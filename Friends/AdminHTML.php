@@ -15,7 +15,7 @@ class FriendsAdminHTML extends Jaws_GadgetHTML
      * Creates the datagrid
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML template of datagrid
      */
     function DataGrid()
     {
@@ -37,7 +37,7 @@ class FriendsAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   int     $limit  Limit of data
-     * @return  array   Data
+     * @return  array   Data array
      */
     function GetFriends($limit = 0)
     {
@@ -85,7 +85,7 @@ class FriendsAdminHTML extends Jaws_GadgetHTML
      * Creates and prints the administration template
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function Admin()
     {

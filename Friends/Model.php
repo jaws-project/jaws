@@ -15,8 +15,8 @@ class FriendsModel extends Jaws_Model
      * Get information of a friend
      *
      * @access  public
-     * @param   int     $id Friend's ID
-     * @return  array   An array of the information of the friend and Jaws_Error on any error
+     * @param   int     $id     Friend's ID
+     * @return  mixed   An array of the information of the friend and Jaws_Error on any error
      */
     function GetFriend($id)
     {
@@ -45,8 +45,8 @@ class FriendsModel extends Jaws_Model
      * Get information of a friend by its name
      *
      * @access  public
-     * @param   stirng  $friend Friend's name
-     * @return  array   An array of the information of the friend and Jaws_Error on any error
+     * @param   string  $name   Friend's name
+     * @return  mixed   An array of the information of the friend and Jaws_Error on any error
      */
     function GetFriendByName($name)
     {
@@ -76,7 +76,8 @@ class FriendsModel extends Jaws_Model
      * Get the list of friends
      *
      * @access  public
-     * @return  array   An array of friends and Jaws_Error on any error
+     * @param   int     $limit  data limit
+     * @return  mixed   An array of friends and Jaws_Error on any error
      */
     function GetFriendsList($limit = 10)
     {
@@ -103,7 +104,7 @@ class FriendsModel extends Jaws_Model
      * Get the total of friends we have
      *
      * @access  public
-     * @return  int     Total of friends we have
+     * @return  mixed   Total of friends we have or Jaws_Error on error
      */
     function TotalOfData()
     {
@@ -121,7 +122,7 @@ class FriendsModel extends Jaws_Model
      * Get a random list of friends limited bt
      *
      * @access  public
-     * @return  array   An array of random friends and Jaws_Error on any error
+     * @return  mixed   An array of random friends and Jaws_Error on any error
      */
     function GetRandomFriends()
     {

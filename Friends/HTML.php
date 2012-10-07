@@ -15,7 +15,7 @@ class FriendsHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @acces  public
-     * @return string  HTML result
+     * @return string  XHTML result
      */
     function DefaultAction()
     {

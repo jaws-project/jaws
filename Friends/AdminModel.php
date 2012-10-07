@@ -17,7 +17,7 @@ class FriendsAdminModel extends FriendsModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Returns true if installation success and Jaws_Error on any error found
+     * @return  mixed   Returns true if installation success and Jaws_Error on any error found
      */
     function InstallGadget()
     {
@@ -36,7 +36,7 @@ class FriendsAdminModel extends FriendsModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed  True on Success or Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -60,7 +60,7 @@ class FriendsAdminModel extends FriendsModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -78,8 +78,8 @@ class FriendsAdminModel extends FriendsModel
      * Set properties of the gadget
      *
      * @access  public
-     * @param   int     $limit Limit
-     * @return  boolean True if change is successful, if not, returns Jaws_Error on any error
+     * @param   int     $limit  Limit
+     * @return  mixed   True if change is successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($limit)
     {
@@ -100,7 +100,7 @@ class FriendsAdminModel extends FriendsModel
      * @access  public
      * @param   string  $friend Friend name
      * @param   string  $url    Friend's url
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
     function NewFriend($friend, $url)
     {
@@ -132,7 +132,7 @@ class FriendsAdminModel extends FriendsModel
      * @param   itn     $id         Friend's ID
      * @param   string  $friend     Friend's Name
      * @param   string  $url        Friend's Url
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
     function UpdateFriend($id, $friend, $url)
     {
@@ -163,7 +163,7 @@ class FriendsAdminModel extends FriendsModel
      *
      * @access  public
      * @param   itn     $id         Friend's ID
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
     function DeleteFriend($id)
     {

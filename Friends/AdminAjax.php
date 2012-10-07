@@ -14,6 +14,7 @@ class FriendsAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function FriendsAdminAjax(&$model)
     {
@@ -24,8 +25,8 @@ class FriendsAdminAjax extends Jaws_Ajax
      * Get information of a friend
      *
      * @access  public
-     * @param   string  $friend  Friend's name
-     * @return  array   Friend information
+     * @param   string  $friend     Friend's name
+     * @return  mixed   Friend information or False on error
      */
     function GetFriend($friend)
     {
@@ -43,7 +44,7 @@ class FriendsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $friend  Friend's name
      * @param   string  $url     Friend's URL
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function NewFriend($friend, $url)
     {
@@ -59,7 +60,7 @@ class FriendsAdminAjax extends Jaws_Ajax
      * @param   string  $old     Friend's OLD name
      * @param   string  $friend  Friend's name
      * @param   string  $url     Friend's URL
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateFriend($old, $friend, $url)
     {
@@ -73,7 +74,7 @@ class FriendsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $friend  Friend's name
-     * @return  array  Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteFriend($friend)
     {
@@ -86,8 +87,8 @@ class FriendsAdminAjax extends Jaws_Ajax
      * Update the properties
      *
      * @access  public
-     * @param   int     $limit Limit random
-     * @return  array   Response
+     * @param   int     $limit  Limit random
+     * @return  array   Response array
      */
     function UpdateProperties($limit)
     {
@@ -100,6 +101,8 @@ class FriendsAdminAjax extends Jaws_Ajax
      * Get data from DB
      *
      * @access  public
+     * @param   int     $limit  limit data
+     * @return  array   data array
      */
     function GetData($limit = 0)
     {

@@ -15,7 +15,7 @@ class FriendsLayoutHTML
      * Creates and prints the template of Friends
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function Display()
     {
