@@ -22,6 +22,12 @@ require_once JAWS_PATH . 'libraries/pear/' . 'XML/RPC/Server.php';
 
 /**
  * Get Blog ACL permission for a specified user
+ *
+ * @access  public
+ * @param   string  $user           username
+ * @param   string  $task           task to use
+ * @param   bool    $superadmin     is super admin
+ * @return  bool    Graned (true) or Denied (false)    
  */
 function GetBlogPermission($user, $task, $superadmin)
 {
@@ -35,6 +41,11 @@ function GetBlogPermission($user, $task, $superadmin)
 
 /**
  * Aux functions
+ *
+ * @access public
+ * @param   object  $p
+ * @param   string  $i
+ * @return  mixed   
  */
 function getScalarValue($p, $i)
 {
@@ -47,6 +58,12 @@ function getScalarValue($p, $i)
     return $r->scalarval();
 }
 
+/**
+ *
+ * @access public
+ * @param   string  $content
+ * @return  string  content
+ */
 function parseContent($content)
 {
     $content = htmlentities($content, ENT_NOQUOTES, 'UTF-8');
@@ -62,6 +79,10 @@ function parseContent($content)
  */
 /*
  * metaWeblog.getUsersBlogs
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getUsersBlogs($params)
 {
@@ -97,6 +118,10 @@ function metaWeblog_getUsersBlogs($params)
 
 /*
  * metaWeblog.getUserInfo
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getUserInfo($params)
 {
@@ -133,6 +158,10 @@ function metaWeblog_getUserInfo($params)
 
 /**
  * New Post (metaWeblog.newPost)
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_newPost($params)
 {
@@ -212,6 +241,10 @@ function metaWeblog_newPost($params)
 
 /*
  * metaWeblog.editPost
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_editPost($params)
 {
@@ -281,6 +314,10 @@ function metaWeblog_editPost($params)
 
 /*
  * metaWeblog.deletePost
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_deletePost($params)
 {
@@ -316,6 +353,10 @@ function metaWeblog_deletePost($params)
 
 /*
  * metaWeblog.getCategories
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getCategories($params)
 {
@@ -366,6 +407,10 @@ function metaWeblog_getCategories($params)
 
 /*
  * metaWeblog.getPost
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getPost($params)
 {
@@ -429,6 +474,10 @@ function metaWeblog_getPost($params)
 
 /*
  * metaWeblog.getRecentPosts
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getRecentPosts($params)
 {
@@ -512,6 +561,10 @@ function metaWeblog_getRecentPosts($params)
 
 /*
  * metaWeblog.getTemplate
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_getTemplate($params)
 {
@@ -520,6 +573,10 @@ function metaWeblog_getTemplate($params)
 
 /*
  * metaWeblog.setTemplate
+ *
+ * @access public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
  */
 function metaWeblog_setTemplate($params)
 {
@@ -530,7 +587,12 @@ function metaWeblog_setTemplate($params)
  * specs on www.hixie.ch/specs/pingback/pingback
  */
 
-/* pingback.ping gets a pingback and registers it */
+/**
+ * pingback.ping gets a pingback and registers it
+ *
+ * @access public
+ * @param   array   $params     array of params
+ */
 function pingback_ping($params)
 {
     //parameters
@@ -538,9 +600,14 @@ function pingback_ping($params)
     $linkto   = getScalarValue($params, 1);
 }
 
-/* pingback.extensions.getPingbacks returns an array of URLs
-    that pingbacked the given URL
-    specs on http://www.aquarionics.com/misc/archives/blogite/0198.html */
+/**
+ * pingback.extensions.getPingbacks returns an array of URLs
+ *   that pingbacked the given URL
+ *   specs on http://www.aquarionics.com/misc/archives/blogite/0198.html
+ *
+ * @access public
+ * @param   array   $params     array of params
+ */
 function pingback_extensions_getPingbacks($params)
 {
 

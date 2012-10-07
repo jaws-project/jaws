@@ -15,8 +15,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default admin action(NewEntry)
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -26,9 +26,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays admin menu bar according to selected action
      *
-     * @access       public
-     * @param        string $action_selected selected action
-     * @return       template content
+     * @access  public
+     * @param   string  $action_selected    selected action
+     * @return  string XHTML template content
      */
     function MenuBar($action_selected)
     {
@@ -73,8 +73,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog summary with some statistics
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Summary()
     {
@@ -193,8 +193,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog settings administration panel
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function AdditionalSettings()
     {
@@ -374,8 +374,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Applies modifications on blog settings
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveAdditionalSettings()
     {
@@ -402,7 +401,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Prepares the comments datagrid of an advanced search
      *
      * @access  public
-     * @return  string  The XHTML of a datagrid
+     * @return  string  The XHTML template of a datagrid
      */
     function CommentsDatagrid()
     {
@@ -417,10 +416,10 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Builds the data (an array) of filtered comments
      *
      * @access  public
-     * @param   int     $limit   Limit of comments
-     * @param   string  $filter  Filter
-     * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
+     * @param   int     $limit      Limit of comments
+     * @param   string  $filter     Filter
+     * @param   string  $search     Search word
+     * @param   string  $status     Spam status (approved, waiting, spam)
      * @return  array   Filtered Comments
      */
     function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
@@ -436,10 +435,10 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Builds the data (an array) of filtered trackbacks
      *
      * @access  public
-     * @param   int     $limit   Limit of trackbacks
-     * @param   string  $filter  Filter
-     * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
+     * @param   int     $limit      Limit of trackbacks
+     * @param   string  $filter     Filter
+     * @param   string  $search     Search word
+     * @param   string  $status     Spam status (approved, waiting, spam)
      * @return  array   Filtered Trackbacks
      */
     function TrackbacksData($limit = 0, $filter = '', $search = '', $status = '')
@@ -451,8 +450,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog comments manager
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ManageComments()
     {
@@ -513,8 +512,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog comment to be edited
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function EditComment()
     {
@@ -615,8 +614,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Applies changes to a blog comment
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveEditComment()
     {
@@ -636,8 +634,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Deletes a blog comment
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function DeleteComment()
     {
@@ -660,8 +657,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog trackbacks manager
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ManageTrackbacks()
     {
@@ -769,8 +766,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog trackback to be edited
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ViewTrackback()
     {
@@ -867,7 +864,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Get a list of categories in a combo
      *
      * @access   public
-     * @param    array   $categories Array of categories (optional)
+     * @param    array   $categories    Array of categories (optional)
      * @return   string  XHTML of a Combo
      */
     function GetCategoriesAsCombo($categories = null)
@@ -894,7 +891,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Get the categories form
      *
      * @access  public
-     * @param   int     $catid  Category id
+     * @param   string  $second_action  
+     * @param   int     $id             Category id
+     * @return  string  XHTML template content
      */
     function CategoryForm($second_action = 'new', $id = '')
     {
@@ -967,8 +966,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog categories manager
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @param   string  $second_action      
+     * @return  string  XHTML template content
      */
     function ManageCategories($second_action = '')
     {
@@ -1005,8 +1005,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Adds the given category to blog
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function AddCategory()
     {
@@ -1022,8 +1021,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Updates a blog category name
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function UpdateCategory()
     {
@@ -1040,8 +1038,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Deletes the given blog category
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function DeleteCategory()
     {
@@ -1057,9 +1054,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays an editor to write a new blog entry or preview it before saving
      *
-     * @access       public
-     * @param        string $action "preview" or empty(optional, empty by default)
-     * @return       template content
+     * @access  public
+     * @param   string $action  "preview" or empty(optional, empty by default)
+     * @return  string  XHTML template content
      */
     function NewEntry($action = '')
     {
@@ -1205,8 +1202,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Saves a new blog entry and displays the entries list on admin section
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveNewEntry()
     {
@@ -1250,8 +1246,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of a new entry before saving
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function PreviewNewEntry()
     {
@@ -1262,9 +1258,10 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays an editor to edit an existing blog entry or preview it before saving changes
      *
-     * @access       public
-     * @param        string $action "preview" or empty(optional, empty by default)
-     * @return       template content
+     * @access  public
+     * @param   string  $action     "preview" or empty(optional, empty by default)
+     * @param   int     $id         
+     * @return  string  XHTML template content
      */
     function EditEntry($action = '', $id = null)
     {
@@ -1451,8 +1448,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of an edited blog entry before saving changes
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function PreviewEditEntry()
     {
@@ -1463,8 +1460,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Save changes on an edited blog entry and shows the entries list on admin section
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveEditEntry()
     {
@@ -1507,8 +1503,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Shows confirm. screen for deleting a blog entry or deletes it if confirm. was done
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function DeleteEntry()
     {
@@ -1590,8 +1586,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of blog entries for the blog admin section
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string XHTML template content
      */
     function ListEntries()
     {
@@ -1723,6 +1719,12 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         return $tpl->Get();
     }
 
+    /**
+     * Wrapper functions for EditCategory action
+     * 
+     * @access public
+     * @return  string  XHTML template content
+     */
     function EditCategory()
     {
         return $this->ManageCategories('editcategory');
@@ -1742,11 +1744,11 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Prepares the data of an advanced search on blog posts
      *
      * @access  public
-     * @param   string  $period  Period to look for
-     * @param   int     $cat     Category
-     * @param   int     $status  Status (0=Draft, 1=Published)
-     * @param   string  $search  Search word
-     * @param   int     $limit   Limit data
+     * @param   string  $period     Period to look for
+     * @param   int     $cat        Category
+     * @param   int     $status     Status (0=Draft, 1=Published)
+     * @param   string  $search     Search word
+     * @param   int     $limit      Limit data
      * @return  array   An array with all the data
      */
     function PostsData($period, $cat, $status, $search, $limit = 0)
@@ -1805,8 +1807,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Format a status boolean to human readable
      *
-     * @param string $value value to format
-     * @return string("Published" or "Draft")
+     * @access  public
+     * @param   string $value value to format
+     * @return  string  ("Published" or "Draft")
      */
     function FormatStatus($value)
     {
@@ -1816,8 +1819,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Format a date using Jaws
      *
-     * @param string $value The data to format.
-     * @return string The formatted date.
+     * @access  public
+     * @param   string  $value  The data to format.
+     * @return  string The formatted date.
      */
     function FormatDate($value)
     {

@@ -16,6 +16,7 @@ class BlogLayoutHTML
      * Load layout actions
      *
      * @access private
+     * @return  array   actions array
      */
     function LoadLayoutActions()
     {
@@ -40,7 +41,7 @@ class BlogLayoutHTML
      *
      * @access  public
      * @param   int     Category ID
-     * @return  string  Template content
+     * @return  string  XHTML Template content
      */
     function EntriesByCategory($cat = null)
     {
@@ -124,8 +125,8 @@ class BlogLayoutHTML
     /**
      * Displays a list of blog entries ordered by date and grouped by month
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function MonthlyHistory()
     {
@@ -182,8 +183,8 @@ class BlogLayoutHTML
     /**
      * Displays a list of blog categories with a link to each one's posts and xml feeds
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function CategoriesList()
     {
@@ -219,8 +220,8 @@ class BlogLayoutHTML
     /**
      * Displays a list of recent blog entries ordered by date
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function RecentPosts()
     {
@@ -230,8 +231,8 @@ class BlogLayoutHTML
     /**
      * Displays a list of recent blog comments ordered by date
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function RecentComments()
     {
@@ -264,8 +265,8 @@ class BlogLayoutHTML
     /**
      * Displays a calendar of the current month/year
      *
-     * @access       public
-     * @return       true on successful installation, false otherwise
+     * @access public
+     * @return  bool    True on successful installation, False otherwise
      */
     function Calendar()
     {
@@ -355,9 +356,8 @@ class BlogLayoutHTML
     /**
      * Display a tag cloud
      *
-     * @return  template content
-     *
      * @access  public
+     * @return  string  XHTML template content
      */
     function ShowTagCloud()
     {
@@ -402,8 +402,8 @@ class BlogLayoutHTML
     /**
      * Displays a link to blog RSS feed
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function RSSLink()
     {
@@ -419,8 +419,8 @@ class BlogLayoutHTML
     /**
      * Displays a link to blog Atom feed
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function AtomLink()
     {
@@ -436,8 +436,8 @@ class BlogLayoutHTML
     /**
      * Displays a link to Atom feed for blog most recent comments
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function RecentCommentsAtomLink()
     {
@@ -452,8 +452,8 @@ class BlogLayoutHTML
     /**
      * Displays a link to RSS feed for blog most recent comments
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function RecentCommentsRSSLink()
     {
@@ -469,7 +469,7 @@ class BlogLayoutHTML
      * Get popular posts
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML Template content
      */
     function PopularPosts()
     {
@@ -518,7 +518,7 @@ class BlogLayoutHTML
      * Get posts authors
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML Template content
      */
     function PostsAuthors()
     {

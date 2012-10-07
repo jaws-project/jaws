@@ -15,8 +15,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(view)
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string XHTML template content
      */
     function DefaultAction()
     {
@@ -45,8 +45,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of recent blog entries ordered by date
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  mixed   XHTML template content on Success or False on error
      */
     function LastPost()
     {
@@ -68,8 +68,10 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * @access      public
-     * @return      template content
+     * 
+     * @access  public
+     * @param   int     $cat    
+     * @return  string  XHTML template content
      */
     function ViewPage($cat = null)
     {
@@ -149,8 +151,9 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * @access      public
-     * @return      template content
+     * 
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ViewAuthorPage()
     {
@@ -209,8 +212,12 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * @access       public
-     * @return       template content
+     * 
+     * @access  public
+     * @param   mixed   $year   year
+     * @param   mixed   $month  month
+     * @param   mixed   $day    day
+     * @return  string  XHTML template content
      */
     function ViewDatePage($year = '', $month = '', $day = '')
     {
@@ -308,7 +315,12 @@ class BlogHTML extends Jaws_GadgetHTML
 
     /**
      * Gets year/month/day nav
-     * @access private
+     *
+     * @access public
+     * @param   mixed   $year   year
+     * @param   mixed   $month  month
+     * @param   mixed   $day    day
+     * @return  string  XHTML template content
      */
     function GetDateNavigation($year, $month, $day)
     {
@@ -394,7 +406,14 @@ class BlogHTML extends Jaws_GadgetHTML
 
     /**
      * Get page navigation links
-     * @access private
+     *
+     * @access  public
+     * @param   int     $page       page number
+     * @param   int     $page_size
+     * @param   int     $total
+     * @param   string  $action     action
+     * @param   array   $params     params array
+     * @return  string  XHTML template content
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $action, $params = array())
     {
@@ -465,7 +484,13 @@ class BlogHTML extends Jaws_GadgetHTML
 
     /**
      * Get navigation links
-     * @access private
+     * 
+     * @access public
+     * @param   string  $purl
+     * @param   string  $ptitle     title
+     * @param   string  $nurl       url
+     * @param   string  $ntitle     title
+     * @return  string  XHTML template content
      */
     function GetNavigation($purl, $ptitle, $nurl, $ntitle)
     {
@@ -497,11 +522,12 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a given blog entry according to given parameters
      *
-     * @access       public
-     * @param        int $entry entry id
-     * @param        boolean $commentLink
-     * @param        boolean $useMore(optional, false by default)
-     * @return       template content
+     * @access  public
+     * @param   int     $entry          entry id
+     * @param   bool    $commentLink
+     * @param   bool    $useMore        (optional, false by default)
+     * @param   string  $tplStr         template string
+     * @return  string XHTML template content
      */
     // TODO: Add author info!!!!
     function ShowEntry($entry, $commentLink = true, $useMore = false, $tplStr = '')
@@ -615,10 +641,11 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a given blog entry
      *
-     * @access public
-     * @param  boolean Display comments flag (optional, false by default)
-     * @param  int     Post id (optional, null by default)
-     * @return template content
+     * @access  public
+     * @param   int     $id                 Post id (optional, null by default)
+     * @param   bool    $preview_mode       Display comments flag (optional, false by default)
+     * @param   string  $reply_to_comment   reply string
+     * @return  string  XHTML template content
      */
     function SingleView($id = null, $preview_mode = false, $reply_to_comment = '')
     {
@@ -739,14 +766,14 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Recursively displays comments of a given post according to several parameters
      *
-     * @access       public
-     * @param        int $id post id
-     * @param        int $parent parent comment id
-     * @param        int $level deep level on thread
-     * @param        int $thread 1 to show full thread
-     * @param        int $reply_link 1 to show reply-to link
-     * @param        array $data  Array with comments data if null it's loaded from model.
-     * @return       template content
+     * @access  public
+     * @param   int     $id             post id
+     * @param   int     $parent         parent comment id
+     * @param   int     $level          deep level on thread
+     * @param   int     $thread         1 to show full thread
+     * @param   int     $reply_link     1 to show reply-to link
+     * @param   array   $data           Array with comments data if null it's loaded from model.
+     * @return  string XHTML template content
      */
     function ShowComments($id, $parent, $level, $thread, $reply_link, $data = null)
     {
@@ -836,9 +863,9 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a given blog comment
      *
-     * @access       public
-     * @param        int $id comment id
-     * @return       template content
+     * @access  public
+     * @param   int $id     comment id
+     * @return  string XHTML template content
      */
     function ShowSingleComment($id)
     {
@@ -883,8 +910,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a given blog comments and a form for replying
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Reply()
     {
@@ -896,12 +923,12 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a form to send a comment to the blog
      *
-     * @access       public
-     * @param        int $parent_id id of the replied item(immediately before on the thread)
-     * @param        int $parent id of the replied entry(comment thread starter)
-     * @param        string $title title of the comment
-     * @param        string $comments body of the comment(optional, empty by default)
-     * @return       template content
+     * @access  public
+     * @param   int     $parent_id  id of the replied item(immediately before on the thread)
+     * @param   int     $parent     id of the replied entry(comment thread starter)
+     * @param   string  $title      title of the comment
+     * @param   string  $comments   body of the comment(optional, empty by default)
+     * @return  string  XTHML template content
      */
     function DisplayCommentForm($parent_id, $parent = 0, $title = '', $comments = '')
     {
@@ -1015,8 +1042,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given blog comment
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Preview()
     {
@@ -1043,8 +1070,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given blog comment
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string XHTML template content
      */
     function ShowPreview()
     {
@@ -1087,8 +1114,7 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Saves the given blog comment
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveComment()
     {
@@ -1167,8 +1193,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of blog entries ordered by date
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Archive()
     {
@@ -1224,9 +1250,9 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays or writes a RSS feed for the blog
      *
-     * @access       public
-     * @param        boolean $save true to save RSS, false to display
-     * @return       xml with RSS feed on display mode, nothing otherwise
+     * @access  public
+     * @param   bool    $save   true to save RSS, false to display
+     * @return  string  xml with RSS feed on display mode, nothing otherwise
      */
     function RSS($save = false)
     {
@@ -1243,9 +1269,9 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays or writes an Atom feed for the blog
      *
-     * @access       public
-     * @param        boolean $save true to save Atom, false to display
-     * @return       xml with Atom feed on display mode, nothing otherwise
+     * @access  public
+     * @param   bool    $save   true to save Atom, false to display
+     * @return  string  xml with Atom feed on display mode, nothing otherwise
      */
     function Atom($save = false)
     {
@@ -1262,8 +1288,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a RSS feed for a given blog category
      *
-     * @access       public
-     * @return       xml with RSS feed
+     * @access  public
+     * @return  string  xml with RSS feed
      */
     function ShowRSSCategory()
     {
@@ -1287,8 +1313,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays an Atom feed for a given blog category
      *
-     * @access       public
-     * @return       xml with Atom feed
+     * @access  public
+     * @return  string  xml with Atom feed
      */
     function ShowAtomCategory()
     {
@@ -1312,8 +1338,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays an Atom feed for blog most recent comments
      *
-     * @access       public
-     * @return       xml with Atom feed
+     * @access  public
+     * @return  string  xml with Atom feed
      */
     function RecentCommentsAtom()
     {
@@ -1330,8 +1356,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a RSS feed for blog most recent comments
      *
-     * @access       public
-     * @return       xml with RSS feed
+     * @access  public
+     * @return  string  xml with RSS feed
      */
     function RecentCommentsRSS()
     {
@@ -1348,8 +1374,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays an Atom feed for most recent comments on the given blog entry
      *
-     * @access       public
-     * @return       xml with Atom feed
+     * @access  public
+     * @return  string  xml with Atom feed
      */
     function CommentsAtom()
     {
@@ -1370,8 +1396,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a RSS feed for most recent comments on the given blog entry
      *
-     * @access       public
-     * @return       xml with RSS feed
+     * @access  public
+     * @return  string  xml with RSS feed
      */
     function CommentsRSS()
     {
@@ -1392,8 +1418,9 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of blog posts included on the given category
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @param   int     category ID
+     * @return  string  XHTML template content
      */
     function ShowCategory($cat = '')
     {
@@ -1463,8 +1490,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of blog categories with a link to each one's posts
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function CategoriesList()
     {
@@ -1478,8 +1505,8 @@ class BlogHTML extends Jaws_GadgetHTML
      * The function other people send to so our blog gadget
      * gets trackbacks
      *
-     * @access       public
-     * @return       trackback xml response
+     * @access  public
+     * @return  string  trackback xml response
      */
     function Trackback()
     {
@@ -1535,9 +1562,9 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Shows existing trackbacks for a given entry
      *
-     * @access       public
-     * @param        int $id entry id
-     * @return       template content
+     * @access  public
+     * @param   int     $id     entry id
+     * @return  string  XHTML template content
      */
     function ShowTrackbacks($id)
     {
@@ -1624,8 +1651,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of popular posts
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function PopularPosts()
     {
@@ -1637,8 +1664,8 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Displays a list of posts authors
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function PostsAuthors()
     {

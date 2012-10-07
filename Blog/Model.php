@@ -36,7 +36,7 @@ class BlogModel extends Jaws_Model
      * @access  public
      * @param   string  $begintime  Begin date time
      * @param   string  $endtime    End date time
-     * @return  boolean An array of entries of a certain year and month and false on error
+     * @return  mixed   An array of entries of a certain year and month and Jaws_Error on error
      */
     function GetEntriesAsCalendar($begintime, $endtime)
     {
@@ -79,7 +79,7 @@ class BlogModel extends Jaws_Model
      * @param   string  $status   Status of the entry, 0 = Draft, 1 = Published
      * @param   string  $match    Match word
      * @param   string  $user_id  User id
-     * @return  array   An array of entries and false on error
+     * @return  mixed   An array of entries and Jaws_Error on error
      */
     function AdvancedSearch($limit, $filter, $category, $status, $match, $user_id)
     {
@@ -194,6 +194,7 @@ class BlogModel extends Jaws_Model
      * Get date limitation of the blog entries
      *
      * @access  public
+     * @param   bool    $published      is published
      * @return  array   An array that has the date limitation of blog entries
      */
     function GetPostsDateLimitation($published = null)
@@ -332,6 +333,7 @@ class BlogModel extends Jaws_Model
      * Get a category
      *
      * @access  public
+     * @param   int     $id     category ID
      * @return  mixed   A category or Jaws_Error
      */
     function GetCategory($id)
@@ -362,7 +364,8 @@ class BlogModel extends Jaws_Model
      * Get a category
      *
      * @access  public
-     * @return  mixed   A category or Jaws_Error
+     * @param   string  $name   category name
+     * @return  mixed   A category array or Jaws_Error
      */
     function GetCategoryByName($name)
     {
@@ -388,6 +391,8 @@ class BlogModel extends Jaws_Model
 
     /**
      * Get categories in a given entry
+     *
+     * @access  public
      * @param   int     $post_id  Post ID
      * @return  array   Returns an array with the categories in a given post
      */
@@ -410,6 +415,8 @@ class BlogModel extends Jaws_Model
 
     /**
      * Get categories in entries
+     *
+     * @access  public
      * @param   int     $ids Array with post id's
      * @return  array   Returns an array with the categories in a given post
      */
@@ -437,13 +444,13 @@ class BlogModel extends Jaws_Model
     /**
      * Get entries
      *
-     * @param   $cat         Category ID
-     * @params  $conditions  Array with extra conditions
-     * @params  $extraparams Array with extra params
-     * @params  $extralimit  Integer which limits number of results
-     * @params  $extraoffset Integer which sets an offset to skip results
      * @access  public
-     * @return  array   Returns an array of entries and false on error
+     * @param   int     $cat            Category ID
+     * @param   array   $conditions     Array with extra conditions
+     * @param   array   $extraparams    Array with extra params
+     * @param   int     $extralimit     Integer which limits number of results
+     * @param   int     $extraoffset    Integer which sets an offset to skip results
+     * @return  array   Returns an array of entries and Jaws_Error on error
      */
     function GetEntries($cat = null, $conditions = null, $extraparams = null, $extralimit = null, $extraoffset = null)
     {
@@ -545,10 +552,9 @@ class BlogModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $page
-     * @param   int     $year   Year we want
-     * @param   int     $day    Day we want
-     * @param   int     $month  month we want
-     * @return  array   Returns an array of entries of a certain date and false on error
+     * @param   string  $min_date   minimum date
+     * @param   string  $max_date   maximum date
+     * @return  array   Returns an array of entries of a certain date and Jaws_Error on error
      */
     function GetEntriesByDate($page, $min_date, $max_date)
     {
@@ -576,9 +582,9 @@ class BlogModel extends Jaws_Model
      * Get a list of comments
      *
      * @access  public
-     * @param   int     $id     ID of the comment
-     * @param   int     $parent ID of the parent comment
-     * @return  array   Returns a list of comments and false on error
+     * @param   int     $id         ID of the comment
+     * @param   int     $parent     ID of the parent comment
+     * @return  mixed   Returns a list of comments and Jaws_Error on error
      */
     function GetComments($id, $parent)
     {
@@ -600,7 +606,10 @@ class BlogModel extends Jaws_Model
 
     /**
      * Puts avatar and format time for given comments
-     * @access private
+     * 
+     * @access  private
+     * @param   array   $comments   reference to comments array
+     * @param   string  $prenum     
      */
     function _AdditionalCommentsData(&$comments, $prenum = '')
     {
@@ -621,7 +630,7 @@ class BlogModel extends Jaws_Model
      * Get last comments
      *
      * @access  public
-     * @return  array   Returns a list of recent comments and false on error
+     * @return  mixed   Returns a list of recent comments and Jaws_Error on error
      */
     function GetRecentComments()
     {
@@ -657,7 +666,7 @@ class BlogModel extends Jaws_Model
      * @param   string  $filter   Filter data
      * @param   string  $status   Spam status (approved, waiting, spam)
      * @param   mixed   $limit    Data limit (numeric/boolean)
-     * @return  array   Returns a list of comments and false on error
+     * @return  mixed   Returns a list of comments and Jaws_Error on error
      */
     function GetCommentsFiltered($filterby, $filter, $status, $limit)
     {
@@ -718,8 +727,8 @@ class BlogModel extends Jaws_Model
      * Get a comment
      *
      * @access  public
-     * @param   int     $id  ID of the comment
-     * @return  array   Properties of a comment and false on error
+     * @param   int     $id     ID of the comment
+     * @return  mixed   Properties of a comment and Jaws_Error on error
      */
     function GetComment($id)
     {
@@ -744,13 +753,12 @@ class BlogModel extends Jaws_Model
      * This function mails the comments to the admin and
      * to the user when he asks for it.
      *
-     * @access public
-     * @param int $id            The blog id.
-     * @param string $title      The email title
-     * @param string $from_email The email to sendto
-     * @param string $comment    The body of the email (The actual comment)
-     * @param string $url        The url of the blog id.
-     * @return
+     * @access  public
+     * @param   int     $id            The blog id.
+     * @param   string  $title      The email title
+     * @param   string  $from_email The email to sendto
+     * @param   string  $comment    The body of the email (The actual comment)
+     * @param   string  $url        The url of the blog id.
      */
     function MailComment($id, $title, $from_email, $comment, $url)
     {
@@ -807,8 +815,8 @@ class BlogModel extends Jaws_Model
      * @param   int     $parent     ID of the parent comment
      * @param   int     $parentId   ID of the entry
      * @param   string  $ip         IP of the author
-     * @param   boolean $set_cookie Create a cookie
-     * @return  boolean True if comment was added, and false if not.
+     * @param   bool    $set_cookie Create a cookie
+     * @return  bool    True if comment was added, and Jaws_Error if not.
      */
     function NewComment($name, $title, $url, $email, $comments, $parent, $parentId, $ip = '', $set_cookie = true)
     {
@@ -886,7 +894,7 @@ class BlogModel extends Jaws_Model
      * Get entries as an archive
      *
      * @access  public
-     * @return  array   Returns a list of entries in Archive Format and false on error
+     * @return  mixed   Returns a list of entries in Archive Format and Jaws_Error on error
      */
     function GetEntriesAsArchive()
     {
@@ -919,7 +927,7 @@ class BlogModel extends Jaws_Model
      * Get entries as a history
      *
      * @access  public
-     * @return  array   Returns a list of entries in History Format and false on error
+     * @return  mixed   Returns a list of entries in History Format and Jaws_Error on error
      */
     function GetEntriesAsHistory()
     {
@@ -946,7 +954,7 @@ class BlogModel extends Jaws_Model
      * Get entries grouped by categories
      *
      * @access  public
-     * @return  array   Returns a list of entries in Category Format and false on error
+     * @return  mixed   Returns a list of entries in Category Format and Jaws_Error on error
      */
     function GetEntriesAsCategories()
     {
@@ -978,8 +986,8 @@ class BlogModel extends Jaws_Model
      * Get last entries of all categories or just of only one category
      *
      * @access  public
-     * @param   int     $cat  Category ID
-     * @return  array   Returns a list of recent entries and false on error
+     * @param   int     $cat    Category ID
+     * @return  mixed   Returns a list of recent entries and Jaws_Error on error
      */
     function GetRecentEntries($cat = null)
     {
@@ -1036,7 +1044,8 @@ class BlogModel extends Jaws_Model
      * Create ATOM struct
      *
      * @access  public
-     * @return  object  Can return the Atom Object
+     * @param   string  $feed_type  OPTIONAL feed type
+     * @return  mixed  Can return the Atom Object or Jaws_Error on error
      */
     function GetAtomStruct($feed_type = 'atom')
     {
@@ -1172,8 +1181,8 @@ class BlogModel extends Jaws_Model
      * Create ATOM of the blog
      *
      * @access  public
-     * @param   boolean $write Flag that determinates if Atom file should be written to disk
-     * @return  mixed   Returns nothing if atom was
+     * @param   bool    $write Flag that determinates if Atom file should be written to disk
+     * @return  mixed   XML string or Jaws_Error on error
      */
     function MakeAtom($write = false)
     {
@@ -1200,8 +1209,8 @@ class BlogModel extends Jaws_Model
      * Create RSS of the blog
      *
      * @access  public
-     * @param   boolean  $write  Flag that determinates if it should returns the RSS
-     * @return  mixed    Returns the RSS(string) if it was required, or true
+     * @param   bool    $write  Flag that determinates if it should returns the RSS
+     * @return  mixed   Returns the RSS(string) if it was required, or Jaws_Error on error
      */
     function MakeRSS($write = false)
     {
@@ -1229,8 +1238,9 @@ class BlogModel extends Jaws_Model
      * Create ATOM struct of a given category
      *
      * @access  public
-     * @param   int $category Category ID
-     * @return  object  Can return the Atom Object
+     * @param   int     $category   Category ID
+     * $params  string  $feed_type  OPTIONAL feed type
+     * @return  mixed   Can return the Atom Object or Jaws_Error on error
      */
     function GetCategoryAtomStruct($category, $feed_type = 'atom')
     {
@@ -1360,9 +1370,10 @@ class BlogModel extends Jaws_Model
      * Create ATOM of the blog
      *
      * @access  public
-     * @param   int $categoryId Category ID
-     * @param   boolean $writeToDisk Flag that determinates if Atom file should be written to disk
-     * @return  mixed   Returns nothing if atom was saved, otherwise returns the ATOM in XML(string)
+     * @param   int     $categoryId     Category ID
+     * @param   string  $catAtom        
+     * @param   bool    $writeToDisk    Flag that determinates if Atom file should be written to disk
+     * @return  mixed   Returns nothing if atom was saved, otherwise returns the ATOM in XML(string) or Jaws_Error on error
      */
     function MakeCategoryAtom($categoryId, $catAtom = null, $writeToDisk = false)
     {
@@ -1393,9 +1404,10 @@ class BlogModel extends Jaws_Model
      * Create RSS of a given category
      *
      * @access  public
-     * @param   int $categoryId Category ID
-     * @param   boolean $writeToDisk Flag that determinates if Atom file should be written to disk
-     * @return  mixed    Returns the RSS(string) if it was required, or true
+     * @param   int     $categoryId     Category ID
+     * @param   string  $catAtom        
+     * @param   bool    $writeToDisk    Flag that determinates if Atom file should be written to disk
+     * @return  mixed   Returns the RSS(string) if it was required, or Jaws_Error on error
      */
     function MakeCategoryRSS($categoryId, $catAtom = null, $writeToDisk = false)
     {
@@ -1426,6 +1438,7 @@ class BlogModel extends Jaws_Model
      * Create ATOM struct of recent comments
      *
      * @access  private
+     * @param   string  $feed_type  OPTIONAL feed type
      * @return  object  Can return the Atom Object
      */
     function GetRecentCommentsAtomStruct($feed_type = 'atom')
@@ -1530,7 +1543,8 @@ class BlogModel extends Jaws_Model
      * Create ATOM struct of comments of a given entry
      *
      * @access  private
-     * @param   int $id Post ID
+     * @param   int     $id             Post ID
+     * @param   string  $feed_type      OPTIONAL feed type
      * @return  object  Can return the Atom Object
      */
     function GetPostCommentsAtomStruct($id, $feed_type = 'atom')
@@ -1605,7 +1619,8 @@ class BlogModel extends Jaws_Model
      * Comments Atom of a given post
      *
      * @access  public
-     * @return  mixed    Returns the Recent comments RSS
+     * @param   int     $id     post ID
+     * @return  mixed    Returns the Recent comments RSS or Jaws_Error on error
      */
     function GetPostCommentsAtom($id)
     {
@@ -1621,7 +1636,8 @@ class BlogModel extends Jaws_Model
      * Comments RSS of a given post
      *
      * @access  public
-     * @return  mixed    Returns the Recent comments RSS
+     * @param   int     $id     post ID
+     * @return  mixed    Returns the Recent comments RSS or Jaws_Error on error
      */
     function GetPostCommentsRSS($id)
     {
@@ -1639,7 +1655,7 @@ class BlogModel extends Jaws_Model
      * @access  public
      * @param   int     $category
      * @param   int     $page
-     * @return  array   Returns an array of entries and false on error
+     * @return  mixed   Returns an array of entries and Jaws_Error on error
      */
     function GetEntriesByCategory($category, $page)
     {
@@ -1663,8 +1679,8 @@ class BlogModel extends Jaws_Model
      * Increment visits counter of an entry
      *
      * @access  public
-     * @param   int     $id ID of the Entry
-     * @return  boolean True if counter was successfully increment and false on error
+     * @param   int     $id     ID of the Entry
+     * @return  bool    True if counter was successfully increment and false on error
      */
     function ViewEntry($id)
     {
@@ -1685,9 +1701,9 @@ class BlogModel extends Jaws_Model
      * Get an entry
      *
      * @access  public
-     * @param   int     $id ID of the Entry
-     * @param   boolean $published If it is true then get the entry only if it is published
-     * @return  array   Properties of the entry(an array) and false on error
+     * @param   int     $id         ID of the Entry
+     * @param   bool    $published  If it is true then get the entry only if it is published
+     * @return  mixed   Properties of the entry(an array) and Jaws_Error on error
      */
     function GetEntry($id, $published = false)
     {
@@ -1761,7 +1777,7 @@ class BlogModel extends Jaws_Model
      * Get latest published entry ID
      *
      * @access  public
-     * @return  integer ID of the latest published entry and false on error
+     * @return  mixed   ID of the latest published entry and false on error
      */
     function GetLatestPublishedEntryID()
     {
@@ -1791,7 +1807,7 @@ class BlogModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $limit
-     * @return  array   An array of the last entries and false on error
+     * @return  mixed   An array of the last entries and Jaws_Error on error
      */
     function GetLastEntries($limit)
     {
@@ -1841,7 +1857,7 @@ class BlogModel extends Jaws_Model
      * Get an month/year where exists entries
      *
      * @access  public
-     * @return  array  An array of relations between months and years of the blog and false on error
+     * @return  mixed   An array of relations between months and years of the blog and Jaws_Error on error
      */
     function GetMonthsEntries()
     {
@@ -1873,8 +1889,8 @@ class BlogModel extends Jaws_Model
      * Verify if an entry exists
      *
      * @access  public
-     * @param   string  $post_id The entry ID (ID or fast_URL, string)
-     * return   boolean True if entry exists, else, false.
+     * @param   string  $post_id    The entry ID (ID or fast_URL, string)
+     * return   bool    True if entry exists, else, false.
      */
     function DoesEntryExists($post_id)
     {
@@ -1900,9 +1916,9 @@ class BlogModel extends Jaws_Model
      * Get trackbacks
      *
      * @access  public
-     * @param   int     $id ID of the Entry
-     * @return  array   A list of the trackbacks, if blog is not using trackback returns true,
-     *                  but if blog is using trackback but was not fetched correctly will returns false
+     * @param   int     $id     ID of the Entry
+     * @return  mixed   A list of the trackbacks, if blog is not using trackback returns true,
+     *                  but if blog is using trackback but was not fetched correctly will returns false or Jaws_Error on error
      */
     function GetTrackbacks($id)
     {
@@ -1947,8 +1963,8 @@ class BlogModel extends Jaws_Model
      * Get trackbacks
      *
      * @access  public
-     * @param   int     $id ID of the Trackback
-     * @return  array   Properties of a trackback and false on error
+     * @param   int     $id     ID of the Trackback
+     * @return  mixed   Properties of a trackback and Jaws_Error on error
      */
     function GetTrackback($id)
     {
@@ -1991,9 +2007,11 @@ class BlogModel extends Jaws_Model
     /**
      * Get next/previous published entry
      * NOP = next or previous
+     * 
      * @access  public
-     * @param   int     $id ID of the Entry
-     * @return  array   Properties of the entry(an array) and false on error
+     * @param   int     $id         ID of the Entry
+     * @param   string  $direction  OPTIONAL direction
+     * @return  bool    Properties of the entry(an array) and false on error
      */
     function GetNOPEntry($id, $direction = 'next')
     {
@@ -2049,7 +2067,7 @@ class BlogModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $fasturl    The fastURL of entry
-     * @return  array   An array contains entry info and false otherwise
+     * @return  mixed   An array contains entry info and false otherwise
      */
     function GetFastURL($fasturl)
     {
@@ -2074,13 +2092,13 @@ class BlogModel extends Jaws_Model
      * Create a new trackback
      *
      * @access  public
-     * @param   int     $parent_id        ID of the entry
-     * @param   string  $url       URL of the trackback
-     * @param   string  $title     Title of the trackback
-     * @param   string  $excerpt   The Excerpt
-     * @param   string  $blog_name The name of the Blog
-     * @param   string  $ip        The sender ip address
-     * @return  boolean True if trackback was successfully added, if not, returns false
+     * @param   int     $parent_id      ID of the entry
+     * @param   string  $url            URL of the trackback
+     * @param   string  $title          Title of the trackback
+     * @param   string  $excerpt        The Excerpt
+     * @param   string  $blog_name      The name of the Blog
+     * @param   string  $ip             The sender ip address
+     * @return  mixed   True if trackback was successfully added, if not, returns Jaws_Error
      */
     function NewTrackback($parent_id, $url, $title, $excerpt, $blog_name, $ip)
     {
@@ -2143,8 +2161,8 @@ class BlogModel extends Jaws_Model
     /**
      * Generates a tag cloud
      *
-     * @return  Array   An array on success and Jaws_Error in case of errors
      * @access  public
+     * @return  mixed   An array on success and Jaws_Error in case of errors
      */
     function CreateTagCloud()
     {
@@ -2168,8 +2186,12 @@ class BlogModel extends Jaws_Model
     /**
      * Get entries in a given page (page size = last_entries_limit)
      *
-     * @return Array  An array with the entries
      * @access public
+     * @param   int     $cat            category
+     * @param   int     $page           page
+     * @param   array   $condition      conditions array
+     * @param   array   $extraparams    extra params array
+     * @return  array  An array with the entries
      */
     function GetEntriesAsPage($cat = null, $page = 0, $condition = null, $extraparams = null)
     {
@@ -2190,6 +2212,8 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of pages limited by last_entries_limit
      *
+     * @access public
+     * @param   int     $cat    category iD
      * @return int number of pages
      */
     function GetNumberOfPages($cat = null)
@@ -2227,6 +2251,9 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of date's pages
      *
+     * @access public
+     * @param   string  $min_date   minimum date
+     * @param   string  $max_date   maximum date
      * @return int number of pages
      */
     function GetDateNumberOfPages($min_date, $max_date)
@@ -2257,6 +2284,8 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of author's pages
      *
+     * @access public
+     * @param   string  $user   username
      * @return int number of pages
      */
     function GetAuthorNumberOfPages($user)
@@ -2292,6 +2321,8 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of category's pages
      *
+     * @access public
+     * @param   int     $category   category iD
      * @return int number of pages
      */
     function GetCategoryNumberOfPages($category)
@@ -2328,7 +2359,6 @@ class BlogModel extends Jaws_Model
      * @param   string  $permalink Target URI (of post)
      * @param   string  $title     Title of who's pinging (<title>..)
      * @param   string  $content   has the context, from exact target link position (optional)
-     * @return  boolean Success/Failure
      */
     function SavePingback($postID, $sourceURI, $permalink, $title, $content)
     {
@@ -2469,7 +2499,7 @@ class BlogModel extends Jaws_Model
      * Get popular posts
      *
      * @access  public
-     * @return  array   List of popular posts
+     * @return  mixed   List of popular posts or Jaws_Error on error
      */
     function GetPopularPosts()
     {
@@ -2518,7 +2548,7 @@ class BlogModel extends Jaws_Model
      * Get posts authors
      *
      * @access  public
-     * @return  array   List of posts authors
+     * @return  mixed   List of posts authors or Jaws_Error on error
      */
     function GetPostsAuthors()
     {
@@ -2550,7 +2580,7 @@ class BlogModel extends Jaws_Model
      * @param   int     $id         ID of the Entry
      * @param   string  $summary    Summary of the entry
      * @param   string  $text       Main text of the entry
-     * @return  boolean True if counter was successfully increment and false on error
+     * @return  bool    True if counter was successfully increment and false on error
      */
     function SplitEntry($id, &$summary, &$text)
     {

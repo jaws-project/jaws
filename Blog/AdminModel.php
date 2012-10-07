@@ -18,7 +18,7 @@ class BlogAdminModel extends BlogModel
      * Install Blog gadget in Jaws
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -70,7 +70,7 @@ class BlogAdminModel extends BlogModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error otherwise
+     * @return  mixed  True on success and Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -121,7 +121,7 @@ class BlogAdminModel extends BlogModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success, Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -147,7 +147,7 @@ class BlogAdminModel extends BlogModel
      * @param   string  $name        Category name
      * @param   string  $description Category description
      * @param   string  $fast_url    Category fast url
-     * @return  boolean Returns true if Category was successfully added, if not, returns false
+     * @return  mixed   True on success, Jaws_Error on failure
      */
     function NewCategory($name, $description, $fast_url)
     {
@@ -180,9 +180,9 @@ class BlogAdminModel extends BlogModel
      * Update a category entry
      *
      * @access  public
-     * @param   int     $cid   ID of category
-     * @param   string  $name Name of category
-     * @return  boolean Returns true if Category was successfully updated, if not, returns false
+     * @param   int     $cid    ID of category
+     * @param   string  $name   Name of category
+     * @return  bool    Returns True if Category was successfully updated, else Jaws_Error
      */
     function UpdateCategory($cid, $name, $description, $fast_url)
     {
@@ -224,8 +224,8 @@ class BlogAdminModel extends BlogModel
      * Delete a category entry
      *
      * @access  public
-     * @param   int     $id ID of category
-     * @return  boolean Returns true if Category was successfully deleted, if not, returns false
+     * @param   int     $id     ID of category
+     * @return  mixed   Returns True if Category was successfully deleted, else Jaws_Error
      */
     function DeleteCategory($id)
     {
@@ -268,9 +268,10 @@ class BlogAdminModel extends BlogModel
     /**
      * Add a category to a given entry (in blog_category table)
      *
+     * @access  public
      * @param   int     $blog_id        Post ID
      * @param   int     $category_id    Category ID
-     * @return  boolean     Returns true if everything is ok, else Jaws_Error
+     * @return  mixed   Returns True if everything is ok, else Jaws_Error
      */
     function AddCategoryToEntry($blog_id, $category_id)
     {
@@ -301,7 +302,7 @@ class BlogAdminModel extends BlogModel
      *
      * @param   int     $blog_id        Post ID
      * @param   int     $category_id    Category ID
-     * @return  boolean     Returns true if everything is ok, else Jaws_Error
+     * @return  mixed   Returns True if everything is ok, else Jaws_Error
      */
     function DeleteCategoryInEntry($blog_id, $category_id)
     {
@@ -358,18 +359,19 @@ class BlogAdminModel extends BlogModel
      * Save the main settings of the Blog
      *
      * @access  public
-     * @param   string  $view               The default View
-     * @param   int     $limit              Limit of entries that blog will show
-     * @param   int     $popularLimit       Limit of popular entries
-     * @param   int     $commentsLimit      Limit of comments that blog will show
-     * @param   int     $recentcommentLimit Limit of recent comments to display
-     * @param   string  $category           The default category for blog entries
-     * @param   boolean $comments           If comments should appear
-     * @param   string  $comment_status     Default comment status
-     * @param   boolean $trackback          If Trackback should be used
-     * @param   string  $trackback_status   Default trackback status
-     * @param   boolean $pingback           If Pingback should be used
-     * @return  boolean Return true if settings were saved without problems, if not, returns false
+     * @param   string  $view                   The default View
+     * @param   int     $limit                  Limit of entries that blog will show
+     * @param   int     $popularLimit           Limit of popular entries
+     * @param   int     $commentsLimit          Limit of comments that blog will show
+     * @param   int     $recentcommentsLimit    Limit of recent comments to display
+     * @param   string  $category               The default category for blog entries
+     * @param   int     $xml_limit              xml limit
+     * @param   bool    $comments               If comments should appear
+     * @param   string  $comment_status         Default comment status
+     * @param   bool    $trackback              If Trackback should be used
+     * @param   string  $trackback_status       Default trackback status
+     * @param   bool    $pingback               If Pingback should be used
+     * @return  mixed   Return True if settings were saved without problems, else Jaws_Error
      */
     function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category, 
                           $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
@@ -407,13 +409,15 @@ class BlogAdminModel extends BlogModel
      * @param   int     $user           User ID
      * @param   array   $categories     Array with categories id's
      * @param   string  $title          Title of the entry
+     * @param   string  $summary        post summary
      * @param   string  $content        Content of the entry
      * @param   string  $fast_url       FastURL
-     * @param   boolean $allow_comments If entry should allow commnets
-     * @param   boolean $publish        If entry should be published
+     * @param   bool    $allow_comments If entry should allow commnets
+     * @param   bool    $trackbacks     
+     * @param   bool    $publish        If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
-     * @param   boolean $autodraft      Does it comes from an autodraft action?
-     * @return  int     Returns the ID of the new post and false on error
+     * @param   bool    $autodraft      Does it comes from an autodraft action?
+     * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
     function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $allow_comments, $trackbacks,
                       $publish, $timestamp = null, $autoDraft = false)
@@ -508,13 +512,15 @@ class BlogAdminModel extends BlogModel
      * @param   int     $post_id        Post ID
      * @param   int     $categories     Categories array
      * @param   string  $title          Title of the Entry
+     * @param   string  $summary        entry summary
      * @param   string  $content        Content of the Entry
      * @param   string  $fast_url       FastURL
-     * @param   boolean $allow_comments If entry should allow commnets
-     * @param   boolean $publish        If entry should be published
+     * @param   bool    $allow_comments If entry should allow commnets
+     * @param   bool    $trackbacks     
+     * @param   bool    $publish        If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
-     * @param   boolean $autodraft      Does it comes from an autodraft action?
-     * @return  int     Returns the ID of the post and false on error
+     * @param   bool    $autodraft      Does it comes from an autodraft action?
+     * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
     function UpdateEntry($post_id, $categories, $title, $summary, $content, $fast_url, $allow_comments, $trackbacks,
                          $publish, $timestamp = null, $autoDraft = false)
@@ -655,8 +661,8 @@ class BlogAdminModel extends BlogModel
      * Delete an entry
      *
      * @access  public
-     * @param   int     $post_id The entry ID
-     * @return  boolean True if entry was successfully deleted, if not, returns false
+     * @param   int     $post_id    The entry ID
+     * @return  mixed   True if entry was successfully deleted, Jaws_Error on failure
      */
     function DeleteEntry($post_id)
     {
@@ -704,7 +710,7 @@ class BlogAdminModel extends BlogModel
      * @param   string  $title     Title of the Site
      * @param   string  $excerpt   The Excerpt
      * @param   string  $permalink The Permalink to send
-     * @param   array  $to        Where to send the trackback
+     * @param   array   $to        Where to send the trackback
      */
     function SendTrackback($title, $excerpt, $permalink, $to)
     {
@@ -744,7 +750,7 @@ class BlogAdminModel extends BlogModel
      * Get the total number of posts of an user
      *
      * @access  public
-     * @return  int
+     * @return  int     Number of posts on Success, or zero on error
      */
     function TotalOfPosts()
     {
@@ -771,7 +777,7 @@ class BlogAdminModel extends BlogModel
      * @param   string  $comments   Text of the comment
      * @param   string  $permalink  Permanent link to post
      * @param   string  $status     Comment Status
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
     {
@@ -805,8 +811,8 @@ class BlogAdminModel extends BlogModel
      * Delete a comment
      *
      * @access  public
-     * @param   string  $id Comment id
-     * @return  boolean Success/Failure
+     * @param   string  $id     Comment id
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function DeleteComment($id)
     {
@@ -850,8 +856,7 @@ class BlogAdminModel extends BlogModel
      * Delete all comments in a given entry
      *
      * @access  public
-     * @param   string  $id         Post id.
-     * @return  boolean Success/Failure
+     * @param   int     $id         Post id.
      */
     function DeleteCommentsIn($id)
     {
@@ -864,8 +869,9 @@ class BlogAdminModel extends BlogModel
      * Mark as different status a comment
      *
      * @access  public
-     * @param   array  $ids     Id's of the comments to mark as spam
-     * @param   string $status  New status (spam by default)
+     * @param   array   $ids     Id's of the comments to mark as spam
+     * @param   string  $status  New status (spam by default)
+     * @return  mixed   True on Success or Jaws_Error on failure
      */
     function MarkCommentsAs($ids, $status = 'spam')
     {
@@ -904,8 +910,9 @@ class BlogAdminModel extends BlogModel
      * Mark as different status a trackback
      *
      * @access  public
-     * @param   array  $ids     Id's of the trackbacks to mark as spam
-     * @param   string $status  New status (spam by default)
+     * @param   array   $ids     Id's of the trackbacks to mark as spam
+     * @param   string  $status  New status (spam by default)
+     * @param   mixed   True on Success or Jaws_Error on failure
      */
     function MarkTrackbacksAs($ids, $status = 'spam')
     {
@@ -932,7 +939,7 @@ class BlogAdminModel extends BlogModel
      *
      * @access  public
      * @param   array   $ids  Ids of comments
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function MassiveCommentDelete($ids)
     {
@@ -957,7 +964,7 @@ class BlogAdminModel extends BlogModel
      *
      * @access  public
      * @param   array   $ids  Ids of entries
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function MassiveEntryDelete($ids)
     {
@@ -981,9 +988,9 @@ class BlogAdminModel extends BlogModel
      * Change status of group of entries ids
      *
      * @access  public
-     * @param   array   $ids    Ids of entries
-     * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @param   array   $ids        Ids of entries
+     * @param   string  $status     New status
+     * @return  mixed   True on Success or Jaws_Error on failure
      */
     function ChangeEntryStatus($ids, $status = '0')
     {
@@ -1009,7 +1016,7 @@ class BlogAdminModel extends BlogModel
      *
      * @access  public
      * @param   array   $ids  Ids of trackbacks
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function MassiveTrackbackDelete($ids)
     {
@@ -1032,9 +1039,9 @@ class BlogAdminModel extends BlogModel
     /**
      * Deletes a trackback
      *
-     * @param   int     $id     Trackback's ID
-     * @return  boolean True if sucess or Jaws_Error on any error
      * @access  public
+     * @param   int     $id     Trackback's ID
+     * @return  mixed   True if sucess or Jaws_Error on any error
      */
     function DeleteTrackback($id)
     {
@@ -1056,11 +1063,11 @@ class BlogAdminModel extends BlogModel
      * See Filter modes for more info
      *
      * @access  public
-     * @param   string  $filterMode Which mode should be used to filter
-     * @param   string  $filterData Data that will be used in the filter
-     * @param   string  $status     Spam status (approved, waiting, spam)
-     * @param   mixed   $limit      Limit of data (numeric/boolean: no limit)
-     * @return  array   Returns an array with of filtered trackbacks or Jaws_Error on error
+     * @param   string  $filterMode     Which mode should be used to filter
+     * @param   string  $filterData     Data that will be used in the filter
+     * @param   string  $status         Spam status (approved, waiting, spam)
+     * @param   mixed   $limit          Limit of data (numeric/boolean: no limit)
+     * @return  mixed   Returns an array with of filtered trackbacks or Jaws_Error on error
      */
     function GetFilteredTrackbacks($filterMode, $filterData, $status, $limit)
     {
@@ -1210,10 +1217,10 @@ class BlogAdminModel extends BlogModel
      * See Filter modes for more info
      *
      * @access  public
-     * @param   string  $filterMode Which mode should be used to filter
-     * @param   string  $filterData Data that will be used in the filter
-     * @param   string  $status     Spam status (approved, waiting, spam)
-     * @return  int   Returns how many trackbacks exists with a given filter
+     * @param   string  $filterMode     Which mode should be used to filter
+     * @param   string  $filterData     Data that will be used in the filter
+     * @param   string  $status         Spam status (approved, waiting, spam)
+     * @return  mixed   Returns how many trackbacks exists with a given filter or Jaws_Error on failure
      */
     function HowManyFilteredTrackbacks($filterMode, $filterData, $status)
     {

@@ -15,6 +15,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  model reference
      */
     function BlogAdminAjax(&$model)
     {
@@ -39,7 +40,7 @@ class BlogAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $period  Period to look for
-     * @param   int     $cat     Category
+     * @param   int     $cat     Category ID
      * @param   int     $status  Status (0=Draft, 1=Published)
      * @param   string  $search  Search word
      * @param   int     $limit   Limit data
@@ -55,7 +56,8 @@ class BlogAdminAjax extends Jaws_Ajax
      * Get total posts of a search
      *
      * @access  public
-     * @param   int     $cat     Category
+     * @param   string  $period  Period to look for
+     * @param   int     $cat     Category ID
      * @param   int     $status  Status (0=Draft, 1=Published)
      * @param   string  $search  Search word
      * @return  int     Total of posts
@@ -71,19 +73,20 @@ class BlogAdminAjax extends Jaws_Ajax
      * Save blog settings
      *
      * @access  public
-     * @param   string  $view               The default View
-     * @param   int     $limit              Limit of entries that blog will show
-     * @param   int     $popularLimit       Limit of popular entries
-     * @param   int     $commentsLimit      Limit of comments that blog will show
-     * @param   int     $recentcommentLimit Limit of recent comments to display
-     * @param   string  $commentStatus      Default comment status
-     * @param   string  $category           The default category for blog entries
-     * @param   boolean $comments           If comments should appear
-     * @param   string  $comment_status     Default comment status
-     * @param   boolean $trackback          If Trackback should be used
-     * @param   string  $trackback_status   Default trackback status
-     * @param   boolean $pingback           If Pingback should be used
-     * @return  array   Response (notice or error)
+     * @param   string  $view                   The default View
+     * @param   int     $limit                  Limit of entries that blog will show
+     * @param   int     $popularLimit           Limit of popular entries
+     * @param   int     $commentsLimit          Limit of comments that blog will show
+     * @param   int     $recentcommentsLimit    Limit of recent comments to display
+     * @param   string  $commentStatus          Default comment status
+     * @param   string  $category               The default category for blog entries
+     * @param   int     xml_limit               limit
+     * @param   bool    $comments               If comments should appear
+     * @param   string  $comment_status         Default comment status
+     * @param   bool    $trackback              If Trackback should be used
+     * @param   string  $trackback_status       Default trackback status
+     * @param   bool    $pingback               If Pingback should be used
+     * @return  array   Response array (notice or error)
      */
     function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category, 
                           $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
@@ -99,6 +102,8 @@ class BlogAdminAjax extends Jaws_Ajax
      * Prepare the Category form
      *
      * @access  public
+     * @param   string  $action
+     * @param   int     $id
      * @return  string  XHTML of Category Form
      */
     function GetCategoryForm($action, $id)
@@ -112,10 +117,10 @@ class BlogAdminAjax extends Jaws_Ajax
      * Add a new category
      *
      * @access  public
-     * @param   string  $name        Category name
-     * @param   string  $description Category description
-     * @param   string  $fast_url    Category fast url
-     * @return  array   Response (notice or error)
+     * @param   string  $name           Category name
+     * @param   string  $description    Category description
+     * @param   string  $fast_url       Category fast url
+     * @return  array   Response array (notice or error)
      */
     function AddCategory($name, $description, $fast_url)
     {
@@ -128,11 +133,11 @@ class BlogAdminAjax extends Jaws_Ajax
      * Update a category
      *
      * @access  public
-     * @param   int     $id          ID of category
-     * @param   string  $name        Name of category
-     * @param   string  $description Category description
-     * @param   string  $fast_url    Category fast url
-     * @return  array   Response (notice or error)
+     * @param   int     $id             ID of category
+     * @param   string  $name           Name of category
+     * @param   string  $description    Category description
+     * @param   string  $fast_url       Category fast url
+     * @return  array   Response array (notice or error)
      */
     function UpdateCategory($id, $name, $description, $fast_url)
     {
@@ -146,7 +151,7 @@ class BlogAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id   ID of category
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteCategory($id)
     {
@@ -176,7 +181,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Data
+     * @return  array   Data array
      */
     function SearchComments($limit, $filter, $search, $status)
     {
@@ -193,7 +198,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Data
+     * @return  array   Data array
      */
     function SearchTrackbacks($limit, $filter, $search, $status)
     {
@@ -270,7 +275,7 @@ class BlogAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $ids     Comment ids
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteComments($ids)
     {
@@ -284,7 +289,7 @@ class BlogAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $ids     Entries ids
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteEntries($ids)
     {
@@ -297,9 +302,9 @@ class BlogAdminAjax extends Jaws_Ajax
      * Change status of group of entries ids
      *
      * @access  public
-     * @param   array   $ids    Ids of entries
-     * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @param   array   $ids        Ids of entries
+     * @param   string  $status     New status
+     * @return  array   Response array (notice or error)
      */
     function ChangeEntryStatus($ids, $status)
     {
@@ -313,7 +318,7 @@ class BlogAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $ids     Trackback ids
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteTrackbacks($ids)
     {
@@ -326,9 +331,9 @@ class BlogAdminAjax extends Jaws_Ajax
      * Mark as different type a group of ids
      *
      * @access  public
-     * @param   array   $ids    Ids of comments
-     * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @param   array   $ids        Ids of comments
+     * @param   string  $status     New status
+     * @return  array   Response array (notice or error)
      */
     function MarkAs($ids, $status)
     {
@@ -341,9 +346,9 @@ class BlogAdminAjax extends Jaws_Ajax
      * Mark as different type a group of ids
      *
      * @access  public
-     * @param   array   $ids    Ids of comments
-     * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @param   array   $ids        Ids of comments
+     * @param   string  $status     New status
+     * @return  array   Response array (notice or error)
      */
     function TrackbackMarkAs($ids, $status)
     {
@@ -358,15 +363,17 @@ class BlogAdminAjax extends Jaws_Ajax
      * user clicks on save.
      *
      * @access public
+     * @param   int     $id             ID
      * @param   array   $categories     Array with categories id's
      * @param   string  $title          Title of the entry
      * @param   string  $summary        Summary of the entry
      * @param   string  $text           Content of the entry
      * @param   string  $fasturl        FastURL
-     * @param   string  $trackback      Trackback to send
-     * @param   boolean $allow_comments If entry should allow commnets
-     * @param   boolean $publish        If entry should be published
+     * @param   bool    $allow_comments If entry should allow commnets
+     * @param   string  $trackbacks     Trackback to send
+     * @param   bool    $published      If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
+     * @return  array   last response array
      */
     function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $allow_comments,
                        $trackbacks, $published, $timestamp)
