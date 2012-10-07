@@ -14,7 +14,8 @@ class EmblemsHTML extends Jaws_GadgetHTML
      * Executes the default action
      *
      * @access public
-     * @see    Display()
+     * @see     Display()
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
@@ -25,7 +26,7 @@ class EmblemsHTML extends Jaws_GadgetHTML
      * Displays the emblems in our site
      *
      * @access public
-     * @return string The parsed HTML
+     * @return string   XHTML template content
      */
     function Display()
     {

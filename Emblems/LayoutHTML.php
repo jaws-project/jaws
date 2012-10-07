@@ -14,7 +14,7 @@ class EmblemsLayoutHTML
      * Displays the emblems in our site
      *
      * @access public
-     * @return string The parsed HTML
+     * @return string   XHTML template content
      */
     function Display()
     {

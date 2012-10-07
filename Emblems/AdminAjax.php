@@ -14,6 +14,7 @@ class EmblemsAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function EmblemsAdminAjax(&$model)
     {
@@ -25,7 +26,7 @@ class EmblemsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id     Emblem id
-     * @return  array   Response (notice | error)
+     * @return  array   Response array (notice | error)
      */
     function DeleteEmblem($id)
     {
@@ -40,8 +41,12 @@ class EmblemsAdminAjax extends Jaws_Ajax
      * Updates an emblem
      *
      * @access  public
-     * @param
-     * @return  array  Response (notice | error)
+     * @param   int     $id
+     * @param   string  $title
+     * @param   string  $url
+     * @param   string  $type
+     * @param   string  $status
+     * @return  array  Response array (notice | error)
      */
     function UpdateEmblem($id, $title, $url, $type, $status)
     {

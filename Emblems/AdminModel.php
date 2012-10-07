@@ -16,7 +16,7 @@ class EmblemsAdminModel extends EmblemsModel
      * Installs the gadget
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -62,7 +62,7 @@ class EmblemsAdminModel extends EmblemsModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error on error
+     * @return  mixed   True on success and Jaws_Error on error
      */
     function UninstallGadget()
     {
@@ -87,7 +87,7 @@ class EmblemsAdminModel extends EmblemsModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -128,12 +128,12 @@ class EmblemsAdminModel extends EmblemsModel
      * Updates the emblem info in the database
      *
      * @access  public
-     * @param   $id         integer     ID That identifies the emblem
-     * @param   $name       string      Name of the emblem
-     * @param   $url        string      URL of the emblem
-     * @param   $type       string      Type code of the emblem
-     * @param   $status     string      Status of the emblem
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @param   int     $id     ID That identifies the emblem
+     * @param   string  $name   Name of the emblem
+     * @param   string  $url    URL of the emblem
+     * @param   string  $type   Type code of the emblem
+     * @param   string  $status Status of the emblem
+     * @return  mixed   True if query was successful and Jaws_Error on error
      */
     function UpdateEmblem($id, $title, $url, $type, $status)
     {
@@ -170,9 +170,9 @@ class EmblemsAdminModel extends EmblemsModel
      * Updates the gadget properties in the registry
      *
      * @access public
-     * @param  $rows        integer Number of rows that will display the gadget
-     * @param  $allow_url   boolean If the emblems will display the link or not
-     * @return boolean      True if properties got updated, Jaws_Error otherwise
+     * @param   int      $rows        Number of rows that will display the gadget
+     * @param   bool     $allow_url   If the emblems will display the link or not
+     * @return  mixed    True if properties got updated, Jaws_Error otherwise
      */
     function UpdateProperties($rows, $allow_url)
     {
@@ -197,10 +197,10 @@ class EmblemsAdminModel extends EmblemsModel
      * Adds a new emblem to the system and database
      *
      * @access  public
-     * @param   $name       string  Name of the emblem
-     * @param   $url        string  URL of the emblem
-     * @param   $file_url   string  relative file url
-     * @return  boolean True if successful, Jaws_Error otherwise
+     * @param   string  $name       Name of the emblem
+     * @param   string  $url        URL of the emblem
+     * @param   string  $file_url   relative file url
+     * @return  mixed   True if successful, Jaws_Error otherwise
      */
     function AddEmblem($title, $url, $file_url, $type = 'P', $enabled = false)
     {
@@ -235,9 +235,9 @@ class EmblemsAdminModel extends EmblemsModel
      * Deletes an emblem
      *
      * @access public
-     * @param  $id      integer ID that identifies the emblem
-     * @param  $src     string  Path to the emblem image
-     * @return boolean  True if success, Jaws_Error otherwise
+     * @param  int      $id     ID that identifies the emblem
+     * @param  string   $src    Path to the emblem image
+     * @return mixed    True if success, Jaws_Error otherwise
      */
     function DeleteEmblem($id, $src)
     {

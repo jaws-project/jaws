@@ -98,7 +98,7 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
      * Build the datagrid
      *
      * @access  public
-     * @return  string  Datagrid XHTML
+     * @return  string  XHTML template Datagrid
      */
     function Datagrid()
     {
@@ -139,7 +139,7 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
      * Admin gadget display
      *
      * @access public
-     * @return string The parsed HTML
+     * @return string   XHTML template
      */
     function Admin()
     {

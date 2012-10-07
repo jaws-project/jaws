@@ -14,8 +14,8 @@ class EmblemsModel extends Jaws_Model
      * Get Emblems
      *
      * @access  public
-     * @param   boolean $onlyenabled if need to get only the enabled emblems
-     * @param   mixed   $limit        Optional. Limit of data to retrieve (false = returns all)
+     * @param   bool    $onlyenabled    if need to get only the enabled emblems
+     * @param   mixed   $limit          Optional. Limit of data to retrieve (false = returns all)
      * @return  array   An array emblems properties and Jaws_Error on error
      */
     function GetEmblems($onlyenabled = false, $limit = false)
@@ -52,7 +52,7 @@ class EmblemsModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $id     Emblem's id
-     * @return  array   An array contains emblems information and Jaws_Error on error
+     * @return  mixed   An array contains emblems information and Jaws_Error on error
      */
     function GetEmblem($id)
     {
@@ -75,8 +75,7 @@ class EmblemsModel extends Jaws_Model
      *(I rather put it here than writing the switch everytime...)
      *
      * @access  public
-     * @param   string    $type code of the type
-     * @return  string    The description of the type
+     * @param   string    $type     code of the type
      */
     function TranslateType($type)
     {
