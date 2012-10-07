@@ -26,7 +26,7 @@ class BlocksHTML extends Jaws_GadgetHTML
      * view block(title and content)
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML template content
      */
     function ViewBlock()
     {

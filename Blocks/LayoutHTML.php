@@ -14,7 +14,8 @@ class BlocksLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access public
+     * @return  array   actions array
      */
     function LoadLayoutActions()
     {
@@ -38,7 +39,8 @@ class BlocksLayoutHTML
      * Show a Block
      *
      * @access  public
-     * @return  string  Template content
+     * @param   int     Block ID
+     * @return  string  XHTML Template content
      */
     function Display($id)
     {

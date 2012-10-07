@@ -14,8 +14,8 @@ class BlocksModel extends Jaws_Model
      * Get a Block
      *
      * @access  public
-     * @param   integer  $id ID of the block to retrieve
-     * @return  array   An array of the information of the Block and Jaws_Error on any error
+     * @param   int     $id     ID of the block to retrieve
+     * @return  array   An array of the information of the Block or Jaws_Error on any error
      */
     function GetBlock($id)
     {
@@ -47,9 +47,9 @@ class BlocksModel extends Jaws_Model
     /**
      * Get all blocks
      *
-     * @param   boolean $simple If true returns an array with id/title
      * @access  public
-     * @return  array   An array of blocks and Jaws_Error on any error
+     * @param   bool    $simple     If true returns an array with id/title
+     * @return  mixed   An array of blocks or Jaws_Error on any error
      */
     function GetBlocks($simple = false)
     {

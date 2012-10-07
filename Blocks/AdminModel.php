@@ -16,7 +16,7 @@ class BlocksAdminModel extends BlocksModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Returns true if installation success and Jaws_Error on any error found
+     * @return  mixed    Returns True if installation success or Jaws_Error on any error found
      */
     function InstallGadget()
     {
@@ -35,7 +35,7 @@ class BlocksAdminModel extends BlocksModel
      * Uninstall the gadget
      *
      * @access  public
-     * @return  boolean True on a successful one and Jaws_Error otherwise
+     * @return  mixed   True on if successful or Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -59,7 +59,7 @@ class BlocksAdminModel extends BlocksModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool    True on Success, Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -78,11 +78,11 @@ class BlocksAdminModel extends BlocksModel
      * Create a new Block
      *
      * @access  public
-     * @param   string   $title Block title
-     * @param   string   $contents Block contents
-     * @param   boolean  $display_title True if we want to display block title
-     * @param   integer  $user User ID
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @param   string  $title          Block title
+     * @param   string  $contents       Block contents
+     * @param   bool    $display_title  True if we want to display block title
+     * @param   int     $user           User ID
+     * @return  mixed   result array if successful or Jaws_Error or False on failure
      */
     function NewBlock($title, $contents, $display_title, $user)
     {
@@ -133,12 +133,12 @@ class BlocksAdminModel extends BlocksModel
      * Update Block
      *
      * @access  public
-     * @param   integer  $id Block ID
-     * @param   string   $title Block title
-     * @param   string   $contents Block contents
-     * @param   boolean  $display_title True if we want to display block title
-     * @param   integer  $user User ID
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @param   int     $id             Block ID
+     * @param   string  $title          Block title
+     * @param   string  $contents       Block contents
+     * @param   bool    $display_title  True if we want to display block title
+     * @param   int     $user           User ID
+     * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
     function UpdateBlock($id, $title, $contents, $display_title, $user)
     {
@@ -177,8 +177,8 @@ class BlocksAdminModel extends BlocksModel
      * Delete a block
      *
      * @access  public
-     * @param   integer $id  Block ID
-     * @return  boolean True if query is successful, if not, returns Jaws_Error on any error
+     * @param   int     $id     Block ID
+     * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
     function DeleteBlock($id)
     {

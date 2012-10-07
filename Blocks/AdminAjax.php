@@ -14,6 +14,7 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function BlocksAdminAjax(&$model)
     {
@@ -24,8 +25,8 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Get Block
      *
      * @access public
-     * @param  int $id Block ID
-     * @return array Block data
+     * @param  int      $id     Block ID
+     * @return mixed    Block data or False on error
      */
     function GetBlock($id)
     {
@@ -41,9 +42,10 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Create a new  block
      *
      * @access public
-     * @param string $title Block title
-     * @param string $contents Block contents
-     * @param boolean $displayTitle If true display block title
+     * @param   string  $title          Block title
+     * @param   string  $contents       Block contents
+     * @param   bool    $displayTitle   If true display block title
+     * @return  array   response array
      */
     function NewBlock($title, $contents, $displayTitle)
     {
@@ -60,10 +62,11 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Update a block
      *
      * @access public
-     * @param int $id Block ID
-     * @param string $title Block title
-     * @param string $contents Block contents
-     * @param boolean $displayTitle If true display block title
+     * @param   int     $id             Block ID
+     * @param   string  $title          Block title
+     * @param   string  $contents       Block contents
+     * @param   bool    $displayTitle   If true display block title
+     * @param   array   response array
      */
     function UpdateBlock($id, $title, $contents, $displayTitle)
     {
@@ -77,8 +80,8 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Delete a block
      *
      * @access  public
-     * @param   int     $id  Block ID
-     * @return  array   Response (notice or error)
+     * @param   int     $id     Block ID
+     * @return  array   Response array (notice or error)
      */
     function DeleteBlock($id)
     {

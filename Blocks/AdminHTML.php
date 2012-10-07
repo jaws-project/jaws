@@ -14,7 +14,7 @@ class BlocksAdminHTML extends Jaws_GadgetHTML
      * Creates and prints the administration template
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML Template content
      */
     function Admin()
     {
