@@ -14,6 +14,7 @@ class FaqAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function FaqAdminAjax(&$model)
     {
@@ -24,7 +25,7 @@ class FaqAdminAjax extends Jaws_Ajax
      * Ugly but fast hack.. it sorts an array by key
      *
      * @access  public
-     * @param   array   $array Input array
+     * @param   array   $array  Input array
      * @return  array   Sorted array
      */
     function KSort($array)
@@ -37,8 +38,8 @@ class FaqAdminAjax extends Jaws_Ajax
      * Delete a category
      *
      * @access  public
-     * @param   int     $id  Category ID
-     * @return  array   Response (notice or error)
+     * @param   int     $id     Category ID
+     * @return  array   Response array (notice or error)
      */
     function DeleteCategory($id)
     {
@@ -51,8 +52,8 @@ class FaqAdminAjax extends Jaws_Ajax
      * Delete a question
      *
      * @access  public
-     * @param   int     $id  Question ID
-     * @return  array   Response (notice or error)
+     * @param   int     $id     Question ID
+     * @return  array   Response array (notice or error)
      */
     function DeleteQuestion($id)
     {
@@ -67,7 +68,7 @@ class FaqAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id        Question ID
      * @param   string  $direction Direction (up/down)
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function MoveQuestion($id, $direction)
     {
@@ -106,8 +107,8 @@ class FaqAdminAjax extends Jaws_Ajax
      * Fix positions..
      *
      * @access  public
-     * @param   array   $categories  Array with information and positions of each category
-     * @return  array   Response (notice or error)
+     * @param   array   $categories     Array with information and positions of each category
+     * @return  array   Response array (notice or error)
      */
     function FixPositions($categories)
     {
@@ -144,7 +145,7 @@ class FaqAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id        Category ID
-     * @return  string  HTML content
+     * @return  string  XHTML template content
      */
     function GetCategoryGrid($id)
     {

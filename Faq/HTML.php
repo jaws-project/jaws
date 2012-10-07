@@ -14,8 +14,8 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(View)
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
@@ -25,8 +25,8 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Displays a concrete question & answer
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ViewQuestion()
     {
@@ -55,8 +55,8 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Displays a concrete category
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function ViewCategory()
     {
@@ -121,8 +121,8 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Displays complete FAQ to the user: first fastlinks and below questions and answers
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function View()
     {

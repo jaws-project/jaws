@@ -15,9 +15,9 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Builds the menubar
      *
-     * @access       public
-     * @param        string  $selected Selected action
-     * @return       string  The html menubar
+     * @access public
+     * @param   string  $selected   Selected action
+     * @return  string  XHTML menu template
      */
     function MenuBar($selected)
     {
@@ -49,8 +49,8 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Displays faq admin section
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -61,10 +61,10 @@ class FaqAdminHTML extends Jaws_GadgetHTML
      * Creates the datagrid of a category
      *
      * @access   public
-     * @param    int     $cat  Category
-     * @param    array   $questions Array of questions so that we can skip fetching those here
-     * @param    int     $maxCatPos Max cat position
-     * @return   string  XHTML of datagrid
+     * @param    int     $cat           Category
+     * @param    array   $questions     Array of questions so that we can skip fetching those here
+     * @param    int     $maxCatPos     Max cat position
+     * @return   string  XHTML template of datagrid
      */
     function DataGrid($cat, $questions = null, $maxCatPos = null)
     {
@@ -118,8 +118,8 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays faq list of questions(admin mode)
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function ManageQuestions()
     {
@@ -220,7 +220,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
      * Edit a Question
      *
      * @access  public
-     * @return  template New question form content
+     * @return  string  XHTML New question form content
      */
     function EditQuestion()
     {
@@ -336,6 +336,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * New question
+     * 
      * @access public
      */
     function NewQuestion()
@@ -356,6 +357,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * New question
+     * 
      * @access public
      */
     function UpdateQuestion()
@@ -375,6 +377,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Delete question
+     * 
      * @access public
      */
     function DeleteQuestion()
@@ -394,7 +397,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
      * Edit a category
      *
      * @access  public
-     * @return  template Category form content
+     * @return  string  XHTML Category form content
      */
     function EditCategory()
     {
@@ -469,6 +472,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * New category
+     * 
      * @access public
      */
     function NewCategory()
@@ -486,6 +490,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Update category
+     * 
      * @access public
      */
     function UpdateCategory()

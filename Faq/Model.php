@@ -16,8 +16,9 @@ class FaqModel extends Jaws_Model
      * Get the list of questions
      *
      * @access  public
-     * @param  int $category Just questions from this category(optional)
-     * @return  boolean Returns an array of questions and Jaws_Error on error
+     * @param   int     $category   Just questions from this category(optional)
+     * @param   bool    $justactive 
+     * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
     function GetQuestions($category = null, $justactive = false)
     {
@@ -106,7 +107,7 @@ class FaqModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $id   Number of the question
-     * @return  array   An array with the properties of a question FAQ and Jaws_Error on error
+     * @return  mixed   An array with the properties of a question FAQ and Jaws_Error on error
      */
     function GetQuestion($id)
     {
@@ -151,7 +152,7 @@ class FaqModel extends Jaws_Model
      * Get categories
      *
      * @access public
-     * @return array an array with the categories ordered by position or Jaws_Error on failure
+     * @return mixed    An array with the categories ordered by position or Jaws_Error on failure
      */
     function GetCategories()
     {
@@ -176,9 +177,10 @@ class FaqModel extends Jaws_Model
 
     /**
      * Get category
+     * 
      * @access public
-     * @param  int $id Category ID
-     * @return array an array with the category info or Jaws_Error on failure
+     * @param   int     $id     Category ID
+     * @return  mixed   Array an array with the category info or Jaws_Error on failure
      */
     function GetCategory($id)
     {

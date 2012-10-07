@@ -16,8 +16,8 @@ class FaqAdminModel extends FaqModel
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -41,7 +41,7 @@ class FaqAdminModel extends FaqModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -66,7 +66,7 @@ class FaqAdminModel extends FaqModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -98,8 +98,8 @@ class FaqAdminModel extends FaqModel
      * Max question position
      *
      * @access public
-     * @param int $category Category ID
-     * @return Max position
+     * @param   int     $category   Category ID
+     * @return  int     Max position
      */
     function GetMaxQuestionPosition($category)
     {
@@ -116,12 +116,12 @@ class FaqAdminModel extends FaqModel
      * Add a new Question
      *
      * @access  public
-     * @param   string  $question The question
-     * @param   string  $fast_url Fast URL
-     * @param   string  $answer   The answer of the question
-     * @param   int     $category Category id
-     * @param   boolean $active   Question status
-     * @return  boolean True if question is succesfully added, Jaws_Error if not
+     * @param   string  $question   The question
+     * @param   string  $fast_url   Fast URL
+     * @param   string  $answer     The answer of the question
+     * @param   int     $category   Category id
+     * @param   bool    $active     Question status
+     * @return  mixed   True if question is succesfully added, Jaws_Error if not
      */
     function AddQuestion($question, $fast_url, $answer, $category, $active)
     {
@@ -159,13 +159,13 @@ class FaqAdminModel extends FaqModel
      * Update a question
      *
      * @access  public
-     * @param   string  $id       Number of the question
-     * @param   string  $question The question
-     * @param   string  $fast_url Fast URL
-     * @param   string  $answer   The answer of the question
-     * @param   int     $category Category id
-     * @param   boolean $active   Question status
-     * @return  boolean True if question is succesfully updated, Jaws_Error if not
+     * @param   string  $id         Number of the question
+     * @param   string  $question   The question
+     * @param   string  $fast_url   Fast URL
+     * @param   string  $answer     The answer of the question
+     * @param   int     $category   Category id
+     * @param   bool    $active     Question status
+     * @return  mixed   True if question is succesfully updated, Jaws_Error if not
      */
     function UpdateQuestion($id, $question, $fast_url, $answer, $category, $active)
     {
@@ -208,8 +208,8 @@ class FaqAdminModel extends FaqModel
      * Delete a question
      *
      * @access  public
-     * @param   string  $id   Number of the question
-     * @return  boolean True if question is succesfully deleted, Jaws_Error if not
+     * @param   string  $id     Number of the question
+     * @return  bool    True if question is succesfully deleted, Jaws_Error if not
      */
     function DeleteQuestion($id)
     {
@@ -251,9 +251,9 @@ class FaqAdminModel extends FaqModel
      * Move a given question
      *
      * @access  public
-     * @param   string  $direction Where to move it
-     * @param   int     $id  Question id
-     * @return  boolean Returns true if the question was moved without problems, if not, returns Jaws_Error
+     * @param   string  $direction  Where to move it
+     * @param   int     $id         Question id
+     * @return  mixed   Returns true if the question was moved without problems, if not, returns Jaws_Error
      */
     function MoveQuestion($direction, $id)
     {
@@ -351,7 +351,7 @@ class FaqAdminModel extends FaqModel
      * Max category position
      *
      * @access public
-     * @return Max position
+     * @return  int  Max position
      */
     function GetMaxCategoryPosition()
     {
@@ -371,7 +371,7 @@ class FaqAdminModel extends FaqModel
      * @param   string  $category     Category name
      * @param   string  $fast_url     Fast URL
      * @param   string  $description  Category description
-     * @return  boolean True if success, Jaws_Error otherwise
+     * @return  mixed   True if success, Jaws_Error otherwise
      */
     function AddCategory($category, $fast_url, $description)
     {
@@ -415,7 +415,7 @@ class FaqAdminModel extends FaqModel
      * @param   string  $category     Category name
      * @param   string  $fast_url     Fast URL
      * @param   string  $description  Category description
-     * @return  boolean True if category is succesfully updated, Jaws_Error if not
+     * @return  mixed   True if category is succesfully updated, Jaws_Error if not
      */
     function UpdateCategory($id, $category, $fast_url, $description)
     {
@@ -451,8 +451,8 @@ class FaqAdminModel extends FaqModel
      * Delete category
      *
      * @access public
-     * @param int $id position
-     * @return True if success, Jaws_Error on failure
+     * @param   int     $id     category position
+     * @return  mixed   True if success, Jaws_Error on failure
      */
     function DeleteCategory($id)
     {
@@ -501,9 +501,9 @@ class FaqAdminModel extends FaqModel
      * Fix the position of a category
      *
      * @access  public
-     * @param   int    $cat  Category ID
-     * @param   int    $pos  New position
-     * @return  Returns true if the category was moved without problems, if not, returns Jaws_Error
+     * @param   int     $cat  Category ID
+     * @param   int     $pos  New position
+     * @return  mixed   True if the category was moved without problems, if not, returns Jaws_Error
      */
     function FixCategoryPosition($cat, $pos)
     {
@@ -529,9 +529,9 @@ class FaqAdminModel extends FaqModel
      * Move a given category
      *
      * @access  public
-     * @param   string  $direction Where to move it
-     * @param   int     $id  category id
-     * @return  boolean Returns true if the category was moved without problems, if not, returns Jaws_Error
+     * @param   string  $direction  Where to move it
+     * @param   int     $id         category id
+     * @return  mixed   True if the category was moved without problems, if not, returns Jaws_Error
      */
     function MoveCategory($direction, $id)
     {

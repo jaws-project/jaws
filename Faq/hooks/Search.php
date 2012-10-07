@@ -12,6 +12,9 @@ class FaqSearchHook
 {
     /**
      * Gets the gadget's search fields
+     *
+     * @access public
+     * @return  array search fields array
      */
     function GetSearchFields() {
         return array(
@@ -23,7 +26,7 @@ class FaqSearchHook
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
+     * @param   string  $pSql   Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
     function Hook($pSql = '')
