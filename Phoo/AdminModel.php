@@ -18,7 +18,7 @@ class PhooAdminModel extends PhooModel
      * Install Phoo gadget in Jaws
      *
      * @access  public
-     * @return  boolean true on successful installation, Jaws_Error otherwise
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -62,7 +62,7 @@ class PhooAdminModel extends PhooModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -112,7 +112,7 @@ class PhooAdminModel extends PhooModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error onFailure
      */
     function UpdateGadget($old, $new)
     {
@@ -192,12 +192,12 @@ class PhooAdminModel extends PhooModel
      * Update the information of an image
      *
      * @access  public
-     * @param   int     $id          ID of the image
-     * @param   string  $title       Title of the image
-     * @param   string  $description Description of the image
-     * @param   boolean     $allow_comments true is comments allowed, false is not allowed
-     * @param   boolean     $published  true for Published, false for Hidden
-     * @return  boolean True if entry was updated successfully and Jaws_Error if not
+     * @param   int     $id                 ID of the image
+     * @param   string  $title              Title of the image
+     * @param   string  $description        Description of the image
+     * @param   bool    $allow_comments     True is comments allowed, False is not allowed
+     * @param   bool    $published          true for Published, false for Hidden
+     * @return  mixed   True if entry was updated successfully and Jaws_Error if not
      */
     function UpdateEntry($id, $title, $description, $allow_comments, $published, $albums = null)
     {
@@ -248,8 +248,8 @@ class PhooAdminModel extends PhooModel
      * Delete an image
      *
      * @access  public
-     * @param   int     $id ID of the image
-     * @return  boolean True if entry was deleted successfully and Jaws_Error if not
+     * @param   int     $id     ID of the image
+     * @return  mixed   True if entry was deleted successfully and Jaws_Error if not
      */
     function DeletePhoto($id)
     {
@@ -295,7 +295,7 @@ class PhooAdminModel extends PhooModel
      * @param   string  $description      Description of the image
      * @param   boolean $fromControlPanel Is it called from ControlPanel?
      * @param   array   $album            Array containing the required info about the album
-     * @return  int     Returns the ID of the new entry and Jaws_Error on error
+     * @return  mixed   Returns the ID of the new entry and Jaws_Error on error
      */
     function NewEntry($user, $files, $title, $description, $fromControlPanel = true, $album)
     {
@@ -438,7 +438,7 @@ class PhooAdminModel extends PhooModel
      * @access  public
      * @param   int     $id    Entry Id
      * @param   int     $album Album Id
-     * @return  boolean Returns true if entry was added without problems, Jaws_Error if not.
+     * @return  mixed   Returns true if entry was added without problems, Jaws_Error if not.
      */
     function AddEntryToAlbum($id, $album)
     {
@@ -467,7 +467,7 @@ class PhooAdminModel extends PhooModel
      * @access  public
      * @param   int     $id     Entry Id
      * @param   array   $albums Array with albums id's
-     * @return  boolean Returns true, allways
+     * @return  mixed   Returns true, or Jaws_Error on error
      */
     function SetEntryAlbums($id, $albums)
     {
@@ -496,12 +496,12 @@ class PhooAdminModel extends PhooModel
      * Update the Album information
      *
      * @access public
-     * @param  int     ID of the album
-     * @param  string  Name of the album
-     * @param  string  Description of the album
-     * @param  boolean If a comments are enabled
-     * @param  boolean If the album is visable to users or not
-     * @return boolean Returns true if album was updated without problems, Jaws_Error if not.
+     * @param  int      $id             ID of the album
+     * @param  string   $name           Name of the album
+     * @param  string   $description    Description of the album
+     * @param  bool     $comments       If a comments are enabled
+     * @param  bool     $published      If the album is visable to users or not
+     * @return mixed    Returns true if album was updated without problems, Jaws_Error if not.
      */
     function UpdateAlbum($id, $name, $description, $comments, $published)
     {
@@ -539,8 +539,8 @@ class PhooAdminModel extends PhooModel
      * Delete an album and all its images
      *
      * @access  public
-     * @param   int     $id ID of the album
-     * @return  boolean Returns true if album was deleted without problems, Jaws_Error if not.
+     * @param   int     $id     ID of the album
+     * @return  mixed   Returns true if album was deleted without problems, Jaws_Error if not.
      */
     function DeleteAlbum($id)
     {
@@ -626,11 +626,11 @@ class PhooAdminModel extends PhooModel
      * Create a new album
      *
      * @access public
-     * @param  string  Name of the album
-     * @param  string  Description of the album
-     * @param  boolean If a comments are enabled
-     * @param  boolean If the album is visable to users or not
-     * @return int     Returns the ID of the new album and Jaws_Error on error
+     * @param  string   $name        Name of the album
+     * @param  string   $description Description of the album
+     * @param  bool     $comments    If a comments are enabled
+     * @param  bool     $published   If the album is visable to users or not
+     * @return mixed    Returns the ID of the new album and Jaws_Error on error
      */
     function NewAlbum($name, $description, $comments, $published)
     {
@@ -667,6 +667,20 @@ class PhooAdminModel extends PhooModel
      * Update registry settings for phoo
      *
      * @access public
+     * @param   string  $default_action
+     * @param   bool    $published
+     * @param   bool    $allow_comments
+     * @param   string  $moblog_album
+     * @param   string  $moblog_limit
+     * @param   string  $photoblog_album
+     * @param   string  $photoblog_limit
+     * @param   bool    $show_exif_info
+     * @param   bool    $keep_original
+     * @param   string  $thumb_limit
+     * @param   string  $comment_status
+     * @param   string  $albums_order_type
+     * @param   string  $photos_order_type
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function SaveSettings($default_action, $published, $allow_comments, $moblog_album, $moblog_limit,
                           $photoblog_album, $photoblog_limit, $show_exif_info, $keep_original, $thumb_limit,
@@ -701,7 +715,8 @@ class PhooAdminModel extends PhooModel
 
     /**
      * Items to import, looking in 'data/phoo/import' folder
-     * @return array Items to import
+     * 
+     * @return array    Items to import
      */
     function GetItemsToImport()
     {
@@ -723,12 +738,13 @@ class PhooAdminModel extends PhooModel
         return array();
     }
 
-	/**
+    /**
      * Mark as different status a comment
      *
      * @access  public
      * @param   array  $ids     Id's of the comments to mark as spam
      * @param   string $status  New status (spam by default)
+     * @return  bool    True always
      */
     function MarkCommentsAs($ids, $status = 'spam')
     {
@@ -749,7 +765,7 @@ class PhooAdminModel extends PhooModel
      *
      * @access  public
      * @param   array   $ids  Ids of comments
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success and Jaws_Error on Failure
      */
     function MassiveCommentDelete($ids)
     {

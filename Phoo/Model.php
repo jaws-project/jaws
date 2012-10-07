@@ -16,7 +16,7 @@ class PhooModel extends Jaws_Model
      * Get the thumbnail thumb path of a given filename
      *
      * @access  public
-     * @param   string  $file Name of the file
+     * @param   string  $file   Name of the file
      * @return  string  The ThumbPath
      */
     function GetThumbPath($file)
@@ -29,7 +29,7 @@ class PhooModel extends Jaws_Model
      * Get the medium path of a given filename
      *
      * @access  public
-     * @param   string  $file Name of the file
+     * @param   string  $file   Name of the file
      * @return  string  The MediumPath
      */
     function GetMediumPath($file)
@@ -42,7 +42,7 @@ class PhooModel extends Jaws_Model
      * Get the original path of a given filename
      *
      * @access  public
-     * @param   string  $file Name of the file
+     * @param   string  $file   Name of the file
      * @return  string  The original path
      */
     function GetOriginalPath($file)
@@ -55,7 +55,7 @@ class PhooModel extends Jaws_Model
      * Get the max date from phoo_image
      *
      * @access public
-     * @return string Date formatted as MM/DD/YYYY
+     * @return mixed   Date formatted as MM/DD/YYYY or False on error
      */
     function getMaxDate()
     {
@@ -71,8 +71,9 @@ class PhooModel extends Jaws_Model
 
     /**
      * Get the min date from phoo_image
+     * 
      * @access public
-     * @return string Date formatted as MM/DD/YYYY
+     * @return mixed    Date formatted as MM/DD/YYYY or false on error
      */
     function GetMinDate()
     {
@@ -90,7 +91,7 @@ class PhooModel extends Jaws_Model
      * Convert bytes to a nice size format
      *
      * @access  public
-     * @param   string  $size Bytes
+     * @param   string  $size   Bytes
      * @return  string  The size with its unit prefix
      */
     function NiceSize($size)
@@ -109,6 +110,7 @@ class PhooModel extends Jaws_Model
      * Get the correct order type
      *
      * @access  private
+     * @param   string  $resource
      * @return  string   The correct (or default) order type
      */
     function GetOrderType($resource)
@@ -142,7 +144,7 @@ class PhooModel extends Jaws_Model
      * @param   string  $date     Entry date
      * @param   string  $album    Album ID
      * @param   string  $words    Words to search
-     * @return  array   Get an array of phoo entries that matches a pattern and Jaws_Error on error
+     * @return  mixed   Get an array of phoo entries that matches a pattern and Jaws_Error on error
      */
     function AdvancedSearch($date, $album, $words = '')
     {
@@ -200,7 +202,7 @@ class PhooModel extends Jaws_Model
      * Get entries as Moblog
      *
      * @access  public
-     * @return  array   Returns an array of phoo entries in moblog format and Jaws_Error on error
+     * @return  mixed   Returns an array of phoo entries in moblog format and Jaws_Error on error
      */
     function GetMoblog()
     {
@@ -332,6 +334,7 @@ class PhooModel extends Jaws_Model
      * Get a random image
      *
      * @access  public
+     * @param   int     $albumid    album ID
      * @return  array  The properties of a random image and Jaws_Error on error
      */
     function GetRandomImage($albumid = null)
@@ -382,8 +385,8 @@ class PhooModel extends Jaws_Model
      * Get info of a given album
      *
      * @access  public
-     * @param   int    $id Album Id
-     * @return  array  The properties of an album and Jaws_Error on error
+     * @param   int    $id      Album Id
+     * @return  mixed  The properties of an album and Jaws_Error on error
      */
     function GetAlbumInfo($id)
     {
@@ -415,7 +418,9 @@ class PhooModel extends Jaws_Model
      * the order depends on what's passed to the function
      *
      * @access  public
-     * @return  array   A list of available albums and Jaws_Error on error
+     * @param   string  $by         order by
+     * @param   string  $direction  order direction
+     * @return  mixed   A list of available albums and Jaws_Error on error
      */
     function GetAlbums($by = 'name', $direction = 'ASC')
     {
@@ -461,7 +466,7 @@ class PhooModel extends Jaws_Model
      * Get number of images on a given album
      *
      * @access  public
-     * @param   int     $id ID of the album
+     * @param   int     $id     ID of the album
      * @return  int     number of images on the album, 0 if album doesn't exist
      */
     function GetAlbumCount($id)
@@ -495,7 +500,7 @@ class PhooModel extends Jaws_Model
      * Get album pager links
      *
      * @access  public
-     * @param   int     $id ID of the album
+     * @param   int     $id     ID of the album
      * @return  array   array with numbers of the first, previous, next and last pages
      */
     function GetAlbumPager($id, $page)
@@ -517,7 +522,8 @@ class PhooModel extends Jaws_Model
      * Get album pager numbered links
      *
      * @access  public
-     * @param   int     $id ID of the album
+     * @param   int     $id     ID of the album
+     * @param   int     $page   page number
      * @return  array   array with numbers of pages
      */
     function GetAlbumPagerNumbered($id, $page)
@@ -622,12 +628,12 @@ class PhooModel extends Jaws_Model
      * Get a paged thumbnail of a given album
      *
      * @access  public
-     * @param   int    $id ID of the album
-     * @param   int    $page number of the page to show
-     * @param   int    $day Optional, get only photos in this day/month/year plus 30 days
-     * @param   int    $month Optional, get only photos in this month/year plus 30 days
-     * @param   int    $year Optional, get only photos in this month/year plus 30 days
-     * @return  array  Returns an array with some phoo entries of a certain
+     * @param   int    $id      ID of the album
+     * @param   int    $page    number of the page to show
+     * @param   int    $day     Optional, get only photos in this day/month/year plus 30 days
+     * @param   int    $month   Optional, get only photos in this month/year plus 30 days
+     * @param   int    $year    Optional, get only photos in this month/year plus 30 days
+     * @return  mixed  Returns an array with some phoo entries of a certain
      *                 album and Jaws_Error on error.
      */
     function GetAlbumImages($id, $page = null, $day = null, $month = null, $year = null)
@@ -747,9 +753,9 @@ class PhooModel extends Jaws_Model
      * Get information of a given image
      *
      * @access  public
-     * @param   int     $id       ID of the image
-     * @param   int     $album_id ID of the album
-     * @return  array   Returns an array with the information of an image and Jaws_Error on error
+     * @param   int     $id         ID of the image
+     * @param   int     $album_id   ID of the album
+     * @return  mixed   Returns an array with the information of an image and Jaws_Error on error
      */
     function GetImage($id, $album_id)
     {
@@ -929,8 +935,8 @@ class PhooModel extends Jaws_Model
      * Get an image entry
      *
      * @access  public
-     * @param   int     $id ID of the image
-     * @return  array   Returns an array with the image entry information and Jaws_Error on error
+     * @param   int     $id     ID of the image
+     * @return  mixed   Returns an array with the image entry information and Jaws_Error on error
      */
     function GetImageEntry($id)
     {
@@ -981,8 +987,8 @@ class PhooModel extends Jaws_Model
      * Get a portrait of an image
      *
      * @access  public
-     * @param   int     $id ID of the image
-     * @return  array   An array with the images with a portrait look&feel and Jaws_Error on error
+     * @param   string  $id     ID of the image
+     * @return  mixed   An array with the images with a portrait look&feel and Jaws_Error on error
      */
     function GetAsPortrait($id = '')
     {
@@ -1048,7 +1054,7 @@ class PhooModel extends Jaws_Model
      * @access  public
      * @param   int     $id     ID of the comment
      * @param   int     $parent ID of the parent comment
-     * @return  array   Returns a list of comments and false on error
+     * @return  mixed   A list of comments and Jaws_Error on error
      */
     function GetComments($id, $parent)
     {
@@ -1070,7 +1076,9 @@ class PhooModel extends Jaws_Model
 
     /**
      * Puts avatar and format time for given comments
+     * 
      * @access private
+     * @param   array   $comments   comments array reference
      */
     function _AdditionalCommentsData(&$comments)
     {
@@ -1088,7 +1096,7 @@ class PhooModel extends Jaws_Model
      * Get last comments
      *
      * @access  public
-     * @return  array   Returns a list of recent comments and Jaws_Error on error
+     * @return  mixed   Returns a list of recent comments and Jaws_Error on error
      */
     function GetRecentComments()
     {
@@ -1106,9 +1114,9 @@ class PhooModel extends Jaws_Model
      * Get a list of comments
      *
      * @access  public
-     * @param   string      $filterby Filter to use(postid, author, email, url, title, comment)
-     * @param   string  $filter Filter data
-     * @return  array   Returns a list of comments and Jaws_Error on error
+     * @param   string  $filterby   Filter to use(postid, author, email, url, title, comment)
+     * @param   string  $filter     Filter data
+     * @return  mixed   Returns a list of comments and Jaws_Error on error
      */
     function GetCommentsFiltered($filterby, $filter)
     {
@@ -1167,7 +1175,7 @@ class PhooModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $id  ID of the comment
-     * @return  array   Properties of a comment and Jaws_Error on error
+     * @return  mixed   Properties of a comment and Jaws_Error on error
      */
     function GetComment($id)
     {
@@ -1197,7 +1205,6 @@ class PhooModel extends Jaws_Model
      * @param string $from_email The email to sendto
      * @param string $comment    The body of the email (The actual comment)
      * @param string $url        The url of the blog id
-     * @return
      */
     function MailComment($link, $title, $from_email, $comment, $url)
     {
@@ -1227,10 +1234,10 @@ class PhooModel extends Jaws_Model
      * @param   string  $comments     Text of the comment
      * @param   int     $parent       ID of the parent comment
      * @param   int     $parent_entry ID of the entry
-	 * @param   string  $permalink    Permalink of the image
+     * @param   string  $permalink    Permalink of the image
      * @param   string  $ip           IP of the author
-     * @param   boolean $set_cookie   Create a cookie
-     * @return  boolean True if comment was added, and Jaws_Error if not.
+     * @param   bool    $set_cookie   Create a cookie
+     * @return  mixed   True if comment was added, and Jaws_Error if not.
      */
     function NewComment($name, $title, $url, $email, $comments, $parent, $parent_entry, $permalink, $ip = '', $set_cookie = true)
     {
@@ -1301,6 +1308,7 @@ class PhooModel extends Jaws_Model
 
     /**
      * Updates a comment
+     * 
      * @access  public
      * @param   string  $id         Comment id
      * @param   string  $name       Name of the author
@@ -1310,7 +1318,7 @@ class PhooModel extends Jaws_Model
      * @param   string  $comments   Text of the comment
      * @param   string  $permalink  Permalink
      * @param   string  $status     Comment status
-     * @return  boolean True if comment was added, and Jaws_Error if not.
+     * @return  mixed   True if comment was added, and Jaws_Error if not.
      */
     function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
     {
@@ -1341,8 +1349,10 @@ class PhooModel extends Jaws_Model
 
     /**
      * Delete a comment
+     * 
      * @access  public
-     * @param   string  $id         Comment id
+     * @param   int     $id         Comment id
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function DeleteComment($id)
     {
@@ -1375,7 +1385,7 @@ class PhooModel extends Jaws_Model
      * Get registry settings for Phoo
      *
      * @access public
-     * @return array array with the settings
+     * @return mixed    array with the settings or Jaws_Error on error
      */
     function GetSettings()
     {
@@ -1413,7 +1423,7 @@ class PhooModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $albumname  AlbumName string
-     * @return  array   An array contains the Album info and False on errors
+     * @return  mixed   An array contains the Album info and False on errors
      */
     function GetFastURL($albumname)
     {
@@ -1435,11 +1445,10 @@ class PhooModel extends Jaws_Model
     
     /**
      * Returns the first album of a given image id
-     *
-     * @param int $id Image id.
      * 
      * @access public
-     * @return int 
+     * @param   int     $id     Image id.
+     * @return  mixed   result array or false on error
      */
     function GetImageAlbum($id) 
     {

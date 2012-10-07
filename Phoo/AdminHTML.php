@@ -18,7 +18,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Returns the default administration action to use if none is specified.
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function Admin()
     {
@@ -29,8 +29,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Displays a menu bar for the control panel gadget.
      *
      * @access protected
-     * @param  string $action_selected The item to display as selected.
-     * @return string
+     * @param  string   $action_selected    The item to display as selected.
+     * @return string   XHTML template content for menubar
      */
     function MenuBar($action_selected)
     {
@@ -66,7 +66,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Main UI to admin photos
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function AdminPhotos()
     {
@@ -288,7 +288,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Displays a form to edit Photo
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function EditPhoto()
     {
@@ -415,6 +415,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Update a photo
+     * 
      * @access public
      */
     function SaveEditPhoto()
@@ -451,8 +452,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Rotate left a image
+     * 
      * @access public
-     * @return string
      */
     function RotateLeft()
     {
@@ -509,8 +510,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Rotate right a image
+     * 
      * @access public
-     * @return string
      */
     function RotateRight()
     {
@@ -567,6 +568,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Delete a photo
+     * 
      * @access public
      */
     function DeletePhoto()
@@ -583,7 +585,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Displays a form for adding new images.
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function UploadPhotos()
     {
@@ -660,7 +662,6 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * @see PhooModel::AddEntryToAlbum()
      * @see PhooModel::AddCategoryToEntry()
      * @see PhooModel::NewAlbum()
-     * @return string
      */
     function UploadPhotosStep2()
     {
@@ -714,7 +715,9 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * New album
+     * 
      * @access public
+     * @return  string  XHTML template content
      * @see PhooModel::SaveNewAlbum()
      * @see Phoo::AdminPhotos()
      */
@@ -805,7 +808,9 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Edit album
+     * 
      * @access public
+     * @return  string  XHTML template content
      * @see PhooModel::SaveEditAlbum()
      * @see Phoo::AdminPhotos()
      */
@@ -909,6 +914,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Delete an album and all its images
+     * 
      * @access public
      * @see PhooModel::DeleteAlbum()
      * @see Phoo::AdminPhotos()
@@ -929,7 +935,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Prepares the comments datagrid of an advanced search
      *
      * @access  public
-     * @return  string  The XHTML of a datagrid
+     * @return  string  The XHTML template content of a datagrid
      */
     function CommentsDatagrid()
     {
@@ -959,11 +965,11 @@ class PhooAdminHTML extends Jaws_GadgetHTML
         return $commentUI->GetDataAsArray($filter, $search, $status, $limit);
     }
 
-	/**
+    /**
      * Displays blog comments manager
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function ManageComments()
     {
@@ -1026,8 +1032,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo comment to be edited
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function EditComment()
     {
@@ -1116,8 +1122,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Applies changes to a phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
      */
     function SaveEditComment()
     {
@@ -1139,8 +1144,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Deletes a phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
      */
     function DeleteComment()
     {
@@ -1158,8 +1162,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo settings administration panel
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function AdditionalSettings()
     {
@@ -1352,8 +1356,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Applies modifications on blog settings
      *
-     * @access       public
-     * @return       template content
+     * @access  public
      */
     function SaveAdditionalSettings()
     {
@@ -1387,8 +1390,9 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Import pictures in 'import' folder
+     * 
      * @access public
-     * @return string xhtml UI
+     * @return string   XHTML template content
      */
     function Import()
     {
@@ -1450,7 +1454,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Import selected images
      *
      * @access public
-     * @return string XHTML with the results of the importation
+     * @return string   XHTML with the results of the importation
      */
     function FinishImport()
     {
@@ -1486,7 +1490,9 @@ class PhooAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Resize an image on the fly
+     * 
      * FIXME: I don't know if is better to get it as a standalone function...
+     * 
      * @returns binary Image resized
      */
     function Thumb()
@@ -1502,7 +1508,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Browse across albums and images from Phoo
      *
      * @access public
-     * @return string XHTML with the list of albums and images appropiate for navigation
+     * @return string   XHTML with the list of albums and images appropiate for navigation
      */
     function BrowsePhoo()
     {
@@ -1696,7 +1702,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Show the image selected from BrowsePhoo with some options to insert.
      *
      * @access public
-     * @return string XHTML with the image selected and it's options
+     * @return string   XHTML with the image selected and it's options
      */
     function SelectImage()
     {

@@ -14,6 +14,7 @@ class PhooAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param	Jaws_Model	$model	Jaws_Model reference
      */
     function PhooAdminAjax(&$model)
     {
@@ -23,10 +24,10 @@ class PhooAdminAjax extends Jaws_Ajax
     /**
      * Import an image located in 'import' folder
      *
+     * @access public
      * @param   string  $image  Image file
      * @param   string  $name   Name of the image
      * @param   string  $album  In which album the image will be imported
-     * @access public
      */
     function ImportImage($image, $name, $album)
     {
@@ -45,7 +46,7 @@ class PhooAdminAjax extends Jaws_Ajax
         $res = $this->_Model->AddEntryToAlbum($id, $album);
     }
 
-	/**
+    /**
      * Search for comments and return the data in an array
      *
      * @access  public
@@ -53,7 +54,7 @@ class PhooAdminAjax extends Jaws_Ajax
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Data
+     * @return  array   Data array
      */
     function SearchComments($limit, $filter, $search, $status)
     {
@@ -116,7 +117,7 @@ class PhooAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $ids     Comment ids
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteComments($ids)
     {
@@ -131,7 +132,7 @@ class PhooAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $ids    Ids of comments
      * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function MarkAs($ids, $status)
     {
@@ -146,10 +147,11 @@ class PhooAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id             Photo Id
      * @param   string  $title          Photo title
-     * @param   string  $des            Photo description
-     * @param   boolean $allow_comments Comment status
-     * @param   boolean $published      Publish status
-     * @return  array   Response (notice or error)
+     * @param   string  $desc           Photo description
+     * @param   bool	$allow_comments Comment status
+     * @param   bool 	$published      Publish status
+     * @param	array	$albums
+     * @return  array   Response array (notice or error)
      */
     function UpdatePhoto($id, $title, $desc, $allow_comments, $published, $albums = null) {
         if (!$this->GetPermission('Phoo', 'ManageAlbums')) {

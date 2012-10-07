@@ -17,7 +17,7 @@ class PhooHTML extends Jaws_GadgetHTML
      * Returns the default action to use if none is specified.
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function DefaultAction()
     {
@@ -28,7 +28,7 @@ class PhooHTML extends Jaws_GadgetHTML
      * Displays an index of galleries.
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function AlbumList()
     {
@@ -41,7 +41,7 @@ class PhooHTML extends Jaws_GadgetHTML
      * Displays an index of pictures in an album.
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function ViewAlbum()
     {
@@ -53,7 +53,7 @@ class PhooHTML extends Jaws_GadgetHTML
      * TODO: Test it, maybe we need some modifications in ViewImage...
      *
      * @access public
-     * @return string
+     * @return string   XHTML template content
      */
     function ViewAlbumPage()
     {
@@ -175,7 +175,11 @@ class PhooHTML extends Jaws_GadgetHTML
      * Displays an individual image.
      *
      * @access public
-     * @return string
+     * @param   int     $id                 image ID
+     * @param   int     $albumid            album ID
+     * @param   bool    $preview_mode       preview mode
+     * @param   string  $reply_to_comment   
+     * @return string   XHTML template content
      */
     function ViewImage($id = null, $albumid = null, $preview_mode = false, $reply_to_comment = '')
     {
@@ -362,7 +366,7 @@ class PhooHTML extends Jaws_GadgetHTML
      *
      * @access public
      * @see PhooModel::GetAsPortrait()
-     * @return string
+     * @return string   XHTML template content
      * @todo Better docblock
      */
     function PhotoblogPortrait()
@@ -464,15 +468,15 @@ class PhooHTML extends Jaws_GadgetHTML
 	/**
      * Recursively displays comments of a given image according to several parameters
      *
-     * @access       public
-     * @param        int $id image id
-	 * @param        int $albumid album id
-     * @param        int $parent parent comment id
-     * @param        int $level deep level on thread
-     * @param        int $thread 1 to show full thread
-     * @param        int $reply_link 1 to show reply-to link
-     * @param        array $data  Array with comments data if null it's loaded from model.
-     * @return       template content
+     * @access public
+     * @param   int     $id             image id
+     * @param   int     $albumid        album id
+     * @param   int     $parent         parent comment id
+     * @param   int     $level          deep level on thread
+     * @param   int     $thread         1 to show full thread
+     * @param   int     $reply_link     1 to show reply-to link
+     * @param   array   $data           Array with comments data if null it's loaded from model.
+     * @return  string  XHTML template content
      */
     function ShowComments($id, $albumid, $parent, $level, $thread, $reply_link, $data = null)
     {
@@ -557,9 +561,9 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a given phoo comment
      *
-     * @access       public
-     * @param        int $id comment id
-     * @return       template content
+     * @access public
+     * @param   int     $id     comment id
+     * @return  string  XHTML template content
      */
     function ShowSingleComment($id)
     {
@@ -604,8 +608,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a given phoo comments and a form for replying
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function Reply()
     {
@@ -617,12 +621,13 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a form to send a comment to the phoo
      *
-     * @access       public
-     * @param        int $parent_id id of the replied item(immediately before on the thread)
-     * @param        int $parent id of the replied entry(comment thread starter)
-     * @param        string $title title of the comment
-     * @param        string $comment body of the comment(optional, empty by default)
-     * @return       template content
+     * @access public
+     * @param   int     $parent_id  id of the replied item(immediately before on the thread)
+     * @param   int     $albumid    album ID
+     * @param   int     $parent     id of the replied entry(comment thread starter)
+     * @param   string  $title      title of the comment
+     * @param   string  $comment    body of the comment(optional, empty by default)
+     * @return  string  XHTML template content
      */
     function DisplayCommentForm($parent_id, $albumid, $parent = 0, $title = '', $comments = '')
     {
@@ -732,8 +737,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function Preview()
     {
@@ -760,8 +765,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function ShowPreview()
     {
@@ -804,8 +809,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Saves the given phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function SaveComment()
     {
@@ -874,8 +879,9 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Format a date using Jaws
      *
-     * @param string $value The data to format.
-     * @return string The formatted date.
+     * @access public
+     * @param   string  $date   The data to format.
+     * @return  string  The formatted date.
      */
     function FormatDate($date)
     {
@@ -885,7 +891,9 @@ class PhooHTML extends Jaws_GadgetHTML
 
     /**
      * Resize an image on the fly
+     * 
      * FIXME: I don't know if is better to get it as a standalone function...
+     * 
      * @returns binary Image resized
      */
     function Thumb()
