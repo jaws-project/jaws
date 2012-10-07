@@ -15,11 +15,10 @@ class ChatboxModel extends Jaws_Model
      * This function mails the comments to the owner
      *
      * @access public
-     * @param int $link          The permanent link
-     * @param string $from_email The email to sendto
-     * @param string $comment    The body of the email (The actual comment)
-     * @param string $url        The actual comment url
-     * @return
+     * @param   int     $link           The permanent link
+     * @param   string  $from_email     The email to sendto
+     * @param   string  $comment        The body of the email (The actual comment)
+     * @param   string  $url            The actual comment url
      */
     function MailComment($link, $from_email, $comment, $url)
     {
@@ -41,13 +40,13 @@ class ChatboxModel extends Jaws_Model
      * Create a new entry in the chatbox table
      *
      * @access  public
-     * @param   string  $name       Who is posting?
-     * @param   string  $message    The message of the post
-     * @param   string  $email      Email of the poster
-     * @param   string  $url        Url of the poster
-     * @param   string  $ip         IP of the poster
-     * @param   boolean $set_cookie True if we should create a cookie or false if not.
-     * @return  boolean True if query is successful and Jaws_Error on any error
+     * @param   string  $name           Who is posting?
+     * @param   string  $message        The message of the post
+     * @param   string  $email          Email of the poster
+     * @param   string  $url            Url of the poster
+     * @param   string  $ip             IP of the poster
+     * @param   bool    $set_cookie     True if we should create a cookie or false if not.
+     * @return  bool    True if query is successful and Jaws_Error on any error
      */
     function NewEntry($name, $message, $email = '', $url = '', $ip = '', $set_cookie = true)
     {
@@ -98,7 +97,7 @@ class ChatboxModel extends Jaws_Model
      * Get last entries delimited by a given limit
      *
      * @access  public
-     * @param   int     $limit  Entries limit
+     * @param   int     $limit      Entries limit
      * @return  array   Array with last N entries
      */
     function GetEntries($limit = 10)

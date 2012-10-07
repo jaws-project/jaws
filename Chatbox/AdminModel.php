@@ -16,7 +16,7 @@ class ChatboxAdminModel extends Jaws_Model
      * Install Chatbox gadget in Jaws
      *
      * @access  public
-     * @return  boolean true on successful installation, Jaws_Error otherwise
+     * @return  bool	true on successful installation
      */
     function InstallGadget()
     {
@@ -34,7 +34,7 @@ class ChatboxAdminModel extends Jaws_Model
      * Uninstall the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool	True
      */
     function UninstallGadget()
     {
@@ -54,7 +54,7 @@ class ChatboxAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool	True
      */
     function UpdateGadget($old, $new)
     {
@@ -78,12 +78,13 @@ class ChatboxAdminModel extends Jaws_Model
         return true;
     }
 
-	/**
+    /**
      * Mark as different status an entry
      *
      * @access  public
      * @param   array  $ids     Id's of the entries to mark as spam
      * @param   string $status  New status (spam by default)
+     * @return	bool	TRUE
      */
     function MarkCommentsAs($ids, $status = 'spam')
     {
@@ -103,7 +104,7 @@ class ChatboxAdminModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $id         Comment id
-     * @return  boolean Success/Failure
+     * @return  mixed	True on Success or Jaws_Error on failure
      */
     function DeleteComment($id)
     {
@@ -129,8 +130,8 @@ class ChatboxAdminModel extends Jaws_Model
      * Does a massive entry delete
      *
      * @access  public
-     * @param   array   $ids  Ids of entries
-     * @return  boolean Success/Failure
+     * @param   array   $ids  	Ids of entries
+     * @return  mixed	True on Success or Jaws_Error on Failure
      */
     function MassiveCommentDelete($ids)
     {
@@ -156,13 +157,10 @@ class ChatboxAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $id         Comment id
      * @param   string  $name       Name of the author
-     * @param   string  $title      Title of the comment
      * @param   string  $url        Url of the author
      * @param   string  $email      Email of the author
      * @param   string  $comments   Text of the comment
-     * @param   string  $permalink  Permanent link to post
-     * @param   string  $status     Comment Status
-     * @return  boolean Success/Failure
+     * @return  mixed	True on Success or Jaws_Error on Failure
      */
     function UpdateComment($id, $name, $url, $email, $comments)
     {
@@ -206,8 +204,8 @@ class ChatboxAdminModel extends Jaws_Model
      * @access  public
      * @param   int     $limit      Limit of chatbox entries
      * @param   int     $max_strlen Maximum length of comment entry
-     * @param   boolean $authority
-     * @return  boolean True if change was successful, if not, returns Jaws_Error on any error
+     * @param   bool	$authority
+     * @return  mixed	True if change was successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {

@@ -15,6 +15,7 @@ class ChatboxURLListHook
      * can use
      *
      * @access  public
+     * @return  array   urls array
      */
     function Hook()
     {

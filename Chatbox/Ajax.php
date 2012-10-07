@@ -14,7 +14,7 @@ class ChatboxAjax extends Jaws_Ajax
      * Get messages list
      *
      * @access  public
-     * @return  template content
+     * @return  string  XHTML template content
      */
     function GetMessages()
     {

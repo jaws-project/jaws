@@ -14,6 +14,7 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param	Jaws_Model	$model	Jaws_Model reference
      */
     function ChatboxAdminAjax(&$model)
     {
@@ -21,7 +22,7 @@ class ChatboxAdminAjax extends Jaws_Ajax
     }
 
 
-	/**
+    /**
      * Search for comments and return the data in an array
      *
      * @access  public
@@ -29,7 +30,7 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Data
+     * @return  array   Data array
      */
     function SearchComments($limit, $filter, $search, $status)
     {
@@ -86,7 +87,7 @@ class ChatboxAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $ids     Comment ids
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteComments($ids)
     {
@@ -99,9 +100,9 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * Mark as different type a group of ids
      *
      * @access  public
-     * @param   array   $ids    Ids of comments
-     * @param   string  $status New status
-     * @return  array   Response (notice or error)
+     * @param   array   $ids	Ids of comments
+     * @param   string  $status	New status
+     * @return  array   Response array (notice or error)
      */
     function MarkAs($ids, $status)
     {
@@ -116,7 +117,8 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $limit      Limit of chatbox entries
      * @param   int     $max_strlen Maximum length of comment entry
-     * @return  array   Response
+     * @param	bool	$authority	
+     * @return  array   Response array
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {

@@ -16,7 +16,7 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
      * Returns the default administration action to use if none is specified.
      *
      * @access public
-     * @return string
+     * @return string	XHTML template content
      */
     function Admin()
     {
@@ -60,8 +60,8 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
 	/**
      * Displays chatbox admin (comments manager)
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return 	string	XHTML template content
      */
     function ManageComments()
     {
@@ -176,8 +176,8 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo comment to be edited
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return 	string	XHTML template content
      */
     function EditEntry()
     {
@@ -256,8 +256,7 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
     /**
      * Save changes to entry.
      *
-     * @access       public
-     * @return       template content
+     * @access public
      */
     function SaveEditEntry()
     {
@@ -276,8 +275,7 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
     /**
      * Deletes a phoo comment
      *
-     * @access       public
-     * @return       template content
+     * @access public
      */
     function DeleteComment()
     {

@@ -14,8 +14,8 @@ class ChatboxLayoutHTML
     /**
      * Displays the chatbox
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function Display()
     {
@@ -90,8 +90,8 @@ class ChatboxLayoutHTML
     /**
      * Get the chatbox messages list
      *
-     * @access       public
-     * @return       template content
+     * @access public
+     * @return  string  XHTML template content
      */
     function GetMessages()
     {
