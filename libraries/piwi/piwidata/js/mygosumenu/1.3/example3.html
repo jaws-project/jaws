@@ -1,0 +1,289 @@
+<html>
+<head>
+    <script type="text/javascript" src="ClickShowHideMenu.js"></script>
+    <style type="text/css">
+    body {
+        background-color: #cccccc;
+    }
+    div.left {
+        width: 190px;
+        height: 100%;
+        background-color: #ffffff;
+    }
+    td.top {
+        background-color: #999999;
+        line-height: 26px;
+        text-indent: 10px;
+        font-size: 13px;
+        font-weight: bold;
+        font-family: tahoma;
+        color: #ffffff;
+    }
+    td.section {
+        padding: 6px 12px;
+    }
+    .click-menu {
+        -moz-user-select: none;
+    }
+    .click-menu .box1 {
+        background: url("images/tree-node.gif") no-repeat;
+        padding-left: 19px;
+        cursor: default;
+    }
+    .click-menu .box1-open {
+        background: url("images/tree-node-open.gif") no-repeat;
+        padding-left: 19px;
+        cursor: default;
+    }
+    .click-menu .box1,
+    .click-menu .box1-open, {
+        color: #000000;
+        font-family: arial;
+        font-size: 12px;
+    }
+    /* mozilla fix */
+    html>body .click-menu .box1,
+    html>body .click-menu .box1-open {
+        color: #000000;
+        font-family: arial;
+        font-size: 12px;
+        line-height: 16px;
+        padding-bottom: 1px;
+    }
+    /* ie fix */
+    * html .click-menu .box1,
+    * html .click-menu .box1-open {
+        color: #000000;
+        font-family: arial;
+        font-size: 12px;
+        height: 16px;
+    }
+    .click-menu .section {
+        font-family: arial;
+        font-size: 12px;
+        line-height: 16px;
+        display: none;
+    }
+    .click-menu .section a {
+        color: #000000;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .click-menu .section a:hover {
+        color: #0000ff;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .click-menu .box2 {
+        background: url("images/tree-leaf.gif") no-repeat;
+        padding-left: 19px;
+    }
+    .click-menu .box2-last {
+        background: url("images/tree-leaf-last.gif") no-repeat;
+        padding-left: 19px;
+    }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+/* preload images, you can remove this code */
+img1 = new Image();
+img1.src = "images/tree-node.gif";
+img2 = new Image();
+img2.src = "images/tree-node-open.gif";
+img3 = new Image();
+img3.src = "images/tree-leaf.gif";
+img4 = new Image();
+img4.src = "images/tree-leaf-last.gif";
+</script>
+
+<script type="text/javascript">
+window.onload = function() {
+    var ClickMenu3a = new ClickShowHideMenu('click-menu3a');
+    ClickMenu3a.box1Hover = false;
+    ClickMenu3a.box2Hover = false;
+    ClickMenu3a.init();
+    var ClickMenu3b = new ClickShowHideMenu('click-menu3b');
+    ClickMenu3b.box1Hover = false;
+    ClickMenu3b.box2Hover = false;
+    ClickMenu3b.init();
+    var ClickMenu3c = new ClickShowHideMenu('click-menu3c');
+    ClickMenu3c.box1Hover = false;
+    ClickMenu3c.box2Hover = false;
+    ClickMenu3c.init();
+}
+</script>
+
+<div class="left">
+
+    <table cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+        <td class="top">&raquo; Products</td>
+    </tr>
+    <tr>
+        <td class="section">
+
+            <div id="click-menu3a" class="click-menu">
+
+                <table cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                    <td>
+                        <div><span class="box1">Product One</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Overview</a></div>
+                            <div class="box2"><a href="example3.html">Features</a></div>
+                            <div class="box2-last"><a href="example3.html">Requirements</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Product Two</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Overwiev</a></div>
+                            <div class="box2"><a href="example3.html">Features</a></div>
+                            <div class="box2"><a href="example3.html">Requirements</a></div>
+                            <div class="box2"><a href="example3.html">Screenshots</a></div>
+                            <div class="box2"><a href="example3.html">Flash Demos</a></div>
+                            <div class="box2-last"><a href="example3.html">Live Demo</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Product Three</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Overview</a></div>
+                            <div class="box2"><a href="example3.html">Features</a></div>
+                            <div class="box2-last"><a href="example3.html">Requirements</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Product Four</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Overview</a></div>
+                            <div class="box2"><a href="example3.html">Features</a></div>
+                            <div class="box2"><a href="example3.html">Requirements</a></div>
+                            <div class="box2"><a href="example3.html">Screenshots</a></div>
+                            <div class="box2-last"><a href="example3.html">Live Demo</a></div>
+                        </div>
+                    </td>
+                </tr>
+                </table>
+
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="top">&raquo; Downloads</td>
+    </tr>
+    <tr>
+        <td class="section">
+            
+            <div id="click-menu3b" class="click-menu">
+
+                <table cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                    <td>
+                        <div><span class="box1">Program One</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Windows Download</a></div>
+                            <div class="box2"><a href="example3.html">Solaris Download</a></div>
+                            <div class="box2-last"><a href="example3.html">Linux Download</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Program Two</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Windows Download</a></div>
+                            <div class="box2-last"><a href="example3.html">Linux Download</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Program Three</span></div>
+                        <div class="section">
+                            <div class="box2-last"><a href="example3.html">Linux Download</a></div>
+                        </div>
+                    </td>
+                </tr>
+                </table>
+
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="top">&raquo; Other</td>
+    </tr>
+    <tr>
+        <td class="section">
+            
+            <div id="click-menu3c" class="click-menu">
+
+                <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Partners</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Partner Benefits</a></div>
+                            <div class="box2"><a href="example3.html">Partner Application</a></div>
+                            <div class="box2-last"><a href="example3.html">Partner Listing</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">Customers</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Customer One</a></div>
+                            <div class="box2"><a href="example3.html">Customer Two</a></div>
+                            <div class="box2"><a href="example3.html">Customer Three</a></div>
+                            <div class="box2"><a href="example3.html">Customer Four</a></div>
+                            <div class="box2"><a href="example3.html">Customer Five</a></div>
+                            <div class="box2"><a href="example3.html">Customer Six</a></div>
+                            <div class="box2-last"><a href="example3.html">Customer Seven</a></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td height="2"></td></tr>
+                <tr>
+                    <td>
+                        <div><span class="box1">About us</span></div>
+                        <div class="section">
+                            <div class="box2"><a href="example3.html">Executive Team</a></div>
+                            <div class="box2"><a href="example3.html">Investors</a></div>
+                            <div class="box2"><a href="example3.html">Career</a></div>
+                            <div class="box2"><a href="example3.html">Press Center</a></div>
+                            <div class="box2"><a href="example3.html">Success Stories</a></div>
+                            <div class="box2-last"><a href="example3.html">Contact Us</a></div>
+                        </div>
+                    </td>
+                </tr>
+                </table>
+
+            </div>
+
+        </td>
+    </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

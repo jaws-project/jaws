@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>#1.0 DropDownMenu1 example 2</title>
+    <style type="text/css">
+    body {
+        font: 11px tahoma;
+        background: #ffffff;
+        margin: 0;
+        padding: 50px;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="example2.css" />
+    <script type="text/javascript" src="../ie5.js"></script>
+    <script type="text/javascript" src="DropDownMenu1.js"></script>
+</head>
+<body>
+
+    <table cellspacing="0" cellpadding="0" id="menu1" class="ddm1">
+    <tr>
+        <td>
+            <a class="item1" href="example2.html">Home Page</a>
+            
+            <a class="item1" href="javascript:void(0)">Solutions</a>
+            <div class="section">
+                <a class="item2" href="example2.html">Category One</a>
+                <a class="item2" href="example2.html">Category Two</a>
+                <a class="item2" href="example2.html">Category Three</a>
+                <a class="item2" href="example2.html">Category Four</a>
+                <a class="item2" href="example2.html">Category Five</a>
+                <a class="item2" href="example2.html">Category Six</a>
+                <a class="item2" href="example2.html">Category Seven</a>
+            </div>
+
+            <a class="item1" href="javascript:void(0)">Products</a>
+            <div class="section">
+                <a class="item2" href="example2.html">First Product</a>
+                <a class="item2" href="example2.html">Second Product</a>
+                <a class="item2" href="example2.html">Third Product</a>
+                <a class="item2" href="example2.html">Fourth Product</a>
+                <a class="item2" href="example2.html">Fifth Product</a>
+                <a class="item2" href="example2.html">Sixth Product</a>
+            </div>
+
+            <a class="item1" href="javascript:void(0)">Company</a>
+            <div class="section">
+                <a class="item2" href="example2.html">About our Company</a>
+                <a class="item2" href="example2.html">Careers</a>
+                <a class="item2" href="example2.html">Media Center</a>
+                <a class="item2" href="example2.html">News</a>
+            </div>
+
+            <a class="item1" href="example2.html">Contact Us</a>
+
+            <a class="item1" href="example2.html">Privacy Policy</a>
+
+            <a class="item1 bottom" href="example2.html">Help</a>
+            <div class="section">
+                <a class="item2" href="example2.html">Help blabla 1</a>
+                <a class="item2" href="example2.html">Help bleble 22</a>
+                <a class="item2" href="example2.html">Help bleble 3</a>
+                <a class="item2" href="example2.html">Help bleble 44444</a>
+            </div>
+        </td>
+    </tr>
+    </table>
+
+    <p>
+        <b>Project</b>: <a href="http://gosu.pl/dhtml/mygosumenu.html">mygosuMenu</a> <br />
+        <b>Menu type</b>: #1.0 DropDownMenu1 example 2 <br />
+        <b>Features</b>: <br />
+        - horizontal or vertical menu <br />
+        - can be positioned statically or absolutely <br />
+        - delay for showing/hiding menu (can be turned off by setting to 0) <br />
+        - position of submenus can be changed, so they can for example overflow parent elements <br />
+        - on the same page there can be many menus created <br />
+        - seperated into 3 layers: behaviour(javascript), structure(html), presentation(css) <br />
+        - search engine friendly <br />
+        - free for any use (BSD license) <br />
+        <b>Compatibility</b>: Tested and works great on: IE 5.0/5.5/6.0, Mozilla 1.4/1.7, Opera 7.11/7.23/7.51, Netscape 7.11, Firefox 0.7/0.8/0.9, Safari 1.2
+    </p>
+
+    <script type="text/javascript">
+    var ddm1 = new DropDownMenu1('menu1');
+    ddm1.type = "vertical";
+    ddm1.position.left = -1;
+    ddm1.init();
+    </script>
+
+</body>
+</html>

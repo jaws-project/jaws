@@ -1,0 +1,90 @@
+.click-menu {
+    width: 135px;
+}
+.click-menu .box1 {
+    background-color: #202340;
+    color: #99bb99;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: tahoma;
+    padding: 4px 8px;
+    border-width: 1px;
+    border-color: #448882;
+    border-style: solid solid solid solid;
+    cursor: default;
+    position: relative;
+}
+.click-menu .box1-hover {
+    background-color: #113344;
+    color: #CCEEEB;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: tahoma;
+    padding: 4px 8px;
+    border-width: 1px;
+    border-color: #99CCAE;
+    border-style: solid solid solid solid;
+    cursor: default;
+    position: relative;
+}
+.click-menu .box1-open {
+    background-color: #202340;
+    color: #99bb99;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: tahoma;
+    padding: 4px 8px;
+    border-width: 1px;
+    border-color: #448882;
+    border-style: solid solid none solid;
+    cursor: default;
+    position: relative;
+}
+.click-menu .box1-open-hover {
+    background-color: #113344;
+    color: #CCEEEB;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: tahoma;
+    padding: 4px 8px;
+    border-width: 1px;
+    border-color: #99CCAE;
+    border-style: solid solid none solid;
+    cursor: default;
+    position: relative;
+}
+.click-menu .box1 img, .click-menu .box1-hover img, .click-menu .box1-open img, .click-menu .box1-open-hover img {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+.click-menu .section {
+    background-color: #224441;
+    font-family: arial;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 5px 5px 6px 5px;
+    border-width: 1px;
+    border-color: #448882;
+    border-style: none solid solid solid;
+    display: none;
+}
+.click-menu .section a {
+    color: #8BAA88;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.click-menu .section a:hover {
+    color: #CCEEEB;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.click-menu .box2 {
+}
+.click-menu .box2-hover {
+    background: #000000;
+}
+.click-menu .section .active,
+.click-menu .section .active:hover {
+    color: yellow;
+}

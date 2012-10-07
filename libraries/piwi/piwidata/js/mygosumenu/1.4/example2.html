@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>#1.4 XulMenu example 2</title>
+    <link rel="stylesheet" type="text/css" href="example2.css" />
+    <script type="text/javascript" src="../ie5.js"></script>
+    <script type="text/javascript" src="XulMenu.js"></script>
+    <style type="text/css">
+    html, body { height: 100%; }
+    body { margin: 0; padding: 0; background: #ffffff; }
+    #bar {
+        background: #ECE9D8;
+        border: 1px solid;
+        border-color: #ffffff #ACA899 #ACA899 #ffffff;
+        padding: 3px;
+        cursor: default;
+    }
+    table td { vertical-align: top; }
+    p { font-family: georgia, tahoma, verdana; font-size: 11px; margin: 2em; }
+    </style>
+</head>
+<body>
+
+    <script type="text/javscript">
+    /* preload images */
+    var arrow1 = new Image(4, 7);
+    arrow1.src = "images/arrow1.gif";
+    var arrow2 = new Image(4, 7);
+    arrow2.src = "images/arrow2.gif";
+    </script>
+
+    <table cellspacing="0" cellpadding="0" height="100%"><tr><td id="bar">
+        
+        <table cellspacing="0" cellpadding="0" id="menu1" class="XulMenu">
+        <tr>
+            <td>
+                <a class="button" href="javascript:void(0)">Viewer</a>
+                <div class="section">
+                    <a class="item" href="example2.html">Home</a>
+                    <a class="item" href="example2.html">Close</a>
+                </div>
+
+                <a class="button" href="javascript:void(0)">Articles</a>
+                <div class="section">
+                    <a class="item" href="javascript:void(0)">Advocacy<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="example2.html">Advocacy One</a>
+                        <a class="item" href="example2.html">Advocacy Two</a>
+                        <a class="item" href="example2.html">Advocacy Three</a>
+                        <a class="item" href="example2.html">Advocacy Four</a>
+                        <a class="item" href="example2.html">Advocacy Five</a>
+                        <a class="item" href="example2.html">Advocacy Six</a>
+                        <a class="item" href="example2.html">Advocacy Seven</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Blogs<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="javascript:void(0)">PHP Guru<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">Guru One</a>
+                            <a class="item" href="example2.html">Guru Two</a>
+                            <a class="item" href="example2.html">Guru Three</a>
+                            <a class="item" href="example2.html">Guru Four</a>
+                        </div>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Design<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="javascript:void(0)">Archive<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example1.hmtl">Archive One</a>
+                        </div>
+                        <a class="item" href="example2.html">Design One</a>
+                        <a class="item" href="example2.html">Design Two</a>
+                        <a class="item" href="example2.html">Design Three</a>
+                        <a class="item" href="example2.html">Design Four</a>
+                        <a class="item" href="example2.html">Design Five</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Develop<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="example2.html">Develop One</a>
+                        <a class="item" href="example2.html">Develop Two</a>
+                        <a class="item" href="example2.html">Develop Three</a>
+                        <a class="item" href="example2.html">Develop Five</a>
+                        <a class="item" href="example2.html">Develop Six</a>
+                        <a class="item" href="example2.html">Develop Seven</a>
+                        <a class="item" href="example2.html">Develop Eight</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">News<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="example2.html">News One</a>
+                        <a class="item" href="example2.html">News Two</a>
+                        <a class="item" href="example2.html">News Three</a>
+                        <a class="item" href="example2.html">News Four</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Reviews<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="example2.html">Review One</a>
+                        <a class="item" href="example2.html">Review Two</a>
+                    </div>
+                    <a class="item" href="example2.html">File Manager</a>
+                </div>
+
+                <a class="button" href="javascript:void(0)">Links</a>
+                <div class="section">
+                    <a class="item" href="javascript:void(0)">Advocacy<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="javascript:void(0)">Interviews<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">Interview One</a>
+                            <a class="item" href="example2.html">Interview Two</a>
+                            <a class="item" href="example2.html">Interview Three</a>
+                            <a class="item" href="example2.html">Interview Four</a>
+                            <a class="item" href="example2.html">Interview Five</a>
+                            <a class="item" href="example2.html">Interview Six</a>
+                            <a class="item" href="example2.html">Interview Seven</a>
+                        </div>
+                        <a class="item" href="javascript:void(0)">PHP<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">PHP One</a>
+                            <a class="item" href="example2.html">PHP Two</a>
+                            <a class="item" href="example2.html">PHP Three</a>
+                        </div>
+                        <a class="item" href="example2.html">Advocacy One</a>
+                        <a class="item" href="example2.html">Advocacy Two</a>
+                        <a class="item" href="example2.html">Advocacy Three</a>
+                        <a class="item" href="example2.html">Advocacy Four</a>
+                        <a class="item" href="example2.html">Advocacy Five</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Community<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="example2.html">Community One</a>
+                        <a class="item" href="example2.html">Community Two</a>
+                        <a class="item" href="example2.html">Community Three</a>
+                        <a class="item" href="example2.html">Community Four</a>
+                        <a class="item" href="example2.html">Community Five</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Concepts<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="javascript:void(0)">Books<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">Book One</a>
+                            <a class="item" href="example2.html">Book Two</a>
+                            <a class="item" href="example2.html">Book Three</a>
+                            <a class="item" href="example2.html">Book Four</a>
+                        </div>
+                        <a class="section" href="javascript:void(0)">Patterns<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">Pattern One</a>
+                            <a class="item" href="example2.html">Pattern Two</a>
+                            <a class="item" href="example2.html">Pattern Three</a>
+                            <a class="item" href="example2.html">Pattern Four</a>
+                        </div>
+                        <a class="item" href="example2.html">Concept One</a>
+                        <a class="item" href="example2.html">Concept Two</a>
+                        <a class="item" href="example2.html">Concept Three</a>
+                    </div>
+                    <a class="item" href="javascript:void(0)">Tutorials<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                    <div class="section">
+                        <a class="item" href="javascript:void(0)">Introductory<img class="arrow" src="images/arrow1.gif" width="4" height="7" alt="" /></a>
+                        <div class="section">
+                            <a class="item" href="example2.html">Introductory One</a>
+                            <a class="item" href="example2.html">IIntroductory Two</a>
+                            <a class="item" href="example2.html">Introductory Three</a>
+                            <a class="item" href="example2.html">Introductory Four</a>
+                            <a class="item" href="example2.html">Introductory Five</a>
+                            <a class="item" href="example2.html">Introductory Six</a>
+                            <a class="item" href="example2.html">Introductory Seven</a>
+                        </div>
+                        <a class="item" href="example2.html">Tutorial One</a>
+                        <a class="item" href="example2.html">Tutorial Two</a>
+                        <a class="item" href="example2.html">Tutorial Three</a>
+                        <a class="item" href="example2.html">Tutorial Four</a>
+                        <a class="item" href="example2.html">Tutorial Five</a>
+                        <a class="item" href="example2.html">Tutorial Six</a>
+                        <a class="item" href="example2.html">Tutorial Seven</a>
+                        <a class="item" href="example2.html">Tutorial Eight</a>
+                        <a class="item" href="example2.html">Tutorial Nine</a>
+                    </div>
+                </div>
+
+                <a class="button" href="javascript:void(0)">Help</a>
+                <div class="section">
+                    <a class="item" href="example2.html">About XulMenu</a>
+                    <a class="item" href="example2.html">About this site</a>
+                </div>
+            </td>
+        </tr>
+        </table>
+
+    </td>
+    <td>
+        <p>
+            <b>Project</b>: <a href="http://gosu.pl/dhtml/mygosumenu.html">mygosuMenu</a> <br />
+            <b>Menu type</b>: #1.4 XulMenu example 2 <br />
+            <b>Features</b>: <br />
+            - horizontal or vertical menu <br />
+            - unlimited nesting <br />
+            - can be positioned statically or absolutely <br />
+            - position of submenus can be changed, so they can for example overflow parent elements <br />
+            - on the same page there can be many menus created <br />
+            - seperated into 3 layers: behaviour(javascript), structure(html), presentation(css) <br />
+            - search engine friendly <br />
+            - free for any use (BSD license) <br />
+            <b>Compatibility</b>: Tested and works great on: IE 5.0/5.5/6.0, Mozilla 1.4/1.7, Opera 7.11/7.23/7.51, Netscape 7.11, Firefox 0.7/0.8/0.9, Safari 1.2
+        </p>
+    </td></tr></table>
+
+    <script type="text/javascript">
+    var menu1 = new XulMenu("menu1");
+    menu1.type = "vertical";
+    menu1.position.level1.left = 2;
+    menu1.arrow1 = "images/arrow1.gif";
+    menu1.arrow2 = "images/arrow2.gif";
+    menu1.init();
+    </script>
+
+    
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+.ddmx {
+    font: 11px tahoma;
+}
+.ddmx .item1,
+.ddmx .item1:hover,
+.ddmx .item1-active,
+.ddmx .item1-active:hover {
+    padding: 3px 10px 3px 10px;
+    background: #000000;
+    font: 12px arial;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    position: relative;
+}
+.ddmx .item2,
+.ddmx .item2:hover,
+.ddmx .item2-active,
+.ddmx .item2-active:hover {
+    padding: 3px 8px 4px 8px;
+    font: 11px tahoma;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    position: relative;
+    z-index: 500;
+}
+.ddmx .item2 {
+    background: #e5e1da;
+}
+.ddmx .item2:hover,
+.ddmx .item2-active,
+.ddmx .item2-active:hover {
+    background: #ffffff;
+}
+.ddmx .arrow,
+.ddmx .arrow:hover {
+    padding: 3px 16px 4px 8px;
+}
+.ddmx .item2 img,
+.ddmx .item2-active img{
+    position: absolute;
+    top: 4px;
+    right: 1px;
+    border: 0;
+}
+.ddmx .section {
+    border: 1px solid #b8b4ae;
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+}
+
+* html .ddmx td { position: relative; } /* ie 5.0 fix */

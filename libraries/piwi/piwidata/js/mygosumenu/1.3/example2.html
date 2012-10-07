@@ -1,0 +1,147 @@
+<html>
+<head>
+    <script type="text/javascript" src="ClickShowHideMenu.js"></script>
+    <style type="text/css">
+    body {
+        background-color: #271D11;
+    }
+    .click-menu {
+    }
+    .click-menu .box1 {
+        background: url("images/button1.gif") no-repeat;
+        color: #f9f9f9;
+    }
+    .click-menu .box1-hover {
+        background: url("images/button1.gif") no-repeat;
+        color: #FFEBA9;
+    }
+    .click-menu .box1-open {
+        background: url("images/button1-click.gif") no-repeat;
+        color: #f9f9f9;
+    }
+    .click-menu .box1-open-hover {
+        background: url("images/button1-click.gif") no-repeat;
+        color: #FFEBA9;
+    }
+    .click-menu .box1,
+    .click-menu .box1-hover,
+    .click-menu .box1-open,
+    .click-menu .box1-open-hover {
+        text-indent: 12px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 31px;
+        font-family: arial;
+        cursor: pointer;
+        width: 150px;
+    }
+    .click-menu .section {
+        background-color: #46351F;
+        font-family: arial;
+        font-size: 13px;
+        line-height: 15px;
+        padding: 0 0 5px 10px;
+        display: none;
+    }
+    .click-menu .section a {
+        color: #ffffff;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .click-menu .section a:hover {
+        color: #FFFF99;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .click-menu .box2 {
+        border-color: #7B6139;
+        border-width: 1px;
+        border-style: none none solid solid;
+        padding: 1px 0 2px 6px;
+    }
+    .click-menu .box2-hover {
+        border-color: #7B6139;
+        border-width: 1px;
+        border-style: none none solid solid;
+        padding: 1px 0 2px 6px;
+        background: #5B4529;
+    }
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript">
+    /* preload images, you can remove this code */
+    var img = new Array();
+    img[0] = new Image();
+    img[0].src = "images/button1.gif";
+    img[1] = new Image();
+    img[1].src = "images/button1-click.gif";
+    </script>
+
+    <table><tr><td style="height: 500px; background-color: #46351F; vertical-align: top; padding: 10px;">
+
+        <table cellspacing="0" cellpadding="0" id="click-menu2" class="click-menu">
+        <tr>
+            <td>
+                <div class="box1">Products</div>
+                <div class="section">
+                    <div class="box2"><a href="example2.html">Product One</a></div>
+                    <div class="box2"><a href="example2.html">Product Two</a></div>
+                    <div class="box2"><a href="example2.html">Product Three</a></div>
+                    <div class="box2"><a href="example2.html">Product Four</a></div>
+                    <div class="box2"><a href="example2.html">Product Five</a></div>
+                </div>
+            </td>
+        </tr>
+        <tr><td height="8"></td></tr>
+        <tr>
+            <td>
+                <div class="box1">Partners</div>
+                <div class="section">
+                    <div class="box2"><a href="example2.html">Partner Benefits</a></div>
+                    <div class="box2"><a href="example2.html">Partner Application</a></div>
+                    <div class="box2"><a href="example2.html">Partner Listing</a></div>
+                </div>
+            </td>
+        </tr>
+        <tr><td height="8"></td></tr>
+        <tr>
+            <td>
+                <div class="box1">Customers</div>
+                <div class="section">
+                    <div class="box2"><a href="example2.html">Customer One</a></div>
+                    <div class="box2"><a href="example2.html">Customer Two</a></div>
+                    <div class="box2"><a href="example2.html">Customer Three</a></div>
+                    <div class="box2"><a href="example2.html">Customer Four</a></div>
+                    <div class="box2"><a href="example2.html">Customer Five</a></div>
+                    <div class="box2"><a href="example2.html">Customer Six</a></div>
+                    <div class="box2"><a href="example2.html">Customer Seven</a></div>
+                </div>
+            </td>
+        </tr>
+        <tr><td height="8"></td></tr>
+        <tr>
+            <td>
+                <div class="box1">About Us</div>
+                <div class="section">
+                    <div class="box2"><a href="example2.html">Executive Team</a></div>
+                    <div class="box2"><a href="example2.html">Investors</a></div>
+                    <div class="box2"><a href="example2.html">Career</a></div>
+                    <div class="box2"><a href="example2.html">Press Center</a></div>
+                    <div class="box2"><a href="example2.html">Success Stories</a></div>
+                    <div class="box2"><a href="example2.html">Contact Us</a></div>
+                </div>
+            </td>
+        </tr>
+        </table>
+
+    </td></tr></table>
+
+    <script type="text/javascript">
+    var clickMenu2 = new ClickShowHideMenu('click-menu2');
+    clickMenu2.init();
+    </script>
+
+</body>
+</html>

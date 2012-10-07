@@ -1,0 +1,130 @@
+----------------
+INSTALL
+----------------
+
+1) include .css file
+2) include .js file
+3) put html structure
+4) initialize menu
+
+Html structure is:
+
+- XulMenu
+    - button
+    - section
+        - item
+        - item
+        - item
+        - section
+            - item
+            - item
+            - item
+        - item
+    - button
+    - section
+        - item
+        - item
+    - button
+
+Example of initializing:
+  var menu = new XulMenu("id_of_the_menu");
+  menu.init();
+
+Example of initializing and setting additional stuff:
+  var menu1 = new XulMenu("menu1");
+  menu1.type = "horizontal";
+  menu1.position.level1.top = 0;
+  menu1.position.level1.left = 0;
+  menu1.position.levelX.top = 0;
+  menu1.position.levelX.left = 0;
+  menu1.arrow1 = "images/arrow.gif";
+  menu1.arrow2 = "images/arrow-active.gif";
+
+Note:
+  arrow1 & arrow2 set only when you want the arrow image to change when
+  element is active. If you don't want the arrow to change keep both variables empty.  
+
+----------------
+API
+----------------
+
+Controlling the menu:
+
+  show(id)
+  hide(id)
+  hideAll()
+  hideHigherOrEqualLevels(n)
+
+  id = id of the element
+  n = level
+
+  examples:
+
+  1)
+  menu1.show("menu1-1");
+
+  2)
+  menu1.show("menu1-1");
+  menu1.show("menu1-1-2");
+  menu1.show("menu1-1-2-0");
+  menu1.hideHigherOrEqualLevels(2);
+
+  Both examples show the same.
+
+----------------
+CACHING
+----------------
+
+If the menu is big, for example you want the whole structure of the site in the menu
+and it is 50 KB then you should cache this data, so the user downloads this code only
+once and not on each request.
+
+See files: example1-cache.html, example1-cache.js
+
+example1-cache.html - instead of menu structure put this:
+<script type="text/javascript" src="example1-cache.js"></script>
+
+example1-cache.js - the code with removed whitespace characters and some js code:
+document.write('... code of the menu with removed spaces and new lines ...');
+
+Advantages: reduce bandwidth, faster page loading
+Disadvantages: the links won't be visible to search engines
+
+Note:
+  Removing whitespace characters from the menu code is easy with this tool:
+  http://gosu.pl/demo/dhtml-tools/String.replace.html
+  1) In "Before" put the menu code.
+  2) In "Regexp" put this: \s*(<[^>]*>)
+  3) In "NewSubStr" put this: $1
+  Click Replace and it's done !
+
+----------------
+FEATURES
+----------------
+
+- horizontal or vertical menu
+- unlimited nesting
+- can be positioned statically or absolutely
+- position of submenus can be changed, so they can for example overflow parent elements
+- on the same page there can be many menus created
+- seperated into 3 layers: behaviour(javascript), structure(html), presentation(css)
+- search engine friendly
+- free for any use (BSD license) 
+
+----------------
+COMPATIBILITY
+----------------
+
+Tested on: IE, Mozilla, Opera, Safari, Netscape, Firefox
+
+----------------
+CHANGELOG
+----------------
+
+*** 1.4.2 ***
+
+  - added support for IE 5.0 & IE 5.5
+
+*** 1.4.1 ***
+   
+  - [js] fixed a minor bug, onclick event

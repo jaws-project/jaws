@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>#1.4 XulMenu example 1</title>
+    <link rel="stylesheet" type="text/css" href="example1.css" />
+    <script type="text/javascript" src="../ie5.js"></script>
+    <script type="text/javascript" src="XulMenu.js"></script>
+    <style type="text/css">
+    body { margin: 0; padding: 0; background: #ffffff; }
+    #bar {
+        background: #ECE9D8;
+        border: 1px solid;
+        border-color: #ffffff #ACA899 #ACA899 #ffffff;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        cursor: default;
+    }
+    #menu1 { padding-left: 5px; }
+    #search {
+        position: absolute;
+        top: 0;
+        right: 5px;
+    }
+    #search input,
+    #search select {
+        font-family: georgia, tahoma, verdana;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    </style>
+</head>
+<body>
+
+    <script type="text/javscript">
+    /* preload images */
+    var arrow1 = new Image(4, 7);
+    arrow1.src = "images/arrow1.gif";
+    var arrow2 = new Image(4, 7);
+    arrow2.src = "images/arrow2.gif";
+    </script>
+
+    <div id="bar">
+        
+        <script type="text/javascript" src="example1-cache.js"></script>
+
+        <div id="search">
+            <input type="text" name="searchField" value="" />
+            <select name="searchWhat"><option value="">Articles</option><option value="">Links</option><option value="">PHP Manual</option></select>
+            <input type="button" value="Search" />
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+    var menu1 = new XulMenu("menu1");
+    menu1.arrow1 = "images/arrow1.gif";
+    menu1.arrow2 = "images/arrow2.gif";
+    menu1.init();
+    </script>
+
+</body>
+</html>

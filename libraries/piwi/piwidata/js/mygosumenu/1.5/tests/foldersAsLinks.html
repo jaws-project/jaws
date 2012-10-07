@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>DynamicTree example 1</title>
+    <link rel="stylesheet" type="text/css" href="../DynamicTree.css" />
+    <script type="text/javascript" src="../../ie5.js"></script>
+    <script type="text/javascript" src="../DynamicTree.js"></script>
+    <style type="text/css">
+    p { font-family: georgia, sans-serif; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <p>
+        <b>Project:</b> <a href="http://gosu.pl/dhtml/mygosumenu.html">mygosuMenu</a> <br />
+        <b>Menu type:</b> #1.5 DynamicTree example 1 <br />
+        <b>Features:</b> <br />
+        - Dynamically editable in browser (see example 2) <br />
+        - Export the structure of the tree to Html, Php or Sql <br />
+        - State of the menu is saved in cookie <br />
+        - Unlimited nesting <br />
+        - Links are visible to search engines <br />
+        - Accessible for user agents with javascript disabled (see /tests/test2.html) <br />
+        - Object Oriented code, so you can create many menus on the same page <br />
+        - Free for any use (BSD license) <br />
+        <b>Compatibility:</b> Tested on: IE 5.0/5.5/6.0, Mozilla 1.4/1.7, Opera 7.11/7.23/7.52, Netscape 7.11, Firefox 0.7/0.8/0.9, Safari 1.2
+    </p>
+
+    <div class="DynamicTree">
+        <div class="top">Tree View</div>
+        <div class="wrap" id="tree">
+            <div class="folder"><a href="foldersAsLinks.html">Node 1</a>
+                <div class="folder"><a href="foldersAsLinks.html">Node 1.1</a>
+                    <div class="folder"><a href="foldersAsLinks.html">Node 1.1.1</a>
+                        <div class="doc"><a href="foldersAsLinks.html" title="Node 1.1.1.1" target="_self">Node 1.1.1.1</a></div>
+                    </div>
+                </div>
+                <div class="doc"><a href="foldersAsLinks.html">Node 1.2</a></div>
+            </div>
+            <div class="doc"><a href="foldersAsLinks.html">Node 2</a></div>
+            <div class="doc"><a href="foldersAsLinks.html">Node 3</a></div>
+            <div class="doc"><a href="foldersAsLinks.html">Node 4</a></div>
+            <div class="folder"><a href="foldersAsLinks.html">Node 5</a>
+                <div class="doc"><a href="foldersAsLinks.html">Node 5.1</a></div>
+                <div class="doc"><a href="foldersAsLinks.html">Node 5.2</a></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    var tree = new DynamicTree("tree");
+    tree.foldersAsLinks = true;
+    tree.path = '../images/';
+    tree.init();
+    </script>
+
+</body>
+</html>
