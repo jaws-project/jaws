@@ -1,0 +1,9 @@
+Extras
+----------------------
+The files in this directory are imported from other projects.
+
+If you are going to make changes to them, make sure you are using the latest
+version first.
+
+For Piwi checkout a copy from SVN first:
+	svn co http://code.jaws-project.com/svn/piwi/trunk/

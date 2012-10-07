@@ -1,0 +1,128 @@
+/* Jaws installer stylesheet */
+#main {
+    width: 100%;
+    max-width: 100%;
+}
+
+ul, ol {padding: 0; margin: 0 25px 10px 0;}
+ul li, ol li {margin: 0px;}
+
+ol.stagelist {
+    float: right;
+    border: 1px solid #9db029;
+    -moz-border-radius: 3px;
+    background-color: #e6f0a5;
+    padding: 10px 30px 10px 0px;
+    margin: 0 0 0 20px;
+    width: 150px;
+}
+
+ol.stagelist li {
+    margin: 0px;
+}
+
+li.current {
+    font-weight: bold;
+}
+
+li.complete {
+    text-decoration: line-through;
+}
+
+.content {
+    padding-left: 48px;
+    margin-right: 210px;
+}
+
+.msg_info, .msg_warning, .msg_error {
+   -moz-border-radius: 4px;
+    font-weight: bold;
+    display: block;
+    text-align: right;
+    padding-left: 8px;
+    padding-right: 26px;
+    padding-top: 4px;
+    padding-bottom: 3px;
+    overflow: auto;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.msg_info {
+    border: 1px solid #9db029;
+    background-color: #e6f0a5;
+    background-image: url("../../images/stock/info-small.png");
+}
+
+.msg_warning {
+    border: 1px solid #fce94f;
+    background-color: #fdf4a7;
+    background-image: url("../../images/stock/warning-small.png");
+}
+
+.msg_error {
+    border: 1px solid #cc0000;
+    background-color: #fabfbf;
+    background-image: url("../../images/stock/error-small.png");
+}
+
+h1 {
+    clear: both;
+    font-size: 150%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 35px;
+    border-bottom: none;
+}
+
+h1 img {
+    float: left;
+}
+
+.key {
+    padding: 10px;
+    border: 1px solid #d3d7cf;
+    background-color: #eeeeec;
+    margin-bottom: 10px;
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+.form_comment {
+    font-size: 80%;
+}
+
+.config-area {
+    width: 100%;
+    font-size: 8pt;
+    direction: ltr;
+    text-align: left;
+}
+.fs_table {
+    text-align: center;
+    border: 1px solid #d3d7cf;
+}
+
+.fs_table th {
+    font-size: 100%;
+    font-weight: bold;
+    padding: 4px;
+    color: #fff;
+    background-color: #3465a4;
+}
+
+.fs_table td {
+    font-size: small;
+    font-weight: bold;
+    padding: 4px;
+    border: 1px solid #d3d7cf;
+}
+
+.fs_table .title {
+    text-align: right;
+}

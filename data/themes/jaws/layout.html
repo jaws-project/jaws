@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- BEGIN layout -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <base href="{BASE_URL}" />
+  <title>{site-title}</title>
+  <meta name="author" content="{site-author}" />
+  <meta name="keywords" content="{site-keywords}" />
+  <meta name="description" content="{site-description}" />
+  <meta http-equiv="content-language" content="{site-languages}" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="{THEME}blog{.dir}.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="{THEME}style{.dir}.css" media="screen" />
+  <!-- BEGIN head -->{ELEMENT}<!-- END head -->
+</head>
+<body>
+  <div id="container" class="clearfix">
+
+    <div id="top_header"><h1><a href="{site-url}">{site-name}</a></h1>
+      <p>{site-slogan}</p>
+    </div>
+
+    <div id="header" class="wide clearfix">
+    <!-- BEGIN header -->{ELEMENT}<!-- END header -->
+    </div>
+
+    <div id="main-section" class="clearfix">
+
+      <div id="bar1" class="narrow">
+      <!-- BEGIN bar1 narrow="yes" -->{ELEMENT}<!-- END bar1 -->
+      </div>
+
+      <div id="main" class="wide">
+      <!-- BEGIN main -->{ELEMENT}<!-- END main -->
+      </div>
+
+      <div id="bar2" class="narrow">
+      <!-- BEGIN bar2 narrow="yes" -->{ELEMENT}<!-- END bar2 -->
+      </div>
+
+    </div>
+
+    <div id="footer" class="wide">
+    <!-- BEGIN footer -->{ELEMENT}<!-- END footer -->
+    </div>
+
+    <div id="sub_footer">
+      <p><strong>{site-name}</strong><br />{site-slogan}</p>
+      <p>Powered by the <a href="http://www.jaws-project.com" rel="external">Jaws Project</a></p>
+    </div>
+
+  </div>
+</body>
+</html>
+<!-- END layout -->

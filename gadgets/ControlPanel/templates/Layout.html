@@ -1,0 +1,78 @@
+<!-- BEGIN layout -->
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="{BASE_URL}" />
+  <title>{site-name}: {control-panel}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!-- BEGIN head -->{ELEMENT}<!-- END head -->
+  <script type="text/javascript" src="gadgets/ControlPanel/resources/script.js"></script>
+</head>
+<body onload="hideWorkingNotification();">
+ <!-- Working Notification -->
+  <div id="working_notification"></div>
+  <script type="text/javascript">
+   default_loading_message = "{loading-message}";
+   var loading_message = default_loading_message;
+   var navigate_away_message = "{navigate-away-message}";
+  </script>
+ <!-- /Working Notification -->
+  <script type="text/javascript">
+  showWorkingNotification();
+  </script>
+  <div id="header">
+   <div id="site-info">
+    <h1><a href="{admin_script}">{site-name}: {control-panel}</a></h1>
+    <p>{site-slogan}</p>
+   </div>
+   <div id="login-info">
+      <!-- BEGIN login-info -->
+      <img alt="{name}" width="48" height="48" src="{avatar}" />
+      <div class="name">{my-account}</div>
+      <div class="logout"><a href="{logout-url}">{logout}</a></div>
+      <!-- END login-info -->
+   </div>
+   <div class="clearfix"></div>
+   <!-- BEGIN warning --><div id="warning-wrapper"><div class="warning">{warning}</div></div><!-- END warning -->
+  </div>
+  <div class="clearfix" style="margin-bottom: 8px;"></div>
+  <div id="container" class="clearfix">
+   <div id="main-section" class="clearfix">
+   <!-- BEGIN cptitle -->
+   <div id="control-panel-title" align="left"><span><img alt="{title-gadget}" style="vertical-align: middle;" src="{icon-gadget}" />
+     <a href="{admin_script}">{title-cp}</a> &rarr; <a href="{admin_script}?gadget={title-gadget}">{title-name}</a>
+     <span id="cpsubtitle"></span>
+     <!-- BEGIN documentation -->
+     <a href="{url}" target="_blank"><img src="{src}" alt="{alt}" title="{alt}" style="vertical-align: top; height: 16px; width: 16px;"/></a>
+     <!-- END documentation -->
+   </span></div>
+   <!-- BEGIN description --><div class="gadget-description">{title-desc}</div><!-- END description -->
+   <!-- END cptitle -->
+   <div id="msgbox-wrapper">
+   <!-- BEGIN msgbox -->
+   <div id="msgbox_{msg-id}" class="{msg-css}">{msg-txt}</div>
+    <script type="text/javascript">
+        var msgbox = $('msgbox_{msg-id}');
+        if((msgbox.className != 'error-message') && (msgbox.className != 'warning-message') && (window.hideResponseBox)) {
+            hideResponseBox(msgbox);
+        }
+    </script>
+   <!-- END msgbox -->
+   </div>
+   <!-- BEGIN main -->
+   {ELEMENT}
+    <!-- END main -->
+   </div>
+
+   <div id="footer">
+    <p>
+     <strong>{site-name}</strong><br />
+     {site-slogan}
+    </p>
+    <p>Powered by the <a href="http://www.jaws-project.com" rel="external">Jaws Project</a></p>
+   </div>
+
+  </div>
+</body>
+</html>
+<!-- END layout -->

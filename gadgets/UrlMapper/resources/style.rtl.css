@@ -1,0 +1,27 @@
+table td label {
+    float: right;
+}
+
+#buttons {
+float: left;
+}
+
+#gadgets_combo {
+margin-bottom: 10px;
+}
+
+.jawsDatagrid{ 
+padding: 0px;
+}
+
+#map_area input {
+margin: 0 8px;
+}
+
+#map_area label {
+margin: 5px 8px 2px 0;
+}
+
+#alias, #custom_url {
+direction: ltr;
+}

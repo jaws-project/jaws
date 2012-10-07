@@ -1,0 +1,54 @@
+#jaws-sidebar-settings {
+    width: 180px;
+    float: left;
+    border: 1px solid #d3d7cf;
+}
+
+#settings {
+    width: 560px;
+    float: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+    border: 1px solid #d3d7cf;
+}
+
+.buttons {
+    clear: both;
+}
+
+div.fields {
+    clear: both;
+    margin-top: 4px;
+    text-align: left;
+}
+
+div.fields label {
+    margin: 0;
+    margin-right: .6em;
+    padding-top: 4px;
+    display: block;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+    cursor: pointer;
+    width: 15em;
+}
+
+div.fields select {
+    max-width: 320px;
+}
+
+.meta-name {
+    width: 6em;
+}
+.meta-value {
+    width: 17em;
+    margin-left: 0.4em;
+}
+.add-button {
+    margin-top: 5px;
+}
+.add-button input, .add-button button {
+    margin-left: 15.6em;
+}

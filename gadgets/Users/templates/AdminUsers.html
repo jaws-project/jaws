@@ -1,0 +1,50 @@
+<!-- BEGIN Users -->
+{menubar}
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="vertical-align: top;">
+      <table id="users_filter" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="filter_label"><label>{lbl_filter_group}:</label></td><td>{filter_group}</td>
+          <td class="filter_label"></td><td></td>
+        </tr>
+        <tr>
+          <td class="filter_label"><label>{lbl_filter_type}:</label></td><td>{filter_type}</td>
+          <td class="filter_label"><label>{lbl_filter_status}:</label></td><td>{filter_status}</td>
+        </tr>
+      </table>
+      {users_datagrid}
+    </td>
+    <td style="vertical-align:top; width: 290px;">
+      <input type="hidden" name="uid" id="uid" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="user_workarea">{user_workarea}</div>
+      </fieldset>
+    </td>
+  </tr>
+  <tr><td class="buttons" colspan="2">{cancel}{save}</td></tr>
+</table>
+<script type="text/javascript">
+  var noGroup               = "{noGroup}";
+  var wrongPassword         = "{wrongPassword}";
+  var incompleteUserFields  = "{incompleteUserFields}";
+  var permissionsMsg        = "{permissionsMsg}";
+  var confirmUserDelete     = "{confirmUserDelete}";
+  var confirmResetACL       = "{confirmResetACL}";
+  var permissionAllow       = "{permissionAllow}";
+  var permissionDeny        = "{permissionDeny}";
+  var permissionNone        = "{permissionNone}";
+  var addUser_title         = "{addUser_title}";
+  var editUser_title        = "{editUser_title}";
+  var editUserACL_title     = "{editUserACL_title}";
+  var editUserGroups_title  = "{editUserGroups_title}";
+  var editPersonal_title    = "{editPersonal_title}";
+  var editPreferences_title = "{editPreferences_title}";
+  var currentAction         = 'UserAccount';
+  var cachedUserForm        = $('user_workarea').innerHTML;
+  stopUserAction();
+  var base_script           = "{base_script}";
+  initDataGrid('users_datagrid', new usersadminajax, getUsers);
+</script>
+<!-- END Users -->

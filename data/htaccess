@@ -1,0 +1,14 @@
+#Prevent executing all server-side scripts
+#Please select from the following solutions that are compatible with your server
+#-------------------------------------------
+RemoveType .php .php3 .php4 .php5 .phtml .phps .pl .py .cgi
+RemoveHandler application/x-httpd-php .php .php3 .php4 .php5 .phtml
+RemoveHandler application/x-httpd-php-source .phps
+RemoveHandler cgi-script .pl .py .cgi
+#-------------------------------------------
+php_value engine off
+#-------------------------------------------
+<FilesMatch "\.(php|php3|php4|php5|phtml|phps|pl|py|cgi|pcgi|pcgi5|pcgi4)$">
+    ForceType application/octet-stream
+    SetHandler application/x-httpd-php-source
+</FilesMatch>

@@ -1,0 +1,36 @@
+<!-- BEGIN Jms -->
+{menubar}
+<script type="text/javascript">
+  var confirmUninstallComponent = "{confirmUninstallComponent}";
+  var noAvailableData        = "{noAvailableData}";
+</script>
+<table style="width: 100%; border: 1px solid #ccc; padding: 0px; border-spacing: 0.1px; height: 350px; max-height: 350px;">
+  <!-- big work area -->
+  <tr>
+    <td valign="top">
+      {combo_plugins}
+      <!-- big combo (gadgets) -->
+    </td>
+    <td style="width: 100%; height: 350px; max-height: 350px; overflow: auto;" valign="top">
+      <!-- work area -->
+      <div id="work_area" style="height: 350px; max-height: 350px; overflow: auto;">
+      </div>
+    </td>
+  </tr>
+</table>
+<table style="width: 100%; padding: 0px;">
+  <tr>
+    <td>
+      <div id="search_div">
+       <label for="only_show">{only_show_t}</label>{only_show}
+      </div>
+    </td>
+    <td id="buttons_area">
+      {buttons}
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+$('{plugins_combo').selectedIndex = -1;
+</script>
+<!-- END Jms -->

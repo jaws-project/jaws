@@ -1,0 +1,51 @@
+#
+# To use search engine friendly URLs check that mod_rewrite is enabled, and then copy this file to .htaccess
+# You may need change this file to compatibility with your server configuration
+#
+
+# Not found error
+ErrorDocument 404 /index.php?http_error=404
+<FilesMatch "(favicon\.(ico|png|gif|jpg)|robots\.txt)$">
+    ErrorDocument 404 "File Not Found"
+</FilesMatch>
+
+# Forbidden error
+ErrorDocument 403 /index.php?http_error=403
+
+# Don't show directory listing
+# For security reasons, Option followsymlinks cannot be overridden
+Options -ExecCGI -FollowSymLinks +SymLinksIfOwnerMatch -Indexes
+
+# Encoding issues
+AddType 'text/html; charset=UTF-8' html
+AddType 'text/xml; charset=UTF-8' atom rss xml
+
+<IfModule mod_rewrite.c>
+    RewriteBase /
+    RewriteEngine On
+
+    # shortcut to access admin area
+    RewriteRule ^admin$ /admin.php [NC,L]
+
+    # working without using index.php from URLs for better SEO optimization
+    RewriteCond $1 !^(favicon\.(ico|png|gif|jpg)|robots\.txt|admin\.php) [NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|swf|flv|mp3|ico|pdf)$">
+        Header unset Set-Cookie
+        FileETag -INode MTime Size
+        Header unset Last-Modified
+        Header set Cache-Control "max-age=31536000, public, must-revalidate"
+    </FilesMatch>
+
+    <FilesMatch "\.(js|css)$">
+        FileETag None
+        Header unset Set-Cookie
+        Header set Cache-Control "max-age=2592000, public, must-revalidate"
+    </FilesMatch>
+</IfModule>

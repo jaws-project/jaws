@@ -1,0 +1,168 @@
+.menu-titlebar {
+    text-align: left;
+    background: #d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
+    padding-left: 5px;
+    padding-right: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #d3d7cf;
+    height: 2.4em;
+}
+
+.menu-titlebar span {
+    float: left;
+    padding: .4em;
+    white-space: nowrap;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-left: 1px solid #ddd;
+}
+
+.menu-titlebar span img {
+    width: 16px;
+    vertical-align: -3px;
+    margin-right: 2px;
+}
+
+#menus_area {
+    float: left;
+    width: 300px;
+}
+
+#menus_trees {
+    margin: 0px;
+    padding: 0px;
+    width: 298px;
+    height: 390px;
+    border: 1px solid #d3d7cf;
+    background-color: #f7f7f7;
+    overflow: auto;
+}
+
+#menus_trees img {
+    width: 16px;
+    vertical-align: -4px;
+    margin-right: 0.2em;
+}
+
+#menus_trees a {
+    text-decoration: none;
+}
+
+#menus_trees a:hover {
+    text-decoration: underline;
+}
+
+.menu_groups {
+    margin:  0px;
+    padding: 2px;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+    background-color: #f7f7f7;
+    border-bottom: 1px dotted #d3d7cf;
+}
+
+.menu_tree_items {
+    clear: both;
+    font-size: 11px;
+    text-align: right;
+    padding-bottom: 16px;
+}
+
+.menu_groups .menu_tree_items {
+    background-color: #e0e0e0;
+}
+
+.menu_levels .menu_tree_items {
+    background-color: #f7f7f7;
+}
+
+.menu_tree_items .title {
+    float: left;
+}
+
+.menu_tree_items .actions {
+    float: right;
+}
+
+.menu_levels .menu_tree_items .actions {
+    visibility: hidden;
+}
+
+div.menu_levels {
+    padding: 0px;
+    margin: 1px 0px 1px 14px;
+}
+
+#edit_area {
+    float: left;
+    width: 432px;
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
+
+#edit_area  span {
+    width: 400px;
+    overflow: hidden;
+}
+
+#menus_edit {
+    height: 390px;
+    border: 1px solid #d3d7cf;
+}
+
+#tbl_group, #tbl_menu {
+    padding:4px;
+    text-align: left;
+}
+
+#tbl_group td, #tbl_menu td {
+    padding: 8px 0px 0px 10px;
+}
+
+.buttons {padding-right:4px;}
+
+#ifrm_upload {
+    display:none;
+}
+td#menu_image {
+padding:0px;
+vertical-align: bottom;
+text-align: center;
+width:128px;
+}
+#menu_image img {
+background-color:white;
+border:1px solid #a9a9a9;
+padding:2px;
+max-width:120px;
+max-height:90px;
+}
+td#image-action {
+padding: 2px 0;
+text-align: center;
+}
+#image-action .actions {
+position:relative;
+width:55px;
+margin:0px auto;
+}
+#image-action .actions button {
+width:24px;
+height:24px;
+margin:0;
+}
+#image-action .wrapper {
+position:absolute;
+top:0;
+width:24px;
+height:24px;
+overflow:hidden;
+}
+#image-action .wrapper input {
+margin:0;
+font-size:30px;
+opacity:0;
+filter:alpha(opacity=0);
+}
