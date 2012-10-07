@@ -1,8 +1,0 @@
-If you want to write a script for Launcher just include a file with a function (without params) with the same as the file.
-
-Example:
-
-Script Hello.php must have a function Hello().
-
-
-Default script is called defaultscript.php (if you want to use the Launcher default action).
