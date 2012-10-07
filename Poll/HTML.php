@@ -15,7 +15,7 @@ class PollHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @acces  public
-     * @return string  HTML result
+     * @return string  XHTML template result
      */
     function DefaultAction()
     {
@@ -67,7 +67,7 @@ class PollHTML extends Jaws_GadgetHTML
      * Prints all the enabled polls as a layout
      *
      * @access  public
-     * @return  string  HTML view of a list of polls
+     * @return  string  XHTML view of a list of polls
      */
     function ListOfPolls()
     {
@@ -93,7 +93,7 @@ class PollHTML extends Jaws_GadgetHTML
      * Look for a term and prints it
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function ViewResult()
     {

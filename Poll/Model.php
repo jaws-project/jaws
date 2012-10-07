@@ -15,9 +15,9 @@ class PollModel extends Jaws_Model
      * Add a new vote to the poll's answer
      *
      * @access  public
-     * @param   int     $pid Poll's ID
-     * @param   int     $aid Answer's ID
-     * @return  boolean True if the poll answer was incremented and false on error
+     * @param   int     $pid    Poll's ID
+     * @param   int     $aid    Answer's ID
+     * @return  mixed   True if the poll answer was incremented and Jaws_Error on error
      */
     function AddAnswerVote($pid, $aid)
     {
@@ -42,8 +42,8 @@ class PollModel extends Jaws_Model
      * Get Poll Answers
      *
      * @access  public
-     * @param   int     $pid  Poll's ID
-     * @return  array   An array with the information of the answer and false on error
+     * @param   int     $pid    Poll's ID
+     * @return  mixed   An array with the information of the answer and Jaws_Error on error
      */
     function GetPollAnswers($pid)
     {
@@ -64,7 +64,8 @@ class PollModel extends Jaws_Model
      * Get Poll data
      *
      * @access  public
-     * @return  array   An array of poll properties and Jaws_Error on error
+     * @param   int     $pid    poll ID
+     * @return  mixed   An array of poll properties and Jaws_Error on error
      */
     function GetPoll($pid)
     {
@@ -86,7 +87,7 @@ class PollModel extends Jaws_Model
      * Gets the last visible poll
      *
      * @access  public
-     * @return  array   An array with the last visible and returns false on error
+     * @return  mixed   An array with the last visible and returns Jaws_Error or false on error
      */
     function GetLastPoll()
     {
@@ -116,7 +117,11 @@ class PollModel extends Jaws_Model
      * Get the list of polls
      *
      * @access  public
-     * @return  array   An array of available polls and Jaws_Error on error
+     * @param   int     $gid            group ID
+     * @param   bool    $onlyVisible    only show visible polls
+     * @param   int     $limit          limit polls
+     * @param   int     $offset         offset data by
+     * @return  mixed   An array of available polls and Jaws_Error on error
      */
     function GetPolls($gid = null, $onlyVisible = false, $limit = 0, $offset = null)
     {
@@ -156,7 +161,8 @@ class PollModel extends Jaws_Model
      * Retrieve information of a group
      *
      * @access  public
-     * @return  array  An array of group's data and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @return  mixed   An array of group's data and Jaws_Error on error
      */
     function GetPollGroup($gid)
     {
@@ -182,7 +188,9 @@ class PollModel extends Jaws_Model
      * Retrieve poll groups
      *
      * @access  public
-     * @return  array  An array of available poll groups and Jaws_Error on error
+     * @param   int     $limit  limit groups
+     * @param   int     $offset offset groups
+     * @return  mixed   An array of available poll groups and Jaws_Error on error
      */
     function GetPollGroups($limit = 0, $offset = null)
     {
@@ -212,7 +220,7 @@ class PollModel extends Jaws_Model
      * Get the list of visible polls
      *
      * @access  public
-     * @return  array   An array with the visible polls and returns false on error
+     * @return  mixed   An array with the visible polls and returns Jaws_Error on error
      */
     function GetEnabledPolls()
     {

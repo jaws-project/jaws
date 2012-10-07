@@ -15,6 +15,7 @@ class PollAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model $model Jaws_Model reference
      */
     function PollAdminAjax(&$model)
     {
@@ -25,7 +26,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Get a Poll
      *
      * @access  public
-     * @return  array   Poll info
+     * @param   $int    $pid    poll ID
+     * @return  mixed   Poll info array or False on error
      */
     function GetPoll($pid)
     {
@@ -51,7 +53,15 @@ class PollAdminAjax extends Jaws_Ajax
      * Insert a Poll
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   string  $question       poll question
+     * @param   int     $gid            group ID
+     * @param   string  $start_time     poll start date time
+     * @param   string  $stop_time      poll stop date time
+     * @param   string  $select_type
+     * @param   string  $poll_type
+     * @param   string  $result_view
+     * @param   bool    $visible        is visible
+     * @return  array   Response array (notice or error)
      */
     function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
@@ -65,7 +75,16 @@ class PollAdminAjax extends Jaws_Ajax
      * Update a Poll
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $pid            poll ID
+     * @param   string  $question       poll question
+     * @param   int     $gid            group ID
+     * @param   string  $start_time     poll start date time
+     * @param   string  $stop_time      poll stop date time
+     * @param   string  $select_type
+     * @param   string  $poll_type
+     * @param   string  $result_view
+     * @param   bool    $visible        is visible
+     * @return  array   Response array (notice or error)
      */
     function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
@@ -80,7 +99,7 @@ class PollAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $pid  Poll ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeletePoll($pid)
     {
@@ -94,7 +113,7 @@ class PollAdminAjax extends Jaws_Ajax
      * Returns the poll answers form
      *
      * @access  public
-     * @return  string  XHTML
+     * @return  string  XHTML template content
      */
     function PollAnswersUI()
     {
@@ -106,7 +125,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Get a Poll Answers
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $pid    poll ID
+     * @return  mixed   Response array (notice or error) or False on error
      */
     function GetPollAnswers($pid)
     {
@@ -127,7 +147,9 @@ class PollAdminAjax extends Jaws_Ajax
      * Update a Poll Answers
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $pid        poll ID
+     * @param   array   $answers    poll answers array
+     * @return  array   Response array (notice or error)
      */
     function UpdatePollAnswers($pid, $answers)
     {
@@ -141,7 +163,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Get a list of poll groups
      *
      * @access  public
-     * @return  array   Poll Groups list
+     * @param   int     $gid    group ID
+     * @return  mixed   Poll Groups list or False on error
      */
     function GetPollGroup($gid)
     {
@@ -157,7 +180,9 @@ class PollAdminAjax extends Jaws_Ajax
      * Insert poll groups
      *
      * @access  public
-     * @return  array   Poll list
+     * @param   string  $title      group title
+     * @param   bool    $visible    is visible
+     * @return  array   response array
      */
     function InsertPollGroup($title, $visible)
     {
@@ -171,7 +196,10 @@ class PollAdminAjax extends Jaws_Ajax
      * Update poll groups
      *
      * @access  public
-     * @return  array   Poll list
+     * @param   int     $gid        group ID
+     * @param   string  $title      group title
+     * @param   bool    $visible    is visible
+     * @return  array   response array
      */
     function UpdatePollGroup($gid, $title, $visible)
     {
@@ -185,8 +213,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Delete an poll group
      *
      * @access  public
-     * @param   int     $gid   group ID
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    group ID
+     * @return  array   Response array (notice or error)
      */
     function DeletePollGroup($gid)
     {
@@ -200,7 +228,7 @@ class PollAdminAjax extends Jaws_Ajax
      * Get the pollgroup-polls form
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML template content
      */
     function PollGroupPollsUI()
     {
@@ -212,8 +240,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Get a list of polls
      *
      * @access  public
-     * @param   integer  $gid
-     * @return  array   Polls list
+     * @param   int     $gid       group ID
+     * @return  mixed   response array or false on error
      */
     function GetPollGroupPolls($gid)
     {
@@ -234,9 +262,9 @@ class PollAdminAjax extends Jaws_Ajax
      * Add a group of Poll (by they ids) to a certain poll group
      *
      * @access  public
-     * @param   int     $gid  PollGroup's ID
-     * @param   array   $Poll Array with poll id
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    PollGroup's ID
+     * @param   array   $Poll   Array with poll ids
+     * @return  array   Response array (notice or error)
      */
     function AddPollsToPollGroup($gid, $polls)
     {
@@ -245,6 +273,13 @@ class PollAdminAjax extends Jaws_Ajax
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
+    /**
+     * Retrieves Group Polls
+     *
+     * @access public
+     * @param   int     $gid        group ID
+     * @return  mixed   array of Polls or false on error
+     */
     function GetGroupPolls($gid)
     {
         $polls = $this->_Model->GetPolls($gid);
@@ -259,7 +294,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Get the poll results
      *
      * @access  public
-     * @return  string
+     * @param   int     $pid    poll ID
+     * @return  string  XHTML template content
      */
     function PollResultsUI($pid)
     {
@@ -272,6 +308,8 @@ class PollAdminAjax extends Jaws_Ajax
      * Prepare the datagrid of polls
      *
      * @access  public
+     * @param   int     $offset     date offset
+     * @param   int     $grid       gid
      * @return  string  The XHTML of a datagrid
      */
     function GetData($offset, $grid)

@@ -17,7 +17,7 @@ class PollAdminModel extends PollModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error on failure
+     * @return  mixed  True on success and Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -41,7 +41,7 @@ class PollAdminModel extends PollModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed  True on Success and Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -70,7 +70,7 @@ class PollAdminModel extends PollModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -110,7 +110,15 @@ class PollAdminModel extends PollModel
      * Insert a Poll
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   string  $question       poll question
+     * @param   int     $gid            group ID
+     * @param   string  $start_time     start date time
+     * @param   string  $stop_time      stop date time
+     * @param   string  $select_type
+     * @param   string  $poll_type
+     * @param   string  $result_view
+     * @param   bool    $visible
+     * @return  mixed   Response array (notice or error) or Jaws_Error on failure
      */
     function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
@@ -156,10 +164,16 @@ class PollAdminModel extends PollModel
      * Updates the question of a poll
      *
      * @access  public
-     * @param   string  $question Poll's Question
-     * @param   int     $id       Poll's ID
-     * @param   string  $visible   Poll status (visible|invisible)
-     * @return  boolean True if the poll was updated and false on error
+     * @param   int     $pid        Poll's ID
+     * @param   string  $question   Poll's Question
+     * @param   int     $gid        group ID
+     * @param   string  $start_time     start date time
+     * @param   string  $stop_time      stop date time
+     * @param   string  $select_type
+     * @param   string  $poll_type
+     * @param   string  $result_view
+     * @param   bool    $visible
+     * @return  mixed   True if the poll was updated and Jaws_Error on error
      */
     function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
@@ -210,8 +224,8 @@ class PollAdminModel extends PollModel
      * Deletes a poll
      *
      * @access  public
-     * @param   int     $pid Poll's ID
-     * @return  boolean True if the poll was deleted and false on error
+     * @param   int     $pid    Poll's ID
+     * @return  mixed   True if the poll was deleted and Jaws_Error on error
      */
     function DeletePoll($pid)
     {
@@ -237,7 +251,9 @@ class PollAdminModel extends PollModel
      * Update a Poll Answers
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $pid    poll ID
+     * @param   array   $answers
+     * @return  bool    Response array (notice or error) or False on error
      */
     function UpdatePollAnswers($pid, $answers)
     {
@@ -284,17 +300,18 @@ class PollAdminModel extends PollModel
             }
         }
 
-    $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ANSWERS_UPDATED'), RESPONSE_NOTICE);
-    return true;
+        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ANSWERS_UPDATED'), RESPONSE_NOTICE);
+        return true;
     }
 
     /**
      * Insert a new answer
      *
      * @access  public
-     * @param   int     $poll   Poll's ID
-     * @param   string  $answer Answer
-     * @return  boolean True if the answer was created and false on error
+     * @param   int     $pid        Poll's ID
+     * @param   string  $answer     Answer
+     * @param   string  $rank       
+     * @return  mixed   True if the answer was created and Jaws_Error on error
      */
     function InsertAnswer($pid, $answer, $rank)
     {
@@ -322,9 +339,10 @@ class PollAdminModel extends PollModel
      * Updates the answer
      *
      * @access  public
-     * @param   string  $answer   Answer's Question
-     * @param   int     $aid       Answer's ID
-     * @return  boolean True if the answer was updated and false on error
+     * @param   string  $aid        Answer's Question
+     * @param   int     $answer     Answer's ID
+     * @param   string  $rank       
+     * @return  mixed   True if the answer was updated and Jaws_Error on error
      */
     function UpdateAnswer($aid, $answer, $rank)
     {
@@ -352,8 +370,8 @@ class PollAdminModel extends PollModel
      * Deletes an answer
      *
      * @access  public
-     * @param   int     $aid Answer's ID
-     * @return  boolean True if the answer was deleted and false on error
+     * @param   int     $aid    Answer's ID
+     * @return  mixed   True if the answer was deleted and Jaws_Error on error
      */
     function DeleteAnswer($aid)
     {
@@ -371,7 +389,9 @@ class PollAdminModel extends PollModel
     * Insert a poll group
     *
     * @access  public
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    string  $title      group title
+    * @param    bool    $visible    is visible
+    * @return   bool    True on Success or False Failure
     */
     function InsertPollGroup($title, $visible)
     {
@@ -409,9 +429,12 @@ class PollAdminModel extends PollModel
 
     /**
     * Update a poll group
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    int     $gid        group ID
+    * @param    string  $title      group title
+    * @param    bool    $visible    is visible
+    * @return   mixed   True on Success, Jaws_Error or False on Failure
     */
     function UpdatePollGroup($gid, $title, $visible)
     {
@@ -452,8 +475,8 @@ class PollAdminModel extends PollModel
      * Delete a poll group
      *
      * @access  public
-     * @param   int     $gid The poll group that will be deleted
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @param   int     $gid    The poll group that will be deleted
+     * @return  mixed   True if query was successful and Jaws_Error or False on error
      */
     function DeletePollGroup($gid)
     {
@@ -489,9 +512,9 @@ class PollAdminModel extends PollModel
      * Add a group of poll (by they ids) to a certain poll group
      *
      * @access  public
-     * @param   int     $gid  PollGroup's ID
-     * @param   array   $polls Array with poll id
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    PollGroup's ID
+     * @param   array   $polls  Array with poll id
+     * @return  bool    True always
      */
     function AddPollsToPollGroup($gid, $polls)
     {
@@ -515,10 +538,10 @@ class PollAdminModel extends PollModel
      * Adds an poll to a group
      *
      * @access  public
-     * @param   int     $pid  Poll's ID
-     * @param   int     $gid  PollGroup's ID
-     * @param   int     $new_gid  PollGroup's ID
-     * @return  boolean Returns true if poll was sucessfully added to the group, false if not
+     * @param   int     $pid        Poll's ID
+     * @param   int     $gid        PollGroup's ID
+     * @param   int     $new_gid    PollGroup's ID
+     * @return  bool    True if poll was sucessfully added to the group, false if not
      */
     function UpdateGroupsOfPolls($pid, $gid, $new_gid)
     {

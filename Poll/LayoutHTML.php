@@ -16,6 +16,7 @@ class PollLayoutHTML
      * Loads layout actions
      *
      * @access private
+     * @return  array   actions array
      */
     function LoadLayoutActions()
     {
@@ -60,9 +61,8 @@ class PollLayoutHTML
     /**
      * Print the last poll
      *
-     * @param   string  $pid Poll ID
-     * @return  string  The poll form or the poll results
      * @access  public
+     * @return  string  The poll form or the poll results
      */
     function LastPoll()
     {
@@ -73,6 +73,7 @@ class PollLayoutHTML
      * Prints all the enabled polls as a layout
      *
      * @access  public
+     * @param   int     $gid    group ID
      * @return  string  HTML view of a list of polls
      */
     function ListOfPolls($gid = null)
@@ -109,9 +110,9 @@ class PollLayoutHTML
     /**
      * Builds the default template with polls and answers
      *
-     * @param   string  $pollid Poll ID
-     * @return  string  The poll form or the poll results
      * @access  public
+     * @param   string  $pid    Poll ID
+     * @return  string  The poll form or the poll results
      */
     function Display($pid = 0)
     {

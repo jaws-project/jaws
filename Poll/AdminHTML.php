@@ -15,7 +15,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Calls default admin action
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML Template content
      */
     function Admin()
     {
@@ -65,7 +65,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   int     $offset  Offset of data
-     * @return  array   Data
+     * @return  array   Polls Data array
      */
     function GetPolls($offset = null)
     {
@@ -179,7 +179,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given poll
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function PollUI()
     {
@@ -266,7 +266,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given poll answers
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function PollAnswersUI()
     {
@@ -321,7 +321,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   int     $offset  Offset of data
-     * @return  array   Data
+     * @return  array   Data array
      */
     function GetPollGroups($offset = null)
     {
@@ -433,7 +433,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given poll group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function PollGroupUI()
     {
@@ -464,7 +464,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Returns the poll-group management
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML template content
      */
     function PollGroupPollsUI()
     {
@@ -495,7 +495,7 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * View report
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Reports()
     {
@@ -538,7 +538,8 @@ class PollAdminHTML extends Jaws_GadgetHTML
      * Get the poll results
      *
      * @access  public
-     * @return  string
+     * @param   int     $pid    Poll ID
+     * @return  string  XHTML template content
      */
     function PollResultsUI($pid)
     {
