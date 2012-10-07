@@ -12,6 +12,9 @@ class GlossarySearchHook
 {
     /**
      * Gets the gadget's search fields
+     *
+     * @access public
+     * @return  array   search fields array
      */
     function GetSearchFields() {
         return array(
@@ -24,7 +27,7 @@ class GlossarySearchHook
      *
      * @access  public
      * @param   string  $pSql  Prepared search (WHERE) SQL
-     * @return  array   An array of entries that matches a certain pattern
+     * @return  mixed   An array of entries that matches a certain pattern or False on error
      */
     function Hook($pSql = '')
     {

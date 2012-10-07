@@ -15,7 +15,7 @@ class GlossaryLayoutHTML
      * Look for a random term and prints it
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function RandomTerms()
     {
@@ -38,7 +38,7 @@ class GlossaryLayoutHTML
      * Looks for a list of terms (general) and prints them
      *
      * @access   public
-     * @return   string HTML Content
+     * @return   string XHTML template Content
      */
     function ListOfTerms()
     {

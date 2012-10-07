@@ -15,7 +15,7 @@ class GlossaryAdminHTML extends Jaws_GadgetHTML
      * Manages the main functions of Glossary administration
      *
      * @access  public
-     * @return  stirng  HTML Content
+     * @return  stirng  XHTML template Content
      */
     function Admin()
     {

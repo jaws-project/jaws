@@ -17,7 +17,7 @@ class GlossaryAdminModel extends GlossaryModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -41,7 +41,7 @@ class GlossaryAdminModel extends GlossaryModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -62,7 +62,7 @@ class GlossaryAdminModel extends GlossaryModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -86,7 +86,7 @@ class GlossaryAdminModel extends GlossaryModel
      *
      * @acess   public
      * @param   int     $id  Term ID
-     * @return  boolean Returns true if term was deleted
+     * @return  mixed   Returns true if term was deleted or Jaws_Error on error
      */
     function DeleteTerm($id)
     {
@@ -109,10 +109,11 @@ class GlossaryAdminModel extends GlossaryModel
      * Updates a term
      *
      * @acess   public
-     * @param   int     $id   Term's ID
-     * @param   string  $term Term
-     * @param   string  $desc Term's description
-     * @return  boolean Returns true if term was deleted
+     * @param   int     $id         Term's ID
+     * @param   string  $term       Term
+     * @param   string  $fast_url   
+     * @param   string  $desc       Term's description
+     * @return  mixed   Returns true if term was deleted or Jaws_Error on error
      */
     function UpdateTerm($id, $term, $fast_url, $desc)
     {
@@ -149,9 +150,10 @@ class GlossaryAdminModel extends GlossaryModel
      * Adds a new term
      *
      * @acess   public
-     * @param   string  $term Term
-     * @param   string  $desc Term's description
-     * @return  boolean Returns true if term was added
+     * @param   string  $term       Term
+     * @param   string  $fast_url   
+     * @param   string  $desc       Term's description
+     * @return  mixed   Returns true if term was added or Jaws_Error on error
      */
     function NewTerm($term, $fast_url, $desc)
     {

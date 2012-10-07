@@ -15,8 +15,8 @@ class GlossaryModel extends Jaws_Model
      * Get a term
      *
      * @access  public
-     * @param   int     $id  Term ID
-     * @return  array   Returns the properties of a term and false on error
+     * @param   int     $id     Term ID
+     * @return  mixed   Returns the properties of a term and Jaws_Error on error
      */
     function GetTerm($id)
     {
@@ -41,8 +41,8 @@ class GlossaryModel extends Jaws_Model
      * Get a term
      *
      * @access  public
-     * @param   string  $term  Term
-     * @return  array   Returns the properties of a term and false on error
+     * @param   string  $term   Term
+     * @return  mixed   Returns the properties of a term and Jaws_Error on error
      */
     function GetTermByTerm($term)
     {
@@ -65,7 +65,7 @@ class GlossaryModel extends Jaws_Model
      * Get a random term
      *
      * @access  public
-     * @return  array   Returns the properties of a term and false on error
+     * @return  mixed   Returns the properties of a term and Jaws_Error on error
      */
     function GetRandomTerm()
     {
@@ -94,7 +94,7 @@ class GlossaryModel extends Jaws_Model
      * Get a list of all the terms
      *
      * @access  public
-     * @return  array   Returns an array with all the terms
+     * @return  mixed   Returns an array with all the terms or Jaws_Error on error
      */
     function GetTerms()
     {

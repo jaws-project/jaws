@@ -14,6 +14,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function GlossaryAdminAjax(&$model)
     {
@@ -24,8 +25,8 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * Get a term
      *
      * @access public
-     * @param  int    $id Term ID
-     * @return array  Term data
+     * @param   int    $id Term ID
+     * @return  mixed  Term data or false on error
      */
     function GetTerm($id)
     {
@@ -41,10 +42,10 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * Create a new term
      *
      * @access public
-     * @param  string  $term
-     * @param  string  $fast_url
-     * @param  string  $contents Term description
-     * @return array   Response (notice or error)
+     * @param   string  $term
+     * @param   string  $fast_url
+     * @param   string  $contents    Term description
+     * @return  array   Response array (notice or error)
      */
     function NewTerm($term, $fast_url, $contents)
     {
@@ -59,10 +60,10 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * Update a term
      *
      * @access public
-     * @param  int    $id       Term ID
-     * @param  string $term     Term
-     * @param  string $contents Term description
-     * @return array  Response (notice or error)
+     * @param   int    $id       Term ID
+     * @param   string $term     Term
+     * @param   string $contents Term description
+     * @return  array  Response array (notice or error)
      */
     function UpdateTerm($id, $term, $fast_url, $contents)
     {
@@ -76,7 +77,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id  Term ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteTerm($id)
     {

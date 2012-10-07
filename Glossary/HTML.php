@@ -26,7 +26,7 @@ class GlossaryHTML extends Jaws_GadgetHTML
      * Look for a term and prints it
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function ViewTerm()
     {
@@ -68,8 +68,8 @@ class GlossaryHTML extends Jaws_GadgetHTML
     /**
      * Look for all the terms, order them and prints them all together
      *
-     * @access   public
-     * @return   string HTML Content
+     * @access  public
+     * @return  string  XHTML template Content
      */
     function Display()
     {
