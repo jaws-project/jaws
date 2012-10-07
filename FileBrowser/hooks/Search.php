@@ -14,7 +14,7 @@ class FileBrowserSearchHook
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $match Match word
+     * @param   string  $match  Match word
      * @return  array   An array of entries that matches a certain pattern
      */
     function Hook($match)

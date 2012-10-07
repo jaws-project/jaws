@@ -16,7 +16,7 @@ class FileBrowserHTML extends Jaws_GadgetHTML
      * Default action to be run if none is defined.
      *
      * @access public
-     * @return string HTML content of Default action
+     * @return string   XHTML template content of Default action
      */
     function DefaultAction()
     {
@@ -27,7 +27,7 @@ class FileBrowserHTML extends Jaws_GadgetHTML
      * Prints all the files with their titles and contents
      *
      * @access  public
-     * @return  string  HTML content with titles and contents
+     * @return  mixed  XHTML template content with titles and contents or false or error
      */
     function Display()
     {
@@ -152,7 +152,14 @@ class FileBrowserHTML extends Jaws_GadgetHTML
 
     /**
      * Get page navigation links
+     * 
      * @access private
+     * @param   string  $page
+     * @param   string  $page_size
+     * @param   string  $total
+     * @param   string  $action
+     * @param   array   $params
+     * @return  string  XHTML template content
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $action, $params = array())
     {
@@ -225,7 +232,7 @@ class FileBrowserHTML extends Jaws_GadgetHTML
      * Action for display file info
      *
      * @access  public
-     * @return  string  HTML content with titles and contents
+     * @return  string  XHTML template content with titles and contents
      */
     function FileInfo()
     {
@@ -295,7 +302,7 @@ class FileBrowserHTML extends Jaws_GadgetHTML
      * Action for providing download file
      *
      * @access  public
-     * @return  mixed   Requested file content or HTML error page
+     * @return  string   Requested file content or HTML error page
      */
     function Download()
     {

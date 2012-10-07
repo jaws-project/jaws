@@ -15,8 +15,8 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
     /**
      * Builds the basic datagrid view
      *
-     * @access  private
-     * @return  string   XHTML of datagrid
+     * @access  public
+     * @return  string   XHTML template of datagrid
      */
     function DataGrid($path = '')
     {
@@ -46,7 +46,8 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * @access  public
      * @param   string  $dir
      * @param   int     $offset
-     * @return  array
+     * @param   int     $order
+     * @return  array   directory tree array
      */
     function GetDirectory($dir, $offset, $order)
     {
@@ -129,9 +130,8 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * Creates and returns some data
      *
      * @access  public
-     * @param   string  $dir
-     * @param   int     $offset
-     * @return  array
+     * @param   string  $path   
+     * @return  string  location link string   
      */
     function GetLocation($path)
     {
@@ -153,7 +153,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * Prints the admin section
      *
      * @access  public
-     * @return  string  HTML content of administration
+     * @return  string  XHTML template content of administration
      */
     function Admin()
     {
@@ -204,7 +204,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given file
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function GetFileUI()
     {
@@ -263,7 +263,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given directory
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function GetDirectoryUI()
     {
@@ -311,7 +311,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
     /**
      * Uploads a new file
      *
-     * @access       public
+     * @access public
      */
     function UploadFile()
     {
@@ -354,7 +354,8 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
     /**
      * Browses for the files & directories on the server
      *
-     * @access       public
+     * @access public
+     * @return  string  XHTML template content for browing file
      */
     function BrowseFile()
     {

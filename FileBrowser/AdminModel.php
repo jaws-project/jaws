@@ -18,7 +18,7 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -51,7 +51,7 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -80,7 +80,7 @@ class FileBrowserAdminModel extends FileBrowserModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -147,9 +147,13 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Add/Update file or directory information
      *
      * @access  public
-     * @param   string  $path File|Directory path
-     * @param   string  $file File|Directory name
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @param   string  $path           File|Directory path
+     * @param   string  $file           File|Directory name
+     * @param   string  $title          
+     * @param   string  $description
+     * @param   string  $fast_url
+     * @param   string  $oldname        
+     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname = '')
     {
@@ -233,9 +237,9 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Delete file or directory information
      *
      * @access  public
-     * @param   string  $path File|Directory path
-     * @param   string  $file File|Directory name
-     * @return  boolean True/False
+     * @param   string  $path   File|Directory path
+     * @param   string  $file   File|Directory name
+     * @return  bool    True/False
      */
     function DeleteDBFileInfo($path, $file)
     {
@@ -271,9 +275,9 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Creates a directory
      *
      * @access  public
-     * @param   string  $path     Where to create it
-     * @param   string  $dir_name Which name
-     * @return  boolean Returns true if the directory was created, if not, returns Jaws_Error
+     * @param   string  $path       Where to create it
+     * @param   string  $dir_name   Which name
+     * @return  bool    Returns true if the directory was created, if not, returns false
      */
     function MakeDir($path, $dir_name)
     {
@@ -308,9 +312,9 @@ class FileBrowserAdminModel extends FileBrowserModel
      * Deletes a file or directory
      *
      * @access  public
-     * @param   string  $path     Where is it
-     * @param   string  $filename The name of the file
-     * @return  boolean Returns true if file/directory was deleted without problems, if not, returns Jaws_Error
+     * @param   string  $path       Where is it
+     * @param   string  $filename   The name of the file
+     * @return  bool    Returns true if file/directory was deleted without problems, if not, returns false
      */
     function Delete($path, $filename)
     {
@@ -364,7 +368,7 @@ class FileBrowserAdminModel extends FileBrowserModel
      * @param   string  $type             file or dir
      * @param   string  $old_filename     Filename to rename
      * @param   string  $new_filename     New Filename
-     * @return  boolean Returns file if file/directory was renamed without problems, if not, returns Jaws_Error
+     * @return  bool    Returns file if file/directory was renamed without problems, if not, returns false
      */
     function Rename($path, $old, $new)
     {

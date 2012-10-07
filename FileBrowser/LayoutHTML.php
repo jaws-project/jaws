@@ -15,7 +15,8 @@ class FileBrowserLayoutHTML
      * Prints all the files with their titles and contents of initial folder
      *
      * @access  public
-     * @return  string  HTML content with titles and contents
+     * @param   string  $path
+     * @return  string  XHTML template content with titles and contents
      */
     function InitialFolder($path = '')
     {

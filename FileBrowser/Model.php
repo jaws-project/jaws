@@ -40,7 +40,7 @@ class FileBrowserModel extends Jaws_Model
      * Get files of the current root dir
      *
      * @access  public
-     * @param   string  $current_dir Current directory
+     * @param   string  $current_dir    Current directory
      * @return  array   A list of directories or files of a certain directory
      */
     function GetCurrentRootDir($current_dir)
@@ -90,8 +90,9 @@ class FileBrowserModel extends Jaws_Model
      * Gets information of the directory content
      *
      * @access  public
-     * @param   string  $path Where to read
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @param   string  $path   Where to read
+     * @param   string  $file   
+     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function DBFileInfo($path, $file)
     {
@@ -128,7 +129,7 @@ class FileBrowserModel extends Jaws_Model
      * Get file properties by id or fast_url
      *
      * @access  public
-     * @param   mixed   $id Fast url or file id
+     * @param   mixed   $id     Fast url or file id
      * @return  array   A list of properties of file
      */
     function DBFileInfoByIndex($id)
@@ -155,7 +156,8 @@ class FileBrowserModel extends Jaws_Model
      * Get file properties
      *
      * @access  public
-     * @param   string  $path Where to read
+     * @param   string  $path   Where to read
+     * @param   string  $fname  
      * @return  array   A list of properties of file
      */
     function GetFileProperties($path, $fname)
@@ -236,7 +238,8 @@ class FileBrowserModel extends Jaws_Model
      * Get dir properties
      *
      * @access  public
-     * @param   string  $path Where to read
+     * @param   string  $path       Where to read
+     * @param   string  $dirname    
      * @return  array   A list of properties directory
      */
     function GetDirProperties($path, $dirname)
@@ -307,8 +310,11 @@ class FileBrowserModel extends Jaws_Model
      * Gets the directory content
      *
      * @access  public
-     * @param   string  $path Where to read
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @param   string  $path   Where to read
+     * @param   int     $limit  limit data
+     * @param   int     $offset start offset
+     * @param   string  $order  
+     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function ReadDir($path, $limit = 0, $offset = 0, $order = '')
     {
@@ -358,8 +364,8 @@ class FileBrowserModel extends Jaws_Model
      * Gets Count of items in directory
      *
      * @access  public
-     * @param   string  $path Where to check
-     * @return  array   Count of items in directory
+     * @param   string  $path   Where to check
+     * @return  int     Count of items in directory
      */
     function GetDirContentsCount($path)
     {
@@ -385,8 +391,9 @@ class FileBrowserModel extends Jaws_Model
      * Directories first, followed by files.
      *
      * @access public
-     * @param array $files The filesystem array
-     * @return array the sorted filesystem array
+     * @param   array   $files  The filesystem array
+     * @param   int     $order  
+     * @return  array   the sorted filesystem array
      */
     function SortFiles($files, $order = '')
     {
@@ -431,6 +438,9 @@ class FileBrowserModel extends Jaws_Model
 
     /**
      *
+     * @access public
+     * @param   string  $ext
+     * @return  mixed   extension string or false on error
      */
     function getExtImage($ext)
     {
@@ -626,8 +636,8 @@ class FileBrowserModel extends Jaws_Model
      * Increment download hits
      *
      * @access  public
-     * @param   int     $fid File ID
-     * @return  boolean True if hits was successfully increment and false on error
+     * @param   int     $fid    File ID
+     * @return  bool    True if hits was successfully increment and false on error
      */
     function HitFileDownload($fid)
     {

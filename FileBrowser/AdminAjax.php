@@ -14,6 +14,7 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function FileBrowserAdminAjax(&$model)
     {
@@ -24,8 +25,9 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Gets information of the directory content
      *
      * @access  public
-     * @param   string  $path Where to read
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @param   string  $path   Where to read
+     * @param   string  $file   
+     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function DBFileInfo($path, $file)
     {
@@ -36,7 +38,7 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Gets Count of items in directory
      *
      * @access  public
-     * @param   string  $path Where to check
+     * @param   string  $path   Where to check
      * @return  array   Count of items in directory
      */
     function GetDirContentsCount($path)
@@ -49,7 +51,7 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $path
-     * @return  array
+     * @return  array   
      */
     function GetLocation($path)
     {
@@ -63,7 +65,8 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $dir
      * @param   int     $offset
-     * @return  array
+     * @param   int     $order
+     * @return  array   directory array
      */
     function GetDirectory($dir, $offset, $order)
     {
@@ -79,9 +82,13 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Add/Update file information
      *
      * @access  public
-     * @param   string  $path File|Directory path
-     * @param   string  $file File|Directory name
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @param   string  $path           File|Directory path
+     * @param   string  $file           File|Directory name
+     * @param   string  $title          
+     * @param   string  $description    
+     * @param   string  $fast_url       
+     * $param   string  $oldname        
+     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
     {
@@ -102,8 +109,12 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Add/Update directory information
      *
      * @access  public
-     * @param   string  $path File|Directory path
-     * @param   string  $file File|Directory name
+     * @param   string  $path           File|Directory path
+     * @param   string  $dir            File|Directory name
+     * @param   string  $title          
+     * @param   string  $description    
+     * @param   string  $fast_url       
+     * $param   string  $oldname        
      * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)
@@ -127,9 +138,9 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Delete file information
      *
      * @access  public
-     * @param   string  $path  File path
-     * @param   string  $file  File name
-     * @return  array   Response (notice or error)
+     * @param   string  $path   File path
+     * @param   string  $file   File name
+     * @return  array   Response array (notice or error)
      */
     function DeleteFile($path, $file)
     {
@@ -145,9 +156,9 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * Delete directory information
      *
      * @access  public
-     * @param   string  $path Directory path
-     * @param   string  $dir  Directory name
-     * @return  array   Response (notice or error)
+     * @param   string  $path   Directory path
+     * @param   string  $dir    Directory name
+     * @return  array   Response array (notice or error)
      */
     function DeleteDir($path, $dir)
     {
