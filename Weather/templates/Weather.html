@@ -1,0 +1,30 @@
+<!-- BEGIN weather -->
+<div class="gadget weather">
+  <h2><a href="{url}">{title}</a></h2>
+  <div class="content">
+    <!-- BEGIN current -->
+    <div class="current">
+      <!-- BEGIN head --><h3>{lbl_current}</h3><!-- END head -->
+      <a href="{url}">
+        <img src="{icon}" alt="{alt}" width="48" height="48" />&nbsp;
+        <strong><span class="temp">{temp}{unit}</span></strong>
+      </a>
+    </div>
+    <!-- END current -->
+    <!-- BEGIN forecast -->
+    <div class="forecast">
+      <h3>{lbl_forecast}</h3>
+      <!-- BEGIN item -->
+      <div class="clearfix">
+        <div class="forecast_temp">
+          <div><span class="date">{forecast_date}</span></div>
+          <p><span class="low">{low_temp}{unit}</span> | <span class="high">{high_temp}{unit}</span></p>
+        </div>
+        <div class="forecast_state"><img src="{icon}" alt="{alt}" width="48" height="48" /></div>
+      </div>
+      <!-- END item -->
+    </div>
+    <!-- END forecast -->
+  </div>
+</div>
+<!-- END weather -->

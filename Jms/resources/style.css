@@ -1,0 +1,114 @@
+#buttons_area {
+    float: right;
+    padding: 0px;
+    border-spacing: 0px;
+}
+
+#search_div {
+    float: left;
+}
+
+/* Information */
+#title 
+{
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+  border: 1px solid #d3d7cf;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-align: justify;
+  background-color: #729fcf;
+}
+
+.pretty-table 
+{
+  border-collapse: collapse;
+  border: 1px solid #d3d7cf;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: left;
+}
+
+.pretty-table caption 
+{
+  color: #000;
+  font-weight: bold;
+  font-size: 150%;	
+  width: 100%;
+}
+
+.pretty-table tr th 
+{
+  color: #000;
+  font-weight: bold;
+  border-bottom: 2px solid #314e6c;
+}
+
+.pretty-table tr td 
+{
+  display: table-cell;
+  vertical-align: top;
+  color: #888a85;
+  border-bottom: 1px solid #eee;
+}
+
+/* Tree CSS */
+.webfx-tree-container {
+	margin: 0px;
+	padding: 0px;
+	font: icon;
+	white-space: nowrap;        
+}
+
+
+.webfx-tree-item {
+	padding: 0px;
+	margin: 0px;
+	font: icon;
+	color: black;
+	white-space: nowrap;
+}
+
+.webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
+	margin-left: 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+.webfx-tree-item a {
+        cursor: default;
+                     
+	color: black;
+	text-decoration: none;
+}
+
+.webfx-tree-item img {
+	margin-left: 2px;
+	vertical-align: middle;
+	border: 0px;
+	width: 16px;
+	height: 16px;
+}
+
+.webfx-tree-pm-icon {
+}
+
+.webfx-tree-grid-icon {
+    margin-right: 0px;
+    visibility: hidden;
+}
+
+.webfx-tree-icon {
+    display: none;
+}
+
+.webfx-tree-item a.selected {
+	color: highlighttext;
+	background: highlight;
+}
+
+.webfx-tree-item a.selected-inactive {
+	color: windowtext;
+	background: buttonface;
+}

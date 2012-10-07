@@ -1,0 +1,19 @@
+<!-- BEGIN manage_comments -->
+{menubar}
+<div id="main" align="center">
+  <form action="{base_script}" name="ListComments" onsubmit="return searchComment();" method="post">
+    <input type="hidden" name="gadget" value="Blog" />
+    <input type="hidden" id="action" name="action" value="ManageComments" />
+    <table style="width: 100%">
+      <tr>
+        <td align="right" nowrap="nowrap">{status_label} {status} {comments_where} {filter_by} {filter} {filter_button}</td>
+      </tr>
+    </table>
+  </form>
+  {comments}
+</div>
+<script type="text/javascript">
+var deleteConfirm = "{deleteConfirm}";
+getData();
+</script>
+<!-- END manage_comments -->

@@ -1,0 +1,42 @@
+#filter_options {
+    float: right;
+    text-align: right;
+    vertical-align: top;
+}
+
+#editor {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.editor-preview {
+    width: 100%;
+    display: none;
+}
+
+#previewContent br {
+    display: block;
+}
+
+#groups_datagrid {
+    vertical-align:top;
+}
+
+#group_ui {
+    width:370px;
+    vertical-align:top;
+}
+
+#group_ui table {
+    padding:10px;
+}
+
+#PageGroups {
+    width: 100%;
+    padding: 0px;
+}
+
+#PageGroups td {
+    font-size: 10pt;
+    text-align: right;
+}

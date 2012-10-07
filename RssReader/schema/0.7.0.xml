@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>rss_sites</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>name</name>
+            <type>text</type>
+            <length>255</length>
+            <notnull>true</notnull>
+            <default></default>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>255</length>
+            <notnull>true</notnull>
+            <default></default>
+        </field>
+
+        <field>
+            <name>rank</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>0</default>
+            </field>
+
+        <field>
+            <name>count</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>visible</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>rss_sites</name>
+            <field>
+                <name>rank</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+</database>

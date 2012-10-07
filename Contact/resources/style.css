@@ -1,0 +1,122 @@
+.title_label {
+    text-align: right;
+    white-space: nowrap;
+}
+
+#c_datagrid  {
+    width: 352px;
+}
+
+#c_datagrid label  {
+    font-weight: normal;
+    cursor: default;
+}
+
+#contact_box, #reply_box {
+    text-align: left;
+}
+
+#recipient_datagrid {
+    width: 100%;
+    margin-top: 0.1em;
+}
+
+#recipient table {
+    height: 100%;
+    font-weight: bold;
+    text-align: left;
+}
+
+#settings {
+    padding:8px 10px 8px 10px;
+    font-weight: bold;
+    border: 1px solid #d3d7cf;
+    text-align: left;
+}
+
+#send_email {
+  display: inline-block;
+  padding:0 20px;
+}
+#send_email table {
+  margin: 2px 0;
+}
+#send_email tbody {
+  display: block;
+}
+#send_email th {
+  width: 85px;
+  text-align: left;
+}
+#send_email select {
+  width: 200px;
+}
+#send_email input[type=radio] {
+  margin: 5px 0;
+}
+#send_email input[type=text] {
+  width: 435px;
+  margin: 2px 0;
+}
+#send_email textarea {
+  height: 200px;
+}
+#send_email span {
+  color: #0000FF;
+}
+#send_email label {
+  margin-top: 10px;
+}
+#send_email .options {
+  margin-bottom: 10px;
+}
+#send_email .options label {
+  margin: 0 5px;
+}
+#ifrm_upload {
+  display: none;
+}
+#frm_file {
+  padding: 5px 0;
+}
+#frm_file a, #frm_file small, #frm_file img {
+  vertical-align: middle;
+}
+#frm_file .actions {
+  position: relative;
+}
+#frm_file .actions button {
+  height: 24px;
+  margin: 0;
+}
+#frm_file .wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 110px;
+  height: 20px;
+  overflow: hidden;
+}
+#frm_file .wrapper input {
+  position: absolute;
+  right: 0;
+  margin: 0;
+  font-size: 30px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+#attach_actions {
+  display: inline-block;
+}
+#file_size {
+  font-style: italic;
+  color: #555;
+}
+#btn_upload {
+  border: none;
+  background: none;
+  color: #3465A4;
+}
+.buttons {
+  text-align: right;
+}

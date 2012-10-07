@@ -1,0 +1,79 @@
+<!-- BEGIN contact -->
+<div class="gadget contact">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form name="contact" action="{base_script}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="gadget" value="Contact" />
+  <input type="hidden" name="action" value="Send" />
+  <div class="content">
+    <div class="contact_comments">{comments}</div>
+<!-- BEGIN name -->
+      <p><label>{lbl_name}:</label>
+         <input name="contact_name" type="text" value="{name}" />
+      </p>
+<!-- END name -->
+<!-- BEGIN email -->
+      <p><label>{lbl_email}:</label>
+         <input name="contact_email" type="text" value="{email}" style="direction: ltr;" />
+      </p>
+<!-- END email -->
+<!-- BEGIN company -->
+      <p><label>{lbl_company}:</label>
+         <input name="contact_company" type="text" value="{company}" />
+      </p>
+<!-- END company -->
+<!-- BEGIN url -->
+      <p><label>{lbl_url}:</label>
+         <input name="contact_url" type="text" value="{url}" style="direction: ltr;" />
+      </p>
+<!-- END url -->
+<!-- BEGIN tel -->
+      <p><label>{lbl_tel}:</label>
+         <input name="contact_tel" type="text" value="{tel}" />
+      </p>
+<!-- END tel -->
+<!-- BEGIN fax -->
+      <p><label>{lbl_fax}:</label>
+         <input name="contact_fax" type="text" value="{fax}" />
+      </p>
+<!-- END fax -->
+<!-- BEGIN mobile -->
+      <p><label>{lbl_mobile}:</label>
+         <input name="contact_mobile" type="text" value="{mobile}" />
+      </p>
+<!-- END mobile -->
+<!-- BEGIN address -->
+      <p><label>{lbl_address}:</label>
+         <input name="contact_address" type="text" value="{address}" />
+      </p>
+<!-- END address -->
+<!-- BEGIN captcha -->
+      <p><label>{lbl_captcha}:</label><br /><span>{captcha}<br /><small>{captcha_msg}</small></span><br />{captchavalue}</p>
+<!-- END captcha -->
+<!-- BEGIN recipient -->
+      <p><label>{lbl_recipient}:</label>
+          <select name="contact_recipient">
+          <!-- BEGIN item -->
+          <option value="{recipient_id}" {selected}>{recipient_name}</option>
+          <!-- END item -->
+          </select>
+      </p>
+<!-- END recipient -->
+<!-- BEGIN subject -->
+      <p><label>{lbl_subject}:</label>
+         <input name="contact_subject" type="text" value="{subject}" /></p>
+<!-- END subject -->
+<!-- BEGIN attachment -->
+      <p><label>{lbl_attachment}:</label>
+         <input name="contact_attachment" type="file" /></p>
+<!-- END attachment -->
+<!-- BEGIN message -->
+      <p><label>{lbl_message}:</label>
+         <textarea name="contact_message" cols="25" rows="6">{message}</textarea>
+      </p>
+<!-- END message -->
+  </div>
+  <div class="actions">{btn_send}</div>
+  </form>
+</div>
+<!-- END contact -->

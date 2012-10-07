@@ -1,0 +1,12 @@
+#body_emblems_datagrid td
+{ 
+  vertical-align: middle;
+  text-align: center;
+}
+
+#msgbox-wrapper {
+    margin-top: 0px;
+}
+.error-message, .notice-message {
+    line-height: 16px;
+}

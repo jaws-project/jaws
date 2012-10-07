@@ -1,0 +1,39 @@
+<!-- BEGIN forums -->
+<div id="main" style="width: 100%;">
+  <div id="forums_area">
+    <div class="titlebar">
+      <span style="font-weight: bold;"><img src="gadgets/Forum/images/menu-item.png" />&nbsp;{forum_tree_title}</span>
+    </div>
+    <div id="forums_tree">
+      <!-- BEGIN group -->
+      <div class="forum_groups" id="{mg_id}">
+        <div class="forum_tree_items" onmouseover="mm_enter(this);" onmouseout="mm_leave(this);">
+          <div class="title"><img class="icon" src="{icon}" alt="icon" /><a href="javascript: {js_edit_func};">{title}</a></div>
+          <div class="actions"><a href="javascript: {js_add_func};" title="{add_title}"><img src="{add_icon}" alt="add" /></a></div>
+        </div>
+        <!-- BEGIN forum -->
+        <div id="{fid}">
+          <img class="icon" src="{icon}" alt="icon" /><a onclick="javascript: {js_edit_func};">{title}</a>
+        </div>
+        <!-- END forum -->
+      </div>
+      <!-- END group -->
+    </div>
+  </div>
+  <div id="edit_area">
+    <div class="titlebar"><span style="font-weight: bold;"></span></div>
+    <div id="forums_edit"></div>
+  </div>
+  <div class="buttons">{cancel} {del} {save} {add}</div>
+</div>
+<script type="text/javascript">
+  var addGroupTitle  = "{addGroupTitle}";
+  var editGroupTitle = "{editGroupTitle}";
+  var addForumTitle  = "{addForumTitle}";
+  var editForumTitle = "{editForumTitle}";
+  var delForumTitle  = "{delForumTitle}";
+  var forumImageSrc   = "{forumImageSrc}";
+  var incompleteFields   = "{incompleteFields}";
+  var confirmForumDelete = "{confirmDeleteForum}";
+</script>
+<!-- END forums -->

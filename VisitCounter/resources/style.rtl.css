@@ -1,0 +1,19 @@
+#statistics {
+    width: 100%;
+    border: 1px solid #d3d7cf;
+    padding: 4px;
+}
+
+#statistics_title {
+    text-align: right;
+}
+
+#statistics_label {
+    text-align: right;
+    white-space: nowrap;
+}
+
+#statistics_value {
+    text-align: left;
+    white-space: nowrap;
+}

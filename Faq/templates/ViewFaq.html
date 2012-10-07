@@ -1,0 +1,41 @@
+<!-- BEGIN faq -->
+<div class="gadget faq">
+  <h2>{title}<a name="topfaq">&nbsp;</a></h2>
+  <!-- BEGIN summary -->
+  <div class="summary">
+    <ul>
+    <!-- BEGIN category -->
+      <li><h3><a href="{url}">{category}</a></h3>
+        <ol>
+        <!-- BEGIN item -->
+          <li><a href="{url}#question{pos}">{question}</a></li>
+        <!-- END item -->
+        </ol>
+      </li>
+    <!-- END category -->
+    </ul>
+  </div>
+  <!-- END summary -->
+  <!-- BEGIN answers -->
+  <div class="content">
+    <ul>
+    <!-- BEGIN category -->
+      <li><h3>{category}</h3>
+        <ol>
+        <!-- BEGIN question -->
+          <li>
+            <h4><a href="{url}" name="question{pos}">{question}</a></h4>
+            <div class="faq_answer">
+              {answer}
+            </div>
+            <div class="actions"><a href="{top_link}">{top_label}</a></div>
+          </li>
+        <!-- END question -->
+        </ol>
+      </li>
+    <!-- END category -->
+    </ul>
+  </div>
+  <!-- END answers -->
+</div>
+<!-- END faq -->

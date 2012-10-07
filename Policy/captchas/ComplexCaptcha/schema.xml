@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>captcha_complex</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>key</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>value</name>
+            <type>text</type>
+            <length>128</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>createtime</name>
+            <type>timestamp</type>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>complex_key</name>
+            <unique>true</unique>
+            <field>
+                <name>key</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+</database>

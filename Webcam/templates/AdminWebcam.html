@@ -1,0 +1,21 @@
+<!-- BEGIN webcam -->
+<div id="main" align="center">
+<table>
+  <tr>
+    <td valign="top" align="center" width="70%">
+      <div id="datagrid">
+      {grid}
+      </div>
+    </td>
+    <td valign="top">
+      {config_form}
+      {webcam_form}
+    </td>
+  </tr>
+</table>
+</div>
+<script type="text/javascript">
+    var incompleteWebcamFields = "{incompleteWebcamFields}";
+    initDataGrid('webcam_datagrid', new webcamadminajax);
+</script>
+<!-- END webcam -->

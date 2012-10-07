@@ -1,0 +1,57 @@
+<!-- BEGIN edit_entry -->
+{menubar}
+<div id="preview" class="editor-preview">
+ <h1 id="previewTitle"></h1>
+ <div id="previewContent" class="entry">
+ </div>
+</div>
+<div id="main">
+  <form name="edit_entry" method="post" action="{base_script}">
+   <input id="action" type="hidden" name="action" value="Save{action}" />
+   <input type="hidden" name="gadget" value="Blog" />
+   <input id="id" type="hidden" name="id" value="{id}" />
+   <div class="blog_field"><label for="title">{title}</label><br/>{title_field}</div>
+   <div class="blog_field"><label for="summary_block">{lbl_summary}</label><br/>{summary}</div>
+   <div class="blog_field"><label for="text_block">{text}</label><br/>{editor}</div>
+   <div class="blog_category">
+      <div class="blog_field"><label>{category}</label><br />
+      <div style="overflow: auto; max-height: 200px;">
+      {category_field}
+      </div>
+      </div>
+   </div>
+   <div class="blog_advanced">
+    <div class="blog_field">{allow_comments_field}</div>
+    <div class="blog_field"><label for="published">{status}</label> {status_field}</div>
+    <!-- BEGIN advanced -->
+    <div style="margin-top: 20px; width: 100%; border-top: 1px solid #ddd;">
+    {advanced_field}
+    <div id="advanced" style="padding: 5px; {advanced_style}">
+        <div class="blog_field" style="border-bottom: 1px solid #eee;">
+          <label for="timestamp">{timestamp_label}:</label>
+          <br/>
+          {timestamp_check}{pubdate}
+        </div>
+        <div class="blog_field" style="border-bottom: 1px solid #eee;">
+          <label for="fasturl">{fasturl}</label>: {fasturl_field}
+          <span style="font-size: 80%; color: #999;">{fasturl_comment}</span>
+        </div>
+       <!-- BEGIN trackback -->
+       <div class="blog_field" style="border-bottom: 1px solid #eee;">
+       <label for="trackback_to">{trackback_to}</label><br />
+       {trackbackTextArea}
+       </div>
+       <!-- END trackback -->
+    </div>
+    </div>
+    <!-- END advanced -->
+   </div>
+   <div class="clearfix"></div>
+   <div class="buttons">{preview_button} {save_button}</div>
+  </form>
+</div>
+<script type="text/javascript">
+  toggleUpdate(false);
+  setTimeout('startAutoDrafting();', 120000);
+</script>
+<!-- END edit_entry -->

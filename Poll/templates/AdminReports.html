@@ -1,0 +1,36 @@
+<!-- BEGIN Reports -->
+{menubar}
+<div id="main" style="width: 100%;">
+  <div id="polls_box">
+    <div class="titles">{lbl_pollgroups}:</div>
+    <div>{pollgroups_combo}</div><br />
+    <div class="titles">{lbl_grouppolls}:</div>
+    <div>{grouppolls_combo}</div>
+    <script type="text/javascript">
+        $('pollgroups').selectedIndex = 0;
+    </script>
+  </div>
+  <div id="result_box">
+    <div class="titlebar"><span style="font-weight: bold;"></span></div>
+    <div id="result_area"></div>
+  </div>
+</div>
+<!-- END Reports -->
+<!-- BEGIN PollResults -->
+<table id="poll_results" border="0" cellpadding="2" cellspacing="1">
+<!-- BEGIN answer -->
+<tr><td width="2px">&nbsp;</td>
+    <td width="224x">{answer}</td>
+    <td width="28px">{percent}</td>
+    <td width="150px" >
+        <img style="background-color:#3377cc;" height="15px" width="{image_width}px" src="gadgets/Poll/images/vote.png" alt="{percent}" />
+    </td>
+    <td>{votes}</td>
+</tr>
+<!-- END answer -->
+<tr><td colspan="3" style="empty-cells:hide;"></td>
+    <td class="poll_resume">{lbl_total_votes}:</td>
+    <td class="poll_resume">{total_votes}</td>
+</tr>
+</table>
+<!-- END PollResults -->

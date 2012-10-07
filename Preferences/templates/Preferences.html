@@ -1,0 +1,13 @@
+<!-- BEGIN preferences -->
+<div class="gadget preferences">
+  <h2>{title}</h2>
+  <form action="{base_script}" method="post">
+  <input type="hidden" name="gadget" value="Preferences" />
+  <input type="hidden" name="action" value="Save" />
+  <div class="content">
+    <!-- BEGIN option --><p><label>{label}:</label>{value}</p><!-- END option -->
+  </div>
+  <div class="actions">{reset_button} {submit_button}</div>
+  </form>
+</div>
+<!-- END preferences -->

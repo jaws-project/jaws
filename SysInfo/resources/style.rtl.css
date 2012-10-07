@@ -1,0 +1,51 @@
+#sysinfo_table td {
+    vertical-align: top;
+}
+
+#sysinfo-sidebar {
+    width: 180px;
+    padding-left: 6px;
+}
+
+#jaws-sidebar-sysinfo {
+    height: 256px;
+    width: 100%;
+}
+
+#info_section table td {
+    padding: 1px 2px 1px 2px;
+    border: 1px solid #ddd;
+    font-size: 8pt;
+}
+
+#info_section table {
+    direction: ltr;
+}
+
+#info_section table td {
+    padding: 1px 2px 1px 2px;
+    border: 1px solid #ddd;
+    font-size: 8pt;
+}
+
+#info_section table th {
+    direction: rtl;
+    height: 1.8em;
+    color: #3465a4;
+    font-size: 9pt;
+    text-align: right;
+    padding-left: 5px;
+    padding-right: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #d3d7cf;
+    background: #d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
+}
+
+.item_title {
+    color: #cc6534;
+    width: 180px;
+}
+
+.item_value {
+    color:#3465cc;
+}

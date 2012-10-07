@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>poll_groups</name>
+    <initialization>
+    <insert>
+        <field>
+            <name>title</name>
+            <value>General</value>
+        </field>
+        <field>
+            <name>visible</name>
+            <value>1</value>
+        </field>
+    </insert>
+    </initialization>
+ </table>
+
+</database>

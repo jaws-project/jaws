@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>weather</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>fast_url</name>
+            <type>text</type>
+            <length>90</length>
+        </field>
+
+       <field>
+            <name>title</name>
+            <type>text</type>
+            <length>128</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>latitude</name>
+            <type>decimal</type>
+            <length>5,2</length>
+        </field>
+
+        <field>
+            <name>longitude</name>
+            <type>decimal</type>
+            <length>5,2</length>
+        </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+    </declaration>
+ </table>
+
+</database>

@@ -1,0 +1,87 @@
+.buttons {
+    text-align: right;
+    vertical-align: top;
+    padding: 4px 0px;
+}
+
+.floatbtns {
+    float: left;
+}
+
+#working_area {
+    width: 530px;
+    border: 1px solid #c7c7c7;
+    padding: 5px;
+    float: left;
+}
+
+#preview {
+    width: 530px;
+    height: 325px;
+    min-height: 325px;
+    display: none;
+}
+
+#preview_container {
+    height: 300px;
+    min-height: 300px;
+}
+
+#preview_title {
+    font-weight: bold;
+    font-size: 130%;
+    color: #3465a4;
+    border-bottom: 1px dotted #c7c7c7;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+#preview_contents {
+    border: 1px solid #c7c7c7;
+    height: 260px;
+    max-height: 260px;
+    text-align: left;
+    overflow: auto;
+}
+
+#edit table {
+    text-align: left;  
+}
+
+ul#tabs {
+    margin: 0;
+    margin-top: 8px;
+    padding: 0;
+    text-align: left;
+}
+
+ul#tabs li  {
+    display: inline;
+    list-style: none;
+}
+
+ul#tabs span {
+    background: #eee;
+    border: 1px solid #c7c7c7;
+    border-bottom: none;
+    text-decoration: none;
+    padding: 4px 4px 0px 4px;
+    color: #888a85;
+    font-weight: bold;
+}
+
+ul#tabs span:hover {
+    cursor: pointer;
+    background-color: #cee14b;
+    color: #9db029;
+}
+
+ul#tabs span.current {
+    background: #fff;
+    color: #3465a4;
+    border-top: 3px solid #c7c7c7;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    border-bottom: none;
+    padding: 4px 4px 1px 4px;
+}

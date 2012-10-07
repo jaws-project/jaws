@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+  <name><variable>table_prefix</variable>custom_maps</name>
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <autoincrement>true</autoincrement>
+   </field>
+
+   <field>
+    <name>gadget</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+    <default></default>
+   </field>
+
+   <field>
+    <name>gadget_action</name>
+    <was>action</was>
+    <type>text</type>
+    <length>120</length>
+    <notnull>true</notnull>
+    <default></default>
+   </field>
+
+   <field>
+    <name>map</name>
+    <type>text</type>
+    <length>120</length>
+    <notnull>true</notnull>
+    <default></default>
+   </field>
+
+   <field>
+    <name>script_file</name>
+    <type>text</type>
+    <length>10</length>
+    <notnull>true</notnull>
+    <default>index.php</default>
+   </field>
+
+   <field>
+     <name>secret_key</name>
+     <type>text</type>
+     <length>48</length>
+     <notnull>true</notnull>
+     <default></default>
+   </field>
+
+  </declaration>
+ </table>
+
+ <table>
+  <name><variable>table_prefix</variable>url_aliases</name>
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <autoincrement>true</autoincrement>
+   </field>
+
+   <field>
+    <name>real_url</name>
+    <type>text</type>
+    <length>120</length>
+    <notnull>true</notnull>
+    <default></default>
+   </field>
+
+   <field>
+    <name>alias_url</name>
+    <type>text</type>
+    <length>120</length>
+    <notnull>true</notnull>
+    <default></default>
+   </field>
+
+   <field>
+     <name>alias_hash</name>
+     <type>text</type>
+     <length>32</length>
+     <notnull>true</notnull>
+     <default></default>
+   </field>
+
+   <index>
+     <name><variable>table_prefix</variable>url_aliases_hash</name>
+     <unique>true</unique>
+     <field>
+       <name>alias_hash</name>
+     </field>
+   </index>
+
+  </declaration>
+ </table>
+
+</database>

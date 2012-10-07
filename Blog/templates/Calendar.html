@@ -1,0 +1,32 @@
+<!-- BEGIN calendar -->
+<div class="gadget calendar">
+  <h2>{title}</h2>
+  <div class="content">
+    <table cellpadding="0" cellspacing="0" border="0">
+     <tr>
+      <td id="cal-header" colspan="7">
+       {month} {year}
+      </td>
+     </tr>
+     <tr>
+      <!-- BEGIN weekday -->
+      <td class="weekday">{weekday}</td>
+      <!-- END weekday -->
+     </tr>
+     <!-- BEGIN week -->
+     <tr>
+      <!-- BEGIN day -->
+      <td class="{style}">{day}</td>
+      <!-- END day -->
+     </tr>
+     <!-- END week -->
+     <tr>
+      <td id="cal-footer" colspan="7">
+       <div id="arrow-left">{left_arrow}</div>
+       <div id="arrow-right">{right_arrow}</div>
+      </td>
+     </tr>
+    </table>
+  </div>
+</div>
+<!-- END calendar -->

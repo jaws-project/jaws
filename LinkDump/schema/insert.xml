@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>linkdump_groups</name>
+    <initialization>
+    <insert>
+        <field>
+            <name>title</name>
+            <value>General</value>
+        </field>
+        <field>
+            <name>fast_url</name>
+            <value>general</value>
+        </field>
+        <field>
+            <name>limit_count</name>
+            <value>10</value>
+        </field>
+        <field>
+            <name>link_type</name>
+            <value>2</value>
+        </field>
+        <field>
+            <name>order_type</name>
+            <value>0</value>
+        </field>
+    </insert>
+    </initialization>
+ </table>
+
+</database>

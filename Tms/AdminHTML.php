@@ -1,0 +1,208 @@
+<?php
+/**
+ * TMS (Theme Management System) Gadget Admin view
+ *
+ * @category   GadgetAdmin
+ * @package    TMS
+ * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @copyright  2007-2012 Jaws Development Group
+ * @license    http://www.gnu.org/copyleft/lesser.html
+ */
+class TmsAdminHTML extends Jaws_GadgetHTML
+{
+    /**
+     * Main method
+     *
+     * @access  public
+     * @return  string  HTML content of main
+     */
+    function Admin()
+    {
+        return $this->Themes();
+    }
+
+    /**
+     * Prepares the menubar
+     *
+     * @access  public
+     * @param   string  $action  Selected action
+     * @return  string  XHTML of menubar
+     */
+    function Menubar($action)
+    {
+        $actions = array('Themes');
+        if (!in_array($action, $actions)) {
+            $action = 'Themes';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+        $menubar->AddOption('Themes', _t('TMS_THEMES'),
+                            BASE_SCRIPT . '?gadget=Tms&amp;action=Themes',
+                            'gadgets/Tms/images/themes.png');
+        $menubar->Activate($action);
+        return $menubar->Get();
+    }
+
+    /**
+     * Manages the themes
+     *
+     * @access  public
+     * @param   string  $content  HTML content(if needed)
+     */
+    function Themes()
+    {
+        $this->AjaxMe('script.js');
+
+        $model = $GLOBALS['app']->LoadGadget('Tms', 'AdminModel');
+        $tpl = new Jaws_Template('gadgets/Tms/templates/');
+        $tpl->Load('AdminThemes.html');
+        $tpl->SetBlock('Tms');
+
+        $tpl->SetVariable('confirmUninstallTheme', _t('TMS_THEMES_UNINSTALL_CONFIRM'));
+        $tpl->SetVariable('noAvailableData', _t('TMS_THEMES_NOTHING'));
+
+        $themesCombo =& Piwi::CreateWidget('ComboGroup', 'themes_combo');
+        $themesCombo->SetID('themes_combo');
+        $themesCombo->SetSize(24);
+        $themesCombo->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
+        $themesCombo->addGroup('remote', _t('LAYOUT_THEME_REMOTE'));
+        $themesCombo->AddEvent(ON_CHANGE, 'javascript: editTheme(this.value);');
+        $themes = Jaws_Utils::GetThemesList();
+        foreach ($themes as $theme => $tInfo) {
+            $themesCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
+        }
+        $tpl->SetVariable('themes_combo', $themesCombo->Get());
+
+        if ($this->GetPermission('UploadTheme')) {
+            // Upload theme
+            $tpl->SetBlock('Tms/UploadTheme');
+            $fileEntry =& Piwi::CreateWidget('FileEntry', 'theme_upload');
+            $fileEntry->SetStyle('width: 250px;');
+            $fileEntry->AddEvent(ON_CHANGE, 'javascript: uploadTheme();');
+            $tpl->SetVariable('lbl_theme_upload', _t('TMS_UPLOAD_THEME'));
+            $tpl->SetVariable('theme_upload', $fileEntry->Get());
+            $tpl->ParseBlock('Tms/UploadTheme');
+        }
+
+        $btnDownload =& Piwi::CreateWidget('Button',
+                                           'download_button',
+                                           _t('TMS_DOWNLOAD'), 
+                                           STOCK_DOWN);
+        $btnDownload->AddEvent(ON_CLICK, 'javascript: downloadTheme();');
+        $btnDownload->SetStyle('display: none');
+        $tpl->SetVariable('btn_download', $btnDownload->Get());
+
+        $tpl->SetVariable('menubar', $this->Menubar('Admin'));
+        $tpl->ParseBlock('Tms');
+
+        return $tpl->Get();
+    }
+
+    /**
+     * Returns the XHTML for viewing theme information
+     *
+     * @access  public
+     * @param   string  $theme      Theme's name
+     * @return  string  XHTML view
+     */
+    function GetThemeInfo($theme)
+    {
+        $tpl= new Jaws_Template('gadgets/Tms/templates/');
+        $tpl->Load('ThemeInfo.html');
+        $tpl->SetBlock('ThemeInfo');
+        $tpl->SetVariable('theme_str', _t('TMS_THEME_INFO_NAME'));
+
+        $themes = Jaws_Utils::GetThemesList();
+        if (isset($themes[$theme])) {
+            $tInfo = $themes[$theme];
+            $tpl->SetVariable('theme_name', $tInfo['name']);
+            $tpl->SetVariable('download',
+                              ($tInfo['local'] ||
+                               (isset($tInfo['download']) && (bool)$tInfo['download']))? 'true' : 'false');
+            $tpl->SetVariable('theme_image', $tInfo['image']);
+            $tpl->SetBlock('ThemeInfo/section');
+            $tpl->SetVariable('name', _t('TMS_THEME_INFO_DESCRIPTION'));
+            if (empty($tInfo['desc'])) {
+                $tpl->SetVariable('value', _t('TMS_THEME_INFO_DESCRIPTION_DEFAULT'));
+            } else {
+                $tpl->SetVariable('value', $tInfo['desc']);
+            }
+            $tpl->ParseBlock('ThemeInfo/section');
+
+            //We have authors?
+            if (count($tInfo['authors']) > 0) {
+                $tpl->SetBlock('ThemeInfo/multisection');
+                $tpl->SetVariable('name', _t('TMS_THEME_INFO_AUTHOR'));
+                foreach($tInfo['authors'] as $author) {
+                    $tpl->SetBlock('ThemeInfo/multisection/subsection');
+                    $tpl->SetVariable('value', $author);
+                    $tpl->ParseBlock('ThemeInfo/multisection/subsection');
+                }
+                $tpl->ParseBlock('ThemeInfo/multisection');
+            }
+        } else {
+            $tpl->SetVariable('downloadable', 'false');
+            $tpl->SetBlock('ThemeInfo/error');
+            $tpl->SetVariable('msg', $tInfo->getMessage());
+            $tpl->ParseBlock('ThemeInfo/error');
+        }
+
+        $tpl->ParseBlock('ThemeInfo');
+        return $tpl->Get();
+    }
+
+    /**
+     * Upload new theme
+     *
+     * @access  public
+     * @return
+     */
+    function UploadTheme()
+    {
+        $this->CheckPermission('UploadTheme');
+
+        $res = Jaws_Utils::ExtractFiles($_FILES, JAWS_DATA . 'themes' . DIRECTORY_SEPARATOR, false);
+        if (!Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        }
+
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Tms&action=Themes');
+    }
+
+    /**
+     * Download theme
+     *
+     * @access public
+     * @return download link
+     */
+    function DownloadTheme()
+    {
+        $request =& Jaws_Request::getInstance();
+        $theme = $request->get('theme', 'get');
+
+        $themes = Jaws_Utils::GetThemesList();
+        if (isset($themes[$theme])) {
+            $locally = $themes[$theme]['local'];
+            if (!$locally) {
+                if (!isset($themes[$theme]['download']) || !(bool)$themes[$theme]['download']) {
+                    require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+                    echo Jaws_HTTPError::Get(403);
+                    exit;
+                }
+            }
+            $tmpDir = sys_get_temp_dir();
+            $tmsModel = $GLOBALS['app']->loadGadget('Tms', 'AdminModel');
+            $res = $tmsModel->packTheme($theme,
+                                        ($locally? JAWS_DATA : JAWS_BASE_DATA) . 'themes',
+                                        $tmpDir,
+                                        false);
+            if (!Jaws_Error::isError($res)) {
+                Jaws_Utils::Download($res, "$theme.zip");
+            }
+        }
+    }
+
+}

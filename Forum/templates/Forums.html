@@ -1,0 +1,39 @@
+<!-- BEGIN forums -->
+<div class="gadget forum">
+  <h2><a href="{url}">{title}</a></h2>
+  <div class="content">
+    <!-- BEGIN group -->
+    <ul class="forums_header">
+      <li>
+        <dl>
+          <dt>{title}</dt>
+          <dd class="forums_topics">{lbl_topics}</dd>
+          <dd class="forums_posts">{lbl_posts}</dd>
+          <dd class="forums_lastpost">{lbl_lastpost}</dd>
+        </dl>
+      </li>
+    </ul>
+    <!-- BEGIN forum -->
+    <ul class="forums_list">
+      <li>
+        <dl>
+          <dt><img src="" title="{status}" alt="{status}"/>
+              <a href="{url}">{title}</a>
+              <br/>
+              <span>{description}</span>
+          </dt>
+          <dd class="forums_topics">{topics}</dd>
+          <dd class="forums_posts">{posts}</dd>
+          <dd class="forums_lastpost">
+          <!-- BEGIN lastpost -->
+          {postedby_lbl}{username}{nickname}{user_url}{lastpost_url}{lastpost_lbl}{lastpost_date}
+          <!-- END lastpost -->
+          </dd>
+        </dl>
+      </li>
+    </ul>
+    <!-- END forum -->
+    <!-- END group -->
+  </div>
+</div>
+<!-- END forums -->

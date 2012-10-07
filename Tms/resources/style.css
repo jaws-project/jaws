@@ -1,0 +1,34 @@
+#themes_info {
+    text-align: left;
+}
+
+#themes_info th {
+    color: #3465a4;
+}
+
+#buttons_area {
+    float: right;
+    padding: 5px 0;
+    border-spacing: 0px;
+}
+
+#themes_combo {
+    width: 250px;
+    height: 290px;
+}
+
+#themes_info_area {
+    width: 500px;
+}
+
+#theme_area {
+    width: 100%;
+    height: 350px;
+    max-height: 350px;
+    overflow: auto;
+    border: 1px solid #ccc;
+}
+
+#extra_options {
+    padding-top: 10px;
+}

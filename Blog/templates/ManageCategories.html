@@ -1,0 +1,33 @@
+<!-- BEGIN categories -->
+{menubar}
+<div id="main" align="center">
+<!-- BEGIN manage -->
+<script type="text/javascript">
+var deleteMessage = "{delete_message}";
+</script>
+  <table>
+    <tr><td class="category_title" valign="top">
+      <b>{categories}</b>
+      <table cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td style="width: 180px;">
+            <form name="frmcat" method="post" action="{base_script}">
+            <div id="categoriesComboTable">{combo}</div>
+            <table cellpadding="0" cellspacing="0" width="100%" style="margin-top: 0px; padding: 0px;">
+              <tr>
+                <td style="text-align: right; align: right;">{new_button}</td>
+              </tr>
+            </table>
+            </form>
+            <div id="notifications"></div>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td id="catinfoform" valign="top">
+      {new_form}
+    </td></tr>
+  </table>
+<!-- END manage -->
+</div>
+<!-- END categories -->

@@ -1,0 +1,86 @@
+/* css for tabs */
+ul#tabs {
+    margin: 0;
+    margin-top: 8px;
+    padding: 0;
+    text-align: left;
+}
+
+ul#tabs li  {
+    display: inline;
+    list-style: none;
+}
+
+ul#tabs span {
+    background: #eee;
+    border: 1px solid #c7c7c7;
+    border-bottom: none;
+    text-decoration: none;
+    padding: 4px 4px 0px 4px;
+    color: #888a85;
+    font-weight: bold;
+}
+
+ul#tabs span:hover {
+    cursor: pointer;
+    background-color: #cee14b;
+    color: #9db029;
+}
+
+ul#tabs span.current {
+    background: #fff;
+    color: #3465a4;
+    border-top: 3px solid #c7c7c7;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    border-bottom: none;
+    padding: 4px 4px 1px 4px;
+}
+/* end css for tabs */
+
+#file_box td, #dir_box td {
+    padding-top: 5px;
+    
+}
+
+#file_box .buttons, #dir_box .buttons {
+    text-align: right;
+    padding-top: 4px;
+}
+
+#d_work_area {
+    display: none;
+}
+#f_work_area,
+#d_work_area {
+    padding: 10px;
+    border:  1px solid #D3D7CF;
+}
+
+#loc {
+    padding-top: 4px;
+    max-width: 510px;
+    word-wrap: break-word;
+    display: inline-block;
+}
+
+#location {
+    max-width: 510px;
+    word-wrap: break-word;
+}
+
+#location a {
+    padding: 3px;
+}
+
+#order {
+    float: right;
+    padding-right: 2px;
+}
+
+#file_browser {background-color:#FFFFFF; font-size:12px; padding:10px;}
+#file_browser .navigation {text-align:left; padding:5px 0;}
+#file_browser .files {padding:10px; border:1px solid #888; border-radius:5px; -moz-border-radius:5px;}
+#file_browser table {width:100%; border-spacing:0;}
+#file_browser th {height:20px; background-color:#3465A4; color:#FFFFFF;}
+#file_browser .col-icon {width:20px;}

@@ -1,0 +1,35 @@
+<!-- BEGIN quotes -->
+<div class="gadget quotes" id="quotes_{gid}">
+  <!-- BEGIN title --><h2>{title}</h2><!-- END title -->
+  <div class="content">
+  <!-- BEGIN simple -->
+    <ul>
+    <!-- BEGIN quote -->
+    <li><!-- BEGIN quote_title -->
+        <a href="{url}">{quote_title}</a>
+        <!-- END quote_title -->
+        <!-- BEGIN full_mode -->
+        <p>{quotation}</p>
+        <!-- END full_mode -->
+    </li>
+    <!-- END quote -->
+    </ul>
+  <!-- END simple -->
+  <!-- BEGIN marquee -->
+    <marquee behavior="scroll" direction="{marquee_direction}" scrolldelay="100" scrollamount="1" onmouseover="this.stop()" onmouseout="this.start()">
+    <ul>
+    <!-- BEGIN quote -->
+    <li><!-- BEGIN quote_title -->
+        <a href="{url}">{quote_title}</a>
+        <!-- END quote_title -->
+        <!-- BEGIN full_mode -->
+        <p>{quotation}</p>
+        <!-- END full_mode -->
+    </li>
+    <!-- END quote -->
+    </ul>
+    </marquee>
+  <!-- END marquee -->
+  </div>
+</div>
+<!-- END quotes -->

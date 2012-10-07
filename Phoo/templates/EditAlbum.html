@@ -1,0 +1,40 @@
+<!-- BEGIN edit_album -->
+{menubar}
+<script type="text/javascript">
+  var base_script = "{base_script}";
+</script>
+<div id="main" align="center">
+  <form name="EditPhoto" method="post" action="{base_script}">
+  <input type="hidden" name="gadget" value="Phoo" />
+  <input type="hidden" name="action" value="{action}" />
+  {album}
+  <table class="widetable">
+  <tr><td>
+   <table width="100%">
+    <tr>
+     <td class="message"><label for="title">{name}:</label>{name_field}</td>
+    </tr>
+    <tr>
+     <td>{description}</td>
+    </tr>
+    <tr>
+     <td colspan="2" class="extra" align="right">
+      <table>
+       <tr>
+        <td id="allow-comments-cell">
+         {allow_comments_field}
+        </td>
+        <td id="published-cell">
+         <label for="published">{status}</label> {status_field}
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </td></tr>
+  <tr><td class="buttons">{cancel} {save}</td></tr>
+  </table>
+  </form>
+</div>
+<!-- END edit_album -->

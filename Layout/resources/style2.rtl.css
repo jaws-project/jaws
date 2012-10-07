@@ -1,0 +1,127 @@
+body {
+    background: #fff;
+    font-size: small;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+    font-family: "Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
+}
+
+label, p, select {
+    font-size: 10pt;
+}
+
+form, table { margin: 0; padding: 0; }
+
+#controls {
+    width: 100%;
+    font-size: 10pt;
+    border-collapse: collapse;
+    text-align: right;
+}
+
+#controls tr th {
+    border-bottom: 1px solid #ddd;
+}
+
+#gadget-list, #gadget-actions {
+    height: 265px;
+    overflow: auto;
+}
+
+#gadget-list {
+    width: 200px;
+}
+
+#gadget-actions {
+    width: 380px;
+}
+
+.gadget-item {
+    border-bottom: 1px solid #ddd;
+    padding-left: 4px;
+    height: 52px;
+    font-size: 10pt;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;
+}
+
+.gadget-item img {
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+.gadget-selected {
+    background: #3465a4;
+    color: #fff;
+}
+
+#actions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#actions-list li {
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+}
+#actions-list li span {
+    display: block;
+    color: #666;
+    font-weight: normal;
+    font-size: 10pt;
+    padding-right: 2em;
+}
+
+.action-msg {
+    text-align: center;
+    padding: 2em;
+    color: #999;
+}
+
+#footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+#buttons {
+    float: left;
+}
+
+#buttons button {
+    font-size: 10pt;
+}
+
+#display_in {
+    width: 100%;
+}
+
+#selected_gadgets {
+    height: 200px;
+    border: 1px solid #ddd;
+    overflow: auto;
+    padding-right: 2px;
+}
+
+#g-info {
+    color: #666;
+    display: block;
+    font-size: 9pt;
+    text-align: right;
+}
+
+#g-info img {
+    width: 48px;
+    height: 48px;
+    float: right;
+    padding-right: 2px;
+}
+
+#g-info label {
+    color: #3465a4;
+    font-size: 11pt;
+    padding-top: 8px;
+    display: block;
+}

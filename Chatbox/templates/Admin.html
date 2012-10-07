@@ -1,0 +1,24 @@
+<!-- BEGIN chatbox_admin -->
+<div align="center">
+<table>
+    <tr>
+        <td valign="top">
+            <form action="{base_script}" name="ListComments" onsubmit="return searchComment();" method="post">
+            <input type="hidden" name="gadget" value="Chatbox" />
+            <table style="width: 100%">
+              <tr>
+                <td align="right" nowrap="nowrap">{status_label} {status} {comments_where} {filter_by} {filter} {filter_button}</td>
+              </tr>
+            </table>
+            </form>
+            {comments}
+        </td>
+        <td valign="top">{config_form}</td>
+    </tr>
+</table>
+</div>
+<script type="text/javascript">
+var deleteConfirm = "{deleteConfirm}";
+getData();
+</script>
+<!-- END chatbox_admin -->

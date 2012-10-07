@@ -1,0 +1,62 @@
+<!-- BEGIN Polls -->
+{menubar}
+<div id="main">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td id="p_datagrid" rowspan="2" valign="top" style="padding-right:4px;">
+    {grid}
+    </td>
+    <td style="vertical-align: top;">
+        <input type="hidden" name="pid" id="pid" value="0" />
+        <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+            <div id="p_work_area">{poll_ui}</div>
+        </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons">{btn_cancel} {btn_save}</td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  initDataGrid('polls_datagrid', new polladminajax);
+  var requiresTwoAnswers    = "{requiresTwoAnswers}";
+  var incompletePollsFields = "{incompletePollsFields}";
+  var confirmPollDelete     = "{confirmPollDelete}";
+  var addPoll_title         = "{addPoll_title}";
+  var editPoll_title        = "{editPoll_title}";
+  var editAnswers_title     = "{editAnswers_title}";
+
+  currentAction = 'Polls';
+  stopAction();
+</script>
+
+</div>
+<!-- END Polls -->
+<!-- BEGIN PollUI -->
+<table id="poll_box" border="0" cellpadding="2" cellspacing="2">
+    <tr><td colspan="2"><label for="question">{lbl_question}:</label><br />{question}</td></tr>
+    <tr><td colspan="2"><label for="gid">{lbl_gid}:</label><br />{gid}</td></tr>
+    <tr><td><label for="start_time">{lbl_start_time}:</label></td><td>{start_time}</td></tr>
+    <tr><td><label for="stop_time">{lbl_stop_time}:</label></td><td>{stop_time}</td></tr>
+    <tr><td><label for="select_type">{lbl_select_type}:</label></td><td>{select_type}</td></tr>
+    <tr><td><label for="poll_type">{lbl_poll_type}:</label></td><td>{poll_type}</td></tr>
+    <tr><td><label for="result_view">{lbl_result_view}:</label></td><td>{result_view}</td></tr>
+    <tr><td><label for="visible">{lbl_visible}:</label></td><td>{visible}</td></tr>
+</table>
+<!-- END PollUI -->
+<!-- BEGIN PollAnswersUI -->
+<table id="answers_box" width="100%" border="0" cellpadding="2" cellspacing="0">
+    <tr><td colspan="2"><label for="question">{lbl_question}:</label><br />{question}</td></tr>
+    <tr><td colspan="2"><label for="answer">{lbl_answer}:</label></td><tr>
+    <tr>
+        <td style="1px solid #f00;">{answer}</td>
+        <td width="20px">{btn_add}</td>
+    </tr>
+    <tr>
+        <td>{answers_combo}</td>
+        <td width="20px">{btn_stop}{btn_up}{btn_down}{btn_del}</td>
+    </tr>
+</table>
+<!-- END PollAnswersUI -->

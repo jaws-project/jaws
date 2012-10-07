@@ -1,0 +1,51 @@
+#policy_table {
+    width: 100%;
+    padding: 1px;
+}
+
+#policy_table td {
+    vertical-align: top;
+}
+
+#policy_sidebar {
+    width: 200px;
+    vertical-align: top;
+    padding-right: 6px;
+}
+
+#jaws-sidebar-policy {
+    height: 256px;
+    width: 100%;
+}
+
+#jaws-sidebar-policy  img {
+    width: 16px;
+}
+
+#blocked_ips_datagrid, #blocked_agents_datagrid {
+    margin: 0;
+    width: 100%;
+}
+
+#policy_options {
+    margin: 2px;
+    padding: 4px;
+    border: 1px solid #d3d7cf;
+}
+
+#entry_area {
+    width: 200px;
+}
+
+#options_entry table {
+    padding: 4px;
+}
+
+.field_label {
+    width: 200px;
+    word-spacing: nowrap;
+}
+
+.buttons {
+    text-align: right;
+}

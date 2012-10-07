@@ -1,0 +1,135 @@
+<!-- BEGIN ImageSelect -->
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>{page-title}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/resources/public{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/Phoo/resources/style{.dir}.css" />
+  <!-- BEGIN script --><script type="text/javascript" src="libraries/tinymce/tiny_mce_popup.js"></script><!-- END script -->
+</head>
+<body>
+  <div id="image_select_container">
+    <div id="image_select">
+      <!-- BEGIN selected -->
+      <form name="AdminPhotos" action="admin.php" method="POST">
+        <input type="hidden" name="gadget" value="Phoo" />
+        <input type="hidden" name="action" value="BrowsePhoo" />
+        <input type="hidden" name="album" value="{album}" />
+        <div class="image-box"><table class="image-box_">
+            <tr>
+              <td class="phoo-image">
+                <img src="{s_image}" title="{s_name}" />
+              </td>
+              <td valign="top">
+                <table class="image-porperties">
+                  <tr>
+                    <td><label for="s_title">{t_title}:</label></td>
+                    <td><input id="s_title" name="s_title" type="text" value="{s_name}" size="35" maxlength="50"></td>
+                  </tr>
+                  <tr>
+                    <td><label for="s_desc">{t_desc}:</label></td>
+                    <td><input id="s_desc" name="s_desc" type="text" value="{s_desc}" size="35" maxlength="50"></td>
+                  </tr>
+                  <tr>
+                    <td><label for="thumb">{t_size}:</label></td>
+                    <td>
+                      <input id="thumb" name="size" type="radio" value="Thumb" checked onClick="javascript:this.form.s_size.value ='Thumb'" ><label for="thumb">{t_thumb}</label>
+                      <input id="medium" name="size" type="radio" value="Medium" onClick="javascript:this.form.s_size.value='Medium'"><label for="medium">{t_medium}</label>
+                      <!-- BEGIN original -->
+                      <input id="original" name="size" type="radio" value="Original" onClick="javascript:this.form.s_size.value='Original'"><label for="original">{t_original}</label>
+                      <!-- END original -->
+                    </td>
+                  </tr>
+                  <!-- BEGIN linked -->
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                      <input type="checkbox" id="s_linked" name="s_linked" value="Yes" onClick="javascript: this.form.linked.value = this.form.s_linked.checked;">
+                      <label for="s_linked">{include_link}</label>
+                    </td>
+                  </tr>
+                  <!-- END linked -->
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="center">
+                <input name="s_size" type="hidden" value="Thumb" size="1" maxlength="1">
+                <input name="linked" type="hidden" value="false" size="1" maxlength="1">
+              </td>
+            </tr>
+        </table></div>
+        {button_bar}
+      </form>
+      <!-- END selected -->
+
+      <!-- BEGIN not_published -->
+      <form name="AdminPhotos" action="admin.php" method="POST">
+        <input type="hidden" name="gadget" value="Phoo" />
+        <input type="hidden" name="action" value="BrowsePhoo" />
+        <input type="hidden" name="album" value="{album}" />
+        <div class="image-box">
+          <div class="notice-message">{not_published_label}</div> 
+        </div>
+        {button_bar}
+      </form>
+      <!-- END not_published -->
+    </div>
+  </div>
+</body>
+<script type="text/JavaScript">
+    function insertImage(filename, title, desc, size, linked, editor) {
+        var src = getImagePath(filename, size);
+        switch (editor) {
+            case 'TinyMCE':
+                var win = tinyMCEPopup.getWindowArg("window");
+                win.document.getElementById('src').value = src;
+                win.document.getElementById('alt').value = desc;
+                win.document.getElementById('title').value = title;
+                if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
+                if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(src);
+                tinyMCEPopup.close();
+                break;
+            case 'CKEditor':
+                var ckFuncIndex = '{ckFuncIndex}';
+                window.opener.CKEDITOR.tools.callFunction(ckFuncIndex, src, setImageAlt(title));
+                close();
+                break;
+            case 'TextArea':
+                var img = '<img src="' + src + '" title="' + title + '" alt="' + desc + '" />';
+                if (linked === 'true') {
+                    img = '<a href="' + filename + '">' + img + '</a>';
+                }
+                opener.insertTags(opener.the_textarea, img, '', '');
+                close();
+                break;
+        }
+
+        function getImagePath(filename, size) {
+            var path = filename.substring(0, filename.lastIndexOf('/')),
+                file = filename.substring(filename.lastIndexOf('/'));
+
+            switch(size) {
+                case 'Thumb':
+                    return path + '/thumb' + file;
+                    break;
+                case 'Medium':
+                    return path + '/medium' + file;
+                    break;
+                default:
+                    return filename;
+            }
+        }
+
+        function setImageAlt(title) {
+            var dialog = window.opener.CKEDITOR.dialog.getCurrent();
+            if (dialog.getName() == 'image') {
+                var txtAltField = dialog.getContentElement( 'info', 'txtAlt' );
+                txtAltField.setValue(title);
+            }
+        }
+    }
+</script>
+<!-- END ImageSelect -->

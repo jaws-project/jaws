@@ -1,0 +1,38 @@
+<!-- BEGIN topics -->
+<div class="gadget forum">
+  <h2><a href="{url}">{title}</a></h2>
+  <div class="content">
+    <ul class="topics_header">
+      <li>
+        <dl>
+          <dt>{lbl_topics}</dt>
+          <dd class="topics_replies">{lbl_replies}</dd>
+          <dd class="topics_views">{lbl_views}</dd>
+          <dd class="topics_lastpost">{lbl_lastpost}</dd>
+        </dl>
+      </li>
+    </ul>
+    <!-- BEGIN topic -->
+    <ul class="topics_list">
+      <li>
+        <dl>
+          <dt><img src="" title="{status}" alt="{status}"/><a href="{url}">{title}</a></dt>
+          <dd class="topics_replies">{replies}</dd>
+          <dd class="topics_views">{view}</dd>
+          <dd class="topics_lastpost">
+          <!-- BEGIN lastpost -->
+          {postedby_lbl}{username}{nickname}{user_url}{lastpost_url}{lastpost_lbl}{lastpost_date}
+          <!-- END lastpost -->
+          </dd>
+        </dl>
+      </li>
+    </ul>
+    <!-- END topic -->
+  </div>
+  <!-- BEGIN actions -->
+  <div class="actions">
+    <a href="{url_newtopic}" title="lbl_newtopic">{lbl_newtopic}</a>
+  </div>
+  <!-- END actions -->
+</div>
+<!-- END topics -->

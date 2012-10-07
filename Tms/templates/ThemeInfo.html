@@ -1,0 +1,28 @@
+<!-- BEGIN ThemeInfo -->
+<input type="hidden" name="download" id="download" value="{download}" />
+<table id="themes_info">
+    <tr><th colspan="2">{theme_str}:&nbsp;{theme_name}</th></tr>
+    <!-- BEGIN section -->
+    <tr>
+      <td>{name}:</td><td>{value}</td>
+    </tr>
+    <!-- END section -->
+    <!-- BEGIN multisection -->
+    <tr>
+      <td valign="top">{name}:</td>
+      <td valign="top">
+      <!-- BEGIN subsection -->
+      {value}<br />
+      <!-- END subsection -->
+      </td>
+    </tr>
+    <!-- END multisection -->
+    <tr>
+      <td></td>
+      <td><img src="{theme_image}" alt="" style="max-width: 250px; max-height: 250px;" /></td>
+    </tr>  
+</table>
+<!-- BEGIN error -->
+{msg}
+<!-- END error -->
+<!-- END ThemeInfo -->

@@ -1,0 +1,46 @@
+<!-- BEGIN Jms -->
+{menubar}
+<script type="text/javascript">
+  var confirmDisableComponent   = "{confirmDisableComponent}";
+  var confirmPurgeComponent     = "{confirmPurgeComponent}";
+  var confirmUninstallComponent = "{confirmUninstallComponent}";
+  var noAvailableData           = "{noAvailableData}";
+  pluginsMode                   = {pluginsMode};
+  var gadgetsMsg                = "{gadgetsMsg}";
+  var useAlways                 = "{useAlways}";
+</script>
+<table style="width: 100%; border: 1px solid #ccc; padding: 0px; border-spacing: 0.1px; height: 350px; max-height: 350px;">
+  <!-- big work area -->
+  <tr>
+    <td valign="top">
+      {combo_components}
+    </td>
+    <td style="width: 100%; height: 350px; max-height: 350px; overflow: auto;" valign="top">
+      <!-- work area -->
+      <div id="work_area" style="height: 350px; max-height: 350px; overflow: auto;">
+      </div>
+    </td>
+  </tr>
+</table>
+<table style="width: 100%; padding: 0px;">
+  <tr>
+    <td>
+      <div id="search_div">
+       <label for="only_show">{only_show_t}</label>{only_show}
+      </div>
+    </td>
+    <td id="buttons_area">
+      {buttons}     
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+$('{combo_name}').selectedIndex = -1;
+if ($('{combo_name}').options.length == 0) { //No installed components, lets check uninstalled
+  $('only_show').selectedIndex = 1;
+  updateView();
+} else {
+  $('only_show').selectedIndex = 0;
+}
+</script>
+<!-- END Jms -->

@@ -1,0 +1,29 @@
+<!-- BEGIN emblems -->
+<div align="center"></div>
+<table width="100%">
+ <tr>
+<!-- BEGIN properties -->
+  <td width="50%" align="center">
+   {props}
+  </td>
+<!-- END properties -->
+<!-- BEGIN addemblem -->
+  <td width="50%" align="center">
+   {add}
+  </td>
+<!-- END addemblem -->
+ </tr>
+</table>
+<!-- BEGIN emblemlist -->
+<div align="center" id="grid" style="display: block;">
+  <form action="{base_script}" method="post" id="emblemsForm">
+    <input type="hidden" name="gadget" value="Emblems" />
+    <input type="hidden" name="action" value="EditEmblem" />
+    {grid}
+  </form>
+</div>
+<script type="text/javascript">
+initDataGrid('emblems_datagrid', new emblemsadminajax);
+</script>
+<!-- END emblemlist -->
+<!-- END emblems -->

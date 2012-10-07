@@ -1,0 +1,37 @@
+.buttons {
+    text-align: right;
+}
+
+#b_datagrid , #bg_datagrid {
+    width: 340px;
+}
+
+#b_work_area, #bg_work_area {
+    width: 388px;
+    padding: 4px;
+}
+
+#banner_box {
+    width: 100%;
+    padding: 4px;
+    font-weight: bold;
+    font-size: small;
+    text-align: left;
+}
+
+#banner_box td {
+    text-align: left;
+    padding-top: 4px;
+}
+
+#tbl_group {
+    width: 99%;
+    padding: 4px;
+    text-align: left;
+}
+
+#group_banners {
+    width: 99%;
+    padding: 4px;
+    text-align: left;
+}

@@ -1,0 +1,105 @@
+.buttons {
+    text-align: left;
+}
+
+#p_datagrid , #pg_datagrid {
+    width: 458px;
+}
+
+#p_work_area, #pg_work_area {
+    width: 260px;
+    height: 320px;
+    padding: 4px;
+}
+
+#poll_box { width: 100%; }
+#poll_box td { text-align: right; }
+
+#answers_box { width: 100% }
+#answers_box td { text-align: right; }
+
+#groups_box { width: 100% }
+#groups_box td { text-align: right; }
+
+#pg_polls_combo {
+    width: 208px;
+}
+
+#PollGroupPolls {
+    padding: 0px;
+    height: 320px;
+    overflow: scroll;
+    text-align: right;
+    overflow-x: hidden;
+}
+
+#PollGroupPolls {
+    padding: 0px;
+    height: 320px;
+    overflow: scroll;
+    text-align: right;
+    overflow-x: hidden;
+}
+
+#PollGroupPolls table td {
+    text-align: right;
+}
+
+.titlebar {
+    text-align: right;
+    background: #d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #d3d7cf;
+    height: 2.4em;
+}
+
+.titlebar span {
+    float: right;
+    padding: .4em;
+    white-space: nowrap;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-right: 1px solid #ddd;
+}
+
+div .titles {
+    font-weight: bold;
+    text-align: right;
+}
+
+#polls_box {
+    width: 240px;
+    float: right;
+}
+
+#result_box {
+    width: 494px;
+    float: left;
+}
+
+#result_area {
+    height: 280px;
+    border: 1px solid #d3d7cf;
+}
+
+#poll_results {
+    margin: 4px;
+    width: 484px;
+    font-size: small;
+}
+
+#poll_results td {
+    font-size: 8pt;
+    text-align: right;
+    padding:4px 4px 4px 2px;
+    border: 1px solid #d3d7cf;
+}
+
+#poll_results .poll_resume {
+    font-weight:bold;
+    font-size:8pt;
+}

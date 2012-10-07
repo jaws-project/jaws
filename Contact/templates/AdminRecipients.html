@@ -1,0 +1,36 @@
+<!-- BEGIN recipients -->
+{menubar}
+<div id="main" align="left">
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top" align="left">
+      <div id="datagrid">{grid}</div>
+    </td>
+    <td style="width: 200px; vertical-align: top; padding-left: 8px;">
+    <fieldset>
+    <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="recipient">
+        <input type="hidden" name="id" id="id" value="0" />
+        <table border="0" cellpadding="0" cellspacing="2">
+          <tr><td><label for="name">{lbl_name}:</label><br />{name}</td></tr>
+          <tr><td><label for="email">{lbl_email}:</label><br />{email}</td></tr>
+          <tr><td><label for="tel">{lbl_tel}:</label><br />{tel}</td></tr>
+          <tr><td><label for="fax">{lbl_fax}:</label><br />{fax}</td></tr>
+          <tr><td><label for="mobile">{lbl_mobile}:</label><br />{mobile}</td></tr>
+          <tr><td><label for="inform_type">{lbl_inform_type}:</label><br />{inform_type}</td></tr>
+          <tr><td><label for="visible">{lbl_visible}:</label><br />{visible}</td></tr>
+        </table>
+        </div>
+    </fieldset>
+    </td>
+  </tr>
+  <tr><td class="buttons" colspan="2">{btn_cancel}{btn_save}</td></tr>
+</table>
+</div>
+<script type="text/javascript">
+  currentAction = 'Recipients';
+  var incompleteRecipientFields = "{incompleteRecipientFields}";
+  var confirmRecipientDelete    = "{confirmRecipientDelete}";
+  initDataGrid('recipient_datagrid', new contactadminajax);
+</script>
+<!-- END recipients -->

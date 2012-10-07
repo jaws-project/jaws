@@ -1,0 +1,27 @@
+<?php
+/**
+ * Friend Gadget
+ *
+ * @category   Gadget
+ * @package    Friend
+ * @author     Jonathan Hernandez <ion@suavizado.com>
+ * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @copyright  2004-2012 Jaws Development Group
+ * @license    http://www.gnu.org/copyleft/gpl.html
+ */
+class FriendsHTML extends Jaws_GadgetHTML
+{
+    /**
+     * Default action
+     *
+     * @acces  public
+     * @return string  HTML result
+     */
+    function DefaultAction()
+    {
+        $this->SetTitle(_t('FRIENDS_NAME'));
+        $layoutGadget = $GLOBALS['app']->LoadGadget('Friends', 'LayoutHTML');
+        return $layoutGadget->Display();
+    }
+}
+?>

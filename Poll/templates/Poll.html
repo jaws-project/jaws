@@ -1,0 +1,31 @@
+<!-- BEGIN Poll -->
+<div class="gadget poll">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form action="{base-script}" name="poll_form_{pid}" method="post">
+  <div class="content">
+    <input type="hidden" name="gadget" value="Poll" />
+    <input type="hidden" name="action" value="Vote" />
+    <input type="hidden" name="pid" value="{pid}" />
+    <h3>{question}</h3>
+    <!-- BEGIN answer -->
+    <div class="poll-answer">
+      {input}<label for="poll-answer-input-{aid}">{answer}</label>
+    </div>
+    <!-- END answer -->
+    <!-- BEGIN result -->
+    <div class="poll-inline-result" id="poll-answer-{aid}">
+      <label>{answer} - {votes} - {txt-percent}</label>
+      <div style="width: {percent}%;"></div>
+    </div>
+    <!-- END result -->
+    <!-- BEGIN total-votes -->
+    <div class="poll-total-votes">{lbl-total-votes}: {total-votes}</div>
+    <!-- END total-votes -->
+    <div class="poll-message">{already-message}</div>
+    <div class="poll-message">{disabled-message}</div>
+  </div>
+  <div class="actions">{result-link} {btn-vote}</div>
+  </form>
+</div>
+<!-- END Poll -->

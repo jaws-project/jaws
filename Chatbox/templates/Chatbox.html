@@ -1,0 +1,45 @@
+<!-- BEGIN chatbox -->
+<div class="gadget chatbox">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <div class="content" id="chatbox_messages">
+    {chatbox_messages}
+  </div>
+  <!-- BEGIN fieldset -->
+  <form action="{base_script}" method="post">
+    <input type="hidden" name="gadget" value="Chatbox" />
+    <input type="hidden" name="action" value="Post" />
+    <div class= "fieldset">
+      <!-- BEGIN info-box -->
+      <p><label for="name_chatbox{rand}">{name}:</label>
+         <input name="name" id="name_chatbox{rand}" type="text" maxlength="20" value="{namevalue}" />
+      </p>
+      <p><label for="email_chatbox{rand}">{email}:</label>
+         <input name="email" id="email_chatbox{rand}" type="text" value="{emailvalue}" style="direction: ltr;" />
+      </p>
+      <p><label for="url_chatbox{rand}">{url}:</label>
+         <input name="url" id="url_chatbox{rand}" type="text" maxlength="100" value="{urlvalue}" style="direction: ltr;" />
+      </p>
+      <!-- END info-box -->
+      <!-- BEGIN captcha -->
+      <p><label>{lbl_captcha}:</label><br /><span>{captcha}<br /><small>{captcha_msg}</small></span><br />{captchavalue}</p>
+      <!-- END captcha -->
+      <p><label for="message{rand}">{message}:</label>
+         <textarea id="message{rand}" cols="17" rows="4" name="message"></textarea>
+      </p>
+    </div>
+    <div class="actions"><button type="submit" value="{send}">{send}</button></div>
+  </form>
+  <!-- END fieldset -->
+  <!-- BEGIN unregistered -->
+  <div class="simple-response-msg">{msg}</div>
+  <!-- END unregistered -->
+</div>
+<!-- END chatbox -->
+<!-- BEGIN messages -->
+<ul>
+  <!-- BEGIN entry -->
+  <li><div><a href="{url}" title="{email}/{updatetime}" rel="external">{name}</a>: {message} <em>{status_message}</em></div></li>
+  <!-- END entry -->
+</ul>
+<!-- END messages -->

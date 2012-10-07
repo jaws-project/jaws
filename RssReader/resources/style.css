@@ -1,0 +1,18 @@
+fieldset {
+    margin-bottom: 0px;
+}
+
+.buttons {
+    text-align: right;
+}
+
+#FeedProperties {
+    width: 224px;
+    padding: 4px;
+    text-align: left;
+    font-weight: bold;
+}
+
+#FeedProperties td {
+    padding: 4px 0 0 4px;
+}

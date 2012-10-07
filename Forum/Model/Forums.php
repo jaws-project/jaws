@@ -1,0 +1,84 @@
+<?php
+/**
+ * Forum Gadget
+ *
+ * @category   GadgetModel
+ * @package    Forum
+ * @author     Ali Fazelzadeh <afz@php.net>
+ * @copyright  2012 Jaws Development Group
+ * @license    http://www.gnu.org/copyleft/gpl.html
+ */
+class Forum_Model_Forums extends Jaws_Model
+{
+    /**
+     * Returns array of forum properties
+     *
+     * @access  public
+     * @return  array  Array of forum properties
+     */
+    function GetForum($fid)
+    {
+        $sql = '
+            SELECT
+                [id], [gid], [title], [description], [fast_url], [order], [locked], [published]
+            FROM [[forums]]
+            WHERE [id] = {fid}';
+
+        $params = array();
+        $params['fid'] = $fid;
+
+        $types = array('integer', 'integer', 'text', 'text', 'text', 'integer', 'boolean', 'boolean');
+        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error(_t('FORUM_ERROR_GET_FORUMS'), _t('FORUM_NAME'));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns a list of  forums at a request level
+     *
+     * @access  public
+     * @return  array  Array with all the available forums and Jaws_Error on error
+     */
+    function GetForums($gid, $onlyPublished = false, $last_post_info = false)
+    {
+        if ($last_post_info) {
+            $sql = 'SELECT
+                        [[forums]].[id], [[forums]].[title], [[forums]].[description],
+                        [[forums]].[fast_url], [[forums]].[topics], [[forums]].[posts],
+                        [last_post_id], [last_post_time], [[users]].[nickname], [[forums]].[locked],
+                        [[forums]].[published]
+                    FROM [[forums]]
+                    LEFT JOIN [[forums_posts]] ON [[forums]].[last_post_id] = [[forums_posts]].[id]
+                    LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+                    WHERE [gid] = {gid}';
+            $types = array('integer', 'text', 'text', 'text', 'integer', 'integer', 'integer', 'timestamp',
+                           'text', 'boolean', 'boolean');
+        } else {
+            $sql = 'SELECT
+                        [id], [title], [description], [fast_url], [topics], [posts],
+                        [locked], [published]
+                    FROM [[forums]]
+                    WHERE [gid] = {gid}';
+            $types = array('integer', 'text', 'text', 'text', 'integer', 'integer', 'boolean', 'boolean');
+        }
+        if ($onlyPublished) {
+            $sql .= ' AND [[forums]].[published] = {published}';
+        }
+        $sql.= ' ORDER BY [[forums]].[order] ASC';
+
+        $params = array();
+        $params['gid'] = $gid;
+        $params['published'] = true;
+
+        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error(_t('FORUM_ERROR_GET_FORUMS'), _t('FORUM_NAME'));
+        }
+
+        return $result;
+    }
+
+}

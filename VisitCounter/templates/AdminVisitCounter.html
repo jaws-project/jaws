@@ -1,0 +1,39 @@
+<!-- BEGIN visitcounter -->
+<table style="width: 100%;">
+ <tr>
+  <td valign="top">
+  {menubar}
+  </td>
+ </tr>
+</table>
+<div id="main" align="center">
+<table>
+ <tr>
+   <td valign="top" align="center">
+    <table id="statistics" cellspacing="0">
+    <tr>
+     <td id="statistics_title" colspan="2" class="dark-background">{visitor_stats}</td>
+    </tr>
+    <!-- BEGIN item -->
+    <tr>
+     <td id="statistics_label"><label>{label}</label></td>
+     <td id="statistics_value">{value}</td>
+    </tr>
+    <!-- END item -->
+    </table>
+   </td>
+   <td valign="top" width="100%" rowspan="2">
+    <div id="datagrid" style="text-align: center;">
+    {grid}
+    </div>
+    <script type="text/javascript">initDataGrid('visitcounter_datagrid', new visitcounteradminajax);</script>
+   </td>
+ </tr>
+ <tr>
+   <td valign="top" align="center"><div align="left"><br /><div>
+   {config_form}
+   </div></td>
+ </tr>
+</table>
+</div>
+<!-- END visitcounter -->
