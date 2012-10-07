@@ -14,7 +14,7 @@ class Forum_Actions_Topics extends ForumHTML
      * Display forum's topics
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Topics()
     {
@@ -89,7 +89,7 @@ class Forum_Actions_Topics extends ForumHTML
      * Show new topic form
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function NewTopic()
     {
@@ -143,7 +143,6 @@ class Forum_Actions_Topics extends ForumHTML
      * Add/Edit a topic
      *
      * @access  public
-     * @return  void
      */
     function UpdateTopic()
     {

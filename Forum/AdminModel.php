@@ -14,7 +14,7 @@ class ForumAdminModel extends Jaws_Model
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Success with true and failure with Jaws_Error
+     * @return  mixed  Success with true and failure with Jaws_Error
      */
     function InstallGadget()
     {
@@ -39,7 +39,7 @@ class ForumAdminModel extends Jaws_Model
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed  True on Success and Jaws_Error on Failure
      */
     function UninstallGadget()
     {

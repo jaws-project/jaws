@@ -12,9 +12,16 @@ class Forum_Model_Admin_Forums extends Jaws_Model
 {
     /**
     * Insert a group
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    int     $gid            group ID
+    * @param    string  $title          group title
+    * @param    string  $description    group description
+    * @param    string  $fast_url
+    * @param    string  $order
+    * @param    bool    $locked
+    * @param    bool    $published
+    * @return   bool    True on Success and False on Failure
     */
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
@@ -46,9 +53,17 @@ class Forum_Model_Admin_Forums extends Jaws_Model
 
     /**
     * Update a forum
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    int     $fid            forum ID
+    * @param    int     $gid            group ID
+    * @param    string  $title          forum title
+    * @param    string  $description    forum description
+    * @param    string  $fast_url
+    * @param    string  $order
+    * @param    bool    $locked
+    * @param    bool    $published
+    * @return   mixed   True on Success and Jaws_Error on Failure
     */
     function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
     {

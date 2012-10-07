@@ -14,7 +14,7 @@ class Forum_Actions_Admin_Group extends ForumAdminHTML
      * Show a form to edit a given group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function GetGroupUI()
     {

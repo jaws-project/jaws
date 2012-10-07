@@ -14,7 +14,8 @@ class Forum_Model_Forums extends Jaws_Model
      * Returns array of forum properties
      *
      * @access  public
-     * @return  array  Array of forum properties
+     * @param   int     $fid        forum ID
+     * @return  mixed   Array of forum properties or Jaws_Error on error
      */
     function GetForum($fid)
     {
@@ -40,7 +41,10 @@ class Forum_Model_Forums extends Jaws_Model
      * Returns a list of  forums at a request level
      *
      * @access  public
-     * @return  array  Array with all the available forums and Jaws_Error on error
+     * @param   int     $gid                group ID
+     * @param   bool    $onlyPublished
+     * @param   bool    $last_post_info
+     * @return  mixed  Array with all the available forums and Jaws_Error on error
      */
     function GetForums($gid, $onlyPublished = false, $last_post_info = false)
     {

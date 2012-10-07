@@ -14,7 +14,7 @@ class Forum_Actions_Forums extends ForumHTML
      * Display groups and forums
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Forums()
     {

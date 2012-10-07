@@ -14,7 +14,7 @@ class ForumHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @acces  public
-     * @return string  HTML result
+     * @return string  XHTML template content
      */
     function DefaultAction()
     {

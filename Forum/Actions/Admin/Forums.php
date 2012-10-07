@@ -14,7 +14,7 @@ class Forum_Actions_Admin_Forums extends ForumAdminHTML
      * Show forums administration interface
      *
      * @access  public
-     * @return  string HTML Template content
+     * @return  string  XHTML Template content
      */
     function Forums()
     {

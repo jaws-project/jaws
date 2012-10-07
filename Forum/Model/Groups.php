@@ -14,7 +14,8 @@ class Forum_Model_Groups extends Jaws_Model
      * Returns array of group properties
      *
      * @access  public
-     * @return  array  Array of group properties
+     * @param   int     $gid    group ID
+     * @return  mixed   Array of group properties or Jaws_Error on error
      */
     function GetGroup($gid)
     {
@@ -40,7 +41,8 @@ class Forum_Model_Groups extends Jaws_Model
      * Returns array of groups and properties
      *
      * @access  public
-     * @return  array  Array of groups and properties
+     * @param   bool    $onlyPublished
+     * @return  mixed   Array of groups and properties or Jaws_Error on error
      */
     function GetGroups($onlyPublished = false)
     {

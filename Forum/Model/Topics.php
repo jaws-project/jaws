@@ -14,9 +14,9 @@ class Forum_Model_Topics extends Jaws_Model
      * Get topics of forum
      *
      * @access  public
-     * @param   int     $fid    Forum's ID
-     * @param   int     $limit  Count of topics to be returned
-     * @param   int     $offset Offset of data array
+     * @param   int     $fid        Forum's ID
+     * @param   bool    $limit      Count of topics to be returned
+     * @param   int     $offset     Offset of data array
      * @return  array   Array of topics or Jaws_Error on failure
      */
     function GetTopics($fid, $limit = false, $offset = null)
@@ -49,13 +49,12 @@ class Forum_Model_Topics extends Jaws_Model
      * Insert new topic
      *
      * @access  public
-     * @param   integer $uid
-     * @param   integer $fid
+     * @param   int     $uid
+     * @param   int     $fid
      * @param   string  $subject
      * @param   string  $fast_url
      * @param   string  $message
-     * @param   boolean $published
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   bool    $published
      */
     function InsertTopic($uid, $fid, $subject, $fast_url, $message, $published = true)
     {

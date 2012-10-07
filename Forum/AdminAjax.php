@@ -14,6 +14,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function ForumAdminAjax(&$model)
     {
@@ -25,7 +26,7 @@ class ForumAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information
+     * @return  mixed   Group information or False on error
      */
     function GetGroup($gid)
     {
@@ -44,7 +45,7 @@ class ForumAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $fid    Forum ID
-     * @return  array   Forum information
+     * @return  mixed   Forum information or False on error
      */
     function GetForum($fid)
     {
@@ -62,7 +63,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * Returns the group form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template content of groupForm
      */
     function GetGroupUI()
     {
@@ -75,7 +76,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * Returns the forum form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template content of groupForm
      */
     function GetForumUI()
     {
@@ -88,7 +89,10 @@ class ForumAdminAjax extends Jaws_Ajax
      * Insert forum
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $gid            group ID
+     * @param   string  $title          forum title
+     * @param   string  $description    forum description
+     * @return  array   response array
      */
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
@@ -109,7 +113,15 @@ class ForumAdminAjax extends Jaws_Ajax
      * Update forum
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $fid            forum ID
+     * @param   int     $gid            group ID
+     * @param   string  $title          forum title
+     * @param   string  $description    forum description
+     * @param   string  $fast_url
+     * @param   string  $order
+     * @param   bool    $locked
+     * @param   bool    $published
+     * @return  array  response array
      */
     function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
     {
@@ -129,7 +141,13 @@ class ForumAdminAjax extends Jaws_Ajax
      * Insert group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $title          group title
+     * @param   string  $description    group description
+     * @param   string  $fast_url
+     * @param   string  $order
+     * @param   bool    $locked
+     * @param   bool    $published
+     * @return  array   response array
      */
     function InsertGroup($title, $description, $fast_url, $order, $locked, $published)
     {
@@ -150,7 +168,14 @@ class ForumAdminAjax extends Jaws_Ajax
      * Update group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $gid            group ID
+     * @param   string  $title          group title
+     * @param   string  $description    group description
+     * @param   string  $fast_url
+     * @param   string  $order
+     * @param   bool    $locked
+     * @param   bool    $published
+     * @return  array   response array
      */
     function UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published)
     {

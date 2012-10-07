@@ -13,8 +13,8 @@ class ForumAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default admin action
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Admin()
     {
