@@ -17,7 +17,7 @@ class ContactAdminModel extends ContactModel
      * Installs the gadget
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class ContactAdminModel extends ContactModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error otherwise
+     * @return  mixed   True on success and Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -78,7 +78,7 @@ class ContactAdminModel extends ContactModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -144,8 +144,8 @@ class ContactAdminModel extends ContactModel
      * Get information of a Contact Reply
      *
      * @access  public
-     * @param   int Contact ID
-     * @return  array Array of Contact Reply Information or Jaws_Error on failure
+     * @param   int     $id     Contact ID
+     * @return  mixed   Array of Contact Reply Information or Jaws_Error on failure
      */
     function GetReply($id)
     {
@@ -170,7 +170,7 @@ class ContactAdminModel extends ContactModel
      * @param   int     $recipient  Recipient ID
      * @param   int     $limit      Count of contacts to be returned
      * @param   int     $offset     offset of data array
-     * @return  array Array of Contacts or Jaws_Error on failure
+     * @return  mixed   Array of Contacts or Jaws_Error on failure
      */
     function GetContacts($recipient = -1, $limit = false, $offset = null)
     {
@@ -203,8 +203,8 @@ class ContactAdminModel extends ContactModel
      * Gets contacts count
      *
      * @access  public
-     * @param   int $recipient  Recipient ID
-     * @return  int Count of available contacts and Jaws_Error on failure
+     * @param   int     $recipient      Recipient ID
+     * @return  mixed   Count of available contacts and Jaws_Error on failure
      */
     function GetContactsCount($recipient = -1)
     {
@@ -228,7 +228,7 @@ class ContactAdminModel extends ContactModel
      * Update contact information
      *
      * @access  public
-     * @param   integer $id         Contact ID
+     * @param   int     $id         Contact ID
      * @param   string  $name       Name
      * @param   string  $email      Email address
      * @param   string  $$company
@@ -237,10 +237,10 @@ class ContactAdminModel extends ContactModel
      * @param   string  $fax
      * @param   string  $mobile
      * @param   string  $address
-     * @param   integer $recipient  Recipient ID
+     * @param   int     $recipient  Recipient ID
      * @param   string  $subject    Subject of message
      * @param   string  $message    Message content
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message)
     {
@@ -290,9 +290,9 @@ class ContactAdminModel extends ContactModel
      * Update contact reply
      *
      * @access  public
-     * @param   integer $id     Contact ID
+     * @param   int     $id     Contact ID
      * @param   string  $reply  Reply content
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateReply($id, $reply)
     {
@@ -322,8 +322,8 @@ class ContactAdminModel extends ContactModel
      * Update reply send field
      *
      * @access  public
-     * @param   integer $id Contact ID
-     * @return  boolean Success/Failure
+     * @param   int     $id     Contact ID
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateReplySent($id, $reply_sent)
     {
@@ -353,8 +353,8 @@ class ContactAdminModel extends ContactModel
      * Delete a Contact
      *
      * @access  public
-     * @param   string $id  ID of the Contact
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $id  ID of the Contact
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function DeleteContact($id)
     {
@@ -373,13 +373,13 @@ class ContactAdminModel extends ContactModel
      * Insert the information of a Recipient
      *
      * @access  public
-     * @param   string $name    Name of the recipient
-     * @param   string $email   Email of recipient
-     * @param   string $tel     Phone number of recipient
-     * @param   string $fax     Fax number of recipient
-     * @param   string $mobile  Mobile number of recipient
-     * @param   string $visible The visible of the recipient
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $name    Name of the recipient
+     * @param   string  $email   Email of recipient
+     * @param   string  $tel     Phone number of recipient
+     * @param   string  $fax     Fax number of recipient
+     * @param   string  $mobile  Mobile number of recipient
+     * @param   string  $visible The visible of the recipient
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
@@ -413,14 +413,15 @@ class ContactAdminModel extends ContactModel
      * Update the information of a Recipient
      *
      * @access  public
-     * @param   string $id      ID of the recipient
-     * @param   string $name    Name of the recipient
-     * @param   string $email   Email of recipient
-     * @param   string $tel     Phone number of recipient
-     * @param   string $fax     Fax number of recipient
-     * @param   string $mobile  Mobile number of recipient
-     * @param   string $visible The visible of the recipient
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $id             ID of the recipient
+     * @param   string  $name           Name of the recipient
+     * @param   string  $email          Email of recipient
+     * @param   string  $tel            Phone number of recipient
+     * @param   string  $fax            Fax number of recipient
+     * @param   string  $mobile         Mobile number of recipient
+     * @param   string  $inform_type    
+     * @param   string  $visible        The visible of the recipient
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
@@ -460,8 +461,8 @@ class ContactAdminModel extends ContactModel
      * Delete a Recipient
      *
      * @access  public
-     * @param   string $id  ID of the Recipient
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $id  ID of the Recipient
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function DeleteRecipient($id)
     {
@@ -480,9 +481,9 @@ class ContactAdminModel extends ContactModel
      * Set properties of the gadget
      *
      * @access  public
-     * @param   boolean $use_antispam
+     * @param   bool    $use_antispam
      * @param   string  $email_format
-     * @return  boolean True if change is successful, if not, returns Jaws_Error on any error
+     * @return  mixed   True if change is successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {

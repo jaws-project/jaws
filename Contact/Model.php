@@ -15,8 +15,8 @@ class ContactModel extends Jaws_Model
      * Get information of a Contact
      *
      * @access  public
-     * @param   int Contact ID
-     * @return  array Array of Contact Information or Jaws_Error on failure
+     * @param   int     $id     Contact ID
+     * @return  mixed   Array of Contact Information or Jaws_Error on failure
      */
     function GetContact($id)
     {
@@ -39,7 +39,7 @@ class ContactModel extends Jaws_Model
      * Get information of one Recipient
      *
      * @access  public
-     * @param   string ID of the Recipient
+     * @param   string  $id     ID of the Recipient
      * @return  array  Array with the information of a Recipient or Jaws_Error on failure
      */
     function GetRecipient($id)
@@ -66,10 +66,10 @@ class ContactModel extends Jaws_Model
      * Get a list of the available Recipients
      *
      * @access  public
-     * @param   boolean
-     * @param   boolean
-     * @param   boolean
-     * @return  array Array of Recipients or Jaws_Error on failure
+     * @param   bool    $onlyVisible
+     * @param   bool    $limit
+     * @param   bool    $offset
+     * @return  mixed   Array of Recipients or Jaws_Error on failure
      */
     function GetRecipients($onlyVisible = false, $limit = false, $offset = null)
     {
@@ -112,7 +112,7 @@ class ContactModel extends Jaws_Model
      * @access  public
      * @param   string  $name       Name
      * @param   string  $email      Email address
-     * @param   string  $$company
+     * @param   string  $company
      * @param   string  $url
      * @param   string  $tel
      * @param   string  $fax
@@ -122,7 +122,7 @@ class ContactModel extends Jaws_Model
      * @param   string  $subject    Subject of message
      * @param   string  $attachment Attachment filename
      * @param   string  $message    Message content
-     * @return  boolean Success/Failure
+     * @return  bool    True on Success or False on Failure
      */
     function InsertContact($name, $email, $company, $url, $tel, $fax, $mobile,
                            $address, $rcipient, $subject, $attachment, $message)

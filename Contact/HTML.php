@@ -15,7 +15,7 @@ class ContactHTML extends Jaws_GadgetHTML
      * Default Action
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content of DefaultAction
      */
     function DefaultAction()
     {
@@ -28,7 +28,7 @@ class ContactHTML extends Jaws_GadgetHTML
      * ContactMini Action
      *
      * @access  public
-     * @return  string  HTML content of ContactMini
+     * @return  string  XHTML content of ContactMini
      */
     function ContactMini()
     {
@@ -41,7 +41,7 @@ class ContactHTML extends Jaws_GadgetHTML
      * ContactSimple Action
      *
      * @access  public
-     * @return  string  HTML content of ContactSimple
+     * @return  string  XHTML content of ContactSimple
      */
     function ContactSimple()
     {
@@ -54,7 +54,7 @@ class ContactHTML extends Jaws_GadgetHTML
      * ContactFull Action
      *
      * @access  public
-     * @return  string  HTML content of ContactFull
+     * @return  string  XHTML content of ContactFull
      */
     function ContactFull()
     {
@@ -167,7 +167,7 @@ class ContactHTML extends Jaws_GadgetHTML
      * @access  public
      * @param   string   $to   Recipient email address
      * @param   integer  $cid   Contact ID
-     * @return  boolean Success/Failure
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function SendEmailToRecipient($to, $cid)
     {

@@ -15,7 +15,7 @@ class ContactLayoutHTML
      *
      * @access public
      * @param  string   $type
-     * @return string   HTML content
+     * @return string   XHTML template content
      */
     function GetContactForm($type = '')
     {
@@ -207,7 +207,7 @@ class ContactLayoutHTML
      * Show default contact us form
      *
      * @access public
-     * @return string HTML content
+     * @return string   XHTML templatecontent
      */
     function Display()
     {
@@ -218,17 +218,18 @@ class ContactLayoutHTML
      * Show mini contact us form
      *
      * @access public
-     * @return string HTML content
+     * @return string   XHTML template content
      */
     function DisplayMini()
     {
         return $this->GetContactForm('mini');
     }
+    
     /**
      * Show simple contact us form
      *
      * @access public
-     * @return string HTML content
+     * @return string   XHTML template content
      */
     function DisplaySimple()
     {
@@ -239,7 +240,7 @@ class ContactLayoutHTML
      * Show full contact us form
      *
      * @access public
-     * @return string HTML content
+     * @return string   XHTML template content
      */
     function DisplayFull()
     {

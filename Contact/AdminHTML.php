@@ -16,7 +16,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Admin of Gadget
      *
      * @access  public
-     * @return  string HTML content of administration
+     * @return  string  XHTML content of administration
      */
     function Admin()
     {
@@ -81,7 +81,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * @access  public
      * @param   int    $recipient   Recipient ID
      * @param   int    $offset      Offset of data array
-     * @return  array  Data
+     * @return  array  Data array
      */
     function GetContacts($recipient = -1, $offset = null)
     {
@@ -147,7 +147,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Prepares the datagrid view (XHTML of datagrid)
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML template of datagrid
      */
     function ContactsDataGrid()
     {
@@ -178,7 +178,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Show contacts list
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string XHTML template content
      */
     function Contacts()
     {
@@ -249,7 +249,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Show a form to show/edit a given contact
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function ContactUI()
     {
@@ -344,7 +344,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit/send contact reply
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function ReplyUI()
     {
@@ -396,8 +396,8 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Send contact reply
      *
      * @access  public
-     * @param   integer $cid Contact ID
-     * @return  boolean Success/Failure
+     * @param   int     $cid    Contact ID
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function SendReply($cid)
     {
@@ -493,8 +493,8 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Prepares the data of recipient
      *
      * @access  public
-     * @param   int    $limit  Limit of data
-     * @return  array  Data
+     * @param   int    $offset  offset of data
+     * @return  array  Data array
      */
     function GetRecipients($offset = null)
     {
@@ -532,7 +532,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Prepares the datagrid view (XHTML of datagrid)
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string XHTML template of datagrid
      */
     function RecipientsDataGrid()
     {
@@ -563,7 +563,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Show recipients list
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Recipients()
     {
@@ -644,7 +644,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Show contacts Setting
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Properties()
     {
@@ -710,7 +710,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Prepares UI for sending Email
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function Mailer()
     {
@@ -868,7 +868,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * Uploads attachment file
      *
      * @access  public
-     * @return  
+     * @return  string  javascript script segment
      */
     function UploadFile()
     {
@@ -891,7 +891,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string  $message  Body part of the Email
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function PrepareMessage($message)
     {
@@ -930,7 +930,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * @param   string  $target     JSON decoded array ([to, cc, bcc] or [user, group])
      * @param   string  $subject    Subject of the Email
      * @param   string  $message    Message body of the Email
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function SendEmail($target, $subject, $message, $attachment)
     {
