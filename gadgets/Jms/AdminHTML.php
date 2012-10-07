@@ -297,23 +297,6 @@ class JmsAdminHTML extends Jaws_GadgetHTML
                 $tpl->ParseBlock('info/requires/item');
             }
             $tpl->ParseBlock('info/requires');
-
-            // Provides
-            if (count($info->GetProvides()) > 0) {
-                $tpl->SetBlock('info/provides');
-                $tpl->SetVariable('provides', _t('GLOBAL_GI_GADGET_PROVIDES'));
-                $tpl->SetVariable('description', _t('GLOBAL_GI_GADGET_DESCRIPTION'));
-                $tpl->SetVariable('type', _t('GLOBAL_GI_GADGET_TYPE'));
-                foreach ($info->GetProvides() as $service => $items) {
-                    foreach ($items as $k => $v) {
-                        $tpl->SetBlock('info/provides/item');
-                        $tpl->SetVariable('description', $v['Description']);
-                        $tpl->SetVariable('type', $service);
-                        $tpl->ParseBlock('info/provides/item');
-                    }
-                }
-                $tpl->ParseBlock('info/provides');
-            }
         }
         $tpl->ParseBlock('info');
 
