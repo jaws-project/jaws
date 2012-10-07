@@ -15,6 +15,7 @@ class LinkDumpLayoutHTML
      * Loads layout actions
      *
      * @access private
+     * @return  array   actions array
      */
     function LoadLayoutActions()
     {
@@ -39,7 +40,8 @@ class LinkDumpLayoutHTML
      * Display links
      *
      * @access  public
-     * @return  template content
+     * @param   int     $gid    group ID
+     * @return  string  XHTML template content
      */
     function Display($gid = 0)
     {
@@ -97,7 +99,7 @@ class LinkDumpLayoutHTML
      * Display a Tag Cloud
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function ShowTagCloud()
     {

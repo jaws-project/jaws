@@ -15,7 +15,7 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
      * Administration section
      *
      * @access  public
-     * @return  template content
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -73,7 +73,7 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
      * Providing a list of groups
      *
      * @access  public
-     * @return  string HTML Template content
+     * @return  string XHTML Template content
      */
     function GetGroupsList()
     {
@@ -100,6 +100,12 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
         return $tpl->Get();
     }
 
+    /**
+     * Links List Action
+     *
+     * @access public
+     * @return  string  XHTML template content
+     */
     function GetLinksList($gid)
     {
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel');
@@ -130,7 +136,7 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function GetGroupUI()
     {
@@ -188,7 +194,7 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function GetLinkUI()
     {

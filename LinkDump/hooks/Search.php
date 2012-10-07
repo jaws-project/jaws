@@ -12,6 +12,9 @@ class LinkDumpSearchHook
 {
     /**
      * Gets the gadget's search fields
+     *
+     * @access public
+     * @return  array   search fields array
      */
     function GetSearchFields() {
         return array(

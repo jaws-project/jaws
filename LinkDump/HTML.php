@@ -15,6 +15,7 @@ class LinkDumpHTML extends Jaws_GadgetHTML
      * Dafault action
      *
      * @access  public
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
@@ -26,7 +27,7 @@ class LinkDumpHTML extends Jaws_GadgetHTML
      * Show the archives of links
      *
      * @access  public
-     * @return  template content
+     * @return  mixed  XHTML template content or false on error
      */
     function Archive()
     {
@@ -89,7 +90,7 @@ class LinkDumpHTML extends Jaws_GadgetHTML
      * Show the archives of links
      *
      * @access  public
-     * @return  template content
+     * @return  string  XHTML template content
      */
     function Group()
     {
@@ -100,7 +101,9 @@ class LinkDumpHTML extends Jaws_GadgetHTML
      * Populating RDF feed
      *
      * @access  public
-     * @return  string  RDF
+     * @param   int     $gid    group ID
+     * @param   int     $limit  data limit
+     * @return  mixed   XHTML template content or false on error
      */
     function PopulateFeed($gid, $limit = 10)
     {
@@ -143,6 +146,7 @@ class LinkDumpHTML extends Jaws_GadgetHTML
 
     /**
      * Redirect to the URL and increase the clicks by one
+     * 
      * @access  public
      */
     function Link()
@@ -172,7 +176,7 @@ class LinkDumpHTML extends Jaws_GadgetHTML
      * Generates an Archive for a specified tag
      *
      * @access  public
-     * @return  XHTML compliant date
+     * @return  string  XHTML compliant date
      */
     function Tag()
     {

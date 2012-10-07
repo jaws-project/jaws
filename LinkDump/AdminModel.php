@@ -16,7 +16,7 @@ class LinkDumpAdminModel extends LinkDumpModel
      * Installs the gadget
      *
      * @access  public
-     * @return  boolean Returns true on a successfull Install and Jaws_Error on errors
+     * @return  mixed   True on a successfull Install and Jaws_Error on errors
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class LinkDumpAdminModel extends LinkDumpModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed  True on Success and Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -77,7 +77,7 @@ class LinkDumpAdminModel extends LinkDumpModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success and Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -112,9 +112,15 @@ class LinkDumpAdminModel extends LinkDumpModel
 
     /**
     * Insert a link
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    int     $gid        group ID
+    * @param    string  $title      link title
+    * @param    string  $url        url address
+    * @param    string  $fast_url
+    * @param    string  $desc       description
+    * @param    string  $tags
+    * @return   mixed   True on Success and Jaws_Error on Failure
     */
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -176,10 +182,14 @@ class LinkDumpAdminModel extends LinkDumpModel
      *
      * @access  public
      * @param   int     $id             The id of link
+     * @param   int     $gid            group ID
      * @param   string  $title          Title of the link
-     * @param   string  $description    Link's description
-     * @param   string  $url            Link's URL
-     * @return  boolean True on success and Jaws_Error in otherwise
+     * @param   string  $url            Url address
+     * @param   string  $fast_url       
+     * @param   string  $desc           Link's description
+     * @param   string  $tags
+     * @param   string  $rank
+     * @return  mixed   True on success and Jaws_Error in otherwise
      */
     function UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -260,7 +270,12 @@ class LinkDumpAdminModel extends LinkDumpModel
      * function for change gid, pid and rank of menus
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $lid        link ID
+     * @param   int     $new_gid    new group ID
+     * @param   int     $old_gid    old group ID
+     * @param   int     $new_rank   new rank
+     * @param   int     $old_rank   old rank
+     * @return  bool    True on success and False on failure
      */
     function MoveLink($lid, $new_gid, $old_gid, $new_rank, $old_rank)
     {
@@ -379,12 +394,10 @@ class LinkDumpAdminModel extends LinkDumpModel
     }
 
     /**
-     * This is the short Description for the Function
-     *
-     * This is the long description for the Class
-     *
-     * @return	mixed	 Description
+     * Adds Tag to Link
+     * 
      * @access	public
+     * @return	mixed	 True on Success and Jaws_Error on Failure
      */
     function AddTagToLink($lid, $tag)
     {
@@ -422,10 +435,10 @@ class LinkDumpAdminModel extends LinkDumpModel
     }
 
     /**
-    * This is the short Description for the Function
+    * Removes Tag From Link
     *
-    * @return mixed	 Description
     * @access public
+    * @return mixed	 True on Success and Jaws_Error on Failure
     */
     function RemoveTagFromLink($id, $tag)
     {
@@ -454,8 +467,8 @@ class LinkDumpAdminModel extends LinkDumpModel
      * Delete link
      *
      * @access  public
-     * @param   int $lid Link's id
-     * @return  Boolean True on success on Jaws_Error otherwise
+     * @param   int     $lid    Link's id
+     * @return  mixed   True on success on Jaws_Error otherwise
      */
     function DeleteLink($lid, $gid = '', $rank = 0)
     {
@@ -487,6 +500,8 @@ class LinkDumpAdminModel extends LinkDumpModel
      * Will Poupulate the linkdump feed
      *
      * @access  public
+     * @param   int     $gid    group ID
+     * @return  bool    True on Success and False on Failure
      */
     function PopulateFeed($gid)
     {
@@ -510,9 +525,14 @@ class LinkDumpAdminModel extends LinkDumpModel
 
     /**
     * Insert a group
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    string  $title      group title
+    * @param    string  $fast_url
+    * @param    int     $limit_count
+    * @param    string  $link_type
+    * @param    string  $order_type
+    * @return   bool    True Success and False on Failure
     */
     function InsertGroup($title, $fast_url, $limit_count, $link_type, $order_type)
     {
@@ -545,9 +565,15 @@ class LinkDumpAdminModel extends LinkDumpModel
 
     /**
     * Update a group
+    * 
     * @access  public
-    *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @param    int     $gid        group ID
+    * @param    string  $title      group title
+    * @param    string  $fast_url
+    * @param    int     $limit_count
+    * @param    string  $link_type
+    * @param    string  $order_type
+    * @return   bool    True on Success and False on Failure
     */
     function UpdateGroup($gid, $title, $fast_url, $limit_count, $link_type, $order_type)
     {
@@ -586,7 +612,8 @@ class LinkDumpAdminModel extends LinkDumpModel
      * Delete a group
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @return  bool    True if query was successful and false on error
      */
     function DeleteGroup($gid)
     {

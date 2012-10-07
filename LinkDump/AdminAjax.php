@@ -15,6 +15,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   Jaws_Model  $model  Jaws_Model reference
      */
     function LinkDumpAdminAjax(&$model)
     {
@@ -25,7 +26,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Returns the group form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template content of groupForm
      */
     function GetGroupUI()
     {
@@ -37,7 +38,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Returns the link form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template content of groupForm
      */
     function GetLinkUI()
     {
@@ -50,7 +51,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id     Link id
-     * @return  array   Link information
+     * @return  mixed   Link information array or false on error
      */
     function GetLink($id)
     {
@@ -68,7 +69,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information
+     * @return  mixed   Group information array or false one error
      */
     function GetGroups($gid)
     {
@@ -85,7 +86,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information
+     * @return  array   Group information array
      */
     function GetLinksList($gid)
     {
@@ -97,7 +98,12 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Insert group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   string  $title      group title
+     * @param   string  $fast_url
+     * @param   string  $limitation
+     * @param   string  $links_type
+     * @param   string  $order_type
+     * @return  array   response array
      */
     function InsertGroup($title, $fast_url, $limitation, $links_type, $order_type)
     {
@@ -111,7 +117,14 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Insert link
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $gid        group ID
+     * @param   string  $title      link title
+     * @param   string  $url        url address
+     * @param   string  $fast_url
+     * @param   string  $desc       description
+     * @param   string  $tags
+     * @param   string  $rank
+     * @return  array   response array
      */
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -125,7 +138,13 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * Update group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $gid        group ID
+     * @param   string  $title      group title
+     * @param   string  $fast_url
+     * @param   string  $limitation
+     * @param   string  $links_type
+     * @param   string  $order_type
+     * @return  array   response array
      */
     function UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type)
     {
@@ -138,11 +157,15 @@ class LinkDumpAdminAjax extends Jaws_Ajax
     /**
      * Update a link
      * @access  public
-     * @param   int     $id     Link ID
-     * @param   string  $title  Link title
-     * @param   string  $desc   Link description
-     * @param   string  $url    Link URL
-     * @param   string  $tags   Link's tags
+     * @param   int     $id         Link ID
+     * @param   int     $gid        group ID
+     * @param   string  $title      Link title
+     * @param   string  $url        Link URL
+     * @param   string  $fast_url   
+     * @param   string  $desc       Link description
+     * @param   string  $tags       Link's tags
+     * @param   string  $rank
+     * @return  array   response array
      */
     function UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -153,9 +176,12 @@ class LinkDumpAdminAjax extends Jaws_Ajax
 
     /**
      * Delete a link
+     * 
      * @access  public
-     * @param   int $id     Link id
-     * @param   int $gid    Group ID
+     * @param   int     $id         Link id
+     * @param   int     $gid        Group ID
+     * @param   string  $rank
+     * @return  array   response array
      */
     function DeleteLink($id, $gid, $rank)
     {

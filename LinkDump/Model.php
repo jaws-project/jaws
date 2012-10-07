@@ -15,8 +15,8 @@ class LinkDumpModel extends Jaws_Model
      * Get information about a link
      *
      * @access  public
-     * @param   int     $id The links id
-     * @return  array   An array contains link information and Jaws_Error on error
+     * @param   int     $id     The links id
+     * @return  mixed   An array contains link information and Jaws_Error on error
      */
     function GetLink($id)
     {
@@ -87,8 +87,8 @@ class LinkDumpModel extends Jaws_Model
      * Inrease the link's clicks by one
      *
      * @access  public
-     * @param   int $id Link's id
-     * @return  boolean True on success and Jaws_Error otherwise
+     * @param   int     $id     Link's id
+     * @return  mixed   True on Success and Jaws_Error otherwise
      */
     function Click($id)
     {
@@ -107,7 +107,8 @@ class LinkDumpModel extends Jaws_Model
     /**
      * Generates a TagCloud
      *
-     * @return  TagCloud data or Jaws_Error on error
+     * @access public
+     * @return  mixed   TagCloud data or Jaws_Error on error
      */
     function CreateTagCloud()
     {
@@ -131,7 +132,8 @@ class LinkDumpModel extends Jaws_Model
      * Returns a group information
      *
      * @access  public
-     * @return  array  Array of group information and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @return  mixed   Array of group information and Jaws_Error on error
      */
     function GetGroup($gid)
     {
@@ -162,7 +164,7 @@ class LinkDumpModel extends Jaws_Model
      * Returns a list with all the menus
      *
      * @access  public
-     * @return  array  Array with all the available menus and Jaws_Error on error
+     * @return  mixed  Array with all the available menus and Jaws_Error on error
      */
     function GetGroups()
     {
@@ -184,8 +186,10 @@ class LinkDumpModel extends Jaws_Model
      * Retrive all links
      *
      * @access  public
-     * @param   mixed   $limit  Limit of data to retrieve (false by default, returns all)
-     * @return  array   An array contains all links and info. and Jaws_Error on error
+     * @param   int     $gid        group ID
+     * @param   bool    $limit      Limit of data to retrieve (false by default, returns all)
+     * @param   string  $orderBy    order by
+     * @return  mixed   An array contains all links and info. and Jaws_Error on error
      */
     function GetGroupLinks($gid = null, $limit = false, $orderBy = 'rank')
     {
