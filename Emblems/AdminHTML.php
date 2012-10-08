@@ -138,8 +138,8 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
     /**
      * Admin gadget display
      *
-     * @access public
-     * @return string   XHTML template
+     * @access  public
+     * @return  string   XHTML template
      */
     function Admin()
     {
@@ -231,8 +231,8 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
     /**
      * Edit emblem info
      *
-     * @access public
-     * @see    EmblemsModel->UpdateEmblem()
+     * @access  public
+     * @return  void
      */
     function EditEmblem()
     {
@@ -271,4 +271,5 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems&action=Admin');
     }
+
 }

@@ -13,8 +13,8 @@ class EmblemsLayoutHTML
     /**
      * Displays the emblems in our site
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function Display()
     {

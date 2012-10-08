@@ -14,8 +14,8 @@ class EmblemsHTML extends Jaws_GadgetHTML
      * Executes the default action
      *
      * @access public
-     * @see     Display()
      * @return  string  XHTML template content
+     * @see     Display()
      */
     function DefaultAction()
     {

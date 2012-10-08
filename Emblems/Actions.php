@@ -20,4 +20,4 @@ $actions['Display'] = array('LayoutAction',
 /* Admin actions*/
 $actions['AddEmblem']  = array('AdminAction');
 $actions['EditEmblem'] = array('AdminAction');
-?>
+

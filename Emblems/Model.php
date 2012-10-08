@@ -76,6 +76,7 @@ class EmblemsModel extends Jaws_Model
      *
      * @access  public
      * @param   string    $type     code of the type
+     * @return  string    The description of the type
      */
     function TranslateType($type)
     {
@@ -97,5 +98,5 @@ class EmblemsModel extends Jaws_Model
             break;
         }
     }
+
 }
-?>

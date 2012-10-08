@@ -169,7 +169,7 @@ class EmblemsAdminModel extends EmblemsModel
     /**
      * Updates the gadget properties in the registry
      *
-     * @access public
+     * @access  public
      * @param   int      $rows        Number of rows that will display the gadget
      * @param   bool     $allow_url   If the emblems will display the link or not
      * @return  mixed    True if properties got updated, Jaws_Error otherwise
@@ -234,10 +234,10 @@ class EmblemsAdminModel extends EmblemsModel
     /**
      * Deletes an emblem
      *
-     * @access public
-     * @param  int      $id     ID that identifies the emblem
-     * @param  string   $src    Path to the emblem image
-     * @return mixed    True if success, Jaws_Error otherwise
+     * @access  public
+     * @param   int      $id     ID that identifies the emblem
+     * @param   string   $src    Path to the emblem image
+     * @return  mixed    True if success, Jaws_Error otherwise
      */
     function DeleteEmblem($id, $src)
     {
@@ -258,4 +258,5 @@ class EmblemsAdminModel extends EmblemsModel
         $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_FILE_NOT_DELETED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('EMBLEMS_FILE_NOT_DELETED', 'DeleteEmblem'), _t('EMBLEMS_NAME'));
     }
+
 }
