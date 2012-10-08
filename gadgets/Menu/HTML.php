@@ -17,7 +17,7 @@ class MenuHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @access  public
-     * @return  string  XHTML result
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {

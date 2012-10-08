@@ -22,7 +22,7 @@ class MenuLayoutHTML
      * Loads layout actions
      *
      * @access  private
-     * @return  array   actions array
+     * @return  array   Actions array
      */
     function LoadLayoutActions()
     {
@@ -84,11 +84,11 @@ class MenuLayoutHTML
      * Displays the next level of parent menu
      *
      * @access  public
-     * @param   Jaws_Model      $model
-     * @param   Jaws_Template   $tpl_str
-     * @param   int             $gid        group ID
-     * $par     int             $pid
-     * @return  string  XHTML content with sub menu items
+     * @param   object  $model      Jaws_Model reference
+     * @param   string  $tpl_str    XHTML template content passed by reference
+     * @param   int     $gid        Group ID
+     * $par     int     $pid
+     * @return  string  XHTML template content with sub menu items
      */
     function GetNextLevel(&$model, &$tpl_str, $gid, $pid)
     {

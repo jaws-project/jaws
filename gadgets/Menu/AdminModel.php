@@ -19,7 +19,7 @@ class MenuAdminModel extends MenuModel
      * Install the gadget
      *
      * @access  public
-     * @return  mixed   Success with true and failure with Jaws_Error
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class MenuAdminModel extends MenuModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  mixed     True on Success and Jaws_Error on Failure
+     * @return  mixed     True on success or Jaws_Error on failure
      */
     function UninstallGadget()
     {
@@ -74,7 +74,7 @@ class MenuAdminModel extends MenuModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  mixed   True on Success and Jaws_Error on Failure
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateGadget($old, $new)
     {
@@ -157,12 +157,12 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Insert a group
-    * 
+    *
     * @access  public
-    * @param    string  $title
-    * @param    string  $title_view
-    * @param    bool    $visible        is visible
-    * @return   bool Success/Failure (Jaws_Error)
+    * @param   string   $title
+    * @param   string   $title_view
+    * @param   bool     $visible        is visible
+    * @return  bool     True on success or False on failure
     */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -202,7 +202,7 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Insert a menu
-    * 
+    *
     * @access  public
     * @param    int     $pid
     * @param    int     $gid        group ID
@@ -213,7 +213,7 @@ class MenuAdminModel extends MenuModel
     * @param    string  $rank
     * @param    bool    $visible    is visible
     * @param    string  $image
-    * @return   bool     Success/Failure (Jaws_Error)
+    * @return   bool    True on success or False on failure
     */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -260,13 +260,13 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Update a group
-    * 
+    *
     * @access  public
     * @param    int     $gid            group ID
     * @param    string  $title
     * @param    string  $title_view
     * @param    bool    $visible        is visible
-    * @return   bool Success/Failure (Jaws_Error)
+    * @return   bool    True on success or False on failure
     */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -313,7 +313,7 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Update a menu
-    * 
+    *
     * @access  public
     * @param    int     $mid        menu ID
     * @param    int     $pid
@@ -325,7 +325,7 @@ class MenuAdminModel extends MenuModel
     * @param    string  $rank
     * @param    bool    $visible    is visible
     * @param    string  $image
-    * @return   bool     Success/Failure (Jaws_Error)
+    * @return   bool    True on success or False on failure
     */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -503,7 +503,7 @@ class MenuAdminModel extends MenuModel
      * @param   int     $old_pid
      * @param   string  $new_rank
      * @param   string  $old_rank
-     * @return  bool    True on Success and False on Failure
+     * @return  bool    True on success or False on failure
      */
     function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
     {
@@ -666,7 +666,7 @@ class MenuAdminModel extends MenuModel
      * @param   int     $gid    group ID
      * @param   string  $excluded_mid
      * @param   array   $menu_str
-     * @return  bool    True on Success and False on Failure
+     * @return  bool    True on success or False on failure
      */
     function GetParentMenus($pid, $gid, $excluded_mid, &$result, $menu_str = '')
     {
