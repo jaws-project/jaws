@@ -16,7 +16,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   object  $model  The model to use for performing actions.
+     * @param   Jaws_Model  $model  The model to use for performing actions.
      */
     function MenuAdminAjax(&$model)
     {
@@ -27,7 +27,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Get all menus and groups data
      *
      * @access  public
-     * @return  array   Data
+     * @return  mixed   Data array or False on error
      */
     function GetMenusTrees()
     {
@@ -44,7 +44,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Returns the group form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template of groupForm
      */
     function GetGroupUI()
     {
@@ -56,7 +56,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Returns the menu form
      *
      * @access  public
-     * @return  string  XHTML of groupForm
+     * @return  string  XHTML template of groupForm
      */
     function GetMenuUI()
     {
@@ -69,7 +69,7 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information
+     * @return  mixed   Group information array or False on error
      */
     function GetGroups($gid)
     {
@@ -86,7 +86,7 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $mid    Menu ID
-     * @return  array   Menu data
+     * @return  mixed   Menu data array or False on error
      */
     function GetMenu($mid)
     {
@@ -102,7 +102,10 @@ class MenuAdminAjax extends Jaws_Ajax
      * Insert group
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title          menu title
+     * @param   string  $title_view     
+     * @param   bool    $visible        is visible
+     * @return  array   response array
      */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -116,7 +119,16 @@ class MenuAdminAjax extends Jaws_Ajax
      * Insert menu
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $pid
+     * @param   int     $gid            group ID
+     * @param   string  $type
+     * @param   string  $title
+     * @param   string  $url
+     * @param   string  $url_target
+     * @param   string  $rank
+     * @param   bool    $visible        is visible
+     * @param   string  $image
+     * @return  array   response array
      */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -130,7 +142,11 @@ class MenuAdminAjax extends Jaws_Ajax
      * Update group
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $gid            group ID
+     * @param   string  $title
+     * @param   string  $title_view
+     * @param   bool    $visible        is visible
+     * @return  array   response array
      */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -144,7 +160,17 @@ class MenuAdminAjax extends Jaws_Ajax
      * Update menu
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $mid            menu ID
+     * @param   int     $pid
+     * @param   int     $gid            group ID
+     * @param   string  $type
+     * @param   string  $title
+     * @param   string  $url
+     * @param   string  $url_target
+     * @param   string  $rank
+     * @param   bool    $visible        is visible
+     * @param   string  $image
+     * @return  array   response array
      */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -159,7 +185,7 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid   group ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteGroup($gid)
     {
@@ -174,7 +200,7 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $mid   menu ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteMenu($mid)
     {
@@ -191,8 +217,9 @@ class MenuAdminAjax extends Jaws_Ajax
      * Get menu data
      *
      * @access  public
+     * @param   int     $gid    group ID
      * @param   int     $mid    Menu ID
-     * @return  array   Menu data
+     * @return  array   Menu data array
      */
     function GetParentMenus($gid, $mid)
     {
@@ -207,7 +234,14 @@ class MenuAdminAjax extends Jaws_Ajax
      * function for change gid, pid and rank of menus
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $mid        menu ID
+     * @param   int     $new_gid    new group id
+     * @param   int     $old_gid    old group id
+     * @param   int     $new_pid
+     * @param   int     $old_pid
+     * @param   string  $new_rank
+     * @param   string  $old_rank
+     * @return  array   Response array (notice or error)
      */
     function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
     {
@@ -221,7 +255,8 @@ class MenuAdminAjax extends Jaws_Ajax
      * Get a list of URLs of a gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
+     * @param   string  $request  Gadget's name
+     * @return  array   urls array on success or empty array on failure
      */
     function GetPublicURList($request)
     {
