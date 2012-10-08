@@ -17,7 +17,8 @@ class MenuModel extends Jaws_Model
      * Returns a menu
      *
      * @access  public
-     * @return  array  Array with all the available menus and Jaws_Error on error
+     * @param   int     $mid    menu ID
+     * @return  mixed  Array with all the available menus and Jaws_Error on error
      */
     function GetMenu($mid)
     {
@@ -44,7 +45,10 @@ class MenuModel extends Jaws_Model
      * Returns a list of  menus at a request level
      *
      * @access  public
-     * @return  array  Array with all the available menus and Jaws_Error on error
+     * @param   int     $pid
+     * @param   int     $gid            group ID
+     * @param   bool    $onlyVisible    show only visible
+     * @return  mixed   Array with all the available menus and Jaws_Error on error
      */
     function GetLevelsMenus($pid, $gid = null, $onlyVisible = false)
     {
@@ -75,7 +79,8 @@ class MenuModel extends Jaws_Model
      * Returns the image of the menu
      *
      * @access  public
-     * @returns blob image or Jaws_Error on error
+     * @param   int     $id
+     * @returns blob    image or Jaws_Error on error
      */
     function GetMenuImage($id)
     {
@@ -103,7 +108,8 @@ class MenuModel extends Jaws_Model
      * Returns a list with all the menus
      *
      * @access  public
-     * @return  array  Array with all the available menus and Jaws_Error on error
+     * @param   int     $gid        group ID
+     * @return  mixed  Array with all the available menus and Jaws_Error on error
      */
     function GetGroups($gid = null)
     {

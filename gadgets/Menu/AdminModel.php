@@ -19,7 +19,7 @@ class MenuAdminModel extends MenuModel
      * Install the gadget
      *
      * @access  public
-     * @return  bool     Success with true and failure with Jaws_Error
+     * @return  mixed   Success with true and failure with Jaws_Error
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class MenuAdminModel extends MenuModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed     True on Success and Jaws_Error on Failure
      */
     function UninstallGadget()
     {
@@ -74,7 +74,7 @@ class MenuAdminModel extends MenuModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success and Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -157,9 +157,12 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Insert a group
+    * 
     * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
+    * @param    string  $title
+    * @param    string  $title_view
+    * @param    bool    $visible        is visible
+    * @return   bool Success/Failure (Jaws_Error)
     */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -199,9 +202,18 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Insert a menu
+    * 
     * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
+    * @param    int     $pid
+    * @param    int     $gid        group ID
+    * @param    string  $type
+    * @param    string  $title
+    * @param    string  $url
+    * @param    string  $url_target
+    * @param    string  $rank
+    * @param    bool    $visible    is visible
+    * @param    string  $image
+    * @return   bool     Success/Failure (Jaws_Error)
     */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -248,9 +260,13 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Update a group
+    * 
     * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
+    * @param    int     $gid            group ID
+    * @param    string  $title
+    * @param    string  $title_view
+    * @param    bool    $visible        is visible
+    * @return   bool Success/Failure (Jaws_Error)
     */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -297,9 +313,19 @@ class MenuAdminModel extends MenuModel
 
     /**
     * Update a menu
+    * 
     * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
+    * @param    int     $mid        menu ID
+    * @param    int     $pid
+    * @param    int     $gid        group ID
+    * @param    string  $type
+    * @param    string  $title
+    * @param    string  $url
+    * @param    string  $url_target
+    * @param    string  $rank
+    * @param    bool    $visible    is visible
+    * @param    string  $image
+    * @return   bool     Success/Failure (Jaws_Error)
     */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -362,6 +388,7 @@ class MenuAdminModel extends MenuModel
      * Delete a group
      *
      * @access  public
+     * @param   int     $gid    group ID
      * @return  bool    True if query was successful and Jaws_Error on error
      */
     function DeleteGroup($gid)
@@ -404,6 +431,7 @@ class MenuAdminModel extends MenuModel
      * Delete a menu
      *
      * @access  public
+     * @param   int     $mid    menu ID
      * @return  bool    True if query was successful and Jaws_Error on error
      */
     function DeleteMenu($mid)
@@ -444,6 +472,7 @@ class MenuAdminModel extends MenuModel
      * Delete a all menu related with a gadget (type = %gadget%)
      *
      * @access  public
+     * @param   string  $type
      * @return  bool    True if query was successful and Jaws_Error on error
      */
     function RemoveMenusByType($type)
@@ -459,7 +488,7 @@ class MenuAdminModel extends MenuModel
                 return false;
             }
         }
-
+        
         return true;
     }
 
@@ -467,7 +496,14 @@ class MenuAdminModel extends MenuModel
      * function for change gid, pid and rank of menus
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $mid        menu ID
+     * @param   int     $new_gid    new group ID
+     * @param   int     $old_gid    old group ID
+     * @param   int     $new_pid
+     * @param   int     $old_pid
+     * @param   string  $new_rank
+     * @param   string  $old_rank
+     * @return  bool    True on Success and False on Failure
      */
     function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
     {
@@ -626,7 +662,11 @@ class MenuAdminModel extends MenuModel
      * function for get menus tree
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @param   int     $pid
+     * @param   int     $gid    group ID
+     * @param   string  $excluded_mid
+     * @param   array   $menu_str
+     * @return  bool    True on Success and False on Failure
      */
     function GetParentMenus($pid, $gid, $excluded_mid, &$result, $menu_str = '')
     {

@@ -18,7 +18,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Displays gadget administration section
      *
      * @access  public
-     * @return  string HTML Template content
+     * @return  string  XHTML Template content
      */
     function Admin()
     {
@@ -67,6 +67,15 @@ class MenuAdminHTML extends Jaws_GadgetHTML
         return $tpl->Get();
     }
 
+    /**
+     *
+     * @access public
+     * @param   Jaws_Model      $model      Jaws_Model reference
+     * @param   Jaws_Template   $tpl_str
+     * @param   int             $gid        group ID
+     * @param   int             $pid
+     * @return  string  XHTML template content
+     */
     function GetMenuLevel(&$model, &$tpl_str, $gid, $pid)
     {
         $menus = $model->GetLevelsMenus($pid, $gid);
@@ -96,7 +105,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Providing a treeview of menus and gadgtes
      *
      * @access  public
-     * @return  string HTML Template content
+     * @return  string  XHTML Template content
      */
     function GetMenusTrees()
     {
@@ -129,7 +138,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function GetGroupUI()
     {
@@ -169,7 +178,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Show a form to edit a given group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML template content
      */
     function GetMenuUI()
     {
@@ -276,7 +285,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Uploads the image file
      *
      * @access  public
-     * @return  
+     * @return  string  javascript script snippet
      */
     function UploadImage()
     {
