@@ -16,7 +16,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  The model to use for performing actions.
+     * @param   object  $model  The model to use for performing actions.
      */
     function MenuAdminAjax(&$model)
     {
