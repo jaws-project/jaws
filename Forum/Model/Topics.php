@@ -62,7 +62,6 @@ class Forum_Model_Topics extends Jaws_Model
         $fast_url = empty($fast_url)? $subject : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'forums_topics');
 
-
     }
 
 }
