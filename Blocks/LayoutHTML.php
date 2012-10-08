@@ -14,8 +14,8 @@ class BlocksLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access public
-     * @return  array   actions array
+     * @access  public
+     * @return  array   Actions array
      */
     function LoadLayoutActions()
     {

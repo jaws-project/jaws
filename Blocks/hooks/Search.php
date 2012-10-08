@@ -13,7 +13,7 @@ class BlocksSearchHook
     /**
      * Gets the gadget's search fields
      *
-     * @access public
+     * @access  public
      * @return  array   array of search fields
      */
     function GetSearchFields() {

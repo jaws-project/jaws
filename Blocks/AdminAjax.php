@@ -45,7 +45,7 @@ class BlocksAdminAjax extends Jaws_Ajax
      * @param   string  $title          Block title
      * @param   string  $contents       Block contents
      * @param   bool    $displayTitle   If true display block title
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function NewBlock($title, $contents, $displayTitle)
     {
@@ -66,7 +66,7 @@ class BlocksAdminAjax extends Jaws_Ajax
      * @param   string  $title          Block title
      * @param   string  $contents       Block contents
      * @param   bool    $displayTitle   If true display block title
-     * @param   array   response array
+     * @param   array  Response array (notice or error)
      */
     function UpdateBlock($id, $title, $contents, $displayTitle)
     {

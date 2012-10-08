@@ -59,7 +59,7 @@ class BlocksAdminModel extends BlocksModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool    True on Success, Jaws_Error on Failure
+     * @return  bool    True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -82,7 +82,7 @@ class BlocksAdminModel extends BlocksModel
      * @param   string  $contents       Block contents
      * @param   bool    $display_title  True if we want to display block title
      * @param   int     $user           User ID
-     * @return  mixed   result array if successful or Jaws_Error or False on failure
+     * @return  mixed   Result array if successful or Jaws_Error or False on failure
      */
     function NewBlock($title, $contents, $display_title, $user)
     {
