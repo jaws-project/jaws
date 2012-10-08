@@ -14,87 +14,87 @@ class Jaws_GadgetInfo
     /**
      * Language translate name of the gadget
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Name = '';
 
     /**
      * Language translate description of the gadget
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Description = '';
 
     /**
      * Gadget version
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Version = '';
 
     /**
      * Required Jaws version required
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Req_JawsVersion = '';
 
     /**
      * Minimum PHP version required
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Min_PHPVersion = '';
 
     /**
      * Is this gadget core gadget?
      *
-     * @var    boolean
-     * @access private
+     * @var     bool
+     * @access  private
      */
     var $_IsCore = false;
 
     /**
      * Section of the gadget(Gadget, Customers, etc..)
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Section = '';
 
     /**
      * Base URL of gadget's documents
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Wiki_URL = JAWS_WIKI;
 
     /**
      * Format of gadget's documents url
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Wiki_Format = JAWS_WIKI_FORMAT;
 
     /**
      * Required gadgets
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_Requires = array();
 
     /**
      * Default ACL value of frontend gadget access
      *
-     * @var     boolean
+     * @var     bool
      * @access  private
      */
     var $_DefaultACL = true;
@@ -110,25 +110,25 @@ class Jaws_GadgetInfo
     /**
      * Attributes of the gadget
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_Attributes = array();
 
     /**
      * Name of the gadget
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Gadget = '';
 
     /**
      * Constructor
      *
-     * @access public
-     * @param  string $gadget   Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  public
+     * @param   string $gadget   Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Jaws_GadgetInfo($gadget)
     {
@@ -141,9 +141,9 @@ class Jaws_GadgetInfo
      * Initializes the Info object
      *
      * @deprecated
-     * @access public
-     * @param  string   Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  public
+     * @param   string   Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Init($gadget)
     {
@@ -153,11 +153,11 @@ class Jaws_GadgetInfo
     /**
      * Sets an attribute
      *
-     * @access protected
-     * @param string $key         Attribute name
-     * @param string $value       Attribute value
-     * @param string $description Attribute description
-     * @return void
+     * @access  protected
+     * @param   string $key         Attribute name
+     * @param   string $value       Attribute value
+     * @param   string $description Attribute description
+     * @return  void
      */
     function SetAttribute($key, $value, $description = '')
     {
@@ -175,9 +175,9 @@ class Jaws_GadgetInfo
     /**
      * Returns the value of the given attribute key
      *
-     * @access protected
-     * @param  string $key Attribute name
-     * @return mixed  value of the given attribute key
+     * @access  protected
+     * @param   string $key Attribute name
+     * @return  mixed  value of the given attribute key
      */
     function GetAttribute($key)
     {
@@ -194,8 +194,8 @@ class Jaws_GadgetInfo
     /**
      * Get all attributres for the gadget
      *
-     * @access public
-     * @return array Attributes of the gadget
+     * @access  public
+     * @return  array Attributes of the gadget
      */
     function GetAttributes()
     {
@@ -206,9 +206,9 @@ class Jaws_GadgetInfo
      * Sets the gadget name
      *
      * @deprecated
-     * @access protected
-     * @param  string   Gadget translated name
-     * @return void
+     * @access  protected
+     * @param   string   Gadget translated name
+     * @return  void
      */
     function GadgetName($name)
     {
@@ -218,8 +218,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the gadget translated name
      *
-     * @access protected
-     * @return string   Gadget translated name
+     * @access  protected
+     * @return  string   Gadget translated name
      */
     function GetName()
     {
@@ -230,9 +230,9 @@ class Jaws_GadgetInfo
      * Sets the section of the gadget(Gadget, Customers, etc..)
      *
      * @deprecated
-     * @access protected
-     * @param  string   Gadget's section
-     * @return void
+     * @access  protected
+     * @param   string   Gadget's section
+     * @return  void
      */
     function GadgetSection($section)
     {
@@ -242,8 +242,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the gadget's section
      *
-     * @access public
-     * @return string Gadget's section
+     * @access  public
+     * @return  string Gadget's section
      */
     function GetSection()
     {
@@ -260,9 +260,9 @@ class Jaws_GadgetInfo
      * Sets the required Jaws version
      *
      * @deprecated
-     * @access protected
-     * @param  string   Jaws's version
-     * @return void
+     * @access  protected
+     * @param   string   Jaws's version
+     * @return  void
      */
     function RequiresJaws($version)
     {
@@ -272,8 +272,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the jaws version that the gadget requires
      *
-     * @access public
-     * @return string   jaws version
+     * @access  public
+     * @return  string   jaws version
      */
     function GetRequiredJawsVersion()
     {
@@ -288,8 +288,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the minimum php version that the gadget requires
      *
-     * @access public
-     * @return string   jaws version
+     * @access  public
+     * @return  string   jaws version
      */
     function GetMinimumPHPVersion()
     {
@@ -305,11 +305,11 @@ class Jaws_GadgetInfo
      * Sets the manual/doc URL
      *
      * @deprecated
-     * @access protected
-     * @param  string  $page   Gadget's name
-     * @param  string  $url    Manual/Doc base URL
-     * @param  string  $format Format of manual/doc url
-     * @return void
+     * @access  protected
+     * @param   string  $page   Gadget's name
+     * @param   string  $url    Manual/Doc base URL
+     * @param   string  $format Format of manual/doc url
+     * @return  void
      */
     function Doc($page, $url = JAWS_WIKI, $format = JAWS_WIKI_FORMAT)
     {
@@ -320,8 +320,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the gadget doc/manual URL
      *
-     * @access public
-     * @return string Gadget's manual/doc url
+     * @access  public
+     * @return  string Gadget's manual/doc url
      */
     function GetDoc()
     {
@@ -337,9 +337,9 @@ class Jaws_GadgetInfo
      * Sets the gadget description
      *
      * @deprecated
-     * @access protected
-     * @param  string  $desc   Gadget description
-     * @return void
+     * @access  protected
+     * @param   string  $desc   Gadget description
+     * @return  void
      */
     function GadgetDescription($desc)
     {
@@ -349,8 +349,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the gadget description
      *
-     * @access public
-     * @return string   Gadget description
+     * @access  public
+     * @return  string   Gadget description
      */
     function GetDescription()
     {
@@ -361,9 +361,9 @@ class Jaws_GadgetInfo
      * Sets the gadget version
      *
      * @deprecated
-     * @access protected
-     * @param  string   $version    Gadget version
-     * @return void
+     * @access  protected
+     * @param   string   $version    Gadget version
+     * @return  void
      */
     function GadgetVersion($version)
     {
@@ -373,8 +373,8 @@ class Jaws_GadgetInfo
     /**
      * Gets the gadget version
      *
-     * @access public
-     * @return string Gadget's version
+     * @access  public
+     * @return  string Gadget's version
      */
     function GetVersion()
     {
@@ -384,9 +384,9 @@ class Jaws_GadgetInfo
     /**
      * Register required gadgets
      *
-     * @access public
+     * @access  public
      * @param  mixed $argv variable list of required gadgets
-     * @return void
+     * @return  void
      */
     function Requires($argv)
     {
@@ -409,7 +409,7 @@ class Jaws_GadgetInfo
      *
      * @deprecated
      * @access  public
-     * @param   boolean $default    True for global access and False for restricted
+     * @param   bool    $default    True for global access and False for restricted
      * @return  void
      */
     function SetDefaultACL($default = true)
@@ -434,9 +434,9 @@ class Jaws_GadgetInfo
     /**
      * Gets the short description of a given ACL key
      *
-     * @access public
-     * @param  string $key  ACL Key
-     * @return string The ACL description
+     * @access  public
+     * @param   string $key  ACL Key
+     * @return  string The ACL description
      */
     function GetACLDescription($key)
     {

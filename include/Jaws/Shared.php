@@ -18,7 +18,7 @@ class Jaws_Shared
      * @access  public
      * @param   string   $gadget  Gadget name that has the shared method
      * @param   string   $method  Shared method
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function AddNewMethod($gadget, $method)
     {
@@ -62,7 +62,7 @@ class Jaws_Shared
      * @access  public
      * @param   string   $gadget  Gadget name that has the shared method
      * @param   string   $method  Shared method
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function DeleteMethod($gadget, $method)
     {
@@ -145,7 +145,7 @@ class Jaws_Shared
      * Gets information of a shared method by giving its shared method ID
      *
      * @access  public
-     * @param   integer  $id  id of method
+     * @param   int      $id  id of method
      * @return  array    Properties of a shared method
      */
     function GetSharedMethodByID($id)
@@ -194,7 +194,7 @@ class Jaws_Shared
      * @param   int      $shared   ID of shared method
      * @param   string   $source   Source to accept, drop or reject
      * @param   string   $type     Type of rule (ACCEPT, DROP or REJECT)
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function AddNewAccess($shared, $source = '*', $type = 'ACCEPT')
     {
@@ -238,7 +238,7 @@ class Jaws_Shared
      * @param   int      $shared   Shared method
      * @param   string   $source   Source to accept, drop or reject
      * @param   string   $type     Type of rule (ACCEPT, DROP or REJECT)
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function UpdateAccess($rule, $shared, $source = '*', $type = 'ACCEPT')
     {
@@ -282,7 +282,7 @@ class Jaws_Shared
      *
      * @access  public
      * @param   string   $id      Shared method rule
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function DeleteAccess($id)
     {
@@ -309,7 +309,7 @@ class Jaws_Shared
      * @access  public
      * @param   string   $gadget  Gadget name that has the shared method
      * @param   string   $method  Shared method
-     * @return  boolean  True(Success) or Jaws_Error(Failure)
+     * @return  bool     True(Success) or Jaws_Error(Failure)
      */
     function DeleteAllMethodAccess($gadget, $method)
     {
@@ -532,7 +532,7 @@ class Jaws_Shared
      * @param   string   $method  Shared method
      * @param   string   $md5     MD5Key. It should be the URL on the other side but in MD5.
      * @param   string   $type    Type of access (by default uses the one in registry)
-     * @return  boolean  True if user can use the method
+     * @return  bool     True if user can use the method
      */
     function HasAccess($gadget, $method, $md5, $type = '')
     {

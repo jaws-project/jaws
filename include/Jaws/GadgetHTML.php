@@ -14,16 +14,16 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * Are we running Ajax?
      *
      * @access  private
-     * @var     boolean
+     * @var     bool
      */
     var $_usingAjax = false;
 
     /**
      * Constructor
      *
-     * @access public
-     * @param  string $gadget Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  public
+     * @param   string $gadget Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Jaws_GadgetHTML($gadget)
     {
@@ -44,9 +44,9 @@ class Jaws_GadgetHTML extends Jaws_Gadget
     /**
      * Refactor Init, Jaws_GadgetHTML::Init() loads the Piwi stuff
      *
-     * @access public
-     * @param  string $gadget Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  public
+     * @param   string $gadget Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Init($gadget)
     {
@@ -97,7 +97,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      *
      * @access  public
      * @param   string  $action to Verify
-     * @return  boolean True if action is standalone, if not, returns false
+     * @return  bool    True if action is standalone, if not, returns false
      */
     function IsStandAlone($action)
     {
@@ -112,7 +112,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      *
      * @access  public
      * @param   string  $action to Verify
-     * @return  boolean True if action is standalone of the controlpanel if not, returns false
+     * @return  bool    True if action is standalone of the controlpanel if not, returns false
      */
     function IsStandAloneAdmin($action)
     {
@@ -142,7 +142,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * ?>
      * </code>
      *
-     * @access public
+     * @access  public
      */
     function Ajax()
     {
@@ -224,7 +224,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      *
      * @access  public
      * @param   string  $gadget Gadget's Name
-     * @return  boolean Returns true if the gadget is valid, otherwise will finish the execution
+     * @return  bool    Returns true if the gadget is valid, otherwise will finish the execution
      */
     function IsValid($gadget)
     {
@@ -339,7 +339,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * Returns the state of usingAjax
      *
      * @access  public
-     * @return  boolean
+     * @return  bool
      */
     function usingAjax()
     {
@@ -353,7 +353,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * @param   string     $action    Gadget's action name
      * @param   array      $params    Params that the URL map requires
      * @param   array      $params    Params that the URL map requires
-     * @param   boolean    $useExt    Append the extension? (if there's)
+     * @param   bool       $useExt    Append the extension? (if there's)
      * @param   mixed      URIPrefix  Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string     The mapped URL
      */
@@ -361,4 +361,5 @@ class Jaws_GadgetHTML extends Jaws_Gadget
     {
         return $GLOBALS['app']->Map->GetURLFor($this->_Name, $action, $params, $useExt, $URIPrefix);
     }
+
 }

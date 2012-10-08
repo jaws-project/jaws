@@ -16,11 +16,11 @@ class Jaws_XSS
     /**
      * Parses the text
      *
-     * @access public
-     * @param  string $string String to parse
-     * @param  boolean $strict How strict we can be. True will be very strict (default), false
+     * @access  public
+     * @param   string $string String to parse
+     * @param   bool   $strict How strict we can be. True will be very strict (default), false
      *                         will allow some attributes (id) and tags (object, applet, embed)
-     * @return string The safe string
+     * @return  string The safe string
      */
     function parse($string, $strict = null)
     {

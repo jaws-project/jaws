@@ -15,23 +15,23 @@ class Jaws_Translate
     /**
      * Default language to use
      *
-     * @access private
-     * @var    string
+     * @access  private
+     * @var     string
      */
     var $_defaultLanguage = 'en';
 
     /**
      * load user translated files
      *
-     * @access private
-     * @var    boolean
+     * @access  private
+     * @var     bool
      */
     var $_load_user_translated = true;
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws_Translate($load_user_translated = true)
     {
@@ -62,11 +62,11 @@ class Jaws_Translate
     /**
      * Translate a string.
      *
-     * @access public
+     * @access  public
      * @static
-     * @param string $string The ID of the string to translate.
-     * @param array $replacements An array replacements to make in the string.
-     * @return string The tranlsated string, with replacements made.
+     * @param   string $string The ID of the string to translate.
+     * @param   array $replacements An array replacements to make in the string.
+     * @return  string The tranlsated string, with replacements made.
      */
     function Translate($lang, $string, $replacements = array())
     {
@@ -107,11 +107,11 @@ class Jaws_Translate
      * Loaded translations are kept in $GLOBALS['i18n'], so that they aren't
      * reloaded.
      *
-     * @access public
+     * @access  public
      * @static
-     * @param string module The translation to load.
-     * @param string type   Type of modulr(JAWS_OTHERS, JAWS_GADGET, JAWS_PLUGIN)
-     * @return void
+     * @param   string module The translation to load.
+     * @param   string type   Type of modulr(JAWS_OTHERS, JAWS_GADGET, JAWS_PLUGIN)
+     * @return  void
      */
     function LoadTranslation($module, $type = JAWS_OTHERS, $lang = null)
     {
@@ -189,9 +189,9 @@ class Jaws_Translate
  *
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
  *
- * @access public
- * @param string        string The string to translate.
- * @return string
+ * @access  public
+ * @param   string        string The string to translate.
+ * @return  string
  */
 function _t($string)
 {
@@ -213,10 +213,10 @@ function _t($string)
  *
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
  *
- * @access public
- * @param string        lang The language.
- * @param string        string The string to translate.
- * @return string
+ * @access  public
+ * @param   string        lang The language.
+ * @param   string        string The string to translate.
+ * @return  string
  */
 function _t_lang($lang, $string)
 {

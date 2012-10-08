@@ -14,54 +14,54 @@ class Jaws_Mail
     // {{{ Variables
     /**
      * The mailer type
-     * @param string $mailer The mailer type
+     * @param   string $mailer The mailer type
      */
     var $mailer = '';
 
     // {{{ Variables
     /**
      * Send email via this email
-     * @param string $gate_email The default site email address
+     * @param   string $gate_email The default site email address
      */
     var $gate_email = '';
 
     // {{{ Variables
     /**
      * From name
-     * @param string $gate_title The default site email name
+     * @param   string $gate_title The default site email name
      */
     var $gate_title = '';
 
     /**
      * SMTP email verification?
-     * @param boolean $smtp_vrfy SMTP email verification?
+     * @param   bool    $smtp_vrfy SMTP email verification?
      */
     var $smtp_vrfy = false;
 
     // {{{ Variables
     /**
      * The server infos (host,login,pass)
-     * @param array $server The server infos
+     * @param   array $server The server infos
      */
     var $params = array();
 
     /**
      * The email recipients.
-     * @param array $recipients The recipients.
+     * @param   array $recipients The recipients.
      */
     var $recipient = array();
 
     /**
      * The email headers
      *
-     * @param array string $headers The headers of the mail.
+     * @param   array string $headers The headers of the mail.
      */
     var $headers = array();
 
     /**
      * The crlf character(s)
      *
-     * @param string $crlf
+     * @param   string $crlf
      */
     var $crlf = "\n";
 
@@ -94,7 +94,7 @@ class Jaws_Mail
      * This function loads the mail settings from
      * the registry.
      *
-     * @access public
+     * @access  public
      */
     function Init()
     {
@@ -126,10 +126,10 @@ class Jaws_Mail
     /**
      * This adds a recipient to the mail to send.
      *
-     * @param string $recipient     The recipient to add.
-     * @param string $inform_type   Inform type(To, Bcc, Cc)
-     * @access public
-     * @return string recipients
+     * @param   string $recipient     The recipient to add.
+     * @param   string $inform_type   Inform type(To, Bcc, Cc)
+     * @access  public
+     * @return  string recipients
      */
     function AddRecipient($recipient = '', $inform_type = 'To')
     {
@@ -162,9 +162,9 @@ class Jaws_Mail
     /**
      * This function sets the subject of the email to send.
      *
-     * @param string $subject       Subject of the email.
-     * @access public
-     * @return void
+     * @param   string $subject       Subject of the email.
+     * @access  public
+     * @return  void
      */
     function SetSubject($subject = '')
     {
@@ -174,10 +174,10 @@ class Jaws_Mail
     /**
      * This function sets the from of the email to send.
      *
-     * @param string $from_email    Who the email is from(E-mail address).
-     * @param string $from_name     Who the email is from(name).
-     * @access public
-     * @return voild
+     * @param   string $from_email    Who the email is from(E-mail address).
+     * @param   string $from_name     Who the email is from(name).
+     * @access  public
+     * @return  voild
      */
     function SetFrom($from_email = '', $from_name = '')
     {
@@ -198,10 +198,10 @@ class Jaws_Mail
      * This function sets the body, the structure
      * of the email, what's in it..
      *
-     * @param string $body   The body of the email
-     * @param string $format The format to use.
-     * @access protected
-     * @return string $body
+     * @param   string $body   The body of the email
+     * @param   string $format The format to use.
+     * @access  protected
+     * @return  string $body
      */
     function SetBody($body, $format = 'html')
     {
@@ -232,11 +232,8 @@ class Jaws_Mail
     /**
      * This function sends the email
      *
-     * @param array string recipients The recipients
-     * @param array string headers    The email headers
-     * @param       string from       The email sender
-     * @param       string body       The email body
-     * @access public
+     * @access  public
+     * @return  mixed
      */
     function send()
     {

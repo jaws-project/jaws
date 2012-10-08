@@ -14,8 +14,8 @@ class Jaws_Model
 {
     /**
      * Model's name
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      * @see SetName()
      * @see GetName()
      */
@@ -23,8 +23,8 @@ class Jaws_Model
 
     /**
      * Model's name
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      * @see SetDescription()
      * @see GetDescription()
      */
@@ -32,8 +32,8 @@ class Jaws_Model
 
     /**
      * Model's name
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      * @see SetVersion()
      * @see GetVersion()
      */
@@ -42,9 +42,9 @@ class Jaws_Model
     /**
      * Refactor Init, Jaws_Model::Init()
      *
-     * @access public
-     * @param  string $gadget Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  public
+     * @param   string $gadget Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Jaws_Model($gadget = '')
     {
@@ -122,7 +122,7 @@ class Jaws_Model
      * Gadgets should override this method only if they need to perform actions to install.
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -133,7 +133,7 @@ class Jaws_Model
      * Updates the gadget
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateGadget()
     {
@@ -141,7 +141,7 @@ class Jaws_Model
     }
 
     /**
-     * @access public
+     * @access  public
      */
     function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
     {
@@ -234,7 +234,7 @@ class Jaws_Model
     /**
      * Installs the ACLs defined in the Info
      *
-     * @access public
+     * @access  public
      */
     function InstallACLs()
     {
@@ -253,7 +253,7 @@ class Jaws_Model
     /**
      * Installs the ACLs defined in the Info
      *
-     * @access public
+     * @access  public
      */
     function UninstallACLs()
     {
@@ -273,7 +273,7 @@ class Jaws_Model
      * @access  protected
      * @param   string     $fast_url     Fast URL
      * @param   string     $table        DB table name (without [[ ]])
-     * @param   boolean    $unique_check must be false in update methods
+     * @param   bool       $unique_check must be false in update methods
      * @param   string     $field        Table field where fast_url is stored
      * @return  string     Correct fast URL
      */

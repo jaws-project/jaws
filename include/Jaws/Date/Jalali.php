@@ -17,7 +17,7 @@ class Jaws_Date_Jalali extends Jaws_Date
     var $_LeapYear = array(1, 5, 9, 13, 17, 22, 26, 30);
 
     /**
-     * @access private
+     * @access  private
      */
     var $_JalaliDaysInMonthes = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
 
@@ -26,7 +26,7 @@ class Jaws_Date_Jalali extends Jaws_Date
      *
      * @param   int     $year  Jalali year
      * @access  private
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function IsJalaliLeapYear($year)
     {
@@ -40,7 +40,7 @@ class Jaws_Date_Jalali extends Jaws_Date
      * @param   int     $month  Jalali month
      * @param   int     $day    Jalali day
      * @access  public
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function JalaliTotalDays($year, $month, $day)
     {
@@ -186,8 +186,8 @@ class Jaws_Date_Jalali extends Jaws_Date
    /**
     * Format the input date.
     *
-    * @param  string  $date   Date string
-    * @param  string  $format Format to use
+    * @param   string  $date   Date string
+    * @param   string  $format Format to use
     * @return The original date with a new format
     */
     function Format($date, $format = null)
@@ -215,8 +215,8 @@ class Jaws_Date_Jalali extends Jaws_Date
    /**
     * Format the input date.
     *
-    * @param  string  $date   Date string
-    * @param  string  $format Format to use
+    * @param   string  $date   Date string
+    * @param   string  $format Format to use
     * @return The original date with a new format
     */
     function DateFormat($format, $date)

@@ -573,9 +573,9 @@ class Jaws_Template
     /**
      * Check if a given block exists
      *
-     * @param string $pathString Block path
-     * @return boolean True if block is found, otherwise false.
-     * @access public
+     * @param   string $pathString Block path
+     * @return  bool    True if block is found, otherwise false.
+     * @access  public
      */
     function BlockExists($pathString)
     {
@@ -605,9 +605,9 @@ class Jaws_Template
     /**
      * Check if a variable exists in curren block
      *
-     * @param string $variable Variable name
+     * @param   string $variable Variable name
      * @return True if variable found, otherwise false
-     * @access public
+     * @access  public
      */
     function VariableExists($variable)
     {

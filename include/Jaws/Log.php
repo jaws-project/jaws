@@ -83,8 +83,8 @@ class Jaws_Log
     /**
      * The stack of messages
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      * @see    GetMessageStack()
      */
     var $_MessageStack;
@@ -175,7 +175,7 @@ class Jaws_Log
      * @access  public
      * @param   string  $priority  The severity level of log
      * @param   string  $msg       Message to log
-     * @param   integer $backtrace Log trace back level
+     * @param   int     $backtrace Log trace back level
      */
     function Log($priority, $msg, $backtrace = 0)
     {
@@ -204,7 +204,7 @@ class Jaws_Log
     /**
      * This function prints a variable in a human readable form to the log method specified
      *
-     * @access public
+     * @access  public
      * @param  $mixed mixed Object to display
      */
     function VarDump($mixed = null)
@@ -434,10 +434,10 @@ class Jaws_Log
  *
  * Passes it's arguments to Jaws_Log::Log to do the actual log.
  *
- * @access public
+ * @access  public
  * @param   string  $priority  The severity level of log
  * @param   string  $msg       Message to log
- * @param   integer $backtrace Log trace back level
+ * @param   int     $backtrace Log trace back level
  */
 function _log($priority, $msg, $backtrace = 0)
 {
@@ -451,7 +451,7 @@ function _log($priority, $msg, $backtrace = 0)
  *
  * Passes it's arguments to Jaws_Log::VarDump to do the actual dump.
  *
- * @access public
+ * @access  public
  * @param  $mixed mixed Object to display
  */
 function _log_var_dump($mixed = null)

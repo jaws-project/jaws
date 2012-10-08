@@ -12,14 +12,14 @@ class Jaws_Cache_File extends Jaws_Cache
 {
     /**
      * Cache path
-     * @access private
+     * @access  private
      */
     var $_path = '';
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      * @return Null
      */
     function Jaws_Cache_File()

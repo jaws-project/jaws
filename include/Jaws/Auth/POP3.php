@@ -13,32 +13,32 @@ class Jaws_Auth_POP3
 {
     /**
      * Authentication ID
-     * @access private
+     * @access  private
      */
     var $_AuthID = '';
 
     /**
      * username
-     * @access private
+     * @access  private
      */
     var $_User = '';
 
     /**
      * POP3 server
-     * @access private
+     * @access  private
      */
     var $_Server = 'localhost';
 
     /**
      * POP3 port
-     * @access private
+     * @access  private
      */
     var $_Port = '110';
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws_Auth_POP3()
     {
@@ -49,7 +49,7 @@ class Jaws_Auth_POP3
     /**
      * Authenticate user/password
      *
-     * @access public
+     * @access  public
      */
     function Auth($user, $password)
     {
@@ -75,7 +75,7 @@ class Jaws_Auth_POP3
     /**
      * Attributes of logged user
      *
-     * @access public
+     * @access  public
      */
     function GetAttributes()
     {

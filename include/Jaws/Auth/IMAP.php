@@ -12,38 +12,38 @@ class Jaws_Auth_IMAP
 {
     /**
      * Authentication ID
-     * @access private
+     * @access  private
      */
     var $_AuthID = '';
 
     /**
      * username
-     * @access private
+     * @access  private
      */
     var $_User = '';
 
     /**
      * IMAP server
-     * @access private
+     * @access  private
      */
     var $_Server = 'localhost';
 
     /**
      * IMAP port
-     * @access private
+     * @access  private
      */
     var $_Port = '143';
 
     /**
      * Using SSL
-     * @access private
+     * @access  private
      */
     var $_SSL = false;
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws_Auth_IMAP()
     {
@@ -55,7 +55,7 @@ class Jaws_Auth_IMAP
     /**
      * Authenticate user/password
      *
-     * @access public
+     * @access  public
      */
     function Auth($user, $password)
     {
@@ -81,7 +81,7 @@ class Jaws_Auth_IMAP
     /**
      * Attributes of logged user
      *
-     * @access public
+     * @access  public
      */
     function GetAttributes()
     {

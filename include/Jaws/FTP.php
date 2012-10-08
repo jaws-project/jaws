@@ -79,7 +79,7 @@ class Jaws_FTP
      * This function loads the ftp settings from
      * the registry.
      *
-     * @access protected
+     * @access  protected
      */
     function LoadFTPSettings()
     {
@@ -225,7 +225,7 @@ class Jaws_FTP
      *
      * @access  public
      * @param   mixed   $target        The file or array of files to set permissions for
-     * @param   integer $permissions   The mode to set the file permissions to
+     * @param   int     $permissions   The mode to set the file permissions to
      * @return  mixed                  True if successful, otherwise Jaws_Error
      */
     function chmod($target, $permissions)

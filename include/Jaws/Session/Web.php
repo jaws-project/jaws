@@ -38,8 +38,8 @@ class Jaws_Session_Web extends Jaws_Session
      * @see Jaws_Session::Create
      *
      * @param   array  $info      User attributes
-     * @param   boolean $remember Remember me
-     * @return  boolean True if can create session.
+     * @param   bool    $remember Remember me
+     * @return  bool    True if can create session.
      */
     function Create($info = array(), $remember = false)
     {
@@ -108,7 +108,7 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   string $gadget Gadget name
      * @param   string $task Task name
      * @param   string $errorMessage Error message to return
-     * @return  boolean True if granted, else print HTML output telling the user he doesn't have permission
+     * @return  bool    True if granted, else print HTML output telling the user he doesn't have permission
      */
     function CheckPermission($gadget, $task, $errorMessage = '')
     {

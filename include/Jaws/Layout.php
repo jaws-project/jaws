@@ -15,7 +15,7 @@ class Jaws_Layout
      * Model that will be used to get data
      *
      * @var    LayoutJaws_Model
-     * @access private
+     * @access  private
      */
     var $_Model;
 
@@ -23,31 +23,31 @@ class Jaws_Layout
      * Template that will be used to print the data
      *
      * @var    Jaws_Template
-     * @access private
+     * @access  private
      */
     var $_Template;
 
     /**
      * Array that will have the meta tags
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_HeadMeta = array();
 
     /**
      * Array that will have the links meta tags
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_HeadLink = array();
 
     /**
      * Array that will have the JS links
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_ScriptLink = array();
 
@@ -55,31 +55,31 @@ class Jaws_Layout
      * Array that will contain other info/text
      * that has to go into the <head> part
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_HeadOther = array();
 
     /**
      * Requested gadget
      *
-     * @access private
-     * @var    string
+     * @access  private
+     * @var     string
      */
     var $_RequestedGadget;
 
     /**
      * Requested gadget's action
      *
-     * @access private
-     * @var    string
+     * @access  private
+     * @var     string
      */
     var $_RequestedAction;
 
     /**
      * Current section
      *
-     * @access private
+     * @access  private
      * @var string
      */
     var $_Section = '';
@@ -87,7 +87,7 @@ class Jaws_Layout
     /**
      * Current section
      *
-     * @access private
+     * @access  private
      * @var string
      */
     var $_SectionAttributes = array();
@@ -155,8 +155,8 @@ class Jaws_Layout
     /**
      * Gets the current section
      *
-     * @access public
-     * @return string Current section
+     * @access  public
+     * @return  string Current section
      */
     function GetSectionName()
     {
@@ -166,8 +166,8 @@ class Jaws_Layout
     /**
      * Is current section wide?
      *
-     * @access public
-     * @return boolean
+     * @access  public
+     * @return  bool
      */
     function IsSectionWide()
     {
@@ -502,7 +502,7 @@ class Jaws_Layout
      * Is gadget item displayable?
      *
      * @access  public
-     * @return  boolean
+     * @return  bool
      */
     function IsDisplayable($gadget, $action, $display_when, $index)
     {
@@ -753,7 +753,7 @@ class Jaws_Layout
      * @access  public
      * @param   string  $name           Key of the meta tag
      * @param   string  $content        Value of the key
-     * @param   boolean $use_http_equiv Use the equiv of HTTP
+     * @param   bool    $use_http_equiv Use the equiv of HTTP
      */
     function AddHeadMeta($name, $content, $use_http_equiv = false)
     {
@@ -769,10 +769,10 @@ class Jaws_Layout
      * @param   string  $href  The HREF
      * @param   string  $rel   The REL that will be associated
      * @param   string  $type  Type of HeadLink
-     * @param   boolean $checkInTheme Check if resource exists in the current theme directory
+     * @param   bool    $checkInTheme Check if resource exists in the current theme directory
      * @param   string  $title Title of the HeadLink
      * @param   string  $media Media type, screen, print or such
-     * @param   boolean $standanlone for use in static load
+     * @param   bool    $standanlone for use in static load
      */
     function AddHeadLink($href, $rel, $type, $title = '', $direction = null, $checkInTheme = false,
                          $media = '', $standanlone = false)
@@ -850,7 +850,7 @@ class Jaws_Layout
      * @access  public
      * @param   string  $href   The path for the source.
      * @param   string  $type   The mime type.
-     * @param   boolean $standanlone for use in static load
+     * @param   bool    $standanlone for use in static load
      * @return  mixed   array if standanlone otherwise true
      */
     function AddScriptLink($href, $type = 'text/javascript', $standanlone = false)

@@ -16,7 +16,7 @@ class Jaws_URLMapping
      * Model that will be used to get data
      *
      * @var    UrlMapperModel
-     * @access private
+     * @access  private
      */
     var $_Model;
 
@@ -35,13 +35,13 @@ class Jaws_URLMapping
      * Initializes the map, just pass null to a param if you want
      * to use the default values
      *
-     * @param   boolean $enabled        When true uses maps
-     * @param   boolean $use_file       When true it uses maps files
-     * @param   boolean $use_rewrite    Set to true if you're using
+     * @param   bool    $enabled        When true uses maps
+     * @param   bool    $use_file       When true it uses maps files
+     * @param   bool    $use_rewrite    Set to true if you're using
      *                                  mod_rewrite (don't show ? in url)
      * @param   string  $use_aliases    When true it parses aliases in each 'Parse' request
      * @param   string  $extension      Extension URL maps should append or parse
-     * @access public
+     * @access  public
      */
     function Jaws_URLMapping($enabled = null, $use_rewrite = null, $use_aliases = null, $extension = null)
     {
@@ -97,8 +97,8 @@ class Jaws_URLMapping
      * @param   string  $extension  Extension of mapped utl (e.g. html, xml, ....)
      * @param   array   $reqs       Array with the validation for each var
      * @param   array   $extraparms Array with the extra params with its default values
-     * @param   boolean $custom Is it a custom map? (defined by user)
-     * @access public
+     * @param   bool    $custom Is it a custom map? (defined by user)
+     * @access  public
      */
     function Connect($gadget, $action, $map, $extension = '', $reqs = null, $extraparams = null)
     {
@@ -108,7 +108,7 @@ class Jaws_URLMapping
     /**
      * Loads the maps
      *
-     * @access public
+     * @access  public
      */
     function Load()
     {
@@ -332,7 +332,7 @@ class Jaws_URLMapping
      * @param   string  $gadget   Gadget's name
      * @param   string  $action   Gadget's action name
      * @param   array   $params   Params that the URL map requires
-     * @param   boolean $useExt   Append the extension? (if there's)
+     * @param   bool    $useExt   Append the extension? (if there's)
      * @param   mixed   URIPrefix Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string  The real URL map (aka jaws permalink)
      */

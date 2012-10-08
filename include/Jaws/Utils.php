@@ -15,9 +15,9 @@ class Jaws_Utils
     /**
      * Change the color of a row from a given color
      *
-     * @param  string  $color  Original color(so we don't return the same color)
-     * @return string  New color
-     * @access public
+     * @param   string  $color  Original color(so we don't return the same color)
+     * @return  string  New color
+     * @access  public
      */
     function RowColor($color)
     {
@@ -112,7 +112,7 @@ class Jaws_Utils
      * Get request url
      *
      * @access  public
-     * @param   boolean rel_url relative or full URL
+     * @param   bool    rel_url relative or full URL
      * @return  string  get url without base url
      */
     function getRequestURL($rel_url = true)
@@ -140,7 +140,7 @@ class Jaws_Utils
      *
      * @access  public
      * @param   string  $path directory path
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function is_writable($path)
     {
@@ -192,8 +192,8 @@ class Jaws_Utils
      *
      * @access  public
      * @param   string  $path file/directory path
-     * @param   integer $mode see php chmod() function
-     * @return  boolean True/False
+     * @param   int     $mode see php chmod() function
+     * @return  bool    True/False
      */
     function chmod($path, $mode = null)
     {
@@ -235,8 +235,8 @@ class Jaws_Utils
      *
      * @access  public
      * @param   string  $path   Path to the directory
-     * @param   integer $mode   see php chmod() function
-     * @return  boolean True/False
+     * @param   int     $mode   see php chmod() function
+     * @return  bool    True/False
      */
     function mkdir($path, $recursive = 0, $mode = null)
     {
@@ -266,7 +266,7 @@ class Jaws_Utils
      * @access  public
      * @param   text    $source Path to the source file or directory
      * @param   text    $dest   The destination path
-     * @param   integer $mode   see php chmod() function
+     * @param   int     $mode   see php chmod() function
      * @see http://www.php.net/copy
      */
     function copy($source, $dest, $mode = null)
@@ -307,8 +307,8 @@ class Jaws_Utils
      * Delete directories and files
      *
      * @access  public
-     * @param   boolean $dirs_include
-     * @param   boolean $self_include
+     * @param   bool    $dirs_include
+     * @param   bool    $self_include
      * @see http://www.php.net/rmdir & http://www.php.net/unlink
      */
     function delete($path, $dirs_include = true, $self_include = true)
@@ -363,10 +363,10 @@ class Jaws_Utils
      * param    string  $dest         destination directory(include end directory separator)
      * param    string  $allowFormats permitted file format
      * param    string  $denyFormats  not permitted file format
-     * @param   boolean $overwrite    overwite file if exist
-     * @param   boolean $move_files   moving or only copying files. this param avail for non-uploaded files
-     * @param   integer $max_size     max size of file
-     * @return  boolean True/False
+     * @param   bool    $overwrite    overwite file if exist
+     * @param   bool    $move_files   moving or only copying files. this param avail for non-uploaded files
+     * @param   int     $max_size     max size of file
+     * @return  bool    True/False
      */
     function UploadFiles($files, $dest, $allowFormats = '', $denyFormats = '',
                          $overwrite = true, $move_files = true, $max_size = null)
@@ -463,9 +463,9 @@ class Jaws_Utils
      * @param   array   $files        $_FILES array
      * param    string  $dest         destination directory(include end directory separator)
      * param    string  $extractToDir create separate directory for extracted files
-     * @param   boolean $overwrite    overwite directory if exist
-     * @param   integer $max_size     max size of file
-     * @return  boolean True/False
+     * @param   bool    $overwrite    overwite directory if exist
+     * @param   int     $max_size     max size of file
+     * @return  bool    True/False
      */
     function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
     {

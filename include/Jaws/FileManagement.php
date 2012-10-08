@@ -14,9 +14,9 @@ class Jaws_FileManagement
      * Removes a file or a complete directory.
      *
      * THANKS TO: http://aidan.dotgeek.org/lib/?file=function.rmdirr.php
-     * @access   public
-     * @param    string  $dirname File/Directory to remove
-     * @return   boolean True or false on error
+     * @access  public
+     * @param   string  $dirname File/Directory to remove
+     * @return  bool    True or false on error
      */
     function FullRemoval($dirname)
     {

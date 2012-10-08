@@ -18,7 +18,7 @@ class Jaws_EventListener
      * @param   string  $gadget  Gadget name that listens
      * @param   string  $call    Call name (call that is waiting)
      * @param   string  $method  Gadget method that will be executed
-     * @return  boolean True if listener was added, otherwise returns Jaws_Error
+     * @return  bool    True if listener was added, otherwise returns Jaws_Error
      */
     function NewListener($gadget, $call, $method)
     {
@@ -48,7 +48,7 @@ class Jaws_EventListener
      * @access  public
      * @param   string  $gadget  Gadget name
      * @param   string  $method  Gadget method name
-     * @return  boolean True if listener was deleted, otherwise returns Jaws_Error
+     * @return  bool    True if listener was deleted, otherwise returns Jaws_Error
      */
     function DeleteListener($gadget, $method = '')
     {
@@ -78,7 +78,7 @@ class Jaws_EventListener
      * @param   string  $gadget  Gadget name
      * @param   mixed   $param   Param that is send to the listener, can be a
      *                           string, int, array, object, etc.
-     * @return  boolean True if call was received/executed successfully, otherwise returns Jaws_Error
+     * @return  bool    True if call was received/executed successfully, otherwise returns Jaws_Error
      */
     function Listen($call, $param)
     {

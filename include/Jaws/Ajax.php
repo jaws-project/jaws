@@ -72,7 +72,7 @@ class Jaws_Ajax
      * Gets the existence of the session status
      *
      * @access   private
-     * @return   boolean
+     * @return  bool
      */
     function GetSessionExistence()
     {
@@ -95,7 +95,7 @@ class Jaws_Ajax
      * Gets the session status
      *
      * @access  private
-     * @return  boolean
+     * @return  bool
      */
     function IsSessionAlive()
     {
@@ -119,14 +119,14 @@ class Jaws_Ajax
     /**
      * Gets the session permission status
      *
-     * @access public
-     * @param  string $gadget   Gadget name
-     * @param  string  $task    Task name
-     * @return boolean
+     * @access  public
+     * @param   string $gadget   Gadget name
+     * @param   string  $task    Task name
+     * @return  bool
      */
     function GetSessionPermission($gadget, $task)
     {
         return $GLOBALS['app']->Session->GetPermission($gadget, $task) ? true : false;
     }
+
 }
-?>

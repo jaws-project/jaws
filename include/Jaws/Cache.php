@@ -12,7 +12,7 @@ class Jaws_Cache
 {
     /**
      * Cache driver
-     * @access private
+     * @access  private
      */
     var $_Driver;
 

@@ -110,9 +110,9 @@ class Jaws_Header
     /**
      * Change the content disposition of the file and change its filename
      *
-     * @param  string  $ctype  Content type
-     * @param  string  $file   Filename
-     * @accses public
+     * @param   string  $ctype  Content type
+     * @param   string  $file   Filename
+     * @access  public
      */
     function ChangeContent($ctype, $file)
     {

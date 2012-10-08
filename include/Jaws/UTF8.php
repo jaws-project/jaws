@@ -14,9 +14,9 @@ class Jaws_UTF8
     /**
      * Detect if the string is UTF8 or not
      *
-     * @param  string $string String to evaluate
-     * @access public
-     * @return boolean True if UTF8 encoding is detected, false if not
+     * @param   string $string String to evaluate
+     * @access  public
+     * @return  bool    True if UTF8 encoding is detected, false if not
      */
     function IsUTF8($str)
     {
@@ -34,9 +34,9 @@ class Jaws_UTF8
 
     /**
      * Encode text to UTF8
-     * @param  string $str String to encode
-     * @access public
-     * @return string Encoded string
+     * @param   string $str String to encode
+     * @access  public
+     * @return  string Encoded string
      */
     function UTF8Encode($str)
     {
@@ -45,9 +45,9 @@ class Jaws_UTF8
 
     /**
      * Decode text to UTF8
-     * @param  string $str String to decode
-     * @access public
-     * @return string Decoded string
+     * @param   string $str String to decode
+     * @access  public
+     * @return  string Decoded string
      */
     function UTF8Decode($str)
     {

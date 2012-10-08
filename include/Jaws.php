@@ -15,29 +15,29 @@ class Jaws
     /**
      * Is index page
      *
-     * @var    boolean
-     * @access private
+     * @var     bool
+     * @access  private
      */
     var $_IsIndex = false;
 
     /**
      * The main request's gadget
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_RequestGadget = '';
 
     /**
      * The main request's action
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_RequestAction = '';
 
     /**
      * Default preferences
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_Preferences = array(
         'theme'             => 'jaws',
@@ -50,64 +50,64 @@ class Jaws
 
     /**
      * The application's theme.
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_Theme = 'jaws';
 
     /**
      * The language the application is running in.
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_Language = 'en';
 
     /**
      * The calendar type.
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_CalendarType = 'Gregorian';
 
     /**
      * The calendar language the application is running in.
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_CalendarLanguage = 'en';
 
     /**
      * The editor application is using
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_Editor = null;
 
     /**
      * The timezone
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_Timezone = null;
 
     /**
      * Browser flag
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_BrowserFlag = '';
 
     /**
      * Browser HTTP_ACCEPT_ENCODING
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      */
     var $_BrowserEncoding = '';
 
     /**
      * Should application use layout?
-     * @var    boolean
-     * @access protected
+     * @var     bool
+     * @access  protected
      */
     var $_UseLayout = false;
 
@@ -115,7 +115,7 @@ class Jaws
      * Store gadget object for later use so we aren't running
      * around with multiple copies
      * @var array
-     * @access protected
+     * @access  protected
      */
     var $_Gadgets = array();
 
@@ -123,21 +123,21 @@ class Jaws
      * Store plugin object for later use so we aren't running
      * around with multiple copies
      * @var array
-     * @access protected
+     * @access  protected
      */
     var $_Plugins = array();
 
     /**
      * Store hook object for later use so we aren't running
      * @var array
-     * @access protected
+     * @access  protected
      */
     var $_Classes = array();
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws()
     {
@@ -149,8 +149,8 @@ class Jaws
     /**
      * Does everything needed to get the application to a usable state.
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function create()
     {
@@ -172,8 +172,8 @@ class Jaws
     /**
      * Load the default application preferences(language, theme, ...)
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function loadPreferences()
     {
@@ -192,8 +192,8 @@ class Jaws
     /**
      * Set the language and theme, first based on session data, then on application defaults.
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function loadDefaults()
     {
@@ -290,8 +290,8 @@ class Jaws
     /**
      * Setup the applications session.
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function InstanceSession()
     {
@@ -303,8 +303,8 @@ class Jaws
     /**
      * Setup the applications cache.
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function InstanceCache()
     {
@@ -315,8 +315,8 @@ class Jaws
     /**
      * Setup the applications Layout object.
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function InstanceLayout()
     {
@@ -327,8 +327,8 @@ class Jaws
     /**
      * Get the boolean answer if application is using a layout
      *
-     * @return boolean
-     * @access public
+     * @return  bool
+     * @access  public
      */
     function IsUsingLayout()
     {
@@ -339,7 +339,7 @@ class Jaws
      * Get the name of the Theme
      *
      * @access  public
-     * @param   boolean rel_url relative url
+     * @param   bool    rel_url relative url
      * @return  string The name of the theme
      */
     function GetTheme($rel_url = true)
@@ -534,11 +534,11 @@ class Jaws
      * stores it globally for later use so we do not have duplicates
      * of the same instance around in our code.
      *
-     * @access public
-     * @param  string Name of the gadget
-     * @param  string The type being loaded
-     * @param  string Try to find gadget class in this file
-     * @return mixed  Gadget class object on successful, Jaws_Error otherwise
+     * @access  public
+     * @param   string Name of the gadget
+     * @param   string The type being loaded
+     * @param   string Try to find gadget class in this file
+     * @return  mixed  Gadget class object on successful, Jaws_Error otherwise
      */
     function LoadGadget($gadget, $type = 'HTML', $filename = '')
     {
@@ -683,9 +683,9 @@ class Jaws
      * stores it globally for later use so we do not have duplicates
      * of the same instance around in our code.
      *
-     * @access public
-     * @param string $plugin Name of the plugin
-     * @return mixed Plugin class object on successful, Jaws_Error otherwise
+     * @access  public
+     * @param   string $plugin Name of the plugin
+     * @return  mixed Plugin class object on successful, Jaws_Error otherwise
      */
     function LoadPlugin($plugin)
     {
@@ -746,7 +746,7 @@ class Jaws
      * Set main request properties like gadget and action
      *
      * @access  public
-     * @param   boolean $index  Index page?
+     * @param   bool    $index  Index page?
      * @param   string  $gadget Gadget's name
      * @param   string  $action Gadget's action
      * @return  void
@@ -807,7 +807,7 @@ class Jaws
      * Gets a list of installed gadgets (using Singleton), it uses
      * the /gadget/enabled_items
      *
-     * @access   public
+     * @access  public
      * @return   array   Array of enabled_items (and updated)
      */
     function GetInstalledGadgets()
@@ -922,8 +922,8 @@ class Jaws
      * Loads the Jaws Date class.
      * Singleton approach.
      *
-     * @access public
-     * @return object  Date calender object
+     * @access  public
+     * @return  object  Date calender object
      */
     function loadDate()
     {
@@ -946,10 +946,10 @@ class Jaws
     /**
      * Loads a class from within the Jaws dir
      *
-     * @access public
-     * @param  string  $property Jaws app property name
-     * @param  string  $class    Class name
-     * @return object  Date calender object
+     * @access  public
+     * @param   string  $property Jaws app property name
+     * @param   string  $class    Class name
+     * @return  object  Date calender object
      */
     function loadClass($property, $class)
     {
@@ -1087,8 +1087,8 @@ class Jaws
      * Returns the URL of the data
      *
      * @param   string  suffix    suffix part of url
-     * @param   boolean rel_url   relative url
-     * @param   boolean base_data use JAWS_BASE_DATA instead of JAWS_DATA
+     * @param   bool    rel_url   relative url
+     * @param   bool    base_data use JAWS_BASE_DATA instead of JAWS_DATA
      * @access  public
      * @return  string  Related URL to data directory
      */
@@ -1190,7 +1190,7 @@ class Jaws
      * use native gzip compression?
      *
      * @access  private
-     * @return  boolean True or False
+     * @return  bool    True or False
      */
     function GZipEnabled()
     {
@@ -1218,7 +1218,7 @@ class Jaws
      * Is actual agent a robot?
      *
      * @access  private
-     * @return  boolean True or False
+     * @return  bool    True or False
      */
     function IsAgentRobot()
     {
@@ -1247,8 +1247,8 @@ class Jaws
      * @access  private
      * @param   mixed   $time   timestamp
      * @param   string  $format date format
-     * @param   boolean $default_timezone   use default timezone instead of user timezone
-     * @return  boolean True or False
+     * @param   bool    $default_timezone   use default timezone instead of user timezone
+     * @return  bool    True or False
      */
     function UTC2UserTime($time = '', $format = '', $default_timezone = false)
     {
@@ -1282,8 +1282,8 @@ class Jaws
      * @access  private
      * @param   mixed   $time   timestamp
      * @param   string  $format date format
-     * @param   boolean $default_timezone   use default timezone instead of user timezone
-     * @return  boolean True or False
+     * @param   bool    $default_timezone   use default timezone instead of user timezone
+     * @return  bool    True or False
      */
     function UserTime2UTC($time, $format = '', $default_timezone = false)
     {

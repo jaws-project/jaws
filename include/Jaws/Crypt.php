@@ -35,7 +35,7 @@ class Jaws_Crypt
     }
 
     /**
-     * @access public
+     * @access  public
      */
     function Init()
     {

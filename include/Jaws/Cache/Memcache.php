@@ -12,14 +12,14 @@ class Jaws_Cache_Memcache extends Jaws_Cache
 {
     /**
      * Memcache object
-     * @access private
+     * @access  private
      */
     var $_memcache;
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      * @return Null
      */
     function Jaws_Cache_File()

@@ -50,7 +50,7 @@ class Jaws_Error
      * @param   string  $message  Error message
      * @param   string  $code     Error code
      * @param   int     $level    The severity level of the error.
-     * @access public
+     * @access  public
      */
     function Jaws_Error($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
@@ -67,8 +67,8 @@ class Jaws_Error
      * @param   string  $message   Error message
      * @param   string  $code      Error code
      * @param   int     $level     The severity level of the error.
-     * @param   integer $backtrace Log trace back level
-     * @access public
+     * @param   int     $backtrace Log trace back level
+     * @access  public
      */
     function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR)
     {
@@ -114,7 +114,7 @@ class Jaws_Error
      *
      * @access  public
      * @param   mixed   $input  Input to validate(can be boolean, object, numeric, etc)
-     * @return  boolean True if input is a Jaws_Error, false if not.
+     * @return  bool    True if input is a Jaws_Error, false if not.
      */
     function IsError(&$input)
     {

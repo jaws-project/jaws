@@ -101,7 +101,7 @@ class Jaws_Widgets_FieldSet extends FieldSet
      * Add a widget, just bin widgets!
      *
      * @param    object   $widget  Widget To add
-     * @access   public
+     * @access  public
      */
     function add($widget, $comment = '')
     {

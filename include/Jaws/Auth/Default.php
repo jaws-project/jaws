@@ -13,20 +13,20 @@ class Jaws_Auth_Default
 {
     /**
      * User model
-     * @access private
+     * @access  private
      */
     var $_Model;
 
     /**
      * Authentication ID
-     * @access private
+     * @access  private
      */
     var $_AuthID = 0;
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws_Auth_Default()
     {
@@ -36,7 +36,7 @@ class Jaws_Auth_Default
     /**
      * Authenticate user/password
      *
-     * @access public
+     * @access  public
      */
     function Auth($user, $password)
     {
@@ -52,7 +52,7 @@ class Jaws_Auth_Default
     /**
      * Attributes of logged user
      *
-     * @access public
+     * @access  public
      */
     function GetAttributes()
     {

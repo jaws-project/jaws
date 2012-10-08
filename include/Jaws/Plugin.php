@@ -34,7 +34,7 @@ class Jaws_Plugin
 
     /**
      * @access  private
-     * @var     boolean
+     * @var     bool
      * @see     function  IsFriendly
      */
     var $_IsFriendly;
@@ -90,7 +90,7 @@ class Jaws_Plugin
      * Get the friendly state of the plugin, friendly or non-friendly
      *
      * @access  public
-     * @return  boolean value of $_IsFriendly
+     * @return  bool    value of $_IsFriendly
      */
     function IsFriendly()
     {
@@ -156,7 +156,7 @@ class Jaws_Plugin
      * Enable the plugin (creates the registry keys)
      *
      * @access  public
-     * @return  boolean  True if everything is OK or Jaws_Error on failure
+     * @return  bool     True if everything is OK or Jaws_Error on failure
      */
     function EnablePlugin($plugin = null)
     {
@@ -244,8 +244,8 @@ class Jaws_Plugin
 
     /**
      * This function disables a plugin
-     * @param string $plugin The name of the plugin to disable
-     * @access public
+     * @param   string $plugin The name of the plugin to disable
+     * @access  public
      */
     function DisablePlugin($plugin = null)
     {

@@ -25,12 +25,12 @@ class Jaws_Widgets_AutoComplete extends Entry
     /*
      * AutoComplete public constructor
      *
-     * @param    string $name   Name of the entry
-     * @param    string $value  Value of the entry (optional)
-     * @param    string $title  Title of the entry (optional)
+     * @param   string $name   Name of the entry
+     * @param   string $value  Value of the entry (optional)
+     * @param   string $title  Title of the entry (optional)
      * @param    int    $length Lenght of the field (optional)
-     * @param    string $status boolean Set the readonly status (optional)
-     * @access   public
+     * @param   string $status boolean Set the readonly status (optional)
+     * @access  public
      */
     function Jaws_Widgets_AutoComplete($name, $value = '', $title = '', $length = '', $status = false)
     {
@@ -83,5 +83,5 @@ class Jaws_Widgets_AutoComplete extends Entry
         $this->_XHTML.= "minChars: 3});\n";
         $this->_XHTML.= "</script>\n";
     }
+
 }
-?>

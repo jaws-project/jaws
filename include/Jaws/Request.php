@@ -88,8 +88,8 @@ class Jaws_Request
     /**
      * Constructor
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function Jaws_Request()
     {
@@ -117,8 +117,8 @@ class Jaws_Request
      * Creates the Jaws_Request instance if it doesn't exist
      * else it returns the already created one.
      *
-     * @return object returns the instance
-     * @access public
+     * @return  object returns the instance
+     * @access  public
      */
     function &getInstance()
     {
@@ -148,12 +148,12 @@ class Jaws_Request
     /**
      * Adds a filter that will be runned on all output beside _getRaw()
      *
-     * @param string name of the filter
-     * @param string the function that will be executed
-     * @param string path of the included if it's needed for the function
+     * @param   string name of the filter
+     * @param   string the function that will be executed
+     * @param   string path of the included if it's needed for the function
      *
-     * @return void
-     * @access public
+     * @return  void
+     * @access  public
      */
     function addFilter($name, $function, $params = null, $include = '')
     {
@@ -168,9 +168,9 @@ class Jaws_Request
     /**
      * Strip null character
      *
-     * @param string    value
-     * @return string   The striped data
-     * @access public
+     * @param   string    value
+     * @return  string   The striped data
+     * @access  public
      */
     function nullstrip(&$value)
     {
@@ -180,9 +180,9 @@ class Jaws_Request
     /**
      * Strip ambiguous characters
      *
-     * @param string    value
-     * @return string   The striped data
-     * @access public
+     * @param   string    value
+     * @return  string   The striped data
+     * @access  public
      */
     function strip_ambiguous($value)
     {
@@ -192,9 +192,9 @@ class Jaws_Request
     /**
      * Filter data with added filter functions
      *
-     * @param string    value
-     * @return string   The filtered data
-     * @access public
+     * @param   string    value
+     * @return  string   The filtered data
+     * @access  public
      */
     function filter(&$value)
     {
@@ -223,10 +223,10 @@ class Jaws_Request
      * Fetches the data with out filter, it's like using
      * the super globals straight.
      *
-     * @param string the key being fetched
-     * @param string which super global is being fetched from
+     * @param   string the key being fetched
+     * @param   string which super global is being fetched from
      *
-     * @access private
+     * @access  private
      */
     function _getRaw($key, $type = '')
     {
@@ -259,9 +259,9 @@ class Jaws_Request
      * Fetches the data with out filter, it's like using
      * the super globals straight.
      *
-     * @param string which super global is being fetched from
+     * @param   string which super global is being fetched from
      *
-     * @access public
+     * @access  public
      */
     function getRawAll($type = '')
     {
@@ -284,14 +284,14 @@ class Jaws_Request
     /**
      * Fetches the data, filters it and then it returns it.
      *
-     * @param string|array the key being fetched, it can be an array
+     * @param   string|array the key being fetched, it can be an array
      *                     with multiple keys in it to fetch and then
      *                     an array will be returned accourdingly.
      *                     Works recursivly, ala $_GET['foo']['bar']['foobar']['helgi']
-     * @param string|array which super global is being fetched from
+     * @param   string|array which super global is being fetched from
      *
-     * @return string|array The filtered data, string or an array depending on the key
-     * @access public
+     * @return  string|array The filtered data, string or an array depending on the key
+     * @access  public
      */
     function get($key, $types = '', $filter = true)
     {
@@ -331,15 +331,15 @@ class Jaws_Request
     /**
      * Does the recursion on the data being fetched
      *
-     * @param array      Array filled with keys, recursion
-     * @param string     Which super global is being fetched from
-     * @param integer    The depth level
+     * @param   array      Array filled with keys, recursion
+     * @param   string     Which super global is being fetched from
+     * @param   int        The depth level
      * @param null|array The data that will be processed, if it's NULL
      *                   then it will populate it with the internal data
      *                   storage
      *
      * @return null|array null if there is no data else an array with the processed data
-     * @access private
+     * @access  private
      */
     function _get($key, $type)
     {
@@ -384,10 +384,10 @@ class Jaws_Request
     /**
      * Reset super global request variables
      *
-     * @param string which super global is being reset,
+     * @param   string which super global is being reset,
      *               if passed value id empty reset all super global request vaiables
      *
-     * @access public
+     * @access  public
      */
     function reset($type = '')
     {

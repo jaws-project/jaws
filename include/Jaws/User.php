@@ -40,7 +40,7 @@ class Jaws_User
      * @param   string  $user      User to validate
      * @param   string  $password  Password of the user
      * @param   string  $onlyAdmin Only validate for admins
-     * @return  boolean Returns true if the user is valid and false if not
+     * @return  bool    Returns true if the user is valid and false if not
      */
     function Valid($user, $password, $onlyAdmin = false)
     {
@@ -136,7 +136,7 @@ class Jaws_User
      * Updates the last login time for the given user
      *
      * @param $user_id integer user id of the user being updated
-     * @return boolean true if all is ok, false if error
+     * @return  bool    true if all is ok, false if error
      */
     function updateLoginTime($user_id)
     {
@@ -263,10 +263,10 @@ class Jaws_User
 
     /**
      * Get the avatar url
-     * @access public
-     * @param  string   $username   Username
-     * @param  string   $email      Email
-     * @return string   Url to avatar image
+     * @access  public
+     * @param   string   $username   Username
+     * @param   string   $email      Email
+     * @return  string   Url to avatar image
      */
     function GetAvatar($avatar, $email, $time = '')
     {
@@ -398,7 +398,7 @@ class Jaws_User
      * @param   mixed   $group      Group ID of users
      * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
      * @param   int     $status     user's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
-     * @return  integer Returns users count
+     * @return  int     Returns users count
      */
     function GetUsersCount($group = false, $superadmin = null, $status = null)
     {
@@ -490,7 +490,7 @@ class Jaws_User
      *
      * @access  public
      * @param   bool    $enabled    enabled groups?(null for both)
-     * @return  integer Returns groups count
+     * @return  int     Returns groups count
      */
     function GetGroupsCount($enabled = null)
     {
@@ -555,7 +555,7 @@ class Jaws_User
      * @param   int     $concurrent_logins  Concurrent logins limitation
      * @param   string  $logon_hours        Logon hours
      * @param   string  $expiry_date        Expiry date
-     * @return  boolean Returns true if user was successfully added, false if not
+     * @return  bool    Returns true if user was successfully added, false if not
      */
     function AddUser($username, $nickname, $email, $password, $superadmin = false,
                      $status = 1, $concurrent_logins = 0, $logon_hours = null, $expiry_date = null)
@@ -663,7 +663,7 @@ class Jaws_User
      * @param   int     $concurrent_logins  Concurrent logins limitation
      * @param   string  $logon_hours        Logon hours
      * @param   string  $expiry_date        Expiry date
-     * @return  boolean Returns true if user was successfully updated, false if not
+     * @return  bool    Returns true if user was successfully updated, false if not
      */
     function UpdateUser($id, $username, $nickname, $email, $password = null, $superadmin = null,
                         $status = null, $concurrent_logins = null, $logon_hours = null, $expiry_date = null)
@@ -813,7 +813,7 @@ class Jaws_User
      * @access  public
      * @param   int     $id    User's ID
      * @param   array   $info  Personal information
-     * @return  boolean Returns true on success, false on failure
+     * @return  bool    Returns true on success, false on failure
      */
     function UpdatePersonalInfo($id, $info = array())
     {
@@ -889,7 +889,7 @@ class Jaws_User
      * @access  public
      * @param   int     $id    User's ID
      * @param   array   $opts  Advanced options
-     * @return  boolean Returns true on success, false on failure
+     * @return  bool    Returns true on success, false on failure
      */
     function UpdateAdvancedOptions($id, $opts = array())
     {
@@ -929,9 +929,9 @@ class Jaws_User
      * @param   string  $name        Group's name
      * @param   string  $title       Group's title
      * @param   string  $description Group's description
-     * @param   boolean $enabled     Group's status
+     * @param   bool    $enabled     Group's status
      * @param   bool    $removable   (Optional) Can the group be removed by users (via UI)?
-     * @return  boolean Returns true if group  was sucessfully added, false if not
+     * @return  bool    Returns true if group  was sucessfully added, false if not
      */
     function AddGroup($name, $title, $description, $enabled, $removable = true)
     {
@@ -977,8 +977,8 @@ class Jaws_User
      * @param   string  $name        Group's title
      * @param   string  $title       Group's name
      * @param   string  $description Group's description
-     * @param   boolean $enabled     Group's status
-     * @return  boolean Returns true if group was sucessfully updated, false if not
+     * @param   bool    $enabled     Group's status
+     * @return  bool    Returns true if group was sucessfully updated, false if not
      */
     function UpdateGroup($id, $name, $title, $description, $enabled)
     {
@@ -1017,7 +1017,7 @@ class Jaws_User
      *
      * @access  public
      * @param   int     $id     User's ID
-     * @return  boolean Returns true if user was sucessfully deleted, false if not
+     * @return  bool    Returns true if user was sucessfully deleted, false if not
      */
     function DeleteUser($id)
     {
@@ -1066,7 +1066,7 @@ class Jaws_User
      *
      * @access  public
      * @param   int     $id     Group's ID
-     * @return  boolean Returns true if group was sucessfully deleted, false if not
+     * @return  bool    Returns true if group was sucessfully deleted, false if not
      */
     function DeleteGroup($id)
     {
@@ -1110,7 +1110,7 @@ class Jaws_User
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
-     * @return  boolean Returns true if user was sucessfully added to the group, false if not
+     * @return  bool    Returns true if user was sucessfully added to the group, false if not
      */
     function AddUserToGroup($user, $group)
     {
@@ -1138,7 +1138,7 @@ class Jaws_User
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
-     * @return  boolean Returns true if user was sucessfully deleted from a group, false if not
+     * @return  bool    Returns true if user was sucessfully deleted from a group, false if not
      */
     function DeleteUserFromGroup($user, $group)
     {
@@ -1167,7 +1167,7 @@ class Jaws_User
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
-     * @return  boolean Returns true if user in in the group or false if not
+     * @return  bool    Returns true if user in in the group or false if not
      */
     function UserIsInGroup($user, $group)
     {
@@ -1196,7 +1196,7 @@ class Jaws_User
      *
      * @access  public
      * @param   string  $key  Secret key
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function GetIDByVerificationKey($key)
     {
@@ -1224,7 +1224,7 @@ class Jaws_User
      * @access  public
      * @param   int     $uid  User's ID
      * @param   string  $key  (Optional) Secret key
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function UpdateVerificationKey($uid, $key = '')
     {

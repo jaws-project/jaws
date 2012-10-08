@@ -165,24 +165,24 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Tells if the bin widget is enabled or not
      *
-     * @var    boolean $_IsEnabled
-     * @access private
+     * @var     bool    $_IsEnabled
+     * @access  private
      */
     var $_IsEnabled = true;
 
     /**
      * Tells if the bin widget is resizable or not
      *
-     * @var    boolean $_IsResizable
-     * @access private
+     * @var     bool    $_IsResizable
+     * @access  private
      */
     var $_IsResizable = true;
 
     /**
      * Default plugins
      *
-     * @var    array $_DefaultPlugins
-     * @access private
+     * @var     array $_DefaultPlugins
+     * @access  private
      */
     var $_DefaultPlugins = array(
         'autogrow', 'clipboard', 'colordialog', 'dialog', 'div', 'docprops',
@@ -380,8 +380,8 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Gets the label of the textarea
      *
-     * @access public
-     * @return string The label to be displayed with the box.
+     * @access  public
+     * @return  string The label to be displayed with the box.
      */
     function getLabel()
     {
@@ -391,8 +391,8 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Sets the label displayed with the textarea
      *
-     * @access public
-     * @param  string $label The label to display.
+     * @access  public
+     * @param   string $label The label to display.
      * @return null
      */
     function setLabel($label)
@@ -403,7 +403,7 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Set the CKEditor theme
      *
-     * @param string $Theme
+     * @param   string $Theme
      */
     function setTheme($Theme)
     {
@@ -411,7 +411,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param string $Skin
+     * @param   string $Skin
      */
     function setSkin($Skin)
     {
@@ -419,7 +419,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param string $Language
+     * @param   string $Language
      */
     function setLanguage($Language)
     {
@@ -427,7 +427,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param boolean $IsEnabled
+     * @param   bool    $IsEnabled
      */
     function setIsEnabled($IsEnabled)
     {
@@ -435,7 +435,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param boolean $IsResizable
+     * @param   bool    $IsResizable
      */
     function setIsResizable($IsResizable)
     {
@@ -443,7 +443,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param string $Plugins
+     * @param   string $Plugins
      */
     function removePlugins($Plugins)
     {
@@ -451,7 +451,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param string $Direction
+     * @param   string $Direction
      */
     function setDirection($Direction)
     {
@@ -467,7 +467,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param mixed $height
+     * @param   arrayed $height
      */
     function setHeight($height)
     {
@@ -475,7 +475,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param mixed $width
+     * @param   arrayed $width
      */
     function setWidth($width)
     {

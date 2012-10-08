@@ -19,7 +19,7 @@ class Jaws_EventShouter
      * @access  public
      * @param   string  $gadget  Gadget name that shouts
      * @param   string  $call    Call name
-     * @return  boolean True if shouter was added, otherwise returns Jaws_Error
+     * @return  bool    True if shouter was added, otherwise returns Jaws_Error
      */
     function NewShouter($gadget, $call)
     {
@@ -48,7 +48,7 @@ class Jaws_EventShouter
      * @access  public
      * @param   string  $gadget  Gadget name
      * @param   string  $call    Call name
-     * @return  boolean True if shouter was deleted, otherwise returns Jaws_Error
+     * @return  bool    True if shouter was deleted, otherwise returns Jaws_Error
      */
     function DeleteShouter($gadget, $call)
     {
@@ -79,7 +79,7 @@ class Jaws_EventShouter
      * @param   string  $gadget  Gadget name
      * @param   mixed   $param   Param that is send to the listener, can be a
      *                           string, int, array, object, etc.
-     * @return  boolean True if shouter didn't returned a Jaws_Error, otherwise returns Jaws_Error
+     * @return  bool    True if shouter didn't returned a Jaws_Error, otherwise returns Jaws_Error
      */
     function Shout($call, $param)
     {

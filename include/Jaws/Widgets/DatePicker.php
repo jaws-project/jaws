@@ -52,5 +52,5 @@ class Jaws_Widgets_DatePicker extends DatePicker
                                              'stylesheet', 'text/css');
         parent::buildXHTML();
     }
+
 }
-?>

@@ -18,48 +18,48 @@ class Jaws_DB
     /**
      * The DB prefix for tables
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_prefix;
 
     /**
      * The DB driver we are using
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_driver;
 
     /**
      * The DB charset
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_charset;
 
     /**
      * This user is DB sdministrator?
      *
-     * @var    boolean
-     * @access private
+     * @var     bool
+     * @access  private
      */
     var $_is_dba;
 
     /**
      * This DB path
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_db_path;
 
     /**
      * This DB options
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
      var $_dsn;
 
@@ -99,10 +99,10 @@ class Jaws_DB
     /**
      * Get a Jaws_DB instance
      *
-     * @access public
-     * @param  array  $options  Database connection options
-     * @param  string $instance Jaws_DB instance name
-     * @return object Jaws_DB instance
+     * @access  public
+     * @param   array  $options  Database connection options
+     * @param   string $instance Jaws_DB instance name
+     * @return  object Jaws_DB instance
      */
     function &getInstance($options = array(), $instance = 'default')
     {
@@ -135,7 +135,7 @@ class Jaws_DB
     /**
      * Connect to database
      *
-     * @access public
+     * @access  public
      */
     function connect()
     {
@@ -220,7 +220,7 @@ class Jaws_DB
      * Get DB server version information
      *
      * @access  public
-     * @param   boolean $native determines if the raw version string should be returned
+     * @param   bool    $native determines if the raw version string should be returned
      * @return  string  DB Driver
      */
     function getDBVersion($native = true)
@@ -270,10 +270,10 @@ class Jaws_DB
     /**
      * Execute a manipulation query to the database and return any the affected rows
      *
-     * @param string $query the SQL query
-     * @param array $params replace values in the query
-     * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
-     * @access public
+     * @param   string $query the SQL query
+     * @param   array $params replace values in the query
+     * @return  mixed a result handle or MDB2_OK on success, a MDB2 error on failure
+     * @access  public
      */
     function query($sql, $params = array())
     {
@@ -294,14 +294,14 @@ class Jaws_DB
      * the first row of the result set and then frees
      * the result set.
      *
-     * @param string $query the SELECT query statement to be executed.
-     * @param array $params replace values in the query
-     * @param string $type optional argument that specifies the expected
+     * @param   string $query the SELECT query statement to be executed.
+     * @param   array $params replace values in the query
+     * @param   string $type optional argument that specifies the expected
      *       datatype of the result set field, so that an eventual conversion
      *       may be performed. The default datatype is text, meaning that no
      *       conversion is performed
-     * @return mixed MDB2_OK or field value on success, a MDB2 error on failure
-     * @access public
+     * @return  mixed MDB2_OK or field value on success, a MDB2 error on failure
+     * @access  public
      */
     function queryOne($sql, $params = array(), $type = null)
     {
@@ -326,15 +326,15 @@ class Jaws_DB
      * row of the result set into an array and then frees
      * the result set.
      *
-     * @param string $query the SELECT query statement to be executed.
-     * @param array $params replace values in the query
-     * @param array $types optional array argument that specifies a list of
+     * @param   string $query the SELECT query statement to be executed.
+     * @param   array $params replace values in the query
+     * @param   array $types optional array argument that specifies a list of
      *       expected datatypes of the result set columns, so that the eventual
      *       conversions may be performed. The default list of datatypes is
      *       empty, meaning that no conversion is performed.
-     * @param int $fetchmode how the array data should be indexed
-     * @return mixed MDB2_OK or data array on success, a MDB2 error on failure
-     * @access public
+     * @param   int $fetchmode how the array data should be indexed
+     * @return  mixed MDB2_OK or data array on success, a MDB2 error on failure
+     * @access  public
      */
     function queryRow($sql, $params = array(), $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT)
     {
@@ -354,24 +354,24 @@ class Jaws_DB
      * Execute the specified query, fetch all the rows of the result set into
      * a two dimensional array and then frees the result set.
      *
-     * @param string $query the SELECT query statement to be executed.
-     * @param array $params replace values in the query
-     * @param array $types optional array argument that specifies a list of
+     * @param   string $query the SELECT query statement to be executed.
+     * @param   array $params replace values in the query
+     * @param   array $types optional array argument that specifies a list of
      *       expected datatypes of the result set columns, so that the eventual
      *       conversions may be performed. The default list of datatypes is
      *       empty, meaning that no conversion is performed.
-     * @param int $fetchmode how the array data should be indexed
-     * @param boolean $rekey if set to true, the $all will have the first
+     * @param   int $fetchmode how the array data should be indexed
+     * @param   bool    $rekey if set to true, the $all will have the first
      *       column as its first dimension
-     * @param boolean $force_array used only when the query returns exactly
+     * @param   bool    $force_array used only when the query returns exactly
      *       two columns. If true, the values of the returned array will be
      *       one-element arrays instead of scalars.
-     * @param boolean $group if true, the values of the returned array is
+     * @param   bool    $group if true, the values of the returned array is
      *       wrapped in another array.  If the same key value(in the first
      *       column) repeats itself, the values will be appended to this array
      *       instead of overwriting the existing values.
-     * @return mixed MDB2_OK or data array on success, a MDB2 error on failure
-     * @access public
+     * @return  mixed MDB2_OK or data array on success, a MDB2 error on failure
+     * @access  public
      */
     function queryAll($sql, $params = array(), $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT,
         $rekey = false, $force_array = false, $group = false)
@@ -392,15 +392,15 @@ class Jaws_DB
      * Execute the specified query, fetch the value from the first column of
      * each row of the result set into an array and then frees the result set.
      *
-     * @param string $query the SELECT query statement to be executed.
-     * @param array $params replace values in the query
-     * @param string $type optional argument that specifies the expected
+     * @param   string $query the SELECT query statement to be executed.
+     * @param   array $params replace values in the query
+     * @param   string $type optional argument that specifies the expected
      *       datatype of the result set field, so that an eventual conversion
      *       may be performed. The default datatype is text, meaning that no
      *       conversion is performed
-     * @param int $colnum the row number to fetch
-     * @return mixed MDB2_OK or data array on success, a MDB2 error on failure
-     * @access public
+     * @param   int $colnum the row number to fetch
+     * @return  mixed MDB2_OK or data array on success, a MDB2 error on failure
+     * @access  public
      */
     function queryCol($sql, $params = array(), $type = null, $colnum = 0)
     {
@@ -419,8 +419,8 @@ class Jaws_DB
     /**
      * returns the DB unicode charset
      *
-     * @return string
-     * @access public
+     * @return  string
+     * @access  public
      */
     function getUnicodeCharset()
     {
@@ -442,10 +442,10 @@ class Jaws_DB
     /**
      * returns the autoincrement ID if supported or $id
      *
-     * @param mixed $id value as returned by getBeforeId()
-     * @param string $table name of the table into which a new row was inserted
-     * @return mixed MDB2 Error Object or id
-     * @access public
+     * @param   arrayed $id value as returned by getBeforeId()
+     * @param   string $table name of the table into which a new row was inserted
+     * @return  mixed MDB2 Error Object or id
+     * @access  public
      */
     function lastInsertID($table = null, $field = null)
     {
@@ -456,13 +456,12 @@ class Jaws_DB
      * returns the next free id of a sequence if the RDBMS
      * does not support auto increment
      *
-     * @param string name of the table into which a new row was inserted
-     * @param string name of the field that the sequence belongs to
-     * @param bool when true the sequence is automatic created, if it not exists
-     * @param bool if the returned value should be quoted
-     *
-     * @return mixed MDB2 Error Object or id
-     * @access public
+     * @access  public
+     * @param   string name of the table into which a new row was inserted
+     * @param   string name of the field that the sequence belongs to
+     * @param   bool when true the sequence is automatic created, if it not exists
+     * @param   bool if the returned value should be quoted
+     * @return  mixed MDB2 Error Object or id
      */
     function getBeforeId($table, $field, $ondemend = true, $quote = true)
     {
@@ -488,11 +487,10 @@ class Jaws_DB
     /**
      * returns the autoincrement ID if supported or $id
      *
-     * @param string name of the table into which a new row was inserted
-     * @param string name of the field into which a new row was inserted
-     *
-     * @return mixed MDB2 Error Object or id
-     * @access public
+     * @access  public
+     * @param   string name of the table into which a new row was inserted
+     * @param   string name of the field into which a new row was inserted
+     * @return  mixed MDB2 Error Object or id
      */
     function getAfterId($table, $field = null)
     {
@@ -560,10 +558,10 @@ class Jaws_DB
     /**
      * set the range of the next query
      *
-     * @param string $limit number of rows to select
-     * @param string $offset first row to select
-     * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
+     * @param   string $limit number of rows to select
+     * @param   string $offset first row to select
+     * @return  mixed MDB2_OK on success, a MDB2 error on failure
+     * @access  public
      */
     function setLimit($limit, $offset = null)
     {
@@ -611,10 +609,10 @@ class Jaws_DB
     /**
      * Executes a query
      *
-     * @access public
-     * @param  string  SQL To Execute
-     * @param  array   Array that has the params to replace
-     * @return string  parsed sql string with [[table]] and {field} replaced
+     * @access  public
+     * @param   string  SQL To Execute
+     * @param   array   Array that has the params to replace
+     * @return  string  parsed sql string with [[table]] and {field} replaced
      */
     function sqlParse($sql, $params = null)
     {
@@ -654,7 +652,7 @@ class Jaws_DB
     /**
      *
      *
-     * @access public
+     * @access  public
      */
     function installSchema($file, $variables = array(), $file_update = false, $data = false, $create = true, $debug = false)
     {
@@ -741,8 +739,8 @@ class Jaws_DB
     /**
      * return the current datetime
      *
-     * @return string current datetime in the MDB2 format
-     * @access public
+     * @return  string current datetime in the MDB2 format
+     * @access  public
      */
     function Date($timestamp = '')
     {
@@ -752,8 +750,8 @@ class Jaws_DB
     /**
      * Detect mssql driver is FreeTDS
      *
-     * @access public
-     * @return boolean
+     * @access  public
+     * @return  bool
      */
     function Is_FreeTDS_MSSQL_Driver()
     {

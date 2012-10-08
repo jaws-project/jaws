@@ -78,5 +78,5 @@ class Jaws_EncodeConvert
         }
         return $retstr;
     }
+
 }
-?>

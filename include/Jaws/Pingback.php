@@ -59,7 +59,7 @@ class Jaws_PingBack
      * @access  public
      * @param   string   $source  Source URL (blog's URL post for example, a permalink)
      * @param   string   $message Message to parse
-     * @return  boolean  Success/Failure
+     * @return  bool     Success/Failure
      */
     function sendFromString($source, $message)
     {
@@ -132,7 +132,7 @@ class Jaws_PingBack
      * @access  public
      * @param   string   $source   Source URL (blog's URL post for example, a permalink)
      * @param   string   $target   Target URL
-     * @return  boolean  Success/Failure
+     * @return  bool     Success/Failure
      */
     function send($source, $target)
     {

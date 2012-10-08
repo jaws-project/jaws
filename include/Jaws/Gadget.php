@@ -16,8 +16,8 @@ class Jaws_Gadget
     /**
      * Gadget's name (FS name)
      *
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      * @see    GetName
      */
     var $_Name;
@@ -25,8 +25,8 @@ class Jaws_Gadget
     /**
      * Gadget's translated name
      *
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      * @see    GetTranslatedName
      */
     var $_TranslatedName;
@@ -34,8 +34,8 @@ class Jaws_Gadget
     /**
      * Gadget's version
      *
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      * @see    GetVersion
      */
     var $_Version;
@@ -43,8 +43,8 @@ class Jaws_Gadget
     /**
      * Gadget's description
      *
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      * @see    GetDescription
      */
     var $_Description;
@@ -52,8 +52,8 @@ class Jaws_Gadget
     /**
      * Action that gadget will execute
      *
-     * @var    string
-     * @access protected
+     * @var     string
+     * @access  protected
      * @see SetAction()
      * @see GetAction()
      */
@@ -62,8 +62,8 @@ class Jaws_Gadget
     /**
      * A list of actions that the gadget has
      *
-     * @var    array
-     * @access protected
+     * @var     array
+     * @access  protected
      * @see AddAction()
      * @see GetActions()
      */
@@ -72,17 +72,17 @@ class Jaws_Gadget
     /**
      * Flag to know if the actions have been loaded
      *
-     * @var    boolean
-     * @access private
+     * @var     bool
+     * @access  private
      */
     var $_LoadedActions = false;
 
     /**
      * Constructor
      *
-     * @access protected
-     * @param  string $gadget Gadget's name(same as the filesystem name)
-     * @return void
+     * @access  protected
+     * @param   string $gadget Gadget's name(same as the filesystem name)
+     * @return  void
      */
     function Jaws_Gadget($gadget)
     {
@@ -313,7 +313,7 @@ class Jaws_Gadget
      *
      * @access  public
      * @param   string  $action to Verify
-     * @return  boolean True if action is for admin users, if not, returns false
+     * @return  bool    True if action is for admin users, if not, returns false
      */
     function IsAdmin($action)
     {
@@ -329,7 +329,7 @@ class Jaws_Gadget
      *
      * @access  public
      * @param   string  $action to Verify
-     * @return  boolean True if action is normal, if not, returns false
+     * @return  bool    True if action is normal, if not, returns false
      */
     function IsNormal($action)
     {
@@ -402,7 +402,7 @@ class Jaws_Gadget
      * @access  public
      * @param   string  $text   The Text to parse
      * @param   string  $gadget The Gadget's name
-     * @param   boolean $auto_paragraph If parse text should move new lines to paragraphs
+     * @param   bool    $auto_paragraph If parse text should move new lines to paragraphs
      * @return  string  Returns the parsed text
      */
     function ParseText($text, $gadget = null, $auto_paragraph = true, $clean = false)
@@ -450,7 +450,7 @@ class Jaws_Gadget
      *
      * @access  public
      * @param   string  $gadget Gadget's Name
-     * @return  boolean Returns true if the gadget is valid, otherwise will finish the execution
+     * @return  bool    Returns true if the gadget is valid, otherwise will finish the execution
      */
     function IsValid($gadget)
     {
@@ -473,8 +473,8 @@ class Jaws_Gadget
     /**
      * Disables a gadget, just removing main entries from the registry
      *
-     * @param string $name Name of the gadget to disable.
-     * @access public
+     * @param   string $name Name of the gadget to disable.
+     * @access  public
      */
     function DisableGadget($gadget)
     {
@@ -516,7 +516,7 @@ class Jaws_Gadget
      * tables, data, etc..
      *
      * @param   string  $gadget  Gadget's name
-     * @return  boolean True true success or false on error
+     * @return  bool    True true success or false on error
      * @access  public
      */
     function UninstallGadget($gadget)
@@ -609,13 +609,13 @@ class Jaws_Gadget
      * Operations that both UninstallGadget
      * and DisableGadget use
      *
-     * @param string name of the gadget being uninstalled/disabled
-     * @return void
+     * @param   string name of the gadget being uninstalled/disabled
+     * @return  void
      *
      * @see UninstallGadget
      * @see DisableGadget
      *
-     * @access public
+     * @access  public
      */
     function _commonDisableGadget($gadget)
     {
@@ -647,7 +647,7 @@ class Jaws_Gadget
      * key (in registry) will be updated
      *
      * @param   string  $gadget     Gadget's name
-     * @return  boolean True if success or false on error
+     * @return  bool    True if success or false on error
      * @access  public
      */
     function UpdateGadget($gadget)
@@ -830,7 +830,7 @@ class Jaws_Gadget
      * Return true or false if the gadget is correctly installed
      *
      * @access  public
-     * @return  boolean True or false, depends of the gadget status
+     * @return  bool    True or false, depends of the gadget status
      */
     function IsGadgetInstalled($gadget = null)
     {
@@ -860,7 +860,7 @@ class Jaws_Gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  boolean True or false, depends of the jaws version
+     * @return  bool    True or false, depends of the jaws version
      */
     function IsGadgetUpdated($gadget)
     {
@@ -894,7 +894,7 @@ class Jaws_Gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  boolean True or false, depends of the jaws version
+     * @return  bool    True or false, depends of the jaws version
      */
     function CanRunInCoreVersion($gadget)
     {
@@ -926,7 +926,7 @@ class Jaws_Gadget
      *
      * @param   string $task Task name
      * @param   string $gadget Gadget name
-     * @return  boolean True if granted, else False
+     * @return  bool    True if granted, else False
      */
     function GetPermission($task, $gadget = false)
     {
@@ -939,7 +939,7 @@ class Jaws_Gadget
      * @param   string $task Task name
      * @param   string $gadget Gadget name
      * @param   string $errorMessage Error message to return
-     * @return  boolean True if granted, else throws an Exception(Jaws_Error::Fatal)
+     * @return  bool    True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
     function CheckPermission($task, $gadget = false, $errorMessage = '')
     {

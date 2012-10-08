@@ -13,16 +13,16 @@ class Jaws_HTTPAuth
     /**
      * Username
      *
-     * @access private
-     * @var    string
+     * @access  private
+     * @var     string
      */
     var $username = '';
 
     /**
      * Password
      *
-     * @access private
-     * @var    string
+     * @access  private
+     * @var     string
      */
     var $password = '';
 

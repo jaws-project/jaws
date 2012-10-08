@@ -20,7 +20,7 @@ class Jaws_Image
 
     /**
      * read only
-     * @var boolean
+     * @return  object  Jaws_Error
      */
     var $_readonly = false;
 
@@ -46,7 +46,7 @@ class Jaws_Image
      * Holds the image resource for manipulation
      *
      * @var resource $_hImage
-     * @access protected
+     * @access  protected
      */
     var $_hImage = null;
 
@@ -54,7 +54,7 @@ class Jaws_Image
      * Holds the image raw data
      *
      * @var resource $_iData
-     * @access protected
+     * @access  protected
      */
     var $_iData = '';
 
@@ -83,7 +83,7 @@ class Jaws_Image
  
     /**
      * @var array General options
-     * @access protected
+     * @access  protected
      */
     var $_options = array(
         'quality'     => 75,
@@ -96,7 +96,7 @@ class Jaws_Image
     /**
      * Supported image types
      * @var array
-     * @access protected
+     * @access  protected
      */
     var $_supported_image_types = array();
 
@@ -187,9 +187,9 @@ class Jaws_Image
     /**
      * Sets the image information(width, height, type)
      *
-     * @param string $image Image filename
-     * @return mixed True or Jaws_Error
-     * @access public
+     * @param   string $image Image filename
+     * @return  mixed True or Jaws_Error
+     * @access  public
      */
     function get_image_details($image)
     {
@@ -220,9 +220,9 @@ class Jaws_Image
     /**
      * Returns the image type of the extension
      *
-     * @param  string  $extension Image type
-     * @return integer The image type if available, or zero
-     * @access public
+     * @param   string  $extension Image type
+     * @return  int     The image type if available, or zero
+     * @access  public
      */
     function get_image_extension_to_type($extension)
     {
@@ -237,9 +237,9 @@ class Jaws_Image
     /**
      * Returns the image type from mime type
      *
-     * @param  string   $mime_type  Mime type
-     * @return integer  The image type if available, or zero
-     * @access public
+     * @param   string   $mime_type  Mime type
+     * @return  int      The image type if available, or zero
+     * @access  public
      */
     function mime_type_to_image_type($mime_type)
     {
@@ -276,13 +276,13 @@ class Jaws_Image
     /**
      * Checks if the rectangle passed intersects with the current image
      *
-     * @param int $width  Width of rectangle
-     * @param int $height Height of rectangle
-     * @param int $x      X-coordinate
-     * @param int $y      Y-coordinate
+     * @param   int $width  Width of rectangle
+     * @param   int $height Height of rectangle
+     * @param   int $x      X-coordinate
+     * @param   int $y      Y-coordinate
      *
-     * @return bool True if intersects, False if not
-     * @access protected
+     * @return  bool True if intersects, False if not
+     * @access  protected
      */
     function _intersects($width, $height, $x, $y)
     {
@@ -309,11 +309,11 @@ class Jaws_Image
     /**
      * Returns if the driver supports a given image type
      *
-     * @param string $type Image type (gif, png, jpeg...)
-     * @param string $mode 'r' for read, 'w' for write, 'rw' for both
+     * @param   string $type Image type (gif, png, jpeg...)
+     * @param   string $mode 'r' for read, 'w' for write, 'rw' for both
      *
      * @return True if type (and mode) is supported false otherwise
-     * @access protected
+     * @access  protected
      */
     function _typeSupported($type, $mode = 'rw')
     {
@@ -323,9 +323,9 @@ class Jaws_Image
     /**
      * Converts a color string into an array of RGB values
      *
-     * @param string $colorhex A color following the #FFFFFF format
-     * @return array 3-element array with 0-255 values
-     * @access protected
+     * @param   string $colorhex A color following the #FFFFFF format
+     * @return  array 3-element array with 0-255 values
+     * @access  protected
      */
     function _colorhex2colorarray($colorhex)
     {
@@ -338,10 +338,10 @@ class Jaws_Image
     /**
      * Converts an array of RGB value into a #FFFFFF format color.
      *
-     * @param array $color 3-element array with 0-255 values
-     * @return mixed A color following the #FFFFFF format or FALSE
+     * @param   array $color 3-element array with 0-255 values
+     * @return  mixed A color following the #FFFFFF format or FALSE
      *               if the array couldn't be converted
-     * @access protected
+     * @access  protected
      */
     function _colorarray2colorhex($color)
     {
@@ -355,12 +355,12 @@ class Jaws_Image
     /**
      * Returns a color option
      *
-     * @param string $colorOf one of 'canvasColor', 'pencilColor', 'fontColor'
-     * @param array  $options configuration options
-     * @param array  $default default value to return if color not found
+     * @param   string $colorOf one of 'canvasColor', 'pencilColor', 'fontColor'
+     * @param   array  $options configuration options
+     * @param   array  $default default value to return if color not found
      *
-     * @return array an RGB color array
-     * @access protected
+     * @return  array an RGB color array
+     * @access  protected
      */
     function _getColor($colorOf, $options = array(), $default = array(0, 0, 0))
     {
@@ -383,12 +383,11 @@ class Jaws_Image
     /**
      * Returns an option
      *
-     * @param string $name    name of option
-     * @param array  $options local override option array
-     * @param mixed  $default default value to return if option is not found
-     *
-     * @return mixed the option
-     * @access protected
+     * @access  protected
+     * @param   string $name    name of option
+     * @param   array  $options local override option array
+     * @param   array  $default default value to return if option is not found
+     * @return  mixed the option
      */
     function _getOption($name, $options = array(), $default = null)
     {
@@ -399,10 +398,10 @@ class Jaws_Image
     /**
      * Loads an image file
      *
-     * @param string    $filename filename
-     * @param boolean   $readonly readonly
-     * @return Jaws_Error
-     * @access public
+     * @param   string    $filename filename
+     * @param   bool      $readonly readonly
+     * @return  object  Jaws_Error
+     * @access  public
      */
     function load($filename, $readonly = false)
     {
@@ -427,10 +426,10 @@ class Jaws_Image
     /**
      * Loads an image from raw data
      *
-     * @param string    $data  image raw data
-     * @param boolean   $readonly readonly
-     * @return mixed True or a Jaws_Error object on error
-     * @access public
+     * @param   string    $data  image raw data
+     * @param   bool      $readonly readonly
+     * @return  mixed True or a Jaws_Error object on error
+     * @access  public
      */
     function setData($data, $readonly = false)
     {
@@ -453,8 +452,8 @@ class Jaws_Image
     /**
      * Returns the image handle so that one can further try to manipulate the image
      *
-     * @return Jaws_Error
-     * @access public
+     * @return  object  Jaws_Error
+     * @access  public
      */
     function &getHandle()
     {
@@ -467,12 +466,12 @@ class Jaws_Image
      *
      * If either is 0 it will keep the original size for that dimension
      *
-     * @param mixed $new_w   (0, number or percentage)
-     * @param mixed $new_h   (0, number or percentage)
-     * @param array $options Options
+     * @param   arrayed $new_w   (0, number or percentage)
+     * @param   arrayed $new_h   (0, number or percentage)
+     * @param   array $options Options
      *
-     * @return mixed True or Jaws_Error object on error
-     * @access public
+     * @return  mixed True or Jaws_Error object on error
+     * @access  public
      */
     function resize($new_w = 0, $new_h = 0, $options = null)
     {
@@ -483,13 +482,13 @@ class Jaws_Image
     /**
      * Crops an image
      *
-     * @param int $width  Cropped image width
-     * @param int $height Cropped image height
-     * @param int $x      X-coordinate to crop at
-     * @param int $y      Y-coordinate to crop at
+     * @param   int $width  Cropped image width
+     * @param   int $height Cropped image height
+     * @param   int $x      X-coordinate to crop at
+     * @param   int $y      Y-coordinate to crop at
      *
-     * @return mixed True or a Jaws_Error object on error
-     * @access public
+     * @return  mixed True or a Jaws_Error object on error
+     * @access  public
      **/
     function crop($width, $height, $x = 0, $y = 0)
     {
@@ -501,10 +500,10 @@ class Jaws_Image
      * Rotates the image clockwise
      *
      * @param float $angle   Angle of rotation in degres
-     * @param mixed $options Rotation options
+     * @param   arrayed $options Rotation options
      *
-     * @return mixed True or a Jaws_Error object on error
-     * @access public
+     * @return  mixed True or a Jaws_Error object on error
+     * @access  public
      */
     function rotate($angle, $options = null)
     {
@@ -517,8 +516,8 @@ class Jaws_Image
      *
      * @param float $gamma
      *
-     * @return mixed True or a Jaws_Error on error
-     * @access public
+     * @return  mixed True or a Jaws_Error on error
+     * @access  public
      **/
     function gamma($gamma = 1.0)
     {
@@ -529,8 +528,8 @@ class Jaws_Image
     /**
      * Horizontal mirroring
      *
-     * @return mixed True or Jaws_Error on error
-     * @access public
+     * @return  mixed True or Jaws_Error on error
+     * @access  public
      **/
     function mirror()
     {
@@ -541,8 +540,8 @@ class Jaws_Image
     /**
      * Vertical mirroring
      *
-     * @return mixed True or Jaws_Error on error
-     * @access public
+     * @return  mixed True or Jaws_Error on error
+     * @access  public
      **/
     function flip()
     {
@@ -553,7 +552,7 @@ class Jaws_Image
     /**
      * Converts an image into grayscale colors
      *
-     * @return mixed True or Jaws_Error on error
+     * @return  mixed True or Jaws_Error on error
      **/
     function grayscale()
     {
@@ -564,12 +563,12 @@ class Jaws_Image
     /**
      * Saves image to file
      *
-     * @param string $filename Filename to save image to
-     * @param string $type     Format of image to save as
-     * @param mixed  $quality  Format-dependent
+     * @param   string $filename Filename to save image to
+     * @param   string $type     Format of image to save as
+     * @param   arrayed  $quality  Format-dependent
      *
-     * @return Jaws_Error
-     * @access public
+     * @return  object  Jaws_Error
+     * @access  public
      */
     function save($filename, $type, $quality = null)
     {
@@ -581,12 +580,12 @@ class Jaws_Image
      * Displays image without saving and lose changes.
      * This method adds the Content-type HTTP header
      *
-     * @param string $type (JPEG, PNG...);
-     * @param mixed  $quality  Format-dependent
-     * @param int    $expires  set Cache-Control and Expires of HTTP header
+     * @param   string $type (JPEG, PNG...);
+     * @param   arrayed  $quality  Format-dependent
+     * @param   int    $expires  set Cache-Control and Expires of HTTP header
      *
-     * @return mixed True on success or Jaws_Error object on error
-     * @access public
+     * @return  mixed True on success or Jaws_Error object on error
+     * @access  public
      */
     function display($type = '', $quality = null, $expires = 0)
     {
@@ -645,8 +644,8 @@ class Jaws_Image
     /**
      * Releases resource
      *
-     * @return Jaws_Error
-     * @access public
+     * @return  object  Jaws_Error
+     * @access  public
      */
     function free()
     {

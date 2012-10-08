@@ -53,7 +53,7 @@ class Jaws_Session
 
     /**
      * Changes flag
-     * @var     boolean $_HasChanged
+     * @var     bool    $_HasChanged
      * @access  private
      */
     var $_HasChanged;
@@ -67,7 +67,7 @@ class Jaws_Session
 
     /**
      * Is session exists in browser or application
-     * @var     boolean $_SessionExists
+     * @var     bool    $_SessionExists
      * @access  private
      */
     var $_SessionExists = true;
@@ -132,9 +132,9 @@ class Jaws_Session
      *
      * @param   string  $username   Username
      * @param   string  $password   Password
-     * @param   boolean $remember   Remember me
+     * @param   bool    $remember   Remember me
      * @param   string  $authmethod Authentication method
-     * @return  boolean True if succeed.
+     * @return  bool    True if succeed.
      */
     function Login($username, $password, $remember, $authmethod = '')
     {
@@ -219,7 +219,7 @@ class Jaws_Session
      * Loads Jaws Session
      *
      * @param   string  $sid Session identifier
-     * @return  boolean True if can load session, false if not
+     * @return  bool    True if can load session, false if not
      */
     function Load($sid)
     {
@@ -317,8 +317,8 @@ class Jaws_Session
     /**
      * Create a new session for a given data
      * @param   array  $info      User attributes
-     * @param   boolean $remember Remember me
-     * @return  boolean True if can create session.
+     * @param   bool    $remember Remember me
+     * @return  bool    True if can create session.
      */
     function Create($info = array(), $remember = false)
     {
@@ -372,7 +372,7 @@ class Jaws_Session
 
     /**
      * Reset current session
-     * @return  boolean True if can reset it
+     * @return  bool    True if can reset it
      */
     function Reset()
     {
@@ -405,7 +405,7 @@ class Jaws_Session
      *
      * @param   string $name attribute name
      * @param   string $value attribute value
-     * @return  boolean True if attribute has changed
+     * @return  bool    True if attribute has changed
      */
     function SetAttribute($name, $value)
     {
@@ -472,7 +472,7 @@ class Jaws_Session
      * Delete a session attribute
      *
      * @param   string $name attribute name
-     * @return  boolean True if attribute has been deleted
+     * @return  bool    True if attribute has been deleted
      */
     function DeleteAttribute($name)
     {
@@ -490,7 +490,7 @@ class Jaws_Session
      *
      * @param   string $gadget Gadget name
      * @param   string $task Task name
-     * @return  boolean True if granted, else False
+     * @return  bool    True if granted, else False
      */
     function GetPermission($gadget, $task)
     {
@@ -505,7 +505,7 @@ class Jaws_Session
      * @param   string $gadget Gadget name
      * @param   string $task Task name
      * @param   string $errorMessage Error message to return
-     * @return  boolean True if granted, else throws an Exception(Jaws_Error::Fatal)
+     * @return  bool    True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
     function CheckPermission($gadget, $task, $errorMessage = '')
     {
@@ -525,7 +525,7 @@ class Jaws_Session
      * Returns true if user is a super-admin (aka superroot)
      *
      * @access  public
-     * @return  boolean
+     * @return  bool
      */
     function IsSuperAdmin()
     {
@@ -641,8 +641,8 @@ class Jaws_Session
     /**
      * Delete a session
      *
-     * @param   integer  $sid  Session ID
-     * @return  boolean Success/Failure
+     * @param   int      $sid  Session ID
+     * @return  bool    Success/Failure
      */
     function Delete($sid)
     {
@@ -659,7 +659,7 @@ class Jaws_Session
      * Deletes all sessions of an user
      *
      * @param   string  $user   User's ID
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function DeleteUserSessions($user)
     {
@@ -693,7 +693,7 @@ class Jaws_Session
      * Returns all users's sessions count
      *
      * @access  public
-     * @param   integer $user   User ID
+     * @param   int     $user   User ID
      * @return  mixed   Session count if exist, false otherwise
      */
     function GetUserSessions($user, $onlyOnline = false)
@@ -762,7 +762,7 @@ class Jaws_Session
      *
      * @access  public
      * @param   string  $resource Resource's name
-     * @param   boolean $removePoppedResource
+     * @param   bool    $removePoppedResource
      * @return  mixed   Last simple response
      */
     function PopSimpleResponse($resource = 'SimpleResponse', $removePoppedResource = true)

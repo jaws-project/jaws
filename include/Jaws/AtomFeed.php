@@ -327,10 +327,10 @@ class AtomEntry
     /**
      * Add an enclosure entry
      *
-     * @access public
-     * @param  string  $url  URL it refers
+     * @access  public
+     * @param   string  $url  URL it refers
      * @param  int     $size Object size (in bytes)
-     * @param  string  $mime Mime type
+     * @param   string  $mime Mime type
      */
     function AddEnclosure($url, $size, $mime)
     {
@@ -398,8 +398,8 @@ class AtomEntry
 
     /**
      * Add a category to feed
-     * @param  string  $category  Category name
-     * @access public
+     * @param   string  $category  Category name
+     * @access  public
      */
     function AddCategory($term, $label, $schema)
     {
@@ -515,7 +515,7 @@ class Jaws_AtomFeed
     /**
      * Site URL
      * 
-     * @param string $url  Site URL
+     * @param   string $url  Site URL
      */
     function SetSiteURL($url) {
         $this->SiteURL = $url;
@@ -777,4 +777,5 @@ class Jaws_AtomFeed
 
         return $res;
     }
+
 }

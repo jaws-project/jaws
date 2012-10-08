@@ -13,8 +13,8 @@ class Jaws_Registry
     /**
      * Has the registry
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      * @see    GetSimpleArray()
      */
     var $_Registry = array();
@@ -23,7 +23,7 @@ class Jaws_Registry
      * Date of last update
      *
      * @var    date
-     * @access private
+     * @access  private
      * @see    GetLastUpdate();
      */
     var $_LastUpdate;
@@ -31,8 +31,8 @@ class Jaws_Registry
     /**
      * Array that has a *registry* of files that have been called
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_LoadedFiles = array();
 
@@ -531,7 +531,7 @@ class Jaws_Registry
      * @access  protected
      * @param   string     $component  Component name
      * @param   string     $type       Type of component (gadget or plugin)
-     * @return  boolean    Success/Failure
+     * @return  bool       Success/Failure
      */
     function _regenerateInternalRegistry($component, $type = 'gadgets')
     {
@@ -623,7 +623,7 @@ class Jaws_Registry
      * @access  protected
      * @param   string     $name       Component name
      * @param   string     $type       Type of component (gadget or plugin)
-     * @return  boolean    Success/Failure
+     * @return  bool       Success/Failure
      */
     function deleteCacheFile($name, $type = 'gadgets')
     {

@@ -30,8 +30,8 @@ class Jaws_Comment
     /**
      * Gadget's name
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Gadget;
 
@@ -79,7 +79,7 @@ class Jaws_Comment
      *
      * @access  public
      * @param   string   $md5     Message key in MD5
-     * @return  boolean  Exists (true) or Not Exists (false)
+     * @return  bool     Exists (true) or Not Exists (false)
      */
     function IsMessageDuplicated($md5)
     {
@@ -212,7 +212,7 @@ class Jaws_Comment
      * @param   string  $message Author's message
      * @param   string  $permalink Permanent link to resource
      * @param   string  $status  Comment status
-     * @return  boolean True if sucess or Jaws_Error on any error
+     * @return  bool    True if sucess or Jaws_Error on any error
      * @access  public
      */
     function UpdateComment($id, $name, $email, $url, $title, $message, $permalink, $status)
@@ -269,7 +269,7 @@ class Jaws_Comment
      * Deletes a comment
      *
      * @param   int     $id     Comment's ID
-     * @return  boolean True if sucess or Jaws_Error on any error
+     * @return  bool    True if sucess or Jaws_Error on any error
      * @access  public
      */
     function DeleteComment($id)
@@ -339,7 +339,7 @@ class Jaws_Comment
      * Deletes all comment from a given gadget reference
      *
      * @param   int     $id  gadget id reference
-     * @return  boolean True if sucess or Jaws_Error on any error
+     * @return  bool    True if sucess or Jaws_Error on any error
      * @access  public
      */
     function DeleteCommentsByReference($id)
@@ -362,9 +362,9 @@ class Jaws_Comment
     /**
      * Mark as a different status several comments
      *
-     * @access public
-     * @param  array  $ids     Id's of the comments to mark as spam
-     * @param  string $status  New status (spam by default)
+     * @access  public
+     * @param   array  $ids     Id's of the comments to mark as spam
+     * @param   string $status  New status (spam by default)
      */
     function MarkAs($ids, $status = 'spam')
     {
@@ -468,10 +468,10 @@ class Jaws_Comment
      *                            to find the comments releated to a specific record
      *                            in a gadget.
      * @param   int     $parent   Parent message, if null get all comments (threaded) of the given $gadgetId
-     * @param   boolean $getApproved    If true get comments that are approved (optional, default true);
-     * @param   boolean $getWaiting     If true get comments that are waiting for moderation (optional, default false);
-     * @param   boolean $getSpam    If true get comments that are marked as spam (optional, default false);
-     * @param   boolean $getAllCurrentUser If true get all the comments for the current user (based on user cookie)
+     * @param   bool    $getApproved    If true get comments that are approved (optional, default true);
+     * @param   bool    $getWaiting     If true get comments that are waiting for moderation (optional, default false);
+     * @param   bool    $getSpam    If true get comments that are marked as spam (optional, default false);
+     * @param   bool    $getAllCurrentUser If true get all the comments for the current user (based on user cookie)
      * @return  array   Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
@@ -553,9 +553,9 @@ class Jaws_Comment
      * Gets a list of old comments.
      *
      * @param   int     $limit   How many comments
-     * @param   boolean $getApproved    If true get comments that are approved (optional, default true);
-     * @param   boolean $getWaiting     If true get comments that are waiting for moderation (optional, default false);
-     * @param   boolean $getSpam    If true get comments that are marked as spam (optional, default false);
+     * @param   bool    $getApproved    If true get comments that are approved (optional, default true);
+     * @param   bool    $getWaiting     If true get comments that are waiting for moderation (optional, default false);
+     * @param   bool    $getSpam    If true get comments that are marked as spam (optional, default false);
      * @return  array   Returns an array with data of a list of last comments or Jaws_Error on error
      * @access  public
      */
@@ -605,8 +605,8 @@ class Jaws_Comment
     /**
      * Deletes all comments of a certain gadget
      *
-     * @access public
-     * @return mixed   True on success and Jaws_Error on failure
+     * @access  public
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function DeleteCommentsOfGadget()
     {
@@ -745,7 +745,7 @@ class Jaws_Comment
      * @param   string  $filterMode Which mode should be used to filter
      * @param   string  $filterData Data that will be used in the filter
      * @param   string  $status     Spam status (approved, waiting, spam)
-     * @return  int   Returns how many comments exists with a given filter
+     * @return  int     Returns how many comments exists with a given filter
      */
     function HowManyFilteredComments($filterMode, $filterData, $status)
     {

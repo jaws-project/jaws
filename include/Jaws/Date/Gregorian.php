@@ -78,8 +78,8 @@ class Jaws_Date_Gregorian extends Jaws_Date
     /**
      * Format the input date.
      *
-     * @param  string  $date   Date string
-     * @param  string  $format Format to use
+     * @param   string  $date   Date string
+     * @param   string  $format Format to use
      * @return The original date with a new format
      */
     function Format($date, $format = null)

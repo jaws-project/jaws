@@ -31,13 +31,13 @@ class Jaws_Widgets_XHTMLMenu
     /**
      * Add a new option
      *
-     * @access   public
-     * @param    string  ACtion
-     * @param    string  Title to print
-     * @param    string  Url to point
-     * @param    string  Icon/Stock to use
-     * @param    boolean If the option is marked as selected
-     * @param    strings Access key
+     * @access  public
+     * @param   string  ACtion
+     * @param   string  Title to print
+     * @param   string  Url to point
+     * @param   string  Icon/Stock to use
+     * @param   bool    If the option is marked as selected
+     * @param   strings Access key
      */
     function addOption($action, $name, $url = '', $icon = '', $selected = false, $accesskey = '', $icon_bypass = false)
     {
@@ -87,7 +87,7 @@ class Jaws_Widgets_XHTMLMenu
      *     Under sub:
      *      - items ... Can contain any of above
      *
-     * @access protected
+     * @access  protected
      */
     function _process($action, $option, $name, $level, $parent = '')
     {
@@ -157,7 +157,7 @@ class Jaws_Widgets_XHTMLMenu
     /**
      * Build the menubar with its options
      *
-     * @access public
+     * @access  public
      */
     function get()
     {

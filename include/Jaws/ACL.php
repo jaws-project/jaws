@@ -24,8 +24,8 @@ class Jaws_ACL
     /**
      * Has the registry
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      * @see    GetSimpleArray()
      */
     var $_Registry = array();
@@ -33,15 +33,15 @@ class Jaws_ACL
     /**
      * Array that has a *registry* of files that have been called
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_LoadedFiles = array();
 
     /**
      * Constructor
      *
-     * @access public
+     * @access  public
      */
     function Jaws_ACL()
     {
@@ -72,7 +72,7 @@ class Jaws_ACL
      *
      * @access      private
      * @param   string  $name   Key to find
-     * @return  boolean  The value of the key, if not key found must return null
+     * @return  bool     The value of the key, if not key found must return null
      */
     function Get($name)
     {
@@ -307,7 +307,7 @@ class Jaws_ACL
      * @param   string   $gadget Gadget to use
      * @param   string   $task   Task to use
      * @param   bool     $is_super_admin
-     * @return  boolean  Permission value: Granted (true) or Denied (false)
+     * @return  bool     Permission value: Granted (true) or Denied (false)
      */
     function GetFullPermission($user, $groups, $gadget, $task, $is_super_admin = false)
     {
@@ -368,7 +368,7 @@ class Jaws_ACL
      * @param   string  $group          Group's ID
      * @param   string  $gadget         Gadget name
      * @param   string  $task           Task or method name
-     * @return  boolean True if permission is granted
+     * @return  bool    True if permission is granted
      */
     function GetGroupPermission($group, $gadget, $task)
     {
@@ -562,7 +562,7 @@ class Jaws_ACL
      * @access  protected
      * @param   string     $name       Component name
      * @param   string     $type       Type of component (gadget or plugin)
-     * @return  boolean    Success/Failure
+     * @return  bool       Success/Failure
      */
     function deleteCacheFile($name, $type = 'gadgets')
     {
@@ -581,9 +581,9 @@ class Jaws_ACL
     /**
      * Saves the key array file in JAWS_CACHE . 'acl(gadgets|plugins)' . $component
      *
-     * @access public
-     * @param string Component's name
-     * @param string The type of the component, (plugin or a gadget) only
+     * @access  public
+     * @param   string Component's name
+     * @param   string The type of the component, (plugin or a gadget) only
      *               if the component name is not empty
      */
     function Commit($comp, $type = 'gadgets', $regexp = '')
@@ -757,7 +757,7 @@ class Jaws_ACL
      * @access  protected
      * @param   string     $component  Component name
      * @param   string     $type       Type of component (gadget or plugin)
-     * @return  boolean    Success/Failure
+     * @return  bool       Success/Failure
      */
     function _regenerateInternalRegistry($component, $type = 'gadgets')
     {

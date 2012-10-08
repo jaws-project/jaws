@@ -15,29 +15,29 @@ class Jaws_Date
     /**
      * Has all months in an array
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_Months = array();
 
     /**
      * Has all days in an array
      *
-     * @var    array
-     * @access private
+     * @var     array
+     * @access  private
      */
     var $_Days = array();
 
     /**
      * Has the current timezone in ISO8601 form
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_ISO8601Timezone;
 
     /**
-     * @access private
+     * @access  private
      */
     var $_GregorianDaysInMonthes = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
@@ -135,8 +135,8 @@ class Jaws_Date
     /**
      * Format the input date.
      *
-     * @param  string  $date   Date string
-     * @param  string  $format Format to use
+     * @param   string  $date   Date string
+     * @param   string  $format Format to use
      * @return The original date with a new format
      */
     function Format()
@@ -146,7 +146,7 @@ class Jaws_Date
    /**
     * Output the date in since format
     *
-    * @param    string  $date   Date String
+    * @param   string  $date   Date String
     * @return   string  since formatted
     */
     function SinceFormat($date)
@@ -171,8 +171,8 @@ class Jaws_Date
      * Return the month number in string
      *
      * @param  int    $m  Numeric month(1..12)
-     * @return string     The month in string not in number
-     * @access public
+     * @return  string     The month in string not in number
+     * @access  public
      */
     function MonthString($m)
     {
@@ -207,8 +207,8 @@ class Jaws_Date
      * Return the month number in string
      *
      * @param  int    $m  Numeric month(1..12)
-     * @return string     The month in string not in number
-     * @access public
+     * @return  string     The month in string not in number
+     * @access  public
      */
     function MonthShortString($m = '')
     {
@@ -301,8 +301,8 @@ class Jaws_Date
      * Based on http://php.net/manual/en/function.checkdate.php#54948 (Zoe Blade)
      *
      * @params string $date Date to valid
-     * @return boolean True if successful
-     * @access public
+     * @return  bool    True if successful
+     * @access  public
      */
     function ValidDBDate($date)
     {
@@ -318,8 +318,8 @@ class Jaws_Date
      * ISO8601 to db date (without timezone)
      *
      * @params string $isodate Date to convert
-     * @return string Date formatted as YYYY-MM-DD HH:mm:ss
-     * @access public
+     * @return  string Date formatted as YYYY-MM-DD HH:mm:ss
+     * @access  public
      */
     function ISOToDBDate($isodate)
     {
@@ -336,7 +336,7 @@ class Jaws_Date
      *
      * @param   int     $year  Gregorian year
      * @access  private
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function _IsLeapYear($year)
     {
@@ -350,7 +350,7 @@ class Jaws_Date
      * @param   int     $month  Gregorian month
      * @param   int     $day    Gregorian day
      * @access  public
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function GregorianTotalDays($year, $month, $day)
     {
@@ -428,8 +428,8 @@ class Jaws_Date
     /**
      * Convenience function to translate calendar strings.
      *
-     * @param string    string The string to translate.
-     * @access public
+     * @param   string    string The string to translate.
+     * @access  public
      */
     function _t_cal($string)
     {

@@ -13,7 +13,7 @@ class Jaws_WSServer
     /**
      * Return true or false if the webservice($GLOBALS['server'] flag) is running
      *
-     * @return  boolean  True if server is running, false if not.
+     * @return  bool     True if server is running, false if not.
      * @access  public
      */
     function IsActive()
@@ -57,5 +57,5 @@ class Jaws_WSServer
 
         return false;
     }
+
 }
-?>

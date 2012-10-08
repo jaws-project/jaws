@@ -13,11 +13,11 @@ class Jaws_ArraySort
     /**
      * Sort and array by the second index
      *
-     * @param  array   $multiArray  Input array
-     * @param  string  $secondIndex Index to look
-     * @param  boolean $caseSensitive if the sort should be case sensitive (optional)
-     * @return array   Sorted array
-     * @access public
+     * @param   array   $multiArray  Input array
+     * @param   string  $secondIndex Index to look
+     * @param   bool   $caseSensitive if the sort should be case sensitive (optional)
+     * @return  array   Sorted array
+     * @access  public
      */
     function SortBySecondIndex($multiArray, $secondIndex, $caseSensitive = true, $reverseSort = false)
     {
@@ -50,11 +50,11 @@ class Jaws_ArraySort
      * Sort by QuickSort technique
      * FROM: http://martinjansen.com/projects/Quicksort/
      *
-     * @param  array   $array        Input array
+     * @param   array   $array        Input array
      * @param  int     $firstElement Element to start the sort
      * @param  int     $lastElement  Element where the sort should stop
-     * @return boolean True if sort was ok, false if not.
-     * @access public
+     * @return  bool    True if sort was ok, false if not.
+     * @access  public
      */
     function QuickSort(&$array, $firstElement = null, $lastElement = null)
     {
@@ -102,10 +102,10 @@ class Jaws_ArraySort
     /**
      * Change elements of a quick sorting
      *
-     * @param  array   $array  Input array
+     * @param   array   $array  Input array
      * @param  int     $a      First element to replace
      * @param  int     $b      Second element to replace
-     * @access public
+     * @access  public
      */
     function QuickSortChangeElements(&$array, $a, $b)
     {
@@ -120,7 +120,7 @@ class Jaws_ArraySort
      * Sort by BubbleSort
      * Based: http://www.programmershelp.co.uk/showcode.php?e=254
      *
-     * @param  array  $array  Input array
+     * @param   array  $array  Input array
      * @param  return array   Sorted array
      * @return public
      */
@@ -143,7 +143,7 @@ class Jaws_ArraySort
     /**
      * Sort by BubbleSort but in reverse mode
      *
-     * @param  array  $array  Input array
+     * @param   array  $array  Input array
      * @param  return array   Sorted array
      * @return public
      */
@@ -225,5 +225,5 @@ class Jaws_ArraySort
 
         return $array_out;
     }
+
 }
-?>

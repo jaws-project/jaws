@@ -284,8 +284,8 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * Sets the label displayed with the textarea
      *
-     * @access public
-     * @param  string $label The label to display.
+     * @access  public
+     * @param   string $label The label to display.
      * @return null
      */
     function SetLabel($label)
@@ -316,7 +316,7 @@ class Jaws_Widgets_TinyMCE extends Container
     }
 
     /**
-     * @param mixed $width
+     * @param   arrayed $width
      */
     function setWidth($width)
     {

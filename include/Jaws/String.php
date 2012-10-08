@@ -15,9 +15,9 @@ class Jaws_String
      * Return the string with the valid HTML tags
      * Of course this doesn't strip out id="" class="" and similar
      *
-     * @param  string  $string  Input string with lot of HTML tags
-     * @return string  Clean string, with just some allowed tags
-     * @access public
+     * @param   string  $string  Input string with lot of HTML tags
+     * @return  string  Clean string, with just some allowed tags
+     * @access  public
      */
     function WithHTML($string)
     {
