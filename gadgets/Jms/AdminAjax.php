@@ -14,6 +14,7 @@ class JmsAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   object  $model  Jaws_Model reference
      */
     function JmsAdminAjax(&$model)
     {
@@ -104,7 +105,7 @@ class JmsAdminAjax extends Jaws_Ajax
      * Returns a list of gadgets activated in a certain plugin
      *
      * @access  public
-     * @param   string  $plugin Plugin's name
+     * @param   string  $plugin     Plugin's name
      * @return  array   List of gadgets
      */
     function GetGadgetsOfPlugin($plugin)
@@ -136,8 +137,8 @@ class JmsAdminAjax extends Jaws_Ajax
      * Returns true or false if a plugin can be used always
      *
      * @access  public
-     * @param   string   $plugin   Plugin's name
-     * @return  boolean  Can be used or no
+     * @param   string  $plugin   Plugin's name
+     * @return  bool    Can be used or no
      */
     function UseAlways($plugin)
     {
@@ -147,11 +148,11 @@ class JmsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Installs a gadget
+     * Installs gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  array   Response
+     * @return  array   Response array (notice or error)
      */
     function InstallGadget($gadget)
     {
@@ -201,7 +202,7 @@ class JmsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $plugin  Plugin's name
-     * @return  array   Response
+     * @return  array   Response array (notice or error)
      */
     function InstallPlugin($plugin)
     {
@@ -223,7 +224,7 @@ class JmsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  array   Response
+     * @return  array   Response array (notice or error)
      */
     function UninstallGadget($gadget)
     {
@@ -250,7 +251,7 @@ class JmsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $plugin  Plugin's name
-     * @return  array   Response
+     * @return  array   Response array (notice or error)
      */
     function UninstallPlugin($plugin)
     {
@@ -272,7 +273,7 @@ class JmsAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  array   Response
+     * @return  array   Response array (notice or error)
      */
     function PurgeGadget($gadget)
     {
@@ -294,6 +295,13 @@ class JmsAdminAjax extends Jaws_Ajax
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
+    /**
+     *
+     * @access  private
+     * @param   string  $gadget     gadget name
+     * @param   string  $type
+     * @return  mixed   True if susccessful, else Jaws_Error on error
+     */
     function _commonDisableGadget($gadget, $type)
     {
         if ($GLOBALS['app']->Registry->Get('/config/main_gadget') == $gadget) {
@@ -348,6 +356,7 @@ class JmsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $plugin    Plugin's name
      * @param   mixed   $selection Can be an array of gadget or a: '*' meaning all gadgets should be used
+     * @return  array   Response array (notice or error)
      */
     function UpdatePluginUsage($plugin, $selection)
     {
@@ -373,4 +382,5 @@ class JmsAdminAjax extends Jaws_Ajax
         $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_SAVED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }

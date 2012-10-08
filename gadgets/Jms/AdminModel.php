@@ -15,8 +15,8 @@ class JmsAdminModel extends Jaws_Model
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  bool    True
      */
     function InstallGadget()
     {
@@ -28,11 +28,11 @@ class JmsAdminModel extends Jaws_Model
      * Get a list of gadgets, installed or non installed, core or not core, has layout or not,...
      *
      * @access  public
-     * @param   boolean $core_gadget accept true/false/null value
-     * @param   boolean $installed   accept true/false/null value
-     * @param   boolean $updated     accept true/false/null value
-     * @param   boolean $has_layout  accept true/false/null value
-     * @param   boolean $has_html    accept true/false/null value
+     * @param   bool    $core_gadget accept true/false/null value
+     * @param   bool    $installed   accept true/false/null value
+     * @param   bool    $updated     accept true/false/null value
+     * @param   bool    $has_layout  accept true/false/null value
+     * @param   bool    $has_html    accept true/false/null value
      * @return  array   A list of gadgets
      */
     function GetGadgetsList($core_gadget = null, $installed = null, $updated = null,
@@ -171,7 +171,7 @@ class JmsAdminModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $plugin Plugin
-     * @return  array   Plugin information
+     * @return  mixed   Plugin information or Jaws_Error on error
      */
     function GetPluginInfo($plugin)
     {
@@ -213,4 +213,5 @@ class JmsAdminModel extends Jaws_Model
 
         return $rs;
     }
+
 }

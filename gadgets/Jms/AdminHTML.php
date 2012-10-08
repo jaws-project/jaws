@@ -15,7 +15,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      * Main method
      *
      * @access  public
-     * @return  string  HTML content of main
+     * @return  string  XHTML content of main
      */
     function Admin()
     {
@@ -32,7 +32,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string  $action  Selected action
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML template content of menubar
      */
     function Menubar($action)
     {
@@ -58,8 +58,8 @@ class JmsAdminHTML extends Jaws_GadgetHTML
     /**
      * Manages the gadgets settings
      *
-     * @param     string  $content  HTML content(if needed)
-     * @access    public
+     * @access  public
+     * @return  string  XHTML template content
      */
     function ViewGadgets()
     {
@@ -132,7 +132,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      * Prepares the HTML for managing plugins
      *
      * @access  public
-     * @return  string  HTML content
+     * @return  string  XHTML template content
      */
     function Plugins()
     {
@@ -208,7 +208,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
     /**
      * Enable a passed gadget by running Jaws_GadgetHTML::EnableGadget method, then redirects to admin area
      *
-     * @access       public
+     * @access  public
      */
     function EnableGadget()
     {
@@ -239,7 +239,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
     /**
      * Update a passed gadget by running Jaws_GadgetHTML::UpgradeGadget method, then redirects to admin area
      *
-     * @access       public
+     * @access  public
      */
     function UpdateGadget()
     {
@@ -271,7 +271,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string   $gadget  Gadget's name
-     * @return  string   XHTML of the view
+     * @return  string   XHTML template of the view
      */
     function GetGadgetInfo($gadget)
     {
@@ -297,6 +297,23 @@ class JmsAdminHTML extends Jaws_GadgetHTML
                 $tpl->ParseBlock('info/requires/item');
             }
             $tpl->ParseBlock('info/requires');
+
+            // Provides
+            if (count($info->GetProvides()) > 0) {
+                $tpl->SetBlock('info/provides');
+                $tpl->SetVariable('provides', _t('GLOBAL_GI_GADGET_PROVIDES'));
+                $tpl->SetVariable('description', _t('GLOBAL_GI_GADGET_DESCRIPTION'));
+                $tpl->SetVariable('type', _t('GLOBAL_GI_GADGET_TYPE'));
+                foreach ($info->GetProvides() as $service => $items) {
+                    foreach ($items as $k => $v) {
+                        $tpl->SetBlock('info/provides/item');
+                        $tpl->SetVariable('description', $v['Description']);
+                        $tpl->SetVariable('type', $service);
+                        $tpl->ParseBlock('info/provides/item');
+                    }
+                }
+                $tpl->ParseBlock('info/provides');
+            }
         }
         $tpl->ParseBlock('info');
 
@@ -308,7 +325,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string   $plugin  Plugin's name
-     * @return  string   XHTML of the view
+     * @return  string   XHTML template of the view
      */
     function GetPluginInfo($plugin)
     {
@@ -342,4 +359,5 @@ class JmsAdminHTML extends Jaws_GadgetHTML
 
         return $tpl->Get();
     }
+
 }
