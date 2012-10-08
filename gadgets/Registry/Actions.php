@@ -13,4 +13,3 @@ $actions['DefaultAction']  = array('AdminAction');
 $actions['Admin']          = array('AdminAction');
 $actions['EditACL']        = array('AdminAction');
 $actions['EditRegistry']   = array('AdminAction');
-?>

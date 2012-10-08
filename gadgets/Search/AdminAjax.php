@@ -25,11 +25,11 @@ class SearchAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array    $gadgets Array with gadgets to be set as searchable
-	 * @param   string   $display_gadgets Set the display_gadgets flag in registry
+     * @param   string   $display_gadgets Set the display_gadgets flag in registry
      */
     function SaveChanges($gadgets)
     {
-		$this->_Model->SetSearchableGadgets($gadgets);
+        $this->_Model->SetSearchableGadgets($gadgets);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
