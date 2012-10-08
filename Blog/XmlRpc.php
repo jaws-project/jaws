@@ -42,7 +42,7 @@ function GetBlogPermission($user, $task, $superadmin)
 /**
  * Aux functions
  *
- * @access public
+ * @access  public
  * @param   object  $p
  * @param   string  $i
  * @return  mixed   
@@ -60,7 +60,7 @@ function getScalarValue($p, $i)
 
 /**
  *
- * @access public
+ * @access  public
  * @param   string  $content
  * @return  string  content
  */
@@ -80,7 +80,7 @@ function parseContent($content)
 /*
  * metaWeblog.getUsersBlogs
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -119,7 +119,7 @@ function metaWeblog_getUsersBlogs($params)
 /*
  * metaWeblog.getUserInfo
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -159,7 +159,7 @@ function metaWeblog_getUserInfo($params)
 /**
  * New Post (metaWeblog.newPost)
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -242,7 +242,7 @@ function metaWeblog_newPost($params)
 /*
  * metaWeblog.editPost
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -315,7 +315,7 @@ function metaWeblog_editPost($params)
 /*
  * metaWeblog.deletePost
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -354,7 +354,7 @@ function metaWeblog_deletePost($params)
 /*
  * metaWeblog.getCategories
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -408,7 +408,7 @@ function metaWeblog_getCategories($params)
 /*
  * metaWeblog.getPost
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -475,7 +475,7 @@ function metaWeblog_getPost($params)
 /*
  * metaWeblog.getRecentPosts
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -562,7 +562,7 @@ function metaWeblog_getRecentPosts($params)
 /*
  * metaWeblog.getTemplate
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -574,7 +574,7 @@ function metaWeblog_getTemplate($params)
 /*
  * metaWeblog.setTemplate
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
  * @return  XML_RPC_Response object
  */
@@ -590,8 +590,9 @@ function metaWeblog_setTemplate($params)
 /**
  * pingback.ping gets a pingback and registers it
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
+ * @return  void
  */
 function pingback_ping($params)
 {
@@ -605,8 +606,9 @@ function pingback_ping($params)
  *   that pingbacked the given URL
  *   specs on http://www.aquarionics.com/misc/archives/blogite/0198.html
  *
- * @access public
+ * @access  public
  * @param   array   $params     array of params
+ * @return  void
  */
 function pingback_extensions_getPingbacks($params)
 {

@@ -373,7 +373,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $trackbacks     Trackback to send
      * @param   bool    $published      If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
-     * @return  array   last response array
+     * @return  array   Response array (notice or error)
      */
     function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $allow_comments,
                        $trackbacks, $published, $timestamp)

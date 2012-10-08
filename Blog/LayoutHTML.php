@@ -16,7 +16,7 @@ class BlogLayoutHTML
      * Load layout actions
      *
      * @access private
-     * @return  array   actions array
+     * @return  array   Actions array
      */
     function LoadLayoutActions()
     {
@@ -125,7 +125,7 @@ class BlogLayoutHTML
     /**
      * Displays a list of blog entries ordered by date and grouped by month
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function MonthlyHistory()
@@ -183,7 +183,7 @@ class BlogLayoutHTML
     /**
      * Displays a list of blog categories with a link to each one's posts and xml feeds
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function CategoriesList()
@@ -220,7 +220,7 @@ class BlogLayoutHTML
     /**
      * Displays a list of recent blog entries ordered by date
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RecentPosts()
@@ -231,7 +231,7 @@ class BlogLayoutHTML
     /**
      * Displays a list of recent blog comments ordered by date
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RecentComments()
@@ -265,7 +265,7 @@ class BlogLayoutHTML
     /**
      * Displays a calendar of the current month/year
      *
-     * @access public
+     * @access  public
      * @return  bool    True on successful installation, False otherwise
      */
     function Calendar()
@@ -402,7 +402,7 @@ class BlogLayoutHTML
     /**
      * Displays a link to blog RSS feed
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RSSLink()
@@ -419,7 +419,7 @@ class BlogLayoutHTML
     /**
      * Displays a link to blog Atom feed
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function AtomLink()
@@ -436,7 +436,7 @@ class BlogLayoutHTML
     /**
      * Displays a link to Atom feed for blog most recent comments
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RecentCommentsAtomLink()
@@ -452,7 +452,7 @@ class BlogLayoutHTML
     /**
      * Displays a link to RSS feed for blog most recent comments
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RecentCommentsRSSLink()
