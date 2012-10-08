@@ -14,8 +14,8 @@ class ControlPanelAdminModel extends Jaws_Model
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  bool    True on successful installation or Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -30,7 +30,7 @@ class ControlPanelAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool    True on Success
      */
     function UpdateGadget($old, $new)
     {

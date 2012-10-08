@@ -14,8 +14,8 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(MainMenu)
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function DefaultAction()
     {
@@ -25,8 +25,8 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays the Control Panel main menu
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML menu template content
      */
     function MainMenu()
     {
@@ -137,9 +137,9 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
     /**
      * Get HTML login form
      *
-     * @access public
-     * @param  string  $message If a message is needed
-     * @return string  HTML of the form
+     * @access  public
+     * @param   string  $message If a message is needed
+     * @return  string  XHTML template of the login form
      */
     function ShowLoginForm($message = '')
     {
@@ -290,7 +290,7 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
      * Returns downloadable backup file
      *
      * @access public
-     * @return string template content
+     * @return void
      */
     function Backup()
     {
@@ -325,4 +325,5 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
         @readfile($pathArchive);
         Jaws_Utils::Delete($pathArchive);
     }
+
 }

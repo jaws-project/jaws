@@ -14,6 +14,7 @@ class ControlPanelAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   object  $model  Jaws_Model reference
      */
     function ControlPanelAdminAjax(&$model)
     {
