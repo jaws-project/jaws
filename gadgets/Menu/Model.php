@@ -80,7 +80,7 @@ class MenuModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $id
-     * @returns blob    image or Jaws_Error on error
+     * @return  blob    image or Jaws_Error on error
      */
     function GetMenuImage($id)
     {

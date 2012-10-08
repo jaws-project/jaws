@@ -14,6 +14,7 @@ class MenuLayoutHTML
     /**
      * Request URL
      *
+     * @var ReqURL
      * @access  private
      */
     var $_ReqURL = '';
@@ -85,9 +86,9 @@ class MenuLayoutHTML
      *
      * @access  public
      * @param   Jaws_Model      $model
-     * @param   Jaws_Template   $tpl_str
+     * @param   Jaws_Template   $tpl_str    template reference
      * @param   int             $gid        group ID
-     * $par     int             $pid
+     * @param   int             $pid
      * @return  string  XHTML content with sub menu items
      */
     function GetNextLevel(&$model, &$tpl_str, $gid, $pid)

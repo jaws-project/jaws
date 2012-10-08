@@ -206,7 +206,8 @@ class JmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Enable a passed gadget by running Jaws_GadgetHTML::EnableGadget method, then redirects to admin area
+     * Enable a passed gadget by running
+     * Jaws_GadgetHTML::EnableGadget method, then redirects to admin area
      *
      * @access  public
      */
@@ -237,7 +238,8 @@ class JmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Update a passed gadget by running Jaws_GadgetHTML::UpgradeGadget method, then redirects to admin area
+     * Update a passed gadget by running
+     * Jaws_GadgetHTML::UpgradeGadget method, then redirects to admin area
      *
      * @access  public
      */
