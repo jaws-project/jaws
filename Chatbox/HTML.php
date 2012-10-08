@@ -14,7 +14,7 @@ class ChatboxHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(display)
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function DefaultAction()
@@ -26,7 +26,8 @@ class ChatboxHTML extends Jaws_GadgetHTML
     /**
      * Adds a new entry to the chatbox, sets cookie with user data and redirects to main page
      *
-     * @access public
+     * @access  public
+     * @return  void
      */
     function Post()
     {

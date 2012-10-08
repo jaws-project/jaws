@@ -14,7 +14,7 @@ class ChatboxModel extends Jaws_Model
     /**
      * This function mails the comments to the owner
      *
-     * @access public
+     * @access  public
      * @param   int     $link           The permanent link
      * @param   string  $from_email     The email to sendto
      * @param   string  $comment        The body of the email (The actual comment)

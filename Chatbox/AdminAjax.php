@@ -14,7 +14,7 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param	Jaws_Model	$model	Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function ChatboxAdminAjax(&$model)
     {
@@ -100,8 +100,8 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * Mark as different type a group of ids
      *
      * @access  public
-     * @param   array   $ids	Ids of comments
-     * @param   string  $status	New status
+     * @param   array   $ids    Ids of comments
+     * @param   string  $status    New status
      * @return  array   Response array (notice or error)
      */
     function MarkAs($ids, $status)
@@ -117,8 +117,8 @@ class ChatboxAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $limit      Limit of chatbox entries
      * @param   int     $max_strlen Maximum length of comment entry
-     * @param	bool	$authority	
-     * @return  array   Response array
+     * @param   bool    $authority
+     * @return  array   Response array (notice or error)
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {
