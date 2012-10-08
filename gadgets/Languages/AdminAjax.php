@@ -14,6 +14,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   object  $model  Jaws_Model reference
      */
     function LanguagesAdminAjax(&$model)
     {
@@ -24,7 +25,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
      * @access  public
      *
      * @param   string  $lang_str   Language code and name
-     * @return  boolean Success/Failure (Jaws_Error)
+     * @return  array   Response array (notice or error)
      */
     function SaveLanguage($lang_str)
     {
@@ -38,7 +39,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
      *
      * @param   string  $component  Component name
      * @param   string  $langTo     Slave language code
-     * @return  boolean Success/Failure (Jaws_Error)
+     * @return  string  XHTML template content
      */
     function GetLangDataUI($component, $langTo)
     {
@@ -50,8 +51,10 @@ class LanguagesAdminAjax extends Jaws_Ajax
 
     /**
      * @access  public
-     *
-     * @return  boolean Success/Failure (Jaws_Error)
+     * @param   string  $component
+     * @param   string  $langTo
+     * @param   string  $data
+     * @return  array   Response array (notice or error)
      */
     function SetLangData($component, $langTo, $data)
     {

@@ -15,8 +15,8 @@ class LanguagesAdminModel extends Jaws_Model
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -41,7 +41,7 @@ class LanguagesAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateGadget($old, $new)
     {
@@ -65,10 +65,11 @@ class LanguagesAdminModel extends Jaws_Model
     }
 
     /**
-     * @access  public
+     * Add/Edit language's profile(local/international name, ...)
      *
+     * @access  public
      * @param   string  $lang_str   Language code and name
-     * @return  boolean Success/Failure (Jaws_Error)
+     * @return  bool    True on Success or False on failure
      */
     function SaveLanguage($lang_str)
     {
@@ -130,10 +131,16 @@ class LanguagesAdminModel extends Jaws_Model
     }
 
     /**
+     * Get grouped Jaws component list
      *
+     * @access  public
+     * @return  array   List of components
      */
     function GetComponents()
     {
+        /**
+         *
+         */
         function GetModulesList($type = 'gadgets')
         {
             $modules = array();
@@ -162,7 +169,7 @@ class LanguagesAdminModel extends Jaws_Model
      * Returns an array of module language data
      *
      * @access  public
-     * @return  array   A list of module language string
+     * @return  mixed   A list of module language string or false on error
      */
     function GetLangData($module, $type, $langTo, $langFrom)
     {
@@ -244,9 +251,10 @@ class LanguagesAdminModel extends Jaws_Model
     }
 
     /**
-     * @access  public
+     * Save language data into file
      *
-     * @return  boolean Success/Failure (Jaws_Error)
+     * @access  public
+     * @return  bool    True on Success or False on failure
      */
     function SetLangData($module, $type, $langTo, $data = null)
     {
@@ -371,4 +379,5 @@ class LanguagesAdminModel extends Jaws_Model
             return true;
         }
     }
+
 }

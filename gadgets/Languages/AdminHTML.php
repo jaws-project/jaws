@@ -13,8 +13,8 @@ class LanguagesAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(MainMenu)
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -122,8 +122,11 @@ class LanguagesAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(MainMenu)
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @param   string  $module 
+     * @param   string  $type   
+     * @param   string  $langTo 
+     * @return  string  XHTML template content
      */
     function GetLangDataUI($module, $type, $langTo)
     {
@@ -175,8 +178,8 @@ class LanguagesAdminHTML extends Jaws_GadgetHTML
     /**
      * Export language
      *
-     * @access public
-     * @return download link
+     * @access  public
+     * @return  void
      */
     function Export()
     {
