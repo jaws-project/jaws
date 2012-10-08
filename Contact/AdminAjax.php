@@ -16,7 +16,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function ContactAdminAjax(&$model)
     {
@@ -56,7 +56,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   int     $recipient  Rcipient ID
      * @param   string  $subject    Subject of message
      * @param   string  $message    Message content
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message)
     {
@@ -72,7 +72,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   integer $id             Contact ID
      * @param   string  $reply          Reply content
      * @param   bool    $send_reply     whether to send a reply
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateReply($id, $reply, $send_reply)
     {
@@ -91,7 +91,7 @@ class ContactAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $id  ID of the Contact
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function DeleteContact($id)
     {
@@ -159,7 +159,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   string  $mobile         Mobile number of recipient
      * @param   int     $inform_type    Inform Type
      * @param   string  $visible        The visible of the recipient
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
@@ -180,7 +180,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   string  $mobile         Mobile number of recipient
      * @param   int     $inform_type    Inform Type
      * @param   string  $visible        The visible of the recipient
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
@@ -194,7 +194,7 @@ class ContactAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $id  ID of the Recipient
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function DeleteRecipient($id)
     {
@@ -211,7 +211,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   string  $email_format
      * @param   bool    $enable_attachment
      * @param   string  $comments
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
@@ -226,7 +226,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $recipient
      * @param   int     $offset
-     * @return  array  Recipients or Contacts
+     * @return  array   Recipients or Contacts
      */
     function GetContacts($recipient, $offset)
     {
@@ -291,7 +291,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @param   string  $subject    Subject of the Email
      * @param   string  $message    Message body of the Email
      * @param   string  $attachment attachment
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function SendEmail($target, $subject, $message, $attachment)
     {
@@ -307,7 +307,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $offset
      * @param   string  $grid
-     * @return  array  Recipients or Contacts
+     * @return  array   Recipients or Contacts
      */
     function GetData($offset, $grid)
     {

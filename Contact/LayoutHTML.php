@@ -224,7 +224,7 @@ class ContactLayoutHTML
     {
         return $this->GetContactForm('mini');
     }
-    
+
     /**
      * Show simple contact us form
      *
