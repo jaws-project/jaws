@@ -92,6 +92,10 @@ class ForumAdminAjax extends Jaws_Ajax
      * @param   int     $gid            group ID
      * @param   string  $title          forum title
      * @param   string  $description    forum description
+     * @param   string  $fast_url
+     * @param   string  $order
+     * @param   bool    $locked         is locked
+     * @param   bool    $published      is published
      * @return  array   Response array (notice or error)
      */
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)

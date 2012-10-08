@@ -68,6 +68,7 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
+     * Generates template XHTML
      * 
      * @access  public
      * @param   int     $cat    
@@ -151,6 +152,7 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
+     * Generates and returns Author Page
      * 
      * @access  public
      * @return  string  XHTML template content
@@ -212,6 +214,7 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
+     * Generates and retrieves Date Page
      * 
      * @access  public
      * @param   mixed   $year   year
@@ -529,7 +532,6 @@ class BlogHTML extends Jaws_GadgetHTML
      * @param   string  $tplStr         template string
      * @return  string XHTML template content
      */
-    // TODO: Add author info!!!!
     function ShowEntry($entry, $commentLink = true, $useMore = false, $tplStr = '')
     {
         $tpl = new Jaws_Template('gadgets/Blog/templates/');

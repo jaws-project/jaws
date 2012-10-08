@@ -59,7 +59,8 @@ function getScalarValue($p, $i)
 }
 
 /**
- *
+ * Parses content
+ * 
  * @access  public
  * @param   string  $content
  * @return  string  content
@@ -75,9 +76,6 @@ function parseContent($content)
 }
 
 /**
- * metaweblog API
- */
-/*
  * metaWeblog.getUsersBlogs
  *
  * @access  public
@@ -116,7 +114,7 @@ function metaWeblog_getUsersBlogs($params)
     return new XML_RPC_Response($response);
 }
 
-/*
+/**
  * metaWeblog.getUserInfo
  *
  * @access  public
@@ -239,7 +237,7 @@ function metaWeblog_newPost($params)
     return new XML_RPC_Response($val);
 }
 
-/*
+/**
  * metaWeblog.editPost
  *
  * @access  public
@@ -312,7 +310,7 @@ function metaWeblog_editPost($params)
     return new XML_RPC_Response(new XML_RPC_Value('1', 'boolean'));
 }
 
-/*
+/**
  * metaWeblog.deletePost
  *
  * @access  public
@@ -351,7 +349,7 @@ function metaWeblog_deletePost($params)
     return new XML_RPC_Response($val);
 }
 
-/*
+/**
  * metaWeblog.getCategories
  *
  * @access  public
@@ -405,7 +403,7 @@ function metaWeblog_getCategories($params)
     return new XML_RPC_Response($val);
 }
 
-/*
+/**
  * metaWeblog.getPost
  *
  * @access  public
@@ -472,7 +470,7 @@ function metaWeblog_getPost($params)
     return new XML_RPC_Response($struct);
 }
 
-/*
+/**
  * metaWeblog.getRecentPosts
  *
  * @access  public
@@ -559,7 +557,7 @@ function metaWeblog_getRecentPosts($params)
     return new XML_RPC_Response($resp);
 }
 
-/*
+/**
  * metaWeblog.getTemplate
  *
  * @access  public
@@ -571,7 +569,7 @@ function metaWeblog_getTemplate($params)
     return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('BLOG_ERROR_XMLRPC_NO_GETTEMPLATE_SUPPORT'));
 }
 
-/*
+/**
  * metaWeblog.setTemplate
  *
  * @access  public

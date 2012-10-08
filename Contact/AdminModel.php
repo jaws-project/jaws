@@ -322,7 +322,8 @@ class ContactAdminModel extends ContactModel
      * Update reply send field
      *
      * @access  public
-     * @param   int     $id     Contact ID
+     * @param   int     $id             Contact ID
+     * @param   int     $reply_sent     
      * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateReplySent($id, $reply_sent)
@@ -373,12 +374,13 @@ class ContactAdminModel extends ContactModel
      * Insert the information of a Recipient
      *
      * @access  public
-     * @param   string  $name    Name of the recipient
-     * @param   string  $email   Email of recipient
-     * @param   string  $tel     Phone number of recipient
-     * @param   string  $fax     Fax number of recipient
-     * @param   string  $mobile  Mobile number of recipient
-     * @param   string  $visible The visible of the recipient
+     * @param   string  $name           Name of the recipient
+     * @param   string  $email          Email of recipient
+     * @param   string  $tel            Phone number of recipient
+     * @param   string  $fax            Fax number of recipient
+     * @param   string  $mobile         Mobile number of recipient
+     * @param   string  $inform_type    
+     * @param   string  $visible        The visible of the recipient
      * @return  mixed   True on success and Jaws_Error on failure
      */
     function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
@@ -483,6 +485,8 @@ class ContactAdminModel extends ContactModel
      * @access  public
      * @param   bool    $use_antispam
      * @param   string  $email_format
+     * @param   bool    $enable_attachment
+     * @param   bool    $comments
      * @return  mixed   True if change is successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)

@@ -78,7 +78,6 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   int     $popularLimit           Limit of popular entries
      * @param   int     $commentsLimit          Limit of comments that blog will show
      * @param   int     $recentcommentsLimit    Limit of recent comments to display
-     * @param   string  $commentStatus          Default comment status
      * @param   string  $category               The default category for blog entries
      * @param   int     xml_limit               limit
      * @param   bool    $comments               If comments should appear

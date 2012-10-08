@@ -26,7 +26,7 @@ class PollAdminAjax extends Jaws_Ajax
      * Get a Poll
      *
      * @access  public
-     * @param   $int    $pid    poll ID
+     * @param   int     $pid    poll ID
      * @return  mixed   Poll info array or False on error
      */
     function GetPoll($pid)

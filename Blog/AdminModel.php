@@ -180,8 +180,10 @@ class BlogAdminModel extends BlogModel
      * Update a category entry
      *
      * @access  public
-     * @param   int     $cid    ID of category
-     * @param   string  $name   Name of category
+     * @param   int     $cid            ID of category
+     * @param   string  $name           Name of category
+     * @param   string  $description    entry description
+     * @param   string  $fast_url       
      * @return  bool    Returns True if Category was successfully updated, else Jaws_Error
      */
     function UpdateCategory($cid, $name, $description, $fast_url)
@@ -912,7 +914,7 @@ class BlogAdminModel extends BlogModel
      * @access  public
      * @param   array   $ids     Id's of the trackbacks to mark as spam
      * @param   string  $status  New status (spam by default)
-     * @param   mixed   True on Success or Jaws_Error on failure
+     * @return  mixed   True on Success or Jaws_Error on failure
      */
     function MarkTrackbacksAs($ids, $status = 'spam')
     {

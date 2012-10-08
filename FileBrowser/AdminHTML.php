@@ -16,6 +16,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
      * Builds the basic datagrid view
      *
      * @access  public
+     * @param   string  $path
      * @return  string   XHTML template of datagrid
      */
     function DataGrid($path = '')

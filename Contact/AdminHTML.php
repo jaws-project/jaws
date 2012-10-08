@@ -12,7 +12,7 @@
  */
 class ContactAdminHTML extends Jaws_GadgetHTML
 {
-    /*
+    /**
      * Admin of Gadget
      *
      * @access  public
@@ -930,6 +930,7 @@ class ContactAdminHTML extends Jaws_GadgetHTML
      * @param   string  $target     JSON decoded array ([to, cc, bcc] or [user, group])
      * @param   string  $subject    Subject of the Email
      * @param   string  $message    Message body of the Email
+     * @param   string  $attachment attachment
      * @return  string  XHTML template content
      */
     function SendEmail($target, $subject, $message, $attachment)

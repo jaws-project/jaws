@@ -1,4 +1,5 @@
 <?php
+define('PHOO_MAXFILES', 50);
 /**
  * Phoo Gadget
  *
@@ -10,8 +11,6 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-define('PHOO_MAXFILES', 50);
-
 class PhooAdminHTML extends Jaws_GadgetHTML
 {
     /**

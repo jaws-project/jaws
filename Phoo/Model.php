@@ -501,6 +501,7 @@ class PhooModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $id     ID of the album
+     * @param   int     $page   
      * @return  array   array with numbers of the first, previous, next and last pages
      */
     function GetAlbumPager($id, $page)

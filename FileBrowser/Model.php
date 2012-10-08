@@ -437,7 +437,8 @@ class FileBrowserModel extends Jaws_Model
     }
 
     /**
-     *
+     * Retrieves extension
+     * 
      * @access  public
      * @param   string  $ext
      * @return  mixed   extension string or false on error

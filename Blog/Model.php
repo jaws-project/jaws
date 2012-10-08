@@ -23,6 +23,8 @@ class BlogModel extends Jaws_Model
     /**
      * Holds the tree category stuff
      *
+     * @var Tree
+     * @access private
      */
     var $_Tree = array(
                        'children'  => array(),
@@ -1239,7 +1241,7 @@ class BlogModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $category   Category ID
-     * $params  string  $feed_type  OPTIONAL feed type
+     * @param   string  $feed_type  OPTIONAL feed type
      * @return  mixed   Can return the Atom Object or Jaws_Error on error
      */
     function GetCategoryAtomStruct($category, $feed_type = 'atom')
@@ -1889,8 +1891,8 @@ class BlogModel extends Jaws_Model
      * Verify if an entry exists
      *
      * @access  public
-     * @param   string  $post_id    The entry ID (ID or fast_URL, string)
-     * return   bool    True if entry exists, else, false.
+     * @param   int     $post_id    The entry ID (ID or fast_URL, string)
+     * @return  bool    True if entry exists, else, false.
      */
     function DoesEntryExists($post_id)
     {

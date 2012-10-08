@@ -120,6 +120,7 @@ class LinkDumpAdminModel extends LinkDumpModel
     * @param    string  $fast_url
     * @param    string  $desc       description
     * @param    string  $tags
+    * @param    string  $rank
     * @return   mixed   True on Success and Jaws_Error on Failure
     */
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
@@ -396,8 +397,10 @@ class LinkDumpAdminModel extends LinkDumpModel
     /**
      * Adds Tag to Link
      * 
-     * @access    public
-     * @return    mixed     True on Success and Jaws_Error on Failure
+     * @access  public
+     * @param   int     $lid    link ID
+     * @param   string  $tag    
+     * @return  mixed   True on Success and Jaws_Error on Failure
      */
     function AddTagToLink($lid, $tag)
     {
@@ -438,7 +441,9 @@ class LinkDumpAdminModel extends LinkDumpModel
     * Removes Tag From Link
     *
     * @access  public
-    * @return  mixed     True on Success and Jaws_Error on Failure
+    * @param    int     $id     tag ID
+    * @param    string  $tag
+    * @return   mixed   True on Success and Jaws_Error on Failure
     */
     function RemoveTagFromLink($id, $tag)
     {
@@ -468,6 +473,8 @@ class LinkDumpAdminModel extends LinkDumpModel
      *
      * @access  public
      * @param   int     $lid    Link's id
+     * @param   string  $gid    group ID
+     * @param   int     $rank   
      * @return  mixed   True on success on Jaws_Error otherwise
      */
     function DeleteLink($lid, $gid = '', $rank = 0)
