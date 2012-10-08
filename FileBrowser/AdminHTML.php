@@ -311,7 +311,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
     /**
      * Uploads a new file
      *
-     * @access public
+     * @access  public
      */
     function UploadFile()
     {
@@ -354,7 +354,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
     /**
      * Browses for the files & directories on the server
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content for browing file
      */
     function BrowseFile()

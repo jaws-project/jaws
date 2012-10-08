@@ -53,8 +53,8 @@ class SimpleSiteLayoutHTML
     /** 
      * Show the Menu without the top elements
      * 
-     * @access public
-     * @return string Menu in HTML
+     * @access  public
+     * @return  string Menu in HTML
      */
     function ShowWithoutTop() 
     {
@@ -64,8 +64,8 @@ class SimpleSiteLayoutHTML
     /**
      * Show the menu with the first two levels opened
      *
-     * @access public
-     * @return string Menu in HTML
+     * @access  public
+     * @return  string Menu in HTML
      */
     function ShowTwoLevels()
     {
@@ -75,8 +75,8 @@ class SimpleSiteLayoutHTML
     /** 
      * Show the menu with the first three levels opened
      *
-     * @access public
-     * @return string Menu in HTML
+     * @access  public
+     * @return  string Menu in HTML
      */
     function ShowThreeLevels()
     {
@@ -86,8 +86,8 @@ class SimpleSiteLayoutHTML
     /**
      * Internal recursive function to build the menu
      * 
-     * @access private
-     * @return string Menu in HTML
+     * @access  private
+     * @return  string Menu in HTML
      */
     function DisplayMenu(&$items, &$tplString, $level = 1) {
         $tpl = new Jaws_Template();
@@ -123,8 +123,8 @@ class SimpleSiteLayoutHTML
     /** 
      * Show the top menu
      *
-     * @access public
-     * @return string HTML top menu
+     * @access  public
+     * @return  string HTML top menu
      */
     function TopMenu()
     {
@@ -167,9 +167,9 @@ class SimpleSiteLayoutHTML
     /** 
      * Show the given level
      *
-     * @access public
-     * @param  int $depth Depth (default 1)
-     * @return string HTML level menu
+     * @access  public
+     * @param   int $depth Depth (default 1)
+     * @return  string HTML level menu
      */
     function DisplayLevel($depth = 1) 
     {

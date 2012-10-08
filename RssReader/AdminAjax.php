@@ -49,7 +49,7 @@ class RssReaderAdminAjax extends Jaws_Ajax
      * @param   int     $count_entry   The count of the viewable RSS title
      * @param   int     $title_view
      * @param   int     $visible The visible of the RSS Site
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {

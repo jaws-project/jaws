@@ -75,7 +75,7 @@ class SimpleSiteModel extends Jaws_Model
      * @param $items Reference to items array
      * @param $current Start
      * @param $depth Depth to return
-     * @access private
+     * @access  private
      */
     function _GetItemLevels(&$items, $current, $depth) 
     {
@@ -92,8 +92,8 @@ class SimpleSiteModel extends Jaws_Model
    
     /**
      * Create a hierachical array based on parents... 
-     * @access private   
-     * @return  boolean  Always true
+     * @access  private   
+     * @return  bool     Always true
      */
     function CreateItemsArray()
     {
@@ -118,7 +118,7 @@ class SimpleSiteModel extends Jaws_Model
 
     /**
      * Create a hierachical array based on parents... recursive proccess
-     * @access private
+     * @access  private
      * @params  array   $items      Array with all the items
      * @params  int     $parent     Parent id to extract
      * @return  array   Childs array
@@ -165,9 +165,9 @@ class SimpleSiteModel extends Jaws_Model
     /**
      * Gets the contents via path
      *
-     * @access public
-     * @param  string $path     Node path
-     * @return string   HTML Contents.
+     * @access  public
+     * @param   string $path     Node path
+     * @return  string   HTML Contents.
      */
     function GetContent($path)
     {
@@ -206,7 +206,7 @@ class SimpleSiteModel extends Jaws_Model
      * Create XML struct of sitemap
      *
      * @access  public
-     * @param   boolean  $writeToDisk Flag that determinates if content should be written to disk
+     * @param   bool     $writeToDisk Flag that determinates if content should be written to disk
      * @return  mixed    Returns the XML(string) if it was required, or true
      */
     function makeSitemap($writeToDisk = false)
@@ -282,7 +282,7 @@ class SimpleSiteModel extends Jaws_Model
      * Ping the sitemap.xml file to many search engines
      *
      * @access  public
-     * @param   boolean  $redo  (Optional) Rewrite sitemap before sending it
+     * @param   bool     $redo  (Optional) Rewrite sitemap before sending it
      */
     function ping($redo = false)
     {

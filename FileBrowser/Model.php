@@ -390,7 +390,7 @@ class FileBrowserModel extends Jaws_Model
      * Performs case insensitive sort based on filename.
      * Directories first, followed by files.
      *
-     * @access public
+     * @access  public
      * @param   array   $files  The filesystem array
      * @param   int     $order  
      * @return  array   the sorted filesystem array
@@ -438,7 +438,7 @@ class FileBrowserModel extends Jaws_Model
 
     /**
      *
-     * @access public
+     * @access  public
      * @param   string  $ext
      * @return  mixed   extension string or false on error
      */

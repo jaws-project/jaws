@@ -380,7 +380,7 @@ function downAnswer()
  */
 function editPollGroup(element, gid)
 {
-	if (gid == 0) return;
+    if (gid == 0) return;
 
     currentAction = 'PollGroups';
     selectedPollGroup = gid;

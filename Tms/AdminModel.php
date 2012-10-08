@@ -15,7 +15,7 @@ class TmsAdminModel extends Jaws_Model
      * Installs the gadget
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  bool    True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -42,7 +42,7 @@ class TmsAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -80,7 +80,7 @@ class TmsAdminModel extends Jaws_Model
      * Makes a .zip of a theme located in themes/ 
      *
      * @access  public
-     * @return  boolean Returns true if:
+     * @return  bool    Returns true if:
      *                    - Theme exists
      *                    - Theme exists and could be packed
      *                  Returns false if:

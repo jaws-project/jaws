@@ -15,7 +15,7 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @access  public
-     * @return string  HTML result
+     * @return  string  HTML result
      */
     function DefaultAction()
     {
@@ -26,7 +26,7 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
      * Returns the HTML of a group of sitemap childs (sub levels)
      *
      * @param object $xss   XSS parser passed by reference
-     * @param array  $items Nested item childs passed by reference
+     * @param   array  $items Nested item childs passed by reference
      *
      * @access  private
      * @return  string   HTML of nested childs
@@ -54,8 +54,8 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
      * Returns a string (based on a template) with a simple
      * sitemap layout
      *
-     * @access public
-     * @return string  HTML result
+     * @access  public
+     * @return  string  HTML result
      */
     function Sitemap()
     {
@@ -104,7 +104,7 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
      * Display
      * 
      * @access  public
-     * @return string  HTML result
+     * @return  string  HTML result
      */
     function Display()
     {

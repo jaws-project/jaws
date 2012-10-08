@@ -16,9 +16,9 @@ class PhooLayoutHTML
     /**
      * Displays a random image from one of the galleries.
      *
-     * @access public
+     * @access  public
      * @param   int     $albumid    album ID
-     * @return string   XHTML template content
+     * @return  string   XHTML template content
      * @see PhooModel::GetRandomImage()
      */
     function Random($albumid = null)
@@ -56,7 +56,7 @@ class PhooLayoutHTML
     /**
      * Displays a random image from the gallery listed as a Moblog
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function Moblog()
@@ -99,7 +99,7 @@ class PhooLayoutHTML
     /**
      * Displays a list of recent phoo comments ordered by date
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function RecentComments()
@@ -130,7 +130,7 @@ class PhooLayoutHTML
     /**
      * Displays an index of galleries.
      *
-     * @access public
+     * @access  public
      * @return  string XHTML template content
      */
     function AlbumList()

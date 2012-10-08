@@ -15,8 +15,8 @@ class RssReaderHTML extends Jaws_GadgetHTML
     /**
      * Default action to be run if none is defined.
      *
-     * @access public
-     * @return string HTML content of Default action
+     * @access  public
+     * @return  string HTML content of Default action
      */
     function DefaultAction()
     {
@@ -32,7 +32,7 @@ class RssReaderHTML extends Jaws_GadgetHTML
      * @access  private
      * @param   array    $item    Item to look for the date
      * @param   int      $offset  Offset of item(index)
-     * @param   boolean  $returnNull Should it return false?
+     * @param   bool     $returnNull Should it return false?
      * @return  string   The correct dcDate
      */
     function GetDCDate($item, $nowOffset = 0, $returnNull = false)

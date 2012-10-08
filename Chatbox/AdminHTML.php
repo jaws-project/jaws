@@ -176,8 +176,8 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo comment to be edited
      *
-     * @access public
-     * @return string  XHTML template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function EditEntry()
     {

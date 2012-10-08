@@ -15,8 +15,8 @@ class VisitCounterAdminHTML extends Jaws_GadgetHTML
     /**
      * Creates the menubar
      *
-     * @access private
-     * @return string  Menubar HTML content
+     * @access  private
+     * @return  string  Menubar HTML content
      */
     function MenuBar($selected)
     {
@@ -102,8 +102,8 @@ class VisitCounterAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays the administration page.
      *
-     * @access public
-     * @return string HTML content
+     * @access  public
+     * @return  string HTML content
      */
     function Admin()
     {

@@ -16,7 +16,7 @@ class BlogModel extends Jaws_Model
      * Has the Atom pointer to create the RSS/XML files
      *
      * @var    AtomFeed
-     * @access private
+     * @access  private
      */
     var $_Atom;
 
@@ -2186,7 +2186,7 @@ class BlogModel extends Jaws_Model
     /**
      * Get entries in a given page (page size = last_entries_limit)
      *
-     * @access public
+     * @access  public
      * @param   int     $cat            category
      * @param   int     $page           page
      * @param   array   $condition      conditions array
@@ -2212,9 +2212,9 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of pages limited by last_entries_limit
      *
-     * @access public
+     * @access  public
      * @param   int     $cat    category iD
-     * @return int number of pages
+     * @return  int number of pages
      */
     function GetNumberOfPages($cat = null)
     {
@@ -2251,10 +2251,10 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of date's pages
      *
-     * @access public
+     * @access  public
      * @param   string  $min_date   minimum date
      * @param   string  $max_date   maximum date
-     * @return int number of pages
+     * @return  int number of pages
      */
     function GetDateNumberOfPages($min_date, $max_date)
     {
@@ -2284,9 +2284,9 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of author's pages
      *
-     * @access public
+     * @access  public
      * @param   string  $user   username
-     * @return int number of pages
+     * @return  int number of pages
      */
     function GetAuthorNumberOfPages($user)
     {
@@ -2321,9 +2321,9 @@ class BlogModel extends Jaws_Model
     /**
      * Get number of category's pages
      *
-     * @access public
+     * @access  public
      * @param   int     $category   category iD
-     * @return int number of pages
+     * @return  int number of pages
      */
     function GetCategoryNumberOfPages($category)
     {

@@ -14,7 +14,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function ForumAdminAjax(&$model)
     {
@@ -92,7 +92,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * @param   int     $gid            group ID
      * @param   string  $title          forum title
      * @param   string  $description    forum description
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
@@ -121,7 +121,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * @param   string  $order
      * @param   bool    $locked
      * @param   bool    $published
-     * @return  array  response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
     {
@@ -147,7 +147,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * @param   string  $order
      * @param   bool    $locked
      * @param   bool    $published
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $description, $fast_url, $order, $locked, $published)
     {
@@ -175,7 +175,7 @@ class ForumAdminAjax extends Jaws_Ajax
      * @param   string  $order
      * @param   bool    $locked
      * @param   bool    $published
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published)
     {

@@ -15,7 +15,7 @@ class PollHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @acces  public
-     * @return string  XHTML template result
+     * @return  string  XHTML template result
      */
     function DefaultAction()
     {

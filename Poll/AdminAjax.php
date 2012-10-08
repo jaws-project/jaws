@@ -15,7 +15,7 @@ class PollAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model $model Jaws_Model reference
+     * @param   object $model Jaws_Model reference
      */
     function PollAdminAjax(&$model)
     {
@@ -276,7 +276,7 @@ class PollAdminAjax extends Jaws_Ajax
     /**
      * Retrieves Group Polls
      *
-     * @access public
+     * @access  public
      * @param   int     $gid        group ID
      * @return  mixed   array of Polls or false on error
      */

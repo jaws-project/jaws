@@ -166,7 +166,7 @@ class ContactHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string   $to   Recipient email address
-     * @param   integer  $cid   Contact ID
+     * @param   int      $cid   Contact ID
      * @return  mixed    True on Success or Jaws_Error on Failure
      */
     function SendEmailToRecipient($to, $cid)

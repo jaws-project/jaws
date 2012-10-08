@@ -14,7 +14,7 @@ class LinkDumpLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  private
      * @return  array   actions array
      */
     function LoadLayoutActions()

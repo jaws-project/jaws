@@ -16,8 +16,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Returns the default action to use if none is specified.
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function DefaultAction()
     {
@@ -27,8 +27,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays an index of galleries.
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function AlbumList()
     {
@@ -40,8 +40,8 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays an index of pictures in an album.
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function ViewAlbum()
     {
@@ -52,8 +52,8 @@ class PhooHTML extends Jaws_GadgetHTML
      * Displays a paged index of pictures in an album.
      * TODO: Test it, maybe we need some modifications in ViewImage...
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function ViewAlbumPage()
     {
@@ -174,12 +174,12 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays an individual image.
      *
-     * @access public
+     * @access  public
      * @param   int     $id                 image ID
      * @param   int     $albumid            album ID
      * @param   bool    $preview_mode       preview mode
      * @param   string  $reply_to_comment   
-     * @return string   XHTML template content
+     * @return  string   XHTML template content
      */
     function ViewImage($id = null, $albumid = null, $preview_mode = false, $reply_to_comment = '')
     {
@@ -364,9 +364,9 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * I'm not sure what this does... gets the authors photo maybe?
      *
-     * @access public
+     * @access  public
      * @see PhooModel::GetAsPortrait()
-     * @return string   XHTML template content
+     * @return  string   XHTML template content
      * @todo Better docblock
      */
     function PhotoblogPortrait()
@@ -468,7 +468,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Recursively displays comments of a given image according to several parameters
      *
-     * @access public
+     * @access  public
      * @param   int     $id             image id
      * @param   int     $albumid        album id
      * @param   int     $parent         parent comment id
@@ -561,7 +561,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a given phoo comment
      *
-     * @access public
+     * @access  public
      * @param   int     $id     comment id
      * @return  string  XHTML template content
      */
@@ -608,7 +608,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a given phoo comments and a form for replying
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function Reply()
@@ -621,7 +621,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a form to send a comment to the phoo
      *
-     * @access public
+     * @access  public
      * @param   int     $parent_id  id of the replied item(immediately before on the thread)
      * @param   int     $albumid    album ID
      * @param   int     $parent     id of the replied entry(comment thread starter)
@@ -737,7 +737,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given phoo comment
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function Preview()
@@ -765,7 +765,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Displays a preview of the given phoo comment
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function ShowPreview()
@@ -809,7 +809,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Saves the given phoo comment
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function SaveComment()
@@ -879,7 +879,7 @@ class PhooHTML extends Jaws_GadgetHTML
     /**
      * Format a date using Jaws
      *
-     * @access public
+     * @access  public
      * @param   string  $date   The data to format.
      * @return  string  The formatted date.
      */

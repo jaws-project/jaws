@@ -17,7 +17,7 @@ class WebcamAdminModel extends WebcamModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  True/Jaws_Error
+     * @return  bool     True/Jaws_Error
      */
     function InstallGadget()
     {
@@ -36,7 +36,7 @@ class WebcamAdminModel extends WebcamModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -60,7 +60,7 @@ class WebcamAdminModel extends WebcamModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -81,7 +81,7 @@ class WebcamAdminModel extends WebcamModel
      * @param   string  $title       Title of the webcam frame
      * @param   string  $url         Url of the webcam image
      * @param   string  $refresh     The refresh time to reload the webcam
-     * @return  boolean True if query was successful, otherwise returns false.
+     * @return  bool    True if query was successful, otherwise returns false.
      */
     function NewWebcam($title, $url, $refresh)
     {
@@ -113,7 +113,7 @@ class WebcamAdminModel extends WebcamModel
      * @param   string  $title       Title of the webcam frame
      * @param   string  $url         Url of the webcam image
      * @param   string  $refresh     Refresh rate
-     * @return  boolean True if query was successful, otherwise returns false.
+     * @return  bool    True if query was successful, otherwise returns false.
      */
     function UpdateWebcam($id, $title, $url, $refresh)
     {
@@ -144,7 +144,7 @@ class WebcamAdminModel extends WebcamModel
      *
      * @access  public
      * @param   int     $id          Id of the webcam
-     * @return  boolean True if query was successful, otherwise returns false.
+     * @return  bool    True if query was successful, otherwise returns false.
      */
     function DeleteWebcam($id)
     {
@@ -164,7 +164,7 @@ class WebcamAdminModel extends WebcamModel
      *
      * @access  public
      * @param   int     $limit Random Limit
-     * @return  boolean True if change is successful, if not, returns Jaws_Error on any error
+     * @return  bool    True if change is successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($limit)
     {

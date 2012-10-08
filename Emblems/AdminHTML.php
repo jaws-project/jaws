@@ -252,7 +252,7 @@ class EmblemsAdminHTML extends Jaws_GadgetHTML
     /**
      * Adds a new emblem
      *
-     * @access public
+     * @access  public
      * @see    EmblemsModel->AddEmblem()
      */
     function AddEmblem()

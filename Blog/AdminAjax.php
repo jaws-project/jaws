@@ -15,7 +15,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  model reference
+     * @param   object  $model  model reference
      */
     function BlogAdminAjax(&$model)
     {
@@ -362,7 +362,7 @@ class BlogAdminAjax extends Jaws_Ajax
      * it's value to not published, which will later be changed when the
      * user clicks on save.
      *
-     * @access public
+     * @access  public
      * @param   int     $id             ID
      * @param   array   $categories     Array with categories id's
      * @param   string  $title          Title of the entry

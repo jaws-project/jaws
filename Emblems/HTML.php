@@ -13,7 +13,7 @@ class EmblemsHTML extends Jaws_GadgetHTML
     /**
      * Executes the default action
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      * @see     Display()
      */
@@ -25,8 +25,8 @@ class EmblemsHTML extends Jaws_GadgetHTML
     /**
      * Displays the emblems in our site
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function Display()
     {

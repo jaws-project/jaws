@@ -149,7 +149,7 @@ function searchComment()
 function getData(limit)
 {
     if (limit == undefined) {
-    	limit = $('comments_datagrid').getCurrentPage();
+        limit = $('comments_datagrid').getCurrentPage();
     }
 
     var formData = getDataOfLCForm();

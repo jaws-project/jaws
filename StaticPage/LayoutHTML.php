@@ -14,7 +14,7 @@ class StaticPageLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  private
      */
     function LoadLayoutActions()
     {
@@ -38,8 +38,8 @@ class StaticPageLayoutHTML
     /**
      * Displays a layout block of static pages.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function PagesList()
     {
@@ -71,8 +71,8 @@ class StaticPageLayoutHTML
     /**
      * Displays a layout block of groups.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function GroupsList()
     {

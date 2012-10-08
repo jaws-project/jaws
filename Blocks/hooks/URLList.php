@@ -15,7 +15,7 @@ class BlocksURLListHook
      * can use
      *
      * @access  public
-     * @return array    urls array
+     * @return  array   URLs array
      */
     function Hook()
     {

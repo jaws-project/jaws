@@ -1722,7 +1722,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     /**
      * Wrapper functions for EditCategory action
      * 
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function EditCategory()

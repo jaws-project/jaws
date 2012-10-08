@@ -15,8 +15,8 @@ class FileBrowserHTML extends Jaws_GadgetHTML
     /**
      * Default action to be run if none is defined.
      *
-     * @access public
-     * @return string   XHTML template content of Default action
+     * @access  public
+     * @return  string   XHTML template content of Default action
      */
     function DefaultAction()
     {
@@ -153,7 +153,7 @@ class FileBrowserHTML extends Jaws_GadgetHTML
     /**
      * Get page navigation links
      * 
-     * @access private
+     * @access  private
      * @param   string  $page
      * @param   string  $page_size
      * @param   string  $total

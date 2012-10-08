@@ -175,7 +175,7 @@ class TmsAdminHTML extends Jaws_GadgetHTML
     /**
      * Download theme
      *
-     * @access public
+     * @access  public
      * @return download link
      */
     function DownloadTheme()

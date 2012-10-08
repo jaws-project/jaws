@@ -15,7 +15,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Builds the menubar
      *
-     * @access public
+     * @access  public
      * @param   string  $selected   Selected action
      * @return  string  XHTML menu template
      */
@@ -49,7 +49,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Displays faq admin section
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function Admin()
@@ -118,7 +118,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays faq list of questions(admin mode)
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function ManageQuestions()
@@ -337,7 +337,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * New question
      * 
-     * @access public
+     * @access  public
      */
     function NewQuestion()
     {
@@ -358,7 +358,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * New question
      * 
-     * @access public
+     * @access  public
      */
     function UpdateQuestion()
     {
@@ -378,7 +378,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Delete question
      * 
-     * @access public
+     * @access  public
      */
     function DeleteQuestion()
     {
@@ -473,7 +473,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * New category
      * 
-     * @access public
+     * @access  public
      */
     function NewCategory()
     {
@@ -491,7 +491,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
     /**
      * Update category
      * 
-     * @access public
+     * @access  public
      */
     function UpdateCategory()
     {

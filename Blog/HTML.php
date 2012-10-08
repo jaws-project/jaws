@@ -316,7 +316,7 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Gets year/month/day nav
      *
-     * @access public
+     * @access  public
      * @param   mixed   $year   year
      * @param   mixed   $month  month
      * @param   mixed   $day    day
@@ -485,7 +485,7 @@ class BlogHTML extends Jaws_GadgetHTML
     /**
      * Get navigation links
      * 
-     * @access public
+     * @access  public
      * @param   string  $purl
      * @param   string  $ptitle     title
      * @param   string  $nurl       url

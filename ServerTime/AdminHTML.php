@@ -14,8 +14,8 @@ class ServerTimeAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays the administration page.
      *
-     * @access public
-     * @return string HTML content
+     * @access  public
+     * @return  string HTML content
      */
     function Admin()
     {

@@ -14,8 +14,8 @@ class VisitCounterHTML extends Jaws_GadgetHTML
     /**
      * Runs the display action if none is specified.
      *
-     * @access public
-     * @return boolean HTML content
+     * @access  public
+     * @return  bool    HTML content
      */
     function DefaultAction()
     {

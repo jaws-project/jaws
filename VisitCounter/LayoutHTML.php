@@ -15,8 +15,8 @@ class VisitCounterLayoutHTML
     /**
      * Show visitors number
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function GetVisitorsFormat($visit_counters)
     {
@@ -102,8 +102,8 @@ class VisitCounterLayoutHTML
     /**
      * Displays the visit counter.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function Display()
     {
@@ -114,8 +114,8 @@ class VisitCounterLayoutHTML
     /**
      * Displays number of online visitors.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function DisplayOnline()
     {
@@ -125,8 +125,8 @@ class VisitCounterLayoutHTML
     /**
      * Displays number of today visitors.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function DisplayToday()
     {
@@ -136,8 +136,8 @@ class VisitCounterLayoutHTML
     /**
      * Displays number of total visitors.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function DisplayTotal()
     {

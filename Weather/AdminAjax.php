@@ -26,7 +26,7 @@ class WeatherAdminAjax extends Jaws_Ajax
      * Gets associated data of the region
      *
      * @access  public
-     * @param   integer $id ID of the geo posiotion
+     * @param   int     $id ID of the geo posiotion
      * @return  array   Array with the associated data of region
      */
     function GetRegion($id)
@@ -47,7 +47,7 @@ class WeatherAdminAjax extends Jaws_Ajax
      * @param   string  $fast_url   Fast_URL
      * @param   float   $latitude   Latitude of the geo posiotion
      * @param   float   $longitude  Longitude of the geo posiotion
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertRegion($title, $fast_url, $latitude, $longitude, $published)
     {
@@ -60,13 +60,13 @@ class WeatherAdminAjax extends Jaws_Ajax
      * Updates the specified region
      *
      * @access  public
-     * @param   integer $id         ID of the geo posiotion
+     * @param   int     $id         ID of the geo posiotion
      * @param   string  $title      Title of the geo posiotion
      * @param   string  $fast_url   Fast_URL
      * @param   float   $latitude   Latitude of the geo posiotion
      * @param   float   $longitude  Longitude of the geo posiotion
-     * @param   boolean $published  Whether be published or not
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   bool    $published  Whether be published or not
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published)
     {
@@ -79,8 +79,8 @@ class WeatherAdminAjax extends Jaws_Ajax
      * Deletes the specified region
      *
      * @access  public
-     * @param   integer $id     ID of the region
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $id     ID of the region
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function DeleteRegion($id)
     {
@@ -94,9 +94,9 @@ class WeatherAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $unit           Unit for displaying temperature
-     * @param   integer $update_period  Time interval between updates
+     * @param   int     $update_period  Time interval between updates
      * @param   string  $date_format    Date string format
-     * @return  boolean True if update is successful or Jaws_Error on any error
+     * @return  bool    True if update is successful or Jaws_Error on any error
      */
     function UpdateProperties($unit, $update_period, $date_format)
     {
@@ -109,7 +109,7 @@ class WeatherAdminAjax extends Jaws_Ajax
      * Gets Data for grid
      *
      * @access  public
-     * @param   integer $offset Data offset
+     * @param   int     $offset Data offset
      * @param   string  $grid   Name of the grid
      * @return  array   Regions
      */

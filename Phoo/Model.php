@@ -54,8 +54,8 @@ class PhooModel extends Jaws_Model
     /**
      * Get the max date from phoo_image
      *
-     * @access public
-     * @return mixed   Date formatted as MM/DD/YYYY or False on error
+     * @access  public
+     * @return  mixed   Date formatted as MM/DD/YYYY or False on error
      */
     function getMaxDate()
     {
@@ -72,8 +72,8 @@ class PhooModel extends Jaws_Model
     /**
      * Get the min date from phoo_image
      * 
-     * @access public
-     * @return mixed    Date formatted as MM/DD/YYYY or false on error
+     * @access  public
+     * @return  mixed    Date formatted as MM/DD/YYYY or false on error
      */
     function GetMinDate()
     {
@@ -1077,7 +1077,7 @@ class PhooModel extends Jaws_Model
     /**
      * Puts avatar and format time for given comments
      * 
-     * @access private
+     * @access  private
      * @param   array   $comments   comments array reference
      */
     function _AdditionalCommentsData(&$comments)
@@ -1199,12 +1199,12 @@ class PhooModel extends Jaws_Model
     /**
      * This function mails the comments to the owner
      *
-     * @access public
-     * @param int    $link       The permanent link
-     * @param string $title      The email title
-     * @param string $from_email The email to sendto
-     * @param string $comment    The body of the email (The actual comment)
-     * @param string $url        The url of the blog id
+     * @access  public
+     * @param   int    $link       The permanent link
+     * @param   string $title      The email title
+     * @param   string $from_email The email to sendto
+     * @param   string $comment    The body of the email (The actual comment)
+     * @param   string $url        The url of the blog id
      */
     function MailComment($link, $title, $from_email, $comment, $url)
     {
@@ -1384,8 +1384,8 @@ class PhooModel extends Jaws_Model
     /**
      * Get registry settings for Phoo
      *
-     * @access public
-     * @return mixed    array with the settings or Jaws_Error on error
+     * @access  public
+     * @return  mixed    array with the settings or Jaws_Error on error
      */
     function GetSettings()
     {
@@ -1446,7 +1446,7 @@ class PhooModel extends Jaws_Model
     /**
      * Returns the first album of a given image id
      * 
-     * @access public
+     * @access  public
      * @param   int     $id     Image id.
      * @return  mixed   result array or false on error
      */

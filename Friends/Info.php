@@ -14,8 +14,8 @@ class FriendsInfo extends Jaws_GadgetInfo
     /**
      * Gadget version
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Version = '0.6.1';
 

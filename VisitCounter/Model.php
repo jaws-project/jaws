@@ -18,8 +18,8 @@ class VisitCounterModel extends Jaws_Model
      * WARNING: This may cause delays if DNS isn't setup properly, don't use it anywhere
      *          performance is a major issue.
      *
-     * @access public
-     * @return string The hostname of the remote machine, or Jaws_Error if no reverse lookup could be done.
+     * @access  public
+     * @return  string The hostname of the remote machine, or Jaws_Error if no reverse lookup could be done.
      */
     function GetHostname($ip)
     {
@@ -36,7 +36,7 @@ class VisitCounterModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $ip  IP of the visitor
-     * @return  boolean True if query was successful, otherwise returns Jaws_Error
+     * @return  bool    True if query was successful, otherwise returns Jaws_Error
      */
     function AddVisitor($ip, $inc = true)
     {
@@ -226,8 +226,8 @@ class VisitCounterModel extends Jaws_Model
     /**
      * Gets the type of visits to be displayed.
      *
-     * @access public
-     * @return string   The type of visits being displayed.
+     * @access  public
+     * @return  string   The type of visits being displayed.
      */
     function GetVisitType()
     {

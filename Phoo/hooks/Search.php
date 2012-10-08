@@ -13,7 +13,7 @@ class PhooSearchHook
     /**
      * Gets the gadget's search fields
      *
-     * @access public
+     * @access  public
      * @return  array   search fields array
      */
     function GetSearchFields() {

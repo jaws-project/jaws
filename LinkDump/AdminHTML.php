@@ -103,7 +103,7 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
     /**
      * Links List Action
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function GetLinksList($gid)

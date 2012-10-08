@@ -44,7 +44,7 @@ class QuotesAdminModel extends QuotesModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -76,7 +76,7 @@ class QuotesAdminModel extends QuotesModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -94,7 +94,7 @@ class QuotesAdminModel extends QuotesModel
      * Insert the information of a Quote
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -147,7 +147,7 @@ class QuotesAdminModel extends QuotesModel
      * Update the information of a Quote
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -201,7 +201,7 @@ class QuotesAdminModel extends QuotesModel
      *
      * @access  public
      * @param   int  $id Quote ID
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function DeleteQuote($id)
     {
@@ -220,7 +220,7 @@ class QuotesAdminModel extends QuotesModel
     * Insert a group
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
@@ -270,7 +270,7 @@ class QuotesAdminModel extends QuotesModel
     * Update a group
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
@@ -323,7 +323,7 @@ class QuotesAdminModel extends QuotesModel
      * @param   int     $qid  Quote's ID
      * @param   int     $gid  Group's ID
      * @param   int     $new_gid  Group's ID
-     * @return  boolean Returns true if quote was sucessfully added to the group, false if not
+     * @return  bool    Returns true if quote was sucessfully added to the group, false if not
      */
     function UpdateQuoteGroup($qid, $gid, $new_gid)
     {
@@ -393,7 +393,7 @@ class QuotesAdminModel extends QuotesModel
      * Delete a group
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function DeleteGroup($gid)
     {

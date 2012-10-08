@@ -41,8 +41,8 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Get references
      * @param   string  $type   Type of references
-     * @access public
-     * @return array Data
+     * @access  public
+     * @return  array Data
      */
     function GetReferences($type)
     {
@@ -64,8 +64,8 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Get the references for StaticPages...
      *
-     * @access public
-     * @return array Data
+     * @access  public
+     * @return  array Data
      */
     function GetStaticPageReferences()
     {
@@ -84,8 +84,8 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Get the references for Blog...
      *
-     * @access public
-     * @return array Data
+     * @access  public
+     * @return  array Data
      */
     function GetBlogReferences()
     {
@@ -104,8 +104,8 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Get the references for Launcher...
      *
-     * @access public
-     * @return array Data
+     * @access  public
+     * @return  array Data
      */
     function GetLauncherReferences()
     {
@@ -124,17 +124,17 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Create a new item
      *
-     * @access public
-     * @param  integer  $parent_id  Parent Id
-     * @param  string   $title      Item title
-     * @param  string   $shortname  Item shortname (also used in paths)
-     * @param  string   $type       Item type (URL, StaticPage, Blog, etc)
-     * @param  string   $reference  Type reference (e.g. ID of the static page)
-     * @param  string   $change     Change frequency. Values can be always, hourly, daily, weekly,
+     * @access  public
+     * @param   int      $parent_id  Parent Id
+     * @param   string   $title      Item title
+     * @param   string   $shortname  Item shortname (also used in paths)
+     * @param   string   $type       Item type (URL, StaticPage, Blog, etc)
+     * @param   string   $reference  Type reference (e.g. ID of the static page)
+     * @param   string   $change     Change frequency. Values can be always, hourly, daily, weekly,
      *                              monthly, yearly, never
-     * @param  string   $priority   Priority of this item relative to other item on the site. Can be 
+     * @param   string   $priority   Priority of this item relative to other item on the site. Can be 
      *                              values from 1 to 5 (only numbers!).
-     * @return array New item data
+     * @return  array New item data
      */
     function NewItem($parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -156,18 +156,18 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Update item
      *
-     * @access public
-     * @param  integer  $id         Item Id
-     * @param  integer  $parent_id  Parent Id
-     * @param  string   $title      Item title
-     * @param  string   $shortname  Item shortname (also used in paths)
-     * @param  string   $type       Item type (URL, StaticPage, Blog, etc)
-     * @param  string   $reference  Type reference (e.g. ID of the static page)
-     * @param  string   $change     Change frequency. Values can be always, hourly, daily, weekly,
+     * @access  public
+     * @param   int      $id         Item Id
+     * @param   int      $parent_id  Parent Id
+     * @param   string   $title      Item title
+     * @param   string   $shortname  Item shortname (also used in paths)
+     * @param   string   $type       Item type (URL, StaticPage, Blog, etc)
+     * @param   string   $reference  Type reference (e.g. ID of the static page)
+     * @param   string   $change     Change frequency. Values can be always, hourly, daily, weekly,
      *                              monthly, yearly, never
-     * @param  string   $priority   Priority of this item relative to other item on the site. Can be 
+     * @param   string   $priority   Priority of this item relative to other item on the site. Can be 
      *                              values from 1 to 5 (only numbers!).
-     * @return array New item data
+     * @return  array New item data
      */
     function UpdateItem($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -183,9 +183,9 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Delete a given item
      *
-     * @param  integer  $id Item Id.
-     * @access public
-     * @return boolean True if succesful
+     * @param   int      $id Item Id.
+     * @access  public
+     * @return  bool    True if succesful
      */
     function DeleteItem($id)
     {
@@ -196,10 +196,10 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Move a given item to a given direction
      *
-     * @param  integer  $id         Item Id
-     * @param  string   $direction  up or down
-     * @access public
-     * @return boolean True if succesful
+     * @param   int      $id         Item Id
+     * @param   string   $direction  up or down
+     * @access  public
+     * @return  bool    True if succesful
      */
     function MoveItem($id, $direction)
     {
@@ -210,8 +210,8 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     /**
      * Send the sitemap XML URL to search engines
      *
-     * @access public
-     * @return boolean True if succesful
+     * @access  public
+     * @return  bool    True if succesful
      */
     function PingSitemap()
     {

@@ -155,7 +155,7 @@ class StaticPageModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $page   Page ID
-     * @param   boolean $onlyPublished
+     * @param   bool    $onlyPublished
      * @return  mixed   List of code languages / False if no code are found
      */
     function GetTranslationsOfPage($page, $onlyPublished = false)
@@ -254,7 +254,7 @@ class StaticPageModel extends Jaws_Model
      * @access  public
      * @param   int     $page_id   The page ID
      * @param   string  $language  The translation we are looking for
-     * @return  boolean Exists / Not exists
+     * @return  bool    Exists / Not exists
      */
     function TranslationExists($page_id, $language)
     {

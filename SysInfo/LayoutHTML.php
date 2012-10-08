@@ -13,8 +13,8 @@ class SysInfoLayoutHTML
     /**
      * Show information around system(OS, WebServer, Database,...)
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function SysInfo()
     {
@@ -46,8 +46,8 @@ class SysInfoLayoutHTML
     /**
      * Show some common PHP settings like memory limit, safe mode, ...
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function PHPInfo()
     {
@@ -79,8 +79,8 @@ class SysInfoLayoutHTML
     /**
      * Show information around your Jaws like installed gadgets, plugins, ...
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function JawsInfo()
     {
@@ -112,8 +112,8 @@ class SysInfoLayoutHTML
     /**
      * Show information about Jaws's main directories like permissions, ...
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function DirInfo()
     {

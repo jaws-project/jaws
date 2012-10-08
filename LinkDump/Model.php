@@ -107,7 +107,7 @@ class LinkDumpModel extends Jaws_Model
     /**
      * Generates a TagCloud
      *
-     * @access public
+     * @access  public
      * @return  mixed   TagCloud data or Jaws_Error on error
      */
     function CreateTagCloud()

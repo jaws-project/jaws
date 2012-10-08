@@ -14,7 +14,7 @@ class FaqLayoutHTML
     /**
      * Displays a list with links to each category
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function ListCategories()

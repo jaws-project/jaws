@@ -38,8 +38,8 @@ class WeatherHTML extends Jaws_GadgetHTML
     /**
      * Displays the weather of a region
      *
-     * @access public
-     * @return string   HTML content
+     * @access  public
+     * @return  string   HTML content
      */
     function RegionWeather()
     {

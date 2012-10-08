@@ -46,7 +46,7 @@ class RssReaderAdminModel extends RssReaderModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -70,7 +70,7 @@ class RssReaderAdminModel extends RssReaderModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -103,7 +103,7 @@ class RssReaderAdminModel extends RssReaderModel
      * @param   int     $count_entry   The count of the viewable RSS title
      * @param   int     $title_view
      * @param   int     $visible The visible of the RSS Site
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -144,7 +144,7 @@ class RssReaderAdminModel extends RssReaderModel
      * @param   int     $view_type
      * @param   int     $count_entry   The count of the viewable RSS title
      * @param   int     $visible The visible of the RSS Site
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateRSS($RSSid, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -185,7 +185,7 @@ class RssReaderAdminModel extends RssReaderModel
      *
      * @access  public
      * @param   string  $id ID of the RSS Site
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function DeleteRSS($id)
     {

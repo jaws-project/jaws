@@ -14,8 +14,8 @@ class StaticPageHTML extends Jaws_GadgetHTML
     /**
      * Excutes the default action, currently displaying the default page.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function DefaultAction()
     {
@@ -26,8 +26,8 @@ class StaticPageHTML extends Jaws_GadgetHTML
      * Displays an individual page.
      *
      * @var    int    $id    Page ID (optional)
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function Page($page_id = null, $base_action = 'Page')
     {
@@ -118,8 +118,8 @@ class StaticPageHTML extends Jaws_GadgetHTML
     /**
      * Displays an index of available groups.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function GroupsList()
     {
@@ -155,8 +155,8 @@ class StaticPageHTML extends Jaws_GadgetHTML
      * Displays an individual page.
      *
      * @var    int    $id    Page ID (optional)
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function Pages()
     {

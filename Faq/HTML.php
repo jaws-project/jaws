@@ -14,7 +14,7 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(View)
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function DefaultAction()
@@ -55,7 +55,7 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Displays a concrete category
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function ViewCategory()
@@ -121,7 +121,7 @@ class FaqHTML extends Jaws_GadgetHTML
     /**
      * Displays complete FAQ to the user: first fastlinks and below questions and answers
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function View()

@@ -69,7 +69,7 @@ class ContactAdminAjax extends Jaws_Ajax
      * Update contact reply
      *
      * @access  public
-     * @param   integer $id             Contact ID
+     * @param   int     $id             Contact ID
      * @param   string  $reply          Reply content
      * @param   bool    $send_reply     whether to send a reply
      * @return  array   Response array (notice or error)

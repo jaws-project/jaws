@@ -14,8 +14,8 @@ class BannerLayoutHTML
     /**
      * Get Display action params
      *
-     * @access public
-     * @return array list of Display action params
+     * @access  public
+     * @return  array list of Display action params
      */
     function DisplayLayoutParams()
     {
@@ -40,7 +40,7 @@ class BannerLayoutHTML
     /**
      * Displays banners(all-time visibles and random ones)
      *
-     * @access public
+     * @access  public
      * @param   int     $gid       group ID
      * @param   bool    $URIPrefix
      * @return  string  XHTML template content

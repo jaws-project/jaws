@@ -11,7 +11,7 @@
     <name>ip</name>
     <type>text</type>
     <length>255</length>
-	<notnull>true</notnull>
+    <notnull>true</notnull>
    </field>
 
    <field>

@@ -437,8 +437,8 @@ class LinkDumpAdminModel extends LinkDumpModel
     /**
     * Removes Tag From Link
     *
-    * @access public
-    * @return mixed     True on Success and Jaws_Error on Failure
+    * @access  public
+    * @return  mixed     True on Success and Jaws_Error on Failure
     */
     function RemoveTagFromLink($id, $tag)
     {

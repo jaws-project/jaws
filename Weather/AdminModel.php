@@ -19,7 +19,7 @@ class WeatherAdminModel extends WeatherModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean True on successful installation, Jaws_Error otherwise
+     * @return  bool    True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -49,7 +49,7 @@ class WeatherAdminModel extends WeatherModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error otherwise
+     * @return  bool     True on success and Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -75,7 +75,7 @@ class WeatherAdminModel extends WeatherModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -118,8 +118,8 @@ class WeatherAdminModel extends WeatherModel
      * @param   string  $fast_url   Fast_URL
      * @param   float   $latitude   Latitude of geo posiotion
      * @param   float   $longitude  Longitude of geo posiotion
-     * @param   boolean $published  Visibility status of geo posiotion
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   bool    $published  Visibility status of geo posiotion
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertRegion($title, $fast_url, $latitude, $longitude, $published)
     {
@@ -154,13 +154,13 @@ class WeatherAdminModel extends WeatherModel
      * Updates the region
      *
      * @access  public
-     * @param   integer $id         ID of the geo posiotion
+     * @param   int     $id         ID of the geo posiotion
      * @param   string  $title      Title of geo posiotion
      * @param   string  $fast_url   Fast_URL
      * @param   float   $latitude   Latitude of geo posiotion
      * @param   float   $longitude  Longitude of geo posiotion
-     * @param   boolean $published  Visibility status of geo posiotion
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   bool    $published  Visibility status of geo posiotion
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published)
     {
@@ -199,8 +199,8 @@ class WeatherAdminModel extends WeatherModel
      * Deletes the specified region
      *
      * @access  public
-     * @param   integer $id     ID of the region
-     * @return  boolean True on success and Jaws_Error on failure
+     * @param   int     $id     ID of the region
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function DeleteRegion($id)
     {
@@ -220,9 +220,9 @@ class WeatherAdminModel extends WeatherModel
      *
      * @access  public
      * @param   string  $unit           Unit for displaying temperature
-     * @param   integer $update_period  Time interval between updates
+     * @param   int     $update_period  Time interval between updates
      * @param   string  $date_format    Date string format
-     * @return  boolean True if update is successful or Jaws_Error on any error
+     * @return  bool    True if update is successful or Jaws_Error on any error
      */
     function UpdateProperties($unit, $update_period, $date_format)
     {

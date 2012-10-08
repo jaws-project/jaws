@@ -17,7 +17,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Success with true and failure with Jaws_Error
+     * @return  bool     Success with true and failure with Jaws_Error
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -67,7 +67,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -87,8 +87,8 @@ class SimpleSiteAdminModel extends SimpleSiteModel
     /**
      * Get max position for a given parent...
      * @param   int $parent_id  ID of the parent
-     * @access private
-     * @return int Max position.
+     * @access  private
+     * @return  int Max position.
      */
     function GetMaxPosition($parent_id)
     {
@@ -110,7 +110,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      *                              monthly, yearly, never
      * @param   string  $priority   (Optional) Priority of this item relative to other items on the site. Can be 
      *                              values from 1 to 5 (only numbers!).
-     * @return  boolean True if the simplesite was added without errors, else, returns false
+     * @return  bool    True if the simplesite was added without errors, else, returns false
      */
     function NewItem($parent_id, $title, $shortname, $type, $reference, $change = '', $priority = '')
     {
@@ -189,7 +189,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      *
      * @access  public
      * @param   int     $id ID of the item
-     * @return  boolean True if the item was removed without errors, if not, returns false
+     * @return  bool    True if the item was removed without errors, if not, returns false
      */
     function DeleteItem($id)
     {
@@ -226,7 +226,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      *                              monthly, yearly, never
      * @param   string  $priority   (Optional) Priority of this item relative to other item on the site. Can be 
      *                              values from 1 to 5 (only numbers!).
-     * @return  boolean True if the query was successful, if not, returns false
+     * @return  bool    True if the query was successful, if not, returns false
      */
     function UpdateItem($id, $parent_id, $title, $shortname, $type, $reference, $change = '', $priority = '')
     {
@@ -326,7 +326,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      * @access  public
      * @param   int     $id         Item id
      * @param   string  $direction  Where to move it (up or down)
-     * @return  boolean Returns true if item was moved without problems, if not, returns false
+     * @return  bool    Returns true if item was moved without problems, if not, returns false
      */
     function MoveItem($id, $direction)
     {

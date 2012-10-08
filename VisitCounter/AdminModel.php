@@ -18,7 +18,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  True on success and Jaws_Error on failure
+     * @return  bool     True on success and Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -44,7 +44,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -74,7 +74,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -139,7 +139,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * Clears the visitors table
      *
      * @access  private
-     * @return  boolean True if change was successful, otherwise returns Jaws_Error
+     * @return  bool    True if change was successful, otherwise returns Jaws_Error
      */
     function ClearVisitors()
     {
@@ -158,7 +158,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * Resets the counter to zero
      *
      * @access  public
-     * @return  boolean True if change was successful, otherwise returns Jaws_Error
+     * @return  bool    True if change was successful, otherwise returns Jaws_Error
      */
     function ResetCounter()
     {
@@ -184,7 +184,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * @access  public
      * @param   int     $numdays Number of days
      * @param   string  $type    The type of visits being displayed
-     * @return  boolean True if change was successful, otherwise returns Jaws_Error
+     * @return  bool    True if change was successful, otherwise returns Jaws_Error
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text='')
     {
@@ -221,7 +221,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      *
      * @access  public
      * @param   string   $date StartDate
-     * @return  boolean  True/Jaws_Error
+     * @return  bool     True/Jaws_Error
      */
     function SetStartDate($date)
     {

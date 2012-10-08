@@ -17,8 +17,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Returns the default administration action to use if none is specified.
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function Admin()
     {
@@ -29,8 +29,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Displays a menu bar for the control panel gadget.
      *
      * @access protected
-     * @param  string   $action_selected    The item to display as selected.
-     * @return string   XHTML template content for menubar
+     * @param   string   $action_selected    The item to display as selected.
+     * @return  string   XHTML template content for menubar
      */
     function MenuBar($action_selected)
     {
@@ -65,8 +65,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Main UI to admin photos
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function AdminPhotos()
     {
@@ -287,8 +287,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays a form to edit Photo
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function EditPhoto()
     {
@@ -416,7 +416,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Update a photo
      * 
-     * @access public
+     * @access  public
      */
     function SaveEditPhoto()
     {
@@ -453,7 +453,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Rotate left a image
      * 
-     * @access public
+     * @access  public
      */
     function RotateLeft()
     {
@@ -511,7 +511,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Rotate right a image
      * 
-     * @access public
+     * @access  public
      */
     function RotateRight()
     {
@@ -569,7 +569,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Delete a photo
      * 
-     * @access public
+     * @access  public
      */
     function DeletePhoto()
     {
@@ -584,8 +584,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays a form for adding new images.
      *
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function UploadPhotos()
     {
@@ -657,7 +657,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
      * Saves a new image using input data from UploadPhotos
      * If required any new albums will be created
      *
-     * @access public
+     * @access  public
      * @see Phoo::UploadPhotos()
      * @see PhooModel::AddEntryToAlbum()
      * @see PhooModel::AddCategoryToEntry()
@@ -716,7 +716,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * New album
      * 
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      * @see PhooModel::SaveNewAlbum()
      * @see Phoo::AdminPhotos()
@@ -790,7 +790,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Creates a new album based on input data from the New Album
      *
-     * @access public
+     * @access  public
      * @see PhooModel::NewAlbum()
      * @see Phoo::AdminPhotos()
      */
@@ -809,7 +809,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Edit album
      * 
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      * @see PhooModel::SaveEditAlbum()
      * @see Phoo::AdminPhotos()
@@ -894,7 +894,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Updates a given album with the given info
      *
-     * @access public
+     * @access  public
      * @see PhooModel::NewAlbum()
      * @see Phoo::AdminPhotos()
      */
@@ -915,7 +915,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Delete an album and all its images
      * 
-     * @access public
+     * @access  public
      * @see PhooModel::DeleteAlbum()
      * @see Phoo::AdminPhotos()
      */
@@ -968,7 +968,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays blog comments manager
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function ManageComments()
@@ -1032,7 +1032,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo comment to be edited
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function EditComment()
@@ -1122,7 +1122,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Applies changes to a phoo comment
      *
-     * @access public
+     * @access  public
      */
     function SaveEditComment()
     {
@@ -1144,7 +1144,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Deletes a phoo comment
      *
-     * @access public
+     * @access  public
      */
     function DeleteComment()
     {
@@ -1162,7 +1162,7 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Displays phoo settings administration panel
      *
-     * @access public
+     * @access  public
      * @return  string  XHTML template content
      */
     function AdditionalSettings()
@@ -1391,8 +1391,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Import pictures in 'import' folder
      * 
-     * @access public
-     * @return string   XHTML template content
+     * @access  public
+     * @return  string   XHTML template content
      */
     function Import()
     {
@@ -1453,8 +1453,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Import selected images
      *
-     * @access public
-     * @return string   XHTML with the results of the importation
+     * @access  public
+     * @return  string   XHTML with the results of the importation
      */
     function FinishImport()
     {
@@ -1507,8 +1507,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Browse across albums and images from Phoo
      *
-     * @access public
-     * @return string   XHTML with the list of albums and images appropiate for navigation
+     * @access  public
+     * @return  string   XHTML with the list of albums and images appropiate for navigation
      */
     function BrowsePhoo()
     {
@@ -1701,8 +1701,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
     /**
      * Show the image selected from BrowsePhoo with some options to insert.
      *
-     * @access public
-     * @return string   XHTML with the image selected and it's options
+     * @access  public
+     * @return  string   XHTML with the image selected and it's options
      */
     function SelectImage()
     {

@@ -26,7 +26,7 @@ class QuotesHTML extends Jaws_GadgetHTML
      * Print the recent quotes
      *
      * @access  public
-     * @return  template content
+     * @return  XHTML template content
      */
     function RecentQuotes()
     {
@@ -37,8 +37,8 @@ class QuotesHTML extends Jaws_GadgetHTML
     /**
      * Displays quotes by group
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function ViewGroupQuotes()
     {
@@ -51,8 +51,8 @@ class QuotesHTML extends Jaws_GadgetHTML
     /**
      * Displays quotes by group in standalone mode
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function QuotesByGroup()
     {

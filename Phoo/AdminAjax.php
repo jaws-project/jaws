@@ -24,7 +24,7 @@ class PhooAdminAjax extends Jaws_Ajax
     /**
      * Import an image located in 'import' folder
      *
-     * @access public
+     * @access  public
      * @param   string  $image  Image file
      * @param   string  $name   Name of the image
      * @param   string  $album  In which album the image will be imported

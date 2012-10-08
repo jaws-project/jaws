@@ -293,7 +293,7 @@ class PhooAdminModel extends PhooModel
      * @param   array   $files            info like original name, tmp name and size
      * @param   string  $title            Title of the image
      * @param   string  $description      Description of the image
-     * @param   boolean $fromControlPanel Is it called from ControlPanel?
+     * @param   bool    $fromControlPanel Is it called from ControlPanel?
      * @param   array   $album            Array containing the required info about the album
      * @return  mixed   Returns the ID of the new entry and Jaws_Error on error
      */
@@ -495,13 +495,13 @@ class PhooAdminModel extends PhooModel
     /**
      * Update the Album information
      *
-     * @access public
-     * @param  int      $id             ID of the album
-     * @param  string   $name           Name of the album
-     * @param  string   $description    Description of the album
-     * @param  bool     $comments       If a comments are enabled
-     * @param  bool     $published      If the album is visable to users or not
-     * @return mixed    Returns true if album was updated without problems, Jaws_Error if not.
+     * @access  public
+     * @param   int      $id             ID of the album
+     * @param   string   $name           Name of the album
+     * @param   string   $description    Description of the album
+     * @param   bool     $comments       If a comments are enabled
+     * @param   bool     $published      If the album is visable to users or not
+     * @return  mixed    Returns true if album was updated without problems, Jaws_Error if not.
      */
     function UpdateAlbum($id, $name, $description, $comments, $published)
     {
@@ -625,12 +625,12 @@ class PhooAdminModel extends PhooModel
     /**
      * Create a new album
      *
-     * @access public
-     * @param  string   $name        Name of the album
-     * @param  string   $description Description of the album
-     * @param  bool     $comments    If a comments are enabled
-     * @param  bool     $published   If the album is visable to users or not
-     * @return mixed    Returns the ID of the new album and Jaws_Error on error
+     * @access  public
+     * @param   string   $name        Name of the album
+     * @param   string   $description Description of the album
+     * @param   bool     $comments    If a comments are enabled
+     * @param   bool     $published   If the album is visable to users or not
+     * @return  mixed    Returns the ID of the new album and Jaws_Error on error
      */
     function NewAlbum($name, $description, $comments, $published)
     {
@@ -666,7 +666,7 @@ class PhooAdminModel extends PhooModel
     /**
      * Update registry settings for phoo
      *
-     * @access public
+     * @access  public
      * @param   string  $default_action
      * @param   bool    $published
      * @param   bool    $allow_comments
@@ -716,7 +716,7 @@ class PhooAdminModel extends PhooModel
     /**
      * Items to import, looking in 'data/phoo/import' folder
      * 
-     * @return array    Items to import
+     * @return  array    Items to import
      */
     function GetItemsToImport()
     {

@@ -16,7 +16,7 @@ class FaqAdminModel extends FaqModel
     /**
      * Installs the gadget
      *
-     * @access public
+     * @access  public
      * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
@@ -97,7 +97,7 @@ class FaqAdminModel extends FaqModel
     /**
      * Max question position
      *
-     * @access public
+     * @access  public
      * @param   int     $category   Category ID
      * @return  int     Max position
      */
@@ -350,7 +350,7 @@ class FaqAdminModel extends FaqModel
     /**
      * Max category position
      *
-     * @access public
+     * @access  public
      * @return  int  Max position
      */
     function GetMaxCategoryPosition()
@@ -450,7 +450,7 @@ class FaqAdminModel extends FaqModel
     /**
      * Delete category
      *
-     * @access public
+     * @access  public
      * @param   int     $id     category position
      * @return  mixed   True if success, Jaws_Error on failure
      */

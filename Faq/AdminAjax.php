@@ -14,7 +14,7 @@ class FaqAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function FaqAdminAjax(&$model)
     {

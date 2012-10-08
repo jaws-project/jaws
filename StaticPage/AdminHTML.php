@@ -228,8 +228,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Display the administration page.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function Admin()
     {
@@ -338,8 +338,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Creates the form to create a new page
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function AddNewPage()
     {
@@ -350,8 +350,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Save a new page.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function AddPage()
     {
@@ -372,8 +372,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Edit a page.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function EditPage()
     {
@@ -397,8 +397,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Save an updated page.
      *
-     * @access public
-     * @return string
+     * @access  public
+     * @return  string
      */
     function SaveEditPage()
     {
@@ -497,8 +497,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
      * @param   string      $title          The title text.
      * @param   string      $fast_url       Fast URL
      * @param   string      $content        The content text.
-     * @param   boolean     $published      If the document is published or not
-     * @param   boolean     $show_title     If the document should publish the title or not
+     * @param   bool        $published      If the document is published or not
+     * @param   bool        $show_title     If the document should publish the title or not
      * @param   string      $language       Language page has been written
      * @param   int         $id             The ID of the page
      * @param   int         $gid            The ID of page group

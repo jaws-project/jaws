@@ -17,7 +17,7 @@ class PreferencesModel extends Jaws_Model
      * @access  public
      * @param   array   $Preferences
      * @param   int     $expiretime
-     * @return  boolean True/False
+     * @return  bool    True/False
      */
     function SavePreferences($Preferences, $expire_age = 1440)
     {

@@ -18,7 +18,7 @@ class StaticPageAdminModel extends StaticPageModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Success/failure
+     * @return  bool     Success/failure
      */
     function InstallGadget()
     {
@@ -47,7 +47,7 @@ class StaticPageAdminModel extends StaticPageModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -78,7 +78,7 @@ class StaticPageAdminModel extends StaticPageModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -164,8 +164,8 @@ class StaticPageAdminModel extends StaticPageModel
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
-     * @param   boolean $published  If the translated page is published or not
-     * @return  boolean Success/failure
+     * @param   bool    $published  If the translated page is published or not
+     * @return  bool    Success/failure
      */
     function AddTranslation($page_id, $title, $content, $language, $published)
     {
@@ -216,8 +216,8 @@ class StaticPageAdminModel extends StaticPageModel
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
-     * @param   boolean $published  If the translated page is published or not
-     * @return  boolean Success/failure
+     * @param   bool    $published  If the translated page is published or not
+     * @return  bool    Success/failure
      */
     function UpdateTranslation($id, $title, $content, $language, $published)
     {
@@ -304,7 +304,7 @@ class StaticPageAdminModel extends StaticPageModel
      *
      * @access  public
      * @param   string  $id         Translation ID
-     * @return  boolean Success/failure
+     * @return  bool    Success/failure
      */
     function DeleteTranslation($id)
     {
@@ -344,13 +344,13 @@ class StaticPageAdminModel extends StaticPageModel
      *
      * @access  public
      * @param   string  $title      The title of the page.
-     * @param   integer $group      The group of page that belongs to 
+     * @param   int     $group      The group of page that belongs to 
      * @param   string  $fast_url   The fast URL of the page
-     * @param   boolean $show_title If the document should publish the title or not
+     * @param   bool    $show_title If the document should publish the title or not
      * @param   string  $content    The contents of the page.
      * @param   string  $language   The language of page
-     * @param   boolean $published  If the page is published or not
-     * @param   boolean $auto       If it's auto saved or not
+     * @param   bool    $published  If the page is published or not
+     * @param   bool    $auto       If it's auto saved or not
      * @return  bool    Success/failure
      */
     function AddPage($title, $group, $fast_url, $show_title, $content, $language, $published, $auto = false)
@@ -393,15 +393,15 @@ class StaticPageAdminModel extends StaticPageModel
      *
      * @access  public
      * @param   int     $id             The ID of the page to update.
-     * @param   integer $group          The group of page that belongs to 
+     * @param   int     $group          The group of page that belongs to 
      * @param   string  $fast_url       The fast URL of the page.
-     * @param   boolean $show_title     If the document should publish the title or not
+     * @param   bool    $show_title     If the document should publish the title or not
      * @param   string  $title          The new title of the page.
      * @param   string  $content        The new contents of the the page.
      * @param   string  $language       The language of page
-     * @param   boolean $published      If the page is published or not
-     * @param   boolean $auto           If it's auto saved or not
-     * @return  boolean Success/failure
+     * @param   bool    $published      If the page is published or not
+     * @param   bool    $auto           If it's auto saved or not
+     * @return  bool    Success/failure
      */
     function UpdatePage($id, $group, $fast_url, $show_title, $title, $content, $language, $published, $auto = false)
     {
@@ -612,7 +612,7 @@ class StaticPageAdminModel extends StaticPageModel
      * Delete a group
      *
      * @access  public
-     * @param   integer $gid   Group ID
+     * @param   int     $gid   Group ID
      * @returns mixed   True on success or Jaws_Error on failure
      */
     function DeleteGroup($gid)
@@ -636,7 +636,7 @@ class StaticPageAdminModel extends StaticPageModel
      * @access  public
      * @param   string  $defaultPage  Default page to use
      * @param   string  $multiLang    Use a multilanguage 'schema'?
-     * @return  boolean Success/failure
+     * @return  bool    Success/failure
      */
     function UpdateSettings($defaultPage, $multiLang)
     {

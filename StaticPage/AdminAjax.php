@@ -129,16 +129,16 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * it's value to not published, which will later be changed when the
      * user clicks on save.
      *
-     * @access public
-     * @param int    $id        The id of the staticpage id to update
-     * @param int    $group     The group id of the page that blongs to
-     * @param string $fast_url  The value of the fast_url. This will
+     * @access  public
+     * @param   int    $id        The id of the staticpage id to update
+     * @param   int    $group     The group id of the page that blongs to
+     * @param   string $fast_url  The value of the fast_url. This will
      *                          be autocreated if nothing is passed.
-     * @param bool   $showtitle This will to know if we show the title or not.
-     * @param string $title     The new autosaved title
-     * @param string $content   The content of the new page
-     * @param string $language  The language of page
-     * @param bool   $published If the item is published or not. Default: draft
+     * @param   bool   $showtitle This will to know if we show the title or not.
+     * @param   string $title     The new autosaved title
+     * @param   string $content   The content of the new page
+     * @param   string $language  The language of page
+     * @param   bool   $published If the item is published or not. Default: draft
      */
     function AutoDraft($id = '', $group, $fast_url = '', $showtitle = '', $title = '', $content = '',
                        $language = '', $published = '')

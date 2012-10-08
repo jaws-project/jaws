@@ -24,7 +24,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Get information of a quote
      *
      * @access  public
-     * @param   integer $qid
+     * @param   int     $qid
      * @return  array   Quote(s) information
      */
     function GetQuote($qid)
@@ -51,8 +51,8 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Get information of a quotes
      *
      * @access  public
-     * @param   integer $qid
-     * @param   integer  $gid
+     * @param   int     $qid
+     * @param   int      $gid
      * @return  array   Quote(s) information
      */
     function GetQuotes($qid, $gid = -1)
@@ -69,7 +69,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Insert the information of a Quote
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -82,7 +82,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Update the information of a Quote
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -126,7 +126,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Insert groups
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
     {
@@ -140,7 +140,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      * Update groups
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
     {

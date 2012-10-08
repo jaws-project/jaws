@@ -14,7 +14,7 @@ class BlocksAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function BlocksAdminAjax(&$model)
     {
@@ -24,9 +24,9 @@ class BlocksAdminAjax extends Jaws_Ajax
     /**
      * Get Block
      *
-     * @access public
-     * @param  int      $id     Block ID
-     * @return mixed    Block data or False on error
+     * @access  public
+     * @param   int      $id     Block ID
+     * @return  mixed    Block data or False on error
      */
     function GetBlock($id)
     {
@@ -41,7 +41,7 @@ class BlocksAdminAjax extends Jaws_Ajax
     /**
      * Create a new  block
      *
-     * @access public
+     * @access  public
      * @param   string  $title          Block title
      * @param   string  $contents       Block contents
      * @param   bool    $displayTitle   If true display block title
@@ -61,7 +61,7 @@ class BlocksAdminAjax extends Jaws_Ajax
     /**
      * Update a block
      *
-     * @access public
+     * @access  public
      * @param   int     $id             Block ID
      * @param   string  $title          Block title
      * @param   string  $contents       Block contents

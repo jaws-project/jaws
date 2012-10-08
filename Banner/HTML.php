@@ -28,8 +28,8 @@ class BannerHTML extends Jaws_GadgetHTML
     /**
      * Redirects request to banner's target
      *
-     * @access public
-     * @return mixed    Void if Success, 404  XHTML template content on Failure
+     * @access  public
+     * @return  mixed    Void if Success, 404  XHTML template content on Failure
      */
     function Click()
     {

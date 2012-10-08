@@ -13,8 +13,8 @@ class ForumHTML extends Jaws_GadgetHTML
     /**
      * Default action
      *
-     * @acces  public
-     * @return string  XHTML template content
+     * @acces   public
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {

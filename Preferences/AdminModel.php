@@ -17,7 +17,7 @@ class PreferencesAdminModel extends PreferencesModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean true on successful installation, Jaws_Error otherwise
+     * @return  bool    true on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -39,7 +39,7 @@ class PreferencesAdminModel extends PreferencesModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -64,7 +64,7 @@ class PreferencesAdminModel extends PreferencesModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {

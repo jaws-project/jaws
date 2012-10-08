@@ -15,7 +15,7 @@ class BlogLayoutHTML
     /**
      * Load layout actions
      *
-     * @access private
+     * @access  private
      * @return  array   Actions array
      */
     function LoadLayoutActions()

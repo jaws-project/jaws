@@ -15,7 +15,7 @@ class RssReaderLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  private
      */
     function LoadLayoutActions()
     {
@@ -39,8 +39,8 @@ class RssReaderLayoutHTML
     /**
      * Show titles of RSS sites
      *
-     * @access public
-     * @return string HTML content with all titles and links of RSS sites
+     * @access  public
+     * @return  string HTML content with all titles and links of RSS sites
      */
     function Display($id = 0)
     {

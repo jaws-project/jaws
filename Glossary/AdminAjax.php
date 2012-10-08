@@ -14,7 +14,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  Jaws_Model reference
+     * @param   object  $model  Jaws_Model reference
      */
     function GlossaryAdminAjax(&$model)
     {
@@ -24,7 +24,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
     /**
      * Get a term
      *
-     * @access public
+     * @access  public
      * @param   int    $id Term ID
      * @return  mixed  Term data or false on error
      */
@@ -41,7 +41,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
     /**
      * Create a new term
      *
-     * @access public
+     * @access  public
      * @param   string  $term
      * @param   string  $fast_url
      * @param   string  $contents    Term description
@@ -59,7 +59,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
     /**
      * Update a term
      *
-     * @access public
+     * @access  public
      * @param   int    $id       Term ID
      * @param   string $term     Term
      * @param   string $contents Term description

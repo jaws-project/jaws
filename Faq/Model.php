@@ -151,8 +151,8 @@ class FaqModel extends Jaws_Model
     /**
      * Get categories
      *
-     * @access public
-     * @return mixed    An array with the categories ordered by position or Jaws_Error on failure
+     * @access  public
+     * @return  mixed    An array with the categories ordered by position or Jaws_Error on failure
      */
     function GetCategories()
     {
@@ -178,7 +178,7 @@ class FaqModel extends Jaws_Model
     /**
      * Get category
      * 
-     * @access public
+     * @access  public
      * @param   int     $id     Category ID
      * @return  mixed   Array an array with the category info or Jaws_Error on failure
      */
