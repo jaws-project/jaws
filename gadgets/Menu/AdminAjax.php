@@ -103,7 +103,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Insert group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -117,7 +117,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Insert menu
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -131,7 +131,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Update group
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -145,7 +145,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Update menu
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error on failure
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {

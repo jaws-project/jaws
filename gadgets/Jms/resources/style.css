@@ -35,7 +35,7 @@
 {
   color: #000;
   font-weight: bold;
-  font-size: 150%;	
+  font-size: 150%;    
   width: 100%;
 }
 
@@ -56,39 +56,39 @@
 
 /* Tree CSS */
 .webfx-tree-container {
-	margin: 0px;
-	padding: 0px;
-	font: icon;
-	white-space: nowrap;        
+    margin: 0px;
+    padding: 0px;
+    font: icon;
+    white-space: nowrap;        
 }
 
 
 .webfx-tree-item {
-	padding: 0px;
-	margin: 0px;
-	font: icon;
-	color: black;
-	white-space: nowrap;
+    padding: 0px;
+    margin: 0px;
+    font: icon;
+    color: black;
+    white-space: nowrap;
 }
 
 .webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
-	margin-left: 0px;
-	padding: 0px 0px 0px 0px;
+    margin-left: 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .webfx-tree-item a {
         cursor: default;
                      
-	color: black;
-	text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 .webfx-tree-item img {
-	margin-left: 2px;
-	vertical-align: middle;
-	border: 0px;
-	width: 16px;
-	height: 16px;
+    margin-left: 2px;
+    vertical-align: middle;
+    border: 0px;
+    width: 16px;
+    height: 16px;
 }
 
 .webfx-tree-pm-icon {
@@ -104,11 +104,11 @@
 }
 
 .webfx-tree-item a.selected {
-	color: highlighttext;
-	background: highlight;
+    color: highlighttext;
+    background: highlight;
 }
 
 .webfx-tree-item a.selected-inactive {
-	color: windowtext;
-	background: buttonface;
+    color: windowtext;
+    background: buttonface;
 }

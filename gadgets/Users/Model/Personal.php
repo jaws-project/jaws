@@ -23,7 +23,7 @@ class Users_Model_Personal extends Jaws_Model
      * @param   string   $email     User's email
      * @param   string   $url       User's url
      * @param   string   $password  Password
-     * @param   boolean  $uppass    Really updte the user password?
+     * @param   bool     $uppass    Really updte the user password?
      * @return  mixed    True (Success) or Jaws_Error (failure)
      */
     function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url)

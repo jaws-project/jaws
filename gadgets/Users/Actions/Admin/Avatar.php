@@ -38,7 +38,7 @@ class Users_Actions_Admin_Avatar extends UsersAdminHTML
      * Returns avatar as stream data
      *
      * @access  public
-     * @return  boolean True on successful, False otherwise
+     * @return  bool    True on successful, False otherwise
      */
     function LoadAvatar()
     {

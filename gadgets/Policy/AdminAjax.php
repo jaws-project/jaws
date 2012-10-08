@@ -45,7 +45,7 @@ class PolicyAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $from_ip  The from IP
      * @param   string  $to_ip    The to IP
-     * @param   boolean $blocked
+     * @param   bool    $blocked
      * @return  string  Response
      */
     function AddIPRange($from_ip, $to_ip = null, $blocked)
@@ -62,7 +62,7 @@ class PolicyAdminAjax extends Jaws_Ajax
      * @param   int     $id ID of the to-be-blocked IP range addresses
      * @param   string  $from_ip  The from IP
      * @param   string  $to_ip    The to IP
-     * @param   boolean $blocked
+     * @param   bool    $blocked
      * @return  string  Response
      */
     function EditIPRange($id, $from_ip, $to_ip, $blocked)
@@ -109,7 +109,7 @@ class PolicyAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $agent   Which Agent is supposed to be blocked or allowed
-     * @param   boolean $blocked
+     * @param   bool    $blocked
      * @return  string  Response
      */
     function AddAgent($agent, $blocked)
@@ -125,7 +125,7 @@ class PolicyAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id     ID of the agent
      * @param   string  $agent  Which Agent is supposed to be blocked or allowed
-     * @param   boolean $blocked
+     * @param   bool    $blocked
      * @return  string  Response
      */
     function EditAgent($id, $agent, $blocked)
@@ -153,8 +153,8 @@ class PolicyAdminAjax extends Jaws_Ajax
      * Set IPBlocking block undefined ip
      *
      * @access  public
-     * @param   boolean $blocked    blocked by default
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $blocked    blocked by default
+     * @return  bool    True on success and Jaws error on failure
      */
     function IPBlockingBlockUndefined($blocked)
     {
@@ -173,8 +173,8 @@ class PolicyAdminAjax extends Jaws_Ajax
      * Set AgentBlocking block undefined agent
      *
      * @access  public
-     * @param   boolean $blocked    blocked by default
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $blocked    blocked by default
+     * @return  bool    True on success and Jaws error on failure
      */
     function AgentBlockingBlockUndefined($blocked)
     {
@@ -193,10 +193,10 @@ class PolicyAdminAjax extends Jaws_Ajax
      * Update  Encryption Settings
      *
      * @access  public
-     * @param   boolean $enabled   Enable/Disable encryption
-     * @param   boolean $key_age   Key age
-     * @param   boolean $key_len   Key length
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $enabled   Enable/Disable encryption
+     * @param   bool    $key_age   Key age
+     * @param   bool    $key_len   Key length
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
@@ -209,12 +209,12 @@ class PolicyAdminAjax extends Jaws_Ajax
      * Update AntiSpam Settings
      *
      * @access  public
-     * @param   boolean $allow_duplicate
-     * @param   boolean $filter
+     * @param   bool    $allow_duplicate
+     * @param   bool    $filter
      * @param   string  $captcha
      * @param   string  $captcha_driver
-     * @param   boolean $obfuscator
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $obfuscator
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
@@ -228,14 +228,14 @@ class PolicyAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $passwd_complexity
-     * @param   integer $passwd_bad_count
-     * @param   integer $passwd_lockedout_time
-     * @param   integer $passwd_max_age
-     * @param   integer $passwd_min_length
+     * @param   int     $passwd_bad_count
+     * @param   int     $passwd_lockedout_time
+     * @param   int     $passwd_max_age
+     * @param   int     $passwd_min_length
      * @param   string  $xss_parsing_level
-     * @param   integer $session_idle_timeout
-     * @param   integer $session_remember_timeout
-     * @return  boolean True on success and Jaws error on failure
+     * @param   int     $session_idle_timeout
+     * @param   int     $session_remember_timeout
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,

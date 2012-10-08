@@ -14,8 +14,8 @@ class PolicyInfo extends Jaws_GadgetInfo
     /**
      * Gadget version
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Version = '0.2.0';
 
@@ -23,7 +23,7 @@ class PolicyInfo extends Jaws_GadgetInfo
      * Is this gadget core gadget?
      *
      * @var    boolean
-     * @access private
+     * @access  private
      */
     var $_IsCore = true;
 

@@ -21,7 +21,7 @@ class Users_Model_Registration extends Jaws_Model
      * @param   string  $password   Password
      * @param   string  $p_check    Password check (to verify)
      * @param   string  $group      Default user group
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function CreateUser($username, $user_email, $nickname, $fname, $lname, $gender, $dob, $url,
                         $password, $group = null)
@@ -234,7 +234,7 @@ class Users_Model_Registration extends Jaws_Model
      *
      * @access  public
      * @param   string  $user_email Email
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function SendRecoveryKey($user_email)
     {

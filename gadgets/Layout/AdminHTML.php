@@ -354,8 +354,8 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
     /**
      * Adds layout element
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function AddLayoutElement()
     {
@@ -428,8 +428,8 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
     /**
      * Save layout element
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function SaveLayoutElement()
     {
@@ -450,8 +450,8 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
     /**
      * Changes action of a given gadget
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function EditElementAction()
     {
@@ -535,8 +535,8 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
     /**
      * Changes when to display a given gadget
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function ChangeDisplayWhen()
     {
@@ -603,8 +603,8 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
     /**
      * Delete an element from the layout
      *
-     * @access public
-     * @return template content
+     * @access  public
+     * @return  XHTML template content
      */
     function DeleteLayoutElement()
     {

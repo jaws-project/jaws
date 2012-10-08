@@ -62,7 +62,7 @@ class Users_Model_Admin_UserACL extends Jaws_Model
      * @access  public
      * @param   int     $uid    User' ID
      * @param   array   $keys   ACL Keys
-     * @return  boolean Success/Failure(Jaws_Error)
+     * @return  bool    Success/Failure(Jaws_Error)
      */
     function UpdateUserACL($uid, $keys)
     {

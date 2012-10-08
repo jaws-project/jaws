@@ -374,7 +374,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $anon       Anonymous users can auto-register
      * @param   string  $repetitive Anonymous can register by repetitive email
      * @param   string  $act        Activation type
-     * @param   integer $group      Default group of anonymous registered user
+     * @param   int     $group      Default group of anonymous registered user
      * @param   string  $recover    Users can recover their passwords
      * @return  array   Response (notice or error)
      */
@@ -639,7 +639,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string $name        Groups's name
      * @param   string $title       Groups's title
      * @param   string $description Groups's description
-     * @param   boolean $enabled    Group's status
+     * @param   bool    $enabled    Group's status
      * @return  array  Response (notice or error)
      */
     function AddGroup($name, $title, $description, $enabled)
@@ -669,7 +669,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string $name        Group's name
      * @param   string $title       Groups's title
      * @param   string $description Groups's description
-     * @param   boolean $enabled    Group's status
+     * @param   bool    $enabled    Group's status
      * @return  array  Response (notice or error)
      */
     function UpdateGroup($guid, $name, $title, $description, $enabled)

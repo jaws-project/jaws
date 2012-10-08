@@ -17,7 +17,7 @@ class MenuHTML extends Jaws_GadgetHTML
      * Default action
      *
      * @acces  public
-     * @return string  HTML result
+     * @return  string  HTML result
      */
     function DefaultAction()
     {
@@ -29,7 +29,7 @@ class MenuHTML extends Jaws_GadgetHTML
      * Returns menu image as stream data
      *
      * @access  public
-     * @return  boolean True on successful, False otherwise
+     * @return  bool    True on successful, False otherwise
      */
     function LoadImage()
     {

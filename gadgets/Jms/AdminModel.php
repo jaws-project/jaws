@@ -120,7 +120,7 @@ class JmsAdminModel extends Jaws_Model
      * Get a list of plugins, installed or non installed
      *
      * @access  public
-     * @param   boolean $installed   accept true/false/null value
+     * @param   bool    $installed   accept true/false/null value
      * @return  array   A list of plugins
      */
     function GetPluginsList($installed = null)

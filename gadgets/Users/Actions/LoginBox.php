@@ -13,8 +13,8 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
     /**
      * Calls Login box
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function LoginBox()
     {
@@ -106,8 +106,8 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
     /**
      * Calls Login box
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function LoginLinks()
     {

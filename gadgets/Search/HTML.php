@@ -172,7 +172,7 @@ class SearchHTML extends Jaws_GadgetHTML
 
     /**
      * Get page navigation links
-     * @access private
+     * @access  private
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $query_string, $id = null)
     {

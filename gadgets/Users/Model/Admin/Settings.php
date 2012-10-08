@@ -19,10 +19,10 @@ class Users_Model_Admin_Settings extends Jaws_Model
      * @param   string  $anon       Anonymous users can auto-register
      * @param   string  $repetitive Anonymous can register by repetitive email
      * @param   string  $act        Activation type
-     * @param   integer $type       User's type
-     * @param   integer $group      Default group of anonymous registered user
+     * @param   int     $type       User's type
+     * @param   int     $group      Default group of anonymous registered user
      * @param   string  $recover    Users can recover their passwords
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
     {

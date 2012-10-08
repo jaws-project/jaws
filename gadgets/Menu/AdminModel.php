@@ -19,7 +19,7 @@ class MenuAdminModel extends MenuModel
      * Install the gadget
      *
      * @access  public
-     * @return  boolean  Success with true and failure with Jaws_Error
+     * @return  bool     Success with true and failure with Jaws_Error
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class MenuAdminModel extends MenuModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UninstallGadget()
     {
@@ -74,7 +74,7 @@ class MenuAdminModel extends MenuModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -159,7 +159,7 @@ class MenuAdminModel extends MenuModel
     * Insert a group
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -201,7 +201,7 @@ class MenuAdminModel extends MenuModel
     * Insert a menu
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -250,7 +250,7 @@ class MenuAdminModel extends MenuModel
     * Update a group
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -299,7 +299,7 @@ class MenuAdminModel extends MenuModel
     * Update a menu
     * @access  public
     *
-    * @return  boolean Success/Failure (Jaws_Error)
+    * @return  bool    Success/Failure (Jaws_Error)
     */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -362,7 +362,7 @@ class MenuAdminModel extends MenuModel
      * Delete a group
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function DeleteGroup($gid)
     {
@@ -404,7 +404,7 @@ class MenuAdminModel extends MenuModel
      * Delete a menu
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function DeleteMenu($mid)
     {
@@ -444,7 +444,7 @@ class MenuAdminModel extends MenuModel
      * Delete a all menu related with a gadget (type = %gadget%)
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function RemoveMenusByType($type)
     {

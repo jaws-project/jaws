@@ -278,7 +278,7 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
     /**
      * Terminates Control Panel session and redirects to website
      *
-     * @access public
+     * @access  public
      */
     function Logout()
     {
@@ -289,7 +289,7 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
     /**
      * Returns downloadable backup file
      *
-     * @access public
+     * @access  public
      * @return void
      */
     function Backup()

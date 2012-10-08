@@ -13,8 +13,8 @@ class PolicyHTML extends Jaws_GadgetHTML
     /**
      * Calls default action
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function DefaultAction()
     {
@@ -23,7 +23,7 @@ class PolicyHTML extends Jaws_GadgetHTML
 
     /**
      * Tricky way to get the captcha image...
-     * @access public
+     * @access  public
      * @return PNG image
      */
     function Captcha()

@@ -30,7 +30,7 @@ class SettingsAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -184,7 +184,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'site_comment',     => //Site commnet
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function SaveBasicSettings($settings)
     {
@@ -228,7 +228,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'timezone',            //Timezone
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function SaveAdvancedSettings($settings)
     {
@@ -267,7 +267,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'copyright',
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function SaveMetaSettings($settings)
     {
@@ -310,7 +310,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'smtp_pass',
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function UpdateMailSettings($settings)
     {
@@ -353,7 +353,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'ftp_root',
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function UpdateFTPSettings($settings)
     {
@@ -395,7 +395,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'proxy_pass',
      *                  );
      *
-     * @return  boolean True or Jaws_Error
+     * @return  bool    True or Jaws_Error
      */
     function UpdateProxySettings($settings)
     {

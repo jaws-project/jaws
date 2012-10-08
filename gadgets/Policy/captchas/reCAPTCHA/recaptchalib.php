@@ -42,7 +42,7 @@ define("RECAPTCHA_VERIFY_SERVER", "api-verify.recaptcha.net");
 /**
  * Encodes the given data into a query string format
  * @param $data - array of string elements to be encoded
- * @return string - encoded request
+ * @return  string - encoded request
  */
 function _recaptcha_qsencode ($data) {
         $req = "";
@@ -58,11 +58,11 @@ function _recaptcha_qsencode ($data) {
 
 /**
  * Submits an HTTP POST to a reCAPTCHA server
- * @param string $host
- * @param string $path
- * @param array $data
- * @param int port
- * @return array response
+ * @param   string $host
+ * @param   string $path
+ * @param   array $data
+ * @param   int port
+ * @return  array response
  */
 function _recaptcha_http_post($host, $path, $data, $port = 80) {
 
@@ -97,11 +97,11 @@ function _recaptcha_http_post($host, $path, $data, $port = 80) {
  * Gets the challenge HTML (javascript and non-javascript version).
  * This is called from the browser, and the resulting reCAPTCHA HTML widget
  * is embedded within the HTML form it was called from.
- * @param string $pubkey A public key for reCAPTCHA
- * @param string $error The error given by reCAPTCHA (optional, default is null)
- * @param boolean $use_ssl Should the request be made over ssl? (optional, default is false)
+ * @param   string $pubkey A public key for reCAPTCHA
+ * @param   string $error The error given by reCAPTCHA (optional, default is null)
+ * @param   bool    $use_ssl Should the request be made over ssl? (optional, default is false)
 
- * @return string - The HTML to be embedded in the user's form.
+ * @return  string - The HTML to be embedded in the user's form.
  */
 function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
 {
@@ -142,10 +142,10 @@ class ReCaptchaResponse {
 
 /**
   * Calls an HTTP POST function to verify if the user's guess was correct
-  * @param string $privkey
-  * @param string $remoteip
-  * @param string $challenge
-  * @param string $response
+  * @param   string $privkey
+  * @param   string $remoteip
+  * @param   string $challenge
+  * @param   string $response
   * @return ReCaptchaResponse
   */
 function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response)
@@ -195,8 +195,8 @@ function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response)
  * gets a URL where the user can sign up for reCAPTCHA. If your application
  * has a configuration page where you enter a key, you should provide a link
  * using this function.
- * @param string $domain The domain where the page is hosted
- * @param string $appname The name of your application
+ * @param   string $domain The domain where the page is hosted
+ * @param   string $appname The name of your application
  */
 function recaptcha_get_signup_url ($domain = null, $appname = null) {
     return "http://recaptcha.net/api/getkey?" .  _recaptcha_qsencode (array ('domain' => $domain, 'app' => $appname));

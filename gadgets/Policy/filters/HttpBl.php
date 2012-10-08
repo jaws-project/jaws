@@ -37,7 +37,7 @@ class HttpBl
      *  - If ApiKey isn't empty
      *  - Requesting httpbl returns true if key is valid
      *
-     * @access private
+     * @access  private
      */
     var $IsKeyValid;
     
@@ -63,7 +63,7 @@ class HttpBl
      * Verify if key exists, and if it exists if it's not empty
      *
      * @access  private
-     * @return  boolean Is key valid?
+     * @return  bool    Is key valid?
      */
     function VerifyKey()
     {
@@ -78,16 +78,16 @@ class HttpBl
     /**
      * Checks if user IP is marked as spam at HttpBl
      *
-     * @param string $permalink  Permalink of post
-     * @param string $type       Component's name
-     * @param string $name       Author's name
-     * @param string $email      Author's email
-     * @param string $message    Author's message
+     * @param   string $permalink  Permalink of post
+     * @param   string $type       Component's name
+     * @param   string $name       Author's name
+     * @param   string $email      Author's email
+     * @param   string $message    Author's message
      *
      * As a note: Any of the params are really taken since
      * we need the user's IP
      *
-     * @return boolean Is it spam returns true otherwise we return false
+     * @return  bool    Is it spam returns true otherwise we return false
      */
     function IsSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
@@ -119,11 +119,11 @@ class HttpBl
      * Since there's no real 'server' way to tell HttpBl a comment was a 
      * spam then we do nothing in this one
      *
-     * @param string $permalink  Permalink of post
-     * @param string $type       Component's name
-     * @param string $name       Author's name
-     * @param string $email      Author's email
-     * @param string $message    Author's message
+     * @param   string $permalink  Permalink of post
+     * @param   string $type       Component's name
+     * @param   string $name       Author's name
+     * @param   string $email      Author's email
+     * @param   string $message    Author's message
      *
      * @access  public
      */
@@ -136,11 +136,11 @@ class HttpBl
      * Since there's no real 'server' way to tell HttpBl a comment was ham
      * then we do nothing in this one
      *
-     * @param string $permalink  Permalink of post
-     * @param string $type       Component's name
-     * @param string $name       Author's name
-     * @param string $email      Author's email
-     * @param string $message    Author's message
+     * @param   string $permalink  Permalink of post
+     * @param   string $type       Component's name
+     * @param   string $name       Author's name
+     * @param   string $email      Author's email
+     * @param   string $message    Author's message
      *
      * @access  public
      */

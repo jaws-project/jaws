@@ -297,7 +297,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Returns menu image as stream data
      *
      * @access  public
-     * @return  boolean True on successful, False otherwise
+     * @return  bool    True on successful, False otherwise
      */
     function LoadImage()
     {

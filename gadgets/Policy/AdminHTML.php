@@ -38,7 +38,7 @@ class PolicyAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string  $action Selected Action
-     * @return  template content
+     * @return  XHTML template content
      */
     function SideBar($action)
     {
@@ -598,4 +598,5 @@ class PolicyAdminHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock('AdvancedPolicies');
         return $tpl->Get();
     }
+
 }

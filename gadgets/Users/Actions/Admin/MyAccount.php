@@ -14,8 +14,8 @@ class Users_Actions_Admin_MyAccount extends UsersAdminHTML
     /**
      * Show account settings for logged user
      *
-     * @access public
-     * @return string  Template content
+     * @access  public
+     * @return  string  Template content
      */
     function MyAccount()
     {

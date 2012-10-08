@@ -43,7 +43,7 @@ class LayoutAdminModel extends LayoutModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -110,7 +110,7 @@ class LayoutAdminModel extends LayoutModel
      * @param   string  $action_params   Action's params
      * @param   string  $action_filename Filename that contant action method
      * @param   string  $pos             (Optional) Element position
-     * @return  boolean Returns true if gadget was added without problems, if not, returns false
+     * @return  bool    Returns true if gadget was added without problems, if not, returns false
      */
     function NewElement($section, $gadget, $action, $action_params, $action_filename, $pos = '')
     {
@@ -159,7 +159,7 @@ class LayoutAdminModel extends LayoutModel
      * @param   string  $gadget      Gadget name
      * @param   string  $old_action  Old action
      * @param   string  $new_action  New action
-     * @return  boolean Returns true if updated without problems, if not, returns false
+     * @return  bool    Returns true if updated without problems, if not, returns false
      */
     function ChangeGadgetActionName($gadget, $old_action, $new_action)
     {
@@ -201,7 +201,7 @@ class LayoutAdminModel extends LayoutModel
      *
      * @access  public
      * @param   int     $id  Element ID
-     * @return  boolean Returns true if element was removed, if not it returns false
+     * @return  bool    Returns true if element was removed, if not it returns false
      */
     function DeleteElement($id)
     {
@@ -235,7 +235,7 @@ class LayoutAdminModel extends LayoutModel
      * @access  public
      * @param   int     $section       Section to move it
      * @param   int     $highpriority  Item with high priority
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function UpdateSectionPositions($section)
     {
@@ -300,7 +300,7 @@ class LayoutAdminModel extends LayoutModel
      * @param   int     $section       Section to move it
      * @param   int     $pos           Position that will be used, all other positions will be placed under this
      * @param   array   $sortedItems   An array with the sorted items of $section. WARNING: keys have the item_ prefix
-     * @return  boolean Success/Failure
+     * @return  bool    Success/Failure
      */
     function MoveElementToSection($id, $section, $pos, $sortedItems)
     {
@@ -444,7 +444,7 @@ class LayoutAdminModel extends LayoutModel
      * @access  public
      * @param   string  $from Which section to move
      * @param   string  $to   The destination
-     * @return  boolean True if the section was moved without problems, if not it returns false
+     * @return  bool    True if the section was moved without problems, if not it returns false
      */
     function MoveSection($from, $to)
     {
@@ -526,7 +526,7 @@ class LayoutAdminModel extends LayoutModel
      *
      * @access  public
      * @param   string  $gadget Gadget's name
-     * @return  boolean Returns true if element was removed, if not it returns false
+     * @return  bool    Returns true if element was removed, if not it returns false
      */
     function DeleteGadgetElements($gadget)
     {

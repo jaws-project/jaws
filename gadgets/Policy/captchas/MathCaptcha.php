@@ -104,7 +104,7 @@ class MathCaptcha
      * Check if a captcha key is valid
      *
      * @access  public
-     * @param   boolean  Valid/Not Valid
+     * @param   bool     Valid/Not Valid
      */
     function Check()
     {

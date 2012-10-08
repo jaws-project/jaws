@@ -16,7 +16,7 @@ class PolicyModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $ip IP Address
-     * @return  boolean True if the IP is blocked
+     * @return  bool    True if the IP is blocked
      */
     function IsIPBlocked($ip)
     {
@@ -50,7 +50,7 @@ class PolicyModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $agent  Agent
-     * @return  boolean True if the Agent is blocked
+     * @return  bool    True if the Agent is blocked
      */
     function IsAgentBlocked($agent)
     {
@@ -79,7 +79,7 @@ class PolicyModel extends Jaws_Model
      * @param   string  $captcha
      * @param   string  $entry
      * @param   string  $description
-     * @return  boolean True if captcha loaded successfully
+     * @return  bool    True if captcha loaded successfully
      */
     function LoadCaptcha(&$captcha, &$entry, &$label, &$description)
     {
@@ -113,7 +113,7 @@ class PolicyModel extends Jaws_Model
      * Load and get captcha
      *
      * @access  public
-     * @return  boolean True if captcha loaded successfully
+     * @return  bool    True if captcha loaded successfully
      */
     function CheckCaptcha()
     {

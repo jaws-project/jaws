@@ -13,57 +13,57 @@ class Akismet
 {
     /**
      * The Akismet API server name
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $apiServer = 'rest.akismet.com';
 
     /**
      * The port to use to connect to the Akismet API server
      * @var    integer
-     * @access private
+     * @access  private
      */
     var $apiPort = 80;
 
     /**
      * The Akismet API version to use
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $apiVersion = '1.1';
 
     /**
      * The API key to use to access Akismet services
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $apiKey = '';
 
     /**
      * The HTTP user-agent to use
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $userAgent = '';
 
     /**
      * Whether or not the API key is valid
      * @var    boolean
-     * @access private
+     * @access  private
      */
     var $apiKeyIsValid = null;
 
     /**
      * The URL of the this website
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $siteURL = '';
 
     /**
      * Whitelist of allowed $_SERVER variables to send to Akismet
      * @var array
-     * @access private
+     * @access  private
      */
     var $_allowedServerVars = array(
         'SCRIPT_URI',

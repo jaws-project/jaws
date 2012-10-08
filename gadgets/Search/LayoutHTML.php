@@ -14,7 +14,7 @@ class SearchLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  private
      */
     function LoadLayoutActions()
     {

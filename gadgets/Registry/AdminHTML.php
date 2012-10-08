@@ -13,8 +13,8 @@ class RegistryAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(MainMenu)
      *
-     * @access public
-     * @return string template content
+     * @access  public
+     * @return  string template content
      */
     function DefaultAction()
     {
@@ -82,8 +82,8 @@ class RegistryAdminHTML extends Jaws_GadgetHTML
     /**
      * Allows users to view and edit the registry.
      *
-     * @access public
-     * @return string content
+     * @access  public
+     * @return  string content
      */
     function View()
     {

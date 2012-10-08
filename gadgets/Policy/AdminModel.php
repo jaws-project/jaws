@@ -46,7 +46,7 @@ class PolicyAdminModel extends PolicyModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -253,7 +253,7 @@ class PolicyAdminModel extends PolicyModel
      *
      * @access  public
      * @param   string  $ip the to be blocked IP address
-     * @return  boolean True on success and Jaws_Error on errors
+     * @return  bool    True on success and Jaws_Error on errors
      */
     function AddIPRange($from_ip, $to_ip = null, $blocked = true)
     {
@@ -298,7 +298,7 @@ class PolicyAdminModel extends PolicyModel
      * @param   int     $id ID of the to-be-blocked IP range addresses
      * @param   string  $from_ip  The to-be-blocked from IP
      * @param   string  $to_ip    The to-be-blocked to IP
-     * @return  boolean True on success and Jaws_Error on errors
+     * @return  bool    True on success and Jaws_Error on errors
      */
     function EditIPRange($id, $from_ip, $to_ip = null, $blocked = true)
     {
@@ -343,7 +343,7 @@ class PolicyAdminModel extends PolicyModel
      *
      * @access  public
      * @param   int $id ID of the to be unblocked IP Band
-     * @return  boolean True on successfull attempts and Jaws Error otherwise
+     * @return  bool    True on successfull attempts and Jaws Error otherwise
      */
     function DeleteIPRange($id)
     {
@@ -425,7 +425,7 @@ class PolicyAdminModel extends PolicyModel
      *
      * @access  public
      * @param   int $id ID of the-to-be-unblocked-agent
-     * @return  boolean true on success and Jaws error on failure
+     * @return  bool    true on success and Jaws error on failure
      */
     function DeleteAgent($id)
     {
@@ -444,8 +444,8 @@ class PolicyAdminModel extends PolicyModel
      * Set IPBlocking block undefined ip
      *
      * @access  public
-     * @param   boolean $blocked    blocked by default
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $blocked    blocked by default
+     * @return  bool    True on success and Jaws error on failure
      */
     function IPBlockingBlockUndefined($blocked)
     {
@@ -462,8 +462,8 @@ class PolicyAdminModel extends PolicyModel
      * Set AgentBlocking block undefined agent
      *
      * @access  public
-     * @param   boolean $blocked    blocked by default
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $blocked    blocked by default
+     * @return  bool    True on success and Jaws error on failure
      */
     function AgentBlockingBlockUndefined($blocked)
     {
@@ -480,10 +480,10 @@ class PolicyAdminModel extends PolicyModel
      * Update  Encryption Settings
      *
      * @access  public
-     * @param   boolean $enabled   Enable/Disable encryption
-     * @param   boolean $key_age   Key age
-     * @param   boolean $key_len   Key length
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $enabled   Enable/Disable encryption
+     * @param   bool    $key_age   Key age
+     * @param   bool    $key_len   Key length
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
@@ -504,12 +504,12 @@ class PolicyAdminModel extends PolicyModel
      * Update  AntiSpam Settings
      *
      * @access  public
-     * @param   boolean $allow_duplicate
-     * @param   boolean $filter
+     * @param   bool    $allow_duplicate
+     * @param   bool    $filter
      * @param   string  $captcha
      * @param   string  $captcha_driver
-     * @param   boolean $obfuscator
-     * @return  boolean True on success and Jaws error on failure
+     * @param   bool    $obfuscator
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
@@ -529,14 +529,14 @@ class PolicyAdminModel extends PolicyModel
      *
      * @access  public
      * @param   string  $passwd_complexity
-     * @param   integer $passwd_bad_count
-     * @param   integer $passwd_lockedout_time
-     * @param   integer $passwd_max_age
-     * @param   integer $passwd_min_length
+     * @param   int     $passwd_bad_count
+     * @param   int     $passwd_lockedout_time
+     * @param   int     $passwd_max_age
+     * @param   int     $passwd_min_length
      * @param   string  $xss_parsing_level
-     * @param   integer $session_idle_timeout
-     * @param   integer $session_remember_timeout
-     * @return  boolean True on success and Jaws error on failure
+     * @param   int     $session_idle_timeout
+     * @param   int     $session_remember_timeout
+     * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
@@ -558,8 +558,8 @@ class PolicyAdminModel extends PolicyModel
     /**
      * Get filters
      *
-     * @access public
-     * @return array Array with the filters names.
+     * @access  public
+     * @return  array Array with the filters names.
      */
     function GetFilters()
     {
@@ -578,8 +578,8 @@ class PolicyAdminModel extends PolicyModel
     /**
      * Get captchas
      *
-     * @access public
-     * @return array Array with the captchas names.
+     * @access  public
+     * @return  array Array with the captchas names.
      */
     function GetCaptchas()
     {
@@ -598,8 +598,8 @@ class PolicyAdminModel extends PolicyModel
     /**
      * Get filters
      *
-     * @access public
-     * @return array Array with the obfuscators names.
+     * @access  public
+     * @return  array Array with the obfuscators names.
      */
     function GetObfuscators()
     {

@@ -14,14 +14,14 @@ class MenuLayoutHTML
     /**
      * Request URL
      *
-     * @access private
+     * @access  private
      */
     var $_ReqURL = '';
 
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  private
      */
     function LoadLayoutActions()
     {

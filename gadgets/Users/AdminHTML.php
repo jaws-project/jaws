@@ -14,8 +14,8 @@ class UsersAdminHTML extends Jaws_GadgetHTML
     /**
      * Calls default admin action
      *
-     * @access public
-     * @return string  Template content
+     * @access  public
+     * @return  string  Template content
      */
     function Admin()
     {

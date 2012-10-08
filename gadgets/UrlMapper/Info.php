@@ -14,8 +14,8 @@ class UrlMapperInfo extends Jaws_GadgetInfo
     /**
      * Gadget version
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Version = '0.3.3';
 
@@ -23,7 +23,7 @@ class UrlMapperInfo extends Jaws_GadgetInfo
      * Is this gadget core gadget?
      *
      * @var    boolean
-     * @access private
+     * @access  private
      */
     var $_IsCore = true;
 

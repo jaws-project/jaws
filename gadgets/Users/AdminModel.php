@@ -50,7 +50,7 @@ class UsersAdminModel extends Jaws_Model
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {

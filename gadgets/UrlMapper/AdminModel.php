@@ -43,7 +43,7 @@ class UrlMapperAdminModel extends UrlMapperModel
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  boolean  Success/Failure (Jaws_Error)
+     * @return  bool     Success/Failure (Jaws_Error)
      */
     function UpdateGadget($old, $new)
     {
@@ -258,7 +258,7 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Add all gadget's maps
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function AddGadgetMaps($gadget)
     {
@@ -303,7 +303,7 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Update all gadget's maps
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function UpdateGadgetMaps($gadget)
     {
@@ -513,7 +513,7 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Delete all maps related with a gadget
      *
      * @access  public
-     * @return  boolean True if query was successful and Jaws_Error on error
+     * @return  bool    True if query was successful and Jaws_Error on error
      */
     function RemoveGadgetMaps($gadget, $time = '')
     {
@@ -586,7 +586,7 @@ class UrlMapperAdminModel extends UrlMapperModel
      * @param   int      $id      Alias ID
      * @param   string   $alias   Alias value
      * @param   string   $url     Real URL
-     * @return  boolean  Success/Failure
+     * @return  bool     Success/Failure
      */
     function UpdateAlias($id, $alias, $url)
     {
@@ -668,11 +668,11 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Save settings
      *
      * @access  public
-     * @param   boolean  $enabled     Should maps be used?
-     * @param   boolean  $use_aliases Should aliases be used?
-     * @param   boolean  $precedence  custom map precedence over default map
+     * @param   bool     $enabled     Should maps be used?
+     * @param   bool     $use_aliases Should aliases be used?
+     * @param   bool     $precedence  custom map precedence over default map
      * @param   string   $extension   Extension to use
-     * @return  boolean  Success/Failure
+     * @return  bool     Success/Failure
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {

@@ -14,8 +14,8 @@ class SettingsInfo extends Jaws_GadgetInfo
     /**
      * Gadget version
      *
-     * @var    string
-     * @access private
+     * @var     string
+     * @access  private
      */
     var $_Version = '0.3.1';
 
@@ -23,7 +23,7 @@ class SettingsInfo extends Jaws_GadgetInfo
      * Is this gadget core gadget?
      *
      * @var    boolean
-     * @access private
+     * @access  private
      */
     var $_IsCore = true;
 
