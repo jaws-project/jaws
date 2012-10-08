@@ -229,5 +229,5 @@ class SimpleSiteLayoutHTML
         $tpl->ParseBlock('simplesite_breadcrumb');
         return $tpl->get();
     }
+
 }
-?>

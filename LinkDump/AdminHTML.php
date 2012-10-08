@@ -258,4 +258,5 @@ class LinkDumpAdminHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock('linkdump');
         return $tpl->Get();
     }
+
 }

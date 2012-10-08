@@ -220,5 +220,5 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
         $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_SITEMAP_SENT'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }
-?>

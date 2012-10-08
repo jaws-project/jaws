@@ -60,4 +60,5 @@ class LinkDumpSearchHook
 
         return $links;
     }
+
 }

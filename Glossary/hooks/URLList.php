@@ -24,4 +24,5 @@ class GlossaryURLListHook
                         'title' => _t('GLOSSARY_NAME'));
         return $urls;
     }
+
 }

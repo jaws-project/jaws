@@ -240,4 +240,5 @@ class PollModel extends Jaws_Model
 
         return $result;
     }
+
 }

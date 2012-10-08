@@ -14,7 +14,7 @@ class PhooAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param	Jaws_Model	$model	Jaws_Model reference
+     * @param    Jaws_Model    $model    Jaws_Model reference
      */
     function PhooAdminAjax(&$model)
     {
@@ -148,9 +148,9 @@ class PhooAdminAjax extends Jaws_Ajax
      * @param   int     $id             Photo Id
      * @param   string  $title          Photo title
      * @param   string  $desc           Photo description
-     * @param   bool	$allow_comments Comment status
-     * @param   bool 	$published      Publish status
-     * @param	array	$albums
+     * @param   bool    $allow_comments Comment status
+     * @param   bool     $published      Publish status
+     * @param    array    $albums
      * @return  array   Response array (notice or error)
      */
     function UpdatePhoto($id, $title, $desc, $allow_comments, $published, $albums = null) {
@@ -161,5 +161,5 @@ class PhooAdminAjax extends Jaws_Ajax
         $this->_Model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }
-?>

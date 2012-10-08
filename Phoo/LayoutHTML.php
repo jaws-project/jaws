@@ -169,4 +169,5 @@ class PhooLayoutHTML
         $t->ParseBlock('albums');
         return $t->Get();
     }
+
 }

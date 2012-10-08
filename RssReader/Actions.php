@@ -13,4 +13,3 @@
 $actions = array();
 
 $actions['GetFeed']   = array('NormalAction');
-?>

@@ -14,4 +14,3 @@ $actions = array();
 $actions['Display'] = array('LayoutAction', 
                             _t('SKELETON_ACTION_DISPLAY'),
                             _t('SKELETON_ACTION_DISPLAY_DESC'));
-?>

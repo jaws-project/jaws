@@ -111,4 +111,5 @@ class GlossaryModel extends Jaws_Model
 
         return $result;
     }
+
 }

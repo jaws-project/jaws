@@ -25,7 +25,7 @@ class StaticPageHTML extends Jaws_GadgetHTML
     /**
      * Displays an individual page.
      *
-     * @var	int	$id	Page ID (optional)
+     * @var    int    $id    Page ID (optional)
      * @access public
      * @return string
      */
@@ -154,7 +154,7 @@ class StaticPageHTML extends Jaws_GadgetHTML
     /**
      * Displays an individual page.
      *
-     * @var	int	$id	Page ID (optional)
+     * @var    int    $id    Page ID (optional)
      * @access public
      * @return string
      */

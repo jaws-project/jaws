@@ -217,4 +217,5 @@ class LinkDumpHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock('tag');
         return $tpl->Get();
     }
+
 }

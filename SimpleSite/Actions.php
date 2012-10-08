@@ -22,4 +22,3 @@ $actions['ShowTwoLevels']   = array('LayoutAction', _t('SIMPLESITE_TWOLEVELS'), 
 $actions['ShowThreeLevels']   = array('LayoutAction', _t('SIMPLESITE_THREELEVELS'), _t('SIMPLESITE_THREELEVELS_DESCRIPTION'));
 $actions['DisplayLevel']    = array('LayoutAction', _t('SIMPLESITE_DISPLAYLEVEL'), _t('SIMPLESITE_DISPLAYLEVEL_DESCRIPTION')); 
 $actions['Breadcrumb']      = array('LayoutAction', _t('SIMPLESITE_BREADCRUMB'), _t('SIMPLESITE_BREADCRUMB_DESCRIPTION')); 
-?>

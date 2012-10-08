@@ -348,5 +348,4 @@ class SimpleSiteModel extends Jaws_Model
         return $breadcrumb;
     }
 
-    
 }

@@ -37,4 +37,5 @@ class FriendsLayoutHTML
         $tpl->ParseBlock('friends');
         return $tpl->Get();
     }
+
 }

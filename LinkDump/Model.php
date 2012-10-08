@@ -236,4 +236,5 @@ class LinkDumpModel extends Jaws_Model
 
         return $res;
     }
+
 }

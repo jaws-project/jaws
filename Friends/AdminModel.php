@@ -180,5 +180,5 @@ class FriendsAdminModel extends FriendsModel
         $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_DELETED'), RESPONSE_NOTICE);
         return true;
     }
+
 }
-?>

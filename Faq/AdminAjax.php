@@ -163,4 +163,5 @@ class FaqAdminAjax extends Jaws_Ajax
         $noQuestions.= "</div>\n";
         return $noQuestions;
     }
+
 }

@@ -124,4 +124,5 @@ class GlossaryAdminHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock('Glossary');
         return $tpl->Get();
     }
+
 }

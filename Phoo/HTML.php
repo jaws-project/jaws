@@ -465,7 +465,7 @@ class PhooHTML extends Jaws_GadgetHTML
         return $t->Get();
     }
 
-	/**
+    /**
      * Recursively displays comments of a given image according to several parameters
      *
      * @access public
@@ -487,7 +487,7 @@ class PhooHTML extends Jaws_GadgetHTML
             $comments = $model->GetComments($id, null);
         } else {
             $comments = $data;
-		}
+        }
 
         if (!Jaws_Error::IsError($comments)) {
 
@@ -543,7 +543,7 @@ class PhooHTML extends Jaws_GadgetHTML
                                       _t('PHOO_REPLY').'</a>');
 
                     $tpl->ParseBlock('comment/reply-link');
-				}
+                }
 
                 if (count($c['childs']) > 0) {
                     $tpl->SetBlock('comment/thread');

@@ -23,5 +23,5 @@ class SkeletonLayoutHTML
 
         return _t('SKELETON_DISPLAY_MESSAGE', $version);
     }
+
 }
-?>

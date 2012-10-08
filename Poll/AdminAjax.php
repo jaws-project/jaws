@@ -320,4 +320,5 @@ class PollAdminAjax extends Jaws_Ajax
         }
         return ($grid == 'polls_datagrid')? $gadget->GetPolls($offset) : $gadget->GetPollGroups($offset);
     }
+
 }

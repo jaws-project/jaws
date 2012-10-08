@@ -18,4 +18,3 @@ $info = array(
                                  ),
               'deps'    => array(),
               );
-?>

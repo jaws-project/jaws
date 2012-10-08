@@ -43,7 +43,7 @@ define('_DE_PHOO_UNKNOWN_CAM', "Unbekannte Kamera");
 define('_DE_PHOO_LEAVE_COMMENT', "Kommentar hinzufügen");
 define('_DE_PHOO_PHOTOS', "Fotos");
 define('_DE_PHOO_PHOTO', "Foto {0}");
-define('_DE_PHOO_PHOTO_COUNTER', "Bilder {0} von {1}	");
+define('_DE_PHOO_PHOTO_COUNTER', "Bilder {0} von {1}");
 define('_DE_PHOO_PHOTOS_COUNT', "{0} Bilder");
 define('_DE_PHOO_COMMENTS', "Kommentare");
 define('_DE_PHOO_ADDITIONAL_SETTINGS', "Zusätzliche Einstellungen");

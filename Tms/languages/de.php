@@ -61,7 +61,7 @@ define('_DE_TMS_ERROR_THEME_DOES_NOT_EXISTS', "Das Theme {0} existiert nicht");
 define('_DE_TMS_ERROR_THEME_NOT_CREATED', "Das Theme konnte nicht erstellt werden");
 define('_DE_TMS_ERROR_THEME_SHOULD_BE_ZIP', "Das Theme sollte in einer .zip-Datei sein");
 define('_DE_TMS_ERROR_WRITING_RSSFILE', "Es trat ein Fehler beim Schreiben der RSS-Datei auf");
-define('_DE_TMS_ERROR_NO_BLOCK', "Das Theme \"{0}\" hat keinen \"{1}\" - Block	");
+define('_DE_TMS_ERROR_NO_BLOCK', "Das Theme \"{0}\" hat keinen \"{1}\" - Block");
 define('_DE_TMS_THEME_UPLOADED', "Das Theme wurde hochgeladen");
 define('_DE_TMS_RESPONSE_REPOSITORY_ADDED', "Das Repository wurde hinzugefügt");
 define('_DE_TMS_RESPONSE_REPOSITORY_DELETED', "Das Repository wurde gelöscht");

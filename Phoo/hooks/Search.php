@@ -125,4 +125,5 @@ class PhooSearchHook
 
         return $entries;
     }
+
 }

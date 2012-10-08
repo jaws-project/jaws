@@ -174,4 +174,5 @@ class LinkDumpLayoutHTML
         $tpl->ParseBlock('categories');
         return $tpl->Get();
    }
+
 }

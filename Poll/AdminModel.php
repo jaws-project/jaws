@@ -578,4 +578,5 @@ class PollAdminModel extends PollModel
 
         return true;
     }
+
 }

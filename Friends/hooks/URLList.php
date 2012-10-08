@@ -23,4 +23,5 @@ class FriendsURLListHook
                         'title' => _t('FRIENDS_NAME'));
         return $urls;
     }
+
 }

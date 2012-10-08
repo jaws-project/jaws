@@ -151,4 +151,5 @@ class FriendsModel extends Jaws_Model
 
         return $result;
     }
+
 }

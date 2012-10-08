@@ -505,4 +505,5 @@ class FaqAdminHTML extends Jaws_GadgetHTML
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq&category='. $post['id']);
     }
+
 }

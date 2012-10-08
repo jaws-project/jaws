@@ -112,5 +112,5 @@ class FriendsAdminAjax extends Jaws_Ajax
         }
         return $gadget->GetFriends($limit);
     }
+
 }
-?>

@@ -204,4 +204,5 @@ class LinkDumpAdminAjax extends Jaws_Ajax
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }

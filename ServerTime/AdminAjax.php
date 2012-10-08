@@ -32,5 +32,5 @@ class ServerTimeAdminAjax extends Jaws_Ajax
         $this->_Model->UpdateProperties($format);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }
-?>

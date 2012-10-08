@@ -68,5 +68,5 @@ class WebcamLayoutHTML
 
         return $tpl->Get();
     }
+
 }
-?>

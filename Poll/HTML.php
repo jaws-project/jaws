@@ -134,4 +134,5 @@ class PollHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock ('results');
         return $tpl->Get();
     }
+
 }

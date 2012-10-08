@@ -38,4 +38,5 @@ class PollURLListHook
         }
         return $urls;
     }
+
 }

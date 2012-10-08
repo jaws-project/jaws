@@ -23,5 +23,5 @@ class FriendsHTML extends Jaws_GadgetHTML
         $layoutGadget = $GLOBALS['app']->LoadGadget('Friends', 'LayoutHTML');
         return $layoutGadget->Display();
     }
+
 }
-?>

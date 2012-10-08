@@ -14,4 +14,3 @@ $actions = array();
 $actions['Display'] = array('LayoutAction', 
                             _t('SERVERTIME_LAYOUT_DISPLAY'),
                             _t('SERVERTIME_LAYOUT_DISPLAY_DESC'));
-?>

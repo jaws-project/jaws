@@ -11,5 +11,6 @@
 /* Normal actions*/
 $actions = array();
 /* Layout actions */
-$actions['Display'] = array('LayoutAction', _t('FRIENDS_LAYOUT_DISPLAY'), _t('FRIENDS_LAYOUT_DISPLAY_DESC')); 
-?>
+$actions['Display'] = array('LayoutAction',
+                            _t('FRIENDS_LAYOUT_DISPLAY'),
+                            _t('FRIENDS_LAYOUT_DISPLAY_DESC')); 

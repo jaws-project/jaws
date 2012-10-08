@@ -18,4 +18,3 @@ $actions['Display'] = array('LayoutAction',
 $actions['Random'] = array('LayoutAction', 
                            _t('WEBCAM_LAYOUT_RANDOM'),
                            _t('WEBCAM_LAYOUT_RANDOM_DESC'));
-?>

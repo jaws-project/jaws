@@ -198,4 +198,5 @@ class FaqHTML extends Jaws_GadgetHTML
 
         return $tpl->Get();
     }
+
 }

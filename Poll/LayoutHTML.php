@@ -199,4 +199,5 @@ class PollLayoutHTML
         $tpl->ParseBlock('Poll');
         return $tpl->Get();
     }
+
 }

@@ -573,4 +573,5 @@ class PollAdminHTML extends Jaws_GadgetHTML
         $tpl->ParseBlock('PollResults');
         return $tpl->Get();
     }
+
 }
