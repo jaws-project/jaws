@@ -15,6 +15,7 @@ class LauncherURLListHook
      * can use
      *
      * @access  public
+     * @return  array   URLs array
      */
     function Hook()
     {

@@ -15,7 +15,7 @@ class LauncherModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $script     Script name
-     * @return  string  Result of the script execution
+     * @return  mixed   Result of the script execution or Jaws_Error on error
      */
     function GetLauncher($script, $params)
     {
@@ -54,4 +54,5 @@ class LauncherModel extends Jaws_Model
         sort($result);
         return $result;
     }
+
 }

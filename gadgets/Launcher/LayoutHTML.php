@@ -13,7 +13,8 @@ class LauncherLayoutHTML
     /**
      * Loads layout actions
      *
-     * @access private
+     * @access  public
+     * @return  array   Actions array
      */
     function LoadLayoutActions()
     {
@@ -35,8 +36,8 @@ class LauncherLayoutHTML
     /**
      * Show a Launcher
      *
-     * @var string  $script Script name 
      * @access  public
+     * @param   string  $script     script name
      * @return  string  Script content
      */
     function Display($script)
@@ -48,5 +49,5 @@ class LauncherLayoutHTML
         }
         return $output;
     }
+
 }
-?>

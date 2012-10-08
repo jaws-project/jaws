@@ -13,8 +13,8 @@ class LauncherHTML extends Jaws_GadgetHTML
     /**
      * Calls default action(display)
      *
-     * @access       public
-     * @return       template content
+     * @access  public
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
@@ -24,8 +24,8 @@ class LauncherHTML extends Jaws_GadgetHTML
     /**
      * Show a Launcher
      *
-     * @var string  $script Script name (optional) 
      * @access  public
+     * @param   string  $script     script name (optional)
      * @return  string  Script content
      */
     function DisplayMain($script = null)
@@ -43,5 +43,5 @@ class LauncherHTML extends Jaws_GadgetHTML
         }
         return $html;
     }
+
 }
-?>
