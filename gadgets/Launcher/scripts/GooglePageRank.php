@@ -11,7 +11,12 @@
 class PageRank
 {
     /**
+     * Saves file
      *
+     * @access public
+     * @param   string  $cache_file
+     * @param   string  $data
+     * @return  mixed   True on Success, PEAR Error on Failure
      */
     function saveFile($cache_file, $data)
     {
@@ -23,7 +28,11 @@ class PageRank
     }
 
     /**
+     * Loads File
      *
+     * @access public
+     * @param   string  $cache_file
+     * @return  mixed   data array or PEAR Error on Failure
      */
     function loadFile($cache_file)
     {
@@ -36,6 +45,12 @@ class PageRank
 
     /**
      * convert a string to a 32-bit integer
+     *
+     * @access public
+     * @param   string  $Str
+     * @param   string  $Check
+     * @param   string  $Magic
+     * @return  int     converted integer  
      */
     function StrToNum($Str, $Check, $Magic)
     {
@@ -58,6 +73,10 @@ class PageRank
 
     /**
      * genearate a hash for a url
+     *
+     * @access public
+     * @param   string  $String
+     * @return  string  hash
      */
     function HashURL($String)
     {
@@ -77,6 +96,10 @@ class PageRank
 
     /**
      * genearate a checksum for the hash string
+     *
+     * @access public
+     * @param   string  $Hashnum
+     * @return  string
      */
     function CheckHash($Hashnum)
     {
@@ -111,7 +134,11 @@ class PageRank
     }
 
     /**
+     * Retrieves URL content
      *
+     * @access public
+     * @param   string  $url    url address
+     * @return  string  page string data
      */
     function getURL($url)
     {
@@ -129,7 +156,11 @@ class PageRank
     }
 
     /**
+     * Gets Google Rank
      *
+     * @access public
+     * @param   string  $url
+     * @return  string  rank
      */
     function GetRank($url)
     {
@@ -145,6 +176,12 @@ class PageRank
     }
 }
 
+/**
+ * Generates Google Rank Html display Fragment
+ * 
+ * @access public
+ * @return string   html fragment
+ */
 function GooglePageRank()
 {
     $cache_dir = JAWS_DATA . 'launcher' . DIRECTORY_SEPARATOR;
