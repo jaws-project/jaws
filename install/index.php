@@ -192,34 +192,28 @@ $theme = 'jaws';
 $direction = _t('GLOBAL_LANG_DIRECTION');
 $dir  = $direction == 'rtl' ? '.' . $direction : '';
 
-// Display the page
-$page = new Jaws_Template(JAWS_BASE_DATA . 'themes/' . $theme);
-$page->Load('layout.html', false, false);
-$page->SetBlock('layout');
+// Display the layout
+$layout = new Jaws_Template('templates');
+$layout->Load('layout.html');
+$layout->SetBlock('layout');
 
 // Basic setup
-$page->SetVariable('BASE_URL', Jaws_Utils::getBaseURL('/install/'));
-$page->SetVariable('.dir', $dir);
-$page->SetVariable('THEME', '../data/themes/' . $theme . '/');
-$page->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
-$page->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
-$page->SetVariable('site-slogan', JAWS_VERSION_CODENAME);
-$page->SetVariable('layout-mode', 0);
-
-// Load the stylesheet
-$page->SetBlock('layout/head');
-$page->SetVariable('ELEMENT', '<link rel="stylesheet" type="text/css" href="resources/install'.$dir.'.css" />');
-$page->ParseBlock('layout/head');
+$layout->SetVariable('BASE_URL', Jaws_Utils::getBaseURL('/install/'));
+$layout->SetVariable('.dir', $dir);
+$layout->SetVariable('THEME', '../data/themes/' . $theme . '/');
+$layout->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
+$layout->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
+$layout->SetVariable('site-slogan', JAWS_VERSION_CODENAME);
 
 // Load js files
-$page->SetBlock('layout/head');
-$page->SetVariable('ELEMENT', '<script type="text/javascript" src="../libraries/js/rsa.lib.js"></script>');
-$page->ParseBlock('layout/head');
+$layout->SetBlock('layout/head');
+$layout->SetVariable('ELEMENT', '<script type="text/javascript" src="../libraries/js/rsa.lib.js"></script>');
+$layout->ParseBlock('layout/head');
 
 // Display the stage
-$page->SetBlock('layout/main');
-$page->SetVariable('ELEMENT', $tpl->Get());
-$page->ParseBlock('layout/main');
-$page->ParseBlock('layout');
+$layout->SetBlock('layout/main');
+$layout->SetVariable('ELEMENT', $tpl->Get());
+$layout->ParseBlock('layout/main');
+$layout->ParseBlock('layout');
 
-echo $page->Get();
+echo $layout->Get();
