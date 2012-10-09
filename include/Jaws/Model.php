@@ -240,9 +240,9 @@ class Jaws_Model
     {
         $acls = array();
         $info = $GLOBALS['app']->LoadGadget($this->_Name, 'Info');
-        foreach ($info->GetACLs() as $acl => $opts) {
+        foreach ($info->GetACLs() as $acl => $default) {
             if (false === stripos(serialize($acls), "\"{$acl}\"")) {
-                $acls[] = array($acl, $opts['Default']);
+                $acls[] = array($acl, $default);
             }
         }
 
