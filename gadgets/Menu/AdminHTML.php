@@ -68,7 +68,8 @@ class MenuAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     *
+     * Retrieves Menu Level
+     * 
      * @access public
      * @param   object  $model      Jaws_Model reference
      * @param   string  $tpl_str    XHTML template content passed by reference

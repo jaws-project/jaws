@@ -169,6 +169,10 @@ class LanguagesAdminModel extends Jaws_Model
      * Returns an array of module language data
      *
      * @access  public
+     * @param   string  $module
+     * @param   string  $type
+     * @param   string  $langTo
+     * @param   string  $langFrom
      * @return  mixed   A list of module language string or false on error
      */
     function GetLangData($module, $type, $langTo, $langFrom)
@@ -254,6 +258,10 @@ class LanguagesAdminModel extends Jaws_Model
      * Save language data into file
      *
      * @access  public
+     * @param   string  $module
+     * @param   string  $type
+     * @param   string  $langTo
+     * @param   array   $data
      * @return  bool    True on Success or False on failure
      */
     function SetLangData($module, $type, $langTo, $data = null)

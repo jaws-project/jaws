@@ -15,6 +15,7 @@ class LauncherModel extends Jaws_Model
      *
      * @access  public
      * @param   string  $script     Script name
+     * @param   array   $params     function params
      * @return  mixed   Result of the script execution or Jaws_Error on error
      */
     function GetLauncher($script, $params)

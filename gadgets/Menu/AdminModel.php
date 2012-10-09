@@ -663,8 +663,9 @@ class MenuAdminModel extends MenuModel
      *
      * @access  public
      * @param   int     $pid
-     * @param   int     $gid    group ID
+     * @param   int     $gid            group ID
      * @param   string  $excluded_mid
+     * @param   string  $result         result reference
      * @param   array   $menu_str
      * @return  bool    True on success or False on failure
      */
