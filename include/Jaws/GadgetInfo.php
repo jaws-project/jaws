@@ -475,7 +475,7 @@ class Jaws_GadgetInfo
         $result['/ACL/gadgets/'. $this->_Gadget. '/default_admin'] = 'false';
         $result['/ACL/gadgets/'. $this->_Gadget. '/default_registry'] = 'false';
 
-        return result;
+        return $result;
     }
 
 }
