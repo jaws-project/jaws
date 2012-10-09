@@ -322,8 +322,8 @@ class ContactAdminModel extends ContactModel
      * Update reply send field
      *
      * @access  public
-     * @param   int     $id             Contact ID
-     * @param   int     $reply_sent     
+     * @param   int     $id         Contact ID
+     * @param   int     $reply_sent
      * @return  mixed   True on Success or Jaws_Error on Failure
      */
     function UpdateReplySent($id, $reply_sent)
@@ -379,7 +379,7 @@ class ContactAdminModel extends ContactModel
      * @param   string  $tel            Phone number of recipient
      * @param   string  $fax            Fax number of recipient
      * @param   string  $mobile         Mobile number of recipient
-     * @param   string  $inform_type    
+     * @param   string  $inform_type
      * @param   string  $visible        The visible of the recipient
      * @return  mixed   True on success and Jaws_Error on failure
      */

@@ -68,7 +68,7 @@ class BlogHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Generates template XHTML
+     * Generates XHTML template
      * 
      * @access  public
      * @param   int     $cat    

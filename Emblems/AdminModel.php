@@ -199,9 +199,9 @@ class EmblemsAdminModel extends EmblemsModel
      * @access  public
      * @param   string  $title      emblem title
      * @param   string  $url        URL of the emblem
-     * @param   string  $file_url   relative file url
+     * @param   string  $file_url   Relative file url
      * @param   string  $type
-     * @param   bool    $enabled    
+     * @param   bool    $enabled
      * @return  mixed   True if successful, Jaws_Error otherwise
      */
     function AddEmblem($title, $url, $file_url, $type = 'P', $enabled = false)

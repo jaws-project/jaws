@@ -197,7 +197,7 @@ class PhooAdminModel extends PhooModel
      * @param   string  $description        Description of the image
      * @param   bool    $allow_comments     True is comments allowed, False is not allowed
      * @param   bool    $published          true for Published, false for Hidden
-     * @param   array   $albums             
+     * @param   array   $albums
      * @return  mixed   True if entry was updated successfully and Jaws_Error if not
      */
     function UpdateEntry($id, $title, $description, $allow_comments, $published, $albums = null)

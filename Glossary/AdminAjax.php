@@ -62,7 +62,7 @@ class GlossaryAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id         Term ID
      * @param   string  $term       Term
-     * @param   string  $fast_url   
+     * @param   string  $fast_url
      * @param   string  $contents   Term description
      * @return  array   Response array (notice or error)
      */

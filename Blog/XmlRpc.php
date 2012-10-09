@@ -60,7 +60,7 @@ function getScalarValue($p, $i)
 
 /**
  * Parses content
- * 
+ *
  * @access  public
  * @param   string  $content
  * @return  string  content

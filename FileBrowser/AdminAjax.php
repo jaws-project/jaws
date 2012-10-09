@@ -84,10 +84,10 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $path           File|Directory path
      * @param   string  $file           File|Directory name
-     * @param   string  $title          
-     * @param   string  $description    
-     * @param   string  $fast_url       
-     * @param   string  $oldname        
+     * @param   string  $title
+     * @param   string  $description
+     * @param   string  $fast_url
+     * @param   string  $oldname
      * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
@@ -111,10 +111,10 @@ class FileBrowserAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $path           File|Directory path
      * @param   string  $dir            File|Directory name
-     * @param   string  $title          
-     * @param   string  $description    
-     * @param   string  $fast_url       
-     * @param   string  $oldname        
+     * @param   string  $title
+     * @param   string  $description
+     * @param   string  $fast_url
+     * @param   string  $oldname
      * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)

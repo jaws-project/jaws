@@ -15,16 +15,16 @@ class BlogModel extends Jaws_Model
     /**
      * Has the Atom pointer to create the RSS/XML files
      *
-     * @var    AtomFeed
+     * @var     object  $_Atom  AtomFeed object
      * @access  private
      */
-    var $_Atom;
+    var $_Atom = null;
 
     /**
      * Holds the tree category stuff
      *
-     * @var Tree
-     * @access private
+     * @var     array   $_Tree
+     * @access  private
      */
     var $_Tree = array(
                        'children'  => array(),

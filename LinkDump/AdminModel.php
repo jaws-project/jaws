@@ -399,7 +399,7 @@ class LinkDumpAdminModel extends LinkDumpModel
      * 
      * @access  public
      * @param   int     $lid    link ID
-     * @param   string  $tag    
+     * @param   string  $tag
      * @return  mixed   True on Success and Jaws_Error on Failure
      */
     function AddTagToLink($lid, $tag)
@@ -441,7 +441,7 @@ class LinkDumpAdminModel extends LinkDumpModel
     * Removes Tag From Link
     *
     * @access  public
-    * @param    int     $id     tag ID
+    * @param    int     $id     Tag ID
     * @param    string  $tag
     * @return   mixed   True on Success and Jaws_Error on Failure
     */
@@ -473,7 +473,7 @@ class LinkDumpAdminModel extends LinkDumpModel
      *
      * @access  public
      * @param   int     $lid    Link's id
-     * @param   string  $gid    group ID
+     * @param   string  $gid    Group ID
      * @param   int     $rank   
      * @return  mixed   True on success on Jaws_Error otherwise
      */

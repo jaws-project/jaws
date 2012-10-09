@@ -810,6 +810,7 @@ class PhooHTML extends Jaws_GadgetHTML
      * Saves the given phoo comment
      *
      * @access  public
+     * @return  void
      */
     function SaveComment()
     {

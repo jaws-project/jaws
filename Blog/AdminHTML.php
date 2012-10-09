@@ -1734,6 +1734,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
      * Prepares the datagrid for blog posts
      *
      * @access  public
+     * @return  void
      */
     function PostsDatagrid()
     {
