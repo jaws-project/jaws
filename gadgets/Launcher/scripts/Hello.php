@@ -2,7 +2,7 @@
 /**
  * This is a sample script.
  *
- * @access public
+ * @access  public
  * @return  string  sample string
  */
 function Hello() {

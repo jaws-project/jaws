@@ -297,7 +297,7 @@ class JmsAdminAjax extends Jaws_Ajax
 
     /**
      * Disables gadget
-     * 
+     *
      * @access  private
      * @param   string  $gadget     gadget name
      * @param   string  $type

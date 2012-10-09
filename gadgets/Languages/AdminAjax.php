@@ -23,7 +23,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
 
     /**
      * Saves language
-     * 
+     *
      * @access  public
      *
      * @param   string  $lang_str   Language code and name
@@ -38,7 +38,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
 
     /**
      * Generates Language Data UI
-     * 
+     *
      * @access  public
      *
      * @param   string  $component  Component name
@@ -55,7 +55,7 @@ class LanguagesAdminAjax extends Jaws_Ajax
 
     /**
      * Sets language data
-     * 
+     *
      * @access  public
      * @param   string  $component
      * @param   string  $langTo

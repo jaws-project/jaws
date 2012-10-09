@@ -210,6 +210,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      * Jaws_GadgetHTML::EnableGadget method, then redirects to admin area
      *
      * @access  public
+     * @return  void
      */
     function EnableGadget()
     {
@@ -242,6 +243,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
      * Jaws_GadgetHTML::UpgradeGadget method, then redirects to admin area
      *
      * @access  public
+     * @return  void
      */
     function UpdateGadget()
     {

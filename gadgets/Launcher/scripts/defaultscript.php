@@ -2,7 +2,7 @@
 /**
  * Outputs default script message
  *
- * @access public
+ * @access  public
  * @return  string  default message
  */
 function defaultscript()

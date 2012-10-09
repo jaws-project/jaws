@@ -13,7 +13,7 @@ class PageRank
     /**
      * Saves file
      *
-     * @access public
+     * @access  public
      * @param   string  $cache_file
      * @param   string  $data
      * @return  mixed   True on Success, PEAR Error on Failure
@@ -30,7 +30,7 @@ class PageRank
     /**
      * Loads File
      *
-     * @access public
+     * @access  public
      * @param   string  $cache_file
      * @return  mixed   data array or PEAR Error on Failure
      */
@@ -46,7 +46,7 @@ class PageRank
     /**
      * convert a string to a 32-bit integer
      *
-     * @access public
+     * @access  public
      * @param   string  $Str
      * @param   string  $Check
      * @param   string  $Magic
@@ -74,7 +74,7 @@ class PageRank
     /**
      * genearate a hash for a url
      *
-     * @access public
+     * @access  public
      * @param   string  $String
      * @return  string  hash
      */
@@ -97,7 +97,7 @@ class PageRank
     /**
      * genearate a checksum for the hash string
      *
-     * @access public
+     * @access  public
      * @param   string  $Hashnum
      * @return  string
      */
@@ -136,7 +136,7 @@ class PageRank
     /**
      * Retrieves URL content
      *
-     * @access public
+     * @access  public
      * @param   string  $url    url address
      * @return  string  page string data
      */
@@ -158,7 +158,7 @@ class PageRank
     /**
      * Gets Google Rank
      *
-     * @access public
+     * @access  public
      * @param   string  $url
      * @return  string  rank
      */
@@ -179,8 +179,8 @@ class PageRank
 /**
  * Generates Google Rank Html display Fragment
  * 
- * @access public
- * @return string   html fragment
+ * @access  public
+ * @return  string   html fragment
  */
 function GooglePageRank()
 {

@@ -8,10 +8,16 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('EMPTY_STRING', "-EMPTY-");
-
 class LanguagesAdminModel extends Jaws_Model
 {
+    /**
+     * Special empty string
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_EMPTY_STRING = '-EMPTY-';
+
     /**
      * Installs the gadget
      *
@@ -241,12 +247,12 @@ class LanguagesAdminModel extends Jaws_Model
             if (defined('_' . strtoupper($langTo) . '_DATA_' . $cons)) {
                 $toValue = constant('_' . strtoupper($langTo) . '_DATA_' . $cons);
                 if ($toValue == '') {
-                    $toValue = EMPTY_STRING;
+                    $toValue = $this->_EMPTY_STRING;
                 }
             } elseif (defined('_' . strtoupper($langTo) . '_' . $cons)) {
                 $toValue = constant('_' . strtoupper($langTo) . '_' . $cons);
                 if ($toValue == '') {
-                    $toValue = EMPTY_STRING;
+                    $toValue = $this->_EMPTY_STRING;
                 }
             }
             $data['strings'][$cons][$langTo] = $toValue;
@@ -323,7 +329,7 @@ class LanguagesAdminModel extends Jaws_Model
         foreach ($data['strings'] as $k => $v) {
             if ($v == '') {
                 continue;
-            } elseif ($v === EMPTY_STRING) {
+            } elseif ($v === $this->_EMPTY_STRING) {
                 $v = '';
             }
 
