@@ -1,5 +1,13 @@
 <?php
 /**
+ * Responses
+ */
+define('RESPONSE_WARNING', 'RESPONSE_WARNING');
+define('RESPONSE_ERROR',   'RESPONSE_ERROR');
+define('RESPONSE_NOTICE',  'RESPONSE_NOTICE');
+define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrent_logins,acl,updatetime");
+
+/**
  * Class to manage User session.
  *
  * @category   Session
@@ -10,15 +18,6 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrent_logins,acl,updatetime");
-
-/**
- * Responses
- */
-define('RESPONSE_WARNING', 'RESPONSE_WARNING');
-define('RESPONSE_ERROR',   'RESPONSE_ERROR');
-define('RESPONSE_NOTICE',  'RESPONSE_NOTICE');
-
 class Jaws_Session
 {
     /**
@@ -34,14 +33,6 @@ class Jaws_Session
      * @access  private
      */
     var $_AuthMethod;
-
-    /**
-     * Last error message
-     * @var     string $_Error
-     * @access  private
-     * @see     GetError()
-     */
-    var $_Error;
 
     /**
      * Attributes array
@@ -76,6 +67,7 @@ class Jaws_Session
      * An interface for available drivers
      *
      * @access  public
+     * @return  object  Jaws_Session type object
      */
     function &factory()
     {
@@ -95,6 +87,9 @@ class Jaws_Session
 
     /**
      * Initializes the Session
+     *
+     * @access  public
+     * @return  void
      */
     function Init()
     {
@@ -117,24 +112,13 @@ class Jaws_Session
     }
 
     /**
-     * Gets the session mode
-     *
-     * @access  public
-     * @return  string  Session mode
-     */
-    function GetMode()
-    {
-        return $this->_Mode;
-    }
-
-    /**
      * Login
      *
      * @param   string  $username   Username
      * @param   string  $password   Password
      * @param   bool    $remember   Remember me
      * @param   string  $authmethod Authentication method
-     * @return  bool    True if succeed.
+     * @return  mixed   An Array of user's attributes if success, otherwise Jaws_Error
      */
     function Login($username, $password, $remember, $authmethod = '')
     {
@@ -169,9 +153,9 @@ class Jaws_Session
                         $this->Create($result, $remember);
                         return true;
                     } else {
-                        $result = new Jaws_Error(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
-                                                 __FUNCTION__,
-                                                 JAWS_ERROR_NOTICE);
+                        $result = Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
+                                                         __FUNCTION__,
+                                                         JAWS_ERROR_NOTICE);
                     }
                 }
             }
@@ -179,14 +163,16 @@ class Jaws_Session
             return $result;
         }
 
-        return new Jaws_Error(_t('GLOBAL_ERROR_LOGIN_WRONG'),
-                                 __FUNCTION__,
-                                 JAWS_ERROR_NOTICE);
+        return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
+                                      __FUNCTION__,
+                                      JAWS_ERROR_NOTICE);
     }
 
     /**
      * Return session login status
+     *
      * @access  public
+     * @return  bool    login status
      */
     function Logged()
     {
@@ -194,10 +180,10 @@ class Jaws_Session
     }
 
     /**
-     * Logout
+     * Logout from session and reset session values
      *
-     * Logout from session
-     * reset session values
+     * @access  public
+     * @return  void
      */
     function Logout()
     {
@@ -207,17 +193,9 @@ class Jaws_Session
     }
 
     /**
-     * Return last error message
-     * @access  public
-     */
-    function GetError()
-    {
-        return $this->_Error;
-    }
-
-    /**
      * Loads Jaws Session
      *
+     * @access  protected
      * @param   string  $sid Session identifier
      * @return  bool    True if can load session, false if not
      */
@@ -316,9 +294,11 @@ class Jaws_Session
 
     /**
      * Create a new session for a given data
-     * @param   array  $info      User attributes
-     * @param   bool    $remember Remember me
-     * @return  bool    True if can create session.
+     *
+     * @access  protected
+     * @param   array   $info       User's attributes
+     * @param   bool    $remember   Remember me
+     * @return  bool    True if can create session
      */
     function Create($info = array(), $remember = false)
     {
@@ -372,6 +352,8 @@ class Jaws_Session
 
     /**
      * Reset current session
+     *
+     * @access  protected
      * @return  bool    True if can reset it
      */
     function Reset()
@@ -403,31 +385,29 @@ class Jaws_Session
     /**
      * Set a session attribute
      *
-     * @param   string $name attribute name
-     * @param   string $value attribute value
-     * @return  bool    True if attribute has changed
+     * @access  public
+     * @param   string  $name   attribute name
+     * @param   mixed   $value  attribute value
+     * @return  bool    True if can set value
      */
     function SetAttribute($name, $value)
     {
-        if (!array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] != $value))
-        {
-            if (is_array($value) && $name == 'LastResponses') {
-                $this->_Attributes['LastResponses'][] = $value;
-            } else {
-                $this->_Attributes[$name] = $value;
-            }
-            $this->_HasChanged = true;
-            return true;
+        $this->_HasChanged = !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] != $value);
+        if (is_array($value) && $name == 'LastResponses') {
+            $this->_Attributes['LastResponses'][] = $value;
+        } else {
+            $this->_Attributes[$name] = $value;
         }
 
-        return false;
+        return true;
     }
 
     /**
      * Get a session attribute
      *
-     * @param   string $name attribute name
-     * @return  string value of the attribute
+     * @access  public
+     * @param   string  $name attribute name
+     * @return  mixed   Value of the attribute or Null if not exist
      */
     function GetAttribute($name)
     {
@@ -444,11 +424,13 @@ class Jaws_Session
     }
 
     /**
-     * Get a session attributes
+     * Get value of given session's attributes
      *
-     * @return  array value of the attributes
+     * @access  public
+     * @param   mixed   $argv Optional variable list of attributes name
+     * @return  array   Value of the attributes
      */
-    function GetAttributes()
+    function GetAttributes($argv)
     {
         $names = func_get_args();
         // for support array of keys array
@@ -456,7 +438,7 @@ class Jaws_Session
             $names = $names[0];
         }
 
-        if (empty($reg_keys)) {
+        if (empty($names)) {
             return $this->_Attributes;
         }
 
@@ -471,25 +453,26 @@ class Jaws_Session
     /**
      * Delete a session attribute
      *
+     * @access  public
      * @param   string $name attribute name
-     * @return  bool    True if attribute has been deleted
+     * @return  bool   True if can delete value
      */
     function DeleteAttribute($name)
     {
         if (array_key_exists($name, $this->_Attributes)) {
             unset($this->_Attributes[$name]);
             $this->_HasChanged = true;
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     /**
      * Get permission on a given gadget/task
      *
-     * @param   string $gadget Gadget name
-     * @param   string $task Task name
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @param   string  $task   Task name
      * @return  bool    True if granted, else False
      */
     function GetPermission($gadget, $task)
@@ -502,9 +485,10 @@ class Jaws_Session
     /**
      * Check permission on a given gadget/task
      *
-     * @param   string $gadget Gadget name
-     * @param   string $task Task name
-     * @param   string $errorMessage Error message to return
+     * @access  public
+     * @param   string  $gadget         Gadget name
+     * @param   string  $task           Task name
+     * @param   string  $errorMessage   Error message to return
      * @return  bool    True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
     function CheckPermission($gadget, $task, $errorMessage = '')
@@ -522,10 +506,10 @@ class Jaws_Session
     }
 
     /**
-     * Returns true if user is a super-admin (aka superroot)
+     * Returns is a current user is superadmin
      *
      * @access  public
-     * @return  bool
+     * @return  bool    True if user is a superadmin
      */
     function IsSuperAdmin()
     {
@@ -534,6 +518,9 @@ class Jaws_Session
 
     /**
      * Synchronize current session
+     *
+     * @access  public
+     * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
     function Synchronize()
     {
@@ -641,8 +628,9 @@ class Jaws_Session
     /**
      * Delete a session
      *
-     * @param   int      $sid  Session ID
-     * @return  bool    Success/Failure
+     * @access  public
+     * @param   int     $sid  Session ID
+     * @return  bool    True if success, otherwise False
      */
     function Delete($sid)
     {
@@ -658,8 +646,9 @@ class Jaws_Session
     /**
      * Deletes all sessions of an user
      *
+     * @access  public
      * @param   string  $user   User's ID
-     * @return  bool    Success/Failure
+     * @return  bool    True if success, otherwise False
      */
     function DeleteUserSessions($user)
     {
@@ -675,6 +664,9 @@ class Jaws_Session
 
     /**
      * Delete expired sessions
+     *
+     * @access  public
+     * @return  bool    True if success, otherwise False
      */
     function DeleteExpiredSessions()
     {
@@ -693,8 +685,9 @@ class Jaws_Session
      * Returns all users's sessions count
      *
      * @access  public
-     * @param   int     $user   User ID
-     * @return  mixed   Session count if exist, false otherwise
+     * @param   int     $user       User ID
+     * @param   bool    $onlyOnline Optional only count of online sessions
+     * @return  mixed   Sessions    count/False if error occurs when runing query
      */
     function GetUserSessions($user, $onlyOnline = false)
     {
@@ -715,15 +708,15 @@ class Jaws_Session
             return false;
         }
 
-        return (int) $count;
+        return (int)$count;
     }
 
     /**
-     * Returns the session values
+     * Returns the session's attributes
      *
      * @access  private
-     * @param   string  $sid  Session ID
-     * @return  mixed   Session values if exist, false otherwise
+     * @param   string  $sid    Session ID
+     * @return  mixed   Session's attributes if exist, otherwise False
      */
     function GetSession($sid)
     {
@@ -747,36 +740,62 @@ class Jaws_Session
     }
 
     /**
-     * Push a simple response (no CSS and special data)
+     * Push response data
      *
      * @access  public
-     * @param   string  $msg    Response's message
+     * @param   mixed   $data       Response data
+     * @param   string  $resource   Response name
+     * @return  void
      */
-    function PushSimpleResponse($msg, $resource = 'SimpleResponse')
+    function PushResponse($data, $resource = 'Response')
     {
-        $this->SetAttribute($resource, $msg);
+        $this->SetAttribute($resource, $data);
     }
 
     /**
-     * Prints (returns) the last simple response
+     * Returns the response data
      *
      * @access  public
-     * @param   string  $resource Resource's name
-     * @param   bool    $removePoppedResource
-     * @return  mixed   Last simple response
+     * @param   string  $resource   Resource's name
+     * @param   bool    $remove     Optional remove popped response
+     * @return  mixed   Response data, or Null if resource not found
      */
-    function PopSimpleResponse($resource = 'SimpleResponse', $removePoppedResource = true)
+    function PopResponse($resource = 'Response', $remove = true)
     {
         $response = $this->GetAttribute($resource);
-        if ($removePoppedResource) {
+        if ($remove) {
             $this->DeleteAttribute($resource);
         }
 
-        if (empty($response)) {
-            return false;
-        }
-
         return $response;
+    }
+
+    /**
+     * Push response data
+     *
+     * @deprecated
+     * @access  public
+     * @param   mixed   $data       Response data
+     * @param   string  $resource   Response name
+     * @return  void
+     */
+    function PushSimpleResponse($data, $resource = 'SimpleResponse')
+    {
+        $this->PushResponse($data, $resource);
+    }
+
+    /**
+     * Returns the response data
+     *
+     * @deprecated
+     * @access  public
+     * @param   string  $resource   Resource's name
+     * @param   bool    $remove     Optional remove popped response
+     * @return  mixed   Response data, or Null if resource not found
+     */
+    function PopSimpleResponse($resource = 'SimpleResponse', $remove = true)
+    {
+        return $this->PopResponse($resource, $remove);
     }
 
     /**
@@ -785,14 +804,11 @@ class Jaws_Session
      * @access  public
      * @param   string  $msg    Response's message
      * @param   string  $level  Response type
-     * @param   mixed   $data   Extra data
+     * @param   mixed   $data   Optional extra data
+     * @return  void
      */
     function PushLastResponse($msg, $level = RESPONSE_WARNING, $data = null)
     {
-        if (!defined($level)) {
-            $level = RESPONSE_WARNING;
-        }
-
         switch ($level) {
             case RESPONSE_ERROR:
                 $css = 'error-message';
@@ -800,8 +816,8 @@ class Jaws_Session
             case RESPONSE_NOTICE:
                 $css = 'notice-message';
                 break;
-            case RESPONSE_WARNING:
             default:
+                $level = RESPONSE_WARNING;
                 $css = 'warning-message';
                 break;
         }
@@ -819,14 +835,13 @@ class Jaws_Session
      * Get the response
      *
      * @access  public
-     * @return  string  Returns the message of the response
+     * @param   string  $msg    Response's message
+     * @param   string  $level  Response type
+     * @param   mixed   $data   Optional extra data
+     * @return  array   Returns array include msg, data, level and css class
      */
     function GetResponse($msg, $level = RESPONSE_WARNING, $data = null)
     {
-        if (!defined($level)) {
-            $level = RESPONSE_WARNING;
-        }
-
         switch ($level) {
             case RESPONSE_ERROR:
                 $css = 'error-message';
@@ -834,8 +849,8 @@ class Jaws_Session
             case RESPONSE_NOTICE:
                 $css = 'notice-message';
                 break;
-            case RESPONSE_WARNING:
             default:
+                $level = RESPONSE_WARNING;
                 $css = 'warning-message';
                 break;
         }
@@ -847,11 +862,10 @@ class Jaws_Session
     }
 
     /**
-     * Prints and deletes the last response of a gadget
+     * Return and deletes the last response pushed
      *
      * @access  public
-     * @param   string  $gadget Gadget's name
-     * @return  string  Returns the message of the last response and false if there's no response
+     * @return  mixed   Last responses array if exist, otherwise False
      */
     function PopLastResponse()
     {

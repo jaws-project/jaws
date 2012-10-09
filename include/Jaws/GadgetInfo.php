@@ -385,7 +385,7 @@ class Jaws_GadgetInfo
      * Register required gadgets
      *
      * @access  public
-     * @param  mixed $argv variable list of required gadgets
+     * @param   mixed   $argv Optional variable list of required gadgets
      * @return  void
      */
     function Requires($argv)
