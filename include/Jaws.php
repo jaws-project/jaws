@@ -357,13 +357,13 @@ class Jaws
 
             $theme = array();
             $theme['name'] = $this->_Theme;
-            $theme['path'] = JAWS_DATA . 'themes/' . $this->_Theme . '/';
+            $theme['path'] = JAWS_THEMES. $this->_Theme . '/';
             if (!is_dir($theme['path'])) {
-                $theme['url']    = $this->getDataURL('themes/' . $this->_Theme . '/', $rel_url, true);
-                $theme['path']   = JAWS_BASE_DATA .  'themes/' . $this->_Theme . '/';
+                $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url, true);
+                $theme['path']   = JAWS_BASE_THEMES. $this->_Theme . '/';
                 $theme['exists'] = is_dir($theme['path']);
             } else {
-                $theme['url']    = $this->getDataURL('themes/' . $this->_Theme . '/', $rel_url);
+                $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url);
                 $theme['exists'] = true;
             }
         }
@@ -1026,9 +1026,9 @@ class Jaws
     /**
      * Returns the URL of the site
      *
+     * @access  public
      * @param   string  suffix for add to site url
      * @param   string  rel_url relative url
-     * @access  public
      * @return  string  Site's URL
      */
     function getSiteURL($suffix = '', $rel_url = false)
@@ -1086,19 +1086,17 @@ class Jaws
     /**
      * Returns the URL of the data
      *
+     * @access  public
      * @param   string  suffix    suffix part of url
      * @param   bool    rel_url   relative url
      * @param   bool    base_data use JAWS_BASE_DATA instead of JAWS_DATA
-     * @access  public
      * @return  string  Related URL to data directory
      */
     function getDataURL($suffix = '', $rel_url = true, $base_data = false)
     {
         if (!defined('JAWS_DATA_URL') || $base_data) {
             $url = substr($base_data? JAWS_BASE_DATA : JAWS_DATA, strlen(JAWS_PATH));
-            if (DIRECTORY_SEPARATOR !='/') {
-                $url = str_replace('\\', '/', $url);
-            }
+            $url = str_replace('\\', '/', $url);
             if (!$rel_url) {
                 $url = $this->getSiteURL('/' . $url);
             }
@@ -1112,8 +1110,35 @@ class Jaws
     }
 
     /**
+     * Returns the URL of the themes directory
+     *
+     * @access  public
+     * @param   string  $suffix         suffix part of url
+     * @param   bool    $rel_url        relative url
+     * @param   bool    $base_themes    use JAWS_BASE_DATA instead of JAWS_DATA
+     * @return  string  Related URL to themes directory
+     */
+    function getThemeURL($suffix = '', $rel_url = true, $base_themes = false)
+    {
+        if (!defined('JAWS_THEMES_URL') || $base_themes) {
+            $url = substr($base_themes? JAWS_BASE_THEMES : JAWS_THEMES, strlen(JAWS_PATH));
+            $url = str_replace('\\', '/', $url);
+            if (!$rel_url) {
+                $url = $this->getSiteURL('/' . $url);
+            }
+        } else {
+            $url = JAWS_THEMES_URL;
+        }
+
+        $suffix = is_bool($suffix)? array() : explode('/', $suffix);
+        $suffix = implode('/', array_map('rawurlencode', $suffix));
+        return $url . $suffix;
+    }
+
+    /**
      * Executes the autoload gadgets
      *
+     * @access  public
      * @return  void
      */
     function RunAutoload()

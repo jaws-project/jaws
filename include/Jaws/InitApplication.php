@@ -32,10 +32,18 @@ require_once JAWS_PATH . 'include/Jaws/Utils.php';
 require JAWS_PATH . 'include/Jaws/Error.php';
 
 if (!defined('JAWS_BASE_DATA')) {
-    define('JAWS_BASE_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+    define('JAWS_BASE_DATA',
+           defined('JAWS_DATA')? JAWS_DATA : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR));
 }
 if (!defined('JAWS_DATA')) {
     define('JAWS_DATA', JAWS_BASE_DATA);
+}
+if (!defined('JAWS_BASE_THEMES')) {
+    define('JAWS_BASE_THEMES',
+           defined('JAWS_THEMES')? JAWS_THEMES: (JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR));
+}
+if (!defined('JAWS_THEMES')) {
+    define('JAWS_THEMES', JAWS_BASE_THEMES);
 }
 if (!defined('JAWS_CACHE')) {
     define('JAWS_CACHE', JAWS_DATA. 'cache');

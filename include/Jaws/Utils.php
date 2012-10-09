@@ -686,9 +686,8 @@ class Jaws_Utils
 
         static $pThemes;
         if (!isset($pThemes)) {
-            $theme_path = JAWS_DATA . 'themes/';
-            $pThemes = scandir($theme_path);
-            array_walk($pThemes, 'is_vaild_theme', $theme_path);
+            $pThemes = scandir(JAWS_THEMES);
+            array_walk($pThemes, 'is_vaild_theme', JAWS_THEMES);
             $pThemes = array_filter($pThemes);
             sort($pThemes);
             $pThemes = array_flip($pThemes);
@@ -700,11 +699,11 @@ class Jaws_Utils
                                          'version'  => '0.1',
                                          'license'  => '',
                                          'authors'  => array());
-                if (file_exists($theme_path. $theme. '/example.png')) {
+                if (file_exists(JAWS_THEMES. $theme. '/example.png')) {
                     $pThemes[$theme]['image'] = $GLOBALS['app']->getDataURL("themes/$theme/example.png");
                 }
 
-                $iniFile = $theme_path. $theme. '/Info.ini';
+                $iniFile = JAWS_THEMES. $theme. '/Info.ini';
                 if (file_exists($iniFile)) {
                     $tInfo = @parse_ini_file($iniFile, true);
                     if (!empty($tInfo) && array_key_exists('info', $tInfo)) {
@@ -718,10 +717,9 @@ class Jaws_Utils
             static $themes;
             if (!isset($themes)) {
                 $themes = array();
-                if (JAWS_DATA != JAWS_BASE_DATA) {
-                    $theme_path = JAWS_BASE_DATA . 'themes/';
-                    $themes = scandir($theme_path);
-                    array_walk($themes, 'is_vaild_theme', $theme_path);
+                if (JAWS_THEMES != JAWS_BASE_THEMES) {
+                    $themes = scandir(JAWS_BASE_THEMES);
+                    array_walk($themes, 'is_vaild_theme', JAWS_BASE_THEMES);
                     $themes = array_filter($themes);
                     sort($themes);
                     $themes = array_flip($themes);
@@ -733,10 +731,10 @@ class Jaws_Utils
                                                  'version'  => '0.1',
                                                  'license'  => '',
                                                  'authors'  => array());
-                        if (file_exists($theme_path. $theme. '/example.png')) {
+                        if (file_exists(JAWS_BASE_THEMES. $theme. '/example.png')) {
                             $themes[$theme]['image'] = $GLOBALS['app']->getDataURL("themes/$theme/example.png", true, true);
                         }
-                        $iniFile = $theme_path. $theme. '/Info.ini';
+                        $iniFile = JAWS_BASE_THEMES. $theme. '/Info.ini';
                         if (file_exists($iniFile)) {
                             $tInfo = @parse_ini_file($iniFile, true);
                             if (!empty($tInfo) && array_key_exists('info', $tInfo)) {
