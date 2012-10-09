@@ -108,12 +108,12 @@ class Jaws_Translate
      * reloaded.
      *
      * @access  public
-     * @static
-     * @param   string module The translation to load.
-     * @param   string type   Type of modulr(JAWS_OTHERS, JAWS_GADGET, JAWS_PLUGIN)
+     * @param   string  $module The translation to load
+     * @param   string  $type   Type of module(JAWS_COMPONENT_OTHERS, JAWS_COMPONENT_GADGET, JAWS_COMPONENT_PLUGIN)
+     * @param   string  $lang   Optional language code
      * @return  void
      */
-    function LoadTranslation($module, $type = JAWS_OTHERS, $lang = null)
+    function LoadTranslation($module, $type = JAWS_COMPONENT_OTHERS, $lang = null)
     {
         $language = $this->_defaultLanguage;
         if ($module == 'Date' && isset($GLOBALS['app'])) {
@@ -136,17 +136,17 @@ class Jaws_Translate
 
         // Only attempt to load a translation if it isn't already loaded.
         if (in_array(array($module, $type), $GLOBALS['i18n'][$language])) {
-            return true;
+            return;
         }
 
         switch ($type) {
-            case JAWS_GADGET:
+            case JAWS_COMPONENT_GADGET:
                 $orig_i18n = JAWS_PATH . "gadgets/$module/languages/$language.php";
                 $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.php";
                 $fall_back = JAWS_PATH . "gadgets/$module/languages/en.php";
                 break;
 
-            case JAWS_PLUGIN:
+            case JAWS_COMPONENT_PLUGIN:
                 $orig_i18n = JAWS_PATH . "plugins/$module/languages/$language.php";
                 $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.php";
                 $fall_back = JAWS_PATH . "plugins/$module/languages/en.php";
@@ -182,6 +182,7 @@ class Jaws_Translate
             }
         }
     }
+
 }
 
 /**

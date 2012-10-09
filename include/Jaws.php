@@ -569,7 +569,7 @@ class Jaws
             }
 
             // Load gadget's language file
-            $this->Translate->LoadTranslation($gadget, JAWS_GADGET);
+            $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
 
             switch ($type) {
                 case 'Info':
@@ -733,7 +733,7 @@ class Jaws
             // load registry file
             $this->Registry->LoadFile($plugin, 'plugins');
             // load plugin's language file
-            $this->Translate->LoadTranslation($plugin, JAWS_PLUGIN);
+            $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
 
             $this->_Plugins[$plugin] = $obj;
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded plugin: ' . $plugin);

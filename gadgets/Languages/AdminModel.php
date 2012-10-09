@@ -165,9 +165,9 @@ class LanguagesAdminModel extends Jaws_Model
         }
 
         $components = array();
-        $components[JAWS_OTHERS] = array('Global', 'Date', 'Install', 'Upgrade');
-        $components[JAWS_GADGET] = GetModulesList('gadgets');
-        $components[JAWS_PLUGIN] = GetModulesList('plugins');
+        $components[JAWS_COMPONENT_OTHERS] = array('Global', 'Date', 'Install', 'Upgrade');
+        $components[JAWS_COMPONENT_GADGET] = GetModulesList('gadgets');
+        $components[JAWS_COMPONENT_PLUGIN] = GetModulesList('plugins');
         return $components;
     }
 
@@ -184,13 +184,13 @@ class LanguagesAdminModel extends Jaws_Model
     function GetLangData($module, $type, $langTo, $langFrom)
     {
         switch ($type) {
-            case JAWS_GADGET:
+            case JAWS_COMPONENT_GADGET:
                 $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
                 $orig_file = JAWS_PATH . "gadgets/$module/languages/$langTo.php";
                 $from_file = JAWS_PATH . "gadgets/$module/languages/$langFrom.php";
                 break;
 
-            case JAWS_PLUGIN:
+            case JAWS_COMPONENT_PLUGIN:
                 $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
                 $orig_file = JAWS_PATH . "plugins/$module/languages/$langTo.php";
                 $from_file = JAWS_PATH . "plugins/$module/languages/$langFrom.php";
@@ -274,12 +274,12 @@ class LanguagesAdminModel extends Jaws_Model
     {
         $module_name = $module;
         switch ($type) {
-            case JAWS_GADGET:
+            case JAWS_COMPONENT_GADGET:
                 $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
                 $orig_file = JAWS_PATH . "gadgets/$module/languages/$langTo.php";
                 break;
 
-            case JAWS_PLUGIN:
+            case JAWS_COMPONENT_PLUGIN:
                 $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
                 $orig_file = JAWS_PATH . "plugins/$module/languages/$langTo.php";
                 $module_name = 'Plugins_' . $module;

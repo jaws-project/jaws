@@ -259,7 +259,7 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
         $theme = $request->get('theme', 'post');
         $mode = $request->get('mode', 'post');
 
-        $tpl = new Jaws_Template('', JAWS_OTHERS);
+        $tpl = new Jaws_Template('', JAWS_COMPONENT_OTHERS);
         $layout_file = JAWS_DATA . 'themes/' . $theme . '/layout.html';
         if (!file_exists($layout_file)) {
             $layout_file = JAWS_BASE_DATA . 'themes/' . $theme . '/layout.html';

@@ -44,9 +44,12 @@ class Jaws_Template
     /**
      * Class constructor
      *
-     * @param   string $base_path   Template base path(gadget or plugin name or template base path)
-     * @param   string $base_type   Template base type(JAWS_OTHERS, JAWS_GADGET, JAWS_PLUGIN)
      * @access  public
+     * @param   string $base_path   Template base path(gadget or plugin name or template base path)
+     * @param   string $base_type   Template base type(JAWS_COMPONENT_OTHERS,
+     *                                                 JAWS_COMPONENT_GADGET,
+     *                                                 JAWS_COMPONENT_PLUGIN)
+     * @return  void
      */
     function Jaws_Template($base_path = '', $base_type = null)
     {
@@ -70,20 +73,20 @@ class Jaws_Template
             if (!empty($base_path)) {
                 //for compatible with old versions
                 if (strpos($base_path, 'gadgets/') !== false) {
-                    $base_type = JAWS_GADGET;
+                    $base_type = JAWS_COMPONENT_GADGET;
                     $base_path = str_replace(array('gadgets/', '/templates/'), '', $base_path);
                 }
 
                 if (strpos($base_path, 'plugins/') !== false) {
-                    $base_type = JAWS_PLUGIN;
+                    $base_type = JAWS_COMPONENT_PLUGIN;
                     $base_path = str_replace(array('plugins/', '/templates/'), '', $base_path);
                 }
 
-                if ($base_type == JAWS_OTHERS) {
+                if ($base_type == JAWS_COMPONENT_OTHERS) {
                     $base_path .= '/';
                 }
             } else {
-                $base_type = JAWS_THEMES;
+                $base_type = JAWS_COMPONENT_THEMES;
             }
         }
 
@@ -119,7 +122,7 @@ class Jaws_Template
         $direction = strtolower(empty($direction) ? (function_exists('_t') ? _t('GLOBAL_LANG_DIRECTION') : 'ltr') : $direction);
         $prefix = ($direction == 'rtl')? '.rtl' : '';
 
-        if ($this->_BaseType != JAWS_OTHERS) {
+        if ($this->_BaseType != JAWS_COMPONENT_OTHERS) {
             $theme = $GLOBALS['app']->GetTheme();
             if (!$theme['exists']) {
                 Jaws_Error::Fatal('Template doesn\'t exists. <br />A possible reason of this error is that the theme: ' .
@@ -127,8 +130,8 @@ class Jaws_Template
             }
 
             switch ($this->_BaseType) {
-                case JAWS_GADGET:
-                case JAWS_PLUGIN:
+                case JAWS_COMPONENT_GADGET:
+                case JAWS_COMPONENT_PLUGIN:
                     // at first trying to load the template within the theme dir
                     if ($InTheme) {
                         $tplFile = $theme['path'] . $this->_BasePath . '/' . $fileName . $prefix . $fileExt;
@@ -141,7 +144,7 @@ class Jaws_Template
 
                     // trying to load the template within the original location
                     if (!$InTheme) {
-                        $tplDir = ($this->_BaseType == JAWS_GADGET)? 'gadgets/' : 'plugins/';
+                        $tplDir = ($this->_BaseType == JAWS_COMPONENT_GADGET)? 'gadgets/' : 'plugins/';
                         $tplDir = $tplDir . $this->_BasePath . '/templates/';
                         $tplFile = JAWS_PATH . $tplDir . $fileName . $prefix . $fileExt;
                         if (!file_exists($tplFile) && !empty($prefix)) {
@@ -151,7 +154,7 @@ class Jaws_Template
 
                     break;
 
-                default: //JAWS_THEMES
+                default: //JAWS_COMPONENT_THEMES
                     $tplFile = $theme['path'] . $fileName . $prefix . $fileExt;
                     if (!file_exists($tplFile) && !empty($prefix)) {
                         $tplFile = $theme['path'] . $fileName . $fileExt;
