@@ -230,22 +230,6 @@ class Upgrader_Requirements extends JawsUpgraderStage
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
-        // data/themes directory
-        $tpl->setBlock('Requirements/rec_item');
-        $result = $this->_check_path('data/themes', 'rw');
-        $tpl->setVariable('item', _t('UPGRADE_REQ_DIRECTORY', 'data/themes'));
-        $tpl->setVariable('item_requirement', _t('UPGRADE_REQ_WRITABLE'));
-        $tpl->setVariable('item_actual', $this->_get_perms('data/themes'));
-        if ($result) {
-            _log(JAWS_LOG_DEBUG,"data/themes directory exists");
-            $result_txt = '<span style="color: #0b0;">'._t('UPGRADE_REQ_OK').'</span>';
-        } else {
-            _log(JAWS_LOG_DEBUG,"data/themes directory doesn't exists");
-            $result_txt = '<span style="color: #b00;">'._t('UPGRADE_REQ_BAD').'</span>';
-        }
-        $tpl->setVariable('result', $result_txt);
-        $tpl->parseBlock('Requirements/rec_item');
-
         $tpl->parseBlock('Requirements');
         return $tpl->get();
     }

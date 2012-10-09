@@ -188,7 +188,6 @@ if (isset($GLOBALS['message'])) {
 $tpl->ParseBlock('page');
 
 // Defines where the layout template should be loaded from.
-$theme = 'jaws';
 $direction = _t('GLOBAL_LANG_DIRECTION');
 $dir  = $direction == 'rtl' ? '.' . $direction : '';
 
@@ -200,7 +199,6 @@ $layout->SetBlock('layout');
 // Basic setup
 $layout->SetVariable('BASE_URL', Jaws_Utils::getBaseURL('/install/'));
 $layout->SetVariable('.dir', $dir);
-$layout->SetVariable('THEME', '../data/themes/' . $theme . '/');
 $layout->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
 $layout->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
 $layout->SetVariable('site-slogan', JAWS_VERSION_CODENAME);
