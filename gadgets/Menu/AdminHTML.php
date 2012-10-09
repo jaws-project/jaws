@@ -18,7 +18,7 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Displays gadget administration section
      *
      * @access  public
-     * @return  string  XHTML Template content
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -71,10 +71,10 @@ class MenuAdminHTML extends Jaws_GadgetHTML
      * Retrieves Menu Level
      * 
      * @access public
-     * @param   Jaws_Model      $model      Jaws_Model reference
-     * @param   Jaws_Template   $tpl_str
-     * @param   int             $gid        group ID
-     * @param   int             $pid
+     * @param   object  $model      Jaws_Model reference
+     * @param   string  $tpl_str    XHTML template content passed by reference
+     * @param   int     $gid        Group ID
+     * @param   int     $pid
      * @return  string  XHTML template content
      */
     function GetMenuLevel(&$model, &$tpl_str, $gid, $pid)

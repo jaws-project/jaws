@@ -16,7 +16,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
-     * @param   Jaws_Model  $model  The model to use for performing actions.
+     * @param   object  $model  Jaws_Model reference
      */
     function MenuAdminAjax(&$model)
     {
@@ -103,9 +103,9 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $title          menu title
-     * @param   string  $title_view     
+     * @param   string  $title_view
      * @param   bool    $visible        is visible
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $title_view, $visible)
     {
@@ -128,7 +128,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * @param   string  $rank
      * @param   bool    $visible        is visible
      * @param   string  $image
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -146,7 +146,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * @param   string  $title
      * @param   string  $title_view
      * @param   bool    $visible        is visible
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
@@ -170,7 +170,7 @@ class MenuAdminAjax extends Jaws_Ajax
      * @param   string  $rank
      * @param   bool    $visible        is visible
      * @param   string  $image
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
@@ -256,7 +256,7 @@ class MenuAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   string  $request  Gadget's name
-     * @return  array   urls array on success or empty array on failure
+     * @return  array   URLs array on success or empty array on failure
      */
     function GetPublicURList($request)
     {
