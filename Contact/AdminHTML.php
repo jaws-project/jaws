@@ -449,8 +449,8 @@ class ContactAdminHTML extends Jaws_GadgetHTML
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
         $site_language = $GLOBALS['app']->Registry->Get('/config/site_language');
-        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_OTHERS, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
         $tpl->Load('SendReplyTo.html', false, true, _t_lang($site_language, 'GLOBAL_LANG_DIRECTION'));
@@ -905,8 +905,8 @@ class ContactAdminHTML extends Jaws_GadgetHTML
         }
 
         $site_language = $GLOBALS['app']->Registry->Get('/config/site_language');
-        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_OTHERS, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
         $tpl->Load('SendEmail.html', null, true, _t_lang($site_language, 'GLOBAL_LANG_DIRECTION'));
