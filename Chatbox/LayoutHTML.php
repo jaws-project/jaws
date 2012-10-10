@@ -121,9 +121,10 @@ class ChatboxLayoutHTML
                 $tpl->ParseBlock('messages/entry');
             }
             $tpl->ParseBlock('messages');
+            return $tpl->Get();
         }
 
-        return $tpl->Get();
+        return '';
     }
 
 }
