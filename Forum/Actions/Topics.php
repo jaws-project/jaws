@@ -43,9 +43,9 @@ class Forum_Actions_Topics extends ForumHTML
             $tpl->SetBlock('topics/topic');
             $tpl->SetVariable('icon', '');
             $tpl->SetVariable('status', _t('FORUM_LOCKED'));
-            $tpl->SetVariable('title', $topic['title']);
+            $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum',
-                                                                     'Topic', array('id' => $topic['id']))
+                                                                     'Topic', array('tid' => $topic['id']))
             );
             $tpl->SetVariable('replies', $topic['replies']);
             $tpl->SetVariable('views', $topic['views']);
@@ -147,7 +147,7 @@ class Forum_Actions_Topics extends ForumHTML
     function UpdateTopic()
     {
         $request =& Jaws_Request::getInstance();
-        $topic = $request->get(array('fid', 'tid', 'subject', 'fast_url', 'message', 'published'),
+        $topic = $request->get(array('fid', 'tid', 'subject', 'fast_url', 'description', 'published'),
                                'post');
 
         $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
@@ -156,12 +156,12 @@ class Forum_Actions_Topics extends ForumHTML
                                         $topic['fid'],
                                         $topic['subject'],
                                         $topic['fast_url'],
-                                        $topic['message'],
+                                        $topic['description'],
                                         $topic['published']);
         } else {
             $tid = $tModel->UpdateTopic($topic['subject'],
                                         $topic['fast_url'],
-                                        $topic['message'],
+                                        $topic['description'],
                                         $topic['published']);
         }
 
@@ -176,7 +176,55 @@ class Forum_Actions_Topics extends ForumHTML
 
         Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum',
                                                               'Topic',
-                                                              array('tid' => $topic['tid'])));
+                                                              array('tid' => $topic['tid'])), true);
     }
 
+    /**
+     * Display topic's posts
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function Topic()
+    {
+        $request =& Jaws_Request::getInstance();
+        $get = $request->get(array('tid', 'page'), 'get');
+
+        $model = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $topic = $model->GetTopicInfo($get['tid']);
+        if (Jaws_Error::IsError($topic)) {
+            return false;
+        }
+
+        $objDate = $GLOBALS['app']->loadDate();
+        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl->Load('Topic.html');
+        $tpl->SetBlock('topic');
+
+        $tpl->SetVariable('title', $topic['subject']);
+
+        $posts = $model->GetPosts($get['tid']);
+        if (Jaws_Error::IsError($posts)) {
+            return false;
+        }
+        foreach ($posts as $post) {
+            $tpl->SetBlock('topic/post');
+            $tpl->SetVariable('title', $topic['subject']);
+            $tpl->SetVariable('message', $post['message']);
+
+            $tpl->ParseBlock('topic/post');
+        }
+
+        $tpl->SetBlock('topic/actions');
+        $tpl->SetVariable('lbl_newpost', _t('FORUM_NEWPOST'));
+        $tpl->SetVariable('url_newpost',
+                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                                                          'NewPost',
+                                                          array('tid' => $get['tid']))
+        );
+        $tpl->ParseBlock('topic/actions');
+
+        $tpl->ParseBlock('topic');
+        return $tpl->Get();
+    }
 }
