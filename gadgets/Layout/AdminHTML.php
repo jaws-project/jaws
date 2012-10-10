@@ -260,9 +260,9 @@ class LayoutAdminHTML extends Jaws_GadgetHTML
         $mode = $request->get('mode', 'post');
 
         $tpl = new Jaws_Template('', JAWS_COMPONENT_OTHERS);
-        $layout_file = JAWS_DATA . 'themes/' . $theme . '/layout.html';
+        $layout_file = JAWS_THEMES. $theme . '/layout.html';
         if (!file_exists($layout_file)) {
-            $layout_file = JAWS_BASE_DATA . 'themes/' . $theme . '/layout.html';
+            $layout_file = JAWS_BASE_THEMES. $theme . '/layout.html';
         }
         $tpl->Load($layout_file, false, false);
 

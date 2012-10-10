@@ -169,11 +169,11 @@ class Jaws_Template
 
         if (!file_exists($tplFile)) {
             if (isset($GLOBALS['app'])) {
-                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists. <br />A possible reason of this error is that the theme: ' .
-                                 '<strong>' . $theme['name'] . ' </strong> is missing');
+                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists');
             } else {
-                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists. <br />A possible reason of this error is that the ' .
-                                 'default theme is missing');
+                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists. <br />'.
+                                  'A possible reason of this error is that the ' .
+                                  'default theme is missing');
             }
         }
 

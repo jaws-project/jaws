@@ -700,7 +700,7 @@ class Jaws_Utils
                                          'license'  => '',
                                          'authors'  => array());
                 if (file_exists(JAWS_THEMES. $theme. '/example.png')) {
-                    $pThemes[$theme]['image'] = $GLOBALS['app']->getDataURL("themes/$theme/example.png");
+                    $pThemes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png");
                 }
 
                 $iniFile = JAWS_THEMES. $theme. '/Info.ini';
@@ -732,7 +732,7 @@ class Jaws_Utils
                                                  'license'  => '',
                                                  'authors'  => array());
                         if (file_exists(JAWS_BASE_THEMES. $theme. '/example.png')) {
-                            $themes[$theme]['image'] = $GLOBALS['app']->getDataURL("themes/$theme/example.png", true, true);
+                            $themes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png", true, true);
                         }
                         $iniFile = JAWS_BASE_THEMES. $theme. '/Info.ini';
                         if (file_exists($iniFile)) {
