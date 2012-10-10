@@ -12,16 +12,6 @@
 class UrlMapperAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function UrlMapperAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Returns the mapped actions of a certain gadget
      *
      * @access  public

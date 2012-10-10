@@ -13,16 +13,6 @@
 class LayoutAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function LayoutAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Change items position
      *
      * @access  public

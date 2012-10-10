@@ -12,16 +12,6 @@
 class SettingsAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function SettingsAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Update basic settings
      *
      * @access  public

@@ -12,16 +12,6 @@
 class PolicyAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function PolicyAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get blocked IP range
      *
      * @access  public

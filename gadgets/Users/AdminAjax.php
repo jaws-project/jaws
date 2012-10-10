@@ -21,11 +21,12 @@ class UsersAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   object $model Jaws_Model reference
+     * @return  void
      */
     function UsersAdminAjax(&$model)
     {
-        $this->_Model =& $model;
-
+        parent::Jaws_Ajax($model);
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $this->_UserModel = new Jaws_User();
     }

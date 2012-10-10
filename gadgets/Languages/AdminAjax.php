@@ -11,17 +11,6 @@
 class LanguagesAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function LanguagesAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Saves language
      *
      * @access  public

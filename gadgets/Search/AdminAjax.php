@@ -11,16 +11,6 @@
 class SearchAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function SearchAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Set searchable gadgets
      *
      * @access  public
