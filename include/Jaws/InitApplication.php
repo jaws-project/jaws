@@ -18,7 +18,7 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
 
 // Initialize the logger
 require JAWS_PATH . 'include/Jaws/Log.php';
-$GLOBALS['log'] = new Jaws_Log(defined('DEBUG_ACTIVATED')? DEBUG_ACTIVATED : false,
+$GLOBALS['log'] = new Jaws_Log(defined('LOG_ACTIVATED')? LOG_ACTIVATED : false,
                                isset($GLOBALS['logger'])? $GLOBALS['logger'] : null);
 $GLOBALS['log']->Start();
 

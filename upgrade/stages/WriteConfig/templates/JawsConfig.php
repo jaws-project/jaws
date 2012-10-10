@@ -35,6 +35,7 @@ $db['prefix']   = '{db_prefix}';
  * idea is to configure/enable it.
  *
  * Debug: false Disable log
+ *        0     Disabled
  *        1     Emergency log level
  *        2     Alert log and utmost levels
  *        3     Critical log and utmost levels
@@ -44,7 +45,7 @@ $db['prefix']   = '{db_prefix}';
  *        7     Info log and utmost levels
  *        8     Debug log and utmost levels
  */
-define('DEBUG_ACTIVATED', false);
+define('LOG_ACTIVATED', {log_level});
 
 /**
  * Log Method

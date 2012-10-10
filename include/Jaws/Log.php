@@ -25,19 +25,21 @@ define('Jaws_LogDefaultOption', '');            /* default log option */
 class Jaws_Log
 {
     /**
-     * Log activated and level value 
-     *  0   Emergency log level
-     *  1   Alert log and utmost levels
-     *  2   Critical log and utmost levels
-     *  3   Error log and utmost levels
-     *  4   Warning log and utmost levels
-     *  5   Notice log and utmost levels
-     *  6   Info log and utmost levels
-     *  7   Debug log and utmost levels
+     * Log activated and level value
+     *  0   Disabled
+     *  1   Emergency log level
+     *  2   Alert log and utmost levels
+     *  3   Critical log and utmost levels
+     *  4   Error log and utmost levels
+     *  5   Warning log and utmost levels
+     *  6   Notice log and utmost levels
+     *  7   Info log and utmost levels
+     *  8   Debug log and utmost levels
+     *
      * @var mixed
      * @access  private
      */
-    var $_LogActivated = false;
+    var $_LogActivated = 0;
 
     /**
      * The equivalent string of log priorities
@@ -94,10 +96,10 @@ class Jaws_Log
      *
      * @access  public
      */
-    function Jaws_Log($activated = false, $logger = null)
+    function Jaws_Log($activated = 0, $logger = null)
     {
         $this->_MessageStack = '';
-        $this->_LogActivated = $activated;
+        $this->_LogActivated = (int)$activated;
         if (!empty($logger)) {
             $this->_Method = $logger['method'];
             if (isset($logger['options'])) {
@@ -179,7 +181,7 @@ class Jaws_Log
      */
     function Log($priority, $msg, $backtrace = 0)
     {
-        if ($this->_LogActivated === false || $priority > (int)$this->_LogActivated) {
+        if ($priority > $this->_LogActivated) {
             return;
         }
 

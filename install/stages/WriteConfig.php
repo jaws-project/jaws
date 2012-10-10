@@ -29,6 +29,7 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->SetVariable('db_path',    addslashes($_SESSION['install']['Database']['path']));
         $tpl->SetVariable('db_name',    $_SESSION['install']['Database']['name']);
         $tpl->SetVariable('db_prefix',  $_SESSION['install']['Database']['prefix']);
+        $tpl->SetVariable('log_level',  '0');
         $tpl->ParseBlock('JawsConfig');
 
         return $tpl->Get();

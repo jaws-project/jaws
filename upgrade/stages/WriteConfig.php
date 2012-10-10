@@ -33,6 +33,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         $tpl->SetVariable('db_name',    $_SESSION['upgrade']['Database']['name']);
         $tpl->SetVariable('db_path',    addslashes($_SESSION['upgrade']['Database']['path']));
         $tpl->SetVariable('db_prefix',  $_SESSION['upgrade']['Database']['prefix']);
+        $tpl->SetVariable('log_level',  defined('LOG_ACTIVATED')? LOG_ACTIVATED : (int)DEBUG_ACTIVATED);
         $tpl->ParseBlock('JawsConfig');
 
         return $tpl->Get();
