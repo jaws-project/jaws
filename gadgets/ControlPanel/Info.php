@@ -19,6 +19,14 @@ class ControlPanelInfo extends Jaws_GadgetInfo
     var $_Version = '0.8.0';
 
     /**
+     * Is this gadget core gadget?
+     *
+     * @var     boolean
+     * @access  private
+     */
+    var $_IsCore = true;
+
+    /**
      * Gadget ACLs
      *
      * @var     array
