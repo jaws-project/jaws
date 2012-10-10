@@ -15,7 +15,7 @@ class Installer_CreateUser extends JawsInstallerStage {
      */
     var $_Fields = array(
         'username' => 'jawsadmin',
-        'name'     => 'Jaws Administrator',
+        'nickname' => 'Jaws Administrator',
         'email'    => 'admin@example.org',
         'password' => '',
         'repeat'   => ''
@@ -43,17 +43,17 @@ class Installer_CreateUser extends JawsInstallerStage {
         $tpl->Load('display.html', false, false);
         $tpl->SetBlock('CreateUser');
 
-        $tpl->setVariable('lbl_info',    _t('INSTALL_USER_INFO'));
-        $tpl->setVariable('lbl_notice',  _t('INSTALL_USER_NOTICE'));
-        $tpl->setVariable('lbl_user',    _t('INSTALL_USER_USER'));
-        $tpl->setVariable('user_info',   _t('INSTALL_USER_USER_INFO'));
-        $tpl->setVariable('lbl_pass',    _t('INSTALL_USER_PASS'));
-        $tpl->setVariable('lbl_repeat',  _t('INSTALL_USER_REPEAT'));
-        $tpl->setVariable('repeat_info', _t('INSTALL_USER_REPEAT_INFO'));
-        $tpl->setVariable('lbl_name',    _t('INSTALL_USER_NAME'));
-        $tpl->setVariable('name_info',   _t('INSTALL_USER_NAME_INFO'));
-        $tpl->setVariable('lbl_email',   _t('INSTALL_USER_EMAIL'));
-        $tpl->SetVariable('next',        _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',     _t('INSTALL_USER_INFO'));
+        $tpl->setVariable('lbl_notice',   _t('INSTALL_USER_NOTICE'));
+        $tpl->setVariable('lbl_user',     _t('INSTALL_USER_USER'));
+        $tpl->setVariable('user_info',    _t('INSTALL_USER_USER_INFO'));
+        $tpl->setVariable('lbl_pass',     _t('INSTALL_USER_PASS'));
+        $tpl->setVariable('lbl_repeat',   _t('INSTALL_USER_REPEAT'));
+        $tpl->setVariable('repeat_info',  _t('INSTALL_USER_REPEAT_INFO'));
+        $tpl->setVariable('lbl_nickname', _t('INSTALL_USER_NAME'));
+        $tpl->setVariable('name_info',    _t('INSTALL_USER_NAME_INFO'));
+        $tpl->setVariable('lbl_email',    _t('INSTALL_USER_EMAIL'));
+        $tpl->SetVariable('next',         _t('GLOBAL_NEXT'));
 
         if ($_SESSION['install']['secure']) {
             $tpl->SetVariable('pub_modulus',  $_SESSION['pub_mod']);
@@ -65,10 +65,9 @@ class Installer_CreateUser extends JawsInstallerStage {
 
         $tpl->SetVariable('username', $values['username']);
         $tpl->SetVariable('password', '');
-        $tpl->SetVariable('repeat', '');
-        $tpl->SetVariable('name', $values['name']);
-        $tpl->ParseBlock('CreateUser/name');
-        $tpl->SetVariable('email', $values['email']);
+        $tpl->SetVariable('repeat',   '');
+        $tpl->SetVariable('nickname', $values['nickname']);
+        $tpl->SetVariable('email',    $values['email']);
 
         $tpl->ParseBlock('CreateUser');
         return $tpl->Get();
@@ -84,7 +83,7 @@ class Installer_CreateUser extends JawsInstallerStage {
     function Validate()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'repeat', 'password'), 'post');
+        $post = $request->get(array('username', 'repeat', 'password', 'nickname'), 'post');
 
         if (isset($_SESSION['install']['data']['CreateUser'])) {
             $post = $_SESSION['install']['data']['CreateUser'] + $post;
@@ -94,7 +93,11 @@ class Installer_CreateUser extends JawsInstallerStage {
             }
         }
 
-        if (!empty($post['username']) && !empty($post['password']) && !empty($post['repeat'])) {
+        if (!empty($post['username']) &&
+            !empty($post['password']) &&
+            !empty($post['repeat']) &&
+            !empty($post['nickname']))
+        {
             if ($post['password'] !== $post['repeat']) {
                 _log(JAWS_LOG_DEBUG,"The password and repeat boxes don't match, please try again.");
                 return new Jaws_Error(_t('INSTALL_USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
@@ -102,7 +105,8 @@ class Installer_CreateUser extends JawsInstallerStage {
 
             return true;
         }
-        _log(JAWS_LOG_DEBUG,"You must complete the username, password, and repeat boxes.");
+
+        _log(JAWS_LOG_DEBUG,"You must complete the username, nickname, password, and repeat boxes.");
         return new Jaws_Error(_t('INSTALL_USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
@@ -116,7 +120,7 @@ class Installer_CreateUser extends JawsInstallerStage {
     function Run()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'email', 'name', 'password'), 'post');
+        $post = $request->get(array('username', 'email', 'nickname', 'password'), 'post');
 
         if (isset($_SESSION['install']['data']['CreateUser'])) {
             $post = $_SESSION['install']['data']['CreateUser'] + $post;
@@ -136,7 +140,7 @@ class Installer_CreateUser extends JawsInstallerStage {
         $_SESSION['install']['CreateUser'] = array(
             'username' => $post['username'],
             'email'    => $post['email'],
-            'name'     => $post['name']
+            'nickname' => $post['nickname']
         );
 
         require_once JAWS_PATH . 'include/Jaws/DB.php';
@@ -159,13 +163,13 @@ class Installer_CreateUser extends JawsInstallerStage {
                 _log(JAWS_LOG_DEBUG,"Update existing user");
                 $res = $userModel->UpdateUser($userInfo['id'],
                                               $post['username'], 
-                                              $post['name'],
+                                              $post['nickname'],
                                               $post['email'],
                                               $post['password']);
             } else {
                 _log(JAWS_LOG_DEBUG,"Adding first/new admin user to Jaws");
                 $res = $userModel->AddUser($post['username'],
-                                           $post['name'],
+                                           $post['nickname'],
                                            $post['email'],
                                            $post['password'],
                                            true);

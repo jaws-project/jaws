@@ -179,7 +179,7 @@ class Installer_Settings extends JawsInstallerStage
         $settings['/config/site_keywords']    = '';
         $settings['/config/site_description'] = '';
         $settings['/config/custom_meta']      = '';
-        $settings['/config/site_author']      = $_SESSION['install']['CreateUser']['name'];
+        $settings['/config/site_author']      = $_SESSION['install']['CreateUser']['nickname'];
         $settings['/config/site_license']     = '';
         $settings['/config/site_favicon']     = 'images/jaws.png';
         $settings['/config/title_separator']  = '-';
