@@ -139,11 +139,6 @@ class Jaws_DB
      */
     function connect()
     {
-        // connect to database
-        if (!defined('DEBUG_ACTIVATED')) {
-            define('DEBUG_ACTIVATED', false);
-        }
-
         $options = array(
             'debug' => false,
             'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
@@ -514,7 +509,7 @@ class Jaws_DB
         $dsn = $this->_dsn;
 
         $options = array(
-            'debug' => DEBUG_ACTIVATED,
+            'debug' => false,
             'log_line_break' => '<br />',
             'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
             'quote_identifier' => true
@@ -654,7 +649,7 @@ class Jaws_DB
      *
      * @access  public
      */
-    function installSchema($file, $variables = array(), $file_update = false, $data = false, $create = true, $debug = false)
+    function installSchema($file, $variables = array(), $file_update = false, $data = false, $create = true)
     {
         MDB2::loadFile('Schema');
 
@@ -673,7 +668,7 @@ class Jaws_DB
         }
 
         $options = array(
-            'debug' => $debug,
+            'debug' => false,
             'log_line_break' => '<br />',
             'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
             'quote_identifier' => true,
@@ -715,14 +710,6 @@ class Jaws_DB
 
         $method = $data === true ? 'writeInitialization' : 'updateDatabase';
         $result = $this->schema->$method($file, $file_update, $variables);
-
-        if ($debug) {
-            $debug = $this->schema->getOption('debug');
-            if ($debug && !PEAR::IsError($debug)) {
-                echo('Debug messages<br />');
-                echo($this->schema->db->getDebugOutput() . '<br />');
-            }
-        }
 
         if (PEAR::isError($result)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Schema: ' . $result->getMessage());
