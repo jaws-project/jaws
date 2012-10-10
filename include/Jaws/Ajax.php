@@ -19,6 +19,18 @@ class Jaws_Ajax
     var $_Model;
 
     /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object  $model  Jaws_Model reference
+     * @return  void
+     */
+    function Jaws_Ajax(&$model)
+    {
+        $this->_Model =& $model;
+    }
+
+    /**
      * Check the session permission:
      *
      *  - If user has privileges to execute the task
