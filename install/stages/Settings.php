@@ -184,7 +184,7 @@ class Installer_Settings extends JawsInstallerStage
         $settings['/config/site_favicon']     = 'images/jaws.png';
         $settings['/config/title_separator']  = '-';
         $settings['/config/main_gadget']      = $post['default_gadget'];
-        $settings['/config/copyright']        = date('Y') . ', ' . $_SESSION['install']['CreateUser']['name'];
+        $settings['/config/copyright']        = date('Y'). ', '. $post['site_name'];
         $settings['/config/site_language']    = $post['site_language'];
         $settings['/config/admin_language']   = $post['site_language'];
         $settings['/config/site_email']       = $_SESSION['install']['CreateUser']['email'];
