@@ -12,17 +12,6 @@
 class PollAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $model Jaws_Model reference
-     */
-    function PollAdminAjax(&$model)
-    {
-        $this->_Model  =& $model;
-    }
-
-    /**
      * Get a Poll
      *
      * @access  public

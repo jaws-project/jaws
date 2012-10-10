@@ -11,17 +11,6 @@
 class FileBrowserAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function FileBrowserAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Gets information of the directory content
      *
      * @access  public

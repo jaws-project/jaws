@@ -11,17 +11,6 @@
 class EmblemsAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function EmblemsAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Delete an emblem
      *
      * @access  public

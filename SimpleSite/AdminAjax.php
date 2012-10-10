@@ -12,18 +12,6 @@
 class SimpleSiteAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @param   SimpleSiteModel   $model  The model to use for performing actions.
-     * @return  Null
-     * @access  public
-     */
-    function SimpleSiteAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get simplesites with items
      *
      * @access  public

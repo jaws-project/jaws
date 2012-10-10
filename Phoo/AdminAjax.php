@@ -11,17 +11,6 @@
 class PhooAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param    Jaws_Model    $model    Jaws_Model reference
-     */
-    function PhooAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Import an image located in 'import' folder
      *
      * @access  public

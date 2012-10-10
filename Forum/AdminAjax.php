@@ -11,17 +11,6 @@
 class ForumAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function ForumAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get information of a group
      *
      * @access  public

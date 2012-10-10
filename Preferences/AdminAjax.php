@@ -12,16 +12,6 @@
 class PreferencesAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function PreferencesAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Update preferences
      *
      * @access  public

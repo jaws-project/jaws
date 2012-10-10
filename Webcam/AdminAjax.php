@@ -11,16 +11,6 @@
 class WebcamAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function WebcamAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get information of a webcam
      *
      * @access  public

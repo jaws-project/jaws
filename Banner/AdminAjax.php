@@ -12,17 +12,6 @@
 class BannerAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param Jaws_Model    $model  model reference
-     */
-    function BannerAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get a banner info
      *
      * @access  public

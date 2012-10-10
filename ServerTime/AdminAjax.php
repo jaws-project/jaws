@@ -11,16 +11,6 @@
 class ServerTimeAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function ServerTimeAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Update the properties
      *
      * @access  public

@@ -12,17 +12,6 @@
 class BlogAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  model reference
-     */
-    function BlogAdminAjax(&$model)
-    {
-        $this->_Model  =& $model;
-    }
-
-    /**
      * Parse text
      *
      * @access  public

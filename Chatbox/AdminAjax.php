@@ -11,18 +11,6 @@
 class ChatboxAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function ChatboxAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-
-    /**
      * Search for comments and return the data in an array
      *
      * @access  public

@@ -12,16 +12,6 @@
 class VisitCounterAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function VisitCounterAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Clean all the entries (records)
      *
      * @access  public

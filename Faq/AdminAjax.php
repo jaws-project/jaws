@@ -11,17 +11,6 @@
 class FaqAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function FaqAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Ugly but fast hack.. it sorts an array by key
      *
      * @access  public

@@ -10,17 +10,6 @@
  */
 class StaticPageAdminAjax extends Jaws_Ajax
 {
-    // {{{ Constructor PHP4
-    /**
-     * PHP 4 Constructor
-     *
-     * @access  public
-     */
-    function StaticPageAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
     /**
      * Deletes a page and all translated of it.
      *

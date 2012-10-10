@@ -11,17 +11,6 @@
 class GlossaryAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function GlossaryAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get a term
      *
      * @access  public

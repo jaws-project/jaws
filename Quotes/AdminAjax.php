@@ -11,16 +11,6 @@
 class QuotesAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function QuotesAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get information of a quote
      *
      * @access  public

@@ -12,17 +12,6 @@
 class LinkDumpAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object  $model  Jaws_Model reference
-     */
-    function LinkDumpAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Returns the group form
      *
      * @access  public

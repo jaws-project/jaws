@@ -12,16 +12,6 @@
 class RssReaderAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function RssReaderAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Get information of a RSS site
      *
      * @access  public

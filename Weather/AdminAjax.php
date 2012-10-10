@@ -13,16 +13,6 @@
 class WeatherAdminAjax extends Jaws_Ajax
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function WeatherAdminAjax(&$model)
-    {
-        $this->_Model =& $model;
-    }
-
-    /**
      * Gets associated data of the region
      *
      * @access  public
