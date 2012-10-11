@@ -263,6 +263,7 @@ class Jaws_Layout
     {
         $this->AddScriptLink('libraries/prototype/prototype.js');
         $this->AddScriptLink('libraries/prototype/scriptaculous.js');
+        $this->AddScriptLink('include/Jaws/Ajax/Ajax.js');
         $this->AddHeadLink('gadgets/ControlPanel/resources/public.css', 'stylesheet', 'text/css');
         $this->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css');
 
