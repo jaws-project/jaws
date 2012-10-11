@@ -11,11 +11,11 @@
 class QuotesAdminAjax extends Jaws_Ajax
 {
     /**
-     * Get information of a quote
+     * Gets data of the quote
      *
      * @access  public
      * @param   int     $qid
-     * @return  array   Quote(s) information
+     * @return  mixed   data of the quote or false on error
      */
     function GetQuote($qid)
     {
@@ -38,12 +38,12 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get information of a quotes
+     * Gets data of quotes
      *
      * @access  public
-     * @param   int     $qid
-     * @param   int      $gid
-     * @return  array   Quote(s) information
+     * @param   int     $qid    quote ID
+     * @param   int     $gid    group ID
+     * @return  mixed   data of quotes or false on error
      */
     function GetQuotes($qid, $gid = -1)
     {
@@ -56,10 +56,17 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Insert the information of a Quote
+     * Inserts a new quote
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title
+     * @param   string  $quotation
+     * @param   int     $gid    group ID
+     * @param   string  $start_time
+     * @param   string  $stop_time
+     * @param   bool    $show_title
+     * @param   bool    $published
+     * @return  array   response (notice or error)
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -69,10 +76,18 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update the information of a Quote
+     * Updates the quote
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $id     quote ID
+     * @param   string  $title
+     * @param   string  $quotation
+     * @param   int     $gid    group ID
+     * @param   string  $start_time
+     * @param   string  $stop_time
+     * @param   bool    $show_title
+     * @param   bool    $published
+     * @return  array   response (notice or error)
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -82,11 +97,11 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete a Quote
+     * Deletes the quote
      *
      * @access  public
-     * @param   int    $id Quote ID
-     * @return  array  Response (notice or error)
+     * @param   int     $id  quote ID
+     * @return  array   response (notice or error)
      */
     function DeleteQuote($id)
     {
@@ -96,11 +111,11 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get information of a quote group
+     * Gets data of a quote group
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information
+     * @return  mixed   data of group or false on error
      */
     function GetGroup($gid)
     {
@@ -113,10 +128,17 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Insert groups
+     * Inserts a new group
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title
+     * @param   int     $view_mode
+     * @param   int     $view_type
+     * @param   bool    $show_title
+     * @param   int     $limit_count
+     * @param   bool    $randomly
+     * @param   bool    $published
+     * @return  array   response (notice or error)
      */
     function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
     {
@@ -127,10 +149,18 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update groups
+     * Updates the group
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $gid     group ID
+     * @param   string  $title
+     * @param   int     $view_mode
+     * @param   int     $view_type
+     * @param   bool    $show_title
+     * @param   int     $limit_count
+     * @param   bool    $randomly
+     * @param   bool    $published
+     * @return  array   response (notice or error)
      */
     function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
     {
@@ -141,10 +171,10 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the quotes-group form
+     * Gets the group-quotes form
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML UI for group-quotes
      */
     function GroupQuotesUI()
     {
@@ -153,12 +183,12 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Add a group of quote (by they ids) to a certain group
+     * Assigns quotes to a certain group
      *
      * @access  public
-     * @param   int     $gid  Group's ID
-     * @param   array   $quotes Array with quote id
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    group ID
+     * @param   array   $quotes array of IDs
+     * @return  array   response (notice or error)
      */
     function AddQuotesToGroup($gid, $quotes)
     {
@@ -168,11 +198,11 @@ class QuotesAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete an group
+     * Deletes the group
      *
      * @access  public
-     * @param   int     $gid   group ID
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    group ID
+     * @return  array   response (notice or error)
      */
     function DeleteGroup($gid)
     {

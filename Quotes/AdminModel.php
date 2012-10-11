@@ -15,8 +15,8 @@ class QuotesAdminModel extends QuotesModel
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   true on successful installation or Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -30,7 +30,6 @@ class QuotesAdminModel extends QuotesModel
             return $result;
         }
 
-        // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_limit',       '10');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_view_mode',   '0');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_view_type',   '0');
@@ -44,7 +43,7 @@ class QuotesAdminModel extends QuotesModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   true on success or Jaws_Error
      */
     function UninstallGadget()
     {
@@ -60,7 +59,6 @@ class QuotesAdminModel extends QuotesModel
             }
         }
 
-        //registry keys
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_limit');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_view_mode');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_view_type');
@@ -71,12 +69,12 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   true on success or Jaws_Error
      */
     function UpdateGadget($old, $new)
     {
@@ -85,16 +83,21 @@ class QuotesAdminModel extends QuotesModel
             return $result;
         }
 
-        // Registry keys.
-
         return true;
     }
 
     /**
-     * Insert the information of a Quote
+     * Inserts a new quote
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title
+     * @param   string  $quotation
+     * @param   int     $gid    group ID
+     * @param   string  $start_time
+     * @param   string  $stop_time
+     * @param   bool    $show_title
+     * @param   bool    $published
+     * @return  mixed   true on success or Jaws_Error
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -144,10 +147,18 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Update the information of a Quote
+     * Updates the quote
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $id     quote ID
+     * @param   string  $title
+     * @param   string  $quotation
+     * @param   int     $gid    group ID
+     * @param   string  $start_time
+     * @param   string  $stop_time
+     * @param   bool    $show_title
+     * @param   bool    $published
+     * @return  mixed   true on success or Jaws_Error
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
@@ -197,11 +208,11 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Delete a Quote
+     * Deletes the quote
      *
      * @access  public
-     * @param   int  $id Quote ID
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $id  quote ID
+     * @return  mixed   true on success or Jaws_Error
      */
     function DeleteQuote($id)
     {
@@ -217,11 +228,18 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-    * Insert a group
-    * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
-    */
+     * Inserts a new group
+     *
+     * @access  public
+     * @param   string  $title
+     * @param   int     $view_mode
+     * @param   int     $view_type
+     * @param   bool    $show_title
+     * @param   int     $limit_count
+     * @param   bool    $random
+     * @param   bool    $published
+     * @return  bool    success/failure
+     */
     function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
         $sql = 'SELECT COUNT([id]) FROM [[quotes_groups]] WHERE [title] = {title}';
@@ -267,11 +285,19 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-    * Update a group
-    * @access  public
-    *
-    * @return  bool    Success/Failure (Jaws_Error)
-    */
+     * Updates the group
+     *
+     * @access  public
+     * @param   int     $gid     group ID
+     * @param   string  $title
+     * @param   int     $view_mode
+     * @param   int     $view_type
+     * @param   bool    $show_title
+     * @param   int     $limit_count
+     * @param   bool    $random
+     * @param   bool    $published
+     * @return  bool    Success/Failure
+     */
     function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
         $sql = 'SELECT COUNT([id]) FROM [[quotes_groups]] WHERE [id] != {gid} AND [title] = {title}';
@@ -317,13 +343,13 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Adds an quote to a group
+     * Updates group of the quote
      *
      * @access  public
-     * @param   int     $qid  Quote's ID
-     * @param   int     $gid  Group's ID
-     * @param   int     $new_gid  Group's ID
-     * @return  bool    Returns true if quote was sucessfully added to the group, false if not
+     * @param   int     $qid        quote ID
+     * @param   int     $gid        group ID
+     * @param   int     $new_gid    new group ID
+     * @return  bool    Success/Failure
      */
     function UpdateQuoteGroup($qid, $gid, $new_gid)
     {
@@ -362,12 +388,12 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Add a group of quote (by they ids) to a certain group
+     * Updates the group ID of quotes
      *
      * @access  public
-     * @param   int     $gid  Group's ID
-     * @param   array   $quotes Array with quote id
-     * @return  array   Response (notice or error)
+     * @param   int     $gid    group ID
+     * @param   array   $quotes array of IDs
+     * @return  bool    always true!
      */
     function AddQuotesToGroup($gid, $quotes)
     {
@@ -390,10 +416,11 @@ class QuotesAdminModel extends QuotesModel
     }
 
     /**
-     * Delete a group
+     * Deletes the group
      *
      * @access  public
-     * @return  bool    True if query was successful and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @return  bool    success/failure
      */
     function DeleteGroup($gid)
     {

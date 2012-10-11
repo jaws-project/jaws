@@ -11,10 +11,11 @@
 class QuotesModel extends Jaws_Model
 {
     /**
-     * Retrieve quote
+     * Retrieves data of the quote
      *
      * @access  public
-     * @return  array   An array of quote information and Jaws_Error on error
+     * @param   int     $id
+     * @return  mixed   array of quote information or Jaws_Error
      */
     function GetQuote($id)
     {
@@ -37,10 +38,13 @@ class QuotesModel extends Jaws_Model
     }
 
     /**
-     * Retrieve quotes
+     * Retrieves quotes
      *
-     * @access  public
-     * @return  array   An array of available quotes and Jaws_Error on error
+     * @param   int     $id
+     * @param   int     $gid
+     * @param   int     $limit
+     * @param   int     $offset
+     * @return  mixed   list of quotes or Jaws_Error
      */
     function GetQuotes($id = -1, $gid = -1, $limit = 0, $offset = null)
     {
@@ -90,11 +94,11 @@ class QuotesModel extends Jaws_Model
     }
 
     /**
-     * Get information of a quote group
+     * Gets data of the group
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group information and Jaws_Error on error
+     * @return  array   group information or Jaws_Error
      */
     function GetGroup($gid)
     {
@@ -115,12 +119,12 @@ class QuotesModel extends Jaws_Model
     }
 
     /**
-     * Retrieve groups
+     * Retrieves groups
      *
      * @access  public
-     * @param
-     * @param
-     * @return  array   An array of available quotes groups and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @param   int     $id     quote ID
+     * @return  array   list of available groups or Jaws_Error
      */
     function GetGroups($gid = -1, $id = -1)
     {
@@ -163,10 +167,13 @@ class QuotesModel extends Jaws_Model
     }
 
     /**
-     * Retrieve quotes that can be published
+     * Retrieves quotes that can be published
      *
      * @access  public
-     * @return  array   An array of available quotes and Jaws_Error on error
+     * @param   int     $gid    group ID
+     * @param   int     $limit
+     * @param   bool    $randomly
+     * @return  array   list of quotes or Jaws_Error
      */
     function GetPublishedQuotes($gid, $limit = null, $randomly = false)
     {
@@ -214,10 +221,12 @@ class QuotesModel extends Jaws_Model
     }
 
     /**
-     * Retrieve recent quotes
+     * Retrieves latest created quotes
      *
      * @access  public
-     * @return  array   An array of available quotes and Jaws_Error on error
+     * @param   int     $limit
+     * @param   bool    $randomly
+     * @return  array   list of quotes or Jaws_Error
      */
     function GetRecentQuotes($limit = null, $randomly = false)
     {

@@ -11,10 +11,10 @@
 class QuotesURLListHook
 {
     /**
-     * Returns an array with all available items the Menu gadget 
-     * can use
+     * Returns an array with all available items the Menu gadget can use
      *
      * @access  public
+     * @return  array   list of URLs
      */
     function Hook()
     {
