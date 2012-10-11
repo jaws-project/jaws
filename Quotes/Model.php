@@ -14,8 +14,8 @@ class QuotesModel extends Jaws_Model
      * Retrieves data of the quote
      *
      * @access  public
-     * @param   int     $id
-     * @return  mixed   array of quote information or Jaws_Error
+     * @param   int     $id     Quote ID
+     * @return  mixed   Quote's data array or Jaws_Error
      */
     function GetQuote($id)
     {
@@ -44,7 +44,7 @@ class QuotesModel extends Jaws_Model
      * @param   int     $gid
      * @param   int     $limit
      * @param   int     $offset
-     * @return  mixed   list of quotes or Jaws_Error
+     * @return  mixed   List of quotes or Jaws_Error
      */
     function GetQuotes($id = -1, $gid = -1, $limit = 0, $offset = null)
     {
@@ -98,7 +98,7 @@ class QuotesModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   group information or Jaws_Error
+     * @return  array   Group's data array or Jaws_Error
      */
     function GetGroup($gid)
     {
@@ -122,9 +122,9 @@ class QuotesModel extends Jaws_Model
      * Retrieves groups
      *
      * @access  public
-     * @param   int     $gid    group ID
-     * @param   int     $id     quote ID
-     * @return  array   list of available groups or Jaws_Error
+     * @param   int     $gid    Group ID
+     * @param   int     $id     Quote ID
+     * @return  array   List of available groups or Jaws_Error
      */
     function GetGroups($gid = -1, $id = -1)
     {
@@ -170,10 +170,10 @@ class QuotesModel extends Jaws_Model
      * Retrieves quotes that can be published
      *
      * @access  public
-     * @param   int     $gid    group ID
+     * @param   int     $gid        Group ID
      * @param   int     $limit
      * @param   bool    $randomly
-     * @return  array   list of quotes or Jaws_Error
+     * @return  array   List of quotes or Jaws_Error
      */
     function GetPublishedQuotes($gid, $limit = null, $randomly = false)
     {
@@ -226,7 +226,7 @@ class QuotesModel extends Jaws_Model
      * @access  public
      * @param   int     $limit
      * @param   bool    $randomly
-     * @return  array   list of quotes or Jaws_Error
+     * @return  array   List of quotes or Jaws_Error
      */
     function GetRecentQuotes($limit = null, $randomly = false)
     {

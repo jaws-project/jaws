@@ -14,7 +14,7 @@ class QuotesSearchHook
      * Gets the gadget's search fields
      *
      * @access  public
-     * @return  array   list of fields
+     * @return  array   List of search fields
      */
     function GetSearchFields() {
         return array(
@@ -26,8 +26,8 @@ class QuotesSearchHook
      * Returns an array of the search results
      *
      * @access  public
-     * @param   string  $pSql  prepared search(WHERE) SQL
-     * @return  array   array of entries match a certain pattern
+     * @param   string  $pSql  Prepared search(WHERE) SQL
+     * @return  array   Array of entries match a certain pattern
      */
     function Hook($pSql = '')
     {

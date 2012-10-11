@@ -14,7 +14,7 @@ class QuotesLayoutHTML
      * Loads layout actions
      *
      * @access  private
-     * @return  array   list of layout actions
+     * @return  array   List of layout actions
      */
     function LoadLayoutActions()
     {
@@ -44,7 +44,7 @@ class QuotesLayoutHTML
      * Prints the recent quotes
      *
      * @access  public
-     * @return  XHTML   template content
+     * @return  string  XHTML template content
      */
     function RecentQuotes()
     {
@@ -69,8 +69,8 @@ class QuotesLayoutHTML
      * Displays quotes of the specified group
      *
      * @access  public
-     * @param   int     $gid    group ID
-     * @return  XHTML   template content
+     * @param   int     $gid    Group ID
+     * @return  string  XHTML template content
      */
     function Display($gid)
     {
@@ -92,9 +92,9 @@ class QuotesLayoutHTML
      * Builds the template for displaying quotes
      *
      * @access  public
-     * @param   array   data of the group
-     * @param   array   list of quotes to be displayed
-     * @return  XHTML   template content
+     * @param   array   $group      Group's data array
+     * @param   array   $quotes     List of quotes to be displayed
+     * @return  string  XHTML template content
      */
     function DisplayQuotes(&$group, &$quotes)
     {
@@ -138,4 +138,5 @@ class QuotesLayoutHTML
         $tpl->ParseBlock('quotes');
         return $tpl->Get();
     }
+
 }
