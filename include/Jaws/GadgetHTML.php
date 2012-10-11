@@ -241,10 +241,11 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * Ajax the gadget adding the basic script links to build the interface
      *
      * @access  protected
-     * @param   string     $file (Optional) The gadget can require a special JS file, it should be located under
-     *                           gadgets/$gadget/resources/$file
+     * @param   string  $file       Optional The gadget can require a special JS file,
+     *                              it should be located under gadgets/$gadget/resources/$file
+     * @param   string  $version    Optional File version
      */
-    function AjaxMe($file = '')
+    function AjaxMe($file = '', $version = '')
     {
         $this->_usingAjax = true;
         $name = $this->GetName();
@@ -253,8 +254,12 @@ class Jaws_GadgetHTML extends Jaws_Gadget
                                                $name.
                                                '&amp;action=Ajax&amp;client&amp;json');
 
-        if (!empty($file) && file_exists(JAWS_PATH . 'gadgets/' . $name . '/resources/' . $file)) {
-            $GLOBALS['app']->Layout->AddScriptLink('gadgets/' . $name . '/resources/' . $file);
+        if (!empty($file)) {
+            $GLOBALS['app']->Layout->AddScriptLink('gadgets/'.
+                                                   $name.
+                                                   '/resources/'.
+                                                   $file.
+                                                   (empty($version)? '' : "?$version"));
         }
 
         $config = array(
