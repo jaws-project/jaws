@@ -27,10 +27,6 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
 
-// Init layout...
-$GLOBALS['app']->InstanceLayout();
-$GLOBALS['app']->Layout->Load();
-
 $IsIndex   = false;
 $objGadget = null;
 $IsReqActionStandAlone = false;
@@ -76,6 +72,10 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     $ReqGadget = null;
     $ReqAction = null;
 }
+
+// Init layout...
+$GLOBALS['app']->InstanceLayout();
+$GLOBALS['app']->Layout->Load();
 
 // Run auto-load methods before standalone actions too
 $GLOBALS['app']->RunAutoload();
