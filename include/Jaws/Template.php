@@ -310,10 +310,17 @@ class Jaws_Template
                         $vars[$match[1]] = Jaws_Utils::getRequestURL();
                         break;
 
-                    case 'index':
+                    case 'index': // Deprecated
                         if (isset($GLOBALS['app'])) {
                             $req = $GLOBALS['app']->GetMainRequest();
                             $vars[$match[1]] = $req['index']? 'index' : '';
+                        }
+                        break;
+
+                    case 'jaws_index':
+                        if (isset($GLOBALS['app'])) {
+                            $req = $GLOBALS['app']->GetMainRequest();
+                            $vars[$match[1]] = $req['index']? 'jaws_index' : '';
                         }
                         break;
 
@@ -337,7 +344,7 @@ class Jaws_Template
                     case 'requested_gadget':
                         if (isset($GLOBALS['app'])) {
                             $req = $GLOBALS['app']->GetMainRequest();
-                            $vars[$match[1]] = $req['gadget'];
+                            $vars[$match[1]] = strtolower($req['gadget']);
                         }
                         break;
 
