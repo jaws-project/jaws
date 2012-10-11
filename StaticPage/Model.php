@@ -24,7 +24,8 @@ class StaticPageModel extends Jaws_Model
         $sql = '
             SELECT
                 sp.[page_id], sp.[group_id], spt.[translation_id], spt.[language], spt.[title],
-                sp.[fast_url], spt.[published], sp.[show_title], spt.[content], spt.[updated]
+                sp.[fast_url], spt.[published], sp.[show_title], spt.[content], spt.[user],
+                spt.[updated]
             FROM [[static_pages]] sp
             INNER JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]';
         if (empty($language)) {
@@ -40,9 +41,9 @@ class StaticPageModel extends Jaws_Model
         }
 
         $types = array('integer', 'integer', 'integer', 'text', 'text', 'text', 'boolean',
-                       'boolean', 'text', 'timestamp');
+                       'boolean', 'text', 'integer', 'timestamp');
 
-        $params             = array();
+        $params = array();
         $params['id']       = $id;
         $params['language'] = $language;
 
