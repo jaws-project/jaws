@@ -3,18 +3,19 @@
   <h2><a href="{url}">{title}</a></h2>
   <div class="content">
     <!-- BEGIN post -->
-    <ul class="topics_list">
-      <li>
-        <dl>
-          <dt><a href="{url}">{title}</a></dt>
-          <dd class="post_by">{username}</dd>
-          <dd class="post_date">{post_date}</dd>
-        </dl>
-        <dl>
-            <dd class="post_message">{message}</dd>
-        </dl>
-      </li>
-    </ul>
+    <div class="forum_post">
+      <dl class="post_profile">
+        <dt>{username}{nickname}{user_url}</dt>
+        <dd>{posts_lbl}: {posts_count}</dd>
+        <dd>{joined_lbl}: {joined_time}</dd>
+      </dl>
+      <div class="post_meta">{postedby_lbl}{username}{nickname}{user_url}{createtime}</div>
+      <div class="post_content">{message}</div>
+      <!-- BEGIN update -->
+      <div class="post_update">{updatedby_lbl}{username}{nickname}{user_url}{update_reason}{update_time}</div>
+      <!-- END update -->
+    </div>
+    <hr>
     <!-- END post -->
   </div>
   <!-- BEGIN actions -->
