@@ -150,15 +150,12 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
             $use_crypt = $JCrypt->Init();
         }
 
-        $tpl = new Jaws_Template('gadgets/ControlPanel/templates/');
-        $tpl->Load('Login.html');
-        $tpl->SetBlock('login');
-
-        $tpl->SetVariable('BASE_URL', $GLOBALS['app']->GetSiteURL('/'.BASE_SCRIPT));
-        $tpl->SetVariable('admin_script', BASE_SCRIPT);
-        $tpl->SetVariable('site-name', $GLOBALS['app']->Registry->Get('/config/site_name'));
-        $tpl->SetVariable('site-slogan', $GLOBALS['app']->Registry->Get('/config/site_slogan'));
-        $tpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
+        // Init layout
+        $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/templates/',
+                                      'Login.html');
+        $ltpl =& $GLOBALS['app']->Layout->_Template;
+        $ltpl->SetVariable('admin_script', BASE_SCRIPT);
+        $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
 
         $request =& Jaws_Request::getInstance();
         $reqpost = $request->get(array('username', 'auth_method', 'remember', 'usecrypt'), 'post');
@@ -197,7 +194,6 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
         $usernameEntry =& Piwi::CreateWidget('Entry', 'username', (string) $reqpost['username']);
         $usernameEntry->SetTitle(_t('GLOBAL_USERNAME'));
         $fieldset->Add($usernameEntry);
-        $tpl->SetVariable('loadObject', $usernameEntry->GetID());
 
         $passEntry =& Piwi::CreateWidget('PasswordEntry', 'password', '');
         $passEntry->SetTitle(_t('GLOBAL_PASSWORD'));
@@ -240,39 +236,23 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
 
         $submit =& Piwi::CreateWidget('Button', 'loginButton', _t('GLOBAL_LOGIN'), STOCK_OK);
         $submit->SetSubmit();
-        $fieldset->Add($submit);
 
+        $fieldset->Add($submit);
         $form->Add($fieldset);
 
-        $tpl->SetVariable('form', $form->Get());
-        $tpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
-
-        $prefix = '.' . strtolower(_t('GLOBAL_LANG_DIRECTION'));
-        if ($prefix !== '.rtl') {
-            $prefix = '';
-        }
-
-        $hLinks = $GLOBALS['app']->Layout->AddHeadLink(
-                                    'gadgets/ControlPanel/resources/public.css',
-                                    'stylesheet', 'text/css', '',
-                                    null, false, '', true);
-        $sLinks = $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js', 'text/javascript', true);
-        $tmpArray = array();
-        $headContent = $GLOBALS['app']->Layout->GetHeaderContent($hLinks, $sLinks, $tmpArray, $tmpArray);
-
-        $tpl->SetBlock('login/head');
-        $tpl->SetVariable('ELEMENT', $headContent);
-        $tpl->ParseBlock('login/head');
+        $ltpl->SetVariable('loadObject', $usernameEntry->GetID());
+        $ltpl->SetVariable('form', $form->Get());
+        $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/public.css');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
 
         if (!empty($message)) {
-            $tpl->SetBlock('login/message');
-            $tpl->SetVariable('message', $message);
-            $tpl->ParseBlock('login/message');
+            $ltpl->SetBlock('layout/message');
+            $ltpl->SetVariable('message', $message);
+            $ltpl->ParseBlock('layout/message');
         }
 
-        $tpl->ParseBlock('login');
-
-        return $tpl->Get();
+        return $GLOBALS['app']->Layout->Get();
     }
 
     /**
