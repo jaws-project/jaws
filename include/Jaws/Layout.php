@@ -175,11 +175,14 @@ class Jaws_Layout
     }
 
     /**
-     * Loads the template
+     * Loads layout template
      *
      * @access  public
+     * @param   string  $layout_path  Optional layout file path
+     * @param   string  $layout_file  Optional layout file name
+     * @return  void
      */
-    function Load()
+    function Load($layout_path = '', $layout_file = '')
     {
         if ($GLOBALS['app']->Registry->Get('/config/site_status') == 'disabled' &&
             !$GLOBALS['app']->Session->IsSuperAdmin())
@@ -210,8 +213,8 @@ class Jaws_Layout
             }
         }
 
-        $this->_Template = new Jaws_Template();
-        $this->_Template->Load('layout.html');
+        $this->_Template = new Jaws_Template($layout_path);
+        $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file);
         $this->_Template->SetBlock('layout');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -238,18 +241,6 @@ class Jaws_Layout
             }
         }
 
-        // Deprecated since 0.8: This is for backwards compatibility
-        switch ($GLOBALS['app']->Registry->Get('/config/layoutmode')) {
-            case 1: $layoutmode = 'twobar';
-                    break;
-            case 2: $layoutmode = 'leftbar';
-                    break;
-            case 3: $layoutmode = 'rightbar';
-                    break;
-            case 4: $layoutmode = 'nobar';
-                    break;
-        } 
-        $this->_Template->SetVariable('layout-mode-name', $layoutmode);
         $this->_Template->SetVariable('encoding', 'utf-8');
         $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
     }
@@ -773,10 +764,10 @@ class Jaws_Layout
      * @param   bool    $checkInTheme Check if resource exists in the current theme directory
      * @param   string  $title Title of the HeadLink
      * @param   string  $media Media type, screen, print or such
-     * @param   bool    $standanlone for use in static load
+     * @return  array   array include head link information
      */
-    function AddHeadLink($href, $rel, $type, $title = '', $direction = null, $checkInTheme = false,
-                         $media = '', $standanlone = false)
+    function AddHeadLink($href, $rel = 'stylesheet', $type = 'text/css', $title = '',
+                         $direction = null, $checkInTheme = false, $media = '')
     {
         $fileName = basename($href);
         $fileExt  = strrchr($fileName, '.');
@@ -809,9 +800,6 @@ class Jaws_Layout
 
             if (!file_exists($href)) {
                 $href = JAWS_PATH . 'gadgets/' . $gadget . 'resources/' . $fileName . $fileExt;
-                if (!file_exists($href)) {
-                    return false;
-                }
             }
             $href = str_replace(JAWS_PATH, '', $href);
         } else {
@@ -828,7 +816,7 @@ class Jaws_Layout
             'title' => $title,
             'media' => $media,
         );
-        if (!$standanlone) $this->_HeadLink[] = $hLinks[0];
+        $this->_HeadLink[] = $hLinks[0];
 
         $brow_href = substr_replace($href, $brow, strrpos($href, '.'), 0);
         if (!empty($brow) && @file_exists($brow_href)) {
@@ -839,10 +827,10 @@ class Jaws_Layout
                 'title' => $title,
                 'media' => $media,
             );
-            if (!$standanlone) $this->_HeadLink[] = $hLinks[1];
+            $this->_HeadLink[] = $hLinks[1];
         }
 
-        return $standanlone? $hLinks : true;
+        return $hLinks;
     }
 
     /**
@@ -850,23 +838,19 @@ class Jaws_Layout
      *
      * @access  public
      * @param   string  $href   The path for the source.
-     * @param   string  $type   The mime type.
      * @param   bool    $standanlone for use in static load
-     * @return  mixed   array if standanlone otherwise true
+     * @param   string  $type   The mime type.
+     * @return  array   array include head script information
      */
-    function AddScriptLink($href, $type = 'text/javascript', $standanlone = false)
+    function AddScriptLink($href, $type = 'text/javascript')
     {
-        $sLink = array('href' => $href, 'type' => $type);
-        if (!$standanlone) {
-            if (!in_array(strtolower($href),
-                          array_map(create_function('$row','return strtolower($row["href"]);'),
-                                    $this->_ScriptLink)))
-            {
-                $this->_ScriptLink[] = $sLink;
-            }
-        }
+        $sLink = array(
+            'href' => $href,
+            'type' => $type,
+        );
 
-        return $standanlone? $sLink : true;
+        $this->_ScriptLink[md5($href)] = $sLink;
+        return $sLink;
     }
 
     /**
