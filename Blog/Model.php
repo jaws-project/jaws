@@ -1713,9 +1713,10 @@ class BlogModel extends Jaws_Model
             return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
         }
 
-        $params              = array();
-        $params['id']        = $id;
-        $params['published'] = $published;
+        $params = array();
+        $params['id'] = $id;
+        // super admins can get/show drafted entries
+        $params['published'] = (bool)$published && !$GLOBALS['app']->Session->IsSuperAdmin();
 
         $sql = '
             SELECT
@@ -1747,13 +1748,13 @@ class BlogModel extends Jaws_Model
         }
 
         if ($params['published']) {
+            // entry's author can get/show drafted entries
+            $params['now']  = $GLOBALS['db']->Date();
+            $params['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $sql .= '
               AND
-                [published] = {published}';
-            $params['now'] = $GLOBALS['db']->Date();
-            $sql .= '
-              AND
-                [[blog]].[publishtime] <= {now}';
+                ([[blog]].[user_id] = {user} OR
+                ([published] = {published} AND [[blog]].[publishtime] <= {now}))';
         }
 
         $types = array('integer', 'integer', 'text', 'text', 'text',
