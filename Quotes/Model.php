@@ -15,7 +15,7 @@ class QuotesModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $id     Quote ID
-     * @return  mixed   Quote's data array or Jaws_Error
+     * @return  mixed   Quote data array or Jaws_Error
      */
     function GetQuote($id)
     {
@@ -98,7 +98,7 @@ class QuotesModel extends Jaws_Model
      *
      * @access  public
      * @param   int     $gid    Group ID
-     * @return  array   Group's data array or Jaws_Error
+     * @return  array   Group data array or Jaws_Error
      */
     function GetGroup($gid)
     {

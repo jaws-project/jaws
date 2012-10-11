@@ -92,7 +92,7 @@ class QuotesLayoutHTML
      * Builds the template for displaying quotes
      *
      * @access  public
-     * @param   array   $group      Group's data array
+     * @param   array   $group      Group data array
      * @param   array   $quotes     List of quotes to be displayed
      * @return  string  XHTML template content
      */

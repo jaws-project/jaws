@@ -15,7 +15,7 @@ class QuotesAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $qid
-     * @return  mixed   Quote's data array or False on error
+     * @return  mixed   Quote data array or False on error
      */
     function GetQuote($qid)
     {

@@ -11,7 +11,7 @@
 class QuotesSearchHook
 {
     /**
-     * Gets the gadget's search fields
+     * Gets the gadget search fields
      *
      * @access  public
      * @return  array   List of search fields
