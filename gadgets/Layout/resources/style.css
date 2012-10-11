@@ -119,7 +119,7 @@ text-align: center;
 background: transparent url(../images/layout-controls-bg.png);
 }
 #layout-controls *{
-font-family: "Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
+font: bold 1em tahoma, georgia, arial, sans-serif;
 }
 #layout-controls-items {
 width: 758px;
