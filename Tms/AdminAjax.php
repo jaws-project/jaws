@@ -14,6 +14,7 @@ class TmsAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @return  void
      */
     function TmsAdminAjax(&$model)
     {
@@ -21,11 +22,11 @@ class TmsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get information of a given theme
+     * Gets information of given theme
      *
      * @access  public
-     * @param   string  $theme      Theme's name
-     * @return  array   Theme's info
+     * @param   string  $theme  Name of the theme
+     * @return  array   Theme info
      */
     function GetThemeInfo($theme)
     {

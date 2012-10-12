@@ -11,10 +11,10 @@
 class TmsAdminHTML extends Jaws_GadgetHTML
 {
     /**
-     * Main method
+     * Calls Themes function
      *
      * @access  public
-     * @return  string  HTML content of main
+     * @return  string  XHTML content
      */
     function Admin()
     {
@@ -26,7 +26,7 @@ class TmsAdminHTML extends Jaws_GadgetHTML
      *
      * @access  public
      * @param   string  $action  Selected action
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML menubar
      */
     function Menubar($action)
     {
@@ -45,10 +45,10 @@ class TmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Manages the themes
+     * Builds themes management UI
      *
      * @access  public
-     * @param   string  $content  HTML content(if needed)
+     * @return  string  XHTML template content
      */
     function Themes()
     {
@@ -100,11 +100,11 @@ class TmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Returns the XHTML for viewing theme information
+     * Builds an XHTML UI of the theme information
      *
      * @access  public
-     * @param   string  $theme      Theme's name
-     * @return  string  XHTML view
+     * @param   string  $theme  Name of the theme
+     * @return  string  XHTML content
      */
     function GetThemeInfo($theme)
     {
@@ -153,10 +153,10 @@ class TmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Upload new theme
+     * Uploads a new theme
      *
      * @access  public
-     * @return
+     * @return  void
      */
     function UploadTheme()
     {
@@ -173,10 +173,10 @@ class TmsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Download theme
+     * Downloads the theme
      *
      * @access  public
-     * @return download link
+     * @returns void
      */
     function DownloadTheme()
     {
