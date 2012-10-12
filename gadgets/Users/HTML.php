@@ -12,10 +12,10 @@
 class UsersHTML extends Jaws_GadgetHTML
 {
     /**
-     * Default Action
+     * Calls LoginBox function if no action is specified
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {
@@ -24,13 +24,13 @@ class UsersHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the NoPermission HTML template
+     * Builds the NoPermission UI
      *
      * @access  public
      * @param   string  $user    Username
-     * @param   string  $gadget  Gadget user is requesting
+     * @param   string  $gadget  The Gadget user is requesting
      * @param   string  $action  The 'denied' action
-     * @return  string  HTML template
+     * @return  string  XHTML content
      */
     function ShowNoPermission($user, $gadget, $action)
     {

@@ -12,10 +12,10 @@
 class Users_Actions_Admin_Properties extends UsersAdminHTML
 {
     /**
-     * Edit properties
+     * Builds admin properties UI
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML form
      */
     function Properties()
     {

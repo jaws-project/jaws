@@ -12,11 +12,11 @@
 class Users_Model_Admin_UserACL extends Jaws_Model
 {
     /**
-     * Get ACL permissions of a given user
+     * Gets ACL permissions of the user
      *
      * @access  public
      * @param   string  $username  Username
-     * @return  array   Array with ACL Keys
+     * @return  mixed   Array of ACL Keys or false
      */
     function GetUserACLKeys($username)
     {
@@ -57,12 +57,12 @@ class Users_Model_Admin_UserACL extends Jaws_Model
     }
 
     /**
-     * Saves only the modified ACL user keys
+     * Updates modified user ACL keys
      *
      * @access  public
-     * @param   int     $uid    User' ID
+     * @param   int     $uid    User ID
      * @param   array   $keys   ACL Keys
-     * @return  bool    Success/Failure(Jaws_Error)
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateUserACL($uid, $keys)
     {

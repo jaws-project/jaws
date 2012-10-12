@@ -12,10 +12,10 @@
 class Users_Actions_Account extends UsersHTML
 {
     /**
-     * Prepares a simple form to update user's data (nickname, email, password)
+     * Builds a simple form to update user account info(nickname, email, password)
      *
      * @access  public
-     * @return  string  XHTML template of a form
+     * @return  string  XHTML form
      */
     function Account()
     {
@@ -62,9 +62,10 @@ class Users_Actions_Account extends UsersHTML
     }
 
     /**
-     * Updates user information
+     * Updates user account information
      *
      * @access  public
+     * @return  void
      */
     function UpdateAccount()
     {
@@ -105,8 +106,8 @@ class Users_Actions_Account extends UsersHTML
     }
 
     /**
-     * Check if given recovery key really exists, it it exists it generates
-     * a new password (pronounceable) and sends it to user mailbox
+     * Checks if given recovery key really exists, it it does then generates
+     * a new password(pronounceable) and sends it to the user mailbox
      *
      * @access  public
      * @return  string  XHTML template

@@ -13,6 +13,8 @@ class UsersAdminAjax extends Jaws_Ajax
 {
     /**
      * User model
+     *
+     * @var     object
      * @access  private
      */
     var $_UserModel;
@@ -32,11 +34,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get a users's profile
+     * Gets users's profile
      *
      * @access  public
-     * @param   int     $uid  Users's ID
-     * @return  array   User's Profile
+     * @param   int     $uid  Users ID
+     * @return  array   User's profile
      */
     function GetUser($uid, $account = true, $personal = false, $preferences = false, $extra = false)
     {
@@ -72,7 +74,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get a list of users
+     * Gets list of users
      *
      * @access  public
      * @param   string  $match    Users who match..
@@ -96,11 +98,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get a list of users
+     * Gets number of users
      *
      * @access  public
      * @param   string  $match    Users who match..
-     * @return  array   Users list
+     * @return  int     Number of users
      */
     function GetUsersCount($group, $superadmin, $status)
     {
@@ -171,7 +173,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Updates an user
+     * Updates user information
      *
      * @access  public
      * @param   int     $uid        User ID
@@ -231,7 +233,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete an user
+     * Deletes the user
      *
      * @access  public
      * @param   int     $uid   User ID
@@ -263,10 +265,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * update modified ACL user keys
+     * Updates modified user ACL keys
      *
      * @access  public
-     * @param   int     $uid    User' ID
+     * @param   int     $uid    User ID
      * @param   array   $keys   ACL Keys
      * @return  array   Response array (notice or error)
      */
@@ -287,7 +289,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Save ACL keys of a group
+     * Updates ACL keys of the group
      *
      * @access  public
      * @param   int     $guid   Group ID
@@ -311,10 +313,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Add a user to groups
+     * Adds a user to groups
      *
      * @access  public
-     * @param   int     $uid    User's ID
+     * @param   int     $uid    User ID
      * @param   array   $groups Array with group id
      * @return  array   Response array (notice or error)
      */
@@ -347,11 +349,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Add a group of user (by they ids) to a certain group
+     * Adds a group of users(by their IDs) to a certain group
      *
      * @access  public
-     * @param   int     $guid  Group's ID
-     * @param   array   $users Array with user id
+     * @param   int     $guid  Group ID
+     * @param   array   $users Array with user ID
      * @return  array   Response array (notice or error)
      */
     function AddUsersToGroup($guid, $users)
@@ -368,7 +370,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Save user config settings
+     * Updates User gadget settings
      *
      * @access  public
      * @param   string  $method     Authentication method
@@ -393,12 +395,12 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Returns an array with the ACL keys of a given user
+     * Returns an array with the ACL keys of the user
      *
      * @access  public
-     * @param   int     $uid    User's ID
-     * @param   string  $gadget Gadget's name
-     * @return  array   Array with ACL Keys
+     * @param   int     $uid    User ID
+     * @param   string  $gadget Gadget name
+     * @return  mixed   Array of ACL keys or false on failure
      */
     function GetUserACLKeys($uid)
     {
@@ -413,11 +415,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Returns an array with the ACL keys of a given group
+     * Returns an array with the ACL keys of the group
      *
      * @access  public
-     * @param   int     $guid   Group's ID
-     * @return  array   Array with ACL Keys
+     * @param   int     $guid   Group ID
+     * @return  mixed   Array of ACL keys or false on failure
      */
     function GetGroupACLKeys($guid)
     {
@@ -435,10 +437,11 @@ class UsersAdminAjax extends Jaws_Ajax
      * Updates my account
      *
      * @access  public
-     * @param   string  $username  Username
-     * @param   string  $password  Password
-     * @param   string  $nickname  User's display name
-     * @param   string  $email     User's email
+     * @param   string  $uid        User ID
+     * @param   string  $username   Username
+     * @param   string  $password   Password
+     * @param   string  $nickname   User display name
+     * @param   string  $email      User email
      * @return  array   Response array (notice or error)
      */
     function UpdateMyAccount($uid, $username, $password, $nickname, $email)
@@ -471,10 +474,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the user-groups form
+     * Gets the user-groups form
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function UserGroupsUI()
     {
@@ -483,10 +486,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the user-groups array
+     * Gets the user-groups data
      *
      * @access  public
-     * @return  string
+     * @param   string  $uid    User ID
+     * @return  array   Groups data
      */
     function GetUserGroups($uid)
     {
@@ -499,10 +503,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Returns the UI for the personal information
+     * Returns the UI of the personal information
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function PersonalUI()
     {
@@ -511,10 +515,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
     
     /**
-     * Returns the UI for the preferences options
+     * Returns the UI of the preferences options
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function PreferencesUI()
     {
@@ -523,13 +527,17 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update personal information of selected user
+     * Updates personal information of selected user
      *
      * @access  public
-     * @param   int     $uid     User ID
-     * @param   string  $lang    User language
-     * @param   string  $theme   User theme
-     * @param   string  $editor  User editor
+     * @param   int      $uid     User ID
+     * @param   string   $fname   First name
+     * @param   string   $lname   Last name
+     * @param   string   $gender  User gender
+     * @param   string   $dob     User birth date
+     * @param   string   $url     User URL
+     * @param   string  $avatar   User avatar
+     * @param   bool    $privacy  User's display name
      * @return  array   Response array (notice or error)
      */
     function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $avatar, $privacy)
@@ -561,13 +569,14 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Save preferences options of selected user
+     * Updates preferences options of the user
      *
      * @access  public
-     * @param   int     $uid     User ID
-     * @param   string  $lang    User language
-     * @param   string  $theme   User theme
-     * @param   string  $editor  User editor
+     * @param   int     $uid       User ID
+     * @param   string  $lang      User language
+     * @param   string  $theme     User theme
+     * @param   string  $editor    User editor
+     * @param   string  $timezone  User timezone
      * @return  array   Response array (notice or error)
      */
     function UpdatePreferences($uid, $lang, $theme, $editor, $timezone)
@@ -605,11 +614,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the information of a group
+     * Gets information of a the group
      *
      * @access  public
-     * @param   int     $guid  Group's ID
-     * @return  array   Group's information
+     * @param   int     $guid  Group ID
+     * @return  array   Group information
      */
     function GetGroup($guid)
     {
@@ -622,10 +631,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get a list of groups
+     * Gets list of groups
      *
      * @access  public
-     * @return  array    Groups list
+     * @param   int     $offset Data offset
+     * @return  array   Groups list
      */
     function GetGroups($offset)
     {
@@ -637,10 +647,10 @@ class UsersAdminAjax extends Jaws_Ajax
      * Adds a new group
      *
      * @access  public
-     * @param   string  $name        Groups's name
-     * @param   string  $title       Groups's title
-     * @param   string  $description Groups's description
-     * @param   bool    $enabled    Group's status
+     * @param   string  $name        Groups name
+     * @param   string  $title       Groups title
+     * @param   string  $description Groups description
+     * @param   bool    $enabled     Group status
      * @return  array   Response array (notice or error)
      */
     function AddGroup($name, $title, $description, $enabled)
@@ -663,14 +673,14 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Updates a group
+     * Updates the group
      *
      * @access  public
      * @param   int     $guid        Group ID
-     * @param   string  $name        Group's name
-     * @param   string  $title       Groups's title
-     * @param   string  $description Groups's description
-     * @param   bool    $enabled    Group's status
+     * @param   string  $name        Group name
+     * @param   string  $title       Groups title
+     * @param   string  $description Groups description
+     * @param   bool    $enabled    Group status
      * @return  array   Response array (notice or error)
      */
     function UpdateGroup($guid, $name, $title, $description, $enabled)
@@ -689,7 +699,7 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Deletes a group
+     * Deletes the group
      *
      * @access  public
      * @param   int     $guid   Group ID
@@ -712,11 +722,10 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the users-group form
+     * Gets the users-group form
      *
      * @access  public
-     * @param   int     $guid    Group ID
-     * @return  string
+     * @return  string  XHTML content
      */
     function GroupUsersUI()
     {
@@ -725,10 +734,11 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the group-users array
+     * Gets the group-users array
      *
      * @access  public
-     * @return  string
+     * @param   int     $gid    Group ID
+     * @return  array   List of users
      */
     function GetGroupUsers($gid)
     {

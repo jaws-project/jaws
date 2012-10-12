@@ -12,10 +12,10 @@
 class Users_Actions_Admin_Users extends UsersAdminHTML
 {
     /**
-     * Prepares the datagrid view (XHTML of datagrid)
+     * Builds users datagrid
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function UsersDataGrid()
     {
@@ -41,11 +41,14 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Prepares the list of users
+     * Prepares list of users for datagrid
      *
      * @access  public
-     * @param   int    $offset  Offset of data array
-     * @return  array  Data
+     * @param   int    $group       User default group
+     * @param   bool   $superadmin  Is created user superadmin or not
+     * @param   int    $status      Status of created user
+     * @param   int    $offset      Offset of data array
+     * @return  array  Grid data
      */
     function GetUsers($group, $superadmin, $status, $offset = null)
     {
@@ -119,10 +122,10 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Show user administration
+     * Builds user administration UI
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML form
      */
     function Users()
     {
@@ -231,10 +234,10 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Show a form to edit a given user
+     * Builds a form to edit user data
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML form
      */
     function UserUI()
     {
@@ -336,10 +339,10 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Returns the user-groups form
+     * Builds the user-groups UI
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML form
      */
     function UserGroupsUI()
     {
@@ -364,10 +367,10 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Returns a form to edit user's personal information
+     * Builds a form to edit user's personal information
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML form
      */
     function PersonalUI()
     {
@@ -443,10 +446,10 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     }
 
     /**
-     * Returns a form to edit user's preferences
+     * Builds a form to edit user's preferences
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML form
      */
     function PreferencesUI()
     {

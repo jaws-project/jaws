@@ -112,6 +112,7 @@ class Users_Actions_Preferences extends UsersHTML
      * Updates user information
      *
      * @access  public
+     * @return  void
      */
     function UpdatePreferences()
     {

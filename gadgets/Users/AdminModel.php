@@ -14,8 +14,8 @@ class UsersAdminModel extends Jaws_Model
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   true on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -31,12 +31,12 @@ class UsersAdminModel extends Jaws_Model
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
         }
 
-        //registry keys.
+        // Rregistry keys.
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/pluggable', 'false');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/password_recovery', 'false');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/register_notification', 'true');
 
-        //Create the group 'Jaws_Users'
+        // Create the group 'Jaws_Users'
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User;
         $userModel->AddGroup('users', 'Users', '', true, false); //Don't check if it returns true or false
@@ -45,12 +45,12 @@ class UsersAdminModel extends Jaws_Model
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   true on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {

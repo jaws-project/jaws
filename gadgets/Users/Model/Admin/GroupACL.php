@@ -16,7 +16,7 @@ class Users_Model_Admin_GroupACL extends Jaws_Model
      *
      * @access  public
      * @param   int     $guid   Group's ID
-     * @return  array   Array with ACL Keys
+     * @return  array  List of ACL Keys
      */
     function GetGroupACLKeys($guid)
     {
@@ -56,11 +56,12 @@ class Users_Model_Admin_GroupACL extends Jaws_Model
     }
 
     /**
-     * Saves only the modified ACL group keys
+     * Updates the modified ACL group keys
      *
      * @access  public
      * @param   int     $guid   Group ID
      * @param   array   $keys   ACL Keys
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateGroupACL($guid, $keys)
     {

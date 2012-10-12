@@ -13,9 +13,10 @@ class Users_Actions_Login extends UsersHTML
 {
     /**
      * Verifies if user/email/(captcha) are valid, if they are a mail
-     * is sent to user with a secret (MD5) key
+     * is sent to user with a secret(MD5) key
      *
      * @access  public
+     * @return  void
      */
     function SendRecoverKey()
     {
@@ -45,10 +46,10 @@ class Users_Actions_Login extends UsersHTML
     }
 
     /**
-     * Password recovery
+     * Builds password recovery UI
      *
      * @access  public
-     * @return  string  XHTML template
+     * @return  string  XHTML content
      */
     function ForgotLogin()
     {
@@ -91,6 +92,7 @@ class Users_Actions_Login extends UsersHTML
      * Calls Login box
      *
      * @access  public
+     * @return  string  XHTML content
      */
     function LoginBox()
     {
@@ -103,10 +105,11 @@ class Users_Actions_Login extends UsersHTML
     }
 
     /**
-     * Logins an user, if something goes wrong then redirect user to previous page
+     * Logins user, if something goes wrong then redirect user to previous page
      * and notify the error
      *
      * @access  public
+     * @return  void
      */
     function Login()
     {
@@ -141,9 +144,10 @@ class Users_Actions_Login extends UsersHTML
     }
 
     /**
-     * Logout an user
+     * Logout user
      *
      * @access  public
+     * @return  void
      */
     function Logout()
     {

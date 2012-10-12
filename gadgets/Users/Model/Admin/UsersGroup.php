@@ -12,12 +12,12 @@
 class Users_Model_Admin_UsersGroup extends Jaws_Model
 {
     /**
-     * Add a group of user (by they ids) to a certain group
+     * Adds a group of users(by their IDs) to a certain group
      *
      * @access  public
      * @param   int     $guid  Group's ID
      * @param   array   $users Array with user id
-     * @return  array   Response array (notice or error)
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function AddUsersToGroup($guid, $users)
     {

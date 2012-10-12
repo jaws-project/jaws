@@ -19,9 +19,9 @@ class Users_Model_Registration extends Jaws_Model
      * @param   string  $email      User's email
      * @param   string  $nickname   User's display name
      * @param   string  $password   Password
-     * @param   string  $p_check    Password check (to verify)
+     * @param   string  $p_check    Password check(to verify)
      * @param   string  $group      Default user group
-     * @return  bool    Success/Failure
+     * @return  mixed   True on success or message string
      */
     function CreateUser($username, $user_email, $nickname, $fname, $lname, $gender, $dob, $url,
                         $password, $group = null)
@@ -229,12 +229,12 @@ class Users_Model_Registration extends Jaws_Model
     }
 
     /**
-     * Checks if user/email are valid, if they are generates a recovery secret
-     * key and sends it to the user
+     * Checks if user/email are valid, if they are then generates a recovery
+     * secret key and sends it to the user
      *
      * @access  public
-     * @param   string  $user_email Email
-     * @return  bool    Success/Failure
+     * @param   string  $user_email User email
+     * @return  bool    True on success or Jaws_Error on failure
      */
     function SendRecoveryKey($user_email)
     {
@@ -298,11 +298,11 @@ class Users_Model_Registration extends Jaws_Model
     }
 
     /**
-     * Changes a enabled from a given key
+     * Changes the status of user to enabled by a key
      *
      * @access  public
-     * @param   string   $key   Recovery key
-     * @return  boolean
+     * @param   string  $key   Recovery key
+     * @return  bool    True on success or Jaws_Error on failure
      */
     function ActivateUser($key)
     {

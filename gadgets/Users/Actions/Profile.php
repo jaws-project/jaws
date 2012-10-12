@@ -12,10 +12,10 @@
 class Users_Actions_Profile extends UsersHTML
 {
     /**
-     * Prepares a simple form to update user's data (name, email, password)
+     * Builds a simple form to update user profile (fname, lname, gender, ...)
      *
      * @access  public
-     * @return  string  XHTML template of a form
+     * @return  string  XHTML form
      */
     function Profile()
     {
@@ -84,9 +84,10 @@ class Users_Actions_Profile extends UsersHTML
     }
 
     /**
-     * Updates user information
+     * Updates user profile
      *
      * @access  public
+     * @return  void
      */
     function UpdateProfile()
     {

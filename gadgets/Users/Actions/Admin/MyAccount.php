@@ -12,10 +12,10 @@
 class Users_Actions_Admin_MyAccount extends UsersAdminHTML
 {
     /**
-     * Show account settings for logged user
+     * Builds account settings for logged users
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML content
      */
     function MyAccount()
     {

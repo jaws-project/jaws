@@ -12,10 +12,10 @@
 class Users_Actions_Admin_Groups extends UsersAdminHTML
 {
     /**
-     * Prepares the datagrid view (XHTML of datagrid)
+     * Builds groups datagrid
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function GroupsDataGrid()
     {
@@ -41,11 +41,12 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
     }
 
     /**
-     * Prepares the list of groups
+     * Prepares list of groups for datagrid
      *
      * @access  public
-     * @param   int    $offset  Offset of data array
-     * @return  array  Data
+     * @param   bool    $enabled    Status of the group
+     * @param   int     $offset     Offset of data array
+     * @return  array   Grid data
      */
     function GetGroups($enabled, $offset = null)
     {
@@ -103,10 +104,10 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
     }
 
     /**
-     * Prepares the group management view
+     * Builds the group management UI
      *
      * @access  public
-     * @return  string  XHTML of view
+     * @return  string  XHTML form
      */
     function Groups()
     {
@@ -153,10 +154,10 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
     }
 
     /**
-     * Show a form to edit a given group
+     * Builds a form to edit group
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML form
      */
     function GroupUI()
     {
@@ -198,10 +199,10 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
     }
 
     /**
-     * Returns the group-users form
+     * Builds the group-users form
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML form
      */
     function GroupUsersUI()
     {

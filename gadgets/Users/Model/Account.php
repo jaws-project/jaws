@@ -12,15 +12,15 @@
 class Users_Model_Account extends Jaws_Model
 {
     /**
-     * Updates the profile of an user
+     * Updates user profile
      *
      * @access  public
-     * @param   int      $uid       User's ID
+     * @param   int      $uid       User ID
      * @param   string   $username  Username
      * @param   string   $email     User's email
-     * @param   string   $nickname     User's display name
+     * @param   string   $nickname  User's display name
      * @param   string   $password  Password
-     * @return  mixed    True (Success) or Jaws_Error (failure)
+     * @return  mixed    True on success or Jaws_Error on failure
      */
     function UpdateAccount($uid, $username, $email, $nickname, $password)
     {
@@ -44,7 +44,7 @@ class Users_Model_Account extends Jaws_Model
      *
      * @access  public
      * @param   string   $key   Recovery key
-     * @return  boolean
+     * @return  mixed    True on success or Jaws_Error on failure
      */
     function ChangePassword($key)
     {

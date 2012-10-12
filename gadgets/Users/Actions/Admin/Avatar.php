@@ -11,10 +11,10 @@
 class Users_Actions_Admin_Avatar extends UsersAdminHTML
 {
     /**
-     * Upload avatar
+     * Uploads the avatar
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function UploadAvatar()
     {
@@ -38,7 +38,7 @@ class Users_Actions_Admin_Avatar extends UsersAdminHTML
      * Returns avatar as stream data
      *
      * @access  public
-     * @return  bool    True on successful, False otherwise
+     * @return  bool    True on success, false otherwise
      */
     function LoadAvatar()
     {

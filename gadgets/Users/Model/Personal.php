@@ -12,19 +12,18 @@
 class Users_Model_Personal extends Jaws_Model
 {
     /**
-     * Updates the profile of an user
+     * Updates user profile
      *
      * @access  public
-     * @param   int      $uid       User's ID
+     * @param   int      $uid       User ID
      * @param   string   $username  Username
-     * @param   string   $nickname     User's display name
+     * @param   string   $nickname  User's display name
      * @param   string   $fname     First name
      * @param   string   $lname     Last name
-     * @param   string   $email     User's email
-     * @param   string   $url       User's url
-     * @param   string   $password  Password
-     * @param   bool     $uppass    Really updte the user password?
-     * @return  mixed    True (Success) or Jaws_Error (failure)
+     * @param   string   $gender    User gender
+     * @param   string   $dob       User birth date
+     * @param   string   $url       User URL
+     * @return  mixed    True on success or Jaws_Error on failure
      */
     function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url)
     {

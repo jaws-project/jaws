@@ -12,17 +12,16 @@
 class Users_Model_Admin_Settings extends Jaws_Model
 {
     /**
-     * Save user config settings
+     * Updates the User gadget settings
      *
      * @access  public
      * @param   string  $method     Authentication method
      * @param   string  $anon       Anonymous users can auto-register
      * @param   string  $repetitive Anonymous can register by repetitive email
      * @param   string  $act        Activation type
-     * @param   int     $type       User's type
      * @param   int     $group      Default group of anonymous registered user
      * @param   string  $recover    Users can recover their passwords
-     * @return  bool    Success/Failure
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
     {

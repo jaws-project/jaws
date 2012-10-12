@@ -15,7 +15,7 @@ class Users_Actions_Registration extends UsersHTML
      * Tells the user the registation process is done
      *
      * @access  public
-     * @return  string  XHTML of template
+     * @return  string  XHTML content
      */
     function Registered()
     {
@@ -42,9 +42,10 @@ class Users_Actions_Registration extends UsersHTML
     }
 
     /**
-     * Register the user
+     * Registers the user
      *
      * @access  public
+     * @return  void
      */
     function DoRegister()
     {
@@ -104,10 +105,10 @@ class Users_Actions_Registration extends UsersHTML
     }
 
     /**
-     * Prepares a single form to get registered
+     * Builds the registration form
      *
      * @access  public
-     * @return  string  XHTML of template
+     * @return  string  XHTML form
      */
     function Registration()
     {
@@ -185,9 +186,10 @@ class Users_Actions_Registration extends UsersHTML
     }
 
     /**
-     * Activate the user
+     * Activates the user
      *
      * @access  public
+     * @return  string  Appropriate notice or error message
      */
     function ActivateUser()
     {

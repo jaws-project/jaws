@@ -12,17 +12,15 @@
 class Users_Model_Preferences extends Jaws_Model
 {
     /**
-     * Updates the profile of an user
+     * Updates user profile
      *
      * @access  public
-     * @param   int      $uid       User's ID
-     * @param   string   $username  Username
-     * @param   string   $name      User's real name
-     * @param   string   $email     User's email
-     * @param   string   $url       User's url
-     * @param   string   $password  Password
-     * @param   bool     $uppass    Really updte the user password?
-     * @return  mixed    True (Success) or Jaws_Error (failure)
+     * @param   int     $uid        User ID
+     * @param   string  $language   User language
+     * @param   string  $theme      User theme
+     * @param   string  $editor     User editor
+     * @param   string  $timezone   User timezone
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdatePreferences($uid, $language, $theme, $editor, $timezone)
     {

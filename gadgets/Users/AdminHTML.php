@@ -15,7 +15,7 @@ class UsersAdminHTML extends Jaws_GadgetHTML
      * Calls default admin action
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML content
      */
     function Admin()
     {
@@ -33,11 +33,11 @@ class UsersAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the users menubar
+     * Builds the users menubar
      *
      * @access  public
      * @param   string  $action   Selected action
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML menubar
      */
     function MenuBar($action)
     {
