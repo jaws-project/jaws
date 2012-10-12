@@ -128,13 +128,16 @@ class Users_Actions_Login extends UsersHTML
             $GLOBALS['app']->Session->PushSimpleResponse($login->GetMessage(), 'Users.Login');
             unset($post['password']);
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Login.Data');
-            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor(
-                                            'Users',
-                                            'LoginBox',
-                                            array('referrer'  => $post['referrer'])), true);
+            $login_url = $GLOBALS['app']->Map->GetURLFor(
+                'Users',
+                'LoginBox',
+                array('referrer'  => $post['referrer'])
+            );
+
+            Jaws_Header::Location($login_url, true);
         }
 
-        Jaws_Header::Location($post['referrer']);
+        Jaws_Header::Location(hex2bin($post['referrer']), true);
     }
 
     /**

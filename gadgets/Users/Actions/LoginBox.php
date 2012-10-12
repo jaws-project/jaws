@@ -43,7 +43,7 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
             $reqpost['username'] = '';
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
-            $reqpost['referrer'] = is_null($referrer)? Jaws_Utils::getRequestURL(false) : $referrer;
+            $reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
         }
 
         if ($use_crypt) {
@@ -99,7 +99,6 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
         }
 
         $tpl->ParseBlock('LoginBox');
-
         return $tpl->Get();
     }
 
@@ -166,6 +165,15 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
 
             $tpl->ParseBlock('UserLinks');
         } else {
+            $request   =& Jaws_Request::getInstance();
+            $referrer  = $request->get('referrer', 'get');
+            $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
+            $login_url = $GLOBALS['app']->Map->GetURLFor(
+                'Users',
+                'LoginBox',
+                array('referrer'  => $referrer)
+            );
+
             $tpl->SetBlock('LoginLinks');
             $tpl->SetVariable('title', _t('USERS_LOGINLINKS'));
 
@@ -174,11 +182,7 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
 
             // login
             $tpl->SetVariable('user_login', _t('USERS_LOGIN_TITLE'));
-            $tpl->SetVariable('login_url', 
-                              $GLOBALS['app']->Map->GetURLFor(
-                                'Users',
-                                'LoginBox',
-                                array('referrer'  => Jaws_Utils::getRequestURL(false))));
+            $tpl->SetVariable('login_url', $login_url);
 
             // registeration
             if ($GLOBALS['app']->Registry->Get('/config/anon_register') == 'true') {
