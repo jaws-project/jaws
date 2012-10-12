@@ -12,11 +12,11 @@
 class UrlMapperAdminAjax extends Jaws_Ajax
 {
     /**
-     * Returns the mapped actions of a certain gadget
+     * Returns mapped actions of a certain gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget name
-     * @return  array   Array with actions
+     * @return  mixed   Array of actions or false on error
      */
     function GetGadgetActions($gadget)
     {
@@ -29,13 +29,13 @@ class UrlMapperAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Returns the total maps of a certain action in a certain gadget
+     * Returns total maps of a certain action in a certain gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget name so we get sure we don't return the same action
      *                           maps of another gadget
      * @param   string  $action  Action name
-     * @return  array   Maps that an action has
+     * @return  array   The maps of the action
      */
     function GetActionMaps($gadget, $action)
     {
@@ -48,9 +48,9 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Updates a map
      *
      * @access  public
-     * @param   int      $id       Map's ID
-     * @param   string   $map      New map
-     * @return  bool     Success/Failure
+     * @param   int     $id       Map's ID
+     * @param   string  $map      New map
+     * @return  array   Response (notice or error)
      */
     function UpdateMap($id, $map, $extension, $order)
     {
@@ -84,7 +84,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * @param   bool     $use_aliases Should aliases be used?
      * @param   string   $precedence  custom map precedence over default map (true/false)
      * @param   string   $extension   Extension to use
-     * @return  bool     Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateSettings($enabled, $use_aliases, $precedence, $extension)
     {
@@ -99,7 +99,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Returns all aliases
      *
      * @access  public
-     * @return  array    List of aliases
+     * @return  mixed   List of aliases or false if no aliases found
      */
     function GetAliases()
     {
@@ -114,8 +114,8 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Returns basic information of certain alias
      *
      * @access  public
-     * @param   int      $id      Alias ID
-     * @return  array    Alias information
+     * @param   int     $id     Alias ID
+     * @return  array   Alias information
      */
     function GetAlias($id)
     {
@@ -126,9 +126,9 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Adds a new alias
      *
      * @access  public
-     * @param   string   $alias   Alias value
-     * @param   string   $url     Real URL
-     * @return  bool     Success/Failure
+     * @param   string  $alias  Alias value
+     * @param   string  $url    Real URL
+     * @return  array   Response (notice or error)
      */
     function AddAlias($alias, $url)
     {
@@ -137,13 +137,13 @@ class UrlMapperAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Updates an alias by its ID
+     * Updates the alias
      *
      * @access  public
-     * @param   int      $id      Alias ID
-     * @param   string   $alias   Alias value
-     * @param   string   $url     Real URL
-     * @return  bool     Success/Failure
+     * @param   int     $id     Alias ID
+     * @param   string  $alias  Alias value
+     * @param   string  $url    Real URL
+     * @return  array   Response (notice or error)
      */
     function UpdateAlias($id, $alias, $url)
     {
@@ -152,11 +152,11 @@ class UrlMapperAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Deletes an alias by its ID
+     * Deletes the alias
      *
      * @access  public
-     * @param   int      $id      Alias ID
-     * @return  bool     Success/Failure
+     * @param   int     $id     Alias ID
+     * @return  array   Response (notice or error)
      */
     function DeleteAlias($id)
     {

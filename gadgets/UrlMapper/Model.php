@@ -12,14 +12,14 @@ class UrlMapperModel extends Jaws_Model
 {
 
     /**
-     * Returns true if map already exists
+     * Checks if map already exists or not
      *
      * @access   public
-     * @param    string    $gadget      Gadget's name (FS name)
-     * @param    string    $action      Gadget's action to use
+     * @param    string    $gadget      Gadget name (FS name)
+     * @param    string    $action      Gadget action to use
      * @param    string    $map         Map to use (foo/bar/{param}/{param2}...)
      * @param    string    $extension   Extension of map
-     * @return   boolean   Exists/Doesn't exists
+     * @return   bool      Exists/Doesn't exists
      */
     function MapExists($gadget, $action, $map, $extension = '')
     {
@@ -51,10 +51,10 @@ class UrlMapperModel extends Jaws_Model
     }
 
     /**
-     * Returns all aliases stored in the DB
+     * Returns all aliases stored in DB
      *
      * @access  public
-     * @return  array   Array of URL aliases
+     * @return  array   List of URL aliases
      */
     function GetAliases()
     {
@@ -98,11 +98,11 @@ class UrlMapperModel extends Jaws_Model
     }
 
     /**
-     * Returns true if hash already exists
+     * Checks if hash already exists or not
      *
      * @access   public
-     * @param    string    $hash    Alias HASH value
-     * @return   boolean   Exists/Doesn't exists
+     * @param    string $hash   Alias HASH value
+     * @return   bool   Exists/Doesn't exists
      */
     function AliasExists($hash)
     {
@@ -124,10 +124,10 @@ class UrlMapperModel extends Jaws_Model
     }
 
     /**
-     * Returns the maps stored in the DB
+     * Returns maps stored in DB
      *
      * @access  public
-     * @return  array   Array of maps
+     * @return  array   List of maps
      */
     function GetMaps()
     {
@@ -147,12 +147,12 @@ class UrlMapperModel extends Jaws_Model
     }
 
     /**
-     * Returns the real path of an alias (given path), if no alias is found
+     * Returns the real path of an alias(given path), if no alias is found
      * it returns false
      *
      * @access  public
      * @param   string  $alias  Alias
-     * @return  mixed   Real path (URL) or false
+     * @return  mixed   Real path(URL) or false
      */
     function GetAliasPath($alias)
     {

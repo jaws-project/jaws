@@ -16,8 +16,8 @@ class UrlMapperAdminModel extends UrlMapperModel
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -38,12 +38,12 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
@@ -133,7 +133,7 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Returns only the map route of a certain map (by its ID)
+     * Returns only the map route of a certain map
      *
      * @access  public
      * @param   int     $id Map's ID
@@ -196,12 +196,12 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Returns the maps of a certain gadget/action stored in the DB
+     * Returns maps of a certain gadget/action stored in DB
      *
      * @access  public
      * @param   string  $gadget   Gadget's name (FS name)
      * @param   string  $action   Gadget's action to use
-     * @return  array   Array of custom maps
+     * @return  array   List of custom maps
      */
     function GetActionMaps($gadget, $action)
     {
@@ -228,11 +228,11 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Returns the mapped actions of a certain gadget
+     * Returns mapped actions of a certain gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget name
-     * @return  array   Array with actions
+     * @return  array   List of actions
      */
     function GetGadgetActions($gadget)
     {
@@ -255,10 +255,11 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Add all gadget's maps
+     * Adds all of gadget maps
      *
      * @access  public
-     * @return  bool    True if query was successful and Jaws_Error on error
+     * @param   string  $gadget  Gadget name
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function AddGadgetMaps($gadget)
     {
@@ -300,10 +301,11 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Update all gadget's maps
+     * Updates all of gadget maps
      *
      * @access  public
-     * @return  bool    True if query was successful and Jaws_Error on error
+     * @param   string  $gadget  Gadget name
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadgetMaps($gadget)
     {
@@ -369,12 +371,12 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Get regular expression for detect map
+     * Gets regular expression to detect map
      *
-     * @access   public
-     * @param    string $map            Map to use (foo/bar/{param}/{param2}...)
-     * @param    array  $vars_regexps   Array of regexp validators
-     * @return   string Regular expression
+     * @access  public
+     * @param   string  $map            Map to use (foo/bar/{param}/{param2}...)
+     * @param   array   $vars_regexps   Array of regexp validators
+     * @return  string  Regular expression
      */
     function GetMapRegExp($map, $vars_regexps)
     {
@@ -402,13 +404,13 @@ class UrlMapperAdminModel extends UrlMapperModel
     /**
      * Adds a new custom map
      *
-     * @access   public
-     * @param    string $gadget         Gadget's name (FS name)
-     * @param    string $action         Gadget's action to use
-     * @param    string $map            Map to use (foo/bar/{param}/{param2}...)
-     * @param    string $extension      Extension of map
-     * @param    array  $vars_regexps   Array of regexp validators
-     * @return   mixed  Success/Failure
+     * @access  public
+     * @param   string $gadget          Gadget name (FS name)
+     * @param   string $action          Gadget action to use
+     * @param   string $map             Map to use (foo/bar/{param}/{param2}...)
+     * @param   string $extension       Extension of map
+     * @param   array  $vars_regexps    Array of regexp validators
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function AddMap($gadget, $action, $map, $extension = '', $vars_regexps = null, $order = 0, $time = '')
     {
@@ -452,12 +454,12 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Updates the map route of a map by its ID
+     * Updates map route of the map
      *
-     * @access   public
-     * @param    int       $id       Map's ID
-     * @param    string    $map      Map to use (foo/bar/{param}/{param2}...)
-     * @return   boolean   Success/Failure
+     * @access  public
+     * @param   int     $id     Map ID
+     * @param   string  $map    Map to use (foo/bar/{param}/{param2}...)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateMap($id, $map, $extension, $vars_regexps, $order, $time = '')
     {
@@ -510,10 +512,12 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Delete all maps related with a gadget
+     * Deletes all maps related to a gadget
      *
      * @access  public
-     * @return  bool    True if query was successful and Jaws_Error on error
+     * @param   string  $gadget Gadget name
+     * @param   string  $time   Time condition
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function RemoveGadgetMaps($gadget, $time = '')
     {
@@ -541,10 +545,10 @@ class UrlMapperAdminModel extends UrlMapperModel
     /**
      * Adds a new alias
      *
-     * @access   public
-     * @param    string   $alias   Alias value
-     * @param    string   $url     Real URL
-     * @return   boolean   Success/Failure
+     * @access  public
+     * @param   string  $alias  Alias value
+     * @param   string  $url    Real URL
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function AddAlias($alias, $url)
     {
@@ -580,13 +584,13 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Updates an alias by its ID
+     * Updates the alias
      *
      * @access  public
-     * @param   int      $id      Alias ID
-     * @param   string   $alias   Alias value
-     * @param   string   $url     Real URL
-     * @return  bool     Success/Failure
+     * @param   int     $id     Alias ID
+     * @param   string  $alias  Alias value
+     * @param   string  $url    Real URL
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateAlias($id, $alias, $url)
     {
@@ -641,11 +645,11 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Deletes an alias
+     * Deletes the alias
      *
-     * @access   public
-     * @param    int      $id      Alias ID
-     * @return   boolean  Success/Failure
+     * @access  public
+     * @param   int     $id  Alias ID
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function DeleteAlias($id)
     {
@@ -665,14 +669,14 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Save settings
+     * Updates settings
      *
      * @access  public
-     * @param   bool     $enabled     Should maps be used?
-     * @param   bool     $use_aliases Should aliases be used?
-     * @param   bool     $precedence  custom map precedence over default map
-     * @param   string   $extension   Extension to use
-     * @return  bool     Success/Failure
+     * @param   bool    $enabled        Should maps be used?
+     * @param   bool    $use_aliases    Should aliases be used?
+     * @param   bool    $precedence     custom map precedence over default map
+     * @param   string  $extension      Extension to use
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {

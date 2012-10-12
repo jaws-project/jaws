@@ -23,11 +23,11 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the menubar
+     * Builds the menubar
      *
      * @access  public
-     * @param   string   $action_selected selected action
-     * @return  string   Template content
+     * @param   string   $action_selected   Selected action
+     * @return  string   XHTML template content
      */
     function MenuBar($action_selected)
     {
@@ -49,12 +49,12 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the data (an array) of maps for gadget action
+     * Prepares the data of maps for a certain gadget and action
      *
      * @access  public
-     * @param   string  $gadget  gadget name
-     * @param   string  $action  action name
-     * @return  array   Data
+     * @param   string  $gadget  Gadget name
+     * @param   string  $action  Action name
+     * @return  array   List of maps
      */
     function GetMaps($gadget, $action)
     {
@@ -82,10 +82,10 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares a clean template for showing the maps
+     * Builds maps datagrid
      *
      * @access  public
-     * @return  string  XHTML of Datagrid
+     * @return  string  XHTML datagrid
      */
     function MapsDatagrid()
     {
@@ -102,10 +102,10 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Returns the Maps UI
+     * Builds maps UI
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function Maps()
     {
@@ -196,10 +196,10 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the aliases UI
+     * Builds aliases UI
      *
      * @access  public
-     * @return  string  XHTML template
+     * @return  string  XHTML template content
      */
     function Aliases()
     {
@@ -267,10 +267,10 @@ class UrlMapperAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the view for properties
+     * Builds Properties UI
      *
      * @access  public
-     * @return  string  XHTML template
+     * @return  string  XHTML template content
      */
     function Properties()
     {
