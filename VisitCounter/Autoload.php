@@ -12,8 +12,10 @@
 class VisitCounterAutoload
 {
     /**
-     * Autoload load method
+     * Autoload function
      *
+     * @access  private
+     * @return  void
      */
     function Execute()
     {
@@ -22,6 +24,12 @@ class VisitCounterAutoload
         }
     }
 
+    /**
+     * Adds a new visitor
+     *
+     * @access  public
+     * @return  void
+     */
     function AddVisitor()
     {
         $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model');

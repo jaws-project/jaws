@@ -13,10 +13,11 @@
 class VisitCounterLayoutHTML
 {
     /**
-     * Show visitors number
+     * Builds the visits report
      *
      * @access  public
-     * @return  string
+     * @param   array   $visit_counters  Types of reports
+     * @return  string  XHTML content
      */
     function GetVisitorsFormat($visit_counters)
     {
@@ -100,10 +101,10 @@ class VisitCounterLayoutHTML
     }
 
     /**
-     * Displays the visit counter.
+     * Displays the visit counter output
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function Display()
     {
@@ -112,10 +113,10 @@ class VisitCounterLayoutHTML
     }
 
     /**
-     * Displays number of online visitors.
+     * Displays number of online visitors
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function DisplayOnline()
     {
@@ -123,10 +124,10 @@ class VisitCounterLayoutHTML
     }
 
     /**
-     * Displays number of today visitors.
+     * Displays number of today visitors
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function DisplayToday()
     {
@@ -134,10 +135,10 @@ class VisitCounterLayoutHTML
     }
 
     /**
-     * Displays number of total visitors.
+     * Displays number of total visitors
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function DisplayTotal()
     {

@@ -12,10 +12,10 @@
 class VisitCounterAdminAjax extends Jaws_Ajax
 {
     /**
-     * Clean all the entries (records)
+     * Cleans all the entries (records)
      *
      * @access  public
-     * @return  array   Response
+     * @return  array   Response (notice or error)
      */
     function CleanEntries()
     {
@@ -25,10 +25,10 @@ class VisitCounterAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Reset the counter
+     * Resets the counter
      *
      * @access  public
-     * @return  array   Response
+     * @return  array   Response (notice or error)
      */
     function ResetCounter()
     {
@@ -39,10 +39,10 @@ class VisitCounterAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the start date
+     * Gets the start date
      *
      * @access  public
-     * @return  string  Start date (taken from registry)
+     * @return  string  Start date(taken from registry)
      */
     function GetStartDate()
     {
@@ -52,12 +52,18 @@ class VisitCounterAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update the properties
+     * Updates properties
      *
      * @access  public
-     * @param   int     $numdays Number of days
-     * @param   string  $type    The type of visits being displayed
-     * @return  array   Response
+     * @param   int     $online     Number of online visitors
+     * @param   int     $today      Number of today visitors
+     * @param   int     $total      Number of total visitors
+     * @param   string  $custom     Custome text to be displayed
+     * @param   int     $numdays    Cookie lifetime in days
+     * @param   string  $type       The type of visits being displayed
+     * @param   int     $mode       Display mode
+     * @param   string  $custom_text    User defined text to be displayed
+     * @return  array   Response (notice or error)
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text)
     {
@@ -67,10 +73,10 @@ class VisitCounterAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get all entries/records
+     * Gets all entries/records for datagrid
      *
      * @access  public
-     * @return  array   Array of webcams
+     * @return  array   List of visits
      */
     function GetData($limit)
     {

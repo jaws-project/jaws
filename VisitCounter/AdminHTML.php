@@ -13,10 +13,11 @@
 class VisitCounterAdminHTML extends Jaws_GadgetHTML
 {
     /**
-     * Creates the menubar
+     * Builds the menubar
      *
      * @access  private
-     * @return  string  Menubar HTML content
+     * @param   string  $selected   Selected menu item
+     * @return  string  XHTML menubar
      */
     function MenuBar($selected)
     {
@@ -47,11 +48,11 @@ class VisitCounterAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Get a list of visits
+     * Gets list of visits
      *
      * @access  public
-     * @param   int     $limit  Limit
-     * @return  array   Data
+     * @param   int     $limit  Data limitation
+     * @return  array   List of visits
      */
     function GetVisits($limit = 0)
     {
@@ -76,11 +77,10 @@ class VisitCounterAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Creates the datagrid
+     * Builds the datagrid
      *
      * @access  public
-     * @param   string $mode  ViewAll or ViewRecent
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function DataGrid()
     {
@@ -100,10 +100,10 @@ class VisitCounterAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays the administration page.
+     * Builds the administration UI
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function Admin()
     {

@@ -13,13 +13,13 @@
 class VisitCounterModel extends Jaws_Model
 {
     /**
-     * Returns the hostname of an IP address using a reverse lookup.
+     * Returns the hostname of an IP address using a reverse lookup
      *
      * WARNING: This may cause delays if DNS isn't setup properly, don't use it anywhere
      *          performance is a major issue.
      *
      * @access  public
-     * @return  string The hostname of the remote machine, or Jaws_Error if no reverse lookup could be done.
+     * @return  string  The hostname of the remote machine, or Jaws_Error if no reverse lookup could be done.
      */
     function GetHostname($ip)
     {
@@ -32,11 +32,11 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Add a new visitor to the table
+     * Adds a new visitor
      *
      * @access  public
      * @param   string  $ip  IP of the visitor
-     * @return  bool    True if query was successful, otherwise returns Jaws_Error
+     * @return  mixed   True if query was successful, otherwise returns Jaws_Error
      */
     function AddVisitor($ip, $inc = true)
     {
@@ -88,7 +88,7 @@ class VisitCounterModel extends Jaws_Model
      * Gets the period of the counter cookie
      *
      * @access  public
-     * @return  int      Number of days.
+     * @return  int  Number of days
      */
     function GetCookiePeriod()
     {
@@ -101,10 +101,10 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Gets the timeout(second)  of online visitors
+     * Gets the timeout of online visitors in seconds
      *
      * @access  public
-     * @return  int.
+     * @return  int  Timeout in seconds
     */
     function GetOnlineVisitorsTimeout()
     {
@@ -117,10 +117,10 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Gets the initial date for the visit counter
+     * Gets the initial date for visit counter
      *
      * @access  public
-     * @return  string  The date of start date
+     * @return  string  Date of the start date
      */
     function GetStartDate()
     {
@@ -133,10 +133,10 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     *Gets the number of online visitors.
+     * Gets number of online visitors
      *
      * @access  public
-     * @return  int     The number of online visitors by IP or Jaws_Error on failure
+     * @return  int Number of online visitors by IP or Jaws_Error on failure
     */
     function GetOnlineVisitors()
     {
@@ -156,10 +156,11 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Gets the number of visitors that today visits the site.
+     * Gets the number of today visitors
      *
      * @access  public
-     * @return  int     The number of today visitors or Jaws_Error on failure
+     * @param   string  $type   Type of calculation
+     * @return  int The number of today visitors or Jaws_Error on failure
     */
     function GetTodayVisitors($type = null)
     {
@@ -190,10 +191,11 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Gets the number of total visitors that visits the site since start date.
+     * Gets number of total visitors since start date
      *
      * @access  public
-     * @return  int     The number of total visitors or Jaws_Error on failure
+     * @param   string  $type   Type of calculation
+     * @return  int  Number of total visitors or Jaws_Error on failure
     */
     function GetTotalVisitors($type = null)
     {
@@ -224,10 +226,10 @@ class VisitCounterModel extends Jaws_Model
     }
 
     /**
-     * Gets the type of visits to be displayed.
+     * Gets type of visits to be displayed
      *
      * @access  public
-     * @return  string   The type of visits being displayed.
+     * @return  string  Type of visits being displayed
      */
     function GetVisitType()
     {

@@ -12,10 +12,10 @@
 class VisitCounterHTML extends Jaws_GadgetHTML
 {
     /**
-     * Runs the display action if none is specified.
+     * Calls Display function if no action is specified
      *
      * @access  public
-     * @return  bool    HTML content
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {
