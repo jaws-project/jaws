@@ -15,7 +15,7 @@ class VisitCounterAdminAjax extends Jaws_Ajax
      * Cleans all the entries (records)
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function CleanEntries()
     {
@@ -28,7 +28,7 @@ class VisitCounterAdminAjax extends Jaws_Ajax
      * Resets the counter
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function ResetCounter()
     {
@@ -55,15 +55,15 @@ class VisitCounterAdminAjax extends Jaws_Ajax
      * Updates properties
      *
      * @access  public
-     * @param   int     $online     Number of online visitors
-     * @param   int     $today      Number of today visitors
-     * @param   int     $total      Number of total visitors
-     * @param   string  $custom     Custome text to be displayed
-     * @param   int     $numdays    Cookie lifetime in days
-     * @param   string  $type       The type of visits being displayed
-     * @param   int     $mode       Display mode
+     * @param   int     $online         Number of online visitors
+     * @param   int     $today          Number of today visitors
+     * @param   int     $total          Number of total visitors
+     * @param   string  $custom         Custome text to be displayed
+     * @param   int     $numdays        Cookie lifetime in days
+     * @param   string  $type           The type of visits being displayed
+     * @param   int     $mode           Display mode
      * @param   string  $custom_text    User defined text to be displayed
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text)
     {
