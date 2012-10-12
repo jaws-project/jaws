@@ -12,11 +12,11 @@
 class RssReaderAdminAjax extends Jaws_Ajax
 {
     /**
-     * Get information of a RSS site
+     * Gets information of the RSS site
      *
      * @access  public
      * @param   int     $id    RSS Site ID
-     * @return  array   RSS Site information
+     * @return  mixed   RSS Site information or false on error
      */
     function GetRSS($id)
     {
@@ -29,17 +29,17 @@ class RssReaderAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Insert the information of a RSS Site
+     * Inserts a new RSS site
      *
      * @access  public
-     * @param   string  $title    Name of the RSS Site
-     * @param   string  $url     URL of the RSS Site
-     * @param   int     $cache_time
-     * @param   int     $view_type
-     * @param   int     $count_entry   The count of the viewable RSS title
-     * @param   int     $title_view
-     * @param   int     $visible The visible of the RSS Site
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title          Name of the RSS Site
+     * @param   string  $url            URL of the RSS Site
+     * @param   int     $cache_time     Cache time period in seconds
+     * @param   int     $view_type      Display type (0-4)
+     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $title_view     Display title or not
+     * @param   int     $visible        The visibility status of the RSS Site
+     * @return  array   Response (notice or error)
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -49,17 +49,17 @@ class RssReaderAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update RSS Site information
+     * Updates the RSS Site information
      *
      * @access  public
-     * @param   string $id   ID of the RSS Site
-     * @param   string  $title    Name of the RSS Site
-     * @param   string  $url     URL of the RSS Site
-     * @param   int     $cache_time
-     * @param   int     $view_type
-     * @param   int     $count_entry   The count of the viewable RSS title
-     * @param   int     $title_view
-     * @param   int     $visible The visible of the RSS Site
+     * @param   string  $id             RSS Site ID
+     * @param   string  $title          Name of the RSS Site
+     * @param   string  $url            URL of the RSS Site
+     * @param   int     $cache_time     Cache time period in seconds
+     * @param   int     $view_type      Display type (0-4)
+     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $title_view     Display title or not
+     * @param   int     $visible        The visibility status of the RSS Site
      * @return  array   Response (notice or error)
      */
     function UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
@@ -70,10 +70,10 @@ class RssReaderAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete a RSS site
+     * Deletes the RSS site
      *
      * @access  public
-     * @param   int    $id  RSS Site Id
+     * @param   int    $id  RSS Site ID
      * @return  array  Response (notice or error)
      */
     function DeleteRSS($id)
@@ -84,10 +84,11 @@ class RssReaderAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get RSS sites
+     * Gets RSS sites for data grid
      *
      * @access  public
-     * @return  array  RSS Sites
+     * @param   int     $offset Data offset
+     * @return  array   RSS Sites
      */
     function GetData($offset)
     {

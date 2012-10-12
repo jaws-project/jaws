@@ -13,11 +13,11 @@
 class RssReaderAdminHTML extends Jaws_GadgetHTML
 {
     /**
-     * Prepares the data of rss sites
+     * Prepares data of RSS sites for data grid
      *
      * @access  public
-     * @param   int    $limit  Limit of data
-     * @return  array  Data
+     * @param   int    $offset  Data offset
+     * @return  array  List of RSS sites
      */
     function GetRSSSites($offset = null)
     {
@@ -55,10 +55,10 @@ class RssReaderAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the datagrid view (XHTML of datagrid)
+     * Builds the datagrid
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function DataGrid()
     {
@@ -85,10 +85,10 @@ class RssReaderAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prints the RSSreader administration
+     * Builds the RSSreader administration UI
      *
      * @access  public
-     * @return  string HTML content of administration
+     * @return  string  XHTML content for administration UI
      */
     function Admin()
     {

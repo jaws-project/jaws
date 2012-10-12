@@ -13,10 +13,10 @@
 class RssReaderHTML extends Jaws_GadgetHTML
 {
     /**
-     * Default action to be run if none is defined.
+     * Default action to be run if no action is present
      *
      * @access  public
-     * @return  string HTML content of Default action
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
@@ -25,14 +25,14 @@ class RssReaderHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Get the dcDate of an item
+     * Gets the dcDate of an item
      *
      * From planet-php.net source code
      *
      * @access  private
-     * @param   array    $item    Item to look for the date
-     * @param   int      $offset  Offset of item(index)
-     * @param   bool     $returnNull Should it return false?
+     * @param   array    $item          Item to look for the date
+     * @param   int      $offset        Offset of item(index)
+     * @param   bool     $returnNull    Should it return false?
      * @return  string   The correct dcDate
      */
     function GetDCDate($item, $nowOffset = 0, $returnNull = false)
@@ -57,7 +57,7 @@ class RssReaderHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Fix the date format
+     * Fixes the date format
      *
      * @access  private
      * @param   string  $date  Date to fix
@@ -72,8 +72,10 @@ class RssReaderHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * get requested feed
+     * Gets requested feed
+     *
      * @access  public
+     * @return  string  XHTML template content
      */
     function GetFeed()
     {

@@ -13,12 +13,13 @@
 class RssReaderModel extends Jaws_Model
 {
     /**
-     * Get a list of the available RSS sites
+     * Gets list of possible RSS sites
      *
      * @access  public
-     * @param   mixed Optional. Limit of data to retrieve (false = returns all)
-     * @param   mixed Type of ordering you want to do, null means the default type
-     * @return  array Array of RSS sites or Jaws_Error on failure
+     * @param   bool    $onlyVisible    Visible sites only
+     * @param   int     $limit          Number of data to retrieve (false = returns all)
+     * @param   int     $offset         Data offset
+     * @return  mixed   Array of RSS sites or Jaws_Error on failure
      */
     function GetRSSs($onlyVisible = false, $limit = false, $offset = null)
     {
@@ -53,11 +54,11 @@ class RssReaderModel extends Jaws_Model
     }
 
     /**
-     * Get information of one RSS site
+     * Gets information of the RSS site
      *
      * @access  public
-     * @param   string ID of the RSS Site
-     * @return  array  Array with the information of a RSS site or Jaws_Error on failure
+     * @param   int     $id    RSS Site ID
+     * @return  mixed   Array of the RSS site data or Jaws_Error on failure
      */
     function GetRSS($id)
     {

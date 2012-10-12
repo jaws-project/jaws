@@ -17,8 +17,8 @@ class RssReaderAdminModel extends RssReaderModel
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   true on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -46,7 +46,7 @@ class RssReaderAdminModel extends RssReaderModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   true on success, Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -65,12 +65,12 @@ class RssReaderAdminModel extends RssReaderModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   true on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
@@ -93,17 +93,17 @@ class RssReaderAdminModel extends RssReaderModel
     }
 
     /**
-     * Insert the information of a RSS Site
+     * Inserts a new RSS site
      *
      * @access  public
-     * @param   string  $title    Title of the RSS Site
-     * @param   string  $url     URL of the RSS Site
-     * @param   int     $cache_time
-     * @param   int     $view_type
-     * @param   int     $count_entry   The count of the viewable RSS title
-     * @param   int     $title_view
-     * @param   int     $visible The visible of the RSS Site
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $title          Name of the RSS Site
+     * @param   string  $url            URL of the RSS Site
+     * @param   int     $cache_time     Cache time period in seconds
+     * @param   int     $view_type      Display type (0-4)
+     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $title_view     Display title or not
+     * @param   int     $visible        The visibility status of the RSS Site
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -134,17 +134,18 @@ class RssReaderAdminModel extends RssReaderModel
     }
 
     /**
-     * Update the information of a RSS Site
+     * Updates the RSS Site information
      *
      * @access  public
-     * @param   string $RSSid   ID of the RSS Site
-     * @param   string  $title   Title of the RSS Site
-     * @param   string  $url     URL of the RSS Site
-     * @param   int     $cache_time
-     * @param   int     $view_type
-     * @param   int     $count_entry   The count of the viewable RSS title
-     * @param   int     $visible The visible of the RSS Site
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $id             RSS Site ID
+     * @param   string  $title          Name of the RSS Site
+     * @param   string  $url            URL of the RSS Site
+     * @param   int     $cache_time     Cache time period in seconds
+     * @param   int     $view_type      Display type (0-4)
+     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $title_view     Display title or not
+     * @param   int     $visible        The visibility status of the RSS Site
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function UpdateRSS($RSSid, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -181,11 +182,11 @@ class RssReaderAdminModel extends RssReaderModel
     }
 
     /**
-     * Delete a RSS Site
+     * Deletes the RSS site
      *
      * @access  public
-     * @param   string  $id ID of the RSS Site
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   int     $id  RSS Site ID
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function DeleteRSS($id)
     {

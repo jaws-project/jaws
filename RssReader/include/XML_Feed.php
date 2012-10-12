@@ -32,25 +32,27 @@ class XML_Feed extends XML_Parser
      * valid encodings
      *
      * @var array
+     * @access  private
      */
     var $_validEncodings = array('ISO-8859-1', 'UTF-8', 'US-ASCII');
 
     /**
      * Constructor
      *
+     * @access  public
+     * @return  void
      */
     function XML_Feed()
     {
         $this->XML_Parser();
     }
 
-
     /**
      * Sets the input xml file to be parsed
      *
-     * @param    string      Filename (full path)
-     * @return   resource    handle of the given file
      * @access   public
+     * @param    string  $file  Filename(full path)
+     * @return   mixed   True on success or error on failure
      */
     function setInputFile($file)
     {
@@ -82,8 +84,12 @@ class XML_Feed extends XML_Parser
         return true;
     }
 
-
     /**
+     * Fetches feeds
+     *
+     * @access   public
+     * @param    string  $feed_url  Feed URL
+     * @return   mixed   True on success or error on failure
      */
     function fetch($feed_url)
     {
@@ -112,8 +118,13 @@ class XML_Feed extends XML_Parser
         return true;
     }
 
-
     /**
+     * Extends the array
+     *
+     * @access   public
+     * @param    string  $func  Callback function
+     * @param    array   $arr   The array to be extend
+     * @return   array   The new extended array
      */
     function ex_array_map($func, $arr)
     {
@@ -124,8 +135,12 @@ class XML_Feed extends XML_Parser
         return $newArr;
     }
 
-
     /**
+     * Saves data into the file
+     *
+     * @access   public
+     * @param    string  $cache_file    Filename
+     * @return   mixed   True on success or error on failure
      */
     function saveFile($cache_file)
     {
@@ -141,8 +156,12 @@ class XML_Feed extends XML_Parser
         }
     }
 
-
     /**
+     * Loads data from the file
+     *
+     * @access   public
+     * @param    string  $cache_file    Filename
+     * @return   mixed   True on success or error on failure
      */
     function loadFile($cache_file)
     {
@@ -159,8 +178,14 @@ class XML_Feed extends XML_Parser
         }
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @param    ?       $parser    Never used
+     * @param    string  $tagName   Name of the tag
+     * @param    array   $attrs     The attributes
+     * @return   mixed   Void/false
      */
     function startHandler($parser, $tagName, $attrs)
     {
@@ -237,8 +262,13 @@ class XML_Feed extends XML_Parser
         }
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @param    ?       $parser    Never used
+     * @param    string  $tagName   Name of the tag
+     * @return   void
      */
     function endHandler($parser, $tagName)
     {
@@ -278,8 +308,13 @@ class XML_Feed extends XML_Parser
         }
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @param    ?       $parser    Never used
+     * @param    string  $cdata
+     * @return   void
      */
     function cdataHandler($parser, $cdata)
     {
@@ -323,8 +358,14 @@ class XML_Feed extends XML_Parser
         }
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @param    string  $type
+     * @param    string  $field
+     * @param    string  $value
+     * @return   void
      */
     function _add($type, $field, $value)
     {
@@ -337,8 +378,11 @@ class XML_Feed extends XML_Parser
         $this->last = $this->{$type};
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @return   void
      */
     function feedFree()
     {
@@ -350,8 +394,12 @@ class XML_Feed extends XML_Parser
         $this->free();
     }
 
-
     /**
+     * ??
+     *
+     * @access   public
+     * @param    array  $params
+     * @return   bool   true
      */
     function setParams($params = array())
     {

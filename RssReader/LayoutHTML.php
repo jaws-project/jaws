@@ -16,6 +16,7 @@ class RssReaderLayoutHTML
      * Loads layout actions
      *
      * @access  private
+     * @return  array   List of actions
      */
     function LoadLayoutActions()
     {
@@ -37,10 +38,11 @@ class RssReaderLayoutHTML
     }
 
     /**
-     * Show titles of RSS sites
+     * Displays titles of the RSS sites
      *
      * @access  public
-     * @return  string HTML content with all titles and links of RSS sites
+     * @param   int     $id     RSS site ID
+     * @return  string  XHTML content with all titles and links of RSS sites
      */
     function Display($id = 0)
     {
