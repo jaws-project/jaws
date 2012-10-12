@@ -178,10 +178,9 @@ class SearchHTML extends Jaws_GadgetHTML
      * @param   int     $page_size      Number of results per page
      * @param   int     $total          Number of all results
      * @param   string  $query_string   SQL query
-     * @param   int     $id
      * @return  string  XHTML page navigation
      */
-    function GetNumberedPageNavigation($page, $page_size, $total, $query_string, $id = null)
+    function GetNumberedPageNavigation($page, $page_size, $total, $query_string)
     {
         $tpl = new Jaws_Template('gadgets/Search/templates/');
         $tpl->Load('PageNavigation.html');
