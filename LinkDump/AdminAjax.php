@@ -92,7 +92,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * @param   string  $limitation
      * @param   string  $links_type
      * @param   string  $order_type
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $fast_url, $limitation, $links_type, $order_type)
     {
@@ -113,7 +113,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * @param   string  $desc       description
      * @param   string  $tags
      * @param   string  $rank
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -133,7 +133,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * @param   string  $limitation
      * @param   string  $links_type
      * @param   string  $order_type
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type)
     {
@@ -154,7 +154,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * @param   string  $desc       Link description
      * @param   string  $tags       Link's tags
      * @param   string  $rank
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
@@ -170,7 +170,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      * @param   int     $id         Link id
      * @param   int     $gid        Group ID
      * @param   string  $rank
-     * @return  array   response array
+     * @return  array   Response array (notice or error)
      */
     function DeleteLink($id, $gid, $rank)
     {
@@ -184,7 +184,7 @@ class LinkDumpAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid   group ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteGroup($gid)
     {
