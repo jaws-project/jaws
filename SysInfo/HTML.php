@@ -11,10 +11,10 @@
 class SysInfoHTML extends Jaws_GadgetHTML
 {
     /**
-     * Default Action
+     * Gets system information
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {
@@ -22,10 +22,10 @@ class SysInfoHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * System Information
+     * Gets system information
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function SysInfo()
     {
@@ -41,10 +41,10 @@ class SysInfoHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * PHP Settings
+     * Gets PHP settings of the server
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function PHPInfo()
     {
@@ -60,10 +60,10 @@ class SysInfoHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Jaws Settings
+     * Gets installed Jaws specifications
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function JawsInfo()
     {
@@ -79,10 +79,10 @@ class SysInfoHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Directory Permissions
+     * Gets permissions of Jaws directories
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function DirInfo()
     {

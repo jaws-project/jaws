@@ -14,7 +14,7 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
      * Calls default action
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -31,11 +31,11 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display the sidebar
+     * Displays the sidebar
      *
      * @access  public
      * @param   string  $action Selected Action
-     * @return  XHTML template content
+     * @return  string  XHTML sidebar
      */
     function SideBar($action)
     {
@@ -79,7 +79,7 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
      * Returns information around system(OS, WebServer, Database,...)
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function SysInfo()
     {
@@ -110,7 +110,7 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
      * Returns some PHP Settings
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function PHPInfo()
     {
@@ -138,10 +138,10 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Returns information around jaws
+     * Returns information around installed Jaws
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function JawsInfo()
     {
@@ -172,7 +172,7 @@ class SysInfoAdminHTML extends Jaws_GadgetHTML
      * Returns directory permissions
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
     function DirInfo()
     {

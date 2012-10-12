@@ -11,10 +11,11 @@
 class SysInfoModel extends Jaws_Model
 {
     /**
-     * Get database server information
+     * Gets database server information
      *
      * @access  public
-     * @return  string   database server information
+     * @param   int     $iType  Type of information
+     * @return  string  Database server information
      */
     function GetDBServerInfo($iType = 0)
     {
@@ -36,10 +37,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Loaded extension
+     * Gets loaded extension
      *
      * @access  public
-     * @return  string   list of loaded extension
+     * @return  string  list of loaded extensions
      */
     function GetLoadedExtensions()
     {
@@ -49,10 +50,11 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get directory permission
+     * Gets directory permission
      *
      * @access  public
-     * @return  string   full permissions of directory
+     * @param   string  $path   Diretory path
+     * @return  string  Full permissions of directory
      */
     function GetPermission($path)
     {
@@ -73,11 +75,11 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get equivalent string of error_reporting
+     * Gets equivalent string of error_reporting
      *
      * @access  public
      * @param   int      $error return of error_reporting function
-     * @return  string   equivalent string of error_reporting
+     * @return  string   Equivalent string of error_reporting
      */
     function GetErrorLevelString($error)
     {
@@ -111,10 +113,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get a list of loaded Apache modules
+     * Gets list of loaded Apache modules
      *
      * @access  public
-     * @return  string   comma separated apache modules
+     * @return  string  Comma separated apache modules
      */
     function GetApacheModules()
     {
@@ -128,10 +130,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get some system item information
+     * Gets some system item information
      *
      * @access  public
-     * @return  array    array of system item information
+     * @return  array   System information
      */
     function GetSysInfo()
     {
@@ -163,10 +165,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get some PHP settings
+     * Gets some PHP settings
      *
      * @access  public
-     * @return  array    array of some PHP settings
+     * @return  array   Some PHP settings
      */
     function GetPHPInfo()
     {
@@ -209,10 +211,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get some info around your Jaws
+     * Gets some info around your Jaws
      *
      * @access  public
-     * @return  array    array of Jaws item information
+     * @return  array   Jaws information
      */
     function GetJawsInfo()
     {
@@ -258,10 +260,10 @@ class SysInfoModel extends Jaws_Model
     }
 
     /**
-     * Get permissions some Jaws's directories
+     * Gets permissions on some Jaws directories
      *
      * @access  public
-     * @return  array    array of directories permissions
+     * @return  array   Directories permissions
      */
     function GetDirsPermissions()
     {

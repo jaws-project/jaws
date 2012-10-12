@@ -15,8 +15,8 @@ class SysInfoAdminModel extends SysInfoModel
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -24,12 +24,12 @@ class SysInfoAdminModel extends SysInfoModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
