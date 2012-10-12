@@ -15,7 +15,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id  Page ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeletePage($id)
     {
@@ -29,7 +29,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id  Page ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteTranslation($id)
     {
@@ -43,7 +43,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   array   $pages  Array with the ids of pages
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function MassiveDelete($pages)
     {
@@ -58,7 +58,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $defaultPage  Default page to use
      * @param   string  $multiLang    Use a multilanguage 'schema'?
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateSettings($defaultPage, $multiLang)
     {
@@ -195,11 +195,10 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * Creates a new group
      *
      * @access  public
-     * @param    $title      The title of the group
-     * @param    $fast_url   Shortcut keyword to link to the group
-     * @param    $visible    The visibility of the group
-
-     * @return  array       Response (notice or error)
+     * @param   string  $title      The title of the group
+     * @param   string  $fast_url   Shortcut keyword to link to the group
+     * @param   bool    $visible    The visibility of the group
+     * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $fast_url, $visible)
     {
@@ -218,12 +217,11 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * Updates the group
      *
      * @access  public
-     * @param    $id         Group ID
-     * @param    $title      Title of the group
-     * @param    $fast_url   Shortcut keyword to link to the group
-     * @param    $visible    Visibility of the group
-
-     * @return  array       Response (notice or error)
+     * @param   int     $id         Group ID
+     * @param   string  $title      Title of the group
+     * @param   string  $fast_url   Shortcut keyword to link to the group
+     * @param   bool    $visible    Visibility of the group
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($id, $title, $fast_url, $visible)
     {
@@ -243,7 +241,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id   group ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteGroup($id)
     {
