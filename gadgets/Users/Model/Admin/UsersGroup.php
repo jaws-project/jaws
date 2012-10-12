@@ -17,7 +17,7 @@ class Users_Model_Admin_UsersGroup extends Jaws_Model
      * @access  public
      * @param   int     $guid  Group's ID
      * @param   array   $users Array with user id
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddUsersToGroup($guid, $users)
     {

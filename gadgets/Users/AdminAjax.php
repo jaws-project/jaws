@@ -126,9 +126,9 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   int     $guid       Group where user should go
      * @param   int     $superadmin User's type (superadmin or normal)
      * @param   int     $concurrent_logins  Concurrent logins limitation
-     * @param   string  $expiry_date  Expiry date
-     * @param   int     $status     user's status (null: all users, 0: disabled, 1: activated, 2: not verified)
-     * @return  array   Response (notice or error)
+     * @param   string  $expiry_date        Expiry date
+     * @param   int     $status     User's status (null: all users, 0: disabled, 1: activated, 2: not verified)
+     * @return  array   Response array (notice or error)
      */
     function AddUser($username, $password, $nickname, $email, $superadmin, $concurrent_logins,
                      $expiry_date, $status)
@@ -183,7 +183,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   int     $concurrent_logins   Concurrent logins limitation
      * @param   string  $expiry_date  Expiry date
      * @param   int     $status     user's status (null: all users, 0: disabled, 1: activated, 2: not verified)
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateUser($uid, $username, $password, $nickname, $email, $superadmin, $concurrent_logins,
                         $expiry_date, $status)
@@ -235,7 +235,7 @@ class UsersAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $uid   User ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteUser($uid)
     {
@@ -268,7 +268,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $uid    User' ID
      * @param   array   $keys   ACL Keys
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateUserACL($uid, $keys)
     {
@@ -292,7 +292,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $guid   Group ID
      * @param   array   $keys   ACL Keys
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroupACL($guid, $keys)
     {
@@ -316,7 +316,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $uid    User's ID
      * @param   array   $groups Array with group id
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddUserToGroups($uid, $groups)
     {
@@ -352,7 +352,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $guid  Group's ID
      * @param   array   $users Array with user id
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddUsersToGroup($guid, $users)
     {
@@ -377,7 +377,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $act        Activation type
      * @param   int     $group      Default group of anonymous registered user
      * @param   string  $recover    Users can recover their passwords
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
     {
@@ -435,11 +435,11 @@ class UsersAdminAjax extends Jaws_Ajax
      * Updates my account
      *
      * @access  public
-     * @param   string $username  Username
-     * @param   string $password  Password
-     * @param   string $nickname     User's display name
-     * @param   string $email     User's email
-     * @return  array  Response (notice or error)
+     * @param   string  $username  Username
+     * @param   string  $password  Password
+     * @param   string  $nickname  User's display name
+     * @param   string  $email     User's email
+     * @return  array   Response array (notice or error)
      */
     function UpdateMyAccount($uid, $username, $password, $nickname, $email)
     {
@@ -530,7 +530,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $lang    User language
      * @param   string  $theme   User theme
      * @param   string  $editor  User editor
-     * @return  array  Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $avatar, $privacy)
     {
@@ -568,7 +568,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $lang    User language
      * @param   string  $theme   User theme
      * @param   string  $editor  User editor
-     * @return  array  Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdatePreferences($uid, $lang, $theme, $editor, $timezone)
     {
@@ -637,11 +637,11 @@ class UsersAdminAjax extends Jaws_Ajax
      * Adds a new group
      *
      * @access  public
-     * @param   string $name        Groups's name
-     * @param   string $title       Groups's title
-     * @param   string $description Groups's description
+     * @param   string  $name        Groups's name
+     * @param   string  $title       Groups's title
+     * @param   string  $description Groups's description
      * @param   bool    $enabled    Group's status
-     * @return  array  Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddGroup($name, $title, $description, $enabled)
     {
@@ -666,12 +666,12 @@ class UsersAdminAjax extends Jaws_Ajax
      * Updates a group
      *
      * @access  public
-     * @param   int    $guid        Group ID
-     * @param   string $name        Group's name
-     * @param   string $title       Groups's title
-     * @param   string $description Groups's description
+     * @param   int     $guid        Group ID
+     * @param   string  $name        Group's name
+     * @param   string  $title       Groups's title
+     * @param   string  $description Groups's description
      * @param   bool    $enabled    Group's status
-     * @return  array  Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($guid, $name, $title, $description, $enabled)
     {
@@ -693,7 +693,7 @@ class UsersAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $guid   Group ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteGroup($guid)
     {
