@@ -71,7 +71,7 @@ class FaqAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id        Category ID
      * @param   string  $direction Direction (up/down)
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function MoveCategory($id, $direction)
     {
