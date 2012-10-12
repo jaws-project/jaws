@@ -123,7 +123,7 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
      *                                monthly, yearly, never
      * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
      *                                values from 1 to 5 (only numbers!).
-     * @return  array   Response + New item data
+     * @return  array   Response array (notice or error)
      */
     function NewItem($parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -156,7 +156,7 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
      *                                monthly, yearly, never
      * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
      *                                values from 1 to 5 (only numbers!).
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateItem($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -174,7 +174,7 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id Item ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteItem($id)
     {
@@ -188,7 +188,7 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id         Item ID
      * @param   string  $direction  Up or down
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function MoveItem($id, $direction)
     {
@@ -200,7 +200,7 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
      * Sends the sitemap XML URL to search engines
      *
      * @access  public
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function PingSitemap()
     {
