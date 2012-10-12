@@ -17,7 +17,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $settings  Basic settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateBasicSettings($settings)
     {
@@ -32,7 +32,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $settings  Advanced settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateAdvancedSettings($settings)
     {
@@ -48,7 +48,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @param   array   $settings  META settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
      * @param   array   $customMeta User defined META
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateMetaSettings($settings, $customMeta)
     {
@@ -64,7 +64,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $settings  Mail settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateMailSettings($settings)
     {
@@ -79,7 +79,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $settings  FTP settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateFTPSettings($settings)
     {
@@ -94,7 +94,7 @@ class SettingsAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   array   $settings  Proxy settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateProxySettings($settings)
     {
