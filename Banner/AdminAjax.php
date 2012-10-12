@@ -112,7 +112,7 @@ class BannerAdminAjax extends Jaws_Ajax
      * @param   long    $stop_time
      * @param   int     $random
      * @param   bool    $published
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
@@ -140,7 +140,7 @@ class BannerAdminAjax extends Jaws_Ajax
      * @param   long    $stop_time
      * @param   bool    $random
      * @param   bool    $published
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
@@ -161,7 +161,7 @@ class BannerAdminAjax extends Jaws_Ajax
      * @param   bool    $show_title
      * @param   bool    $show_type
      * @param   bool    $published
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $limit_count, $show_title, $show_type, $published)
     {
@@ -181,7 +181,7 @@ class BannerAdminAjax extends Jaws_Ajax
      * @param   bool    $show_title
      * @param   bool    $show_type
      * @param   bool    $published
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateGroup($gid, $title, $limit_count, $show_title, $show_type, $published)
     {
@@ -197,7 +197,7 @@ class BannerAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $gid     Group's ID
      * @param   array   $banners array with banner id
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddBannersToGroup($gid, $banners)
     {
@@ -211,7 +211,7 @@ class BannerAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $bid     banner ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteBanner($bid)
     {
@@ -226,7 +226,7 @@ class BannerAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $bid   banner ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function ResetViews($bid)
     {
@@ -241,7 +241,7 @@ class BannerAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $bid   banner ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function ResetClicks($bid)
     {
@@ -256,7 +256,7 @@ class BannerAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $gid   group ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteGroup($gid)
     {
