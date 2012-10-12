@@ -90,7 +90,7 @@ class PreferencesAdminModel extends PreferencesModel
      *
      * @access  public
      * @param   array   $preferences_config
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdatePreferences($preferences_config)
     {
