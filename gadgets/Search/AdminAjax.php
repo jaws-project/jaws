@@ -11,11 +11,11 @@
 class SearchAdminAjax extends Jaws_Ajax
 {
     /**
-     * Set searchable gadgets
+     * Updates searchable gadgets
      *
      * @access  public
-     * @param   array    $gadgets Array with gadgets to be set as searchable
-     * @param   string   $display_gadgets Set the display_gadgets flag in registry
+     * @param   array   $gadgets    Array with gadgets to be set as searchable
+     * @return  array   Response (notice or error)
      */
     function SaveChanges($gadgets)
     {

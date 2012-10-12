@@ -15,6 +15,7 @@ class SearchLayoutHTML
      * Loads layout actions
      *
      * @access  private
+     * @retrun  array   List of actions
      */
     function LoadLayoutActions()
     {
@@ -39,11 +40,11 @@ class SearchLayoutHTML
     }
 
     /**
-     * Display a search box
+     * Builds the search box
      *
      * @access  public
-     * @var     boolean $gadgets_combo  Display gadgets combo (optional, default true)
-     * @return  string  Searchable box
+     * @param   bool    $gadgets_combo  Display gadgets combo (optional, default true)
+     * @return  string  XHTML search box
      */
     function Box($gadgets_combo = true)
     {
@@ -102,10 +103,10 @@ class SearchLayoutHTML
     }
 
     /**
-     * Display a simple search box
+     * Builds the simple search box
      *
      * @access  public
-     * @return  string Searchable box
+     * @return  string  XHTML search box
      */
     function SimpleBox()
     {
@@ -113,10 +114,10 @@ class SearchLayoutHTML
     }
 
     /**
-     * Display the advanced search box
+     * Builds the advanced search box
      *
      * @access  public
-     * @return  string  Advanced search box (XHTML output)
+     * @return  string  XHTML search box
      */
     function AdvancedBox()
     {

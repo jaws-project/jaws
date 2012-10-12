@@ -13,10 +13,10 @@ require_once JAWS_PATH . 'gadgets/Search/Model.php';
 class SearchAdminModel extends SearchModel
 {
     /**
-     * Install Search gadget in Jaws
+     * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -33,7 +33,7 @@ class SearchAdminModel extends SearchModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -47,12 +47,12 @@ class SearchAdminModel extends SearchModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
@@ -67,10 +67,11 @@ class SearchAdminModel extends SearchModel
     }
 
     /**
-     * Set searchable gadgets
+     * Sets searchable gadgets
      *
      * @access  public
-     * @param   array $gadgets Array with gadgets to be set as searchable
+     * @param   array   $gadgets    List of gadgets to be set as searchable
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function SetSearchableGadgets($gadgets)
     {

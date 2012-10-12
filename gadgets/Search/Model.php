@@ -11,13 +11,20 @@
  */
 class SearchModel extends Jaws_Model
 {
+    /**
+     * Search options
+     *
+     * @var     array
+     * @access  private
+     */
     var $_SearchTerms = array();
 
     /**
-     * Return the search results
+     * Returns the search results
      *
      * @access  public
-     * @return  string  Array with the search result
+     * @param   array   $options    Search options
+     * @return  array   Search results
      */
     function Search($options)
     {
@@ -147,10 +154,11 @@ class SearchModel extends Jaws_Model
     }
 
     /**
-     * Join search phrase for provide string for showing in result title
+     * Prepares result title by joining search phrases
      *
      * @access  public
-     * @return  string  
+     * @param   array   $options    Search options
+     * @return  string  Search result title 
      */
     function implodeSearch($options = null)
     {
@@ -188,7 +196,8 @@ class SearchModel extends Jaws_Model
      * any matches and all other words
      *
      * @access  public
-     * @param   string  $phrase   Phrase to parse
+     * @param   string  $phrase     Phrase to parse
+     * @param   array   $searchable List of searchable gadgets
      * @return  array   An array with the following indexes (and results):
      *                     - all, exact, least and exclude
      */
@@ -297,10 +306,10 @@ class SearchModel extends Jaws_Model
     }
 
     /**
-     * Get searchable gadgets
+     * Gets searchable gadgets
      *
      * @access  public
-     * @return  array
+     * @return  array   List of searchable gadgets
      */
     function GetSearchableGadgets()
     {
@@ -315,13 +324,13 @@ class SearchModel extends Jaws_Model
     }
 
     /**
-     * Get entry pager numbered links
+     * Gets entry pager numbered links
      *
      * @access  public
-     * @param   int     $page      Current page number
-     * @param   int     $page_size Search result count per page
-     * @param   int     $total     Total search result count
-     * @return  array   array with numbers of pages
+     * @param   int     $page       Active page number
+     * @param   int     $page_size  Number of results per page
+     * @param   int     $total      Number of all results
+     * @return  array   Array of page numbers
      */
     function GetEntryPagerNumbered($page, $page_size, $total)
     {

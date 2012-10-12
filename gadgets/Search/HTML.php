@@ -12,10 +12,10 @@
 class SearchHTML extends Jaws_GadgetHTML
 {
     /**
-     * Call SearchBox method
+     * Calls AdvancedBox method
      *
      * @access  public
-     * @return  string The Searchable(magic) box
+     * @return  string  XHTML search form
      */
     function DefaultAction()
     {
@@ -24,10 +24,10 @@ class SearchHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display a search box
+     * Displays the search box
      *
      * @access  public
-     * @return  string  Search box (XHTML output)
+     * @return  string  XHTML search form
      */
     function Box()
     {
@@ -36,10 +36,10 @@ class SearchHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display a simple search box
+     * Displays the simple search box
      *
      * @access  public
-     * @return  string  Simple search box (XHTML output)
+     * @return  string  XHTML search form
      */
     function SimpleBox()
     {
@@ -48,10 +48,10 @@ class SearchHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display the advanced search box
+     * Displays the advanced search box
      *
      * @access  public
-     * @return  string  Advanced search box (XHTML output)
+     * @return  string  XHTML search form
      */
     function AdvancedBox()
     {
@@ -60,10 +60,10 @@ class SearchHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display search results
+     * Displays search results
      *
      * @access  public
-     * @return  string HTML content of search result
+     * @return  string  XHTML content of search results
      */
     function Results()
     {
@@ -171,8 +171,15 @@ class SearchHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Get page navigation links
+     * Gets page navigation links
+     *
      * @access  private
+     * @param   int     $page           Active page number
+     * @param   int     $page_size      Number of results per page
+     * @param   int     $total          Number of all results
+     * @param   string  $query_string   SQL query
+     * @param   int     $id
+     * @return  string  XHTML page navigation
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $query_string, $id = null)
     {
