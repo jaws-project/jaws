@@ -17,8 +17,8 @@ class WeatherModel extends Jaws_Model
      * Gets associated data for a region
      *
      * @access  public
-     * @param   int     $id ID of the region
-     * @return  array   Array with the associated data of region or Jaws_Error on failure
+     * @param   int     $id  region ID
+     * @return  mixed   Array of associated data of region or Jaws_Error on failure
      */
     function GetRegion($id)
     {
@@ -48,9 +48,10 @@ class WeatherModel extends Jaws_Model
      * Gets list of regions
      *
      * @access  public
-     * @param   bool    $limit  Data limit
-     * @param   int     $offset Data offset
-     * @return  array Array of regions or Jaws_Error on failure
+     * @param   bool    $published  Published status
+     * @param   int     $limit      Data limit
+     * @param   int     $offset     Data offset
+     * @return  mixed   Array of regions or Jaws_Error on failure
      */
     function GetRegions($published = null, $limit = false, $offset = null)
     {

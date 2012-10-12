@@ -16,6 +16,7 @@ class WeatherLayoutHTML
      * Loads layout actions
      *
      * @access  private
+     * @return  array   List of actions
      */
     function LoadLayoutActions()
     {
@@ -39,9 +40,9 @@ class WeatherLayoutHTML
      * Displays the weather of a specific region
      *
      * @access  public
-     * @param   int      $region     The ID of the region
-     * @param   bool     $forecast   Whether displays forecst or not
-     * @return  string   HTML content
+     * @param   int      $region     Region ID
+     * @param   bool     $forecast   Whether displays forecast or not
+     * @return  string   XHTML content
      */
     function RegionWeather($region, $forecast = false)
     {
@@ -123,10 +124,10 @@ class WeatherLayoutHTML
     }
 
     /**
-     * Displays the weather of all regions
+     * Displays the weather for all regions
      *
      * @access  public
-     * @return  string   HTML content
+     * @return  string  XHTML content
      */
     function AllRegionsWeather()
     {

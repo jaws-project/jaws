@@ -16,7 +16,7 @@ class WeatherHTML extends Jaws_GadgetHTML
      * Default Action
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {
@@ -24,10 +24,10 @@ class WeatherHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays the weather of all regions
+     * Displays the weather for all regions
      *
      * @access  public
-     * @return  string   HTML content
+     * @return  string  XHTML content
      */
     function AllRegionsWeather()
     {
@@ -39,7 +39,7 @@ class WeatherHTML extends Jaws_GadgetHTML
      * Displays the weather of a region
      *
      * @access  public
-     * @return  string   HTML content
+     * @return  string  XHTML content
      */
     function RegionWeather()
     {

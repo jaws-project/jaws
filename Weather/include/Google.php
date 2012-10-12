@@ -8,21 +8,47 @@
  */
 class Google_Weather
 {
-    /*
+    /**
+     * Whether use metric or not
      *
+     * @var     bool
+     * @access  private
      */
     var $_metric;
 
-    /*
+    /**
+     * The path of the cache directory
      *
+     * @var     string
+     * @access  private
      */
     var $_cache_dir;
+
+    /**
+     * Time interval to update the cache
+     *
+     * @var     int
+     * @access  private
+     */
     var $_expire_time;
+
+    /**
+     * Optional parameters
+     *
+     * @var     array
+     * @access  private
+     */
     var $_params;
 
     /**
      * Constructor
      *
+     * @access  public
+     * @param   bool    $metric
+     * @param   string  $cache_dir
+     * @param   int     $expire_time
+     * @param   array   $options
+     * @return  void
      */
     function Google_Weather($metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
     {
@@ -33,7 +59,12 @@ class Google_Weather
     }
 
     /**
+     * Saves data into the file
      *
+     * @access  public
+     * @param   string  $cache_file
+     * @param   string  $data
+     * @return  mixed   True on success and PEAR error on failure
      */
     function saveFile($cache_file, $data)
     {
@@ -45,7 +76,11 @@ class Google_Weather
     }
 
     /**
+     * Loads data from file
      *
+     * @access  public
+     * @param   string  $cache_file
+     * @return  mixed   True on success and PEAR error on failure
      */
     function loadFile($cache_file)
     {
@@ -57,7 +92,11 @@ class Google_Weather
     }
 
     /**
-     * exchange google icons with native icons
+     * Exchange Google icons with native icons
+     *
+     * @access  public
+     * @param   string  $gIcon
+     * @return  string  $newIcon
      */
     function getWeatherIcon($gIcon)
     {
@@ -147,7 +186,11 @@ class Google_Weather
     }
 
     /**
+     * Gets temperature of the weather
      *
+     * @access  public
+     * @param   int $gTemp
+     * @return  int Temperature
      */
     function getWeatherTemp($gTemp)
     {
@@ -155,7 +198,11 @@ class Google_Weather
     }
 
     /**
+     * Gets weather information
      *
+     * @access  public
+     * @param   array   $gWeather
+     * @return  array   Weather information
      */
     function getWeatherInfo($gWeather)
     {
@@ -168,8 +215,9 @@ class Google_Weather
     /**
      * Sets the input xml file to be parsed
      *
-     * @param    string      Filename (full path)
-     * @return   resource    handle of the given file
+     * @param    float      $latitude   The GEO position latitude
+     * @param    float      $longitude  The GEO position longitude
+     * @return   mixed      Array of weather data or PEAR error
      * @access   public
      */
     function getWeather($latitude, $longitude)

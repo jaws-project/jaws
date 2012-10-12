@@ -14,10 +14,10 @@
 class WeatherAdminHTML extends Jaws_GadgetHTML
 {
     /*
-     * Admin of Gadget
+     * Admin area of the gadget
      *
      * @access  public
-     * @return  string HTML content of administration
+     * @return  string  XHTML content of administration
      */
     function Admin()
     {
@@ -30,11 +30,11 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the weather menubar
+     * Builds the weather menubar
      *
      * @access  public
      * @param   string  $action   Selected action
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML menubar
      */
     function MenuBar($action)
     {
@@ -60,10 +60,10 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays the regions management UI
+     * Displays the management UI for regions
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function Regions()
     {
@@ -126,10 +126,10 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the datagrid structure (XHTML of datagrid)
+     * Builds datagrid structure
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function RegionsDataGrid()
     {
@@ -149,11 +149,11 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares data for regions grid
+     * Prepares data for regions datagrid
      *
      * @access  public
-     * @param   int    $offset  Offset of data
-     * @return  array  Data
+     * @param   int     $offset  Data offset
+     * @return  array   Grid data
      */
     function GetRegions($offset = null)
     {
@@ -185,10 +185,10 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Gets google map image
+     * Returns google map image
      *
      * @access  public
-     * @return  image  Google map image
+     * @return  void
      */
     function GetGoogleMapImage()
     {
@@ -239,10 +239,10 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays the properties section of the gadget 
+     * Builds Properties section of the gadget 
      *
      * @access  public
-     * @return  string HTML content
+     * @return  string  XHTML content
      */
     function Properties()
     {
