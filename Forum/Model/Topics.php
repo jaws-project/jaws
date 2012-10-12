@@ -79,38 +79,6 @@ class Forum_Model_Topics extends Jaws_Model
     }
 
     /**
-     * Get posts of topic
-     *
-     * @access  public
-     * @param   int     $tid        Topic's ID
-     * @param   bool    $limit      Count of topics to be returned
-     * @param   int     $offset     Offset of data array
-     * @return  array   Array of topics or Jaws_Error on failure
-     */
-    function GetPosts($tid, $limit = false, $offset = null)
-    {
-        $sql = '
-            SELECT
-                [[forums_posts]].[id], [[forums_posts]].[message], [[forums_posts]].[createtime],
-                [[users]].[username], [[users]].[nickname],
-                [[forums_posts]].[uid]
-            FROM [[forums_posts]] 
-                LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id] ';
-        $sql.= (empty($tid)? '' : 'WHERE [tid] = {tid} ') . 'ORDER BY [createtime] ASC';
-
-        $params = array();
-        $params['tid'] = $tid;
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_GET_POSTS'), _t('FORUM_NAME'));
-        }
-
-        return $result;
-    }
-
-    /**
      * Insert new topic
      *
      * @access  public

@@ -94,7 +94,7 @@ class Forum_Actions_Topics extends ForumHTML
     function NewTopic()
     {
         $request =& Jaws_Request::getInstance();
-        $req = $request->get(array('subject', 'message', 'fid'));
+        $req = $request->get(array('subject', 'description', 'fid'));
         if (empty($req['fid'])) {
             return false;
         }
@@ -121,7 +121,6 @@ class Forum_Actions_Topics extends ForumHTML
         $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('fid', $req['fid']);
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forum')) {
             $tpl->SetBlock('newtopic/response');
@@ -203,15 +202,41 @@ class Forum_Actions_Topics extends ForumHTML
 
         $tpl->SetVariable('title', $topic['subject']);
 
-        $posts = $model->GetPosts($get['tid']);
+        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $posts = $pModel->GetPosts($get['tid']);
         if (Jaws_Error::IsError($posts)) {
             return false;
         }
+        $objDate = $GLOBALS['app']->loadDate();
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $jUser = new Jaws_User;
+
         foreach ($posts as $post) {
             $tpl->SetBlock('topic/post');
+            $tpl->SetVariable('username', $post['username']);
+            $tpl->SetVariable('nickname', $post['nickname']);
+            $tpl->SetVariable('user_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile'));
+            $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
+            $tpl->SetVariable('joined_time', $objDate->Format($post['user_joined_time']));
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
+            //
+            $tpl->SetVariable('posts_lbl',_t('FORUM_USER_POST_COUNT'));
+            $tpl->SetVariable('joined_lbl',_t('FORUM_USER_JOINED_TIME'));
+            $tpl->SetVariable('postedby_lbl',_t('FORUM_POSTED_BY'));
+            //
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('message', $post['message']);
-
+            if ($post['last_update_uid'] != 0) {
+                $userInfo = $jUser->GetUser($post['last_update_uid']);
+                $tpl->SetBlock('topic/post/update');
+                $tpl->SetVariable('updatedby_lbl', _t('FORUM_POST_UPDATEDBY'));
+                $tpl->SetVariable('username', $userInfo['username']);
+                $tpl->SetVariable('nickname', $userInfo['nickname']);
+                $tpl->SetVariable('user_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile'));
+                $tpl->SetVariable('update_reason', $post['last_update_reason']);
+                $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time']));
+                $tpl->ParseBlock('topic/post/update');
+            }
             $tpl->ParseBlock('topic/post');
         }
 
