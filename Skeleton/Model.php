@@ -11,10 +11,10 @@
 class SkeletonModel extends Jaws_Model
 {
     /**
-     * Return the data in a nice format
+     * Returns version of Jaws
      *
      * @access  public
-     * @return  string  Date and Time of server
+     * @return  string  Jaws version
      */
     function GetJawsVersion()
     {

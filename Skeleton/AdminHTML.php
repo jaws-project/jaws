@@ -11,10 +11,10 @@
 class SkeletonAdminHTML extends Jaws_GadgetHTML
 {
     /**
-     * Admin gadget display
+     * Admin section
      *
      * @access  public
-     * @return  string
+     * @return  void
      */
     function Admin()
     {

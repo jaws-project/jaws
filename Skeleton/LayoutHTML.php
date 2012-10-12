@@ -11,10 +11,10 @@
 class SkeletonLayoutHTML
 {
     /**
-     * Returns the server time
+     * Displays version of Jaws
      *
      * @access  public
-     * @return  string
+     * @return  string  Jaws version
      */
     function Display()
     {

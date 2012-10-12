@@ -14,7 +14,7 @@ class SkeletonHTML extends Jaws_GadgetHTML
      * Executes the default action
      *
      * @access  public
-     * @return  string
+     * @return  string  Jaws version
      */
     function DefaultAction()
     {
