@@ -12,10 +12,10 @@
 class WebcamAdminHTML extends Jaws_GadgetHTML
 {
     /**
-     * Callback to show short URL's
+     * Callback to display short URLs
      *
      * @access  private
-     * @param   string  $url   Long URL
+     * @param   string  $url    Original URL
      * @return  string  Short URL
      */
     function ShowShortURL($url)
@@ -31,10 +31,10 @@ class WebcamAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares data to add to datagrid
+     * Prepares data for datagrid
      *
      * @access  public
-     * @param   int     $limit  Limit of data
+     * @param   int     $limit  Data limit
      * @return  array   Data
      */
     function GetWebCams($limit = 0)
@@ -71,10 +71,10 @@ class WebcamAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Creates the datagrid
+     * Builds the datagrid
      *
      * @access  public
-     * @return  string XHTML of datagrid
+     * @return  string  XHTML datagrid
      */
     function DataGrid()
     {
@@ -92,10 +92,10 @@ class WebcamAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Handles the admin actions
+     * Builds the admin section
      *
      * @access  public
-     * @return  string HTML content of Admin
+     * @return  string  XHTML content of Admin
      */
     function Admin()
     {

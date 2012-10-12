@@ -11,11 +11,11 @@
 class WebcamAdminAjax extends Jaws_Ajax
 {
     /**
-     * Get information of a webcam
+     * Gets information of a webcam
      *
      * @access  public
-     * @param   int     $id    Webcam ID
-     * @return  array   Webcam information
+     * @param   int     $id  Webcam ID
+     * @return  mixed   Array of webcam information or false on failure
      */
     function GetWebcam($id)
     {
@@ -28,12 +28,12 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Add a webcam
+     * Adds a new webcam
      *
      * @access  public
-     * @param   string  $title       Title of the webcam frame
-     * @param   string  $url         Url of the webcam image
-     * @param   int     $refresh     The refresh time to reload the webcam
+     * @param   string  $title      Title of the webcam frame
+     * @param   string  $url        Url of the webcam image
+     * @param   int     $refresh    The refresh time to reload the webcam
      * @return  array   Response (notice or error)
      */
     function NewWebcam($title, $url, $refresh)
@@ -44,13 +44,13 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update webcam information
+     * Updates webcam information
      *
      * @access  public
-     * @param   int     $id          The id of the webcam
-     * @param   string  $title       Title of the webcam frame
-     * @param   string  $url         Url of the webcam image
-     * @param   int     $refresh     Refresh rate
+     * @param   int     $id         Webcam ID
+     * @param   string  $title      Title of the webcam frame
+     * @param   string  $url        Url of the webcam image
+     * @param   int     $refresh    Refresh rate
      * @return  array   Response (notice or error)
      */
     function UpdateWebcam($id, $title, $url, $refresh)
@@ -61,11 +61,11 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete a webcam
+     * Deletes the webcam
      *
      * @access  public
-     * @param   int     $id  Webcam's ID
-     * @return  array  Response (notice or error)
+     * @param   int     $id  Webcam ID
+     * @return  array   Response (notice or error)
      */
     function DeleteWebcam($id)
     {
@@ -75,11 +75,11 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update the properties
+     * Updates properties
      *
      * @access  public
-     * @param   int     $limit Random Limit
-     * @return  array   Response
+     * @param   int     $limit  The limitation
+     * @return  array   Response (notice or error)
      */
     function UpdateProperties($limit)
     {
@@ -89,10 +89,10 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Callback to show short URL's
+     * Callback to display short URLs
      *
      * @access  private
-     * @param   string  $url   Long URL
+     * @param   string  $url    Original URL
      * @return  string  Short URL
      */
     function ShowShortURL($url)
@@ -108,10 +108,11 @@ class WebcamAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get Webcams
+     * Gets webcams
      *
      * @access  public
-     * @return  array   Array of webcams
+     * @param   int     $limit  The limitation
+     * @return  array   List of webcams
      */
     function GetData($limit)
     {

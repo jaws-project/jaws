@@ -12,11 +12,11 @@
 class WebcamModel extends Jaws_Model
 {
     /**
-     * Get the properties of a webcam
+     * Gets properties of the webcam
      *
      * @access  public
-     * @param   int     $id Webcam's ID
-     * @return  array   An array with the webcam's properties and Jaws_Error on failure
+     * @param   int     $id     Webcam ID
+     * @return  mixed   Array of webcam properties or Jaws_Error on failure
      */
     function GetWebCam($id)
     {
@@ -39,11 +39,10 @@ class WebcamModel extends Jaws_Model
     }
 
     /**
-     * Get the properties of a random webcam
+     * Gets properties of a random webcam
      *
      * @access  public
-     * @param   int     Webcam's ID
-     * @return  array   An array with the webcam's properties and Jaws_Error on failure
+     * @return  mixed   Array of webcam properties or Jaws_Error on failure
      */
     function GetRandomWebCam()
     {
@@ -74,11 +73,11 @@ class WebcamModel extends Jaws_Model
     }
 
     /**
-     * Get a list of the available webcams
+     * Gets list of available webcams
      *
      * @access  public
-     * @param   mixed   $limit Optional. Limit of data to retrieve (false = returns all)
-     * @return  array   An array of available webcams and Jaws_Error on error
+     * @param   mixed   $limit  Limit of data to retrieve (false = return all)
+     * @return  mixed   Array of webcams or Jaws_Error on failure
      */
     function GetWebCams($limit = false)
     {

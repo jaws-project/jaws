@@ -14,10 +14,10 @@ require_once JAWS_PATH . 'gadgets/Webcam/Model.php';
 class WebcamAdminModel extends WebcamModel
 {
     /**
-     * Install the gadget
+     * Installs the gadget
      *
      * @access  public
-     * @return  bool     True/Jaws_Error
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -26,7 +26,7 @@ class WebcamAdminModel extends WebcamModel
             return $result;
         }
 
-        //registry keys.
+        //Registry keys.
         $GLOBALS['app']->Registry->NewKey('/gadgets/Webcam/limit_random', '3');
 
         return true;
@@ -36,7 +36,7 @@ class WebcamAdminModel extends WebcamModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UninstallGadget()
     {
@@ -55,12 +55,12 @@ class WebcamAdminModel extends WebcamModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
@@ -69,19 +69,19 @@ class WebcamAdminModel extends WebcamModel
             return $result;
         }
 
-        // Registry keys.
+        // Registry keys
 
         return true;
     }
 
     /**
-     * Create a new webcam
+     * Inserts a new webcam
      *
      * @access  public
-     * @param   string  $title       Title of the webcam frame
-     * @param   string  $url         Url of the webcam image
-     * @param   string  $refresh     The refresh time to reload the webcam
-     * @return  bool    True if query was successful, otherwise returns false.
+     * @param   string  $title      Title of the webcam frame
+     * @param   string  $url        URL of the webcam image
+     * @param   string  $refresh    The refresh time to reload the webcam
+     * @return  mixed   True if query was successful, otherwise returns false.
      */
     function NewWebcam($title, $url, $refresh)
     {
@@ -106,14 +106,14 @@ class WebcamAdminModel extends WebcamModel
     }
 
     /**
-     * Update webcam info
+     * Updates webcam info
      *
      * @access  public
-     * @param   int     $id          The id of the webcam
+     * @param   int     $id          Webcam ID
      * @param   string  $title       Title of the webcam frame
-     * @param   string  $url         Url of the webcam image
+     * @param   string  $url         URL of the webcam image
      * @param   string  $refresh     Refresh rate
-     * @return  bool    True if query was successful, otherwise returns false.
+     * @return  mixed   True if query was successful, otherwise returns false
      */
     function UpdateWebcam($id, $title, $url, $refresh)
     {
@@ -140,11 +140,11 @@ class WebcamAdminModel extends WebcamModel
     }
 
     /**
-     * Delete a webcam
+     * Deletes the webcam
      *
      * @access  public
-     * @param   int     $id          Id of the webcam
-     * @return  bool    True if query was successful, otherwise returns false.
+     * @param   int     $id Webcam ID
+     * @return  mixed   True if query was successful, otherwise returns false
      */
     function DeleteWebcam($id)
     {
@@ -160,11 +160,11 @@ class WebcamAdminModel extends WebcamModel
     }
 
     /**
-     * Set properties of the gadget
+     * Updates properties of the gadget
      *
      * @access  public
-     * @param   int     $limit Random Limit
-     * @return  bool    True if change is successful, if not, returns Jaws_Error on any error
+     * @param   int     $limit  The limitation
+     * @return  mixed   True if change is successful, if not, returns Jaws_Error on any error
      */
     function UpdateProperties($limit)
     {

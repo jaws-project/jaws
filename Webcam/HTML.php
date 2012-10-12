@@ -12,10 +12,10 @@
 class WebcamHTML extends Jaws_GadgetHTML
 {
     /**
-     * Default action to be run if none is defined.
+     * Calls Display function if no is specified
      *
      * @access  public
-     * @return  string  HTML content of DefaultAction
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {

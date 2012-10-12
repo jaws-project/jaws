@@ -12,10 +12,10 @@
 class WebcamLayoutHTML
 {
     /**
-     * Handle the layout action of Display webcams
+     * Displays webcams
      *
      * @access  public
-     * @return  string  HTML content of Webcams for layout action
+     * @return  string  XHTML content of webcams
      */
     function Display()
     {
@@ -45,7 +45,7 @@ class WebcamLayoutHTML
      * Gets a random webcam and prints it
      *
      * @access  public
-     * @return  string  HTML content of radom webcam
+     * @return  string  XHTML content of the webcam
      */
     function Random()
     {
