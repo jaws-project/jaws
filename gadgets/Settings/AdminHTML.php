@@ -12,6 +12,10 @@
 class SettingsAdminHTML extends Jaws_GadgetHTML
 {
     /**
+     * Displays gadget administration section
+     *
+     * @access  public
+     * @return  string  XHTML template content
      */
     function Admin()
     {
@@ -32,11 +36,11 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Builds the settings Sidebar
+     * Builds the settings sidebar
      *
      * @access  private
-     * @param   string  $action  Current action
-     * @return  string  XHTML of sidebar
+     * @param   string  $action Current action
+     * @return  string  XHTML sidebar
      */
     function SideBar($action)
     {
@@ -83,10 +87,10 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display general/basic settings form
+     * Displays general/basic settings form
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function BasicSettings()
     {
@@ -196,10 +200,10 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display advanced settings
+     * Displays advanced settings
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function AdvancedSettings()
     {
@@ -370,10 +374,10 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display meta settings form
+     * Displays meta settings form
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function MetaSettings()
     {
@@ -473,10 +477,10 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display general/mailserver settings form
+     * Displays general/mailserver settings form
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function MailSettings()
     {
@@ -620,7 +624,7 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
      * Display general/ftpserver settings form
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function FTPSettings()
     {
@@ -722,10 +726,10 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display general/proxy settings form
+     * Displays general/proxy settings form
      *
      * @access  public
-     * @return  string  Template content
+     * @return  string  XHTML template content
      */
     function ProxySettings()
     {

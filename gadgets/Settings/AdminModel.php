@@ -15,8 +15,8 @@ class SettingsAdminModel extends Jaws_Model
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -25,12 +25,12 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateGadget($old, $new)
     {
@@ -48,10 +48,10 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Get the available calendars
+     * Gets the available calendars
      *
      * @access   public
-     * @return   Array   Array with available calendars and Jaws_Error otherwise
+     * @return   mixed  Array of available calendars or flase on failure
      */
     function GetCalendarList()
     {
@@ -73,10 +73,10 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Get the available editors
+     * Gets available editors
      *
      * @access   public
-     * @return   Array   Array with available editors and Jaws_Error otherwise
+     * @return   array  List of available editors
      */
     function GetEditorList()
     {
@@ -88,10 +88,10 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Get the available date formats
+     * Gets available date formats
      *
      * @access   public
-     * @return   Array   Array with available date formats and Jaws_Error otherwise
+     * @return   array  List of available date formats
      */
     function GetDateFormatList()
     {
@@ -113,10 +113,10 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Get the timezones list
+     * Gets list of timezones
      *
      * @access   public
-     * @return   Array   Array with timezone and Jaws_Error otherwise
+     * @return   array  List of timezones
      */
     function GetTimeZonesList()
     {
@@ -169,7 +169,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the basic settings
+     * Updates basic settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -184,7 +184,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'site_comment',     => //Site commnet
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function SaveBasicSettings($settings)
     {
@@ -210,7 +210,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the advanced settings
+     * Updates advanced settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -228,7 +228,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'timezone',            //Timezone
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function SaveAdvancedSettings($settings)
     {
@@ -254,7 +254,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the META tags settings
+     * Updates META tags settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -267,7 +267,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'copyright',
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function SaveMetaSettings($settings)
     {
@@ -292,7 +292,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the mail settings
+     * Updates mail settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -310,7 +310,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'smtp_pass',
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function UpdateMailSettings($settings)
     {
@@ -338,7 +338,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the ftp settings
+     * Updates ftp settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -353,7 +353,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'ftp_root',
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function UpdateFTPSettings($settings)
     {
@@ -381,7 +381,7 @@ class SettingsAdminModel extends Jaws_Model
     }
 
     /**
-     * Save the proxy settings
+     * Updates proxy settings
      *
      * @access  public
      * @param   array   $settings  Settings array. This should have the following entries:
@@ -395,7 +395,7 @@ class SettingsAdminModel extends Jaws_Model
      *                   'proxy_pass',
      *                  );
      *
-     * @return  bool    True or Jaws_Error
+     * @return  mixed   True or Jaws_Error
      */
     function UpdateProxySettings($settings)
     {

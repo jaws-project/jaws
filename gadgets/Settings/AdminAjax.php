@@ -12,12 +12,12 @@
 class SettingsAdminAjax extends Jaws_Ajax
 {
     /**
-     * Update basic settings
+     * Updates basic settings
      *
      * @access  public
      * @param   array   $settings  Basic settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateBasicSettings($settings)
     {
@@ -27,12 +27,12 @@ class SettingsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update advanced settings
+     * Updates advanced settings
      *
      * @access  public
      * @param   array   $settings  Advanced settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateAdvancedSettings($settings)
     {
@@ -42,11 +42,13 @@ class SettingsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update META settings
+     * Updates META settings
      *
      * @access  public
-     * @param   array   $settings  
-     * @return  array   Success/Failure
+     * @param   array   $settings  META settings array. Should have the same
+     *                             format as the SaveBasicSettings model's method
+     * @param   array   $customMeta User defined META
+     * @return  array   Response (notice or error)
      */
     function UpdateMetaSettings($settings, $customMeta)
     {
@@ -57,12 +59,12 @@ class SettingsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update mail settings
+     * Updates mail settings
      *
      * @access  public
      * @param   array   $settings  Mail settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateMailSettings($settings)
     {
@@ -72,12 +74,12 @@ class SettingsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update ftp settings
+     * Updates FTP settings
      *
      * @access  public
      * @param   array   $settings  FTP settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateFTPSettings($settings)
     {
@@ -87,12 +89,12 @@ class SettingsAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update proxy settings
+     * Updates proxy settings
      *
      * @access  public
      * @param   array   $settings  Proxy settings array. Should have the same
      *                             format as the SaveBasicSettings model's method
-     * @return  array   Success/Failure
+     * @return  array   Response (notice or error)
      */
     function UpdateProxySettings($settings)
     {
