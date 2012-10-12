@@ -34,7 +34,7 @@ class WebcamAdminAjax extends Jaws_Ajax
      * @param   string  $title      Title of the webcam frame
      * @param   string  $url        Url of the webcam image
      * @param   int     $refresh    The refresh time to reload the webcam
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function NewWebcam($title, $url, $refresh)
     {
@@ -51,7 +51,7 @@ class WebcamAdminAjax extends Jaws_Ajax
      * @param   string  $title      Title of the webcam frame
      * @param   string  $url        Url of the webcam image
      * @param   int     $refresh    Refresh rate
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateWebcam($id, $title, $url, $refresh)
     {
@@ -65,7 +65,7 @@ class WebcamAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id  Webcam ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteWebcam($id)
     {
@@ -79,7 +79,7 @@ class WebcamAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $limit  The limitation
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateProperties($limit)
     {
