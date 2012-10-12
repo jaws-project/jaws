@@ -74,7 +74,7 @@ class RssReaderAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int    $id  RSS Site ID
-     * @return  array  RResponse array (notice or error)
+     * @return  array  Response array (notice or error)
      */
     function DeleteRSS($id)
     {

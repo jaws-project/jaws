@@ -29,7 +29,7 @@ class XML_Feed extends XML_Parser
     var $_params   = array();
 
     /**
-     * valid encodings
+     * Valid encodings
      *
      * @var     array
      * @access  private
