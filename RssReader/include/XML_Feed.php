@@ -3,7 +3,7 @@
  * XML_Feed_Reader
  *
  * @author        Ali Fazelzadeh <afz@php.net>
- * @copyright     2007-2008 Ali Fazelzadeh
+ * @copyright     2007-2012 Ali Fazelzadeh
  * @license       http://www.gnu.org/copyleft/lesser.html
  */
 require_once 'XML/Parser.php';
@@ -13,11 +13,11 @@ class XML_Feed extends XML_Parser
     var $cache_dir = '';
     var $file_mode = null;
     var $cache_time = 3600; // 60 * 60 * 1
-    //--------------------------------------
+
     var $activeTag   = '';
     var $level_1_tag = '';
     var $level_2_tag = '';
-    //--------------------------------------
+
     var $valid_feed_types   = array('FEED', 'RSS', 'RDF', 'OPML');
     var $level_1_valid_tags = array('FEED', 'CHANNEL', 'HEAD');
     var $level_2_valid_tags = array('ENTRY', 'ITEM', 'OUTLINE');
@@ -25,13 +25,13 @@ class XML_Feed extends XML_Parser
     var $feed      = array('channel'=> array(), 'items' => array());
     var $channel   = array();
     var $item      = array();
-    //--------------------------------------
+
     var $_params   = array();
 
     /**
      * valid encodings
      *
-     * @var array
+     * @var     array
      * @access  private
      */
     var $_validEncodings = array('ISO-8859-1', 'UTF-8', 'US-ASCII');
@@ -50,9 +50,9 @@ class XML_Feed extends XML_Parser
     /**
      * Sets the input xml file to be parsed
      *
-     * @access   public
-     * @param    string  $file  Filename(full path)
-     * @return   mixed   True on success or error on failure
+     * @access  public
+     * @param   string  $file  Filename(full path)
+     * @return  mixed   True on success or error on failure
      */
     function setInputFile($file)
     {
@@ -87,9 +87,9 @@ class XML_Feed extends XML_Parser
     /**
      * Fetches feeds
      *
-     * @access   public
-     * @param    string  $feed_url  Feed URL
-     * @return   mixed   True on success or error on failure
+     * @access  public
+     * @param   string  $feed_url  Feed URL
+     * @return  mixed   True on success or error on failure
      */
     function fetch($feed_url)
     {
@@ -121,10 +121,10 @@ class XML_Feed extends XML_Parser
     /**
      * Extends the array
      *
-     * @access   public
-     * @param    string  $func  Callback function
-     * @param    array   $arr   The array to be extend
-     * @return   array   The new extended array
+     * @access  public
+     * @param   string  $func  Callback function
+     * @param   array   $arr   The array to be extend
+     * @return  array   The new extended array
      */
     function ex_array_map($func, $arr)
     {
@@ -138,9 +138,9 @@ class XML_Feed extends XML_Parser
     /**
      * Saves data into the file
      *
-     * @access   public
-     * @param    string  $cache_file    Filename
-     * @return   mixed   True on success or error on failure
+     * @access  public
+     * @param   string  $cache_file    Filename
+     * @return  mixed   True on success or error on failure
      */
     function saveFile($cache_file)
     {
@@ -159,9 +159,9 @@ class XML_Feed extends XML_Parser
     /**
      * Loads data from the file
      *
-     * @access   public
-     * @param    string  $cache_file    Filename
-     * @return   mixed   True on success or error on failure
+     * @access  public
+     * @param   string  $cache_file    Filename
+     * @return  mixed   True on success or error on failure
      */
     function loadFile($cache_file)
     {
@@ -179,13 +179,13 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * Start handler
      *
-     * @access   public
-     * @param    ?       $parser    Never used
-     * @param    string  $tagName   Name of the tag
-     * @param    array   $attrs     The attributes
-     * @return   mixed   Void/false
+     * @access  protected
+     * @param   resource    $parser xml parser resource
+     * @param   string      $tagName   Name of the tag
+     * @param   array       $attrs     The attributes
+     * @return  mixed       False if feed type not valid, void otherwise
      */
     function startHandler($parser, $tagName, $attrs)
     {
@@ -263,12 +263,12 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * End handler
      *
-     * @access   public
-     * @param    ?       $parser    Never used
-     * @param    string  $tagName   Name of the tag
-     * @return   void
+     * @access  protected
+     * @param   resource    $parser xml parser resource
+     * @param   string      $tagName   Name of the tag
+     * @return  void
      */
     function endHandler($parser, $tagName)
     {
@@ -309,12 +309,12 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * Handle character data
      *
-     * @access   public
-     * @param    ?       $parser    Never used
-     * @param    string  $cdata
-     * @return   void
+     * @access  protected
+     * @param   resource    $parser xml parser resource
+     * @param   string      $cdata
+     * @return  void
      */
     function cdataHandler($parser, $cdata)
     {
@@ -359,13 +359,13 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * Add item attribute
      *
-     * @access   public
-     * @param    string  $type
-     * @param    string  $field
-     * @param    string  $value
-     * @return   void
+     * @access  private
+     * @param   string  $type
+     * @param   string  $field
+     * @param   string  $value
+     * @return  void
      */
     function _add($type, $field, $value)
     {
@@ -379,10 +379,10 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * Reset feed object variables
      *
-     * @access   public
-     * @return   void
+     * @access  public
+     * @return  void
      */
     function feedFree()
     {
@@ -395,11 +395,11 @@ class XML_Feed extends XML_Parser
     }
 
     /**
-     * ??
+     * Set HTTP_Request params
      *
-     * @access   public
-     * @param    array  $params
-     * @return   bool   true
+     * @access  public
+     * @param   array  $params
+     * @return  bool   true
      */
     function setParams($params = array())
     {

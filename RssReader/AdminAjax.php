@@ -39,7 +39,7 @@ class RssReaderAdminAjax extends Jaws_Ajax
      * @param   int     $count_entry    Number of viewable RSS title
      * @param   int     $title_view     Display title or not
      * @param   int     $visible        The visibility status of the RSS Site
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -60,7 +60,7 @@ class RssReaderAdminAjax extends Jaws_Ajax
      * @param   int     $count_entry    Number of viewable RSS title
      * @param   int     $title_view     Display title or not
      * @param   int     $visible        The visibility status of the RSS Site
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
@@ -74,7 +74,7 @@ class RssReaderAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int    $id  RSS Site ID
-     * @return  array  Response (notice or error)
+     * @return  array  RResponse array (notice or error)
      */
     function DeleteRSS($id)
     {

@@ -88,7 +88,7 @@ class RssReaderAdminHTML extends Jaws_GadgetHTML
      * Builds the RSSreader administration UI
      *
      * @access  public
-     * @return  string  XHTML content for administration UI
+     * @return  string  XHTML template content for administration UI
      */
     function Admin()
     {
