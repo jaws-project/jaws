@@ -11,11 +11,11 @@
 class ServerTimeAdminAjax extends Jaws_Ajax
 {
     /**
-     * Update the properties
+     * Updates properties
      *
      * @access  public
-     * @param   string  $type The format of date and time being displayed
-     * @return  array   Response
+     * @param   string  $format The format of date and time being displayed
+     * @return  array   Response (notice or error)
      */
     function UpdateProperties($format)
     {

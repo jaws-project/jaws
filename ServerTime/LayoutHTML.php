@@ -12,10 +12,10 @@
 class ServerTimeLayoutHTML 
 {
     /**
-     * Returns the server time
+     * Displays the server time
      *
      * @access  public
-     * @return  string  ServerTime
+     * @return  string  XHTML template content
      */
     function Display()
     {

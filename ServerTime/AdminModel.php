@@ -12,10 +12,10 @@
 class ServerTimeAdminModel extends Jaws_Model
 {
     /**
-     * Install the gadget
+     * Installs the gadget
      *
      * @access  public
-     * @return  bool     True on success and Jaws_Error on failure
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function InstallGadget()
     {
@@ -29,7 +29,7 @@ class ServerTimeAdminModel extends Jaws_Model
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function UninstallGadget()
     {
@@ -40,12 +40,12 @@ class ServerTimeAdminModel extends Jaws_Model
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function UpdateGadget($old, $new)
     {
@@ -56,11 +56,11 @@ class ServerTimeAdminModel extends Jaws_Model
     }
 
     /**
-     * Sets the properties of ServerTime
+     * Updates the properties of ServerTime
      *
      * @access  public
      * @param   string  $format    The format of date and time being displayed
-     * @return  bool    True if change was successful, otherwise returns Jaws_Error
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function UpdateProperties($format)
     {

@@ -11,10 +11,10 @@
 class ServerTimeHTML extends Jaws_GadgetHTML
 {
     /**
-     * Executes the default action
+     * Displays the server time
      *
      * @access  public
-     * @return  string  ServerTime
+     * @return  string  XHTML template content
      */
     function DefaultAction()
     {
