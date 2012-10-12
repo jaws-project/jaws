@@ -19,11 +19,11 @@ class SimpleSiteLayoutHTML
     }
     
     /**
-     * Show the Menu
+     * Displays the Menu
      *
-     * @param   int $levels Show N levels, -1 show without top, false return all
      * @access  public
-     * @return  string Menu in HTML 
+     * @param   int     $levels Displays N levels, -1 displays without top, false returns all
+     * @return  string  XHTML menu
      */
     function Show($levels = false)
     {
@@ -51,10 +51,10 @@ class SimpleSiteLayoutHTML
     }
 
     /** 
-     * Show the Menu without the top elements
+     * Displays the menu without top elements
      * 
      * @access  public
-     * @return  string Menu in HTML
+     * @return  string  XHTML menu
      */
     function ShowWithoutTop() 
     {
@@ -62,10 +62,10 @@ class SimpleSiteLayoutHTML
     }
 
     /**
-     * Show the menu with the first two levels opened
+     * Displays menu with the first two levels opened
      *
      * @access  public
-     * @return  string Menu in HTML
+     * @return  string  XHTML menu
      */
     function ShowTwoLevels()
     {
@@ -73,10 +73,10 @@ class SimpleSiteLayoutHTML
     }
 
     /** 
-     * Show the menu with the first three levels opened
+     * Displays menu with the first three levels opened
      *
      * @access  public
-     * @return  string Menu in HTML
+     * @return  string  XHTML menu
      */
     function ShowThreeLevels()
     {
@@ -87,7 +87,10 @@ class SimpleSiteLayoutHTML
      * Internal recursive function to build the menu
      * 
      * @access  private
-     * @return  string Menu in HTML
+     * @param   array   $items
+     * @param   string  $tplString
+     * @param   int     $level
+     * @return  string  XHTML menu
      */
     function DisplayMenu(&$items, &$tplString, $level = 1) {
         $tpl = new Jaws_Template();
@@ -121,10 +124,10 @@ class SimpleSiteLayoutHTML
     }
 
     /** 
-     * Show the top menu
+     * Displays top menu
      *
      * @access  public
-     * @return  string HTML top menu
+     * @return  string  XHTML top menu
      */
     function TopMenu()
     {
@@ -165,11 +168,11 @@ class SimpleSiteLayoutHTML
     }
 
     /** 
-     * Show the given level
+     * Displays given level
      *
      * @access  public
-     * @param   int $depth Depth (default 1)
-     * @return  string HTML level menu
+     * @param   int     $depth Depth(default 1)
+     * @return  string  XHTML level menu
      */
     function DisplayLevel($depth = 1) 
     {
@@ -201,6 +204,12 @@ class SimpleSiteLayoutHTML
         return $tpl->get();
     }
     
+    /** 
+     * Builds bread crumb
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
     function Breadcrumb()
     {
         $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');

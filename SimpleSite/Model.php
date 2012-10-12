@@ -17,10 +17,10 @@ class SimpleSiteModel extends Jaws_Model
     var $_items;
 
     /**
-     * Return an item
+     * Returns an item
      *
      * @access  public
-     * @param   int     $id The ID of the simplesite to return.
+     * @param   int     $id The ID of the simplesite to return
      * @return  array   Array that has the properties of a specific simplesite
      */
     function GetItem($id)
@@ -40,10 +40,10 @@ class SimpleSiteModel extends Jaws_Model
     }
 
     /**
-     * Get a list (array ) of the simplesite with the items of each one
+     * Gets list of simplesites with their items
      *
-     * @param   int $levels Show N levels
      * @access  public
+     * @param   int     $levels Displays N levels
      * @return  array   Array that contains all the simplesites with their items
      */
     function GetItems($levels = false)
@@ -72,10 +72,11 @@ class SimpleSiteModel extends Jaws_Model
     /**
      * Returns the given levels depth of items
      * 
-     * @param $items Reference to items array
-     * @param $current Start
-     * @param $depth Depth to return
      * @access  private
+     * @param   $items      Reference to items array
+     * @param   $current    Start
+     * @param   $depth      Depth to return
+     * @return  bool        Always true
      */
     function _GetItemLevels(&$items, $current, $depth) 
     {
@@ -91,9 +92,10 @@ class SimpleSiteModel extends Jaws_Model
 
    
     /**
-     * Create a hierachical array based on parents... 
+     * Creates a hierachical array based on parents... 
+     *
      * @access  private   
-     * @return  bool     Always true
+     * @return  bool    Always true
      */
     function CreateItemsArray()
     {
@@ -117,11 +119,12 @@ class SimpleSiteModel extends Jaws_Model
     }
 
     /**
-     * Create a hierachical array based on parents... recursive proccess
+     * Creates a hierachical array based on parents... recursive proccess
+     *
      * @access  private
      * @params  array   $items      Array with all the items
      * @params  int     $parent     Parent id to extract
-     * @return  array   Childs array
+     * @return  array   Children array
      */
     function _CreateItemsArray(&$items, $parent) 
     {
@@ -141,11 +144,11 @@ class SimpleSiteModel extends Jaws_Model
     }
 
     /**
-     * Returns a single item by title.
+     * Returns a single item by title
      *
      * @access  public
      * @param   string  $title  Item title 
-     * @return  array   Array that has the properties of a specific item
+     * @return  array   Array of item properties
      */
     function GetSimpleSiteItemByTitle($title)
     {
@@ -163,11 +166,11 @@ class SimpleSiteModel extends Jaws_Model
     }
 
     /**
-     * Gets the contents via path
+     * Gets the content via path
      *
      * @access  public
-     * @param   string $path     Node path
-     * @return  string   HTML Contents.
+     * @param   string $path    Node path
+     * @return  string  XHTML content
      */
     function GetContent($path)
     {
@@ -203,11 +206,11 @@ class SimpleSiteModel extends Jaws_Model
     }
     
     /**
-     * Create XML struct of sitemap
+     * Creates XML struct of sitemap
      *
      * @access  public
-     * @param   bool     $writeToDisk Flag that determinates if content should be written to disk
-     * @return  mixed    Returns the XML(string) if it was required, or true
+     * @param   bool    $writeToDisk Flag that determinates if content should be written to disk
+     * @return  mixed   XML content if it is required, or true
      */
     function makeSitemap($writeToDisk = false)
     {
@@ -227,7 +230,7 @@ class SimpleSiteModel extends Jaws_Model
     }
 
     /**
-     * Build the sitemap.xml XML structure
+     * Builds the XML structure(sitemap.xml)
      *
      * @access  public
      * @return  string  XML structure of sitemap.xml
@@ -279,10 +282,10 @@ class SimpleSiteModel extends Jaws_Model
     }       
     
     /**
-     * Ping the sitemap.xml file to many search engines
+     * Pings the sitemap.xml file to many search engines
      *
      * @access  public
-     * @param   bool     $redo  (Optional) Rewrite sitemap before sending it
+     * @param   bool    $redo   Rewrites sitemap before sending it(Optional)
      */
     function ping($redo = false)
     {
@@ -324,9 +327,9 @@ class SimpleSiteModel extends Jaws_Model
     /**
      * Returns an array with info of each path element of a given path
      *
-     * @variable  $path URL Path
      * @access  public
-     * @return  array Array with info of each path element
+     * @param   $path   URL Path
+     * @return  array   Array with info of each path element
      */
     function GetBreadcrumb($path)
     {

@@ -12,10 +12,10 @@
 class SimpleSiteAdminAjax extends Jaws_Ajax
 {
     /**
-     * Get simplesites with items
+     * Gets simplesites with items
      *
      * @access  public
-     * @return  array   Data
+     * @return  array   List of items
      */
     function GetItems()
     {
@@ -27,10 +27,11 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get references
-     * @param   string  $type   Type of references
+     * Gets references
+     *
      * @access  public
-     * @return  array Data
+     * @param   string  $type   Type of references
+     * @return  mixed   Array of references or false
      */
     function GetReferences($type)
     {
@@ -50,10 +51,10 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the references for StaticPages...
+     * Gets references for StaticPages...
      *
      * @access  public
-     * @return  array Data
+     * @return  array   Array of references
      */
     function GetStaticPageReferences()
     {
@@ -70,10 +71,10 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the references for Blog...
+     * Gets references for Blog...
      *
      * @access  public
-     * @return  array Data
+     * @return  array   Array of references
      */
     function GetBlogReferences()
     {
@@ -90,10 +91,10 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get the references for Launcher...
+     * Gets references for Launcher...
      *
      * @access  public
-     * @return  array Data
+     * @return  array   Array of references
      */
     function GetLauncherReferences()
     {
@@ -110,19 +111,19 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Create a new item
+     * Creates a new item
      *
      * @access  public
-     * @param   int      $parent_id  Parent Id
-     * @param   string   $title      Item title
-     * @param   string   $shortname  Item shortname (also used in paths)
-     * @param   string   $type       Item type (URL, StaticPage, Blog, etc)
-     * @param   string   $reference  Type reference (e.g. ID of the static page)
-     * @param   string   $change     Change frequency. Values can be always, hourly, daily, weekly,
-     *                              monthly, yearly, never
-     * @param   string   $priority   Priority of this item relative to other item on the site. Can be 
-     *                              values from 1 to 5 (only numbers!).
-     * @return  array New item data
+     * @param   int     $parent_id  Parent ID
+     * @param   string  $title      Item title
+     * @param   string  $shortname  Item shortname (also used in paths)
+     * @param   string  $type       Item type (URL, StaticPage, Blog, etc)
+     * @param   string  $reference  Type reference (e.g. ID of the static page)
+     * @param   string  $change     Change frequency. Values can be always, hourly, daily, weekly,
+     *                                monthly, yearly, never
+     * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
+     *                                values from 1 to 5 (only numbers!).
+     * @return  array   Response + New item data
      */
     function NewItem($parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -142,20 +143,20 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Update item
+     * Updates the item
      *
      * @access  public
      * @param   int      $id         Item Id
-     * @param   int      $parent_id  Parent Id
-     * @param   string   $title      Item title
-     * @param   string   $shortname  Item shortname (also used in paths)
-     * @param   string   $type       Item type (URL, StaticPage, Blog, etc)
-     * @param   string   $reference  Type reference (e.g. ID of the static page)
-     * @param   string   $change     Change frequency. Values can be always, hourly, daily, weekly,
-     *                              monthly, yearly, never
-     * @param   string   $priority   Priority of this item relative to other item on the site. Can be 
-     *                              values from 1 to 5 (only numbers!).
-     * @return  array New item data
+     * @param   int     $parent_id  Parent ID
+     * @param   string  $title      Item title
+     * @param   string  $shortname  Item shortname (also used in paths)
+     * @param   string  $type       Item type (URL, StaticPage, Blog, etc)
+     * @param   string  $reference  Type reference (e.g. ID of the static page)
+     * @param   string  $change     Change frequency. Values can be always, hourly, daily, weekly,
+     *                                monthly, yearly, never
+     * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
+     *                                values from 1 to 5 (only numbers!).
+     * @return  array   Response (notice or error)
      */
     function UpdateItem($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority)
     {
@@ -169,11 +170,11 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Delete a given item
+     * Deletes the item
      *
-     * @param   int      $id Item Id.
      * @access  public
-     * @return  bool    True if succesful
+     * @param   int     $id Item ID
+     * @return  array   Response (notice or error)
      */
     function DeleteItem($id)
     {
@@ -182,12 +183,12 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Move a given item to a given direction
+     * Moves item to the given direction
      *
-     * @param   int      $id         Item Id
-     * @param   string   $direction  up or down
      * @access  public
-     * @return  bool    True if succesful
+     * @param   int     $id         Item ID
+     * @param   string  $direction  Up or down
+     * @return  array   Response (notice or error)
      */
     function MoveItem($id, $direction)
     {
@@ -196,10 +197,10 @@ class SimpleSiteAdminAjax extends Jaws_Ajax
     }
     
     /**
-     * Send the sitemap XML URL to search engines
+     * Sends the sitemap XML URL to search engines
      *
      * @access  public
-     * @return  bool    True if succesful
+     * @return  array   Response (notice or error)
      */
     function PingSitemap()
     {

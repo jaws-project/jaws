@@ -15,7 +15,7 @@ class SimpleSiteAdminHTML extends Jaws_GadgetHTML
      * Prepares the menubar
      *
      * @access  public
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML menubar
      */
     function Menubar()
     {
@@ -35,7 +35,7 @@ class SimpleSiteAdminHTML extends Jaws_GadgetHTML
      * Displays gadget administration section
      *
      * @access  public
-     * @return  string HTML Template content
+     * @return  string HTML template content
      */
     function Admin()
     {
