@@ -1,5 +1,10 @@
 <?php
 /**
+ * Determine server operation system
+ */
+define('JAWS_OS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+
+/**
  * Some utils functions. Random functions
  *
  * @category   JawsType
@@ -9,7 +14,6 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('JAWS_OS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 class Jaws_Utils
 {
     /**
@@ -65,8 +69,8 @@ class Jaws_Utils
      * Get base url
      *
      * @access  public
-     * @param   string  suffix for add to base url
-     * @param   string  rel_url relative url
+     * @param   string  $suffix     suffix for add to base url
+     * @param   bool    $rel_url    relative url
      * @return  string  url of base script
      */
     function getBaseURL($suffix = '', $rel_url = false)
@@ -112,7 +116,7 @@ class Jaws_Utils
      * Get request url
      *
      * @access  public
-     * @param   bool    rel_url relative or full URL
+     * @param   bool    $rel_url    relative or full URL
      * @return  string  get url without base url
      */
     function getRequestURL($rel_url = true)
@@ -234,9 +238,11 @@ class Jaws_Utils
      * Make directory
      *
      * @access  public
-     * @param   string  $path   Path to the directory
-     * @param   int     $mode   see php chmod() function
-     * @return  bool    True/False
+     * @param   string  $path       Path to the directory
+     * @param   int     $recursive  Make up directories if not exists
+     * @param   int     $mode       Directory permissions
+     * @return  bool    Returns TRUE on success or FALSE on failure
+     * @see     http://www.php.net/chmod
      */
     function mkdir($path, $recursive = 0, $mode = null)
     {
@@ -264,9 +270,10 @@ class Jaws_Utils
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   text    $source Path to the source file or directory
-     * @param   text    $dest   The destination path
+     * @param   string  $source Path to the source file or directory
+     * @param   string  $dest   The destination path
      * @param   int     $mode   see php chmod() function
+     * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
     function copy($source, $dest, $mode = null)
@@ -307,8 +314,10 @@ class Jaws_Utils
      * Delete directories and files
      *
      * @access  public
+     * @param   string  $path           File/Directory path
      * @param   bool    $dirs_include
      * @param   bool    $self_include
+     * @return  bool    Returns TRUE on success or FALSE on failure
      * @see http://www.php.net/rmdir & http://www.php.net/unlink
      */
     function delete($path, $dirs_include = true, $self_include = true)
@@ -359,14 +368,14 @@ class Jaws_Utils
      * Upload Files
      *
      * @access  public
-     * @param   array   $files        $_FILES array
-     * param    string  $dest         destination directory(include end directory separator)
-     * param    string  $allowFormats permitted file format
-     * param    string  $denyFormats  not permitted file format
-     * @param   bool    $overwrite    overwite file if exist
-     * @param   bool    $move_files   moving or only copying files. this param avail for non-uploaded files
-     * @param   int     $max_size     max size of file
-     * @return  bool    True/False
+     * @param   array   $files          $_FILES array
+     * @param   string  $dest           destination directory(include end directory separator)
+     * @param   string  $allowFormats   permitted file format
+     * @param   string  $denyFormats    not permitted file format
+     * @param   bool    $overwrite      overwite file if exist
+     * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
+     * @param   int     $max_size       max size of file
+     * @return  bool    Returns TRUE on success or FALSE on failure
      */
     function UploadFiles($files, $dest, $allowFormats = '', $denyFormats = '',
                          $overwrite = true, $move_files = true, $max_size = null)
@@ -461,11 +470,11 @@ class Jaws_Utils
      *
      * @access  public
      * @param   array   $files        $_FILES array
-     * param    string  $dest         destination directory(include end directory separator)
-     * param    string  $extractToDir create separate directory for extracted files
+     * @param   string  $dest         destination directory(include end directory separator)
+     * @param   bool    $extractToDir create separate directory for extracted files
      * @param   bool    $overwrite    overwite directory if exist
      * @param   int     $max_size     max size of file
-     * @return  bool    True/False
+     * @return  bool    Returns TRUE on success or FALSE on failure
      */
     function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
     {
@@ -474,7 +483,6 @@ class Jaws_Utils
                                      __FUNCTION__);
         }
 
-        $result = array();
         if (isset($files['name'])) {
             $files = array($files);
         }
@@ -608,6 +616,7 @@ class Jaws_Utils
      * Returns an array of languages
      *
      * @access  public
+     * @param   bool    $use_data_lang  Include language added into Jaws data directory
      * @return  array   A list of available languages
      */
     function GetLanguagesList($use_data_lang = true)
@@ -661,17 +670,18 @@ class Jaws_Utils
     }
 
     /**
-     * Get a list of the themes the site is running
+     * Get a list of the available themes
      *
      * @access  public
+     * @param   bool    $include_base_themes    Include themes existing in base theme directory
      * @return  array   A list of themes(filenames)
      */
     function GetThemesList($include_base_themes = true)
     {
-        /**
-         * is theme valid?
-         */
         if (!function_exists('is_vaild_theme')) {
+            /**
+             * is theme valid?
+             */
             function is_vaild_theme(&$item, $key, $path)
             {
                 if ($item{0} == '.' ||
@@ -756,7 +766,9 @@ class Jaws_Utils
      * Providing download file
      *
      * @access  public
-     * @return  string  file content
+     * @param   string  $fpath  File path
+     * @param   string  $fname  File name
+     * @return  bool    Returns TRUE on success or FALSE on failure
      */
     function Download($fpath, $fname)
     {

@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Core
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi Ãžormar ÃžorbjÃ¶rnsson <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
@@ -339,7 +339,7 @@ class Jaws
      * Get the name of the Theme
      *
      * @access  public
-     * @param   bool    rel_url relative url
+     * @param   bool    $rel_url relative url
      * @return  string The name of the theme
      */
     function GetTheme($rel_url = true)
@@ -535,9 +535,9 @@ class Jaws
      * of the same instance around in our code.
      *
      * @access  public
-     * @param   string Name of the gadget
-     * @param   string The type being loaded
-     * @param   string Try to find gadget class in this file
+     * @param   string $gadget      Name of the gadget
+     * @param   string $type        The type being loaded
+     * @param   string $filename    Try to find gadget class in this file
      * @return  mixed  Gadget class object on successful, Jaws_Error otherwise
      */
     function LoadGadget($gadget, $type = 'HTML', $filename = '')
@@ -762,7 +762,7 @@ class Jaws
      * Get main request properties like gadget and action
      *
      * @access  public
-     * @return  arraye
+     * @return  array   Main request data array
      */
     function GetMainRequest()
     {
@@ -775,8 +775,8 @@ class Jaws
      * Set true|false if a gadget has been updated so we don't check it again and again
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
-     * @param   string  $status  True if gadget is updated (installed and latest version)
+     * @param   string  $gadget     Gadget's name
+     * @param   bool    $status     True if gadget is updated (installed and latest version)
      * @return  void
      */
     function SetGadgetAsUpdated($gadget, $status = true)
@@ -792,7 +792,7 @@ class Jaws
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
-     * @return  void
+     * @return  mixed   True/False if gadget exist, otherwise Null
      */
     function IsGadgetMarkedAsUpdated($gadget)
     {
@@ -1027,8 +1027,8 @@ class Jaws
      * Returns the URL of the site
      *
      * @access  public
-     * @param   string  suffix for add to site url
-     * @param   string  rel_url relative url
+     * @param   string  $suffix     Suffix for adding to end of URL
+     * @param   bool    $rel_url    Relative url
      * @return  string  Site's URL
      */
     function getSiteURL($suffix = '', $rel_url = false)
@@ -1087,9 +1087,9 @@ class Jaws
      * Returns the URL of the data
      *
      * @access  public
-     * @param   string  suffix    suffix part of url
-     * @param   bool    rel_url   relative url
-     * @param   bool    base_data use JAWS_BASE_DATA instead of JAWS_DATA
+     * @param   string  $suffix    suffix part of url
+     * @param   bool    $rel_url   relative url
+     * @param   bool    $base_data use JAWS_BASE_DATA instead of JAWS_DATA
      * @return  string  Related URL to data directory
      */
     function getDataURL($suffix = '', $rel_url = true, $base_data = false)
@@ -1187,7 +1187,7 @@ class Jaws
     /**
      * Checks if a class exists without triggering __autoload
      *
-     * @param   string  classname
+     * @param   string  $classname  Name of class
      * @return  bool    true success and false on error
      *
      * @access  public

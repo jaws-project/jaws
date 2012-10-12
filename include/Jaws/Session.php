@@ -1,10 +1,19 @@
 <?php
 /**
- * Responses
+ * Responses warning
  */
 define('RESPONSE_WARNING', 'RESPONSE_WARNING');
+/**
+ * Responses error
+ */
 define('RESPONSE_ERROR',   'RESPONSE_ERROR');
+/**
+ * Responses notice
+ */
 define('RESPONSE_NOTICE',  'RESPONSE_NOTICE');
+/**
+ *
+ */
 define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrent_logins,acl,updatetime");
 
 /**
@@ -489,7 +498,7 @@ class Jaws_Session
      * @param   string  $gadget         Gadget name
      * @param   string  $task           Task name
      * @param   string  $errorMessage   Error message to return
-     * @return  bool    True if granted, else throws an Exception(Jaws_Error::Fatal)
+     * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
     function CheckPermission($gadget, $task, $errorMessage = '')
     {

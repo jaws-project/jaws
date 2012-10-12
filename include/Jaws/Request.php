@@ -73,23 +73,42 @@ if (get_magic_quotes_gpc()) {
  *
  * @category   Jaws
  * @package    Jaws_Request
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2006 Helgi Þormar Þorbjörnsson
+ * @author     Helgi Ãžormar ÃžorbjÃ¶rnsson <dufuz@php.net>
+ * @copyright  2006 Helgi Ãžormar ÃžorbjÃ¶rnsson
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  */
 class Jaws_Request
 {
+    /**
+     * @var array
+     */
     var $_filters;
+
+    /**
+     * @var array
+     */
     var $_params;
+
+    /**
+     * @var array
+     */
     var $_priority;
+
+    /**
+     * @var array
+     */
     var $_includes;
+
+    /**
+     * @var array
+     */
     var $_allowedTypes = array('get', 'post', 'cookie');
 
     /**
      * Constructor
      *
-     * @return  void
      * @access  public
+     * @return  void
      */
     function Jaws_Request()
     {
@@ -135,6 +154,10 @@ class Jaws_Request
         return $instances[$signature];
     }
 
+    /**
+     * @param   string  $type
+     * @return  mixed
+     */
     function isTypeValid($type)
     {
         $type = strtolower($type);
@@ -148,12 +171,12 @@ class Jaws_Request
     /**
      * Adds a filter that will be runned on all output beside _getRaw()
      *
-     * @param   string name of the filter
-     * @param   string the function that will be executed
-     * @param   string path of the included if it's needed for the function
-     *
-     * @return  void
      * @access  public
+     * @param   string  $name       Name of the filter
+     * @param   string  $function   The function that will be executed
+     * @param   string  $params     Path of the included if it's needed for the function
+     * @param   string  $include    Filename that include the filter function
+     * @return  void
      */
     function addFilter($name, $function, $params = null, $include = '')
     {
@@ -168,9 +191,9 @@ class Jaws_Request
     /**
      * Strip null character
      *
-     * @param   string    value
-     * @return  string   The striped data
      * @access  public
+     * @param   string  $value  Referenced value
+     * @return  void
      */
     function nullstrip(&$value)
     {
@@ -180,9 +203,9 @@ class Jaws_Request
     /**
      * Strip ambiguous characters
      *
-     * @param   string    value
-     * @return  string   The striped data
      * @access  public
+     * @param   string  $value
+     * @return  string  The striped data
      */
     function strip_ambiguous($value)
     {
@@ -192,9 +215,9 @@ class Jaws_Request
     /**
      * Filter data with added filter functions
      *
-     * @param   string    value
-     * @return  string   The filtered data
      * @access  public
+     * @param   string  $value Referenced value
+     * @return  string  The filtered data
      */
     function filter(&$value)
     {
@@ -223,10 +246,10 @@ class Jaws_Request
      * Fetches the data with out filter, it's like using
      * the super globals straight.
      *
-     * @param   string the key being fetched
-     * @param   string which super global is being fetched from
-     *
      * @access  private
+     * @param   string  $key    the key being fetched
+     * @param   string  $type   which super global is being fetched from
+     * @return  mixed   Key value if exist, Null otherwise
      */
     function _getRaw($key, $type = '')
     {
@@ -256,12 +279,11 @@ class Jaws_Request
     }
 
     /**
-     * Fetches the data with out filter, it's like using
-     * the super globals straight.
-     *
-     * @param   string which super global is being fetched from
+     * Fetches the data with out filter, it's like using the super globals straight.
      *
      * @access  public
+     * @param   string  $type   which super global is being fetched from
+     * @return  mixed   Data array if success, otherwise Null
      */
     function getRawAll($type = '')
     {
@@ -284,14 +306,12 @@ class Jaws_Request
     /**
      * Fetches the data, filters it and then it returns it.
      *
-     * @param   string|array the key being fetched, it can be an array
-     *                     with multiple keys in it to fetch and then
-     *                     an array will be returned accourdingly.
-     *                     Works recursivly, ala $_GET['foo']['bar']['foobar']['helgi']
-     * @param   string|array which super global is being fetched from
-     *
-     * @return  string|array The filtered data, string or an array depending on the key
      * @access  public
+     * @param   mixed   $key    the key being fetched, it can be an array with multiple keys in it to fetch and then
+     *                          an array will be returned accourdingly.
+     * @param   mixed   $types  which super global is being fetched from, it can be an array
+     * @param   bool    $filter Returns filtered data or not
+     * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
     function get($key, $types = '', $filter = true)
     {
@@ -331,15 +351,11 @@ class Jaws_Request
     /**
      * Does the recursion on the data being fetched
      *
-     * @param   array      Array filled with keys, recursion
-     * @param   string     Which super global is being fetched from
-     * @param   int        The depth level
-     * @param null|array The data that will be processed, if it's NULL
-     *                   then it will populate it with the internal data
-     *                   storage
-     *
-     * @return null|array null if there is no data else an array with the processed data
      * @access  private
+     * @param   mixed   $key    The key being fetched, it can be an array with multiple keys in it to fetch and
+     *                          then an array will be returned accourdingly.
+     * @param   string  $type   Which super global is being fetched from
+     * @return  mixed   Null if there is no data else an string|array with the processed data
      */
     function _get($key, $type)
     {
@@ -367,9 +383,15 @@ class Jaws_Request
         return null;
     }
 
-    /* Creates a new key or updates an old one, doesn't support recursive stuff atm. */
-    /* One idea would be to have set('get', 'foo/bar/foobar', 'sm00ke') and resolve the path */
-    /* another would be to allow arrays like crazy but still */
+    /** Creates a new key or updates an old one, doesn't support recursive stuff atm
+     * One idea would be to have set('get', 'foo/bar/foobar', 'sm00ke') and resolve the path
+     * another would be to allow arrays like crazy but still
+     *
+     * @param   string  $type
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  bool
+     */
     function set($type, $key, $value)
     {
         $type = $this->isTypeValid($type);
@@ -384,10 +406,10 @@ class Jaws_Request
     /**
      * Reset super global request variables
      *
-     * @param   string which super global is being reset,
-     *               if passed value id empty reset all super global request vaiables
-     *
      * @access  public
+     * @param   string  $type   Which super global is being reset,
+     *                          if no passed value reset all super global request vaiables
+     * @return  bool    True
      */
     function reset($type = '')
     {

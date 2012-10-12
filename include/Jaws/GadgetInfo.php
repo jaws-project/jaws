@@ -142,7 +142,7 @@ class Jaws_GadgetInfo
      *
      * @deprecated
      * @access  public
-     * @param   string   Gadget's name(same as the filesystem name)
+     * @param   string   $gadget    Gadget's name(same as the filesystem name)
      * @return  void
      */
     function Init($gadget)
@@ -207,7 +207,7 @@ class Jaws_GadgetInfo
      *
      * @deprecated
      * @access  protected
-     * @param   string   Gadget translated name
+     * @param   string   $name  Gadget translated name
      * @return  void
      */
     function GadgetName($name)
@@ -231,7 +231,7 @@ class Jaws_GadgetInfo
      *
      * @deprecated
      * @access  protected
-     * @param   string   Gadget's section
+     * @param   string  $section    Gadget's section
      * @return  void
      */
     function GadgetSection($section)

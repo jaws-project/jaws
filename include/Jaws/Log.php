@@ -1,5 +1,59 @@
 <?php
 /**
+ * System is unusable
+ */
+define('JAWS_LOG_EMERG',   1);
+
+/**
+ * Immediate action required
+ */
+define('JAWS_LOG_ALERT',   2);
+
+/**
+ * Critical conditions
+ */
+define('JAWS_LOG_CRIT',    3);
+
+/**
+ * Error conditions
+ */
+define('JAWS_LOG_ERR',     4);
+
+/**
+ * Error conditions
+ */
+define('JAWS_LOG_ERROR',   4);
+
+/**
+ * Warning conditions
+ */
+define('JAWS_LOG_WARNING', 5);
+
+/**
+ * Normal but significant condition
+ */
+define('JAWS_LOG_NOTICE',  6);
+
+/**
+ * Informational
+ */
+define('JAWS_LOG_INFO',    7);
+
+/**
+ *
+ */
+define('JAWS_LOG_DEBUG',   8); /* debug-level messages */
+
+/**
+ * Default log method
+ */
+define('Jaws_LogDefaultMethod', 'LogToWindow');
+/**
+ * Default log option
+ */
+define('Jaws_LogDefaultOption', '');
+
+/**
  * Class to save entries in the log (screen, syslog, logdb, etc)
  *
  * @category   Log
@@ -10,18 +64,6 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('JAWS_LOG_EMERG',   1); /* system is unusable */
-define('JAWS_LOG_ALERT',   2); /* action must be taken immediately */
-define('JAWS_LOG_CRIT',    3); /* critical conditions */
-define('JAWS_LOG_ERR',     4); /* error conditions */
-define('JAWS_LOG_ERROR',   4); /* error conditions */
-define('JAWS_LOG_WARNING', 5); /* warning conditions */
-define('JAWS_LOG_NOTICE',  6); /* normal but significant condition */
-define('JAWS_LOG_INFO',    7); /* informational */
-define('JAWS_LOG_DEBUG',   8); /* debug-level messages */
-define('Jaws_LogDefaultMethod', 'LogToWindow'); /* default log method */
-define('Jaws_LogDefaultOption', '');            /* default log option */
-
 class Jaws_Log
 {
     /**
@@ -61,7 +103,7 @@ class Jaws_Log
     /**
      * The start time(microseconds)
      *
-     * @var     double
+     * @var     float
      * @access  private
      */
     var $_StartTime = 0;
@@ -87,7 +129,7 @@ class Jaws_Log
      *
      * @var     string
      * @access  private
-     * @see    GetMessageStack()
+     * @see     GetMessageStack()
      */
     var $_MessageStack;
 
@@ -95,6 +137,9 @@ class Jaws_Log
      * Information about the module
      *
      * @access  public
+     * @param   int     $activated  Logging priority level
+     * @param   string  $logger     Logger method
+     * @return  void
      */
     function Jaws_Log($activated = 0, $logger = null)
     {
@@ -121,6 +166,7 @@ class Jaws_Log
      * Return diffrence between current Unix timestamp with start time
      *
      * @access  public
+     * @return  float   Execution time
      */
     function ExecTime()
     {
@@ -133,6 +179,7 @@ class Jaws_Log
      * Return memory usage
      *
      * @access  public
+     * @return  float   Memory usage
      */
     function MemUsage()
     {
@@ -147,6 +194,7 @@ class Jaws_Log
      * Put start string at beginning of log
      *
      * @access  public
+     * @return  void
      */
     function Start()
     {
@@ -158,6 +206,7 @@ class Jaws_Log
      * Put end string at ending of log
      *
      * @access  public
+     * @return  void
      */
     function End()
     {
@@ -207,7 +256,8 @@ class Jaws_Log
      * This function prints a variable in a human readable form to the log method specified
      *
      * @access  public
-     * @param  $mixed mixed Object to display
+     * @param   $mixed mixed Object to display
+     * @return  void
      */
     function VarDump($mixed = null)
     {
@@ -226,6 +276,7 @@ class Jaws_Log
      * @param   string  $priority  How to log
      * @param   string  $msg       Message to log
      * @param   string  $opts      Options(log file naem, ...)
+     * @return  void
      */
     function LogToFile($priority, $msg, $opts)
     {
@@ -250,7 +301,6 @@ class Jaws_Log
      */
     function LogToSyslog($priority, $msg, $opt)
     {
-        @define_syslog_variables();
         $indent = 'Jaws_Log';
         if (isset($opt['indent'])) {
             $indent = $opt['indent'];
@@ -267,6 +317,7 @@ class Jaws_Log
      * @param   string  $priority   How to log
      * @param   string  $msg        Message to log
      * @param   string  $opt        Some options
+     * @return  void
      */
     function LogToFirebug($priority, $msg, $opt)
     {
@@ -305,6 +356,7 @@ class Jaws_Log
      * @param   string  $priority  How to log
      * @param   string  $msg       Message to log
      * @param   string  $opt       Some options
+     * @return  void
      */
     function LogToApache($priority, $msg, $opt)
     {
@@ -330,6 +382,7 @@ class Jaws_Log
      * @param   string  $priority  How to log
      * @param   string  $msg       Message to log
      * @param   string  $opt       Some options
+     * @return  void
      */
     function LogToWindow($priority, $msg, $opt)
     {
@@ -371,7 +424,7 @@ class Jaws_Log
      * Parse the stack and give it a nice format
      *
      * @access  private
-     * @return  string   a HTML with the log
+     * @return  void
      */
     function StackToWindow()
     {
@@ -395,7 +448,7 @@ class Jaws_Log
      * Gives the stack in Firebug's favor format
      *
      * @access  private
-     * @return  string  JavaScript stuff
+     * @return  void
      */
     function StackToFirebug()
     {
@@ -440,6 +493,7 @@ class Jaws_Log
  * @param   string  $priority  The severity level of log
  * @param   string  $msg       Message to log
  * @param   int     $backtrace Log trace back level
+ * @return  void
  */
 function _log($priority, $msg, $backtrace = 0)
 {
@@ -454,7 +508,8 @@ function _log($priority, $msg, $backtrace = 0)
  * Passes it's arguments to Jaws_Log::VarDump to do the actual dump.
  *
  * @access  public
- * @param  $mixed mixed Object to display
+ * @param   $mixed mixed Object to display
+ * @return  void
  */
 function _log_var_dump($mixed = null)
 {
