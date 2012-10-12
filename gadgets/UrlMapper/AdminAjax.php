@@ -50,7 +50,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id       Map's ID
      * @param   string  $map      New map
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateMap($id, $map, $extension, $order)
     {
@@ -80,11 +80,11 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Updates the map settings
      *
      * @access  public
-     * @param   string   $enabled     Should maps be used? (true/false)
-     * @param   bool     $use_aliases Should aliases be used?
-     * @param   string   $precedence  custom map precedence over default map (true/false)
-     * @param   string   $extension   Extension to use
-     * @return  array   Response (notice or error)
+     * @param   string  $enabled     Should maps be used? (true/false)
+     * @param   bool    $use_aliases Should aliases be used?
+     * @param   string  $precedence  custom map precedence over default map (true/false)
+     * @param   string  $extension   Extension to use
+     * @return  array   Response array (notice or error)
      */
     function UpdateSettings($enabled, $use_aliases, $precedence, $extension)
     {
@@ -128,7 +128,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $alias  Alias value
      * @param   string  $url    Real URL
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function AddAlias($alias, $url)
     {
@@ -143,7 +143,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * @param   int     $id     Alias ID
      * @param   string  $alias  Alias value
      * @param   string  $url    Real URL
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function UpdateAlias($id, $alias, $url)
     {
@@ -156,7 +156,7 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $id     Alias ID
-     * @return  array   Response (notice or error)
+     * @return  array   Response array (notice or error)
      */
     function DeleteAlias($id)
     {
