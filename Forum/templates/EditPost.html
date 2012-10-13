@@ -1,0 +1,23 @@
+<!-- BEGIN editpost -->
+<div class="gadget forums newpost">
+  <h2><a href="{url_topic}">{lbl_topic}</a> {title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form name="newpost" action="{requested_url}" method="post">
+    <input type="hidden" name="gadget" value="Forum" />
+    <input type="hidden" name="action" value="UpdatePost" />
+    <input type="hidden" name="tid" value="{tid}" />
+    <input type="hidden" name="pid" value="{pid}" />
+    <div class="content">
+      <p>
+        <label for="message">{lbl_message}:</label>
+        <textarea id="message" name="message" cols="40" rows="10">{message}</textarea>
+      </p>
+      <p>
+        <label for="update_reason">{lbl_update_reason}:</label>
+        <textarea id="update_reason" name="update_reason" cols="40" rows="3">{update_reason}</textarea>
+      </p>
+    </div>
+    <div class="actions"><button type="submit" value="{editpost}">{editpost}</button></div>
+  </form>
+</div>
+<!-- END editpost -->

@@ -283,8 +283,9 @@
 
         <field>
             <name>last_update_reason</name>
-            <type>integer</type>
-            <default>0</default>
+            <type>text</type>
+            <length>256</length>
+            <default></default>
         </field>
 
         <field>

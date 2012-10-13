@@ -16,4 +16,5 @@ $actions['NewTopic']    = array('NormalAction:Topics');
 $actions['UpdateTopic'] = array('StandaloneAction:Topics');
 $actions['Post']        = array('NormalAction:Posts');
 $actions['NewPost']     = array('NormalAction:Posts');
+$actions['EditPost']    = array('NormalAction:Posts');
 $actions['UpdatePost']  = array('StandaloneAction:Posts');

@@ -67,7 +67,7 @@ class Forum_Model_Topics extends Jaws_Model
                 WHERE [tid] = {tid} ';
 
         $params = array();
-        $params['tid'] = $tid;
+        $params['tid'] = (int)$tid;
 
         $result = $GLOBALS['db']->queryRow($sql, $params);
         if (Jaws_Error::IsError($result)) {

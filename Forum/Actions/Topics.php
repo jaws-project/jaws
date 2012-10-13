@@ -227,16 +227,24 @@ class Forum_Actions_Topics extends ForumHTML
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('message', $post['message']);
             if ($post['last_update_uid'] != 0) {
-                $userInfo = $jUser->GetUser($post['last_update_uid']);
+                $userInfo = $jUser->GetUser((int)$post['last_update_uid']);
                 $tpl->SetBlock('topic/post/update');
                 $tpl->SetVariable('updatedby_lbl', _t('FORUM_POST_UPDATEDBY'));
-                $tpl->SetVariable('username', $userInfo['username']);
-                $tpl->SetVariable('nickname', $userInfo['nickname']);
+                if (!empty($userInfo)) {
+                    $tpl->SetVariable('username', $userInfo['username']);
+                    $tpl->SetVariable('nickname', $userInfo['nickname']);
+                }
                 $tpl->SetVariable('user_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile'));
                 $tpl->SetVariable('update_reason', $post['last_update_reason']);
                 $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time']));
                 $tpl->ParseBlock('topic/post/update');
             }
+            // Check User Can Edit Posts
+            $tpl->SetBlock('topic/post/actions');
+            $tpl->SetVariable('lbl_editpost',_t('GLOBAL_EDIT'));
+            $tpl->SetVariable('url_editpost', $GLOBALS['app']->Map->GetURLFor('Forum', 'EditPost', array('pid' => $post['id'])));
+            $tpl->ParseBlock('topic/post/actions');
+
             $tpl->ParseBlock('topic/post');
         }
 
