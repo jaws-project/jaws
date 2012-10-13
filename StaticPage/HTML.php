@@ -12,10 +12,10 @@
 class StaticPageHTML extends Jaws_GadgetHTML
 {
     /**
-     * Excutes the default action, currently displaying the default page.
+     * Excutes the default action, currently displaying the default page
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function DefaultAction()
     {
@@ -23,11 +23,12 @@ class StaticPageHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays an individual page.
+     * Builds an individual page
      *
-     * @var    int    $id    Page ID (optional)
      * @access  public
-     * @return  string
+     * @param   int     $page_id        Page ID (optional)
+     * @param   string  $base_action    Determines the map to be used (Page/Pages)
+     * @return  string  XHTML content
      */
     function Page($page_id = null, $base_action = 'Page')
     {
@@ -119,10 +120,10 @@ class StaticPageHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays an index of available groups.
+     * Displays an index of available groups
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function GroupsList()
     {
@@ -131,10 +132,10 @@ class StaticPageHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays an index of available groups.
+     * Displays an index of available pages
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function GroupPages()
     {
@@ -155,11 +156,10 @@ class StaticPageHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays an individual page.
+     * Displays an individual page
      *
-     * @var    int    $id    Page ID (optional)
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function Pages()
     {
@@ -167,10 +167,10 @@ class StaticPageHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays groups and pages as tree
+     * Displays groups and pages in a tree view
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function PagesTree()
     {

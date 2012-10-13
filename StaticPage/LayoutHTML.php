@@ -15,6 +15,7 @@ class StaticPageLayoutHTML
      * Loads layout actions
      *
      * @access  private
+     * @return  array   List of actions
      */
     function LoadLayoutActions()
     {
@@ -36,10 +37,10 @@ class StaticPageLayoutHTML
     }
 
     /**
-     * Displays a layout block of static pages.
+     * Displays a block of static pages
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function PagesList()
     {
@@ -69,10 +70,10 @@ class StaticPageLayoutHTML
     }
 
     /**
-     * Displays a layout block of groups.
+     * Displays a block of groups
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function GroupsList()
     {
@@ -100,11 +101,11 @@ class StaticPageLayoutHTML
     }
 
     /**
-     * Displays a layout block of groups.
+     * Displays a block of pages belongs to the specified group
      *
      * @access  public
-     * @param   int/string  $gid    ID or fast_url of the group
-     * @return  string
+     * @param   mixed   $gid    ID or fast_url of the group (int/string)
+     * @return  string  XHTML content
      */
     function GroupPages($gid = 0)
     {

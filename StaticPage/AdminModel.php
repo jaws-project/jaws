@@ -15,10 +15,10 @@ require_once JAWS_PATH . 'gadgets/StaticPage/Model.php';
 class StaticPageAdminModel extends StaticPageModel
 {
     /**
-     * Install the gadget
+     * Installs the gadget
      *
      * @access  public
-     * @return  bool     Success/failure
+     * @return  mixed   True on successful installation, Jaws_Error otherwise
      */
     function InstallGadget()
     {
@@ -35,7 +35,7 @@ class StaticPageAdminModel extends StaticPageModel
             return $result;
         }
 
-        //registry keys.
+        // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/hide_title', 'true');
         $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/default_page', '1');
         $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/multilanguage', 'yes');
@@ -47,7 +47,7 @@ class StaticPageAdminModel extends StaticPageModel
      * Uninstalls the gadget
      *
      * @access  public
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UninstallGadget()
     {
@@ -64,7 +64,7 @@ class StaticPageAdminModel extends StaticPageModel
             }
         }
 
-        //registry keys
+        // Registry keys
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/hide_title');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/default_page');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/multilanguage');
@@ -73,12 +73,12 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Update the gadget
+     * Updates the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool     Success/Failure (Jaws_Error)
+     * @return  mixed   True on Success or Jaws_Error on failure
      */
     function UpdateGadget($old, $new)
     {
@@ -115,7 +115,7 @@ class StaticPageAdminModel extends StaticPageModel
             // ACL keys
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/Properties', 'true');
 
-            // Registry keys.
+            // Registry keys
             $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/multilanguage', 'yes');
 
             $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
@@ -157,19 +157,19 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Creates a translation of a given page
+     * Creates a translation of the given page
      *
      * @access  public
-     * @param   string  $page_id    ID of page we are translating
+     * @param   mixed   $page_id    ID or fast_url of the page (int/string)
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
-     * @param   bool    $published  If the translated page is published or not
-     * @return  bool    Success/failure
+     * @param   bool    $published  Publish status of the page
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function AddTranslation($page_id, $title, $content, $language, $published)
     {
-        //Language exists?
+        // Language exists?
         $language = str_replace(array('.', '/'), '', $language);
         if (!file_exists(JAWS_PATH . "languages/$language/FullName")) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language), RESPONSE_ERROR);
@@ -212,12 +212,12 @@ class StaticPageAdminModel extends StaticPageModel
      * Updates a translation
      *
      * @access  public
-     * @param   string  $id         Translation ID
+     * @param   int     $id         Translation ID
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
-     * @param   bool    $published  If the translated page is published or not
-     * @return  bool    Success/failure
+     * @param   bool    $published  Publish status of the page
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateTranslation($id, $title, $content, $language, $published)
     {
@@ -261,7 +261,7 @@ class StaticPageAdminModel extends StaticPageModel
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
-        //Lets update it
+        // Lets update it
         $params              = array();
         $params['id']        = $id;
         $params['title']     = $title;
@@ -300,11 +300,11 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Delete a translation
+     * Deletes the translation
      *
      * @access  public
-     * @param   string  $id         Translation ID
-     * @return  bool    Success/failure
+     * @param   int     $id Translation ID
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function DeleteTranslation($id)
     {
@@ -340,18 +340,18 @@ class StaticPageAdminModel extends StaticPageModel
     
 
     /**
-     * Creates a new page.
+     * Creates a new page
      *
      * @access  public
-     * @param   string  $title      The title of the page.
-     * @param   int     $group      The group of page that belongs to 
+     * @param   string  $title      The title of the page
+     * @param   int     $group      The group of the page
      * @param   string  $fast_url   The fast URL of the page
-     * @param   bool    $show_title If the document should publish the title or not
-     * @param   string  $content    The contents of the page.
-     * @param   string  $language   The language of page
-     * @param   bool    $published  If the page is published or not
-     * @param   bool    $auto       If it's auto saved or not
-     * @return  bool    Success/failure
+     * @param   bool    $show_title Whether displays the title or not
+     * @param   string  $content    The contents of the page
+     * @param   string  $language   The language of the page
+     * @param   bool    $published  Whether the page is published or not
+     * @param   bool    $auto       Whether its an auto saved page or not
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function AddPage($title, $group, $fast_url, $show_title, $content, $language, $published, $auto = false)
     {
@@ -392,16 +392,16 @@ class StaticPageAdminModel extends StaticPageModel
      * Updates a page.
      *
      * @access  public
-     * @param   int     $id             The ID of the page to update.
-     * @param   int     $group          The group of page that belongs to 
-     * @param   string  $fast_url       The fast URL of the page.
-     * @param   bool    $show_title     If the document should publish the title or not
-     * @param   string  $title          The new title of the page.
-     * @param   string  $content        The new contents of the the page.
-     * @param   string  $language       The language of page
-     * @param   bool    $published      If the page is published or not
-     * @param   bool    $auto           If it's auto saved or not
-     * @return  bool    Success/failure
+     * @param   int     $id         The ID of the page to update
+     * @param   int     $group      The group of the page
+     * @param   string  $fast_url   The fast URL of the page
+     * @param   bool    $show_title Whether displays the title or not
+     * @param   string  $title      The title of the page
+     * @param   string  $content    The contents of the page
+     * @param   string  $language   The language of the page
+     * @param   bool    $published  Whether the page is published or not
+     * @param   bool    $auto       Whether its an auto saved page or not
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdatePage($id, $group, $fast_url, $show_title, $title, $content, $language, $published, $auto = false)
     {
@@ -447,11 +447,11 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Deletes a page and all translated of it.
+     * Deletes the page and all of its translations
      *
      * @access  public
-     * @param   int     $id     The ID of the page to delete.
-     * @return  bool    Success/failure
+     * @param   int     $id  Page ID
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function DeletePage($id)
     {
@@ -495,8 +495,8 @@ class StaticPageAdminModel extends StaticPageModel
      * Deletes a group of pages
      *
      * @access  public
-     * @param   array   $pages  Array with the ids of pages
-     * @return  bool    Success/failure
+     * @param   array   $pages  Array with the page IDs
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function MassiveDelete($pages)
     {
@@ -519,12 +519,11 @@ class StaticPageAdminModel extends StaticPageModel
     /**
      * Creates a new group
      *
-     * @access   public
-     * @param    string     $title      Title of the group
-     * @param    string     $fast_url   The fast URL of the group.
-     * @param    boolean    $visible    Visibility of the group
-     *
-     * @returns  mixed      Success/Failure (Jaws_Error)
+     * @access  public
+     * @param   string  $title      Title of the group
+     * @param   string  $fast_url   The fast URL of the group
+     * @param   bool    $visible    Visibility status of the group
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function InsertGroup($title, $fast_url, $visible)
     {
@@ -552,15 +551,14 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Update a group
+     * Updates the group
      *
-     * @access   public
-     * @param    integer    $gid        ID of group
-     * @param    string     $title      Title of the group
-     * @param    string     $fast_url   The fast URL of the group.
-     * @param    boolean    $visible    Visibility of the group
-     *
-     * @returns  mixed      Success/Failure (Jaws_Error)
+     * @access  public
+     * @param   int     $gid        Group ID
+     * @param   string  $title      Title of the group
+     * @param   string  $fast_url   The fast URL of the group
+     * @param   bool    $visible    Visibility status of the group
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateGroup($gid, $title, $fast_url, $visible)
     {
@@ -589,10 +587,10 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Returns count of groups
+     * Gets total number of groups
      *
      * @access  public
-     * @returns mixed   Count of groups or Jaws_Error
+     * @return  mixed   Number of groups or Jaws_Error
      */
     function GetGroupsCount()
     {
@@ -609,11 +607,11 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Delete a group
+     * Deletes the group
      *
      * @access  public
      * @param   int     $gid   Group ID
-     * @returns mixed   True on success or Jaws_Error on failure
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function DeleteGroup($gid)
     {
@@ -631,12 +629,12 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Update settings
+     * Updates gadget settings
      *
      * @access  public
-     * @param   string  $defaultPage  Default page to use
-     * @param   string  $multiLang    Use a multilanguage 'schema'?
-     * @return  bool    Success/failure
+     * @param   string  $defaultPage  Default page to be displayed
+     * @param   string  $multiLang    Whether uses a multilanguage 'schema'?
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdateSettings($defaultPage, $multiLang)
     {
@@ -656,15 +654,15 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Search for pages (and translations) that matches a status and/or a keyword
-     * in the title or content
+     * Search for pages (and translations) that matches the given criteria
      *
      * @access  public
      * @access  public
-     * @param   string  $status  Status of page(s) we want to display
-     * @param   string  $search  Keyword (title/description) of pages we want to look for
-     * @param   int     $offset  Data limit
-     * @return  array   Array of matches
+     * @param   int     $group      Group ID
+     * @param   mixed   $status     Status of the pages we are looking for (1/0 or Y/N)
+     * @param   string  $search     The Keywords we are looking for in title/description of the pages
+     * @param   int     $offset     Data limit
+     * @return  array   List of pages
      */
     function SearchPages($group, $status, $search, $offset = null)
     {

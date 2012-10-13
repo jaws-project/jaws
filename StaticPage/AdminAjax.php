@@ -11,7 +11,7 @@
 class StaticPageAdminAjax extends Jaws_Ajax
 {
     /**
-     * Deletes a page and all translated of it.
+     * Deletes the page and all of its translations
      *
      * @access  public
      * @param   int     $id  Page ID
@@ -25,7 +25,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Deletes a translated page
+     * Deletes the page translation
      *
      * @access  public
      * @param   int     $id  Page ID
@@ -39,10 +39,10 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Executes a massive-delete of pages
+     * Executes a batch delete on pages
      *
      * @access  public
-     * @param   array   $pages  Array with the ids of pages
+     * @param   array   $pages  Array of page IDs
      * @return  array   Response array (notice or error)
      */
     function MassiveDelete($pages)
@@ -53,11 +53,11 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
     
     /**
-     * Update settings
+     * Updates gadget settings
      *
      * @access  public
-     * @param   string  $defaultPage  Default page to use
-     * @param   string  $multiLang    Use a multilanguage 'schema'?
+     * @param   string  $defaultPage    Default page to use
+     * @param   string  $multiLang      Whether uses multilanguage 'schema' or not
      * @return  array   Response array (notice or error)
      */
     function UpdateSettings($defaultPage, $multiLang)
@@ -68,11 +68,11 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Parse text
+     * Parses passed text
      *
      * @access  public
-     * @param   string  $text  Input text
-     * @return  string  parsed Text
+     * @param   string  $text   Input text
+     * @return  string  Parsed text
      */
     function ParseText($text)
     {
@@ -81,12 +81,13 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Get total pages of a search
+     * Gets total number of search results
      *
      * @access  public
-     * @param   string  $status  Status of page(s) we want to display
-     * @param   string  $search  Keyword (title/description) of pages we want to look for
-     * @return  int     Total of posts
+     * @param   int     $group      Group ID
+     * @param   mixed   $status     Status of the page(s) (1/0 or Y/N)
+     * @param   string  $search     Keywords(title/description) of the pages we are looking for
+     * @return  int     Total number of pages
      */
     function SizeOfSearch($group, $status, $search)
     {
@@ -95,13 +96,14 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Returns an array with all the pages
+     * Searches for specified pages
      *
      * @access  public
-     * @param   string  $status  Status of page(s) we want to display
-     * @param   string  $search  Keyword (title/description) of pages we want to look for
-     * @param   int     $limit   Data limit
-     * @return  array   Pages data
+     * @param   int     $group      Group ID
+     * @param   mixed   $status     Status of the pages we are looking for (1/0 or Y/N)
+     * @param   string  $search     The Keywords we are looking for in title/description of the pages
+     * @param   int     $offset     Data limit
+     * @return  array   List of pages
      */
     function SearchPages($group, $status, $search, $limit)
     {
@@ -114,20 +116,21 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * This function will perform an autodraft of the content and set
+     * This function performs an autodraft of the content and set
      * it's value to not published, which will later be changed when the
      * user clicks on save.
      *
      * @access  public
-     * @param   int    $id        The id of the staticpage id to update
-     * @param   int    $group     The group id of the page that blongs to
-     * @param   string $fast_url  The value of the fast_url. This will
-     *                          be autocreated if nothing is passed.
-     * @param   bool   $showtitle This will to know if we show the title or not.
-     * @param   string $title     The new autosaved title
-     * @param   string $content   The content of the new page
-     * @param   string $language  The language of page
-     * @param   bool   $published If the item is published or not. Default: draft
+     * @param   int     $id         The id of the staticpage id to update
+     * @param   int     $group      The group id of the page that blongs to
+     * @param   string  $fast_url   The value of the fast_url. This will
+     *                              be autocreated if nothing is passed
+     * @param   bool    $showtitle  This will to know if we show the title or not
+     * @param   string  $title      The new autosaved title
+     * @param   string  $content    The content of the new page
+     * @param   string  $language   The language of page
+     * @param   bool    $published  If the item is published or not. Default: draft
+     * @return  array   Response array (notice or error)
      */
     function AutoDraft($id = '', $group, $fast_url = '', $showtitle = '', $title = '', $content = '',
                        $language = '', $published = '')
@@ -148,11 +151,11 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Fetches data of specified group
+     * Gets the group data
      *
      * @access  public
-     * @param   int     $id    Group ID
-     * @return  array   group information
+     * @param   int     $id  Group ID
+     * @return  array   Group information
      */
     function GetGroup($id)
     {
@@ -165,11 +168,11 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Fills the groups data grid
+     * Gets the group data for grid
      *
      * @access  public
-     * param    bool    $offset     start offset of result boundaries 
-     * @return  string  XHTML datagrid
+     * @param   int     $offset  Start offset of the result boundaries 
+     * @return  string  XHTML grid data
      */
     function GetGroupsGrid($offset)
     {
@@ -180,10 +183,10 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Fills the groups data grid
+     * Gets number of groups
      *
      * @access  public
-     * @return  string  XHTML datagrid
+     * @return  mixed   Number of groups or Jaws_Error
      */
     function GetGroupsCount()
     {
@@ -192,12 +195,12 @@ class StaticPageAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Creates a new group
+     * Adds a new group
      *
      * @access  public
-     * @param   string  $title      The title of the group
+     * @param   string  $title      Title of the group
      * @param   string  $fast_url   Shortcut keyword to link to the group
-     * @param   bool    $visible    The visibility of the group
+     * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
     function InsertGroup($title, $fast_url, $visible)
@@ -220,7 +223,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * @param   int     $id         Group ID
      * @param   string  $title      Title of the group
      * @param   string  $fast_url   Shortcut keyword to link to the group
-     * @param   bool    $visible    Visibility of the group
+     * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
     function UpdateGroup($id, $title, $fast_url, $visible)
@@ -240,7 +243,7 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * Deletes the group
      *
      * @access  public
-     * @param   int     $id   group ID
+     * @param   int     $id  group ID
      * @return  array   Response array (notice or error)
      */
     function DeleteGroup($id)

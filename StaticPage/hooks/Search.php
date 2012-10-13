@@ -11,7 +11,10 @@
 class StaticPageSearchHook
 {
     /**
-     * Gets the gadget's search fields
+     * Gets search fields of the gadget
+     *
+     * @access  public
+     * @return  array   List of search fields
      */
     function GetSearchFields() {
         return array(
@@ -23,7 +26,7 @@ class StaticPageSearchHook
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
+     * @param   string  $pSql   Prepared search(WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
     function Hook($pSql = '')

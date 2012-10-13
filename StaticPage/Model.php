@@ -13,11 +13,12 @@
 class StaticPageModel extends Jaws_Model
 {
     /**
-     * Gets a single page by ID.
+     * Gets a single page
      *
      * @access  public
-     * @param   int     $id     The ID or fast_url of the page to get.
-     * @return  array   An array containing the page information, or false if no page could be loaded.
+     * @param   mixed   $id         ID or fast_url of the page (int/string)
+     * @param   string  $language   Page language
+     * @return  mixed   Array of the page information or Jaws_Error on failure
      */
     function GetPage($id, $language = '')
     {
@@ -60,11 +61,11 @@ class StaticPageModel extends Jaws_Model
     }
 
     /**
-     * Gets the translation (by the translation ID) of a page
+     * Gets the translation(by translation ID) of a page
      *
      * @access  public
-     * @param   int     $id     The translation ID
-     * @return  array   An array containing the page translation information, or false if no translation could be loaded.
+     * @param   int     $id  Translation ID
+     * @return  mixed   Array translation information or Jaws_Error on failure
      */
     function GetPageTranslation($id)
     {
@@ -88,10 +89,10 @@ class StaticPageModel extends Jaws_Model
     }
 
     /**
-     * Gets the default page.
+     * Gets the default page
      *
      * @access  public
-     * @return  array   An array containing the page information, or false if no page could be loaded.
+     * @return  mixed   Array of the page information or Jaws_Error on failure
      */
     function GetDefaultPage()
     {
@@ -117,12 +118,12 @@ class StaticPageModel extends Jaws_Model
     }
     
     /**
-     * Gets the translation based in the page ID and the language code
+     * Gets the translation by page ID and language code
      *
      * @access  public
-     * @param   string  $page_id    ID of page we are translating
+     * @param   int     $page_id    ID of the page we are translating
      * @param   string  $language   The language we are using
-     * @return  array   An array containing the page translation information, or false if no translation could be loaded.
+     * @return  mixed   Array of translation information or Jaws_Error on failure
      */
     function GetPageTranslationByPage($page_id, $language) 
     {
@@ -150,14 +151,12 @@ class StaticPageModel extends Jaws_Model
     }
 
     /**
-     * Returns an array with all available languages a page 
-     * has been translated. If no languages are found then we return 
-     * false
+     * Returns all available languages a page has been translated to
      *
      * @access  public
-     * @param   int     $page   Page ID
-     * @param   bool    $onlyPublished
-     * @return  mixed   List of code languages / False if no code are found
+     * @param   int     $page           Page ID
+     * @param   bool    $onlyPublished  Publish status of the page
+     * @return  mixed   Array of language codes / False if no code are found
      */
     function GetTranslationsOfPage($page, $onlyPublished = false)
     {
@@ -183,16 +182,15 @@ class StaticPageModel extends Jaws_Model
     }
 
     /**
-     * Gets an index of all the pages.
+     * Gets pages with given conditions
      *
      * @access  public
-     * @param   int     $gid        ID of the group
-     * @param   int     $limit      The number of pages to return. Set to Null to return all pages.
-     * @param   int     $sortType   One of the STATICPAGES_SORT_* constants to set the sort field.
-     * @param   int     $sortDir    Either STATICPAGES_ASC or STATICPAGES_DESC to set the sort direction.
+     * @param   int     $gid        group ID
+     * @param   int     $limit      The number of pages to return (null = all pages)
+     * @param   int     $sortColumn The coulmn which the result must be sorted by
+     * @param   int     $sortDir    Either STATICPAGES_ASC or STATICPAGES_DESC to set the sort direction
      * @param   int     $offset     Starting offset
-     *
-     * @return  array   An array containing the page information.
+     * @return  array   List of pages
      */
     function GetPages($gid = null, $limit = null, $sortColumn = 'title', $sortDir = 'ASC', $offset = false)
     {
@@ -250,12 +248,12 @@ class StaticPageModel extends Jaws_Model
     }
     
     /**
-     * Returns true if $page has been translated to $language
+     * Checks for existance of a page translation
      *
      * @access  public
-     * @param   int     $page_id   The page ID
-     * @param   string  $language  The translation we are looking for
-     * @return  bool    Exists / Not exists
+     * @param   mixed   $page_id    ID or fast_url of the page (int/string)
+     * @param   string  $language   The translation we are looking for
+     * @return  bool    True if exists and false if not
      */
     function TranslationExists($page_id, $language)
     {
@@ -281,11 +279,11 @@ class StaticPageModel extends Jaws_Model
     }
 
     /**
-     * Fetches properties of a group
+     * Gets properties of a group
      *
      * @access  public
-     * param    int     $id     Group ID
-     * @returns mixed   Array of group's info or Jaws_Error
+     * @param    int     $id  Group ID
+     * @return  mixed   Array of group info or Jaws_Error
      */
     function GetGroup($id)
     {
@@ -316,10 +314,10 @@ class StaticPageModel extends Jaws_Model
      * Returns list of groups
      *
      * @access  public
-     * param    boolean     $visible    Checks the visibility of groups
-     * param    boolean     $limit      restricts number of records
-     * param    boolean     $offset     start offset of result boundaries 
-     * @returns mixed       Array of groups or Jaws_Error
+     * @param   bool    $visible    Visibility status of groups
+     * @param   bool    $limit      Number of groups to retrieve
+     * @param   bool    $offset     Start offset of result boundaries 
+     * @return  mixed   Array of groups or Jaws_Error
      */
     function GetGroups($visible = null, $limit = null, $offset = null)
     {

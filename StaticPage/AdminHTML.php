@@ -15,9 +15,9 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     /**
      * Builds the menubar
      *
-     * @access       public
-     * @param        string  $selected Selected action
-     * @return       string  The html menubar
+     * @access  public
+     * @param   string  $selected   Selected action
+     * @return  string  XHTML menubar
      */
     function MenuBar($selected)
     {
@@ -57,10 +57,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Builds the 'manage settings/properties' view
+     * Builds the management UI for gadget properties
      *
      * @access  public
-     * @return  string  XHTML of settings view
+     * @return  string  XHTML form
      */
     function Properties()
     {
@@ -121,10 +121,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Builds the basic datagrid view
+     * Builds datagrid structure
      *
      * @access  private
-     * @return  string   XHTML of datagrid
+     * @return  string   XHTML datagrid
      */
     function DataGrid()
     {
@@ -148,13 +148,14 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Returns an array with pages found
+     * Prepares data for pages grid
      *
      * @access  public
-     * @param   string  $status  Status of page(s) we want to display
-     * @param   string  $search  Keyword (title/description) of pages we want to look for
-     * @param   int     $limit   Data limit
-     * @return  array   Data
+     * @param   int     $group      Group ID
+     * @param   mixed   $status     Status of the page(s) (1/0 or Y/N)
+     * @param   string  $search     Keywords(title/description) of the pages we are looking for
+     * @param   int     $limit      Data limit
+     * @return  array   Grid data
      */
     function GetPages($group, $status, $search, $limit)
     {
@@ -226,10 +227,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Display the administration page.
+     * Builds the gadget administration UI
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function Admin()
     {
@@ -312,10 +313,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Creates the form to create a translation
+     * Builds the form to create a new translation
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function AddNewTranslation()
     {
@@ -336,10 +337,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Creates the form to create a new page
+     * Builds the form to create a new page
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function AddNewPage()
     {
@@ -348,10 +349,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Save a new page.
+     * Adds a new page
      *
      * @access  public
-     * @return  string
+     * @return  void
      */
     function AddPage()
     {
@@ -370,10 +371,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Edit a page.
+     * Builds the form to edit page
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function EditPage()
     {
@@ -395,10 +396,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Save an updated page.
+     * Updates the page
      *
      * @access  public
-     * @return  string
+     * @return  void
      */
     function SaveEditPage()
     {
@@ -418,9 +419,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Add a new page translation
+     * Adds a new page translation
      *
      * @access  public
+     * @return  void
      */
     function AddTranslation()
     {
@@ -447,10 +449,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
     
     /**
-     * Creates the form to edit a translation
+     * Builds the form to edit a translation
      *
      * @access  public
-     * @return  string
+     * @return  string  XHTML content
      */
     function EditTranslation()
     {
@@ -474,7 +476,7 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
      * Updates a translation
      *
      * @access  public
-     * @return  string
+     * @return  void
      */
     function SaveEditTranslation()
     {
@@ -491,20 +493,20 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Builds a pre-filled form.
+     * Builds a pre-filled form
      *
      * @access  private
-     * @param   string      $title          The title text.
+     * @param   string      $title          Page title
      * @param   string      $fast_url       Fast URL
-     * @param   string      $content        The content text.
-     * @param   bool        $published      If the document is published or not
-     * @param   bool        $show_title     If the document should publish the title or not
-     * @param   string      $language       Language page has been written
-     * @param   int         $id             The ID of the page
-     * @param   int         $gid            The ID of page group
-     * @param   string      $action         The action to do when form gets submitted
-     * @param   string      $mode           Mode we are using (base by default or translation)
-     * @return  string      The completed form.
+     * @param   string      $content        Page content
+     * @param   bool        $published      Whether 'published' is checked or not
+     * @param   bool        $show_title     Whether 'show_title' is checked or not
+     * @param   string      $language       Page language
+     * @param   int         $id             Page ID
+     * @param   int         $gid            Group ID
+     * @param   string      $action         The action to perform on page submit
+     * @param   string      $mode           The mode we are using (base by default or translation)
+     * @return  string      XHTML form
      */
     function CreateForm($title, $fast_url, $content, $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
@@ -644,10 +646,10 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Displays gadget administration section for groups
+     * Builds the administration UI for groups
      *
      * @access  public
-     * @returns  string HTML Template content
+     * @return  string  XHTML content
      */
     function Groups()
     {
@@ -703,7 +705,7 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
      * Builds the groups data grid
      *
      * @access  public
-     * @return  string  XHTML of Datagrid
+     * @return  string  XHTML datagrid
      */
     function GroupsDataGrid()
     {
@@ -726,11 +728,11 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     }
 
     /**
-     * Prepares the groups data grid
+     * Prepares data for groups data grid
      *
      * @access  public
-     * param    bool    $offset     start offset of result boundaries 
-     * @return  array   XHTML groups data grid
+     * @param   int     $offset  Start offset of the result boundaries 
+     * @return  array   Grid data
      */
     function GetGroupsGrid($offset)
     {
