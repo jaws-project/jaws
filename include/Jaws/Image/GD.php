@@ -50,11 +50,11 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Returns a new image for temporary processing
      *
+     * @access  protected
      * @param   int $width width of the new image
      * @param   int $height height of the new image
      * @param   bool $trueColor force which type of image to create
-     * @return resource a GD image resource
-     * @access  protected
+     * @return  resource a GD image resource
      */
     function _createImage($width = -1, $height = -1, $trueColor = null)
     {
@@ -102,10 +102,11 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Loads an image from file
      *
-     * @param   string    $image filename
-     * @param   bool      $readonly readonly
-     * @return  mixed True or a Jaws_Error object on error
-     * @access  public
+     * @access   public
+     * @param    string $filename
+     * @param    bool   $readonly readonly
+     * @internal param string $image filename
+     * @return   mixed True or a Jaws_Error object on error
      */
     function load($filename, $readonly = false)
     {
@@ -130,10 +131,10 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Loads an image from raw data
      *
+     * @access  public
      * @param   string    $data  image raw data
      * @param   bool      $readonly readonly
      * @return  mixed True or a Jaws_Error object on error
-     * @access  public
      */
     function setData($data, $readonly = false)
     {
@@ -166,17 +167,17 @@ class Jaws_Image_GD extends Jaws_Image
     }
 
     /**
-     * Resizes the image
+     * Resize the image
      *
      * For GD 2.01+ the new copyresampled function is used
      * It uses a bicubic interpolation algorithm to get far
      * better result.
      *
+     * @access  public
      * @param   int   $new_w   New width
      * @param   int   $new_h   New height
      * @param   array $options Optional parameters(eg. 'scaleMethod': "pixel" or "smooth")
      * @return  mixed True on success or Jaws_Error object on error
-     * @access  public
      */
     function resize($new_w, $new_h, $options = null)
     {
@@ -205,12 +206,12 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Crops image by size and start coordinates
      *
+     * @access  public
      * @param   int width Cropped image width
      * @param   int height Cropped image height
      * @param   int x X-coordinate to crop at
      * @param   int y Y-coordinate to crop at
      * @return  mixed True or a Jaws_Error object on error
-     * @access  public
      */
     function crop($width, $height, $x = 0, $y = 0)
     {
@@ -243,11 +244,12 @@ class Jaws_Image_GD extends Jaws_Image
      * Rotates image by the given angle
      * Uses a fast rotation algorythm for custom angles or lines copy for multiple of 90 degrees
      *
+     * @author  Pierre-Alain Joye
+     *
+     * @access  public
      * @param   int   $angle   Rotation angle
      * @param   array $options array('canvasColor' => array(r ,g, b), named color or #rrggbb)
-     * @author Pierre-Alain Joye
      * @return  bool True on success or a false on error
-     * @access  public
      */
     function rotate($angle, $options = null)
     {
@@ -287,10 +289,9 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Adjusts the image gamma
      *
-     * @param float $gamma
-     *
-     * @return  mixed True or a Jaws_Error on error
      * @access  public
+     * @param   float $gamma
+     * @return  mixed True or a Jaws_Error on error
      **/
     function gamma($gamma = 1.0)
     {
@@ -306,8 +307,8 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Horizontal mirroring
      *
-     * @return  mixed True or Jaws_Error on error
      * @access  public
+     * @return  mixed True or Jaws_Error on error
      **/
     function mirror()
     {
@@ -324,8 +325,8 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Vertical mirroring
      *
-     * @return  mixed True or Jaws_Error on error
      * @access  public
+     * @return  mixed True or Jaws_Error on error
      **/
     function flip()
     {
@@ -362,12 +363,11 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Saves the image to a file
      *
+     * @access  public
      * @param   string $filename the name of the file to write to
      * @param   string $type     the output format, default is the current used format
      * @param   int    $quality  default is 75
-     *
      * @return  mixed True on success or Jaws_Error object on error
-     * @access  public
      */
     function save($filename = '', $type = '', $quality = null)
     {
@@ -406,12 +406,11 @@ class Jaws_Image_GD extends Jaws_Image
      * Displays image without saving and lose changes.
      * This method adds the Content-type HTTP header
      *
+     * @access  public
      * @param   string $type     the output format, default is the current used format
      * @param   int    $quality  default is 75
      * @param   int    $expires  set Cache-Control and Expires of HTTP header
-     *
      * @return  mixed True on success or Jaws_Error object on error
-     * @access  public
      */
     function display($type = '', $quality = null, $expires = 0)
     {
@@ -467,6 +466,7 @@ class Jaws_Image_GD extends Jaws_Image
      * Destroys image handle
      *
      * @access  public
+     * @return void
      */
     function free()
     {

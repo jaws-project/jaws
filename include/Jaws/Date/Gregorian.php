@@ -15,6 +15,10 @@ class Jaws_Date_Gregorian extends Jaws_Date
      * @param   int $year   Gregorian year
      * @param   int $month  Gregorian month
      * @param   int $day    Gregorian day
+     * @param   int $hour
+     * @param   int $minute
+     * @param   int $second
+     * @param   string $format
      * @access  public
      * @return  array   Converted time
      */
@@ -46,6 +50,9 @@ class Jaws_Date_Gregorian extends Jaws_Date
      * @param   int $year  Jalali year
      * @param   int $month Jalali month
      * @param   int $day   Jalali day
+     * @param   int $hour
+     * @param   int $minute
+     * @param   int $second
      * @access  public
      * @return  array   Date time information
      */
@@ -80,7 +87,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
      *
      * @param   string  $date   Date string
      * @param   string  $format Format to use
-     * @return The original date with a new format
+     * @return  The original date with a new format
      */
     function Format($date, $format = null)
     {

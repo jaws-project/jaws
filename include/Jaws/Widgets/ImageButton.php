@@ -89,9 +89,11 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Constructor
      *
-     * @access    public
-     * @param     string   $text  Text of ImageButton
-     * @param     string   $img   Image to display
+     * @access  public
+     * @param   string   $text  Text of ImageButton
+     * @param   string   $img   Image to display
+     * @param   string $action
+     * @return  void
      */
     function Jaws_Widgets_ImageButton($text, $img, $action = '')
     {
@@ -108,8 +110,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the default action
      *
-     * @access     public
-     * @param      string   $action  Action to use
+     * @access  public
+     * @param   string   $action  Action to use
+     * @return  void
      */
     function SetAction($action)
     {
@@ -121,6 +124,7 @@ class Jaws_Widgets_ImageButton extends Bin
      *
      * @access     public
      * @param      string   $style  Button Style to use
+     * @return  void
      */
     function ButtonStyle($style)
     {
@@ -130,8 +134,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the button class
      *
-     * @access     public
-     * @param      string   $class  Button Class to use
+     * @access  public
+     * @param   string   $class  Button Class to use
+     * @return  void
      */
     function SetButtonClass($class)
     {
@@ -141,8 +146,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the text style
      *
-     * @access     public
-     * @param      string   $style  Text Style to use
+     * @access  public
+     * @param   string   $style  Text Style to use
+     * @return  void
      */
     function TextStyle($style)
     {
@@ -152,8 +158,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the text class
      *
-     * @access     public
-     * @param      string   $class  Text Class to use
+     * @access  public
+     * @param   string   $class  Text Class to use
+     * @return  void
      */
     function SetTextClass($class)
     {
@@ -163,8 +170,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the text
      *
-     * @access      public
-     * @param       string   $text   Text of ImageButton
+     * @access  public
+     * @param   string   $text   Text of ImageButton
+     * @return  void
      */
     function SetText($text)
     {
@@ -174,8 +182,9 @@ class Jaws_Widgets_ImageButton extends Bin
     /**
      * Set the image src
      *
-     * @access      public
-     * @param       string   $img   Image to use as background
+     * @access  public
+     * @param   string   $img   Image to use as background
+     * @return  void
      */
     function SetImageSRC($img)
     {
@@ -189,6 +198,7 @@ class Jaws_Widgets_ImageButton extends Bin
      * @access      public
      * @param       string    $text   Text of the link
      * @param       string    $action URL of action or javascript
+     * @return      void
      */
     function AddExtraAction($text, $action)
     {

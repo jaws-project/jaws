@@ -72,6 +72,11 @@ class Jaws_Widgets_TextArea extends Container
      * Main Constructor
      *
      * @access  public
+     * @param   $gadget
+     * @param   $name
+     * @param   string $value
+     * @param   string $label
+     * @return  void
      */
     function Jaws_Widgets_TextArea($gadget, $name, $value = '', $label = '')
     {
@@ -97,6 +102,7 @@ class Jaws_Widgets_TextArea extends Container
      *
      * @param   string  $id    ID name
      * @access  public
+     * @return  void
      */
     function SetID($id)
     {
@@ -134,6 +140,7 @@ class Jaws_Widgets_TextArea extends Container
      *
      * @param   object  $control Control to Add
      * @access  public
+     * @return  void
      */
     function AddControl($control)
     {
@@ -169,7 +176,7 @@ class Jaws_Widgets_TextArea extends Container
      *
      * @access  public
      * @param   string $label The label to display.
-     * @return null
+     * @return  void
      */
     function SetLabel($label)
     {
@@ -178,6 +185,7 @@ class Jaws_Widgets_TextArea extends Container
 
     /**
      * @param   arrayed $width
+     * @return  void
      */
     function setWidth($width)
     {
@@ -188,6 +196,7 @@ class Jaws_Widgets_TextArea extends Container
      * Build the complete JawsEditor looking for the WebControls
      *
      * @access  private
+     * @return  void
      */
     function extraBuild()
     {

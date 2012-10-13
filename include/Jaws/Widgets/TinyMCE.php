@@ -116,6 +116,11 @@ class Jaws_Widgets_TinyMCE extends Container
      * Main Constructor
      *
      * @access  public
+     * @param   string $gadget
+     * @param   string $name
+     * @param   string $value
+     * @param   string $label
+     * @return  void
      */
     function Jaws_Widgets_TinyMCE($gadget, $name, $value = '', $label = '')
     {
@@ -258,6 +263,7 @@ class Jaws_Widgets_TinyMCE extends Container
      *
      * @access  public
      * @param   string   $id  Widget ID
+     * @return  void
      */
     function setID($id)
     {
@@ -273,7 +279,9 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * Set the className of the TextArea
      *
-     * @access    public
+     * @access  public
+     * @param   string $class
+     * @return  void
      */
     function setClass($class)
     {
@@ -286,7 +294,7 @@ class Jaws_Widgets_TinyMCE extends Container
      *
      * @access  public
      * @param   string $label The label to display.
-     * @return null
+     * @return  void
      */
     function SetLabel($label)
     {
@@ -296,7 +304,9 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * Set the TinyMCE theme
      *
-     * @access    public
+     * @access  public
+     * @param   string $theme
+     * @return  void
      */
     function setTheme($theme)
     {
@@ -316,7 +326,8 @@ class Jaws_Widgets_TinyMCE extends Container
     }
 
     /**
-     * @param   arrayed $width
+     * @param   array $width
+     * @return  void
      */
     function setWidth($width)
     {

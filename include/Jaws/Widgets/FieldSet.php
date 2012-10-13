@@ -4,7 +4,7 @@
  *
  * @category   Widget
  * @package    Core
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  */
@@ -12,6 +12,10 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Container/FieldSet.php';
 
 class Jaws_Widgets_FieldSet extends FieldSet
 {
+    /**
+     * @param  string $legend
+     * @return void
+     */
     function Jaws_Widgets_FieldSet($legend = '')
     {
         parent::FieldSet($legend);
@@ -100,8 +104,10 @@ class Jaws_Widgets_FieldSet extends FieldSet
     /**
      * Add a widget, just bin widgets!
      *
-     * @param    object   $widget  Widget To add
      * @access  public
+     * @param   object   $widget  Widget To add
+     * @param   string $comment
+     * @return  bool|void
      */
     function add($widget, $comment = '')
     {

@@ -5,18 +5,20 @@
  * @category   Jaws_Date
  * @package    Core
  * @author     Amir Mohammad Saied <amir@php.net>
- * @autho      Ali Fazelzadeh <afz@php.net>
+ * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Date_Jalali extends Jaws_Date
 {
     /**
+     * @var     array
      * @access  private
      */
     var $_LeapYear = array(1, 5, 9, 13, 17, 22, 26, 30);
 
     /**
+     * @var     array
      * @access  private
      */
     var $_JalaliDaysInMonthes = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
@@ -63,6 +65,10 @@ class Jaws_Date_Jalali extends Jaws_Date
      * @param   int $year  Jalali year
      * @param   int $month Jalali month
      * @param   int $day   Jalali day
+     * @param   int $hour
+     * @param   int $minute
+     * @param   int $second
+     * @param   string $format
      * @access  public
      * @return  array   Converted time
      */
@@ -136,15 +142,18 @@ class Jaws_Date_Jalali extends Jaws_Date
                     );
     }
 
-   /**
-    * Get date information
-    *
+    /**
+     * Get date information
+     *
      * @param   int $year  Jalali year
      * @param   int $month Jalali month
      * @param   int $day   Jalali day
+     * @param   int $hour
+     * @param   int $minute
+     * @param   int $second
      * @access  public
      * @return  array   Date time information
-    */
+     */
     function GetDateInfo($year, $month = 1, $day = 1, $hour = 0, $minute = 0, $second = 0)
     {
         if (is_array(func_get_arg(0))) {
@@ -188,7 +197,7 @@ class Jaws_Date_Jalali extends Jaws_Date
     *
     * @param   string  $date   Date string
     * @param   string  $format Format to use
-    * @return The original date with a new format
+    * @return  The original date with a new format
     */
     function Format($date, $format = null)
     {
@@ -217,7 +226,7 @@ class Jaws_Date_Jalali extends Jaws_Date
     *
     * @param   string  $date   Date string
     * @param   string  $format Format to use
-    * @return The original date with a new format
+    * @return  The original date with a new format
     */
     function DateFormat($format, $date)
     {

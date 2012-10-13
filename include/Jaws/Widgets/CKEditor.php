@@ -369,7 +369,9 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Set the className of the TextArea
      *
-     * @access    public
+     * @access  public
+     * @param   string $class
+     * @return  void
      */
     function setClass($class)
     {
@@ -393,7 +395,7 @@ class Jaws_Widgets_CKEditor extends Container
      *
      * @access  public
      * @param   string $label The label to display.
-     * @return null
+     * @return void
      */
     function setLabel($label)
     {
@@ -404,6 +406,7 @@ class Jaws_Widgets_CKEditor extends Container
      * Set the CKEditor theme
      *
      * @param   string $Theme
+     * @return  void
      */
     function setTheme($Theme)
     {
@@ -412,6 +415,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   string $Skin
+     * @return  void
      */
     function setSkin($Skin)
     {
@@ -420,6 +424,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   string $Language
+     * @return  void
      */
     function setLanguage($Language)
     {
@@ -428,6 +433,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   bool    $IsEnabled
+     * @return  void
      */
     function setIsEnabled($IsEnabled)
     {
@@ -436,6 +442,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   bool    $IsResizable
+     * @return  void
      */
     function setIsResizable($IsResizable)
     {
@@ -444,6 +451,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   string $Plugins
+     * @return  void
      */
     function removePlugins($Plugins)
     {
@@ -452,6 +460,7 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @param   string $Direction
+     * @return  void
      */
     function setDirection($Direction)
     {
@@ -459,7 +468,8 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param $Toolbar
+     * @param  $Toolbar
+     * @return  void
      */
     function setToolbar($Toolbar)
     {
@@ -467,7 +477,8 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   arrayed $height
+     * @param   array $height
+     * @return  void
      */
     function setHeight($height)
     {
@@ -475,7 +486,8 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   arrayed $width
+     * @param   array $width
+     * @return  void
      */
     function setWidth($width)
     {

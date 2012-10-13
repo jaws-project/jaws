@@ -33,6 +33,12 @@ class Jaws_Cache_Memcache extends Jaws_Cache
      * Store cache of given component/section
      *
      * @access  public
+     * @param  string $component
+     * @param  string $section
+     * @param  string $params
+     * @param  $data
+     * @param  int $lifetime
+     * @return mixed
      */
     function set($component, $section, $params, &$data, $lifetime = 0)
     {
@@ -50,6 +56,10 @@ class Jaws_Cache_Memcache extends Jaws_Cache
      * Get cached data of given component/section
      *
      * @access  public
+     * @param  string $component
+     * @param  string $section
+     * @param  string $params
+     * @return mixed
      */
     function get($component, $section, $params = null)
     {
@@ -68,6 +78,10 @@ class Jaws_Cache_Memcache extends Jaws_Cache
      * Delete cached data of given component/section
      *
      * @access  public
+     * @param  string $component
+     * @param  string $section
+     * @param  string $params
+     * @return mixed
      */
     function delete($component = null, $section = null, $params = null)
     {

@@ -37,7 +37,7 @@ class Jaws_Session_Web extends Jaws_Session
     /**
      * @see Jaws_Session::Create
      *
-     * @param   array  $info      User attributes
+     * @param   array   $info      User attributes
      * @param   bool    $remember Remember me
      * @return  bool    True if can create session.
      */
@@ -69,7 +69,10 @@ class Jaws_Session_Web extends Jaws_Session
      *
      * @param   string $name Cookie name
      * @param   string $value Cookie value
-     * @param   string $expiration Cookie expiration minutes
+     * @param   int $minutes
+     * @param   bool $httponly
+     * @internal param string $expiration Cookie expiration minutes
+     * @return  void
      */
     function SetCookie($name, $value, $minutes = 0, $httponly = false)
     {
@@ -84,7 +87,9 @@ class Jaws_Session_Web extends Jaws_Session
 
     /**
      * Get a cookie
+     *
      * @param   string $name Cookie name
+     * @return  string
      */
     function GetCookie($name)
     {

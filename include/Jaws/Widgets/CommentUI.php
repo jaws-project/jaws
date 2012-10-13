@@ -42,6 +42,7 @@ class Jaws_Widgets_CommentUI
      *
      * @access  public
      * @param   string  $action  Edit's action
+     * @return  void
      */
     function SetEditAction($action)
     {

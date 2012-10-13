@@ -4,7 +4,7 @@
  *
  * @category   Widget
  * @package    Core
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  */
@@ -17,6 +17,7 @@ class Jaws_Widgets_DatePicker extends DatePicker
 {
     /**
      * Default theme
+     * @var string
      */
     var $_theme = 'calendar-system';
 

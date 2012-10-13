@@ -56,6 +56,7 @@ class Jaws_Widgets_Menubar
      * @param   string  $icon Icon/Stock to use
      * @param   string  $onclick Javascript OnClick function
      * @param   bool    $selected If the option is marked as selected
+     * @return  void
      */
     function AddOption($action, $name, $url = '', $icon = '', $selected = false, $onclick = null)
     {
@@ -83,6 +84,7 @@ class Jaws_Widgets_Menubar
      *
      * @access  public
      * @param   string  $name  Actions's name to activate
+     * @return  void
      */
     function Activate($name)
     {
@@ -96,6 +98,7 @@ class Jaws_Widgets_Menubar
      *
      * @access  public
      * @param   string  $class Prefix class's name
+     * @return  void
      */
     function SetClass($class)
     {
@@ -106,6 +109,7 @@ class Jaws_Widgets_Menubar
      * Build the menubar with its options
      *
      * @access  private
+     * @return  string
      */
     function Get()
     {
