@@ -1,4 +1,6 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
  * Replaces [block=#n] with a proper content of specified block id
  *
@@ -8,14 +10,13 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class BlockImport extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function BlockImport()
     {
@@ -27,11 +28,11 @@ class BlockImport extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Parse the text
+     * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string  Parsed HTML
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -44,8 +45,8 @@ class BlockImport extends Jaws_Plugin
      * The preg_replace call back function
      *
      * @access  private
-     * @param   string  $matches    Matched strings from preg_replace_callback
-     * @return  string  Block content or plain text on errors
+     * @param   string  $data   Matched strings from preg_replace_callback
+     * @return  string  Block content or blank text
      */
     function Prepare($data)
     {

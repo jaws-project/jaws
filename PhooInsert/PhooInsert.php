@@ -1,7 +1,9 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * PhooInsert is a plugin that let's insert easily 
- * a photo from Phoo gadget to any gadget that admits plugins
+ * By PhooInsert you can browse and insert photos
+ * from Phoo gadget into the content editor
  *
  * @category   Plugin
  * @package    PhooInsert
@@ -10,14 +12,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class PhooInsert extends Jaws_Plugin 
 {
     /**
      * Main Constructor
      *
      * @access   public
+     * @return  void
      */
     function PhooInsert()
     {
@@ -29,10 +30,11 @@ class PhooInsert extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
-     * @access   public
-     * @return   object The HTML WebControl
+     * @access  public
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -49,9 +51,9 @@ class PhooInsert extends Jaws_Plugin
     /**
      * Overrides, Parses the text
      *
-     * @access    public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @access  public
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {

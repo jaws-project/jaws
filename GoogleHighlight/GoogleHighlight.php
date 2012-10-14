@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin that highlights words when google does a search in the page (s=foo).
+ * Highlights words when google does a search in the page (s=foo)
  *
  * @category   Plugin
  * @package    GoogleHighlight
@@ -8,19 +10,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that highlights words when google does a search in the page (s=foo).
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class GoogleHighlight extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function GoogleHighlight()
     {
@@ -34,8 +30,8 @@ class GoogleHighlight extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {

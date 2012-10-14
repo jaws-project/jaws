@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Replace every email addres with 'at' and 'dot' strings
+ * Replaces every email address with 'at' and 'dot' strings
  *
  * @category   Plugin
  * @package    AntiSpammers
@@ -8,19 +10,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces all the @ and dots (.) of an email with _AT_ and _DOT_ string
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class AntiSpammers extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function AntiSpammers()
     {
@@ -31,11 +27,11 @@ class AntiSpammers extends Jaws_Plugin
     }
 
     /**
-     * Simple parses the text and decides if the real parse call should be done
+     * Checks the string to see if parsing is required
      *
      * @access  public
-     * @param   string  $html Html to simple parse
-     * @return  boolean
+     * @param   string  $html   Input HTML
+     * @return  bool    Checking result
      */
     function NeedsParsing($html)
     {
@@ -50,8 +46,8 @@ class AntiSpammers extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -68,11 +64,11 @@ class AntiSpammers extends Jaws_Plugin
     }
 
     /**
-     * Callback that replaces all the @ and dots for _at_ and _dot_ string
+     * Performs the conversion
      *
      * @access  public
-     * @param   array  $email The Email to edit
-     * @return  string The new email
+     * @param   array   $email   The Email address to be converted
+     * @return  string  Converted email address
      */
     function ConvertMail($email)
     {

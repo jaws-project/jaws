@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin that returns a direct link to a term in the glossary
+ * Returns a direct link to a term in the glossary
  *
  * @category   Plugin
  * @package    GlossaGlossy
@@ -8,13 +10,6 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces all the [term] tags with term links
- *
- * @see Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class GlossaGlossy extends Jaws_Plugin
 {
 
@@ -22,6 +17,7 @@ class GlossaGlossy extends Jaws_Plugin
      * Main Constructor
      *
      * @access	public
+     * @return  void
      */
     function GlossaGlossy()
     {
@@ -33,10 +29,11 @@ class GlossaGlossy extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
-     * @access	public
-     * @return  string The HTML WebControl
+     * @access  public
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -63,11 +60,11 @@ class GlossaGlossy extends Jaws_Plugin
     }
 
     /**
-     * A simple parser to determine needs a complex one
+     * Checks the string to see if parsing is required
      *
      * @access  public
-     * @param   string  $html   HTML to parse
-     * @return  string
+     * @param   string  $html   Input HTML
+     * @return  bool    Checking result
      */
     function NeedParsing($html)
     {
@@ -81,9 +78,9 @@ class GlossaGlossy extends Jaws_Plugin
     /**
      * Overrides, Parses the text
      *
-     * @access	public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @access  public
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {

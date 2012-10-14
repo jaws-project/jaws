@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin that highlights code
+ * Highlights the code
  *
  * @category   Plugin
  * @package    SyntaxHighlight
@@ -8,19 +10,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces all the [code] tags with <code>, so the code will be highlighted
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class SyntaxHighlight extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @access  private
      */
     function SyntaxHighlight()
     {
@@ -32,10 +28,11 @@ class SyntaxHighlight extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -74,13 +71,12 @@ class SyntaxHighlight extends Jaws_Plugin
         return $controlbox;
     }
 
-
     /**
-     * Simple parses the text and decides if the real parse call should be done
+     * Checks the string to see if parsing is required
      *
      * @access  public
-     * @param   string  $html Html to simple parse
-     * @return  boolean
+     * @param   string  $html   Input HTML
+     * @return  bool    Checking result
      */
     function NeedsParsing($html)
     {
@@ -97,8 +93,8 @@ class SyntaxHighlight extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -115,11 +111,11 @@ class SyntaxHighlight extends Jaws_Plugin
     }
 
     /**
-     * Callback that prepares the terminal text to xhtml
+     * The callback function that prepares the terminal text to xhtml
      *
      * @access  public
-     * @param   array  $terminal (Terminal text)
-     * @return  string The code in xhtml
+     * @param   array   $terminal   Terminal text
+     * @return  string  XHTML code
      */
     function PrepareTerminal($terminal)
     {
@@ -127,11 +123,11 @@ class SyntaxHighlight extends Jaws_Plugin
     }
 
     /**
-     * Callback that prepares the code to be xhtml
+     * The callback function that prepares the code to be xhtml
      *
      * @access  public
-     * @param   array  $code_information Code Data(code and lang)
-     * @return  string The code in xhtml
+     * @param   array   $code_information   Code Data(code and lang)
+     * @return  string  XHTML code
      */
     function PrepareCode($code_information)
     {

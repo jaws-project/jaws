@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Replace a statement with another.
+ * Replaces a statement with another
  *
  * @category   Plugin
  * @package    Exchange
@@ -8,23 +10,20 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replace a statement with another
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class Exchange extends Jaws_Plugin
 {
     /**
-     * list of exclude tags
+     * List of excluded tags
+     *
+     * @var     string
+     * @access  private
      */
     var $_ExcludeTags = array('style', 'script');
 
     /**
-     * list of exchanges formula
+     * List of exchange formula
      *
+     * @var     array
      * @access  private
      */
     var $_ExchangeList = array(array('language'    => 'fa',
@@ -39,6 +38,7 @@ class Exchange extends Jaws_Plugin
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function Exchange()
     {
@@ -49,6 +49,15 @@ class Exchange extends Jaws_Plugin
         $this->_Version = '0.1.0';
     }
 
+    /**
+     * Performs the conversion
+     *
+     * @access  private
+     * @param   string  $content        Input text
+     * @param   string  $pattern        Subject to be replaced
+     * @param   string  $replacement    Replacement text
+     * @return  string  Converted text
+     */
     function Preparing(&$content, $pattern, $replacement)
     {
         $pos = 0;
@@ -100,8 +109,8 @@ class Exchange extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string  The parsed html
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($text)
     {

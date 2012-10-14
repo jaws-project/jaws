@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Browse your files on the server and insert their links into your content editor
+ * Browse your files on the server and insert file links into the content editor
  *
  * @category   Plugin
  * @package    FileBrowser
@@ -8,14 +10,13 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class FileBrowser extends Jaws_Plugin 
 {
     /**
      * Main Constructor
      *
      * @access   public
+     * @return  void
      */
     function FileBrowser()
     {
@@ -27,10 +28,11 @@ class FileBrowser extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
-     * @access   public
-     * @return   object The HTML WebControl
+     * @access  public
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {

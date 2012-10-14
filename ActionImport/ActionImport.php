@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin for import gadget action
+ * Plugin to import gadget action
  *
  * @category   Plugin
  * @package    ActionImport
@@ -8,14 +10,13 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class ActionImport extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function ActionImport()
     {
@@ -27,11 +28,11 @@ class ActionImport extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Parse the text
+     * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string  Parsed HTML
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -45,7 +46,7 @@ class ActionImport extends Jaws_Plugin
      *
      * @access  private
      * @param   string  $matches    Matched strings from preg_replace_callback
-     * @return  string  Gadget's action output or plain text on errors
+     * @return  string  Gadget action output or plain text on errors
      */
     function Prepare($data)
     {

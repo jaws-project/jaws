@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Replace emoticons with images.
+ * Replaces emoticons with images
  *
  * @category   Plugin
  * @package    Emoticons
@@ -8,13 +10,6 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that manages the Emoticons
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class Emoticons extends Jaws_Plugin
 {
     var $_ImagePath = 'plugins/Emoticons/images';
@@ -23,6 +18,7 @@ class Emoticons extends Jaws_Plugin
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function Emoticons()
     {
@@ -34,10 +30,11 @@ class Emoticons extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -75,11 +72,11 @@ class Emoticons extends Jaws_Plugin
     }
 
     /**
-     * Simple parses the text and decides if the real parse call should be done
+     * Checks the string to see if parsing is required
      *
      * @access  public
-     * @param   string  $html Html to simple parse
-     * @return  boolean
+     * @param   string  $html   Input HTML
+     * @return  bool    Checking result
      */
     function NeedsParsing($html)
     {
@@ -94,8 +91,8 @@ class Emoticons extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string  The parsed html
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {

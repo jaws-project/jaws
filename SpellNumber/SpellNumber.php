@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin that returns the terslated number to string
+ * Returns a translated number to string
  *
  * @category   Plugin
  * @package    SpellNumber
@@ -8,19 +10,13 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces all the [number] tags with translated number to string
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class SpellNumber extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @access  private
      */
     function SpellNumber()
     {
@@ -32,10 +28,11 @@ class SpellNumber extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -52,8 +49,8 @@ class SpellNumber extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -66,15 +63,15 @@ class SpellNumber extends Jaws_Plugin
             $html = preg_replace($pattern, $new_text, $html);
         }
 
-    return $html;
+        return $html;
     }
 
     /**
-     * NumberToText
+     * Converts number to text
      *
      * @access  public
-     * @param   string  $num number to parse
-     * @return  string
+     * @param   string  $num    The number
+     * @return  string  Number string
      */
     function NumberToText($num)
     {
@@ -140,9 +137,11 @@ class SpellNumber extends Jaws_Plugin
     }
 
     /**
+     * Returns group name
+     *
      * @access  public
-     * @param   int
-     * @return  string
+     * @param   int $g_num  The number
+     * @return  string  Group name
      */
     function GroupName($g_num)
     {
@@ -161,10 +160,12 @@ class SpellNumber extends Jaws_Plugin
     }
 
     /**
+     * Returns digit name
+     *
      * @access  public
-     * @param   int $digit
-     * @param   int $order
-     * @return  string
+     * @param   int $digit  Digit
+     * @param   int $order  Order
+     * @return  string  Digit name
      */
     function DigitName($digit, $order)
     {
@@ -174,13 +175,15 @@ class SpellNumber extends Jaws_Plugin
             $order = $order - 1;
         }
 
-    return _t($d_str);
+        return _t($d_str);
     }
 
     /**
+     * Returns name of the two digit number
+     *
      * @access  public
-     * @param   int
-     * @return  string
+     * @param   int $digits  Digits
+     * @return  string  Number name
      */
     function TwoDigitName($digits)
     {

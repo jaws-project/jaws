@@ -1,4 +1,6 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
  * Replaces [a:Gadget:FastURL]Text[/a] with a proper link to the FastURL in Gadget
  *
@@ -8,23 +10,21 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class SmartBridge extends Jaws_Plugin
 {
     /**
      * Approved gadgest for links
      *
-     * @access  private
      * @var     array
+     * @access  private
      */
     var $_ApprovedGadgets = array();
 
     /**
      * Jaws gadgets that are enabled
      *
-     * @access  private
      * @var     array
+     * @access  private
      */
     var $_EnabledGadgets  = array();
 
@@ -32,6 +32,7 @@ class SmartBridge extends Jaws_Plugin
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function SmartBridge()
     {
@@ -54,10 +55,11 @@ class SmartBridge extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -72,11 +74,11 @@ class SmartBridge extends Jaws_Plugin
     }
 
     /**
-     * A simple pares to findout if we want a complex parse
+     * Checks the string to see if parsing is required
      *
      * @access  public
-     * @param   string  $html   HTML to parse
-     * @return  boolean
+     * @param   string  $html   Input HTML
+     * @return  bool    Checking result
      */
     function NeedParsing($html)
     {
@@ -88,11 +90,11 @@ class SmartBridge extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Parse the text
+     * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html   Row HTML to parse
-     * @return  string  Parsed HTML
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -116,7 +118,7 @@ class SmartBridge extends Jaws_Plugin
      *
      * @access  private
      * @param   string  $matches    Matched strings from preg_replace_callback
-     * @return  string  Converted links or plain text on errors
+     * @return  string  Gadget action output
      */
     function Prepare($matches)
     {

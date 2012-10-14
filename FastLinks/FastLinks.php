@@ -1,4 +1,6 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
  * Replaces [email], [url] and other tags to their HTML syntax
  *
@@ -8,19 +10,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces fastlinks bb tags to html tags
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class FastLinks extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function FastLinks()
     {
@@ -35,10 +31,11 @@ class FastLinks extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -65,13 +62,12 @@ class FastLinks extends Jaws_Plugin
         return $buttonbox;
     }
 
-
     /**
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {

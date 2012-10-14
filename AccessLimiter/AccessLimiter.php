@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * Plugin for limiting access to content or part of content for users or groups
+ * Limits access to the content or part of the content for users and user groups
  *
  * @category   Plugin
  * @package    AccessLimiter
@@ -8,14 +10,13 @@
  * @copyright  2009-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class AccessLimiter extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function AccessLimiter()
     {
@@ -30,11 +31,11 @@ class AccessLimiter extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Parse the text
+     * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string  Parsed HTML
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -47,7 +48,7 @@ class AccessLimiter extends Jaws_Plugin
      * The preg_replace call back function
      *
      * @access  private
-     * @param   string  $matches Matched strings from preg_replace_callback
+     * @param   string  $data   Matched strings from preg_replace_callback
      * @return  string  Gadget's action output or access message
      */
     function Prepare($data)

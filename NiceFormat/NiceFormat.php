@@ -1,4 +1,6 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
  * Jaws NiceFormat plugin
  *
@@ -8,19 +10,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that replaces any textilize regexp to xhtml code
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class NiceFormat extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function NiceFormat()
     {
@@ -33,10 +29,11 @@ class NiceFormat extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -126,8 +123,8 @@ class NiceFormat extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -162,11 +159,11 @@ class NiceFormat extends Jaws_Plugin
     }
 
     /**
-     * Build a list from textilize code
+     * Builds a list from textilized code
      *
      * @access  private
-     * @param   string   $block Code to parse
-     * @return  string   The XHTML code
+     * @param   string  $block  The Code to be parsed
+     * @return  string  XHTML code
      */
     function BuildList($block)
     {

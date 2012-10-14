@@ -1,6 +1,8 @@
 <?php
+require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+
 /**
- * AlbumCover plugin. Gets Album Cover from Amazon.com
+ * Gets album cover from Amazon.com
  *
  * @category   Plugin
  * @package    AlbumCover
@@ -9,19 +11,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/**
- * Plugin that adds the cover of an AlbumCover
- *
- * @see Jaws_Plugin
- */
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 class AlbumCover extends Jaws_Plugin
 {
     /**
      * Main Constructor
      *
      * @access  public
+     * @return  void
      */
     function AlbumCover()
     {
@@ -37,7 +33,7 @@ class AlbumCover extends Jaws_Plugin
      * Installs the plugin
      *
      * @access  public
-     * @return  boolean True on success and Jaws_Error otherwise
+     * @return  mixed   True on success and Jaws_Error on failure
      */
     function InstallPlugin()
     {
@@ -53,10 +49,10 @@ class AlbumCover extends Jaws_Plugin
     }
 
     /**
-     * Uninstall AlbumCover
+     * Uninstalls the plugin
      *
      * @access  public
-     * @return  True on success and Jaws_Error on failure
+     * @return  bool    True
      */
     function UninstallPlugin()
     {
@@ -65,10 +61,11 @@ class AlbumCover extends Jaws_Plugin
     }
 
     /**
-     * Overrides, Get the WebControl of this plugin
+     * Overrides, Gets the WebControl of this plugin
      *
      * @access  public
-     * @return  object The HTML WebControl
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
      */
     function GetWebControl($textarea)
     {
@@ -84,8 +81,8 @@ class AlbumCover extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html Html to Parse
-     * @return  string
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
      */
     function ParseText($html)
     {
@@ -95,11 +92,11 @@ class AlbumCover extends Jaws_Plugin
     }
 
     /**
-     * Callback that searches for the Album
+     * Search callback for the album
      *
      * @access  public
-     * @param   array  $data Album data(artist and album)
-     * @return  string The album image
+     * @param   array   $data   Album data(artist and album)
+     * @return  string  XHTML album image
      */
     function GetAlbumCover($data)
     {
@@ -134,11 +131,11 @@ class AlbumCover extends Jaws_Plugin
     }
 
     /**
-     * Get a string and Will make it all lower case and eliminates spaces
+     * Convets the givven string to lower case and eliminates spaces
      *
      * @access  public
-     * @param   string  $string The row string
-     * @return  string  The parsed string
+     * @param   string  $string     The raw string
+     * @return  string  Parsed string
      */
     function ToLowerWithoutSpaces($string)
     {
@@ -149,12 +146,12 @@ class AlbumCover extends Jaws_Plugin
     }
 
     /**
-     * Search for the album cover in Amazon
+     * Searches for the album cover in Amazon
      *
      * @access  public
      * @param   string  $Artist Artist to search for
      * @param   string  $Album  Album to search for
-     * @return  string  The name of the image album
+     * @return  string  Name of the album image
      */
     function GetAlbumCoverFromAmazon($Artist, $Album)
     {
