@@ -4,7 +4,7 @@
  *
  * @category   Widget
  * @package    Core
- * @author     Helgi �ormar �orbj�rnsson <dufuz@php.net>
+ * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  */
@@ -21,6 +21,13 @@ class Jaws_Widgets_DatePicker extends DatePicker
      */
     var $_theme = 'calendar-system';
 
+    /**
+     * Set DatePicker theme
+     *
+     * @access  public
+     * @param   string   $theme Name of theme
+     * @return  void
+     **/
     function setTheme($theme)
     {
         $theme = strtolower($theme);
@@ -41,12 +48,24 @@ class Jaws_Widgets_DatePicker extends DatePicker
         $this->_theme = $theme;
     }
 
+    /**
+     * Build the XHTML
+     *
+     * @access  private
+     * @return  void
+     **/
     function _buildXHTML()
     {
         $this->_XHTML .= $this->_entry->get();
         $this->_XHTML .= $this->_button->get();
     }
 
+    /**
+     * Build the XHTML
+     *
+     * @access  public
+     * @return  void
+     **/
     function buildXHTML()
     {
         $GLOBALS['app']->Layout->addHeadLink('libraries/piwi/data/css/' . $this->_theme . '.css',

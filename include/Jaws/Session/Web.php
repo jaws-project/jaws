@@ -1,5 +1,10 @@
 <?php
 /**
+ * Session ID name
+ */
+define('JAWS_SESSION_NAME', 'JAWSSESSID');
+
+/**
  * Class to manage the session when user is running a web application
  *
  * @category   Session
@@ -10,11 +15,14 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('JAWS_SESSION_NAME', 'JAWSSESSID');
-
 class Jaws_Session_Web extends Jaws_Session
 {
-
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @return  void
+     */
     function Jaws_Session_Web()
     {
         parent::Init();
@@ -24,6 +32,7 @@ class Jaws_Session_Web extends Jaws_Session
      * Initializes the Session
      *
      * @access  public
+     * @return  void
      */
     function init()
     {
@@ -37,9 +46,10 @@ class Jaws_Session_Web extends Jaws_Session
     /**
      * @see Jaws_Session::Create
      *
-     * @param   array   $info      User attributes
-     * @param   bool    $remember Remember me
-     * @return  bool    True if can create session.
+     * @access  public
+     * @param   array   $info       User attributes
+     * @param   bool    $remember   Remember me
+     * @return  void
      */
     function Create($info = array(), $remember = false)
     {
@@ -52,8 +62,11 @@ class Jaws_Session_Web extends Jaws_Session
     }
 
     /**
-     * @see Jaws_Session::Logout
+     * Logout from session
      *
+     * @access  public
+     * @return  void
+     * @see Jaws_Session::Logout
      */
     function Logout()
     {
@@ -67,11 +80,11 @@ class Jaws_Session_Web extends Jaws_Session
     /**
      * Create a new cookie on client
      *
-     * @param   string $name Cookie name
-     * @param   string $value Cookie value
-     * @param   int $minutes
-     * @param   bool $httponly
-     * @internal param string $expiration Cookie expiration minutes
+     * @access  public
+     * @param   string  $name       Cookie name
+     * @param   string  $value      Cookie value
+     * @param   int     $minutes    The time the cookie expires
+     * @param   bool    $httponly   If TRUE the cookie will be made accessible only through the HTTP protocol
      * @return  void
      */
     function SetCookie($name, $value, $minutes = 0, $httponly = false)
@@ -88,7 +101,8 @@ class Jaws_Session_Web extends Jaws_Session
     /**
      * Get a cookie
      *
-     * @param   string $name Cookie name
+     * @access  public
+     * @param   string  $name   Cookie name
      * @return  string
      */
     function GetCookie($name)
@@ -100,7 +114,10 @@ class Jaws_Session_Web extends Jaws_Session
 
     /**
      * Destroy a cookie
-     * @param   string $name Cookie name
+     *
+     * @access  public
+     * @param   string  $name   Cookie name
+     * @return  void
      */
     function DestroyCookie($name)
     {
@@ -110,10 +127,11 @@ class Jaws_Session_Web extends Jaws_Session
     /**
      * Check permission on a given gadget/task
      *
-     * @param   string $gadget Gadget name
-     * @param   string $task Task name
-     * @param   string $errorMessage Error message to return
-     * @return  bool    True if granted, else print HTML output telling the user he doesn't have permission
+     * @access  public
+     * @param   string  $gadget         Gadget name
+     * @param   string  $task           Task name
+     * @param   string  $errorMessage   Error message to return
+     * @return  mixed   True if granted, else print HTML output telling the user he doesn't have permission
      */
     function CheckPermission($gadget, $task, $errorMessage = '')
     {

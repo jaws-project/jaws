@@ -2,24 +2,25 @@
 /**
  * Class to manage Gregorian calendar
  *
- * @category   Jaws_Date
- * @package    Core
- * @author     Amir Mohammad Saied <amir@php.net>
- * @copyright  2006-2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Jaws_Date
+ * @package     Core
+ * @author      Amir Mohammad Saied <amir@php.net>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2006-2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Date_Gregorian extends Jaws_Date
 {
     /**
      *
-     * @param   int $year   Gregorian year
-     * @param   int $month  Gregorian month
-     * @param   int $day    Gregorian day
-     * @param   int $hour
-     * @param   int $minute
-     * @param   int $second
-     * @param   string $format
      * @access  public
+     * @param   int     $year   Gregorian year
+     * @param   int     $month  Gregorian month
+     * @param   int     $day    Gregorian day
+     * @param   int     $hour   Hour
+     * @param   int     $minute Minute
+     * @param   int     $second Second
+     * @param   string  $format Date/Time format
      * @return  array   Converted time
      */
     function ToBaseDate($year, $month = 1, $day = 1, $hour = 0, $minute = 0, $second = 0, $format = '')
@@ -47,13 +48,13 @@ class Jaws_Date_Gregorian extends Jaws_Date
     /**
      * Get date information
      *
-     * @param   int $year  Jalali year
-     * @param   int $month Jalali month
-     * @param   int $day   Jalali day
-     * @param   int $hour
-     * @param   int $minute
-     * @param   int $second
      * @access  public
+     * @param   int     $year   Jalali year
+     * @param   int     $month  Jalali month
+     * @param   int     $day    Jalali day
+     * @param   int     $hour   Hour
+     * @param   int     $minute Minute
+     * @param   int     $second Second
      * @return  array   Date time information
      */
     function GetDateInfo($year, $month = 1, $day = 1, $hour = 0, $minute = 0, $second = 0)
@@ -85,9 +86,10 @@ class Jaws_Date_Gregorian extends Jaws_Date
     /**
      * Format the input date.
      *
+     * @access  public
      * @param   string  $date   Date string
      * @param   string  $format Format to use
-     * @return  The original date with a new format
+     * @return  string  The original date with a new format
      */
     function Format($date, $format = null)
     {

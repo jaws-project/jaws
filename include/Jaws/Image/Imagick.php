@@ -38,11 +38,10 @@ class Jaws_Image_Imagick extends Jaws_Image
     /**
      * Loads an image from file
      *
-     * @access   public
-     * @param    string $filename
-     * @param    bool   $readonly readonly
-     * @internal param string $image filename
-     * @return   mixed True or a Jaws_Error object on error
+     * @access  public
+     * @param   string  $filename   Name of file
+     * @param   bool    $readonly   Don't any change on image
+     * @return  mixed   True if success or a Jaws_Error object on error
      */
     function load($filename, $readonly = false)
     {
@@ -68,9 +67,9 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Loads an image from raw data
      *
      * @access  public
-     * @param   string    $data  image raw data
-     * @param   bool      $readonly readonly
-     * @return  mixed True or a Jaws_Error object on error
+     * @param   string  $data       Image raw data
+     * @param   bool    $readonly   Don't any change on image
+     * @return  mixed   True if success or a Jaws_Error object on error
      */
     function setData($data, $readonly = false)
     {
@@ -96,7 +95,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Returns the Imagick image object
      *
      * @access  public
-     * @return resource
+     * @return  resource Get image handle
      */
     function &getHandle()
     {
@@ -106,11 +105,11 @@ class Jaws_Image_Imagick extends Jaws_Image
     /**
      * Resize the image
      *
-     * @return  mixed True on success or Jaws_Error object on error
-     * @param   int   $new_w   New width
-     * @param   int   $new_h   New height
-     * @param   array $options Optional parameters(eg. 'scaleMethod': "pixel" or "smooth")
      * @access  public
+     * @param   int     $new_w      New width
+     * @param   int     $new_h      New height
+     * @param   array   $options    Optional parameters(eg. 'scaleMethod': "pixel" or "smooth")
+     * @return  mixed   True on success or a Jaws_Error object on error
      */
     function resize($new_w, $new_h, $options = null)
     {
@@ -133,11 +132,11 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Crops image by size and start coordinates
      *
      * @access  public
-     * @param   int width Cropped image width
-     * @param   int height Cropped image height
-     * @param   int x X-coordinate to crop at
-     * @param   int y Y-coordinate to crop at
-     * @return  mixed True or a Jaws_Error object on error
+     * @param   int     $width Cropped image width
+     * @param   int     $height Cropped image height
+     * @param   int     $x X-coordinate to crop at
+     * @param   int     $y Y-coordinate to crop at
+     * @return  mixed   True or a Jaws_Error object on error
      */
     function crop($width, $height, $x = 0, $y = 0)
     {
@@ -168,11 +167,11 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Rotates image by the given angle
      * Uses a fast rotation algorythm for custom angles or lines copy for multiple of 90 degrees
      *
-     * @access  public
-     * @param   int   $angle   Rotation angle
-     * @param   array $options array('canvasColor' => array(r ,g, b), named color or #rrggbb)
      * @author  Pierre-Alain Joye
-     * @return  bool True on success or a false on error
+     * @access  public
+     * @param   int     $angle      Rotation angle
+     * @param   array   $options    An array like array('canvasColor' => array(r ,g, b), named color or #rrggbb)
+     * @return  bool    True on success or False on error
      */
     function rotate($angle, $options = null)
     {
@@ -205,8 +204,8 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Adjusts the image gamma
      *
      * @access  public
-     * @param   float $gamma
-     * @return  mixed True or a Jaws_Error on error
+     * @param   float   $gamma
+     * @return  mixed   True on success or a Jaws_Error on error
      **/
     function gamma($gamma = 1.0)
     {
@@ -224,7 +223,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Horizontal mirroring
      *
      * @access  public
-     * @return  mixed True or Jaws_Error on error
+     * @return  mixed   True on success or a Jaws_Error object on error
      **/
     function mirror()
     {
@@ -277,9 +276,9 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Saves the image to a file
      *
      * @access  public
-     * @param   string $filename the name of the file to write to
-     * @param   string $type     the output format, default is the current used format
-     * @param   int    $quality  default is 75
+     * @param   string  $filename   Name of the file to write to
+     * @param   string  $type       Output format, default is the current used format
+     * @param   int     $quality    Image quality, default is 75
      * @return  mixed True on success or Jaws_Error object on error
      */
     function save($filename = '', $type = '', $quality = null)
@@ -323,10 +322,10 @@ class Jaws_Image_Imagick extends Jaws_Image
      * This method adds the Content-type HTTP header
      *
      * @access  public
-     * @param   string $type     the output format, default is the current used format
-     * @param   int    $quality  default is 75
-     * @param   int    $expires  set Cache-Control and Expires of HTTP header
-     * @return  mixed True on success or Jaws_Error object on error
+     * @param   string  $type       Output format, default is the current used format
+     * @param   int     $quality    Image quality, default is 75
+     * @param   int     $expires    Set Cache-Control and Expires of HTTP header
+     * @return  mixed   True on success or a Jaws_Error object on error
      */
     function display($type = '', $quality = null, $expires = 0)
     {

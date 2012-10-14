@@ -181,7 +181,7 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Default plugins
      *
-     * @var     array $_DefaultPlugins
+     * @var     array   $_DefaultPlugins
      * @access  private
      */
     var $_DefaultPlugins = array(
@@ -196,7 +196,11 @@ class Jaws_Widgets_CKEditor extends Container
      * Main Constructor
      *
      * @access  public
-     *
+     * @param   string  $gadget Gadget name
+     * @param   string  $name   Name of editor
+     * @param   string  $value  Default content of editor
+     * @param   string  $label  Label/Title of editor
+     * @return  void
      */
     function Jaws_Widgets_CKEditor($gadget, $name, $value = '', $label = '')
     {
@@ -226,7 +230,7 @@ class Jaws_Widgets_CKEditor extends Container
      * Build the XHTML
      *
      * @access  public
-     * @return  string  XHTML
+     * @return  string  XHTML content
      */
     function buildXHTML()
     {
@@ -341,8 +345,9 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Set the ID
      *
-     * @param   string  $id    ID name
      * @access  public
+     * @param   string  $id ID name
+     * @return  void
      */
     function setID($id)
     {
@@ -359,7 +364,7 @@ class Jaws_Widgets_CKEditor extends Container
      * Get the value of the textarea
      *
      * @access  public
-     * @return  string Value of the TextArea
+     * @return  string  Value of the TextArea
      */
     function getValue()
     {
@@ -370,7 +375,7 @@ class Jaws_Widgets_CKEditor extends Container
      * Set the className of the TextArea
      *
      * @access  public
-     * @param   string $class
+     * @param   string  $class
      * @return  void
      */
     function setClass($class)
@@ -383,7 +388,7 @@ class Jaws_Widgets_CKEditor extends Container
      * Gets the label of the textarea
      *
      * @access  public
-     * @return  string The label to be displayed with the box.
+     * @return  string  The label to be displayed with the box.
      */
     function getLabel()
     {
@@ -394,8 +399,8 @@ class Jaws_Widgets_CKEditor extends Container
      * Sets the label displayed with the textarea
      *
      * @access  public
-     * @param   string $label The label to display.
-     * @return void
+     * @param   string  $label  The label to display.
+     * @return  void
      */
     function setLabel($label)
     {
@@ -405,7 +410,8 @@ class Jaws_Widgets_CKEditor extends Container
     /**
      * Set the CKEditor theme
      *
-     * @param   string $Theme
+     * @access  public
+     * @param   string  $Theme
      * @return  void
      */
     function setTheme($Theme)
@@ -414,7 +420,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   string $Skin
+     * Set skin of editor
+     *
+     * @access  public
+     * @param   string  $Skin
      * @return  void
      */
     function setSkin($Skin)
@@ -423,7 +432,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   string $Language
+     * Set default language of editor
+     *
+     * @access  public
+     * @param   string  $Language
      * @return  void
      */
     function setLanguage($Language)
@@ -432,6 +444,9 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
+     * Set editor edabled or disabled
+     *
+     * @access  public
      * @param   bool    $IsEnabled
      * @return  void
      */
@@ -441,6 +456,9 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
+     * Set editor to be resizable of not
+     *
+     * @access  public
      * @param   bool    $IsResizable
      * @return  void
      */
@@ -450,7 +468,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   string $Plugins
+     * Remove plugin
+     *
+     * @access  public
+     * @param   string  $Plugins
      * @return  void
      */
     function removePlugins($Plugins)
@@ -459,7 +480,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   string $Direction
+     * Set direction of editor
+     *
+     * @access  public
+     * @param   string  $Direction
      * @return  void
      */
     function setDirection($Direction)
@@ -468,7 +492,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param  $Toolbar
+     * Set default editor toolbar
+     *
+     * @access  public
+     * @param   $Toolbar
      * @return  void
      */
     function setToolbar($Toolbar)
@@ -477,7 +504,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   array $height
+     * Set height of editor
+     *
+     * @access  public
+     * @param   array  $height
      * @return  void
      */
     function setHeight($height)
@@ -486,7 +516,10 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * @param   array $width
+     * Set width of editor
+     *
+     * @access  public
+     * @param   array  $width
      * @return  void
      */
     function setWidth($width)

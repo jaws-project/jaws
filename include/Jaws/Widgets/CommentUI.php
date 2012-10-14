@@ -30,7 +30,8 @@ class Jaws_Widgets_CommentUI
      * Public constructor that sets the gadget's name
      *
      * @access  public
-     * @param   string   $gadget  Gadget's name
+     * @param   string   $gadget    Gadget's name
+     * @return  void
      **/
     function Jaws_Widgets_CommentUI($gadget)
     {
@@ -53,10 +54,10 @@ class Jaws_Widgets_CommentUI
      * Build a new array with filtered data
      *
      * @access  public
-     * @param   string  $filterby Filter to use(postid, author, email, url, title, comment)
-     * @param   string  $filter   Filter data
-     * @param   string  $status   Spam status (approved, waiting, spam)
-     * @param   mixed   $limit    Data limit (numeric/boolean)
+     * @param   string  $filterby   Filter to use(postid, author, email, url, title, comment)
+     * @param   string  $filter     Filter data
+     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @param   mixed   $limit      Data limit (numeric/boolean)
      * @return  array   Filtered Comments
      */
     function GetDataAsArray($filterby, $filter, $status, $limit)
@@ -196,4 +197,5 @@ class Jaws_Widgets_CommentUI
 
         return $gridBox->Get();
     }
+
 }

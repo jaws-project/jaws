@@ -9,7 +9,6 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-
 class Jaws_Widgets_Menubar
 {
     /**
@@ -50,12 +49,12 @@ class Jaws_Widgets_Menubar
      * Add a new option
      *
      * @access  public
-     * @param   string  $action Action's shorname(NOT URL)
-     * @param   string  $name Title to print
-     * @param   string  $url  Url to point
-     * @param   string  $icon Icon/Stock to use
-     * @param   string  $onclick Javascript OnClick function
-     * @param   bool    $selected If the option is marked as selected
+     * @param   string  $action     Action's shorname(NOT URL)
+     * @param   string  $name       Title to print
+     * @param   string  $url        Url to point
+     * @param   string  $icon       Icon/Stock to use
+     * @param   string  $onclick    Javascript OnClick function
+     * @param   bool    $selected   If the option is marked as selected
      * @return  void
      */
     function AddOption($action, $name, $url = '', $icon = '', $selected = false, $onclick = null)

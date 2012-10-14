@@ -1,4 +1,6 @@
 <?php
+require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
+
 /**
  * Jaws TinyMCE Wrapper (uses JS and disable plugins)
  *
@@ -9,7 +11,6 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 class Jaws_Widgets_TinyMCE extends Container
 {
     /**
@@ -33,7 +34,7 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * @access  private
      * @var     object
-     * @see     function  GetValue
+     * @see     GetValue()
      */
     var $_Value;
 
@@ -45,9 +46,8 @@ class Jaws_Widgets_TinyMCE extends Container
 
     /**
      * @access  private
-     * @var     Label
-     * @see     function  GetLabel
-     * @see     function  SetLabel
+     * @var     object
+     * @see     GetLabel(), SetLabel()
      */
     var $_Label;
 
@@ -58,9 +58,9 @@ class Jaws_Widgets_TinyMCE extends Container
     var $_Gadget;
 
     /**
-     * for info see:
-     * http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/mode
      * @access  private
+     * @var     string
+     * @see     http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/mode
      */
     var $_Mode = 'textareas';
 
@@ -71,16 +71,17 @@ class Jaws_Widgets_TinyMCE extends Container
     var $_Theme = 'advanced';
 
     /**
-     * Width of the editor
-     * examples: 100%, 600
+     * Width of the editor, examples: 100%, 600
      *
-     * @var mixed
+     * @var     string
+     * @access  private
      */
     var $_Width = '100%';
 
     /**
      * TinyMCE base actions
      *
+     * @var     array
      * @access  private
      */
     var $_BaseToolbar = array(
@@ -91,24 +92,23 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * TinyMCE ompatibile browsers
      *
+     * @var     array
      * @access  private
      */
     var $_Browsers = array('msie', 'gecko', 'opera', 'safari');
 
     /**
-     * for info see:
-     * http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/extended_valid_elements
-     *
      * @access  private
+     * @var     string
+     * @see     http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/extended_valid_elements
      */
     var $_ExtendedValidElements =
         'iframe[class|id|marginheight|marginwidth|align|frameborder=0|scrolling|align|name|src|height|width]';
 
     /**
-     * for info see:
-     * http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/invalid_elements
-     *
      * @access  private
+     * @var     string
+     * @see     http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/invalid_elements
      */
     var $_InvalidElements = '';
 
@@ -116,10 +116,10 @@ class Jaws_Widgets_TinyMCE extends Container
      * Main Constructor
      *
      * @access  public
-     * @param   string $gadget
-     * @param   string $name
-     * @param   string $value
-     * @param   string $label
+     * @param   string  $gadget
+     * @param   string  $name
+     * @param   string  $value
+     * @param   string  $label
      * @return  void
      */
     function Jaws_Widgets_TinyMCE($gadget, $name, $value = '', $label = '')
@@ -141,6 +141,12 @@ class Jaws_Widgets_TinyMCE extends Container
         parent::init();
     }
 
+    /**
+     * Build the XHTML
+     *
+     * @access  public
+     * @return  void
+     */
     function buildXHTML()
     {
         static $alreadyLoaded;
@@ -262,7 +268,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * in the TextArea
      *
      * @access  public
-     * @param   string   $id  Widget ID
+     * @param   string  $id     Widget ID
      * @return  void
      */
     function setID($id)
@@ -280,7 +286,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * Set the className of the TextArea
      *
      * @access  public
-     * @param   string $class
+     * @param   string  $class
      * @return  void
      */
     function setClass($class)
@@ -313,20 +319,11 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Theme = $theme;
     }
 
-    function compactFile($content)
-    {
-        //FROM WP
-        $content = preg_replace("!(^|\s+)//.*$!m", "", $content);
-        $content = preg_replace("!/\*.*?\*/!s", "", $content);
-        $content = preg_replace("!^\t+!m", "", $content);
-        $content = str_replace("\r", "", $content);
-        $content = preg_replace("!(^|{|}|;|:|\))\n!m", '\\1', $content);
-
-        return $content;
-    }
-
     /**
-     * @param   array $width
+     * Set width of TinyMCE editor
+     *
+     * @access  public
+     * @param   string  $width
      * @return  void
      */
     function setWidth($width)

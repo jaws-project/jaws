@@ -74,8 +74,8 @@ class Jaws_Widgets_TextArea extends Container
      * @access  public
      * @param   $gadget
      * @param   $name
-     * @param   string $value
-     * @param   string $label
+     * @param   string  $value
+     * @param   string  $label
      * @return  void
      */
     function Jaws_Widgets_TextArea($gadget, $name, $value = '', $label = '')
@@ -100,7 +100,7 @@ class Jaws_Widgets_TextArea extends Container
     /**
      * Set the ID
      *
-     * @param   string  $id    ID name
+     * @param   string  $id     ID name
      * @access  public
      * @return  void
      */
@@ -119,7 +119,7 @@ class Jaws_Widgets_TextArea extends Container
      * Build the XHTML
      *
      * @access  public
-     * @return  string  XHTML
+     * @return  void
      */
     function buildXHTML()
     {
@@ -138,7 +138,7 @@ class Jaws_Widgets_TextArea extends Container
     /**
      * Add a new plugin Webcontrol to the toolbar
      *
-     * @param   object  $control Control to Add
+     * @param   object  $control    Control to Add
      * @access  public
      * @return  void
      */
@@ -153,7 +153,7 @@ class Jaws_Widgets_TextArea extends Container
      * Get the value of the textarea
      *
      * @access  public
-     * @return  string Value of the TextArea
+     * @return  string  Value of the TextArea
      */
     function GetValue()
     {
@@ -164,7 +164,7 @@ class Jaws_Widgets_TextArea extends Container
      * Gets the label of the textarea
      *
      * @access  public
-     * @return  string The label to be displayed with the box.
+     * @return  string  The label to be displayed with the box.
      */
     function GetLabel()
     {
@@ -175,7 +175,7 @@ class Jaws_Widgets_TextArea extends Container
      * Sets the label displayed with the textarea
      *
      * @access  public
-     * @param   string $label The label to display.
+     * @param   string  $label The label to display.
      * @return  void
      */
     function SetLabel($label)
@@ -184,6 +184,9 @@ class Jaws_Widgets_TextArea extends Container
     }
 
     /**
+     * Set width of editor
+     *
+     * @access  public
      * @param   arrayed $width
      * @return  void
      */

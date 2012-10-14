@@ -49,9 +49,9 @@ class Jaws_Cache_File extends Jaws_Cache
      * Get cached data of given component/section
      *
      * @access  public
-     * @param   string $component
-     * @param   string $section
-     * @param   string $params
+     * @param   string  $component
+     * @param   string  $section
+     * @param   string  $params
      * @return  string
      */
     function get($component, $section, $params = null)
@@ -71,10 +71,10 @@ class Jaws_Cache_File extends Jaws_Cache
      * Delete cached data of given component/section
      *
      * @access  public
-     * @param  string $component
-     * @param  string $section
-     * @param  string $params
-     * @return bool
+     * @param   string  $component
+     * @param   string  $section
+     * @param   string  $params
+     * @return  bool
      */
     function delete($component = null, $section = null, $params = null)
     {
