@@ -128,23 +128,23 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
             $tpl->SetVariable('email',  $uInfo['email']);
 
             // edit account information
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditAccountInformation')) {
+            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserAccount')) {
                 $tpl->SetBlock('UserLinks/account');
                 $tpl->SetVariable('user_account', _t('USERS_EDIT_ACCOUNT'));
                 $tpl->SetVariable('account_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Account'));
                 $tpl->ParseBlock('UserLinks/account');
             }
 
-            // edit account profile
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditAccountProfile')) {
-                $tpl->SetBlock('UserLinks/profile');
-                $tpl->SetVariable('user_profile', _t('USERS_EDIT_PROFILE'));
-                $tpl->SetVariable('profile_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile'));
-                $tpl->ParseBlock('UserLinks/profile');
+            // edit account personal
+            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPersonal')) {
+                $tpl->SetBlock('UserLinks/personal');
+                $tpl->SetVariable('user_personal', _t('USERS_EDIT_PERSONAL'));
+                $tpl->SetVariable('personal_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Personal'));
+                $tpl->ParseBlock('UserLinks/personal');
             }
 
             // edit account preferences
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditAccountPreferences')) {
+            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPreferences')) {
                 $tpl->SetBlock('UserLinks/preferences');
                 $tpl->SetVariable('user_preferences', _t('USERS_EDIT_PREFERENCES'));
                 $tpl->SetVariable('preferences_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Preferences'));

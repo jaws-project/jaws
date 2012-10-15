@@ -18,7 +18,7 @@ define('_JA_USERS_ACL_MANAGEGROUPS', "グループ管理");
 define('_JA_USERS_ACL_MANAGEPROPERTIES', "プロパティ管理");
 define('_JA_USERS_ACL_MANAGEUSERACLS', "ユーザー ACL の管理");
 define('_JA_USERS_ACL_MANAGEGROUPACLS', "グループ ACL の管理");
-define('_JA_USERS_ACL_EDITACCOUNTINFORMATION', "ユーザーによるアカウント情報の編集");
+define('_JA_USERS_ACL_EDITUSERACCOUNT', "ユーザーによるアカウント情報の編集");
 define('_JA_USERS_LAYOUT_LOGINBOX', "ログインボックス");
 define('_JA_USERS_LAYOUT_LOGINBOX_DESC', "ログインボックスの表示です。");
 define('_JA_USERS_GROUPS_GROUPNAME', "グループ管理");
@@ -109,7 +109,7 @@ define('_JA_USERS_MYACCOUNT_UPDATED', "プロフィールを更新しました�
 define('_JA_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "パスワードをパスワードの確認が一致しません。");
 define('_JA_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "アカウントを更新したければ、すべての項目を埋めてください。");
 define('_JA_USERS_MYACCOUNT', "自分のアカウント");
-define('_JA_USERS_EDIT_PROFILE', "プロフィールの編集");
+define('_JA_USERS_EDIT_PERSONAL', "プロフィールの編集");
 define('_JA_USERS_EDIT_PREFERENCES', "プリファレンスの編集");
 define('_JA_USERS_PREFERENCES_UPDATED', "プリファレンスを更新しました。");
 define('_JA_USERS_CONTROLPANEL', "コントロールパネル");

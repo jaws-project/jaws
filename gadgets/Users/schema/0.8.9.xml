@@ -54,6 +54,7 @@
 
         <field>
             <name>verification_key</name>
+            <was>validation_key</was>
             <type>text</type>
             <length>48</length>
         </field>
@@ -236,6 +237,13 @@
             <type>integer</type>
             <length>16</length>
             <default>0</default>
+        </field>
+
+        <field>
+            <name>enabled</name>
+            <type>boolean</type>
+            <default>true</default>
+            <description>will be removed next version</description>
         </field>
 
         <field>

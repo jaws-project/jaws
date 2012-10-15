@@ -43,8 +43,8 @@ $actions['Account']             = array('NormalAction:Account');
 $actions['ChangePassword']      = array('NormalAction:Account');
 $actions['UpdateAccount']       = array('StandaloneAction:Account');
 
-$actions['Profile']             = array('NormalAction:Profile');
-$actions['UpdateProfile']       = array('StandaloneAction:Profile');
+$actions['Personal']             = array('NormalAction:Personal');
+$actions['UpdatePersonal']       = array('StandaloneAction:Personal');
 
 $actions['Preferences']         = array('NormalAction:Preferences');
 $actions['UpdatePreferences']   = array('StandaloneAction:Preferences');

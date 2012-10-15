@@ -20,10 +20,10 @@ define('_EN_USERS_ACL_MANAGEGROUPS', "Group management");
 define('_EN_USERS_ACL_MANAGEPROPERTIES', "Properties management");
 define('_EN_USERS_ACL_MANAGEUSERACLS', "User's ACLs management");
 define('_EN_USERS_ACL_MANAGEGROUPACLS', "Group's ACLs management");
-define('_EN_USERS_ACL_EDITACCOUNTPASSWORD', "Edit account password by users");
-define('_EN_USERS_ACL_EDITACCOUNTINFORMATION', "Edit account information by users");
-define('_EN_USERS_ACL_EDITACCOUNTPROFILE', "Edit account profile by users");
-define('_EN_USERS_ACL_EDITACCOUNTPREFERENCES', "Edit account preferences by users");
+define('_EN_USERS_ACL_EDITUSERPASSWORD', "Edit user's password by user");
+define('_EN_USERS_ACL_EDITUSERACCOUNT', "Edit user's account by user");
+define('_EN_USERS_ACL_EDITUSERPERSONAL', "Edit user's personal by user");
+define('_EN_USERS_ACL_EDITUSERPREFERENCES', "Edit user's preferences by user");
 define('_EN_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Manage authentication method");
 
 /* Layout */
@@ -143,7 +143,7 @@ define('_EN_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Your password and password v
 define('_EN_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Please fill all the fields if you want to update your account.");
 define('_EN_USERS_MYACCOUNT', "My Account");
 define('_EN_USERS_EDIT_ACCOUNT', "Edit Account");
-define('_EN_USERS_EDIT_PROFILE', "Edit Profile");
+define('_EN_USERS_EDIT_PERSONAL', "Edit Personal");
 define('_EN_USERS_CONTROLPANEL', "Control Panel");
 define('_EN_USERS_EDIT_PREFERENCES', "Edit Preferences");
 define('_EN_USERS_PREFERENCES_UPDATED', "Your preferences have been updated.");

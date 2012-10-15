@@ -16,7 +16,7 @@ class UsersInfo extends Jaws_GadgetInfo
      * @var     string
      * @access  private
      */
-    var $_Version = '0.8.9';
+    var $_Version = '1.0.0';
 
     /**
      * Is this gadget core gadget?
@@ -38,10 +38,10 @@ class UsersInfo extends Jaws_GadgetInfo
         'ManageProperties',
         'ManageUserACLs',
         'ManageGroupACLs',
-        'EditAccountPassword',
-        'EditAccountInformation',
-        'EditAccountProfile',
-        'EditAccountPreferences',
+        'EditUserPassword',
+        'EditUserAccount',
+        'EditUserPersonal',
+        'EditUserPreferences',
         'ManageAuthenticationMethod',
     );
 

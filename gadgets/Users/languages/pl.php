@@ -18,7 +18,7 @@ define('_PL_USERS_ACL_MANAGEGROUPS', "Zarządzanie grupami");
 define('_PL_USERS_ACL_MANAGEPROPERTIES', "Zarządzanie właściwościami");
 define('_PL_USERS_ACL_MANAGEUSERACLS', "Zarządzanie ACL użytkownika");
 define('_PL_USERS_ACL_MANAGEGROUPACLS', "Zarządzanie ACL grup");
-define('_PL_USERS_ACL_EDITACCOUNTINFORMATION', "Edycja informacji o koncie przez użytkownika");
+define('_PL_USERS_ACL_EDITUSERACCOUNT', "Edycja informacji o koncie przez użytkownika");
 define('_PL_USERS_LAYOUT_LOGINBOX', "Box logowania");
 define('_PL_USERS_LAYOUT_LOGINBOX_DESC', "Pokazuj box logowania.");
 define('_PL_USERS_GROUPS_GROUPNAME', "Nazwa grupy");
@@ -110,7 +110,7 @@ define('_PL_USERS_MYACCOUNT_UPDATED', "Dane dotyczące Twojego konta zostały ua
 define('_PL_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Twoje hasło nie zgadza się z weryfikacją hasła.");
 define('_PL_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Jeśli chcesz uaktualnić swoje konto, wypełnij wszystkie pola.");
 define('_PL_USERS_MYACCOUNT', "Moje konto");
-define('_PL_USERS_EDIT_PROFILE', "Edytuj profil");
+define('_PL_USERS_EDIT_PERSONAL', "Edytuj profil");
 define('_PL_USERS_EDIT_PREFERENCES', "Edytuj ustawienia");
 define('_PL_USERS_PREFERENCES_UPDATED', "Twoje ustawienia zostały zapisane.");
 define('_PL_USERS_CONTROLPANEL', "Panel Kontrolny");

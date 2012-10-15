@@ -26,7 +26,7 @@ class Users_Actions_Account extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditAccountInformation');
+        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserAccount');
         $account = $GLOBALS['app']->Session->PopSimpleResponse('Users.Account.Data');
         if (empty($account)) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -76,7 +76,7 @@ class Users_Actions_Account extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditAccountInformation');
+        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserAccount');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('email', 'nickname', 'password', 'password_check'), 'post');
 

@@ -19,7 +19,7 @@ class Users_Actions_Admin_MyAccount extends UsersAdminHTML
      */
     function MyAccount()
     {
-        $this->CheckPermission('EditAccountInformation');
+        $this->CheckPermission('EditUserAccount');
 
         require_once JAWS_PATH.'include/Jaws/User.php';
         $uModel = new Jaws_User();

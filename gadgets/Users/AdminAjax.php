@@ -446,7 +446,7 @@ class UsersAdminAjax extends Jaws_Ajax
      */
     function UpdateMyAccount($uid, $username, $password, $nickname, $email)
     {
-        $this->CheckSession('Users', 'EditAccountInformation');
+        $this->CheckSession('Users', 'EditUserAccount');
         if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();

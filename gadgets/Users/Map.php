@@ -13,12 +13,13 @@ $maps[] = array('LoginBox',
                 'user/login/referrer/{referrer}',
                 '',
                 array('referrer' => '.*'));
+$maps[] = array('Profile', 'users/{user}');
 $maps[] = array('LoginBox', 'user/login');
 $maps[] = array('Registration', 'user/registration');
 $maps[] = array('Registered', 'user/registered');
 $maps[] = array('Logout', 'user/logout');
 $maps[] = array('Account', 'user/account');
-$maps[] = array('Profile', 'user/profile');
+$maps[] = array('Personal', 'user/personal');
 $maps[] = array('Preferences', 'user/preferences');
 $maps[] = array('ForgotLogin', 'user/forget');
 $maps[] = array('ChangePassword', 'user/recover/key/{key}');

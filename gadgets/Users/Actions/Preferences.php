@@ -26,7 +26,7 @@ class Users_Actions_Preferences extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditAccountPreferences');
+        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPreferences');
         //Here we load the Settings/Layout models (which is part of core) to extract some data
         $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel');
 
@@ -123,7 +123,7 @@ class Users_Actions_Preferences extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditAccountPreferences');
+        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPreferences');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
 

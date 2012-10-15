@@ -18,7 +18,7 @@ class Users_Actions_Admin_Avatar extends UsersAdminHTML
      */
     function UploadAvatar()
     {
-        $this->CheckPermission('EditAccountProfile');
+        $this->CheckPermission('EditUserPersonal');
         $res = Jaws_Utils::UploadFiles($_FILES,
                                        Jaws_Utils::upload_tmp_dir(),
                                        'gif,jpg,jpeg,png');

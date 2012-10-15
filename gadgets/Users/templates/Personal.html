@@ -1,0 +1,37 @@
+<!-- BEGIN personal -->
+<div class="gadget users personalbox">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form name="personalbox" action="{base_script}" method="post">
+  <input type="hidden" name="gadget" value="Users" />
+  <input type="hidden" name="action" value="UpdatePersonal" />
+  <div class="content">
+    <fieldset>
+      <p><label for="personal_fname">{lbl_fname}:</label>
+        <input name="fname" id="personal_fname" value="{fname}" type="text" />
+      </p>
+      <p><label for="personal_lname">{lbl_lname}:</label>
+        <input name="lname" id="personal_lname" value="{lname}" type="text" />
+      </p>
+      <p><label for="personal_gender">{lbl_gender}:</label>
+        <select name="gender" id="personal_gender">
+          <option value="0" {male_selected}>{gender_male}</option>
+          <option value="1" {female_selected}>{gender_female}</option>
+        </select>
+      </p>
+      <p id="personal_dob">
+        <label for="personal_dob_year">{lbl_dob}:</label>
+        <input name="dob_year"  id="personal_dob_year"  value="{dob_year}"  type="text" />
+        <input name="dob_month" id="personal_dob_month" value="{dob_month}" type="text" />
+        <input name="dob_day"   id="personal_dob_day"   value="{dob_day}"   type="text" />
+        <span><small>{dob_sample}</small></span>
+      </p>
+      <p><label for="personal_url">{lbl_url}:</label>
+        <input name="url" id="personal_url" value="{url}" type="text" style="direction: ltr;" />
+      </p>
+    </fieldset>
+  </div>
+  <div class="actions"><button type="submit" value="{update}">{update}</button></div>
+  </form>
+</div>
+<!-- END personal -->

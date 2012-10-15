@@ -18,7 +18,7 @@ define('_FI_USERS_ACL_MANAGEGROUPS', "Ryhmä hallinta");
 define('_FI_USERS_ACL_MANAGEPROPERTIES', "Asetusten hallinta");
 define('_FI_USERS_ACL_MANAGEUSERACLS', "Käyttäjän ACL hallinta");
 define('_FI_USERS_ACL_MANAGEGROUPACLS', "Ryhmän ACL hallinta");
-define('_FI_USERS_ACL_EDITACCOUNTINFORMATION', "Muokkaa käyttäjän tietoja");
+define('_FI_USERS_ACL_EDITUSERACCOUNT', "Muokkaa käyttäjän tietoja");
 define('_FI_USERS_LAYOUT_LOGINBOX', "Kirjautumislaatikko");
 define('_FI_USERS_LAYOUT_LOGINBOX_DESC', "Näytä kirjautumislaatikko");
 define('_FI_USERS_GROUPS_GROUPNAME', "Ryhmän nimi");
@@ -110,7 +110,7 @@ define('_FI_USERS_MYACCOUNT_UPDATED', "Sinun käyttäjätiedot on päivitetty.")
 define('_FI_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Sinun salasana ja salasanan varmennus eivät täsmää.");
 define('_FI_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Täytä kaikki kentät jos haluat päivittää käyttäjätiliäsi");
 define('_FI_USERS_MYACCOUNT', "Minun käyttäjätili");
-define('_FI_USERS_EDIT_PROFILE', "Muokkaa profiilia");
+define('_FI_USERS_EDIT_PERSONAL', "Muokkaa profiilia");
 define('_FI_USERS_EDIT_PREFERENCES', "Vaihda asetuksia");
 define('_FI_USERS_PREFERENCES_UPDATED', "Asetuksesi on päivitetty.");
 define('_FI_USERS_CONTROLPANEL', "Ohjauspaneeli");

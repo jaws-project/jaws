@@ -90,7 +90,7 @@ define('_NL_USERS_MYACCOUNT_UPDATED', "Uw accountgegevens zijn bijgewerkt.");
 define('_NL_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Uw wachtwoord en de controle kwamen niet overeen.");
 define('_NL_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Vul alle velden in als u uw account wil bijwerken");
 define('_NL_USERS_MYACCOUNT', "Mijn account");
-define('_NL_USERS_EDIT_PROFILE', "Wijzig profiel");
+define('_NL_USERS_EDIT_PERSONAL', "Wijzig profiel");
 define('_NL_USERS_CONTROLPANEL', "Controlepaneel");
 define('_NL_USERS_USERS_CREATED', "Gebruiker {0} is gemaakt.");
 define('_NL_USERS_USERS_UPDATED', "Gebruiker {0} is bijgewerkt.");

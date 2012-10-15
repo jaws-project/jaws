@@ -18,10 +18,10 @@ define('_FA_USERS_ACL_MANAGEGROUPS', "مدیریت گروههای کاربری")
 define('_FA_USERS_ACL_MANAGEPROPERTIES', "ویرایش تنظیمات ابزار کاربران");
 define('_FA_USERS_ACL_MANAGEUSERACLS', "ویرایش دسترسیهای کاربران");
 define('_FA_USERS_ACL_MANAGEGROUPACLS', "ویرایش دسترسیهای گروههای کاربری");
-define('_FA_USERS_ACL_EDITACCOUNTPASSWORD', "تغییر گذرواژه توسط کاربر");
-define('_FA_USERS_ACL_EDITACCOUNTINFORMATION', "ویرایش اطلاعات کاربری توسط کاربر");
-define('_FA_USERS_ACL_EDITACCOUNTPROFILE', "ویرایش مشخصات توسط کاربر");
-define('_FA_USERS_ACL_EDITACCOUNTPREFERENCES', "ویرایش تنظیمات توسط کاربر");
+define('_FA_USERS_ACL_EDITUSERPASSWORD', "تغییر گذرواژه توسط کاربر");
+define('_FA_USERS_ACL_EDITUSERACCOUNT', "ویرایش اطلاعات کاربری توسط کاربر");
+define('_FA_USERS_ACL_EDITUSERPERSONAL', "ویرایش مشخصات توسط کاربر");
+define('_FA_USERS_ACL_EDITUSERPREFERENCES', "ویرایش تنظیمات توسط کاربر");
 define('_FA_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "مدیریت روش تایید اعتبار کاربران");
 define('_FA_USERS_LAYOUT_LOGINBOX', "بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINBOX_DESC', "نمایش بلوک لاگین");
@@ -129,7 +129,7 @@ define('_FA_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "گذرواژه و تایپ �
 define('_FA_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "لطفا تمام فیلدها را به درستی پر کنید");
 define('_FA_USERS_MYACCOUNT', "مشخصات کاربری من");
 define('_FA_USERS_EDIT_ACCOUNT', "ویرایش مشخصات کاربری");
-define('_FA_USERS_EDIT_PROFILE', "ویرایش مشخصات فردی");
+define('_FA_USERS_EDIT_PERSONAL', "ویرایش مشخصات فردی");
 define('_FA_USERS_CONTROLPANEL', "صفحه کنترل");
 define('_FA_USERS_EDIT_PREFERENCES', "ویرایش تنظیمات ویژه");
 define('_FA_USERS_PREFERENCES_UPDATED', "تنظمیات شما ثبت شد");

@@ -92,7 +92,7 @@ define('_IT_USERS_MYACCOUNT_UPDATED', "I dettagli del tuo account sono stati agg
 define('_IT_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "La tua password e la password di verifica non coincidono.");
 define('_IT_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "E' necessario compilare tutti i campi se vuoi aggiornare il tuo account.");
 define('_IT_USERS_MYACCOUNT', "Mio Account");
-define('_IT_USERS_EDIT_PROFILE', "Modifica Profilo");
+define('_IT_USERS_EDIT_PERSONAL', "Modifica Profilo");
 define('_IT_USERS_CONTROLPANEL', "Pannello di Controllo");
 define('_IT_USERS_USERS_CREATED', "L'utente {0} è stato creato.");
 define('_IT_USERS_USERS_UPDATED', "L'utente {0} è stato aggiornato.");

@@ -76,7 +76,7 @@ class UsersAdminModel extends Jaws_Model
         if (version_compare($old, '0.8.9', '<')) {
             $variables = array();
             $variables['logon_hours'] = str_pad('', 42, 'F');
-            $result = $this->installSchema('schema.xml', $variables, '0.8.7.xml');
+            $result = $this->installSchema('0.8.9.xml', $variables, '0.8.7.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -101,6 +101,23 @@ class UsersAdminModel extends Jaws_Model
             if (!Jaws_Utils::mkdir($new_dir)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
             }
+        }
+
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.8.9.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // ACL keys
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPassword', 'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserAccount', 'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPersonal', 'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPreferences', 'false');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPassword');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountInformation');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountProfile');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/ManageAuthenticationMethod');
         }
 
         return true;

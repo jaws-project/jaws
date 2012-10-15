@@ -90,7 +90,7 @@ define('_CS_USERS_MYACCOUNT_UPDATED', "Váš účet byl aktualizován.");
 define('_CS_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Vaše heslo nesouhlasí s heslem které jste zadali pro kontrolu.");
 define('_CS_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Pokud chcete upravit účet, budete muset vyplnit všechny položky formuláře.");
 define('_CS_USERS_MYACCOUNT', "Můj účet");
-define('_CS_USERS_EDIT_PROFILE', "Upravit profil");
+define('_CS_USERS_EDIT_PERSONAL', "Upravit profil");
 define('_CS_USERS_CONTROLPANEL', "Ovladácí panel");
 define('_CS_USERS_USERS_CREATED', "Uživatel {0} byl vytvořen.");
 define('_CS_USERS_USERS_UPDATED', "Uživatel {0} byl upraven.");
