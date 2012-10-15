@@ -62,7 +62,7 @@ position: relative;
 }
 
 #header .warning {
--moz-border-radius: 4px;
+border-radius: 4px;
 clear: both;
 display: inline-block;
 font-weight: bold;
@@ -299,7 +299,7 @@ text-align: center;
 background-color: #f7f7f7;
 color: #888a85;
 border: 1px solid #d3d7cf;
--moz-border-radius: 4px;
+border-radius: 4px;
 cursor: pointer;
 }
 
@@ -637,7 +637,7 @@ display: block;
 position: absolute;
 z-index: 100;
 float: right;
--moz-border-radius: 4px;
+border-radius: 4px;
 }
 * html fieldset div span.comment {
 font-size: 95%;
@@ -669,26 +669,6 @@ display: none !important;
 
 input[type="checkbox"] + label, input[type="checkbox"] + label + br, fieldset div strong + br  {
 display: inline;
-}
-
-input[type="checkbox"], select {
--moz-border-top-colors: #babdb6 transparent;
--moz-border-left-colors: #babdb6 transparent;
--moz-border-bottom-colors: #d3d7cf transparent;
--moz-border-right-colors: #d3d7cf transparent;
-
-
--moz-border-top-colors: #999 transparent;
--moz-border-left-colors: #ccc transparent;
--moz-border-right-colors: #ccc transparent;
--moz-border-bottom-colors: #ddd transparent;
-}
-
-input[type="checkbox"]:focus {
--moz-border-top-colors: #3465a4 transparent;
--moz-border-left-colors: #3465a4 transparent;
--moz-border-bottom-colors: #3465a4 transparent;
--moz-border-right-colors: #3465a4 transparent;
 }
 
 .form_comment {
@@ -890,10 +870,9 @@ border: 1px solid transparent;
 
 /* ----- NOTIFICATIONS ----- */
 .error-message, .warning-message, .notice-message, .working-message {
--moz-border-radius: 4px;
+border-radius: 4px;
 font-weight: bold;
 display: inline-block;
-display: -moz-inline-stack;
 text-align: right;
 padding-left: 8px;
 padding-right: 26px;
@@ -1010,7 +989,7 @@ border: 1px dashed #CCCCCC;
 }
 
 .jawsDatagrid {
-  -moz-border-radius: 4px;
+  border-radius: 4px;
   padding:2px;
   background: #edf3fe;
   border: 1px dashed #ccc;
