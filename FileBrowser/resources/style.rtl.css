@@ -93,7 +93,7 @@ ul#tabs span.current {
 
 #file_browser {background-color:#FFFFFF; font-size:12px; padding:10px; direction:rtl;}
 #file_browser .navigation {text-align:right; padding:5px 0;}
-#file_browser .files {padding:10px; border:1px solid #888; border-radius:5px; -moz-border-radius:5px;}
+#file_browser .files {padding:10px; border:1px solid #888; border-radius:5px;}
 #file_browser table {width:100%; border-spacing:0; text-align:right;}
 #file_browser th {height:20px; background-color:#3465A4; color:#FFFFFF;}
 #file_browser .col-icon {width:20px;}

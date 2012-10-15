@@ -168,7 +168,7 @@ span.pager_separator, span.page_inactive {
     top: -78%;
     background: #666;
     color: #fff;
-    -moz-opacity:0.50;
+    opacity:0.50;
     filter:alpha(opacity=50);
 }
 .not-published {
@@ -177,7 +177,7 @@ span.pager_separator, span.page_inactive {
     top: -75%;
     background: #666;
     color: #fff;
-    -moz-opacity:0.50;
+    opacity:0.50;
     filter:alpha(opacity=50);
 }
 .no-photos {
