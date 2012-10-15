@@ -120,6 +120,17 @@ var UsersCallback = {
 }
 
 /**
+ * On term key press, for compatibility Opera/IE with other browsers
+ */
+function OnTermKeypress(element, event)
+{
+    if (event.keyCode == 13) {
+        element.blur();
+        element.focus();
+    }
+}
+
+/**
  * Search user function
  */
 function searchUser()
@@ -135,12 +146,15 @@ function getUsers(name, offset, reset)
     var result = usersSync.getusers($('filter_group').value,
                                     $('filter_type').value,
                                     $('filter_status').value,
+                                    $('filter_term').value,
+                                    $('order_type').value,
                                     offset);
     if (reset) {
         $(name).setCurrentPage(0);
         var total = usersSync.getuserscount($('filter_group').value,
                                             $('filter_type').value,
-                                            $('filter_status').value);
+                                            $('filter_status').value,
+                                            ('filter_term').value);
     }
     resetGrid(name, result, total);
 }

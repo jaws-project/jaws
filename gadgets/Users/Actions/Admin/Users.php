@@ -47,14 +47,16 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
      * @param   int    $group       User default group
      * @param   bool   $superadmin  Is created user superadmin or not
      * @param   int    $status      Status of created user
+     * @param   string $term        Search term
+     * @param   string $orderBy     Order by(id, username, nickname, email)
      * @param   int    $offset      Offset of data array
      * @return  array  Grid data
      */
-    function GetUsers($group, $superadmin, $status, $offset = null)
+    function GetUsers($group, $superadmin, $status, $term, $orderBy, $offset = null)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($group, $superadmin, $status, 'nickname', 10, $offset);
+        $users = $uModel->GetUsers($group, $superadmin, $status, $term, $orderBy, 10, $offset);
         if (Jaws_Error::IsError($users)) {
             return array();
         }
@@ -149,7 +151,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
         }
 
-        $this->AjaxMe('script.js');
+        $this->AjaxMe('script.js', $this->GetVersion());
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('AdminUsers.html');
         $tpl->SetBlock('Users');
@@ -184,7 +186,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
 
         // Status Filter
         $filterStatus =& Piwi::CreateWidget('Combo', 'filter_status');
-        $filterStatus->SetStyle('width: 120px;');
+        $filterStatus->SetStyle('width: 135px;');
         $filterStatus->AddOption(_t('GLOBAL_ALL'), -1, false);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_0'), 0);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_1'), 1);
@@ -193,6 +195,29 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
         $filterStatus->SetDefault(-1);
         $tpl->SetVariable('filter_status', $filterStatus->Get());
         $tpl->SetVariable('lbl_filter_status', _t('GLOBAL_STATUS'));
+
+        // Term
+        $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
+        $filterTerm->SetStyle('width: 142px;');
+        $filterTerm->SetID('filter_term');
+        $filterTerm->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $filterTerm->AddEvent(ON_KPRESS, "javascript: OnTermKeypress(this, event);");
+        $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
+        $tpl->SetVariable('filter_term', $filterTerm->Get());
+
+        // Order types
+        $orderType =& Piwi::CreateWidget('Combo', 'order_type');
+        $orderType->SetStyle('width: 135px;');
+        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &darr;', '[id]');
+        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &uarr;', '[id] DESC');
+        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &darr;', '[username]');
+        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &uarr;', '[username] DESC');
+        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &darr;', '[nickname]');
+        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &uarr;', '[nickname] DESC');
+        $orderType->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $orderType->SetDefault(-1);
+        $tpl->SetVariable('order_type', $orderType->Get());
+        $tpl->SetVariable('lbl_order_type', _t('USERS_USERS_ORDER_TYPE'));
 
         $tpl->SetVariable('menubar',        $this->MenuBar('Users'));
         $tpl->SetVariable('users_datagrid', $this->UsersDataGrid());

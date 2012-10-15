@@ -80,7 +80,7 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $match    Users who match..
      * @return  array   Users list
      */
-    function GetUsers($group, $superadmin, $status, $offset)
+    function GetUsers($group, $superadmin, $status, $term, $orderBy, $offset)
     {
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
@@ -94,7 +94,7 @@ class UsersAdminAjax extends Jaws_Ajax
         }
 
         $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
-        return $usrHTML->GetUsers($group, $superadmin, $status, $offset);
+        return $usrHTML->GetUsers($group, $superadmin, $status, $term, $orderBy, $offset);
     }
 
     /**
@@ -742,7 +742,7 @@ class UsersAdminAjax extends Jaws_Ajax
      */
     function GetGroupUsers($gid)
     {
-        $users = $this->_UserModel->GetUsers((int)$gid, null, null, 'nickname');
+        $users = $this->_UserModel->GetUsers((int)$gid);
         if (Jaws_Error::IsError($users)) {
             return array();
         }

@@ -97,7 +97,9 @@ define('_EN_USERS_USERS_BIRTHDAY_SAMPLE', "e.g., 2009/08/31");
 define('_EN_USERS_USERS_SHOW_ALL', "Show all");
 define('_EN_USERS_USERS_CONCURRENT_LOGINS', "Concurrent logins");
 define('_EN_USERS_USERS_EXPIRY_DATE', "Expiry date");
-define('_EN_USERS_FIND_USER', "Find user");
+define('_EN_USERS_USERS_REGISTRATION_DATE', "Registration date");
+define('_EN_USERS_USERS_SEARCH_TERM', "Term");
+define('_EN_USERS_USERS_ORDER_TYPE', "Order");
 define('_EN_USERS_USERS_SEND_AUTO_PASSWORD', "Leave it empty for send random password to your email");
 define('_EN_USERS_USERS_PASSWORD_VERIFY', "Verify Password");
 define('_EN_USERS_USERS_NO_SELECTION', "Please select an user");
@@ -224,4 +226,3 @@ define('_EN_USERS_FORGOT_PASSWORD_CHANGED', "The new password (auto-generated) h
 define('_EN_USERS_FORGOT_PASSWORD_CHANGED_SUBJECT', "New password");
 define('_EN_USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', "A new password has been asigned to your account, you can find it below. In order to change it you need to login with your username ({0}) and this password, then you can update your profile.");
 define('_EN_USERS_FORGOT_ERROR_CHANGING_PASSWORD', "There was an error while changing your password");
-

@@ -12,6 +12,10 @@
           <td class="filter_label"><label>{lbl_filter_type}:</label></td><td>{filter_type}</td>
           <td class="filter_label"><label>{lbl_filter_status}:</label></td><td>{filter_status}</td>
         </tr>
+        <tr>
+          <td class="filter_label"><label>{lbl_filter_term}:</label></td><td>{filter_term}</td>
+          <td class="filter_label"><label>{lbl_order_type}:</label></td><td>{order_type}</td>
+        </tr>
       </table>
       {users_datagrid}
     </td>
@@ -43,8 +47,13 @@
   var editPreferences_title = "{editPreferences_title}";
   var currentAction         = 'UserAccount';
   var cachedUserForm        = $('user_workarea').innerHTML;
-  stopUserAction();
   var base_script           = "{base_script}";
+  $('filter_term').value    = '';
+  $('filter_group').selectedIndex  = 0;
+  $('filter_type').selectedIndex   = 0;
+  $('filter_status').selectedIndex = 0;
+  $('order_type').selectedIndex    = 0;
+  stopUserAction();
   initDataGrid('users_datagrid', new usersadminajax, getUsers);
 </script>
 <!-- END Users -->
