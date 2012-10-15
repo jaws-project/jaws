@@ -141,30 +141,34 @@ class BlogAdminModel extends BlogModel
     }
 
     /**
-     * Create a new category
+     * Creates a new category
      *
      * @access  public
-     * @param   string  $name        Category name
-     * @param   string  $description Category description
-     * @param   string  $fast_url    Category fast url
+     * @param   string  $name           Category name
+     * @param   string  $description    Category description
+     * @param   string  $fast_url       Category fast url
+     * @param   string  $meta_keywords  Meta keywords of the category
+     * @param   string  $meta_desc      Meta description of the category
      * @return  mixed   True on success, Jaws_Error on failure
      */
-    function NewCategory($name, $description, $fast_url)
+    function NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category');
 
         $params = array();
-        $params['name']        = $name;
-        $params['description'] = $description;
-        $params['fast_url']    = $fast_url;
-        $params['now']         = $GLOBALS['db']->Date();
+        $params['name']          = $name;
+        $params['description']   = $description;
+        $params['fast_url']      = $fast_url;
+        $params['meta_keywords'] = $meta_keywords;
+        $params['meta_desc']     = $meta_desc;
+        $params['now']           = $GLOBALS['db']->Date();
 
         $sql = '
             INSERT INTO [[blog_category]]
-                ([name], [description], [fast_url], [createtime], [updatetime])
+                ([name], [description], [fast_url], [meta_keywords], [meta_description], [createtime], [updatetime])
             VALUES
-                ({name}, {description}, {fast_url}, {now}, {now})';
+                ({name}, {description}, {fast_url}, {meta_keywords}, {meta_desc}, {now}, {now})';
 
         $result  = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -177,33 +181,39 @@ class BlogAdminModel extends BlogModel
     }
 
     /**
-     * Update a category entry
+     * Updates a category entry
      *
      * @access  public
-     * @param   int     $cid            ID of category
-     * @param   string  $name           Name of category
-     * @param   string  $description    entry description
-     * @param   string  $fast_url       
-     * @return  bool    Returns True if Category was successfully updated, else Jaws_Error
+     * @param   int     $cid            Category ID
+     * @param   string  $name           Category name
+     * @param   string  $description    Category description
+     * @param   string  $fast_url       Category fast url
+     * @param   string  $meta_keywords  Meta keywords of the category
+     * @param   string  $meta_desc      Meta description of the category
+     * @return  mixed   True on success, Jaws_Error on failure
      */
-    function UpdateCategory($cid, $name, $description, $fast_url)
+    function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category', false);
 
         $params = array();
-        $params['id']          = $cid;
-        $params['name']        = $name;
-        $params['description'] = $description;
-        $params['fast_url']    = $fast_url;
-        $params['now']         = $GLOBALS['db']->Date();
+        $params['id']            = $cid;
+        $params['name']          = $name;
+        $params['description']   = $description;
+        $params['fast_url']      = $fast_url;
+        $params['meta_keywords'] = $meta_keywords;
+        $params['meta_desc']     = $meta_desc;
+        $params['now']           = $GLOBALS['db']->Date();
 
         $sql = '
             UPDATE [[blog_category]] SET
-                [name]        = {name},
-                [description] = {description},
-                [fast_url]    = {fast_url},
-                [updatetime]  = {now}
+                [name]             = {name},
+                [description]      = {description},
+                [fast_url]         = {fast_url},
+                [meta_keywords]    = {meta_keywords},
+                [meta_description] = {meta_desc},
+                [updatetime]       = {now}
             WHERE [id] = {id}';
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -223,7 +233,7 @@ class BlogAdminModel extends BlogModel
     }
 
     /**
-     * Delete a category entry
+     * Deletes a category entry
      *
      * @access  public
      * @param   int     $id     ID of category
@@ -405,7 +415,7 @@ class BlogAdminModel extends BlogModel
     }
 
     /**
-     * Create a new post
+     * Creates a new post
      *
      * @access  public
      * @param   int     $user           User ID
@@ -414,6 +424,8 @@ class BlogAdminModel extends BlogModel
      * @param   string  $summary        post summary
      * @param   string  $content        Content of the entry
      * @param   string  $fast_url       FastURL
+     * @param   string  $meta_keywords  Meta keywords
+     * @param   string  $meta_desc      Meta description
      * @param   bool    $allow_comments If entry should allow commnets
      * @param   bool    $trackbacks     
      * @param   bool    $publish        If entry should be published
@@ -421,21 +433,23 @@ class BlogAdminModel extends BlogModel
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
-    function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $allow_comments, $trackbacks,
-                      $publish, $timestamp = null, $autoDraft = false)
+    function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc,
+                      $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
 
-        $params               = array();
-        $params['user']       = $user;
-        $params['title']      = $title;
-        $params['content']    = str_replace("\r\n", "\n", $content);
-        $params['summary']    = str_replace("\r\n", "\n", $summary);
-        $params['trackbacks'] = $trackbacks;
-        $params['publish']    = $GLOBALS['app']->Session->GetPermission('Blog', 'PublishEntries')? $publish : false;
-        $params['fast_url']   = $fast_url;
-        $params['comments']   = $allow_comments;
+        $params                  = array();
+        $params['user']          = $user;
+        $params['title']         = $title;
+        $params['content']       = str_replace("\r\n", "\n", $content);
+        $params['summary']       = str_replace("\r\n", "\n", $summary);
+        $params['trackbacks']    = $trackbacks;
+        $params['publish']       = $GLOBALS['app']->Session->GetPermission('Blog', 'PublishEntries')? $publish : false;
+        $params['fast_url']      = $fast_url;
+        $params['meta_keywords'] = $meta_keywords;
+        $params['meta_desc']     = $meta_desc;
+        $params['comments']      = $allow_comments;
 
         // Switch out for the MDB2 way
         if (!is_bool($params['comments'])) {
@@ -459,11 +473,11 @@ class BlogAdminModel extends BlogModel
 
         $sql = '
             INSERT INTO [[blog]]
-                ([user_id], [title], [summary], [text], [fast_url], [createtime], [updatetime], [publishtime],
-                [trackbacks], [published], [allow_comments])
+                ([user_id], [title], [summary], [text], [fast_url], [meta_keywords], [meta_description],
+                 [createtime], [updatetime], [publishtime], [trackbacks], [published], [allow_comments])
             VALUES
-                ({user}, {title}, {summary}, {content}, {fast_url}, {now}, {now}, {publishtime},
-                {trackbacks}, {publish}, {comments})';
+                ({user}, {title}, {summary}, {content}, {fast_url}, {meta_keywords}, {meta_desc},
+                 {now}, {now}, {publishtime}, {trackbacks}, {publish}, {comments})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -508,7 +522,7 @@ class BlogAdminModel extends BlogModel
     }
 
     /**
-     * Update an entry
+     * Updates an entry
      *
      * @access  public
      * @param   int     $post_id        Post ID
@@ -517,6 +531,8 @@ class BlogAdminModel extends BlogModel
      * @param   string  $summary        entry summary
      * @param   string  $content        Content of the Entry
      * @param   string  $fast_url       FastURL
+     * @param   string  $meta_keywords  Meta keywords
+     * @param   string  $meta_desc      Meta description
      * @param   bool    $allow_comments If entry should allow commnets
      * @param   bool    $trackbacks     
      * @param   bool    $publish        If entry should be published
@@ -524,21 +540,23 @@ class BlogAdminModel extends BlogModel
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
-    function UpdateEntry($post_id, $categories, $title, $summary, $content, $fast_url, $allow_comments, $trackbacks,
-                         $publish, $timestamp = null, $autoDraft = false)
+    function UpdateEntry($post_id, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc,
+                         $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
 
-        $params               = array();
-        $params['title']      = $title;
-        $params['content']    = str_replace("\r\n", "\n", $content);
-        $params['summary']    = str_replace("\r\n", "\n", $summary);
-        $params['trackbacks'] = $trackbacks;
-        $params['published']  = $publish;
-        $params['comments']   = $allow_comments;
-        $params['id']         = $post_id;
-        $params['fast_url']   = $fast_url;
+        $params                  = array();
+        $params['title']         = $title;
+        $params['content']       = str_replace("\r\n", "\n", $content);
+        $params['summary']       = str_replace("\r\n", "\n", $summary);
+        $params['trackbacks']    = $trackbacks;
+        $params['published']     = $publish;
+        $params['comments']      = $allow_comments;
+        $params['id']            = $post_id;
+        $params['fast_url']      = $fast_url;
+        $params['meta_keywords'] = $meta_keywords;
+        $params['meta_desc']     = $meta_desc;
 
         if (!is_bool($params['published'])) {
             $params['published'] = $params['published'] == '1' ? true : false;
@@ -591,6 +609,8 @@ class BlogAdminModel extends BlogModel
             UPDATE [[blog]] SET
                 [title] = {title},
                 [fast_url] = {fast_url},
+                [meta_keywords] = {meta_keywords},
+                [meta_description] = {meta_desc},
                 [summary]  = {summary},
                 [text] = {content},
                 [updatetime] = {now},

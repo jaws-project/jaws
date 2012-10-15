@@ -654,12 +654,16 @@ function saveCategory(form)
     if (action == 'AddCategory') {
         blog.addcategory(form.elements['name'].value,
                          form.elements['description'].value,
-                         form.elements['fast_url'].value);
+                         form.elements['fast_url'].value,
+                         form.elements['meta_keywords'].value,
+                         form.elements['meta_desc'].value);
     } else {
         blog.updatecategory(form.elements['catid'].value,
                             form.elements['name'].value,
                             form.elements['description'].value,
-                            form.elements['fast_url'].value);
+                            form.elements['fast_url'].value,
+                            form.elements['meta_keywords'].value,
+                            form.elements['meta_desc'].value);
     }
 }
 
@@ -699,6 +703,8 @@ function startAutoDrafting()
 {
     var title          = $('title').value;
     var fasturl        = $('fasturl').value;
+    var meta_keywords  = $('meta_keywords').value;
+    var meta_desc      = $('meta_desc').value;
     var allow_comments = $('allow_comments').checked;
     if ($('trackback_to')) {
         var trackbacks = $('trackback_to').value;
@@ -736,7 +742,8 @@ function startAutoDrafting()
                 break;
         }
 
-        blog.autodraft(id, categories, title, summary, content, fasturl, allow_comments, trackbacks, published, timestamp);
+        blog.autodraft(id, categories, title, summary, content, fasturl, meta_keywords, meta_desc,
+                       allow_comments, trackbacks, published, timestamp);
     }
     setTimeout('startAutoDrafting();', 120000);
 }

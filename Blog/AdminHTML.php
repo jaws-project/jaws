@@ -877,7 +877,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $combo =& Piwi::CreateWidget('Combo', 'category_id');
         $combo->SetID('category_id');
         $combo->SetStyle('width: 100%; margin-bottom: 10px;');
-        $combo->SetSize(20);
+        $combo->SetSize(18);
         $combo->AddEvent(ON_CHANGE, 'editCategory(this.value)');
 
         foreach($categories as $cat) {
@@ -901,15 +901,19 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Blog'));
 
-        $name         = '';
-        $description  = '';
-        $fast_url     = '';
+        $name          = '';
+        $description   = '';
+        $fast_url      = '';
+        $meta_keywords = '';
+        $meta_desc     = '';
         if ($second_action == 'editcategory') {
             $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
             $item = $model->GetCategory($id);
-            $name         = (isset($item['name'])) ? $item['name'] : '';
-            $description  = (isset($item['description'])) ? $item['description'] : '';
-            $fast_url     = (isset($item['fast_url'])) ? $item['fast_url'] : '';
+            $name          = (isset($item['name'])) ? $item['name'] : '';
+            $description   = (isset($item['description'])) ? $item['description'] : '';
+            $fast_url      = (isset($item['fast_url'])) ? $item['fast_url'] : '';
+            $meta_keywords = (isset($item['meta_keywords'])) ? $item['meta_keywords'] : '';
+            $meta_desc     = (isset($item['meta_description'])) ? $item['meta_description'] : '';
         }
 
         $action = $second_action == 'editcategory' ? 'UpdateCategory' : 'AddCategory';
@@ -925,11 +929,19 @@ class BlogAdminHTML extends Jaws_GadgetHTML
 
         $catName =& Piwi::CreateWidget('Entry', 'name', $name);
         $catName->SetTitle(_t('BLOG_CATEGORY'));
-        $catName->setStyle('width: 200px;');
+        $catName->setStyle('width: 250px;');
 
         $catFastURL =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
         $catFastURL->SetTitle(_t('BLOG_FASTURL'));
-        $catFastURL->setStyle('width: 200px;');
+        $catFastURL->setStyle('width: 250px;');
+
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $meta_keywords);
+        $metaKeywords->SetTitle(_t('GLOBAL_META_KEYWORDS'));
+        $metaKeywords->setStyle('width: 250px;');
+
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
+        $metaDesc->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
+        $metaDesc->setStyle('width: 250px;');
 
         $catDescription =& Piwi::CreateWidget('TextArea', 'description', $description);
         $catDescription->SetTitle(_t('GLOBAL_DESCRIPTION'));
@@ -937,6 +949,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
 
         $fieldset->Add($catName);
         $fieldset->Add($catFastURL);
+        $fieldset->Add($metaKeywords);
+        $fieldset->Add($metaDesc);
         $fieldset->Add($catDescription);
         $form->Add($fieldset);
 
@@ -1176,12 +1190,21 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
-        $tpl->SetVariable('fasturl_comment', _t('BLOG_FASTURL_COMMENT'));
-
         $fastUrlEntry =& Piwi::CreateWidget('Entry', 'fasturl', '');
         $fastUrlEntry->SetId('fasturl');
+        $fastUrlEntry->SetTitle(_t('BLOG_FASTURL_COMMENT'));
         $fastUrlEntry->SetStyle('width: 100%; direction: ltr;');
         $tpl->SetVariable('fasturl_field', $fastUrlEntry->Get());
+
+        $tpl->SetVariable('meta_keywords_label', _t('GLOBAL_META_KEYWORDS'), '');
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        $tpl->SetVariable('meta_desc_label', _t('GLOBAL_META_DESCRIPTION'), '');
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', '');
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
@@ -1212,7 +1235,7 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $request =& Jaws_Request::getInstance();
         $names   = array('edit_timestamp', 'pubdate', 'categories', 'title',
                          'fasturl', 'allow_comments', 'published',
-                         'trackback_to');
+                         'trackback_to', 'meta_keywords', 'meta_desc');
         $post    = $request->get($names, 'post');
         $content = $request->get(array('summary_block', 'text_block'), 'post', false);
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
@@ -1223,7 +1246,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         }
 
         $id = $model->NewEntry($GLOBALS['app']->Session->GetAttribute('user') , $post['categories'],
-                               $post['title'], $content['summary_block'], $content['text_block'], $post['fasturl'],
+                               $post['title'], $content['summary_block'], $content['text_block'],
+                               $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                                isset($post['allow_comments'][0]), $post['trackback_to'],
                                $post['published'], $pubdate);
 
@@ -1418,13 +1442,21 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
-        $tpl->SetVariable('fasturl_comment', _t('BLOG_FASTURL_COMMENT'));
-
         $fastUrlData = $entry['fast_url'];
         $fastUrlEntry =& Piwi::CreateWidget('Entry', 'fasturl', $fastUrlData);
         $fastUrlEntry->SetId('fasturl');
         $fastUrlEntry->SetStyle('width: 100%');
         $tpl->SetVariable('fasturl_field', $fastUrlEntry->Get());
+
+        $tpl->SetVariable('meta_keywords_label', _t('GLOBAL_META_KEYWORDS'));
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $entry['meta_keywords']);
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        $tpl->SetVariable('meta_desc_label', _t('GLOBAL_META_DESCRIPTION'));
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', $entry['meta_description']);
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         // Trackback
         if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
@@ -1466,8 +1498,8 @@ class BlogAdminHTML extends Jaws_GadgetHTML
     {
         $request =& Jaws_Request::getInstance();
         $names   = array('id', 'edit_timestamp', 'pubdate', 'categories', 'title',
-                         'fasturl', 'allow_comments', 'published',
-                         'trackback_to');
+                         'fasturl', 'meta_keywords', 'meta_desc', 
+                         'allow_comments', 'published', 'trackback_to');
         $post    = $request->get($names, 'post');
         $content = $request->get(array('summary_block', 'text_block'), 'post', false);
 
@@ -1481,9 +1513,9 @@ class BlogAdminHTML extends Jaws_GadgetHTML
             $pubdate = $post['pubdate'];
         }
 
-        $model->UpdateEntry($id, $post['categories'], $post['title'],
-                            $content['summary_block'], $content['text_block'], $post['fasturl'], isset($post['allow_comments'][0]), 
-                            $post['trackback_to'], $post['published'], $pubdate);
+        $model->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
+                            $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
+                            isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
             if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);

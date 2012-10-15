@@ -110,7 +110,7 @@ define('_EN_BLOG_PARENT', "Parent");
 define('_EN_BLOG_NO_PARENT', "No Parent Category");
 define('_EN_BLOG_ADVANCED_MODE', "Advanced Mode");
 define('_EN_BLOG_FASTURL', "Fast URL");
-define('_EN_BLOG_FASTURL_COMMENT', "How you want to remember this entry? If you write: Remember_Me, then you can read this entry by going to:\n<i>index.php?Blog/Remember_Me</i>, for example.");
+define('_EN_BLOG_FASTURL_COMMENT', "How you want to remember this entry? If you write: remember_me, then you can read this entry by going to:\n<i>index.php?Blog/remember_me</i>, for example.");
 define('_EN_BLOG_READ_MORE', "Read More...");
 define('_EN_BLOG_POSTED_BY', "Posted by");
 define('_EN_BLOG_POSTED_IN', "Posted in");

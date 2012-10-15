@@ -332,11 +332,11 @@ class BlogModel extends Jaws_Model
     }
 
     /**
-     * Get a category
+     * Gets a category data
      *
      * @access  public
-     * @param   int     $id     category ID
-     * @return  mixed   A category or Jaws_Error
+     * @param   int     $id  Category ID
+     * @return  mixed   Array of category data or Jaws_Error
      */
     function GetCategory($id)
     {
@@ -344,7 +344,7 @@ class BlogModel extends Jaws_Model
         $params['id'] = $id;
         $sql = '
             SELECT
-                [id], [name], [description], [fast_url], [createtime], [updatetime]
+                [id], [name], [description], [fast_url], [meta_keywords], [meta_description], [createtime], [updatetime]
             FROM [[blog_category]]';
         if (is_numeric($id)) {
             $sql .= '
@@ -1729,6 +1729,8 @@ class BlogModel extends Jaws_Model
                 [summary],
                 [text],
                 [fast_url],
+                [meta_keywords],
+                [meta_description],
                 [trackbacks],
                 [published],
                 [[blog]].[publishtime],
@@ -1757,8 +1759,8 @@ class BlogModel extends Jaws_Model
                 ([published] = {published} AND [[blog]].[publishtime] <= {now}))';
         }
 
-        $types = array('integer', 'integer', 'text', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'text', 'boolean',
+        $types = array('integer', 'integer', 'text', 'text', 'text', 'text',
+                       'text', 'text', 'text', 'text', 'text', 'text', 'boolean',
                        'timestamp', 'timestamp', 'integer', 'integer', 'boolean');
         $row = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($row)) {

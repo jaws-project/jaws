@@ -28,13 +28,17 @@
     {advanced_field}
     <div id="advanced" style="padding: 5px; {advanced_style}">
         <div class="blog_field" style="border-bottom: 1px solid #eee;">
-          <label for="timestamp">{timestamp_label}:</label>
-          <br/>
-          {timestamp_check}{pubdate}
+          {timestamp_check}<label for="edit_timestamp">{timestamp_label}:</label>
+          {pubdate}
         </div>
-        <div class="blog_field" style="border-bottom: 1px solid #eee;">
+        <div class="blog_field">
           <label for="fasturl">{fasturl}</label>: {fasturl_field}
-          <span style="font-size: 80%; color: #999;">{fasturl_comment}</span>
+        </div>
+        <div class="blog_field">
+          <label for="meta_keywords">{meta_keywords_label}</label>: {meta_keywords}
+        </div>
+        <div class="blog_field">
+          <label for="meta_desc">{meta_desc_label}</label>: {meta_desc}
         </div>
        <!-- BEGIN trackback -->
        <div class="blog_field" style="border-bottom: 1px solid #eee;">

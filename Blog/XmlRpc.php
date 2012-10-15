@@ -228,7 +228,7 @@ function metaWeblog_newPost($params)
     }
     $publish  = getScalarValue($params, 4);
 
-    $post_id = $model->NewEntry($userInfo['id'], $categories, $title, $summary, $content, $title, $allow_c, '', $publish);
+    $post_id = $model->NewEntry($userInfo['id'], $categories, $title, $summary, $content, $title, '', '', $allow_c, '', $publish);
     if (Jaws_Error::IsError ($post_id)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $post_id->GetMessage());
     }
@@ -302,7 +302,7 @@ function metaWeblog_editPost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $blog_result = $model->UpdateEntry($post_id, $categories, $title, $summary, $content, '', $allow_c, '', $publish);
+    $blog_result = $model->UpdateEntry($post_id, $categories, $title, $summary, $content, '', '', '', $allow_c, '', $publish);
     if (Jaws_Error::IsError ($blog_result)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $blog_result->GetMessage());
     }

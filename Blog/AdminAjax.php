@@ -108,12 +108,14 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $name           Category name
      * @param   string  $description    Category description
      * @param   string  $fast_url       Category fast url
+     * @param   string  $meta_keywords  Meta keywords
+     * @param   string  $meta_desc      Meta description
      * @return  array   Response array (notice or error)
      */
-    function AddCategory($name, $description, $fast_url)
+    function AddCategory($name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
         $this->CheckSession('Blog', 'ManageCategories');
-        $this->_Model->NewCategory($name, $description, $fast_url);
+        $this->_Model->NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -125,12 +127,14 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $name           Name of category
      * @param   string  $description    Category description
      * @param   string  $fast_url       Category fast url
+     * @param   string  $meta_keywords  Meta keywords
+     * @param   string  $meta_desc      Meta description
      * @return  array   Response array (notice or error)
      */
-    function UpdateCategory($id, $name, $description, $fast_url)
+    function UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
         $this->CheckSession('Blog', 'ManageCategories');
-        $this->_Model->UpdateCategory($id, $name, $description, $fast_url);
+        $this->_Model->UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -357,14 +361,16 @@ class BlogAdminAjax extends Jaws_Ajax
      * @param   string  $summary        Summary of the entry
      * @param   string  $text           Content of the entry
      * @param   string  $fasturl        FastURL
+     * @param   string  $meta_keywords  Meta keywords
+     * @param   string  $meta_desc      Meta description
      * @param   bool    $allow_comments If entry should allow commnets
      * @param   string  $trackbacks     Trackback to send
      * @param   bool    $published      If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
      * @return  array   Response array (notice or error)
      */
-    function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $allow_comments,
-                       $trackbacks, $published, $timestamp)
+    function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
+                       $allow_comments, $trackbacks, $published, $timestamp)
     {
         $this->CheckSession('Blog', 'AddEntries');
 
@@ -375,6 +381,8 @@ class BlogAdminAjax extends Jaws_Ajax
                                            $summary,
                                            $text,
                                            $fasturl,
+                                           $meta_keywords,
+                                           $meta_desc,
                                            $allow_comments,
                                            $trackbacks,
                                            false,
@@ -397,6 +405,8 @@ class BlogAdminAjax extends Jaws_Ajax
                                        $summary,
                                        $text,
                                        $fasturl,
+                                       $meta_keywords,
+                                       $meta_desc,
                                        $allow_comments,
                                        $trackbacks,
                                        $published,
