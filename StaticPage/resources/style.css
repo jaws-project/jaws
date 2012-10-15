@@ -40,17 +40,14 @@
 }
 
 #btn_advanced {
-    float: left;
+    float: right;
+    margin-top: -24px;
 }
 
-#advanced_options {
-    width: 100%;
-}
-
-#advanced_options td:first-child {
+#page_options td:first-child, #advanced_options td:first-child {
     width: 130px;
 }
 
 #advanced_options input {
-    width: 100%;
+    width: 300px;
 }

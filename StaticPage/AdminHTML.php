@@ -535,12 +535,13 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         }
 
         $vBox =& Piwi::CreateWidget('VBox');
+        $vBox->SetId('page_options');
         $vBox->setSpacing(2);
         $vBox->SetStyle('display:inline;');
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', $title);
         $titleentry->SetTitle(_t('GLOBAL_TITLE'));
-        $titleentry->SetStyle('width:500px');
+        $titleentry->SetStyle('width:300px');
         $vBox->Add($titleentry);
 
         // Group
@@ -587,47 +588,48 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $languageCombo->setTitle(_t('STATICPAGE_PAGE_LANGUAGE'));
         $vBox->Add($languageCombo);
         
-        if ($mode == 'base') {
-            $autodraft = '<script type="text/javascript" language="javascript">setTimeout(\'startAutoDrafting();\', 1200000);</script>';
-            $tpl->SetVariable('autodraft', $autodraft);
-        }
-
-        $pageform->Add($vBox);
-
-        // Editor
-        $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
-        $editor->TextArea->SetStyle('width: 100%;');
-        $editor->SetWidth('750px');
-        $pageform->Add($editor);
-
         // Advanced Options
         $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', _t('STATICPAGE_ADVANCED_OPTIONS'));
         $btnAdvanced->AddEvent(ON_CLICK, 'javascript:$(\'advanced_options\').show(); this.hide();');
-        $pageform->Add($btnAdvanced);
 
-        $vBox =& Piwi::CreateWidget('VBox');
-        $vBox->SetId('advanced_options');
-        $vBox->setSpacing(2);
-        $vBox->SetStyle('display:none;');
+        $advBox =& Piwi::CreateWidget('VBox');
+        $advBox->SetId('advanced_options');
+        $advBox->setSpacing(2);
+        $advBox->SetStyle('display:none;');
 
         // Fast URL
         if ($mode == 'base') {
             $fasturlentry =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
             $fasturlentry->SetTitle(_t('STATICPAGE_FASTURL'));
             $fasturlentry->SetStyle('direction:ltr;');
-            $vBox->Add($fasturlentry);
+            $advBox->Add($fasturlentry);
         }
 
         // Meta Keywords
         $metaKeysEntry =& Piwi::CreateWidget('Entry', 'meta_keys', $meta_keys);
         $metaKeysEntry->SetTitle(_t('GLOBAL_META_KEYWORDS'));
-        $vBox->Add($metaKeysEntry);
+        $advBox->Add($metaKeysEntry);
 
         // Meta Description
         $metaDescEntry =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
         $metaDescEntry->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
-        $vBox->Add($metaDescEntry);
+        $advBox->Add($metaDescEntry);
+
+        // Auto Draft
+        if ($mode == 'base') {
+            $autodraft = '<script type="text/javascript" language="javascript">setTimeout(\'startAutoDrafting();\', 1200000);</script>';
+            $tpl->SetVariable('autodraft', $autodraft);
+        }
+
         $pageform->Add($vBox);
+        $pageform->Add($advBox);
+        $pageform->Add($btnAdvanced);
+
+        // Editor
+        $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
+        $editor->TextArea->SetStyle('width: 100%;');
+        $editor->SetWidth('750px');
+        $pageform->Add($editor);
 
         if ($mode == 'base') {
             if ($action == 'AddPage') {
