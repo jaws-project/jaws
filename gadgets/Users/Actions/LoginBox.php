@@ -124,6 +124,11 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
             $tpl->SetVariable('username',  $uInfo['username']);
             // nickname
             $tpl->SetVariable('nickname',  $uInfo['nickname']);
+            // profile link
+            $tpl->SetVariable('profile_url',
+                              $GLOBALS['app']->Map->GetURLFor('Users',
+                                                              'Profile',
+                                                              array('user' => $uInfo['username'])));
             // email
             $tpl->SetVariable('email',  $uInfo['email']);
 

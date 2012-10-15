@@ -71,6 +71,7 @@ define('_EN_USERS_GROUPS_CANT_DELETE', "There was a problem deleting group {0}."
 /* User Management */
 define('_EN_USERS_ACCOUNT_INFO', "Account Information");
 define('_EN_USERS_PERSONAL_INFO', "Personal Information");
+define('_EN_USERS_PROFILE_INFO', "Profile Information");
 define('_EN_USERS_USERS_ADD', "Add User");
 define('_EN_USERS_ACCOUNT_EDIT', "Edit User");
 define('_EN_USERS_ACCOUNT_DELETE', "Delete User");
@@ -90,10 +91,14 @@ define('_EN_USERS_USERS_STATUS_1', "Enabled");
 define('_EN_USERS_USERS_STATUS_2', "Not Verified");
 define('_EN_USERS_USERS_PRIVACY', "Privacy");
 define('_EN_USERS_USERS_GENDER', "Gender");
-define('_EN_USERS_USERS_MALE', "Male");
-define('_EN_USERS_USERS_FEMALE', "Female");
+define('_EN_USERS_USERS_GENDER_0', "Unknown");
+define('_EN_USERS_USERS_GENDER_1', "Male");
+define('_EN_USERS_USERS_GENDER_2', "Female");
 define('_EN_USERS_USERS_BIRTHDAY', "Birthday");
 define('_EN_USERS_USERS_BIRTHDAY_SAMPLE', "e.g., 2009/08/31");
+define('_EN_USERS_USERS_ABOUT', "About");
+define('_EN_USERS_USERS_OCCUPATION', "Occupation");
+define('_EN_USERS_USERS_INTERESTS', "Interests");
 define('_EN_USERS_USERS_SHOW_ALL', "Show all");
 define('_EN_USERS_USERS_CONCURRENT_LOGINS', "Concurrent logins");
 define('_EN_USERS_USERS_EXPIRY_DATE', "Expiry date");
