@@ -247,7 +247,7 @@ function getPagesGroups(name, offset, reset)
 }
 
 /**
- * Updates a group
+ * Initiates form with group data
  */
 function editGroup(rowElement, gid)
 {
@@ -255,14 +255,16 @@ function editGroup(rowElement, gid)
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('legend_title').update(edit_group_title);
     var group = staticpageSync.getgroup(selectedGroup);
-    $('title').value    = group['title'];
-    $('fast_url').value = group['fast_url'];
-    $('visible').value  = group['visible'];
+    $('title').value     = group['title'];
+    $('meta_keys').value = group['meta_keywords'];
+    $('meta_desc').value = group['meta_description'];
+    $('fast_url').value  = group['fast_url'];
+    $('visible').value   = group['visible'];
     $('title').focus();
 }
 
 /**
- * save a category
+ * Updates the group
  */
 function saveGroup()
 {
@@ -275,11 +277,15 @@ function saveGroup()
     if (selectedGroup == 0) {
         staticpage.insertgroup($('title').value,
                                $('fast_url').value,
+                               $('meta_keys').value,
+                               $('meta_desc').value,
                                $('visible').value);
     } else {
         staticpage.updategroup(selectedGroup,
                                $('title').value,
                                $('fast_url').value,
+                               $('meta_keys').value,
+                               $('meta_desc').value,
                                $('visible').value);
     }
 }
@@ -322,9 +328,11 @@ function stopAction()
 {
     selectedGroup = 0;
     $('legend_title').update(add_group_title);
-    $('title').value    = '';
-    $('fast_url').value = '';
-    $('visible').value  = 'true';
+    $('title').value     = '';
+    $('fast_url').value  = '';
+    $('meta_keys').value = '';
+    $('meta_desc').value = '';
+    $('visible').value   = 'true';
     unselectGridRow('groups_datagrid');
     $('title').focus();
 }

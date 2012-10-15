@@ -40,3 +40,19 @@
     font-size: 10pt;
     text-align: right;
 }
+
+#btn_advanced {
+    float: right;
+}
+
+#advanced_options {
+    width: 100%;
+}
+
+#advanced_options td:first-child {
+    width: 160px;
+}
+
+#advanced_options input {
+    width: 100%;
+}

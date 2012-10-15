@@ -164,10 +164,12 @@ class StaticPageAdminModel extends StaticPageModel
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $published  Publish status of the page
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function AddTranslation($page_id, $title, $content, $language, $published)
+    function AddTranslation($page_id, $title, $content, $language, $meta_keys, $meta_desc, $published)
     {
         // Language exists?
         $language = str_replace(array('.', '/'), '', $language);
@@ -182,21 +184,23 @@ class StaticPageAdminModel extends StaticPageModel
         }
         $published = $GLOBALS['app']->Session->GetPermission('StaticPage', 'PublishPages')? $published : false;
 
+        $sql = '
+            INSERT INTO [[static_pages_translation]]
+                ([base_id], [title], [content], [language], [user], [meta_keywords], [meta_description], [published], [updated])
+            VALUES
+                ({base}, {title}, {content}, {language}, {user}, {meta_keys}, {meta_desc}, {published}, {now})';
+
         //We already have a translation of this page?
         $params              = array();
         $params['base']      = $page_id;
         $params['title']     = $title;
         $params['content']   = str_replace("\r\n", "\n", $content);
         $params['language']  = $language;
+        $params['meta_keys'] = $meta_keys;
+        $params['meta_desc'] = $meta_desc;
         $params['published'] = (bool)$published;
         $params['user']      = $GLOBALS['app']->Session->GetAttribute('user');
         $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            INSERT INTO [[static_pages_translation]]
-                ([base_id], [title], [content], [language], [user], [published], [updated])
-            VALUES
-                ({base}, {title}, {content}, {language}, {user}, {published}, {now})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -216,10 +220,12 @@ class StaticPageAdminModel extends StaticPageModel
      * @param   string  $title      The translated page title
      * @param   string  $content    The translated page content
      * @param   string  $language   The language we are using
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $published  Publish status of the page
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function UpdateTranslation($id, $title, $content, $language, $published)
+    function UpdateTranslation($id, $title, $content, $language, $meta_keys, $meta_desc, $published)
     {
         //Language exists?
         $language = str_replace(array('.', '/'), '', $language);
@@ -261,33 +267,40 @@ class StaticPageAdminModel extends StaticPageModel
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
+        if ($GLOBALS['app']->Session->GetPermission('StaticPage', 'PublishPages')) {
+            $sql = '
+                UPDATE [[static_pages_translation]] SET
+                  [title]            = {title},
+                  [content]          = {content},
+                  [language]         = {language},
+                  [meta_keywords]    = {meta_keys},
+                  [meta_description] = {meta_desc},
+                  [published]        = {published},
+                  [updated]          = {now}
+                WHERE [translation_id] = {id}';
+        } else {
+            $sql = '
+                UPDATE [[static_pages_translation]] SET
+                  [title]            = {title},
+                  [content]          = {content},
+                  [language]         = {language},
+                  [meta_keywords]    = {meta_keys},
+                  [meta_description] = {meta_desc},
+                  [published]        = {published},
+                  [updated]          = {now}
+                WHERE [translation_id] = {id}';
+        }
+
         // Lets update it
         $params              = array();
         $params['id']        = $id;
         $params['title']     = $title;
         $params['content']   = str_replace("\r\n", "\n", $content);
         $params['language']  = $language;
+        $params['meta_keys'] = $meta_keys;
+        $params['meta_desc'] = $meta_desc;
         $params['published'] = (bool)$published;
         $params['now']       = $GLOBALS['db']->Date();
-
-        if ($GLOBALS['app']->Session->GetPermission('StaticPage', 'PublishPages')) {
-            $sql = '
-                UPDATE [[static_pages_translation]] SET
-                  [title]     = {title},
-                  [content]   = {content},
-                  [language]  = {language},
-                  [published] = {published},
-                  [updated]   = {now}
-                WHERE [translation_id] = {id}';
-        } else {
-            $sql = '
-                UPDATE [[static_pages_translation]] SET
-                  [title]     = {title},
-                  [content]   = {content},
-                  [language]  = {language},
-                  [updated]   = {now}
-                WHERE [translation_id] = {id}';
-        }
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -345,15 +358,18 @@ class StaticPageAdminModel extends StaticPageModel
      * @access  public
      * @param   string  $title      The title of the page
      * @param   int     $group      The group of the page
-     * @param   string  $fast_url   The fast URL of the page
      * @param   bool    $show_title Whether displays the title or not
-     * @param   string  $content    The contents of the page
+     * @param   string  $content    The content of the page
      * @param   string  $language   The language of the page
+     * @param   string  $fast_url   The fast URL of the page
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $published  Whether the page is published or not
      * @param   bool    $auto       Whether its an auto saved page or not
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function AddPage($title, $group, $fast_url, $show_title, $content, $language, $published, $auto = false)
+    function AddPage($title, $group, $show_title, $content, $language, 
+                     $fast_url, $meta_keys, $meta_desc, $published, $auto = false)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages', $auto === false);
@@ -378,7 +394,7 @@ class StaticPageAdminModel extends StaticPageModel
         }
 
         $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
-        $result = $this->AddTranslation($base_id, $title, $content, $language, $published);
+        $result = $this->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $published);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), _t('STATICPAGE_NAME'));
@@ -389,21 +405,24 @@ class StaticPageAdminModel extends StaticPageModel
     }
 
     /**
-     * Updates a page.
+     * Updates the page
      *
      * @access  public
      * @param   int     $id         The ID of the page to update
      * @param   int     $group      The group of the page
-     * @param   string  $fast_url   The fast URL of the page
      * @param   bool    $show_title Whether displays the title or not
      * @param   string  $title      The title of the page
      * @param   string  $content    The contents of the page
      * @param   string  $language   The language of the page
+     * @param   string  $fast_url   The fast URL of the page
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $published  Whether the page is published or not
      * @param   bool    $auto       Whether its an auto saved page or not
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function UpdatePage($id, $group, $fast_url, $show_title, $title, $content, $language, $published, $auto = false)
+    function UpdatePage($id, $group, $show_title, $title, $content, $language, 
+                        $fast_url, $meta_keys, $meta_desc, $published, $auto = false)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages', false);
@@ -436,7 +455,7 @@ class StaticPageAdminModel extends StaticPageModel
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
-        $result = $this->UpdateTranslation($page['translation_id'], $title, $content, $language, $published);
+        $result = $this->UpdateTranslation($page['translation_id'], $title, $content, $language, $meta_keys, $meta_desc, $published);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
@@ -522,25 +541,29 @@ class StaticPageAdminModel extends StaticPageModel
      * @access  public
      * @param   string  $title      Title of the group
      * @param   string  $fast_url   The fast URL of the group
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $visible    Visibility status of the group
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function InsertGroup($title, $fast_url, $visible)
+    function InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages_groups', true);
 
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['title']    = $xss->parse($title);
-        $params['fast_url'] = $xss->parse($fast_url);
-        $params['visible']  = (bool)$visible;
+        $params['title']     = $xss->parse($title);
+        $params['fast_url']  = $xss->parse($fast_url);
+        $params['meta_keys'] = $xss->parse($meta_keys);
+        $params['meta_desc'] = $xss->parse($meta_desc);
+        $params['visible']   = (bool)$visible;
 
         $sql = '
           INSERT INTO [[static_pages_groups]]
-              ([title], [fast_url], [visible])
+              ([title], [fast_url], [meta_keywords], [meta_description], [visible])
           VALUES
-              ({title}, {fast_url}, {visible})';
+              ({title}, {fast_url}, {meta_keys}, {meta_desc}, {visible})';
 
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
@@ -557,25 +580,31 @@ class StaticPageAdminModel extends StaticPageModel
      * @param   int     $gid        Group ID
      * @param   string  $title      Title of the group
      * @param   string  $fast_url   The fast URL of the group
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $visible    Visibility status of the group
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function UpdateGroup($gid, $title, $fast_url, $visible)
+    function UpdateGroup($gid, $title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages_groups', false);
 
         $params = array();
-        $params['gid']      = (int)$gid;
-        $params['title']    = $title;
-        $params['fast_url'] = $fast_url;
-        $params['visible']  = (bool)$visible;
+        $params['gid']       = (int)$gid;
+        $params['title']     = $title;
+        $params['fast_url']  = $fast_url;
+        $params['meta_keys'] = $meta_keys;
+        $params['meta_desc'] = $meta_desc;
+        $params['visible']   = (bool)$visible;
 
         $sql = '
             UPDATE [[static_pages_groups]] SET
-                [title]       = {title},
-                [fast_url]    = {fast_url},
-                [visible]     = {visible}
+                [title]            = {title},
+                [fast_url]         = {fast_url},
+                [meta_keywords]    = {meta_keys},
+                [meta_description] = {meta_desc},
+                [visible]          = {visible}
             WHERE [id] = {gid}';
 
         $res = $GLOBALS['db']->query($sql, $params);

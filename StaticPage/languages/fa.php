@@ -24,6 +24,9 @@ define('_FA_STATICPAGE_ACL_DEFAULT', "مدیریت ابزار صفحات ایس�
 define('_FA_STATICPAGE_ACL_ADDPAGE', "اضافه کردن صفحات");
 define('_FA_STATICPAGE_ACL_EDITPAGE', "ویرایش صفحات");
 define('_FA_STATICPAGE_ACL_DELETEPAGE', "حذف صفحات");
+define('_FA_STATICPAGE_ACL_PUBLISHPAGES', "انتشار صفحات");
+define('_FA_STATICPAGE_ACL_MANAGEPUBLISHEDPAGES', "مدیریت انتشار صفحات");
+define('_FA_STATICPAGE_ACL_MODIFYOTHERSPAGES', "ویرایش صفحات سایر کاربران");
 define('_FA_STATICPAGE_ACL_MANAGEGROUPS', "مدیریت دسته‌بندیها");
 define('_FA_STATICPAGE_ACL_PROPERTIES', "پیکربندی تنظیمات");
 define('_FA_STATICPAGE_ERROR_PAGE_NOT_ADDED', "خطا در هنگام اضافه کردن صفحه");
@@ -77,6 +80,7 @@ define('_FA_STATICPAGE_TRANSLATION_CREATED', "ترجمه جدید افزوده �
 define('_FA_STATICPAGE_TRANSLATION_UPDATED', "ترجمه بروزرسانی شد");
 define('_FA_STATICPAGE_TRANSLATION_DELETED', "ترجمه دلخواه شما حدف شد");
 define('_FA_STATICPAGE_AVAIL_TRANSLATIONS', "ترجمه شده به زبانهای");
+define('_FA_STATICPAGE_ADVANCED_OPTIONS', "پیشرفته >");
 define('_FA_STATICPAGE_GROUPS', "دسته‌بندیها");
 define('_FA_STATICPAGE_GROUP', "دسته‌بندی");
 define('_FA_STATICPAGE_GROUP_ADD', "افزودن دسته‌بندی جدید");

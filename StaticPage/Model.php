@@ -26,7 +26,7 @@ class StaticPageModel extends Jaws_Model
             SELECT
                 sp.[page_id], sp.[group_id], spt.[translation_id], spt.[language], spt.[title],
                 sp.[fast_url], spt.[published], sp.[show_title], spt.[content], spt.[user],
-                spt.[updated]
+                spt.[meta_keywords], spt.[meta_description], spt.[updated]
             FROM [[static_pages]] sp
             INNER JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]';
         if (empty($language)) {
@@ -42,7 +42,7 @@ class StaticPageModel extends Jaws_Model
         }
 
         $types = array('integer', 'integer', 'integer', 'text', 'text', 'text', 'boolean',
-                       'boolean', 'text', 'integer', 'timestamp');
+                       'boolean', 'text', 'integer', 'text', 'text', 'timestamp');
 
         $params = array();
         $params['id']       = $id;
@@ -71,11 +71,13 @@ class StaticPageModel extends Jaws_Model
     {
         $sql = '
             SELECT
-                [translation_id], [base_id], [title], [content], [language], [user], [published], [updated]
+                [translation_id], [base_id], [title], [content], [language], 
+                [meta_keywords], [meta_description], [user], [published], [updated]
             FROM [[static_pages_translation]]
             WHERE [translation_id] = {id}';
 
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'integer', 'boolean', 'timestamp');
+        $types = array('integer', 'integer', 'text', 'text', 'text', 
+                       'text', 'text', 'integer', 'boolean', 'timestamp');
         $row = $GLOBALS['db']->queryRow($sql, array('id' => $id), $types);
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
@@ -282,7 +284,7 @@ class StaticPageModel extends Jaws_Model
      * Gets properties of a group
      *
      * @access  public
-     * @param    int     $id  Group ID
+     * @param   int     $id  Group ID
      * @return  mixed   Array of group info or Jaws_Error
      */
     function GetGroup($id)
@@ -291,7 +293,7 @@ class StaticPageModel extends Jaws_Model
         $params['id'] = $id;
 
         $sql = '
-            SELECT [id], [title], [fast_url], [visible]
+            SELECT [id], [title], [fast_url], [meta_keywords], [meta_description], [visible]
             FROM [[static_pages_groups]]
             WHERE ';
 
@@ -301,7 +303,7 @@ class StaticPageModel extends Jaws_Model
             $sql .= '[fast_url] = {id}';
         }
 
-        $types = array('integer', 'text', 'text', 'boolean');
+        $types = array('integer', 'text', 'text', 'text', 'text', 'boolean');
         $group = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($group)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));

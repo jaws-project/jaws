@@ -38,3 +38,19 @@
 #PageGroups td {
     font-size: 10pt;
 }
+
+#btn_advanced {
+    float: left;
+}
+
+#advanced_options {
+    width: 100%;
+}
+
+#advanced_options td:first-child {
+    width: 130px;
+}
+
+#advanced_options input {
+    width: 100%;
+}

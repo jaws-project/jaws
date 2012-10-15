@@ -121,22 +121,24 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * user clicks on save.
      *
      * @access  public
-     * @param   int     $id         The id of the staticpage id to update
-     * @param   int     $group      The group id of the page that blongs to
-     * @param   string  $fast_url   The value of the fast_url. This will
-     *                              be autocreated if nothing is passed
-     * @param   bool    $showtitle  This will to know if we show the title or not
-     * @param   string  $title      The new autosaved title
-     * @param   string  $content    The content of the new page
-     * @param   string  $language   The language of page
+     * @param   int     $id         The ID of the staticpage to update
+     * @param   int     $group      The group ID of the page
+     * @param   bool    $showtitle  Whether displays page title or not
+     * @param   string  $title      Page title
+     * @param   string  $content    Page content
+     * @param   string  $language   Page language
+     * @param   string  $fast_url   The fast URL of the page
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $published  If the item is published or not. Default: draft
      * @return  array   Response array (notice or error)
      */
-    function AutoDraft($id = '', $group, $fast_url = '', $showtitle = '', $title = '', $content = '',
-                       $language = '', $published = '')
+    function AutoDraft($id = '', $group, $showtitle = '', $title = '', $content = '', $language = '',
+                       $fast_url = '', $meta_keys = '', $meta_desc = '', $published = '')
     {
         if ($id == 'NEW') {
-            $this->_Model->AddPage($title, $group, $fast_url, $show_title, $content, $language, $published, true);
+            $this->_Model->AddPage($title, $group, $show_title, $content, $language, 
+                                   $fast_url, $meta_keys, $meta_desc, $published, true);
             $newid    = $GLOBALS['db']->lastInsertID('static_pages', 'id');
             $response['id'] = $newid;
             $response['message'] = _t('STATICPAGE_PAGE_AUTOUPDATED',
@@ -145,7 +147,8 @@ class StaticPageAdminAjax extends Jaws_Ajax
                                       date('D, d'));
             $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
         } else {
-            $this->_Model->UpdatePage($id, $group, $fast_url, $showtitle, $title, $content, $language, $published, true);
+            $this->_Model->UpdatePage($id, $group, $showtitle, $title, $content, $language, 
+                                      $fast_url, $meta_keys, $meta_desc, $published, true);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -200,13 +203,15 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   string  $title      Title of the group
      * @param   string  $fast_url   Shortcut keyword to link to the group
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
-    function InsertGroup($title, $fast_url, $visible)
+    function InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
         $this->CheckSession('StaticPage', 'ManageGroups');
-        $res = $this->_Model->InsertGroup($title, $fast_url, $visible);
+        $res = $this->_Model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
@@ -222,14 +227,16 @@ class StaticPageAdminAjax extends Jaws_Ajax
      * @access  public
      * @param   int     $id         Group ID
      * @param   string  $title      Title of the group
+     * @param   string  $meta_keys  Meta keywords
+     * @param   string  $meta_desc  Meta description
      * @param   string  $fast_url   Shortcut keyword to link to the group
      * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
-    function UpdateGroup($id, $title, $fast_url, $visible)
+    function UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
         $this->CheckSession('StaticPage', 'ManageGroups');
-        $res = $this->_Model->UpdateGroup($id, $title, $fast_url, $visible == 'true');
+        $res = $this->_Model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {

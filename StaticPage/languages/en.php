@@ -91,6 +91,7 @@ define('_EN_STATICPAGE_TRANSLATION_CREATED', "The translation has been created."
 define('_EN_STATICPAGE_TRANSLATION_UPDATED', "The translation has been updated.");
 define('_EN_STATICPAGE_TRANSLATION_DELETED', "The translation has been deleted.");
 define('_EN_STATICPAGE_AVAIL_TRANSLATIONS', 'Available translations');
+define('_EN_STATICPAGE_ADVANCED_OPTIONS', 'Advanced >');
 
 // Groups
 define('_EN_STATICPAGE_GROUPS', 'Groups');

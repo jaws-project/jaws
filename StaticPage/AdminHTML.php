@@ -7,6 +7,7 @@
  * @author     Jon Wood <jon@jellybob.co.uk>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
+ * @author     Mohsen Khahani <mohsen@khahani.com>
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
@@ -332,7 +333,7 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
             $GLOBALS['app']->Session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
-        return $this->CreateForm($page['title'], '', $page['content'], true, true, '', $page_id, '',
+        return $this->CreateForm($page['title'], '', '', '', $page['content'], true, true, '', $page_id, '',
                                  'AddTranslation', 'translation');
     }
 
@@ -345,7 +346,7 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
     function AddNewPage()
     {
         $this->CheckPermission('AddPage');
-        return $this->CreateForm('', '', '', false, true, '', '', '', 'AddPage');
+        return $this->CreateForm('', '', '', '', '', false, true, '', '', '', 'AddPage');
     }
 
     /**
@@ -360,12 +361,12 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
-        $fetch   = array('title', 'fast_url', 'group_id', 'language', 'published', 'show_title');
+        $fetch   = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'group_id', 'language', 'published', 'show_title');
         $post    = $request->get($fetch, 'post');
         $post['content'] = $request->get('content', 'post', false);
 
-        $result = $model->AddPage($post['title'], $post['group_id'], $post['fast_url'], $post['show_title'],
-                                  $post['content'], $post['language'], $post['published']);
+        $result = $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
+                                  $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=Admin');
     }
@@ -390,8 +391,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
         }
 
-        return $this->CreateForm($page['title'], $page['fast_url'], $page['content'],
-                                 $page['published'], $page['show_title'],  $page['language'],
+        return $this->CreateForm($page['title'], $page['fast_url'], $page['meta_keywords'], $page['meta_description'],
+                                 $page['content'], $page['published'], $page['show_title'],  $page['language'],
                                  $id, $page['group_id'], 'SaveEditPage');
     }
 
@@ -406,14 +407,14 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $this->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
-        $fetch   = array('page', 'title', 'fast_url', 'group_id', 'language', 'published', 'show_title');
+        $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys', 'meta_desc', 'published', 'show_title');
         $post    = $request->get($fetch, 'post');
         $post['content'] = $request->get('content', 'post', false);
         $id      = (int)$post['page'];
 
-        $result = $model->UpdatePage($id, $post['group_id'], $post['fast_url'],
-                                     $post['show_title'], $post['title'], $post['content'],
-                                     $post['language'], $post['published']);
+        $result = $model->UpdatePage($id, $post['group_id'], $post['show_title'], $post['title'], 
+                                     $post['content'], $post['language'], $post['fast_url'], 
+                                     $post['meta_keys'], $post['meta_desc'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
     }
@@ -429,12 +430,13 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $this->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
-        $fetch   = array('page', 'title', 'content', 'language', 'published');
+        $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'published');
         $post    = $request->get($fetch, 'post');
         $post['content'] = $request->get('content', 'post', false);
         $page    = (int)$post['page'];
         
-        $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'], $post['published']);
+        $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'],    
+                                         $post['meta_keys'], $post['meta_desc'], $post['published']);
         if (Jaws_Error::isError($result)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         } else {
@@ -468,8 +470,9 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
             $GLOBALS['app']->Session->PushLastResponse($translation->GetMessage(), RESPONSE_ERROR);
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
-        return $this->CreateForm($translation['title'], '', $translation['content'], $translation['published'], true, $translation['language'],
-                                 $trans_id, '', 'SaveEditTranslation', 'translation');
+        return $this->CreateForm($translation['title'], '', $translation['meta_keywords'], $translation['meta_description'],
+                                 $translation['content'], $translation['published'], true, $translation['language'], $trans_id,
+                                 '', 'SaveEditTranslation', 'translation');
     }
 
     /**
@@ -483,11 +486,12 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $this->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
-        $fetch   = array('trans_id', 'title', 'language', 'published');
+        $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'published');
         $post    = $request->get($fetch, 'post');
         $post['content'] = $request->get('content', 'post', false);
         $trans   = (int)$post['trans_id'];
-        $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'], $post['published']);
+        $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'], 
+                                            $post['meta_keys'], $post['meta_desc'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' . $trans);
     }
@@ -508,7 +512,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
      * @param   string      $mode           The mode we are using (base by default or translation)
      * @return  string      XHTML form
      */
-    function CreateForm($title, $fast_url, $content, $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
+    function CreateForm($title, $fast_url, $meta_keys, $meta_desc, $content,
+                        $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
@@ -530,19 +535,13 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         }
 
         $vBox =& Piwi::CreateWidget('VBox');
-        $vBox->SetStyle('display: inline;');
+        $vBox->setSpacing(2);
+        $vBox->SetStyle('display:inline;');
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', $title);
         $titleentry->SetTitle(_t('GLOBAL_TITLE'));
-        $titleentry->SetStyle('width: 300px;');
+        $titleentry->SetStyle('width:500px');
         $vBox->Add($titleentry);
-
-        if ($mode == 'base') {
-            $fasturlentry =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
-            $fasturlentry->SetTitle(_t('STATICPAGE_FASTURL'));
-            $fasturlentry->SetStyle('direction: ltr; width: 300px;');
-            $vBox->PackStart($fasturlentry);
-        }
 
         // Group
         if ($mode == 'base') {
@@ -593,10 +592,41 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
             $tpl->SetVariable('autodraft', $autodraft);
         }
 
+        $pageform->Add($vBox);
+
+        // Editor
         $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->SetWidth('750px');
+        $pageform->Add($editor);
 
+        // Advanced Options
+        $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', _t('STATICPAGE_ADVANCED_OPTIONS'));
+        $btnAdvanced->AddEvent(ON_CLICK, 'javascript:$(\'advanced_options\').show(); this.hide();');
+        $pageform->Add($btnAdvanced);
+
+        $vBox =& Piwi::CreateWidget('VBox');
+        $vBox->SetId('advanced_options');
+        $vBox->setSpacing(2);
+        $vBox->SetStyle('display:none;');
+
+        // Fast URL
+        if ($mode == 'base') {
+            $fasturlentry =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
+            $fasturlentry->SetTitle(_t('STATICPAGE_FASTURL'));
+            $fasturlentry->SetStyle('direction:ltr;');
+            $vBox->Add($fasturlentry);
+        }
+
+        // Meta Keywords
+        $metaKeysEntry =& Piwi::CreateWidget('Entry', 'meta_keys', $meta_keys);
+        $metaKeysEntry->SetTitle(_t('GLOBAL_META_KEYWORDS'));
+        $vBox->Add($metaKeysEntry);
+
+        // Meta Description
+        $metaDescEntry =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
+        $metaDescEntry->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
+        $vBox->Add($metaDescEntry);
         $pageform->Add($vBox);
 
         if ($mode == 'base') {
@@ -634,7 +664,6 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
             $buttonbox->PackStart($btnDelete);
         }
         $buttonbox->PackStart($submit);
-        $pageform->Add($editor);
         $pageform->Add($buttonbox);
 
         $tpl->setVariable('preview_header', _t('GLOBAL_PREVIEW'));
@@ -667,14 +696,24 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
         $tpl->SetVariable('grid', $this->GroupsDataGrid());
 
         $entry =& Piwi::CreateWidget('Entry', 'title', '');
-        $entry->SetStyle('width: 250px;');
+        $entry->SetStyle('width: 200px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE').':');
         $tpl->SetVariable('title', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
-        $entry->SetStyle('width:250px; direction:ltr;');
+        $entry->SetStyle('width:200px; direction:ltr;');
         $tpl->SetVariable('lbl_fast_url', _t('STATICPAGE_FASTURL').':');
         $tpl->SetVariable('fast_url', $entry->Get());
+
+        $entry =& Piwi::CreateWidget('Entry', 'meta_keys', '');
+        $entry->SetStyle('width:200px;');
+        $tpl->SetVariable('lbl_meta_keys', _t('GLOBAL_META_KEYWORDS').':');
+        $tpl->SetVariable('meta_keys', $entry->Get());
+
+        $entry =& Piwi::CreateWidget('Entry', 'meta_desc', '');
+        $entry->SetStyle('width:200px;');
+        $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION').':');
+        $tpl->SetVariable('meta_desc', $entry->Get());
 
         $combo =& Piwi::CreateWidget('Combo', 'visible');
         $combo->AddOption(_t('GLOBAL_NO'),  'false');
