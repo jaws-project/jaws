@@ -177,9 +177,9 @@ class Jaws_User
         }
         if ($personal) {
             $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar],
-                       [privacy]';
+                       [privacy], [about], [occupation], [interests]';
             $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text',
-                                               'boolean'));
+                                               'boolean', 'text', 'text', 'text'));
         }
         if ($preferences) {
             $sql .= ', [language], [theme], [editor], [timezone]';
