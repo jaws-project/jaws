@@ -104,7 +104,9 @@ class UsersAdminModel extends Jaws_Model
         }
 
         if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.8.9.xml');
+            $variables = array();
+            $variables['logon_hours'] = str_pad('', 42, 'F');
+            $result = $this->installSchema('schema.xml', $variables, '0.8.9.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
