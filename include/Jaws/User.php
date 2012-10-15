@@ -322,21 +322,29 @@ class Jaws_User
      * @access  public
      * @param   mixed   $group      Group ID of users
      * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
-     * @param   int     $status     user's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
-     * @param   string  $orderBy    field to order by
+     * @param   int     $status     User's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
+     * @param   string  $term       Search term(searched in username, nickname and email)
+     * @param   string  $orderBy    Field to order by
      * @return  array   Returns an array of the available users and false on error
      */
-    function GetUsers($group = false, $superadmin = null, $status = null, $orderBy = 'nickname',
+    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = '[nickname]',
                       $limit = 0, $offset = null)
     {
-        $fields  = array('id', 'username', 'email', 'nickname');
-        $orderBy = strtolower($orderBy);
+        $fields  = array(
+            '[id]',
+            '[id] DESC',
+            '[username]',
+            '[username] DESC',
+            '[nickname]',
+            '[nickname] DESC',
+            '[email]');
         if (!in_array($orderBy, $fields)) {
             $GLOBALS['log']->Log(JAWS_LOG_WARNING, _t('GLOBAL_ERROR_UNKNOWN_COLUMN'));
-            $orderBy = 'username';
+            $orderBy = '[username]';
         }
 
         $params = array();
+        $params['true']       = true;
         $params['gid']        = $group;
         $params['superadmin'] = (bool)$superadmin;
         $params['status']     = (int)$status;
@@ -353,28 +361,37 @@ class Jaws_User
             $sql .= '
                 INNER JOIN [[users_groups]] ON [[users_groups]].[user_id] = [[users]].[id]
                 WHERE [[users_groups]].[group_id] = {gid}';
+        } else {
+            $sql .= '
+                WHERE {true} = {true}';
         }
 
         if (!is_null($superadmin)) {
-            if ($group === false) {
-                $sql .= "
-                    WHERE [superadmin] = {superadmin}";
-            } else {
-                $sql .= " AND [superadmin] = {superadmin}";
-            }
+            $sql .= " AND [superadmin] = {superadmin}";
         }
 
         if (!is_null($status)) {
-            if ($group === false && is_null($superadmin)) {
-                $sql .= '
-                    WHERE [[users]].[status] = {status}';
-            } else {
-                $sql .= ' AND [[users]].[status] = {status}';
-            }
+            $sql .= ' AND [[users]].[status] = {status}';
+        }
+
+        if (!empty($term)) {
+            $userTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[username]');
+            $nickTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[nickname]');
+            $emailTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[email]');
+            $sql.= " AND ($userTerm OR $nickTerm OR $emailTerm)";
         }
 
         $sql .= '
-            ORDER BY [[users]].[' . $orderBy . ']';
+            ORDER BY [[users]].'. $orderBy;
 
         if (!empty($limit)) {
             $result = $GLOBALS['db']->setLimit($limit, $offset);
@@ -398,11 +415,13 @@ class Jaws_User
      * @param   mixed   $group      Group ID of users
      * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
      * @param   int     $status     user's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
+     * @param   string  $term       Search term(searched in username, nickname and email)
      * @return  int     Returns users count
      */
-    function GetUsersCount($group = false, $superadmin = null, $status = null)
+    function GetUsersCount($group = false, $superadmin = null, $status = null, $term = '')
     {
         $params = array();
+        $params['true']       = true;
         $params['gid']        = $group;
         $params['superadmin'] = (bool)$superadmin;
         $params['status']     = (int)$status;
@@ -416,24 +435,33 @@ class Jaws_User
             $sql .= '
                 INNER JOIN [[users_groups]] ON [[users_groups]].[user_id] = [[users]].[id]
                 WHERE [[users_groups]].[group_id] = {gid}';
+        } else {
+            $sql .= '
+                WHERE {true} = {true}';
         }
 
         if (!is_null($superadmin)) {
-            if ($group === false) {
-                $sql .= "
-                    WHERE [superadmin] = {superadmin}";
-            } else {
-                $sql .= " AND [superadmin] = {superadmin}";
-            }
+            $sql .= " AND [superadmin] = {superadmin}";
         }
 
         if (!is_null($status)) {
-            if ($group === false && is_null($superadmin)) {
-                $sql .= '
-                    WHERE [[users]].[status] = {status}';
-            } else {
-                $sql .= ' AND [[users]].[status] = {status}';
-            }
+            $sql .= ' AND [[users]].[status] = {status}';
+        }
+
+        if (!empty($term)) {
+            $userTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[username]');
+            $nickTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[nickname]');
+            $emailTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
+                                                        array(1 => '%', $term, '%'),
+                                                        'ILIKE',
+                                                        '[[users]].[email]');
+            $sql.= " AND ($userTerm OR $nickTerm OR $emailTerm)";
         }
 
         $result = $GLOBALS['db']->queryOne($sql, $params);
