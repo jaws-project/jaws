@@ -144,6 +144,7 @@ class Jaws
         require_once JAWS_PATH . 'include/Jaws/Gadget.php';
         require_once JAWS_PATH . 'include/Jaws/Template.php';
         require_once JAWS_PATH . 'include/Jaws/Header.php';
+        require_once JAWS_PATH . 'include/Jaws/Plugin.php';
     }
 
     /**
