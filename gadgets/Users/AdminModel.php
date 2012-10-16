@@ -104,11 +104,15 @@ class UsersAdminModel extends Jaws_Model
         }
 
         if (version_compare($old, '1.0.0', '<')) {
-            $variables = array();
-            $variables['logon_hours'] = str_pad('', 42, 'F');
-            $result = $this->installSchema('schema.xml', $variables, '0.8.9.xml');
+            $result = $this->installSchema('schema.xml', '', '0.8.9.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
+            }
+
+            $sql = "UPDATE [[users]] SET [registered_date] = {now}";
+            $result = $GLOBALS['db']->query($sql, array('now'=> time()));
+            if (Jaws_Error::IsError($result)) {
+                //return $result;
             }
 
             // ACL keys

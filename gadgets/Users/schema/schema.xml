@@ -221,7 +221,7 @@
             <name>logon_hours</name>
             <type>text</type>
             <length>42</length>
-            <default><variable>logon_hours</variable></default>
+            <default>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</default>
         </field>
 
         <field>
