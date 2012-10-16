@@ -18,6 +18,10 @@ $actions['LoginBox']   = array('NormalAction:Login,LayoutAction:LoginBox',
 $actions['LoginLinks'] = array('LayoutAction:LoginBox',
                                _t('USERS_LAYOUT_LOGINLINKS'),
                                _t('USERS_LAYOUT_LOGINLINKS_DESC'));
+$actions['Profile']    = array('NormalAction:Profile,LayoutAction:Profile',
+                               _t('USERS_LAYOUT_PROFILE'),
+                               _t('USERS_LAYOUT_PROFILE_DESC'),
+                               true);
 
 /* Admin actions */
 $actions['Users']        = array('AdminAction:Users');
@@ -29,7 +33,6 @@ $actions['LoadAvatar']   = array('StandaloneAdminAction:Avatar');
 $actions['UploadAvatar'] = array('StandaloneAdminAction:Avatar');
 
 /* Normal actions */
-$actions['Profile']        = array('NormalAction:Profile');
 $actions['Login']          = array('NormalAction:Login');
 $actions['Logout']         = array('NormalAction:Login');
 $actions['ForgotLogin']    = array('NormalAction:Login');

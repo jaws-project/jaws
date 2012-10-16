@@ -31,6 +31,8 @@ define('_EN_USERS_LAYOUT_LOGINBOX', "Login Box");
 define('_EN_USERS_LAYOUT_LOGINBOX_DESC', "Display Login Box.");
 define('_EN_USERS_LAYOUT_LOGINLINKS', "Login links");
 define('_EN_USERS_LAYOUT_LOGINLINKS_DESC', "Display some links related to login stuff.");
+define('_EN_USERS_LAYOUT_PROFILE', "About a user");
+define('_EN_USERS_LAYOUT_PROFILE_DESC', "Display user's profile information");
 
 /* Group Management */
 define('_EN_USERS_GROUPS_GROUPNAME', "Group name");
@@ -69,6 +71,7 @@ define('_EN_USERS_GROUPS_NOT_UPDATED', "There was a problem updating group {0}."
 define('_EN_USERS_GROUPS_CANT_DELETE', "There was a problem deleting group {0}.");
 
 /* User Management */
+define('_EN_USERS_USERS', "Users");
 define('_EN_USERS_ACCOUNT_INFO', "Account Information");
 define('_EN_USERS_PERSONAL_INFO', "Personal Information");
 define('_EN_USERS_PROFILE_INFO', "Profile Information");

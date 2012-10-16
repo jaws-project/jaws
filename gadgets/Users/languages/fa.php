@@ -27,6 +27,8 @@ define('_FA_USERS_LAYOUT_LOGINBOX', "بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINBOX_DESC', "نمایش بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINLINKS', "پیوندهای کاربری");
 define('_FA_USERS_LAYOUT_LOGINLINKS_DESC', "نمایش پیوندهای کاربری");
+define('_FA_USERS_LAYOUT_PROFILE', "درباره کاربر");
+define('_FA_USERS_LAYOUT_PROFILE_DESC', "نمایش پروفایل کاربر");
 define('_FA_USERS_GROUPS_GROUPNAME', "نام گروه");
 define('_FA_USERS_GROUPS_GROUPID', "کد گروه");
 define('_FA_USERS_GROUPS_GROUP', "گروه");
@@ -57,8 +59,10 @@ define('_FA_USERS_GROUPS_UPDATED_USERS', "تغییرات مربوط به ارت�
 define('_FA_USERS_GROUPS_NOT_CREATED', "خطا هنگام ایجاد گروه {0}");
 define('_FA_USERS_GROUPS_NOT_UPDATED', "خطا هنگام ثبت تغییرات گروه {0}");
 define('_FA_USERS_GROUPS_CANT_DELETE', "خطا هنگام حذف گروه {0}");
+define('_FA_USERS_USERS', "کاربران");
 define('_FA_USERS_ACCOUNT_INFO', "اطلاعات کاربری");
 define('_FA_USERS_PERSONAL_INFO', "اطلاعات شخصی");
+define('_FA_USERS_PROFILE_INFO', "پروفایل کاربر");
 define('_FA_USERS_USERS_ADD', "ایجاد کاربر");
 define('_FA_USERS_ACCOUNT_EDIT', "ویرایش کاربر");
 define('_FA_USERS_ACCOUNT_DELETE', "حذف کاربر");
@@ -78,10 +82,14 @@ define('_FA_USERS_USERS_STATUS_1', "پويا");
 define('_FA_USERS_USERS_STATUS_2', "وارسی نشده");
 define('_FA_USERS_USERS_PRIVACY', "نگهداری داده ها");
 define('_FA_USERS_USERS_GENDER', "جنسیت");
+define('_FA_USERS_USERS_GENDER_0', "ناشناخته");
 define('_FA_USERS_USERS_GENDER_1', "مرد");
 define('_FA_USERS_USERS_GENDER_2', "زن");
 define('_FA_USERS_USERS_BIRTHDAY', "تاریخ تولد");
 define('_FA_USERS_USERS_BIRTHDAY_SAMPLE', "مانند: 18 - 05 - 1360");
+define('_FA_USERS_USERS_ABOUT', "درباره");
+define('_FA_USERS_USERS_OCCUPATION', "پیشینه کاری");
+define('_FA_USERS_USERS_INTERESTS', "دلبستگی ها");
 define('_FA_USERS_USERS_SHOW_ALL', "دیدن همه");
 define('_FA_USERS_USERS_CONCURRENT_LOGINS', "تعداد ورود همزمان");
 define('_FA_USERS_USERS_EXPIRY_DATE', "زمان پایان");

@@ -8,21 +8,56 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Profile extends UsersHTML
+class Users_Actions_Profile extends Jaws_GadgetHTML
 {
+    /**
+     * Get Profile action params(superadmin users list)
+     *
+     * @access  public
+     * @return  array list of Profile action params(superadmin users list)
+     */
+    function ProfileLayoutParams()
+    {
+        $result = array();
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $usrModel = new Jaws_User;
+        $users = $usrModel->GetUsers(false, true);
+        if (!Jaws_Error::IsError($users)) {
+            $pusers = array();
+            foreach ($users as $user) {
+                $pusers[$user['username']] = $user['nickname'];
+            }
+
+            $result[] = array(
+                'title' => _t('USERS_USERS'),
+                'value' => $pusers
+            );
+        }
+
+        return $result;
+    }
+
     /**
      * Builds user information page include (personal, contact, ... information)
      *
      * @access  public
+     * @param   string  Optional username
      * @return  string  XHTML template content
      */
-    function Profile()
+    function Profile($user = '')
     {
+        $tplFile  = 'AboutUser.html';
+        $tplTitle = _t('USERS_LAYOUT_PROFILE');
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $request =& Jaws_Request::getInstance();
-        $user = $request->get('user', 'get');
         if (empty($user)) {
-            return Jaws_HTTPError::Get(404);
+            $request =& Jaws_Request::getInstance();
+            $user = $request->get('user', 'get');
+            if (empty($user)) {
+                return Jaws_HTTPError::Get(404);
+            }
+
+            $tplFile  = 'Profile.html';
+            $tplTitle = _t('USERS_PROFILE_INFO');
         }
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -41,9 +76,10 @@ class Users_Actions_Profile extends UsersHTML
 
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Profile.html');
+        // $tplFile is Profile.html or AboutUser.html
+        $tpl->Load($tplFile);
         $tpl->SetBlock('profile');
-        $tpl->SetVariable('title',          _t('USERS_PROFILE_INFO'));
+        $tpl->SetVariable('title',          $tplTitle);
         $tpl->SetVariable('lbl_fname',      _t('USERS_USERS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lname',      _t('USERS_USERS_LASTNAME'));
         $tpl->SetVariable('lbl_nickname',   _t('USERS_USERS_NICKNAME'));
