@@ -676,7 +676,9 @@ class BlogHTML extends Jaws_GadgetHTML
             }
 
             $this->SetTitle($entry['title']);
-            $tpl = new Jaws_Template('gadgets/Blog/templates/');
+            $this->AddToMetaKeywords($entry['meta_keywords']);
+            $this->SetDescription($entry['meta_description']);
+           $tpl = new Jaws_Template('gadgets/Blog/templates/');
             $tpl->Load('SingleView.html');
             $tpl->SetBlock('single-view');
             $tpl->SetVariable('entry', $this->ShowEntry($entry, false, false));
@@ -1461,6 +1463,8 @@ class BlogHTML extends Jaws_GadgetHTML
                                                  'RSS 2.0 - '.$name);
 
             $this->SetTitle($name);
+            $this->AddToMetaKeywords($catInfo['meta_keywords']);
+            $this->SetDescription($catInfo['meta_description']);
             $tpl->SetBlock('view_category');
             $tpl->SetVariable('title', $name);
 
