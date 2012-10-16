@@ -115,6 +115,9 @@ class StaticPageLayoutHTML
             return false;
         }
 
+        $GLOBALS['app']->Layout->AddToMetaKeywords($group['meta_keywords']);
+        $GLOBALS['app']->Layout->SetDescription($group['meta_description']);
+
         if (!is_numeric($gid)) {
             $gid = $group['id'];
         }
