@@ -137,7 +137,7 @@ class PolicyModel extends Jaws_Model
         if (!$objCaptcha[$dCaptcha]->Check()) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
                                           'Jaws_Captcha',
-                                          JAWS_ERROR_ERROR);
+                                          JAWS_ERROR_NOTICE);
         }
 
         return true;
