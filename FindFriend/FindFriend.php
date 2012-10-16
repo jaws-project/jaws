@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Returns the URL of the given friend
  *
@@ -87,5 +85,5 @@ class FindFriend extends Jaws_Plugin
 
         return $html;
     }
+
 }
-?>

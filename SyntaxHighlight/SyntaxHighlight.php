@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Highlights the code
  *
@@ -172,5 +170,5 @@ class SyntaxHighlight extends Jaws_Plugin
 
         return $new_html;
     }
+
 }
-?>

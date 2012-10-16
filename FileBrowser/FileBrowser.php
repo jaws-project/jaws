@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Browse your files on the server and insert file links into the content editor
  *

@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Returns a direct link to a term in the glossary
  *

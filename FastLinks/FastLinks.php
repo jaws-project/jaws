@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces [email], [url] and other tags to their HTML syntax
  *
@@ -98,6 +96,5 @@ class FastLinks extends Jaws_Plugin
 
         return $html;
     }
-}
 
-?>
+}

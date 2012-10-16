@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces a statement with another
  *
@@ -122,4 +120,5 @@ class Exchange extends Jaws_Plugin
         }
         return $text;
     }
+
 }

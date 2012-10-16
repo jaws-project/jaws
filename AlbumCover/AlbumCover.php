@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Gets album cover from Amazon.com
  *
@@ -196,4 +194,5 @@ class AlbumCover extends Jaws_Plugin
 
         return $bestMatch;
     }
+
 }

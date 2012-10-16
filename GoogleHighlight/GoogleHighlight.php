@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Highlights words when google does a search in the page (s=foo)
  *
@@ -65,5 +63,5 @@ class GoogleHighlight extends Jaws_Plugin
 
         return $html;
     }
+
 }
-?>

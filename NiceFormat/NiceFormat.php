@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Jaws NiceFormat plugin
  *
@@ -242,5 +240,5 @@ class NiceFormat extends Jaws_Plugin
         }
         return $ret;
     }
+
 }
-?>

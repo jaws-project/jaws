@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces every email address with 'at' and 'dot' strings
  *
@@ -78,5 +76,5 @@ class AntiSpammers extends Jaws_Plugin
 
         return str_replace($atsdots, $magicdots, $email);
     }
+
 }
-?>

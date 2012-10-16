@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces [a:Gadget:FastURL]Text[/a] with a proper link to the FastURL in Gadget
  *
@@ -146,4 +144,5 @@ class SmartBridge extends Jaws_Plugin
         $text = '<a href="'. $mapURL . '">' . $linkText . '</a>';
         return $text;
     }
+
 }

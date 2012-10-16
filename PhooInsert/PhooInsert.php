@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * By PhooInsert you can browse and insert photos
  * from Phoo gadget into the content editor

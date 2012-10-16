@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Returns a translated number to string
  *
@@ -190,5 +188,5 @@ class SpellNumber extends Jaws_Plugin
         $td_str = 'PLUGINS_SPELLNUMBER_' . $digits;
         return _t($td_str);
     }
+
 }
-?>

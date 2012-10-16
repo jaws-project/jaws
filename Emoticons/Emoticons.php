@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces emoticons with images
  *
@@ -160,4 +158,5 @@ class Emoticons extends Jaws_Plugin
         }
         return $newHTML;
     }
+
 }

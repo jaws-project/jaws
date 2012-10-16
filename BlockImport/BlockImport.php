@@ -1,6 +1,4 @@
 <?php
-require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-
 /**
  * Replaces [block=#n] with a proper content of specified block id
  *
@@ -61,4 +59,5 @@ class BlockImport extends Jaws_Plugin
 
         return '';
     }
+
 }
