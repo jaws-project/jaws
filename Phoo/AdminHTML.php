@@ -1079,7 +1079,8 @@ class PhooAdminHTML extends Jaws_GadgetHTML
         $subject->SetTitle(_t('GLOBAL_TITLE'));
         $subject->SetStyle('width: 400px;');
 
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $comment['msg_txt']);
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
