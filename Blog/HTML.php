@@ -678,7 +678,7 @@ class BlogHTML extends Jaws_GadgetHTML
             $this->SetTitle($entry['title']);
             $this->AddToMetaKeywords($entry['meta_keywords']);
             $this->SetDescription($entry['meta_description']);
-           $tpl = new Jaws_Template('gadgets/Blog/templates/');
+            $tpl = new Jaws_Template('gadgets/Blog/templates/');
             $tpl->Load('SingleView.html');
             $tpl->SetBlock('single-view');
             $tpl->SetVariable('entry', $this->ShowEntry($entry, false, false));
