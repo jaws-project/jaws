@@ -110,15 +110,15 @@ class Jaws_Widgets_CommentUI
         foreach ($comments as $row) {
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
-            $newRow['name']    = $xss->filter($row['name']);
+            $newRow['name']    = $row['name'];
             if (empty($row['title'])) {
-                $row['title'] = preg_replace("/(\r\n|\r)/", " ", Jaws_UTF8::substr($row['msg_txt'],0, 50));
-            } else {
-                $row['title'] = preg_replace("/(\r\n|\r)/", " ", $row['title']);
+                $row['title'] = Jaws_UTF8::substr(strip_tags($xss->defilter($row['msg_txt'])),0, 50);
             }
+
+            $row['title'] = preg_replace("/(\r\n|\r)/", " ", $row['title']);
             if (!empty($this->_editAction)) {
                 $url = str_replace('{id}', $row['id'], $this->_editAction);
-                $newRow['title'] = '<a href="'.$url.'">'.$xss->filter($row['title']).'</a>';
+                $newRow['title'] = '<a href="'.$url.'">'.$row['title'].'</a>';
             } else {
                 $newRow['title'] = $row['title'];
             }
