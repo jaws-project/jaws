@@ -42,13 +42,6 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
     var $calledMethod = NULL;
     
     /**
-    * Request encoding to use (e.g. xml, php or json)
-    * @var string
-    * @access public
-    */
-    var $RequestEncoding = 'json';
-
-    /**
     * @access public
     */
     function JPSpan_Server_PostOffice() {
@@ -99,12 +92,10 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
                     
                 }
 
-                require_once JPSPAN . 'Serializer.php';
-
                 $M->setResponseInfo('payload',$response);
                 $M->announceSuccess();
 
-                $response = JPSpan_Serializer::serialize($response, $this->RequestEncoding);
+                $response = Jaws_UTF8::json_encode($response);
 
                 if ( $sendHeaders ) {
                     header('Content-Length: '.strlen($response));
@@ -186,20 +177,14 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
     * @return boolean TRUE if request had args
     * @access private
     */
-    function getArgs(& $args) {
-        require_once JPSPAN . 'RequestData.php';
-
-        switch ($this->RequestEncoding) {
-            case 'php':
-                $args = JPSpan_RequestData_Post::fetch($this->RequestEncoding);
-            break;
-            case 'json':
-                $args = JPSpan_RequestData_JSONPost::fetch($this->RequestEncoding);
-            break;
-            default:
-                $args = JPSpan_RequestData_RawPost::fetch($this->RequestEncoding);
+    function getArgs(& $args)
+    {
+        global $HTTP_RAW_POST_DATA;
+        if (!isset($HTTP_RAW_POST_DATA)) {
+            $HTTP_RAW_POST_DATA = file_get_contents('php://input');
         }
-
+        $args = Jaws_UTF8::json_decode($HTTP_RAW_POST_DATA);
+        
         if ( is_array($args) ) {
             return TRUE;
         }
@@ -218,8 +203,7 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
         $G->init(
             new JPSpan_PostOffice_Generator(),
             $this->descriptions,
-            $this->serverUrl,
-            $this->RequestEncoding
+            $this->serverUrl
             );
         return $G;
     }
@@ -249,13 +233,6 @@ class JPSpan_PostOffice_Generator {
     var $serverUrl;
     
     /**
-    * How requests should be encoded
-    * @var string request encoding
-    * @access public
-    */
-    var $RequestEncoding;
-    
-    /**
     * Invokes code generator
     * @param JPSpan_CodeWriter
     * @return void
@@ -280,28 +257,9 @@ class JPSpan_PostOffice_Generator {
 ?>
 /**@
 * include 'remoteobject.js';
-<?php
-switch ($this->RequestEncoding) {
-    case 'xml':
-?>
-* include 'request/rawpost.js';
-* include 'encode/xml.js';
-<?php
-    break;
-    case 'json':
-?>
 * include 'request/rawpost.js';
 * include 'util/json.js';
 * include 'encode/json.js';
-<?php
-    break;
-    default:
-?>
-* include 'request/post.js';
-* include 'encode/php.js';
-<?php
-}
-?>
 */
 <?php
         $Code->append(ob_get_contents());
@@ -335,25 +293,9 @@ function <?php echo $Description->Class; ?>() {
         echo $url; ?>';
     
     oParent.__remoteClass = '<?php echo $Description->Class; ?>';
+    oParent.__request = new JPSpan_Request_RawPost(new JPSpan_Encode_JSON());
     
 <?php
-switch ($this->RequestEncoding) {
-    case 'xml':
-?>
-    oParent.__request = new JPSpan_Request_RawPost(new JPSpan_Encode_XML());
-<?php
-    break;
-    case 'json':
-?>
-    oParent.__request = new JPSpan_Request_RawPost(new JPSpan_Encode_JSON());
-<?php
-    break;
-    default:
-?>
-    oParent.__request = new JPSpan_Request_Post(new JPSpan_Encode_PHP());
-<?php
-}
-
 foreach ( $Description->methods as $method ) {
 ?>
     

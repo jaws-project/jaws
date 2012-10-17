@@ -29,14 +29,12 @@ class JPSpan_Generator {
     * @param Object responsible for generating client
     * @param array of JPSpan_HandleDescription objects
     * @param string URL of the server
-    * @param string encoding to use when making requests (e.g. xml or php)
     * @access public
     */
-    function init(& $ClientGenerator, & $descriptions, $serverUrl, $encoding) {
+    function init(& $ClientGenerator, & $descriptions, $serverUrl) {
         $this->ClientGenerator = & $ClientGenerator;
         $this->ClientGenerator->descriptions = & $descriptions;
         $this->ClientGenerator->serverUrl = $serverUrl;
-        $this->ClientGenerator->RequestEncoding = $encoding;
     }
     
     /**
