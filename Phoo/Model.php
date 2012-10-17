@@ -357,8 +357,8 @@ class PhooModel extends Jaws_Model
             INNER JOIN [[phoo_image]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
             WHERE [[phoo_image]].[published] = {published}';
 
-        if (!is_null($albumid)) {
-            $sql .= ' AND [[phoo_image_album]].[phoo_album_id] = {$album}';
+        if (is_numeric($albumid)) {
+            $sql .= ' AND [[phoo_image_album]].[phoo_album_id] = {album}';
         }
         $sql .= ' ORDER BY ' . $rand;
 
