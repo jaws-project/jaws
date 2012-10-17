@@ -135,22 +135,21 @@ class ContactModel extends Jaws_Model
                 ({user}, {ip}, {name}, {email}, {company}, {url}, {tel}, {fax}, {mobile}, {address}, {rcipient},
                  {subject}, {attachment}, {message}, {reply}, {reply_sent}, {now}, {now})";
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['user']       = $GLOBALS['app']->Session->GetAttribute('user');
         $params['ip']         = $_SERVER['REMOTE_ADDR'];
-        $params['name']       = $xss->filter($name);
-        $params['email']      = $xss->filter($email);
-        $params['company']    = $xss->filter($company);
-        $params['url']        = $xss->filter($url);
-        $params['tel']        = $xss->filter($tel);
-        $params['fax']        = $xss->filter($fax);
-        $params['mobile']     = $xss->filter($mobile);
-        $params['address']    = $xss->filter($address);
+        $params['name']       = $name;
+        $params['email']      = $email;
+        $params['company']    = $company;
+        $params['url']        = $url;
+        $params['tel']        = $tel;
+        $params['fax']        = $fax;
+        $params['mobile']     = $mobile;
+        $params['address']    = $address;
         $params['rcipient']   = (int)$rcipient;
-        $params['subject']    = $xss->filter($subject);
-        $params['attachment'] = $xss->filter($attachment);
-        $params['message']    = $xss->filter($message);
+        $params['subject']    = $subject;
+        $params['attachment'] = $attachment;
+        $params['message']    = $message;
         $params['reply']      = '';
         $params['reply_sent'] = 0;
         $params['now']      = $GLOBALS['db']->Date();

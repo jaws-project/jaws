@@ -21,12 +21,15 @@ class ContactAdminAjax extends Jaws_Ajax
      */
     function GetContact($id)
     {
-        $ContactInfo = $this->_Model->GetContact($id);
-        if (Jaws_Error::IsError($ContactInfo)) {
+        $contact = $this->_Model->GetContact($id);
+        if (Jaws_Error::IsError($contact)) {
             return false; //we need to handle errors on ajax
         }
 
-        return $ContactInfo;
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $contact['subject'] = $xss->defilter($contact['subject']);
+        $contact['msg_txt'] = $xss->defilter($contact['msg_txt']);
+        return $contact;
     }
 
     /**
