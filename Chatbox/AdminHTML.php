@@ -215,7 +215,8 @@ class ChatboxAdminHTML extends Jaws_GadgetHTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $comment['msg_txt']);
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
