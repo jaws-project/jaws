@@ -555,14 +555,14 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $text = '<strong>' . $entry['title'] . '</strong>';
         $staticText =& Piwi::CreateWidget('StaticEntry', _t('BLOG_COMMENT_CURRENTLY_UPDATING_FOR', $text));
 
-        $name =& Piwi::CreateWidget('Entry', 'name', $xss->filter($comment['name']));
+        $name =& Piwi::CreateWidget('Entry', 'name', $comment['name']);
         $name->SetTitle(_t('GLOBAL_NAME'));
 
-        $email =& Piwi::CreateWidget('Entry', 'email', $xss->filter($comment['email']));
+        $email =& Piwi::CreateWidget('Entry', 'email', $comment['email']);
         $email->SetStyle('direction: ltr;');
         $email->SetTitle(_t('GLOBAL_EMAIL'));
 
-        $url =& Piwi::CreateWidget('Entry', 'url', $xss->filter($comment['url']));
+        $url =& Piwi::CreateWidget('Entry', 'url', $comment['url']);
         $url->SetStyle('direction: ltr;');
         $url->SetTitle(_t('GLOBAL_URL'));
 
@@ -570,11 +570,11 @@ class BlogAdminHTML extends Jaws_GadgetHTML
         $ip->SetTitle(_t('GLOBAL_IP'));
         $ip->SetReadOnly(true);
 
-        $subject =& Piwi::CreateWidget('Entry', 'title', $xss->filter($comment['title']));
+        $subject =& Piwi::CreateWidget('Entry', 'title', $comment['title']);
         $subject->SetTitle(_t('GLOBAL_TITLE'));
         $subject->SetStyle('width: 400px;');
 
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $comment['comments']);
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['comments']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
