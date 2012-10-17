@@ -21,14 +21,15 @@ class Forum_Model_Forums extends Jaws_Model
     {
         $sql = '
             SELECT
-                [id], [gid], [title], [description], [fast_url], [order], [locked], [published]
+                [id], [gid], [title], [description], [fast_url], 
+                [last_post_id], [last_post_time], [order], [locked], [published]
             FROM [[forums]]
             WHERE [id] = {fid}';
 
         $params = array();
         $params['fid'] = $fid;
 
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'integer', 'boolean', 'boolean');
+        $types = array('integer', 'integer', 'text', 'text', 'text', 'integer', 'timestamp', 'integer', 'boolean', 'boolean');
         $result = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('FORUM_ERROR_GET_FORUMS'), _t('FORUM_NAME'));
@@ -85,4 +86,26 @@ class Forum_Model_Forums extends Jaws_Model
         return $result;
     }
 
+    /**
+     * Update last_post_id, last_post_time and count of replies
+     *
+     * @access  public
+     * @param   int         $fid                    Forum's ID
+     * @param   int         $last_post_id           Forum's Last Post ID
+     * @param   timestamp   $last_post_time         Forum's Last Post Time
+     */
+    function UpdateTopicStatistics($fid, $last_post_id, $last_post_time)
+    {
+        $params['fid']            = (int)$fid;
+        $params['last_post_id']   = $last_post_id;
+        $params['last_post_time'] = $last_post_time;
+        $sql = 'UPDATE [[forums]] SET
+                        [last_post_id]   = {last_post_id},
+                        [last_post_time] = {last_post_time},
+                        [topics]         = (SELECT COUNT([[forums_topics]].[id]) FROM [[forums_topics]] WHERE [[forums_topics]].[fid] = {fid}),
+                        [topics]         = (SELECT COUNT([[forums_topics]].[id]) FROM [[forums_topics]] WHERE [[forums_topics]].[fid] = {fid})
+                WHERE [id] = {fid}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
 }

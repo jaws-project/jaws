@@ -26,7 +26,7 @@ class Forum_Actions_Posts extends ForumHTML
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
-        $topic = $tModel->GetTopicInfo($req['tid']);
+        $topic = $tModel->GetTopic($req['tid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
@@ -83,7 +83,7 @@ class Forum_Actions_Posts extends ForumHTML
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
-        $topic = $tModel->GetTopicInfo($post['tid']);
+        $topic = $tModel->GetTopic($post['tid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
@@ -112,6 +112,12 @@ class Forum_Actions_Posts extends ForumHTML
             $tpl->ParseBlock('editpost/response');
         }
 
+        if ($topic['first_post_id'] == (int)$req['pid']) {
+            $tpl->SetBlock('editpost/subject');
+            $tpl->SetVariable('lbl_subject', _t('FORUM_TOPIC_SUBJECT'));
+            $tpl->SetVariable('subject', $topic['subject']);
+            $tpl->ParseBlock('editpost/subject');
+        }
         $tpl->SetVariable('editpost', _t('FORUM_POST_EDIT_BUTTON'));
         $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('message', $post['message']);
@@ -123,21 +129,21 @@ class Forum_Actions_Posts extends ForumHTML
     }
 
     /**
-     * Add/Edit a topic
+     * Add/Edit a post
      *
      * @access  public
      */
     function UpdatePost()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('tid', 'pid', 'message', 'update_reason'), 'post');
+        $post = $request->get(array('tid', 'pid', 'subject', 'message', 'update_reason'), 'post');
 
         $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost($GLOBALS['app']->Session->GetAttribute('user'), $post['tid'], $post['message']);
         } else {
             $result = $pModel->UpdatePost($post['pid'], $GLOBALS['app']->Session->GetAttribute('user'),
-                                          $post['message'], $post['update_reason']);
+                                          $post['subject'], $post['message'], $post['update_reason']);
         }
 
         if (Jaws_Error::IsError($result)) {
@@ -153,4 +159,73 @@ class Forum_Actions_Posts extends ForumHTML
                                                               array('tid' => $post['tid'])), true);
     }
 
+    /**
+     * Delete a post or topic
+     *
+     * @access  public
+     */
+    function DeletePost()
+    {
+        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl->Load('DeletePost.html', true);
+        if (!$GLOBALS['app']->Session->Logged()) {
+            //Add lang
+            $tpl->SetBlock('not_allow');
+            $tpl->SetVariable('msg', _t('FORUM_NOT_PERMISON_PLEASE_LOGIN'));
+            $tpl->ParseBlock('not_allow');
+            return $tpl->Get();
+        }
+
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('pid', 'tid', 'step'));
+        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+
+        $postInfo = $pModel->GetPostInfo($post['pid']);
+        if (Jaws_Error::IsError($postInfo) || empty($postInfo)) {
+            return false;
+        }
+        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $topicInfo = $tModel->GetTopic($postInfo['tid']);
+        if (!is_null($post['step']) && $post['step'] == 'delete') {
+            if ($postInfo['id'] == $topicInfo['first_post_id']) {
+                // Delete Topic And All Posts In this
+                $tModel->DeleteTopic($topicInfo['id']);
+                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topics', array('id' => $topicInfo['fid'])));
+            } else {
+                // Delete Post
+                $pModel->DeletePost($postInfo['id']);
+                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $postInfo['tid'])));
+            }
+        } else if (!is_null($post['step']) && $post['step'] == 'cancel') {
+            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $postInfo['tid'])));
+        }
+
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+
+        $tpl->SetBlock('deletepost');
+
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('pid',  $postInfo['id']);
+        $tpl->SetVariable('tid', $topicInfo['id']);
+        $tpl->SetVariable('subject', $xss->filter($topicInfo['subject']));
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $topicInfo['id'])));
+        $tpl->SetVariable('title', _t('FORUM_DELETE_POST'));
+        $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
+
+        // Message
+        $tpl->SetVariable('delete_message', _t('FORUM_DELETE_POST_CONFIRM'));
+
+        $date = $GLOBALS['app']->loadDate();
+        $tpl->SetVariable('psted_date',   $date->Format($date->ToISO($postInfo['createtime'])));
+        $tpl->SetVariable('posted_by',    _t('FORUM_POSTED_BY'));
+        $tpl->SetVariable('user_name',    $xss->filter($postInfo['username']));
+        $tpl->SetVariable('lbl_message',  _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('message',      $xss->filter($postInfo['message']));
+
+        $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('cancel', _t('GLOBAL_CANCEL'));
+
+        $tpl->ParseBlock('deletepost');
+        return $tpl->Get();
+    }
 }

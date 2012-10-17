@@ -64,7 +64,7 @@ class Forum_Actions_Topics extends ForumHTML
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
                 $tpl->SetVariable('lastpost_url',
                                   $GLOBALS['app']->Map->GetURLFor('Forum',
-                                                                  'Forum', array('id' => $topic['id']))
+                                                                  'Topic', array('id' => $topic['id']))
                 );
                 $tpl->ParseBlock('topics/topic/lastpost');
             }
@@ -157,11 +157,6 @@ class Forum_Actions_Topics extends ForumHTML
                                         $topic['fast_url'],
                                         $topic['description'],
                                         $topic['published']);
-        } else {
-            $tid = $tModel->UpdateTopic($topic['subject'],
-                                        $topic['fast_url'],
-                                        $topic['description'],
-                                        $topic['published']);
         }
 
         if (Jaws_Error::IsError($tid)) {
@@ -190,7 +185,7 @@ class Forum_Actions_Topics extends ForumHTML
         $get = $request->get(array('tid', 'page'), 'get');
 
         $model = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
-        $topic = $model->GetTopicInfo($get['tid']);
+        $topic = $model->GetTopic($get['tid']);
         if (Jaws_Error::IsError($topic)) {
             return false;
         }
@@ -243,6 +238,8 @@ class Forum_Actions_Topics extends ForumHTML
             $tpl->SetBlock('topic/post/actions');
             $tpl->SetVariable('lbl_editpost',_t('GLOBAL_EDIT'));
             $tpl->SetVariable('url_editpost', $GLOBALS['app']->Map->GetURLFor('Forum', 'EditPost', array('pid' => $post['id'])));
+            $tpl->SetVariable('lbl_deletepost',_t('GLOBAL_DELETE'));
+            $tpl->SetVariable('url_deletepost', $GLOBALS['app']->Map->GetURLFor('Forum', 'DeletePost', array('pid' => $post['id'])));
             $tpl->ParseBlock('topic/post/actions');
 
             $tpl->ParseBlock('topic/post');
@@ -255,9 +252,44 @@ class Forum_Actions_Topics extends ForumHTML
                                                           'NewPost',
                                                           array('tid' => $get['tid']))
         );
+        $tpl->SetVariable('lbl_lock_topic', _t('FORUM_LOCK_TOPIC'));
+        $tpl->SetVariable('url_lock_topic',
+                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                                                          'LockTopic',
+                                                          array('tid' => $get['tid']))
+        );
         $tpl->ParseBlock('topic/actions');
 
         $tpl->ParseBlock('topic');
         return $tpl->Get();
+    }
+    /**
+     * Locked a topic
+     *
+     * @access  public
+     */
+    function LockTopic()
+    {
+        $request =& Jaws_Request::getInstance();
+        $topic = $request->get(array('tid'));
+
+        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $topicInfo = $tModel->GetTopic((int)($topic['tid']));
+        if (Jaws_Error::IsError($topicInfo) || empty($topicInfo)) {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_NOT_FOUND'), 'Topic');
+            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic',
+                                                              array('tid' => $topic['tid'])), true);
+        }
+
+        $result = $tModel->LockTopic($topicInfo['id']);
+
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(), 'Topic');
+        } else {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_LOCKED'), 'Topic');
+        }
+
+        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic',
+                                                              array('tid' => $topicInfo['id'])), true);
     }
 }

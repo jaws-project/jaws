@@ -52,19 +52,16 @@ class Forum_Model_Topics extends Jaws_Model
      * @param   int     $tid        Topic's ID
      * @return  array   Array of topic info or Jaws_Error on failure
      */
-    function GetTopicInfo($tid)
+    function GetTopic($tid)
     {
         $sql = '
             SELECT
                 [[forums_topics]].[id], [[forums_topics]].[subject], [views], [[forums_topics]].[published],
                 [[forums_topics]].[createtime], [replies], [[forums_topics]].[locked], [last_post_time],
-                [[users]].[username], [[users]].[nickname],
-                [[forums_topics]].[first_post_id], [[forums_topics]].[last_post_id],
+                [[forums_topics]].[first_post_id], [[forums_topics]].[last_post_id], [fid], 
                 [[forums_topics]].[uid]
             FROM [[forums_topics]] 
-                LEFT JOIN [[forums_posts]] ON [[forums_topics]].[last_post_id] = [[forums_posts]].[id]
-                LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id] 
-                WHERE [tid] = {tid} ';
+            WHERE [id] = {tid} ';
 
         $params = array();
         $params['tid'] = (int)$tid;
@@ -132,10 +129,10 @@ class Forum_Model_Topics extends Jaws_Model
         $post_id = $GLOBALS['db']->lastInsertID('forums_posts', 'id');
 
         $sql = 'UPDATE [[forums_topics]] SET
-                [first_post_id]       = {first_post_id},
-                [last_post_id]        = {last_post_id},
-                [last_post_time]      = {now}
-            WHERE [id] = {tid}';
+                    [first_post_id]       = {first_post_id},
+                    [last_post_id]        = {last_post_id},
+                    [last_post_time]      = {now}
+                WHERE [id] = {tid}';
 
         $params['first_post_id']  = $post_id;
         $params['last_post_id']   = $post_id;
@@ -146,4 +143,93 @@ class Forum_Model_Topics extends Jaws_Model
         return $topic_id;
     }
 
+    /**
+     * Delete topic
+     *
+     * @access  public
+     * @param   int        $tid             Topic's ID
+     */
+    function DeleteTopic($tid)
+    {
+        $tid = (int)$tid;
+        $topicInfo = $this->GetTopic($tid);
+        if (Jaws_Error::IsError($topicInfo)) {
+            //add language word for this
+            return new Jaws_Error(_t('FORUM_ERROR_TOPIC_NOT_DELETED'), _t('FORUM_NAME'));
+        }
+
+        $params = array();
+        $params['fid'] = $topicInfo['fid'];
+        $params['tid'] = $topicInfo['id'];
+        $sql = "DELETE FROM [[forums_posts]] WHERE [tid] = {tid}";
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //add language word for this
+            return new Jaws_Error(_t('FORUM_ERROR_POST_NOT_DELETED'), _t('FORUM_NAME'));
+        }
+
+        $sql = "DELETE FROM [[forums_topics]] WHERE [id] = {tid}";
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //add language word for this
+            return new Jaws_Error(_t('FORUM_ERROR_POST_NOT_DELETED'), _t('FORUM_NAME'));
+        }
+
+        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $forumInfo = $fModel->GetForum($topicInfo['fid']);
+
+        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $lastPostInfo = $pModel->GetLastPostForumID($topicInfo['fid']);
+        $params['last_post_id']   = $lastPostInfo['id'];
+        $params['last_post_time'] = $lastPostInfo['createtime'];
+        $sql = 'UPDATE [[forums]] SET
+                    [posts]            = [posts] - 1,
+                    [last_post_id]     = {last_post_id},
+                    [last_post_time]   = {last_post_time}
+                WHERE [id] = {fid}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+    }
+
+    /**
+     * Update last_post_id, last_post_time and count of replies
+     *
+     * @access  public
+     * @param   int         $tid                    Topic's ID
+     * @param   int         $last_post_id           Topic's Last Post ID
+     * @param   timestamp   $last_post_time         Topic's Last Post Time
+     */
+    function UpdateTopicStatistics($tid, $last_post_id, $last_post_time)
+    {
+        $params['tid']            = (int)$tid;
+        $params['last_post_id']   = $last_post_id;
+        $params['last_post_time'] = $last_post_time;
+        $sql = 'UPDATE [[forums_topics]] SET
+                        [last_post_id]   = {last_post_id},
+                        [last_post_time] = {last_post_time},
+                        [replies]        = (SELECT COUNT([[forums_posts]].[id]) FROM [[forums_posts]] WHERE [[forums_posts]].[tid] = {tid})
+                WHERE [id] = {tid}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
+
+    /**
+     * Lock topic
+     *
+     * @access  public
+     * @param   int         $tid                    Topic's ID
+     */
+    function LockTopic($tid)
+    {
+        $params['tid']    = (int)$tid;
+        $params['locked'] = true;
+        $sql = 'UPDATE [[forums_topics]] SET
+                        [locked]   = {locked}
+                WHERE [id] = {tid}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
 }
