@@ -112,12 +112,10 @@ class QuotesAdminModel extends QuotesModel
                  {now}, {now}, {show_title}, {published})';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['title']       = $xss->parse($title);
-        $params['quotation']   = $xss->parse($quotation);
+        $params = array();
+        $params['title']       = $title;
+        $params['quotation']   = $quotation;
         $params['gid']         = $gid;
-
         $params['start_time']  = null;
         $params['stop_time']   = null;
         if (!empty($start_time)) {
@@ -139,9 +137,9 @@ class QuotesAdminModel extends QuotesModel
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'),_t('QUOTES_NAME'));
         }
 
-        $response            =  array();
+        $response =  array();
         $response['id']      = $GLOBALS['db']->lastInsertID('quotes', 'id');
-        $response['title']   = $xss->parse($title);
+        $response['title']   = $title;
         $response['message'] = _t('QUOTES_QUOTE_ADDED');
 
         $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
@@ -177,13 +175,11 @@ class QuotesAdminModel extends QuotesModel
             WHERE [id] = {id}';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
+        $params = array();
         $params['id']          = (int)$id;
-        $params['title']       = $xss->parse($title);
-        $params['quotation']   = $xss->parse($quotation);
+        $params['title']       = $title;
+        $params['quotation']   = $quotation;
         $params['gid']         = $gid;
-
         $params['start_time']  = null;
         $params['stop_time']   = null;
         if (!empty($start_time)) {
@@ -262,9 +258,8 @@ class QuotesAdminModel extends QuotesModel
             VALUES
                 ({title}, {view_mode}, {view_type}, {show_title}, {limit_count}, {random}, {published})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['title']       = $xss->parse($title);
+        $params = array();
+        $params['title']       = $title;
         $params['view_mode']   = $view_mode;
         $params['view_type']   = $view_type;
         $params['show_title']  = (bool)$show_title;
@@ -277,9 +272,9 @@ class QuotesAdminModel extends QuotesModel
             return false;
         }
 
-        $response            =  array();
+        $response =  array();
         $response['id']      = $GLOBALS['db']->lastInsertID('quotes_groups', 'id');
-        $response['title']   = $xss->parse($title);
+        $response['title']   = $title;
         $response['message'] = _t('QUOTES_GROUPS_CREATED', $response['id']);
 
         $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
@@ -325,10 +320,9 @@ class QuotesAdminModel extends QuotesModel
                 [published]   = {published}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
+        $params = array();
         $params['id']          = $gid;
-        $params['title']       = $xss->parse($title);
+        $params['title']       = $title;
         $params['view_mode']   = $view_mode;
         $params['view_type']   = $view_type;
         $params['show_title']  = (bool)$show_title;
