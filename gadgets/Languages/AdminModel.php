@@ -79,8 +79,7 @@ class LanguagesAdminModel extends Jaws_Model
      */
     function SaveLanguage($lang_str)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        if ($lang_str == $xss->parse($lang_str)) {
+        if ($lang_str == $lang_str) {
             $lang_code = substr($lang_str, 0, strpos($lang_str, ';'));
             if (preg_match("/^([a-z]{2})$|^([a-z]{2}[-][a-z]{2})$/", $lang_code)) {
                 $lang_name = substr($lang_str, strpos($lang_str, ';')+1);
