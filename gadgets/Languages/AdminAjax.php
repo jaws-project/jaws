@@ -53,6 +53,9 @@ class LanguagesAdminAjax extends Jaws_Ajax
      */
     function SetLangData($component, $langTo, $data)
     {
+        $request =& Jaws_Request::getInstance();
+        $data = $request->get(2, 'post', false);
+
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $this->_Model->SetLangData($component[1], (int)$component[0], $langTo, $data);
