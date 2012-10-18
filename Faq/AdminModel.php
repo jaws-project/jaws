@@ -128,12 +128,10 @@ class FaqAdminModel extends FaqModel
         $fast_url = empty($fast_url) ? $question : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['question'] = $xss->parse($question);
-        $params['fast_url'] = $xss->parse($fast_url);
-        $params['answer']   = $xss->parse($answer, false);
+        $params['question'] = $question;
+        $params['fast_url'] = $fast_url;
+        $params['answer']   = $answer;
         $params['category'] = $category;
         $params['active']   = $active;
         $params['position'] = $this->GetMaxQuestionPosition($category) + 1;
@@ -172,13 +170,11 @@ class FaqAdminModel extends FaqModel
         $fast_url = empty($fast_url) ? $question : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq', false);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['id']       = $id;
-        $params['question'] = $xss->parse($question);
-        $params['fast_url'] = $xss->parse($fast_url);
-        $params['answer']   = $xss->parse($answer, false);
+        $params['question'] = $question;
+        $params['fast_url'] = $fast_url;
+        $params['answer']   = $answer;
         $params['category'] = $category;
         $params['active']   = $active;
         $params['now']      = $GLOBALS['db']->Date();
