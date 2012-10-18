@@ -202,11 +202,9 @@ class PhooAdminModel extends PhooModel
      */
     function UpdateEntry($id, $title, $description, $allow_comments, $published, $albums = null)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['id']             = (int)$id;
-        $params['title']          = $xss->parse($title);
+        $params['title']          = $title;
         $params['desc']           = $description;
         $params['allow_comments'] = $allow_comments;
         $params['published']      = $published;
@@ -374,10 +372,9 @@ class PhooAdminModel extends PhooModel
             return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'), _t('PHOO_NAME'));
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params['user_id']     = $user;
         $params['filename']    = date('Y_m_d').'/'.$filename;
-        $params['title']       = $xss->parse($title);
+        $params['title']       = $title;
         $params['description'] = $description;
 
         if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments') == 'true' &&
@@ -506,10 +503,9 @@ class PhooAdminModel extends PhooModel
      */
     function UpdateAlbum($id, $name, $description, $comments, $published)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
+        $params = array();
         $params['id']          = (int)$id;
-        $params['name']        = $xss->Parse($name);
+        $params['name']        = $name;
         $params['description'] = $description;
         $params['comments']    = $comments;
         $params['published']   = $published;
@@ -635,10 +631,8 @@ class PhooAdminModel extends PhooModel
      */
     function NewAlbum($name, $description, $comments, $published)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['album']       = $xss->parse($name);
+        $params['album']       = $name;
         $params['description'] = $description;
         $params['comments']    = $comments;
         $params['published']   = $published;
