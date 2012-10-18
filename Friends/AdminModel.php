@@ -137,9 +137,9 @@ class FriendsAdminModel extends FriendsModel
     function UpdateFriend($id, $friend, $url)
     {
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params           = array();
-        $params['friend'] = $xss->parse($friend);
-        $params['url']    = $xss->parse($url);
+        $params = array();
+        $params['friend'] = $friend;
+        $params['url']    = $url;
         $params['id']     = $id;
 
         $sql = '

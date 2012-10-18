@@ -20,9 +20,8 @@ class FriendsModel extends Jaws_Model
      */
     function GetFriend($id)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params           = array();
-        $params['id']     = $xss->parse($id);
+        $params = array();
+        $params['id'] = $id;
         $sql = '
             SELECT
                 [id], [friend], [url]
@@ -50,9 +49,8 @@ class FriendsModel extends Jaws_Model
      */
     function GetFriendByName($name)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params           = array();
-        $params['name']   = $xss->parse($name);
+        $params = array();
+        $params['name'] = $name;
 
         $sql = '
             SELECT
