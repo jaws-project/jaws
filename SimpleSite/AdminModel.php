@@ -134,12 +134,10 @@ class SimpleSiteAdminModel extends SimpleSiteModel
         }
 
         $position = $this->GetMaxPosition($parent_id);
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params                 = array();
         $params['now']          = $GLOBALS['db']->Date();
         $params['parent_id']    = $parent_id;
-        $params['title']        = $xss->parse($title);
+        $params['title']        = $title;
         $params['shortname']    = $shortname;
         $params['type']         = $type;
         $params['reference']    = $reference;
@@ -251,17 +249,16 @@ class SimpleSiteAdminModel extends SimpleSiteModel
             return new Jaws_Error(_t('SIMPLESITE_ERROR_CHANGE_FREQ_FORMAT'), _t('SIMPLESITE_NAME'));
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['now']          = $GLOBALS['db']->Date();
-        $params['id']           = (int)$id;
-        $params['title']        = $xss->parse($title);
-        $params['shortname']    = $shortname;
-        $params['type']         = $type;
-        $params['reference']    = $reference;
-        $params['parent_id']    = $parent_id;
-        $params['priority']     = $priority;
-        $params['changefreq']   = $change;
+        $params['now']        = $GLOBALS['db']->Date();
+        $params['id']         = (int)$id;
+        $params['title']      = $title;
+        $params['shortname']  = $shortname;
+        $params['type']       = $type;
+        $params['reference']  = $reference;
+        $params['parent_id']  = $parent_id;
+        $params['priority']   = $priority;
+        $params['changefreq'] = $change;
         
         if ($parent_id != $item['parent_id']) {
             $params['position'] = $this->GetMaxPosition($parent_id);
