@@ -252,7 +252,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Ajax/Ajax.js');
         $GLOBALS['app']->Layout->AddScriptLink(BASE_SCRIPT.'?gadget='.
                                                $name.
-                                               '&amp;action=Ajax&amp;client&amp;json');
+                                               '&amp;action=Ajax&amp;client');
 
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink('gadgets/'.
