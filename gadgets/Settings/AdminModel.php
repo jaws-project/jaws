@@ -191,15 +191,13 @@ class SettingsAdminModel extends Jaws_Model
         $basicKeys = array('site_status', 'site_name', 'site_slogan', 'site_language',
                            'admin_language', 'main_gadget', 'site_comment');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $basicKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
 
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
@@ -236,15 +234,13 @@ class SettingsAdminModel extends Jaws_Model
                               'use_gravatar', 'gravatar_rating', 'allow_comments',
                               'show_viewsite', 'title_separator', 'editor', 'timezone');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
         }
@@ -274,15 +270,13 @@ class SettingsAdminModel extends Jaws_Model
         $advancedKeys = array('site_description', 'site_keywords', 'site_author',
                               'site_license', 'copyright', 'custom_meta');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
         }
@@ -317,14 +311,13 @@ class SettingsAdminModel extends Jaws_Model
         $mailKeys = array('mailer', 'gate_email', 'gate_title', 'smtp_vrfy', 'sendmail_path', 
                           'smtp_host', 'smtp_port', 'smtp_auth', 'smtp_user', 'smtp_pass');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $mailKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
             if ($settingKey == 'smtp_pass' && empty($settingValue)) {
                 continue;
@@ -360,14 +353,13 @@ class SettingsAdminModel extends Jaws_Model
         $ftpKeys = array('ftp_enabled', 'ftp_host', 'ftp_port',
                          'ftp_mode', 'ftp_user', 'ftp_pass', 'ftp_root');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $ftpKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
             if ($settingKey == 'ftp_pass' && empty($settingValue)) {
                 continue;
@@ -402,14 +394,13 @@ class SettingsAdminModel extends Jaws_Model
         $proxyKeys = array('proxy_enabled', 'proxy_host', 'proxy_port',
                          'proxy_auth', 'proxy_user', 'proxy_pass');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $proxyKeys)) {
                 continue;
             }
 
             if (is_string($settingValue) && !empty($settingValue)) {
-                $settingValue = $xss->parse($settingValue);
+                $settingValue = $settingValue;
             }
             if ($settingKey == 'proxy_pass' && empty($settingValue)) {
                 continue;
