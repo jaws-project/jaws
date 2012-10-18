@@ -159,13 +159,12 @@ class BannerAdminModel extends BannerModel
                 {clicks_limit}, {start_time}, {stop_time},{now}, {now}, {random}, {published})';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params                 = array();
-        $params['title']        = $xss->parse($title);
+        $params['title']        = $title;
         $params['url']          = $url;
         $params['gid']          = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
         $params['banner']       = $banner;
-        $params['template']     = $xss->parse($template, false);
+        $params['template']     = $template;
         $params['views_limit']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
         $params['clicks_limit'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
 
@@ -231,14 +230,13 @@ class BannerAdminModel extends BannerModel
             WHERE [id] = {bid}';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params                 = array();
         $params['bid']          = $bid;
-        $params['title']        = $xss->parse($title);
+        $params['title']        = $title;
         $params['url']          = $url;
         $params['gid']          = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
         $params['banner']       = $banner;
-        $params['template']     = $xss->parse($template, false);
+        $params['template']     = $template;
         $params['views_limit']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
         $params['clicks_limit'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
 
@@ -310,9 +308,8 @@ class BannerAdminModel extends BannerModel
             VALUES
                 ({title}, {limit_count}, {show_title}, {show_type}, {published})';
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['title']       = $xss->parse($title);
+        $params['title']       = $title;
         $params['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
         $params['show_title']  = (bool)$show_title;
         $params['show_type']   = (int)$show_type;
@@ -350,10 +347,9 @@ class BannerAdminModel extends BannerModel
                 [published]   = {published}
             WHERE [id] = {id}';
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['id']          = $gid;
-        $params['title']       = $xss->parse($title);
+        $params['title']       = $title;
         $params['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
         $params['show_title']  = (bool)$show_title;
         $params['show_type']   = (int)$show_type;
