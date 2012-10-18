@@ -120,13 +120,11 @@ class GlossaryAdminModel extends GlossaryModel
         $fast_url = empty($fast_url) ? $term : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'glossary', false);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['id']       = $id;
-        $params['term']     = $xss->parse($term);
-        $params['fast_url'] = $xss->parse($fast_url);
-        $params['desc']     = $xss->parse($desc);
+        $params['term']     = $term;
+        $params['fast_url'] = $fast_url;
+        $params['desc']     = $desc;
         $params['now']      = $GLOBALS['db']->Date();
         $sql = "
             UPDATE [[glossary]] SET
@@ -160,12 +158,10 @@ class GlossaryAdminModel extends GlossaryModel
         $fast_url = empty($fast_url) ? $term : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'glossary');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['term']     = $xss->parse($term);
-        $params['fast_url'] = $xss->parse($fast_url);
-        $params['desc']     = $xss->parse($desc);
+        $params['term']     = $term;
+        $params['fast_url'] = $fast_url;
+        $params['desc']     = $desc;
         $params['now']      = $GLOBALS['db']->Date();
         $sql = "
             INSERT INTO [[glossary]]

@@ -49,7 +49,6 @@ class GlossaryLayoutHTML
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model');
         $terms = $model->GetTerms();
         if (!Jaws_Error::IsError ($terms)) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($terms as $term) {
                 $tpl->SetBlock('list_of_terms/term');
                 $tpl->SetVariable('term', $term['term']);
