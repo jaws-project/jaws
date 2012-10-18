@@ -265,7 +265,6 @@ class SearchModel extends Jaws_Model
 
         $options['all'] = '';
         $min_key_len = $GLOBALS['app']->Registry->Get('/gadgets/Search/min_key_len');
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         foreach(array_keys($newOptions) as $option) {
             if (!empty($newOptions[$option])) {
                 $options[$option] = trim(isset($options[$option])?
@@ -274,7 +273,7 @@ class SearchModel extends Jaws_Model
             }
 
             $content = (isset($options[$option])) ? $options[$option] : '';
-            $content = $xss->parse($content);
+            $content = $content;
             $content = $GLOBALS['app']->UTF8->strtolower($GLOBALS['app']->UTF8->trim($content));
             if ($GLOBALS['app']->UTF8->strlen($content) >= $min_key_len) {
                 $searchable = true;
