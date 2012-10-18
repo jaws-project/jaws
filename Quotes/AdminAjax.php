@@ -71,6 +71,9 @@ class QuotesAdminAjax extends Jaws_Ajax
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
         $this->CheckSession('Quotes', 'ManageQuotes');
+
+        $request =& Jaws_Request::getInstance();
+        $quotation = $request->get(1, 'post', false);
         $this->_Model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -92,6 +95,9 @@ class QuotesAdminAjax extends Jaws_Ajax
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
         $this->CheckSession('Quotes', 'ManageQuotes');
+
+        $request =& Jaws_Request::getInstance();
+        $quotation = $request->get(2, 'post', false);
         $this->_Model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
