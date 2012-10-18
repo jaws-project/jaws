@@ -147,6 +147,9 @@ class PhooAdminAjax extends Jaws_Ajax
             $albums    = null;
             $published = null;
         }
+
+        $request =& Jaws_Request::getInstance();
+        $desc = $request->get(2, 'post', false);
         $this->_Model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
