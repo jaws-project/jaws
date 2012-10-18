@@ -9,6 +9,9 @@
 $_SERVER['REQUEST_METHOD']  = array_key_exists('REQUEST_METHOD', $_SERVER)?
                                                strtoupper($_SERVER['REQUEST_METHOD']):
                                                'GET';
+$_SERVER['CONTENT_TYPE']    = array_key_exists('CONTENT_TYPE', $_SERVER)?
+                                               $_SERVER['CONTENT_TYPE']:
+                                               '';
 $_SERVER['HTTP_USER_AGENT'] = array_key_exists('HTTP_USER_AGENT', $_SERVER)?
                                                $_SERVER['HTTP_USER_AGENT']:
                                                '';
@@ -117,8 +120,15 @@ class Jaws_Request
         $this->_priority = array();
         $this->_includes = array();
         $this->data['get']    = $_GET;
-        $this->data['post']   = $_POST;
         $this->data['cookie'] = $_COOKIE;
+        // support json encoded pos data
+        if (false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
+            $json = file_get_contents('php://input');
+            $this->data['post'] = Jaws_UTF8::json_decode($json);
+        } else {
+            $this->data['post'] = $_POST;
+        }
+
         array_walk_recursive($this->data, array(&$this, 'nullstrip'));
 
         // Strict mode
@@ -148,7 +158,7 @@ class Jaws_Request
 
         $signature = serialize(array('request'));
         if (!isset($instances[$signature])) {
-            $instances[$signature] = new Jaws_Request;
+            $instances[$signature] = new Jaws_Request();
         }
 
         return $instances[$signature];
@@ -169,7 +179,7 @@ class Jaws_Request
     }
 
     /**
-     * Adds a filter that will be runned on all output beside _getRaw()
+     * Adds a filter that will be runned on output requested data
      *
      * @access  public
      * @param   string  $name       Name of the filter
@@ -243,61 +253,39 @@ class Jaws_Request
     }
 
     /**
-     * Fetches the data with out filter, it's like using
-     * the super globals straight.
+     * Does the recursion on the data being fetched
      *
      * @access  private
-     * @param   string  $key    the key being fetched
-     * @param   string  $type   which super global is being fetched from
-     * @return  mixed   Key value if exist, Null otherwise
+     * @param   mixed   $key            The key being fetched, it can be an array with multiple keys in it to fetch and
+     *                                  then an array will be returned accourdingly.
+     * @param   string  $type           Which super global is being fetched from
+     * @param   bool    $filter         Returns filtered data or not
+     * @param   bool    $json_decode    Decode JSON data or not
+     * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    function _getRaw($key, $type = '')
+    function _get($key, $type = '', $filter = true, $json_decode = false)
     {
-        if (empty($type)) {
-            $type = strtolower($_SERVER['REQUEST_METHOD']);
-        }
-
-        $type = $this->isTypeValid($type);
-        if (!$type) {
-            return null;
-        }
-
+        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
         if (is_array($key)) {
             $result = array();
             foreach ($key as $k) {
-                $result[$k] = $this->_getRaw($k, $type);
+                $result[$k] = $this->_get($k, $type, $filter, $json_decode);
             }
 
             return $result;
         }
 
         if (isset($this->data[$type][$key])) {
-            return $this->data[$type][$key];
-        }
+            $value = $json_decode? Jaws_UTF8::json_decode($this->data[$type][$key]) : $this->data[$type][$key];
+            if ($filter) {
+                if (is_array($value)) {
+                    array_walk_recursive($value, array(&$this, 'filter'));
+                } else {
+                    $this->filter($value);
+                }
+            }
 
-        return null;
-    }
-
-    /**
-     * Fetches the data with out filter, it's like using the super globals straight.
-     *
-     * @access  public
-     * @param   string  $type   which super global is being fetched from
-     * @return  mixed   Data array if success, otherwise Null
-     */
-    function getRawAll($type = '')
-    {
-        if (empty($type)) {
-            $type = strtolower($_SERVER['REQUEST_METHOD']);
-        }
-
-        $type = $this->isTypeValid($type);
-        if (!$type) {
-            return null;
-        }
-
-        if (isset($this->data[$type])) {
-            return $this->data[$type];
+            return $value;
         }
 
         return null;
@@ -307,13 +295,14 @@ class Jaws_Request
      * Fetches the data, filters it and then it returns it.
      *
      * @access  public
-     * @param   mixed   $key    the key being fetched, it can be an array with multiple keys in it to fetch and then
-     *                          an array will be returned accourdingly.
-     * @param   mixed   $types  which super global is being fetched from, it can be an array
-     * @param   bool    $filter Returns filtered data or not
+     * @param   mixed   $key            The key being fetched, it can be an array with multiple keys in it to fetch and then
+     *                                  an array will be returned accourdingly.
+     * @param   mixed   $types          Which super global is being fetched from, it can be an array
+     * @param   bool    $filter         Returns filtered data or not
+     * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function get($key, $types = '', $filter = true)
+    function get($key, $types = '', $filter = true, $json_decode = false)
     {
         $result = null;
         if (empty($types)) {
@@ -334,12 +323,7 @@ class Jaws_Request
         }
 
         foreach ($types as $type) {
-            if ($filter) {
-                $result = $this->_get($key, $type);
-            } else {
-                $result = $this->_getRaw($key, $type);
-            }
-
+            $result = $this->_get($key, $type, $filter, $json_decode);
             if (!is_null($result)) {
                 break;
             }
@@ -349,38 +333,26 @@ class Jaws_Request
     }
 
     /**
-     * Does the recursion on the data being fetched
+     * Fetches the filtered data with out filter, it's like using the super globals straight.
      *
-     * @access  private
-     * @param   mixed   $key    The key being fetched, it can be an array with multiple keys in it to fetch and
-     *                          then an array will be returned accourdingly.
+     * @access  public
      * @param   string  $type   Which super global is being fetched from
-     * @return  mixed   Null if there is no data else an string|array with the processed data
+     * @param   bool    $filter Returns filtered data or not
+     * @return  array   Filtered Data array
      */
-    function _get($key, $type)
+    function getAll($type = '', $filter = true)
     {
-        if (is_array($key)) {
-            $result = array();
-            foreach ($key as $k) {
-                $result[$k] = $this->_get($k, $type);
-            }
-
-            return $result;
+        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
+        if (!isset($this->data[$type]) || empty($this->data[$type])) {
+            return array();
         }
 
-        if (isset($this->data[$type][$key])) {
-            $value = $this->data[$type][$key];
-
-            if (is_array($value)) {
-                array_walk_recursive($value, array(&$this, 'filter'));
-            } else {
-                $this->filter($value);
-            }
-
-            return $value;
+        if ($filter) {
+            return array_map(array($this, '_get'),
+                             array_keys($this->data[$type]));
+        } else {
+            return $this->data[$type];
         }
-
-        return null;
     }
 
     /** Creates a new key or updates an old one, doesn't support recursive stuff atm
