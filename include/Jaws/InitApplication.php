@@ -66,6 +66,10 @@ require JAWS_PATH . 'include/Jaws/PHPFunctions.php';
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
+// Create application
+require_once JAWS_PATH . 'include/Jaws.php';
+$GLOBALS['app'] = new Jaws();
+
 // Lets handle our requests
 require JAWS_PATH . 'include/Jaws/Request.php';
 $request =& Jaws_Request::getInstance();
@@ -89,9 +93,6 @@ $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 #    Jaws_Error::Fatal('Couldn\'t connect to database');
 #}
 
-// Create application
-require_once JAWS_PATH . 'include/Jaws.php';
-$GLOBALS['app'] = new Jaws();
 $GLOBALS['app']->loadClass('Registry', 'Jaws_Registry');
 $GLOBALS['app']->Registry->Init();
 if ($GLOBALS['app']->Registry->Get('/version') != JAWS_VERSION) {
