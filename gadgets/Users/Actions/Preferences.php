@@ -34,8 +34,6 @@ class Users_Actions_Preferences extends UsersHTML
         $jUser = new Jaws_User;
         $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, true);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Preferences.html');

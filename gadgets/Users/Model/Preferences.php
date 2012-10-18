@@ -26,7 +26,6 @@ class Users_Model_Preferences extends Jaws_Model
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser    = new Jaws_User;
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $result = $jUser->UpdateAdvancedOptions($uid, array('language' => $language, 
                                                             'theme' => $theme, 
                                                             'editor' => $editor, 

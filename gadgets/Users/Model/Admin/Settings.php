@@ -25,12 +25,10 @@ class Users_Model_Admin_Settings extends Jaws_Model
      */
     function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
-        $method     = $xss->parse($method);
-        $anon       = $xss->parse($anon);
-        $repetitive = $xss->parse($repetitive);
-        $recover    = $xss->parse($recover);
+        $method     = $method;
+        $anon       = $anon;
+        $repetitive = $repetitive;
+        $recover    = $recover;
 
         $res = true;
         if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageAuthenticationMethod')) {
