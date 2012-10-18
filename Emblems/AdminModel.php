@@ -146,11 +146,9 @@ class EmblemsAdminModel extends EmblemsModel
                 [updated] = {now}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['title']  = $xss->parse($title);
-        $params['url']    = $xss->parse($url);
+        $params['title']  = $title;
+        $params['url']    = $url;
         $params['type']   = $type;
         $params['status'] = $status;
         $params['now']    = $GLOBALS['db']->Date();
@@ -212,10 +210,8 @@ class EmblemsAdminModel extends EmblemsModel
             VALUES
                 ({title}, {src}, {url}, {type}, {enabled}, {now})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['title']   = $xss->parse($title);
+        $params['title']   = $title;
         $params['src']     = $file_url;
         $params['url']     = $url;
         $params['now']     = $GLOBALS['db']->Date();
