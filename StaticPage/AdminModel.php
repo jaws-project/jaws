@@ -551,12 +551,11 @@ class StaticPageAdminModel extends StaticPageModel
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages_groups', true);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['title']     = $xss->parse($title);
-        $params['fast_url']  = $xss->parse($fast_url);
-        $params['meta_keys'] = $xss->parse($meta_keys);
-        $params['meta_desc'] = $xss->parse($meta_desc);
+        $params['title']     = $title;
+        $params['fast_url']  = $fast_url;
+        $params['meta_keys'] = $meta_keys;
+        $params['meta_desc'] = $meta_desc;
         $params['visible']   = (bool)$visible;
 
         $sql = '
