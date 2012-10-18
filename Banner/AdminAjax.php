@@ -118,6 +118,9 @@ class BannerAdminAjax extends Jaws_Ajax
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $this->CheckSession('Banner', 'ManageBanners');
+
+        $request =& Jaws_Request::getInstance();
+        $template = $request->get(4, 'post', false);
         $this->_Model->InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
@@ -146,6 +149,9 @@ class BannerAdminAjax extends Jaws_Ajax
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $this->CheckSession('Banner', 'ManageBanners');
+
+        $request =& Jaws_Request::getInstance();
+        $template = $request->get(5, 'post', false);
         $this->_Model->UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
@@ -328,4 +334,5 @@ class BannerAdminAjax extends Jaws_Ajax
 
         return $res;
     }
+
 }
