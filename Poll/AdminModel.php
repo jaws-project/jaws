@@ -131,12 +131,11 @@ class PollAdminModel extends PollModel
                  {select_type}, {poll_type}, {result_view}, {visible})';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['question']    = $xss->parse($question);
-        $params['gid']         = $gid;
-        $params['start_time']   = null;
-        $params['stop_time']    = null;
+        $params = array();
+        $params['question']   = $question;
+        $params['gid']        = $gid;
+        $params['start_time'] = null;
+        $params['stop_time']  = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
             $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
@@ -190,13 +189,12 @@ class PollAdminModel extends PollModel
             WHERE [id] = {pid}';
 
         $date = $GLOBALS['app']->loadDate();
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['pid']         = (int)$pid;
-        $params['question']    = $xss->parse($question);
-        $params['gid']         = $gid;
-        $params['start_time']   = null;
-        $params['stop_time']    = null;
+        $params = array();
+        $params['pid']        = (int)$pid;
+        $params['question']   = $question;
+        $params['gid']        = $gid;
+        $params['start_time'] = null;
+        $params['stop_time']  = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
             $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
@@ -321,10 +319,9 @@ class PollAdminModel extends PollModel
             VALUES
                 ({pid}, {answer}, {rank})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params           = array();
+        $params = array();
         $params['pid']    = $pid;
-        $params['answer'] = $xss->parse($answer);
+        $params['answer'] = $answer;
         $params['rank']   = (int)$rank;
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -352,10 +349,9 @@ class PollAdminModel extends PollModel
                 [rank]   = {rank}
             WHERE [id] = {aid}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params           = array();
+        $params = array();
         $params['aid']    = (int)$aid;
-        $params['answer'] = $xss->parse($answer);
+        $params['answer'] = $answer;
         $params['rank']   = (int)$rank;
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -413,9 +409,8 @@ class PollAdminModel extends PollModel
             VALUES
                 ({title}, {visible})';
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params            = array();
-        $params['title']   = $xss->parse($title);
+        $params = array();
+        $params['title']   = $title;
         $params['visible'] = $visible;
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
@@ -456,10 +451,9 @@ class PollAdminModel extends PollModel
                 [visible] = {visible}
             WHERE [id] = {gid}';
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params            = array();
+        $params = array();
         $params['gid']     = $gid;
-        $params['title']   = $xss->parse($title);
+        $params['title']   = $title;
         $params['visible'] = $visible;
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
