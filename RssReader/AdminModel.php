@@ -113,10 +113,9 @@ class RssReaderAdminModel extends RssReaderModel
             VALUES
                 ({title}, {url}, {cache_time}, {view_type}, {count_entry}, {title_view}, {visible})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['title']       = $xss->parse($title);
-        $params['url']         = $xss->parse($url);
+        $params = array();
+        $params['title']       = $title;
+        $params['url']         = $url;
         $params['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
         $params['view_type']   = $view_type;
         $params['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
@@ -160,11 +159,10 @@ class RssReaderAdminModel extends RssReaderModel
                 [visible]     = {visible}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
+        $params = array();
         $params['id']          = (int)$RSSid;
-        $params['title']       = $xss->parse($title);
-        $params['url']         = $xss->parse($url);
+        $params['title']       = $title;
+        $params['url']         = $url;
         $params['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
         $params['view_type']   = $view_type;
         $params['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
