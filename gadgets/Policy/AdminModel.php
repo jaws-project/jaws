@@ -269,7 +269,6 @@ class PolicyAdminModel extends PolicyModel
             if ($to_ip < 0) $to_ip = $to_ip + 0xffffffff + 1;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $sql = '
             INSERT INTO [[policy_ipblock]]
                 ([from_ip], [to_ip], [blocked])
@@ -314,7 +313,6 @@ class PolicyAdminModel extends PolicyModel
             if ($to_ip < 0) $to_ip = $to_ip + 0xffffffff + 1;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $sql = '
             UPDATE [[policy_ipblock]] SET
                 [from_ip] = {from_ip},
@@ -324,8 +322,8 @@ class PolicyAdminModel extends PolicyModel
 
         $params = array();
         $params['id']      = $id;
-        $params['from_ip'] = $xss->parse($from_ip);
-        $params['to_ip']   = $xss->parse($to_ip);
+        $params['from_ip'] = $from_ip;
+        $params['to_ip']   = $to_ip;
         $params['blocked'] = (bool)$blocked;
 
         $res = $GLOBALS['db']->query($sql, $params);
