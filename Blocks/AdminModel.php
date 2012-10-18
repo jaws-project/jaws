@@ -86,13 +86,9 @@ class BlocksAdminModel extends BlocksModel
      */
     function NewBlock($title, $contents, $display_title, $user)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['user']  = $user;
-        $params['title'] = $xss->parse($title);
-        // SECURITY: If you want to validate XSS use this:
-        // $params['contents'] = $xss->parse($contents);
+        $params['title'] = $title;
         $params['contents'] = $contents;
 
         $params['now']      = $GLOBALS['db']->Date();
@@ -142,14 +138,10 @@ class BlocksAdminModel extends BlocksModel
      */
     function UpdateBlock($id, $title, $contents, $display_title, $user)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['id']    = (int)$id;
         $params['user']  = $user;
-        $params['title'] = $xss->parse($title);
-        // SECURITY: If you want to validate XSS use this:
-        // $params['contents'] = $xss->parse($contents);
+        $params['title'] = $title;
         $params['contents'] = $contents;
         $params['now']      = $GLOBALS['db']->Date();
         $params['display_title'] = ($display_title ? true : false);
