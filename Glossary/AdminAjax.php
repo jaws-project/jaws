@@ -39,6 +39,9 @@ class GlossaryAdminAjax extends Jaws_Ajax
     function NewTerm($term, $fast_url, $contents)
     {
         $this->CheckSession('Glossary', 'AddTerm');
+
+        $request =& Jaws_Request::getInstance();
+        $contents = $request->get(2, 'post', false);
         $id = $this->_Model->NewTerm($term, $fast_url, $contents);
         $response = $GLOBALS['app']->Session->PopLastResponse();
         $response['id'] = $id;
@@ -58,6 +61,9 @@ class GlossaryAdminAjax extends Jaws_Ajax
     function UpdateTerm($id, $term, $fast_url, $contents)
     {
         $this->CheckSession('Glossary', 'UpdateTerm');
+
+        $request =& Jaws_Request::getInstance();
+        $contents = $request->get(3, 'post', false);
         $this->_Model->UpdateTerm($id, $term, $fast_url, $contents);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -85,6 +91,8 @@ class GlossaryAdminAjax extends Jaws_Ajax
      */
     function ParseText($text)
     {
+        $request =& Jaws_Request::getInstance();
+        $text = $request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminHTML');
         return $gadget->ParseText($text, 'Glossary');
     }
