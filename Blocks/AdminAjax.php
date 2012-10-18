@@ -39,7 +39,10 @@ class BlocksAdminAjax extends Jaws_Ajax
     function NewBlock($title, $contents, $displayTitle)
     {
         $this->CheckSession('Blocks', 'AddBlock');
+
         $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $request =& Jaws_Request::getInstance();
+        $contents = $request->get(1, 'post', false);
         $id = $this->_Model->NewBlock($title, $contents, $displayTitle, $user);
         $response = $GLOBALS['app']->Session->PopLastResponse();
         // Little hack
@@ -60,7 +63,10 @@ class BlocksAdminAjax extends Jaws_Ajax
     function UpdateBlock($id, $title, $contents, $displayTitle)
     {
         $this->CheckSession('Blocks', 'EditBlock');
+
         $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $request =& Jaws_Request::getInstance();
+        $contents = $request->get(2, 'post', false);
         $this->_Model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -88,6 +94,8 @@ class BlocksAdminAjax extends Jaws_Ajax
      */
     function ParseText($text)
     {
+        $request =& Jaws_Request::getInstance();
+        $text = $request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML');
         return $gadget->ParseText($text, 'Blocks');
     }
