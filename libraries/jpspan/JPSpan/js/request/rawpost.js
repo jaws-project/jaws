@@ -49,7 +49,7 @@ function JPSpan_Request_RawPost(encoder) {
                     );
             break;
         };
-        this.http.setRequestHeader('Content-Type',this.encoder.contentType);
+        this.http.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     };
     
     // Send the request

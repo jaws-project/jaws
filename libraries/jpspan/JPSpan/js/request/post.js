@@ -4,8 +4,8 @@
 // @version $Id: post.js,v 1.3 2004/11/15 12:14:28 harryf Exp $
 
 // For building HTTP POST requests to use with XmlHttpClient
-function JPSpan_Request_Post(encoder) {
-
+function JPSpan_Request_Post(encoder)
+{
     var oParent = new JPSpan_Request(encoder);
     
     // Builds the post body
@@ -14,6 +14,10 @@ function JPSpan_Request_Post(encoder) {
     oParent.build = function() {
         var sep = '';
         for ( var argName in this.args ) {
+            if (typeof(this.args[argName]) == 'function') {
+                continue;
+            }
+
             try {
                 this.body += sep + argName + '=';
                 this.body += encodeURIComponent(this.encoder.encode(this.args[argName]));
@@ -30,10 +34,8 @@ function JPSpan_Request_Post(encoder) {
     // @protected
     // @throws Error codes 1005, 1006 and 1007
     oParent.prepare = function(http) {
-    
         this.http = http;
         this.build();
-        
         switch ( this.type ) {
             case 'async':
                 try {
@@ -68,6 +70,6 @@ function JPSpan_Request_Post(encoder) {
     oParent.send = function() {
         this.http.send(this.body);
     };
-    
+
     return oParent;
 };

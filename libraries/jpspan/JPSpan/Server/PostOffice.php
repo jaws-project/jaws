@@ -49,77 +49,6 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
     }
     
     /**
-    * Serve a request
-    * @param boolean send headers
-    * @return boolean FALSE if failed (invalid request - see errors)
-    * @access public
-    */
-    function serve($sendHeaders = TRUE) {
-        require_once JPSPAN . 'Monitor.php';
-        $M = & JPSpan_Monitor::instance();
-        $this->calledClass = NULL;
-        $this->calledMethod = NULL;
-        
-        if ( $_SERVER['REQUEST_METHOD'] != 'POST' ) {
-            trigger_error('Invalid HTTP request method: '.$_SERVER['REQUEST_METHOD'],E_USER_ERROR);
-            return FALSE;
-        }
-        if ( $this->resolveCall() ) {
-            $M->setRequestInfo('class',$this->calledClass);
-            $M->setRequestInfo('method',$this->calledMethod);
-            
-            if ( FALSE !== ($Handler = & $this->getHandler($this->calledClass) ) ) {
-                $args = array();
-                $M->setRequestInfo('args',$args);
-
-                if ( $this->getArgs($args) ) {
-                    $M->setRequestInfo('args',$args);
-                    $response = call_user_func_array(
-                        array(
-                            & $Handler,
-                            $this->calledMethod
-                        ),
-                        $args
-                    );
-                    
-                } else {
-                    $response = call_user_func(
-                        array(
-                            & $Handler,
-                            $this->calledMethod
-                        )
-                    );
-                    
-                }
-
-                $M->setResponseInfo('payload',$response);
-                $M->announceSuccess();
-
-                $response = Jaws_UTF8::json_encode($response);
-
-                if ( $sendHeaders ) {
-                    header('Content-Length: '.strlen($response));
-                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
-                    header('Last-Modified: ' . gmdate( "D, d M Y H:i:s" ) . 'GMT'); 
-                    header('Cache-Control: no-cache, must-revalidate'); 
-                    header('Pragma: no-cache');
-                }
-                echo $response;
-
-                return TRUE;
-                
-            } else {
-            
-                trigger_error('Invalid handle for: '.$this->calledClass,E_USER_ERROR);
-                return FALSE;
-                
-            }
-            
-        }
-        return FALSE;
-    }
-
-    /**
     * Resolve the call - identify the handler class and method and store
     * locally
     * @return boolean FALSE if failed (invalid request - see errors)
@@ -171,27 +100,6 @@ class JPSpan_Server_PostOffice extends JPSpan_Server {
         
     }
 
-    /**
-    * Populate the args array if there are any
-    * @param array args (reference)
-    * @return boolean TRUE if request had args
-    * @access private
-    */
-    function getArgs(& $args)
-    {
-        global $HTTP_RAW_POST_DATA;
-        if (!isset($HTTP_RAW_POST_DATA)) {
-            $HTTP_RAW_POST_DATA = file_get_contents('php://input');
-        }
-        $args = Jaws_UTF8::json_decode($HTTP_RAW_POST_DATA);
-        
-        if ( is_array($args) ) {
-            return TRUE;
-        }
-        
-        return FALSE;
-    }
-    
     /**
     * Get the Javascript client generator
     * @return JPSpan_Generator
