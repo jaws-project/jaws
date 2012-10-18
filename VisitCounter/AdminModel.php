@@ -188,7 +188,6 @@ class VisitCounterAdminModel extends VisitCounterModel
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text='')
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         if ($online) {
             $visit_counters[] = 'online';
         }
@@ -205,7 +204,7 @@ class VisitCounterAdminModel extends VisitCounterModel
         $rs2 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/period', $numdays);
         $rs3 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/type',   $type);
         $rs4 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/mode', $mode);
-        $rs5 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/custom_text', $xss->parse($custom_text));
+        $rs5 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/custom_text', $custom_text);
         if ($rs1 && $rs2 && $rs3 && $rs4 && $rs5) {
             $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             $GLOBALS['app']->Registry->Commit('VisitCounter');
