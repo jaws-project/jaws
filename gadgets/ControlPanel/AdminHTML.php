@@ -168,13 +168,9 @@ class ControlPanelAdminHTML extends Jaws_GadgetHTML
         $form->shouldValidate($use_crypt, $use_crypt);
 
         $redirectTo = '';
-        if (isset($_SERVER['QUERY_STRING'])) {
+        if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
             $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            $queryString = $xss->parse($_SERVER['QUERY_STRING']);
-            if (!empty($queryString)) {
-                $redirectTo  = '?' . $queryString;
-                $redirectTo  = $xss->filter($redirectTo);
-            }
+            $redirectTo = '?'. $xss->filter($_SERVER['QUERY_STRING']);
         }
 
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'ControlPanel'));
