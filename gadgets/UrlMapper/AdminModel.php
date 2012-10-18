@@ -680,11 +680,9 @@ class UrlMapperAdminModel extends UrlMapperModel
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {
-        $xss   = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
-        $res = $GLOBALS['app']->Registry->Set('/map/enabled',     ($enabled === true)? 'true' : 'false');
+        $res = $GLOBALS['app']->Registry->Set('/map/enabled', ($enabled === true)? 'true' : 'false');
         $res = $res && $GLOBALS['app']->Registry->Set('/map/custom_precedence', ($precedence === true)?  'true' : 'false');
-        $res = $res && $GLOBALS['app']->Registry->Set('/map/extensions',  $xss->parse($extension));
+        $res = $res && $GLOBALS['app']->Registry->Set('/map/extensions',  $extension);
         $res = $res && $GLOBALS['app']->Registry->Set('/map/use_aliases', ($use_aliases === true)? 'true' : 'false');
 
         if ($res === false) {
