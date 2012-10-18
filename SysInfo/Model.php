@@ -143,7 +143,7 @@ class SysInfoModel extends Jaws_Model
                     array('title' => 'Operating System',
                           'value' => php_uname()),
                     array('title' => 'Web Server',
-                          'value' => $xss->parse($_SERVER['SERVER_SOFTWARE'])),
+                          'value' => $xss->filter($_SERVER['SERVER_SOFTWARE'])),
                     array('title' => 'Server API/Loaded modules',
                           'value' => php_sapi_name(). (empty($apache_modules)? '' : ('/'.$apache_modules))),
                     array('title' => 'PHP Version',
@@ -160,7 +160,7 @@ class SysInfoModel extends Jaws_Model
                     array('title' => 'Jaws Version/Codename',
                           'value' => JAWS_VERSION . '/' . JAWS_VERSION_CODENAME),
                     array('title' => 'User Agent',
-                          'value' => $xss->parse($_SERVER['HTTP_USER_AGENT'])),
+                          'value' => $xss->filter($_SERVER['HTTP_USER_AGENT'])),
                 );
     }
 
