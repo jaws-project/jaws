@@ -184,11 +184,10 @@ class MenuAdminModel extends MenuModel
             VALUES
                 ({title}, {title_view}, {visible})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['title']       = $xss->parse($title);
-        $params['title_view']  = $title_view;
-        $params['visible']     = $visible;
+        $params = array();
+        $params['title']      = $title;
+        $params['title_view'] = $title_view;
+        $params['visible']    = $visible;
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -223,22 +222,21 @@ class MenuAdminModel extends MenuModel
             VALUES
                 ({pid}, {gid}, {type}, {title}, {url}, {url_target}, {rank}, {visible}, {image})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['pid']         = $pid;
-        $params['gid']         = $gid;
-        $params['type']        = $type;
-        $params['title']       = $xss->parse($title);
-        $params['url']         = $xss->parse($url);
-        $params['url_target']  = $url_target;
-        $params['rank']        = $rank;
-        $params['visible']     = $visible;
+        $params = array();
+        $params['pid']        = $pid;
+        $params['gid']        = $gid;
+        $params['type']       = $type;
+        $params['title']      = $title;
+        $params['url']        = $url;
+        $params['url_target'] = $url_target;
+        $params['rank']       = $rank;
+        $params['visible']    = $visible;
         if (empty($image)) {
-            $params['image'] = null;
+            $params['image']  = null;
         } else {
             $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-            $params['image'] = array('type'=> 'blob', 'value' => 'File://' . $filename);
+            $params['image']  = array('type'=> 'blob', 'value' => 'File://' . $filename);
         }
 
         $res = $GLOBALS['db']->query($sql, $params);
@@ -295,12 +293,11 @@ class MenuAdminModel extends MenuModel
                 [visible]     = {visible}
             WHERE [id] = {gid}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['gid']         = $gid;
-        $params['title']       = $xss->parse($title);
-        $params['title_view']  = $title_view;
-        $params['visible'] = $visible;
+        $params = array();
+        $params['gid']        = $gid;
+        $params['title']      = $title;
+        $params['title_view'] = $title_view;
+        $params['visible']    = $visible;
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -335,17 +332,16 @@ class MenuAdminModel extends MenuModel
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
-        $params['mid']         = $mid;
-        $params['pid']         = $pid;
-        $params['gid']         = $gid;
-        $params['type']        = $type;
-        $params['title']       = $xss->parse($title);
-        $params['url']         = $xss->parse($url);
-        $params['url_target']  = $url_target;
-        $params['rank']        = $rank;
-        $params['visible']     = $visible;
+        $params = array();
+        $params['mid']        = $mid;
+        $params['pid']        = $pid;
+        $params['gid']        = $gid;
+        $params['type']       = $type;
+        $params['title']      = $title;
+        $params['url']        = $url;
+        $params['url_target'] = $url_target;
+        $params['rank']       = $rank;
+        $params['visible']    = $visible;
 
         $sql = '
             UPDATE [[menus]] SET
