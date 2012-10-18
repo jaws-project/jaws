@@ -128,13 +128,11 @@ class LinkDumpAdminModel extends LinkDumpModel
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_links');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
-        $params['title']       = $xss->parse($title);
-        $params['description'] = $xss->parse($desc);
+        $params['title']       = $title;
+        $params['description'] = $desc;
         $params['url']         = $url;
-        $params['fast_url']    = $xss->parse($fast_url);
+        $params['fast_url']    = $fast_url;
         $params['gid']         = $gid;
         $params['rank']        = $rank;
         $params['now']         = $GLOBALS['db']->Date();
@@ -203,15 +201,13 @@ class LinkDumpAdminModel extends LinkDumpModel
             return new Jaws_Error($oldLink->getMessage(), 'SQL');
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['id']          = (int)$id;
         $params['gid']         = (int)$gid;
-        $params['title']       = $xss->parse($title);
-        $params['description'] = $xss->parse($desc);
+        $params['title']       = $title;
+        $params['description'] = $desc;
         $params['url']         = $url;
-        $params['fast_url']    = $xss->parse($fast_url);
+        $params['fast_url']    = $fast_url;
         $params['now']         = $GLOBALS['db']->Date();
         $params['rank']        = $rank;
 
@@ -552,10 +548,9 @@ class LinkDumpAdminModel extends LinkDumpModel
             VALUES
                 ({title}, {fast_url}, {limit_count}, {link_type}, {order_type})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['title']       = $xss->parse($title);
-        $params['fast_url']    = $xss->parse($fast_url);
+        $params['title']       = $title;
+        $params['fast_url']    = $fast_url;
         $params['limit_count'] = $limit_count;
         $params['link_type']   = $link_type;
         $params['order_type']  = $order_type;
@@ -596,11 +591,10 @@ class LinkDumpAdminModel extends LinkDumpModel
                 [order_type]  = {order_type}
             WHERE [id] = {gid}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params                = array();
+        $params = array();
         $params['gid']         = $gid;
-        $params['title']       = $xss->parse($title);
-        $params['fast_url']    = $xss->parse($fast_url);
+        $params['title']       = $title;
+        $params['fast_url']    = $fast_url;
         $params['limit_count'] = $limit_count;
         $params['link_type']   = $link_type;
         $params['order_type']  = $order_type;
