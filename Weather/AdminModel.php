@@ -126,10 +126,9 @@ class WeatherAdminModel extends WeatherModel
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'weather');
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['title']     = $xss->parse($title);
-        $params['fast_url']  = $xss->parse($fast_url);
+        $params['title']     = $title;
+        $params['fast_url']  = $fast_url;
         $params['latitude']  = (float) $latitude;
         $params['longitude'] = (float) $longitude;
         $params['published'] = $published;
@@ -167,11 +166,10 @@ class WeatherAdminModel extends WeatherModel
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'weather', false);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['id']        = (int)$id;
-        $params['title']     = $xss->parse($title);
-        $params['fast_url']  = $xss->parse($fast_url);
+        $params['title']     = $title;
+        $params['fast_url']  = $fast_url;
         $params['latitude']  = (float) $latitude;
         $params['longitude'] = (float) $longitude;
         $params['published'] = $published;
