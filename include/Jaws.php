@@ -145,6 +145,7 @@ class Jaws
         require_once JAWS_PATH . 'include/Jaws/Template.php';
         require_once JAWS_PATH . 'include/Jaws/Header.php';
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+        $this->loadClass('UTF8', 'Jaws_UTF8');
     }
 
     /**
@@ -155,7 +156,6 @@ class Jaws
      */
     function create()
     {
-        $this->loadClass('UTF8', 'Jaws_UTF8');
         $this->loadClass('Translate', 'Jaws_Translate');
         $this->loadClass('Registry', 'Jaws_Registry');
 
