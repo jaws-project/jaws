@@ -31,8 +31,6 @@ class Forum_Actions_Posts extends ForumHTML
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
         $tpl->Load('NewPost.html');
         $tpl->SetBlock('newpost');
@@ -87,8 +85,6 @@ class Forum_Actions_Posts extends ForumHTML
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
 
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
         $tpl->Load('EditPost.html');
