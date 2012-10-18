@@ -167,16 +167,15 @@ class FileBrowserAdminModel extends FileBrowserModel
         $path = str_replace('..', '', $path);
 
         $date  = $GLOBALS['app']->loadDate();
-        $xss   = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $title = empty($title)? $file : $title;
         $fast_url = empty($fast_url) ? $title : $fast_url;
 
         $params = array();
-        $params['path']        = $xss->parse($path);
-        $params['file']        = $xss->parse($file);
-        $params['oldname']     = empty($oldname)? $params['file'] : $xss->parse($oldname);
-        $params['title']       = $xss->parse($title);
-        $params['description'] = $xss->parse($description);
+        $params['path']        = $path;
+        $params['file']        = $file;
+        $params['oldname']     = empty($oldname)? $params['file'] : $oldname;
+        $params['title']       = $title;
+        $params['description'] = $description;
         $params['now']         = $GLOBALS['db']->Date();
 
         $dbFile = $this->DBFileInfo($path, $params['oldname']);
@@ -188,7 +187,7 @@ class FileBrowserAdminModel extends FileBrowserModel
         if (array_key_exists('id', $dbFile)) {
             // Update
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser', false);
-            $params['fast_url'] = $xss->parse($fast_url);
+            $params['fast_url'] = $fast_url;
 
             $sql = '
                 UPDATE [[filebrowser]] SET
@@ -213,7 +212,7 @@ class FileBrowserAdminModel extends FileBrowserModel
         } else {
             //Insert
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser');
-            $params['fast_url'] = $xss->parse($fast_url);
+            $params['fast_url'] = $fast_url;
 
             $sql = '
                 INSERT INTO [[filebrowser]]
@@ -252,10 +251,9 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
         $path = str_replace('..', '', $path);
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['path'] = $xss->parse($path);
-        $params['file'] = $xss->parse($file);
+        $params['path'] = $path;
+        $params['file'] = $file;
 
         $sql = '
             DELETE FROM [[filebrowser]]
