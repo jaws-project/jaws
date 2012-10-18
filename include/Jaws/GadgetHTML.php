@@ -147,7 +147,6 @@ class Jaws_GadgetHTML extends Jaws_Gadget
     function Ajax()
     {
         $name = $this->GetName();
-        $objects = array();
         require_once JAWS_PATH . 'include/Jaws/Ajax.php';
 
         if (JAWS_SCRIPT == 'admin') {
@@ -159,9 +158,18 @@ class Jaws_GadgetHTML extends Jaws_Gadget
             require_once JAWS_PATH.'gadgets/' . $name . '/Ajax.php';
             $ajaxClass = $name . 'Ajax';
         }
-        $objects[] = new $ajaxClass($model);
 
-        $this->InitAjax($objects);
+        $objAjax = new $ajaxClass($model);
+        $request =& Jaws_Request::getInstance();
+        if (isset($_GET['client'])) {
+            $this->InitAjax($objAjax);
+        } else {
+            $output = '';
+            $method = $request->get('method', 'get');
+            $params = $request->getAll('post');
+            $output = call_user_func_array(array($objAjax, $method), $params);
+            return Jaws_UTF8::json_encode($output);
+        }
     }
 
     /**
@@ -173,46 +181,38 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * @return  string  The reply.
      * @since   0.6
      */
-    function InitAjax($objects = array())
+    function InitAjax($object = null)
     {
-        if (count($objects)) {
+        if (is_object($object)) {
             // Load the JPSpan library
             require_once JAWS_PATH . 'libraries/jpspan/JPSpan.php';
             require_once JAWS_PATH . 'libraries/jpspan/JPSpan/Server/PostOffice.php';
 
-            // Create a server object, set the URL to submit to, and export some objects.
+            // Create a server object, set the URL to submit to, and export object.
             $server = new JPSpan_Server_Postoffice();
             $server->setServerUrl(BASE_SCRIPT.'?gadget='.$this->_Name.'&action=Ajax');
-            
-            foreach ($objects as $object) {
-                $server->addHandler($object);
-            }
+            $server->addHandler($object);
 
-            if (isset($_GET['client'])) {
-                // Display the client code.
-                define('JPSPAN_INCLUDE_COMPRESS', true);
-                $client = $server->displayClient();
+            // Display the client code.
+            define('JPSPAN_INCLUDE_COMPRESS', true);
+            $client = $server->displayClient();
 
-                header('Content-type: text/javascript; charset: UTF-8');
-                header('Content-Type: application/x-javascript');
-                header("Vary: Accept-Encoding");
-                //2592000 = 30 * 24 * 3600
-                header('Cache-Control: max-age=2592000, public, must-revalidate');
-                //header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 2592000) . ' GMT');
-                if ($GLOBALS['app']->GZipEnabled()) {
-                    $client = @gzencode($client, COMPRESS_LEVEL, FORCE_GZIP);
-                    header('Content-Length: '.strlen($client));
-                    header('Content-Encoding: '.(strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')!== false? 'x-gzip' : 'gzip'));
-                } else {
-                    header('Content-Length: '.strlen($client));
-                }
-                echo $client;
-                exit;
+            header('Content-type: text/javascript; charset: UTF-8');
+            header('Content-Type: application/x-javascript');
+            header("Vary: Accept-Encoding");
+            //2592000 = 30 * 24 * 3600
+            header('Cache-Control: max-age=2592000, public, must-revalidate');
+            //header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 2592000) . ' GMT');
+            if ($GLOBALS['app']->GZipEnabled()) {
+                $client = @gzencode($client, COMPRESS_LEVEL, FORCE_GZIP);
+                header('Content-Length: '.strlen($client));
+                header('Content-Encoding: '.(strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')!== false? 'x-gzip' : 'gzip'));
             } else {
-                // Process method calls, displaying any errors that occur on the client side.
-                require_once JAWS_PATH.'libraries/jpspan/JPSpan/ErrorHandler.php';
-                $server->serve();
+                header('Content-Length: '.strlen($client));
             }
+
+            echo $client;
+            exit;
         }
 
         // Yeah, so it's a hack.
