@@ -260,20 +260,19 @@ class ContactAdminModel extends ContactModel
                 [updatetime] = {now}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $params              = array();
-        $params['id']        = (int)$id;;
-        $params['name']      = $xss->parse($name);
-        $params['email']     = $xss->parse($email);
-        $params['company']   = $xss->parse($company);
-        $params['url']       = $xss->parse($url);
-        $params['tel']       = $xss->parse($tel);
-        $params['fax']       = $xss->parse($fax);
-        $params['mobile']    = $xss->parse($mobile);
-        $params['address']   = $xss->parse($address);
+        $params = array();
+        $params['id']        = (int)$id;
+        $params['name']      = $name;
+        $params['email']     = $email;
+        $params['company']   = $company;
+        $params['url']       = $url;
+        $params['tel']       = $tel;
+        $params['fax']       = $fax;
+        $params['mobile']    = $mobile;
+        $params['address']   = $address;
         $params['recipient'] = (int)$recipient;
-        $params['subject']   = $xss->parse($subject);
-        $params['message']   = $xss->parse($message);
+        $params['subject']   = $subject;
+        $params['message']   = $message;
         $params['now']       = $GLOBALS['db']->Date();
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -302,10 +301,9 @@ class ContactAdminModel extends ContactModel
                 [updatetime] = {now}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params          = array();
         $params['id']    = (int)$id;;
-        $params['reply'] = $xss->parse($reply);
+        $params['reply'] = $reply;
         $params['now']   = $GLOBALS['db']->Date();
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -334,7 +332,6 @@ class ContactAdminModel extends ContactModel
                 [updatetime] = {now}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['id']         = (int)$id;;
         $params['reply_sent'] = (int)$reply_sent;
@@ -391,13 +388,12 @@ class ContactAdminModel extends ContactModel
             VALUES
                 ({name}, {email}, {tel}, {fax}, {mobile}, {inform_type}, {visible})';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['name']        = $xss->parse($name);
-        $params['email']       = $xss->parse($email);
-        $params['tel']         = $xss->parse($tel);
-        $params['fax']         = $xss->parse($fax);
-        $params['mobile']      = $xss->parse($mobile);
+        $params['name']        = $name;
+        $params['email']       = $email;
+        $params['tel']         = $tel;
+        $params['fax']         = $fax;
+        $params['mobile']      = $mobile;
         $params['inform_type'] = (int)$inform_type;
         $params['visible']     = (int)$visible;
 
@@ -438,14 +434,13 @@ class ContactAdminModel extends ContactModel
                 [visible]     = {visible}
             WHERE [id] = {id}';
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['id']          = (int)$id;
-        $params['name']        = $xss->parse($name);
-        $params['email']       = $xss->parse($email);
-        $params['tel']         = $xss->parse($tel);
-        $params['fax']         = $xss->parse($fax);
-        $params['mobile']      = $xss->parse($mobile);
+        $params['name']        = $name;
+        $params['email']       = $email;
+        $params['tel']         = $tel;
+        $params['fax']         = $fax;
+        $params['mobile']      = $mobile;
         $params['inform_type'] = (int)$inform_type;
         $params['visible']     = (int)$visible;
 
