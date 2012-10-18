@@ -76,6 +76,9 @@ class StaticPageAdminAjax extends Jaws_Ajax
      */
     function ParseText($text)
     {
+        $request =& Jaws_Request::getInstance();
+        $text = $request->get(0, 'post', false);
+
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
         return $gadget->ParseText($text, 'StaticPage');
     }
@@ -136,6 +139,9 @@ class StaticPageAdminAjax extends Jaws_Ajax
     function AutoDraft($id = '', $group, $showtitle = '', $title = '', $content = '', $language = '',
                        $fast_url = '', $meta_keys = '', $meta_desc = '', $published = '')
     {
+        $request =& Jaws_Request::getInstance();
+        $content = $request->get(4, 'post', false);
+
         if ($id == 'NEW') {
             $this->_Model->AddPage($title, $group, $show_title, $content, $language, 
                                    $fast_url, $meta_keys, $meta_desc, $published, true);
