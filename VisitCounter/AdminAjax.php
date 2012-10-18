@@ -68,6 +68,9 @@ class VisitCounterAdminAjax extends Jaws_Ajax
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text)
     {
         $this->CheckSession('VisitCounter', 'UpdateProperties');
+
+        $request =& Jaws_Request::getInstance();
+        $custom_text = $request->get(7, 'post', false);
         $this->_Model->UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
