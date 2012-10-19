@@ -13,11 +13,11 @@
  */
 class WeatherAdminHTML extends Jaws_GadgetHTML
 {
-    /*
-     * Admin area of the gadget
+    /**
+     * Default action of the gadget
      *
      * @access  public
-     * @return  string  XHTML content of administration
+     * @return  string  XHTML content
      */
     function Admin()
     {

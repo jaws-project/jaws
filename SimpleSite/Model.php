@@ -13,6 +13,9 @@ class SimpleSiteModel extends Jaws_Model
 {
     /**
      * Internal variable to load items 
+     *
+     * @var     array
+     * @access  private
      */
     var $_items;
 
@@ -73,9 +76,9 @@ class SimpleSiteModel extends Jaws_Model
      * Returns the given levels depth of items
      * 
      * @access  private
-     * @param   $items      Reference to items array
-     * @param   $current    Start
-     * @param   $depth      Depth to return
+     * @param   array       $items      Reference to items array
+     * @param   int         $current    Start
+     * @param   int         $depth      Depth to return
      * @return  bool        Always true
      */
     function _GetItemLevels(&$items, $current, $depth) 
@@ -122,8 +125,8 @@ class SimpleSiteModel extends Jaws_Model
      * Creates a hierachical array based on parents... recursive proccess
      *
      * @access  private
-     * @params  array   $items      Array with all the items
-     * @params  int     $parent     Parent id to extract
+     * @params  array   $items      Reference to items array
+     * @params  int     $parent     Parent ID to extract
      * @return  array   Children array
      */
     function _CreateItemsArray(&$items, $parent) 
@@ -286,6 +289,7 @@ class SimpleSiteModel extends Jaws_Model
      *
      * @access  public
      * @param   bool    $redo   Rewrites sitemap before sending it(Optional)
+     * @return  bool    True
      */
     function ping($redo = false)
     {
@@ -328,7 +332,7 @@ class SimpleSiteModel extends Jaws_Model
      * Returns an array with info of each path element of a given path
      *
      * @access  public
-     * @param   $path   URL Path
+     * @param   string  $path   URL Path
      * @return  array   Array with info of each path element
      */
     function GetBreadcrumb($path)

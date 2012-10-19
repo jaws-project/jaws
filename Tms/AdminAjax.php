@@ -14,6 +14,7 @@ class TmsAdminAjax extends Jaws_Ajax
      * Constructor
      *
      * @access  public
+     * @param   string  $model  TMS model
      * @return  void
      */
     function TmsAdminAjax(&$model)

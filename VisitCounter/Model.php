@@ -19,6 +19,7 @@ class VisitCounterModel extends Jaws_Model
      *          performance is a major issue.
      *
      * @access  public
+     * @param   string  IP of the visitor
      * @return  string  The hostname of the remote machine, or Jaws_Error if no reverse lookup could be done.
      */
     function GetHostname($ip)
@@ -35,7 +36,8 @@ class VisitCounterModel extends Jaws_Model
      * Adds a new visitor
      *
      * @access  public
-     * @param   string  $ip  IP of the visitor
+     * @param   string  $ip     IP of the visitor
+     * @param   bool    $inc    Whether increments number of visits or not
      * @return  mixed   True if query was successful, otherwise returns Jaws_Error
      */
     function AddVisitor($ip, $inc = true)

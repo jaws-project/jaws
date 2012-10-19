@@ -27,7 +27,7 @@ class VisitCounterAdminModel extends VisitCounterModel
             return $result;
         }
 
-        //registry keys.
+        // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/visit_counters',  'online,today,total');
         $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/timeout', '600');
         $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/type', 'impressions');
@@ -56,7 +56,7 @@ class VisitCounterAdminModel extends VisitCounterModel
             return new Jaws_Error($errMsg, $gName);
         }
 
-        //registry keys
+        // Registry keys
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/visit_counters');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/timeout');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/type');
@@ -110,6 +110,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      * Gets list of IP visitors / date visited
      *
      * @access  public
+     * @param   int     $limit  Data limit to fetch
      * @return  array   Array of visitors or Jaws_Error on failure
      */
     function GetVisitors($limit = null)
@@ -179,11 +180,17 @@ class VisitCounterAdminModel extends VisitCounterModel
     }
 
     /**
-     * Updates properties of VisitCounter
+     * Updates VisitCounter settings
      *
      * @access  public
-     * @param   int     $numdays Number of days
-     * @param   string  $type    Type of visits being displayed
+     * @param   bool    $online     Include online visitors
+     * @param   bool    $today      Include today visitors
+     * @param   bool    $total      Include total visitors
+     * @param   bool    $custom     Display custom text
+     * @param   int     $numdays    Number of days
+     * @param   int     $type       Type of calculation (unique/impressions)
+     * @param   int     $mode       Display type (text/image)
+     * @param   string  $custom_text    Custome text to be displayed
      * @return  bool    True if change was successful, otherwise returns Jaws_Error
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text='')

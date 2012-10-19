@@ -217,6 +217,7 @@ class SimpleSiteAdminModel extends SimpleSiteModel
      *
      * @access  public
      * @param   int     $id         ID of the SimpleSite
+     * @param   int     $parent_id  Parent ID
      * @param   string  $title      Item title
      * @param   string  $shortname  Item shortname (used as link)
      * @param   string  $type       Item type ('static_page', 'blog', 'url', etc)
