@@ -150,7 +150,7 @@ class SyntaxHighlight extends Jaws_Plugin
             //For some fscking reason, geshi applied htmlentities again, so a &lt will be &amp;lt
             $htmltable = get_html_translation_table(HTML_ENTITIES);
             foreach ($htmltable as $key => $value) {
-                $code = ereg_replace(addslashes($value), $key, $code);
+                $code = str_replace(addslashes($value), $key, $code);
             }
             require_once JAWS_PATH.'libraries/geshi/geshi.php';
             $geshi = new GeSHi($code, $lang,  JAWS_PATH.'libraries/geshi/geshi');
