@@ -936,15 +936,17 @@ class Jaws_Gadget
     /**
      * Check permission on a gadget/task
      *
-     * @param   string $task Task name
-     * @param   string $gadget Gadget name
-     * @param   string $errorMessage Error message to return
-     * @return  bool    True if granted, else throws an Exception(Jaws_Error::Fatal)
+     * @param   string  $task           Task(s) name
+     * @param   bool    $together       And/Or tasks permission result, default true
+     * @param   string  $gadget         Gadget name
+     * @param   string  $errorMessage   Error message to return
+     * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($task, $gadget = false, $errorMessage = '')
+    function CheckPermission($task, $together = true, $gadget = false, $errorMessage = '')
     {
         return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->_Name : $gadget,
                                                          $task,
+                                                         $together,
                                                          $errorMessage);
     }
 

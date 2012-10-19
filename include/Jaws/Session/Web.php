@@ -129,13 +129,14 @@ class Jaws_Session_Web extends Jaws_Session
      *
      * @access  public
      * @param   string  $gadget         Gadget name
-     * @param   string  $task           Task name
+     * @param   string  $task           Task(s) name
+     * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $errorMessage   Error message to return
-     * @return  mixed   True if granted, else print HTML output telling the user he doesn't have permission
+     * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($gadget, $task, $errorMessage = '')
+    function CheckPermission($gadget, $task, $together = true, $errorMessage = '')
     {
-        if ($this->GetPermission($gadget, $task)) {
+        if ($this->GetPermission($gadget, $task, $together)) {
             return true;
         }
 

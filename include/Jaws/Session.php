@@ -480,15 +480,30 @@ class Jaws_Session
      * Get permission on a given gadget/task
      *
      * @access  public
-     * @param   string  $gadget Gadget name
-     * @param   string  $task   Task name
+     * @param   string  $gadget     Gadget name
+     * @param   string  $task       Task(s) name
+     * @param   bool    $together   And/Or tasks permission result, default true
      * @return  bool    True if granted, else False
      */
-    function GetPermission($gadget, $task)
+    function GetPermission($gadget, $task, $together = true)
     {
+        $result = $together? true : false;
         $user = $this->GetAttribute('username');
         $groups = $this->GetAttribute('groups');
-        return $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget, $task, $this->IsSuperAdmin());
+        $tasks = array_filter(array_map('trim', explode(',', $task)));
+        foreach ($tasks as $task) {
+            if ($together) {
+                $result = $result &&
+                          $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget,
+                                                                  $task, $this->IsSuperAdmin());
+            } else {
+                $result = $result ||
+                          $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget,
+                                                                  $task, $this->IsSuperAdmin());
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -496,13 +511,14 @@ class Jaws_Session
      *
      * @access  public
      * @param   string  $gadget         Gadget name
-     * @param   string  $task           Task name
+     * @param   string  $task           Task(s) name
+     * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $errorMessage   Error message to return
      * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($gadget, $task, $errorMessage = '')
+    function CheckPermission($gadget, $task, $together = true, $errorMessage = '')
     {
-        if ($this->GetPermission($gadget, $task)) {
+        if ($this->GetPermission($gadget, $task, $together)) {
             return true;
         }
 

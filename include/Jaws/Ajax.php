@@ -38,14 +38,17 @@ class Jaws_Ajax
      *  - If session stills active
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
-     * @param   string  $task    Task name
+     * @param   string  $gadget     Gadget name
+     * @param   string  $task       Task name
+     * @param   bool    $together   And/Or tasks permission result, default true
      */
-    function CheckSession($gadget, $task)
+    function CheckSession($gadget, $task, $together = true)
     {
         $this->CheckSessionExistence();
         $this->CheckSessionLife();
-        $this->CheckSessionPermission($gadget, $task);
+        if (!$GLOBALS['app']->Session->GetPermission($gadget, $task, $together)) {
+            trigger_error('[NOPERMISSION] - You do not have permission to execute this task', E_USER_ERROR);
+        }
     }
 
     /**
@@ -56,15 +59,16 @@ class Jaws_Ajax
      *  - If session stills active
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
-     * @param   string  $task    Task name
+     * @param   string  $gadget     Gadget name
+     * @param   string  $task       Task name
+     * @param   bool    $together   And/Or tasks permission result, default true
      */
-    function GetPermission($gadget, $task)
+    function GetPermission($gadget, $task, $together = true)
     {
         return (
             $this->GetSessionExistence() &&
             $this->IsSessionAlive() &&
-            $this->GetSessionPermission($gadget, $task)
+            $GLOBALS['app']->Session->GetPermission($gadget, $task, $together)
         );
     }
 
@@ -112,33 +116,6 @@ class Jaws_Ajax
     function IsSessionAlive()
     {
         return $GLOBALS['app']->Session->Logged() ? true : false;
-    }
-
-    /**
-     * Check permission on a gadget/task
-     *
-     * @access  public
-     * @param   string  $gadget  Gadget name
-     * @param   string  $task    Task name
-     */
-    function CheckSessionPermission($gadget, $task)
-    {
-        if (!$GLOBALS['app']->Session->GetPermission($gadget, $task)) {
-            trigger_error('[NOPERMISSION] - You do not have permission to execute this task', E_USER_ERROR);
-        }
-    }
-
-    /**
-     * Gets the session permission status
-     *
-     * @access  public
-     * @param   string $gadget   Gadget name
-     * @param   string  $task    Task name
-     * @return  bool
-     */
-    function GetSessionPermission($gadget, $task)
-    {
-        return $GLOBALS['app']->Session->GetPermission($gadget, $task) ? true : false;
     }
 
 }
