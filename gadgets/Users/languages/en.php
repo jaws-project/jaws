@@ -20,9 +20,10 @@ define('_EN_USERS_ACL_MANAGEGROUPS', "Group management");
 define('_EN_USERS_ACL_MANAGEPROPERTIES', "Properties management");
 define('_EN_USERS_ACL_MANAGEUSERACLS', "User's ACLs management");
 define('_EN_USERS_ACL_MANAGEGROUPACLS', "Group's ACLs management");
-define('_EN_USERS_ACL_EDITUSERPASSWORD', "Edit user's password by user");
 define('_EN_USERS_ACL_EDITUSERACCOUNT', "Edit user's account by user");
-define('_EN_USERS_ACL_EDITUSERPERSONAL', "Edit user's personal by user");
+define('_EN_USERS_ACL_EDITUSERPASSWORD', "Edit user's password by user");
+define('_EN_USERS_ACL_EDITUSERPERSONAL', "Edit user's personal data by user");
+define('_EN_USERS_ACL_EDITUSERCONTACT', "Edit user's contact data by user");
 define('_EN_USERS_ACL_EDITUSERPREFERENCES', "Edit user's preferences by user");
 define('_EN_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Manage authentication method");
 

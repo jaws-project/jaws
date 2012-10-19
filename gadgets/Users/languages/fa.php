@@ -18,10 +18,11 @@ define('_FA_USERS_ACL_MANAGEGROUPS', "مدیریت گروههای کاربری")
 define('_FA_USERS_ACL_MANAGEPROPERTIES', "ویرایش تنظیمات ابزار کاربران");
 define('_FA_USERS_ACL_MANAGEUSERACLS', "ویرایش دسترسیهای کاربران");
 define('_FA_USERS_ACL_MANAGEGROUPACLS', "ویرایش دسترسیهای گروههای کاربری");
-define('_FA_USERS_ACL_EDITUSERPASSWORD', "تغییر گذرواژه توسط کاربر");
-define('_FA_USERS_ACL_EDITUSERACCOUNT', "ویرایش اطلاعات کاربری توسط کاربر");
-define('_FA_USERS_ACL_EDITUSERPERSONAL', "ویرایش مشخصات توسط کاربر");
-define('_FA_USERS_ACL_EDITUSERPREFERENCES', "ویرایش تنظیمات توسط کاربر");
+define('_FA_USERS_ACL_EDITUSERACCOUNT', "ویرایش شناسه‌های کاربری از سوی کاربر");
+define('_FA_USERS_ACL_EDITUSERPASSWORD', "ویرایش گذرواژه از سوی کاربر");
+define('_FA_USERS_ACL_EDITUSERPERSONAL', "ویرایش نشانه‌های  فردی از سوی کاربر");
+define('_FA_USERS_ACL_EDITUSERCONTACT', "ویرایش نشانه‌های تماس از سوی کاربر");
+define('_FA_USERS_ACL_EDITUSERPREFERENCES', "ویرایش تنظیمات از سوی کاربر");
 define('_FA_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "مدیریت روش تایید اعتبار کاربران");
 define('_FA_USERS_LAYOUT_LOGINBOX', "بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINBOX_DESC', "نمایش بلوک لاگین");

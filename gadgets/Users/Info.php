@@ -38,9 +38,10 @@ class UsersInfo extends Jaws_GadgetInfo
         'ManageProperties',
         'ManageUserACLs',
         'ManageGroupACLs',
-        'EditUserPassword',
         'EditUserAccount',
+        'EditUserPassword',
         'EditUserPersonal',
+        'EditUserContact',
         'EditUserPreferences',
         'ManageAuthenticationMethod',
     );
