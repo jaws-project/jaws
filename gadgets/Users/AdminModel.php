@@ -125,7 +125,7 @@ class UsersAdminModel extends Jaws_Model
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPassword');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountInformation');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountProfile');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/ManageAuthenticationMethod');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPreferences');
         }
 
         return true;
