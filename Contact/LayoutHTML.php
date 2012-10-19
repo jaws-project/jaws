@@ -51,7 +51,6 @@ class ContactLayoutHTML
         $btnSend->SetSubmit();
         $tpl->SetVariable('btn_send', $btnSend->Get());
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $last_message = $GLOBALS['app']->Session->PopSimpleResponse('Contact_Data');
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Contact')) {
             $tpl->SetBlock('contact/response');
@@ -66,7 +65,7 @@ class ContactLayoutHTML
                 $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
                 $name = isset($last_message['contact_name'])?
                         $last_message['contact_name'] : $GLOBALS['app']->Session->GetCookie('visitor_name');
-                $tpl->SetVariable('name', isset($name)? $xss->filter($name) : '');
+                $tpl->SetVariable('name', isset($name)? $name : '');
                 $tpl->ParseBlock('contact/name');
             }
 
@@ -76,7 +75,7 @@ class ContactLayoutHTML
                 $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
                 $email = isset($last_message['contact_email'])?
                          $last_message['contact_email'] : $GLOBALS['app']->Session->GetCookie('visitor_email');
-                $tpl->SetVariable('email', isset($email)? $xss->filter($email) : '');
+                $tpl->SetVariable('email', isset($email)? $email : '');
                 $tpl->ParseBlock('contact/email');
             }
 
@@ -86,7 +85,7 @@ class ContactLayoutHTML
                 $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
                 $url = isset($last_message['contact_url'])?
                        $last_message['contact_url'] : $GLOBALS['app']->Session->GetCookie('visitor_url');
-                $tpl->SetVariable('url', isset($url)? $xss->filter($url) : 'http://');
+                $tpl->SetVariable('url', isset($url)? $url : 'http://');
                 $tpl->ParseBlock('contact/url');
             }
         }
@@ -108,7 +107,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/company');
             $tpl->SetVariable('lbl_company', _t('CONTACT_COMPANY'));
             $company = isset($last_message['contact_company'])? $last_message['contact_company'] : '';
-            $tpl->SetVariable('company', $xss->filter($company));
+            $tpl->SetVariable('company', $company);
             $tpl->ParseBlock('contact/company');
         }
 
@@ -117,7 +116,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/tel');
             $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
             $tel = isset($last_message['contact_tel'])? $last_message['contact_tel'] : '';
-            $tpl->SetVariable('tel', $xss->filter($tel));
+            $tpl->SetVariable('tel', $tel);
             $tpl->ParseBlock('contact/tel');
         }
 
@@ -126,7 +125,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/fax');
             $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
             $fax = isset($last_message['contact_fax'])? $last_message['contact_fax'] : '';
-            $tpl->SetVariable('fax', $xss->filter($fax));
+            $tpl->SetVariable('fax', $fax);
             $tpl->ParseBlock('contact/fax');
         }
 
@@ -135,7 +134,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/mobile');
             $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
             $mobile = isset($last_message['contact_mobile'])? $last_message['contact_mobile'] : '';
-            $tpl->SetVariable('mobile', $xss->filter($mobile));
+            $tpl->SetVariable('mobile', $mobile);
             $tpl->ParseBlock('contact/mobile');
         }
 
@@ -144,7 +143,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/address');
             $tpl->SetVariable('lbl_address',  _t('CONTACT_ADDRESS'));
             $address = isset($last_message['contact_address'])? $last_message['contact_address'] : '';
-            $tpl->SetVariable('address', $xss->filter($address));
+            $tpl->SetVariable('address', $address);
             $tpl->ParseBlock('contact/address');
         }
 
@@ -176,7 +175,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/subject');
             $tpl->SetVariable('lbl_subject',  _t('CONTACT_SUBJECT'));
             $subject = isset($last_message['contact_subject'])? $last_message['contact_subject'] : '';
-            $tpl->SetVariable('subject', $xss->filter($subject));
+            $tpl->SetVariable('subject', $subject);
             $tpl->ParseBlock('contact/subject');
         }
 
@@ -195,7 +194,7 @@ class ContactLayoutHTML
             $tpl->SetBlock('contact/message');
             $tpl->SetVariable('lbl_message',  _t('CONTACT_MESSAGE'));
             $message = isset($last_message['contact_message'])? $last_message['contact_message'] : '';
-            $tpl->SetVariable('message', $xss->filter($message));
+            $tpl->SetVariable('message', $message);
             $tpl->ParseBlock('contact/message');
         }
 
