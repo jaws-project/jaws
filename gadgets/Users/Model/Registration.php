@@ -16,10 +16,14 @@ class Users_Model_Registration extends Jaws_Model
      *
      * @access  public
      * @param   string  $username   Username
-     * @param   string  $email      User's email
+     * @param   string  $user_email User's email
      * @param   string  $nickname   User's display name
+     * @param   string  $fname      First name
+     * @param   string  $lname      Last name
+     * @param   string  $gender     User gender
+     * @param   string  $dob        Birth date
+     * @param   string  $url        User's URL
      * @param   string  $password   Password
-     * @param   string  $p_check    Password check(to verify)
      * @param   string  $group      Default user group
      * @return  mixed   True on success or message string
      */

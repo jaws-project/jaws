@@ -37,8 +37,12 @@ class UsersAdminAjax extends Jaws_Ajax
      * Gets users's profile
      *
      * @access  public
-     * @param   int     $uid  Users ID
-     * @return  array   User's profile
+     * @param   int     $uid            User ID
+     * @param   bool    $account        Include account information
+     * @param   bool    $personal       Include personal information
+     * @param   bool    $preferences    Include user preferences information
+     * @param   bool    $extra          Include user extra information
+     * @return  array   User information
      */
     function GetUser($uid, $account = true, $personal = false, $preferences = false, $extra = false)
     {
@@ -74,10 +78,15 @@ class UsersAdminAjax extends Jaws_Ajax
     }
 
     /**
-     * Gets list of users
+     * Gets list of users according to the given criteria
      *
      * @access  public
-     * @param   string  $match    Users who match..
+     * @param   string  $group      User group
+     * @param   bool    $superadmin Is superadmin
+     * @param   int     $status     User status
+     * @param   string  $term       Term to search
+     * @param   string  $orderBy    Order type of result list
+     * @param   int     $offset     Data offset
      * @return  array   Users list
      */
     function GetUsers($group, $superadmin, $status, $term, $orderBy, $offset)
@@ -101,7 +110,9 @@ class UsersAdminAjax extends Jaws_Ajax
      * Gets number of users
      *
      * @access  public
-     * @param   string  $match    Users who match..
+     * @param   string  $group      User group
+     * @param   bool    $superadmin Is superadmin
+     * @param   int     $status     User status
      * @return  int     Number of users
      */
     function GetUsersCount($group, $superadmin, $status)
@@ -125,7 +136,6 @@ class UsersAdminAjax extends Jaws_Ajax
      * @param   string  $password   Password
      * @param   string  $nickname   User's display name
      * @param   string  $email      User's email
-     * @param   int     $guid       Group where user should go
      * @param   int     $superadmin User's type (superadmin or normal)
      * @param   int     $concurrent_logins  Concurrent logins limitation
      * @param   string  $expiry_date        Expiry date
@@ -399,7 +409,6 @@ class UsersAdminAjax extends Jaws_Ajax
      *
      * @access  public
      * @param   int     $uid    User ID
-     * @param   string  $gadget Gadget name
      * @return  mixed   Array of ACL keys or false on failure
      */
     function GetUserACLKeys($uid)

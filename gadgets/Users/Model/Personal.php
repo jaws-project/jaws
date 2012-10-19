@@ -16,8 +16,6 @@ class Users_Model_Personal extends Jaws_Model
      *
      * @access  public
      * @param   int      $uid       User ID
-     * @param   string   $username  Username
-     * @param   string   $nickname  User's display name
      * @param   string   $fname     First name
      * @param   string   $lname     Last name
      * @param   string   $gender    User gender

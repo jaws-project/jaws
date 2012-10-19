@@ -405,11 +405,13 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Adds a new custom map
      *
      * @access  public
-     * @param   string $gadget          Gadget name (FS name)
-     * @param   string $action          Gadget action to use
-     * @param   string $map             Map to use (foo/bar/{param}/{param2}...)
-     * @param   string $extension       Extension of map
-     * @param   array  $vars_regexps    Array of regexp validators
+     * @param   string  $gadget         Gadget name (FS name)
+     * @param   string  $action         Gadget action to use
+     * @param   string  $map            Map to use (foo/bar/{param}/{param2}...)
+     * @param   string  $extension      Extension of map
+     * @param   array   $vars_regexps   Array of regexp validators
+     * @param   int     $order          Sequence number of the map
+     * @param   string  $time           Create/Update time
      * @return  mixed   True on success, Jaws_Error otherwise
      */
     function AddMap($gadget, $action, $map, $extension = '', $vars_regexps = null, $order = 0, $time = '')
@@ -457,8 +459,12 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Updates map route of the map
      *
      * @access  public
-     * @param   int     $id     Map ID
-     * @param   string  $map    Map to use (foo/bar/{param}/{param2}...)
+     * @param   int     $id             Map ID
+     * @param   string  $map            Map to use (foo/bar/{param}/{param2}...)
+     * @param   string  $extension      Extension of map
+     * @param   array   $vars_regexps   Array of regexp validators
+     * @param   int     $order          Sequence number of the map
+     * @param   string  $time           Create/Update time
      * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateMap($id, $map, $extension, $vars_regexps, $order, $time = '')

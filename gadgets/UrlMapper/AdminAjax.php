@@ -48,8 +48,10 @@ class UrlMapperAdminAjax extends Jaws_Ajax
      * Updates a map
      *
      * @access  public
-     * @param   int     $id       Map's ID
-     * @param   string  $map      New map
+     * @param   int     $id         Map ID
+     * @param   string  $map        Map string
+     * @param   string  $extension  Map extension
+     * @param   int     $order      Sequence number of the map
      * @return  array   Response array (notice or error)
      */
     function UpdateMap($id, $map, $extension, $order)
