@@ -34,8 +34,6 @@ class Users_Actions_Personal extends UsersHTML
             $personal  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Personal.html');
@@ -44,18 +42,15 @@ class Users_Actions_Personal extends UsersHTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
-        $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
-        $tpl->SetVariable('fname',             $xss->filter($personal['fname']));
-        $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
-        $tpl->SetVariable('lname',             $xss->filter($personal['lname']));
-        $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('gender_male',       _t('USERS_USERS_MALE'));
-        $tpl->SetVariable('gender_female',     _t('USERS_USERS_FEMALE'));
-        if (empty($personal['gender'])) {
-            $tpl->SetVariable('male_selected',   'selected="selected"');
-        } else {
-            $tpl->SetVariable('female_selected', 'selected="selected"');
-        }
+        $tpl->SetVariable('lbl_fname',  _t('USERS_USERS_FIRSTNAME'));
+        $tpl->SetVariable('fname',      $personal['fname']);
+        $tpl->SetVariable('lbl_lname',  _t('USERS_USERS_LASTNAME'));
+        $tpl->SetVariable('lname',      $personal['lname']);
+        $tpl->SetVariable('lbl_gender', _t('USERS_USERS_GENDER'));
+        $tpl->SetVariable('gender_0',   _t('USERS_USERS_GENDER_0'));
+        $tpl->SetVariable('gender_1',   _t('USERS_USERS_GENDER_1'));
+        $tpl->SetVariable('gender_2',   _t('USERS_USERS_GENDER_2'));
+        $tpl->SetVariable('selected_gender_'.(int)$personal['gender'], 'selected="selected"');
 
         if (empty($personal['dob'])) {
             $dob = array('', '', '');
@@ -71,8 +66,8 @@ class Users_Actions_Personal extends UsersHTML
         $tpl->SetVariable('dob_day',    $dob[2]);
         $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
-        $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
-        $tpl->SetVariable('url',               $xss->filter($personal['url']));
+        $tpl->SetVariable('lbl_url',    _t('GLOBAL_URL'));
+        $tpl->SetVariable('url',        $personal['url']);
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Personal.Response')) {
             $tpl->SetBlock('personal/response');

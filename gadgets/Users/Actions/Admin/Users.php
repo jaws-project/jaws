@@ -444,8 +444,9 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
         // gender
         $gender =& Piwi::CreateWidget('Combo', 'gender');
         $gender->SetID('gender');
-        $gender->AddOption(_t('USERS_USERS_MALE'),   0);
-        $gender->AddOption(_t('USERS_USERS_FEMALE'), 1);
+        $gender->AddOption(_t('USERS_USERS_GENDER_0'), 0);
+        $gender->AddOption(_t('USERS_USERS_GENDER_1'), 1);
+        $gender->AddOption(_t('USERS_USERS_GENDER_2'), 2);
         $gender->SetDefault(0);
         $tpl->SetVariable('lbl_gender', _t('USERS_USERS_GENDER'));
         $tpl->SetVariable('gender', $gender->Get());

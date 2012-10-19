@@ -141,8 +141,9 @@ class Users_Actions_Registration extends UsersHTML
         $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
         $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('gender_male',       _t('USERS_USERS_MALE'));
-        $tpl->SetVariable('gender_female',     _t('USERS_USERS_FEMALE'));
+        $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
+        $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
+        $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
         $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
