@@ -18,7 +18,6 @@ define('_FI_USERS_ACL_MANAGEGROUPS', "Ryhmä hallinta");
 define('_FI_USERS_ACL_MANAGEPROPERTIES', "Asetusten hallinta");
 define('_FI_USERS_ACL_MANAGEUSERACLS', "Käyttäjän ACL hallinta");
 define('_FI_USERS_ACL_MANAGEGROUPACLS', "Ryhmän ACL hallinta");
-define('_FI_USERS_ACL_EDITUSERACCOUNT', "Muokkaa käyttäjän tietoja");
 define('_FI_USERS_LAYOUT_LOGINBOX', "Kirjautumislaatikko");
 define('_FI_USERS_LAYOUT_LOGINBOX_DESC', "Näytä kirjautumislaatikko");
 define('_FI_USERS_GROUPS_GROUPNAME', "Ryhmän nimi");

@@ -19,7 +19,6 @@ define('_NB_USERS_ACL_MANAGEPROPERTIES', "Behandle egenskaper");
 define('_NB_USERS_ACL_MANAGEUSERACLS', "ACL egenskaper for brukere");
 define('_NB_USERS_ACL_MANAGEGROUPACLS', "ACL egenskaper for grupper");
 define('_NB_USERS_ACL_EDITUSERPASSWORD', "Rediger brukers passord");
-define('_NB_USERS_ACL_EDITUSERACCOUNT', "Rediger brukers kontoinformasjon");
 define('_NB_USERS_ACL_EDITUSERPERSONAL', "Rediger brukers profil");
 define('_NB_USERS_ACL_EDITUSERPREFERENCES', "Rediger brukers referanser");
 define('_NB_USERS_LAYOUT_LOGINBOX', "Innloggingsboks");

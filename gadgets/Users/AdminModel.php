@@ -116,9 +116,11 @@ class UsersAdminModel extends Jaws_Model
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPassword', 'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserAccount', 'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPersonal', 'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserNickname',    'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserEmail',       'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPassword',    'false');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPersonal',    'false');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPreferences', 'false');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPassword');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountInformation');

@@ -26,7 +26,11 @@ class Users_Actions_Account extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserAccount');
+        $GLOBALS['app']->Session->CheckPermission(
+            'Users',
+            'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+            false);
+
         $account = $GLOBALS['app']->Session->PopSimpleResponse('Users.Account.Data');
         if (empty($account)) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -44,13 +48,27 @@ class Users_Actions_Account extends UsersHTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
-        $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email',             $xss->filter($account['email']));
-        $tpl->SetVariable('lbl_nickname',      _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('nickname',          $xss->filter($account['nickname']));
-        $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('emptypassword',     _t('USERS_NOCHANGE_PASSWORD'));
-        $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_username',    _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username',        $account['username']);
+        $tpl->SetVariable('lbl_nickname',    _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('nickname',        $account['nickname']);
+        $tpl->SetVariable('lbl_email',       _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email',           $account['email']);
+        $tpl->SetVariable('lbl_password',    _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('emptypassword',   _t('USERS_NOCHANGE_PASSWORD'));
+        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserName')) {
+            $tpl->SetVariable('username_disabled', 'disabled="disabled"');
+        }
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserNickname')) {
+            $tpl->SetVariable('nickname_disabled', 'disabled="disabled"');
+        }
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserEmail')) {
+            $tpl->SetVariable('email_disabled', 'disabled="disabled"');
+        }
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserPassword')) {
+            $tpl->SetVariable('password_disabled', 'disabled="disabled"');
+        }
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Account.Response')) {
             $tpl->SetBlock('account/response');
@@ -76,16 +94,44 @@ class Users_Actions_Account extends UsersHTML
                                                 array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserAccount');
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('email', 'nickname', 'password', 'password_check'), 'post');
+        $GLOBALS['app']->Session->CheckPermission(
+            'Users',
+            'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+            false);
 
-        if ($post['password'] === $post['password_check']) {
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('username', 'nickname', 'email', 'password', 'chkpassword'), 'post');
+        if ($post['password'] === $post['chkpassword']) {
+            // check edit username permission
+            if (empty($post['username']) ||
+                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserName'))
+            {
+                $post['username'] = $GLOBALS['app']->Session->GetAttribute('username');
+            }
+            // check edit nickname permission
+            if (empty($post['nickname']) ||
+                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserNickname'))
+            {
+                $post['nickname'] = $GLOBALS['app']->Session->GetAttribute('nickname');
+            }
+            // check edit email permission
+            if (empty($post['email']) ||
+                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserEmail'))
+            {
+                $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
+            }
+            // check edit password permission
+            if (empty($post['password']) ||
+                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserPassword'))
+            {
+                $post['password'] = null;
+            }
+
             $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Account');
             $result = $model->UpdateAccount($GLOBALS['app']->Session->GetAttribute('user'),
-                                            $GLOBALS['app']->Session->GetAttribute('username'),
-                                            $post['email'],
+                                            $post['username'],
                                             $post['nickname'],
+                                            $post['email'],
                                             $post['password']);
             if (!Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
@@ -100,7 +146,7 @@ class Users_Actions_Account extends UsersHTML
         }
 
         // unset unnecessary account data
-        unset($post['password'], $post['password_check']);
+        unset($post['password'], $post['chkpassword']);
         $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Account.Data');
         Jaws_Header::Location($this->GetURLFor('Account'));
     }

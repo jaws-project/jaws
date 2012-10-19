@@ -19,7 +19,6 @@ define('_FR_USERS_ACL_MANAGEPROPERTIES', "Gestion des propriété");
 define('_FR_USERS_ACL_MANAGEUSERACLS', "Gestion des droits des utilisateurs");
 define('_FR_USERS_ACL_MANAGEGROUPACLS', "Gestion des droits des groupes");
 define('_FR_USERS_ACL_EDITUSERPASSWORD', "Modifier le mot de passe du compte par utilisateurs");
-define('_FR_USERS_ACL_EDITUSERACCOUNT', "Edition des informations du compte pas les utilisateurs");
 define('_FR_USERS_ACL_EDITUSERPERSONAL', "Modifier le profil du compte par utilisateurs");
 define('_FR_USERS_ACL_EDITUSERPREFERENCES', "Modifier les préférences du compte par utilisateurs");
 define('_FR_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Gestion de la méthode d'authentification");

@@ -19,7 +19,6 @@ define('_ES_USERS_ACL_MANAGEPROPERTIES', "Adminsitración de propiedades");
 define('_ES_USERS_ACL_MANAGEUSERACLS', "Adminsitración de listas de control de acceso de usuario");
 define('_ES_USERS_ACL_MANAGEGROUPACLS', "de acceso de grupo");
 define('_ES_USERS_ACL_EDITUSERPASSWORD', "Editar contraseña por usuarios");
-define('_ES_USERS_ACL_EDITUSERACCOUNT', "Editar información de cuenta por usuarios");
 define('_ES_USERS_ACL_EDITUSERPERSONAL', "Editar perfil por usuarios");
 define('_ES_USERS_ACL_EDITUSERPREFERENCES', "Editar preferencias por usuarios");
 define('_ES_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Administrar el método de autenticación");

@@ -18,7 +18,6 @@ define('_PL_USERS_ACL_MANAGEGROUPS', "Zarządzanie grupami");
 define('_PL_USERS_ACL_MANAGEPROPERTIES', "Zarządzanie właściwościami");
 define('_PL_USERS_ACL_MANAGEUSERACLS', "Zarządzanie ACL użytkownika");
 define('_PL_USERS_ACL_MANAGEGROUPACLS', "Zarządzanie ACL grup");
-define('_PL_USERS_ACL_EDITUSERACCOUNT', "Edycja informacji o koncie przez użytkownika");
 define('_PL_USERS_LAYOUT_LOGINBOX', "Box logowania");
 define('_PL_USERS_LAYOUT_LOGINBOX_DESC', "Pokazuj box logowania.");
 define('_PL_USERS_GROUPS_GROUPNAME', "Nazwa grupy");

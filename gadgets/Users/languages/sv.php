@@ -19,7 +19,6 @@ define('_SV_USERS_ACL_MANAGEPROPERTIES', "Hantering av egenskaper");
 define('_SV_USERS_ACL_MANAGEUSERACLS', "Användares ACL-hantering");
 define('_SV_USERS_ACL_MANAGEGROUPACLS', "Grupps ACL-hantering");
 define('_SV_USERS_ACL_EDITUSERPASSWORD', "Hantera kontolösenord efter användare");
-define('_SV_USERS_ACL_EDITUSERACCOUNT', "Ändra kontoinformation för användare");
 define('_SV_USERS_ACL_EDITUSERPERSONAL', "Hantera kontoprofil efter användare");
 define('_SV_USERS_ACL_EDITUSERPREFERENCES', "Hantera kontopreferenser");
 define('_SV_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Hantera autentiseringsmetod");

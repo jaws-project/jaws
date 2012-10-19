@@ -1,24 +1,29 @@
 <!-- BEGIN account -->
-<div class="gadget users profilebox">
+<div class="gadget users account">
   <h2>{title}</h2>
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <form name="profilebox" action="{base_script}" method="post">
+  <form name="account" action="{base_script}" method="post">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdateAccount" />
   <div class="content">
     <fieldset>
-      <p><label for="profile_email">{lbl_email}:</label>
-        <input name="email" id="profile_email" value="{email}" type="text" style="direction: ltr;" />
+      <p><label for="username">{lbl_username}:</label>
+        <input name="username" id="username" value="{username}" type="text" {username_disabled} style="direction: ltr;" />
       </p>
-      <p><label for="profile_nickname">{lbl_nickname}:</label>
-        <input name="nickname" id="profile_nickname" value="{nickname}" type="text" />
+      <hr/>
+      <p><label for="nickname">{lbl_nickname}:</label>
+        <input name="nickname" id="nickname" value="{nickname}" type="text" {nickname_disabled} />
       </p>
-      <p><label for="profile_password">{lbl_password}:</label>
-        <input name="password" id="profile_password" type="password" value="" style="direction: ltr;" />
+      <p><label for="email">{lbl_email}:</label>
+        <input name="email" id="email" value="{email}" type="text" style="direction: ltr;" {email_disabled} />
+      </p>
+      <hr/>
+      <p><label for="password">{lbl_password}:</label>
+        <input name="password" id="password" type="password" value="" {password_disabled} style="direction: ltr;" />
         <span><small>{emptypassword}</small></span>
       </p>
-      <p><label for="profile_chkpasswd">{lbl_checkpassword}:</label>
-        <input name="password_check" id="profile_chkpasswd" type="password" value="" style="direction: ltr;" />
+      <p><label for="chkpassword">{lbl_chkpassword}:</label>
+        <input name="chkpassword" id="chkpassword" type="password" value="" {password_disabled} style="direction: ltr;" />
       </p>
     </fieldset>
   </div>

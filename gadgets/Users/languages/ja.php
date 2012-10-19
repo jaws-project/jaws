@@ -18,7 +18,6 @@ define('_JA_USERS_ACL_MANAGEGROUPS', "グループ管理");
 define('_JA_USERS_ACL_MANAGEPROPERTIES', "プロパティ管理");
 define('_JA_USERS_ACL_MANAGEUSERACLS', "ユーザー ACL の管理");
 define('_JA_USERS_ACL_MANAGEGROUPACLS', "グループ ACL の管理");
-define('_JA_USERS_ACL_EDITUSERACCOUNT', "ユーザーによるアカウント情報の編集");
 define('_JA_USERS_LAYOUT_LOGINBOX', "ログインボックス");
 define('_JA_USERS_LAYOUT_LOGINBOX_DESC', "ログインボックスの表示です。");
 define('_JA_USERS_GROUPS_GROUPNAME', "グループ管理");

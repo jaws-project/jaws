@@ -133,7 +133,10 @@ class Users_Actions_LoginBox extends UsersLayoutHTML
             $tpl->SetVariable('email',  $uInfo['email']);
 
             // edit account information
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserAccount')) {
+            if ($GLOBALS['app']->Session->GetPermission(
+                    'Users',
+                    'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false))
+            {
                 $tpl->SetBlock('UserLinks/account');
                 $tpl->SetVariable('user_account', _t('USERS_EDIT_ACCOUNT'));
                 $tpl->SetVariable('account_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Account'));

@@ -18,7 +18,6 @@ define('_CA_USERS_ACL_MANAGEGROUPS', "Gestió de grups");
 define('_CA_USERS_ACL_MANAGEPROPERTIES', "Gestió de propietats");
 define('_CA_USERS_ACL_MANAGEUSERACLS', "Gestió ACL d'usuaris");
 define('_CA_USERS_ACL_MANAGEGROUPACLS', "Gestió ACL de grups");
-define('_CA_USERS_ACL_EDITUSERACCOUNT', "Editar la informació dels comptes per usuaris");
 define('_CA_USERS_LAYOUT_LOGINBOX', "Quadre d'inici de sessió");
 define('_CA_USERS_LAYOUT_LOGINBOX_DESC', "Mostra un quadre d'inici de sessió.");
 define('_CA_USERS_GROUPS_GROUPNAME', "Nom del grup");

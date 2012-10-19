@@ -19,7 +19,6 @@ define('_DE_USERS_ACL_MANAGEPROPERTIES', "Einstellungen verwalten");
 define('_DE_USERS_ACL_MANAGEUSERACLS', "ACL's der User verwalten");
 define('_DE_USERS_ACL_MANAGEGROUPACLS', "ACL's der Gruppen verwalten");
 define('_DE_USERS_ACL_EDITUSERPASSWORD', "Userpasswörter bearbeiten");
-define('_DE_USERS_ACL_EDITUSERACCOUNT', "Userinformationen bearbeiten");
 define('_DE_USERS_ACL_EDITUSERPERSONAL', "Userprofil bearbeiten");
 define('_DE_USERS_ACL_EDITUSERPREFERENCES', "Usereinstellungen bearbeiten");
 define('_DE_USERS_LAYOUT_LOGINBOX', "Loginformular");

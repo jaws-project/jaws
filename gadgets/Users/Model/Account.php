@@ -17,20 +17,16 @@ class Users_Model_Account extends Jaws_Model
      * @access  public
      * @param   int      $uid       User ID
      * @param   string   $username  Username
-     * @param   string   $email     User's email
      * @param   string   $nickname  User's display name
+     * @param   string   $email     User's email
      * @param   string   $password  Password
      * @return  mixed    True on success or Jaws_Error on failure
      */
-    function UpdateAccount($uid, $username, $email, $nickname, $password)
+    function UpdateAccount($uid, $username, $nickname, $email, $password)
     {
-        if (trim($nickname) == '' || trim($email) == '')
-        {
-            return new Jaws_Error(_t('USERS_USERS_INCOMPLETE_FIELDS'), _t('USERS_NAME'));
-        }
-
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser  = new Jaws_User;
+        
         $result = $jUser->UpdateUser($uid,
                                      $username,
                                      $nickname,

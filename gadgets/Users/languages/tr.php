@@ -19,7 +19,6 @@ define('_TR_USERS_ACL_MANAGEPROPERTIES', "Özellik yönetimi");
 define('_TR_USERS_ACL_MANAGEUSERACLS', "Kullanıcı ACL yönetimi");
 define('_TR_USERS_ACL_MANAGEGROUPACLS', "Grup ACL yönetimi");
 define('_TR_USERS_ACL_EDITUSERPASSWORD', " Kullanıcı hesap şifrelerini değiştir\n");
-define('_TR_USERS_ACL_EDITUSERACCOUNT', "Hesap bilgileri kullanıcılar tarafından düzenlenir");
 define('_TR_USERS_ACL_EDITUSERPERSONAL', "Profil bilgileri kullanıcılar tarafından düzenlenir");
 define('_TR_USERS_ACL_EDITUSERPREFERENCES', "Hesap ayarları kullanıcılar tarafından düzenlenir");
 define('_TR_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Yetkilendirme yöntemini yönet");
