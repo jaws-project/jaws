@@ -320,7 +320,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname'), 'post');
+        $post = $request->get(array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'), 'post');
         $uploaddir = $model->GetFileBrowserRootDir() . $post['path'];
 
         require_once 'File/Util.php';
@@ -348,7 +348,11 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
             }
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Admin&path=' . $post['path']);
+        if (empty($post['extra_params'])) {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Admin&path=' . $post['path']);
+        } else {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+        }
     }
 
 
@@ -369,6 +373,10 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
         $tpl->SetBlock('browse');
 
         $tpl->SetVariable('page-title', _t('FILEBROWSER_NAME'));
+        $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
+        $tpl->SetVariable('confirmDirDelete', _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
+        $tpl->SetVariable('path', $path);
 
         $dir = _t('GLOBAL_LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
@@ -386,6 +394,25 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
             $tpl->SetVariable('ckFuncIndex', $getParams['CKEditorFuncNum']);
         }
 
+        $tpl->SetVariable('extra_params', $extraParams);
+        $tpl->SetVariable('lbl_file_upload', _t('FILEBROWSER_UPLOAD_FILE'));
+
+
+        $title =& Piwi::CreateWidget('Entry', 'file_title', '');
+        $title->SetStyle('width: 200px;');
+        $tpl->SetVariable('lbl_file_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('file_title', $title->Get());
+
+        $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
+        $uploadfile->SetID('uploadfile');
+        $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
+        $tpl->SetVariable('uploadfile', $uploadfile->Get());
+
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
+        $tpl->SetVariable('btn_upload_file', $btnSave->Get());
+
+
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $pathArr = $model->GetCurrentRootDir($path);
         if (!Jaws_Error::IsError($pathArr)) {
@@ -396,7 +423,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
                 }
                 $url = BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $_path;
                 if (empty($_path)) {
-                    $link =& Piwi::CreateWidget('Link', _t('FILEBROWSER_ROOT'), $url . '/');
+                    $link =& Piwi::CreateWidget('Link', _t('FILEBROWSER_ROOT'), $url . '/' . $extraParams);
                     $tpl->SetVariable('root', $link->Get());
                 } else {
                     if ($_path == $path) {
@@ -414,6 +441,7 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
         $tpl->SetVariable('lbl_location', _t('FILEBROWSER_LOCATION'));
         $tpl->SetVariable('lbl_file_name', _t('FILEBROWSER_FILENAME'));
         $tpl->SetVariable('lbl_file_size', _t('FILEBROWSER_SIZE'));
+        $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
         $files = $model->ReadDir($path);
         if (!Jaws_Error::IsError($files)) {
@@ -433,6 +461,15 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
                     $link->SetID('');
                     $link->SetTitle($file['title']);
                     $tpl->SetVariable('file_name', $link->Get());
+
+                    if ($this->GetPermission('ManageDirectories')) {
+                        $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                            "javascript: deleteDir('" . $file['filename'] . "');",
+                            STOCK_DELETE);
+                        $tpl->SetVariable('action', $link->Get());
+                    }
+
+
                 } else {
                     if (empty($file['id'])) {
                         $furl = $xss->filter($file['url']);
@@ -444,6 +481,15 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
                                                 $file['filename'],
                                                 "javascript:selectFile('$furl', '{$file['title']}', '$editor')");
                     $tpl->SetVariable('file_name', $link->Get());
+
+                    if ($this->GetPermission('ManageFiles')) {
+                        $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                            "javascript: deleteFile('" . $file['filename'] . "');",
+                            STOCK_DELETE);
+                        $tpl->SetVariable('action', $link->Get());
+                    }
+
+
                 }
 
                 // File Size
@@ -454,6 +500,48 @@ class FileBrowserAdminHTML extends Jaws_GadgetHTML
 
         $tpl->ParseBlock('browse');
         return $tpl->Get();
+    }
+
+    /**
+     * Delete a file in text editor mode
+     *
+     * @access  public
+     * @return  void
+     */
+    function DeleteFile()
+    {
+        $this->CheckPermission('ManageFiles');
+
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('path', 'selected_item', 'extra_params'), 'post');
+
+        if ($model->Delete($post['path'], $post['selected_item'])) {
+            $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
+        }
+
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+    }
+
+    /**
+     * Delete a directory in text editor mode
+     *
+     * @access  public
+     * @return  void
+     */
+    function DeleteDir()
+    {
+        $this->CheckPermission('ManageDirectories');
+
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('path', 'selected_item', 'extra_params'), 'post');
+
+        if ($model->Delete($post['path'], $post['selected_item'])) {
+            $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
+        }
+
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
     }
 
 }
