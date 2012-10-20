@@ -244,6 +244,10 @@ span.pager_separator, span.page_inactive {
     width: 170px;
 }
 
+.tableform {
+    width: 420px;
+}
+
 /* Phoo Browse */
 #phoo_browse {height:445px; font-size:12px; padding:10px; background-color:white;}
 #phoo_browse #albums-area {height:445px; padding:0 10px;}
