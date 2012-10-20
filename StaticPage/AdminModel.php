@@ -137,7 +137,7 @@ class StaticPageAdminModel extends StaticPageModel
 
             $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
             if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->ChangeGadgetActionName('StaticPage', 'Display', 'PagesList');
+                $layoutModel->EditGadgetLayoutAction('StaticPage', 'Display', 'PagesList');
             }
         }
 
