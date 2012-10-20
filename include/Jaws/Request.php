@@ -207,7 +207,9 @@ class Jaws_Request
      */
     function nullstrip(&$value)
     {
-        $value = preg_replace(array('/\0+/', '/(\\\\0)+/'), '', $value);
+        if (is_string($value)) {
+            $value = preg_replace(array('/\0+/', '/(\\\\0)+/'), '', $value);
+        }
     }
 
     /**
@@ -219,7 +221,9 @@ class Jaws_Request
      */
     function strip_ambiguous($value)
     {
-        return preg_replace('/%00/', '', $value);
+        if (is_string($value)) {
+            return preg_replace('/%00/', '', $value);
+        }
     }
 
     /**
@@ -231,24 +235,23 @@ class Jaws_Request
      */
     function filter(&$value)
     {
-        foreach ($this->_priority as $filter) {
-            $function = $this->_filters[$filter];
-            if (
-                isset($this->_includes[$filter]) &&
-                file_exists($this->_includes[$filter])
-            ) {
-                include_once $this->_includes[$filter];
-            }
+        if (is_string($value)) {
+            foreach ($this->_priority as $filter) {
+                $function = $this->_filters[$filter];
+                if (isset($this->_includes[$filter]) && file_exists($this->_includes[$filter])) {
+                    include_once $this->_includes[$filter];
+                }
 
-            $params = array();
-            $params[] = $value;
-            if (is_array($this->_params[$filter])) {
-                $params = array_merge($params, $this->_params[$filter]);
-            } else {
-                $params[] = $this->_params[$filter];
-            }
+                $params = array();
+                $params[] = $value;
+                if (is_array($this->_params[$filter])) {
+                    $params = array_merge($params, $this->_params[$filter]);
+                } else {
+                    $params[] = $this->_params[$filter];
+                }
 
-            $value = call_user_func_array($function, $params);
+                $value = call_user_func_array($function, $params);
+            }
         }
     }
 
