@@ -170,7 +170,7 @@ function editPoll(element, pid)
     selectDataGridRow(element.parentNode.parentNode);
 
     var pollInfo = pollSync.getpoll(selectedPoll);
-    $('question').value    = pollInfo['question'];
+    $('question').value    = JawsDefilter(pollInfo['question']);
     $('gid').value         = pollInfo['gid'];
     if (pollInfo['start_time'] == null) pollInfo['start_time'] = '';
     if (pollInfo['stop_time']  == null) pollInfo['stop_time']  = '';
@@ -208,7 +208,7 @@ function editPollAnswers(element, pid)
     var box = $('answers_combo');
     box.length = 0;
     for(var i = 0; i < answers.length; i++) {
-        box.options[i] = new Option(answers[i]['answer'], answers[i]['id']);
+        box.options[i] = new Option(JawsDefilter(answers[i]['answer']), answers[i]['id']);
     }
     $('answer').focus();
 }

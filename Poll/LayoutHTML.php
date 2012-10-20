@@ -93,13 +93,12 @@ class PollLayoutHTML
             $tpl->SetVariable('title', _t('POLL_ACTION_POLLS_TITLE'));
         }
 
-        $xss   = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $polls = $model->GetPolls($gid, true);
         if (!Jaws_Error::isError($polls)) {
             foreach ($polls as $poll) {
                 $tpl->SetBlock('Polls/poll');
                 $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Poll', 'ViewPoll', array('id' => $poll['id'])));
-                $tpl->SetVariable('question', $xss->filter($poll['question']));
+                $tpl->SetVariable('question', $poll['question']);
                 $tpl->ParseBlock('Polls/poll');
             }
         }
@@ -141,9 +140,8 @@ class PollLayoutHTML
             $tpl->ParseBlock('Poll/response');
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl->SetVariable('pid', $poll['id']);
-        $tpl->SetVariable('question', $xss->filter($poll['question']));
+        $tpl->SetVariable('question', $poll['question']);
         $votable = ($poll['poll_type'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
         if ($votable || $poll['result_view']) {
             //print the answers or results
@@ -154,7 +152,7 @@ class PollLayoutHTML
                 foreach ($answers as $answer) {
                     $tpl->SetBlock("Poll/{$block}");
                     $tpl->SetVariable('aid', $answer['id']);
-                    $tpl->SetVariable('answer', $xss->filter($answer['answer']));
+                    $tpl->SetVariable('answer', $answer['answer']);
                     if ($poll['select_type'] == 1) {
                         $rb = '<input type="checkbox" name="answers[]" id="poll-answer-input-'.
                               $answer['id'].'" value="' .$answer['id']. '"/>';

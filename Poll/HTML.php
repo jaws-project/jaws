@@ -110,9 +110,7 @@ class PollHTML extends Jaws_GadgetHTML
         $tpl->Load('Results.html');
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('POLL_ACTION_RESULT_TITLE'));
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $tpl->SetVariable('question', $xss->filter($poll['question']));
+        $tpl->SetVariable('question', $poll['question']);
 
         $answers = $model->GetPollAnswers($poll['id']);
         if (!Jaws_Error::IsError($answers)) {
