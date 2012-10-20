@@ -79,7 +79,7 @@ class VisitCounterAdminAjax extends Jaws_Ajax
      * Gets all entries/records for datagrid
      *
      * @access  public
-     * @limit   int     Data limit to fetch
+     * @limit   int     $limit  Data limit to fetch
      * @return  array   List of visits
      */
     function GetData($limit)

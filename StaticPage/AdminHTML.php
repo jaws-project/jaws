@@ -502,6 +502,8 @@ class StaticPageAdminHTML extends Jaws_GadgetHTML
      * @access  private
      * @param   string      $title          Page title
      * @param   string      $fast_url       Fast URL
+     * @param   string      $meta_keys      Meta keywords
+     * @param   string      $meta_desc      Meta description
      * @param   string      $content        Page content
      * @param   bool        $published      Whether 'published' is checked or not
      * @param   bool        $show_title     Whether 'show_title' is checked or not
