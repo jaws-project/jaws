@@ -38,7 +38,7 @@ function updateProperties(form)
 {
     var rows = form.elements['rows_combo'].value;
     var allow_url = 'true';
-    if (form.elements['allow_url'][1].checked) {
+    if (form.elements['allow_url_false'].checked) {
         allow_url = 'false';
     }
 
