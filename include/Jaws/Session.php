@@ -52,6 +52,14 @@ class Jaws_Session
     var $_Attributes = array();
 
     /**
+     * Attributes array trash
+     * @var     array $_AttributesTrash
+     * @access  private
+     * @see     SetAttribute(), GetAttibute()
+     */
+    var $_AttributesTrash = array();
+
+    /**
      * Changes flag
      * @var     bool    $_HasChanged
      * @access  private
@@ -395,17 +403,22 @@ class Jaws_Session
      * Set a session attribute
      *
      * @access  public
-     * @param   string  $name   attribute name
-     * @param   mixed   $value  attribute value
+     * @param   string  $name       Attribute name
+     * @param   mixed   $value      Attribute value
+     * @param   bool    $trashed    Trashed attribute(eliminated end of current request)
      * @return  bool    True if can set value
      */
-    function SetAttribute($name, $value)
+    function SetAttribute($name, $value, $trashed = false)
     {
-        $this->_HasChanged = !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] != $value);
-        if (is_array($value) && $name == 'LastResponses') {
-            $this->_Attributes['LastResponses'][] = $value;
+        if ($trashed) {
+            $this->_AttributesTrash[$name] = $value;
         } else {
-            $this->_Attributes[$name] = $value;
+            $this->_HasChanged = !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] != $value);
+            if (is_array($value) && $name == 'LastResponses') {
+                $this->_Attributes['LastResponses'][] = $value;
+            } else {
+                $this->_Attributes[$name] = $value;
+            }
         }
 
         return true;
@@ -427,6 +440,8 @@ class Jaws_Session
 
         if (array_key_exists($name, $this->_Attributes)) {
             return $this->_Attributes[$name];
+        } elseif (array_key_exists($name, $this->_AttributesTrash)) {
+            return $this->_AttributesTrash[$name];
         }
 
         return null;
@@ -463,14 +478,20 @@ class Jaws_Session
      * Delete a session attribute
      *
      * @access  public
-     * @param   string $name attribute name
-     * @return  bool   True if can delete value
+     * @param   string  $name       Attribute name
+     * @param   bool    $trashed    Move ttribute to trash before delete
+     * @return  bool    True if can delete value
      */
-    function DeleteAttribute($name)
+    function DeleteAttribute($name, $trashed = false)
     {
         if (array_key_exists($name, $this->_Attributes)) {
+            if ($trashed) {
+                $this->_AttributesTrash[$name] = $this->_Attributes[$name];
+            }
             unset($this->_Attributes[$name]);
             $this->_HasChanged = true;
+        } elseif (!$trashed && array_key_exists($name, $this->_AttributesTrash)) {
+            unset($this->_AttributesTrash[$name]);
         }
 
         return true;
@@ -789,7 +810,8 @@ class Jaws_Session
     {
         $response = $this->GetAttribute($resource);
         if ($remove) {
-            $this->DeleteAttribute($resource);
+            // move it into attributes trash
+            $this->DeleteAttribute($resource, true);
         }
 
         return $response;
