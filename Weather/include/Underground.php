@@ -10,6 +10,14 @@
 class Underground_Weather
 {
     /**
+     * API key for using Underground weather service
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $_apikey;
+
+    /**
      * Whether use metric or not
      *
      * @var     bool
@@ -45,14 +53,16 @@ class Underground_Weather
      * Constructor
      *
      * @access  public
+     * @param   string  $apikey         Underground weather service api key
      * @param   bool    $metric
      * @param   string  $cache_dir
      * @param   int     $expire_time
      * @param   array   $options
      * @return  void
      */
-    function Weather_Underground($metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
+    function Underground_Weather($apikey, $metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
     {
+        $this->_apikey      = $apikey;
         $this->_metric      = $metric;
         $this->_cache_dir   = $cache_dir;
         $this->_expire_time = $expire_time;
@@ -228,9 +238,9 @@ class Underground_Weather
     }
 
     /**
-     * Gets weather information
+     * Gets weather temperature details
      *
-     * @access  public
+     * @access  private
      * @param   array   $gWeather
      * @return  array   Weather information
      */
@@ -243,12 +253,12 @@ class Underground_Weather
     }
 
     /**
-     * Sets the input xml file to be parsed
+     * Gets weather data for specific latitude/longitude
      *
-     * @param    float      $latitude   The GEO position latitude
-     * @param    float      $longitude  The GEO position longitude
-     * @return   mixed      Array of weather data or PEAR error
      * @access   public
+     * @param    float  $latitude   The GEO position latitude
+     * @param    float  $longitude  The GEO position longitude
+     * @return   mixed  Array of weather data or PEAR error
      */
     function getWeather($latitude, $longitude)
     {
@@ -261,11 +271,10 @@ class Underground_Weather
             require_once 'HTTP/Request.php';
             require_once "XML/Unserializer.php";
 
-//            $latitude  = $latitude  * 1000000;
-//            $longitude = $longitude * 1000000;
-            $apiKey = '0000000000000000';
-            $httpRequest = new HTTP_Request("http://api.wunderground.com/api/$apiKey/forecast/conditions/q/{$latitude},{$longitude}.xml",
-                                            $this->_params);
+            $req_url = "http://api.wunderground.com/api/{$this->_apikey}/forecast/conditions/q/";
+            $req_url.= "{$latitude},{$longitude}.xml";
+            $httpRequest = new HTTP_Request($req_url, $this->_params);
+
             $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
             $resRequest  = $httpRequest->sendRequest();
             if (PEAR::isError($resRequest)) {

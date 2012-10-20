@@ -277,12 +277,21 @@ class WeatherAdminHTML extends Jaws_GadgetHTML
         $now = time();
         $objDate = $GLOBALS['app']->loadDate();
         $dFormat =& Piwi::CreateWidget('Combo', 'date_format');
+        $dFormat->setStyle('width:208px;');
         $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
         $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
         $dFormat->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Weather/date_format'));
         $tpl->SetVariable('lbl_date_format', _t('WEATHER_DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
+
+        $apikey =& Piwi::CreateWidget('Entry',
+                                      'api_key',
+                                      $GLOBALS['app']->Registry->Get('/gadgets/Weather/api_key'));
+        $apikey->setStyle('width:200px; direction: ltr;');
+        $tpl->SetVariable('lbl_api_key', _t('WEATHER_API_KEY'));
+        $tpl->SetVariable('lbl_api_key_desc', _t('WEATHER_API_KEY_DESC'));
+        $tpl->SetVariable('api_key', $apikey->Get());
 
         if ($this->GetPermission('UpdateSetting')) {
             $btnupdate =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);

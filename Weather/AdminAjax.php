@@ -87,12 +87,13 @@ class WeatherAdminAjax extends Jaws_Ajax
      * @param   string  $unit           Unit for displaying temperature
      * @param   int     $update_period  Time interval between updates
      * @param   string  $date_format    Date string format
+     * @param   string  $api_key        API key
      * @return  array   Response (success or failure)
      */
-    function UpdateProperties($unit, $update_period, $date_format)
+    function UpdateProperties($unit, $update_period, $date_format, $api_key)
     {
         $this->CheckSession('Weather', 'UpdateProperties');
-        $this->_Model->UpdateProperties($unit, $update_period, $date_format);
+        $this->_Model->UpdateProperties($unit, $update_period, $date_format, $api_key);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

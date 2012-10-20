@@ -41,6 +41,8 @@ define('_EN_WEATHER_UNIT_METRIC_TEMP', "&deg;C");
 define('_EN_WEATHER_UNIT_IMPERIAL', "Imperial");
 define('_EN_WEATHER_UNIT_IMPERIAL_TEMP', "&deg;F");
 define('_EN_WEATHER_DATE_FORMAT', "Date Format");
+define('_EN_WEATHER_API_KEY', "API Key");
+define('_EN_WEATHER_API_KEY_DESC', "you need api key from <a href='http://www.wunderground.com/weather/api/'>Weather Underground</a>");
 
 // Website
 define('_EN_WEATHER_TITLE', "Weather of {0}");

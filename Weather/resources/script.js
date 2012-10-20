@@ -147,7 +147,8 @@ function updateProperties()
 {
     weatherAsync.updateproperties($('unit').value,
                                   $('update_period').value,
-                                  $('date_format').value);
+                                  $('date_format').value,
+                                  $('api_key').value);
 }
 
 /**

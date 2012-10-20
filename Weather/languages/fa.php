@@ -33,6 +33,8 @@ define('_FA_WEATHER_UNIT_METRIC_TEMP', "&deg;C");
 define('_FA_WEATHER_UNIT_IMPERIAL', "امپریال");
 define('_FA_WEATHER_UNIT_IMPERIAL_TEMP', "&deg;F");
 define('_FA_WEATHER_DATE_FORMAT', "قالب تاریخ");
+define('_FA_WEATHER_API_KEY', "کلید بکارگیری سرویس");
+define('_FA_WEATHER_API_KEY_DESC', "برای بهره برداری از این ابزار نیازمند دریافت کلیدی از نشانی <a href='http://www.wunderground.com/weather/api/'>Weather Underground</a> می باشید");
 define('_FA_WEATHER_TITLE', "آب و هوای {0}");
 define('_FA_WEATHER_ALL_REGIONS', "آب و هوا");
 define('_FA_WEATHER_CURRENT', "هم اکنون");

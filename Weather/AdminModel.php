@@ -41,6 +41,7 @@ class WeatherAdminModel extends WeatherModel
         $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/unit', 'metric');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/date_format', 'DN d MN');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/update_period', '3600');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/api_key', '');
 
         return true;
     }
@@ -65,6 +66,7 @@ class WeatherAdminModel extends WeatherModel
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/unit');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/date_format');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/update_period');
+        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/api_key');
 
         return true;
     }
@@ -79,33 +81,38 @@ class WeatherAdminModel extends WeatherModel
      */
     function UpdateGadget($old, $new)
     {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
+        if (version_compare($old, '0.8.0', '<')) {
+            $result = $this->installSchema('schema.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
 
-        // Remove from layout
-        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->DeleteGadgetElements('Weather');
-        }
+            // Remove from layout
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->DeleteGadgetElements('Weather');
+            }
 
-        // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Weather/ManageRegions', 'true');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/AddCity');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/EditCity');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
+            // ACL keys
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Weather/ManageRegions', 'true');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/AddCity');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/EditCity');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
+
+            // Registry keys
+            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/unit', 'metric');
+            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/date_format', 'DN d MN');
+            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/update_period', '3600');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/refresh');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/cities');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/units');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/forecast');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/partner_id');
+            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/license_key');
+        }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/unit', 'metric');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/date_format', 'DN d MN');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/update_period', '3600');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/refresh');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/cities');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/units');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/forecast');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/partner_id');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/license_key');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/api_key', '');
 
         return true;
     }
@@ -220,14 +227,16 @@ class WeatherAdminModel extends WeatherModel
      * @param   string  $unit           Unit for displaying temperature
      * @param   int     $update_period  Time interval between updates
      * @param   string  $date_format    Date string format
+     * @param   string  $api_key        API key
      * @return  mixed   True if update is successful or Jaws_Error on any error
      */
-    function UpdateProperties($unit, $update_period, $date_format)
+    function UpdateProperties($unit, $update_period, $date_format, $api_key)
     {
         $res = array();
         $res[] = $GLOBALS['app']->Registry->Set('/gadgets/Weather/unit', $unit);
         $res[] = $GLOBALS['app']->Registry->Set('/gadgets/Weather/update_period', $update_period);
         $res[] = $GLOBALS['app']->Registry->Set('/gadgets/Weather/date_format', $date_format);
+        $res[] = $GLOBALS['app']->Registry->Set('/gadgets/Weather/api_key', $api_key);
 
         foreach ($res as $r) {
             if (Jaws_Error::IsError($r) || !$r) {

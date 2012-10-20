@@ -69,10 +69,12 @@ class WeatherLayoutHTML
 
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
         $metric = $GLOBALS['app']->Registry->Get('/gadgets/Weather/unit') == 'metric';
-        $wService = new Underground_Weather($metric,
-                                       JAWS_DATA . 'weather',
-                                       $GLOBALS['app']->Registry->Get('/gadgets/Weather/update_period'),
-                                       $options);
+        $wService = new Underground_Weather(
+                                $GLOBALS['app']->Registry->Get('/gadgets/Weather/api_key'),
+                                $metric,
+                                JAWS_DATA . 'weather',
+                                $GLOBALS['app']->Registry->Get('/gadgets/Weather/update_period'),
+                                $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
             $tpl->SetVariable('title', _t('WEATHER_TITLE', $region['title']));
@@ -117,6 +119,8 @@ class WeatherLayoutHTML
                 }
                 $tpl->ParseBlock('weather/forecast');
             }
+        } else {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, $rWeather->getMessage());
         }
 
         $tpl->ParseBlock('weather');
