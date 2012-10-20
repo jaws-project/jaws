@@ -161,7 +161,8 @@ class Jaws_GadgetHTML extends Jaws_Gadget
 
         $objAjax = new $ajaxClass($model);
         $request =& Jaws_Request::getInstance();
-        if (isset($_GET['client'])) {
+        $jpspan  = $request->get('jpspan', 'get');
+        if (isset($jpspan)) {
             $this->InitAjax($objAjax);
         } else {
             $output = '';
@@ -252,7 +253,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Ajax/Ajax.js');
         $GLOBALS['app']->Layout->AddScriptLink(BASE_SCRIPT.'?gadget='.
                                                $name.
-                                               '&amp;action=Ajax&amp;client');
+                                               '&amp;action=Ajax&amp;jpspan');
 
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink('gadgets/'.
