@@ -526,6 +526,17 @@ if (!function_exists('sys_get_temp_dir')) {
 }
 
 /**
+ * Converts the hex representation of data to binary
+ * @see http://www.php.net/hex2bin
+ */
+if (!function_exists('hex2bin')) {
+    function hex2bin($data)
+    {
+        return pack("H*", $data);
+    }
+}
+
+/**
  * Get GMT/UTC date/time information
  * @see http://www.php.net/getdate
  */
