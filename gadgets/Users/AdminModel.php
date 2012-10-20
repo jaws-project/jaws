@@ -117,6 +117,13 @@ class UsersAdminModel extends Jaws_Model
                 //return $result;
             }
 
+            // Update layout actions
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Users', 'LoginBox', 'LoginBox', 'LoginBox');
+                $layoutModel->EditGadgetLayoutAction('Users', 'LoginLinks', 'LoginLinks', 'LoginBox');
+            }
+
             // ACL keys
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserNickname',    'false');
