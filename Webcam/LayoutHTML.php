@@ -24,13 +24,12 @@ class WebcamLayoutHTML
         $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model');
         $webcams = $model->GetWebcams();
         if (!Jaws_Error::IsError($webcams)) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $tpl->SetBlock('webcam');
             $tpl->SetVariable('title', _t('WEBCAM_WEBCAMS'));
             foreach ($webcams as $webcam) {
                 $tpl->SetBlock('webcam/item');
-                $tpl->SetVariable('url',     $xss->filter($webcam['url']));
-                $tpl->SetVariable('title',   $xss->filter($webcam['title']));
+                $tpl->SetVariable('url',     $webcam['url']);
+                $tpl->SetVariable('title',   $webcam['title']);
                 $tpl->SetVariable('id',      $webcam['id']);
                 $tpl->SetVariable('refresh', $webcam['refresh']);
                 $tpl->ParseBlock('webcam/item');
@@ -54,12 +53,11 @@ class WebcamLayoutHTML
         $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model');
         $webcam = $model->GetRandomWebCam();
         if (!Jaws_Error::IsError($webcam)) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $tpl->SetBlock('webcam');
             $tpl->SetVariable('title', _t('WEBCAM_WEBCAMS'));
             $tpl->SetBlock('webcam/item');
-            $tpl->SetVariable('url',     $xss->filter($webcam['url']));
-            $tpl->SetVariable('title',   $xss->filter($webcam['title']));
+            $tpl->SetVariable('url',     $webcam['url']);
+            $tpl->SetVariable('title',   $webcam['title']);
             $tpl->SetVariable('id',      $webcam['id']);
             $tpl->SetVariable('refresh', $webcam['refresh']);
             $tpl->ParseBlock('webcam/item');

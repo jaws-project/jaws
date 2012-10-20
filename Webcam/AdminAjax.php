@@ -97,14 +97,11 @@ class WebcamAdminAjax extends Jaws_Ajax
      */
     function ShowShortURL($url)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $clean_url = $xss->filter($url);
         if (strlen($url) > 40) {
-            return "<a title=\"{$clean_url}\" href=\"{$clean_url}\">" .
-                $xss->filter(substr($url, 0, 40)) . "...</a>";
+            return "<a title=\"{$url}\" href=\"{$url}\">" . substr($url, 0, 40) . "...</a>";
         }
 
-        return "<a title=\"{$clean_url}\" href=\"{$clean_url}\">".$clean_url."</a>";
+        return "<a title=\"{$url}\" href=\"{$url}\">".$url."</a>";
     }
 
     /**
