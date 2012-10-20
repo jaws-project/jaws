@@ -153,8 +153,44 @@ class LayoutAdminModel extends LayoutModel
     }
 
     /**
-     * Update the gadget's action name
+     * Update the gadget layout action name/file
      *
+     * @access  public
+     * @param   string  $gadget             Gadget name
+     * @param   string  $old_action         Old action name
+     * @param   string  $gadget_action      New action name
+     * @param   string  $action_filename    New action file
+     * @return  bool    Returns true if updated without problems, otherwise returns false
+     */
+    function EditGadgetLayoutAction($gadget, $old_action, $gadget_action, $action_filename = '')
+    {
+        $params = array();
+        $params['gadget']          = $gadget;
+        $params['old_action']      = $old_action;
+        $params['gadget_action']   = $gadget_action;
+        $params['action_filename'] = $action_filename;
+
+        $sql = '
+            UPDATE [[layout]] SET
+                [gadget_action]   = {gadget_action},
+                [action_filename] = {action_filename}
+            WHERE
+                [gadget] = {gadget}
+              AND
+                [gadget_action] = {old_action}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return true;
+    }
+
+    /**
+     * Update the gadget action name
+     *
+     * @deprecated
      * @access  public
      * @param   string  $gadget      Gadget name
      * @param   string  $old_action  Old action
@@ -163,37 +199,7 @@ class LayoutAdminModel extends LayoutModel
      */
     function ChangeGadgetActionName($gadget, $old_action, $new_action)
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['action'] = $old_action.'%';
-
-        $sql = '
-            SELECT [id], [gadget_action]
-            FROM [[layout]]
-            WHERE
-                [gadget] = {gadget}
-              AND
-                [gadget_action] LIKE {action}';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        foreach ($result as $row) {
-            $params['id']     = $row['id'];
-            $params['action'] = substr_replace($row['gadget_action'], $new_action, 0, strlen($old_action));
-            $sql = '
-                UPDATE [[layout]] SET
-                    [gadget_action] = {action}
-                WHERE [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    return $result;
-                }
-        }
-
-        return true;
+        return $this->EditGadgetLayoutAction($gadget, $old_action, $new_action);
     }
 
     /**
