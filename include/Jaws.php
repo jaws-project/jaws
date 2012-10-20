@@ -882,8 +882,10 @@ class Jaws
 
         if (empty($type)) {
             return $this->_Gadgets[$gadget]['actions'];
-        } else {
+        } elseif (array_key_exists($type, $this->_Gadgets[$gadget]['actions'])) {
             return $this->_Gadgets[$gadget]['actions'][$type];
+        } else {
+            return array();
         }
     }
 
