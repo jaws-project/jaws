@@ -14,8 +14,9 @@
 var BlocksCallback = {
 
     newblock: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            afterNewBlock(response['id']);
+        console.log(response);
+        if (response['css'] == 'notice-message') {
+            afterNewBlock(response['data']);
         }
         showResponse(response);
     },

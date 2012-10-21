@@ -43,11 +43,15 @@ class BlocksAdminAjax extends Jaws_Ajax
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $request =& Jaws_Request::getInstance();
         $contents = $request->get(1, 'post', false);
-        $id = $this->_Model->NewBlock($title, $contents, $displayTitle, $user);
-        $response = $GLOBALS['app']->Session->PopLastResponse();
-        // Little hack
-        $response['id'] = $id;
-        return $response;
+        $res = $this->_Model->NewBlock($title, $contents, $displayTitle, $user);
+        if (Jaws_Error::IsError($res)) {
+            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(),
+                                                         RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(_t('BLOCKS_ADDED', "#$res"),
+                                                     RESPONSE_NOTICE,
+                                                     $res);
     }
 
     /**

@@ -106,23 +106,11 @@ class BlocksAdminModel extends BlocksModel
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOCKS_ERROR_NOT_ADDED'), _t('BLOCKS_NAME'));
-        }
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ADDED', $title), RESPONSE_NOTICE);
-
-        ///NOTE this might be obselete by lastInsertID.
-        $sql = 'SELECT [id] FROM [[blocks]] WHERE [createtime] = {now}';
-        $row = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            $result->SetMessage(_t('BLOCKS_ERROR_NOT_ADDED'));
+            return $result;
         }
 
-        if (isset($row['id'])) {
-            return $row['id'];
-        }
-
-        return false;
+        return $GLOBALS['db']->lastInsertID('blocks', 'id');
     }
 
     /**
