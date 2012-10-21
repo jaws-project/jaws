@@ -77,6 +77,18 @@ class Jaws_Error
     }
 
     /**
+     * Sets the Error message
+     *
+     * @access  public
+     * @param   string  $message    Error message
+     * @return  void
+     */
+    function SetMessage($message)
+    {
+        $this->_Message = $message;
+    }
+
+    /**
      * Returns the Error message
      *
      * @access  public
