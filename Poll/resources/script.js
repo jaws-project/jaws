@@ -203,7 +203,7 @@ function editPollAnswers(element, pid)
     $('p_work_area').innerHTML = cachePollAnswersForm;
     var answersData = pollSync.getpollanswers(selectedPoll);
     var answers  = answersData['Answers'];
-    $('question').value  = answersData['question'];
+    $('question').value  = JawsDefilter(answersData['question']);
 
     var box = $('answers_combo');
     box.length = 0;
