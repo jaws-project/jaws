@@ -141,10 +141,13 @@ class Jaws
      */
     function Jaws()
     {
-        require_once JAWS_PATH . 'include/Jaws/Gadget.php';
         require_once JAWS_PATH . 'include/Jaws/Template.php';
         require_once JAWS_PATH . 'include/Jaws/Header.php';
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+        require_once JAWS_PATH . 'include/Jaws/Gadget.php';
+        require_once JAWS_PATH . 'include/Jaws/GadgetHTML.php';
+        require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
+
         $this->loadClass('UTF8', 'Jaws_UTF8');
     }
 
@@ -575,15 +578,9 @@ class Jaws
             switch ($type) {
                 case 'Info':
                     $load_registry = false;
-                    if (!Jaws::classExists('Jaws_GadgetInfo')) {
-                        require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
-                    }
                     break;
                 case 'HTML':
                 case 'AdminHTML':
-                    if (!Jaws::classExists('Jaws_GadgetHTML')) {
-                        require_once JAWS_PATH . 'include/Jaws/GadgetHTML.php';
-                    }
                     break;
             }
 
