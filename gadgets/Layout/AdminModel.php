@@ -212,7 +212,7 @@ class LayoutAdminModel extends LayoutModel
     function DeleteElement($id)
     {
         $element = $this->GetElement($id);
-        if ($element === false) {
+        if (empty($element)) {
             return false;
         }
 
@@ -643,6 +643,13 @@ class LayoutAdminModel extends LayoutModel
                     }
                     if (isset($actions[$action])) {
                         if (isset($param)) {
+                            if (!isset($actions[$action]['params'][0])) {
+                                $actions[$action]['params'][0] = array(
+                                    'title' => '',
+                                    'value' => array('' => '')
+                                );
+                            }
+
                             $actions[$action]['params'][0]['value'] += array($param => $attributes['name']);
                             unset($param);
                         }
