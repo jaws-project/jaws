@@ -162,7 +162,7 @@ function getGroups()
         var combo = $('groups_combo');
         var i = 0;
         groupList.each(function(value, index) {
-            var op = new Option(value['title'], value['id']);
+            var op = new Option(JawsDefilter(value['title']), value['id']);
             if (i % 2 == 0) {
                 op.style.backgroundColor = evenColor;
             } else {
@@ -357,11 +357,11 @@ function editBanner(element, bid)
 
     var banner = bannerSync.getbanner(bid);
     $('bid').value    = banner['id'];
-    $('title').value  = banner['title'];
+    $('title').value  = JawsDefilter(banner['title']);
     $('url').value    = banner['url'];
     $('gid').value    = banner['gid'];
     document.getElementsByName('through_upload[]').item(0).checked = false;
-    $('banner').value       = banner['banner'];
+    $('banner').value       = JawsDefilter(banner['banner']);
     defaultTemplate         = banner['template'];
     $('template').value     = defaultTemplate;
     defaultTemplate = banner['template'];
@@ -396,7 +396,7 @@ function editGroup(gid)
     selectedGroup = gid;
     var groupInfo = bannerSync.getgroup(selectedGroup);
     $('gid').value   = groupInfo['id'];
-    $('title').value = groupInfo['title'];
+    $('title').value = JawsDefilter(groupInfo['title']);
     $('count').value = groupInfo['limit_count'];
     $('show_title').value = groupInfo['show_title']? 1 : 0;
     $('show_type').value  = groupInfo['show_type'];

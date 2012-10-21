@@ -66,7 +66,7 @@ function fillEditorEntries(block_data)
 {
     $('block_id').disabled    = false;
     $('hidden_id').value      = block_data['id'];
-    $('block_title').value    = block_data['title'];
+    $('block_title').value    = JawsDefilter(block_data['title']);
     changeEditorValue('block_contents', block_data['contents']);
     document.getElementsByName('display_title[]').item(0).checked = block_data['display_title'] == '1';
     currentMode = 'edit';
