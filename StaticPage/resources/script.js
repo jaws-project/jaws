@@ -255,9 +255,9 @@ function editGroup(rowElement, gid)
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('legend_title').update(edit_group_title);
     var group = staticpageSync.getgroup(selectedGroup);
-    $('title').value     = group['title'];
-    $('meta_keys').value = group['meta_keywords'];
-    $('meta_desc').value = group['meta_description'];
+    $('title').value     = group['title'].defilter();
+    $('meta_keys').value = group['meta_keywords'].defilter();
+    $('meta_desc').value = group['meta_description'].defilter();
     $('fast_url').value  = group['fast_url'];
     $('visible').value   = group['visible'];
     $('title').focus();
