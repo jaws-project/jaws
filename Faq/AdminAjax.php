@@ -11,19 +11,6 @@
 class FaqAdminAjax extends Jaws_Ajax
 {
     /**
-     * Ugly but fast hack.. it sorts an array by key
-     *
-     * @access  public
-     * @param   array   $array  Input array
-     * @return  array   Sorted array
-     */
-    function KSort($array)
-    {
-        ksort($array);
-        return $array;
-    }
-
-    /**
      * Delete a category
      *
      * @access  public

@@ -139,9 +139,8 @@ class FaqAdminHTML extends Jaws_GadgetHTML
         $catCombo =& Piwi::CreateWidget('Combo', 'category');
         $cats = $model->GetCategories();
         $catCombo->AddOption(_t('FAQ_ALL_CATEGORIES'), '*');
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         foreach ($cats as $c) {
-            $catCombo->AddOption($c['category_position'].'. '.$xss->filter($c['category']), $c['id']);
+            $catCombo->AddOption($c['category_position'].'. '.$c['category'], $c['id']);
         }
 
         if (isset($category)) {
@@ -178,7 +177,7 @@ class FaqAdminHTML extends Jaws_GadgetHTML
                 } else {
                     $tpl->SetVariable('style', 'display: block;');
                 }
-                $tpl->SetVariable('name', $xss->filter($cat['category']));
+                $tpl->SetVariable('name', $cat['category']);
                 $tpl->SetVariable('description', $this->ParseText($cat['description'], 'Faq'));
                 if ($this->GetPermission('AddQuestion')) {
                     $add_url = BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;category='.$cat['id'];
@@ -266,13 +265,12 @@ class FaqAdminHTML extends Jaws_GadgetHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq');
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $firstCategory = null;
         foreach ($cats as $c) {
             if (is_null($firstCategory)) {
                 $firstCategory = $c['id'];
             }
-            $catCombo->AddOption($c['category_position'].'. '.$xss->filter($c['category']), $c['id']);
+            $catCombo->AddOption($c['category_position'].'. '.$c['category'], $c['id']);
         }
 
         if (!is_null($get['category'])) {
@@ -481,7 +479,8 @@ class FaqAdminHTML extends Jaws_GadgetHTML
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('category', 'fast_url', 'description'), 'post');
+        $post    = $request->get(array('category', 'fast_url'), 'post');
+        $post['description'] = $request->get('description', 'post', false);
 
         $id = $model->AddCategory($post['category'], $post['fast_url'], $post['description']);
 
@@ -499,7 +498,8 @@ class FaqAdminHTML extends Jaws_GadgetHTML
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('id', 'category', 'fast_url', 'description'), 'post');
+        $post    = $request->get(array('id', 'category', 'fast_url'), 'post');
+        $post['description'] = $request->get('description', 'post', false);
 
         $model->UpdateCategory($post['id'], $post['category'], $post['fast_url'], $post['description']);
 
