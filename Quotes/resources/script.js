@@ -27,7 +27,7 @@ function fillQuotesCombo()
     var quotes = quotesSync.getquotes(-1, $('group_filter').value);
     if (quotes.length > 0) {
         quotes.each(function(value, index) {
-            box.options[box.options.length] = new Option(value['title'], value['id']);
+            box.options[box.options.length] = new Option(value['title'].defilter(), value['id']);
         });
     }
     stopAction();
@@ -150,7 +150,7 @@ function editQuote(id)
     var quoteInfo = quotesSync.getquote(id);
     currentAction = 'Quotes';
     $('id').value    = quoteInfo['id'];
-    $('title').value = quoteInfo['title'];
+    $('title').value = quoteInfo['title'].defilter();
     changeEditorValue('quotation', quoteInfo['quotation']);
     $('gid').value = quoteInfo['gid'];
     if (quoteInfo['gid'] == 0) {
@@ -178,7 +178,7 @@ function editGroup(gid)
     currentAction = 'Groups';
     var groupInfo = quotesSync.getgroup(gid);
     $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'];
+    $('title').value       = groupInfo['title'].defilter();
     $('view_mode').value   = groupInfo['view_mode'];
     $('view_type').value   = groupInfo['view_type'];
     $('show_title').value  = groupInfo['show_title'];
