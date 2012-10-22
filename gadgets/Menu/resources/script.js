@@ -348,6 +348,10 @@ function editMenu(mid)
     $('visible').value     = menuInfo['visible'];
     getReferences($('type').value);
     $('references').value = menuInfo['url'];
+    if ($('type').value == 'url' && $('references').selectedIndex == -1) {
+        $('references').selectedIndex = 0;
+    }
+
     $('imagename').value  = 'true';
     if (menuInfo['image'] === null) {
         $('image').src = 'gadgets/Menu/images/no-image.png?' + (new Date()).getTime();
