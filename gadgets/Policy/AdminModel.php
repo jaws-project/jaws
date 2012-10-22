@@ -365,9 +365,8 @@ class PolicyAdminModel extends PolicyModel
      */
     function AddAgent($agent, $blocked = true)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['agent']   = $xss->filter($agent);
+        $params['agent']   = $agent;
         $params['blocked'] = (bool)$blocked;
 
         $sql = '
@@ -396,10 +395,9 @@ class PolicyAdminModel extends PolicyModel
      */
     function EditAgent($id, $agent, $blocked = true)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['id']      = (int)$id;
-        $params['agent']   = $xss->filter($agent);
+        $params['agent']   = $agent;
         $params['blocked'] = (bool)$blocked;
 
         $sql = '
@@ -511,7 +509,6 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/allow_duplicate', $allow_duplicate);
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/filter',          $filter);
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha',         $captcha);

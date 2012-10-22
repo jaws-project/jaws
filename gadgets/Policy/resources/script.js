@@ -196,7 +196,9 @@ function editAgent(element, id)
     var agent = policySync.getagent(id);
 
     $('id').value    = agent['id'];
-    $('agent').value = agent['agent'];
+    console.log(agent['agent']);
+    $('agent').value = agent['agent'].defilter();
+    console.log($('agent').value);
     $('blocked').selectedIndex = agent['blocked']? 1 : 0;
 }
 
