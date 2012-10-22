@@ -393,7 +393,7 @@ function editPollGroup(element, gid)
 
     var groupInfo = pollSync.getpollgroup(selectedPollGroup);
     $('gid').value = groupInfo['id'];
-    $('title').value  = groupInfo['title'];
+    $('title').value  = groupInfo['title'].defilter();
     $('visible').selectedIndex = groupInfo['visible'];
 }
 
