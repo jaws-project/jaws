@@ -97,6 +97,7 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
         $this->CheckPermission('BasicSettings');
         $this->AjaxMe('script.js');
 
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl = new Jaws_Template('gadgets/Settings/templates/');
         $tpl->Load('Settings.html');
         $tpl->SetBlock('settings');
@@ -120,7 +121,9 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
 
         // Site name
         $tpl->SetBlock('settings/item');
-        $sitename =& Piwi::CreateWidget('Entry', 'site_name', $GLOBALS['app']->Registry->Get('/config/site_name'));
+        $sitename =& Piwi::CreateWidget('Entry',
+                                        'site_name',
+                                        $xss->defilter($GLOBALS['app']->Registry->Get('/config/site_name')));
         $sitename->setSize(40);
         $sitename->setID('site_name');
         $tpl->SetVariable('field-name', 'site_name');
@@ -130,8 +133,9 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
 
         // Site slogan
         $tpl->SetBlock('settings/item');
-        $sitedesc =& Piwi::CreateWidget('Entry', 'site_slogan',
-                                        $GLOBALS['app']->Registry->Get('/config/site_slogan'));
+        $sitedesc =& Piwi::CreateWidget('Entry',
+                                        'site_slogan',
+                                        $xss->defilter($GLOBALS['app']->Registry->Get('/config/site_slogan')));
         $sitedesc->setSize(40);
         $sitedesc->setID('site_slogan');
         $tpl->SetVariable('field-name', 'site_slogan');
@@ -185,8 +189,9 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
 
         // Site comment
         $tpl->SetBlock('settings/item');
-        $sitecomment =& Piwi::CreateWidget('TextArea', 'site_comment',
-                                           $GLOBALS['app']->Registry->Get('/config/site_comment'));
+        $sitecomment =& Piwi::CreateWidget('TextArea',
+                                           'site_comment',
+                                           $xss->defilter($GLOBALS['app']->Registry->Get('/config/site_comment')));
         $sitecomment->SetRows(4);
         $sitecomment->SetStyle('width: 252px;');
         $sitecomment->setID('site_comment');
@@ -384,6 +389,7 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
         $this->CheckPermission('MetaSettings');
         $this->AjaxMe('script.js');
 
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl = new Jaws_Template('gadgets/Settings/templates/');
         $tpl->Load('Settings.html');
         $tpl->SetBlock('settings');
@@ -403,8 +409,9 @@ class SettingsAdminHTML extends Jaws_GadgetHTML
 
         // Site description
         $tpl->SetBlock('settings/item');
-        $sitedesc =& Piwi::CreateWidget('TextArea', 'site_description',
-                                        $GLOBALS['app']->Registry->Get('/config/site_description'));
+        $sitedesc =& Piwi::CreateWidget('TextArea',
+                                        'site_description',
+                                        $xss->defilter($GLOBALS['app']->Registry->Get('/config/site_description')));
         $sitedesc->SetRows(5);
         $sitedesc->setStyle('width: 24em;');
         $sitedesc->setID('site_description');
