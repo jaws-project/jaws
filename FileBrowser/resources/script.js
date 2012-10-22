@@ -153,8 +153,8 @@ function editFile(element, fname)
 
     var dbfile = filebrowserSync.dbfileinfo($('path').value, fname);
     if (dbfile['id']) {
-        $('file_title').value       = dbfile['title'];
-        $('file_description').value = dbfile['description'];
+        $('file_title').value       = dbfile['title'].defilter();
+        $('file_description').value = dbfile['description'].defilter();
         $('file_fast_url').value    = dbfile['fast_url'];
     }
 }
