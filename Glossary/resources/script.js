@@ -63,7 +63,7 @@ var GlossaryCallback = {
 function fillEditorEntries(term_data)
 {
     $('hidden_id').value  = term_data['id'];
-    $('term_title').value = term_data['term'];
+    $('term_title').value = term_data['term'].defilter();
     $('fast_url').value   = term_data['fast_url'];
     changeEditorValue('term_contents', term_data['description']);
     currentMode = 'edit';
