@@ -86,7 +86,7 @@ function editRegion(rowElement, id)
 
     var geoPos = weatherSync.getregion(id);
     $('id').value        = geoPos['id'];
-    $('title').value     = geoPos['title'];
+    $('title').value     = geoPos['title'].defilter();
     $('fast_url').value  = geoPos['fast_url'];
     $('latitude').value  = geoPos['latitude'];
     $('longitude').value = geoPos['longitude'];
