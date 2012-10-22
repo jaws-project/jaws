@@ -328,7 +328,7 @@ function editGroup(gid)
     var groupInfo = linkdumpSync.getgroups(selectedGroup);
 
     $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'];
+    $('title').value       = groupInfo['title'].defilter();
     $('fast_url').value    = groupInfo['fast_url'];
     $('limit_count').value = groupInfo['limit_count'];
     $('links_type').value  = groupInfo['link_type'];
@@ -360,10 +360,10 @@ function editLink(element, lid)
 
     $('lid').value         = linkInfo['id'];
     $('gid').value         = linkInfo['gid'];
-    $('title').value       = linkInfo['title'];
+    $('title').value       = linkInfo['title'].defilter();
     $('url').value         = linkInfo['url'];
     $('fast_url').value    = linkInfo['fast_url'];
-    $('description').value = linkInfo['description'];
+    $('description').value = linkInfo['description'].defilter();
     $('tags').value        = linkInfo['tags'];
     $('clicks').value      = linkInfo['clicks'];
     setRanksCombo($('gid').value);
