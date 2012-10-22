@@ -43,32 +43,20 @@ class Jaws_Registry
      */
     function Init()
     {
-        // Fetch registry table's fields
-        $sql = "SELECT * FROM [[registry]]";
-        $fields = $GLOBALS['db']->queryRow($sql);
-        if (Jaws_Error::isError($fields)) {
-            Jaws_Error::Fatal($fields->getMessage());
-        }
-        $fields = array_keys($fields);
-        if (!empty($fields)) {
-            $key_name  = $fields[1];
-            $key_value = $fields[2];
-            
-            // Fetch the enabled/version part for speed purpose
-            $sql = "
-                SELECT [$key_name], [$key_value] FROM [[registry]]
-                WHERE
-                    [$key_name] LIKE '%/enabled'
-                OR
-                    [$key_name] LIKE '%/version'";
+        // Fetch the enabled/version part
+        $sql = "
+            SELECT [key_name], [key_value] FROM [[registry]]
+            WHERE
+                [key_name] LIKE '%/enabled'
+            OR
+                [key_name] LIKE '%/version'";
 
-            $result = $GLOBALS['db']->queryAll($sql, array(), null, null, true);
-            if (Jaws_Error::isError($result)) {
-                Jaws_Error::Fatal("Failed to fetch enabled data for registry<br />" .
-                                 $result->getMessage());
-            }
-            $this->_Registry = $result;
+        $result = $GLOBALS['db']->queryAll($sql, array(), null, null, true);
+        if (Jaws_Error::isError($result)) {
+            Jaws_Error::Fatal("Failed to fetch enabled data for registry<br />" .
+                             $result->getMessage());
         }
+        $this->_Registry = $result;
 
         $this->LoadFile('core');
     }
