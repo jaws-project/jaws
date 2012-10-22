@@ -62,7 +62,7 @@ function updateForm(webcamInfo)
 {
     $('webcam_form').elements['id'].value       = webcamInfo['id'];
     $('webcam_form').elements['url'].value      = webcamInfo['url'];
-    $('webcam_form').elements['title'].value    = webcamInfo['title'];
+    $('webcam_form').elements['title'].value    = webcamInfo['title'].defilter();
     $('webcam_form').elements['refresh'].value  = webcamInfo['refresh'];
     $('webcam_form').elements['action'].value   = 'UpdateWebcam';
 }
