@@ -26,11 +26,10 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
      * Returns the HTML of a group of sitemap childs (sub levels)
      *
      * @access  private
-     * @param   mixed   $xss    XSS parser passed by reference
      * @param   array   $items  Nested item childs passed by reference
      * @return  string  XHTML of nested childs
      */
-    function GetNextLevel(&$xss, &$items)
+    function GetNextLevel(&$items)
     {
         $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
         $tpl->Load('Sitemap.html');
@@ -39,9 +38,9 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
             $tpl->SetBlock('branch');
             foreach ($items as $item) {
                 $tpl->SetBlock('branch/item');
-                $tpl->SetVariable('title', $xss->filter($item['title']));
+                $tpl->SetVariable('title', $item['title']);
                 $tpl->SetVariable('url', $item['reference']);
-                $tpl->SetVariable('childs', $this->GetNextLevel($xss, $item['childs']));
+                $tpl->SetVariable('childs', $this->GetNextLevel($item['childs']));
                 $tpl->ParseBlock('branch/item');
             }
             $tpl->ParseBlock('branch');
@@ -61,9 +60,7 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
         
         $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
         $tpl->Load('Sitemap.html');
-        $xss   = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $items = $model->GetItems();
-
         if (count($items) > 0) {
             $tpl->SetBlock('sitemap');
             $tpl->SetBlock('sitemap/title');
@@ -71,9 +68,9 @@ class SimpleSiteHTML extends Jaws_GadgetHTML
             $tpl->ParseBlock('sitemap/title');
             foreach ($items as $item) {
                 $tpl->SetBlock('sitemap/item');
-                $tpl->SetVariable('title', $xss->filter($item['title']));
+                $tpl->SetVariable('title', $item['title']);
                 $tpl->SetVariable('url', $item['reference']);
-                $tpl->SetVariable('childs', $this->GetNextLevel($xss, $item['childs']));
+                $tpl->SetVariable('childs', $this->GetNextLevel($item['childs']);
                 $tpl->ParseBlock('sitemap/item');
             }
             $tpl->ParseBlock('sitemap');

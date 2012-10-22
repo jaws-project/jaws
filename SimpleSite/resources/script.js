@@ -68,7 +68,7 @@ function createTree(data, depth) {
             ssitems1d[data[i]['id']] = new Array();
             ssitems1d[data[i]['id']]['id']          = data[i]['id'];
             ssitems1d[data[i]['id']]['parent_id']   = data[i]['parent_id'];
-            ssitems1d[data[i]['id']]['title']       = data[i]['title'];
+            ssitems1d[data[i]['id']]['title']       = data[i]['title'].defilter();
             ssitems1d[data[i]['id']]['shortname']   = data[i]['shortname'];
             ssitems1d[data[i]['id']]['type']        = data[i]['rfc_type'];
             ssitems1d[data[i]['id']]['reference']   = data[i]['reference'];
