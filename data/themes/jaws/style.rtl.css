@@ -800,10 +800,10 @@ font-size: xx-small;
 .users #register_dob span {display: inline; padding-right: 5px;}
 
 .users #profile_gender {width: 148px;}
-.users #profile_dob {direction: ltr; text-align: right;}
-.users #profile_dob label {direction: rtl;}
-.users #profile_dob input {width: 40px;}
-.users #profile_dob span {display: inline; padding-right: 5px;}
+.users #personal_dob {direction: ltr; text-align: right;}
+.users #personal_dob label {direction: rtl;}
+.users #personal_dob input {width: 40px;}
+.users #personal_dob span {display: inline; padding-right: 5px;}
 
 /* preferences */
 .preferences p {padding-bottom: 4px;}

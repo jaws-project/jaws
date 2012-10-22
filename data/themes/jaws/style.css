@@ -796,8 +796,8 @@ font-size: xx-small;
 .users #register_dob span {display: inline; padding-left: 5px;}
 
 .users #profile_gender {width: 148px;}
-.users #profile_dob input {width: 40px;}
-.users #profile_dob span {display: inline; padding-left: 5px;}
+.users #personal_dob input {width: 40px;}
+.users #personal_dob span {display: inline; padding-left: 5px;}
 
 /* preferences */
 .preferences p {padding-bottom: 4px;}
