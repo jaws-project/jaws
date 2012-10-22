@@ -320,7 +320,7 @@ function editUser(rowElement, uid)
 
     var uInfo = usersSync.getuser(uid, true);
     $('username').value    = uInfo['username'];
-    $('nickname').value    = uInfo['nickname'];
+    $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
     $('superadmin').value  = Number(uInfo['superadmin']);
     $('logins').value      = uInfo['concurrent_logins'];
@@ -472,8 +472,8 @@ function editGroup(rowElement, gid)
 
     var gInfo = usersSync.getgroup(gid);
     $('name').value        = gInfo['name'];
-    $('title').value       = gInfo['title'];
-    $('description').value = gInfo['description'];
+    $('title').value       = gInfo['title'].defilter();
+    $('description').value = gInfo['description'].defilter();
     $('enabled').value     = Number(gInfo['enabled']);
 }
 
