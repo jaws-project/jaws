@@ -85,8 +85,7 @@ function getEditorValue(name)
  *
  * @see https://raw.github.com/kvz/phpjs/master/functions/strings/htmlspecialchars_decode.js
  */
-function JawsDefilter(string, quote_style)
-{
+String.prototype.defilter = function(quote_style) {
     var optTemp = 0,
         i = 0,
         noquotes = false;
@@ -95,7 +94,7 @@ function JawsDefilter(string, quote_style)
         quote_style = 3;
     }
 
-    string = string.toString().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    var str = this.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     var OPTS = {
         'ENT_NOQUOTES': 0,
         'ENT_HTML_QUOTE_SINGLE': 1,
@@ -124,17 +123,17 @@ function JawsDefilter(string, quote_style)
     }
 
     if (quote_style & OPTS.ENT_HTML_QUOTE_SINGLE) {
-        string = string.replace(/&#0*39;/g, "'"); // PHP doesn't currently escape if more than one 0, but it should
-        // string = string.replace(/&apos;|&#x0*27;/g, "'"); // This would also be useful here, but not a part of PHP
+        str = str.replace(/&#0*39;/g, "'"); // PHP doesn't currently escape if more than one 0, but it should
+        // str = str.replace(/&apos;|&#x0*27;/g, "'"); // This would also be useful here, but not a part of PHP
     }
 
     if (!noquotes) {
-        string = string.replace(/&quot;/g, '"');
+        str = str.replace(/&quot;/g, '"');
     }
 
     // Put this in last place to avoid escape being double-decoded
-    string = string.replace(/&amp;/g, '&');
-    return string;
+    str = str.replace(/&amp;/g, '&');
+    return str;
 }
 
 /**
