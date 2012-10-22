@@ -296,7 +296,7 @@ function editGroup(gid)
     var groupInfo = menuSync.getgroups(selectedGroup);
 
     $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'];
+    $('title').value       = groupInfo['title'].defilter();
     $('title_view').value  = groupInfo['title_view'];
     $('visible').value     = groupInfo['visible'];
 }
@@ -338,7 +338,7 @@ function editMenu(mid)
     $('pid').value         = menuInfo['pid'];
     $('gid').value         = menuInfo['gid'];
     $('type').value        = menuInfo['menu_type'];
-    $('title').value       = menuInfo['title'];
+    $('title').value       = menuInfo['title'].defilter();
     $('url').value         = decodeURI(menuInfo['url']);
     $('url_target').value  = menuInfo['url_target'];
 
