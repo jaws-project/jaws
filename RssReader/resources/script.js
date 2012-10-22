@@ -100,7 +100,7 @@ function stopAction()
 function updateForm(rssInfo)
 {
     $('id').value          = rssInfo['id'];
-    $('title').value       = rssInfo['title'];
+    $('title').value       = rssInfo['title'].defilter();
     $('url').value         = rssInfo['url'];
     $('cache_time').value  = rssInfo['cache_time'];
     $('view_type').value   = rssInfo['view_type'];
