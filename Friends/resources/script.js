@@ -60,8 +60,8 @@ function cleanForm(form)
  */
 function updateForm(friendInfo) 
 {
-    $('friends_form').elements['friend'].value       = friendInfo['friend'].unescapeHTML();
-    $('friends_form').elements['url'].value          = friendInfo['url'].unescapeHTML();
+    $('friends_form').elements['friend'].value       = friendInfo['friend'].defilter();
+    $('friends_form').elements['url'].value          = friendInfo['url'];
     $('friends_form').elements['id'].value           = friendInfo['id'];
     $('friends_form').elements['action'].value       = 'UpdateFriend';
 }
