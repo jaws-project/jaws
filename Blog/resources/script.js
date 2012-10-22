@@ -674,6 +674,7 @@ function fillCatInfoForm(content)
 {
     var catInfo = document.getElementById('catinfoform');
     catInfo.innerHTML = content;
+    $('description').value = content.evalScripts().toString().defilter();
 }
 
 /**
