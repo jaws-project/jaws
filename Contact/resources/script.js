@@ -189,8 +189,8 @@ function editContact(element, id)
     $('mobile').value  = contact['mobile'];
     $('address').value = contact['address'];
     $('rid').value     = contact['recipient'];
-    $('subject').value = contact['subject'];
-    $('message').value = contact['msg_txt'];
+    $('subject').value = contact['subject'].defilter();
+    $('message').value = contact['msg_txt'].defilter();
     $('btn_save_send').hide();
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
@@ -227,9 +227,9 @@ function editReply(element, id)
     $('id').value      = replyData['id'];
     $('name').value    = replyData['name'];
     $('email').value   = replyData['email'];
-    $('subject').value = replyData['subject'];
-    $('message').value = replyData['msg_txt'];
-    $('reply').value   = replyData['reply'];
+    $('subject').value = replyData['subject'].defilter();
+    $('message').value = replyData['msg_txt'].defilter();
+    $('reply').value   = replyData['reply'].defilter();
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
     $('btn_save_send').show();
@@ -305,7 +305,7 @@ function editRecipient(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var recipient = contactSync.getrecipient(id);
     $('id').value      = recipient['id'];
-    $('name').value    = recipient['name'];
+    $('name').value    = recipient['name'].defilter();
     $('email').value   = recipient['email'];
     $('tel').value     = recipient['tel'];
     $('fax').value     = recipient['fax'];

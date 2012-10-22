@@ -26,9 +26,6 @@ class ContactAdminAjax extends Jaws_Ajax
             return false; //we need to handle errors on ajax
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $contact['subject'] = $xss->defilter($contact['subject']);
-        $contact['msg_txt'] = $xss->defilter($contact['msg_txt']);
         return $contact;
     }
 
