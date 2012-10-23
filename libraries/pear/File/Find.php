@@ -16,7 +16,7 @@
 // | Author: Sterling Hughes <sterling@php.net>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Find.php 267815 2008-10-26 17:55:22Z clockwerx $
+// $Id$
 //
 
 require_once 'PEAR.php';
@@ -30,7 +30,7 @@ define('FILE_FIND_VERSION', '@package_version@');
 *  Commonly needed functions searching directory trees
 *
 * @access public
-* @version $Id: Find.php 267815 2008-10-26 17:55:22Z clockwerx $
+* @version $Id$
 * @package File
 * @author Sterling Hughes <sterling@php.net>
 */
@@ -205,13 +205,15 @@ class File_Find
         sort($retval);
 
         while (list($key, $val) = each($retval)) {
-            $path = $directory . "/" . $val;
       
-            if (!is_array($val) && is_dir($path)) {
-                unset($retval[$key]);
-                if ($maxrecursion == 0 || $count < $maxrecursion) {
-                    $retval[$val] = &File_Find::mapTreeMultiple($path, 
-                                    $maxrecursion, $count);
+            if (!is_array($val)) {
+                $path = $directory . "/" . $val;
+                if (is_dir($path)) {
+                    unset($retval[$key]);
+                    if ($maxrecursion == 0 || $count < $maxrecursion) {
+                        $retval[$val] = &File_Find::mapTreeMultiple($path, 
+                                        $maxrecursion, $count);
+                    }
                 }
             }
         }
@@ -243,7 +245,7 @@ class File_Find
      * @access public
      * @static
      */
-    function &search($pattern, $directory, $type = 'perl', $fullpath = true, $match = 'files')
+    function &search($pattern, $directory, $type = 'php', $fullpath = true, $match = 'files')
     {
 
         $matches = array();
