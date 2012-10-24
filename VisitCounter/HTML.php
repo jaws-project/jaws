@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounterHTML extends Jaws_GadgetHTML
+class VisitCounterHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls Display function if no action is specified

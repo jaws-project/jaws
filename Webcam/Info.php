@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WebcamInfo extends Jaws_GadgetInfo
+class WebcamInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

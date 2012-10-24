@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounterAdminAjax extends Jaws_Ajax
+class VisitCounterAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Cleans all the entries (records)

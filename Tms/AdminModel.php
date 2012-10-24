@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class TmsAdminModel extends Jaws_Model
+class TmsAdminModel extends Jaws_Gadget_Model
 {
     /**
      * Installs the gadget

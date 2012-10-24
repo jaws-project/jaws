@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WebcamHTML extends Jaws_GadgetHTML
+class WebcamHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls Display function if no is specified

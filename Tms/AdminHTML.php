@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class TmsAdminHTML extends Jaws_GadgetHTML
+class TmsAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls Themes function

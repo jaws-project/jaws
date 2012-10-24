@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class TmsAdminAjax extends Jaws_Ajax
+class TmsAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Constructor
