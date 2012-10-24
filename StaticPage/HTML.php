@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageHTML extends Jaws_GadgetHTML
+class StaticPageHTML extends Jaws_Gadget_HTML
 {
     /**
      * Excutes the default action, currently displaying the default page

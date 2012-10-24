@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SkeletonAdminHTML extends Jaws_GadgetHTML
+class SkeletonAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Admin section

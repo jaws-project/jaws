@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderModel extends Jaws_Model
+class RssReaderModel extends Jaws_Gadget_Model
 {
     /**
      * Gets list of possible RSS sites

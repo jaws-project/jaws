@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteInfo extends Jaws_GadgetInfo
+class SimpleSiteInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

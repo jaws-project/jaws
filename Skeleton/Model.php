@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SkeletonModel extends Jaws_Model
+class SkeletonModel extends Jaws_Gadget_Model
 {
     /**
      * Returns version of Jaws

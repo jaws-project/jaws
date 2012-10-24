@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteModel extends Jaws_Model
+class SimpleSiteModel extends Jaws_Gadget_Model
 {
     /**
      * Internal variable to load items 

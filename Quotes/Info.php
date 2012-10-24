@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class QuotesInfo extends Jaws_GadgetInfo
+class QuotesInfo extends Jaws_Gadget
 {
     /**
      * Gadget version
