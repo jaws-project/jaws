@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class GlossaryModel extends Jaws_Model
+class GlossaryModel extends Jaws_Gadget_Model
 {
     /**
      * Get a term

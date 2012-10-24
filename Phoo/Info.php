@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooInfo extends Jaws_GadgetInfo
+class PhooInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

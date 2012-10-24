@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FriendsAdminHTML extends Jaws_GadgetHTML
+class FriendsAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Creates the datagrid

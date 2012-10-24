@@ -8,7 +8,7 @@
  * @copyright  2010-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowserAdminAjax extends Jaws_Ajax
+class FileBrowserAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Gets information of the directory content

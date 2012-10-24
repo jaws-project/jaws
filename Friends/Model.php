@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FriendsModel extends Jaws_Model
+class FriendsModel extends Jaws_Gadget_Model
 {
     /**
      * Get information of a friend

@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PollHTML extends Jaws_GadgetHTML
+class PollHTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action

@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class GlossaryHTML extends Jaws_GadgetHTML
+class GlossaryHTML extends Jaws_Gadget_HTML
 {
     /**
      * Runs the default action

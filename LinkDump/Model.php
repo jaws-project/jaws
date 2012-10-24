@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LinkDumpModel extends Jaws_Model
+class LinkDumpModel extends Jaws_Gadget_Model
 {
     /**
      * Get information about a link

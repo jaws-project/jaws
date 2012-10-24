@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooHTML extends Jaws_GadgetHTML
+class PhooHTML extends Jaws_Gadget_HTML
 {
     /**
      * Returns the default action to use if none is specified.

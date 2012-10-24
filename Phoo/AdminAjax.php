@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooAdminAjax extends Jaws_Ajax
+class PhooAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Import an image located in 'import' folder

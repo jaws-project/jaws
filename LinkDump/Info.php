@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDumpInfo extends Jaws_GadgetInfo
+class LinkDumpInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

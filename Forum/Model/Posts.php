@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Model_Posts extends Jaws_Model
+class Forum_Model_Posts extends Jaws_Gadget_Model
 {
     /**
      * Get posts count of user

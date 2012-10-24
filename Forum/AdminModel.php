@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumAdminModel extends Jaws_Model
+class ForumAdminModel extends Jaws_Gadget_Model
 {
     /**
      * Install the gadget

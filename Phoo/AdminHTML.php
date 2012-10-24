@@ -11,7 +11,7 @@ define('PHOO_MAXFILES', 50);
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooAdminHTML extends Jaws_GadgetHTML
+class PhooAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Returns the default administration action to use if none is specified.

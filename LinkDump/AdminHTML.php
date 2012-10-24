@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDumpAdminHTML extends Jaws_GadgetHTML
+class LinkDumpAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Administration section
