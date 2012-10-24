@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Ajax
+class Jaws_Gadget_Ajax extends Jaws_Gadget
 {
     /**
      * Model
@@ -25,7 +25,7 @@ class Jaws_Ajax
      * @param   object  $model  Jaws_Model reference
      * @return  void
      */
-    function Jaws_Ajax(&$model)
+    function Jaws_Gadget_Ajax(&$model)
     {
         $this->_Model =& $model;
     }

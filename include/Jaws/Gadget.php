@@ -9,45 +9,119 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require JAWS_PATH . 'include/Jaws/Model.php';
-
 class Jaws_Gadget
 {
     /**
-     * Gadget's name (FS name)
+     * Language translate name of the gadget
      *
      * @var     string
-     * @access  protected
-     * @see    GetName
+     * @access  private
      */
-    var $_Name;
+    var $_Name = '';
 
     /**
-     * Gadget's translated name
+     * Language translate description of the gadget
      *
      * @var     string
-     * @access  protected
-     * @see    GetTranslatedName
+     * @access  private
      */
-    var $_TranslatedName;
+    var $_Description = '';
 
     /**
-     * Gadget's version
+     * Gadget version
      *
      * @var     string
-     * @access  protected
-     * @see    GetVersion
+     * @access  private
      */
-    var $_Version;
+    var $_Version = '';
 
     /**
-     * Gadget's description
+     * Required Jaws version required
      *
      * @var     string
-     * @access  protected
-     * @see    GetDescription
+     * @access  private
      */
-    var $_Description;
+    var $_Req_JawsVersion = '';
+
+    /**
+     * Minimum PHP version required
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_Min_PHPVersion = '';
+
+    /**
+     * Is this gadget core gadget?
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $_IsCore = false;
+
+    /**
+     * Section of the gadget(Gadget, Customers, etc..)
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_Section = '';
+
+    /**
+     * Base URL of gadget's documents
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_Wiki_URL = JAWS_WIKI;
+
+    /**
+     * Format of gadget's documents url
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_Wiki_Format = JAWS_WIKI_FORMAT;
+
+    /**
+     * Required gadgets
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_Requires = array();
+
+    /**
+     * Default ACL value of frontend gadget access
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $_DefaultACL = true;
+
+    /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array();
+
+    /**
+     * Attributes of the gadget
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_Attributes = array();
+
+    /**
+     * Name of the gadget
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_Gadget = '';
 
     /**
      * Action that gadget will execute
@@ -86,6 +160,7 @@ class Jaws_Gadget
      */
     function Jaws_Gadget($gadget)
     {
+        $this->_Gadget = $gadget;
         if (substr($gadget, -5, 5) == 'Model') {
             $gadget = substr($gadget, 0, strlen($gadget) - 5);
         }
@@ -95,17 +170,8 @@ class Jaws_Gadget
             $GLOBALS['app']->ACL->LoadFile($gadget);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
-        $info = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        // check for error
-        if (Jaws_Error::IsError($info)) {
-            Jaws_Error::Fatal("Gadget $gadget needs Info File!");
-        }
-
-        $this->_Name           = $gadget;
-        $this->_TranslatedName = $info->GetName();
-        $this->_Description    = $info->GetDescription();
-        $this->_Version        = $info->GetVersion();
+        $this->_Name        = _t(strtoupper($gadget).'_NAME');
+        $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
         $this->LoadActions($gadget);
     }
 
@@ -136,10 +202,65 @@ class Jaws_Gadget
     }
 
     /**
-     * Get the gadget's name
+     * Gets the gadget name
      *
      * @access  public
-     * @return  string    Returns the gadget's name
+     * @return  string   Gadget name
+     */
+    function GetGadget()
+    {
+        return $this->_Gadget;
+    }
+
+    /**
+     * Sets an attribute
+     *
+     * @access  protected
+     * @param   string $key         Attribute name
+     * @param   string $value       Attribute value
+     * @param   string $description Attribute description
+     * @return  void
+     */
+    function SetAttribute($key, $value, $description = '')
+    {
+        $this->_Attributes[$key] = array(
+            'value'       => $value,
+            'description' => $description
+        );
+    }
+
+    /**
+     * Returns the value of the given attribute key
+     *
+     * @access  protected
+     * @param   string $key Attribute name
+     * @return  mixed  value of the given attribute key
+     */
+    function GetAttribute($key)
+    {
+        if (array_key_exists($key, $this->_Attributes)) {
+            return $this->_Attributes[$key]['value'];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get all attributres for the gadget
+     *
+     * @access  public
+     * @return  array Attributes of the gadget
+     */
+    function GetAttributes()
+    {
+        return $this->_Attributes;
+    }
+
+    /**
+     * Gets the gadget translated name
+     *
+     * @access  protected
+     * @return  string   Gadget translated name
      */
     function GetName()
     {
@@ -147,21 +268,86 @@ class Jaws_Gadget
     }
 
     /**
-     * Get the gadget's translated name
+     * Gets the gadget's section
      *
      * @access  public
-     * @return  string    Returns the gadget's translated name
+     * @return  string Gadget's section
      */
-    function GetTranslatedName()
+    function GetSection()
     {
-        return $this->_TranslatedName;
+        if ($this->_IsCore) {
+            $this->_Section = 'General';
+        } elseif (empty($this->_Section)) {
+            $this->_Section = 'Gadgets';
+        }
+
+        return $this->_Section;
     }
 
     /**
-     * Get the gadget's version
+     * Gets the jaws version that the gadget requires
      *
      * @access  public
-     * @return  string    Returns the gadget's version
+     * @return  string   jaws version
+     */
+    function GetRequiredJawsVersion()
+    {
+        $jawsVersion = $this->_Req_JawsVersion;
+        if (empty($jawsVersion)) {
+            $jawsVersion = $GLOBALS['app']->Registry->Get('/config/version');
+        }
+
+        return $jawsVersion;
+    }
+
+    /**
+     * Gets the minimum php version that the gadget requires
+     *
+     * @access  public
+     * @return  string   jaws version
+     */
+    function GetMinimumPHPVersion()
+    {
+        $phpVersion = $this->_Min_PHPVersion;
+        if (empty($phpVersion)) {
+            $phpVersion = PHP_VERSION;
+        }
+
+        return $phpVersion;
+    }
+
+    /**
+     * Gets the gadget doc/manual URL
+     *
+     * @access  public
+     * @return  string Gadget's manual/doc url
+     */
+    function GetDoc()
+    {
+        $lang = $GLOBALS['app']->GetLanguage();
+        return str_replace(array('{url}', '{lang}', '{page}', '{lower-page}',
+                                 '{type}', '{lower-type}', '{types}', '{lower-types}'),
+                           array($this->_Wiki_URL, $lang, $this->_Gadget, strtolower($this->_Gadget),
+                                 'Gadget', 'gadget', 'Gadgets', 'gadgets'),
+                           $this->_Wiki_Format);
+    }
+
+    /**
+     * Gets the gadget description
+     *
+     * @access  public
+     * @return  string   Gadget description
+     */
+    function GetDescription()
+    {
+        return $this->_Description;
+    }
+
+    /**
+     * Gets the gadget version
+     *
+     * @access  public
+     * @return  string Gadget's version
      */
     function GetVersion()
     {
@@ -169,14 +355,73 @@ class Jaws_Gadget
     }
 
     /**
-     * Get the gadget's description
+     * Register required gadgets
      *
      * @access  public
-     * @return  string    Returns the gadget's description
+     * @param   mixed   $argv Optional variable list of required gadgets
+     * @return  void
      */
-    function GetDescription()
+    function Requires($argv)
     {
-        return $this->_Description;
+        $this->_Requires = func_get_args();
+    }
+
+    /**
+     * Get the requirements of the gadget
+     *
+     * @access  public
+     * @return  array Gadget's Requirements
+     */
+    function GetRequirements()
+    {
+        return $this->_Requires;
+    }
+
+    /**
+     * Gets the short description of a given ACL key
+     *
+     * @access  public
+     * @param   string $key  ACL Key
+     * @return  string The ACL description
+     */
+    function GetACLDescription($key)
+    {
+        $key = substr(strrchr($key, '/'), 1);
+        if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
+            return _t(strtoupper('GLOBAL_ACL_'. $key));
+        } else {
+            return _t(strtoupper($this->_Gadget. '_ACL_'. $key));
+        }
+    }
+
+    /**
+     * Get all ACLs for the gadet
+     *
+     * @access  public
+     * @return  array   ACLs of the gadget
+     */
+    function GetACLs()
+    {
+        $result = array();
+        foreach ($this->_ACLs as $key => $value) {
+            //ACL comes with a value?
+            if ($value === 'true' || $value === 'false') {
+                $default = $value;
+                $acl     = $key;
+            } else {
+                //False by default
+                $default = 'false';
+                $acl     = $value;
+            }
+            $result['/ACL/gadgets/'. $this->_Gadget. '/'. $acl] = $default;
+        }
+
+        // Adding common ACL keys
+        $result['/ACL/gadgets/'. $this->_Gadget. '/default'] = $this->_DefaultACL? 'true' : 'false';
+        $result['/ACL/gadgets/'. $this->_Gadget. '/default_admin'] = 'false';
+        $result['/ACL/gadgets/'. $this->_Gadget. '/default_registry'] = 'false';
+
+        return $result;
     }
 
     /**
@@ -210,7 +455,7 @@ class Jaws_Gadget
     {
         // is an empty action?
         if (empty($this->_Action) || $this->_Action == 'DefaultAction') {
-            $this->_Action = $GLOBALS['app']->Registry->Get('/gadgets/' . $this->_Name . '/default_action');
+            $this->_Action = $GLOBALS['app']->Registry->Get('/gadgets/' . $this->_Gadget . '/default_action');
             if (empty($this->_Action)) {
                 $this->_Action = 'DefaultAction';
             }
@@ -229,7 +474,7 @@ class Jaws_Gadget
 
         $file = $this->_ValidAction[$mode][$action]['file'];
         if (!empty($file)) {
-            $objAction = $GLOBALS['app']->loadGadget($this->_Name,
+            $objAction = $GLOBALS['app']->loadGadget($this->_Gadget,
                                                      JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
                                                      $file);
         }
@@ -567,10 +812,6 @@ class Jaws_Gadget
 
     function _commonPreDisableGadget($gadget)
     {
-        if (!file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Info.php')) {
-            return false;
-        }
-
         if (
             Jaws_Gadget::IsGadgetInstalled($gadget) &&
             $GLOBALS['app']->Registry->Get('/config/main_gadget') == $gadget
@@ -652,13 +893,8 @@ class Jaws_Gadget
      */
     function UpdateGadget($gadget)
     {
-        $info  = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($info)) {
-            return $info;
-        }
-
         $currentVersion = $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/version');
-        $newVersion     = $info->GetVersion();
+        $newVersion     = $this->_Version;
         if (version_compare($currentVersion, $newVersion, ">=")) {
             return true;
         }
@@ -739,18 +975,10 @@ class Jaws_Gadget
                                      __FUNCTION__);
         }
 
-        $info = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($info)) {
-            return false;
-        }
-
-        $req = $info->GetRequirements();
-        if (is_array($req)) {
-            foreach ($req as $r) {
-                if (!Jaws_Gadget::IsGadgetInstalled($r)) {
-                    return new Jaws_Error(_t('GLOBAL_GI_GADGET_REQUIRES', $r, $gadget),
-                                          __FUNCTION__);
-                }
+        foreach ($this->_Requires as $req) {
+            if (!Jaws_Gadget::IsGadgetInstalled($req)) {
+                return new Jaws_Error(_t('GLOBAL_GI_GADGET_REQUIRES', $req, $gadget),
+                                      __FUNCTION__);
             }
         }
 
@@ -760,8 +988,6 @@ class Jaws_Gadget
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
-
-        $core = $info->GetAttribute('core_gadget');
 
         $enabled = '/gadgets/' . $gadget . '/enabled';
         $status = $GLOBALS['app']->Registry->Get($enabled);
@@ -785,7 +1011,7 @@ class Jaws_Gadget
             // Applying the keys that every gadget gets
             $requires = implode($req, ', ');
             $GLOBALS['app']->Registry->NewKeyEx(array($enabled, 'true'),
-                                                array('/gadgets/' . $gadget . '/version', $info->GetVersion()),
+                                                array('/gadgets/' . $gadget . '/version', $this->_Version),
                                                 array('/gadgets/' . $gadget . '/requires', $requires)
                                                 );
             // ACL keys
@@ -795,7 +1021,7 @@ class Jaws_Gadget
             $GLOBALS['app']->Registry->Commit($gadget);
         }
 
-        $type = ($core && !is_null($core)) ? 'core_items' : 'enabled_items';
+        $type = $this->_IsCore ? 'core_items' : 'enabled_items';
         $items = $GLOBALS['app']->Registry->Get('/gadgets/' . $type);
         $gadgets = explode(',', $items);
         if (!in_array($gadget, $gadgets)) {
@@ -834,8 +1060,9 @@ class Jaws_Gadget
      */
     function IsGadgetInstalled($gadget = null)
     {
+        return true;
         if (is_null($gadget)) {
-            $gadget = $this->_Name;
+            $gadget = $this->_Gadget;
         }
 
         ///FIXME registry get has to be checked for errors
@@ -856,7 +1083,7 @@ class Jaws_Gadget
     }
 
     /**
-     * Returns true or false if the gadget is running the version the $gadgetInfo.php says
+     * Returns true or false if the gadget is running the version the Info.php says
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
@@ -864,19 +1091,13 @@ class Jaws_Gadget
      */
     function IsGadgetUpdated($gadget)
     {
+        $GLOBALS['app']->SetGadgetAsUpdated($gadget, true);
+        return $GLOBALS['app']->IsGadgetMarkedAsUpdated($gadget);
         if ($GLOBALS['app']->IsGadgetMarkedAsUpdated($gadget) === null) {
             if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
-                $info = $GLOBALS['app']->loadGadget($gadget, 'Info');
-                if (Jaws_Error::IsError($info)) {
-                    //Jaws_Error::Fatal("Gadget $gadget needs Info File!");
-                    return false;
-                }
-
                 $current_version = $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/version');
-                $gadget_version  = $info->GetVersion();;
-
                 //If the new gadget version is > than the current version (installed)
-                $status = version_compare($gadget_version, $current_version, '>') ? false : true;
+                $status = version_compare($this->_Version, $current_version, '>') ? false : true;
             } else {
                 $status = false;
             }
@@ -899,13 +1120,8 @@ class Jaws_Gadget
     function CanRunInCoreVersion($gadget)
     {
         if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
-            $info = $GLOBALS['app']->loadGadget($gadget, 'Info');
-            if (Jaws_Error::IsError($info)) {
-                Jaws_Error::Fatal("Gadget $gadget needs Info File!");
-            }
-
             $coreVersion     = $GLOBALS['app']->Registry->Get('/config/version');
-            $requiredVersion = $Info->GetRequiredJawsVersion();
+            $requiredVersion = $this->GetRequiredJawsVersion();
 
             if ($requiredVersion == $coreVersion) {
                 return true;
@@ -930,7 +1146,7 @@ class Jaws_Gadget
      */
     function GetPermission($task, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->_Name : $gadget, $task);
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->_Gadget : $gadget, $task);
     }
 
     /**
@@ -944,7 +1160,7 @@ class Jaws_Gadget
      */
     function CheckPermission($task, $together = true, $gadget = false, $errorMessage = '')
     {
-        return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->_Name : $gadget,
+        return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->_Gadget : $gadget,
                                                          $task,
                                                          $together,
                                                          $errorMessage);
@@ -960,7 +1176,7 @@ class Jaws_Gadget
     function GetIconURL($name = null)
     {
         if (empty($name)) {
-            $name = $this->_Name;
+            $name = $this->_Gadget;
         }
         $image = Jaws::CheckImage('gadgets/'.$name.'/images/logo.png');
         return $image;

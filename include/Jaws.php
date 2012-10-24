@@ -145,8 +145,8 @@ class Jaws
         require_once JAWS_PATH . 'include/Jaws/Header.php';
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
         require_once JAWS_PATH . 'include/Jaws/Gadget.php';
-        require_once JAWS_PATH . 'include/Jaws/GadgetHTML.php';
-        require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
+        require_once JAWS_PATH . 'include/Jaws/Gadget/Model.php';
+        require_once JAWS_PATH . 'include/Jaws/Gadget/HTML.php';
 
         $this->loadClass('UTF8', 'Jaws_UTF8');
     }

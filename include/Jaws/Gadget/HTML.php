@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_GadgetHTML extends Jaws_Gadget
+class Jaws_Gadget_HTML extends Jaws_Gadget
 {
     /**
      * Are we running Ajax?
@@ -25,7 +25,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      * @param   string $gadget Gadget's name(same as the filesystem name)
      * @return  void
      */
-    function Jaws_GadgetHTML($gadget)
+    function Jaws_Gadget_HTML($gadget)
     {
         parent::Jaws_Gadget($gadget);
         if (APP_TYPE == 'web') {
@@ -146,8 +146,8 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      */
     function Ajax()
     {
-        $name = $this->GetName();
-        require_once JAWS_PATH . 'include/Jaws/Ajax.php';
+        $name = $this->_Gadget;
+        require_once JAWS_PATH . 'include/Jaws/Gadget/Ajax.php';
 
         if (JAWS_SCRIPT == 'admin') {
             $model = $GLOBALS['app']->LoadGadget($name, 'AdminModel');
@@ -191,7 +191,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
 
             // Create a server object, set the URL to submit to, and export object.
             $server = new JPSpan_Server_Postoffice();
-            $server->setServerUrl(BASE_SCRIPT.'?gadget='.$this->_Name.'&action=Ajax');
+            $server->setServerUrl(BASE_SCRIPT.'?gadget='.$this->_Gadget.'&action=Ajax');
             $server->addHandler($object);
 
             // Display the client code.
@@ -217,7 +217,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
         }
 
         // Yeah, so it's a hack.
-        return "alert('The ".$this->GetName()." gadget does not provide a Javascript interface.')";
+        return "alert('The ".$this->_Gadget." gadget does not provide a Javascript interface.')";
     }
 
     /**
@@ -249,7 +249,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
     function AjaxMe($file = '', $version = '')
     {
         $this->_usingAjax = true;
-        $name = $this->GetName();
+        $name = $this->_Gadget;
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Ajax/Ajax.js');
         $GLOBALS['app']->Layout->AddScriptLink(BASE_SCRIPT.'?gadget='.
                                                $name.
@@ -365,7 +365,7 @@ class Jaws_GadgetHTML extends Jaws_Gadget
      */
     function GetURLFor($action='', $params = null, $useExt = true, $URIPrefix = false)
     {
-        return $GLOBALS['app']->Map->GetURLFor($this->_Name, $action, $params, $useExt, $URIPrefix);
+        return $GLOBALS['app']->Map->GetURLFor($this->_Gadget, $action, $params, $useExt, $URIPrefix);
     }
 
 }

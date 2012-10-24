@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Model
+class Jaws_Gadget_Model extends Jaws_Gadget
 {
     /**
      * Model's name
@@ -19,7 +19,7 @@ class Jaws_Model
      * @see SetName()
      * @see GetName()
      */
-    var $_Name;
+    var $_Gadget;
 
     /**
      * Model's name
@@ -48,7 +48,7 @@ class Jaws_Model
      */
     function Jaws_Model($gadget = '')
     {
-        $this->_Name = $gadget;
+        $this->_Gadget = $gadget;
     }
 
     /**
@@ -59,7 +59,7 @@ class Jaws_Model
      */
     function SetName($value)
     {
-        $this->_Name = $value;
+        $this->_Gadget = $value;
     }
 
     /**
@@ -70,7 +70,7 @@ class Jaws_Model
      */
     function GetName()
     {
-        return $this->_Name;
+        return $this->_Gadget;
     }
 
     /**
@@ -145,8 +145,8 @@ class Jaws_Model
      */
     function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
     {
-        $info = $GLOBALS['app']->LoadGadget($this->_Name, 'Info');
-        $main_file = JAWS_PATH . 'gadgets/'. $this->_Name . '/schema/' . $main_schema;
+        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
+        $main_file = JAWS_PATH . 'gadgets/'. $this->_Gadget . '/schema/' . $main_schema;
         if (!file_exists($main_file)) {
             return new Jaws_Error (_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
                                    $info->GetAttribute('Name'),
@@ -156,7 +156,7 @@ class Jaws_Model
 
         $base_file = false;
         if (!empty($base_schema)) {
-            $base_file = JAWS_PATH . 'gadgets/'. $this->_Name . '/schema/' . $base_schema;
+            $base_file = JAWS_PATH . 'gadgets/'. $this->_Gadget . '/schema/' . $base_schema;
             if (!file_exists($base_file)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
                                       $info->GetAttribute('Name'),
@@ -239,7 +239,7 @@ class Jaws_Model
     function InstallACLs()
     {
         $acls = array();
-        $info = $GLOBALS['app']->LoadGadget($this->_Name, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
         foreach ($info->GetACLs() as $acl => $default) {
             if (false === stripos(serialize($acls), "\"{$acl}\"")) {
                 $acls[] = array($acl, $default);
@@ -247,7 +247,7 @@ class Jaws_Model
         }
 
         $GLOBALS['app']->ACL->NewKeyEx($acls);
-        $GLOBALS['app']->ACL->commit($this->_Name);
+        $GLOBALS['app']->ACL->commit($this->_Gadget);
     }
 
     /**
@@ -257,12 +257,12 @@ class Jaws_Model
      */
     function UninstallACLs()
     {
-        $info = $GLOBALS['app']->LoadGadget($this->_Name, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
         foreach($info->GetACLs() as $acl => $opts){
             $GLOBALS['app']->ACL->DeleteKey($acl);
         }
 
-        $GLOBALS['app']->ACL->Commit($this->_Name);
+        $GLOBALS['app']->ACL->Commit($this->_Gadget);
     }
 
     /**
