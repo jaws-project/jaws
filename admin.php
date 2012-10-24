@@ -153,7 +153,7 @@ if ($IsReqActionStandAlone) {
     // If requested action
     if ($goGadget->IsAdmin($ReqAction)) {
         $GLOBALS['app']->Layout->LoadControlPanelHead();
-        $ReqResult = $GLOBALS['app']->Layout->PutGadget($goGadget->GetName(), $ReqAction);
+        $ReqResult = $GLOBALS['app']->Layout->PutGadget($ReqGadget, $ReqAction);
         $GLOBALS['app']->Layout->Populate($goGadget, true, $ReqResult);
     } else {
         Jaws_Error::Fatal("Invalid operation: You can't execute requested action");
