@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class EmblemsAdminAjax extends Jaws_Ajax
+class EmblemsAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Delete an emblem

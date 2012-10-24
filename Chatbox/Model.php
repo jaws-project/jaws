@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ChatboxModel extends Jaws_Model
+class ChatboxModel extends Jaws_Gadget_Model
 {
     /**
      * This function mails the comments to the owner

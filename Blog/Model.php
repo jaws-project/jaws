@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogModel extends Jaws_Model
+class BlogModel extends Jaws_Gadget_Model
 {
     /**
      * Has the Atom pointer to create the RSS/XML files
@@ -289,7 +289,7 @@ class BlogModel extends Jaws_Model
 
         // Recent comments
         require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $comments = $api->GetRecentComments(10);
 
         if (Jaws_Error::IsError($comments)) {
@@ -592,7 +592,7 @@ class BlogModel extends Jaws_Model
     {
         require_once JAWS_PATH.'include/Jaws/Comment.php';
 
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $comments = $api->GetComments($id, $parent, true, false, false, true);
 
         if (Jaws_Error::IsError($comments)) {

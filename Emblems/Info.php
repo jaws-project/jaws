@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class EmblemsInfo extends Jaws_GadgetInfo
+class EmblemsInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

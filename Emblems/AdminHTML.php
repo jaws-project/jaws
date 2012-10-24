@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class EmblemsAdminHTML extends Jaws_GadgetHTML
+class EmblemsAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Get emblems

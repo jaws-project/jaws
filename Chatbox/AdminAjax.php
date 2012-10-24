@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ChatboxAdminAjax extends Jaws_Ajax
+class ChatboxAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Search for comments and return the data in an array

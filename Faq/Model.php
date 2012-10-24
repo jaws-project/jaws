@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FaqModel extends Jaws_Model
+class FaqModel extends Jaws_Gadget_Model
 {
     /**
      * Get the list of questions

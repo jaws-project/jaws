@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BannerInfo extends Jaws_GadgetInfo
+class BannerInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BannerAdminHTML extends Jaws_GadgetHTML
+class BannerAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default admin action

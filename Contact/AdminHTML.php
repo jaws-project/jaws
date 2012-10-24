@@ -10,7 +10,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ContactAdminHTML extends Jaws_GadgetHTML
+class ContactAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Admin of Gadget

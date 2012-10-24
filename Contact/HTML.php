@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ContactHTML extends Jaws_GadgetHTML
+class ContactHTML extends Jaws_Gadget_HTML
 {
     /**
      * Default Action

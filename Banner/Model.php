@@ -12,7 +12,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BannerModel extends Jaws_Model
+class BannerModel extends Jaws_Gadget_Model
 {
     /**
      * Get banners base directory name
