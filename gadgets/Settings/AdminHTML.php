@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SettingsAdminHTML extends Jaws_GadgetHTML
+class SettingsAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays gadget administration section

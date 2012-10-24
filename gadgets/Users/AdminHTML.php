@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UsersAdminHTML extends Jaws_GadgetHTML
+class UsersAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default admin action

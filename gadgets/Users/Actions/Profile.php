@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Profile extends Jaws_GadgetHTML
+class Users_Actions_Profile extends Jaws_Gadget_HTML
 {
     /**
      * Get Profile action params(superadmin users list)

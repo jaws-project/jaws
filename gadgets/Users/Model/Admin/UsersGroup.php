@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Model_Admin_UsersGroup extends Jaws_Model
+class Users_Model_Admin_UsersGroup extends Jaws_Gadget_Model
 {
     /**
      * Adds a group of users(by their IDs) to a certain group

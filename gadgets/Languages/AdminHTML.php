@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LanguagesAdminHTML extends Jaws_GadgetHTML
+class LanguagesAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default action(MainMenu)

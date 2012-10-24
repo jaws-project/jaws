@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyModel extends Jaws_Model
+class PolicyModel extends Jaws_Gadget_Model
 {
     /**
      * Checks wheter the IP is blocked or not

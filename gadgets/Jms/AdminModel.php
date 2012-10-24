@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class JmsAdminModel extends Jaws_Model
+class JmsAdminModel extends Jaws_Gadget_Model
 {
     /**
      * Installs the gadget
@@ -88,7 +88,7 @@ class JmsAdminModel extends Jaws_Model
                         'section'     => $section,
                         'realname'    => $gadget,
                         'name'        => $tName,
-                        'core_gadget' => (bool)$gInfo->GetAttribute('core_gadget'),
+                        'core_gadget' => $gInfo->_IsCore,
                         'description' => $gInfo->GetDescription(),
                         'version'     => $gInfo->GetVersion(),
                         'installed'   => (bool)$gInstalled,

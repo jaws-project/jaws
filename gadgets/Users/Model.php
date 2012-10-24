@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UsersModel extends Jaws_Model
+class UsersModel extends Jaws_Gadget_Model
 {
     /**
      */

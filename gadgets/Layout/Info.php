@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LayoutInfo extends Jaws_GadgetInfo
+class LayoutInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

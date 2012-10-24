@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class RegistryAdminModel extends Jaws_Model
+class RegistryAdminModel extends Jaws_Gadget_Model
 {
     /**
      * Installs the gadget

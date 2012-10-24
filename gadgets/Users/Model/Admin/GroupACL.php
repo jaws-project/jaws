@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Model_Admin_GroupACL extends Jaws_Model
+class Users_Model_Admin_GroupACL extends Jaws_Gadget_Model
 {
     /**
      * Returns an array with the ACL keys of a given group

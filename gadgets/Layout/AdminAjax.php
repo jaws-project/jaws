@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LayoutAdminAjax extends Jaws_Ajax
+class LayoutAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Change items position

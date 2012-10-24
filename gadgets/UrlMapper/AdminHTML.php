@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapperAdminHTML extends Jaws_GadgetHTML
+class UrlMapperAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default admin action

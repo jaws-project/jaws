@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Model_Account extends Jaws_Model
+class Users_Model_Account extends Jaws_Gadget_Model
 {
     /**
      * Updates user profile

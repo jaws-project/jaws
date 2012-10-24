@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SettingsAdminAjax extends Jaws_Ajax
+class SettingsAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Updates basic settings

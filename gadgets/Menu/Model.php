@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class MenuModel extends Jaws_Model
+class MenuModel extends Jaws_Gadget_Model
 {
     /**
      * Returns a menu

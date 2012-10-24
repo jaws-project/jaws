@@ -12,7 +12,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class MenuAdminHTML extends Jaws_GadgetHTML
+class MenuAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays gadget administration section

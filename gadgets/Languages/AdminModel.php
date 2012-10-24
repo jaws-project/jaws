@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LanguagesAdminModel extends Jaws_Model
+class LanguagesAdminModel extends Jaws_Gadget_Model
 {
     /**
      * Special empty string

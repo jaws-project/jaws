@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SearchModel extends Jaws_Model
+class SearchModel extends Jaws_Gadget_Model
 {
     /**
      * Search options

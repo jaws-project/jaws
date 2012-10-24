@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UsersAdminAjax extends Jaws_Ajax
+class UsersAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * User model
@@ -28,7 +28,7 @@ class UsersAdminAjax extends Jaws_Ajax
      */
     function UsersAdminAjax(&$model)
     {
-        parent::Jaws_Ajax($model);
+        parent::Jaws_Gadget_Ajax($model);
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $this->_UserModel = new Jaws_User();
     }

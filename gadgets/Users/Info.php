@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UsersInfo extends Jaws_GadgetInfo
+class UsersInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

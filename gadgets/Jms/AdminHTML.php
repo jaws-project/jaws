@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class JmsAdminHTML extends Jaws_GadgetHTML
+class JmsAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Main method
@@ -207,7 +207,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Enable a passed gadget by running
-     * Jaws_GadgetHTML::EnableGadget method, then redirects to admin area
+     * Jaws_Gadget_HTML::EnableGadget method, then redirects to admin area
      *
      * @access  public
      * @return  void
@@ -226,7 +226,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
         if (Jaws_Error::IsError($gInfo)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
-            $return = Jaws_GadgetHTML::EnableGadget($gadget);
+            $return = Jaws_Gadget_HTML::EnableGadget($gadget);
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {
@@ -240,7 +240,7 @@ class JmsAdminHTML extends Jaws_GadgetHTML
 
     /**
      * Update a passed gadget by running
-     * Jaws_GadgetHTML::UpgradeGadget method, then redirects to admin area
+     * Jaws_Gadget_HTML::UpgradeGadget method, then redirects to admin area
      *
      * @access  public
      * @return  void
@@ -255,8 +255,8 @@ class JmsAdminHTML extends Jaws_GadgetHTML
         $get = $request->get(array('location', 'comp'), 'get');
 
         $gadget = $get['comp'];
-        if (!Jaws_GadgetHTML::IsGadgetUpdated($gadget)) {
-            $return = Jaws_GadgetHTML::UpdateGadget($gadget);
+        if (!Jaws_Gadget_HTML::IsGadgetUpdated($gadget)) {
+            $return = Jaws_Gadget_HTML::UpdateGadget($gadget);
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {

@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class RegistryAdminHTML extends Jaws_GadgetHTML
+class RegistryAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default action(MainMenu)

@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyAdminHTML extends Jaws_GadgetHTML
+class PolicyAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default admin action (IPBlocking)

@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SearchAdminHTML extends Jaws_GadgetHTML
+class SearchAdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays gadget administration section

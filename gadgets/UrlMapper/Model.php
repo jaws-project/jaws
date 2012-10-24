@@ -8,7 +8,7 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapperModel extends Jaws_Model
+class UrlMapperModel extends Jaws_Gadget_Model
 {
 
     /**
