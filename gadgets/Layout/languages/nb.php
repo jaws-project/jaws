@@ -24,6 +24,8 @@ define('_NB_LAYOUT_NEW', "Legg til modul");
 define('_NB_LAYOUT_BACK', "Tilbake til kontrollpanelet");
 define('_NB_LAYOUT_CHANGE_DW', "Når skal modulen vises");
 define('_NB_LAYOUT_THEME', "Tema");
+define('_NB_LAYOUT_THEME_LOCAL', "Lokale temaer");
+define('_NB_LAYOUT_THEME_REMOTE', "Ikke lokale temaer");
 define('_NB_LAYOUT_THEME_CHANGED', "Temaet er forandret");
 define('_NB_LAYOUT_CONFIRM_DELETE', "Er du sikker på å fjerne denne modulen?");
 define('_NB_LAYOUT_REQUESTED_GADGET', "Forespurt modul");
