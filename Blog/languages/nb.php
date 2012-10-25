@@ -17,6 +17,7 @@ define('_NB_BLOG_ACL_ADDENTRIES', "Legg til oppføringer");
 define('_NB_BLOG_ACL_MODIFYOTHERSENTRIES', "Forandre andres oppføringer");
 define('_NB_BLOG_ACL_DELETEENTRIES', "Slett oppføringer");
 define('_NB_BLOG_ACL_PUBLISHENTRIES', "Offentliggjør oppføringer");
+define('_NB_BLOG_ACL_MODIFYPUBLISHEDENTRIES', "Endre publiserte innlegg");
 define('_NB_BLOG_ACL_MANAGECOMMENTS', "Administrer kommentarer");
 define('_NB_BLOG_ACL_MANAGETRACKBACKS', "Administrer tilbakesporinger");
 define('_NB_BLOG_ACL_MANAGECATEGORIES', "Administrer kategorier");

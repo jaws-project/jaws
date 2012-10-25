@@ -52,6 +52,7 @@ define('_NB_PHOO_NUM_PHOTOS_ALBUM', "{0} bilder i albumet");
 define('_NB_PHOO_UPLOAD_PHOTOS', "Last opp bilde");
 define('_NB_PHOO_EDIT_DESCRIPTION', "Rediger beskrivelse");
 define('_NB_PHOO_DELETE_ALBUM_CONFIRM', "Er du sikker på å slette dette albumet?");
+define('_NB_PHOO_NOT_FOUND', "Ikke funnet");
 define('_NB_PHOO_NOT_PUBLISHED', "Ikke publisert");
 define('_NB_PHOO_START_UPLOADING_PHOTOS', "Start opplasting av bilder");
 define('_NB_PHOO_INEXISTENT_ALBUM', "Albumet eksisterer ikke");

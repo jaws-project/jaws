@@ -25,6 +25,7 @@ define('_NB_FILEBROWSER_DIR_NAME', "Mappenavn");
 define('_NB_FILEBROWSER_FILENAME', "Filnavn");
 define('_NB_FILEBROWSER_RENAME', "Endre navn");
 define('_NB_FILEBROWSER_LOCATION', "Plassering");
+define('_NB_FILEBROWSER_ORDER_BY', "Rekkefølge etter");
 define('_NB_FILEBROWSER_FILE', "Fil");
 define('_NB_FILEBROWSER_DIR', "Mappe");
 define('_NB_FILEBROWSER_FASTURL', "Rask nettadresse");
@@ -35,6 +36,8 @@ define('_NB_FILEBROWSER_CONFIRM_DELETE_FILE', "Er du sikker på å slette denne 
 define('_NB_FILEBROWSER_SIZE', "Størrelse");
 define('_NB_FILEBROWSER_ROOT', "Rot");
 define('_NB_FILEBROWSER_FILEINFO', "Informasjon");
+define('_NB_FILEBROWSER_ENTRIES_COUNT', "{0} filer/mapper");
+define('_NB_FILEBROWSER_HITS', "Treff");
 define('_NB_FILEBROWSER_INITIAL_FOLDER', "Startmappe");
 define('_NB_FILEBROWSER_INITIAL_FOLDER_DESC', "Viser en liste med elementer i rotmappen");
 define('_NB_FILEBROWSER_CREATED_DIR', "Mappen {0} er opprettet");

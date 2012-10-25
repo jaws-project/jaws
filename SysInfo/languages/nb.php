@@ -12,7 +12,10 @@
 
 define('_NB_SYSINFO_NAME', "System informasjon");
 define('_NB_SYSINFO_DESCRIPTION', "Viser informasjon om operativsystemet, php, databasen og Jaws");
-define('_NB_SYSINFO_ACL_MANAGESYSINFO', "Tilgang til modulen SysInfo");
+define('_NB_SYSINFO_ACL_SYSINFO', "Tilgang til systeminformasjon");
+define('_NB_SYSINFO_ACL_PHPINFO', "Tilgang til PHP innstillinger");
+define('_NB_SYSINFO_ACL_JAWSINFO', "Tilgang til Jaws informasjon");
+define('_NB_SYSINFO_ACL_DIRINFO', "Tilgang til mapperettigheter");
 define('_NB_SYSINFO_SYSINFO', "System informasjon");
 define('_NB_SYSINFO_SYSINFO_DESC', "Informasjon rundt din tjener som operativsystem, netttjeneren, database,....");
 define('_NB_SYSINFO_PHPINFO', "PHP innstillinger");
