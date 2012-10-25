@@ -12,6 +12,7 @@
 
 define('_NB_PLUGINS_SPELLNUMBER_DESCRIPTION', "Oversetter tall til strengformat");
 define('_NB_PLUGINS_SPELLNUMBER_ADD', "Legg til nummertagger");
+define('_NB_PLUGINS_SPELLNUMBER_SEPARATOR', " ");
 define('_NB_PLUGINS_SPELLNUMBER_0', "Null");
 define('_NB_PLUGINS_SPELLNUMBER_1', "en");
 define('_NB_PLUGINS_SPELLNUMBER_2', "to");

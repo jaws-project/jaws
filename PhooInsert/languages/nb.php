@@ -13,3 +13,4 @@
 define('_NB_PLUGINS_PHOOINSERT_DESCRIPTION', "Gir mulighet for å sette inn ett bilde fra bildeorganisatoren");
 define('_NB_PLUGINS_PHOOINSERT_INSERT_IMAGE', "Sett inn bilde");
 define('_NB_PLUGINS_PHOOINSERT_PHOTO_GALLERY', "Bildegalleri");
+define('_NB_PLUGINS_PHOOINSERT_PHOTO_SELECT', "Velg bilde");
