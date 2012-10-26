@@ -22,3 +22,5 @@ $actions['InitialFolder'] = array('LayoutAction',
 $actions['Admin']         = array('AdminAction');
 $actions['UploadFile']    = array('StandaloneAdminAction');
 $actions['BrowseFile']    = array('StandaloneAdminAction');
+$actions['DeleteFile']    = array('StandaloneAdminAction');
+$actions['DeleteDir']     = array('StandaloneAdminAction');

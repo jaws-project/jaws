@@ -268,3 +268,7 @@ span.pager_separator, span.page_inactive {
 #image_select .phoo-image {border:solid 1px #999; padding:3px;}
 #image_select .phoo-image img {width:225px;}
 #image_select .image-porperties tr {height:30px;}
+
+/* TEXT Editor Select Photo */
+#photo_upload_title {text-align: right; font-weight: bold; padding-bottom: 10px;}
+#phoo_browse .files {padding:10px; margin-bottom: 10px; border:1px solid #888; border-radius:5px;}

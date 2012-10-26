@@ -10,25 +10,70 @@
 </head>
 <body>
   <div id="phoo_browse">
+      <!-- BEGIN upload_photo -->
+      <div id="photo_upload_title">{lbl_file_upload}</div>
+      <form id="phoo_form" name="phoo_form" method="post"
+            action="{base_script}"
+            enctype="multipart/form-data">
+          <input type="hidden" name="gadget" value="Phoo"/>
+          <input type="hidden" name="action" id="action" value="UploadPhotosStep2"/>
+          <input type="hidden" name="album" id="album" value="{album}"/>
+          <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
+
+          <div class="files">
+              <table>
+                  <tr>
+                      <td>{lbl_filename}:</td>
+                      <td>{uploadfile}</td>
+                      <td>{btn_upload_file}</td>
+                  </tr>
+              </table>
+
+          </div>
+      </form>
+      <!-- END upload_photo -->
+
     <!-- BEGIN noalbums -->
     <div class="no-album">
       <div class="notice-message">{message}</div>
     </div>
     <!-- END noalbums -->
 
-    <!-- BEGIN photos -->
     <script language="JavaScript">
+        var incompleteFields = "{incompleteFields}";
+
         function selectAllAlbums() {
-            var combo = document.getElementById('albums'),
-                i;
+            var combo, i;
+            combo = document.getElementById('albums');
             for (i = combo.options.length - 1; i >= 0; i--) {
                 combo.options[i].selected = true;
             }
         }
+
+        /**
+         * Upload photo
+         */
+        function uploadPhoto()
+        {
+            defaultAlbum = "{defaultAlbum}";
+            if (document.getElementById('photo1').value==null ||
+                    document.getElementById('photo1').value=="")
+            {
+                alert(incompleteFields);
+                return false;
+            }
+            document.getElementById('album').value = defaultAlbum;
+            document.phoo_form.submit();
+        }
+
     </script>
-    <form name="AdminPhotos" action="admin.php" method="POST">
+
+      <!-- BEGIN photos -->
+
+      <form id="album_form" name="album_form" action="admin.php" method="POST">
       <input type="hidden" name="gadget" value="Phoo" />
       <input type="hidden" name="action" value="BrowsePhoo" />
+      <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
       <table id="phoo-table">
         <tr>
           <td id="albums-combo-cell">

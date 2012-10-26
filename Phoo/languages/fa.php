@@ -50,6 +50,7 @@ define('_FA_PHOO_ADDITIONAL_SETTINGS', "تنظیمات اضافی");
 define('_FA_PHOO_IMPORT', "وارد کردن");
 define('_FA_PHOO_NUM_PHOTOS_ALBUM', "{0} تصویر در آلبوم");
 define('_FA_PHOO_UPLOAD_PHOTOS', "آپلود کردن تصاویر");
+define('_FA_PHOO_UPLOAD_PHOTO', "آپلود کردن تصویر");
 define('_FA_PHOO_EDIT_DESCRIPTION', "ویرایش شرح");
 define('_FA_PHOO_DELETE_ALBUM_CONFIRM', "آیا می‌خواهید این این آلبوم حذف شود؟");
 define('_FA_PHOO_NOT_FOUND', "پیدا نشده");

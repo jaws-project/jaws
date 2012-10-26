@@ -669,6 +669,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $album   = (int)$request->get('album', 'post');
+        $extra_params = $request->get('extra_params', 'post');
 
         $failures = $uploadedImages = array();
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
@@ -709,7 +710,13 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         }
 
         $GLOBALS['app']->Session->SetAttribute('uploadedImages', $uploadedImages);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album=' . $album);
+
+        if (empty($extra_params)) {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album=' . $album);
+        } else {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
+        }
+
     }
 
     /**
@@ -1528,18 +1535,45 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $post    = $request->get(array('date', 'album'), 'post');
         $albums  = $model->GetAlbums('createtime','ASC');
 
-        $extraParams = '';
+        // TODO set default value to change page address to correct location after uploading image
+        $extraParams = '&amp;';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'CKEditor') {
+            $extraParams = $request->get('extra_params');
+            if(empty($extraParams)) {
             $getParams = $request->get(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor='.$getParams['CKEditor'].
                            '&amp;CKEditorFuncNum='.$getParams['CKEditorFuncNum'].
                            '&amp;langCode='.$getParams['langCode'];
+            }
         }
+
+
+
+        if ($this->GetPermission('AddPhotos')) {
+            $t->SetVariable('base_script', BASE_SCRIPT);
+            $t->SetVariable('extra_params', $extraParams);
+            $t->SetVariable('lbl_file_upload', _t('PHOO_UPLOAD_PHOTO'));
+            $t->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+
+            $t->SetBlock("phoo_browse/upload_photo");
+            $uploadfile =& Piwi::CreateWidget('FileEntry', 'photo1', '');
+            $uploadfile->SetID('photo1');
+            $t->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
+            $t->SetVariable('uploadfile', $uploadfile->Get());
+
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave->AddEvent(ON_CLICK, "javascript: uploadPhoto();");
+            $t->SetVariable('btn_upload_file', $btnSave->Get());
+            $t->ParseBlock("phoo_browse/upload_photo");
+        }
+
 
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $objDate = $GLOBALS['app']->loadDate();
             $t->SetBlock ("phoo_browse/photos");
+            $t->SetVariable('extra_params', $extraParams);
+
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
             $datecombo->AddOption ('&nbsp;','');
@@ -1601,8 +1635,17 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             } else {
                 $r_album = isset($album) ? $album : $firstAlbum;
             }
+
+            // Use for uploading image
+            if (is_array($r_album)) {
+                $t->SetVariable('defaultAlbum', $r_album[0]);
+            } else {
+                $t->SetVariable('defaultAlbum', $r_album);
+            }
+
+
             $albumcombo->SetDefault($r_album);
-            $albumcombo->AddEvent (new JSEvent (ON_CHANGE, "this.form.submit();"));
+            $albumcombo->AddEvent (new JSEvent (ON_CHANGE, "document.album_form.submit();"));
             $t->SetVariable('albums', _t('PHOO_ALBUMS'));
             $t->SetVariable('albums_combo', $albumcombo->Get());
 
@@ -1723,11 +1766,17 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $dir = _t('GLOBAL_LANG_DIRECTION');
         $t->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
+        $extraParams = '';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'TinyMCE') {
             $t->SetBlock('ImageSelect/script');
             $t->ParseBlock('ImageSelect/script');
         } elseif ($editor === 'CKEditor') {
+            $getParams = $request->get(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+            $extraParams = '&amp;CKEditor=' . $getParams['CKEditor'] .
+                           '&amp;CKEditorFuncNum=' . $getParams['CKEditorFuncNum'] .
+                           '&amp;langCode=' . $getParams['langCode'];
+
             $ckFuncIndex = $request->get('CKEditorFuncNum', 'get');
             $t->SetVariable('ckFuncIndex', $ckFuncIndex);
         }
@@ -1760,6 +1809,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             $t->ParseBlock('ImageSelect/not_published');
         } else {
             $t->SetBlock('ImageSelect/selected');
+            $t->SetVariable('extra_params', $extraParams);
             $filename = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
             $title = (empty($image['name']))? '' : $image['name'];
             $desc = $image['description'];

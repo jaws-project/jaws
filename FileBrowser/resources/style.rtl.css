@@ -97,3 +97,5 @@ ul#tabs span.current {
 #file_browser table {width:100%; border-spacing:0; text-align:right;}
 #file_browser th {height:20px; background-color:#3465A4; color:#FFFFFF;}
 #file_browser .col-icon {width:20px;}
+
+#file_upload_title {text-align: right; font-weight: bold; padding-bottom: 10px;}
