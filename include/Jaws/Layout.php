@@ -498,7 +498,7 @@ class Jaws_Layout
      */
     function IsDisplayable($gadget, $action, $display_when, $index)
     {
-        $displayWhen = explode(',', $display_when);
+        $displayWhen = array_filter(explode(',', $display_when));
         if ($display_when == '*' || ($index && in_array('index', $displayWhen))) {
             return true;
         }
