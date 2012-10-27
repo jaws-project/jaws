@@ -102,7 +102,8 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     function IsStandAlone($action)
     {
         if ($this->IsValidAction($action)) {
-            return isset($this->_ValidAction['StandaloneAction'][$action]);
+            return (isset($this->_ValidAction[$action]['StandaloneAction']) &&
+                    $this->_ValidAction[$action]['StandaloneAction']);
         }
         return false;
     }
@@ -116,9 +117,9 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function IsStandAloneAdmin($action)
     {
-        $actionmode = '';
         if ($this->IsValidAction($action)) {
-            return isset($this->_ValidAction['StandaloneAdminAction'][$action]);
+            return (isset($this->_ValidAction[$action]['StandaloneAdminAction']) &&
+                    $this->_ValidAction[$action]['StandaloneAdminAction']);
         }
         return false;
     }

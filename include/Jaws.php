@@ -627,11 +627,6 @@ class Jaws
                         $file = JAWS_PATH. "gadgets/$gadget/Actions/$filename.php";
                         break;
 
-                    case 'LayoutHTML':
-                        $file_class_name = $gadget. '_Actions_'. $filename;
-                        $file = JAWS_PATH. "gadgets/$gadget/Actions/$filename.php";
-                        break;
-
                     case 'AdminHTML':
                         $file_class_name = $gadget. '_Actions_Admin_'. $filename;
                         $file = JAWS_PATH. "gadgets/$gadget/Actions/Admin/$filename.php";
@@ -825,13 +820,13 @@ class Jaws
                         $desc   = isset($properties[2])? $properties[2] : '';
                         $params = isset($properties[3])? $properties[3] : false;
                         $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
+                        $tmp[$action] = array('name'   => $name,
+                                              'desc'   => $desc,
+                                              'params' => $params);
                         foreach ($modes as $mode) {
                             @list($mode, $file) = array_filter(explode(':', $mode));
-                            $tmp[$mode][$action] = array('name'   => $name,
-                                                         'mode'   => $mode,
-                                                         'desc'   => $desc,
-                                                         'params' => $params,
-                                                         'file'   => $file);
+                            $tmp[$action] = $tmp[$action] + array($mode => true);
+                            $tmp[$action] = $tmp[$action] + array('file' => $file);
                         }
                     }
                     $this->_Gadgets[$gadget]['actions'] = $tmp;
@@ -845,10 +840,11 @@ class Jaws
 
         if (empty($type)) {
             return $this->_Gadgets[$gadget]['actions'];
-        } elseif (array_key_exists($type, $this->_Gadgets[$gadget]['actions'])) {
-            return $this->_Gadgets[$gadget]['actions'][$type];
         } else {
-            return array();
+            return array_filter(
+                $this->_Gadgets[$gadget]['actions'],
+                create_function('$item', 'return isset($item[\''.$type.'\']);')
+            );
         }
     }
 

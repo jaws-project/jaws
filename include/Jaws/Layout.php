@@ -556,16 +556,11 @@ class Jaws_Layout
                                              $item['display_when'],
                                              $is_index))
                     {
-                        if (Jaws_Gadget::IsGadgetUpdated($item['gadget'])) {
-                            if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
-                                $content = $this->PutGadget($item['gadget'],
-                                                            $item['gadget_action'],
-                                                            unserialize($item['action_params']),
-                                                            $item['action_filename']);
-                            }
-                        } else {
-                            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Trying to populate ' . $item['gadget'] .
-                                                    ' in layout, but looks that it is not installed/upgraded');
+                        if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
+                            $content = $this->PutGadget($item['gadget'],
+                                                        $item['gadget_action'],
+                                                        unserialize($item['action_params']),
+                                                        $item['action_filename']);
                         }
                     }
                 }
@@ -591,50 +586,60 @@ class Jaws_Layout
      */
     function PutGadget($gadget, $action, $params = null, $filename = '')
     {
+        $output = '';
         $enabled = $GLOBALS['app']->Registry->Get('/gadgets/' . $gadget . '/enabled');
-        if (Jaws_Error::isError($enabled)) {
-            $enabled = 'false';
+        if (Jaws_Error::isError($enabled) || $enabled != 'true') {
+            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, "Gadget $gadget is not enabled");
+            return $output;
         }
 
-        $output = '';
-        if ($enabled == 'true') {
-            if (JAWS_SCRIPT == 'admin') {
-                $this->AddHeadLink('gadgets/'.$gadget.'/resources/style.css',
-                                   'stylesheet',
-                                   'text/css',
-                                   '',
-                                   null,
-                                   true);
-                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'AdminHTML');
-                if (!Jaws_Error::isError($goGadget)) {
-                    $goGadget->SetAction($action);
-                    $output = $goGadget->Execute();
-                }
-            } else {
-                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'LayoutHTML', $filename);
-                if (!Jaws_Error::isError($goGadget)) {
-                    $GLOBALS['app']->Registry->LoadFile($gadget);
-                    if (method_exists($goGadget, $action)) {
-                        if (is_array($params)) {
-                            $output = call_user_func_array(array($goGadget, $action), $params);
-                        } else {
-                            $output = $goGadget->$action($params);
-                        }
-                    } else {
-                        $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's LayoutHTML dosn't exist.");
-                    }
-                } else {
-                    $GLOBALS['log']->Log(JAWS_LOG_ERROR,
-                                         $gadget ." is missing the LayoutHTML. Jaws can't execute Layout " .
-                                         "actions if the file doesn't exists");
-                }
+        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
+        if (!$objGadget->IsGadgetUpdated()) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                'Trying to populate '. $gadget.
+                ' in layout, but looks that it is not installed/upgraded'
+            );
+            return $output;
+        }
+
+        if (JAWS_SCRIPT == 'admin') {
+            $this->AddHeadLink('gadgets/'.$gadget.'/resources/style.css',
+                               'stylesheet',
+                               'text/css',
+                               '',
+                               null,
+                               true);
+            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'AdminHTML');
+            if (!Jaws_Error::isError($goGadget)) {
+                $goGadget->SetAction($action);
+                $output = $goGadget->Execute();
             }
         } else {
-            Jaws_Error::Fatal('Gadget ' . $gadget . ' is not enabled');
+            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
+            if (!Jaws_Error::isError($goGadget)) {
+                $GLOBALS['app']->Registry->LoadFile($gadget);
+                if (method_exists($goGadget, $action)) {
+                    if (is_array($params)) {
+                        $output = call_user_func_array(array($goGadget, $action), $params);
+                    } else {
+                        $output = $goGadget->$action($params);
+                    }
+                } else {
+                    $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");
+                }
+            } else {
+                $GLOBALS['log']->Log(
+                    JAWS_LOG_ERROR,
+                    "$gadget is missing the HTML. Jaws can't execute Layout " .
+                    "actions if the file doesn't exists"
+                );
+            }
         }
+
         if (Jaws_Error::isError($output)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
-            return '';
+            $output = '';
         }
 
         return $output;

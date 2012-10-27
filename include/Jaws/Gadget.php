@@ -171,7 +171,7 @@ class Jaws_Gadget
 
         $this->_Name        = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
-        $this->LoadActions($gadget);
+        $this->LoadActions();
     }
 
     /**
@@ -179,22 +179,22 @@ class Jaws_Gadget
      *
      * @access  public
      */
-    function LoadActions($gadget = '')
+    function LoadActions()
     {
         if (!$this->_LoadedActions) {
-            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($gadget);
-            if (!isset($this->_ValidAction['NormalAction']['DefaultAction'])) {
-                $this->_ValidAction['NormalAction']['DefaultAction'] = array('name' => 'DefaultAction',
-                                                                             'mode' => 'NormalAction',
-                                                                             'desc' => '',
-                                                                             'file' => null);
+            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->_Gadget);
+            if (!isset($this->_ValidAction['DefaultAction'])) {
+                $this->_ValidAction['DefaultAction'] = array('name' => 'DefaultAction',
+                                                             'NormalAction' => true,
+                                                             'desc' => '',
+                                                             'file' => null);
             }
 
-            if (!isset($this->_ValidAction['AdminAction']['Admin'])) {
-                $this->_ValidAction['AdminAction']['Admin'] = array('name' => 'Admin',
-                                                                    'mode' => 'AdminAction',
-                                                                    'desc' => '',
-                                                                    'file' => null);
+            if (!isset($this->_ValidAction['Admin'])) {
+                $this->_ValidAction['Admin'] = array('name' => 'Admin',
+                                                     'AdminAction' => true,
+                                                     'desc' => '',
+                                                     'file' => null);
             }
             $this->_LoadedActions = true;
         }
@@ -467,11 +467,11 @@ class Jaws_Gadget
             $action = $this->_Action;
         }
 
-        if (!$mode = $this->IsValidAction($action)) {
+        if (!$this->IsValidAction($action)) {
             Jaws_Error::Fatal('Invalid action: '. $action);
         }
 
-        $file = $this->_ValidAction[$mode][$action]['file'];
+        $file = $this->_ValidAction[$action]['file'];
         if (!empty($file)) {
             $objAction = $GLOBALS['app']->loadGadget($this->_Gadget,
                                                      JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
@@ -502,10 +502,10 @@ class Jaws_Gadget
      */
     function AddAction($action, $mode, $description, $file = null)
     {
-        $this->_ValidAction[$mode][$action] = array('name' => $action,
-                                                    'mode' => $mode,
-                                                    'desc' => $description,
-                                                    'file' => $file);
+        $this->_ValidAction[$action] = array('name' => $action,
+                                             $mode => true,
+                                             'desc' => $description,
+                                             'file' => $file);
     }
 
     /**
@@ -520,10 +520,10 @@ class Jaws_Gadget
     function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
         $this->_ValidAction[$new_mode][$action] = array('name' => $action,
-                                                        'mode' => $new_mode,
+                                                        $new_mode => true,
+                                                        $old_mode => false,
                                                         'desc' => $desc,
                                                         'file' => $file);
-        unset($this->_ValidAction[$old_mode][$action]);
     }
 
     /**
@@ -562,9 +562,12 @@ class Jaws_Gadget
     function IsAdmin($action)
     {
         if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction['AdminAction'][$action]) || 
-                    isset($this->_ValidAction['StandaloneAdminAction'][$action]));
+            return (isset($this->_ValidAction[$action]['AdminAction']) &&
+                    $this->_ValidAction[$action]['AdminAction']) ||
+                   (isset($this->_ValidAction[$action]['StandaloneAdminAction']) &&
+                    $this->_ValidAction[$action]['StandaloneAdminAction']);
         }
+
         return false;
     }
 
@@ -582,9 +585,12 @@ class Jaws_Gadget
         }
 
         if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction['NormalAction'][$action]) || 
-                    isset($this->_ValidAction['StandaloneAction'][$action]));
+            return (isset($this->_ValidAction[$action]['NormalAction']) &&
+                    $this->_ValidAction[$action]['NormalAction']) ||
+                   (isset($this->_ValidAction[$action]['StandaloneAction']) &&
+                    $this->_ValidAction[$action]['StandaloneAction']);
         }
+
         return false;
     }
 
@@ -609,19 +615,7 @@ class Jaws_Gadget
      */
     function IsValidAction($action)
     {
-        if (JAWS_SCRIPT == 'index') {
-            $modes = array('NormalAction', 'LayoutAction', 'StandaloneAction');
-        } else {
-            $modes = array('AdminAction', 'StandaloneAdminAction');
-        }
-
-        foreach($modes as $mode) {
-            if (isset($this->_ValidAction[$mode][$action])) {
-                return $mode;
-            }
-        }
-
-        return false;
+        return isset($this->_ValidAction[$action]);
     }
 
     /**
@@ -704,10 +698,11 @@ class Jaws_Gadget
      * @param   string $name Name of the gadget to disable.
      * @access  public
      */
-    function DisableGadget($gadget)
+    function DisableGadget()
     {
         // run prechecks
-        if (!Jaws_Gadget::_commonPreDisableGadget($gadget)) {
+        $gadget = $this->_Gadget;
+        if (!$this->_commonPreDisableGadget()) {
             return false;
         }
 
@@ -718,7 +713,7 @@ class Jaws_Gadget
             return $res;
         }
 
-        if (!Jaws_Gadget::_commonDisableGadget($gadget)) {
+        if (!$this->_commonDisableGadget()) {
             return false;
         }
 
@@ -747,10 +742,11 @@ class Jaws_Gadget
      * @return  bool    True true success or false on error
      * @access  public
      */
-    function UninstallGadget($gadget)
+    function UninstallGadget()
     {
         // run prechecks
-        if (!Jaws_Gadget::_commonPreDisableGadget($gadget)) {
+        $gadget = $this->_Gadget;
+        if (!$this->_commonPreDisableGadget()) {
             return false;
         }
 
@@ -769,7 +765,7 @@ class Jaws_Gadget
             }
         }
 
-        if (!Jaws_Gadget::_commonDisableGadget($gadget)) {
+        if (!$this->_commonDisableGadget()) {
             return false;
         }
 
@@ -793,11 +789,10 @@ class Jaws_Gadget
         return true;
     }
 
-    function _commonPreDisableGadget($gadget)
+    function _commonPreDisableGadget()
     {
-        if (
-            Jaws_Gadget::IsGadgetInstalled($gadget) &&
-            $GLOBALS['app']->Registry->Get('/config/main_gadget') == $gadget
+        if ($this->IsGadgetInstalled() &&
+            $GLOBALS['app']->Registry->Get('/config/main_gadget') == $this->_Gadget
         ) {
             return false;
         }
@@ -805,7 +800,7 @@ class Jaws_Gadget
         // Check if it's a core gadget, thus can't be removed.
         ///FIXME check for errors
         $core = $GLOBALS['app']->Registry->Get('/gadgets/core_items');
-        if (stristr($core, $gadget)) {
+        if (stristr($core, $this->_Gadget)) {
             return false;
         }
 
@@ -814,7 +809,7 @@ class Jaws_Gadget
             WHERE [key_name] LIKE {name} AND [key_value] LIKE {search}';
         $params = array(
             'name' => '/gadgets/%/requires',
-            'search' => '%' . $gadget . '%'
+            'search' => '%' . $this->_Gadget . '%'
         );
 
         $result = $GLOBALS['db']->queryOne($sql, $params);
@@ -841,8 +836,9 @@ class Jaws_Gadget
      *
      * @access  public
      */
-    function _commonDisableGadget($gadget)
+    function _commonDisableGadget()
     {
+        $gadget = $this->_Gadget;
         $pull = $GLOBALS['app']->Registry->Get('/gadgets/enabled_items');
         if (stristr($pull, $gadget)) {
             $pull = str_replace(',' . $gadget, '', $pull);
@@ -870,12 +866,12 @@ class Jaws_Gadget
      * Does an update to the gadget, if the update of the gadget is ok then the version
      * key (in registry) will be updated
      *
-     * @param   string  $gadget     Gadget's name
      * @return  bool    True if success or false on error
      * @access  public
      */
-    function UpdateGadget($gadget)
+    function UpdateGadget()
     {
+        $gadget = $this->_Gadget;
         $currentVersion = $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/version');
         $newVersion     = $this->_Version;
         if (version_compare($currentVersion, $newVersion, ">=")) {
@@ -951,15 +947,17 @@ class Jaws_Gadget
      * @param   string  $name  Gadget's name
      * @access  public
      */
-    function EnableGadget($gadget)
+    function EnableGadget()
     {
+        $gadget = $this->_Gadget;
         if (strtolower($gadget) === 'core') {
             return new Jaws_Error(_t('GLOBAL_GADGETS_GADGET_CANT_HAVE_NAME_CORE', $gadget),
                                      __FUNCTION__);
         }
 
         foreach ($this->_Requires as $req) {
-            if (!Jaws_Gadget::IsGadgetInstalled($req)) {
+            $objGadget = $GLOBALS['app']->LoadGadget($req, 'Info');
+            if (!$objGadget->IsGadgetInstalled()) {
                 return new Jaws_Error(_t('GLOBAL_GI_GADGET_REQUIRES', $req, $gadget),
                                       __FUNCTION__);
             }
@@ -1041,13 +1039,8 @@ class Jaws_Gadget
      * @access  public
      * @return  bool    True or false, depends of the gadget status
      */
-    function IsGadgetInstalled($gadget = null)
+    function IsGadgetInstalled()
     {
-        return true;
-        if (is_null($gadget)) {
-            $gadget = $this->_Gadget;
-        }
-
         ///FIXME registry get has to be checked for errors
         $items = trim($GLOBALS['app']->Registry->Get('/gadgets/enabled_items'));
         if (!empty($items) && substr($items,-1) != ',') {
@@ -1055,9 +1048,9 @@ class Jaws_Gadget
         }
 
         $items.= $GLOBALS['app']->Registry->Get('/gadgets/core_items');
-        if (is_dir(JAWS_PATH . 'gadgets/' . $gadget) &&
-            $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/enabled') == 'true' &&
-            in_array($gadget, explode(',', $items)))
+        if (is_dir(JAWS_PATH . 'gadgets/' . $this->_Gadget) &&
+            $GLOBALS['app']->Registry->Get('/gadgets/'.$this->_Gadget.'/enabled') == 'true' &&
+            in_array($this->_Gadget, explode(',', $items)))
         {
             return true;
         }
@@ -1069,26 +1062,23 @@ class Jaws_Gadget
      * Returns true or false if the gadget is running the version the Info.php says
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
      * @return  bool    True or false, depends of the jaws version
      */
-    function IsGadgetUpdated($gadget)
+    function IsGadgetUpdated()
     {
-        $GLOBALS['app']->SetGadgetAsUpdated($gadget, true);
-        return $GLOBALS['app']->IsGadgetMarkedAsUpdated($gadget);
-        if ($GLOBALS['app']->IsGadgetMarkedAsUpdated($gadget) === null) {
-            if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
-                $current_version = $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/version');
+        if ($GLOBALS['app']->IsGadgetMarkedAsUpdated($this->_Gadget) === null) {
+            if ($this->IsGadgetInstalled()) {
+                $current_version = $GLOBALS['app']->Registry->Get('/gadgets/'.$this->_Gadget.'/version');
                 //If the new gadget version is > than the current version (installed)
                 $status = version_compare($this->_Version, $current_version, '>') ? false : true;
             } else {
                 $status = false;
             }
 
-            $GLOBALS['app']->SetGadgetAsUpdated($gadget, $status);
+            $GLOBALS['app']->SetGadgetAsUpdated($this->_Gadget, $status);
         }
 
-        return $GLOBALS['app']->IsGadgetMarkedAsUpdated($gadget);
+        return $GLOBALS['app']->IsGadgetMarkedAsUpdated($this->_Gadget);
     }
 
     /**
@@ -1097,12 +1087,11 @@ class Jaws_Gadget
      * If gadget doesn't have any required Jaws version to run it will return true
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
      * @return  bool    True or false, depends of the jaws version
      */
-    function CanRunInCoreVersion($gadget)
+    function CanRunInCoreVersion()
     {
-        if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
+        if ($this->IsGadgetInstalled()) {
             $coreVersion     = $GLOBALS['app']->Registry->Get('/config/version');
             $requiredVersion = $this->GetRequiredJawsVersion();
 
