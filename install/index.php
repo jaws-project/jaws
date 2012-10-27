@@ -61,7 +61,7 @@ $GLOBALS['log']->Start();
 require_once JAWS_PATH . 'include/Jaws/Const.php';
 require_once JAWS_PATH . 'include/Jaws/Error.php';
 require_once JAWS_PATH . 'include/Jaws/Utils.php';
-require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
+require_once JAWS_PATH . 'include/Jaws/Gadget.php';
 
 if (!isset($_SESSION['install'])) {
     $_SESSION['install'] = array('stage' => 0, 'lastStage' => array());

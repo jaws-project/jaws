@@ -95,7 +95,7 @@ class Installer_Settings extends JawsInstallerStage
         $lang->SetDefault($values['site_language']);
 
         // Build the gadgets select.
-        include_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
+        include_once JAWS_PATH . 'include/Jaws/Gadget.php';
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
 
         $gdt =& Piwi::CreateWidget('Combo', 'default_gadget');
