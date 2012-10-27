@@ -802,40 +802,6 @@ class Jaws
     }
 
     /**
-     * Gets a list of installed gadgets (using Singleton), it uses
-     * the /gadget/enabled_items
-     *
-     * @access  public
-     * @return   array   Array of enabled_items (and updated)
-     */
-    function GetInstalledGadgets()
-    {
-        static $installedGadgets;
-
-        if (isset($installedGadgets)) {
-            return $installedGadgets;
-        }
-        $installedGadgets = array();
-
-        $gs = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/enabled_items'));
-        $ci = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/core_items'));
-        $ci = str_replace(' ', '', $ci);
-        $gs = array_merge($gs, $ci);
-
-        if (count($gs) > 0) {
-            foreach ($gs as $gadget) {
-                if (file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Info.php')) {
-                    if (Jaws_Gadget::IsGadgetUpdated($gadget)) {
-                        $installedGadgets[$gadget] = $gadget;
-                    }
-                }
-            }
-        }
-
-        return $installedGadgets;
-    }
-
-    /**
      * Gets the actions of a gadget
      *
      * @access  public
