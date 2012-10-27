@@ -1696,11 +1696,20 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
                                 $t->SetVariable ('url',
                                                  "admin.php?gadget=Phoo&amp;action=SelectImage&amp;".
                                                  "image={$img["id"]}&amp;album={$albumId}". $extraParams);
-                                $t->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                if (Jaws_Error::IsError($imgData)) {
+                                    $t->SetVariable('thumb',  'images/unknown.png');
+                                    $t->SetVariable('width',  60);
+                                    $t->SetVariable('height', 60);
+                                    $t->SetBlock('phoo_browse/photos/albums/item/notfound');
+                                    $t->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
+                                    $t->ParseBlock('phoo_browse/photos/albums/item/notfound');
+                                } else {
+                                    $t->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                    $t->SetVariable('width',  $imgData[0]);
+                                    $t->SetVariable('height', $imgData[1]);
+                                }
                                 $t->SetVariable('name',   $img['name']);
                                 $t->SetVariable('album',  $img['albumid']);
-                                $t->SetVariable('width',  $imgData[0]);
-                                $t->SetVariable('height', $imgData[1]);
                                 if ($img['published'] == false) {
                                     $t->SetBlock('phoo_browse/photos/albums/item/notpublished');
                                     $t->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
