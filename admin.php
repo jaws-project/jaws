@@ -141,7 +141,7 @@ if (Jaws_Error::IsError($goGadget)) {
 $goGadget->SetAction($ReqAction);
 $ReqAction = $goGadget->GetAction();
 $GLOBALS['app']->SetMainRequest(false, $ReqGadget, $ReqAction);
-$IsReqActionStandAlone = $goGadget->isStandAloneAdmin($ReqAction);
+$IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
 
 // If requested action is `stand alone' just print it
 if ($IsReqActionStandAlone) {
