@@ -95,8 +95,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
             if (!is_array($gadgets)) continue;
             foreach ($gadgets as $gadget) {
                 $id = $gadget['id'];
-                if (file_exists(JAWS_PATH . 'gadgets/'. $gadget['gadget']. '/'. 'LayoutHTML.php') ||
-                     file_exists(JAWS_PATH . 'gadgets/'. $gadget['gadget']. '/'. 'Actions.php') ||
+                if (file_exists(JAWS_PATH . 'gadgets/'. $gadget['gadget']. '/'. 'Actions.php') ||
                     ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                 {
                     if (($GLOBALS['app']->Registry->Get('/gadgets/'.$gadget['gadget'].'/enabled') == 'true') ||
@@ -121,54 +120,54 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                             $t_item->SetVariable('item_status', 'none');
                             $t_item->ParseBlock('item');
                         } else {
-                            if (Jaws_Gadget::IsGadgetUpdated($gadget['gadget'])) {
-                                $section_empty = false;
-                                $controls = '';
-                                $t_item->SetBlock('item');
-                                $t_item->SetVariable('section_id', $name);
-                                $delete_url = "javascript: deleteElement('".$gadget['id']."','"._t('LAYOUT_CONFIRM_DELETE')."');";
+                            $section_empty = false;
+                            $controls = '';
+                            $t_item->SetBlock('item');
+                            $t_item->SetVariable('section_id', $name);
+                            $delete_url = "javascript: deleteElement('".$gadget['id']."','"._t('LAYOUT_CONFIRM_DELETE')."');";
 
-                                $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
-                                if (empty($actions)) {
-                                    $t_item->SetVariable('gadget', $gadget['gadget']);
-                                    $t_item->SetVariable('action', _t('LAYOUT_ACTIONS'));
+                            $objGadget = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
+                            $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
+                            if (empty($actions)) {
+                                $t_item->SetVariable('gadget', $gadget['gadget']);
+                                $t_item->SetVariable('action', _t('LAYOUT_ACTIONS'));
+                            } else {
+                                $t_item->SetVariable('gadget', $objGadget->GetName());
+                                if (isset($actions[$gadget['gadget_action']]['name'])) {
+                                    $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
                                 } else {
-                                    $info = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
-                                    $t_item->SetVariable('gadget', $info->GetName());
-                                    if (isset($actions[$gadget['gadget_action']]['name'])) {
-                                        $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
-                                    } else {
-                                        $t_item->SetVariable('action', $gadget['gadget_action']);
-                                    }
-                                    unset($info);
+                                    $t_item->SetVariable('action', $gadget['gadget_action']);
                                 }
-                                $t_item->SetVariable('pos', $gadget['layout_position']);
-                                $t_item->SetVariable('item_id', $id);
-                                $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
-                                $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
-                                $t_item->SetVariable('delete', 'deleteElement(\''.$gadget['id'].'\',\''._t('LAYOUT_CONFIRM_DELETE').'\');');
-                                $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
-                                if (isset($actions[$gadget['gadget_action']])) {
-                                    $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
-                                    $t_item->SetVariable('item_status', 'none');
-                                } else {
-                                    $t_item->SetVariable('description', $gadget['gadget_action']);
-                                    $t_item->SetVariable('item_status', 'line-through');
-                                }
-                                unset($actions);
-
-                                $t_item->SetVariable('controls', $controls);
-                                $t_item->SetVariable('void_link', '');
-                                $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
-                                if ($gadget['display_when'] == '*') {
-                                    $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
-                                } elseif (empty($gadget['display_when'])) {
-                                        $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
-                                } else {
-                                    $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
-                                }
-                                $t_item->ParseBlock('item');
                             }
+                            $t_item->SetVariable('pos', $gadget['layout_position']);
+                            $t_item->SetVariable('item_id', $id);
+                            $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
+                            $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
+                            $t_item->SetVariable(
+                                'delete',
+                                'deleteElement(\''.$gadget['id'].'\',\''._t('LAYOUT_CONFIRM_DELETE').'\');'
+                            );
+                            $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
+                            if (isset($actions[$gadget['gadget_action']]) && $objGadget->IsGadgetUpdated()) {
+                                $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
+                                $t_item->SetVariable('item_status', 'none');
+                            } else {
+                                $t_item->SetVariable('description', $gadget['gadget_action']);
+                                $t_item->SetVariable('item_status', 'line-through');
+                            }
+                            unset($actions);
+
+                            $t_item->SetVariable('controls', $controls);
+                            $t_item->SetVariable('void_link', '');
+                            $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
+                            if ($gadget['display_when'] == '*') {
+                                $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
+                            } elseif (empty($gadget['display_when'])) {
+                                    $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
+                            } else {
+                                $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
+                            }
+                            $t_item->ParseBlock('item');
                         }
                     }
                 }

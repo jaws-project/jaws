@@ -612,66 +612,20 @@ class LayoutAdminModel extends LayoutModel
      */
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
-        $actions = array();
-        $layoutGadget = $GLOBALS['app']->loadGadget($g, 'LayoutHTML');
-        if (!Jaws_Error::IsError($layoutGadget)) {
-            $actions = $GLOBALS['app']->GetGadgetActions($g, 'LayoutAction');
-            foreach ($actions as $key => $action) {
-                if ($action['params'] !== false) {
-                    // set initial params
-                    $actions[$key]['params'] = false;
-                    $lParamsMethod = $key. 'LayoutParams';
-                    $layoutHTML = $GLOBALS['app']->LoadGadget($g, 'LayoutHTML', $action['file']);
-                    if (!Jaws_Error::IsError($layoutHTML) && method_exists($layoutHTML, $lParamsMethod)) {
-                        $actions[$key]['params'] = $layoutHTML->$lParamsMethod();
-                    }
+        $actions = $GLOBALS['app']->GetGadgetActions($g, 'LayoutAction');
+        foreach ($actions as $key => $action) {
+            if ($action['params'] !== false) {
+                // set initial params
+                $actions[$key]['params'] = false;
+                $lParamsMethod = $key. 'LayoutParams';
+                $objGadget = $GLOBALS['app']->LoadGadget($g, 'HTML', $action['file']);
+                if (!Jaws_Error::IsError($objGadget) && method_exists($objGadget, $lParamsMethod)) {
+                    $actions[$key]['params'] = $objGadget->$lParamsMethod();
                 }
-
-                $actions[$key] = array_merge(array('action' => $key), $actions[$key]);
-                unset($actions[$key]['mode']);
             }
 
-            // Deprecated since 0.8: This is for backwards compatibility
-            if (method_exists($layoutGadget, 'LoadLayoutActions')) {
-                $oldActions = $layoutGadget->LoadLayoutActions();
-                $new_action = '';
-                foreach ($oldActions as $action => $attributes) {
-                    preg_match_all('/^([a-z0-9]+)\((.*?)\)$/i', $action, $matches);
-                    if (isset($matches[1][0]) && isset($matches[2][0])) {
-                        $action = $matches[1][0];
-                        $param  = $matches[2][0];
-                    }
-                    if (isset($actions[$action])) {
-                        if (isset($param)) {
-                            if (!isset($actions[$action]['params'][0])) {
-                                $actions[$action]['params'][0] = array(
-                                    'title' => '',
-                                    'value' => array('' => '')
-                                );
-                            }
-
-                            $actions[$action]['params'][0]['value'] += array($param => $attributes['name']);
-                            unset($param);
-                        }
-                    } else {
-                        $actions[$action] = array(
-                            'action' => $action,
-                            'name'   => $action,
-                            'desc'   => $attributes['desc'],
-                            'params' => false,
-                            'file'   => null
-                        );
-
-                        if (isset($param)) {
-                            $actions[$action]['params'][0] = array(
-                                'title' => '',
-                                'value' => array($param => $attributes['name'])
-                            );
-                            unset($param);
-                        }
-                    }
-                } // foreach
-            } // if LoadLayoutActions exist
+            $actions[$key] = array_merge(array('action' => $key), $actions[$key]);
+            unset($actions[$key]['mode']);
         }
 
         return $associated_by_action? $actions : array_values($actions);

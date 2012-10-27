@@ -255,8 +255,9 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
         $get = $request->get(array('location', 'comp'), 'get');
 
         $gadget = $get['comp'];
-        if (!Jaws_Gadget_HTML::IsGadgetUpdated($gadget)) {
-            $return = Jaws_Gadget_HTML::UpdateGadget($gadget);
+        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        if (!$objGadget->IsGadgetUpdated()) {
+            $return = $objGadget->UpdateGadget($gadget);
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {

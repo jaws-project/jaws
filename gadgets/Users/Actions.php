@@ -12,10 +12,10 @@
 $actions = array();
 
 /* Layout actions */
-$actions['LoginBox']   = array('NormalAction:Login,LayoutAction:LoginBox',
+$actions['LoginBox']   = array('NormalAction:Login,LayoutAction:Login',
                                _t('USERS_LAYOUT_LOGINBOX'),
                                _t('USERS_LAYOUT_LOGINBOX_DESC'));
-$actions['LoginLinks'] = array('LayoutAction:LoginBox',
+$actions['LoginLinks'] = array('LayoutAction:Login',
                                _t('USERS_LAYOUT_LOGINLINKS'),
                                _t('USERS_LAYOUT_LOGINLINKS_DESC'));
 $actions['Profile']    = array('NormalAction:Profile,LayoutAction:Profile',

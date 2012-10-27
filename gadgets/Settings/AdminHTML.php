@@ -172,7 +172,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Main gadget
         $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-        $installedgadgets = $jms->GetGadgetsList(null, true, true, null, true);
+        $installedgadgets = $jms->GetGadgetsList(null, true, true, true);
         $gdt =& Piwi::CreateWidget('Combo', 'main_gadget');
         $gdt->setID('main_gadget');
 

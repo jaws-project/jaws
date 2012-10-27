@@ -24,12 +24,12 @@ class Users_Model_Admin_UserACL extends Jaws_Gadget_Model
         $perms = array();
         if (is_array($acls)) {
             foreach ($acls as $gadget => $keys) {
-                $g = $GLOBALS['app']->LoadGadget($gadget, 'Info');
-                if (Jaws_Error::IsError($g)) {
+                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
 
-                if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
+                if (!$objGadget->IsGadgetUpdated()) {
                     continue;
                 }
 
@@ -42,7 +42,7 @@ class Users_Model_Admin_UserACL extends Jaws_Gadget_Model
                     $aclkey = '/ACL'.str_replace('/ACL/users/'.$username, '', $k['name']);
 
                     $perms[$gadget][$aclkey] = array(
-                        'desc'  => $g->GetACLDescription($aclkey),
+                        'desc'  => $objGadget->GetACLDescription($aclkey),
                         'value' => $k['value'],
                         'name'  => $k['name'],
                     );
