@@ -20,10 +20,14 @@ class Users_Actions_Personal extends UsersHTML
     function Personal()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor(
-                                                'Users',
-                                                'LoginBox',
-                                                array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
+            Jaws_Header::Location(
+                $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'LoginBox',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                ),
+                true
+            );
         }
 
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
@@ -87,10 +91,14 @@ class Users_Actions_Personal extends UsersHTML
     function UpdatePersonal()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor(
-                                                'Users',
-                                                'LoginBox',
-                                                array('referrer'  => Jaws_Utils::getRequestURL(false))), true);
+            Jaws_Header::Location(
+                $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'LoginBox',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                ),
+                true
+            );
         }
 
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
