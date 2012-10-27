@@ -139,7 +139,6 @@ class Jaws_Gadget
      * @var     array
      * @access  protected
      * @see AddAction()
-     * @see GetActions()
      */
     var $_ValidAction = array();
 
@@ -623,22 +622,6 @@ class Jaws_Gadget
         }
 
         return false;
-    }
-
-    /**
-     * Get a list of the available actions
-     *
-     * @access  public
-     * @return  array   Returns an array of the available actions
-     */
-    function GetActions($formatted = true)
-    {
-        if (!$formatted) {
-            return $this->_ValidAction;
-        }
-
-        $result = (isset($this->_ValidAction['LayoutAction'])) ? $this->_ValidAction['LayoutAction'] : array();
-        return $result;
     }
 
     /**
