@@ -51,7 +51,7 @@ define('_EN_PHOO_ADDITIONAL_SETTINGS', "Additional Settings");
 define('_EN_PHOO_IMPORT', "Import");
 define('_EN_PHOO_NUM_PHOTOS_ALBUM', "{0} images in album");
 define('_EN_PHOO_UPLOAD_PHOTOS', "Upload photos");
-define('_FA_PHOO_UPLOAD_PHOTO', "Upload photo");
+define('_EN_PHOO_UPLOAD_PHOTO', "Upload photo");
 define('_EN_PHOO_EDIT_DESCRIPTION', "Edit Description");
 define('_EN_PHOO_DELETE_ALBUM_CONFIRM', "Are you sure you want to delete this album?");
 define('_EN_PHOO_NOT_FOUND', "Not Found");
