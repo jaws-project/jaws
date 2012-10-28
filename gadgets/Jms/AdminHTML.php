@@ -215,24 +215,21 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
     function EnableGadget()
     {
         $this->CheckPermission('ManageGadgets');
-
-        require_once JAWS_PATH . 'include/Jaws/GadgetHTML.php';
-
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('location', 'comp'), 'get');
 
         $gadget = $get['comp'];
-        $gInfo = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($gInfo)) {
+        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
-            $return = Jaws_Gadget_HTML::EnableGadget($gadget);
+            $return = $objGadget->EnableGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gInfo->getName()), RESPONSE_ERROR);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $objGadget->getName()), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $gInfo->getName()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->getName()), RESPONSE_NOTICE);
             }
         }
         Jaws_Header::Location(BASE_SCRIPT);
@@ -248,9 +245,6 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
     function UpdateGadget()
     {
         $this->CheckPermission('ManageGadgets');
-
-        require_once JAWS_PATH . 'include/Jaws/GadgetHTML.php';
-
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('location', 'comp'), 'get');
 

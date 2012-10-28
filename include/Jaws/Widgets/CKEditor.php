@@ -304,14 +304,16 @@ class Jaws_Widgets_CKEditor extends Container
         }
 
         $siteURL = $GLOBALS['app']->GetSiteURL();
-        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
+        $objFB = $GLOBALS['app']->LoadGadget('FileBrowser', 'Info');
+        if ($objFB->IsGadgetInstalled()) {
             $this->_Config['filebrowserBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
             $this->_Config['filebrowserFlashBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
-        if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
+        $objFO = $GLOBALS['app']->LoadGadget('Phoo', 'Info');
+        if ($objFO->IsGadgetInstalled()) {
             $this->_Config['filebrowserImageBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
         }

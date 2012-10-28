@@ -990,7 +990,7 @@ class Jaws_Gadget
             }
 
             // Applying the keys that every gadget gets
-            $requires = implode($req, ', ');
+            $requires = implode($this->_Requires, ', ');
             $GLOBALS['app']->Registry->NewKeyEx(array($enabled, 'true'),
                                                 array('/gadgets/' . $gadget . '/version', $this->_Version),
                                                 array('/gadgets/' . $gadget . '/requires', $requires)

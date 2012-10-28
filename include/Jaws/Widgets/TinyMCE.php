@@ -185,14 +185,16 @@ class Jaws_Widgets_TinyMCE extends Container
 
         $this->_XHTML.= "<script type=\"text/javascript\">\n";
 
-        $ibrowser = '';
-        if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
+        $fbrowser = '';
+        $objFB = $GLOBALS['app']->LoadGadget('FileBrowser', 'Info');
+        if ($objFB->IsGadgetInstalled()) {
+            $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
-        $fbrowser = '';
-        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
-            $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
+        $ibrowser = '';
+        $objFO = $GLOBALS['app']->LoadGadget('Phoo', 'Info');
+        if ($objFO->IsGadgetInstalled()) {
+            $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
         }
 
         $this->_XHTML.= "function jaws_filebrowser_callback(field_name, url, type, win) {\n";
