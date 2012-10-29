@@ -239,8 +239,9 @@ class Jaws_URLMapping
                             // Variables
                             preg_match_all('#{(\w+)}#si', $route, $matches_vars);
                             if (is_array($matches_vars)) {
-                                foreach ($matches_vars[1] as $key => $value) {
-                                    $request->set('get', $value, rawurldecode($matches[$key + 1]));
+                                array_shift($matches);
+                                foreach ($matches as $key => $value) {
+                                    $request->set('get', $matches_vars[1][$key], rawurldecode($value));
                                 }
                             }
 
