@@ -16,7 +16,8 @@ define('_EN_LAUNCHER_NAME', "Launcher");
 define('_EN_LAUNCHER_DESCRIPTION', "A minimalistic gadget to run independent scripts");
 
 /* Strings */
-define ('_EN_LAUNCHER_DISPLAY', "Display this script");
+define ('_EN_LAUNCHER_SCRIPT', "Script");
+define ('_EN_LAUNCHER_SCRIPT_DESC', "Execute this script");
 
 /* Errors */
 define ('_EN_LAUNCHER_ERROR_SCRIPT_NOT_EXISTS', "Script doesn't exists");

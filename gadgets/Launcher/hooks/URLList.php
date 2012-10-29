@@ -21,15 +21,21 @@ class LauncherURLListHook
     {
         $urls  = array();
         $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model');
-        $launchers = $model->GetLaunchers();
-        if (!Jaws_Error::isError($launchers)) {
-            foreach ($launchers as $script) {
-                $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Launcher',
-                                                                           'DisplayMain',
-                                                                           array('script' => $script)),
-                                'title' => $script);
+        $scripts = $model->GetScripts();
+        if (!Jaws_Error::isError($scripts)) {
+            foreach ($scripts as $script) {
+                $urls[] = array(
+                    'url' => $GLOBALS['app']->Map->GetURLFor(
+                        'Launcher',
+                        'Execute',
+                        array('script' => $script)
+                    ),
+                    'title' => $script
+                );
             }
         }
+
         return $urls;
     }
+
 }

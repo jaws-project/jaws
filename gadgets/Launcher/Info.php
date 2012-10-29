@@ -16,6 +16,6 @@ class LauncherInfo extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.2.0';
+    var $_Version = '0.3.0';
 
 }

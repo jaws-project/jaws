@@ -11,38 +11,12 @@
 class LauncherModel extends Jaws_Gadget_Model
 {
     /**
-     * Get the execution results of a given script
-     *
-     * @access  public
-     * @param   string  $script     Script name
-     * @param   array   $params     function params
-     * @return  mixed   Result of the script execution or Jaws_Error on error
-     */
-    function GetLauncher($script, $params)
-    {
-        // Check if script exists
-        if (file_exists(JAWS_PATH . 'gadgets/Launcher/scripts/'. $script . '.php')) {
-            require_once JAWS_PATH . 'gadgets/Launcher/scripts/'. $script . '.php';
-        } else {
-            return new Jaws_Error(_t('LAUNCHER_ERROR_SCRIPT_NOT_EXISTS', $script));
-        }
-
-        // Check if function exists and return its execution result.
-        if (function_exists($script)) {
-            return call_user_func($script, $params);
-        } else {
-            return new Jaws_Error(_t('LAUNCHER_ERROR_FUNCTION_NOT_EXISTS', $script));
-        }
-    }
-
-
-    /**
      * Get all scripts
      *
      * @access  public
      * @return  array   An array of all the scripts
      */
-    function GetLaunchers()
+    function GetScripts()
     {
         $result = array();
         $path = JAWS_PATH . 'gadgets/Launcher/scripts/';
