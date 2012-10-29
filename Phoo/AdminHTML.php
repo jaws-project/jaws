@@ -1535,7 +1535,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $post    = $request->get(array('date', 'album'), 'post');
         $albums  = $model->GetAlbums('createtime','ASC');
 
-        // TODO set default value to change page address to correct location after uploading image
+        // TODO set default value for change page address to correct location after uploading image
         $extraParams = '&amp;';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'CKEditor') {
@@ -1548,15 +1548,12 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             }
         }
 
-
-
-        if ($this->GetPermission('AddPhotos')) {
+        if ($this->GetPermission('AddPhotos') && count($albums)>0) {
+            $t->SetBlock("phoo_browse/upload_photo");
             $t->SetVariable('base_script', BASE_SCRIPT);
             $t->SetVariable('extra_params', $extraParams);
             $t->SetVariable('lbl_file_upload', _t('PHOO_UPLOAD_PHOTO'));
-            $t->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
 
-            $t->SetBlock("phoo_browse/upload_photo");
             $uploadfile =& Piwi::CreateWidget('FileEntry', 'photo1', '');
             $uploadfile->SetID('photo1');
             $t->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
@@ -1567,7 +1564,6 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             $t->SetVariable('btn_upload_file', $btnSave->Get());
             $t->ParseBlock("phoo_browse/upload_photo");
         }
-
 
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $objDate = $GLOBALS['app']->loadDate();
@@ -1636,6 +1632,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
                 $r_album = isset($album) ? $album : $firstAlbum;
             }
 
+            $t->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
             // Use for uploading image
             if (is_array($r_album)) {
                 $t->SetVariable('defaultAlbum', $r_album[0]);
