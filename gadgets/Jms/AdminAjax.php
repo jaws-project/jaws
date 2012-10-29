@@ -209,7 +209,8 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
             return $result;
         }
 
-        $return = Jaws_Gadget::DisableGadget($gadget);
+        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
+        $return =$objGadget->DisableGadget();
         if (Jaws_Error::isError($return)) {
             $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
         } else if (!$return) {
@@ -258,7 +259,8 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
             return $result;
         }
 
-        $uninstall = Jaws_Gadget::UninstallGadget($gadget);
+        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
+        $uninstall = $objGadget->UninstallGadget();
         if (Jaws_Error::IsError($uninstall)) {
             $GLOBALS['app']->Session->PushLastResponse($uninstall->GetMessage(), RESPONSE_ERROR);
         } else if (!$uninstall) {
