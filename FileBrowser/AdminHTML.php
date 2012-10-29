@@ -376,12 +376,11 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
         $tpl->SetVariable('confirmDirDelete', _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
-        $tpl->SetVariable('path', $path);
 
         $dir = _t('GLOBAL_LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
-        // TODO set default value to change page address to correct location after uploading file
+        // TODO set default value for change page address to correct location after uploading file
         $extraParams = '&amp;';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'TinyMCE') {
@@ -395,24 +394,29 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('ckFuncIndex', $getParams['CKEditorFuncNum']);
         }
 
-        $tpl->SetVariable('extra_params', $extraParams);
-        $tpl->SetVariable('lbl_file_upload', _t('FILEBROWSER_UPLOAD_FILE'));
+        if ($this->GetPermission('UploadFiles')) {
+            $tpl->SetBlock("browse/upload_file");
 
+            $tpl->SetVariable('path', $path);
+            $tpl->SetVariable('extra_params', $extraParams);
+            $tpl->SetVariable('lbl_file_upload', _t('FILEBROWSER_UPLOAD_FILE'));
 
-        $title =& Piwi::CreateWidget('Entry', 'file_title', '');
-        $title->SetStyle('width: 200px;');
-        $tpl->SetVariable('lbl_file_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('file_title', $title->Get());
+            $title =& Piwi::CreateWidget('Entry', 'file_title', '');
+            $title->SetStyle('width: 200px;');
+            $tpl->SetVariable('lbl_file_title', _t('GLOBAL_TITLE'));
+            $tpl->SetVariable('file_title', $title->Get());
 
-        $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
-        $uploadfile->SetID('uploadfile');
-        $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
-        $tpl->SetVariable('uploadfile', $uploadfile->Get());
+            $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
+            $uploadfile->SetID('uploadfile');
+            $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
+            $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
-        $tpl->SetVariable('btn_upload_file', $btnSave->Get());
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
+            $tpl->SetVariable('btn_upload_file', $btnSave->Get());
 
+            $tpl->ParseBlock("browse/upload_file");
+        }
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $pathArr = $model->GetCurrentRootDir($path);
