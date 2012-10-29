@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Model extends Jaws_Gadget
+class Jaws_Gadget_Model
 {
     /**
      * Model's name
@@ -46,7 +46,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget
      * @param   string $gadget Gadget's name(same as the filesystem name)
      * @return  void
      */
-    function Jaws_Model($gadget = '')
+    function Jaws_Gadget_Model($gadget = '')
     {
         $this->_Gadget = $gadget;
     }
