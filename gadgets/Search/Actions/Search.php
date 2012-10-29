@@ -1,44 +1,16 @@
 <?php
 /**
- * Search Layout HTML file (for layout purposes)
+ * Search boxes actions
  *
- * @category   GadgetLayout
- * @package    Search
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetLayout
+ * @package     Search
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class SearchLayoutHTML
+class Search_Actions_Search extends SearchHTML
 {
-    /**
-     * Loads layout actions
-     *
-     * @access  private
-     * @retrun  array   List of actions
-     */
-    function LoadLayoutActions()
-    {
-        $actions = array();
-        $actions['Box'] = array(
-            'mode' => 'LayoutAction',
-            'name' => _t('SEARCH_LAYOUT_BOX'),
-            'desc' => _t('SEARCH_LAYOUT_BOX_DESCRIPTION')
-        );
-        $actions['SimpleBox'] = array(
-            'mode' => 'LayoutAction',
-            'name' => _t('SEARCH_LAYOUT_SIMPLEBOX'),
-            'desc' => _t('SEARCH_LAYOUT_SIMPLEBOX_DESCRIPTION')
-        );
-        $actions['AdvancedBox'] = array(
-            'mode' => 'LayoutAction',
-            'name' => _t('SEARCH_LAYOUT_ADVANCEDBOX'),
-            'desc' => _t('SEARCH_LAYOUT_ADVANCEDBOX_DESCRIPTION')
-        );
-
-        return $actions;
-    }
-
     /**
      * Builds the search box
      *
@@ -182,4 +154,5 @@ class SearchLayoutHTML
         $tpl->ParseBlock('AdvancedBox');
         return $tpl->Get();
     }
+
 }

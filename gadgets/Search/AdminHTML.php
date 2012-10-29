@@ -2,11 +2,11 @@
 /**
  * Search Gadget Admin
  *
- * @category   Gadget Admin
- * @package    Search
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2005-2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget Admin
+ * @package     Search
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @copyright   2005-2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class SearchAdminHTML extends Jaws_Gadget_HTML
 {

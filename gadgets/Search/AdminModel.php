@@ -2,11 +2,11 @@
 /**
  * Search Gadget Admin
  *
- * @category   GadgetModel
- * @package    Search
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2005-2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetModel
+ * @package     Search
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @copyright   2005-2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 require_once JAWS_PATH . 'gadgets/Search/Model.php';
 
