@@ -23,10 +23,6 @@ class Search_Actions_Search extends SearchHTML
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
 
-        // Clean searchdata
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $post = array_map(array($xss, 'filter'), $post);
-
         $tpl = new Jaws_Template('gadgets/Search/templates/');
         $tpl->Load('Search.html');
         if ($gadgets_combo) {
@@ -96,9 +92,8 @@ class Search_Actions_Search extends SearchHTML
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
 
-        // Clean searchdata
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $post = array_map(array($xss, 'filter'), $post);
+        $post['all'] = $xss->defilter($post['all']);
 
         $tpl = new Jaws_Template('gadgets/Search/templates/');
         $tpl->Load('Search.html');

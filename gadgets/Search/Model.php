@@ -187,8 +187,7 @@ class SearchModel extends Jaws_Gadget_Model
             $resTitle .= ' -' . $terms;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        return $xss->filter($resTitle);
+        return $resTitle;
     }
 
     /**
