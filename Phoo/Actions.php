@@ -51,6 +51,6 @@ $actions['Import']                 = array('AdminAction');
 $actions['FinishImport']           = array('AdminAction');
 
 /* Standalone Admin Actions */
-$actions['Thumb']                  = array('StandaloneAdminAction');
-$actions['BrowsePhoo']             = array('StandaloneAdminAction');
-$actions['SelectImage']            = array('StandaloneAdminAction');
+$actions['Thumb']                  = array('StandaloneAdminAction:Thumb');
+$actions['BrowsePhoo']             = array('StandaloneAdminAction:BrowsePhoo');
+$actions['SelectImage']            = array('StandaloneAdminAction:SelectImage');
