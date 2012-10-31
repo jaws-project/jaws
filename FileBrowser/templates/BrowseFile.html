@@ -99,8 +99,8 @@ function selectFile(url, title, editor) {
      */
     function saveFile()
     {
-        if (document.getElementById('uploadfile').value==null ||
-                document.getElementById('uploadfile').value=="")
+        var uploadfile = document.getElementById('uploadfile').value;
+        if (uploadfile == null || uploadfile == "")
         {
             alert(incompleteFields);
             return false;

@@ -411,7 +411,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
             $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('FILEBROWSER_UPLOAD_FILE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
             $tpl->SetVariable('btn_upload_file', $btnSave->Get());
 
