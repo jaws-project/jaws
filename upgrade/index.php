@@ -47,7 +47,7 @@ if (!defined('JAWS_DATA')) {
     define('JAWS_DATA', JAWS_BASE_DATA);
 }
 if (!defined('JAWS_CACHE')) {
-    define('JAWS_CACHE', JAWS_DATA. 'cache');
+    define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
 }
 define('UPGRADE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
@@ -65,7 +65,7 @@ require_once JAWS_PATH . 'include/Jaws/PHPFunctions.php';
 require_once JAWS_PATH . 'include/Jaws/Const.php';
 require_once JAWS_PATH . 'include/Jaws/Error.php';
 require_once JAWS_PATH . 'include/Jaws/Utils.php';
-require_once JAWS_PATH . 'include/Jaws/GadgetInfo.php';
+require_once JAWS_PATH . 'include/Jaws/Gadget.php';
 
 if (!isset($_SESSION['upgrade'])) {
     $_SESSION['upgrade'] = array('stage' => 0, 'lastStage' => array());
