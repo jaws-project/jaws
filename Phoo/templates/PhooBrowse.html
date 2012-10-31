@@ -39,10 +39,9 @@
     </div>
     <!-- END noalbums -->
 
-      <!-- BEGIN photos -->
-      <script language="JavaScript">
+    <!-- BEGIN photos -->
+    <script language="JavaScript">
         var incompleteFields = "{incompleteFields}";
-
         function selectAllAlbums() {
             var combo, i;
             combo = document.getElementById('albums');
@@ -56,21 +55,18 @@
          */
         function uploadPhoto()
         {
-            defaultAlbum = "{defaultAlbum}";
-            if (document.getElementById('photo1').value==null ||
-                    document.getElementById('photo1').value=="")
-            {
+            var defaultAlbum = "{defaultAlbum}";
+            var photo1 = document.getElementById('photo1').value;
+            if (photo1 == null || photo1 == "") {
                 alert(incompleteFields);
                 return false;
             }
             document.getElementById('album').value = defaultAlbum;
             document.phoo_form.submit();
         }
-
     </script>
 
-
-      <form id="album_form" name="album_form" action="admin.php" method="POST">
+    <form id="album_form" name="album_form" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="Phoo" />
       <input type="hidden" name="action" value="BrowsePhoo" />
       <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>

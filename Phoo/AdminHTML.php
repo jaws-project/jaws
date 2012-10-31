@@ -710,7 +710,6 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         }
 
         $GLOBALS['app']->Session->SetAttribute('uploadedImages', $uploadedImages);
-
         if (empty($extra_params)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album=' . $album);
         } else {
@@ -1559,7 +1558,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             $t->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
             $t->SetVariable('uploadfile', $uploadfile->Get());
 
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript: uploadPhoto();");
             $t->SetVariable('btn_upload_file', $btnSave->Get());
             $t->ParseBlock("phoo_browse/upload_photo");

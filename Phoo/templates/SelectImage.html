@@ -13,7 +13,7 @@
   <div id="image_select_container">
     <div id="image_select">
       <!-- BEGIN selected -->
-      <form name="AdminPhotos" action="admin.php" method="POST">
+      <form name="AdminPhotos" action="{base_script}" method="POST">
         <input type="hidden" name="gadget" value="Phoo" />
         <input type="hidden" name="action" value="BrowsePhoo" />
         <input type="hidden" name="album" value="{album}" />
@@ -67,7 +67,7 @@
       <!-- END selected -->
 
       <!-- BEGIN not_published -->
-      <form name="AdminPhotos" action="admin.php" method="POST">
+      <form name="AdminPhotos" action="{base_script}" method="POST">
         <input type="hidden" name="gadget" value="Phoo" />
         <input type="hidden" name="action" value="BrowsePhoo" />
         <input type="hidden" name="album" value="{album}" />
