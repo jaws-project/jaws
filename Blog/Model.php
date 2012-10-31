@@ -1315,7 +1315,7 @@ class BlogModel extends Jaws_Gadget_Model
                                  $GLOBALS['app']->Registry->Get('/config/gate_email'));
         $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
         $categoryAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
-        $categoryAtom->SetStyle($categoryAtom->Link->HRef.'/gadgets/Blog/templates/atom.xsl', 'text/xsl');
+        $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
         $objDate = $GLOBALS['app']->loadDate();
         foreach ($result as $r) {
@@ -1469,7 +1469,7 @@ class BlogModel extends Jaws_Gadget_Model
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
         $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
 
-        $commentAtom->SetStyle($commentAtom->Link->HRef.'/gadgets/Blog/templates/atom.xsl', 'text/xsl');
+        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
 
         $objDate = $GLOBALS['app']->loadDate();
@@ -1575,7 +1575,7 @@ class BlogModel extends Jaws_Gadget_Model
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
         $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
 
-        $commentAtom->SetStyle($commentAtom->Link->HRef.'/gadgets/Blog/templates/atom.xsl', 'text/xsl');
+        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
 
         $objDate = $GLOBALS['app']->loadDate();
