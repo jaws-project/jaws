@@ -78,7 +78,8 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
         $tpl->SetVariable('status', $status->Get());
 
         // filter by
-        $filterByData = '';
+        $request =& Jaws_Request::getInstance();
+        $filterByData = $request->get('filterby', 'get');
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
         $filterBy->AddOption(_t('BLOG_POST_ID_IS'), 'postid');
@@ -88,12 +89,12 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
         $filterBy->AddOption(_t('BLOG_EMAIL_CONTAINS'), 'email');
         $filterBy->AddOption(_t('BLOG_URL_CONTAINS'), 'url');
         $filterBy->AddOption(_t('BLOG_IP_IS'), 'ip');
-        $filterBy->SetDefault($filterByData);
+        $filterBy->SetDefault(is_null($filterByData)? '' : $filterByData);
         $tpl->SetVariable('filter_by', $filterBy->Get());
 
         // filter
-        $filterData = '';
-        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', $filterData);
+        $filterData = $request->get('filter', 'get');
+        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
         $filterEntry->setSize(20);
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
