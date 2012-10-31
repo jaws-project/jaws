@@ -52,32 +52,32 @@ $actions['RecentCommentsAtomLink'] = array('LayoutAction', _t('BLOG_LAYOUT_COMME
 $actions['ShowTagCloud']           = array('LayoutAction', _t('BLOG_LAYOUT_TAGCLOUD'),
                                                            _t('BLOG_LAYOUT_TAGCLOUD_DESC'));
 
-$actions['Summary']          = array('AdminAction');
-$actions['NewEntry']         = array('AdminAction');
-$actions['SaveNewEntry']     = array('AdminAction');
-$actions['PreviewNewEntry']  = array('AdminAction');
-$actions['ListEntries']      = array('AdminAction');
-$actions['EditEntry']        = array('AdminAction');
-$actions['PreviewEditEntry'] = array('AdminAction');
-$actions['SaveEditEntry']    = array('AdminAction');
-$actions['DeleteEntry']      = array('AdminAction');
+$actions['Summary']          = array('AdminAction:Summary');
+$actions['NewEntry']         = array('AdminAction:Entries');
+$actions['SaveNewEntry']     = array('AdminAction:Entries');
+$actions['PreviewNewEntry']  = array('AdminAction:Entries');
+$actions['ListEntries']      = array('AdminAction:Entries');
+$actions['EditEntry']        = array('AdminAction:Entries');
+$actions['PreviewEditEntry'] = array('AdminAction:Entries');
+$actions['SaveEditEntry']    = array('AdminAction:Entries');
+$actions['DeleteEntry']      = array('AdminAction:Entries');
 
-$actions['UpdateCategory']   = array('AdminAction');
-$actions['AddCategory']      = array('AdminAction');
-$actions['EditCategory']     = array('AdminAction');
-$actions['DeleteCategory']   = array('AdminAction');
-$actions['ManageCategories'] = array('AdminAction');
+$actions['UpdateCategory']   = array('AdminAction:Categories');
+$actions['AddCategory']      = array('AdminAction:Categories');
+$actions['EditCategory']     = array('AdminAction:Categories');
+$actions['DeleteCategory']   = array('AdminAction:Categories');
+$actions['ManageCategories'] = array('AdminAction:Categories');
 
-$actions['ManageComments']   = array('AdminAction');
-$actions['EditComment']      = array('AdminAction');
-$actions['SaveEditComment']  = array('AdminAction');
-$actions['DeleteComment']    = array('AdminAction');
+$actions['ManageComments']   = array('AdminAction:Comments');
+$actions['EditComment']      = array('AdminAction:Comments');
+$actions['SaveEditComment']  = array('AdminAction:Comments');
+$actions['DeleteComment']    = array('AdminAction:Comments');
 
-$actions['ManageTrackbacks'] = array('AdminAction');
-$actions['ViewTrackback']    = array('AdminAction');
+$actions['ManageTrackbacks'] = array('AdminAction:Trackbacks');
+$actions['ViewTrackback']    = array('AdminAction:Trackbacks');
 
-$actions['AdditionalSettings']     = array('AdminAction');
-$actions['SaveAdditionalSettings'] = array('AdminAction');
+$actions['AdditionalSettings']     = array('AdminAction:Settings');
+$actions['SaveAdditionalSettings'] = array('AdminAction:Settings');
 
 $actions['Trackback']          = array('StandaloneAction');
 $actions['Pingback']           = array('StandaloneAction');

@@ -37,7 +37,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
      */
     function SearchPosts($period, $cat, $status, $search, $limit = 0)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Entries');
         return $gadget->PostsData($period, $cat, $status, $search, $limit);
     }
 
@@ -97,7 +97,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
     function GetCategoryForm($action, $id)
     {
         $this->CheckSession('Blog', 'ManageCategories');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
         return $gadget->CategoryForm($action, $id);
     }
 
@@ -161,7 +161,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
     function GetCategoryCombo()
     {
         $this->CheckSession('Blog', 'ManageCategories');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
         return $gadget->GetCategoriesAsCombo();
     }
 
@@ -178,7 +178,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
     function SearchComments($limit, $filter, $search, $status)
     {
         $this->CheckSession('Blog', 'ManageComments');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Comments');
         return $gadget->CommentsData($limit, $filter, $search, $status);
     }
 
@@ -195,7 +195,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
     function SearchTrackbacks($limit, $filter, $search, $status)
     {
         $this->CheckSession('Blog', 'ManageTrackbacks');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Trackbacks');
         return $gadget->TrackbacksData($limit, $filter, $search, $status);
     }
 
