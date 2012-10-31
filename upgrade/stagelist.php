@@ -67,6 +67,12 @@ $stages[] = array(
     'file'  => '0817To0818',
 );
 
+// Upgrade from 0.8.18 to 0.8.19
+$stages[] = array(
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.8.19'),
+    'file'  => '0818To0819',
+);
+
 // Saves the config file.
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),

@@ -31,6 +31,10 @@ class Upgrader_Report extends JawsUpgraderStage
 
         $supportedversions = array(
                                    array(
+                                         'version'   => '0.8.19',
+                                         'stage'     => '9',
+                                         ),
+                                   array(
                                          'version'   => '0.8.18',
                                          'stage'     => '8',
                                          ),
