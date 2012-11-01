@@ -107,8 +107,6 @@ class Forum_Actions_Topics extends ForumHTML
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
         $tpl->Load('NewTopic.html');
         $tpl->SetBlock('newtopic');

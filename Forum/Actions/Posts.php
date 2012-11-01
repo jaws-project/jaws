@@ -196,14 +196,11 @@ class Forum_Actions_Posts extends ForumHTML
             Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $postInfo['tid'])));
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $tpl->SetBlock('deletepost');
-
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('pid',  $postInfo['id']);
         $tpl->SetVariable('tid', $topicInfo['id']);
-        $tpl->SetVariable('subject', $xss->filter($topicInfo['subject']));
+        $tpl->SetVariable('subject', $topicInfo['subject']);
         $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $topicInfo['id'])));
         $tpl->SetVariable('title', _t('FORUM_DELETE_POST'));
         $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
@@ -214,9 +211,9 @@ class Forum_Actions_Posts extends ForumHTML
         $date = $GLOBALS['app']->loadDate();
         $tpl->SetVariable('psted_date',   $date->Format($date->ToISO($postInfo['createtime'])));
         $tpl->SetVariable('posted_by',    _t('FORUM_POSTED_BY'));
-        $tpl->SetVariable('user_name',    $xss->filter($postInfo['username']));
+        $tpl->SetVariable('user_name',    $postInfo['username']);
         $tpl->SetVariable('lbl_message',  _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('message',      $xss->filter($postInfo['message']));
+        $tpl->SetVariable('message',      $postInfo['message']);
 
         $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('cancel', _t('GLOBAL_CANCEL'));
