@@ -418,9 +418,6 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $from_name  = '';
         $from_email = '';
         $to  = $contact['email'];
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $subject = _t('CONTACT_REPLY_TO', $xss->defilter($contact['subject']));
-
         $rid = $contact['recipient'];
         if ($rid != 0) {
             $recipient = $model->GetRecipient($rid);
@@ -467,11 +464,13 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('message',     $contact['msg_txt']);
         $tpl->SetVariable('reply',       $reply);
         $tpl->SetVariable('createtime',  $jDate->Format($contact['createtime']));
-
         $tpl->SetVariable('site-name',   $site_name);
         $tpl->SetVariable('site-url',    $site_url);
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
+
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', $xss->defilter($contact['subject']));
 
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
