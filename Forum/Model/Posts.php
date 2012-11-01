@@ -137,7 +137,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($result)) {
             return false;
         }
-        return true;
+        return $post_id;
     }
 
     /**
@@ -216,28 +216,22 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
         }
 
         $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
-        $forumInfo = $fModel->GetForum($topicInfo['fid']);
-
-        $params['fid'] = $topicInfo['fid'];
-        if ($postInfo['id'] == $forumInfo['last_post_id']) {
-            $lastPostInfo = $this->GetLastPostForumID($topicInfo['fid']);
-            $params['last_post_id']   = $lastPostInfo['id'];
-            $params['last_post_time'] = $lastPostInfo['createtime'];
-            $sql = 'UPDATE [[forums]] SET
-                        [posts]        = [posts] - 1,
-                        [last_post_id]     = {last_post_id},
-                        [last_post_time]   = {last_post_time}
-                    WHERE [id] = {fid}';
+        $lastPostInfo = $this->GetLastPostForumID($topicInfo['fid']);
+        if (!Jaws_Error::IsError($lastPostInfo)) {
+            if (empty($lastPostInfo['id'])) {
+                $lastPostInfo['id'] = 0;
+                $lastPostInfo['createtime'] = 0;
+            }
+            $result = $fModel->UpdateForumStatistics($topicInfo['fid'], $lastPostInfo['id'], $lastPostInfo['createtime']);
         } else {
-            $sql = 'UPDATE [[forums]] SET
-                        [posts]        = [posts] - 1
-                    WHERE [id] = {fid}';
+            return false;
         }
 
-        $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
+
+        return true;
     }
 
     /**

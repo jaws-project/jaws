@@ -113,33 +113,23 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
         }
         $topic_id = $GLOBALS['db']->lastInsertID('forums_topics', 'id');
 
-        $sql = "
-            INSERT INTO [[forums_posts]]
-                ([tid], [uid], [message], [ip], [createtime])
-            VALUES
-                ({tid}, {uid}, {message}, {ip}, {now})";
-
-        $params['tid']       = $topic_id;
-        $params['message']   = $xss->filter($message);
-        $params['ip']        = $_SERVER['REMOTE_ADDR'];
-        $result = $GLOBALS['db']->query($sql, $params);
+        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $result = $pModel->InsertPost($params['uid'], $topic_id, $xss->filter($message));
         if (Jaws_Error::IsError($result)) {
             return false;
         }
-        $post_id = $GLOBALS['db']->lastInsertID('forums_posts', 'id');
 
         $sql = 'UPDATE [[forums_topics]] SET
-                    [first_post_id]       = {first_post_id},
-                    [last_post_id]        = {last_post_id},
-                    [last_post_time]      = {now}
+                    [first_post_id]       = {first_post_id}
                 WHERE [id] = {tid}';
 
-        $params['first_post_id']  = $post_id;
-        $params['last_post_id']   = $post_id;
+        $params['first_post_id']  = $result;
+        $params['tid']            = $topic_id;
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
+
         return $topic_id;
     }
 
@@ -175,23 +165,24 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
             return new Jaws_Error(_t('FORUM_ERROR_POST_NOT_DELETED'), _t('FORUM_NAME'));
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
-        $forumInfo = $fModel->GetForum($topicInfo['fid']);
-
         $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
         $lastPostInfo = $pModel->GetLastPostForumID($topicInfo['fid']);
-        $params['last_post_id']   = $lastPostInfo['id'];
-        $params['last_post_time'] = $lastPostInfo['createtime'];
-        $sql = 'UPDATE [[forums]] SET
-                    [posts]            = [posts] - 1,
-                    [last_post_id]     = {last_post_id},
-                    [last_post_time]   = {last_post_time}
-                WHERE [id] = {fid}';
+        if (!Jaws_Error::IsError($lastPostInfo)) {
+            if (empty($lastPostInfo['id'])) {
+                $lastPostInfo['id'] = 0;
+                $lastPostInfo['createtime'] = 0;
+            }
+            $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+            $result = $fModel->UpdateForumStatistics($topicInfo['fid'], $lastPostInfo['id'], $lastPostInfo['createtime']);
+        } else {
+            return false;
+        }
 
-        $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -217,32 +208,16 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
     }
 
     /**
-     * Lock topic
+     * Lock\UnLock topic
      *
      * @access  public
-     * @param   int     $tid    Topic's ID
+     * @param   int         $tid        Topic's ID
+     * @param   boolean     $locked     True: Locke, False: UnLock
      */
-    function LockTopic($tid)
+    function LockTopic($tid, $locked)
     {
         $params['tid']    = (int)$tid;
-        $params['locked'] = true;
-        $sql = 'UPDATE [[forums_topics]] SET
-                        [locked]   = {locked}
-                WHERE [id] = {tid}';
-        $result = $GLOBALS['db']->query($sql, $params);
-        return $result;
-    }
-
-    /**
-     * UnLock topic
-     *
-     * @access  public
-     * @param   int     $tid    Topic's ID
-     */
-    function UnLockTopic($tid)
-    {
-        $params['tid']    = (int)$tid;
-        $params['locked'] = false;
+        $params['locked'] = $locked;
         $sql = 'UPDATE [[forums_topics]] SET
                         [locked]   = {locked}
                 WHERE [id] = {tid}';

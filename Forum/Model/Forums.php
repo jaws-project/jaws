@@ -103,7 +103,7 @@ class Forum_Model_Forums extends Jaws_Gadget_Model
                         [last_post_id]   = {last_post_id},
                         [last_post_time] = {last_post_time},
                         [topics]         = (SELECT COUNT([[forums_topics]].[id]) FROM [[forums_topics]] WHERE [[forums_topics]].[fid] = {fid}),
-                        [posts]         = (SELECT COUNT([[forums_posts]].[id]) FROM [[forums_posts]] Right JOIN
+                        [posts]          = (SELECT COUNT([[forums_posts]].[id]) FROM [[forums_posts]] Right JOIN
                                                     [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id] 
                                                     WHERE [[forums_topics]].[fid] = {fid})
                 WHERE [id] = {fid}';
