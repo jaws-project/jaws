@@ -314,7 +314,7 @@ class UrlMapperAdminModel extends UrlMapperModel
             // Deprecated: use $GLOBALS to fetch maps of old gadgets
             $maps = array();
             $GLOBALS['maps'] = array();
-            include_once $file;
+            include $file;
             if(!empty($GLOBALS['maps'])) {
                 $maps = $GLOBALS['maps'];
             }
