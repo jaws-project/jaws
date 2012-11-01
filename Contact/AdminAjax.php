@@ -268,6 +268,9 @@ class ContactAdminAjax extends Jaws_Gadget_Ajax
     function GetMessagePreview($message)
     {
         $this->CheckSession('Contact', 'AccessToMailer');
+        $request =& Jaws_Request::getInstance();
+        $message = $request->get(0, 'post', false);
+
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML');
         return $gadget->PrepareMessage($message);
     }
@@ -285,6 +288,9 @@ class ContactAdminAjax extends Jaws_Gadget_Ajax
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->CheckSession('Contact', 'AccessToMailer');
+        $request =& Jaws_Request::getInstance();
+        $message = $request->get(0, 'post', false);
+
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML');
         $gadget->SendEmail($target, $subject, $message, $attachment);
         return $GLOBALS['app']->Session->PopLastResponse();

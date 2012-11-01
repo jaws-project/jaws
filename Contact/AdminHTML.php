@@ -415,10 +415,11 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'), _t('CONTACT_NAME'));
         }
 
-        $to = $contact['email'];
         $from_name  = '';
         $from_email = '';
-        $subject = _t('CONTACT_REPLY_TO',  $contact['subject']);
+        $to  = $contact['email'];
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $subject = _t('CONTACT_REPLY_TO', $xss->defilter($contact['subject']));
 
         $rid = $contact['recipient'];
         if ($rid != 0) {
@@ -936,10 +937,11 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->CheckPermission('AccessToMailer');
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom();
-        $mail->SetSubject($subject);
+        $mail->SetSubject($xss->defilter($subject));
 
         // To, Cc, Bcc
         if (isset($target['to'])) {
