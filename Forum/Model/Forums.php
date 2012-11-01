@@ -53,8 +53,8 @@ class Forum_Model_Forums extends Jaws_Gadget_Model
             $sql = 'SELECT
                         [[forums]].[id], [[forums]].[title], [[forums]].[description],
                         [[forums]].[fast_url], [[forums]].[topics], [[forums]].[posts],
-                        [last_post_id], [last_post_time], [[users]].[nickname], [[forums]].[locked],
-                        [[forums]].[published]
+                        [last_post_id], [last_post_time], [[users]].[username], [[users]].[nickname],
+                        [[forums]].[locked], [[forums]].[published]
                     FROM [[forums]]
                     LEFT JOIN [[forums_posts]] ON [[forums]].[last_post_id] = [[forums_posts]].[id]
                     LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
@@ -94,7 +94,7 @@ class Forum_Model_Forums extends Jaws_Gadget_Model
      * @param   int         $last_post_id           Forum's Last Post ID
      * @param   timestamp   $last_post_time         Forum's Last Post Time
      */
-    function UpdateTopicStatistics($fid, $last_post_id, $last_post_time)
+    function UpdateForumStatistics($fid, $last_post_id, $last_post_time)
     {
         $params['fid']            = (int)$fid;
         $params['last_post_id']   = $last_post_id;
@@ -103,7 +103,9 @@ class Forum_Model_Forums extends Jaws_Gadget_Model
                         [last_post_id]   = {last_post_id},
                         [last_post_time] = {last_post_time},
                         [topics]         = (SELECT COUNT([[forums_topics]].[id]) FROM [[forums_topics]] WHERE [[forums_topics]].[fid] = {fid}),
-                        [topics]         = (SELECT COUNT([[forums_topics]].[id]) FROM [[forums_topics]] WHERE [[forums_topics]].[fid] = {fid})
+                        [posts]         = (SELECT COUNT([[forums_posts]].[id]) FROM [[forums_posts]] Right JOIN
+                                                    [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id] 
+                                                    WHERE [[forums_topics]].[fid] = {fid})
                 WHERE [id] = {fid}';
         $result = $GLOBALS['db']->query($sql, $params);
         return $result;

@@ -42,7 +42,9 @@ class Forum_Actions_Topics extends ForumHTML
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
             $tpl->SetVariable('icon', '');
-            $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+            if ($topic['locked']) {
+                $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+            }
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum',
                                                                      'Topic', array('tid' => $topic['id']))
@@ -187,6 +189,7 @@ class Forum_Actions_Topics extends ForumHTML
         if (Jaws_Error::IsError($topic)) {
             return false;
         }
+        $model->UpdateTopicView($topic['id']);
 
         $objDate = $GLOBALS['app']->loadDate();
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
@@ -250,7 +253,11 @@ class Forum_Actions_Topics extends ForumHTML
                                                           'NewPost',
                                                           array('tid' => $get['tid']))
         );
-        $tpl->SetVariable('lbl_lock_topic', _t('FORUM_LOCK_TOPIC'));
+        if ($topic['locked']) {
+            $tpl->SetVariable('lbl_lock_topic', _t('FORUM_UNLOCK_TOPIC'));
+        } else {
+            $tpl->SetVariable('lbl_lock_topic', _t('FORUM_LOCK_TOPIC'));
+        }
         $tpl->SetVariable('url_lock_topic',
                           $GLOBALS['app']->Map->GetURLFor('Forum',
                                                           'LockTopic',
@@ -279,7 +286,11 @@ class Forum_Actions_Topics extends ForumHTML
                                                               array('tid' => $topic['tid'])), true);
         }
 
-        $result = $tModel->LockTopic($topicInfo['id']);
+        if ($topicInfo['locked']) {
+            $result = $tModel->UnLockTopic($topicInfo['id']);
+        } else {
+            $result = $tModel->LockTopic($topicInfo['id']);
+        }
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(), 'Topic');

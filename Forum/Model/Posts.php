@@ -130,6 +130,13 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($result)) {
             return false;
         }
+
+        $topicInfo = $tModel->GetTopic($params['tid']);
+        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $result = $fModel->UpdateForumStatistics($topicInfo['fid'], $post_id, $params['now']);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
         return true;
     }
 

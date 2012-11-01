@@ -220,7 +220,7 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
      * Lock topic
      *
      * @access  public
-     * @param   int         $tid                    Topic's ID
+     * @param   int     $tid    Topic's ID
      */
     function LockTopic($tid)
     {
@@ -228,6 +228,39 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
         $params['locked'] = true;
         $sql = 'UPDATE [[forums_topics]] SET
                         [locked]   = {locked}
+                WHERE [id] = {tid}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
+
+    /**
+     * UnLock topic
+     *
+     * @access  public
+     * @param   int     $tid    Topic's ID
+     */
+    function UnLockTopic($tid)
+    {
+        $params['tid']    = (int)$tid;
+        $params['locked'] = false;
+        $sql = 'UPDATE [[forums_topics]] SET
+                        [locked]   = {locked}
+                WHERE [id] = {tid}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
+
+    /**
+     * Update topic view
+     *
+     * @access  public
+     * @param   int     $tid    Topic's ID
+     */
+    function UpdateTopicView($tid)
+    {
+        $params['tid']  = (int)$tid;
+        $sql = 'UPDATE [[forums_topics]] SET
+                        [views] = [views] + 1
                 WHERE [id] = {tid}';
         $result = $GLOBALS['db']->query($sql, $params);
         return $result;

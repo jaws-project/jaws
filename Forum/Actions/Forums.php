@@ -48,7 +48,9 @@ class Forum_Actions_Forums extends ForumHTML
             foreach ($forums as $forum) {
                 $tpl->SetBlock('forums/group/forum');
                 $tpl->SetVariable('icon', '');
-                $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+                if ($forum['locked']) {
+                    $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+                }
                 $tpl->SetVariable('title', $forum['title']);
                 $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum',
                                                                          'Topics', array('id' => $forum['id']))
