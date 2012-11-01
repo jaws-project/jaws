@@ -490,15 +490,13 @@ class PhooHTML extends Jaws_Gadget_HTML
         }
 
         if (!Jaws_Error::IsError($comments)) {
-
             $date = $GLOBALS['app']->loadDate();
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($comments as $c) {
                 $tpl->SetBlock('comment');
                 $tpl->SetVariable('id', $c['id']);
                 $tpl->SetVariable('parent_id', $c['gadget_reference']);
-                $tpl->SetVariable('name', $xss->filter($c['name']));
-                $email = $xss->filter($c['email']);
+                $tpl->SetVariable('name', $c['name']);
+                $email = $c['email'];
 
                 $GLOBALS['app']->Registry->LoadFile('Policy');
                 $_obfuscator = $GLOBALS['app']->Registry->Get('/gadgets/Policy/obfuscator');
@@ -511,10 +509,10 @@ class PhooHTML extends Jaws_Gadget_HTML
                 } else {
                     $tpl->SetVariable('email', '<a href="mailto:' . $email . '">' . _t('GLOBAL_EMAIL') . '</a>');
                 }
-                $tpl->SetVariable('url', $xss->filter($c['url']));
+                $tpl->SetVariable('url', $c['url']);
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('title', $xss->filter($c['title']));
+                $tpl->SetVariable('title', $c['title']);
                 $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->ParseText($c['msg_txt']);
@@ -573,14 +571,13 @@ class PhooHTML extends Jaws_Gadget_HTML
         $comment = $model->GetComment($id);
         if (!Jaws_Error::IsError($comment)) {
             $date = $GLOBALS['app']->loadDate();
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $tpl->SetBlock('comment');
             $tpl->SetVariable('id', $comment['id']);
             $tpl->SetVariable('parent_id', $comment['gadget_reference']);
-            $tpl->SetVariable('name',  $xss->filter($comment['name']));
-            $tpl->SetVariable('email', $xss->filter($comment['email']));
-            $tpl->SetVariable('url',   $xss->filter($comment['url']));
-            $tpl->SetVariable('title', $xss->filter($comment['title']));
+            $tpl->SetVariable('name',  $comment['name']);
+            $tpl->SetVariable('email', $comment['email']);
+            $tpl->SetVariable('url',   $comment['url']);
+            $tpl->SetVariable('title', $comment['title']);
             $tpl->SetVariable('ip_address', '127.0.0.1');
             $tpl->SetVariable('status_message', '&nbsp;');
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
@@ -780,15 +777,13 @@ class PhooHTML extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('Comment.html');
         $tpl->SetBlock('comment');
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
-        $tpl->SetVariable('name',  $xss->filter($post['name']));
-        $tpl->SetVariable('email', $xss->filter($post['email']));
-        $tpl->SetVariable('url',   $xss->filter($post['url']));
+        $tpl->SetVariable('name',  $post['name']);
+        $tpl->SetVariable('email', $post['email']);
+        $tpl->SetVariable('url',   $post['url']);
         if (is_null($post['ip_address'])) {
             $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
         }
-        $tpl->SetVariable('title', $xss->filter($post['title']));
+        $tpl->SetVariable('title', $post['title']);
         $tpl->SetVariable('comments', $this->ParseText($post['comments']));
         if (!isset($post['createtime'])) {
             $date = $GLOBALS['app']->loadDate();
