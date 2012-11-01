@@ -29,7 +29,7 @@ class ForumAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forum/topics_limit', '10');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forum/topics_limit', '15');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forum/posts_limit',  '10');
 
         return true;
@@ -43,11 +43,12 @@ class ForumAdminModel extends Jaws_Gadget_Model
      */
     function UninstallGadget()
     {
-        $tables = array('forums_posts',
-                        'forums_topics',
-                        'forums',
-                        'forums_groups');
-
+        $tables = array(
+            'forums_posts',
+            'forums_topics',
+            'forums',
+            'forums_groups'
+        );
         $gName  = _t('FORUM_NAME');
         $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
         foreach ($tables as $table) {
