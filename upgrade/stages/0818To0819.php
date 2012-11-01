@@ -85,7 +85,7 @@ class Upgrader_0818To0819 extends JawsUpgraderStage
         _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
         $igadgets = $GLOBALS['app']->Registry->get('/gadgets/enabled_items');
         $igadgets.= ','. $GLOBALS['app']->Registry->get('/gadgets/core_items');
-        $igadgets = array_filter(array_map('trim', explode(',', $igadgets)))
+        $igadgets = array_filter(array_map('trim', explode(',', $igadgets)));
         foreach ($igadgets as $ig) {
             $GLOBALS['app']->ACL->NewKey("/ACL/gadgets/$ig/default", 'true');
             $GLOBALS['app']->ACL->NewKey("/ACL/gadgets/$ig/default_admin", 'false');
