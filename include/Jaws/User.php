@@ -1,4 +1,7 @@
 <?php
+define('PASSWORD_SALT_LENGTH', 24);
+define('AVATAR_PATH', JAWS_DATA. 'avatar'. DIRECTORY_SEPARATOR);
+
 /**
  * This class is for Jaws_User table operations
  *
@@ -10,8 +13,6 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('PASSWORD_SALT_LENGTH', 24);
-
 class Jaws_User
 {
     /**
@@ -270,11 +271,11 @@ class Jaws_User
      */
     function GetAvatar($avatar, $email, $time = '')
     {
-        $uAvatar = $GLOBALS['app']->getDataURL(). "avatar/$avatar";
-        if (empty($avatar) || !file_exists($uAvatar)) {
+        if (empty($avatar) || !file_exists(AVATAR_PATH . $avatar)) {
             require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
             $uAvatar = Jaws_Gravatar::GetGravatar($email);
         } else {
+            $uAvatar = $GLOBALS['app']->getDataURL(). "avatar/$avatar";
             $uAvatar.= !empty($time)? "?$time" : '';
         }
 
@@ -769,7 +770,6 @@ class Jaws_User
 
         // set new avatar name if username changed
         if (($username !== $user['username']) && !empty($user['avatar'])) {
-            $avtr_path = JAWS_DATA. 'avatar' . DIRECTORY_SEPARATOR;
             $fileinfo = pathinfo($user['avatar']);
             if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                 $params['avatar'] = $username. '.'. $fileinfo['extension'];
@@ -814,9 +814,9 @@ class Jaws_User
 
         // rename avatar name
         if (isset($params['avatar'])) {
-            Jaws_Utils::Delete($avtr_path. $params['avatar']);
-            @rename($avtr_path. $user['avatar'],
-                    $avtr_path. $params['avatar']);
+            Jaws_Utils::Delete(AVATAR_PATH. $params['avatar']);
+            @rename(AVATAR_PATH. $user['avatar'],
+                    AVATAR_PATH. $params['avatar']);
         }
 
         if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
@@ -871,9 +871,8 @@ class Jaws_User
                 return false;
             }
 
-            $avtr_path = JAWS_DATA. 'avatar' . DIRECTORY_SEPARATOR;
             if (!empty($user['avatar'])) {
-                Jaws_Utils::Delete($avtr_path. $user['avatar']);
+                Jaws_Utils::Delete(AVATAR_PATH. $user['avatar']);
             }
 
             if (!empty($params['avatar'])) {
@@ -884,7 +883,7 @@ class Jaws_User
                     } else {
                         $new_avatar = $user['username']. '.'. $fileinfo['extension'];
                         @rename(Jaws_Utils::upload_tmp_dir(). '/'. $params['avatar'],
-                                $avtr_path. $new_avatar);
+                                AVATAR_PATH. $new_avatar);
                         $params['avatar'] = $new_avatar;
                     }
                 }
@@ -1281,4 +1280,5 @@ class Jaws_User
 
         return true;
     }
+
 }
