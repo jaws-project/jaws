@@ -75,7 +75,7 @@ class Forum_Actions_Posts extends ForumHTML
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
-        $post = $pModel->GetPostInfo($req['pid']);
+        $post = $pModel->GetPost($req['pid']);
         if (Jaws_Error::IsError($post) || empty($post)) {
             return false;
         }
@@ -176,7 +176,7 @@ class Forum_Actions_Posts extends ForumHTML
         $post = $request->get(array('pid', 'tid', 'step'));
         $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
 
-        $postInfo = $pModel->GetPostInfo($post['pid']);
+        $postInfo = $pModel->GetPost($post['pid']);
         if (Jaws_Error::IsError($postInfo) || empty($postInfo)) {
             return false;
         }
