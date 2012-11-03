@@ -95,7 +95,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $uid        User's ID
      * @param   int     $tid        Topic ID
      * @param   string  $message    Post content
-     * @return  mixed   True on successfully or Jaws_Error on failure
+     * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
     function InsertPost($uid, $tid, $message)
     {
@@ -238,15 +238,17 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
             return $result;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
         $lastpost = $this->GetLastPostForumID($topic['fid']);
         if (Jaws_Error::IsError($lastpost)) {
             return $lastpost;
         }
 
-        $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        if (!Jaws_Error::IsError($fModel)) {
+            $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

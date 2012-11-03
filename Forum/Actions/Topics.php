@@ -190,7 +190,7 @@ class Forum_Actions_Topics extends ForumHTML
         if (Jaws_Error::IsError($topic)) {
             return false;
         }
-        $model->UpdateTopicView($topic['id']);
+        $model->UpdateTopicViews($topic['id']);
 
         $objDate = $GLOBALS['app']->loadDate();
         $tpl = new Jaws_Template('gadgets/Forum/templates/');

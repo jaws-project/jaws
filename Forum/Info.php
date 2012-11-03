@@ -33,7 +33,6 @@ class ForumInfo extends Jaws_Gadget
         'CloseTopic',
         'AddPostToClosedTopic',
         'DeleteTopic',
-
     );
 
 }
