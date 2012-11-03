@@ -2,11 +2,12 @@
 /**
  * Forum Gadget
  *
- * @category   Gadget
- * @package    Forum
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Forum
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @copyright   2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Forum_Actions_Posts extends ForumHTML
 {
@@ -138,8 +139,13 @@ class Forum_Actions_Posts extends ForumHTML
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost($GLOBALS['app']->Session->GetAttribute('user'), $post['tid'], $post['message']);
         } else {
-            $result = $pModel->UpdatePost($post['pid'], $GLOBALS['app']->Session->GetAttribute('user'),
-                                          $post['subject'], $post['message'], $post['update_reason']);
+            $result = $pModel->UpdatePost(
+                $post['pid'],
+                $GLOBALS['app']->Session->GetAttribute('user'),
+                $post['subject'],
+                $post['message'],
+                $post['update_reason']
+            );
         }
 
         if (Jaws_Error::IsError($result)) {
@@ -221,4 +227,5 @@ class Forum_Actions_Posts extends ForumHTML
         $tpl->ParseBlock('deletepost');
         return $tpl->Get();
     }
+
 }

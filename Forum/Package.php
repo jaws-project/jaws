@@ -11,6 +11,7 @@
 $info = array(           
               'license' => 'GPL',
               'authors' => array(array('lead', 'ali', 'Ali Fazelzadeh', 'afz@php.net'),
+                                 array('developer', 'aboutalebi', 'Hamid Reza Aboutalebi', 'abt_am@yahoo.com'),
                                  ),
               'deps'    => array(),
               );

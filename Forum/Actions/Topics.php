@@ -2,11 +2,12 @@
 /**
  * Forum Gadget
  *
- * @category   Gadget
- * @package    Forum
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Forum
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @copyright   2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Forum_Actions_Topics extends ForumHTML
 {
@@ -297,4 +298,5 @@ class Forum_Actions_Topics extends ForumHTML
         Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic',
                                                               array('tid' => $topicInfo['id'])), true);
     }
+
 }

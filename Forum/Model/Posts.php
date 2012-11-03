@@ -71,13 +71,13 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
      * Get posts count of user
      *
      * @access  public
-     * @param   int     $user_id    User's ID
+     * @param   int     $uid    User's ID
      * @return  mixed   Count of user's posts or Jaws_Error on failure
      */
-    function GetUserPostsCount($user_id)
+    function GetUserPostsCount($uid)
     {
         $params = array();
-        $params['uid'] = (int)$user_id;
+        $params['uid'] = (int)$uid;
 
         $sql = '
             SELECT COUNT([id])
@@ -92,85 +92,103 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
      * Insert new post
      *
      * @access  public
-     * @param   int     $uid
-     * @param   int     $tid
-     * @param   string  $message
+     * @param   int     $uid        User's ID
+     * @param   int     $tid        Topic ID
+     * @param   string  $message    Post content
+     * @return  mixed   True on successfully or Jaws_Error on failure
      */
     function InsertPost($uid, $tid, $message)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['uid']        = (int)$uid;
-        $params['tid']        = (int)$tid;
-        $params['now']        = $GLOBALS['db']->Date();
+        $params['uid'] = (int)$uid;
+        $params['tid'] = (int)$tid;
+        $params['now'] = $GLOBALS['db']->Date();
+        $params['ip']  = $_SERVER['REMOTE_ADDR'];
+        $params['message'] = $message;
 
-        $sql = "
+        $sql = '
             INSERT INTO [[forums_posts]]
                 ([tid], [uid], [message], [ip], [createtime])
             VALUES
-                ({tid}, {uid}, {message}, {ip}, {now})";
+                ({tid}, {uid}, {message}, {ip}, {now})';
 
-        $params['message']   = $xss->filter($message);
-        $params['ip']        = $_SERVER['REMOTE_ADDR'];
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_INSERT_POST'), _t('FORUM_NAME'));
+            return $result;
         }
-        $post_id = $GLOBALS['db']->lastInsertID('forums_posts', 'id');
+
+        $pid = $GLOBALS['db']->lastInsertID('forums_posts', 'id');
+        if (Jaws_Error::IsError($pid)) {
+            return $pid;
+        }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
-        $result = $tModel->UpdateTopicStatistics($params['tid'], $post_id, $params['now']);
-        if (Jaws_Error::IsError($result)) {
-            return false;
+        if (!Jaws_Error::IsError($tModel)) {
+            $result = $tModel->UpdateTopicStatistics($params['tid'], $pid, $params['now']);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
-        $topicInfo = $tModel->GetTopic($params['tid']);
+        $topic = $tModel->GetTopic($params['tid']);
         $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
-        $result = $fModel->UpdateForumStatistics($topicInfo['fid'], $post_id, $params['now']);
-        if (Jaws_Error::IsError($result)) {
-            return false;
+        if (!Jaws_Error::IsError($fModel)) {
+            $result = $fModel->UpdateForumStatistics($topic['fid'], $pid, $params['now']);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
-        return $post_id;
+
+        return $pid;
     }
 
     /**
      * Update post
      *
      * @access  public
-     * @param   int        $pid             Post's ID
-     * @param   int        $uid             User's ID
-     * @param   string     $update_reason   Last Update Reason
-     * @param   string  $message
+     * @param   int     $pid            Post ID
+     * @param   int     $uid            User's ID
+     * @param   string  $subject        Topic subject
+     * @param   string  $message        Post content
+     * @param   string  $update_reason  Update reason text
+     * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $subject, $message, $update_reason)
+    function UpdatePost($pid, $uid, $subject, $message, $update_reason = '')
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['uid']           = (int)$uid;
-        $params['pid']           = (int)$pid;
-        $params['now']           = $GLOBALS['db']->Date();
-        $params['subject']       = $xss->filter($subject);
-        $params['message']       = $xss->filter($message);
-        $params['update_reason'] = $xss->filter($update_reason);
+        $params['uid'] = (int)$uid;
+        $params['pid'] = (int)$pid;
+        $params['now'] = $GLOBALS['db']->Date();
+        $params['subject'] = $subject;
+        $params['message'] = $message;
+        $params['update_reason'] = $update_reason;
 
-        $sql = 'UPDATE [[forums_posts]] SET
-                    [message]            = {message},
-                    [last_update_uid]    = {uid},
-                    [last_update_reason] = {update_reason},
-                    [last_update_time]   = {now}
-                WHERE [id] = {pid}';
+        $sql = '
+            UPDATE [[forums_posts]] SET
+                [message]            = {message},
+                [last_update_uid]    = {uid},
+                [last_update_reason] = {update_reason},
+                [last_update_time]   = {now}
+            WHERE
+                [id] = {pid}';
+
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_EDIT_POST'), _t('FORUM_NAME'));
+            return $result;
         }
 
         if (!empty($subject)) {
-            $sql = 'UPDATE [[forums_topics]] SET
-                        [subject]         = {subject}
-                    WHERE [first_post_id] = {pid}';
+            // FIXME: check whether this post is first post of topic?
+            $sql = '
+                UPDATE [[forums_topics]] SET
+                    [subject] = {subject}
+                WHERE
+                    [first_post_id] = {pid}';
+
             $result = $GLOBALS['db']->query($sql, $params);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
@@ -180,103 +198,128 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
      * Delete post
      *
      * @access  public
-     * @param   int        $pid             Post's ID
+     * @param   int     $pid    Post ID
+     * @return  mixed   True on successfully or Jaws_Error on failure
      */
     function DeletePost($pid)
     {
         $pid = (int)$pid;
-        $postInfo = $this->GetPost($pid);
-        if (Jaws_Error::IsError($postInfo)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_POST_NOT_DELETED'), _t('FORUM_NAME'));
+        $post = $this->GetPost($pid);
+        if (Jaws_Error::IsError($post)) {
+            return $post;
         }
 
         $params = array();
-        $params['id']  = $pid;
-        $sql = "DELETE FROM [[forums_posts]] WHERE [id] = {id}";
+        $params['id'] = $pid;
+
+        $sql = '
+            DELETE FROM [[forums_posts]]
+            WHERE
+                [id] = {id}';
+
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_POST_NOT_DELETED'), _t('FORUM_NAME'));
+            return $result;
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
-        $topicInfo = $tModel->GetTopic($postInfo['tid']);
+        $topic = $tModel->GetTopic($post['tid']);
+        if (Jaws_Error::IsError($topic)) {
+            return $topic;
+        }
 
-        $lastPostInfo = $this->GetLastPostTopicID($topicInfo['id']);
-        $result = $tModel->UpdateTopicStatistics($topicInfo['id'], $lastPostInfo['id'], $lastPostInfo['createtime']);
+        $lastpost = $this->GetLastPostTopicID($topic['id']);
+        if (Jaws_Error::IsError($lastpost)) {
+            return $lastpost;
+        }
+
+        $result = $tModel->UpdateTopicStatistics($topic['id'], $lastpost['id'], $lastpost['createtime']);
         if (Jaws_Error::IsError($result)) {
-            return false;
+            return $result;
         }
 
         $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
-        $lastPostInfo = $this->GetLastPostForumID($topicInfo['fid']);
-        if (!Jaws_Error::IsError($lastPostInfo)) {
-            if (empty($lastPostInfo['id'])) {
-                $lastPostInfo['id'] = 0;
-                $lastPostInfo['createtime'] = 0;
-            }
-            $result = $fModel->UpdateForumStatistics($topicInfo['fid'], $lastPostInfo['id'], $lastPostInfo['createtime']);
-        } else {
-            return false;
+        $lastpost = $this->GetLastPostForumID($topic['fid']);
+        if (Jaws_Error::IsError($lastpost)) {
+            return $lastpost;
         }
 
+        $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
         if (Jaws_Error::IsError($result)) {
-            return false;
+            return $result;
         }
 
         return true;
     }
 
     /**
-     * Return LastPost's ID  For Selected Topic
+     * Get last post ID for given topic
      *
      * @access  public
-     * @param   int        $tid             Topic's ID
+     * @param   int     $tid    Topic ID
+     * @return  mixed   Array of last post data or Jaws_Error on failure
      */
     function GetLastPostTopicID($tid)
     {
-        $sql = 'SELECT [id], [createtime]
-                    FROM [[forums_posts]]
-                    WHERE [tid] = {tid}
-                    ORDER BY [id] DESC';
-
         $params = array();
         $params['tid'] = $tid;
-        $result = $GLOBALS['db']->queryRow($sql, $params);
 
-        if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_GET_POST_INFO'), _t('FORUM_NAME'));
+        $sql = '
+            SELECT
+                [id], [createtime]
+            FROM
+                [[forums_posts]]
+            WHERE
+                [tid] = {tid}
+            ORDER BY
+                [id] DESC';
+
+        $result = $GLOBALS['db']->queryRow($sql, $params);
+        if (empty($result)) {
+            $result = array(
+                'id'         => 0,
+                'createtime' => null
+            );
         }
 
         return $result;
     }
 
     /**
-     * Return LastPost's ID  For Selected Forum
+     * Get last post ID for given forum
      *
      * @access  public
-     * @param   int        $fid             Forum's ID
+     * @param   int     $fid    Forum ID
+     * @return  mixed   Array of last post data or Jaws_Error on failure
      */
     function GetLastPostForumID($fid)
     {
-        $sql = 'SELECT [[forums_posts]].[id], [[forums_posts]].[createtime]
-            FROM [[forums_posts]]
-            LEFT JOIN [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
-            LEFT JOIN [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
-            WHERE [[forums_topics]].[fid] = {fid}
-            ORDER BY [[forums_posts]].[id] DESC';
-
         $params = array();
         $params['fid'] = $fid;
-        $result = $GLOBALS['db']->queryRow($sql, $params);
 
-        if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('FORUM_ERROR_GET_POST_INFO'), _t('FORUM_NAME'));
+        $sql = '
+            SELECT
+                [[forums_posts]].[id], [[forums_posts]].[createtime]
+            FROM
+                [[forums_posts]]
+            LEFT JOIN
+                [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
+            LEFT JOIN
+                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
+            WHERE
+                [[forums_topics]].[fid] = {fid}
+            ORDER BY
+                [[forums_posts]].[id] DESC';
+
+        $result = $GLOBALS['db']->queryRow($sql, $params);
+        if (empty($result)) {
+            $result = array(
+                'id'         => 0,
+                'createtime' => null
+            );
         }
 
         return $result;
     }
+
 }

@@ -2,11 +2,12 @@
 /**
  * Forum Gadget
  *
- * @category   GadgetModel
- * @package    Forum
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetModel
+ * @package     Forum
+ * @author      Ali Fazelzadeh <afz@php.net>
+  * @author     Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @copyright   2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Forum_Model_Topics extends Jaws_Gadget_Model
 {
@@ -98,12 +99,11 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
             VALUES
                 ({uid}, {fid}, {subject}, {fast_url}, {now}, {now}, {published})";
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['uid']        = $uid;
         $params['fid']        = (int)$fid;
-        $params['subject']    = $xss->filter($subject);
-        $params['fast_url']   = $xss->filter($fast_url);
+        $params['subject']    = $subject;
+        $params['fast_url']   = $fast_url;
         $params['now']        = $GLOBALS['db']->Date();
         $params['published']  = (int)$published;
 
@@ -114,7 +114,7 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
         $topic_id = $GLOBALS['db']->lastInsertID('forums_topics', 'id');
 
         $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
-        $result = $pModel->InsertPost($params['uid'], $topic_id, $xss->filter($message));
+        $result = $pModel->InsertPost($params['uid'], $topic_id, $message);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -195,14 +195,25 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
      */
     function UpdateTopicStatistics($tid, $last_post_id, $last_post_time)
     {
+        $params = array();
         $params['tid']            = (int)$tid;
         $params['last_post_id']   = $last_post_id;
         $params['last_post_time'] = $last_post_time;
-        $sql = 'UPDATE [[forums_topics]] SET
-                        [last_post_id]   = {last_post_id},
-                        [last_post_time] = {last_post_time},
-                        [replies]        = (SELECT COUNT([[forums_posts]].[id]) FROM [[forums_posts]] WHERE [[forums_posts]].[tid] = {tid})
-                WHERE [id] = {tid}';
+
+        $sql = '
+            UPDATE [[forums_topics]] SET
+                [last_post_id]   = {last_post_id},
+                [last_post_time] = {last_post_time},
+                [replies]        = (
+                    SELECT
+                        COUNT([[forums_posts]].[id])
+                    FROM
+                        [[forums_posts]]
+                    WHERE
+                        [[forums_posts]].[tid] = {tid}
+                )
+            WHERE
+                [id] = {tid}';
         $result = $GLOBALS['db']->query($sql, $params);
         return $result;
     }
