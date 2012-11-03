@@ -32,7 +32,7 @@ $objGadget = null;
 $IsReqActionStandAlone = false;
 // Only registerd user can access not global website
 $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
-                         $GLOBALS['app']->Registry->Get('/config/global_website') !== 'true';
+                         $GLOBALS['app']->Registry->Get('/config/global_website') == 'false';
 $request =& Jaws_Request::getInstance();
 // Get forwarded error from webserver
 $ReqError = $request->get('http_error', 'get');
