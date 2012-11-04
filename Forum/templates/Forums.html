@@ -26,7 +26,9 @@
           <dd class="forums_posts">{posts}</dd>
           <dd class="forums_lastpost">
           <!-- BEGIN lastpost -->
-          {postedby_lbl}{username}{nickname}{user_url}{lastpost_url}{lastpost_lbl}{lastpost_date}
+          {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+          <a href="{lastpost_url}"><img src="gadgets/Forum/images/topic_latest.png" alt="{lastpost_lbl}"/></a>
+          {lastpost_date}
           <!-- END lastpost -->
           </dd>
         </dl>
