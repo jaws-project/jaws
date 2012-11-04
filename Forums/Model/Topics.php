@@ -1,15 +1,15 @@
 <?php
 /**
- * Forum Gadget
+ * Forums Gadget
  *
  * @category    GadgetModel
- * @package     Forum
+ * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
   * @author     Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Model_Topics extends Jaws_Gadget_Model
+class Forums_Model_Topics extends Jaws_Gadget_Model
 {
     /**
      * Get topic info
@@ -113,7 +113,7 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pid = 0;
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (!Jaws_Error::IsError($pModel)) {
             $pid = $pModel->InsertPost($params['uid'], $tid, $message);
             if (Jaws_Error::IsError($pid)) {
@@ -176,14 +176,14 @@ class Forum_Model_Topics extends Jaws_Gadget_Model
             return $result;
         }
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (!Jaws_Error::IsError($pModel)) {
             $lastpost = $pModel->GetLastPostForumID($topic['fid']);
             if (Jaws_Error::IsError($lastpost)) {
                 return $lastpost;
             }
 
-            $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
             if (!Jaws_Error::IsError($fModel)) {
                 $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
                 if (Jaws_Error::IsError($result)) {

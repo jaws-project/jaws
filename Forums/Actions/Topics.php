@@ -1,15 +1,15 @@
 <?php
 /**
- * Forum Gadget
+ * Forums Gadget
  *
  * @category    Gadget
- * @package     Forum
+ * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Actions_Topics extends ForumHTML
+class Forums_Actions_Topics extends ForumsHTML
 {
     /**
      * Display forum's topics
@@ -22,7 +22,7 @@ class Forum_Actions_Topics extends ForumHTML
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('id', 'page'), 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topics = $model->GetTopics($get['id']);
         if (Jaws_Error::IsError($topics)) {
             return false;
@@ -102,7 +102,7 @@ class Forum_Actions_Topics extends ForumHTML
             return false;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $forum = $fModel->GetForum($req['fid']);
         if (Jaws_Error::IsError($forum) || empty($forum)) {
             return false;
@@ -150,7 +150,7 @@ class Forum_Actions_Topics extends ForumHTML
         $topic = $request->get(array('fid', 'tid', 'subject', 'fast_url', 'description', 'published'),
                                'post');
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
             $tid = $tModel->InsertTopic($GLOBALS['app']->Session->GetAttribute('user'),
                                         $topic['fid'],
@@ -185,7 +185,7 @@ class Forum_Actions_Topics extends ForumHTML
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('tid', 'page'), 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $model->GetTopic($get['tid']);
         if (Jaws_Error::IsError($topic)) {
             return false;
@@ -199,7 +199,7 @@ class Forum_Actions_Topics extends ForumHTML
 
         $tpl->SetVariable('title', $topic['subject']);
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $posts = $pModel->GetPosts($get['tid']);
         if (Jaws_Error::IsError($posts)) {
             return false;
@@ -279,7 +279,7 @@ class Forum_Actions_Topics extends ForumHTML
         $request =& Jaws_Request::getInstance();
         $topic = $request->get(array('tid'));
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topicInfo = $tModel->GetTopic((int)($topic['tid']));
         if (Jaws_Error::IsError($topicInfo) || empty($topicInfo)) {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_NOT_FOUND'), 'Topic');

@@ -1,8 +1,8 @@
 /**
- * Forum JS actions
+ * Forums JS actions
  *
  * @category   Ajax
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2010 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
@@ -10,7 +10,7 @@
 /**
  * Use async mode, create Callback
  */
-var ForumCallback = {
+var ForumsCallback = {
 
     updategroup: function(response) {
         if (response['css'] == 'notice-message') {
@@ -99,7 +99,7 @@ function saveForums()
     if (currentAction == 'Groups') {
         cacheForumForm = null;
         if (selectedGroup == null) {
-            var response = forumSync.insertgroup(
+            var response = forumsSync.insertgroup(
                                     $('title').value,
                                     $('description').value,
                                     $('fast_url').value,
@@ -112,7 +112,7 @@ function saveForums()
             }
             showResponse(response);
         } else {
-            forumAsync.updategroup(
+            forumsAsync.updategroup(
                                 $('gid').value,
                                 $('title').value,
                                 $('description').value,
@@ -123,7 +123,7 @@ function saveForums()
         }
     } else {
         if (selectedForum == null) {
-            var response = forumSync.insertforum(
+            var response = forumsSync.insertforum(
                                     $('gid').value,
                                     $('title').value,
                                     $('description').value,
@@ -137,7 +137,7 @@ function saveForums()
             }
             showResponse(response);
         } else {
-            var response = forumSync.updateforum(
+            var response = forumsSync.updateforum(
                                     $('fid').value,
                                     $('gid').value,
                                     $('title').value,
@@ -200,7 +200,7 @@ function setOrdersCombo(gid, pid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = forumSync.getgroupui();
+        cacheGroupForm = forumsSync.getgroupui();
     }
     currentAction = 'Groups';
 
@@ -240,7 +240,7 @@ function mm_leave(eid)
 function addForum(gid, pid)
 {
     if (cacheForumForm == null) {
-        cacheForumForm = forumSync.getforumui();
+        cacheForumForm = forumsSync.getforumui();
     }
 
     stopAction();
@@ -273,7 +273,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = forumSync.getgroupui();
+        cacheGroupForm = forumsSync.getgroupui();
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -286,7 +286,7 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheGroupForm;  
 
-    var group = forumSync.getgroup(selectedGroup);
+    var group = forumsSync.getgroup(selectedGroup);
 
     $('gid').value         = group['id'];
     $('title').value       = group['title'];
@@ -305,7 +305,7 @@ function editForum(element, fid)
     if (fid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheForumForm == null) {
-        cacheForumForm = forumSync.getforumui();
+        cacheForumForm = forumsSync.getforumui();
     }
     currentAction = 'Forums';
 
@@ -318,7 +318,7 @@ function editForum(element, fid)
     $('forums_edit').innerHTML = cacheForumForm;  
 
     selectedForum = fid;
-    var forum = forumSync.getforum(selectedForum);
+    var forum = forumsSync.getforum(selectedForum);
 
     $('fid').value         = forum['id'];
     $('gid').value         = forum['gid'];
@@ -343,7 +343,7 @@ function delForums()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheForumForm = null;
-            var response = forumSync.deletegroup(gid);
+            var response = forumsSync.deletegroup(gid);
             if (response['css'] == 'notice-message') {
                 Element.remove($('group_'+gid));
             }
@@ -355,7 +355,7 @@ function delForums()
         var msg = confirmForumDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('forum_'+fid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = forumSync.deleteforum(fid);
+            var response = forumsSync.deleteforum(fid);
             if (response['css'] == 'notice-message') {
                 Element.remove($('forum_'+fid));
             }
@@ -384,15 +384,15 @@ function stopAction()
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
-var forumAsync = new forumadminajax(ForumCallback);
-forumAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-forumAsync.onInit = showWorkingNotification;
-forumAsync.onComplete = hideWorkingNotification;
+var forumsAsync = new forumsadminajax(ForumsCallback);
+forumsAsync.serverErrorFunc = Jaws_Ajax_ServerError;
+forumsAsync.onInit = showWorkingNotification;
+forumsAsync.onComplete = hideWorkingNotification;
 
-var forumSync  = new forumadminajax();
-forumSync.serverErrorFunc = Jaws_Ajax_ServerError;
-forumSync.onInit = showWorkingNotification;
-forumSync.onComplete = hideWorkingNotification;
+var forumsSync  = new forumsadminajax();
+forumsSync.serverErrorFunc = Jaws_Ajax_ServerError;
+forumsSync.onInit = showWorkingNotification;
+forumsSync.onComplete = hideWorkingNotification;
 
 //Current group
 var selectedGroup = null;

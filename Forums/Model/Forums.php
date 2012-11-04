@@ -1,15 +1,15 @@
 <?php
 /**
- * Forum Gadget
+ * Forums Gadget
  *
  * @category    GadgetModel
- * @package     Forum
+ * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Model_Forums extends Jaws_Gadget_Model
+class Forums_Model_Forums extends Jaws_Gadget_Model
 {
     /**
      * Returns array of forum properties

@@ -1,14 +1,14 @@
 <?php
 /**
- * Forum Core Gadget
+ * Forums Core Gadget
  *
  * @category   Gadget
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Actions_Forums extends ForumHTML
+class Forums_Actions_Forums extends ForumsHTML
 {
     /**
      * Display groups and forums
@@ -18,7 +18,7 @@ class Forum_Actions_Forums extends ForumHTML
      */
     function Forums()
     {
-        $gModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Groups');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $groups = $gModel->GetGroups(true);
         if (Jaws_Error::IsError($groups) || empty($groups)) {
             return false;
@@ -39,7 +39,7 @@ class Forum_Actions_Forums extends ForumHTML
             $tpl->SetVariable('lbl_posts', _t('FORUM_POSTS'));
             $tpl->SetVariable('lbl_lastpost', _t('FORUM_LASTPOST'));
 
-            $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
             $forums = $fModel->GetForums($group['id'], true, true);
             if (Jaws_Error::IsError($forums)) {
                 continue;

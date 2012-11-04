@@ -1,27 +1,37 @@
 <?php
 /**
- * Forum Admin Gadget
+ * Forums Admin Gadget
  *
  * @category   GadgetAdmin
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Actions_Admin_Group extends ForumAdminHTML
+class Forums_Actions_Admin_Forum extends ForumsAdminHTML
 {
     /**
-     * Show a form to edit a given group
+     * Show a form to edit a given forum
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function GetGroupUI()
+    function GetForumUI()
     {
         $this->CheckPermission('default');
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
-        $tpl->Load('AdminGroupUI.html');
-        $tpl->SetBlock('GroupsUI');
+        $tpl->Load('AdminForumUI.html');
+        $tpl->SetBlock('ForumUI');
+
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
+        $groups = $gModel->GetGroups();
+        $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
+        $groupCombo->SetID('gid');
+        foreach ($groups as $group) {
+            $groupCombo->AddOption($group['title'], $group['id']);
+        }
+        $tpl->SetVariable('lbl_gid', _t('FORUM_GROUP'));
+        $tpl->SetVariable('gid', $groupCombo->Get());
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $title->SetID('title');
@@ -59,7 +69,7 @@ class Forum_Actions_Admin_Group extends ForumAdminHTML
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
-        $tpl->ParseBlock('GroupsUI');
+        $tpl->ParseBlock('ForumUI');
         return $tpl->Get();
     }
 

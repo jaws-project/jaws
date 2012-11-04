@@ -1,14 +1,14 @@
 <?php
 /**
- * Forum Gadget Info
+ * Forums Gadget Info
  *
  * @category   GadgetInfo
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumInfo extends Jaws_Gadget
+class ForumsInfo extends Jaws_Gadget
 {
     /**
      * Gadget version

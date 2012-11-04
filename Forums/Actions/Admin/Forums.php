@@ -1,14 +1,14 @@
 <?php
 /**
- * Forum Admin Gadget
+ * Forums Admin Gadget
  *
  * @category   GadgetAdmin
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Actions_Admin_Forums extends ForumAdminHTML
+class Forums_Actions_Admin_Forums extends ForumsAdminHTML
 {
     /**
      * Show forums administration interface
@@ -25,8 +25,8 @@ class Forum_Actions_Admin_Forums extends ForumAdminHTML
         $tpl->Load('AdminForums.html');
         $tpl->SetBlock('forums');
 
-        $gModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Groups');
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');

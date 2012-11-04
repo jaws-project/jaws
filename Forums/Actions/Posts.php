@@ -1,15 +1,15 @@
 <?php
 /**
- * Forum Gadget
+ * Forums Gadget
  *
  * @category    Gadget
- * @package     Forum
+ * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Actions_Posts extends ForumHTML
+class Forums_Actions_Posts extends ForumsHTML
 {
 
     /**
@@ -26,7 +26,7 @@ class Forum_Actions_Posts extends ForumHTML
             return false;
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($req['tid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
@@ -75,13 +75,13 @@ class Forum_Actions_Posts extends ForumHTML
             return false;
         }
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $post = $pModel->GetPost($req['pid']);
         if (Jaws_Error::IsError($post) || empty($post)) {
             return false;
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($post['tid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
@@ -135,7 +135,7 @@ class Forum_Actions_Posts extends ForumHTML
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('tid', 'pid', 'subject', 'message', 'update_reason'), 'post');
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost($GLOBALS['app']->Session->GetAttribute('user'), $post['tid'], $post['message']);
         } else {
@@ -180,13 +180,13 @@ class Forum_Actions_Posts extends ForumHTML
 
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('pid', 'tid', 'step'));
-        $pModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Posts');
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
 
         $postInfo = $pModel->GetPost($post['pid']);
         if (Jaws_Error::IsError($postInfo) || empty($postInfo)) {
             return false;
         }
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topicInfo = $tModel->GetTopic($postInfo['tid']);
         if (!is_null($post['step']) && $post['step'] == 'delete') {
             if ($postInfo['id'] == $topicInfo['first_post_id']) {

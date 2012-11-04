@@ -1,15 +1,15 @@
 <?php
 /**
- * Forum Gadget
+ * Forums Gadget
  *
  * @category    GadgetModel
- * @package     Forum
+ * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forum_Model_Posts extends Jaws_Gadget_Model
+class Forums_Model_Posts extends Jaws_Gadget_Model
 {
     /**
      * Get post data
@@ -122,7 +122,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
             return $pid;
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (!Jaws_Error::IsError($tModel)) {
             $result = $tModel->UpdateTopicStatistics($params['tid'], $pid, $params['now']);
             if (Jaws_Error::IsError($result)) {
@@ -131,7 +131,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
         }
 
         $topic = $tModel->GetTopic($params['tid']);
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
             $result = $fModel->UpdateForumStatistics($topic['fid'], $pid, $params['now']);
             if (Jaws_Error::IsError($result)) {
@@ -222,7 +222,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
             return $result;
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Topics');
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($post['tid']);
         if (Jaws_Error::IsError($topic)) {
             return $topic;
@@ -243,7 +243,7 @@ class Forum_Model_Posts extends Jaws_Gadget_Model
             return $lastpost;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
             $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
             if (Jaws_Error::IsError($result)) {

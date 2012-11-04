@@ -1,14 +1,14 @@
 <?php
 /**
- * Forum AJAX API
+ * Forums AJAX API
  *
  * @category   Ajax
- * @package    Forum
+ * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumAdminAjax extends Jaws_Gadget_Ajax
+class ForumsAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get information of a group
@@ -20,7 +20,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function GetGroup($gid)
     {
         $this->CheckSession('Forum', 'default');
-        $gModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Groups');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
@@ -39,7 +39,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function GetForum($fid)
     {
         $this->CheckSession('Forum', 'default');
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'Model', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $forum = $fModel->GetForum($fid);
         if (Jaws_Error::IsError($forum)) {
             return false; //we need to handle errors on ajax
@@ -57,7 +57,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function GetGroupUI()
     {
         $this->CheckSession('Forum', 'default');
-        $gHTML = $GLOBALS['app']->LoadGadget('Forum', 'AdminHTML', 'Group');
+        $gHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Group');
         return $gHTML->GetGroupUI();
     }
 
@@ -70,7 +70,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function GetForumUI()
     {
         $this->CheckSession('Forum', 'default');
-        $fHTML = $GLOBALS['app']->LoadGadget('Forum', 'AdminHTML', 'Forum');
+        $fHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Forum');
         return $fHTML->GetForumUI();
     }
 
@@ -90,7 +90,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
         $this->CheckSession('Forum', 'ManageForums');
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'AdminModel', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_FORUM_CREATED'),
@@ -119,7 +119,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
     {
         $this->CheckSession('Forum', 'ManageForums');
-        $fModel = $GLOBALS['app']->LoadGadget('Forum', 'AdminModel', 'Forums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_FORUM_UPDATED'),
@@ -145,7 +145,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function InsertGroup($title, $description, $fast_url, $order, $locked, $published)
     {
         $this->CheckSession('Forum', 'ManageForums');
-        $gModel = $GLOBALS['app']->LoadGadget('Forum', 'AdminModel', 'Groups');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_GROUP_CREATED'),
@@ -173,7 +173,7 @@ class ForumAdminAjax extends Jaws_Gadget_Ajax
     function UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
         $this->CheckSession('Forum', 'ManageForums');
-        $gModel = $GLOBALS['app']->LoadGadget('Forum', 'AdminModel', 'Groups');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_GROUP_UPDATED'),
