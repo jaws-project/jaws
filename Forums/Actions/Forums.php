@@ -29,15 +29,15 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->Load('Forums.html');
         $tpl->SetBlock('forums');
 
-        $tpl->SetVariable('title', _t('FORUM_NAME'));
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum', 'Forums'));
+        $tpl->SetVariable('title', _t('FORUMS_NAME'));
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums', 'Forums'));
 
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
             $tpl->SetVariable('title', $group['title']);
-            $tpl->SetVariable('lbl_topics', _t('FORUM_TOPICS'));
-            $tpl->SetVariable('lbl_posts', _t('FORUM_POSTS'));
-            $tpl->SetVariable('lbl_lastpost', _t('FORUM_LASTPOST'));
+            $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
+            $tpl->SetVariable('lbl_posts', _t('FORUMS_POSTS'));
+            $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
             $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
             $forums = $fModel->GetForums($group['id'], true, true);
@@ -49,10 +49,10 @@ class Forums_Actions_Forums extends ForumsHTML
                 $tpl->SetBlock('forums/group/forum');
                 $tpl->SetVariable('icon', '');
                 if ($forum['locked']) {
-                    $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+                    $tpl->SetVariable('status', _t('FORUMS_LOCKED'));
                 }
                 $tpl->SetVariable('title', $forum['title']);
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum',
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums',
                                                                          'Topics', array('id' => $forum['id']))
                 );
                 $tpl->SetVariable('description', $forum['description']);
@@ -62,7 +62,7 @@ class Forums_Actions_Forums extends ForumsHTML
                 // last post
                 if (!empty($forum['last_post_id'])) {
                     $tpl->SetBlock('forums/group/forum/lastpost');
-                    $tpl->SetVariable('postedby_lbl',_t('FORUM_POSTEDBY'));
+                    $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
                     $tpl->SetVariable('username', $forum['username']);
                     $tpl->SetVariable('nickname', $forum['nickname']);
                     $tpl->SetVariable(
@@ -73,7 +73,7 @@ class Forums_Actions_Forums extends ForumsHTML
                             array('user' => $forum['username'])
                         )
                     );
-                    $tpl->SetVariable('lastpost_lbl',_t('FORUM_LASTPOSTED'));
+                    $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOSTED'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time']));
                     $tpl->SetVariable(
                         'lastpost_url',

@@ -93,11 +93,11 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_FORUM_CREATED'),
+            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_FORUM_CREATED'),
                                                          RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUM_NOTICE_FORUM_CREATED'),
+        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_FORUM_CREATED'),
                                                      RESPONSE_NOTICE,
                                                      $res);
     }
@@ -122,11 +122,11 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_FORUM_UPDATED'),
+            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_FORUM_UPDATED'),
                                                          RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUM_NOTICE_FORUM_UPDATED'),
+        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_FORUM_UPDATED'),
                                                      RESPONSE_NOTICE);
     }
 
@@ -148,11 +148,11 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_GROUP_CREATED'),
+            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_GROUP_CREATED'),
                                                          RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUM_NOTICE_GROUP_CREATED'),
+        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_GROUP_CREATED'),
                                                      RESPONSE_NOTICE,
                                                      $res);
     }
@@ -176,11 +176,11 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUM_ERROR_GROUP_UPDATED'),
+            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_GROUP_UPDATED'),
                                                          RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUM_NOTICE_GROUP_UPDATED'),
+        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_GROUP_UPDATED'),
                                                      RESPONSE_NOTICE);
     }
 

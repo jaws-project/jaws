@@ -38,12 +38,12 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $tpl->SetVariable('lbl_topic', $topic['subject']);
         $tpl->SetVariable('url_topic',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'Topic',
                                                           array('tid' => $topic['id']))
         );
-        $tpl->SetVariable('title', _t('FORUM_POST_ADD_TITLE'));
-        $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
+        $tpl->SetVariable('title', _t('FORUMS_POST_ADD_TITLE'));
+        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('tid', $req['tid']);
 
@@ -54,7 +54,7 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('newpost', _t('FORUM_POST_ADD_BUTTON'));
+        $tpl->SetVariable('newpost', _t('FORUMS_POST_ADD_BUTTON'));
         $tpl->SetVariable('message', '');
 
         $tpl->ParseBlock('newpost');
@@ -93,12 +93,12 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $tpl->SetVariable('lbl_topic', $topic['subject']);
         $tpl->SetVariable('url_topic',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'Topic',
                                                           array('tid' => $topic['id']))
         );
-        $tpl->SetVariable('title', _t('FORUM_POST_ADD_TITLE'));
-        $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
+        $tpl->SetVariable('title', _t('FORUMS_POST_ADD_TITLE'));
+        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('tid', $post['tid']);
         $tpl->SetVariable('pid', $post['id']);
@@ -111,14 +111,14 @@ class Forums_Actions_Posts extends ForumsHTML
 
         if ($topic['first_post_id'] == (int)$req['pid']) {
             $tpl->SetBlock('editpost/subject');
-            $tpl->SetVariable('lbl_subject', _t('FORUM_TOPIC_SUBJECT'));
+            $tpl->SetVariable('lbl_subject', _t('FORUMS_TOPIC_SUBJECT'));
             $tpl->SetVariable('subject', $topic['subject']);
             $tpl->ParseBlock('editpost/subject');
         }
-        $tpl->SetVariable('editpost', _t('FORUM_POST_EDIT_BUTTON'));
+        $tpl->SetVariable('editpost', _t('FORUMS_POST_EDIT_BUTTON'));
         $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('message', $post['message']);
-        $tpl->SetVariable('lbl_update_reason', _t('FORUM_POST_UPDATE_REASON'));
+        $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
         $tpl->SetVariable('update_reason', '');
 
         $tpl->ParseBlock('editpost');
@@ -152,11 +152,11 @@ class Forums_Actions_Posts extends ForumsHTML
             $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(),
                                                          'Topic');
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_POST_TOPIC_UPDATED'),
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_POST_TOPIC_UPDATED'),
                                                          'Topic');
         }
 
-        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum',
+        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums',
                                                               'Topic',
                                                               array('tid' => $post['tid'])), true);
     }
@@ -173,7 +173,7 @@ class Forums_Actions_Posts extends ForumsHTML
         if (!$GLOBALS['app']->Session->Logged()) {
             //Add lang
             $tpl->SetBlock('not_allow');
-            $tpl->SetVariable('msg', _t('FORUM_NOT_PERMISON_PLEASE_LOGIN'));
+            $tpl->SetVariable('msg', _t('FORUMS_NOT_PERMISON_PLEASE_LOGIN'));
             $tpl->ParseBlock('not_allow');
             return $tpl->Get();
         }
@@ -192,14 +192,14 @@ class Forums_Actions_Posts extends ForumsHTML
             if ($postInfo['id'] == $topicInfo['first_post_id']) {
                 // Delete Topic And All Posts In this
                 $tModel->DeleteTopic($topicInfo['id']);
-                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topics', array('id' => $topicInfo['fid'])));
+                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums', 'Topics', array('id' => $topicInfo['fid'])));
             } else {
                 // Delete Post
                 $pModel->DeletePost($postInfo['id']);
-                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $postInfo['tid'])));
+                Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums', 'Topic', array('tid' => $postInfo['tid'])));
             }
         } else if (!is_null($post['step']) && $post['step'] == 'cancel') {
-            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $postInfo['tid'])));
+            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums', 'Topic', array('tid' => $postInfo['tid'])));
         }
 
         $tpl->SetBlock('deletepost');
@@ -207,16 +207,16 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('pid',  $postInfo['id']);
         $tpl->SetVariable('tid', $topicInfo['id']);
         $tpl->SetVariable('subject', $topicInfo['subject']);
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum', 'Topic', array('tid' => $topicInfo['id'])));
-        $tpl->SetVariable('title', _t('FORUM_DELETE_POST'));
-        $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums', 'Topic', array('tid' => $topicInfo['id'])));
+        $tpl->SetVariable('title', _t('FORUMS_DELETE_POST'));
+        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
 
         // Message
-        $tpl->SetVariable('delete_message', _t('FORUM_DELETE_POST_CONFIRM'));
+        $tpl->SetVariable('delete_message', _t('FORUMS_DELETE_POST_CONFIRM'));
 
         $date = $GLOBALS['app']->loadDate();
         $tpl->SetVariable('psted_date',   $date->Format($date->ToISO($postInfo['createtime'])));
-        $tpl->SetVariable('posted_by',    _t('FORUM_POSTED_BY'));
+        $tpl->SetVariable('posted_by',    _t('FORUMS_POSTED_BY'));
         $tpl->SetVariable('user_name',    $postInfo['username']);
         $tpl->SetVariable('lbl_message',  _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('message',      $postInfo['message']);

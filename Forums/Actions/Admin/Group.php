@@ -35,12 +35,12 @@ class Forums_Actions_Admin_Group extends ForumsAdminHTML
 
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fasturl->SetID('fast_url');
-        $tpl->SetVariable('lbl_fast_url', _t('FORUM_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', _t('FORUMS_FASTURL'));
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         $order =& Piwi::CreateWidget('Combo', 'order');
         $order->SetID('order');
-        $tpl->SetVariable('lbl_order', _t('FORUM_ORDER'));
+        $tpl->SetVariable('lbl_order', _t('FORUMS_ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
         $locked =& Piwi::CreateWidget('Combo', 'locked');
@@ -48,7 +48,7 @@ class Forums_Actions_Admin_Group extends ForumsAdminHTML
         $locked->AddOption(_t('GLOBAL_NO'),  0);
         $locked->AddOption(_t('GLOBAL_YES'), 1);
         $locked->SetDefault(0);
-        $tpl->SetVariable('lbl_locked', _t('FORUM_LOCKED'));
+        $tpl->SetVariable('lbl_locked', _t('FORUMS_LOCKED'));
         $tpl->SetVariable('locked', $locked->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');

@@ -33,21 +33,21 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->Load('Topics.html');
         $tpl->SetBlock('topics');
 
-        $tpl->SetVariable('title', _t('FORUM_NAME'));
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum', 'Forums'));
-        $tpl->SetVariable('lbl_topics', _t('FORUM_TIPICS'));
-        $tpl->SetVariable('lbl_replies', _t('FORUM_REPLIES'));
-        $tpl->SetVariable('lbl_views', _t('FORUM_VIEWS'));
-        $tpl->SetVariable('lbl_lastpost', _t('FORUM_LASTPOST'));
+        $tpl->SetVariable('title', _t('FORUMS_NAME'));
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums', 'Forums'));
+        $tpl->SetVariable('lbl_topics', _t('FORUMS_TIPICS'));
+        $tpl->SetVariable('lbl_replies', _t('FORUMS_REPLIES'));
+        $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
+        $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
             $tpl->SetVariable('icon', '');
             if ($topic['locked']) {
-                $tpl->SetVariable('status', _t('FORUM_LOCKED'));
+                $tpl->SetVariable('status', _t('FORUMS_LOCKED'));
             }
             $tpl->SetVariable('title', $topic['subject']);
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forum',
+            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums',
                                                                      'Topic', array('tid' => $topic['id']))
             );
             $tpl->SetVariable('replies', $topic['replies']);
@@ -56,17 +56,17 @@ class Forums_Actions_Topics extends ForumsHTML
             // last post
             if (!empty($topic['last_post_id'])) {
                 $tpl->SetBlock('topics/topic/lastpost');
-                $tpl->SetVariable('postedby_lbl',_t('FORUM_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
 
                 $tpl->SetVariable('username', $topic['username']);
                 $tpl->SetVariable('nickname', $topic['nickname']);
                 $tpl->SetVariable('user_url',
                                   $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
                 );
-                $tpl->SetVariable('lastpost_lbl',_t('FORUM_LASTPOSTED'));
+                $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOSTED'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
                 $tpl->SetVariable('lastpost_url',
-                                  $GLOBALS['app']->Map->GetURLFor('Forum',
+                                  $GLOBALS['app']->Map->GetURLFor('Forums',
                                                                   'Topic', array('id' => $topic['id']))
                 );
                 $tpl->ParseBlock('topics/topic/lastpost');
@@ -76,9 +76,9 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $tpl->SetBlock('topics/actions');
-        $tpl->SetVariable('lbl_newtopic', _t('FORUM_NEWTOPIC'));
+        $tpl->SetVariable('lbl_newtopic', _t('FORUMS_NEWTOPIC'));
         $tpl->SetVariable('url_newtopic',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'NewTopic',
                                                           array('fid' => $get['id']))
         );
@@ -114,12 +114,12 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $tpl->SetVariable('lbl_forum', $forum['title']);
         $tpl->SetVariable('url_forum',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'Topics',
                                                           array('id' => $forum['id']))
         );
-        $tpl->SetVariable('title', _t('FORUM_TOPIC_ADD_TITLE'));
-        $tpl->SetVariable('separator', _t('FORUM_SEPARATOR'));
+        $tpl->SetVariable('title', _t('FORUMS_TOPIC_ADD_TITLE'));
+        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('fid', $req['fid']);
 
@@ -129,9 +129,9 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->ParseBlock('newtopic/response');
         }
 
-        $tpl->SetVariable('lbl_subject', _t('FORUM_TOPIC_SUBJECT'));
+        $tpl->SetVariable('lbl_subject', _t('FORUMS_TOPIC_SUBJECT'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('newtopic', _t('FORUM_TOPIC_ADD_BUTTON'));
+        $tpl->SetVariable('newtopic', _t('FORUMS_TOPIC_ADD_BUTTON'));
         $tpl->SetVariable('subject', '');
         $tpl->SetVariable('description', '');
 
@@ -165,11 +165,11 @@ class Forums_Actions_Topics extends ForumsHTML
                                                          'Topic');
         } else {
             $topic['tid'] = $tid;
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_UPDATED'),
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_UPDATED'),
                                                          'Topic');
         }
 
-        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum',
+        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums',
                                                               'Topic',
                                                               array('tid' => $topic['tid'])), true);
     }
@@ -217,16 +217,16 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('joined_time', $objDate->Format($post['user_joined_time']));
             $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
             //
-            $tpl->SetVariable('posts_lbl',_t('FORUM_USER_POST_COUNT'));
-            $tpl->SetVariable('joined_lbl',_t('FORUM_USER_JOINED_TIME'));
-            $tpl->SetVariable('postedby_lbl',_t('FORUM_POSTED_BY'));
+            $tpl->SetVariable('posts_lbl',_t('FORUMS_USER_POST_COUNT'));
+            $tpl->SetVariable('joined_lbl',_t('FORUMS_USER_JOINED_TIME'));
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTED_BY'));
             //
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('message', $post['message']);
             if ($post['last_update_uid'] != 0) {
                 $userInfo = $jUser->GetUser((int)$post['last_update_uid']);
                 $tpl->SetBlock('topic/post/update');
-                $tpl->SetVariable('updatedby_lbl', _t('FORUM_POST_UPDATEDBY'));
+                $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POST_UPDATEDBY'));
                 if (!empty($userInfo)) {
                     $tpl->SetVariable('username', $userInfo['username']);
                     $tpl->SetVariable('nickname', $userInfo['nickname']);
@@ -239,28 +239,28 @@ class Forums_Actions_Topics extends ForumsHTML
             // Check User Can Edit Posts
             $tpl->SetBlock('topic/post/actions');
             $tpl->SetVariable('lbl_editpost',_t('GLOBAL_EDIT'));
-            $tpl->SetVariable('url_editpost', $GLOBALS['app']->Map->GetURLFor('Forum', 'EditPost', array('pid' => $post['id'])));
+            $tpl->SetVariable('url_editpost', $GLOBALS['app']->Map->GetURLFor('Forums', 'EditPost', array('pid' => $post['id'])));
             $tpl->SetVariable('lbl_deletepost',_t('GLOBAL_DELETE'));
-            $tpl->SetVariable('url_deletepost', $GLOBALS['app']->Map->GetURLFor('Forum', 'DeletePost', array('pid' => $post['id'])));
+            $tpl->SetVariable('url_deletepost', $GLOBALS['app']->Map->GetURLFor('Forums', 'DeletePost', array('pid' => $post['id'])));
             $tpl->ParseBlock('topic/post/actions');
 
             $tpl->ParseBlock('topic/post');
         }
 
         $tpl->SetBlock('topic/actions');
-        $tpl->SetVariable('lbl_newpost', _t('FORUM_NEWPOST'));
+        $tpl->SetVariable('lbl_newpost', _t('FORUMS_NEWPOST'));
         $tpl->SetVariable('url_newpost',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'NewPost',
                                                           array('tid' => $get['tid']))
         );
         if ($topic['locked']) {
-            $tpl->SetVariable('lbl_lock_topic', _t('FORUM_UNLOCK_TOPIC'));
+            $tpl->SetVariable('lbl_lock_topic', _t('FORUMS_UNLOCK_TOPIC'));
         } else {
-            $tpl->SetVariable('lbl_lock_topic', _t('FORUM_LOCK_TOPIC'));
+            $tpl->SetVariable('lbl_lock_topic', _t('FORUMS_LOCK_TOPIC'));
         }
         $tpl->SetVariable('url_lock_topic',
-                          $GLOBALS['app']->Map->GetURLFor('Forum',
+                          $GLOBALS['app']->Map->GetURLFor('Forums',
                                                           'LockTopic',
                                                           array('tid' => $get['tid']))
         );
@@ -282,8 +282,8 @@ class Forums_Actions_Topics extends ForumsHTML
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topicInfo = $tModel->GetTopic((int)($topic['tid']));
         if (Jaws_Error::IsError($topicInfo) || empty($topicInfo)) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_NOT_FOUND'), 'Topic');
-            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic',
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_NOT_FOUND'), 'Topic');
+            Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums', 'Topic',
                                                               array('tid' => $topic['tid'])), true);
         }
 
@@ -292,10 +292,10 @@ class Forums_Actions_Topics extends ForumsHTML
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(), 'Topic');
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUM_TOPIC_LOCKED'), 'Topic');
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_LOCKED'), 'Topic');
         }
 
-        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forum', 'Topic',
+        Jaws_Header::Location($GLOBALS['app']->Map->GetURLFor('Forums', 'Topic',
                                                               array('tid' => $topicInfo['id'])), true);
     }
 

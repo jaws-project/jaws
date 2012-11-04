@@ -34,7 +34,7 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
             $tpl->SetVariable('icon', 'gadgets/Forum/images/menu-group.png');
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$group['id']})");
-            $tpl->SetVariable('add_title', _t('FORUM_ADD_FORUM'));
+            $tpl->SetVariable('add_title', _t('FORUMS_ADD_FORUM'));
             $tpl->SetVariable('add_icon', STOCK_NEW);
             $tpl->SetVariable('js_add_func', "addForum({$group['id']}, 0)");
             $forums = $fModel->GetForums($group['id']);
@@ -51,7 +51,7 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
             $tpl->ParseBlock('forums/group');
         }
 
-        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('FORUM_ADD_GROUP'), STOCK_NEW);
+        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('FORUMS_ADD_GROUP'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript: addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
@@ -70,15 +70,15 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
         $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
-        $tpl->SetVariable('forum_tree_title', _t('FORUM_TREE_TITLE'));
-        $tpl->SetVariable('addGroupTitle',   _t('FORUM_ADD_GROUP'));
-        $tpl->SetVariable('editGroupTitle',  _t('FORUM_EDIT_GROUP'));
-        $tpl->SetVariable('addForumTitle',   _t('FORUM_ADD_FORUM'));
-        $tpl->SetVariable('editForumTitle',  _t('FORUM_EDIT_FORUM'));
-        $tpl->SetVariable('delForumTitle',   _t('FORUM_DELETE_FORUM'));
+        $tpl->SetVariable('forum_tree_title', _t('FORUMS_TREE_TITLE'));
+        $tpl->SetVariable('addGroupTitle',   _t('FORUMS_ADD_GROUP'));
+        $tpl->SetVariable('editGroupTitle',  _t('FORUMS_EDIT_GROUP'));
+        $tpl->SetVariable('addForumTitle',   _t('FORUMS_ADD_FORUM'));
+        $tpl->SetVariable('editForumTitle',  _t('FORUMS_EDIT_FORUM'));
+        $tpl->SetVariable('delForumTitle',   _t('FORUMS_DELETE_FORUM'));
         $tpl->SetVariable('forumImageSrc',    'gadgets/Forum/images/menu-item.png');
-        $tpl->SetVariable('incompleteFields',   _t('FORUM_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmDeleteForum', _t('FORUM_CONFIRM_DELETE_GROUP'));
+        $tpl->SetVariable('incompleteFields',   _t('FORUMS_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmDeleteForum', _t('FORUMS_CONFIRM_DELETE_GROUP'));
 
         $tpl->ParseBlock('forums');
         return $tpl->Get();

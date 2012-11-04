@@ -49,7 +49,7 @@ class ForumsAdminModel extends Jaws_Gadget_Model
             'forums',
             'forums_groups'
         );
-        $gName  = _t('FORUM_NAME');
+        $gName  = _t('FORUMS_NAME');
         $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);

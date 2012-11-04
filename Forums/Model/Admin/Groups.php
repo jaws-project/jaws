@@ -48,7 +48,7 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         $gid = $GLOBALS['db']->lastInsertID('forums', 'id');
-        $GLOBALS['app']->Session->PushLastResponse($gid.'%%' . _t('FORUM_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse($gid.'%%' . _t('FORUMS_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
 
         return true;
     }
@@ -97,7 +97,7 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('FORUM_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('FORUMS_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
