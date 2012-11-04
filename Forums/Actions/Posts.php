@@ -33,8 +33,8 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('NewPost.html');
-        $tpl->SetBlock('newpost');
+        $tpl->Load('EditPost.html');
+        $tpl->SetBlock('editpost');
 
         $tpl->SetVariable('lbl_topic', $topic['subject']);
         $tpl->SetVariable('url_topic',
@@ -48,16 +48,16 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('tid', $req['tid']);
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forum')) {
-            $tpl->SetBlock('newpost/response');
+            $tpl->SetBlock('editpost/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('newpost/response');
+            $tpl->ParseBlock('editpost/response');
         }
 
         $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('newpost', _t('FORUMS_POST_ADD_BUTTON'));
+        $tpl->SetVariable('editpost', _t('FORUMS_POST_ADD_BUTTON'));
         $tpl->SetVariable('message', '');
 
-        $tpl->ParseBlock('newpost');
+        $tpl->ParseBlock('editpost');
         return $tpl->Get();
     }
 
@@ -118,8 +118,11 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('editpost', _t('FORUMS_POST_EDIT_BUTTON'));
         $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('message', $post['message']);
+
+        $tpl->SetBlock('editpost/update_reason');
         $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
         $tpl->SetVariable('update_reason', '');
+        $tpl->ParseBlock('editpost/update_reason');
 
         $tpl->ParseBlock('editpost');
         return $tpl->Get();

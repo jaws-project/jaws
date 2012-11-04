@@ -52,9 +52,7 @@ class Forums_Actions_Forums extends ForumsHTML
                     $tpl->SetVariable('status', _t('FORUMS_LOCKED'));
                 }
                 $tpl->SetVariable('title', $forum['title']);
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums',
-                                                                         'Topics', array('id' => $forum['id']))
-                );
+                $tpl->SetVariable('url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
                 $tpl->SetVariable('description', $forum['description']);
                 $tpl->SetVariable('topics', $forum['topics']);
                 $tpl->SetVariable('posts', $forum['posts']);

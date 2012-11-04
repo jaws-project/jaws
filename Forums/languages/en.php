@@ -10,7 +10,7 @@
  * "Content-Transfer-Encoding: 8bit"
  */
 
-define('_EN_FORUMS_NAME', "Forum");
+define('_EN_FORUMS_NAME', "Forums");
 define('_EN_FORUMS_DESCRIPTION', "A simple forum");
 
 /* Forums */
@@ -24,7 +24,6 @@ define('_EN_FORUMS_ADD_GROUP', "Add Group");
 define('_EN_FORUMS_EDIT_GROUP', "Edit Group");
 define('_EN_FORUMS_ADD_FORUM', "Add Forum");
 define('_EN_FORUMS_EDIT_FORUM', "Edit Forum");
-define('_EN_FORUMS_TOPIC_SUBJECT', "Subject");
 define('_EN_FORUMS_LASTPOST', "Last Post");
 define('_EN_FORUMS_VIEWS', "Views");
 define('_EN_FORUMS_REPLIES', "Replies");
@@ -32,3 +31,5 @@ define('_EN_FORUMS_REPLIES', "Replies");
 /* Topics */
 define('_EN_FORUMS_TOPIC_ADD_TITLE', "Add New Topic");
 define('_EN_FORUMS_TOPIC_ADD_BUTTON', "Add Topic");
+define('_EN_FORUMS_TOPIC_SUBJECT', "Subject");
+define('_EN_FORUMS_POST_MESSAGE', "Message");
