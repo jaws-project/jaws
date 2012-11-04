@@ -22,7 +22,7 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
-        $tpl->Load('AdminForums.html');
+        $tpl->Load('Admin/Forums.html');
         $tpl->SetBlock('forums');
 
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');

@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Group extends ForumsAdminHTML
     {
         $this->CheckPermission('default');
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
-        $tpl->Load('AdminGroupUI.html');
+        $tpl->Load('Admin/GroupUI.html');
         $tpl->SetBlock('GroupsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');

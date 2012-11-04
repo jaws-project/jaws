@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Forum extends ForumsAdminHTML
     {
         $this->CheckPermission('default');
         $tpl = new Jaws_Template('gadgets/Forum/templates/');
-        $tpl->Load('AdminForumUI.html');
+        $tpl->Load('Admin/ForumUI.html');
         $tpl->SetBlock('ForumUI');
 
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
