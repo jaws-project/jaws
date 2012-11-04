@@ -25,7 +25,7 @@ class Forums_Actions_Forums extends ForumsHTML
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('Forums.html');
         $tpl->SetBlock('forums');
 

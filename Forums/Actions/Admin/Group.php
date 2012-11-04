@@ -19,7 +19,7 @@ class Forums_Actions_Admin_Group extends ForumsAdminHTML
     function GetGroupUI()
     {
         $this->CheckPermission('default');
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('Admin/GroupUI.html');
         $tpl->SetBlock('GroupsUI');
 

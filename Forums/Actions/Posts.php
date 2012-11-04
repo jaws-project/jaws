@@ -32,7 +32,7 @@ class Forums_Actions_Posts extends ForumsHTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('NewPost.html');
         $tpl->SetBlock('newpost');
 
@@ -87,7 +87,7 @@ class Forums_Actions_Posts extends ForumsHTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('EditPost.html');
         $tpl->SetBlock('editpost');
 
@@ -168,7 +168,7 @@ class Forums_Actions_Posts extends ForumsHTML
      */
     function DeletePost()
     {
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('DeletePost.html', true);
         if (!$GLOBALS['app']->Session->Logged()) {
             //Add lang

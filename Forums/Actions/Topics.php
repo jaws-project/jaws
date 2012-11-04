@@ -29,7 +29,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('Topics.html');
         $tpl->SetBlock('topics');
 
@@ -108,7 +108,7 @@ class Forums_Actions_Topics extends ForumsHTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('NewTopic.html');
         $tpl->SetBlock('newtopic');
 
@@ -193,7 +193,7 @@ class Forums_Actions_Topics extends ForumsHTML
         $model->UpdateTopicViews($topic['id']);
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/Forum/templates/');
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('Topic.html');
         $tpl->SetBlock('topic');
 
