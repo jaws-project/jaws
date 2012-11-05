@@ -16,27 +16,46 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $tid    Topic ID
+     * @param   int     $fid    Forum ID
      * @return  mixed   Array of topic info or Jaws_Error on failure
      */
-    function GetTopic($tid)
+    function GetTopic($tid, $fid = null)
     {
         $params = array();
         $params['tid'] = (int)$tid;
+        $params['fid'] = (int)$fid;
 
         $sql = '
             SELECT
-                [[forums_topics]].[id], [fid], [subject], [[forums_posts]].[message], [views],
-                [[forums_topics]].[published], [[forums_topics]].[createtime],
-                [replies], [[forums_topics]].[locked], [last_post_time], [[forums_topics]].[first_post_id],
-                [[forums_topics]].[last_post_id], [[forums_topics]].[uid]
+                [[forums_topics]].[id], [fid], [subject], [views], [replies],
+                [[forums_topics]].[published], [[forums_topics]].[locked],
+                [[forums_topics]].[first_post_id], [[forums_topics]].[createtime],
+                [[forums_topics]].[last_post_id], [[forums_topics]].[last_post_time],
+                [[forums]].[title], [[forums]].[fast_url] as forums_fast_url,
+                [[forums_posts]].[message]
             FROM
                 [[forums_topics]]
             LEFT JOIN
+                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
+            LEFT JOIN
                 [[forums_posts]] ON [[forums_topics]].[first_post_id] = [[forums_posts]].[id]
             WHERE
-                [[forums_topics]].[id] = {tid} ';
+                [[forums_topics]].[id] = {tid}';
 
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        if (!empty($fid)) {
+            $sql .= ' AND [fid] = {fid}';
+        }
+
+        $types = array(
+            'integer', 'integer', 'text', 'integer', 'integer',
+            'boolean', 'boolean',
+            'integer', 'timestamp',
+            'integer', 'timestamp',
+            'text', 'text',
+            'text',
+        );
+
+        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
         return $result;
     }
 

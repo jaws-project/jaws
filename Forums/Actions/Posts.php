@@ -22,12 +22,16 @@ class Forums_Actions_Posts extends ForumsHTML
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('fid', 'tid', 'page'), 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $model->GetTopic($get['tid']);
-        if (Jaws_Error::IsError($topic)) {
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $fModel->GetTopic($get['tid'], $get['fid']);
+        if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
-        $model->UpdateTopicViews($topic['id']);
+
+        $res = $fModel->UpdateTopicViews($topic['id']);
+        if (Jaws_Error::IsError($res)) {
+            // do nothing
+        }
 
         $objDate = $GLOBALS['app']->loadDate();
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
