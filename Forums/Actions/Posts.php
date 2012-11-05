@@ -20,7 +20,7 @@ class Forums_Actions_Posts extends ForumsHTML
     function Posts()
     {
         $request =& Jaws_Request::getInstance();
-        $get = $request->get(array('tid', 'page'), 'get');
+        $get = $request->get(array('fid', 'tid', 'page'), 'get');
 
         $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $model->GetTopic($get['tid']);
@@ -31,10 +31,11 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $objDate = $GLOBALS['app']->loadDate();
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('Topic.html');
-        $tpl->SetBlock('topic');
+        $tpl->Load('Posts.html');
+        $tpl->SetBlock('posts');
 
         $tpl->SetVariable('title', $topic['subject']);
+        $tpl->SetVariable('url', $this->GetURLFor('Posts', array('fid' => $get['fid'], 'tid' => $get['tid'])));
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $posts = $pModel->GetPosts($get['tid']);
@@ -45,8 +46,8 @@ class Forums_Actions_Posts extends ForumsHTML
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
 
-        foreach ($posts as $post) {
-            $tpl->SetBlock('topic/post');
+        foreach ($posts as $pnum => $post) {
+            $tpl->SetBlock('posts/post');
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable('user_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username'])));
@@ -62,7 +63,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('message', $post['message']);
             if ($post['last_update_uid'] != 0) {
                 $userInfo = $jUser->GetUser((int)$post['last_update_uid']);
-                $tpl->SetBlock('topic/post/update');
+                $tpl->SetBlock('posts/post/update');
                 $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POST_UPDATEDBY'));
                 if (!empty($userInfo)) {
                     $tpl->SetVariable('username', $userInfo['username']);
@@ -71,35 +72,43 @@ class Forums_Actions_Posts extends ForumsHTML
                 $tpl->SetVariable('user_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $userInfo['username'])));
                 $tpl->SetVariable('update_reason', $post['last_update_reason']);
                 $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time']));
-                $tpl->ParseBlock('topic/post/update');
+                $tpl->ParseBlock('posts/post/update');
             }
             // Check User Can Edit Posts
-            $tpl->SetBlock('topic/post/actions');
-            $tpl->SetVariable('lbl_editpost',_t('GLOBAL_EDIT'));
-            $tpl->SetVariable('url_editpost', $this->GetURLFor('EditPost', array('pid' => $post['id'])));
-            $tpl->SetVariable('lbl_deletepost',_t('GLOBAL_DELETE'));
-            $tpl->SetVariable('url_deletepost', $this->GetURLFor('DeletePost', array('pid' => $post['id'])));
-            $tpl->ParseBlock('topic/post/actions');
+            $tpl->SetBlock('posts/post/actions');
+            $tpl->SetVariable('editpost_lbl',_t('GLOBAL_EDIT'));
+            if ($pnum == 0) {
+                $tpl->SetVariable(
+                    'editpost_url',
+                    $this->GetURLFor(
+                        'EditTopic',
+                        array('fid' => $get['fid'], 'tid' => $get['tid'])
+                    )
+                );
+            } else {
+                $tpl->SetVariable(
+                    'editpost_url',
+                    $this->GetURLFor(
+                        'EditPost',
+                        array('fid' => $get['fid'], 'tid' => $get['tid'], 'pid' => $post['id'])
+                    )
+                );
+            }
+            $tpl->SetVariable('deletepost_lbl',_t('GLOBAL_DELETE'));
+            $tpl->SetVariable('deletepost_url', $this->GetURLFor('DeletePost', array('pid' => $post['id'])));
+            $tpl->ParseBlock('posts/post/actions');
 
-            $tpl->ParseBlock('topic/post');
+            $tpl->ParseBlock('posts/post');
         }
 
-        $tpl->SetBlock('topic/actions');
-        $tpl->SetVariable('lbl_newpost', _t('FORUMS_NEWPOST'));
-        $tpl->SetVariable('url_newpost',
-                          $this->GetURLFor('NewPost', array('tid' => $get['tid']))
-        );
-        if ($topic['locked']) {
-            $tpl->SetVariable('lbl_lock_topic', _t('FORUMS_UNLOCK_TOPIC'));
-        } else {
-            $tpl->SetVariable('lbl_lock_topic', _t('FORUMS_LOCK_TOPIC'));
-        }
-        $tpl->SetVariable('url_lock_topic',
-                          $this->GetURLFor('LockTopic', array('tid' => $get['tid']))
-        );
-        $tpl->ParseBlock('topic/actions');
+        $tpl->SetBlock('posts/actions');
+        $tpl->SetVariable('newpost_lbl', _t('FORUMS_NEWPOST'));
+        $tpl->SetVariable('newpost_url', $this->GetURLFor('NewPost', array('fid' => $get['fid'], 'tid' => $get['tid'])));
+        $tpl->SetVariable('locktopic_lbl', $topic['locked']? _t('FORUMS_UNLOCK_TOPIC') : _t('FORUMS_LOCK_TOPIC'));
+        $tpl->SetVariable('locktopic_url', $this->GetURLFor('LockTopic', array('fid' => $get['fid'], 'tid' => $get['tid'])));
+        $tpl->ParseBlock('posts/actions');
 
-        $tpl->ParseBlock('topic');
+        $tpl->ParseBlock('posts');
         return $tpl->Get();
     }
 

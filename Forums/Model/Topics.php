@@ -25,14 +25,16 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [[forums_topics]].[id], [[forums_topics]].[subject], [views], [[forums_topics]].[published],
-                [[forums_topics]].[createtime], [replies], [[forums_topics]].[locked], [last_post_time],
-                [[forums_topics]].[first_post_id], [[forums_topics]].[last_post_id], [fid], 
-                [[forums_topics]].[uid]
+                [[forums_topics]].[id], [fid], [subject], [[forums_posts]].[message], [views],
+                [[forums_topics]].[published], [[forums_topics]].[createtime],
+                [replies], [[forums_topics]].[locked], [last_post_time], [[forums_topics]].[first_post_id],
+                [[forums_topics]].[last_post_id], [[forums_topics]].[uid]
             FROM
-                [[forums_topics]] 
+                [[forums_topics]]
+            LEFT JOIN
+                [[forums_posts]] ON [[forums_topics]].[first_post_id] = [[forums_posts]].[id]
             WHERE
-                [id] = {tid} ';
+                [[forums_topics]].[id] = {tid} ';
 
         $result = $GLOBALS['db']->queryRow($sql, $params);
         return $result;
@@ -136,6 +138,66 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         return $tid;
+    }
+
+    /**
+     * Update topic
+     *
+     * @access  public
+     * @param   int     $fid            Forum ID
+     * @param   int     $tid            Topic ID
+     * @param   int     $pid            Topic first post ID
+     * @param   string  $subject        Topic subject
+     * @param   string  $fast_url       Topic fast url
+     * @param   string  $message        First post content
+     * @param   bool    $published      Topic publish status
+     * @param   string  $update_reason  Update reason text
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function UpdateTopic($fid, $tid, $pid, $subject, $fast_url, $message, $published = null, $update_reason = '')
+    {
+        $fast_url = empty($fast_url)? $subject : $fast_url;
+        $fast_url = $this->GetRealFastUrl($fast_url, 'forums_topics', false);
+
+        $params = array();
+        $params['fid'] = (int)$fid;
+        $params['tid'] = (int)$tid;
+        $params['pid'] = (int)$pid;
+        $params['now'] = $GLOBALS['db']->Date();
+        $params['subject']  = $subject;
+        $params['fast_url'] = $fast_url;
+        $params['message']  = $message;
+        $params['published'] = true;
+        $params['update_reason'] = $update_reason;
+
+        $sql = '
+            UPDATE [[forums_topics]] SET
+                [fid]       = {fid},
+                [subject]   = {subject},
+                [fast_url]  = {fast_url},
+                [published] = {published}
+            WHERE
+                [id] = {tid}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        $sql = '
+            UPDATE [[forums_posts]] SET
+                [message]            = {message},
+                [last_update_reason] = {update_reason},
+                [last_update_time]   = {now}
+            WHERE
+                [id] = {pid}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return  $tid;
     }
 
     /**

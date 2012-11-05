@@ -45,6 +45,13 @@ $maps[] = array(
           'tid' => '[[:alnum:]-_]+',)
 );
 $maps[] = array(
+    'LockTopic',
+    'forums/{fid}/topics/{tid}/lock ',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
     'Posts',
     'forums/{fid}/topics/{tid}/posts',
     '',

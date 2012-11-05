@@ -1,0 +1,33 @@
+<!-- BEGIN topic -->
+<div class="gadget forums edittopic">
+  <h2><a href="{forum_url}">{forum_title}</a> - {title}</h2>
+  <!-- BEGIN response -->
+  <div class="simple-response-msg">{msg}</div>
+  <!-- END response -->
+  <form name="edittopic" action="{requested_url}" method="post">
+    <input type="hidden" name="gadget" value="Forums" />
+    <input type="hidden" name="action" value="UpdateTopic" />
+    <input type="hidden" name="fid" value="{fid}" />
+    <input type="hidden" name="tid" value="{tid}" />
+    <div class="content">
+      <!-- BEGIN subject -->
+      <p>
+        <label for="subject">{lbl_subject}:</label>
+        <input id="subject" name="subject" type="text" value="{subject}" />
+      </p>
+      <!-- END subject -->
+      <p>
+        <label for="message">{lbl_message}:</label>
+        <textarea id="message" name="message" cols="40" rows="10">{message}</textarea>
+      </p>
+      <!-- BEGIN update_reason -->
+      <p>
+        <label for="update_reason">{lbl_update_reason}:</label>
+        <textarea id="update_reason" name="update_reason" cols="40" rows="3">{update_reason}</textarea>
+      </p>
+      <!-- END update_reason -->
+    </div>
+    <div class="actions"><button type="submit" name="submit">{btn_title}</button></div>
+  </form>
+</div>
+<!-- END topic -->

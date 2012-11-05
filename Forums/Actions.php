@@ -12,6 +12,7 @@ $actions = array();
 $actions['Forums']      = array('AdminAction,NormalAction:Forums');
 $actions['Topics']      = array('NormalAction:Topics');
 $actions['NewTopic']    = array('NormalAction:Topics');
+$actions['EditTopic']   = array('NormalAction:Topics');
 $actions['UpdateTopic'] = array('StandaloneAction:Topics');
 $actions['LockTopic']   = array('StandaloneAction:Topics');
 $actions['Posts']       = array('NormalAction:Posts');
