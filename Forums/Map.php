@@ -37,3 +37,40 @@ $maps[] = array(
     array('fid' => '[[:alnum:]-_]+',
           'tid' => '[[:alnum:]-_]+',)
 );
+$maps[] = array(
+    'EditTopic',
+    'forums/{fid}/topics/{tid}/edit',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
+    'Posts',
+    'forums/{fid}/topics/{tid}/posts',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
+    'NewPost',
+    'forums/{fid}/topics/{tid}/posts/new',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
+    'Post',
+    'forums/{fid}/topics/{tid}/posts/{pid}',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',
+          'pid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
+    'EditPost',
+    'forums/{fid}/topics/{tid}/posts/{pid}/edit',
+    '',
+    array('fid' => '[[:alnum:]-_]+',
+          'tid' => '[[:alnum:]-_]+',
+          'pid' => '[[:alnum:]-_]+',)
+);
