@@ -355,6 +355,12 @@ class Jaws_URLMapping
                     }
                 }
 
+                do {
+                    $rpl_url = $url;
+                    $url = preg_replace('$\[[[:word:]/]*{\w+}[[:word:]/]*\]$u', '', $url);
+                } while ($rpl_url != $url);
+                $url = str_replace(array('[', ']'), '', $url);
+
                 if (!preg_match('#{\w+}#si', $url)) {
                     if (!$this->_use_rewrite) {
                         $url = 'index.php/' . $url;
@@ -364,9 +370,12 @@ class Jaws_URLMapping
                     }
                     break;
                 }
+                $url = '';
             }
 
-            return $this->GetURIPrefix($URIPrefix) . $url;
+            if (!empty($url)) {
+                return $this->GetURIPrefix($URIPrefix) . $url;
+            }
         }
 
         if ($this->_use_rewrite) {
