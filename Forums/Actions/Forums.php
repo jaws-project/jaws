@@ -30,7 +30,7 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_NAME'));
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Forums', 'Forums'));
+        $tpl->SetVariable('url', $this->GetURLFor('Forums'));
 
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
