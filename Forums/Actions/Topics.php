@@ -135,6 +135,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $topic['id'] = 0;
             $topic['subject'] = '';
             $topic['message'] = '';
+            $topic['last_update_reason'] = '';
             $title = _t('FORUMS_TOPIC_ADD_TITLE');
             $btn_title = _t('FORUMS_TOPIC_ADD_BUTTON');
         }
@@ -149,7 +150,7 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('fid', $rqst['fid']);
         $tpl->SetVariable('tid', $topic['id']);
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forum')) {
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forums')) {
             $tpl->SetBlock('topic/response');
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('topic/response');
@@ -164,6 +165,14 @@ class Forums_Actions_Topics extends ForumsHTML
         // message
         $tpl->SetVariable('message', $topic['message']);
         $tpl->SetVariable('lbl_message', _t('FORUMS_POST_MESSAGE'));
+
+        // update reason
+        if (!empty($topic['id'])) {
+            $tpl->SetBlock('topic/update_reason');
+            $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
+            $tpl->SetVariable('update_reason', $topic['last_update_reason']);
+            $tpl->ParseBlock('topic/update_reason');
+        }
 
         // button
         $tpl->SetVariable('btn_title', $btn_title);

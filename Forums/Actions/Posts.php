@@ -124,43 +124,7 @@ class Forums_Actions_Posts extends ForumsHTML
      */
     function NewPost()
     {
-        $request =& Jaws_Request::getInstance();
-        $req = $request->get(array('message', 'tid'));
-        if (empty($req['tid'])) {
-            return false;
-        }
-
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $tModel->GetTopic($req['tid']);
-        if (Jaws_Error::IsError($topic) || empty($topic)) {
-            return false;
-        }
-
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('EditPost.html');
-        $tpl->SetBlock('editpost');
-
-        $tpl->SetVariable('lbl_topic', $topic['subject']);
-        $tpl->SetVariable('url_topic',
-                          $this->GetURLFor('Topic', array('tid' => $topic['id']))
-        );
-        $tpl->SetVariable('title', _t('FORUMS_POST_ADD_TITLE'));
-        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('tid', $req['tid']);
-
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forum')) {
-            $tpl->SetBlock('editpost/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('editpost/response');
-        }
-
-        $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('editpost', _t('FORUMS_POST_ADD_BUTTON'));
-        $tpl->SetVariable('message', '');
-
-        $tpl->ParseBlock('editpost');
-        return $tpl->Get();
+        return $this->EditPost();
     }
 
     /**
@@ -172,59 +136,71 @@ class Forums_Actions_Posts extends ForumsHTML
     function EditPost()
     {
         $request =& Jaws_Request::getInstance();
-        $req = $request->get(array('message', 'pid'));
-        if (empty($req['pid'])) {
-            return false;
-        }
-
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $post = $pModel->GetPost($req['pid']);
-        if (Jaws_Error::IsError($post) || empty($post)) {
+        $rqst = $request->get(array('fid', 'tid', 'pid'), 'get');
+        if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $tModel->GetTopic($post['tid']);
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
 
+        if (!empty($rqst['pid'])) {
+            $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+            $post = $pModel->GetPost($rqst['pid']);
+            if (Jaws_Error::IsError($post) || empty($post)) {
+                return false;
+            }
+
+            $title = _t('FORUMS_POST_EDIT_TITLE');
+            $btn_title = _t('FORUMS_POST_EDIT_BUTTON');
+        } else {
+            $post = array();
+            $post['id'] = 0;
+            $post['message'] = '';
+            $post['last_update_reason'] = '';
+            $title = _t('FORUMS_POST_ADD_TITLE');
+            $btn_title = _t('FORUMS_POST_ADD_BUTTON');
+        }
+
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('EditPost.html');
-        $tpl->SetBlock('editpost');
+        $tpl->SetBlock('post');
 
-        $tpl->SetVariable('lbl_topic', $topic['subject']);
-        $tpl->SetVariable('url_topic',
-                          $this->GetURLFor('Topic', array('tid' => $topic['id']))
+        $tpl->SetVariable('topic_title', $topic['subject']);
+        $tpl->SetVariable(
+            'topic_url',
+            $this->GetURLFor('Posts', array('fid' => $topic['fid'], 'tid' => $topic['id']))
         );
-        $tpl->SetVariable('title', _t('FORUMS_POST_ADD_TITLE'));
-        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('tid', $post['tid']);
+        $tpl->SetVariable('title', $title);
+        $tpl->SetVariable('fid', $topic['fid']);
+        $tpl->SetVariable('tid', $topic['id']);
         $tpl->SetVariable('pid', $post['id']);
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forum')) {
-            $tpl->SetBlock('editpost/response');
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forums')) {
+            $tpl->SetBlock('post/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('editpost/response');
+            $tpl->ParseBlock('post/response');
         }
 
-        if ($topic['first_post_id'] == (int)$req['pid']) {
-            $tpl->SetBlock('editpost/subject');
-            $tpl->SetVariable('lbl_subject', _t('FORUMS_TOPIC_SUBJECT'));
-            $tpl->SetVariable('subject', $topic['subject']);
-            $tpl->ParseBlock('editpost/subject');
-        }
-        $tpl->SetVariable('editpost', _t('FORUMS_POST_EDIT_BUTTON'));
-        $tpl->SetVariable('lbl_message', _t('GLOBAL_DESCRIPTION'));
+        // message
         $tpl->SetVariable('message', $post['message']);
+        $tpl->SetVariable('lbl_message', _t('FORUMS_POST_MESSAGE'));
 
-        $tpl->SetBlock('editpost/update_reason');
-        $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
-        $tpl->SetVariable('update_reason', '');
-        $tpl->ParseBlock('editpost/update_reason');
+        // update reason
+        if (!empty($post['id'])) {
+            $tpl->SetBlock('post/update_reason');
+            $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
+            $tpl->SetVariable('update_reason', $post['last_update_reason']);
+            $tpl->ParseBlock('post/update_reason');
+        }
 
-        $tpl->ParseBlock('editpost');
+        // button
+        $tpl->SetVariable('btn_title', $btn_title);
+
+        $tpl->ParseBlock('post');
         return $tpl->Get();
     }
 
@@ -236,30 +212,44 @@ class Forums_Actions_Posts extends ForumsHTML
     function UpdatePost()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('tid', 'pid', 'subject', 'message', 'update_reason'), 'post');
+        $post = $request->get(
+            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'),
+            'post'
+        );
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
-            $result = $pModel->InsertPost($GLOBALS['app']->Session->GetAttribute('user'), $post['tid'], $post['message']);
+            $result = $pModel->InsertPost(
+                $GLOBALS['app']->Session->GetAttribute('user'),
+                $post['tid'],
+                $post['message']
+            );
         } else {
             $result = $pModel->UpdatePost(
                 $post['pid'],
                 $GLOBALS['app']->Session->GetAttribute('user'),
-                $post['subject'],
                 $post['message'],
                 $post['update_reason']
             );
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(),
-                                                         'Topic');
+            $GLOBALS['app']->Session->PushSimpleResponse($tid->getMessage(),
+                                                         'Post');
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_POST_TOPIC_UPDATED'),
-                                                         'Topic');
+            $post['pid'] = $result;
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_POST_UPDATED'),
+                                                         'Post');
         }
 
-        Jaws_Header::Location($this->GetURLFor('Topic', array('tid' => $post['tid'])), true);
+        // Redirect
+        Jaws_Header::Location(
+            $this->GetURLFor(
+                'EditPost',
+                array('fid' => $post['fid'], 'tid' => $post['tid'], 'pid' => $post['pid'])
+            ),
+            true
+        );
     }
 
     /**

@@ -1,4 +1,4 @@
-<!-- BEGIN editpost -->
+<!-- BEGIN post -->
 <div class="gadget forums editpost">
   <h2><a href="{topic_url}">{topic_title}</a> - {title}</h2>
   <!-- BEGIN response -->
@@ -7,15 +7,10 @@
   <form name="editpost" action="{requested_url}" method="post">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdatePost" />
+    <input type="hidden" name="fid" value="{fid}" />
     <input type="hidden" name="tid" value="{tid}" />
     <input type="hidden" name="pid" value="{pid}" />
     <div class="content">
-      <!-- BEGIN subject -->
-      <p>
-        <label for="subject">{lbl_subject}:</label>
-        <input id="subject" name="subject" type="text" value="{subject}" />
-      </p>
-      <!-- END subject -->
       <p>
         <label for="message">{lbl_message}:</label>
         <textarea id="message" name="message" cols="40" rows="10">{message}</textarea>
@@ -30,4 +25,4 @@
     <div class="actions"><button type="submit" name="submit">{btn_title}</button></div>
   </form>
 </div>
-<!-- END editpost -->
+<!-- END post -->

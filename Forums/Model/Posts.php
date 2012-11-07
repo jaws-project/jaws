@@ -148,18 +148,16 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $pid            Post ID
      * @param   int     $uid            User's ID
-     * @param   string  $subject        Topic subject
      * @param   string  $message        Post content
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $subject, $message, $update_reason = '')
+    function UpdatePost($pid, $uid, $message, $update_reason = '')
     {
         $params = array();
         $params['uid'] = (int)$uid;
         $params['pid'] = (int)$pid;
         $params['now'] = $GLOBALS['db']->Date();
-        $params['subject'] = $subject;
         $params['message'] = $message;
         $params['update_reason'] = $update_reason;
 
@@ -177,21 +175,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             return $result;
         }
 
-        if (!empty($subject)) {
-            // FIXME: check whether this post is first post of topic?
-            $sql = '
-                UPDATE [[forums_topics]] SET
-                    [subject] = {subject}
-                WHERE
-                    [first_post_id] = {pid}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        return true;
+        return $pid;
     }
 
     /**
