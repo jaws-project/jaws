@@ -205,69 +205,41 @@ JPSpan_RemoteObject.prototype = {
         },
         
         self.__responseHandler.onLoad = function(response, callName) {
-
             try {
-                if (typeof JPSpan_Encode_JSON == 'undefined') {
-                    dataFunc = eval(response);
+                data = JSON.parse(response);
+                if ( this.userHandler[callName] ) {
+                    try {
+                        this.userHandler[callName](data);
+                    } catch(e) {
+                        // Error in handler method (e.g. syntax error) - display it
+                        self.__client.displayHandlerError(e);
+                    }
                 } else {
-                    data = eval('(' + response + ')');
+                    alert('Your handler must define a method '+callName);
                 }
 
-                try {
-                    if (typeof JPSpan_Encode_JSON == 'undefined') {
-                        data = dataFunc();
-                    }
-
-                    if ( this.userHandler[callName] ) {
+            } catch (e) {
+                e.client = self.__responseHandler.context.__remoteClass;
+                e.call = callName;
+                if ( e.name == 'Server_Error' ) {
+                    this.context.serverErrorFunc(e);
+                } else {
+                    var errorFunc = callName+'Error';
+                    if ( this.userHandler[errorFunc] ) {
                         try {
-                            this.userHandler[callName](data);
+                            this.userHandler[errorFunc](e);
                         } catch(e) {
                             // Error in handler method (e.g. syntax error) - display it
                             self.__client.displayHandlerError(e);
                         }
                     } else {
-                        alert('Your handler must define a method '+callName);
+                        this.context.applicationErrorFunc(e);
                     }
-
-                } catch (e) {
-
-                    e.client = self.__responseHandler.context.__remoteClass;
-                    e.call = callName;
-                    
-                    if ( e.name == 'Server_Error' ) {
-                        this.context.serverErrorFunc(e);
-                    } else {
-                    
-                        var errorFunc = callName+'Error';
-                        
-                        if ( this.userHandler[errorFunc] ) {
-                            try {
-                                this.userHandler[errorFunc](e);
-                            } catch(e) {
-                                // Error in handler method (e.g. syntax error) - display it
-                                self.__client.displayHandlerError(e);
-                            }
-                        } else {
-                            this.context.applicationErrorFunc(e);
-                        }
-
-                    }
-
                 }
 
-            } catch (e) {
-
-                e.name = 'Server_Error';
-                e.code = 2006;
-                e.response = response;
-                e.client = self.__responseHandler.context.__remoteClass;
-                e.call = callName;
-                this.context.serverErrorFunc(e);
-
             }
-           
         };
-        
+
         self.__responseHandler.onError = function(e, callName) {
             e.client = self.__responseHandler.context.__remoteClass;
             e.call = callName;
@@ -326,20 +298,7 @@ JPSpan_RemoteObject.prototype = {
             var response = this.__client.call(request);
 
             try {
-                if (typeof JPSpan_Encode_JSON == 'undefined') {
-                    var dataFunc = eval(response);
-                    try {
-                        return dataFunc();
-                    } catch (e) {
-                        if ( e.name == 'Server_Error' ) {
-                            this.serverErrorFunc(e);
-                        } else {
-                            this.applicationErrorFunc(e);
-                        }
-                    }
-                } else {
-                    return eval('(' + response + ')');
-                }
+                return JSON.parse(response);
             } catch (e) {
                 e.name = 'Server_Error';
                 e.code = 2006;

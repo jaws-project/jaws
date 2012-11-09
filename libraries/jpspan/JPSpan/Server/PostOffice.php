@@ -166,7 +166,6 @@ class JPSpan_PostOffice_Generator {
 /**@
 * include 'remoteobject.js';
 * include 'request/rawpost.js';
-* include 'util/json.js';
 * include 'encode/json.js';
 */
 <?php
