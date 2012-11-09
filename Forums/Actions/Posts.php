@@ -222,6 +222,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $result = $pModel->InsertPost(
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $post['tid'],
+                $post['fid'],
                 $post['message']
             );
         } else {
@@ -234,7 +235,7 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($tid->getMessage(),
+            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(),
                                                          'Post');
         } else {
             $post['pid'] = $result;

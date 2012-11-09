@@ -94,10 +94,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $uid        User's ID
      * @param   int     $tid        Topic ID
+     * @param   int     $fid        Forum ID
      * @param   string  $message    Post content
+     * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $message)
+    function InsertPost($uid, $tid, $fid, $message, $new_topic = false)
     {
         $params = array();
         $params['uid'] = (int)$uid;
@@ -124,16 +126,23 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (!Jaws_Error::IsError($tModel)) {
-            $result = $tModel->UpdateTopicStatistics($params['tid'], $pid, $params['now']);
+            $result = $tModel->UpdateTopicStatistics(
+                $params['tid'],
+                $pid,
+                $params['now'],
+                $new_topic? $pid : null
+            );
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
-        $topic = $tModel->GetTopic($params['tid']);
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
-            $result = $fModel->UpdateForumStatistics($topic['fid'], $pid, $params['now']);
+            $result = $fModel->UpdateForumStatistics(
+                $fid,
+                $new_topic? $params['tid'] : null
+            );
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -229,7 +238,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
-            $result = $fModel->UpdateForumStatistics($topic['fid'], $lastpost['id'], $lastpost['createtime']);
+            $result = $fModel->UpdateForumStatistics($topic['fid']);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

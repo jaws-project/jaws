@@ -28,10 +28,9 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [[forums_topics]].[id], [fid], [subject], [views], [replies],
+                [first_post_id], [first_post_time], [last_post_id], [last_post_time],
                 [[forums_topics]].[published], [[forums_topics]].[locked],
-                [[forums_topics]].[first_post_id], [[forums_topics]].[createtime],
-                [[forums_topics]].[last_post_id], [[forums_topics]].[last_post_time],
-                [[forums]].[title], [[forums]].[fast_url] as forums_fast_url,
+                [[forums]].[title] as forums_title, [[forums]].[fast_url] as forums_fast_url,
                 [[forums_posts]].[message], [[forums_posts]].[last_update_reason]
             FROM
                 [[forums_topics]]
@@ -48,9 +47,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $types = array(
             'integer', 'integer', 'text', 'integer', 'integer',
+            'integer', 'timestamp', 'integer', 'timestamp',
             'boolean', 'boolean',
-            'integer', 'timestamp',
-            'integer', 'timestamp',
             'text', 'text',
             'text', 'text',
         );
@@ -75,18 +73,25 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [[forums_topics]].[id], [[forums_topics]].[subject], [views], [[forums_topics]].[published],
-                [[forums_topics]].[createtime], [replies], [[forums_topics]].[locked], [last_post_time],
-                [[users]].[username], [[users]].[nickname],
-                [[forums_topics]].[first_post_id], [[forums_topics]].[last_post_id],
-                [[forums_topics]].[uid]
-            FROM [[forums_topics]] 
-                LEFT JOIN [[forums_posts]] ON [[forums_topics]].[last_post_id] = [[forums_posts]].[id]
-                LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+                [[forums_topics]].[id], [fid], [subject], [views], [replies],
+                [first_post_id], [first_post_uid], [first_post_time],
+                [last_post_id], [last_post_uid], [last_post_time],
+                [username], [nickname], [locked], [published]
+            FROM
+                [[forums_topics]]
+            LEFT JOIN 
+                [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
             WHERE
                 [fid] = {fid}
             ORDER BY
                 [last_post_time] DESC';
+
+        $types = array(
+            'integer', 'integer', 'text', 'integer', 'integer',
+            'integer', 'integer', 'timestamp',
+            'integer', 'integer', 'timestamp',
+            'text', 'text', 'boolean', 'boolean',
+        );
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         return $result;
@@ -99,29 +104,23 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $uid        User's ID
      * @param   int     $fid        Forum ID
      * @param   string  $subject    Topic subject
-     * @param   string  $fast_url   Topic fast-url
      * @param   string  $message    Topic first post content
      * @param   bool    $published  Must be published?
      * @return  mixed   Topic ID on successfully or Jaws_Error on failure
      */
-    function InsertTopic($uid, $fid, $subject, $fast_url, $message, $published = true)
+    function InsertTopic($uid, $fid, $subject, $message, $published = true)
     {
-        $fast_url = empty($fast_url)? $subject : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'forums_topics');
-
         $params = array();
         $params['uid']       = $uid;
         $params['fid']       = (int)$fid;
         $params['subject']   = $subject;
-        $params['fast_url']  = $fast_url;
-        $params['now']       = $GLOBALS['db']->Date();
         $params['published'] = (bool)$published;
 
         $sql = '
             INSERT INTO [[forums_topics]]
-                ([uid], [fid], [subject], [fast_url], [last_post_time], [createtime], [published])
+                ([fid], [subject], [first_post_uid], [last_post_uid], [published])
             VALUES
-                ({uid}, {fid}, {subject}, {fast_url}, {now}, {now}, {published})';
+                ({fid}, {subject}, {uid}, {uid}, {published})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -136,24 +135,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $pid = 0;
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (!Jaws_Error::IsError($pModel)) {
-            $pid = $pModel->InsertPost($params['uid'], $tid, $message);
+            $pid = $pModel->InsertPost($params['uid'], $tid, $params['fid'], $message, true);
             if (Jaws_Error::IsError($pid)) {
                 return $pid;
             }
-        }
-
-        $params['tid'] = $tid;
-        $params['first_post_id'] = $pid;
-
-        $sql = '
-            UPDATE [[forums_topics]] SET
-                [first_post_id] = {first_post_id}
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
         }
 
         return $tid;
@@ -167,24 +152,19 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $tid            Topic ID
      * @param   int     $pid            Topic first post ID
      * @param   string  $subject        Topic subject
-     * @param   string  $fast_url       Topic fast url
      * @param   string  $message        First post content
      * @param   bool    $published      Topic publish status
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($fid, $tid, $pid, $subject, $fast_url, $message, $published = null, $update_reason = '')
+    function UpdateTopic($fid, $tid, $pid, $subject, $message, $published = null, $update_reason = '')
     {
-        $fast_url = empty($fast_url)? $subject : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'forums_topics', false);
-
         $params = array();
         $params['fid'] = (int)$fid;
         $params['tid'] = (int)$tid;
         $params['pid'] = (int)$pid;
         $params['now'] = $GLOBALS['db']->Date();
         $params['subject']  = $subject;
-        $params['fast_url'] = $fast_url;
         $params['message']  = $message;
         $params['published'] = true;
         $params['update_reason'] = $update_reason;
@@ -193,7 +173,6 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             UPDATE [[forums_topics]] SET
                 [fid]       = {fid},
                 [subject]   = {subject},
-                [fast_url]  = {fast_url},
                 [published] = {published}
             WHERE
                 [id] = {tid}';
@@ -280,23 +259,35 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Update last_post_id, last_post_time and count of replies
      *
      * @access  public
-     * @param   int         $tid                Topic ID
-     * @param   int         $last_post_id       Last post ID
-     * @param   timestamp   $last_post_time     Last post time
+     * @param   int         $tid            Topic ID
+     * @param   int         $last_post_id   Last post ID
+     * @param   timestamp   $last_post_time Last post time
+     * @param   timestamp   $first_post_id  First post ID
      * @return  mixed       True on successfully or Jaws_Error on failure
      */
-    function UpdateTopicStatistics($tid, $last_post_id, $last_post_time)
+    function UpdateTopicStatistics($tid, $last_post_id, $last_post_time, $first_post_id = null)
     {
         $params = array();
-        $params['tid']            = (int)$tid;
-        $params['last_post_id']   = $last_post_id;
-        $params['last_post_time'] = $last_post_time;
+        $params['tid'] = (int)$tid;
+        $params['first_post_id']   = $first_post_id;
+        $params['first_post_time'] = $last_post_time;
+        $params['last_post_id']    = $last_post_id;
+        $params['last_post_time']  = $last_post_time;
+        if (empty($first_post_id)) {
+            $first_post_id   = '[first_post_id]';
+            $first_post_time = '[first_post_time]';
+        } else {
+            $first_post_id   = '{first_post_id}';
+            $first_post_time = '{first_post_time}';
+        }
 
-        $sql = '
+        $sql = "
             UPDATE [[forums_topics]] SET
-                [last_post_id]   = {last_post_id},
-                [last_post_time] = {last_post_time},
-                [replies]        = (
+                [first_post_id]   = $first_post_id,
+                [first_post_time] = $first_post_time,
+                [last_post_id]    = {last_post_id},
+                [last_post_time]  = {last_post_time},
+                [replies]         = (
                     SELECT
                         COUNT([[forums_posts]].[id])
                     FROM
@@ -305,7 +296,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                         [[forums_posts]].[tid] = {tid}
                 )
             WHERE
-                [id] = {tid}';
+                [id] = {tid}";
 
         $result = $GLOBALS['db']->query($sql, $params);
         return $result;

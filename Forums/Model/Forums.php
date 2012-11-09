@@ -26,13 +26,13 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [id], [gid], [title], [description], [fast_url], 
-                [last_post_id], [last_post_time], [order], [locked], [published]
+                [order], [locked], [published]
             FROM [[forums]]
             WHERE [id] = {fid}';
 
         $types = array(
             'integer', 'integer', 'text', 'text', 'text',
-            'integer', 'timestamp', 'integer', 'boolean', 'boolean'
+            'integer', 'boolean', 'boolean'
         );
 
         $result = $GLOBALS['db']->queryRow($sql, $params, $types);
@@ -43,34 +43,34 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      * Returns a list of  forums at a request level
      *
      * @access  public
-     * @param   int     $gid            Group ID
+     * @param   int     $gid                Group ID
      * @param   bool    $onlyPublished
-     * @param   bool    $last_post_info
+     * @param   bool    $last_topic_detail
      * @return  mixed   Array with all the available forums or Jaws_Error on error
      */
-    function GetForums($gid, $onlyPublished = false, $last_post_info = false)
+    function GetForums($gid, $onlyPublished = false, $last_topic_detail = false)
     {
         $params = array();
         $params['gid'] = $gid;
         $params['published'] = true;
 
-        if ($last_post_info) {
+        if ($last_topic_detail) {
             $sql = '
                 SELECT
                     [[forums]].[id], [[forums]].[title], [[forums]].[description],
-                    [[forums]].[fast_url], [[forums]].[topics], [[forums]].[posts],
-                    [last_post_id], [last_post_time], [[users]].[username], [[users]].[nickname],
-                    [[forums]].[locked], [[forums]].[published]
+                    [[forums]].[fast_url], [topics], [posts], [last_topic_id],
+                    [[forums_topics]].[last_post_time], [[forums_topics]].[replies],
+                    [[users]].[username], [[users]].[nickname], [[forums]].[locked], [[forums]].[published]
                 FROM [[forums]]
-                LEFT JOIN [[forums_posts]] ON [[forums]].[last_post_id] = [[forums_posts]].[id]
-                LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+                LEFT JOIN [[forums_topics]] ON [[forums]].[last_topic_id] = [[forums_topics]].[id]
+                LEFT JOIN [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
                 WHERE [gid] = {gid}';
 
             $types = array(
                 'integer', 'text', 'text',
-                'text', 'integer', 'integer',
-                'integer', 'timestamp', 'text', 'text',
-                'boolean', 'boolean'
+                'text', 'integer', 'integer', 'integer',
+                'timestamp', 'integer',
+                'text', 'text', 'boolean', 'boolean'
             );
         } else {
             $sql = '
@@ -96,37 +96,35 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
     }
 
     /**
-     * Update last_post_id, last_post_time and count of replies
+     * Update last_topic_id and count of topics/posts
      *
      * @access  public
-     * @param   int         $fid                Forum ID
-     * @param   int         $last_post_id       Last post ID
-     * @param   timestamp   $last_post_time     Last post time
-     * @return  mixed       Jaws_Error on failure
+     * @param   int     $fid            Forum ID
+     * @param   int     $last_topic_id  Last topic ID
+     * @return  mixed   Returns True if successful or Jaws_Error on failure
      */
-    function UpdateForumStatistics($fid, $last_post_id, $last_post_time)
+    function UpdateForumStatistics($fid, $last_topic_id = null)
     {
         $params = array();
-        $params['fid']            = (int)$fid;
-        $params['last_post_id']   = $last_post_id;
-        $params['last_post_time'] = $last_post_time;
+        $params['fid'] = (int)$fid;
+        $params['last_topic_id'] = $last_topic_id;
+        $last_topic_id = empty($last_topic_id)? '[last_topic_id]' : '{last_topic_id}';
 
-        $sql = '
+        $sql = "
             UPDATE [[forums]] SET
-                [last_post_id]   = {last_post_id},
-                [last_post_time] = {last_post_time},
+                [last_topic_id] = $last_topic_id,
                 [topics] = (
                     SELECT COUNT([[forums_topics]].[id])
                     FROM [[forums_topics]]
                     WHERE [[forums_topics]].[fid] = {fid}
                 ),
                 [posts] = (
-                    SELECT COUNT([[forums_posts]].[id])
-                    FROM [[forums_posts]]
-                    RIGHT JOIN [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
+                    SELECT SUM([replies])
+                    FROM [[forums_topics]]
                     WHERE [[forums_topics]].[fid] = {fid}
                 )
-            WHERE [id] = {fid}';
+            WHERE
+                [id] = {fid}";
 
         $result = $GLOBALS['db']->query($sql, $params);
         return $result;

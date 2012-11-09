@@ -190,7 +190,7 @@ class Forums_Actions_Topics extends ForumsHTML
     {
         $request =& Jaws_Request::getInstance();
         $topic = $request->get(
-            array('fid', 'tid', 'subject', 'fast_url', 'message', 'update_reason', 'published'),
+            array('fid', 'tid', 'subject', 'message', 'update_reason', 'published'),
             'post'
         );
 
@@ -200,7 +200,6 @@ class Forums_Actions_Topics extends ForumsHTML
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $topic['fid'],
                 $topic['subject'],
-                $topic['fast_url'],
                 $topic['message'],
                 $topic['published']
             );
@@ -212,7 +211,6 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['tid'],
                     $result['first_post_id'],
                     $topic['subject'],
-                    $topic['fast_url'],
                     $topic['message'],
                     $topic['published'],
                     $topic['update_reason']
@@ -221,7 +219,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($tid->getMessage(),
+            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(),
                                                          'Topic');
         } else {
             $topic['tid'] = $result;

@@ -107,14 +107,9 @@
         </field>
 
         <field>
-            <name>last_post_id</name>
+            <name>last_topic_id</name>
             <type>integer</type>
             <default>0</default>
-        </field>
-
-        <field>
-            <name>last_post_time</name>
-            <type>timestamp</type>
         </field>
 
         <field>
@@ -158,12 +153,6 @@
         </field>
 
         <field>
-            <name>uid</name>
-            <type>integer</type>
-            <default>0</default>
-        </field>
-
-        <field>
             <name>fid</name>
             <type>integer</type>
             <default>0</default>
@@ -176,19 +165,30 @@
         </field>
 
         <field>
-            <name>fast_url</name>
-            <type>text</type>
-            <length>90</length>
-        </field>
-
-        <field>
             <name>first_post_id</name>
             <type>integer</type>
             <default>0</default>
         </field>
 
         <field>
+            <name>first_post_uid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>first_post_time</name>
+            <type>timestamp</type>
+        </field>
+
+        <field>
             <name>last_post_id</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_post_uid</name>
             <type>integer</type>
             <default>0</default>
         </field>
@@ -208,11 +208,6 @@
             <name>replies</name>
             <type>integer</type>
             <default>0</default>
-        </field>
-
-        <field>
-            <name>createtime</name>
-            <type>timestamp</type>
         </field>
 
         <field>
@@ -251,6 +246,7 @@
         <field>
             <name>tid</name>
             <type>integer</type>
+            <notnull>true</notnull>
         </field>
 
         <field>
@@ -300,6 +296,19 @@
             <default>0</default>
         </field>
 
+        <index>
+            <name><variable>table_prefix</variable>forums_posts_topic</name>
+            <field>
+                <name>tid</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_posts_user</name>
+            <field>
+                <name>uid</name>
+            </field>
+        </index>
     </declaration>
  </table>
 </database>
