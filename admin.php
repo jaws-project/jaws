@@ -169,3 +169,4 @@ echo $ReqResult;
 // Sync session
 $GLOBALS['app']->Session->Synchronize();
 $GLOBALS['log']->End();
+exit;

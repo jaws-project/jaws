@@ -170,6 +170,10 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
             $method = $request->get('method', 'get');
             $params = $request->getAll('post');
             $output = call_user_func_array(array($objAjax, $method), $params);
+            // Set Headers
+            header('Content-Type: application/json; charset=utf-8');
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
             return Jaws_UTF8::json_encode($output);
         }
     }
