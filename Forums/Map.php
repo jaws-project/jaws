@@ -53,7 +53,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'LockTopic',
-    'forums/{fid}/topics/{tid}/lock ',
+    'forums/{fid}/topics/{tid}/lock',
     '',
     array(
         'fid' => '[[:alnum:]-_]+',
@@ -62,7 +62,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'DeleteTopic',
-    'forums/{fid}/topics/{tid}/delete ',
+    'forums/{fid}/topics/{tid}/delete',
     '',
     array(
         'fid' => '[[:alnum:]-_]+',
