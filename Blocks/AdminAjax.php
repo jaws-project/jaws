@@ -20,7 +20,7 @@ class BlocksAdminAjax extends Jaws_Gadget_Ajax
     function GetBlock($id)
     {
         $block = $this->_Model->GetBlock($id);
-        if (Jaws_Error::IsError($b)) {
+        if (Jaws_Error::IsError($block)) {
             return false;
         }
 
