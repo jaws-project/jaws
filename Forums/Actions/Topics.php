@@ -260,13 +260,18 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['forum_last_topic_id']
                 );
                 if (Jaws_Error::IsError($result)) {
+                    // redirect to topic delete form
                     Jaws_Header::Location(
                         $this->GetURLFor('DeleteTopic', array('fid' => $topic['fid'], 'tid' => $topic['id'])),
                         true
                     );
                 }
+
+                // redirect to topics list
+                Jaws_Header::Location($this->GetURLFor('Topics', array('fid'=> $topic['fid'])), true);
             }
 
+            // redirect to topic posts list
             Jaws_Header::Location(
                 $this->GetURLFor(
                     'Posts',

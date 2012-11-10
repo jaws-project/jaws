@@ -295,6 +295,7 @@ class Forums_Actions_Posts extends ForumsHTML
                     $post['forum_last_topic_id']
                 );
                 if (Jaws_Error::IsError($result)) {
+                    // redirect to post delete form
                     Jaws_Header::Location(
                         $this->GetURLFor(
                             'DeletePost',
@@ -305,10 +306,11 @@ class Forums_Actions_Posts extends ForumsHTML
                 }
             }
 
+            // redirect to topic posts list
             Jaws_Header::Location(
                 $this->GetURLFor(
                     'Posts',
-                    array('fid'=> $post['fid'],'tid' => $post['tid'])
+                    array('fid'=> $post['fid'], 'tid' => $post['tid'])
                 ),
                 true
             );
