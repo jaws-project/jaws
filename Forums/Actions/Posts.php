@@ -269,7 +269,7 @@ class Forums_Actions_Posts extends ForumsHTML
     }
 
     /**
-     * Delete a post or topic
+     * Delete a post
      *
      * @access  public
      */
@@ -297,8 +297,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 if (Jaws_Error::IsError($result)) {
                     Jaws_Header::Location(
                         $this->GetURLFor(
-                            'DeleteTopic',
-                            array('fid' => $get['fid'], 'tid' => $get['tid'])
+                            'DeletePost',
+                            array('fid' => $post['fid'], 'tid' => $post['tid'], 'pid' => $post['id'])
                         ),
                         true
                     );
@@ -323,7 +323,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('topic_title', $post['subject']);
             $tpl->SetVariable(
                 'topic_url',
-                $this->GetURLFor('Posts', array('fid'=> $post['fid'],'tid' => $post['tid']))
+                $this->GetURLFor('Posts', array('fid'=> $post['fid'], 'tid' => $post['tid']))
             );
             $tpl->SetVariable('title', _t('FORUMS_DELETE_POST'));
             $tpl->SetVariable('message', $post['message']);

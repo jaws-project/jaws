@@ -237,6 +237,73 @@ class Forums_Actions_Topics extends ForumsHTML
     }
 
     /**
+     * Delete a topic
+     *
+     * @access  public
+     */
+    function DeleteTopic()
+    {
+        $request =& Jaws_Request::getInstance();
+        $rqst = $request->get(array('fid', 'tid', 'confirm'));
+
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $pModel->GetTopic($rqst['tid'], $rqst['fid']);
+        if (Jaws_Error::IsError($topic) || empty($topic)) {
+            return false;
+        }
+
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            if (!empty($rqst['confirm'])) {
+                $result = $pModel->DeleteTopic(
+                    $topic['id'],
+                    $topic['fid'],
+                    $topic['forum_last_topic_id']
+                );
+                if (Jaws_Error::IsError($result)) {
+                    Jaws_Header::Location(
+                        $this->GetURLFor('DeleteTopic', array('fid' => $topic['fid'], 'tid' => $topic['id'])),
+                        true
+                    );
+                }
+            }
+
+            Jaws_Header::Location(
+                $this->GetURLFor(
+                    'Posts',
+                    array('fid'=> $topic['fid'],'tid' => $topic['id'])
+                ),
+                true
+            );
+        } else {
+            $tpl = new Jaws_Template('gadgets/Forums/templates/');
+            $tpl->Load('DeleteTopic.html');
+            $tpl->SetBlock('topic');
+
+            $tpl->SetVariable('fid', $topic['fid']);
+            $tpl->SetVariable('tid', $topic['id']);
+            $tpl->SetVariable('forum_title', $topic['forum_title']);
+            $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid'=> $topic['fid'])));
+            $tpl->SetVariable('title', _t('FORUMS_DELETE_TOPIC'));
+            $tpl->SetVariable('message', $topic['message']);
+
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $topic['username']);
+            $tpl->SetVariable('nickname', $topic['nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+            );
+            $objDate = $GLOBALS['app']->loadDate();
+            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time']));
+
+            $tpl->SetVariable('btn_submit_title', _t('GLOBAL_DELETE'));
+            $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
+            $tpl->ParseBlock('topic');
+            return $tpl->Get();
+        }
+    }
+
+    /**
      * Locked a topic
      *
      * @access  public

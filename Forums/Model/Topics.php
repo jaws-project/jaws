@@ -31,13 +31,17 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 [first_post_id], [first_post_time], [last_post_id], [last_post_time],
                 [[forums_topics]].[published], [[forums_topics]].[locked],
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
-                [[forums_posts]].[message], [[forums_posts]].[last_update_reason]
+                [[forums]].[last_topic_id] as forum_last_topic_id,
+                [[forums_posts]].[message], [[forums_posts]].[last_update_reason],
+                [[users]].[username], [[users]].[nickname]
             FROM
                 [[forums_topics]]
             LEFT JOIN
                 [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
             LEFT JOIN
                 [[forums_posts]] ON [[forums_topics]].[first_post_id] = [[forums_posts]].[id]
+            LEFT JOIN
+                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
             WHERE
                 [[forums_topics]].[id] = {tid}';
 
@@ -49,6 +53,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             'integer', 'integer', 'text', 'integer', 'integer',
             'integer', 'timestamp', 'integer', 'timestamp',
             'boolean', 'boolean',
+            'text', 'text',
+            'integer',
             'text', 'text',
             'text', 'text',
         );
