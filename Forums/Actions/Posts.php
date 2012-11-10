@@ -81,7 +81,9 @@ class Forums_Actions_Posts extends ForumsHTML
             // Check User Can Edit Posts
             $tpl->SetBlock('posts/post/actions');
             $tpl->SetVariable('editpost_lbl',_t('GLOBAL_EDIT'));
+            $tpl->SetVariable('deletepost_lbl',_t('GLOBAL_DELETE'));
             if ($pnum == 0) {
+                // topic action links
                 $tpl->SetVariable(
                     'editpost_url',
                     $this->GetURLFor(
@@ -89,7 +91,15 @@ class Forums_Actions_Posts extends ForumsHTML
                         array('fid' => $get['fid'], 'tid' => $get['tid'])
                     )
                 );
+                $tpl->SetVariable(
+                    'deletepost_url',
+                    $this->GetURLFor(
+                        'DeleteTopic',
+                        array('fid' => $get['fid'], 'tid' => $get['tid'])
+                    )
+                );
             } else {
+                // post action links
                 $tpl->SetVariable(
                     'editpost_url',
                     $this->GetURLFor(
@@ -97,9 +107,14 @@ class Forums_Actions_Posts extends ForumsHTML
                         array('fid' => $get['fid'], 'tid' => $get['tid'], 'pid' => $post['id'])
                     )
                 );
+                $tpl->SetVariable(
+                    'deletepost_url',
+                    $this->GetURLFor(
+                        'DeletePost',
+                        array('fid' => $get['fid'], 'tid' => $get['tid'], 'pid' => $post['id'])
+                    )
+                );
             }
-            $tpl->SetVariable('deletepost_lbl',_t('GLOBAL_DELETE'));
-            $tpl->SetVariable('deletepost_url', $this->GetURLFor('DeletePost', array('pid' => $post['id'])));
             $tpl->ParseBlock('posts/post/actions');
 
             $tpl->ParseBlock('posts/post');
@@ -260,64 +275,57 @@ class Forums_Actions_Posts extends ForumsHTML
      */
     function DeletePost()
     {
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('DeletePost.html', true);
-        if (!$GLOBALS['app']->Session->Logged()) {
-            //Add lang
-            $tpl->SetBlock('not_allow');
-            $tpl->SetVariable('msg', _t('FORUMS_NOT_PERMISON_PLEASE_LOGIN'));
-            $tpl->ParseBlock('not_allow');
-            return $tpl->Get();
-        }
-
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('pid', 'tid', 'step'));
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $rqst = $request->get(array('fid', 'tid', 'pid', 'confirm'));
 
-        $postInfo = $pModel->GetPost($post['pid']);
-        if (Jaws_Error::IsError($postInfo) || empty($postInfo)) {
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
+        if (Jaws_Error::IsError($post) || empty($post) || $post['id'] == $post['topic_first_post_id']) {
             return false;
         }
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topicInfo = $tModel->GetTopic($postInfo['tid']);
-        if (!is_null($post['step']) && $post['step'] == 'delete') {
-            if ($postInfo['id'] == $topicInfo['first_post_id']) {
-                // Delete Topic And All Posts In this
-                $tModel->DeleteTopic($topicInfo['id']);
-                Jaws_Header::Location($this->GetURLFor('Topics', array('id' => $topicInfo['fid'])));
-            } else {
-                // Delete Post
-                $pModel->DeletePost($postInfo['id']);
-                Jaws_Header::Location($this->GetURLFor('Topic', array('tid' => $postInfo['tid'])));
+
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            if (!empty($rqst['confirm'])) {
+                $pModel->DeletePost($post['id']);
             }
-        } else if (!is_null($post['step']) && $post['step'] == 'cancel') {
-            Jaws_Header::Location($this->GetURLFor('Topic', array('tid' => $postInfo['tid'])));
+            Jaws_Header::Location(
+                $this->GetURLFor(
+                    'Posts',
+                    array('fid'=> $post['fid'],'tid' => $post['tid'])
+                ),
+                true
+            );
+        } else {
+            $tpl = new Jaws_Template('gadgets/Forums/templates/');
+            $tpl->Load('DeletePost.html');
+            $tpl->SetBlock('post');
+
+            $tpl->SetVariable('fid', $post['fid']);
+            $tpl->SetVariable('tid', $post['tid']);
+            $tpl->SetVariable('pid', $post['id']);
+            $tpl->SetVariable('topic_title', $post['subject']);
+            $tpl->SetVariable(
+                'topic_url',
+                $this->GetURLFor('Posts', array('fid'=> $post['fid'],'tid' => $post['tid']))
+            );
+            $tpl->SetVariable('title', _t('FORUMS_DELETE_POST'));
+            $tpl->SetVariable('message', $post['message']);
+
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $post['username']);
+            $tpl->SetVariable('nickname', $post['nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
+            );
+            $objDate = $GLOBALS['app']->loadDate();
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
+
+            $tpl->SetVariable('btn_submit_title', _t('GLOBAL_DELETE'));
+            $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
+            $tpl->ParseBlock('post');
+            return $tpl->Get();
         }
-
-        $tpl->SetBlock('deletepost');
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('pid',  $postInfo['id']);
-        $tpl->SetVariable('tid', $topicInfo['id']);
-        $tpl->SetVariable('subject', $topicInfo['subject']);
-        $tpl->SetVariable('url', $this->GetURLFor('Topic', array('tid' => $topicInfo['id'])));
-        $tpl->SetVariable('title', _t('FORUMS_DELETE_POST'));
-        $tpl->SetVariable('separator', _t('FORUMS_SEPARATOR'));
-
-        // Message
-        $tpl->SetVariable('delete_message', _t('FORUMS_DELETE_POST_CONFIRM'));
-
-        $date = $GLOBALS['app']->loadDate();
-        $tpl->SetVariable('psted_date',   $date->Format($date->ToISO($postInfo['createtime'])));
-        $tpl->SetVariable('posted_by',    _t('FORUMS_POSTED_BY'));
-        $tpl->SetVariable('user_name',    $postInfo['username']);
-        $tpl->SetVariable('lbl_message',  _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('message',      $postInfo['message']);
-
-        $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('cancel', _t('GLOBAL_CANCEL'));
-
-        $tpl->ParseBlock('deletepost');
-        return $tpl->Get();
     }
 
 }

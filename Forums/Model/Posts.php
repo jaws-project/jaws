@@ -15,24 +15,42 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Get post data
      *
      * @access  public
-     * @param   int     $pid    Post's ID
+     * @param   int     $pid    Post ID
+     * @param   int     $tid    Topic ID
+     * @param   int     $fid    Forum ID
      * @return  mixed   Array of post data or Jaws_Error on failure
      */
-    function GetPost($pid)
+    function GetPost($pid, $tid = null, $fid = null)
     {
         $params = array();
+        $params['fid'] = (int)$fid;
+        $params['tid'] = (int)$tid;
         $params['pid'] = (int)$pid;
 
         $sql = '
             SELECT
-                [[forums_posts]].[id], [[forums_posts]].[tid], [[forums_posts]].[message],
-                [[forums_posts]].[createtime], [[users]].[username], [[users]].[nickname],
-                [[users]].[registered_date] AS user_joined_time, [[forums_posts]].[uid],
-                [[forums_posts]].[last_update_uid], [[forums_posts]].[last_update_reason],
-                [[forums_posts]].[last_update_time], [[forums_posts]].[status]
-            FROM [[forums_posts]]
-            LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
-            WHERE [[forums_posts]].[id] = {pid}';
+                [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[createtime],
+                [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
+                [[forums_topics]].[fid], [[forums_topics]].[subject], [first_post_id] as topic_first_post_id,
+                [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
+                [[users]].[username], [[users]].[nickname], [[users]].[registered_date]
+            FROM
+                [[forums_posts]]
+            LEFT JOIN
+                [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
+            LEFT JOIN
+                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
+            LEFT JOIN
+                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+            WHERE
+                [[forums_posts]].[id] = {pid}';
+
+        if (!empty($tid)) {
+            $sql .= ' AND [tid] = {tid}';
+        }
+        if (!empty($fid)) {
+            $sql .= ' AND [fid] = {fid}';
+        }
 
         $result = $GLOBALS['db']->queryRow($sql, $params);
         return $result;

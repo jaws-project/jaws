@@ -1,36 +1,26 @@
-<!-- BEGIN not_allow -->
-<div class="gadget">
+<!-- BEGIN post -->
+<div class="gadget forums deletepost">
+  <h2><a href="{topic_url}">{topic_title}</a> - {title}</h2>
+  <!-- BEGIN response -->
   <div class="simple-response-msg">{msg}</div>
-</div>
-<!-- END not_allow -->
-<!-- BEGIN deletepost -->
-<div class="gadget forum_delete_post">
-  <h2>{level} <a href="{url}">{subject}</a> <span> {separator}</span> <span>{title}</span></h2>
-  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <form name="new_post" action="{base_script}" method="post">
-    <input type="hidden" name="gadget" value="Forum" />
+  <!-- END response -->
+  <form name="deletepost" action="{requested_url}" method="post">
+    <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="DeletePost" />
-    <input type="hidden" name="pid" value="{pid}" />
+    <input type="hidden" name="fid" value="{fid}" />
     <input type="hidden" name="tid" value="{tid}" />
-    <input type="hidden" name="step" value="delete" />
+    <input type="hidden" name="pid" value="{pid}" />
     <div class="content">
-      <div class="dpost_message">{delete_message}</div>
-      <div class="post_info">
-        <ul>
-          <li>{posted_by}: {user_name}</li>
-          <li>{psted_date}</li>
-        </ul>
-      </div>
-      <div class="post_message"><p>{lbl_message}:</p>
-         {message}
-      </div>
-      {confirm_check}
+      <div class="post_meta">{postedby_lbl}{username}{nickname}{user_url}{createtime}</div>
+      <div class="post_content">{message}</div>
+      <!-- BEGIN update -->
+      <div class="post_update">{updatedby_lbl}{username}{nickname}{user_url}{update_reason}{update_time}</div>
+      <!-- END update -->
     </div>
     <div class="actions">
-        <button type="submit" value="{delete}">{delete}</button>
-        <button type="button" name="cancel" id="cancel" value="{cancel}"
-            onclick="this.form.step.value='cancel'; this.form.submit();">{cancel}</button>
+      <button type="submit" name="confirm">{btn_submit_title}</button>
+      <button type="submit" name="cancel" >{btn_cancel_title}</button>
     </div>
   </form>
 </div>
-<!-- END deletepost -->
+<!-- END post -->

@@ -67,13 +67,15 @@ class Forums_Actions_Topics extends ForumsHTML
 
                 $tpl->SetVariable('username', $topic['username']);
                 $tpl->SetVariable('nickname', $topic['nickname']);
-                $tpl->SetVariable('user_url',
-                                  $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+                $tpl->SetVariable(
+                    'user_url',
+                    $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOSTED'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
-                $tpl->SetVariable('lastpost_url',
-                                  $this->GetURLFor('Topic', array('id' => $topic['id']))
+                $tpl->SetVariable(
+                    'lastpost_url',
+                    $this->GetURLFor('Topic', array('id' => $topic['id']))
                 );
                 $tpl->ParseBlock('topics/topic/lastpost');
             }
