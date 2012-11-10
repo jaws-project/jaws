@@ -31,7 +31,9 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             SELECT
                 [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[createtime],
                 [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
-                [[forums_topics]].[fid], [[forums_topics]].[subject], [first_post_id] as topic_first_post_id,
+                [[forums_topics]].[fid], [[forums_topics]].[subject],
+                [first_post_id] as topic_first_post_id, [first_post_time] as topic_first_post_time,
+                [last_post_id] as topic_last_post_id, [last_post_time] as topic_last_post_time,
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[users]].[username], [[users]].[nickname], [[users]].[registered_date]
             FROM
@@ -209,24 +211,21 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Delete post
      *
      * @access  public
-     * @param   int     $pid    Post ID
+     * @param   int     $pid            Post ID
+     * @param   int     $tid            Topic ID
+     * @param   int     $last_post_id   Topic last post ID
+     * @param   string  $last_post_time Topic last post time
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeletePost($pid)
+    function DeletePost($pid, $tid, $last_post_id, $last_post_time)
     {
-        $pid = (int)$pid;
-        $post = $this->GetPost($pid);
-        if (Jaws_Error::IsError($post)) {
-            return $post;
-        }
-
         $params = array();
-        $params['id'] = $pid;
+        $params['pid'] = (int)$pid;
 
         $sql = '
             DELETE FROM [[forums_posts]]
             WHERE
-                [id] = {id}';
+                [id] = {pid}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -234,32 +233,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $tModel->GetTopic($post['tid']);
-        if (Jaws_Error::IsError($topic)) {
-            return $topic;
-        }
-
-        $lastpost = $this->GetLastPostTopicID($topic['id']);
-        if (Jaws_Error::IsError($lastpost)) {
-            return $lastpost;
-        }
-
-        $result = $tModel->UpdateTopicStatistics($topic['id'], $lastpost['id'], $lastpost['createtime']);
+        $result = $tModel->UpdateTopicStatistics(
+            $tid,
+            $last_post_id,
+            $last_post_time
+        );
         if (Jaws_Error::IsError($result)) {
             return $result;
-        }
-
-        $lastpost = $this->GetLastPostForumID($topic['fid']);
-        if (Jaws_Error::IsError($lastpost)) {
-            return $lastpost;
-        }
-
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
-        if (!Jaws_Error::IsError($fModel)) {
-            $result = $fModel->UpdateForumStatistics($topic['fid']);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
         }
 
         return true;

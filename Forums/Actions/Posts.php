@@ -286,8 +286,23 @@ class Forums_Actions_Posts extends ForumsHTML
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!empty($rqst['confirm'])) {
-                $pModel->DeletePost($post['id']);
+                $result = $pModel->DeletePost(
+                    $post['id'],
+                    $post['tid'],
+                    $post['topic_last_post_id'],
+                    $post['topic_last_post_time']
+                );
+                if (Jaws_Error::IsError($result)) {
+                    Jaws_Header::Location(
+                        $this->GetURLFor(
+                            'DeleteTopic',
+                            array('fid' => $get['fid'], 'tid' => $get['tid'])
+                        ),
+                        true
+                    );
+                }
             }
+
             Jaws_Header::Location(
                 $this->GetURLFor(
                     'Posts',
