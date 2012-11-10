@@ -128,13 +128,20 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             VALUES
                 ({fid}, {subject}, {uid}, {uid}, {published})';
 
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
+
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
         $tid = $GLOBALS['db']->lastInsertID('forums_topics', 'id');
         if (Jaws_Error::IsError($tid)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $tid;
         }
 
@@ -143,9 +150,14 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         if (!Jaws_Error::IsError($pModel)) {
             $pid = $pModel->InsertPost($params['uid'], $tid, $params['fid'], $message, true);
             if (Jaws_Error::IsError($pid)) {
+                //Rollback Transaction
+                $GLOBALS['db']->dbc->rollback();
                 return $pid;
             }
         }
+
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
 
         return $tid;
     }
@@ -170,10 +182,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $params['tid'] = (int)$tid;
         $params['pid'] = (int)$pid;
         $params['now'] = $GLOBALS['db']->Date();
-        $params['subject']  = $subject;
-        $params['message']  = $message;
+        $params['subject']   = $subject;
+        $params['message']   = $message;
         $params['published'] = true;
         $params['update_reason'] = $update_reason;
+
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
 
         $sql = '
             UPDATE [[forums_topics]] SET
@@ -185,6 +200,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
@@ -198,8 +215,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
+
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
 
         return  $tid;
     }
@@ -217,13 +239,19 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     {
         $params = array();
         $params['tid'] = $tid;
+
         $sql = '
             DELETE FROM [[forums_posts]]
             WHERE
                 [tid] = {tid}';
 
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
+
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
@@ -234,8 +262,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
+
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
