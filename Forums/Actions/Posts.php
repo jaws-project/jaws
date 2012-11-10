@@ -289,8 +289,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 $result = $pModel->DeletePost(
                     $post['id'],
                     $post['tid'],
+                    $post['fid'],
                     $post['topic_last_post_id'],
-                    $post['topic_last_post_time']
+                    $post['topic_last_post_time'],
+                    $post['forum_last_topic_id']
                 );
                 if (Jaws_Error::IsError($result)) {
                     Jaws_Header::Location(
