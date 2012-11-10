@@ -63,26 +63,36 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Get posts of topic
      *
      * @access  public
-     * @param   int     $tid    Topic's ID
-     * @param   bool    $limit  Count of topics to be returned
+     * @param   int     $tid    Topic ID
+     * @param   int     $limit  Count of posts to be returned
      * @param   int     $offset Offset of data array
      * @return  mixed   Array of topics or Jaws_Error on failure
      */
-    function GetPosts($tid, $limit = false, $offset = null)
+    function GetPosts($tid, $limit = 0, $offset = null)
     {
         $params = array();
         $params['tid'] = $tid;
 
         $sql = '
             SELECT
-                [[forums_posts]].[id], [[forums_posts]].[message], [[forums_posts]].[createtime],
-                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] AS user_joined_time,
-                [[forums_posts]].[uid], [[forums_posts]].[last_update_uid], [[forums_posts]].[last_update_reason],
-                [[forums_posts]].[last_update_time], [[forums_posts]].[status]
-            FROM [[forums_posts]] 
-            LEFT JOIN [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
-            WHERE [tid] = {tid}
-            ORDER BY [createtime] ASC';
+                [[forums_posts]].[id], [uid], [message], [last_update_uid], [last_update_reason],
+                [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
+                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date
+            FROM
+                [[forums_posts]] 
+            LEFT JOIN
+                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+            WHERE
+                [tid] = {tid}
+            ORDER BY
+                [createtime] ASC';
+
+        if (!empty($limit)) {
+            $result = $GLOBALS['db']->setLimit($limit, $offset);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         return $result;

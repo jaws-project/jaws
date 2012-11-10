@@ -67,12 +67,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Get topics of forum
      *
      * @access  public
-     * @param   int     $fid        Forum's ID
-     * @param   bool    $limit      Count of topics to be returned
+     * @param   int     $fid        Forum ID
+     * @param   int     $limit      Count of topics to be returned
      * @param   int     $offset     Offset of data array
      * @return  mixed   Array of topics or Jaws_Error on failure
      */
-    function GetTopics($fid, $limit = false, $offset = null)
+    function GetTopics($fid, $limit = 0, $offset = null)
     {
         $params = array();
         $params['fid'] = $fid;
@@ -98,6 +98,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             'integer', 'integer', 'timestamp',
             'text', 'text', 'boolean', 'boolean',
         );
+
+        if (!empty($limit)) {
+            $result = $GLOBALS['db']->setLimit($limit, $offset);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         return $result;

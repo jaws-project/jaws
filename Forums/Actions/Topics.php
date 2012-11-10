@@ -21,6 +21,7 @@ class Forums_Actions_Topics extends ForumsHTML
     {
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'page'), 'get');
+        $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $forum  = $fModel->GetForum($rqst['fid']);
@@ -28,8 +29,9 @@ class Forums_Actions_Topics extends ForumsHTML
             return false;
         }
 
+        $limit = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/topics_limit');
         $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topics = $model->GetTopics($forum['id']);
+        $topics = $model->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
             return false;
         }
