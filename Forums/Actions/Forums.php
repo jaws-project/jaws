@@ -29,7 +29,7 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->Load('Forums.html');
         $tpl->SetBlock('forums');
 
-        $tpl->SetVariable('title', _t('FORUMS_NAME'));
+        $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
         $tpl->SetVariable('url', $this->GetURLFor('Forums'));
 
         foreach ($groups as $group) {
@@ -71,7 +71,7 @@ class Forums_Actions_Forums extends ForumsHTML
                             array('user' => $forum['username'])
                         )
                     );
-                    $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOSTED'));
+                    $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time']));
                     $tpl->SetVariable(
                         'lastpost_url',

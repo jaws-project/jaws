@@ -51,6 +51,14 @@ class Forums_Actions_Posts extends ForumsHTML
         $objDate = $GLOBALS['app']->loadDate();
         foreach ($posts as $pnum => $post) {
             $tpl->SetBlock('posts/post');
+            $tpl->SetVariable('title', $topic['subject']);
+            $tpl->SetVariable('posts_count_lbl',_t('FORUMS_USERS_POSTS_COUNT'));
+            $tpl->SetVariable('registered_date_lbl',_t('FORUMS_USERS_REGISTERED_DATE'));
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
+            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date']));
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
+            $tpl->SetVariable('message',  $post['message']);
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable(
@@ -61,19 +69,11 @@ class Forums_Actions_Posts extends ForumsHTML
                     array('user' => $post['username'])
                 )
             );
-            $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
-            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date']));
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
-            //
-            $tpl->SetVariable('posts_lbl',_t('FORUMS_USER_POST_COUNT'));
-            $tpl->SetVariable('joined_lbl',_t('FORUMS_USER_JOINED_TIME'));
-            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTED_BY'));
-            //
-            $tpl->SetVariable('title', $topic['subject']);
-            $tpl->SetVariable('message', $post['message']);
+
+            // update information
             if ($post['last_update_uid'] != 0) {
                 $tpl->SetBlock('posts/post/update');
-                $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POST_UPDATEDBY'));
+                $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POSTS_UPDATEDBY'));
                 $tpl->SetVariable('username', $post['username']);
                 $tpl->SetVariable('nickname', $post['nickname']);
                 $tpl->SetVariable(
@@ -90,8 +90,8 @@ class Forums_Actions_Posts extends ForumsHTML
             }
             // Check User Can Edit Posts
             $tpl->SetBlock('posts/post/actions');
-            $tpl->SetVariable('editpost_lbl',_t('GLOBAL_EDIT'));
-            $tpl->SetVariable('deletepost_lbl',_t('GLOBAL_DELETE'));
+            $tpl->SetVariable('editpost_lbl',_t('FORUMS_POSTS_EDIT'));
+            $tpl->SetVariable('deletepost_lbl',_t('FORUMS_POSTS_DELETE'));
             if ($pnum == 0) {
                 // topic action links
                 $tpl->SetVariable(
@@ -126,15 +126,23 @@ class Forums_Actions_Posts extends ForumsHTML
                 );
             }
             $tpl->ParseBlock('posts/post/actions');
-
             $tpl->ParseBlock('posts/post');
         }
 
         $tpl->SetBlock('posts/actions');
-        $tpl->SetVariable('newpost_lbl', _t('FORUMS_NEWPOST'));
-        $tpl->SetVariable('newpost_url', $this->GetURLFor('NewPost', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
-        $tpl->SetVariable('locktopic_lbl', $topic['locked']? _t('FORUMS_UNLOCK_TOPIC') : _t('FORUMS_LOCK_TOPIC'));
-        $tpl->SetVariable('locktopic_url', $this->GetURLFor('LockTopic', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
+        $tpl->SetVariable('newpost_lbl', _t('FORUMS_POSTS_NEW'));
+        $tpl->SetVariable(
+            'newpost_url',
+            $this->GetURLFor('NewPost', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
+        );
+        $tpl->SetVariable(
+            'locktopic_lbl',
+            $topic['locked']? _t('FORUMS_TOPICS_UNLOCK') : _t('FORUMS_TOPICS_LOCK')
+        );
+        $tpl->SetVariable(
+            'locktopic_url',
+            $this->GetURLFor('LockTopic', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
+        );
         $tpl->ParseBlock('posts/actions');
 
         $tpl->ParseBlock('posts');

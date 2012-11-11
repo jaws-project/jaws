@@ -43,7 +43,7 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $tpl->SetVariable('title', $forum['title']);
         $tpl->SetVariable('url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
-        $tpl->SetVariable('lbl_topics', _t('FORUMS_TIPICS'));
+        $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
         $tpl->SetVariable('lbl_replies', _t('FORUMS_REPLIES'));
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
@@ -73,7 +73,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     'user_url',
                     $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
                 );
-                $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOSTED'));
+                $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
                 $tpl->SetVariable(
                     'lastpost_url',
@@ -86,7 +86,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $tpl->SetBlock('topics/actions');
-        $tpl->SetVariable('newtopic_lbl', _t('FORUMS_NEWTOPIC'));
+        $tpl->SetVariable('newtopic_lbl', _t('FORUMS_TOPICS_NEW'));
         $tpl->SetVariable('newtopic_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
         $tpl->ParseBlock('topics/actions');
 
@@ -131,17 +131,16 @@ class Forums_Actions_Topics extends ForumsHTML
             if (Jaws_Error::IsError($topic) || empty($topic)) {
                 return false;
             }
-
-            $title = _t('FORUMS_TOPIC_EDIT_TITLE');
-            $btn_title = _t('FORUMS_TOPIC_EDIT_BUTTON');
+            $title = _t('FORUMS_TOPICS_EDIT_TITLE');
+            $btn_title = _t('FORUMS_TOPICS_EDIT_BUTTON');
         } else {
             $topic = array();
             $topic['id'] = 0;
             $topic['subject'] = '';
             $topic['message'] = '';
             $topic['last_update_reason'] = '';
-            $title = _t('FORUMS_TOPIC_ADD_TITLE');
-            $btn_title = _t('FORUMS_TOPIC_ADD_BUTTON');
+            $title = _t('FORUMS_TOPICS_NEW_TITLE');
+            $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
         }
 
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
@@ -154,7 +153,7 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('fid', $rqst['fid']);
         $tpl->SetVariable('tid', $topic['id']);
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Forums')) {
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdateTopic')) {
             $tpl->SetBlock('topic/response');
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('topic/response');
@@ -163,17 +162,17 @@ class Forums_Actions_Topics extends ForumsHTML
         // subject
         $tpl->SetBlock('topic/subject');
         $tpl->SetVariable('subject', $topic['subject']);
-        $tpl->SetVariable('lbl_subject', _t('FORUMS_TOPIC_SUBJECT'));
+        $tpl->SetVariable('lbl_subject', _t('FORUMS_TOPICS_SUBJECT'));
         $tpl->ParseBlock('topic/subject');
 
         // message
         $tpl->SetVariable('message', $topic['message']);
-        $tpl->SetVariable('lbl_message', _t('FORUMS_POST_MESSAGE'));
+        $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
 
         // update reason
         if (!empty($topic['id'])) {
             $tpl->SetBlock('topic/update_reason');
-            $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POST_UPDATE_REASON'));
+            $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
             $tpl->SetVariable('update_reason', $topic['last_update_reason']);
             $tpl->ParseBlock('topic/update_reason');
         }
@@ -198,6 +197,15 @@ class Forums_Actions_Topics extends ForumsHTML
             'post'
         );
 
+        if (empty($topic['subject']) ||  empty($topic['message'])) {
+            $GLOBALS['app']->Session->PushSimpleResponse(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                'UpdateTopic'
+            );
+            // redirect to referrer page
+            Jaws_Header::Referrer();
+        }
+
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
             $result = $tModel->InsertTopic(
@@ -207,6 +215,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['message'],
                 $topic['published']
             );
+            $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
             $result = $tModel->GetTopic($topic['tid']);
             if (!Jaws_Error::IsError($result)) {
@@ -220,20 +229,19 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['update_reason']
                 );
             }
+            $error_message = _t('FORUMS_TOPICS_EDIT_ERROR');
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(),
-                                                         'Topic');
-        } else {
-            $topic['tid'] = $result;
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_UPDATED'),
-                                                         'Topic');
+            $GLOBALS['app']->Session->PushSimpleResponse($error_message, 'UpdateTopic');
+            // redirect to referrer page
+            Jaws_Header::Referrer();
         }
 
-        // Redirect
+        $topic['tid'] = $result;
+        // redirect to topic posts page
         Jaws_Header::Location(
-            $this->GetURLFor('EditTopic', array('fid' => $topic['fid'], 'tid' => $topic['tid'])),
+            $this->GetURLFor('Posts', array('fid' => $topic['fid'], 'tid' => $topic['tid'])),
             true
         );
     }
@@ -290,7 +298,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('tid', $topic['id']);
             $tpl->SetVariable('forum_title', $topic['forum_title']);
             $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid'=> $topic['fid'])));
-            $tpl->SetVariable('title', _t('FORUMS_DELETE_TOPIC'));
+            $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
             $tpl->SetVariable('message', $topic['message']);
 
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
@@ -318,27 +326,22 @@ class Forums_Actions_Topics extends ForumsHTML
     function LockTopic()
     {
         $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('tid'));
+        $rqst = $request->get(array('fid', 'tid'), 'get');
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $tModel->GetTopic(($rqst['tid']));
-        if (Jaws_Error::IsError($topic) || empty($topic)) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_NOT_FOUND'), 'Topic');
-            Jaws_Header::Location($this->GetURLFor('Topic', array('tid' => $rqst['tid'])), true);
+        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $model->GetTopic($rqst['tid'], $rqst['fid']);
+        if (Jaws_Error::IsError($topic)) {
+            // redirect to referrer page
+            Jaws_Header::Referrer();
         }
 
-        $result = $tModel->LockTopic($topic['id'], !$topic['locked']);
+        $result = $model->LockTopic($topic['id'], !$topic['locked']);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($apid->getMessage(), 'Topic');
-        } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('FORUMS_TOPIC_LOCKED'), 'Topic');
+            // do nothing
         }
 
-        // Redirect
-        Jaws_Header::Location(
-            $this->GetURLFor('Posts', array('fid' => $topic['fid'], 'tid' => $topic['id'])),
-            true
-        );
+        // redirect to referrer page
+        Jaws_Header::Referrer();
     }
 
 }
