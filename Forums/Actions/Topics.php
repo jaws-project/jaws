@@ -12,7 +12,7 @@
 class Forums_Actions_Topics extends ForumsHTML
 {
     /**
-     * Display forum's topics
+     * Display forum topics
      *
      * @access  public
      * @return  string  XHTML template content
@@ -271,11 +271,12 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['forum_last_topic_id']
                 );
                 if (Jaws_Error::IsError($result)) {
-                    // redirect to topic delete form
-                    Jaws_Header::Location(
-                        $this->GetURLFor('DeleteTopic', array('fid' => $topic['fid'], 'tid' => $topic['id'])),
-                        true
+                    $GLOBALS['app']->Session->PushSimpleResponse(
+                        _t('FORUMS_TOPICS_DELETE_ERROR'),
+                        'DeleteTopic'
                     );
+                    // redirect to referrer page
+                    Jaws_Header::Referrer();
                 }
 
                 // redirect to topics list
@@ -284,10 +285,7 @@ class Forums_Actions_Topics extends ForumsHTML
 
             // redirect to topic posts list
             Jaws_Header::Location(
-                $this->GetURLFor(
-                    'Posts',
-                    array('fid'=> $topic['fid'],'tid' => $topic['id'])
-                ),
+                $this->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id'])),
                 true
             );
         } else {
@@ -300,8 +298,15 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('forum_title', $topic['forum_title']);
             $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid'=> $topic['fid'])));
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
-            $tpl->SetVariable('message', $topic['message']);
 
+            // error response
+            if ($response = $GLOBALS['app']->Session->PopSimpleResponse('DeleteTopic')) {
+                $tpl->SetBlock('topic/response');
+                $tpl->SetVariable('msg', $response);
+                $tpl->ParseBlock('topic/response');
+            }
+
+            $tpl->SetVariable('message', $topic['message']);
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('username', $topic['username']);
             $tpl->SetVariable('nickname', $topic['nickname']);
@@ -312,7 +317,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time']));
 
-            $tpl->SetVariable('btn_submit_title', _t('GLOBAL_DELETE'));
+            $tpl->SetVariable('btn_submit_title', _t('FORUMS_TOPICS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
             $tpl->ParseBlock('topic');
             return $tpl->Get();
