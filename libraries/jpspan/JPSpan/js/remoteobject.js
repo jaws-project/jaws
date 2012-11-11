@@ -298,7 +298,7 @@ JPSpan_RemoteObject.prototype = {
             var response = this.__client.call(request);
 
             try {
-                return JSON.parse(response);
+                return eval('(' + response + ')');
             } catch (e) {
                 e.name = 'Server_Error';
                 e.code = 2006;
