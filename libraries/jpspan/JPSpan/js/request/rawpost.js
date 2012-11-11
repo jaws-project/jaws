@@ -4,22 +4,22 @@
 // @version $Id: rawpost.js,v 1.3 2004/11/15 12:14:28 harryf Exp $
 
 // For building raw (not urlencoded) HTTP POST requests
-function JPSpan_Request_RawPost(encoder) {
+function JPSpan_Request_RawPost() {
 
-    var oParent = new JPSpan_Request(encoder);
-    
+    var oParent = new JPSpan_Request();
+
     // Builds the post body
     // @protected
     // @throws Error code 1006
     oParent.build = function() {
         try {
-            this.body = this.encoder.encode(this.args);
+            this.body = toJSON(this.args);
         } catch (e) {
             throw JPSpan_Client_Error(e, 1006);
         };
         this.requesturl = this.serverurl;
     };
-    
+
     // Called from JPSpan_HttpClient to prepare the XMLHttpRequest object
     // @param XMLHttpRequest
     // @protected
@@ -51,12 +51,12 @@ function JPSpan_Request_RawPost(encoder) {
         };
         this.http.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     };
-    
+
     // Send the request
     // @protected
     oParent.send = function() {
         this.http.send(this.body);
     };
-    
+
     return oParent;
 };

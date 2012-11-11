@@ -166,7 +166,7 @@ class JPSpan_PostOffice_Generator {
 /**@
 * include 'remoteobject.js';
 * include 'request/rawpost.js';
-* include 'encode/json.js';
+* include 'util/json.js';
 */
 <?php
         $Code->append(ob_get_contents());
@@ -200,7 +200,7 @@ function <?php echo $Description->Class; ?>() {
         echo $url; ?>';
     
     oParent.__remoteClass = '<?php echo $Description->Class; ?>';
-    oParent.__request = new JPSpan_Request_RawPost(new JPSpan_Encode_JSON());
+    oParent.__request = new JPSpan_Request_RawPost();
     
 <?php
 foreach ( $Description->methods as $method ) {
