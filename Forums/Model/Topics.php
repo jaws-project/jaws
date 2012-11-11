@@ -176,23 +176,20 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $fid            Forum ID
      * @param   int     $tid            Topic ID
      * @param   int     $pid            Topic first post ID
+     * @param   int     $uid            User's ID
      * @param   string  $subject        Topic subject
      * @param   string  $message        First post content
      * @param   bool    $published      Topic publish status
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($fid, $tid, $pid, $subject, $message, $published = null, $update_reason = '')
+    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $published = null, $update_reason = '')
     {
         $params = array();
         $params['fid'] = (int)$fid;
         $params['tid'] = (int)$tid;
-        $params['pid'] = (int)$pid;
-        $params['now'] = $GLOBALS['db']->Date();
         $params['subject']   = $subject;
-        $params['message']   = $message;
         $params['published'] = true;
-        $params['update_reason'] = $update_reason;
 
         //Start Transaction
         $GLOBALS['db']->dbc->beginTransaction();
@@ -212,15 +209,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             return $result;
         }
 
-        $sql = '
-            UPDATE [[forums_posts]] SET
-                [message]            = {message},
-                [last_update_reason] = {update_reason},
-                [last_update_time]   = {now}
-            WHERE
-                [id] = {pid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $result = $pModel->UpdatePost($pid, $uid, $message, $update_reason);
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();

@@ -223,6 +223,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['fid'],
                     $topic['tid'],
                     $result['first_post_id'],
+                    $GLOBALS['app']->Session->GetAttribute('user'),
                     $topic['subject'],
                     $topic['message'],
                     $topic['published'],
