@@ -3,38 +3,37 @@
   <h2><a href="{url}">{title}</a></h2>
   <div class="content">
     <!-- BEGIN group -->
-    <ul class="forums_header">
-      <li>
+    <div class="forums_group">
+      <div class="forums_header">
         <dl>
           <dt>{title}</dt>
           <dd class="forums_topics">{lbl_topics}</dd>
           <dd class="forums_posts">{lbl_posts}</dd>
           <dd class="forums_lastpost">{lbl_lastpost}</dd>
         </dl>
-      </li>
-    </ul>
-    <!-- BEGIN forum -->
-    <ul class="forums_list">
-      <li>
-        <dl>
-          <dt><img src="" title="{status}" alt="{status}"/>
+      </div>
+      <ul class="forums_list">
+      <!-- BEGIN forum -->
+        <li>
+          <dl>
+            <dt class="forum_status_{status}">
               <a href="{url}">{title}</a>
-              <br/>
               <span>{description}</span>
-          </dt>
-          <dd class="forums_topics">{topics}</dd>
-          <dd class="forums_posts">{posts}</dd>
-          <dd class="forums_lastpost">
-          <!-- BEGIN lastpost -->
-          {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-          <a href="{lastpost_url}"><img src="gadgets/Forums/images/topic_latest.png" alt="{lastpost_lbl}"/></a>
-          {lastpost_date}
-          <!-- END lastpost -->
-          </dd>
-        </dl>
-      </li>
-    </ul>
-    <!-- END forum -->
+            </dt>
+            <dd class="forums_topics">{topics}</dd>
+            <dd class="forums_posts">{posts}</dd>
+            <dd class="forums_lastpost">
+            <!-- BEGIN lastpost -->
+            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+            <a href="{lastpost_url}"><img src="gadgets/Forums/images/topic_latest.png" alt="{lastpost_lbl}"/></a>
+            {lastpost_date}
+            <!-- END lastpost -->
+            </dd>
+          </dl>
+        </li>
+      <!-- END forum -->
+      </ul>
+    </div>
     <!-- END group -->
   </div>
 </div>
