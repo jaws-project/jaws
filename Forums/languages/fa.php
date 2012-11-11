@@ -58,4 +58,4 @@ define('_FA_FORUMS_POSTS_MESSAGE', "پیام");
 define('_FA_FORUMS_POSTS_EDIT_REASON', "انگیزه ویرایش");
 define('_FA_FORUMS_POSTS_UPDATEDBY', "بروزرسانی بدست");
 define('_FA_FORUMS_USERS_POSTS_COUNT', "نوشته ها");
-define('_FA_FORUMS_USERS_REGISTERED_DATE', "زمان نام نویسی");
+define('_FA_FORUMS_USERS_REGISTERED_DATE', "زمان پیوستن");

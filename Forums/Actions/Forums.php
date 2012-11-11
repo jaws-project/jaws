@@ -32,6 +32,8 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
         $tpl->SetVariable('url', $this->GetURLFor('Forums'));
 
+        $posts_limit = $GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
+        $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
             $tpl->SetVariable('title', $group['title']);
@@ -58,7 +60,7 @@ class Forums_Actions_Forums extends ForumsHTML
                 $tpl->SetVariable('posts', $forum['posts']);
 
                 // last post
-                if (!empty($forum['last_post_id'])) {
+                if (!empty($forum['last_topic_id'])) {
                     $tpl->SetBlock('forums/group/forum/lastpost');
                     $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
                     $tpl->SetVariable('username', $forum['username']);
@@ -73,10 +75,12 @@ class Forums_Actions_Forums extends ForumsHTML
                     );
                     $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time']));
-                    $tpl->SetVariable(
-                        'lastpost_url',
-                        $this->GetURLFor('Topic', array('id' => $forum['id']))
-                    );
+                    $url_params = array('fid' => $forum['id'], 'tid'=> $forum['last_topic_id']);
+                    $last_post_page = floor(($forum['replies'] - 1)/$posts_limit) + 1;
+                    if ($last_post_page > 1) {
+                        $url_params['page'] = $last_post_page;
+                    }
+                    $tpl->SetVariable('lastpost_url', $this->GetURLFor('Posts', $url_params));
                     $tpl->ParseBlock('forums/group/forum/lastpost');
                 }
 

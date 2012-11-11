@@ -20,8 +20,9 @@
           <dd class="topics_lastpost">
             <!-- BEGIN lastpost -->
             {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-            <a href="{lastpost_url}"><img src="gadgets/Forums/images/topic_latest.png" alt="{lastpost_lbl}"/></a>
-            <br/>
+            <a href="{lastpost_url}" title="{lastpost_lbl}">
+              <img src="gadgets/Forums/images/topic_latest{.dir}.png" alt="{lastpost_lbl}"/>
+            </a><br/>
             {lastpost_date}
             <!-- END lastpost -->
           </dd>
@@ -32,7 +33,7 @@
   </div>
   <!-- BEGIN actions -->
   <div class="actions">
-    <a href="{newtopic_url}" title="newtopic_lbl">{newtopic_lbl}</a>
+    <a href="{newtopic_url}" title="{newtopic_lbl}">{newtopic_lbl}</a>
   </div>
   <!-- END actions -->
 </div>

@@ -48,6 +48,8 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
+        $posts_limit = $GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
+        $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
             $tpl->SetVariable('icon', '');
@@ -75,10 +77,12 @@ class Forums_Actions_Topics extends ForumsHTML
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
-                $tpl->SetVariable(
-                    'lastpost_url',
-                    $this->GetURLFor('Topic', array('id' => $topic['id']))
-                );
+                $url_params = array('fid' => $topic['fid'], 'tid'=> $topic['id']);
+                $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
+                if ($last_post_page > 1) {
+                    $url_params['page'] = $last_post_page;
+                }
+                $tpl->SetVariable('lastpost_url', $this->GetURLFor('Posts', $url_params));
                 $tpl->ParseBlock('topics/topic/lastpost');
             }
 

@@ -3,7 +3,7 @@
   <h2><a href="{url}">{title}</a></h2>
   <div class="content">
     <!-- BEGIN post -->
-    <div class="forum_post clearfix">
+    <div class="forum_post">
       <ul class="post_profile">
         <li>{username}{nickname}{user_url}</li>
         <li>{posts_count_lbl}: {posts_count}</li>
@@ -16,17 +16,18 @@
       <!-- END update -->
       <!-- BEGIN actions -->
       <div class="post_actions">
-        <a href="{editpost_url}" title="editpost_lbl">{editpost_lbl}</a>
+        <a href="{editpost_url}" title="{editpost_lbl}">{editpost_lbl}</a>
         <a href="{deletepost_url}" title="{deletepost_lbl}">{deletepost_lbl}</a>
       </div>
       <!-- END actions -->
     </div>
+    <hr/>
     <!-- END post -->
   </div>
   <!-- BEGIN actions -->
   <div class="actions">
-    <a href="{newpost_url}" title="newpost_lbl">{newpost_lbl}</a>
-    <a href="{locktopic_url}" title="locktopic_lbl">{locktopic_lbl}</a>
+    <a href="{newpost_url}" title="{newpost_lbl}">{newpost_lbl}</a>
+    <a href="{locktopic_url}" title="{locktopic_lbl}">{locktopic_lbl}</a>
   </div>
   <!-- END actions -->
 </div>

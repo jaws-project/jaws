@@ -58,7 +58,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date']));
             $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
-            $tpl->SetVariable('message',  $post['message']);
+            $tpl->SetVariable('message',  $this->ParseText($post['message']));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable(
