@@ -41,6 +41,8 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->Load('Topics.html');
         $tpl->SetBlock('topics');
 
+        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
         $tpl->SetVariable('title', $forum['title']);
         $tpl->SetVariable('url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
         $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));

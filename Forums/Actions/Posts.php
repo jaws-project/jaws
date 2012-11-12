@@ -45,6 +45,10 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->Load('Posts.html');
         $tpl->SetBlock('posts');
 
+        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('forum_title', $topic['forum_title']);
+        $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid' => $topic['fid'])));
         $tpl->SetVariable('title', $topic['subject']);
         $tpl->SetVariable('url', $this->GetURLFor('Posts', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
 
