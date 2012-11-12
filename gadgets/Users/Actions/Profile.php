@@ -80,6 +80,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->Load($tplFile);
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',          $tplTitle);
+        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('lbl_fname',      _t('USERS_USERS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lname',      _t('USERS_USERS_LASTNAME'));
         $tpl->SetVariable('lbl_nickname',   _t('USERS_USERS_NICKNAME'));
