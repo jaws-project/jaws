@@ -5,14 +5,19 @@
     <!-- BEGIN post -->
     <div class="forum_post">
       <ul class="post_profile">
-        <li>{username}{nickname}{user_url}</li>
+        <li>{postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a></li>
+        <li><img src="{avatar}" alt="{username}" title="{nickname}" /></li>
         <li>{posts_count_lbl}: {posts_count}</li>
         <li>{registered_date_lbl}: {registered_date}</li>
       </ul>
       <div class="post_meta">{postedby_lbl}{username}{nickname}{user_url}{createtime}</div>
       <div class="post_content">{message}</div>
       <!-- BEGIN update -->
-      <div class="post_update">{updatedby_lbl}{username}{nickname}{user_url}{update_reason}{update_time}</div>
+      <div class="post_update">
+        {updatedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+        {update_reason}
+        {update_time}
+      </div>
       <!-- END update -->
       <!-- BEGIN actions -->
       <div class="post_actions">

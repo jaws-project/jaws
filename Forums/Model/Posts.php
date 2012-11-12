@@ -36,7 +36,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
                 [last_post_id] as topic_last_post_id, [last_post_time] as topic_last_post_time,
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[forums]].[last_topic_id] as forum_last_topic_id,
-                [[users]].[username], [[users]].[nickname], [[users]].[registered_date]
+                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
+                [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
             FROM
                 [[forums_posts]]
             LEFT JOIN
@@ -77,7 +78,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             SELECT
                 [[forums_posts]].[id], [uid], [message], [last_update_uid], [last_update_reason],
                 [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
-                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date
+                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
+                [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
             FROM
                 [[forums_posts]] 
             LEFT JOIN

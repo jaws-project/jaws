@@ -53,6 +53,8 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('url', $this->GetURLFor('Posts', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
 
         $objDate = $GLOBALS['app']->loadDate();
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $usrModel = new Jaws_User;
         foreach ($posts as $pnum => $post) {
             $tpl->SetBlock('posts/post');
             $tpl->SetVariable('title', $topic['subject']);
@@ -65,6 +67,17 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('message',  $this->ParseText($post['message']));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
+            // user's avatar
+            $tpl->SetVariable(
+                'avatar',
+                $usrModel->GetAvatar(
+                    $post['avatar'],
+                    $post['email'],
+                    $post['user_last_update']
+                )
+            );
+
+            // user's profile
             $tpl->SetVariable(
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor(
