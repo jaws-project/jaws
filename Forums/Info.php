@@ -25,14 +25,19 @@ class ForumsInfo extends Jaws_Gadget
      * @access  private
      */
     var $_ACLs = array(
-        'ManageForums',
-        'ManageTopics',
-        'ManagePosts',
+        'AddForum',
+        'EditForum',
+        'LockForum',
+        'DeleteForum',
         'AddTopic',
         'EditTopic',
-        'CloseTopic',
-        'AddPostToClosedTopic',
+        'LockTopic',
+        'AddPostToLockedTopic',
         'DeleteTopic',
+        'AddPost',
+        'EditPost',
+        'EditLockedPost',
+        'DeletePost',
     );
 
 }
