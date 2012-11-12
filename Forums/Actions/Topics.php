@@ -183,8 +183,9 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->ParseBlock('topic/update_reason');
         }
 
-        // button
-        $tpl->SetVariable('btn_title', $btn_title);
+        // buttons
+        $tpl->SetVariable('btn_submit_title', $btn_title);
+        $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
 
         $tpl->ParseBlock('topic');
         return $tpl->Get();

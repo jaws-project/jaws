@@ -237,8 +237,9 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->ParseBlock('post/update_reason');
         }
 
-        // button
-        $tpl->SetVariable('btn_title', $btn_title);
+        // buttons
+        $tpl->SetVariable('btn_submit_title', $btn_title);
+        $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
 
         $tpl->ParseBlock('post');
         return $tpl->Get();

@@ -25,7 +25,7 @@ define('_FA_FORUMS_FASTURL', "نگاشت");
 define('_FA_FORUMS_VIEWS', "بازدیدها");
 define('_FA_FORUMS_REPLIES', "پاسخ ها");
 define('_FA_FORUMS_LOCKED', "بسته شده");
-define('_FA_FORUMS_POSTEDBY', "نوشته شده بدست");
+define('_FA_FORUMS_POSTEDBY', "نویسنده");
 define('_FA_FORUMS_LASTPOST', "واپسین نوشتار");
 define('_FA_FORUMS_TOPICS_SUBJECT', "جستار");
 define('_FA_FORUMS_TOPICS_NEW', "جستار تازه");
