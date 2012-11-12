@@ -52,6 +52,10 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('title', $topic['subject']);
         $tpl->SetVariable('url', $this->GetURLFor('Posts', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
 
+        // date format
+        $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+
         $objDate = $GLOBALS['app']->loadDate();
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
@@ -62,8 +66,9 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('registered_date_lbl',_t('FORUMS_USERS_REGISTERED_DATE'));
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
-            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date']));
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
+            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
+            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
             $tpl->SetVariable('message',  $this->ParseText($post['message']));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
@@ -101,15 +106,23 @@ class Forums_Actions_Posts extends ForumsHTML
                         array('user' => $post['username'])
                     )
                 );
-                $tpl->SetVariable('update_reason', $post['last_update_reason']);
-                $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time']));
+                $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time'], $date_format));
+                $tpl->SetVariable('update_time_iso', $objDate->ToISO($post['last_update_time']));
+                if (!empty($post['last_update_reason'])) {
+                    $tpl->SetBlock('posts/post/update/reason');
+                    $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
+                    $tpl->SetVariable('update_reason', $post['last_update_reason']);
+                    $tpl->ParseBlock('posts/post/update/reason');
+                }
                 $tpl->ParseBlock('posts/post/update');
             }
             // Check User Can Edit Posts
             $tpl->SetBlock('posts/post/actions');
-            $tpl->SetVariable('editpost_lbl',_t('FORUMS_POSTS_EDIT'));
-            $tpl->SetVariable('deletepost_lbl',_t('FORUMS_POSTS_DELETE'));
             if ($pnum == 0) {
+                $tpl->SetVariable('editpost_lbl',_t('FORUMS_TOPICS_EDIT'));
+                $tpl->SetVariable('editpost_title',_t('FORUMS_TOPICS_EDIT_TITLE'));
+                $tpl->SetVariable('deletepost_lbl',_t('FORUMS_TOPICS_DELETE'));
+                $tpl->SetVariable('deletepost_title',_t('FORUMS_TOPICS_DELETE_TITLE'));
                 // topic action links
                 $tpl->SetVariable(
                     'editpost_url',
@@ -126,6 +139,10 @@ class Forums_Actions_Posts extends ForumsHTML
                     )
                 );
             } else {
+                $tpl->SetVariable('editpost_lbl',_t('FORUMS_POSTS_EDIT'));
+                $tpl->SetVariable('editpost_title',_t('FORUMS_POSTS_EDIT_TITLE'));
+                $tpl->SetVariable('deletepost_lbl',_t('FORUMS_POSTS_DELETE'));
+                $tpl->SetVariable('deletepost_title',_t('FORUMS_POSTS_DELETE_TITLE'));
                 // post action links
                 $tpl->SetVariable(
                     'editpost_url',

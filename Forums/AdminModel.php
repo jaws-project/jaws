@@ -31,6 +31,7 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/topics_limit', '15');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/posts_limit',  '10');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'DN d MN Y');
 
         return true;
     }
@@ -62,6 +63,7 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         // Registry keys
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/topics_limit');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/posts_limit');
+        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/date_format');
 
         return true;
     }
