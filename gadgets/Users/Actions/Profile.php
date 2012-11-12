@@ -89,8 +89,12 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_about',      _t('USERS_USERS_ABOUT'));
         $tpl->SetVariable('lbl_occupation', _t('USERS_USERS_OCCUPATION'));
         $tpl->SetVariable('lbl_interests',  _t('USERS_USERS_INTERESTS'));
-        
         $tpl->SetVariablesArray($user);
+        if (!empty($user['url'])) {
+            $tpl->SetBlock('profile/website');
+            $tpl->SetVariable('url', $user['url']);
+            $tpl->ParseBlock('profile/website');
+        }
         $tpl->ParseBlock('profile');
         return $tpl->Get();
     }
