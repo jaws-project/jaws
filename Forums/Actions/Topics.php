@@ -91,10 +91,12 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->ParseBlock('topics/topic');
         }
 
-        $tpl->SetBlock('topics/actions');
-        $tpl->SetVariable('newtopic_lbl', _t('FORUMS_TOPICS_NEW'));
-        $tpl->SetVariable('newtopic_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
-        $tpl->ParseBlock('topics/actions');
+        if ($GLOBALS['app']->Session->Logged() && $this->GetPermission('AddTopic')) {
+            $tpl->SetBlock('topics/actions');
+            $tpl->SetVariable('newtopic_lbl', _t('FORUMS_TOPICS_NEW'));
+            $tpl->SetVariable('newtopic_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
+            $tpl->ParseBlock('topics/actions');
+        }
 
         $tpl->ParseBlock('topics');
         return $tpl->Get();

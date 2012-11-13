@@ -13,6 +13,26 @@
 define('_EN_FORUMS_NAME', "Forums");
 define('_EN_FORUMS_DESCRIPTION', "A simple forum");
 
+/* ACLs */
+define('_EN_FORUMS_ACL_ADDFORUM', "Add forum");
+define('_EN_FORUMS_ACL_EDITFORUM', "Edit forum");
+define('_EN_FORUMS_ACL_LOCKFORUM', "Lock forum");
+define('_EN_FORUMS_ACL_DELETEFORUM', "Delete forum");
+define('_EN_FORUMS_ACL_ADDTOPIC', "Add topic");
+define('_EN_FORUMS_ACL_EDITTOPIC', "Edit topic");
+define('_EN_FORUMS_ACL_EDITOTHERSTOPIC', "Edit others topic");
+define('_EN_FORUMS_ACL_EDITLOCKEDTOPIC', "Edit locked topic");
+define('_EN_FORUMS_ACL_EDITOUTDATEDTOPIC', "Edit outdated topic");
+define('_EN_FORUMS_ACL_LOCKTOPIC', "Lock topic");
+define('_EN_FORUMS_ACL_DELETETOPIC', "Delete topic");
+define('_EN_FORUMS_ACL_ADDPOST', "Add post");
+define('_EN_FORUMS_ACL_ADDPOSTTOLOCKEDTOPIC', "Add post to locked topic");
+define('_EN_FORUMS_ACL_EDITPOST', "Edit post");
+define('_EN_FORUMS_ACL_EDITOTHERSPOST', "Edit others post");
+define('_EN_FORUMS_ACL_EDITPOSTINLOCKEDTOPIC', "Edit post in locked topic");
+define('_EN_FORUMS_ACL_EDITOUTDATEDPOST', "Edit outdated post");
+define('_EN_FORUMS_ACL_DELETEPOST', "Delete post");
+
 /* Commons */
 define('_EN_FORUMS_GROUP', "Group");
 define('_EN_FORUMS_GROUPS', "Groups");

@@ -116,68 +116,92 @@ class Forums_Actions_Posts extends ForumsHTML
                 }
                 $tpl->ParseBlock('posts/post/update');
             }
-            // Check User Can Edit Posts
-            $tpl->SetBlock('posts/post/actions');
-            if ($pnum == 0) {
-                $tpl->SetVariable('editpost_lbl',_t('FORUMS_TOPICS_EDIT'));
-                $tpl->SetVariable('editpost_title',_t('FORUMS_TOPICS_EDIT_TITLE'));
-                $tpl->SetVariable('deletepost_lbl',_t('FORUMS_TOPICS_DELETE'));
-                $tpl->SetVariable('deletepost_title',_t('FORUMS_TOPICS_DELETE_TITLE'));
-                // topic action links
-                $tpl->SetVariable(
-                    'editpost_url',
-                    $this->GetURLFor(
-                        'EditTopic',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])
-                    )
-                );
-                $tpl->SetVariable(
-                    'deletepost_url',
-                    $this->GetURLFor(
-                        'DeleteTopic',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])
-                    )
-                );
-            } else {
-                $tpl->SetVariable('editpost_lbl',_t('FORUMS_POSTS_EDIT'));
-                $tpl->SetVariable('editpost_title',_t('FORUMS_POSTS_EDIT_TITLE'));
-                $tpl->SetVariable('deletepost_lbl',_t('FORUMS_POSTS_DELETE'));
-                $tpl->SetVariable('deletepost_title',_t('FORUMS_POSTS_DELETE_TITLE'));
-                // post action links
-                $tpl->SetVariable(
-                    'editpost_url',
-                    $this->GetURLFor(
-                        'EditPost',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                    )
-                );
-                $tpl->SetVariable(
-                    'deletepost_url',
-                    $this->GetURLFor(
-                        'DeletePost',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                    )
-                );
-            }
-            $tpl->ParseBlock('posts/post/actions');
-            $tpl->ParseBlock('posts/post');
-        }
 
-        $tpl->SetBlock('posts/actions');
-        $tpl->SetVariable('newpost_lbl', _t('FORUMS_POSTS_NEW'));
-        $tpl->SetVariable(
-            'newpost_url',
-            $this->GetURLFor('NewPost', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
-        );
-        $tpl->SetVariable(
-            'locktopic_lbl',
-            $topic['locked']? _t('FORUMS_TOPICS_UNLOCK') : _t('FORUMS_TOPICS_LOCK')
-        );
-        $tpl->SetVariable(
-            'locktopic_url',
-            $this->GetURLFor('LockTopic', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
-        );
-        $tpl->ParseBlock('posts/actions');
+            if ($pnum == 0) {
+                // check permission to edit topic
+                if ($GLOBALS['app']->Session->Logged() &&
+                    $this->GetPermission('EditTopic') &&
+                    (!$topic['locked'] || $this->GetPermission('EditLockedTopic'))
+                ){
+                    // edit/delete topic actions
+                    $tpl->SetBlock('posts/post/actions');
+                    $tpl->SetVariable('editpost_lbl',_t('FORUMS_TOPICS_EDIT'));
+                    $tpl->SetVariable('editpost_title',_t('FORUMS_TOPICS_EDIT_TITLE'));
+                    $tpl->SetVariable('deletepost_lbl',_t('FORUMS_TOPICS_DELETE'));
+                    $tpl->SetVariable('deletepost_title',_t('FORUMS_TOPICS_DELETE_TITLE'));
+                    // topic action links
+                    $tpl->SetVariable(
+                        'editpost_url',
+                        $this->GetURLFor(
+                            'EditTopic',
+                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])
+                        )
+                    );
+                    $tpl->SetVariable(
+                        'deletepost_url',
+                        $this->GetURLFor(
+                            'DeleteTopic',
+                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])
+                        )
+                    );
+                    $tpl->ParseBlock('posts/post/actions');
+
+                }
+            } else {
+                // check permission to edit post
+                if ($GLOBALS['app']->Session->Logged() &&
+                    $this->GetPermission('EditPost') &&
+                    (!$topic['locked'] || $this->GetPermission('EditPostInLockedTopic'))
+                ){
+                    // edit/delete post actions
+                    $tpl->SetBlock('posts/post/actions');
+                    $tpl->SetVariable('editpost_lbl',_t('FORUMS_POSTS_EDIT'));
+                    $tpl->SetVariable('editpost_title',_t('FORUMS_POSTS_EDIT_TITLE'));
+                    $tpl->SetVariable('deletepost_lbl',_t('FORUMS_POSTS_DELETE'));
+                    $tpl->SetVariable('deletepost_title',_t('FORUMS_POSTS_DELETE_TITLE'));
+                    // post action links
+                    $tpl->SetVariable(
+                        'editpost_url',
+                        $this->GetURLFor(
+                            'EditPost',
+                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
+                        )
+                    );
+                    $tpl->SetVariable(
+                        'deletepost_url',
+                        $this->GetURLFor(
+                            'DeletePost',
+                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
+                        )
+                    );
+                    $tpl->ParseBlock('posts/post/actions');
+                }
+            }
+
+            $tpl->ParseBlock('posts/post');
+        } // foreach posts
+
+        // check permission to add new post
+        if ($GLOBALS['app']->Session->Logged() &&
+            $this->GetPermission('AddPost') &&
+            (!$topic['locked'] || $this->GetPermission('AddPostToLockedTopic'))
+        ){
+            $tpl->SetBlock('posts/actions');
+            $tpl->SetVariable('newpost_lbl', _t('FORUMS_POSTS_NEW'));
+            $tpl->SetVariable(
+                'newpost_url',
+                $this->GetURLFor('NewPost', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
+            );
+            $tpl->SetVariable(
+                'locktopic_lbl',
+                $topic['locked']? _t('FORUMS_TOPICS_UNLOCK') : _t('FORUMS_TOPICS_LOCK')
+            );
+            $tpl->SetVariable(
+                'locktopic_url',
+                $this->GetURLFor('LockTopic', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
+            );
+            $tpl->ParseBlock('posts/actions');
+        }
 
         $tpl->ParseBlock('posts');
         return $tpl->Get();
