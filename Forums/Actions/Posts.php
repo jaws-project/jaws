@@ -202,9 +202,7 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         // check permission to lock/unlock topic
-        if ($this->GetPermission('AddPost') &&
-            (!$topic['locked'] || $this->GetPermission('AddPostToLockedTopic'))
-        ){
+        if ($this->GetPermission('LockTopic')){
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable(
                 'action_lbl',
