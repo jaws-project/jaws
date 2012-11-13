@@ -54,10 +54,7 @@ class Forums_Actions_Topics extends ForumsHTML
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
-            $tpl->SetVariable('icon', '');
-            if ($topic['locked']) {
-                $tpl->SetVariable('status', _t('FORUMS_LOCKED'));
-            }
+            $tpl->SetVariable('status', (int)$topic['locked']);
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable(
                 'url',
