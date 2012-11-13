@@ -106,7 +106,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             }
         }
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
         return $result;
     }
 
