@@ -43,6 +43,7 @@ class ForumsInfo extends Jaws_Gadget
         'EditPostInLockedTopic',
         'EditOutdatedPost',
         'DeletePost',
+        'DeletePostInLockedTopic',
     );
 
 }

@@ -92,10 +92,10 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         if ($GLOBALS['app']->Session->Logged() && $this->GetPermission('AddTopic')) {
-            $tpl->SetBlock('topics/actions');
-            $tpl->SetVariable('newtopic_lbl', _t('FORUMS_TOPICS_NEW'));
-            $tpl->SetVariable('newtopic_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
-            $tpl->ParseBlock('topics/actions');
+            $tpl->SetBlock('topics/action');
+            $tpl->SetVariable('action_lbl', _t('FORUMS_TOPICS_NEW'));
+            $tpl->SetVariable('action_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
+            $tpl->ParseBlock('topics/action');
         }
 
         $tpl->ParseBlock('topics');
@@ -200,6 +200,11 @@ class Forums_Actions_Topics extends ForumsHTML
      */
     function UpdateTopic()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $request =& Jaws_Request::getInstance();
         $topic = $request->get(
             array('fid', 'tid', 'subject', 'message', 'update_reason', 'published'),
@@ -263,6 +268,11 @@ class Forums_Actions_Topics extends ForumsHTML
      */
     function DeleteTopic()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid', 'confirm'));
 
@@ -340,6 +350,11 @@ class Forums_Actions_Topics extends ForumsHTML
      */
     function LockTopic()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid'), 'get');
 

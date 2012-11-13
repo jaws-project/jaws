@@ -32,6 +32,7 @@ define('_EN_FORUMS_ACL_EDITOTHERSPOST', "Edit others post");
 define('_EN_FORUMS_ACL_EDITPOSTINLOCKEDTOPIC', "Edit post in locked topic");
 define('_EN_FORUMS_ACL_EDITOUTDATEDPOST', "Edit outdated post");
 define('_EN_FORUMS_ACL_DELETEPOST', "Delete post");
+define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
 
 /* Commons */
 define('_EN_FORUMS_GROUP', "Group");

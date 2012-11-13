@@ -30,6 +30,7 @@ define('_FA_FORUMS_ACL_EDITOTHERSPOST', "ویرایش نوشته‌های دیگ
 define('_FA_FORUMS_ACL_EDITPOSTINLOCKEDTOPIC', "ویرایش نوشته‌ها در جستار بسته شده");
 define('_FA_FORUMS_ACL_EDITOUTDATEDPOST', "ویرایش نوشته‌های دیرین");
 define('_FA_FORUMS_ACL_DELETEPOST', "زدودن نوشته");
+define('_FA_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "زدودن نوشته در جستار بسته شده");
 define('_FA_FORUMS_GROUP', "دسته");
 define('_FA_FORUMS_GROUPS', "دسته‌ها");
 define('_FA_FORUMS_FORUM', "انجمن");
