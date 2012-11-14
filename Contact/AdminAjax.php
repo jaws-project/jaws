@@ -289,7 +289,7 @@ class ContactAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Contact', 'AccessToMailer');
         $request =& Jaws_Request::getInstance();
-        $message = $request->get(0, 'post', false);
+        $message = $request->get(2, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML');
         $gadget->SendEmail($target, $subject, $message, $attachment);
