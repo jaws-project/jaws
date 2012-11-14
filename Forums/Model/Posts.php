@@ -251,4 +251,47 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         return true;
     }
 
+    /**
+     * This function mails the comments to the admin and
+     * to the user when he asks for it.
+     *
+     * @access  public
+     * @param   string  $email          Topic creator's email 
+     * @param   string  $event_subject  Event subject
+     * @param   string  $event_message  Event message
+     * @param   string  $post_link      Link of the post
+     * @param   string  $topic_subject  Topic subject
+     * @param   string  $post_message   Post message content
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function PostNotification($email, $event_subject, $event_message, $post_link, $topic_subject, $post_message)
+    {
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
+
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
+        $tpl->Load('PostNotification.html');
+        $tpl->SetBlock('notification');
+        $tpl->SetVariable('notification', $event_message);
+        $tpl->SetVariable('lbl_subject',  _t('FORUMS_TOPICS_SUBJECT'));
+        $tpl->SetVariable('subject',      $topic_subject);
+        $tpl->SetVariable('lbl_message',  _t('FORUMS_POSTS_MESSAGE'));
+        $tpl->SetVariable('message',      $post_message);
+        $tpl->SetVariable('lbl_url',      _t('FORUMS_TOPIC'));
+        $tpl->SetVariable('url',          $post_link);
+        $tpl->SetVariable('site_name',    $site_name);
+        $tpl->SetVariable('site_url',     $site_url);
+        $tpl->ParseBlock('notification');
+        $template = $tpl->Get();
+
+        require_once JAWS_PATH . '/include/Jaws/Mail.php';
+        $ObjMail = new Jaws_Mail;
+        $ObjMail->SetFrom();
+        $ObjMail->AddRecipient($email);
+        $ObjMail->AddRecipient('', 'cc');
+        $ObjMail->SetSubject($event_subject);
+        $ObjMail->SetBody($template, 'html');
+        return $ObjMail->send();
+    }
+
 }

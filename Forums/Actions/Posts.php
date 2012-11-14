@@ -343,6 +343,13 @@ class Forums_Actions_Posts extends ForumsHTML
             Jaws_Header::Referrer();
         }
 
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic  = $tModel->GetTopic($post['tid'], $post['fid']);
+        if (Jaws_Error::IsError($topic)) {
+            // redirect to referrer page
+            Jaws_Header::Referrer();
+        }
+
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost(
@@ -351,6 +358,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $post['fid'],
                 $post['message']
             );
+            $event_subject = _t('FORUMS_POSTS_NEW_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_POSTS_NEW_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
         } else {
             $result = $pModel->UpdatePost(
@@ -359,6 +368,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $post['message'],
                 $post['update_reason']
             );
+            $event_subject = _t('FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
         }
 
@@ -368,12 +379,27 @@ class Forums_Actions_Posts extends ForumsHTML
             Jaws_Header::Referrer();
         }
 
+        $post_link = $this->GetURLFor(
+            'Posts',
+            array('fid' => $post['fid'], 'tid' => $post['tid']),
+            true,
+            'site_url'
+        );
+        $result = $pModel->PostNotification(
+            $topic['email'],
+            $event_subject,
+            $event_message,
+            $post_link,
+            $topic['subject'],
+            $post['message']
+        );
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
         $post['pid'] = $result;
         // redirect to topic posts page
-        Jaws_Header::Location(
-            $this->GetURLFor('Posts', array('fid' => $post['fid'], 'tid' => $post['tid'])),
-            true
-        );
+        Jaws_Header::Location($post_link);
     }
 
     /**

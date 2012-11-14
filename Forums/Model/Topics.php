@@ -33,7 +33,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[forums]].[last_topic_id] as forum_last_topic_id,
                 [[forums_posts]].[message], [[forums_posts]].[last_update_reason],
-                [[users]].[username], [[users]].[nickname]
+                [[users]].[username], [[users]].[nickname], [[users]].[email]
             FROM
                 [[forums_topics]]
             LEFT JOIN
@@ -56,7 +56,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             'text', 'text',
             'integer',
             'text', 'text',
-            'text', 'text',
+            'text', 'text', 'text',
         );
 
         $result = $GLOBALS['db']->queryRow($sql, $params, $types);

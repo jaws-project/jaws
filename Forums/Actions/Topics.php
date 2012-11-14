@@ -273,19 +273,15 @@ class Forums_Actions_Topics extends ForumsHTML
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid', 'confirm'));
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $pModel->GetTopic($rqst['tid'], $rqst['fid']);
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!empty($rqst['confirm'])) {
-                $result = $pModel->DeleteTopic(
-                    $topic['id'],
-                    $topic['fid'],
-                    $topic['forum_last_topic_id']
-                );
+                $result = $tModel->DeleteTopic($topic['id'], $topic['fid']);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),
