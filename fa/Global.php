@@ -36,9 +36,6 @@ define('_FA_GLOBAL_START_TIME', "زمان شروع");
 define('_FA_GLOBAL_STOP_TIME', "زمان پایان");
 define('_FA_GLOBAL_PREVIEW', "پیش نمایش");
 define('_FA_GLOBAL_EMAIL', "پست الکترونیک");
-define('_FA_GLOBAL_CAPTCHA', "تصویر امنیتی");
-define('_FA_GLOBAL_CAPTCHA_CODE', "تصویر امنیتی");
-define('_FA_GLOBAL_CAPTCHA_SENSITIVE', "تصویر امنیتی(غیر حساس به حروف بزرگ و کوچک)");
 define('_FA_GLOBAL_ON', "در");
 define('_FA_GLOBAL_SEARCH', "جستجو");
 define('_FA_GLOBAL_PUBLISHED', "منتشر شود");
@@ -138,7 +135,6 @@ define('_FA_GLOBAL_DATE_WEEKS', "{0} هفته");
 define('_FA_GLOBAL_DATE_MONTH', "{0} ماه");
 define('_FA_GLOBAL_CONFIRM_DELETE', "آیا با اطمینان قصد حذف {0} را دارید؟");
 define('_FA_GLOBAL_IP', "IP");
-define('_FA_GLOBAL_CAPTCHA_CODE_DESC', "کد موجود در تصویری که مشاهده می کنید را وارد کنید");
 define('_FA_GLOBAL_ACTION_DEFAULT', "عمل پیش فرض");
 define('_FA_GLOBAL_FILE_UPLOADED', "فایل {0} با موفقیت آپلود شد");
 define('_FA_GLOBAL_ERROR_UPLOAD', "خطا هنگام آپلود فایل {0}");
@@ -200,6 +196,13 @@ define('_FA_GLOBAL_ERROR_EVENTS_LISTENER_NOT_DELETED', "گوش-به-زنگ پا�
 define('_FA_GLOBAL_ERROR_EVENTS_SHOUTER_NOT_SHOUTED', "تارزان نمی تواند {0}  فریاد بکشد!");
 define('_FA_GLOBAL_ERROR_URLMAP_MAPDIR_NOT_WRITABLE', "شاخه حاوی نقشه ها ({0}) قابل نوشتن نیست");
 define('_FA_GLOBAL_ERROR_URLMAP_MAPDIR_CANT_CREATE', "ساخت پوشه نقشه ({0}) با مشکل مواجه شد");
+define('_FA_GLOBAL_CAPTCHA', "تصویر امنیتی");
+define('_FA_GLOBAL_CAPTCHA_CODE', "تصویر امنیتی");
+define('_FA_GLOBAL_CAPTCHA_QUESTION', "پرسش کپچا");
+define('_FA_GLOBAL_CAPTCHA_CASE_SENSITIVE', "کپچا (حساس به بندواژه کوچک و بزرگ)");
+define('_FA_GLOBAL_CAPTCHA_CASE_INSENSITIVE', "کپچا (غیرحساس به بندواژه کوچک و بزرگ)");
+define('_FA_GLOBAL_CAPTCHA_CODE_DESC', "کد موجود در تصویری که مشاهده می کنید را وارد کنید");
+define('_FA_GLOBAL_CAPTCHA_QUESTION_DESC', "خواهشمند است به پرسش پاسخ دهید");
 define('_FA_GLOBAL_CAPTCHA_ERROR_NOT_ADDED', "ذخیره تصویر امنیتی با مشکل مواجه شد");
 define('_FA_GLOBAL_CAPTCHA_ERROR_OLD_CAPTCHAS_NOT_DELETED', "پاک کردن تصاویر امنیتی قبلی با مشکل مواجه شد");
 define('_FA_GLOBAL_CAPTCHA_ERROR_FORCED_CAPTCHAS_NOT_DELETED', "پاک کردن تصویر امنیتی حتی با اعمال فشار باز هم با مشکل مواجه شد");
