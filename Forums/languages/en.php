@@ -70,7 +70,11 @@ define('_EN_FORUMS_TOPICS_DELETE_ERROR', "There was a problem while deleting top
 define('_EN_FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', "Forums topic edited - {0}");
 define('_EN_FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE', "The following topic was modified in the forum.");
 define('_EN_FORUMS_TOPICS_LOCK', "Lock Topic");
+define('_EN_FORUMS_TOPICS_LOCK_NOTIFICATION_SUBJECT', "Forums topic locked - {0}");
+define('_EN_FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE', "The following topic was locked in the forum.");
 define('_EN_FORUMS_TOPICS_UNLOCK', "Unlock Topic");
+define('_EN_FORUMS_TOPICS_UNLOCK_NOTIFICATION_SUBJECT', "Forums topic unlocked - {0}");
+define('_EN_FORUMS_TOPICS_UNLOCK_NOTIFICATION_MESSAGE', "The following topic was unlocked in the forum.");
 
 /* Posts */
 define('_EN_FORUMS_POSTS_NEW', "New Post");
@@ -89,6 +93,8 @@ define('_EN_FORUMS_POSTS_DELETE', "Delete Post");
 define('_EN_FORUMS_POSTS_DELETE_TITLE', "Delete post");
 define('_EN_FORUMS_POSTS_DELETE_BUTTON', "Delete post");
 define('_EN_FORUMS_POSTS_DELETE_ERROR', "There was a problem while deleting post");
+define('_EN_FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', "Forums post deleted - {0}");
+define('_EN_FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE', "A post was deleted in the topic.");
 define('_EN_FORUMS_POSTS_MESSAGE', "Message");
 define('_EN_FORUMS_POSTS_EDIT_REASON', "Edit reason");
 define('_EN_FORUMS_POSTS_UPDATEDBY', "Updated by");
