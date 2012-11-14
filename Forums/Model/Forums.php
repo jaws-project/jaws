@@ -99,20 +99,23 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      * Update last_topic_id and count of topics/posts
      *
      * @access  public
-     * @param   int     $fid            Forum ID
-     * @param   int     $last_topic_id  Last topic ID
+     * @param   int     $fid    Forum ID
      * @return  mixed   Returns True if successful or Jaws_Error on failure
      */
-    function UpdateForumStatistics($fid, $last_topic_id = null)
+    function UpdateForumStatistics($fid)
     {
         $params = array();
         $params['fid'] = (int)$fid;
-        $params['last_topic_id'] = $last_topic_id;
-        $last_topic_id = empty($last_topic_id)? '[last_topic_id]' : '{last_topic_id}';
 
         $sql = "
             UPDATE [[forums]] SET
-                [last_topic_id] = $last_topic_id,
+                [last_topic_id] = (
+                    SELECT [[forums_topics]].[id]
+                    FROM [[forums_topics]]
+                    WHERE [[forums_topics]].[fid] = {fid}
+                    ORDER BY [last_post_time] DESC
+                    LIMIT 1
+                ),
                 [topics] = (
                     SELECT COUNT([[forums_topics]].[id])
                     FROM [[forums_topics]]

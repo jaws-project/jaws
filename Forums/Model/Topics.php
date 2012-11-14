@@ -227,12 +227,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Delete topic
      *
      * @access  public
-     * @param   int     $tid            Topic ID
-     * @param   int     $fid            Forum ID
-     * @param   int     $last_topic_id  Forum last topic ID
+     * @param   int     $tid    Topic ID
+     * @param   int     $fid    Forum ID
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeleteTopic($tid, $fid, $last_topic_id)
+    function DeleteTopic($tid, $fid)
     {
         $params = array();
         $params['tid'] = $tid;
@@ -269,7 +268,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
-            $result = $fModel->UpdateForumStatistics($fid, $last_topic_id);
+            $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -279,23 +278,20 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     }
 
     /**
-     * Update last_post_id, last_post_time and count of replies
+     * Update last_post_id, last_post_uid, last_post_time and count of replies
      *
      * @access  public
-     * @param   int         $tid            Topic ID
-     * @param   int         $last_post_id   Last post ID
-     * @param   timestamp   $last_post_time Last post time
-     * @param   timestamp   $first_post_id  First post ID
+     * @param   int         $tid Topic ID       Topic ID
+     * @param   int         $first_post_id      First post ID
+     * @param   timestamp   $first_post_time    First post time
      * @return  mixed       True on successfully or Jaws_Error on failure
      */
-    function UpdateTopicStatistics($tid, $last_post_id, $last_post_time, $first_post_id = null)
+    function UpdateTopicStatistics($tid, $first_post_id = 0, $first_post_time = null)
     {
         $params = array();
         $params['tid'] = (int)$tid;
         $params['first_post_id']   = $first_post_id;
-        $params['first_post_time'] = $last_post_time;
-        $params['last_post_id']    = $last_post_id;
-        $params['last_post_time']  = $last_post_time;
+        $params['first_post_time'] = $first_post_time;
         if (empty($first_post_id)) {
             $first_post_id   = '[first_post_id]';
             $first_post_time = '[first_post_time]';
@@ -304,13 +300,42 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             $first_post_time = '{first_post_time}';
         }
 
+        $sql = '
+            SELECT
+                [id], [uid], [createtime]
+            FROM
+                [[forums_posts]]
+            WHERE
+                [[forums_posts]].[tid] = {tid}
+            ORDER BY
+                [createtime] DESC';
+
+        $types = array('integer', 'integer' , 'timestamp');
+        $last_post = $GLOBALS['db']->queryRow($sql, $params);
+        if (Jaws_Error::IsError($last_post)) {
+            return $last_post;
+        }
+
+        if (empty($last_post)) {
+            $last_post = array(
+                'id' => 0,
+                'uid' => 0,
+                'createtime' => null
+            );
+        }
+
+        $params['last_post_id']   = $last_post['id'];
+        $params['last_post_time'] = $last_post['createtime'];
+        $params['last_post_uid']  = $last_post['uid'];
+
         $sql = "
             UPDATE [[forums_topics]] SET
                 [first_post_id]   = $first_post_id,
                 [first_post_time] = $first_post_time,
-                [last_post_id]    = {last_post_id},
-                [last_post_time]  = {last_post_time},
-                [replies]         = (
+                [last_post_id]   = {last_post_id},
+                [last_post_time] = {last_post_time},
+                [last_post_uid]  = {last_post_uid},
+                [replies]        = (
                     SELECT
                         COUNT([[forums_posts]].[id])
                     FROM

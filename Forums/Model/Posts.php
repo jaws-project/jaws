@@ -159,12 +159,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (!Jaws_Error::IsError($tModel)) {
-            $result = $tModel->UpdateTopicStatistics(
-                $params['tid'],
-                $pid,
-                $params['now'],
-                $new_topic? $pid : null
-            );
+            $result = $tModel->UpdateTopicStatistics($params['tid'], $new_topic? $pid : 0, $params['now']);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -172,10 +167,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {
-            $result = $fModel->UpdateForumStatistics(
-                $fid,
-                $new_topic? $params['tid'] : null
-            );
+            $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -224,15 +216,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Delete post
      *
      * @access  public
-     * @param   int     $pid                Post ID
-     * @param   int     $tid                Topic ID
-     * @param   int     $fid                Forum ID
-     * @param   int     $last_post_id       Topic last post ID
-     * @param   string  $last_post_time     Topic last post time
-     * @param   int     $forum_last_post_id Forum last topic id
+     * @param   int     $pid    Post ID
+     * @param   int     $tid    Topic ID
+     * @param   int     $fid    Forum ID
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeletePost($pid, $tid, $fid, $last_post_id, $last_post_time, $forum_last_post_id)
+    function DeletePost($pid, $tid, $fid)
     {
         $params = array();
         $params['pid'] = (int)$pid;
@@ -248,13 +237,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $result = $tModel->UpdateTopicStatistics($tid, $last_post_id, $last_post_time);
+        $result = $tModel->UpdateTopicStatistics($tid);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
-        $result = $fModel->UpdateForumStatistics($fid, $forum_last_post_id);
+        $result = $fModel->UpdateForumStatistics($fid);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }

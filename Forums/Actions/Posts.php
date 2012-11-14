@@ -23,8 +23,8 @@ class Forums_Actions_Posts extends ForumsHTML
         $rqst = $request->get(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $fModel->GetTopic($rqst['tid'], $rqst['fid']);
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
         }
@@ -36,7 +36,7 @@ class Forums_Actions_Posts extends ForumsHTML
             return false;
         }
 
-        $res = $fModel->UpdateTopicViews($topic['id']);
+        $res = $tModel->UpdateTopicViews($topic['id']);
         if (Jaws_Error::IsError($res)) {
             // do nothing
         }
@@ -117,7 +117,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $tpl->ParseBlock('posts/post/update');
             }
 
-            if ($pnum == 0) {
+            if ($topic['first_post_id'] == $post['id']) {
                 // check permission for edit topic
                 if ($this->GetPermission('EditTopic') &&
                     (!$topic['locked'] || $this->GetPermission('EditLockedTopic'))
@@ -399,14 +399,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!empty($rqst['confirm'])) {
-                $result = $pModel->DeletePost(
-                    $post['id'],
-                    $post['tid'],
-                    $post['fid'],
-                    $post['topic_last_post_id'],
-                    $post['topic_last_post_time'],
-                    $post['forum_last_topic_id']
-                );
+                $result = $pModel->DeletePost($post['id'], $post['tid'], $post['fid']);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(
                         _t('FORUMS_POSTS_DELETE_ERROR'),
