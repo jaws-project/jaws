@@ -205,6 +205,9 @@ class ContactAdminAjax extends Jaws_Gadget_Ajax
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
         $this->CheckSession('Contact', 'UpdateProperties');
+        $request =& Jaws_Request::getInstance();
+        $comments = $request->get(3, 'post', false);
+
         $this->_Model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
