@@ -68,11 +68,18 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         }
 
         // Avatar
-        $user['avatar'] = $usrModel->GetAvatar($user['avatar'],
-                                               $user['email'],
-                                               $user['last_update']);
+        $user['avatar'] = $usrModel->GetAvatar(
+            $user['avatar'],
+            $user['email'],
+            $user['last_update']
+        );
+
         // Gender
         $user['gender'] = _t('USERS_USERS_GENDER_'.$user['gender']);
+
+        // Date of birth
+        $objDate = $GLOBALS['app']->loadDate();
+        $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
 
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
