@@ -31,7 +31,7 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/topics_limit', '15');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/posts_limit',  '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'DN d MN Y');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'd MN Y G:i');
 
         return true;
     }

@@ -32,6 +32,11 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
         $tpl->SetVariable('url', $this->GetURLFor('Forums'));
 
+        // date format
+        $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+
+        // posts per page
         $posts_limit = $GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
@@ -71,7 +76,7 @@ class Forums_Actions_Forums extends ForumsHTML
                         )
                     );
                     $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
-                    $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time']));
+                    $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time'], $date_format));
                     $url_params = array('fid' => $forum['id'], 'tid'=> $forum['last_topic_id']);
                     $last_post_page = floor(($forum['replies'] - 1)/$posts_limit) + 1;
                     if ($last_post_page > 1) {

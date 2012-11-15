@@ -50,6 +50,11 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
+        // date format
+        $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+
+        // posts per page
         $posts_limit = $GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
@@ -75,7 +80,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
-                $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time']));
+                $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
                 $url_params = array('fid' => $topic['fid'], 'tid'=> $topic['id']);
                 $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
                 if ($last_post_page > 1) {
