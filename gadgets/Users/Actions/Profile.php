@@ -81,6 +81,12 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $objDate = $GLOBALS['app']->loadDate();
         $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
 
+        if (!empty($user['registered_date'])) {
+            $user['registered_date'] = $objDate->Format($user['registered_date'], 'd MN Y');
+        } else {
+            $user['registered_date'] = '';
+        }
+
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         // $tplFile is Profile.html or AboutUser.html
@@ -97,6 +103,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_about',      _t('USERS_USERS_ABOUT'));
         $tpl->SetVariable('lbl_occupation', _t('USERS_USERS_OCCUPATION'));
         $tpl->SetVariable('lbl_interests',  _t('USERS_USERS_INTERESTS'));
+        $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
         $tpl->SetVariablesArray($user);
         if (!empty($user['url'])) {
             $tpl->SetBlock('profile/website');
