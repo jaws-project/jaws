@@ -25,7 +25,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [id], [gid], [title], [description], [fast_url], [topics], [posts]
+                [id], [gid], [title], [description], [fast_url], [topics], [posts],
                 [order], [locked], [published]
             FROM [[forums]]
             WHERE [id] = {fid}';
