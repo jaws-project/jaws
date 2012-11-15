@@ -172,9 +172,9 @@ class Jaws_User
 
         if ($account) {
             $sql .= ', [username], [nickname], [email], [superadmin], [concurrent_logins], [logon_hours],
-                       [expiry_date], [status], [last_update]';
+                       [expiry_date], [registered_date], [status], [last_update]';
             $types = array_merge($types, array('text', 'text', 'text', 'boolean', 'integer', 'text',
-                                               'integer', 'integer', 'integer'));
+                                               'integer', 'integer', 'integer', 'integer'));
         }
         if ($personal) {
             $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar],
