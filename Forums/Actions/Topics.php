@@ -395,14 +395,39 @@ class Forums_Actions_Topics extends ForumsHTML
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid'), 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topic = $model->GetTopic($rqst['tid'], $rqst['fid']);
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page
             Jaws_Header::Referrer();
         }
 
-        $result = $model->LockTopic($topic['id'], !$topic['locked']);
+        $result = $tModel->LockTopic($topic['id'], !$topic['locked']);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        if ($topic['locked']) {
+            $event_subject = _t('FORUMS_TOPICS_UNLOCK_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_TOPICS_UNLOCK_NOTIFICATION_MESSAGE');
+        } else {
+            $event_subject = _t('FORUMS_TOPICS_LOCK_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE');
+        }
+
+        $topic_link = $this->GetURLFor(
+            'Posts',
+            array('fid' => $topic['fid'], 'tid' => $topic['id']),
+            true,
+            'site_url'
+        );
+        $result = $tModel->TopicNotification(
+            $event_subject,
+            $event_message,
+            $topic_link,
+            $topic['subject'],
+            $this->ParseText($topic['message'])
+        );
         if (Jaws_Error::IsError($result)) {
             // do nothing
         }
