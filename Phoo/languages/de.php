@@ -52,6 +52,7 @@ define('_DE_PHOO_NUM_PHOTOS_ALBUM', "{0} Bilder im Album");
 define('_DE_PHOO_UPLOAD_PHOTOS', "Fotos hochladen");
 define('_DE_PHOO_EDIT_DESCRIPTION', "Beschreibung bearbeiten");
 define('_DE_PHOO_DELETE_ALBUM_CONFIRM', "Soll das Album wirklich gelöscht werden?");
+define('_DE_PHOO_NOT_FOUND', "Nicht gefunden");
 define('_DE_PHOO_NOT_PUBLISHED', "Nicht veröffentlicht");
 define('_DE_PHOO_START_UPLOADING_PHOTOS', "Beginne mit dem Hochladen von Fotos");
 define('_DE_PHOO_INEXISTENT_ALBUM', "Das Album existiert nicht");

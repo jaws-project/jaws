@@ -17,6 +17,7 @@ define('_DE_BLOG_ACL_ADDENTRIES', "Einträge hinzufügen");
 define('_DE_BLOG_ACL_MODIFYOTHERSENTRIES', "Andere Einträge ändern");
 define('_DE_BLOG_ACL_DELETEENTRIES', "Einträge löschen");
 define('_DE_BLOG_ACL_PUBLISHENTRIES', "Einträge hinzufügen");
+define('_DE_BLOG_ACL_MODIFYPUBLISHEDENTRIES', "Veröffentlichte Einträge editieren");
 define('_DE_BLOG_ACL_MANAGECOMMENTS', "Kommentare verwalten");
 define('_DE_BLOG_ACL_MANAGETRACKBACKS', "Trackbacks verwalten");
 define('_DE_BLOG_ACL_MANAGECATEGORIES', "Kategorien verwalten");
@@ -164,7 +165,7 @@ define('_DE_BLOG_ERROR_CATEGORIES_LINKED', "Könnte nicht Kategorie löschen, we
 define('_DE_BLOG_ERROR_CATEGORY_NOT_DELETED', "Es gab ein Problem beim Löschen der Kategorie");
 define('_DE_BLOG_ERROR_SETTINGS_NOT_SAVED', "Es gab ein Problem beim Speichern der Einstellungen");
 define('_DE_BLOG_ERROR_GETTING_ENTRIES', "Es gab ein Problem beim Holen der Einträge");
-define('_DE_BLOG_ERROR_GETTING_ENTRIES_BYDATE', "Es gab ein Problem beim Holen der Einträge über\'s Datum");
+define('_DE_BLOG_ERROR_GETTING_ENTRIES_BYDATE', "Es gab ein Problem beim Holen der Einträge über's Datum");
 define('_DE_BLOG_ERROR_GETTING_COMMENTS', "Es gab ein Problem beim Holen der Kommentare");
 define('_DE_BLOG_ERROR_GETTING_RECENT_COMMENTS', "Es gab ein Problem beim Holen der neuesten Kommentare");
 define('_DE_BLOG_ERROR_GETTING_FILTERED_COMMENTS', "Es gab ein Problem beim Holen der gefilterten Kommentare");

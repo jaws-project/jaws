@@ -52,7 +52,7 @@ define('_DE_FILEBROWSER_ERROR_NOFILES_UNWRITABLE_DIRECTORY', "Konnte keine Datei
 define('_DE_FILEBROWSER_ERROR_CANT_EDIT_FILE', "Die Datei konnte nicht verändert werden, da sie nicht beschreibbar ist");
 define('_DE_FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS', "Das Verzeichnis existiert nicht");
 define('_DE_FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', "Konnte Verzeichnis {0} nicht öffnen");
-define('_DE_FILEBROWSER_ERROR_CANT_CREATE_DIRECTORY', "Can\'t create {0} nicht erstellen");
+define('_DE_FILEBROWSER_ERROR_CANT_CREATE_DIRECTORY', "Can't create {0} nicht erstellen");
 define('_DE_FILEBROWSER_ERROR_CANT_DELETE_FILE', "Kann Datei {0} nicht löschen");
 define('_DE_FILEBROWSER_ERROR_CANT_DELETE_DIR', "Konnte Verzeichnis {0} nicht löschen");
 define('_DE_FILEBROWSER_ERROR_CANT_RENAME_FILE', "Konnte Datei {0} nicht in {1} umbenennen");

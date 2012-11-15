@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: LinkDump"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -47,6 +47,11 @@ define('_TR_LINKDUMP_GROUPS_LINKS_TYPE', "Bağ Türü");
 define('_TR_LINKDUMP_GROUPS_LINKS_TYPE_NOLINK', "Bağ yok");
 define('_TR_LINKDUMP_GROUPS_LINKS_TYPE_RAWLINK', "Direk bağ");
 define('_TR_LINKDUMP_GROUPS_LINKS_TYPE_MAPPED', "Haritalanmış bağ");
+define('_TR_LINKDUMP_GROUPS_ORDER_TYPE', "Sıralama");
+define('_TR_LINKDUMP_GROUPS_ORDER_BY_RANK', "Dereceye göre");
+define('_TR_LINKDUMP_GROUPS_ORDER_BY_ID', "ID'ye göre");
+define('_TR_LINKDUMP_GROUPS_ORDER_BY_TITLE', "Başlığa göre");
+define('_TR_LINKDUMP_GROUPS_ORDER_BY_CLICKS', "Tıklanma sayısına göre");
 define('_TR_LINKDUMP_GROUPS_DELETE_CONFIRM', "(%s%) grubunu(lar) ve bütün bağlarını silmek istediğinizden emin misiniz?");
 define('_TR_LINKDUMP_LINKS_ADDED', "Bağlantı başarıyla eklendi");
 define('_TR_LINKDUMP_LINKS_ADD_ERROR', "Bağlantı ekleme başarısız oldu");

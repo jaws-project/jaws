@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Tms"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -17,9 +17,11 @@ define('_TR_TMS_ACL_MANAGESHARING', "Tema paylaşımı");
 define('_TR_TMS_ACL_MANAGEREPOSITORIES', "Tema havuzu yönetimi");
 define('_TR_TMS_ACL_MANAGESETTINGS', "Tema Ayarları");
 define('_TR_TMS_ACL_UPLOADTHEME', "Tema yükleme");
+define('_TR_TMS_ACL_DOWNLOADTHEME', "Dizayn indir");
 define('_TR_TMS_INSTALL', "Yükle");
 define('_TR_TMS_UNSHARE', "Paylaşma");
 define('_TR_TMS_SHARE', "Paylaş");
+define('_TR_TMS_DOWNLOAD', "İndir");
 define('_TR_TMS_MAKE_DEFAULT', "Varsayılan Yap");
 define('_TR_TMS_UPLOAD_THEME', "Tema yükle");
 define('_TR_TMS_ONLY_SHOW', "Sadece göster");

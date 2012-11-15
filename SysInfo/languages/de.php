@@ -12,7 +12,10 @@
 
 define('_DE_SYSINFO_NAME', "Systeminformationen");
 define('_DE_SYSINFO_DESCRIPTION', "Informationen über Betriebssystem, PHP, Datenbank und Jaws anzeigen");
-define('_DE_SYSINFO_ACL_MANAGESYSINFO', "Zugang zum SysInfogadget");
+define('_DE_SYSINFO_ACL_SYSINFO', "Zugang zu Systeminformationen");
+define('_DE_SYSINFO_ACL_PHPINFO', "Zugang zu PHP-Einstellungen");
+define('_DE_SYSINFO_ACL_JAWSINFO', "Zugang zu Jawsinformationen");
+define('_DE_SYSINFO_ACL_DIRINFO', "Zugang zu den Verzeichnisrechten");
 define('_DE_SYSINFO_SYSINFO', "Systeminformationen");
 define('_DE_SYSINFO_SYSINFO_DESC', "Informationen über den Host wie z.B. Betriebssystem, WebServer, Datenbank,...");
 define('_DE_SYSINFO_PHPINFO', "PHP-Einstellungen");

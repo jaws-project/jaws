@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Phoo"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -52,6 +52,7 @@ define('_TR_PHOO_NUM_PHOTOS_ALBUM', "Albümdeki resim sayısı {0}");
 define('_TR_PHOO_UPLOAD_PHOTOS', "Fotoğraflar Yükle");
 define('_TR_PHOO_EDIT_DESCRIPTION', "Tanımlamayı Düzenle");
 define('_TR_PHOO_DELETE_ALBUM_CONFIRM', "Bu albümü silmek istediğinizden emin misiniz?");
+define('_TR_PHOO_NOT_FOUND', "Bulunamadı");
 define('_TR_PHOO_NOT_PUBLISHED', "Yayınlanmamış");
 define('_TR_PHOO_START_UPLOADING_PHOTOS', "Fotoğrafları yüklemeye başla");
 define('_TR_PHOO_INEXISTENT_ALBUM', "Albüm oluşturulmamış");

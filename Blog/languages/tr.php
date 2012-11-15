@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Blog"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -17,6 +17,7 @@ define('_TR_BLOG_ACL_ADDENTRIES', "Kayıt ekle");
 define('_TR_BLOG_ACL_MODIFYOTHERSENTRIES', "Diğer kayıtları düzenle");
 define('_TR_BLOG_ACL_DELETEENTRIES', "Kayıtları sil");
 define('_TR_BLOG_ACL_PUBLISHENTRIES', "Kayıtları Yayınla");
+define('_TR_BLOG_ACL_MODIFYPUBLISHEDENTRIES', "Yayımlanmış girdileri değiştirme");
 define('_TR_BLOG_ACL_MANAGECOMMENTS', "Yorumları yönet ");
 define('_TR_BLOG_ACL_MANAGETRACKBACKS', "Trackbak Yönetimi");
 define('_TR_BLOG_ACL_MANAGECATEGORIES', "Kategorileri yönet");
