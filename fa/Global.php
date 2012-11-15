@@ -12,12 +12,12 @@
 
 define('_FA_GLOBAL_LANG_DIRECTION', "rtl");
 define('_FA_GLOBAL_ID', "کد");
-define('_FA_GLOBAL_TITLE', "عنوان");
-define('_FA_GLOBAL_URL', "آدرس اینترنتی");
+define('_FA_GLOBAL_TITLE', "نام");
+define('_FA_GLOBAL_URL', "نشانی اینترنتی");
 define('_FA_GLOBAL_SAVE', "ذخیره {0}");
-define('_FA_GLOBAL_SUBMIT', "ارسال {0}");
+define('_FA_GLOBAL_SUBMIT', "فرستادن {0}");
 define('_FA_GLOBAL_RESET', "ریست {0}");
-define('_FA_GLOBAL_NEW', "{0} جدید");
+define('_FA_GLOBAL_NEW', "{0} تازه");
 define('_FA_GLOBAL_CREATE', "ساخت {0}");
 define('_FA_GLOBAL_UPDATE', "بروزرسانی {0}");
 define('_FA_GLOBAL_CANCEL', "لغو");
@@ -28,11 +28,11 @@ define('_FA_GLOBAL_PROPERTIES', "خصوصیات");
 define('_FA_GLOBAL_UPDATE_PROPERTIES', "ثبت تغییرات");
 define('_FA_GLOBAL_YES', "بلی");
 define('_FA_GLOBAL_NO', "خیر");
-define('_FA_GLOBAL_CREATED', "ایجاد شد");
-define('_FA_GLOBAL_UPDATED', "تغییرات ثبت شد");
+define('_FA_GLOBAL_CREATED', "ساخته شد");
+define('_FA_GLOBAL_UPDATED', "بروزرسانی شد");
 define('_FA_GLOBAL_EDIT', "ویرایش {0}");
-define('_FA_GLOBAL_DELETE', "حذف {0}");
-define('_FA_GLOBAL_START_TIME', "زمان شروع");
+define('_FA_GLOBAL_DELETE', "زدودن {0}");
+define('_FA_GLOBAL_START_TIME', "زمان آغاز");
 define('_FA_GLOBAL_STOP_TIME', "زمان پایان");
 define('_FA_GLOBAL_PREVIEW', "پیش نمایش");
 define('_FA_GLOBAL_EMAIL', "پست الکترونیک");
@@ -55,18 +55,18 @@ define('_FA_GLOBAL_ALWAYS', "همیشه");
 define('_FA_GLOBAL_OPTIONS', "گزینه ها");
 define('_FA_GLOBAL_DESCRIPTION', "توضیحات");
 define('_FA_GLOBAL_INFO', "اطلاعات");
-define('_FA_GLOBAL_VERSION', "نسخه");
+define('_FA_GLOBAL_VERSION', "نگارش");
 define('_FA_GLOBAL_ALL', "همه");
 define('_FA_GLOBAL_HOME', "خانه");
 define('_FA_GLOBAL_IS_SPAM', "اسپم؟");
 define('_FA_GLOBAL_LOADING', "درحال بارگذاری...");
 define('_FA_GLOBAL_MENU', "فهرست");
-define('_FA_GLOBAL_OLDER', "قدیمی ترها");
-define('_FA_GLOBAL_NEWER', "جدیدترها");
-define('_FA_GLOBAL_FIRST', "اولین");
-define('_FA_GLOBAL_PREVIOUS', "قبلی");
-define('_FA_GLOBAL_NEXT', "بعدی");
-define('_FA_GLOBAL_LAST', "آخرین");
+define('_FA_GLOBAL_OLDER', "کهن‌ترها");
+define('_FA_GLOBAL_NEWER', "تازه‌ترها");
+define('_FA_GLOBAL_FIRST', "نخستین");
+define('_FA_GLOBAL_PREVIOUS', "پیشین");
+define('_FA_GLOBAL_NEXT', "پسین");
+define('_FA_GLOBAL_LAST', "واپسین");
 define('_FA_GLOBAL_FROM', "از {0}");
 define('_FA_GLOBAL_TO', "به");
 define('_FA_GLOBAL_ALIGN', "نحوه چیدن {0}");
@@ -78,7 +78,7 @@ define('_FA_GLOBAL_STATUS', "وضعیت");
 define('_FA_GLOBAL_WIDTH', "پهنا");
 define('_FA_GLOBAL_HEIGHT', "بلندی");
 define('_FA_GLOBAL_SPAMCHECK_EMPTY', "چک کردن اسپم");
-define('_FA_GLOBAL_THANKS', "با تشکر");
+define('_FA_GLOBAL_THANKS', "با سپاس");
 define('_FA_GLOBAL_NOGADGET', "بدون ابزار");
 define('_FA_GLOBAL_LOGIN', "ورود");
 define('_FA_GLOBAL_LOGOUT', "خروج");
@@ -86,10 +86,10 @@ define('_FA_GLOBAL_USERNAME', "نام کاربری");
 define('_FA_GLOBAL_PASSWORD', "گذرواژه");
 define('_FA_GLOBAL_MY_ACCOUNT', "مشخصات کاربری");
 define('_FA_GLOBAL_REMEMBER_ME', "مرا بخاطر بسپار");
-define('_FA_GLOBAL_LOGIN_SECURE', "استفاده از سیستم رمزنگاری");
+define('_FA_GLOBAL_LOGIN_SECURE', "بکارگیری سیستم رمزنگاری");
 define('_FA_GLOBAL_LANGUAGE', "زبان");
-define('_FA_GLOBAL_NEXTPAGE', "صفحه بعدی");
-define('_FA_GLOBAL_PREVIOUSPAGE', "صفحه قبلی");
+define('_FA_GLOBAL_NEXTPAGE', "برگه پسین");
+define('_FA_GLOBAL_PREVIOUSPAGE', "برگه پیشین");
 define('_FA_GLOBAL_ERROR_ACCESS_DENIED', "دسترسی شما به این بخش ممکن نیست");
 define('_FA_GLOBAL_ERROR_ACCESS_RESTRICTED', "برای دسترسی به این بخش میبایستی عضو سایت شوید، لطفا <a href=\"{0}\">لاگین</a> کنید و یا <a href=\"{1}\">عضو</a> شوید.");
 define('_FA_GLOBAL_GADGETS_GADGET_CANT_HAVE_NAME_CORE', "برای نام ابزار از کلمه Core نمی‌توان استفاده کرد.");
@@ -101,10 +101,10 @@ define('_FA_GLOBAL_ACL_DEFAULT_ADMIN', "دسترسی به ابزار سمت مد
 define('_FA_GLOBAL_ACL_DEFAULT_REGISTRY', "دسترسی به ریجیستری ابزار");
 define('_FA_GLOBAL_GI_GADGET_NAME', "نام ابزار");
 define('_FA_GLOBAL_GI_GADGET_GADGETNAME', "نام ابزار");
-define('_FA_GLOBAL_GI_GADGET_JAWSVERSION', "نسخه نرم افزار مورد نیاز");
+define('_FA_GLOBAL_GI_GADGET_JAWSVERSION', "نگارش نرم افزار مورد نیاز");
 define('_FA_GLOBAL_GI_GADGET_SECTION', "قسمت ابزار");
 define('_FA_GLOBAL_GI_GADGET_DESC', "توضیحات ابزار");
-define('_FA_GLOBAL_GI_GADGET_VERSION', "نسخه ابزار");
+define('_FA_GLOBAL_GI_GADGET_VERSION', "نگارش ابزار");
 define('_FA_GLOBAL_GI_GADGET_REQUIREDGADGETS', "ابزارهای موردنیاز");
 define('_FA_GLOBAL_GI_GADGET_REQUIRES', "ابزار {0} پیش نیاز نصب ابزار {1} می‌باشد");
 define('_FA_GLOBAL_GI_GADGET_ATTRIBUTES', "ویژگیها");
@@ -208,11 +208,11 @@ define('_FA_GLOBAL_CAPTCHA_ERROR_OLD_CAPTCHAS_NOT_DELETED', "پاک کردن ت�
 define('_FA_GLOBAL_CAPTCHA_ERROR_FORCED_CAPTCHAS_NOT_DELETED', "پاک کردن تصویر امنیتی حتی با اعمال فشار باز هم با مشکل مواجه شد");
 define('_FA_GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH', "نوشته شما با تصویر امنیتی یکسان نمی‌باشد");
 define('_FA_GLOBAL_HTTP_ERROR_TITLE_404', "صفحه دلخواه شما یافت نشد");
-define('_FA_GLOBAL_HTTP_ERROR_CONTENT_404', "صفحه دلخواه شما شما ({0}) یافت نشد، در صورتی که اطمینان دارید این صفحه بایستی وجود داشته باشد با مدیر سایت تماس بگیرید.");
+define('_FA_GLOBAL_HTTP_ERROR_CONTENT_404', "برگه دلخواه شما ({0}) یافت نشد، اگر اطمینان دارید این صفحه بایستی وجود داشته باشد با مدیر سایت تماس بگیرید.");
 define('_FA_GLOBAL_HTTP_ERROR_TITLE_403', "دسترسی غیر ممکن است");
 define('_FA_GLOBAL_HTTP_ERROR_CONTENT_403', "شما مجوز لازم برای مشاهده این صفحه را ندارید");
 define('_FA_GLOBAL_HTTP_ERROR_TITLE_500', "خطای داخلی سیستم");
-define('_FA_GLOBAL_HTTP_ERROR_CONTENT_500', "به دلیل نامشخص انجام درخواست شما با خطا روبرو شد. در صورتی که اطمینان دارید این خطا غیر موجه می‌باشد، لطفا با مدیر سایت تماس بگیرید.");
+define('_FA_GLOBAL_HTTP_ERROR_CONTENT_500', "به دلیل نامشخص انجام درخواست شما با خطا روبرو شد. اگر اطمینان دارید این خطا غیر موجه می‌باشد، لطفا با مدیر سایت تماس بگیرید.");
 define('_FA_GLOBAL_HTTP_ERROR_TITLE_503', "سرویس دهی موقتا امکان پذیر نمی باشد");
 define('_FA_GLOBAL_HTTP_ERROR_CONTENT_503', "با عرض پوزش، بدلیل بروزرسانی و اعمال برخی تغییرات، سرویس دهی موقتاً امکان پذیر نمی باشد.\nلطفاً بعداً مراجعه نمایید.");
 define('_FA_GLOBAL_COMMENTS_STATUS', "وضعیت توضیح");
@@ -224,5 +224,5 @@ define('_FA_GLOBAL_MARK_AS_APPROVED', "مهر تایید");
 define('_FA_GLOBAL_MARK_AS_WAITING', "مهر انتظار");
 define('_FA_GLOBAL_MARK_AS_SPAM', "مهر اسپم");
 define('_FA_GLOBAL_SPAM_POSSIBLE_DUPLICATE_MESSAGE', "پیام تکراری است.");
-define('_FA_GLOBAL_MESSAGE_SENT', "پیام شما با موفقیت ارسال شد.");
-define('_FA_GLOBAL_COMMENTS_RESTRICTED', "برای ارسال نظر میبایستی عضو سایت شوید، لطفا <a href=\"{0}\">لاگین</a> کنید و یا <a href=\"{1}\">عضو</a> شوید.");
+define('_FA_GLOBAL_MESSAGE_SENT', "پیام شما فرستاده شد.");
+define('_FA_GLOBAL_COMMENTS_RESTRICTED', "برای فرستادن دیدگاه میبایستی عضو سایت شوید، لطفا <a href=\"{0}\">لاگین</a> کنید و یا <a href=\"{1}\">عضو</a> شوید.");
