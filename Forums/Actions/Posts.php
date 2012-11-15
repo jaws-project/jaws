@@ -379,6 +379,7 @@ class Forums_Actions_Posts extends ForumsHTML
             Jaws_Header::Referrer();
         }
 
+        $post['pid'] = $result;
         $post_link = $this->GetURLFor(
             'Posts',
             array('fid' => $post['fid'], 'tid' => $post['tid']),
@@ -397,7 +398,6 @@ class Forums_Actions_Posts extends ForumsHTML
             // do nothing
         }
 
-        $post['pid'] = $result;
         // redirect to topic posts page
         Jaws_Header::Location($post_link);
     }

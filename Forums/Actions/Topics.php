@@ -207,6 +207,7 @@ class Forums_Actions_Topics extends ForumsHTML
             array('fid', 'tid', 'subject', 'message', 'update_reason', 'published'),
             'post'
         );
+        $topic['forum_title'] = '';
 
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(
@@ -219,17 +220,25 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
-            $result = $tModel->InsertTopic(
-                $GLOBALS['app']->Session->GetAttribute('user'),
-                $topic['fid'],
-                $topic['subject'],
-                $topic['message'],
-                $topic['published']
-            );
+            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+            $result = $fModel->GetForum($topic['fid']);
+            if (!Jaws_Error::IsError($result) && !empty($result)) {
+                $topic['forum_title'] = $result['title'];
+                $result = $tModel->InsertTopic(
+                    $GLOBALS['app']->Session->GetAttribute('user'),
+                    $topic['fid'],
+                    $topic['subject'],
+                    $topic['message'],
+                    $topic['published']
+                );
+            }
+            $event_subject = _t('FORUMS_TOPICS_NEW_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_TOPICS_NEW_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
-            $result = $tModel->GetTopic($topic['tid']);
-            if (!Jaws_Error::IsError($result)) {
+            $result = $tModel->GetTopic($topic['tid'], $topic['fid']);
+            if (!Jaws_Error::IsError($result) && !empty($result)) {
+                $topic['forum_title'] = $result['forum_title'];
                 $result = $tModel->UpdateTopic(
                     $topic['fid'],
                     $topic['tid'],
@@ -241,6 +250,8 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['update_reason']
                 );
             }
+            $event_subject = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
+            $event_message = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_TOPICS_EDIT_ERROR');
         }
 
@@ -251,11 +262,25 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $topic['tid'] = $result;
-        // redirect to topic posts page
-        Jaws_Header::Location(
-            $this->GetURLFor('Posts', array('fid' => $topic['fid'], 'tid' => $topic['tid'])),
-            true
+        $topic_link = $this->GetURLFor(
+            'Posts',
+            array('fid' => $topic['fid'], 'tid' => $topic['tid']),
+            true,
+            'site_url'
         );
+        $result = $tModel->TopicNotification(
+            $event_subject,
+            $event_message,
+            $topic_link,
+            $topic['subject'],
+            $topic['message']
+        );
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        // redirect to topic posts page
+        Jaws_Header::Location($topic_link);
     }
 
     /**

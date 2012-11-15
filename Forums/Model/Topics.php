@@ -397,4 +397,44 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         return $result;
     }
 
+    /**
+     * Mails add/edit topic notification to the admins
+     *
+     * @access  public
+     * @param   string  $event_subject  Event subject
+     * @param   string  $event_message  Event message
+     * @param   string  $topic_link     Link of the topic
+     * @param   string  $topic_subject  Topic subject
+     * @param   string  $topic_message  Post message content
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function TopicNotification($event_subject, $event_message, $topic_link, $topic_subject, $topic_message)
+    {
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
+
+        $tpl = new Jaws_Template('gadgets/Forums/templates/');
+        $tpl->Load('TopicNotification.html');
+        $tpl->SetBlock('notification');
+        $tpl->SetVariable('notification', $event_message);
+        $tpl->SetVariable('lbl_subject',  _t('FORUMS_TOPICS_SUBJECT'));
+        $tpl->SetVariable('subject',      $topic_subject);
+        $tpl->SetVariable('lbl_message',  _t('FORUMS_POSTS_MESSAGE'));
+        $tpl->SetVariable('message',      $topic_message);
+        $tpl->SetVariable('lbl_url',      _t('FORUMS_TOPIC'));
+        $tpl->SetVariable('url',          $topic_link);
+        $tpl->SetVariable('site_name',    $site_name);
+        $tpl->SetVariable('site_url',     $site_url);
+        $tpl->ParseBlock('notification');
+        $template = $tpl->Get();
+
+        require_once JAWS_PATH . '/include/Jaws/Mail.php';
+        $ObjMail = new Jaws_Mail;
+        $ObjMail->SetFrom();
+        $ObjMail->AddRecipient('', 'to');
+        $ObjMail->SetSubject($event_subject);
+        $ObjMail->SetBody($template, 'html');
+        return $ObjMail->send();
+    }
+
 }

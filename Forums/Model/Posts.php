@@ -252,8 +252,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
     }
 
     /**
-     * This function mails the comments to the admin and
-     * to the user when he asks for it.
+     * Mails add/edit post notification to the admins and topic creator
      *
      * @access  public
      * @param   string  $email          Topic creator's email 
