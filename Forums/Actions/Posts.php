@@ -69,7 +69,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
             $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
             $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
-            $tpl->SetVariable('message',  $this->ParseText($post['message']));
+            $tpl->SetVariable('message',  $this->ParseText($post['message'], 'Forums'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             // user's avatar
@@ -346,6 +346,10 @@ class Forums_Actions_Posts extends ForumsHTML
             array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'),
             'post'
         );
+
+        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
+            $post['message'] = $request->get('message', 'post', false);
+        }
 
         if (empty($post['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(
