@@ -120,6 +120,9 @@ class Forums_Actions_Posts extends ForumsHTML
             if ($topic['first_post_id'] == $post['id']) {
                 // check permission for edit topic
                 if ($this->GetPermission('EditTopic') &&
+                    ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
+                     $this->GetPermission('EditOthersTopic')
+                    ) &&
                     (!$topic['locked'] || $this->GetPermission('EditLockedTopic'))
                 ){
                     $tpl->SetBlock('posts/post/action');
@@ -136,7 +139,11 @@ class Forums_Actions_Posts extends ForumsHTML
                 }
 
                 // check permission for delete topic
-                if ($this->GetPermission('DeleteTopic')) {
+                if ($this->GetPermission('DeleteTopic') &&
+                    ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
+                     $this->GetPermission('DeleteOthersTopic')
+                    )
+                ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_DELETE'));
                     $tpl->SetVariable('action_title',_t('FORUMS_TOPICS_DELETE_TITLE'));
@@ -152,6 +159,9 @@ class Forums_Actions_Posts extends ForumsHTML
             } else {
                 // check permission for edit post
                 if ($this->GetPermission('EditPost') &&
+                    ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
+                     $this->GetPermission('EditOthersPost')
+                    ) &&
                     (!$topic['locked'] || $this->GetPermission('EditPostInLockedTopic'))
                 ){
                     $tpl->SetBlock('posts/post/action');
@@ -169,6 +179,9 @@ class Forums_Actions_Posts extends ForumsHTML
 
                 // check permission for delete post
                 if ($this->GetPermission('DeletePost') &&
+                    ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
+                     $this->GetPermission('DeleteOthersPost')
+                    ) &&
                     (!$topic['locked'] || $this->GetPermission('DeletePostInLockedTopic'))
                 ){
                     $tpl->SetBlock('posts/post/action');
