@@ -11,26 +11,35 @@
  */
 class Jaws_Mail
 {
-    // {{{ Variables
     /**
      * The mailer type
      * @param   string $mailer The mailer type
      */
     var $mailer = '';
 
-    // {{{ Variables
     /**
      * Send email via this email
      * @param   string $gate_email The default site email address
      */
     var $gate_email = '';
 
-    // {{{ Variables
     /**
      * From name
      * @param   string $gate_title The default site email name
      */
     var $gate_title = '';
+
+    /**
+     * site owner email address
+     * @param   string $gate_email The default site email address
+     */
+    var $owner_email = '';
+
+    /**
+     * site owner email title
+     * @param   string $gate_title The default site email name
+     */
+    var $owner_title = '';
 
     /**
      * SMTP email verification?
@@ -109,6 +118,9 @@ class Jaws_Mail
         $this->gate_title = $GLOBALS['app']->Registry->Get('/network/gate_title');
         $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('/network/smtp_vrfy') == 'true';
 
+        $this->owner_email = $GLOBALS['app']->Registry->Get('/config/owner_email');
+        $this->owner_title = $GLOBALS['app']->Registry->Get('/config/owner_name');
+
         $params = array();
         $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('/network/sendmail_path');
         $params['sendmail_args'] = $GLOBALS['app']->Registry->Get('/network/sendmail_args');
@@ -134,9 +146,9 @@ class Jaws_Mail
     function AddRecipient($recipient = '', $inform_type = 'To')
     {
         if (empty($recipient)) {
-            $recipient = $this->gate_email;
-            if (!empty($this->gate_title)) {
-               $recipient = $this->gate_title . ' <'. $recipient. '>';
+            $recipient = $this->owner_email;
+            if (!empty($this->owner_title)) {
+               $recipient = $this->owner_title . ' <'. $recipient. '>';
             }
         }
 
