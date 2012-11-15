@@ -30,8 +30,8 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $limit = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/topics_limit');
-        $model = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topics = $model->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topics = $tModel->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
             return false;
         }
@@ -92,6 +92,18 @@ class Forums_Actions_Topics extends ForumsHTML
 
             $tpl->ParseBlock('topics/topic');
         }
+
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'topics',
+            $page,
+            $limit,
+            $forum['topics'],
+            _t('FORUMS_TOPICS_COUNT', $forum['topics']),
+            'Topics',
+            array('fid' => $forum['id'])
+        );
 
         if ($GLOBALS['app']->Session->Logged() && $this->GetPermission('AddTopic')) {
             $tpl->SetBlock('topics/action');

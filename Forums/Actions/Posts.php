@@ -201,6 +201,18 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->ParseBlock('posts/post');
         } // foreach posts
 
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'posts',
+            $page,
+            $limit,
+            $topic['replies'],
+            _t('FORUMS_POSTS_COUNT', $topic['replies']),
+            'Posts',
+            array('fid' => $topic['fid'], 'tid' => $topic['id'])
+        );
+
         // check permission to add new post
         if ($this->GetPermission('AddPost') &&
             (!$topic['locked'] || $this->GetPermission('AddPostToLockedTopic'))

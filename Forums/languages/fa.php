@@ -71,6 +71,7 @@ define('_FA_FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE', "جستار زیر در ت
 define('_FA_FORUMS_TOPICS_UNLOCK', "بازکردن جستار");
 define('_FA_FORUMS_TOPICS_UNLOCK_NOTIFICATION_SUBJECT', "باز شدن جستار در تالار گفتمان - {0}");
 define('_FA_FORUMS_TOPICS_UNLOCK_NOTIFICATION_MESSAGE', "جستار زیر در تالار گفتمان باز شد.");
+define('_FA_FORUMS_TOPICS_COUNT', "({0}) جستار");
 define('_FA_FORUMS_POSTS_NEW', "نوشته تازه");
 define('_FA_FORUMS_POSTS_NEW_TITLE', "نوشته تازه");
 define('_FA_FORUMS_POSTS_NEW_BUTTON', "افزودن نوشته تازه");
@@ -92,5 +93,6 @@ define('_FA_FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE', "نوشته ای از ت�
 define('_FA_FORUMS_POSTS_MESSAGE', "پیام");
 define('_FA_FORUMS_POSTS_EDIT_REASON', "انگیزه ویرایش");
 define('_FA_FORUMS_POSTS_UPDATEDBY', "بروزرسانی بدست");
+define('_FA_FORUMS_POSTS_COUNT', "({0}) نوشته");
 define('_FA_FORUMS_USERS_POSTS_COUNT', "نوشته ها");
 define('_FA_FORUMS_USERS_REGISTERED_DATE', "زمان پیوستن");

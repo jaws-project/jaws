@@ -77,6 +77,7 @@ define('_EN_FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE', "The following topic was l
 define('_EN_FORUMS_TOPICS_UNLOCK', "Unlock Topic");
 define('_EN_FORUMS_TOPICS_UNLOCK_NOTIFICATION_SUBJECT', "Forums topic unlocked - {0}");
 define('_EN_FORUMS_TOPICS_UNLOCK_NOTIFICATION_MESSAGE', "The following topic was unlocked in the forum.");
+define('_EN_FORUMS_TOPICS_COUNT', "{0} topics");
 
 /* Posts */
 define('_EN_FORUMS_POSTS_NEW', "New Post");

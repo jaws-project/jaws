@@ -25,13 +25,13 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [id], [gid], [title], [description], [fast_url], 
+                [id], [gid], [title], [description], [fast_url], [topics], [posts]
                 [order], [locked], [published]
             FROM [[forums]]
             WHERE [id] = {fid}';
 
         $types = array(
-            'integer', 'integer', 'text', 'text', 'text',
+            'integer', 'integer', 'text', 'text', 'text', 'integer', 'integer',
             'integer', 'boolean', 'boolean'
         );
 
