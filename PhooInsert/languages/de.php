@@ -13,3 +13,4 @@
 define('_DE_PLUGINS_PHOOINSERT_DESCRIPTION', "Ein Bild von Phoo einfügen");
 define('_DE_PLUGINS_PHOOINSERT_INSERT_IMAGE', "Bild einfügen");
 define('_DE_PLUGINS_PHOOINSERT_PHOTO_GALLERY', "Bildergalerie");
+define('_DE_PLUGINS_PHOOINSERT_PHOTO_SELECT', "Bild auswählen");
