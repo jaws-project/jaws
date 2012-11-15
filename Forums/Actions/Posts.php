@@ -392,7 +392,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $event_message,
             $post_link,
             $topic['subject'],
-            $post['message']
+            $this->ParseText($post['message'])
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing
@@ -436,11 +436,28 @@ class Forums_Actions_Posts extends ForumsHTML
                 }
             }
 
-            // redirect to topic posts list
-            Jaws_Header::Location(
-                $this->GetURLFor('Posts', array('fid'=> $post['fid'], 'tid' => $post['tid'])),
-                true
+            $event_subject = _t('FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', $post['forum_title']);
+            $event_message = _t('FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE');
+            $topic_link = $this->GetURLFor(
+                'Posts',
+                array('fid' => $post['fid'], 'tid' => $post['tid']),
+                true,
+                'site_url'
             );
+            $result = $pModel->PostNotification(
+                $post['email'],
+                $event_subject,
+                $event_message,
+                $topic_link,
+                $post['subject'],
+                $this->ParseText($post['message'])
+            );
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
+
+            // redirect to topic posts list
+            Jaws_Header::Location($topic_link);
         } else {
             $tpl = new Jaws_Template('gadgets/Forums/templates/');
             $tpl->Load('DeletePost.html');

@@ -273,7 +273,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $event_message,
             $topic_link,
             $topic['subject'],
-            $topic['message']
+            $this->ParseText($topic['message'])
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing
@@ -316,8 +316,27 @@ class Forums_Actions_Topics extends ForumsHTML
                     Jaws_Header::Referrer();
                 }
 
+                $event_subject = _t('FORUMS_TOPICS_DELETE_NOTIFICATION_SUBJECT', $topic['forum_title']);
+                $event_message = _t('FORUMS_TOPICS_DELETE_NOTIFICATION_MESSAGE');
+                $forum_link = $this->GetURLFor(
+                    'Topics',
+                    array('fid' => $topic['fid']),
+                    true,
+                    'site_url'
+                );
+                $result = $tModel->TopicNotification(
+                    $event_subject,
+                    $event_message,
+                    $forum_link,
+                    $topic['subject'],
+                    $this->ParseText($topic['message'])
+                );
+                if (Jaws_Error::IsError($result)) {
+                    // do nothing
+                }
+
                 // redirect to topics list
-                Jaws_Header::Location($this->GetURLFor('Topics', array('fid'=> $topic['fid'])), true);
+                Jaws_Header::Location($forum_link);
             }
 
             // redirect to topic posts list
