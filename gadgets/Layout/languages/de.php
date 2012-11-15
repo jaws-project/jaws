@@ -24,6 +24,8 @@ define('_DE_LAYOUT_NEW', "Gadget hinzufügen");
 define('_DE_LAYOUT_BACK', "Zurück zum Adminpanel");
 define('_DE_LAYOUT_CHANGE_DW', "Der Ort des Gadgets");
 define('_DE_LAYOUT_THEME', "Design");
+define('_DE_LAYOUT_THEME_LOCAL', "Lokale Themes");
+define('_DE_LAYOUT_THEME_REMOTE', "Weitere Themes");
 define('_DE_LAYOUT_THEME_CHANGED', "Das Design wurde verändert");
 define('_DE_LAYOUT_CONFIRM_DELETE', "Soll das Gadget wirklich gelöscht werden?");
 define('_DE_LAYOUT_REQUESTED_GADGET', "Angefordertes Gadget");

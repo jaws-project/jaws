@@ -40,6 +40,7 @@ define('_TR_SETTINGS_SAVED', "Ayarlarınız kaydedildi.");
 define('_TR_SETTINGS_EDITOR', "Düzenleyici");
 define('_TR_SETTINGS_EDITOR_CLASSIC', "Klasik Jaws metin düzenleyisi");
 define('_TR_SETTINGS_EDITOR_TINYMCE', "Yardımsever metin düzenleyicisi (Word / OpenWriter benzeri)");
+define('_TR_SETTINGS_EDITOR_CKEDITOR', "CKEditor");
 define('_TR_SETTINGS_SHOW_VIEWSITE', "Site Görünüm ikonunu göster");
 define('_TR_SETTINGS_BASIC_SETTINGS', "Basit ayarlar");
 define('_TR_SETTINGS_ADVANCED_SETTINGS', "Gelişmiş ayarlar");

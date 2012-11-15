@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Policy"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -21,13 +21,14 @@ define('_TR_POLICY_ACL_ENCRYPTION', "Şifreleme yönetimi");
 define('_TR_POLICY_ACL_MANAGEENCRYPTIONKEY', "Şifreleme anahtarları yönetimi");
 define('_TR_POLICY_ACL_ANTISPAM', "Spam Koruması yönetimi");
 define('_TR_POLICY_ACL_ADVANCEDPOLICIES', "Gelişmiş ayar yönetimi");
+define('_TR_POLICY_BLOCKED', "Engellendi");
 define('_TR_POLICY_IP_BLOCKING', "IP Engelleme");
 define('_TR_POLICY_IP_ADDRESS', "IP Adresi");
 define('_TR_POLICY_IP_RANGE', "IP Aralığı");
-define('_TR_POLICY_IP_ENABLE_BLOCKING', "IP Engelemeyi Etkileştir");
+define('_TR_POLICY_IP_BLOCK_UNDEFINED', "Tanımlanmamış Ip adreslerini engelleme");
 define('_TR_POLICY_AGENT_BLOCKING', "Araç Engelleme");
 define('_TR_POLICY_AGENT', "Araç");
-define('_TR_POLICY_AGENT_ENABLE_BLOCKING', "Araç Engellemeyi Etkinlertir");
+define('_TR_POLICY_AGENT_BLOCK_UNDEFINED', "Tanımlanmamış robot engelleme");
 define('_TR_POLICY_ENCRYPTION', "Şifreleme");
 define('_TR_POLICY_ENCRYPTION_KEY_AGE', "Anahtar Ömrü");
 define('_TR_POLICY_ENCRYPTION_KEY_LEN', "Anahtar Uzunluğu");

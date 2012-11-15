@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Layout"
- * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>"
+ * "Last-Translator: Uğur YILDIZ <uguryildiz@kocaeli.edu.tr>, C.Tuemer <info@exceptionz.net>"
  * "Language-Team: TR"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -24,6 +24,8 @@ define('_TR_LAYOUT_NEW', "Araç Ekle ");
 define('_TR_LAYOUT_BACK', "Kontrol Paneline Geri Dön");
 define('_TR_LAYOUT_CHANGE_DW', "Bu araç gösterildiği zaman");
 define('_TR_LAYOUT_THEME', "Tema");
+define('_TR_LAYOUT_THEME_LOCAL', "Sunucudaki dizaynlar");
+define('_TR_LAYOUT_THEME_REMOTE', "Diğer dizaynlar");
 define('_TR_LAYOUT_THEME_CHANGED', "Tema değiştirildi");
 define('_TR_LAYOUT_CONFIRM_DELETE', "Bu aracı silmek istediğinizden emin misiniz?");
 define('_TR_LAYOUT_REQUESTED_GADGET', "Seçilen Araç");
