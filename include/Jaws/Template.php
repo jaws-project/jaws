@@ -186,8 +186,9 @@ class Jaws_Template
             Jaws_Error::Fatal('There was a problem while reading the template file: ' . $tplFile);
         }
 
+        $InThemeStr = is_null($InTheme)? 'null' : ($InTheme? 'true' : 'false');
         $content = preg_replace("#<!-- INCLUDE (.*) -->#ime",
-                                "\$this->Load('\\1', false, $InTheme, '$direction', true)",
+                                "\$this->Load('\\1', false, $InThemeStr, '$direction', true)",
                                 $content);
 
         if ($dontLoad) {
