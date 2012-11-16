@@ -78,6 +78,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $usrModel->GetAvatar(
                     $post['avatar'],
                     $post['email'],
+                    128,
                     $post['user_last_update']
                 )
             );
