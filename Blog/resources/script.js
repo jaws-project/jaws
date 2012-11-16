@@ -707,8 +707,9 @@ function startAutoDrafting()
     var meta_keywords  = $('meta_keywords').value;
     var meta_desc      = $('meta_desc').value;
     var allow_comments = $('allow_comments').checked;
+    var trackbacks     = '';
     if ($('trackback_to')) {
-        var trackbacks = $('trackback_to').value;
+        trackbacks = $('trackback_to').value;
     }
     var published      = $('published').value;
     var summary        = getEditorValue('summary_block');
