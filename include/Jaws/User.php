@@ -640,6 +640,7 @@ class Jaws_User
         $params['email']             = $email;
         $params['password']          = Jaws_User::GetHashedPassword($password);
         $params['superadmin']        = (bool)$superadmin;
+        $params['registered_date']   = time();
         $params['status']            = (int)$status;
         $params['last_update']       = time();
         $params['concurrent_logins'] = (int)$concurrent_logins;
@@ -654,10 +655,10 @@ class Jaws_User
         $sql = '
             INSERT INTO [[users]]
                 ([username], [nickname], [email], [passwd], [superadmin],
-                 [concurrent_logins], [logon_hours], [expiry_date], [status], [last_update])
+                 [concurrent_logins], [logon_hours], [expiry_date], [registered_date], [status], [last_update])
             VALUES
                 ({username}, {nickname}, {email}, {password}, {superadmin},
-                 {concurrent_logins}, {logon_hours}, {expiry_date}, {status}, {last_update})';
+                 {concurrent_logins}, {logon_hours}, {expiry_date}, {registered_date}, {status}, {last_update})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
