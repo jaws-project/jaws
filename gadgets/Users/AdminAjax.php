@@ -113,9 +113,10 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
      * @param   string  $group      User group
      * @param   bool    $superadmin Is superadmin
      * @param   int     $status     User status
+     * @param   string  $term       Search term(searched in username, nickname and email)
      * @return  int     Number of users
      */
-    function GetUsersCount($group, $superadmin, $status)
+    function GetUsersCount($group, $superadmin, $status, $term)
     {
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
@@ -125,7 +126,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
         $group  = ($group  == -1)? false : (int)$group;
         $status = ($status == -1)? null  : (int)$status;
 
-        return $this->_UserModel->GetUsersCount($group, $superadmin, $status);
+        return $this->_UserModel->GetUsersCount($group, $superadmin, $status, $term);
     }
 
     /**
