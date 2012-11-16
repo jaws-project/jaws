@@ -68,6 +68,7 @@ class Jaws_Auth_Default
             $info['groups'] = $groups;
             $info['avatar'] = $this->_Model->GetAvatar($info['avatar'],
                                                        $info['email'],
+                                                       48,
                                                        $info['last_update']);
             $info['superadmin'] = $info['superadmin'];
             $info['internal']   = true;

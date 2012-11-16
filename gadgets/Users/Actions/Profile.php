@@ -71,6 +71,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $user['avatar'] = $usrModel->GetAvatar(
             $user['avatar'],
             $user['email'],
+            128,
             $user['last_update']
         );
 

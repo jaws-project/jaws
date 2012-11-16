@@ -265,15 +265,17 @@ class Jaws_User
     /**
      * Get the avatar url
      * @access  public
-     * @param   string   $username   Username
-     * @param   string   $email      Email
+     * @param   string   $avatar    User's avatar
+     * @param   string   $email     User's email address
+     * @param   integer  $size      Avatar size
+     * @param   integer  $time      An integer for force browser to refresh it cache
      * @return  string   Url to avatar image
      */
-    function GetAvatar($avatar, $email, $time = '')
+    function GetAvatar($avatar, $email, $size = 48, $time = '')
     {
         if (empty($avatar) || !file_exists(AVATAR_PATH . $avatar)) {
             require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
-            $uAvatar = Jaws_Gravatar::GetGravatar($email);
+            $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
         } else {
             $uAvatar = $GLOBALS['app']->getDataURL(). "avatar/$avatar";
             $uAvatar.= !empty($time)? "?$time" : '';
@@ -824,10 +826,10 @@ class Jaws_User
             $GLOBALS['app']->Session->SetAttribute('nickname', $nickname);
             $GLOBALS['app']->Session->SetAttribute('email',    $email);
             if (isset($params['avatar'])) {
-                $GLOBALS['app']->Session->SetAttribute('avatar',
-                                                       $this->GetAvatar($v,
-                                                                        $email,
-                                                                        $params['last_update']));
+                $GLOBALS['app']->Session->SetAttribute(
+                    'avatar',
+                    $this->GetAvatar($v, $email, 48, $params['last_update'])
+                );
             }
         }
 
@@ -902,10 +904,10 @@ class Jaws_User
             if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
                 foreach($params as $k => $v) {
                     if ($k == 'avatar') {
-                        $GLOBALS['app']->Session->SetAttribute($k,
-                                                               $this->GetAvatar($v,
-                                                                                $user['email'],
-                                                                                $params['last_update']));
+                        $GLOBALS['app']->Session->SetAttribute(
+                            $k,
+                            $this->GetAvatar($v, $user['email'], 48, $params['last_update'])
+                        );
                     } else {
                         $GLOBALS['app']->Session->SetAttribute($k, $v);
                     }

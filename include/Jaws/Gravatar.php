@@ -26,18 +26,18 @@ class Jaws_Gravatar
         $id = md5($email);
         $rating = $GLOBALS['app']->Registry->Get('/config/gravatar_rating');
         if (Jaws_Error::isError($rating)) {
-            $rating = 'G';
+            $rating = 'g';
         }
 
-        if ($size > 80) {
-            $size = 80;
+        if ($size > 128) {
+            $size = 128;
         } elseif ($size < 0) {
             $size = 0;
         }
 
         $defaultImage = urlencode($GLOBALS['app']->getSiteURL('/'.$defaultImage));
-        $gravatar = 'http://www.gravatar.com/avatar.php?gravatar_id=' . $id. '&amp;rating='. $rating. '&amp;' .
-            'size=' . $size.'&amp;default=' . $defaultImage;
+        $gravatar = 'http://www.gravatar.com/avatar/'. md5(strtolower(trim($email)));
+        $gravatar.= '&amp;r='. $rating. '&amp;s=' . $size.'&amp;d=' . $defaultImage;
 
         return $gravatar;
     }
