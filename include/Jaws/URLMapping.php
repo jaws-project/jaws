@@ -155,10 +155,6 @@ class Jaws_URLMapping
             }
         }
 
-        $path = rawurldecode($path);
-        //If it has a slash at the start or end, remove it
-        $path = trim($path, '/');
-
         //Moment.. first check if we are running on aliases_mode
         if ($this->_use_aliases && $realPath = $this->_Model->GetAliasPath($path)) {
             $path = str_ireplace(BASE_SCRIPT, '', $realPath);
@@ -182,7 +178,7 @@ class Jaws_URLMapping
         }
 
         $params = explode('/', $path);
-        $path = implode('/', array_map('rawurlencode', $params));
+        $path = implode('/', array_map('rawurldecode', $params));
         $matched_but_ignored = false;
         foreach ($this->_map as $gadget => $actions) {
             foreach ($actions as $action => $maps) {
