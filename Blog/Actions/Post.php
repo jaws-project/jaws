@@ -101,7 +101,17 @@ class Blog_Actions_Post extends BlogHTML
 
             $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
             if (empty($reply_to_comment)) {
-                $tpl->SetVariable('comments', $commentsHTML->ShowComments($entry['id'], 0, 0, 1, (int)$allow_comments));
+                $tpl->SetVariable(
+                    'comments',
+                    $commentsHTML->ShowComments(
+                        $entry['id'],
+                        $entry['fast_url'],
+                        0,
+                        0,
+                        1,
+                        (int)$allow_comments
+                    )
+                );
                 if ($allow_comments) {
                     if ($preview_mode) {
                         $tpl->SetVariable('preview', $commentsHTML->ShowPreview());

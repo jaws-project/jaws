@@ -17,7 +17,7 @@ class BlogInfo extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.8.9';
+    var $_Version = '0.9.0';
 
     /**
      * Gadget ACLs

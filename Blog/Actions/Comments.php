@@ -24,7 +24,7 @@ class Blog_Actions_Comments extends BlogHTML
      * @param   array   $data           Array with comments data if null it's loaded from model.
      * @return  string XHTML template content
      */
-    function ShowComments($id, $parent, $level, $thread, $reply_link, $data = null)
+    function ShowComments($id, $fast_url, $parent, $level, $thread, $reply_link, $data = null)
     {
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('Comment.html');
@@ -87,6 +87,7 @@ class Blog_Actions_Comments extends BlogHTML
                 $tpl->SetBlock('comment/reply-link');
                 $tpl->SetVariablesArray($c);
                 if ($reply_link) {
+                    $c['gadget_reference'] = empty($fast_url) ? $c['gadget_reference'] : $fast_url;
                     $tpl->SetVariable('reply-link', '<a href="'.
                                                     $this->GetURLFor('Reply', array('id' => $c['gadget_reference'],
                                                                                     'comment_id' => $c['id'], )).'">'.
@@ -98,7 +99,18 @@ class Blog_Actions_Comments extends BlogHTML
 
                 if (count($c['childs']) > 0) {
                     $tpl->SetBlock('comment/thread');
-                    $tpl->SetVariable('thread', $this->ShowComments($id, $c['id'], $level + 1, $thread, $reply_link, $c['childs']));
+                    $tpl->SetVariable(
+                        'thread',
+                        $this->ShowComments(
+                            $id,
+                            $fast_url,
+                            $c['id'],
+                            $level + 1,
+                            $thread,
+                            $reply_link,
+                            $c['childs']
+                        )
+                    );
                     $tpl->ParseBlock('comment/thread');
                 }
                 $tpl->ParseBlock('comment');
@@ -164,7 +176,8 @@ class Blog_Actions_Comments extends BlogHTML
     {
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('id', 'comment_id'), 'get');
-        return $this->SingleView((int)$post['id'], false, (int)$post['comment_id']);
+        $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');
+        return $postHTML->SingleView($post['id'], false, (int)$post['comment_id']);
     }
 
     /**
