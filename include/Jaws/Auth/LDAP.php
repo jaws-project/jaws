@@ -104,7 +104,7 @@ class Jaws_Auth_LDAP
         $info['concurrent_logins'] = 0;
         $info['email']      = '';
         $info['url']        = '';
-        $info['avatar']     = 'gadgets/Users/images/no-photo.png';
+        $info['avatar']     = 'gadgets/Users/images/photo48px.png';
         $info['language']   = '';
         $info['theme']      = '';
         $info['editor']     = '';

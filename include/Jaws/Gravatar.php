@@ -5,6 +5,7 @@
  * @category   Gadget
  * @package    Core
  * @author     Jon Wood <jon@jellybob.co.uk>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -16,7 +17,7 @@ class Jaws_Gravatar
         if (file_exists($theme['path'] . 'default_avatar.png')) {
             $defaultImage = $theme['url'] . 'default_avatar.png';
         } else {
-            $defaultImage = 'gadgets/Users/images/no-photo.png';
+            $defaultImage = "gadgets/Users/images/photo{$size}px.png";
         }
 
         if (empty($email) || $GLOBALS['app']->Registry->Get('/config/use_gravatar') == 'no') {
