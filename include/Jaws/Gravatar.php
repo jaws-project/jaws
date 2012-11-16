@@ -37,7 +37,7 @@ class Jaws_Gravatar
 
         $defaultImage = urlencode($GLOBALS['app']->getSiteURL('/'.$defaultImage));
         $gravatar = 'http://www.gravatar.com/avatar/'. md5(strtolower(trim($email)));
-        $gravatar.= '&amp;r='. $rating. '&amp;s=' . $size.'&amp;d=' . $defaultImage;
+        $gravatar.= '?d=' . $defaultImage. '&amp;r='. $rating. '&amp;s=' . $size;
 
         return $gravatar;
     }
