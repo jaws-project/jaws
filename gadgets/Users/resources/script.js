@@ -154,7 +154,7 @@ function getUsers(name, offset, reset)
         var total = usersSync.getuserscount($('filter_group').value,
                                             $('filter_type').value,
                                             $('filter_status').value,
-                                            ('filter_term').value);
+                                            $('filter_term').value);
     }
     resetGrid(name, result, total);
 }
