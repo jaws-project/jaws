@@ -19,27 +19,27 @@ class Jaws_Mail
 
     /**
      * Send email via this email
-     * @param   string $gate_email The default site email address
+     * @param   string $gate_email The default site from email address
      */
     var $gate_email = '';
 
     /**
      * From name
-     * @param   string $gate_title The default site email name
+     * @param   string $gate_title The default site from email name
      */
     var $gate_title = '';
 
     /**
-     * site owner email address
-     * @param   string $gate_email The default site email address
+     * default site email address
+     * @param   string $site_email The default site email address
      */
-    var $owner_email = '';
+    var $site_email = '';
 
     /**
-     * site owner email title
-     * @param   string $gate_title The default site email name
+     * site email name
+     * @param   string $site_name The default site email name
      */
-    var $owner_title = '';
+    var $site_name = '';
 
     /**
      * SMTP email verification?
@@ -118,8 +118,8 @@ class Jaws_Mail
         $this->gate_title = $GLOBALS['app']->Registry->Get('/network/gate_title');
         $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('/network/smtp_vrfy') == 'true';
 
-        $this->owner_email = $GLOBALS['app']->Registry->Get('/config/owner_email');
-        $this->owner_title = $GLOBALS['app']->Registry->Get('/config/owner_name');
+        $this->site_email = $GLOBALS['app']->Registry->Get('/config/site_email');
+        $this->site_name  = $GLOBALS['app']->Registry->Get('/config/site_name');
 
         $params = array();
         $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('/network/sendmail_path');
@@ -146,9 +146,9 @@ class Jaws_Mail
     function AddRecipient($recipient = '', $inform_type = 'To')
     {
         if (empty($recipient)) {
-            $recipient = $this->owner_email;
-            if (!empty($this->owner_title)) {
-               $recipient = $this->owner_title . ' <'. $recipient. '>';
+            $recipient = $this->site_email;
+            if (!empty($this->site_name)) {
+               $recipient = $this->site_name . ' <'. $recipient. '>';
             }
         }
 
