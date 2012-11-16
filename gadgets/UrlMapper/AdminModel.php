@@ -353,6 +353,8 @@ class UrlMapperAdminModel extends UrlMapperModel
                                             $eMap['custom_extension'],
                                             $vars_regexps,
                                             $order + 1,
+                                            $map[1],
+                                            isset($map[2])? $map[2] : '',
                                             $now);
                     if (Jaws_Error::IsError($res)) {
                         return $res;
@@ -459,18 +461,25 @@ class UrlMapperAdminModel extends UrlMapperModel
      * Updates map route of the map
      *
      * @access  public
-     * @param   int     $id             Map ID
-     * @param   string  $map            Map to use (foo/bar/{param}/{param2}...)
-     * @param   string  $extension      Extension of map
-     * @param   array   $vars_regexps   Array of regexp validators
-     * @param   int     $order          Sequence number of the map
-     * @param   string  $time           Create/Update time
+     * @param   int     $id                 Map ID
+     * @param   string  $custom_map         Custom_map to use (foo/bar/{param}/{param2}...)
+     * @param   string  $custom_extension   Extension of custom map
+     * @param   array   $vars_regexps       Array of regexp validators
+     * @param   int     $order              Sequence number of the map
+     * @param   string  $map                Map to use (foo/bar/{param}/{param2}...)
+     * @param   string  $extension          Extension of default map
+     * @param   string  $time               Create/Update time
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function UpdateMap($id, $map, $extension, $vars_regexps, $order, $time = '')
+    function UpdateMap($id, $custom_map, $custom_extension, $vars_regexps, $order,
+        $map = '', $map_extension = '', $time = '')
     {
-        if (!empty($extension) && $extension{0} != '.') {
-            $extension = '.'.$extension;
+        if (!empty($map_extension) && $map_extension{0} != '.') {
+            $map_extension = '.'.$map_extension;
+        }
+
+        if (!empty($custom_extension) && $custom_extension{0} != '.') {
+            $custom_extension = '.'.$custom_extension;
         }
 
         if (is_null($vars_regexps)) {
@@ -487,27 +496,44 @@ class UrlMapperAdminModel extends UrlMapperModel
             $vars_regexps = unserialize($result['vars_regexps']);
         }
 
-        // map's regular expression
-        $regexp = $this->GetMapRegExp($map, $vars_regexps);
+        $map_regexp = '';
+        if (empty($map)) {
+            $regexp    = '[regexp]';
+            $extension = '[extension]';
+        } else {
+            $regexp    = '{regexp}';
+            $extension = '{extension}';
+
+            // default map's regular expression
+            $map_regexp = $this->GetMapRegExp($map, $vars_regexps);
+
+        }
+
+        // custom map's regular expression
+        $custom_regexp = $this->GetMapRegExp($custom_map, $vars_regexps);
 
         $params = array();
         $params['id'] = $id;
-        $params['map']       = $map;
-        $params['regexp']    = $regexp;
-        $params['extension'] = $extension;
-        $params['vars_regexps'] = serialize($vars_regexps);
-        $params['order']     = $order;
-        $params['time']      = empty($time)? $GLOBALS['db']->Date() : $time;
+        $params['regexp']           = $map_regexp;
+        $params['extension']        = $map_extension;
+        $params['custom_map']       = $custom_map;
+        $params['custom_regexp']    = $custom_regexp;
+        $params['custom_extension'] = $custom_extension;
+        $params['vars_regexps']     = serialize($vars_regexps);
+        $params['order']            = $order;
+        $params['time']             = empty($time)? $GLOBALS['db']->Date() : $time;
 
-        $sql = '
+        $sql = "
             UPDATE [[url_maps]] SET
-                [custom_map]       = {map},
-                [custom_regexp]    = {regexp},
-                [custom_extension] = {extension},
+                [regexp]           = $regexp,
+                [extension]        = $extension,
+                [custom_map]       = {custom_map},
+                [custom_regexp]    = {custom_regexp},
+                [custom_extension] = {custom_extension},
                 [vars_regexps]     = {vars_regexps},
                 [order]            = {order},
                 [updatetime]       = {time}
-            WHERE [id] = {id}';
+            WHERE [id] = {id}";
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
