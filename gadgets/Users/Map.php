@@ -13,7 +13,12 @@ $maps[] = array('LoginBox',
                 'user/login/referrer/{referrer}',
                 '',
                 array('referrer' => '.*'));
-$maps[] = array('Profile', 'users/{user}');
+$maps[] = array(
+    'Profile',
+    'users/{user}',
+    '',
+    array('user' => '[[:alnum:]-_\.\@]+')
+);
 $maps[] = array('LoginBox', 'user/login');
 $maps[] = array('Registration', 'user/registration');
 $maps[] = array('Registered', 'user/registered');
