@@ -55,9 +55,19 @@ class Users_Actions_Registration extends UsersHTML
 
         $result  = '';
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'email', 'nickname', 'password', 'password_check',
-                                    'fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day','url'),
-                              'post');
+        $post = $request->get(
+            array(
+                'username', 'email', 'nickname', 'password', 'password_check',
+                'fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day',
+                'url'
+            ),
+            'post'
+        );
+
+        // validate url
+        if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {
+            $post['url'] = '';
+        }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
         $resCheck = $mPolicy->CheckCaptcha();

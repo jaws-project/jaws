@@ -71,7 +71,7 @@ class Users_Actions_Personal extends UsersHTML
         $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
         $tpl->SetVariable('lbl_url',    _t('GLOBAL_URL'));
-        $tpl->SetVariable('url',        $personal['url']);
+        $tpl->SetVariable('url',        empty($personal['url'])? 'http://' : $personal['url']);
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Personal.Response')) {
             $tpl->SetBlock('personal/response');
@@ -103,7 +103,15 @@ class Users_Actions_Personal extends UsersHTML
 
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url'), 'post');
+        $post = $request->get(
+            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url'),
+            'post'
+        );
+
+        // validate url
+        if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {
+            $post['url'] = '';
+        }
 
         $post['dob'] = null;
         if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
