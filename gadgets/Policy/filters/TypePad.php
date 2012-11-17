@@ -144,7 +144,7 @@ class TypePad
             $method
         );
 
-        require_once 'HTTP/Request.php';
+        require_once PEAR_PATH. 'HTTP/Request.php';
         $options = array();
         $timeout = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');
         $options['timeout'] = $timeout;

@@ -186,7 +186,7 @@ class LanguagesAdminHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $lang = $request->get('lang', 'get');
 
-        require_once "File/Archive.php"; 
+        require_once PEAR_PATH. "File/Archive.php"; 
         $tmpDir = sys_get_temp_dir();
         $tmpFileName = "$lang.tar";
         $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;

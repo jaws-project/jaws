@@ -142,7 +142,7 @@ class PageRank
      */
     function getURL($url)
     {
-        require_once 'HTTP/Request.php';
+        require_once PEAR_PATH. 'HTTP/Request.php';
         $httpRequest = new HTTP_Request($url);
         $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
         $resRequest  = $httpRequest->sendRequest();
