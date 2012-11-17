@@ -50,7 +50,7 @@ class FileBrowserSearchHook
         }
         //FIXME: exclude pattern
 
-        require_once 'File/Find.php';
+        require_once PEAR_PATH. 'File/Find.php';
         $path  = JAWS_DATA . 'files';
         $files = &File_Find::search('/'.$pattern.'/i', $path, 'perl', false, 'both');
 

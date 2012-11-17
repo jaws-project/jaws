@@ -306,7 +306,7 @@ class SimpleSiteModel extends Jaws_Gadget_Model
                           );
         
         
-        require_once 'HTTP/Request.php';
+        require_once PEAR_PATH. 'HTTP/Request.php';
 
         $httpRequest = new HTTP_Request();
         foreach($sengines as $engine => $method) {

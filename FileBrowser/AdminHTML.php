@@ -323,7 +323,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
         $post = $request->get(array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'), 'post');
         $uploaddir = $model->GetFileBrowserRootDir() . $post['path'];
 
-        require_once 'File/Util.php';
+        require_once PEAR_PATH. 'File/Util.php';
         $uploaddir = File_Util::realpath($uploaddir) . DIRECTORY_SEPARATOR;
 
         if (!File_Util::pathInRoot($uploaddir, $model->GetFileBrowserRootDir())) {

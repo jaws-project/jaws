@@ -6,7 +6,7 @@
  * @copyright     2007-2012 Ali Fazelzadeh
  * @license       http://www.gnu.org/copyleft/lesser.html
  */
-require_once 'XML/Parser.php';
+require_once PEAR_PATH. 'XML/Parser.php';
 
 class XML_Feed extends XML_Parser
 {
@@ -56,7 +56,7 @@ class XML_Feed extends XML_Parser
      */
     function setInputFile($file)
     {
-        require_once 'HTTP/Request.php';
+        require_once PEAR_PATH. 'HTTP/Request.php';
         $httpRequest = new HTTP_Request($file, $this->_params);
         $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
         $resRequest  = $httpRequest->sendRequest();

@@ -797,7 +797,7 @@ class PhooAdminModel extends PhooModel
         $cleanFiles = array();
         $tmpDir     = sys_get_temp_dir();
         $counter    = 1;
-        require_once 'File/Archive.php';
+        require_once PEAR_PATH. 'File/Archive.php';
         foreach($files as $key => $file) {
             if (empty($file['tmp_name'])) {
                 continue;

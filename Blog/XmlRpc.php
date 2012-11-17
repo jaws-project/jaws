@@ -18,7 +18,7 @@ require '../../config/JawsConfig.php';
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
 require_once JAWS_PATH . 'include/Jaws/User.php';
-require_once JAWS_PATH . 'libraries/pear/' . 'XML/RPC/Server.php';
+require_once PEAR_PATH . 'XML/RPC/Server.php';
 
 /**
  * Get Blog ACL permission for a specified user

@@ -741,7 +741,7 @@ class BlogAdminModel extends BlogModel
         $blog_name = urlencode(stripslashes($GLOBALS['app']->Registry->Get('/config/site_name')));
         $permalink = urlencode($permalink);
 
-        require_once 'HTTP/Request.php';
+        require_once PEAR_PATH. 'HTTP/Request.php';
 
         $options = array();
         $timeout = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');

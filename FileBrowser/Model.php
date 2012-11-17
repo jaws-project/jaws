@@ -26,7 +26,7 @@ class FileBrowserModel extends Jaws_Gadget_Model
             $root_dir = JAWS_DATA . $root_dir;
             $root_dir = str_replace('..', '', $root_dir);
 
-            require_once 'File/Util.php';
+            require_once PEAR_PATH. 'File/Util.php';
             $root_dir = File_Util::realpath($root_dir) . DIRECTORY_SEPARATOR;
             if (!File_Util::pathInRoot($root_dir, JAWS_DATA)) {
                 Jaws_Error::Fatal(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'), __FILE__, __LINE__);
