@@ -211,10 +211,14 @@ class Users_Actions_Registration extends UsersHTML
             return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
         }
 
-        if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->GetURLFor('LoginBox'));
+        if ($result) {
+            if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {
+                return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->GetURLFor('LoginBox'));
+            } else {
+                return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
+            }
         } else {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
+            return _t('USERS_ACTIVATION_KEY_NOT_VALID');
         }
     }
 
