@@ -37,6 +37,7 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
 }
 
 define('JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
 
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');

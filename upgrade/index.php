@@ -38,6 +38,11 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
 }
 
 require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
+
+if (!defined('PEAR_PATH')) {
+define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
+}
+
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 if (!defined('JAWS_BASE_DATA')) {
