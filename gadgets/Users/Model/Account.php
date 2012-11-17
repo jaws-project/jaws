@@ -46,7 +46,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        $user = $jUser->GetUserByKey($key);
+        $user = $jUser->GetUserByEmailVerifyKey($key);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }

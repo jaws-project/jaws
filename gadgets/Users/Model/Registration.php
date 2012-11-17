@@ -42,25 +42,24 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $password = Text_Password::create(8, 'pronounceable', 'alphanumeric');
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
 
         //We already have a $username in the DB?
         $info = $jUser->GetUser($username);
         if (Jaws_Error::IsError($info) || isset($info['username'])) {
-            return _t('USERS_USERS_ALREADY_EXISTS', $xss->filter($username));
+            return _t('USERS_USERS_ALREADY_EXISTS', $username);
         }
 
         if ($GLOBALS['app']->Registry->Get('/config/anon_repetitive_email') == 'false') {
             if ($jUser->UserEmailExists($user_email)) {
-                return _t('USERS_EMAIL_ALREADY_EXISTS', $xss->filter($user_email));
+                return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
             }
         }
 
         $user_enabled = ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser($username,
-                                   $xss->filter($nickname),
+                                   $nickname,
                                    $user_email,
                                    $password,
                                    false,
@@ -99,7 +98,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl = new Jaws_Template('gadgets/Users/templates/');
             $tpl->Load('UserNotification.txt');
             $tpl->SetBlock('Notification');
-            $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $xss->filter($nickname)));
+            $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $nickname));
 
             if ($random === true) {
                 switch ($activation) {
@@ -118,7 +117,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
                 $tpl->SetBlock('Notification/Password');
                 $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
-                $tpl->SetVariable('password', $xss->filter($password));
+                $tpl->SetVariable('password', $password);
                 $tpl->ParseBlock('Notification/Password');
             } elseif ($activation == 'user') {
                 $tpl->SetVariable('message', _t('USERS_REGISTER_ACTIVATION_MAIL_MSG'));
@@ -132,21 +131,26 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->ParseBlock('Notification/IP');
 
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $xss->filter($username));
+            $tpl->SetVariable('username', $username);
 
             if ($activation == 'user') {
-                $secretKey = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-                $result = $jUser->UpdateVerificationKey($user_id, $secretKey);
-                if ($result === true) {
-                    $tpl->SetBlock('Notification/Activation');
-                    $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
-                    $tpl->SetVariable('activation_link',
-                                      $GLOBALS['app']->Map->GetURLFor('Users', 'ActivateUser',
-                                                                      array('key' => $secretKey), true, 'site_url'));
-                    $tpl->ParseBlock('Notification/Activation');
-                } else {
+                $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
+                if (Jaws_Error::IsError($verifyKey)) {
                     $delete_user = true;
                     $message = _t('GLOBAL_ERROR_QUERY_FAILED');
+                } else {
+                    $tpl->SetBlock('Notification/Activation');
+                    $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
+                    $tpl->SetVariable(
+                        'activation_link',
+                        $GLOBALS['app']->Map->GetURLFor(
+                            'Users',
+                            'ActivateUser',
+                            array('key' => $verifyKey),
+                            true, 'site_url'
+                        )
+                    );
+                    $tpl->ParseBlock('Notification/Activation');
                 }
             }
 
@@ -167,10 +171,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 if (Jaws_Error::IsError($mresult)) {
                     if ($activation == 'user') {
                         $delete_user = true;
-                        $message = _t('USERS_REGISTER_ACTIVATION_SENDMAIL_FAILED', $xss->filter($user_email));
+                        $message = _t('USERS_REGISTER_ACTIVATION_SENDMAIL_FAILED', $user_email);
                     } elseif ($random === true) {
                         $delete_user = true;
-                        $message = _t('USERS_REGISTER_RANDOM_SENDMAIL_FAILED', $xss->filter($user_email));
+                        $message = _t('USERS_REGISTER_RANDOM_SENDMAIL_FAILED', $user_email);
                     }
                 }
             }
@@ -185,21 +189,20 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $site_author));
             $tpl->SetVariable('message', _t('USERS_REGISTER_ADMIN_MAIL_MSG'));
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $xss->filter($username));
+            $tpl->SetVariable('username', $username);
             $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-            $tpl->SetVariable('nickname', $xss->filter($nickname));
+            $tpl->SetVariable('nickname', $nickname);
             $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-            $tpl->SetVariable('email', $xss->filter($user_email));
+            $tpl->SetVariable('email', $user_email);
             $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
             if ($activation == 'admin') {
-                $secretKey = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-                $result = $jUser->UpdateVerificationKey($user_id, $secretKey);
-                if ($result === true) {
+                $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
+                if (!Jaws_Error::IsError($verifyKey)) {
                     $tpl->SetBlock('Notification/Activation');
                     $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
                     $tpl->SetVariable('activation_link', $GLOBALS['app']->Map->GetURLFor('Users', 'ActivateUser',
-                                                                array('key' => $secretKey), true, 'site_url'));
+                                                                array('key' => $verifyKey), true, 'site_url'));
                     $tpl->ParseBlock('Notification/Activation');
                 }
             }
@@ -219,7 +222,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 if (Jaws_Error::IsError($mresult) && $activation == 'admin') {
                     // do nothing
                     //$delete_user = true;
-                    //$message = _t('USERS_ACTIVATE_NOT_ACTIVATED_SENDMAIL', $xss->filter($user_email));
+                    //$message = _t('USERS_ACTIVATE_NOT_ACTIVATED_SENDMAIL', $user_email);
                 }
             }
         }
@@ -254,49 +257,53 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         foreach($uInfos as $info) {
-            $secretKey = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-            $result = $userModel->UpdateVerificationKey($info['id'], $secretKey);
-            if ($result === true) {
-                $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+            $verifyKey = $userModel->UpdatePasswordVerifyKey($info['id']);
+            if (Jaws_Error::IsError($verifyKey)) {
+                $verifyKey->SetMessage(_t('GLOBAL_ERROR_QUERY_FAILED'));
+                return $verifyKey;
+            }
 
-                $site_url    = $GLOBALS['app']->getSiteURL('/');
-                $site_name   = $GLOBALS['app']->Registry->Get('/config/site_name');
+            $site_url    = $GLOBALS['app']->getSiteURL('/');
+            $site_name   = $GLOBALS['app']->Registry->Get('/config/site_name');
 
-                $tpl = new Jaws_Template('gadgets/Users/templates/');
-                $tpl->Load('RecoverPassword.txt');
-                $tpl->SetBlock('RecoverPassword');
-                $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-                $tpl->SetVariable('username', $xss->filter($info['username']));
-                $tpl->SetVariable('nickname', $xss->filter($info['nickname']));
-                $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
-                $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-                $tpl->SetVariable('url',
-                                  $GLOBALS['app']->Map->GetURLFor('Users', 'ChangePassword',
-                                                                  array('key' => $secretKey), true, 'site_url'));
-                $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-                $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-                $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
-                $tpl->SetVariable('site-name', $site_name);
-                $tpl->SetVariable('site-url', $site_url);
-                $tpl->ParseBlock('RecoverPassword');
+            $tpl = new Jaws_Template('gadgets/Users/templates/');
+            $tpl->Load('RecoverPassword.txt');
+            $tpl->SetBlock('RecoverPassword');
+            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+            $tpl->SetVariable('username', $info['username']);
+            $tpl->SetVariable('nickname', $info['nickname']);
+            $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
+            $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+            $tpl->SetVariable(
+                'url',
+                $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'ChangePassword',
+                    array('key' => $verifyKey),
+                    true,
+                    'site_url'
+                )
+            );
+            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+            $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+            $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+            $tpl->SetVariable('site-name', $site_name);
+            $tpl->SetVariable('site-url', $site_url);
+            $tpl->ParseBlock('RecoverPassword');
 
-                $message = $tpl->Get();            
-                $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
+            $message = $tpl->Get();            
+            $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
 
-                require_once JAWS_PATH . 'include/Jaws/Mail.php';
-                $mail = new Jaws_Mail;
-                $mail->SetFrom();
-                $mail->AddRecipient($user_email);
-                $mail->SetSubject($subject);
-                $mail->SetBody(Jaws_Gadget::ParseText($message, 'Users'));
-                $mresult = $mail->send();
-                if (Jaws_Error::IsError($mresult)) {
-                    return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
-                } else {
-                    return true;
-                }
-            } else {
-                return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
+            require_once JAWS_PATH . 'include/Jaws/Mail.php';
+            $mail = new Jaws_Mail;
+            $mail->SetFrom();
+            $mail->AddRecipient($user_email);
+            $mail->SetSubject($subject);
+            $mail->SetBody(Jaws_Gadget::ParseText($message, 'Users'));
+            $mresult = $mail->send();
+            if (Jaws_Error::IsError($mresult)) {
+                $mresult->SetMessage(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
+                return $mresult;
             }
         }
     }
@@ -312,7 +319,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        $user = $jUser->GetUserByKey($key);
+        $user = $jUser->GetUserByEmailVerifyKey($key);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }

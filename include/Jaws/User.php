@@ -178,9 +178,9 @@ class Jaws_User
         }
         if ($personal) {
             $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar],
-                       [privacy], [about], [occupation], [interests]';
+                       [privacy], [about], [experiences], [occupations], [interests]';
             $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text',
-                                               'boolean', 'text', 'text', 'text'));
+                                               'boolean', 'text', 'text', 'text', 'text'));
         }
         if ($preferences) {
             $sql .= ', [language], [theme], [editor], [timezone]';
@@ -233,13 +233,13 @@ class Jaws_User
     }
 
     /**
-     * Get the info of an user(s) by the email address
+     * Get the info of an user(s) by the email verification key
      *
      * @access  public
-     * @param   int     $email  The email address
+     * @param   string  $key  Verification key
      * @return  mixed   Returns an array with the info of the user(s) and false on error
      */
-    function GetUserByKey($key)
+    function GetUserByEmailVerifyKey($key)
     {
         $params = array();
         $params['key'] = trim($key);
@@ -250,7 +250,31 @@ class Jaws_User
             FROM
                 [[users]]
             WHERE
-                [verification_key] = {key}';
+                [email_verify_key] = {key}';
+
+        $types = array('integer', 'text', 'text', 'text', 'integer');
+        return $GLOBALS['db']->queryRow($sql, $params, $types);
+    }
+
+    /**
+     * Get the info of an user(s) by the password verification key
+     *
+     * @access  public
+     * @param   string  $key  Verification key
+     * @return  mixed   Returns an array with the info of the user(s) and false on error
+     */
+    function GetUserByPasswordVerifyKey($key)
+    {
+        $params = array();
+        $params['key'] = trim($key);
+
+        $sql = '
+            SELECT
+                [id], [username], [nickname], [email], [status]
+            FROM
+                [[users]]
+            WHERE
+                [passwd_verify_key] = {key}';
 
         $types = array('integer', 'text', 'text', 'text', 'integer');
         return $GLOBALS['db']->queryRow($sql, $params, $types);
@@ -784,7 +808,8 @@ class Jaws_User
         $params['email']             = $email;
         $params['password']          = Jaws_User::GetHashedPassword($password);
         $params['superadmin']        = (bool)$superadmin;
-        $params['verification_key']  = '';
+        $params['email_verify_key']  = '';
+        $params['passwd_verify_key'] = '';
         $params['status']            = (int)$status;
         $params['last_update']       = time();
         $params['concurrent_logins'] = (int)$concurrent_logins;
@@ -810,7 +835,7 @@ class Jaws_User
                 [nickname] = {nickname},
                 [email] = {email} ';
         if (!is_null($password) && $password !== '') {
-            $sql .= ', [passwd] = {password} ';
+            $sql .= ', [passwd] = {password}, [password_verify_key] = {password_verify_key} ';
         }
         if (!is_null($superadmin)) {
             $sql .= ', [superadmin] = {superadmin} ';
@@ -829,7 +854,7 @@ class Jaws_User
         }
         if (!is_null($status)) {
             if ($params['status'] == 1) {
-                $sql .= ', [verification_key] = {verification_key} ';
+                $sql .= ', [email_verify_key] = {email_verify_key} ';
             }
             $sql .= ', [status] = {status} ';
         }
@@ -1256,34 +1281,59 @@ class Jaws_User
     }
 
     /**
-     * Update the activation key of a certain user with a given (or auto-generated)
-     * secret key (MD5)
+     * Update the email verification key of a certain user
      *
      * @access  public
      * @param   int     $uid  User's ID
-     * @param   string  $key  (Optional) Secret key
-     * @return  bool    Success/Failure
+     * @return  mixed   Generated key if success or Jaws_Error on failure
      */
-    function UpdateVerificationKey($uid, $key = '')
+    function UpdateEmailVerifyKey($uid)
     {
-        if (empty($key)) {
-            $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-        }
-
+        $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
         $params = array();
         $params['key'] = $key;
-        $params['id']  = (int)$uid;
+        $params['uid'] = (int)$uid;
 
         $sql = '
             UPDATE [[users]] SET
-                [verification_key] = {key}
-            WHERE [id] = {id}';
+                [email_verify_key] = {key}
+            WHERE
+                [id] = {uid}';
+
         $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::isError($result)) {
+        if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        return true;
+        return $key;
+    }
+
+    /**
+     * Update the change password verification key of a certain user
+     *
+     * @access  public
+     * @param   int     $uid  User's ID
+     * @return  mixed   Generated key if success or Jaws_Error on failure
+     */
+    function UpdatePasswordVerifyKey($uid)
+    {
+        $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
+        $params = array();
+        $params['key'] = $key;
+        $params['uid'] = (int)$uid;
+
+        $sql = '
+            UPDATE [[users]] SET
+                [passwd_verify_key] = {key}
+            WHERE
+                [id] = {uid}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return $key;
     }
 
 }

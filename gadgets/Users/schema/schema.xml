@@ -29,6 +29,12 @@
         </field>
 
         <field>
+            <name>passwd_verify_key</name>
+            <type>text</type>
+            <length>48</length>
+        </field>
+
+        <field>
             <name>superadmin</name>
             <type>boolean</type>
             <default>false</default>
@@ -53,7 +59,7 @@
         </field>
 
         <field>
-            <name>verification_key</name>
+            <name>email_verify_key</name>
             <type>text</type>
             <length>48</length>
         </field>
@@ -100,21 +106,30 @@
         </field>
 
         <field>
-            <name>occupation</name>
+            <name>experiences</name>
             <type>text</type>
-            <length>255</length>
+        </field>
+
+        <field>
+            <name>occupations</name>
+            <type>text</type>
         </field>
 
         <field>
             <name>interests</name>
             <type>text</type>
-            <length>255</length>
         </field>
 
         <field>
             <name>privacy</name>
             <type>boolean</type>
             <default>true</default>
+        </field>
+
+        <field>
+            <name>agreement</name>
+            <type>boolean</type>
+            <default>false</default>
         </field>
 
         <field>
