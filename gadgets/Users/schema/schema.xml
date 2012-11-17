@@ -60,6 +60,7 @@
 
         <field>
             <name>email_verify_key</name>
+            <was>verification_key</was>
             <type>text</type>
             <length>48</length>
         </field>
@@ -112,6 +113,7 @@
 
         <field>
             <name>occupations</name>
+            <was>occupation</was>
             <type>text</type>
         </field>
 

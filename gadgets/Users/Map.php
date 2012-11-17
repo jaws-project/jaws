@@ -17,7 +17,7 @@ $maps[] = array(
     'Profile',
     'users/{user}',
     '',
-    array('user' => '[[:alnum:]-_\.\@]+')
+    array('user' => '[[:alnum:]-_.@]+')
 );
 $maps[] = array('LoginBox', 'user/login');
 $maps[] = array('Registration', 'user/registration');
