@@ -172,7 +172,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Main gadget
         $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-        $installedgadgets = $jms->GetGadgetsList(null, true, true, true);
+        $installedgadgets = $jms->GetGadgetsList(null, true, true, null, true);
         $gdt =& Piwi::CreateWidget('Combo', 'main_gadget');
         $gdt->setID('main_gadget');
 
@@ -185,6 +185,18 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('field-name', 'main_gadget');
         $tpl->SetVariable('label', _t('SETTINGS_MAIN_GADGET'));
         $tpl->SetVariable('field', $gdt->Get());
+        $tpl->ParseBlock('settings/item');
+
+        // Site email
+        $tpl->SetBlock('settings/item');
+        $siteemail =& Piwi::CreateWidget('Entry',
+                                        'site_email',
+                                        $GLOBALS['app']->Registry->Get('/config/site_email'));
+        $siteemail->setSize(40);
+        $siteemail->setID('site_email');
+        $tpl->SetVariable('field-name', 'site_email');
+        $tpl->SetVariable('label', _t('SETTINGS_SITE_EMAIL'));
+        $tpl->SetVariable('field', $siteemail->Get());
         $tpl->ParseBlock('settings/item');
 
         // Site comment

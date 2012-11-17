@@ -31,6 +31,7 @@ define('_EN_SETTINGS_DEFAULT_THEME', "Default Theme");
 define('_EN_SETTINGS_DEFAULT_SITE_LANGUAGE', "Default Site Language");
 define('_EN_SETTINGS_ADMIN_LANGUAGE', "Admin Area Language");
 define('_EN_SETTINGS_MAIN_GADGET', "Default Gadget");
+define('_EN_SETTINGS_SITE_EMAIL', "Default Site Email");
 define('_EN_SETTINGS_DATE_FORMAT', "Date Format");
 define('_EN_SETTINGS_ALLOW_COMMENTS', "Allow comments site-wide");
 define('_EN_SETTINGS_ALLOW_COMMENTS_RESTRICTED', "Restricted");

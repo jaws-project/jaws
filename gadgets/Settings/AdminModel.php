@@ -189,7 +189,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
     function SaveBasicSettings($settings)
     {
         $basicKeys = array('site_status', 'site_name', 'site_slogan', 'site_language',
-                           'admin_language', 'main_gadget', 'site_comment');
+                           'admin_language', 'main_gadget', 'site_email', 'site_comment');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $basicKeys)) {
