@@ -1,6 +1,11 @@
 <!-- BEGIN post -->
 <div class="gadget forums editpost">
-  <h2><a href="{topic_url}">{topic_title}</a> - {title}</h2>
+  <h2>
+    <a href="{findex_url}">{findex_title}</a> &rsaquo;
+    <a href="{forum_url}">{forum_title}</a> &rsaquo;
+    <a href="{topic_url}">{topic_title}</a> &rsaquo;
+    {title}
+  </h2>
   <!-- BEGIN response -->
   <div class="simple-response-msg">{msg}</div>
   <!-- END response -->
@@ -11,6 +16,12 @@
     <input type="hidden" name="tid" value="{tid}" />
     <input type="hidden" name="pid" value="{pid}" />
     <div class="content">
+      <!-- BEGIN post_meta -->
+      <div class="post_meta">
+        {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+        &raquo; <abbr title="{createtime_iso}">{createtime}</abbr>
+      </div>
+      <!-- END post_meta -->
       <div>
         <label for="message">{lbl_message}:</label>
         <textarea id="message" name="message" cols="40" rows="8">{message}</textarea>

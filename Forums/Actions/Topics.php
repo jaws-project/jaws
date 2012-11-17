@@ -141,23 +141,26 @@ class Forums_Actions_Topics extends ForumsHTML
             return false;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
-        $forum  = $fModel->GetForum($rqst['fid']);
-        if (Jaws_Error::IsError($forum) || empty($forum)) {
-            return false;
-        }
-
         if (!empty($rqst['tid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-            $topic = $tModel->GetTopic($rqst['tid']);
+            $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($topic) || empty($topic)) {
                 return false;
             }
+
             $title = _t('FORUMS_TOPICS_EDIT_TITLE');
             $btn_title = _t('FORUMS_TOPICS_EDIT_BUTTON');
         } else {
+            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+            $forum  = $fModel->GetForum($rqst['fid']);
+            if (Jaws_Error::IsError($forum) || empty($forum)) {
+                return false;
+            }
+
             $topic = array();
             $topic['id'] = 0;
+            $topic['fid'] = $forum['id'];
+            $topic['forum_title'] = $forum['title'];
             $topic['subject'] = '';
             $topic['message'] = '';
             $topic['last_update_reason'] = '';
@@ -169,8 +172,13 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->Load('EditTopic.html');
         $tpl->SetBlock('topic');
 
-        $tpl->SetVariable('forum_title', $forum['title']);
-        $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
+        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('forum_title', $topic['forum_title']);
+        $tpl->SetVariable(
+            'forum_url',
+            $this->GetURLFor('Topics', array('fid' => $topic['fid']))
+        );
         $tpl->SetVariable('title', $title);
         $tpl->SetVariable('fid', $rqst['fid']);
         $tpl->SetVariable('tid', $topic['id']);
@@ -179,6 +187,25 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetBlock('topic/response');
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('topic/response');
+        }
+
+        if (!empty($topic['id'])) {
+            // date format
+            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            // post meta data
+            $tpl->SetBlock('topic/post_meta');
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $topic['username']);
+            $tpl->SetVariable('nickname', $topic['nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+            );
+            $objDate = $GLOBALS['app']->loadDate();
+            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time'], $date_format));
+            $tpl->SetVariable('createtime_iso', $objDate->ToISO($topic['first_post_time']));
+            $tpl->ParseBlock('topic/post_meta');
         }
 
         // subject
@@ -368,8 +395,13 @@ class Forums_Actions_Topics extends ForumsHTML
 
             $tpl->SetVariable('fid', $topic['fid']);
             $tpl->SetVariable('tid', $topic['id']);
+            $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+            $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
             $tpl->SetVariable('forum_title', $topic['forum_title']);
-            $tpl->SetVariable('forum_url', $this->GetURLFor('Topics', array('fid'=> $topic['fid'])));
+            $tpl->SetVariable(
+                'forum_url',
+                $this->GetURLFor('Topics', array('fid'=> $topic['fid']))
+            );
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
 
             // error response
@@ -379,7 +411,10 @@ class Forums_Actions_Topics extends ForumsHTML
                 $tpl->ParseBlock('topic/response');
             }
 
-            $tpl->SetVariable('message', $topic['message']);
+            // date format
+            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            // post meta data
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('username', $topic['username']);
             $tpl->SetVariable('nickname', $topic['nickname']);
@@ -388,7 +423,11 @@ class Forums_Actions_Topics extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time']));
+            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time'], $date_format));
+            $tpl->SetVariable('createtime_iso', $objDate->ToISO($topic['first_post_time']));
+
+            // message
+            $tpl->SetVariable('message', $topic['message']);
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_TOPICS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));

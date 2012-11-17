@@ -1,6 +1,10 @@
 <!-- BEGIN topic -->
 <div class="gadget forums deletetopic">
-  <h2><a href="{forum_url}">{forum_title}</a> - {title}</h2>
+  <h2>
+    <a href="{findex_url}">{findex_title}</a> &rsaquo;
+    <a href="{forum_url}">{forum_title}</a> &rsaquo;
+    {title}
+  </h2>
   <!-- BEGIN response -->
   <div class="simple-response-msg">{msg}</div>
   <!-- END response -->
@@ -10,7 +14,10 @@
     <input type="hidden" name="fid" value="{fid}" />
     <input type="hidden" name="tid" value="{tid}" />
     <div class="content">
-      <div class="post_meta">{postedby_lbl}{username}{nickname}{user_url}{createtime}</div>
+      <div class="post_meta">
+        {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+        &raquo; <abbr title="{createtime_iso}">{createtime}</abbr>
+      </div>
       <div class="post_content">{message}</div>
     </div>
     <div class="actions">

@@ -306,6 +306,13 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->Load('EditPost.html');
         $tpl->SetBlock('post');
 
+        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('forum_title', $post['forum_title']);
+        $tpl->SetVariable(
+            'forum_url',
+            $this->GetURLFor('Topics', array('fid'=> $post['fid']))
+        );
         $tpl->SetVariable('topic_title', $post['subject']);
         $tpl->SetVariable(
             'topic_url',
@@ -320,6 +327,25 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetBlock('post/response');
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('post/response');
+        }
+
+        if (!empty($post['id'])) {
+            // date format
+            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            // post meta data
+            $tpl->SetBlock('post/post_meta');
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $post['username']);
+            $tpl->SetVariable('nickname', $post['nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
+            );
+            $objDate = $GLOBALS['app']->loadDate();
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
+            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
+            $tpl->ParseBlock('post/post_meta');
         }
 
         // message
@@ -496,6 +522,13 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('fid', $post['fid']);
             $tpl->SetVariable('tid', $post['tid']);
             $tpl->SetVariable('pid', $post['id']);
+            $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+            $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+            $tpl->SetVariable('forum_title', $post['forum_title']);
+            $tpl->SetVariable(
+                'forum_url',
+                $this->GetURLFor('Topics', array('fid'=> $post['fid']))
+            );
             $tpl->SetVariable('topic_title', $post['subject']);
             $tpl->SetVariable(
                 'topic_url',
@@ -510,7 +543,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 $tpl->ParseBlock('post/response');
             }
 
-            $tpl->SetVariable('message', $post['message']);
+            // date format
+            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            // post meta data
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
@@ -519,7 +555,11 @@ class Forums_Actions_Posts extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime']));
+            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
+            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
+
+            // message
+            $tpl->SetVariable('message', $post['message']);
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_POSTS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
