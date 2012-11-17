@@ -154,7 +154,7 @@ class AlbumCover extends Jaws_Plugin
     function GetAlbumCoverFromAmazon($Artist, $Album)
     {
         $wsdl = 'http://soap.amazon.com/schemas3/AmazonWebServices.wsdl';
-        require_once 'SOAP/Client.php';
+        require_once PEAR_PATH. 'SOAP/Client.php';
         $service = new SOAP_WSDL($wsdl);
         $page=1;
         $proxy = $service->getProxy();
