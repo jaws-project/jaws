@@ -835,7 +835,7 @@ class Jaws_User
                 [nickname] = {nickname},
                 [email] = {email} ';
         if (!is_null($password) && $password !== '') {
-            $sql .= ', [passwd] = {password}, [password_verify_key] = {password_verify_key} ';
+            $sql .= ', [passwd] = {password}, [passwd_verify_key] = {passwd_verify_key} ';
         }
         if (!is_null($superadmin)) {
             $sql .= ', [superadmin] = {superadmin} ';
