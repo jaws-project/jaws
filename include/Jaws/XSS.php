@@ -26,7 +26,7 @@ class Jaws_XSS
     {
         //Create safehtml object
         if ($this->safeXSS === null) {
-            require_once 'HTML/Safe.php';
+            require_once PEAR_PATH. 'HTML/Safe.php';
             $this->safeXSS = new HTML_Safe();
         }
 

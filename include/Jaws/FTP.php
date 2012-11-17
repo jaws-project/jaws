@@ -68,8 +68,7 @@ class Jaws_FTP
 
     function Jaws_FTP()
     {
-        require_once JAWS_PATH .'/include/Jaws.php';
-        require_once 'Net/FTP.php';
+        require_once PEAR_PATH. 'Net/FTP.php';
 
         $this->LoadFTPSettings();
         $this->_ftp = new Net_FTP();

@@ -16,6 +16,10 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
+if (!defined('PEAR_PATH')) {
+    define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
+}
+
 // Initialize the logger
 require JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log(defined('LOG_ACTIVATED')? LOG_ACTIVATED : false,

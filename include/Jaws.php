@@ -286,7 +286,7 @@ class Jaws
             $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
         }
 
-        require_once 'Net/Detect.php';
+        require_once PEAR_PATH. 'Net/Detect.php';
         $bFlags = explode(',', $this->Registry->Get('/config/browsers_flag'));
         $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
     }

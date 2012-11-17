@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once 'MDB2.php';
+require_once PEAR_PATH. 'MDB2.php';
 
 class Jaws_DB
 {
@@ -504,7 +504,7 @@ class Jaws_DB
     function Dump($file, $type = '')
     {
         @set_time_limit(0);
-        require_once 'MDB2/Schema.php';
+        require_once PEAR_PATH. 'MDB2/Schema.php';
 
         $dsn = $this->_dsn;
 

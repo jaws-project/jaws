@@ -30,7 +30,7 @@ class Jaws_PingBack
             'debug'   => false
         );
 
-        require_once 'Services/Pingback.php';
+        require_once PEAR_PATH. 'Services/Pingback.php';
         $this->_pingBack = new Services_Pingback(null, $options);
     }
 

@@ -487,7 +487,7 @@ class Jaws_Utils
             $files = array($files);
         }
 
-        require_once 'File/Archive.php';
+        require_once PEAR_PATH. 'File/Archive.php';
         foreach($files as $key => $file) {
             if ((isset($file['error']) && !empty($file['error'])) || !isset($file['name'])) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),

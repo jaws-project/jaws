@@ -22,7 +22,7 @@ class Jaws_Crypt
      */
     function Jaws_Crypt()
     {
-        require_once 'Crypt/RSA.php';
+        require_once PEAR_PATH. 'Crypt/RSA.php';
         if (empty($this->wrapper) || !extension_loaded(strtolower($this->wrapper))) {
             $this->wrapper = extension_loaded('bcmath')? 'BCMath' : '';
             //$this->wrapper = extension_loaded('gmp')? 'GMP' : (extension_loaded('bcmath')? 'BCMath' : '');

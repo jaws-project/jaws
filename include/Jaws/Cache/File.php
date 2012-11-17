@@ -84,7 +84,7 @@ class Jaws_Cache_File extends Jaws_Cache
             $params = '';
         }
 
-        require_once 'File/Find.php';
+        require_once PEAR_PATH. 'File/Find.php';
         $match  = is_null($component)? '' : $component;
         $match .= '.' . (is_null($section)? '' : $section);
         $match .= empty($params)? '' : ('.' . $params);

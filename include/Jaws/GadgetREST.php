@@ -37,8 +37,8 @@ class Jaws_GadgetREST extends Jaws_Gadget
         parent::Init($model);
         // Load Piwi if it's a web app
         if (APP_TYPE == 'rest') {
-            require_once 'XML/Serializer.php';
-            require_once 'XML/Unserializer.php';
+            require_once PEAR_PATH. 'XML/Serializer.php';
+            require_once PEAR_PATH. 'XML/Unserializer.php';
 
             $options = array(
                              XML_SERIALIZER_OPTION_INDENT               => '    ',

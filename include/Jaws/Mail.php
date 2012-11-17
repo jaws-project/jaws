@@ -90,8 +90,8 @@ class Jaws_Mail
      */
     function Jaws_Mail($init = true)
     {
-        require_once 'Mail.php';
-        require_once 'Mail/mime.php';
+        require_once PEAR_PATH. 'Mail.php';
+        require_once PEAR_PATH. 'Mail/mime.php';
         $this->mail_mime = new Mail_Mime($this->crlf);
         $this->headers['Subject'] = '';
         if ($init) {
