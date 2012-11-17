@@ -311,67 +311,63 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     function ActivateUser($key)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
-        
         $jUser = new Jaws_User;
-        if ($id = $jUser->GetIDByVerificationKey($key)) {
-            $info = $jUser->GetUser((int)$id);
-
-            $res = $jUser->UpdateVerificationKey($id);
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-
-            $res = $jUser->UpdateUser($id,
-                                       $info['username'],
-                                       $info['nickname'],
-                                       $info['email'],
-                                       null, // password
-                                       null, // superadmin
-                                       1);
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-
-            $site_url  = $GLOBALS['app']->getSiteURL('/');
-            $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
-
-            $tpl = new Jaws_Template('gadgets/Users/templates/');
-            $tpl->Load('UserNotification.txt');
-            $tpl->SetBlock('Notification');
-            $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $info['nickname']));
-            $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
-            if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {
-                $tpl->SetBlock('Notification/IP');
-                $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-                $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-                $tpl->ParseBlock('Notification/IP');
-            }
-
-            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $info['username']);
-
-            $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
-            $tpl->SetVariable('site-name', $site_name);
-            $tpl->SetVariable('site-url', $site_url);
-            $tpl->ParseBlock('Notification');
-
-            $body = $tpl->Get();
-            $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
-
-            require_once JAWS_PATH . 'include/Jaws/Mail.php';
-            $mail = new Jaws_Mail;
-            $mail->SetFrom();
-            $mail->AddRecipient($info['email']);
-            $mail->SetSubject($subject);
-            $mail->SetBody(Jaws_Gadget::ParseText($body, 'Users'));
-            $mresult = $mail->send();
-            if (Jaws_Error::IsError($mresult)) {
-                // do nothing
-            }
-            return true;
-        } else {
-            return new Jaws_Error(_t('USERS_ACTIVATION_KEY_NOT_VALID'));
+        $user = $jUser->GetUserByKey($key);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
         }
+
+        $res = $jUser->UpdateUser(
+            $user['id'],
+            $user['username'],
+            $user['nickname'],
+            $user['email'],
+            null, // password
+            null, // superadmin
+            1     // status
+        );
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
+
+        $tpl = new Jaws_Template('gadgets/Users/templates/');
+        $tpl->Load('UserNotification.txt');
+        $tpl->SetBlock('Notification');
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
+        $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
+        if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {
+            $tpl->SetBlock('Notification/IP');
+            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+            $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+            $tpl->ParseBlock('Notification/IP');
+        }
+
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username', $user['username']);
+
+        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url', $site_url);
+        $tpl->ParseBlock('Notification');
+
+        $body = $tpl->Get();
+        $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
+
+        require_once JAWS_PATH . 'include/Jaws/Mail.php';
+        $mail = new Jaws_Mail;
+        $mail->SetFrom();
+        $mail->AddRecipient($user['email']);
+        $mail->SetSubject($subject);
+        $mail->SetBody(Jaws_Gadget::ParseText($body, 'Users'));
+        $mresult = $mail->send();
+        if (Jaws_Error::IsError($mresult)) {
+            // do nothing
+        }
+
+        return true;
     }
 
 }

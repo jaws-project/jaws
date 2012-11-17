@@ -173,16 +173,15 @@ class Users_Actions_Account extends UsersHTML
         }
 
         $request =& Jaws_Request::getInstance();
-        $key     = $request->get('key', 'get');
+        $key = $request->get('key', 'get');
 
-        $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Account');
-        $result = $model->ChangePassword($key);
-
+        $uModel  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Account');
+        $result = $uModel->ChangePassword($key);
         if (Jaws_Error::IsError($result)) {
             return $result->GetMessage();
         }
 
-        return _t('USERS_FORGOT_PASSWORD_CHANGED');
+        return _t($result? 'USERS_FORGOT_PASSWORD_CHANGED' : 'USERS_FORGOT_KEY_NOT_VALID');
     }
 
 }

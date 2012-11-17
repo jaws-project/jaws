@@ -203,12 +203,12 @@ class Users_Actions_Registration extends UsersHTML
         }
 
         $request =& Jaws_Request::getInstance();
-        $key     = $request->get('key', 'get');
+        $key = $request->get('key', 'get');
 
-        $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
-        $result = $model->ActivateUser($key);
+        $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
+        $result = $uModel->ActivateUser($key);
         if (Jaws_Error::IsError($result)) {
-            return $result->getMessage();
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
         }
 
         if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {

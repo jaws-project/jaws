@@ -233,6 +233,30 @@ class Jaws_User
     }
 
     /**
+     * Get the info of an user(s) by the email address
+     *
+     * @access  public
+     * @param   int     $email  The email address
+     * @return  mixed   Returns an array with the info of the user(s) and false on error
+     */
+    function GetUserByKey($key)
+    {
+        $params = array();
+        $params['key'] = trim($key);
+
+        $sql = '
+            SELECT
+                [id], [username], [nickname], [email], [status]
+            FROM
+                [[users]]
+            WHERE
+                [verification_key] = {key}';
+
+        $types = array('integer', 'text', 'text', 'text', 'integer');
+        return $GLOBALS['db']->queryRow($sql, $params, $types);
+    }
+
+    /**
      * Check and email address already exists
      *
      * @access  public
@@ -760,6 +784,7 @@ class Jaws_User
         $params['email']             = $email;
         $params['password']          = Jaws_User::GetHashedPassword($password);
         $params['superadmin']        = (bool)$superadmin;
+        $params['verification_key']  = '';
         $params['status']            = (int)$status;
         $params['last_update']       = time();
         $params['concurrent_logins'] = (int)$concurrent_logins;
@@ -803,6 +828,9 @@ class Jaws_User
             $sql .= ', [avatar] = {avatar} ';
         }
         if (!is_null($status)) {
+            if ($params['status'] == 1) {
+                $sql .= ', [verification_key] = {verification_key} ';
+            }
             $sql .= ', [status] = {status} ';
         }
         $sql .= ', [last_update] = {last_update} WHERE [id] = {id}';
@@ -1225,32 +1253,6 @@ class Jaws_User
         }
 
         return ($howmany == '0') ? false : true;
-    }
-
-    /**
-     * Returns the ID of a user by a certain verification key
-     *
-     * @access  public
-     * @param   string  $key  Secret key
-     * @return  bool    Success/Failure
-     */
-    function GetIDByVerificationKey($key)
-    {
-        $key = trim($key);
-        if (empty($key)) {
-            return false;
-        }
-
-        $params        = array();
-        $params['key'] = $key;
-
-        $sql = ' SELECT [id] FROM [[users]] WHERE [verification_key] = {key}';
-        $uid = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($uid) || empty($uid)) {
-            return false;
-        }
-
-        return $uid;
     }
 
     /**

@@ -45,63 +45,59 @@ class Users_Model_Account extends Jaws_Gadget_Model
     function ChangePassword($key)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
-
         $jUser = new Jaws_User;
-        if ($id = $jUser->GetIDByVerificationKey($key)) {
-            $info = $jUser->GetUser((int)$id);
-
-            include_once 'Text/Password.php';
-            $password = Text_Password::create(8, 'pronounceable', 'alphanumeric');
-
-            $res = $jUser->UpdateVerificationKey($id);
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-
-            $res = $jUser->UpdateUser($id,
-                                      $info['username'],
-                                      $info['nickname'],
-                                      $info['email'],
-                                      $password);
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-
-            $site_url  = $GLOBALS['app']->getSiteURL('/');
-            $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
-
-            $tpl = new Jaws_Template('gadgets/Users/templates/');
-            $tpl->Load('NewPassword.txt');
-            $tpl->SetBlock('NewPassword');
-            $tpl->SetVariable('username', $info['username']);
-            $tpl->SetVariable('nickname', $info['nickname']);
-            $tpl->SetVariable('password', $password);
-            $tpl->SetVariable('message',  _t('USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', $info['username']));
-            $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
-            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
-            $tpl->SetVariable('site-name', $site_name);
-            $tpl->SetVariable('site-url',  $site_url);
-            $tpl->ParseBlock('NewPassword');
-
-            $message = $tpl->Get();            
-            $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
-
-            require_once JAWS_PATH . 'include/Jaws/Mail.php';
-            $mail = new Jaws_Mail;
-            $mail->SetFrom();
-            $mail->AddRecipient($info['email']);
-            $mail->SetSubject($subject);
-            $mail->SetBody(Jaws_Gadget::ParseText($message, 'Users'));
-            $mresult = $mail->send();
-            if (Jaws_Error::IsError($mresult)) {
-                return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
-            } else {
-                return true;
-            }
-        } else {
-            return new Jaws_Error(_t('USERS_FORGOT_KEY_NOT_VALID'));
+        $user = $jUser->GetUserByKey($key);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
         }
+
+        // generate new password
+        include_once 'Text/Password.php';
+        $password = Text_Password::create(8, 'pronounceable', 'alphanumeric');
+
+        $res = $jUser->UpdateUser(
+            $user['id'],
+            $user['username'],
+            $user['nickname'],
+            $user['email'],
+            $password
+        );
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
+
+        $tpl = new Jaws_Template('gadgets/Users/templates/');
+        $tpl->Load('NewPassword.txt');
+        $tpl->SetBlock('NewPassword');
+        $tpl->SetVariable('username', $user['username']);
+        $tpl->SetVariable('nickname', $user['nickname']);
+        $tpl->SetVariable('password', $password);
+        $tpl->SetVariable('message',  _t('USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', $user['username']));
+        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url',  $site_url);
+        $tpl->ParseBlock('NewPassword');
+
+        $message = $tpl->Get();            
+        $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
+
+        require_once JAWS_PATH . 'include/Jaws/Mail.php';
+        $mail = new Jaws_Mail;
+        $mail->SetFrom();
+        $mail->AddRecipient($user['email']);
+        $mail->SetSubject($subject);
+        $mail->SetBody(Jaws_Gadget::ParseText($message, 'Users'));
+        $mresult = $mail->send();
+        if (Jaws_Error::IsError($mresult)) {
+            return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
+        }
+
+        return true;
     }
 
 }
