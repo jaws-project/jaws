@@ -429,6 +429,9 @@ class Jaws_Utils
 
                 if (!$overwrite || empty($fileinfo['filename'])) {
                     $filename = uniqid(floor(microtime()*1000));
+                    if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                        $filename.= '.'. $fileinfo['extension'];
+                    }
                 }
                 $uploadfile = $dest . $filename;
 
