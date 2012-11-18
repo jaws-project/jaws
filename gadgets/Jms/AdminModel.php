@@ -54,6 +54,10 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
+                if (!$this->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', $gadget)) {
+                    continue;
+                }
+
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
