@@ -170,8 +170,8 @@ define('_DE_GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', "Das Gadget {0} existiert nicht
 define('_DE_GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', "Das Plugin {0} existiert nicht!");
 define('_DE_GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', "Die Klasse {0} ist nicht definiert, falsch geschrieben oder die Datei ist wurde nicht inkludiert.");
 define('_DE_GLOBAL_ERROR_FAILED_CREATING_INSTANCE', "Es gab ein Problem beim Instanzieren der Klasse {0} in {1}");
-define('_DE_GLOBAL_ERROR_GADGET_NOT_PUBLISHED', "Das Gadget {0} ist nicht veröffentlicht!");
-define('_DE_GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', "Das Plugin {0} ist nicht veröffentlicht!");
+define('_DE_GLOBAL_ERROR_GADGET_NOT_AVAILABLE', "Das Gadget {0} ist nicht veröffentlicht!");
+define('_DE_GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', "Das Plugin {0} ist nicht veröffentlicht!");
 define('_DE_GLOBAL_ERROR_INCOMPLETE_FIELDS', "Einige Felder wurden nicht (korrekt) gefüllt.");
 define('_DE_GLOBAL_ERROR_LOGIN_ONLY_ADMIN', "Nur Administratoren haben Zugang zu dieser Seite.");
 define('_DE_GLOBAL_ERROR_LOGIN_WRONG', "Falscher Benutzername und/oder falsches Passwort");

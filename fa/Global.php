@@ -170,8 +170,8 @@ define('_FA_GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', "ابزار {0} پیدا نشد
 define('_FA_GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', "افزونه {0} پیدا نشد.");
 define('_FA_GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', "کلاس {0} تعریف نشده، یا اشتباه نوشده شده و یا اینکه فایل حاوی کلاس بارگذاری نشده است");
 define('_FA_GLOBAL_ERROR_FAILED_CREATING_INSTANCE', "ساخت یک نمونه از کلاس {0} موجود در {1} با مشکل مواجه شد.");
-define('_FA_GLOBAL_ERROR_GADGET_NOT_PUBLISHED', "ابزار {0} در دسترس نمی باشد.");
-define('_FA_GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', "افزونه {0} در دسترس نمی باشد.");
+define('_FA_GLOBAL_ERROR_GADGET_NOT_AVAILABLE', "ابزار {0} در دسترس نمی باشد.");
+define('_FA_GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', "افزونه {0} در دسترس نمی باشد.");
 define('_FA_GLOBAL_ERROR_INCOMPLETE_FIELDS', "برخی از فیلدها به درستی کامل نشده‌اند");
 define('_FA_GLOBAL_ERROR_LOGIN_ONLY_ADMIN', "ورود به این بخش فقط برای کاربران مدیر");
 define('_FA_GLOBAL_ERROR_LOGIN_WRONG', "نام کاربری/کلمه عبور اشتباه");

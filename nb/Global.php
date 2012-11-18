@@ -170,8 +170,8 @@ define('_NB_GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', "Modulen {0} eksisterer ikke.")
 define('_NB_GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', "Programtillegget {0} eksisterer ikke.");
 define('_NB_GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', "Klassen {0} er ikke definert, ukorrekt skrevet eller filen har ikke blitt inkludert.");
 define('_NB_GLOBAL_ERROR_FAILED_CREATING_INSTANCE', "Kunne ikke opprette instansen fra klasse {0} lokalisert i {1}");
-define('_NB_GLOBAL_ERROR_GADGET_NOT_PUBLISHED', "Modulen {0} er ikke publisert.");
-define('_NB_GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', "Programtillegget {0} er ikke publisert.");
+define('_NB_GLOBAL_ERROR_GADGET_NOT_AVAILABLE', "Modulen {0} er ikke publisert.");
+define('_NB_GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', "Programtillegget {0} er ikke publisert.");
 define('_NB_GLOBAL_ERROR_INCOMPLETE_FIELDS', "Noen felter er ikke (korrekt) fylt ut.");
 define('_NB_GLOBAL_ERROR_LOGIN_ONLY_ADMIN', "Bare administratorer kan logge inn i denne seksjonen");
 define('_NB_GLOBAL_ERROR_LOGIN_WRONG', "Galt brukernavn/passord");

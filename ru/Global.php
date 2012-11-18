@@ -174,8 +174,8 @@ define('_RU_GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', "Компонент {0} не с
 define('_RU_GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', "Подключаемый модуль {0} не существует.");
 define('_RU_GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', "Класс {0} не опеределен, некорректно написан, либо файл не включен.");
 define('_RU_GLOBAL_ERROR_FAILED_CREATING_INSTANCE', "Ошибка создания экземпляра класса {0} расположенного в {1}");
-define('_RU_GLOBAL_ERROR_GADGET_NOT_PUBLISHED', "Компонент {0} не опубликован.");
-define('_RU_GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', "Подключаемый модуль {0} не опубликован.");
+define('_RU_GLOBAL_ERROR_GADGET_NOT_AVAILABLE', "Компонент {0} не опубликован.");
+define('_RU_GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', "Подключаемый модуль {0} не опубликован.");
 define('_RU_GLOBAL_ERROR_INCOMPLETE_FIELDS', "Некоторые поля не были (правильно) заполнены");
 define('_RU_GLOBAL_ERROR_LOGIN_ONLY_ADMIN', "Только Администраторы могут входить в этот раздел");
 define('_RU_GLOBAL_ERROR_LOGIN_WRONG', "Неверное имя пользователя/пароль");
