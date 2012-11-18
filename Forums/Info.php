@@ -38,6 +38,7 @@ class ForumsInfo extends Jaws_Gadget
         'DeleteTopic',
         'DeleteOthersTopic',
         'AddPost',
+        'AddPostAttachment',
         'AddPostToLockedTopic',
         'EditPost',
         'EditOthersPost',

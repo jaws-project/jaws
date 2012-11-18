@@ -28,10 +28,18 @@ class ForumsAdminModel extends Jaws_Gadget_Model
             return $result;
         }
 
+        $new_dir = JAWS_DATA . 'forums';
+        if (!Jaws_Utils::mkdir($new_dir)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('FORUMS_NAME'));
+        }
+
         // Registry keys
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/topics_limit', '15');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/posts_limit',  '10');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'd MN Y G:i');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_min_limit_time', '120');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_max_limit_time', '600');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/enable_attachment',   'true');
 
         return true;
     }
@@ -64,6 +72,9 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/topics_limit');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/posts_limit');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/date_format');
+        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/edit_min_limit_time');
+        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/edit_max_limit_time');
+        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/enable_attachment');
 
         return true;
     }

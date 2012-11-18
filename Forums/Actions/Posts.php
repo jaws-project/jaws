@@ -286,6 +286,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $post['id']  = 0;
             $post['fid'] = $topic['fid'];
             $post['tid'] = $topic['id'];
+            $post['forum_title'] = $topic['forum_title'];
             $post['subject'] = $topic['subject'];
             $post['message'] = '';
             $post['last_update_reason'] = '';
@@ -352,6 +353,14 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('message', $post['message']);
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
 
+        // attachment
+        if ($this->GetPermission('AddPostAttachment')) {
+            $tpl->SetBlock('post/attachment');
+            $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
+            $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+            $tpl->ParseBlock('post/attachment');
+        }
+
         // update reason
         if (!empty($post['id'])) {
             $tpl->SetBlock('post/update_reason');
@@ -382,7 +391,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
-            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'),
+            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason', 'remove_attachment'),
             'post'
         );
 
@@ -404,6 +413,25 @@ class Forums_Actions_Posts extends ForumsHTML
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page
             Jaws_Header::Referrer();
+        }
+
+        if (($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true') &&
+            $this->GetPermission('AddPostAttachment'))
+        {
+            $res = Jaws_Utils::UploadFiles(
+                $_FILES,
+                JAWS_DATA. 'forums',
+                '',
+                'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+                false
+            );
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdatePost');
+                // redirect to referrer page
+                Jaws_Header::Referrer();
+            }
+
+            $post['attachment'] = isset($res['post_attachment'][0])? $res['post_attachment'][0] : '';
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');

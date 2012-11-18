@@ -26,6 +26,17 @@
         <label for="message">{lbl_message}:</label>
         <textarea id="message" name="message" cols="40" rows="8">{message}</textarea>
       </div>
+      <!-- BEGIN attachment -->
+      <div>
+        <label>&nbsp;</label>
+        <input id="remove_attachment" name="remove_attachment" type="checkbox" />
+        <label for="remove_attachment">{lbl_remove_attachment}</label>
+      </div>
+      <div>
+        <label for="post_attachment">{lbl_attachment}:</label>
+        <input id="post_attachment" name="attachment" type="file" />
+      </div>
+      <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>
         <label for="update_reason">{lbl_update_reason}:</label>

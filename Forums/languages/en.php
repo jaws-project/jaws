@@ -99,6 +99,8 @@ define('_EN_FORUMS_POSTS_DELETE_ERROR', "There was a problem while deleting post
 define('_EN_FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', "Forums post deleted - {0}");
 define('_EN_FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE', "A post was deleted in the topic.");
 define('_EN_FORUMS_POSTS_MESSAGE', "Message");
+define('_EN_FORUMS_POSTS_ATTACHMENT', "Attachment");
+define('_EN_FORUMS_POSTS_ATTACHMENT_REMOVE', "Remove attachment");
 define('_EN_FORUMS_POSTS_EDIT_REASON', "Edit reason");
 define('_EN_FORUMS_POSTS_UPDATEDBY', "Updated by");
 

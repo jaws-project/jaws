@@ -91,6 +91,8 @@ define('_FA_FORUMS_POSTS_DELETE_ERROR', "هنگام زدودن نوشته، خط
 define('_FA_FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', "زدودن نوشته از تالار گفتمان - {0}");
 define('_FA_FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE', "نوشته ای از تالار گفتمان زدوده شد.");
 define('_FA_FORUMS_POSTS_MESSAGE', "پیام");
+define('_FA_FORUMS_POSTS_ATTACHMENT', "فایل پیوست");
+define('_FA_FORUMS_POSTS_ATTACHMENT_REMOVE', "زدودن فایل پیوست");
 define('_FA_FORUMS_POSTS_EDIT_REASON', "انگیزه ویرایش");
 define('_FA_FORUMS_POSTS_UPDATEDBY', "بروزرسانی بدست");
 define('_FA_FORUMS_POSTS_COUNT', "({0}) نوشته");
