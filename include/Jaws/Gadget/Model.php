@@ -341,4 +341,16 @@ class Jaws_Gadget_Model
         return $fast_url.'-'.($lastNumber+1);
     }
 
+    /**
+     * Get permission on a gadget/task
+     *
+     * @param   string  $task   Task name
+     * @param   string  $gadget Gadget name
+     * @return  bool    True if granted, else False
+     */
+    function GetPermission($task, $gadget = false)
+    {
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->_Gadget : $gadget, $task);
+    }
+
 }
