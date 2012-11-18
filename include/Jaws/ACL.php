@@ -323,6 +323,16 @@ class Jaws_ACL
             }
         }
 
+        if (defined('JAWS_GODUSER_ACLS') && defined('JAWS_GODUSER') && JAWS_GODUSER !== $user) {
+            static $goduser_acls;
+            if (!isset($goduser_acls)) {
+                $goduser_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_GODUSER_ACLS))));
+            }
+            if (in_array(strtolower("$gadget:$task"), $goduser_acls)) {
+                return false;
+            }
+        }
+
         if ($is_super_admin === true) {
             return true;
         }
