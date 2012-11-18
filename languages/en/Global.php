@@ -199,8 +199,8 @@ define('_EN_GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', "The gadget {0} does not exist.
 define('_EN_GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', "The plugin {0} does not exist.");
 define('_EN_GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', "The class {0} is not defined, wrongly written or the file has not been included.");
 define('_EN_GLOBAL_ERROR_FAILED_CREATING_INSTANCE', "There was a error while creating an instance from class {0} located at {1}");
-define('_EN_GLOBAL_ERROR_GADGET_NOT_PUBLISHED', "The gadget {0} does not published.");
-define('_EN_GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', "The plugin {0} does not published.");
+define('_EN_GLOBAL_ERROR_GADGET_NOT_AVAILABLE', "The gadget {0} does not available.");
+define('_EN_GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', "The plugin {0} does not available.");
 define('_EN_GLOBAL_ERROR_INCOMPLETE_FIELDS', "Some fields haven't been (correctly) filled in.");
 
 // Login/User error messages

@@ -557,16 +557,16 @@ class Jaws
                 return $error;
             }
 
-            // is gadget published?
-            if (defined('JAWS_PUBLISHED_GADGETS')) {
-                static $published_gadgets;
-                if (!isset($published_gadgets)) {
-                    $published_gadgets = array_filter(array_map('trim', explode(',', JAWS_PUBLISHED_GADGETS)));
+            // is gadget available?
+            if (defined('JAWS_AVAILABLE_GADGETS')) {
+                static $available_gadgets;
+                if (!isset($available_gadgets)) {
+                    $available_gadgets = array_filter(array_map('trim', explode(',', JAWS_AVAILABLE_GADGETS)));
                 }
 
-                if (!in_array($gadget, $published_gadgets)) {
-                    $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_NOT_PUBLISHED', $gadget),
-                                            'Gadget publish check',
+                if (!in_array($gadget, $available_gadgets)) {
+                    $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_NOT_AVAILABLE', $gadget),
+                                            'Gadget availability check',
                                             JAWS_ERROR_INFO);
                     return $error;
                 }
@@ -690,16 +690,16 @@ class Jaws
                 return $error;
             }
 
-            // is plugin published?
-            if (defined('JAWS_PUBLISHED_PLUGINS')) {
-                static $published_plugins;
-                if (!isset($published_plugins)) {
-                    $published_plugins = array_filter(array_map('trim', explode(',', JAWS_PUBLISHED_PLUGINS)));
+            // is plugin available?
+            if (defined('JAWS_AVAILABLE_PLUGINS')) {
+                static $available_plugins;
+                if (!isset($available_plugins)) {
+                    $available_plugins = array_filter(array_map('trim', explode(',', JAWS_AVAILABLE_PLUGINS)));
                 }
 
-                if (!in_array($plugin, $published_plugins)) {
-                    $error = new Jaws_Error(_t('GLOBAL_ERROR_PLUGIN_NOT_PUBLISHED', $plugin),
-                                            'Plugin publish check');
+                if (!in_array($plugin, $available_plugins)) {
+                    $error = new Jaws_Error(_t('GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', $plugin),
+                                            'Plugin availability check');
                     return $error;
                 }
             }
