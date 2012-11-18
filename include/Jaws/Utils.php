@@ -372,7 +372,7 @@ class Jaws_Utils
      * @param   string  $dest           destination directory(include end directory separator)
      * @param   string  $allowFormats   permitted file format
      * @param   string  $denyFormats    not permitted file format
-     * @param   bool    $overwrite      overwite file if exist
+     * @param   bool    $overwrite      overwite file or generate random filename
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
      * @return  bool    Returns TRUE on success or FALSE on failure
@@ -427,8 +427,8 @@ class Jaws_Utils
                     }
                 }
 
-                if (empty($fileinfo['filename']) || (!$overwrite && file_exists($dest . $filename))) {
-                    $filename = time() . '_' . $filename;
+                if (!$overwrite || empty($fileinfo['filename'])) {
+                    $filename = uniqid(floor(microtime()*1000));
                 }
                 $uploadfile = $dest . $filename;
 
