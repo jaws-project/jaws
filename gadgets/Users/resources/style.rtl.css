@@ -251,6 +251,7 @@ width:63px;
 padding: 0px;
 margin:0px auto;
 position:relative;
+direction:ltr;
 }
 #avatar_actions .actions button {
 width:28px;
