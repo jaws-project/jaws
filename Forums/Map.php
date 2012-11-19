@@ -109,6 +109,16 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'Attachment',
+    'forums/{fid}/topics/{tid}/posts/{pid}/attachment',
+    '',
+    array(
+        'fid' => '[[:alnum:]-_]+',
+        'tid' => '[[:alnum:]-_]+',
+        'pid' => '[[:alnum:]-_]+',
+    )
+);
+$maps[] = array(
     'DeletePost',
     'forums/{fid}/topics/{tid}/posts/{pid}/delete',
     '',

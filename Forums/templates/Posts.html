@@ -15,6 +15,12 @@
         &raquo; <abbr title="{createtime_iso}">{createtime}</abbr>
       </div>
       <div class="post_content">{message}</div>
+      <!-- BEGIN attachment -->
+      <div class="post_attachment">
+        {attachment_lbl}: <a href="{attachment_url}" title="{attachment}">{attachment}</a>
+        &raquo; {attachment_hits_lbl}: <span>{attachment_hits}</span>
+      </div>
+      <!-- END attachment -->
       <!-- BEGIN update -->
       <div class="post_update">
         {updatedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>

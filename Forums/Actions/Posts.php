@@ -93,6 +93,24 @@ class Forums_Actions_Posts extends ForumsHTML
                 )
             );
 
+            // attachment
+            if (!empty($post['attachment'])) {
+                $tpl->SetBlock('posts/post/attachment');
+                $tpl->SetVariable('attachment', $post['attachment']);
+                $tpl->SetVariable('attachment_lbl', _t('FORUMS_POSTS_ATTACHMENT'));
+                $tpl->SetVariable(
+                    'attachment_url',
+                    $this->GetURLFor(
+                        'Attachment',
+                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id']),
+                        false
+                    )
+                );
+                $tpl->SetVariable('attachment_hits', $post['attachment_downloads']);
+                $tpl->SetVariable('attachment_hits_lbl', _t('FORUMS_POSTS_ATTACHMENT_HITS'));
+                $tpl->ParseBlock('posts/post/attachment');
+            }
+
             // update information
             if ($post['last_update_uid'] != 0) {
                 $tpl->SetBlock('posts/post/update');
@@ -354,7 +372,9 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
 
         // attachment
-        if ($this->GetPermission('AddPostAttachment')) {
+        if ($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
+            $this->GetPermission('AddPostAttachment'))
+        {
             $tpl->SetBlock('post/attachment');
             $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
             $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
@@ -415,7 +435,10 @@ class Forums_Actions_Posts extends ForumsHTML
             Jaws_Header::Referrer();
         }
 
-        if (($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true') &&
+        // attachment
+        $post['attachment'] = is_null($post['remove_attachment'])? null : false;
+        if (is_null($post['attachment']) &&
+            $GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
             $this->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
@@ -431,7 +454,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 Jaws_Header::Referrer();
             }
 
-            $post['attachment'] = isset($res['post_attachment'][0])? $res['post_attachment'][0] : '';
+            $post['attachment'] = isset($res['attachment'][0])? $res['attachment'][0] : '';
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
@@ -440,7 +463,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $post['tid'],
                 $post['fid'],
-                $post['message']
+                $post['message'],
+                $post['attachment']
             );
             $event_subject = _t('FORUMS_POSTS_NEW_NOTIFICATION_SUBJECT', $topic['forum_title']);
             $event_message = _t('FORUMS_POSTS_NEW_NOTIFICATION_MESSAGE');
@@ -450,6 +474,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $post['pid'],
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $post['message'],
+                $post['attachment'],
                 $post['update_reason']
             );
             $event_subject = _t('FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);

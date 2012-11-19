@@ -76,8 +76,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [[forums_posts]].[id], [uid], [message], [last_update_uid], [last_update_reason],
-                [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
+                [[forums_posts]].[id], [uid], [message], [attachment], [attachment_downloads], [last_update_uid],
+                [last_update_reason], [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
                 [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
                 [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
             FROM
@@ -129,23 +129,25 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $tid        Topic ID
      * @param   int     $fid        Forum ID
      * @param   string  $message    Post content
+     * @param   string  $attachment Post attachment
      * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $fid, $message, $new_topic = false)
+    function InsertPost($uid, $tid, $fid, $message, $attachment = '', $new_topic = false)
     {
         $params = array();
         $params['uid'] = (int)$uid;
         $params['tid'] = (int)$tid;
         $params['now'] = $GLOBALS['db']->Date();
         $params['ip']  = $_SERVER['REMOTE_ADDR'];
-        $params['message'] = $message;
+        $params['message']    = $message;
+        $params['attachment'] = $attachment;
 
         $sql = '
             INSERT INTO [[forums_posts]]
-                ([tid], [uid], [message], [ip], [createtime])
+                ([tid], [uid], [message], [attachment], [ip], [createtime])
             VALUES
-                ({tid}, {uid}, {message}, {ip}, {now})';
+                ({tid}, {uid}, {message}, {attachment}, {ip}, {now})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -183,26 +185,30 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $pid            Post ID
      * @param   int     $uid            User's ID
      * @param   string  $message        Post content
+     * @param   string  $attachment     Post attachment
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $message, $update_reason = '')
+    function UpdatePost($pid, $uid, $message, $attachment = null, $update_reason = '')
     {
         $params = array();
         $params['uid'] = (int)$uid;
         $params['pid'] = (int)$pid;
         $params['now'] = $GLOBALS['db']->Date();
-        $params['message'] = $message;
+        $params['message']       = $message;
+        $params['attachment']    = $attachment;
         $params['update_reason'] = $update_reason;
+        $attachment = is_null($attachment)? '[attachment]' : '{attachment}';
 
-        $sql = '
+        $sql = "
             UPDATE [[forums_posts]] SET
                 [message]            = {message},
                 [last_update_uid]    = {uid},
+                [attachment]         = $attachment,
                 [last_update_reason] = {update_reason},
                 [last_update_time]   = {now}
             WHERE
-                [id] = {pid}';
+                [id] = {pid}";
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -216,12 +222,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Delete post
      *
      * @access  public
-     * @param   int     $pid    Post ID
-     * @param   int     $tid    Topic ID
-     * @param   int     $fid    Forum ID
+     * @param   int     $pid        Post ID
+     * @param   int     $tid        Topic ID
+     * @param   int     $fid        Forum ID
+     * @param   string  $attachment Post attachment
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeletePost($pid, $tid, $fid)
+    function DeletePost($pid, $tid, $fid, $attachment = '')
     {
         $params = array();
         $params['pid'] = (int)$pid;

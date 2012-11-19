@@ -118,10 +118,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $fid        Forum ID
      * @param   string  $subject    Topic subject
      * @param   string  $message    Topic first post content
+     * @param   string  $attachment Topic first post attachment
      * @param   bool    $published  Must be published?
      * @return  mixed   Topic ID on successfully or Jaws_Error on failure
      */
-    function InsertTopic($uid, $fid, $subject, $message, $published = true)
+    function InsertTopic($uid, $fid, $subject, $message, $attachment = '', $published = true)
     {
         $params = array();
         $params['uid']       = $uid;
@@ -155,7 +156,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $pid = 0;
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (!Jaws_Error::IsError($pModel)) {
-            $pid = $pModel->InsertPost($params['uid'], $tid, $params['fid'], $message, true);
+            $pid = $pModel->InsertPost($params['uid'], $tid, $params['fid'], $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
                 //Rollback Transaction
                 $GLOBALS['db']->dbc->rollback();
@@ -179,11 +180,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $uid            User's ID
      * @param   string  $subject        Topic subject
      * @param   string  $message        First post content
+     * @param   string  $attachment     First post attachment
      * @param   bool    $published      Topic publish status
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $published = null, $update_reason = '')
+    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
+        $published = null, $update_reason = '')
     {
         $params = array();
         $params['fid'] = (int)$fid;
@@ -210,7 +213,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $result = $pModel->UpdatePost($pid, $uid, $message, $update_reason);
+        $result = $pModel->UpdatePost($pid, $uid, $message, null, $update_reason);
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();

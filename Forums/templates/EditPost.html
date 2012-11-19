@@ -9,7 +9,7 @@
   <!-- BEGIN response -->
   <div class="simple-response-msg">{msg}</div>
   <!-- END response -->
-  <form name="editpost" action="{requested_url}" method="post">
+  <form name="editpost" action="{requested_url}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdatePost" />
     <input type="hidden" name="fid" value="{fid}" />

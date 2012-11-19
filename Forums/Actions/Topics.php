@@ -273,6 +273,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
+                    '',
                     $topic['published']
                 );
             }
