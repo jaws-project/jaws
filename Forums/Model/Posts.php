@@ -76,7 +76,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [[forums_posts]].[id], [uid], [message], [attachment], [attachment_downloads], [last_update_uid],
+                [[forums_posts]].[id], [uid], [message],
+                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [last_update_uid],
                 [last_update_reason], [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
                 [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
                 [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
@@ -129,25 +130,31 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $tid        Topic ID
      * @param   int     $fid        Forum ID
      * @param   string  $message    Post content
-     * @param   string  $attachment Post attachment
+     * @param   mixed   $attachment Post attachment
      * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $fid, $message, $attachment = '', $new_topic = false)
+    function InsertPost($uid, $tid, $fid, $message, $attachment = null, $new_topic = false)
     {
         $params = array();
         $params['uid'] = (int)$uid;
         $params['tid'] = (int)$tid;
         $params['now'] = $GLOBALS['db']->Date();
         $params['ip']  = $_SERVER['REMOTE_ADDR'];
-        $params['message']    = $message;
-        $params['attachment'] = $attachment;
+        $params['message'] = $message;
+        if (empty($attachment)) {
+            $params['attachment_host_fname'] = '';
+            $params['attachment_user_fname'] = '';
+        } else {
+            $params['attachment_host_fname'] = $attachment['host_fname'];
+            $params['attachment_user_fname'] = $attachment['user_fname'];
+        }
 
         $sql = '
             INSERT INTO [[forums_posts]]
-                ([tid], [uid], [message], [attachment], [ip], [createtime])
+                ([tid], [uid], [message], [attachment_host_fname], [attachment_user_fname], [ip], [createtime])
             VALUES
-                ({tid}, {uid}, {message}, {attachment}, {ip}, {now})';
+                ({tid}, {uid}, {message}, {attachment_host_fname}, {attachment_user_fname}, {ip}, {now})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -185,7 +192,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $pid            Post ID
      * @param   int     $uid            User's ID
      * @param   string  $message        Post content
-     * @param   string  $attachment     Post attachment
+     * @param   mixed   $attachment     Post attachment
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
@@ -195,16 +202,34 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $params['uid'] = (int)$uid;
         $params['pid'] = (int)$pid;
         $params['now'] = $GLOBALS['db']->Date();
-        $params['message']       = $message;
-        $params['attachment']    = $attachment;
+        $params['message'] = $message;
         $params['update_reason'] = $update_reason;
-        $attachment = is_null($attachment)? '[attachment]' : '{attachment}';
+        if (is_null($attachment)) {
+            $attachment_host_fname = '[attachment_host_fname]';
+            $attachment_user_fname = '[attachment_user_fname]';
+            $attachment_hits_count = '[attachment_hits_count]';
+        } else {
+            $attachment_host_fname = '{attachment_host_fname}';
+            $attachment_user_fname = '{attachment_user_fname}';
+            $attachment_hits_count = '[attachment_hits_count]';
+            if (empty($attachment)) {
+                $attachment_hits_count = '{attachment_hits_count}';
+                $params['attachment_hits_count'] = 0;
+                $params['attachment_host_fname'] = '';
+                $params['attachment_user_fname'] = '';
+            } else {
+                $params['attachment_host_fname'] = $attachment['host_fname'];
+                $params['attachment_user_fname'] = $attachment['user_fname'];
+            }
+        }
 
         $sql = "
             UPDATE [[forums_posts]] SET
                 [message]            = {message},
                 [last_update_uid]    = {uid},
-                [attachment]         = $attachment,
+                [attachment_host_fname] = $attachment_host_fname,
+                [attachment_user_fname] = $attachment_user_fname,
+                [attachment_hits_count] = $attachment_hits_count,
                 [last_update_reason] = {update_reason},
                 [last_update_time]   = {now}
             WHERE

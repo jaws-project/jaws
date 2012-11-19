@@ -118,11 +118,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $fid        Forum ID
      * @param   string  $subject    Topic subject
      * @param   string  $message    Topic first post content
-     * @param   string  $attachment Topic first post attachment
+     * @param   mixed   $attachment Topic first post attachment
      * @param   bool    $published  Must be published?
      * @return  mixed   Topic ID on successfully or Jaws_Error on failure
      */
-    function InsertTopic($uid, $fid, $subject, $message, $attachment = '', $published = true)
+    function InsertTopic($uid, $fid, $subject, $message, $attachment = null, $published = true)
     {
         $params = array();
         $params['uid']       = $uid;
@@ -213,7 +213,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $result = $pModel->UpdatePost($pid, $uid, $message, null, $update_reason);
+        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();

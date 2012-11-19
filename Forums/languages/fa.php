@@ -92,6 +92,7 @@ define('_FA_FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', "زدودن نوشته ا
 define('_FA_FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE', "نوشته ای از تالار گفتمان زدوده شد.");
 define('_FA_FORUMS_POSTS_MESSAGE', "پیام");
 define('_FA_FORUMS_POSTS_ATTACHMENT', "فایل پیوست");
+define('_FA_FORUMS_POSTS_ATTACHMENT_HITS', "دریافت شده {0} بار");
 define('_FA_FORUMS_POSTS_ATTACHMENT_REMOVE', "زدودن فایل پیوست");
 define('_FA_FORUMS_POSTS_EDIT_REASON', "انگیزه ویرایش");
 define('_FA_FORUMS_POSTS_UPDATEDBY', "بروزرسانی بدست");

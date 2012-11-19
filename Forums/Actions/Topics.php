@@ -218,6 +218,16 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('message', $topic['message']);
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
 
+        // attachment
+        if ($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
+            $this->GetPermission('AddPostAttachment'))
+        {
+            $tpl->SetBlock('topic/attachment');
+            $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
+            $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+            $tpl->ParseBlock('topic/attachment');
+        }
+
         // update reason
         if (!empty($topic['id'])) {
             $tpl->SetBlock('topic/update_reason');
@@ -248,7 +258,7 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $request =& Jaws_Request::getInstance();
         $topic = $request->get(
-            array('fid', 'tid', 'subject', 'message', 'update_reason', 'published'),
+            array('fid', 'tid', 'subject', 'message', 'remove_attachment', 'update_reason', 'published'),
             'post'
         );
         $topic['forum_title'] = '';
@@ -262,6 +272,31 @@ class Forums_Actions_Topics extends ForumsHTML
             Jaws_Header::Referrer();
         }
 
+        // attachment
+        $topic['attachment'] = is_null($topic['remove_attachment'])? null : false;
+        if (is_null($topic['attachment']) &&
+            $GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
+            $this->GetPermission('AddPostAttachment'))
+        {
+            $res = Jaws_Utils::UploadFiles(
+                $_FILES,
+                JAWS_DATA. 'forums',
+                '',
+                'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+                false
+            );
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdateTopic');
+                // redirect to referrer page
+                Jaws_Header::Referrer();
+            }
+
+            if (!empty($res)) {
+                $topic['attachment']['host_fname'] = $res['attachment'][0]['host_filename'];
+                $topic['attachment']['user_fname'] = $res['attachment'][0]['user_filename'];
+            }
+        }
+
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
             $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
@@ -273,7 +308,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
-                    '',
+                    $topic['attachment'],
                     $topic['published']
                 );
             }
@@ -291,6 +326,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $GLOBALS['app']->Session->GetAttribute('user'),
                     $topic['subject'],
                     $topic['message'],
+                    $topic['attachment'],
                     $topic['published'],
                     $topic['update_reason']
                 );

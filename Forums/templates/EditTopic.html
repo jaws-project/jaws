@@ -8,7 +8,7 @@
   <!-- BEGIN response -->
   <div class="simple-response-msg">{msg}</div>
   <!-- END response -->
-  <form name="edittopic" action="{requested_url}" method="post">
+  <form name="edittopic" action="{requested_url}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdateTopic" />
     <input type="hidden" name="fid" value="{fid}" />
@@ -30,6 +30,17 @@
         <label for="message">{lbl_message}:</label>
         <textarea id="message" name="message" cols="40" rows="8">{message}</textarea>
       </div>
+      <!-- BEGIN attachment -->
+      <div>
+        <label>&nbsp;</label>
+        <input id="remove_attachment" name="remove_attachment" type="checkbox" />
+        <label for="remove_attachment">{lbl_remove_attachment}</label>
+      </div>
+      <div>
+        <label for="post_attachment">{lbl_attachment}:</label>
+        <input id="post_attachment" name="attachment" type="file" />
+      </div>
+      <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>
         <label for="update_reason">{lbl_update_reason}:</label>

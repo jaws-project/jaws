@@ -94,20 +94,22 @@ class Forums_Actions_Posts extends ForumsHTML
             );
 
             // attachment
-            if (!empty($post['attachment'])) {
+            if (!empty($post['attachment_host_fname'])) {
                 $tpl->SetBlock('posts/post/attachment');
-                $tpl->SetVariable('attachment', $post['attachment']);
-                $tpl->SetVariable('attachment_lbl', _t('FORUMS_POSTS_ATTACHMENT'));
+                $tpl->SetVariable('user_fname', $post['attachment_user_fname']);
+                $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
                 $tpl->SetVariable(
-                    'attachment_url',
+                    'hits_count',
+                    _t('FORUMS_POSTS_ATTACHMENT_HITS', $post['attachment_hits_count'])
+                );
+                $tpl->SetVariable(
+                    'url_attachment',
                     $this->GetURLFor(
                         'Attachment',
                         array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id']),
                         false
                     )
                 );
-                $tpl->SetVariable('attachment_hits', $post['attachment_downloads']);
-                $tpl->SetVariable('attachment_hits_lbl', _t('FORUMS_POSTS_ATTACHMENT_HITS'));
                 $tpl->ParseBlock('posts/post/attachment');
             }
 
@@ -411,7 +413,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
-            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason', 'remove_attachment'),
+            array('fid', 'tid', 'pid', 'subject', 'message', 'remove_attachment', 'update_reason'),
             'post'
         );
 
@@ -454,7 +456,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 Jaws_Header::Referrer();
             }
 
-            $post['attachment'] = isset($res['attachment'][0])? $res['attachment'][0] : '';
+            if (!empty($res)) {
+                $post['attachment']['host_fname'] = $res['attachment'][0]['host_filename'];
+                $post['attachment']['user_fname'] = $res['attachment'][0]['user_filename'];
+            }
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');

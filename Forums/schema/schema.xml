@@ -261,13 +261,19 @@
         </field>
 
         <field>
-            <name>attachment</name>
+            <name>attachment_host_fname</name>
             <type>text</type>
             <length>128</length>
         </field>
 
         <field>
-            <name>attachment_downloads</name>
+            <name>attachment_user_fname</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>attachment_hits_count</name>
             <type>integer</type>
             <default>0</default>
         </field>
