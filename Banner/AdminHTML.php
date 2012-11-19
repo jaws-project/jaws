@@ -419,7 +419,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
                                        '',
                                        false);
         if (!Jaws_Error::IsError($res)) {
-            $filename = $res['upload_banner'][0];
+            $filename = $res['upload_banner'][0]['host_filename'];
             if ($post['bid']!=0) {
                 $model->UpdateBanner($post['bid'],
                                      $post['title'],

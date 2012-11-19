@@ -336,11 +336,11 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
-                if (!empty($post['oldname']) && ($res['uploadfile'][0] != $post['oldname'])) {
+                if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
                     $model->Delete($post['path'], $post['oldname']);
                 }
                 $model->UpdateDBFileInfo($post['path'],
-                                         $res['uploadfile'][0],
+                                         $res['uploadfile'][0]['host_filename'],
                                          $post['file_title'],
                                          $post['file_description'],
                                          $post['file_fast_url'],

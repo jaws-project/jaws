@@ -122,8 +122,9 @@ class ContactHTML extends Jaws_Gadget_HTML
                 $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
                 Jaws_Header::Referrer();
             }
-            if (isset($attach['contact_attachment'][0])) {
-                $attachment = $attach['contact_attachment'][0];
+
+            if (!empty($attach)) {
+                $attachment = $attach['contact_attachment'][0]['host_filename'];
             }
         }
 

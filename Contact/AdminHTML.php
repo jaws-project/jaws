@@ -878,7 +878,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
                               'message' => $res->getMessage());
         } else {
             $response = array('type'    => 'notice',
-                              'filename' => $res['attachment'][0],
+                              'filename' => $res['attachment'][0]['host_filename'],
                               'filesize' => Jaws_Utils::FormatSize($_FILES['attachment']['size']));
         }
 

@@ -339,7 +339,7 @@ class PhooAdminModel extends PhooModel
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
         }
-        $filename = $res[0][0];
+        $filename = $res[0][0]['host_filename'];
         $uploadfile = $uploaddir . $filename;
 
         // Resize Image

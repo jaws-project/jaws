@@ -262,7 +262,7 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
 
         $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
         if (!Jaws_Error::IsError($res)) {
-            $filename = $res['src'][0];
+            $filename = $res['src'][0]['host_filename'];
             $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel');
             $model->AddEmblem($post['title'], $post['url'], $filename);
         } else {
