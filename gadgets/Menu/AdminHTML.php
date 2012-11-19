@@ -296,7 +296,7 @@ class MenuAdminHTML extends Jaws_Gadget_HTML
                               'message' => $res->getMessage());
         } else {
             $response = array('type'    => 'notice',
-                              'message' => $res['upload_image'][0]);
+                              'message' => $res['upload_image'][0]['host_filename']);
         }
 
         $response = $GLOBALS['app']->UTF8->json_encode($response);

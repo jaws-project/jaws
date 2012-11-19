@@ -27,7 +27,7 @@ class Users_Actions_Admin_Avatar extends UsersAdminHTML
                               'message' => $res->getMessage());
         } else {
             $response = array('type'    => 'notice',
-                              'message' => $res['upload_avatar'][0]);
+                              'message' => $res['upload_avatar'][0]['host_filename']);
         }
 
         $response = $GLOBALS['app']->UTF8->json_encode($response);
