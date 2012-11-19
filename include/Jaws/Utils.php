@@ -375,7 +375,7 @@ class Jaws_Utils
      * @param   bool    $overwrite      overwite file or generate random filename
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
-     * @return  bool    Returns TRUE on success or FALSE on failure
+     * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
     function UploadFiles($files, $dest, $allowFormats = '', $denyFormats = '',
                          $overwrite = true, $move_files = true, $max_size = null)
@@ -410,34 +410,34 @@ class Jaws_Utils
                     continue;
                 }
 
-                $filename = isset($file['name']) ? $file['name'] : '';
+                $user_filename = isset($file['name']) ? $file['name'] : '';
                 if (isset($file['error']) && !empty($file['error'])) {
                     return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
                                           __FUNCTION__);
                 }
 
-                $filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/i", "", $filename));
-                $fileinfo = pathinfo($filename);
+                $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/i", "", $user_filename));
+                $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     if (in_array($fileinfo['extension'], $denyFormats) ||
                        (!empty($allowFormats) && !in_array($fileinfo['extension'], $allowFormats)))
                     {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $filename),
+                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
                                               __FUNCTION__);
                     }
                 }
 
                 if (!$overwrite || empty($fileinfo['filename'])) {
-                    $filename = uniqid(floor(microtime()*1000));
+                    $host_filename = uniqid(floor(microtime()*1000));
                     if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                        $filename.= '.'. $fileinfo['extension'];
+                        $host_filename.= '.'. $fileinfo['extension'];
                     }
                 }
-                $uploadfile = $dest . $filename;
+                $uploadfile = $dest . $host_filename;
 
                 if (is_uploaded_file($file['tmp_name'])) {
                     if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $filename),
+                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $host_filename),
                                               __FUNCTION__);
                     }
                 } else {
@@ -448,7 +448,7 @@ class Jaws_Utils
                     }
                     $res = $move_files? @rename($file['tmp_name'], $uploadfile) : @copy($file['tmp_name'], $uploadfile);
                     if (!$res) {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $filename),
+                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $host_filename),
                                               __FUNCTION__);
                     }
                 }
@@ -456,12 +456,13 @@ class Jaws_Utils
                 // Check if the file has been altered or is corrupted
                 if (filesize($uploadfile) != $file['size']) {
                     @unlink($uploadfile);
-                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $filename),
+                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $host_filename),
                                              __FUNCTION__);
                 }
 
                 Jaws_Utils::chmod($uploadfile);
-                $result[$key][$i] = $filename;
+                $result[$key][$i]['user_filename'] = $user_filename;
+                $result[$key][$i]['host_filename'] = $host_filename;
             }
         }
 
