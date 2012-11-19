@@ -30,6 +30,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[createtime],
+                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count],
                 [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
                 [[forums_topics]].[fid], [[forums_topics]].[subject],
                 [first_post_id] as topic_first_post_id, [first_post_time] as topic_first_post_time,
@@ -276,6 +277,28 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $result = $fModel->UpdateForumStatistics($fid);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return true;
+    }
+
+    /**
+     * Increment attachment download hits
+     *
+     * @access  public
+     * @param   int     $pid    Post ID
+     * @return  mixed   True if hits increased successfully or Jaws_Error on error
+     */
+    function HitAttachmentDownload($pid)
+    {
+        $sql = '
+            UPDATE [[forums_posts]] SET
+                [attachment_hits_count] = [attachment_hits_count] + 1
+            WHERE
+                [id] = {pid}';
+        $result = $GLOBALS['db']->query($sql, array('pid' => $pid));
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
