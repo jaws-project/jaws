@@ -203,8 +203,8 @@ class Forums_Actions_Topics extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time'], $date_format));
-            $tpl->SetVariable('createtime_iso', $objDate->ToISO($topic['first_post_time']));
+            $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($topic['first_post_time']));
             $tpl->ParseBlock('topic/post_meta');
         }
 
@@ -461,8 +461,8 @@ class Forums_Actions_Topics extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($topic['first_post_time'], $date_format));
-            $tpl->SetVariable('createtime_iso', $objDate->ToISO($topic['first_post_time']));
+            $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($topic['first_post_time']));
 
             // message
             $tpl->SetVariable('message', $topic['message']);

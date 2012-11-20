@@ -51,7 +51,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $types = array(
             'integer', 'integer', 'text', 'integer', 'integer',
-            'integer', 'timestamp', 'integer', 'timestamp',
+            'integer', 'integer', 'integer', 'integer',
             'boolean', 'boolean',
             'text', 'text',
             'integer',
@@ -94,8 +94,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $types = array(
             'integer', 'integer', 'text', 'integer', 'integer',
-            'integer', 'integer', 'timestamp',
-            'integer', 'integer', 'timestamp',
+            'integer', 'integer', 'integer',
+            'integer', 'integer', 'integer',
             'text', 'text', 'boolean', 'boolean',
         );
 
@@ -291,10 +291,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Update last_post_id, last_post_uid, last_post_time and count of replies
      *
      * @access  public
-     * @param   int         $tid Topic ID       Topic ID
-     * @param   int         $first_post_id      First post ID
-     * @param   timestamp   $first_post_time    First post time
-     * @return  mixed       True on successfully or Jaws_Error on failure
+     * @param   int     $tid Topic ID       Topic ID
+     * @param   int     $first_post_id      First post ID
+     * @param   integer $first_post_time    First post time
+     * @return  mixed   True on successfully or Jaws_Error on failure
      */
     function UpdateTopicStatistics($tid, $first_post_id = 0, $first_post_time = null)
     {
@@ -312,16 +312,16 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [id], [uid], [createtime]
+                [id], [uid], [insert_time]
             FROM
                 [[forums_posts]]
             WHERE
                 [[forums_posts]].[tid] = {tid}
             ORDER BY
-                [createtime] DESC';
+                [insert_time] DESC';
 
-        $types = array('integer', 'integer' , 'timestamp');
-        $last_post = $GLOBALS['db']->queryRow($sql, $params);
+        $types = array('integer', 'integer' , 'integer');
+        $last_post = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($last_post)) {
             return $last_post;
         }
@@ -330,12 +330,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             $last_post = array(
                 'id' => 0,
                 'uid' => 0,
-                'createtime' => null
+                'insert_time' => null
             );
         }
 
         $params['last_post_id']   = $last_post['id'];
-        $params['last_post_time'] = $last_post['createtime'];
+        $params['last_post_time'] = $last_post['insert_time'];
         $params['last_post_uid']  = $last_post['uid'];
 
         $sql = "

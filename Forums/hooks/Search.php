@@ -34,7 +34,7 @@ class ForumsSearchHook
         $sql = '
             SELECT
                 fp.[id], fp.[tid], ft.[fid],
-                ft.[subject], fp.[message], fp.[createtime],
+                ft.[subject], fp.[message], fp.[insert_time],
                 (
                     SELECT
                         COUNT(fpc.[id])
@@ -51,7 +51,7 @@ class ForumsSearchHook
 
         $sql .= ' WHERE ' . $pSql;
         $sql .= '
-            ORDER BY fp.[createtime] DESC';
+            ORDER BY fp.[insert_time] DESC';
 
         $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
@@ -75,7 +75,7 @@ class ForumsSearchHook
             );
             $post['image']   = 'gadgets/Forums/images/logo.png';
             $post['snippet'] = $r['message'];
-            $post['date']    = $objDate->ToISO($r['createtime']);
+            $post['date']    = $objDate->ToISO($r['insert_time']);
             $posts[] = $post;
         }
 

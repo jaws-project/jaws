@@ -29,7 +29,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[createtime],
+                [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[insert_time],
                 [attachment_host_fname], [attachment_user_fname], [attachment_hits_count],
                 [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
                 [[forums_topics]].[fid], [[forums_topics]].[subject],
@@ -79,7 +79,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             SELECT
                 [[forums_posts]].[id], [uid], [message],
                 [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [last_update_uid],
-                [last_update_reason], [last_update_time], [[forums_posts]].[createtime], [[forums_posts]].[status],
+                [last_update_reason], [last_update_time], [[forums_posts]].[insert_time], [[forums_posts]].[status],
                 [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
                 [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
             FROM
@@ -89,7 +89,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             WHERE
                 [tid] = {tid}
             ORDER BY
-                [createtime] ASC';
+                [insert_time] ASC';
 
         if (!empty($limit)) {
             $result = $GLOBALS['db']->setLimit($limit, $offset);
@@ -140,7 +140,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $params = array();
         $params['uid'] = (int)$uid;
         $params['tid'] = (int)$tid;
-        $params['now'] = $GLOBALS['db']->Date();
+        $params['now'] = time();
         $params['ip']  = $_SERVER['REMOTE_ADDR'];
         $params['message'] = $message;
         if (empty($attachment)) {
@@ -153,7 +153,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         $sql = '
             INSERT INTO [[forums_posts]]
-                ([tid], [uid], [message], [attachment_host_fname], [attachment_user_fname], [ip], [createtime])
+                ([tid], [uid], [message], [attachment_host_fname], [attachment_user_fname], [ip], [insert_time])
             VALUES
                 ({tid}, {uid}, {message}, {attachment_host_fname}, {attachment_user_fname}, {ip}, {now})';
 
@@ -203,7 +203,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $params = array();
         $params['uid'] = (int)$uid;
         $params['pid'] = (int)$pid;
-        $params['now'] = $GLOBALS['db']->Date();
+        $params['now'] = time();
         $params['message'] = $message;
         $params['update_reason'] = $update_reason;
         if (is_null($attachment)) {

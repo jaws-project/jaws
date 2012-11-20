@@ -67,8 +67,8 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
-            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
+            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
             $tpl->SetVariable('message',  $this->ParseText($post['message'], 'Forums'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
@@ -145,7 +145,7 @@ class Forums_Actions_Posts extends ForumsHTML
                      $this->GetPermission('EditOthersTopic')
                     ) &&
                     (!$topic['locked'] || $this->GetPermission('EditLockedTopic'))
-                ){
+                ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_EDIT'));
                     $tpl->SetVariable('action_title',_t('FORUMS_TOPICS_EDIT_TITLE'));
@@ -181,10 +181,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 // check permission for edit post
                 if ($this->GetPermission('EditPost') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->GetPermission('EditOthersPost')
-                    ) &&
-                    (!$topic['locked'] || $this->GetPermission('EditPostInLockedTopic'))
-                ){
+                     $this->GetPermission('EditOthersPost')) &&
+                    (!$topic['locked'] || $this->GetPermission('EditPostInLockedTopic')) &&
+                    ($post['insert_time'])
+                ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_EDIT'));
                     $tpl->SetVariable('action_title',_t('FORUMS_POSTS_EDIT_TITLE'));
@@ -364,8 +364,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
-            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
+            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
             $tpl->ParseBlock('post/post_meta');
         }
 
@@ -622,8 +622,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
             );
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetVariable('createtime', $objDate->Format($post['createtime'], $date_format));
-            $tpl->SetVariable('createtime_iso', $objDate->ToISO($post['createtime']));
+            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
 
             // message
             $tpl->SetVariable('message', $post['message']);

@@ -178,7 +178,8 @@
 
         <field>
             <name>first_post_time</name>
-            <type>timestamp</type>
+            <type>integer</type>
+            <length>16</length>
         </field>
 
         <field>
@@ -195,7 +196,8 @@
 
         <field>
             <name>last_post_time</name>
-            <type>timestamp</type>
+            <type>integer</type>
+            <length>16</length>
         </field>
 
         <field>
@@ -285,8 +287,9 @@
         </field>
 
         <field>
-            <name>createtime</name>
-            <type>timestamp</type>
+            <name>insert_time</name>
+            <type>integer</type>
+            <length>16</length>
         </field>
 
         <field>
@@ -304,7 +307,8 @@
 
         <field>
             <name>last_update_time</name>
-            <type>timestamp</type>
+            <type>integer</type>
+            <length>16</length>
         </field>
 
         <field>
