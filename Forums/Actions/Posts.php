@@ -56,6 +56,9 @@ class Forums_Actions_Posts extends ForumsHTML
         $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
+        // edit max limit time
+        $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
+
         $objDate = $GLOBALS['app']->loadDate();
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
@@ -68,7 +71,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->SetVariable('message',  $this->ParseText($post['message'], 'Forums'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
@@ -128,7 +131,7 @@ class Forums_Actions_Posts extends ForumsHTML
                     )
                 );
                 $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time'], $date_format));
-                $tpl->SetVariable('update_time_iso', $objDate->ToISO($post['last_update_time']));
+                $tpl->SetVariable('update_time_iso', $objDate->ToISO((int)$post['last_update_time']));
                 if (!empty($post['last_update_reason'])) {
                     $tpl->SetBlock('posts/post/update/reason');
                     $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
@@ -142,9 +145,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 // check permission for edit topic
                 if ($this->GetPermission('EditTopic') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->GetPermission('EditOthersTopic')
-                    ) &&
-                    (!$topic['locked'] || $this->GetPermission('EditLockedTopic'))
+                     $this->GetPermission('EditOthersTopic')) &&
+                    (!$topic['locked'] || $this->GetPermission('EditLockedTopic')) &&
+                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                     $this->GetPermission('EditOutdatedTopic'))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_EDIT'));
@@ -162,8 +166,9 @@ class Forums_Actions_Posts extends ForumsHTML
                 // check permission for delete topic
                 if ($this->GetPermission('DeleteTopic') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->GetPermission('DeleteOthersTopic')
-                    )
+                     $this->GetPermission('DeleteOthersTopic')) &&
+                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                     $this->GetPermission('DeleteOutdatedTopic'))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_DELETE'));
@@ -183,7 +188,8 @@ class Forums_Actions_Posts extends ForumsHTML
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
                      $this->GetPermission('EditOthersPost')) &&
                     (!$topic['locked'] || $this->GetPermission('EditPostInLockedTopic')) &&
-                    ($post['insert_time'])
+                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                     $this->GetPermission('EditOutdatedPost'))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_EDIT'));
@@ -201,9 +207,10 @@ class Forums_Actions_Posts extends ForumsHTML
                 // check permission for delete post
                 if ($this->GetPermission('DeletePost') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->GetPermission('DeleteOthersPost')
-                    ) &&
-                    (!$topic['locked'] || $this->GetPermission('DeletePostInLockedTopic'))
+                     $this->GetPermission('DeleteOthersPost')) &&
+                    (!$topic['locked'] || $this->GetPermission('DeletePostInLockedTopic')) &&
+                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                     $this->GetPermission('DeleteOutdatedPost'))
                 ){
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_DELETE'));
@@ -365,7 +372,7 @@ class Forums_Actions_Posts extends ForumsHTML
             );
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->ParseBlock('post/post_meta');
         }
 
@@ -623,7 +630,7 @@ class Forums_Actions_Posts extends ForumsHTML
             );
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-            $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['insert_time']));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
 
             // message
             $tpl->SetVariable('message', $post['message']);

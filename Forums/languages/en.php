@@ -26,7 +26,9 @@ define('_EN_FORUMS_ACL_EDITOUTDATEDTOPIC', "Edit outdated topic");
 define('_EN_FORUMS_ACL_LOCKTOPIC', "Lock topic");
 define('_EN_FORUMS_ACL_DELETETOPIC', "Delete topic");
 define('_EN_FORUMS_ACL_DELETEOTHERSTOPIC', "Delete others topic");
+define('_EN_FORUMS_ACL_DELETEOUTDATEDTOPIC', "Delete outdated topic");
 define('_EN_FORUMS_ACL_ADDPOST', "Add post");
+define('_EN_FORUMS_ACL_ADDPOSTATTACHMENT', "Add attachment to post");
 define('_EN_FORUMS_ACL_ADDPOSTTOLOCKEDTOPIC', "Add post to locked topic");
 define('_EN_FORUMS_ACL_EDITPOST', "Edit post");
 define('_EN_FORUMS_ACL_EDITOTHERSPOST', "Edit others post");
@@ -34,6 +36,7 @@ define('_EN_FORUMS_ACL_EDITPOSTINLOCKEDTOPIC', "Edit post in locked topic");
 define('_EN_FORUMS_ACL_EDITOUTDATEDPOST', "Edit outdated post");
 define('_EN_FORUMS_ACL_DELETEPOST', "Delete post");
 define('_EN_FORUMS_ACL_DELETEOTHERSPOST', "Delete others post");
+define('_EN_FORUMS_ACL_DELETEOUTDATEDPOST', "Delete outdated post");
 define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
 
 /* Commons */

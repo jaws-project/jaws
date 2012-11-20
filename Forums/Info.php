@@ -37,6 +37,7 @@ class ForumsInfo extends Jaws_Gadget
         'LockTopic',
         'DeleteTopic',
         'DeleteOthersTopic',
+        'DeleteOutdatedTopic',
         'AddPost',
         'AddPostAttachment',
         'AddPostToLockedTopic',
@@ -46,6 +47,7 @@ class ForumsInfo extends Jaws_Gadget
         'EditOutdatedPost',
         'DeletePost',
         'DeleteOthersPost',
+        'DeleteOutdatedPost',
         'DeletePostInLockedTopic',
     );
 

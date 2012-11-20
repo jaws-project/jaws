@@ -24,7 +24,9 @@ define('_FA_FORUMS_ACL_EDITOUTDATEDTOPIC', "ویرایش جستارهای دیر
 define('_FA_FORUMS_ACL_LOCKTOPIC', "بستن جستار");
 define('_FA_FORUMS_ACL_DELETETOPIC', "زدودن جستار");
 define('_FA_FORUMS_ACL_DELETEOTHERSTOPIC', "زدودن جستار دیگران");
+define('_FA_FORUMS_ACL_DELETEOUTDATEDTOPIC', "زدودن جستار دیرین");
 define('_FA_FORUMS_ACL_ADDPOST', "افزودن نوشته");
+define('_FA_FORUMS_ACL_ADDPOSTATTACHMENT', "افزودن فایل پیوست به نوشته");
 define('_FA_FORUMS_ACL_ADDPOSTTOLOCKEDTOPIC', "افزودن نوشته به جستار بسته شده");
 define('_FA_FORUMS_ACL_EDITPOST', "ویرایش نوشته");
 define('_FA_FORUMS_ACL_EDITOTHERSPOST', "ویرایش نوشته‌های دیگران");
@@ -32,6 +34,7 @@ define('_FA_FORUMS_ACL_EDITPOSTINLOCKEDTOPIC', "ویرایش نوشته‌ها �
 define('_FA_FORUMS_ACL_EDITOUTDATEDPOST', "ویرایش نوشته‌های دیرین");
 define('_FA_FORUMS_ACL_DELETEPOST', "زدودن نوشته");
 define('_FA_FORUMS_ACL_DELETEOTHERSPOST', "زدودن نوشته دیگران");
+define('_FA_FORUMS_ACL_DELETEOUTDATEDPOST', "زدودن نوشته های دیرین");
 define('_FA_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "زدودن نوشته در جستار بسته شده");
 define('_FA_FORUMS_GROUP', "دسته");
 define('_FA_FORUMS_GROUPS', "دسته‌ها");
