@@ -82,19 +82,21 @@ class Jaws_Date
     /**
      * Convert the input date(timestamp) to ISO standard
      *
-     * @param   string  $datetime  Input date, in Timestamp format
+     * @param   mixed   $datetime  Input date, in Timestamp format
      * @return  string  Date in ISO8061 Format
      * @access  public
      */
     function TimeStampToISO8601($datetime)
     {
-        $string = substr($datetime, 0, 4)  . '-' .
-                  substr($datetime, 4, 2)  . '-' .
-                  substr($datetime, 6, 2)  . ' ' .
-                  substr($datetime, 8, 2)  . ':' .
-                  substr($datetime, 10, 2) . ':' .
-                  substr($datetime, 12, 2);
-        $datetime = strtotime($string);
+        if (is_string($datetime)) {
+            $string = substr($datetime, 0, 4)  . '-' .
+                      substr($datetime, 4, 2)  . '-' .
+                      substr($datetime, 6, 2)  . ' ' .
+                      substr($datetime, 8, 2)  . ':' .
+                      substr($datetime, 10, 2) . ':' .
+                      substr($datetime, 12, 2);
+            $datetime = strtotime($string);
+        }
         ///FIXME check if this is returning proper ISO8601 date string
         return date('Y-m-d\TH:i:s', $datetime) . $this->GetISO8601Timezone();
     }
@@ -102,7 +104,7 @@ class Jaws_Date
     /**
      * Convert the input date(datetime) to ISO standard
      *
-     * @param   string  $datetime  Input date, in datetime format
+     * @param   mixed   $datetime  Input date, in datetime format
      * @return  string  Date in ISO8061 Format
      * @access  public
      */
@@ -119,7 +121,7 @@ class Jaws_Date
     /**
      * Detect the time of date and convert it to ISO
      *
-     * @param   string  $datetime  Input date, can be in timestamp or datetime format
+     * @param   mixed   $datetime  Input date, can be in timestamp or datetime format
      * @return  string  Date in ISO8061 Format
      * @access  public
      */
