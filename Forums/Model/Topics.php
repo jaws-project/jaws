@@ -32,7 +32,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 [[forums_topics]].[published], [[forums_topics]].[locked],
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[forums]].[last_topic_id] as forum_last_topic_id,
-                [[forums_posts]].[message], [[forums_posts]].[last_update_reason],
+                [[forums_posts]].[message], [attachment_host_fname], [last_update_reason],
                 [[users]].[username], [[users]].[nickname], [[users]].[email]
             FROM
                 [[forums_topics]]
@@ -55,7 +55,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             'boolean', 'boolean',
             'text', 'text',
             'integer',
-            'text', 'text',
+            'text', 'text', 'text',
             'text', 'text', 'text',
         );
 
@@ -180,12 +180,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $uid            User's ID
      * @param   string  $subject        Topic subject
      * @param   string  $message        First post content
-     * @param   string  $attachment     First post attachment
+     * @param   mixed   $attachment     First post attachment
+     * @param   string  $old_attachment First post old attachment
      * @param   bool    $published      Topic publish status
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
+    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $attachment = null, $old_attachment = '',
         $published = null, $update_reason = '')
     {
         $params = array();
@@ -213,7 +214,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
+        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $old_attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();
@@ -230,11 +231,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Delete topic
      *
      * @access  public
-     * @param   int     $tid    Topic ID
-     * @param   int     $fid    Forum ID
+     * @param   int     $tid        Topic ID
+     * @param   int     $fid        Forum ID
+     * @param   mixed   $attachment Topic first post attachment
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeleteTopic($tid, $fid)
+    function DeleteTopic($tid, $fid, $attachment = '')
     {
         $params = array();
         $params['tid'] = $tid;
@@ -268,6 +270,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         //Commit Transaction
         $GLOBALS['db']->dbc->commit();
+
+        // remove attachment file
+        if (!empty($attachment)) {
+            Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $attachment);
+        }
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!Jaws_Error::IsError($fModel)) {

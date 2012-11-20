@@ -475,13 +475,17 @@ class Forums_Actions_Posts extends ForumsHTML
             $event_message = _t('FORUMS_POSTS_NEW_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
         } else {
-            $result = $pModel->UpdatePost(
-                $post['pid'],
-                $GLOBALS['app']->Session->GetAttribute('user'),
-                $post['message'],
-                $post['attachment'],
-                $post['update_reason']
-            );
+            $result = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
+            if (!Jaws_Error::IsError($result)) {
+                $result = $pModel->UpdatePost(
+                    $post['pid'],
+                    $GLOBALS['app']->Session->GetAttribute('user'),
+                    $post['message'],
+                    $post['attachment'],
+                    $result['attachment_host_fname'],
+                    $post['update_reason']
+                );
+            }
             $event_subject = _t('FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
             $event_message = _t('FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
@@ -538,8 +542,13 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-            if (!empty($rqst['confirm'])) {
-                $result = $pModel->DeletePost($post['id'], $post['tid'], $post['fid']);
+            if (!is_null($rqst['confirm'])) {
+                $result = $pModel->DeletePost(
+                    $post['id'],
+                    $post['tid'],
+                    $post['fid'],
+                    $post['attachment_host_fname']
+                );
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(
                         _t('FORUMS_POSTS_DELETE_ERROR'),

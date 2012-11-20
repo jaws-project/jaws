@@ -194,10 +194,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $uid            User's ID
      * @param   string  $message        Post content
      * @param   mixed   $attachment     Post attachment
+     * @param   string  $old_attachment Post old attachment
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $message, $attachment = null, $update_reason = '')
+    function UpdatePost($pid, $uid, $message, $attachment = null, $old_attachment = '', $update_reason = '')
     {
         $params = array();
         $params['uid'] = (int)$uid;
@@ -221,6 +222,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             } else {
                 $params['attachment_host_fname'] = $attachment['host_fname'];
                 $params['attachment_user_fname'] = $attachment['user_fname'];
+            }
+
+            // remove old attachment file
+            if (!empty($old_attachment)) {
+                Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $old_attachment);
             }
         }
 
@@ -267,6 +273,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return $result;
+        }
+
+        // remove attachment file
+        if (!empty($attachment)) {
+            Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $attachment);
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');

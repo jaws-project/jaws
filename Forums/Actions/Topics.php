@@ -327,6 +327,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['subject'],
                     $topic['message'],
                     $topic['attachment'],
+                    $result['attachment_host_fname'],
                     $topic['published'],
                     $topic['update_reason']
                 );
@@ -386,8 +387,8 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-            if (!empty($rqst['confirm'])) {
-                $result = $tModel->DeleteTopic($topic['id'], $topic['fid']);
+            if (!is_null($rqst['confirm'])) {
+                $result = $tModel->DeleteTopic($topic['id'], $topic['fid'], $topic['attachment_host_fname']);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),
