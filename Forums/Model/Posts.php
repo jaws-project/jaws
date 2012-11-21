@@ -32,7 +32,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
                 [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[insert_time],
                 [attachment_host_fname], [attachment_user_fname], [attachment_hits_count],
                 [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
-                [[forums_topics]].[fid], [[forums_topics]].[subject],
+                [[forums_topics]].[fid], [[forums_topics]].[subject], [[forums_topics]].[locked] as topic_locked,
                 [first_post_id] as topic_first_post_id, [first_post_time] as topic_first_post_time,
                 [last_post_id] as topic_last_post_id, [last_post_time] as topic_last_post_time,
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
@@ -57,7 +57,20 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             $sql .= ' AND [fid] = {fid}';
         }
 
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $types = array(
+            'integer', 'integer', 'integer', 'text', 'integer',
+            'text', 'text', 'integer',
+            'integer', 'text', 'integer', 'integer',
+            'integer', 'text', 'boolean',
+            'integer', 'integer',
+            'integer', 'integer',
+            'text', 'text',
+            'integer',
+            'text', 'text', 'integer',
+            'text', 'text', 'integer',
+        );
+
+        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
         return $result;
     }
 

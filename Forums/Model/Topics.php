@@ -28,7 +28,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [[forums_topics]].[id], [fid], [subject], [views], [replies],
-                [first_post_id], [first_post_time], [last_post_id], [last_post_time],
+                [first_post_id], [first_post_uid], [first_post_time], [last_post_id], [last_post_time],
                 [[forums_topics]].[published], [[forums_topics]].[locked],
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[forums]].[last_topic_id] as forum_last_topic_id,
@@ -51,7 +51,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $types = array(
             'integer', 'integer', 'text', 'integer', 'integer',
-            'integer', 'integer', 'integer', 'integer',
+            'integer', 'integer', 'integer', 'integer', 'integer',
             'boolean', 'boolean',
             'text', 'text',
             'integer',

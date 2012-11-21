@@ -298,8 +298,9 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $send_notification = true;
-        // edit min limit time
+        // edit min/max limit time
         $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+        $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
@@ -326,7 +327,18 @@ class Forums_Actions_Topics extends ForumsHTML
                 Jaws_Header::Referrer();
             }
 
-            $last_update_uid = $GLOBALS['app']->Session->GetAttribute('user');
+            // check permission for edit topic
+            $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ((!$this->GetPermission('EditTopic')) ||
+                ($oldTopic['first_post_uid'] != $last_update_uid &&
+                 !$this->GetPermission('EditOthersTopic')) ||
+                ($oldTopic['locked'] && !$this->GetPermission('EditLockedTopic')) ||
+                ((time() - $oldTopic['first_post_time']) > $edit_max_limit_time &&
+                 !$this->GetPermission('EditOutdatedTopic'))
+            ) {
+                return Jaws_HTTPError::Get(403);
+            }
+
             if ((time() - $oldTopic['first_post_time']) <= $edit_min_limit_time) {
                 $last_update_uid = 0;
                 $send_notification = false;
@@ -406,6 +418,19 @@ class Forums_Actions_Topics extends ForumsHTML
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!is_null($rqst['confirm'])) {
+                // delete min limit time
+                $delete_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+
+                // check delete permissions
+                if ((!$this->GetPermission('DeleteTopic')) ||
+                    ($topic['first_post_uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
+                     !$this->GetPermission('DeleteOthersTopic')) ||
+                    ((time() - $topic['first_post_time']) > $delete_limit_time &&
+                     !$this->GetPermission('DeleteOutdatedTopic'))
+                ) {
+                    return Jaws_HTTPError::Get(403);
+                }
+
                 $result = $tModel->DeleteTopic($topic['id'], $topic['fid'], $topic['attachment_host_fname']);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(

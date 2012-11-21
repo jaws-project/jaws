@@ -56,8 +56,9 @@ class Forums_Actions_Posts extends ForumsHTML
         $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
-        // edit max limit time
+        // edit max/min limit time
         $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
+        $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
 
         $objDate = $GLOBALS['app']->loadDate();
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -167,7 +168,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 if ($this->GetPermission('DeleteTopic') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
                      $this->GetPermission('DeleteOthersTopic')) &&
-                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                    ((time() - $post['insert_time']) <= $edit_min_limit_time ||
                      $this->GetPermission('DeleteOutdatedTopic'))
                 ) {
                     $tpl->SetBlock('posts/post/action');
@@ -209,7 +210,7 @@ class Forums_Actions_Posts extends ForumsHTML
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
                      $this->GetPermission('DeleteOthersPost')) &&
                     (!$topic['locked'] || $this->GetPermission('DeletePostInLockedTopic')) &&
-                    ((time() - $post['insert_time']) <= $edit_max_limit_time ||
+                    ((time() - $post['insert_time']) <= $edit_min_limit_time ||
                      $this->GetPermission('DeleteOutdatedPost'))
                 ){
                     $tpl->SetBlock('posts/post/action');
@@ -495,9 +496,9 @@ class Forums_Actions_Posts extends ForumsHTML
 
             // check edit permissions
             $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ((!$this->GetPermission('EditPost')) &&
-                ($oldPost['uid'] != $last_update_uid && !$this->GetPermission('EditOthersPost')) &&
-                ($topic['locked'] && !$this->GetPermission('EditPostInLockedTopic')) &&
+            if ((!$this->GetPermission('EditPost')) ||
+                ($oldPost['uid'] != $last_update_uid && !$this->GetPermission('EditOthersPost')) ||
+                ($topic['locked'] && !$this->GetPermission('EditPostInLockedTopic')) ||
                 ((time() - $oldPost['insert_time']) > $edit_max_limit_time &&
                  !$this->GetPermission('EditOutdatedPost'))
             ) {
@@ -563,8 +564,8 @@ class Forums_Actions_Posts extends ForumsHTML
      */
     function DeletePost()
     {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -578,7 +579,28 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            $topic_link = $this->GetURLFor(
+                'Posts',
+                array('fid' => $post['fid'], 'tid' => $post['tid']),
+                true,
+                'site_url'
+            );
+
             if (!is_null($rqst['confirm'])) {
+                // delete min limit time
+                $delete_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+
+                // check delete permissions
+                if ((!$this->GetPermission('DeletePost')) ||
+                    ($post['uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
+                     !$this->GetPermission('DeleteOthersPost')) ||
+                    ($post['topic_locked'] && !$this->GetPermission('DeletePostInLockedTopic')) ||
+                    ((time() - $post['insert_time']) > $delete_limit_time &&
+                     !$this->GetPermission('DeleteOutdatedPost'))
+                ) {
+                    return Jaws_HTTPError::Get(403);
+                }
+
                 $result = $pModel->DeletePost(
                     $post['id'],
                     $post['tid'],
@@ -593,26 +615,20 @@ class Forums_Actions_Posts extends ForumsHTML
                     // redirect to referrer page
                     Jaws_Header::Referrer();
                 }
-            }
 
-            $event_subject = _t('FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', $post['forum_title']);
-            $event_message = _t('FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE');
-            $topic_link = $this->GetURLFor(
-                'Posts',
-                array('fid' => $post['fid'], 'tid' => $post['tid']),
-                true,
-                'site_url'
-            );
-            $result = $pModel->PostNotification(
-                $post['email'],
-                $event_subject,
-                $event_message,
-                $topic_link,
-                $post['subject'],
-                $this->ParseText($post['message'])
-            );
-            if (Jaws_Error::IsError($result)) {
-                // do nothing
+                $event_subject = _t('FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', $post['forum_title']);
+                $event_message = _t('FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE');
+                $result = $pModel->PostNotification(
+                    $post['email'],
+                    $event_subject,
+                    $event_message,
+                    $topic_link,
+                    $post['subject'],
+                    $this->ParseText($post['message'])
+                );
+                if (Jaws_Error::IsError($result)) {
+                    // do nothing
+                }
             }
 
             // redirect to topic posts list
