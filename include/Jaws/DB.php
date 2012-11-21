@@ -265,12 +265,13 @@ class Jaws_DB
     /**
      * Execute a manipulation query to the database and return any the affected rows
      *
-     * @param   string $query the SQL query
-     * @param   array $params replace values in the query
+     * @param   string  $query  SQL query string
+     * @param   array   $params replace values in the query
+     * @param   int     $level  The severity level if error occurred
      * @return  mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access  public
      */
-    function query($sql, $params = array())
+    function query($sql, $params = array(), $error_level = JAWS_ERROR_ERROR)
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->exec($sql);
