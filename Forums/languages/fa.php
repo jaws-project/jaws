@@ -68,6 +68,8 @@ define('_FA_FORUMS_TOPICS_DELETE', "زدودن جستار");
 define('_FA_FORUMS_TOPICS_DELETE_TITLE', "زدودن جستار");
 define('_FA_FORUMS_TOPICS_DELETE_BUTTON', "زدودن جستار");
 define('_FA_FORUMS_TOPICS_DELETE_ERROR', "هنگام زدودن جستار، خطایی رخ داده است");
+define('_FA_FORUMS_TOPICS_DELETE_NOTIFICATION_SUBJECT', "زدودن جستار از تالار گفتمان - {0}");
+define('_FA_FORUMS_TOPICS_DELETE_NOTIFICATION_MESSAGE', "جستار زیر از تالار گفتمان زدوده شد.");
 define('_FA_FORUMS_TOPICS_LOCK', "بستن جستار");
 define('_FA_FORUMS_TOPICS_LOCK_NOTIFICATION_SUBJECT', "بستن جستار در تالار گفتمان - {0}");
 define('_FA_FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE', "جستار زیر در تالار گفتمان بسته شد.");
