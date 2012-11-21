@@ -78,9 +78,9 @@ class VisitCounterModel extends Jaws_Gadget_Model
                     ({ip}, {now}, {visits})';
         }
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $GLOBALS['db']->query($sql, $params, JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('VISITCOUNTER_ERROR_CANT_ADD_VISIT', $ip), _t('VISITCOUNTER_NAME'));
+            return $result;
         }
 
         return true;
