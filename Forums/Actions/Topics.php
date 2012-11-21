@@ -236,6 +236,21 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->ParseBlock('topic/update_reason');
         }
 
+        // chack captcha only in new topic action
+        if (empty($topic['id'])) {
+            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+            if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
+                $tpl->SetBlock('topic/captcha');
+                $tpl->SetVariable('lbl_captcha', $label);
+                $tpl->SetVariable('captcha', $captcha);
+                if (!empty($entry)) {
+                    $tpl->SetVariable('value', $entry);
+                }
+                $tpl->SetVariable('msg', $description);
+                $tpl->ParseBlock('topic/captcha');
+            }
+        }
+
         // buttons
         $tpl->SetVariable('btn_submit_title', $btn_title);
         $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
@@ -263,6 +278,10 @@ class Forums_Actions_Topics extends ForumsHTML
         );
         $topic['forum_title'] = '';
 
+        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
+            $topic['message'] = $request->get('message', 'post', false);
+        }
+
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
@@ -270,6 +289,16 @@ class Forums_Actions_Topics extends ForumsHTML
             );
             // redirect to referrer page
             Jaws_Header::Referrer();
+        }
+
+        // chack captcha only in new topic action
+        if (empty($topic['tid'])) {
+            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+            $resCheck = $mPolicy->CheckCaptcha();
+            if (Jaws_Error::IsError($resCheck)) {
+                $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdateTopic');
+                Jaws_Header::Referrer();
+            }
         }
 
         // attachment
