@@ -470,8 +470,9 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         $send_notification = true;
-        // edit min limit time
+        // edit min/max limit time
         $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+        $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
@@ -492,7 +493,17 @@ class Forums_Actions_Posts extends ForumsHTML
                 Jaws_Header::Referrer();
             }
 
+            // check edit permissions
             $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ((!$this->GetPermission('EditPost')) &&
+                ($oldPost['uid'] != $last_update_uid && !$this->GetPermission('EditOthersPost')) &&
+                ($topic['locked'] && !$this->GetPermission('EditPostInLockedTopic')) &&
+                ((time() - $oldPost['insert_time']) > $edit_max_limit_time &&
+                 !$this->GetPermission('EditOutdatedPost'))
+            ) {
+                return Jaws_HTTPError::Get(403);
+            }
+
             if ((time() - $oldPost['insert_time']) <= $edit_min_limit_time) {
                 $last_update_uid = 0;
                 $send_notification = false;
