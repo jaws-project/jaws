@@ -413,8 +413,8 @@ class Forums_Actions_Posts extends ForumsHTML
      */
     function UpdatePost()
     {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -469,6 +469,10 @@ class Forums_Actions_Posts extends ForumsHTML
             }
         }
 
+        $send_notification = true;
+        // edit min limit time
+        $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost(
@@ -482,17 +486,27 @@ class Forums_Actions_Posts extends ForumsHTML
             $event_message = _t('FORUMS_POSTS_NEW_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
         } else {
-            $result = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
-            if (!Jaws_Error::IsError($result)) {
-                $result = $pModel->UpdatePost(
-                    $post['pid'],
-                    $GLOBALS['app']->Session->GetAttribute('user'),
-                    $post['message'],
-                    $post['attachment'],
-                    $result['attachment_host_fname'],
-                    $post['update_reason']
-                );
+            $oldPost = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
+            if (Jaws_Error::IsError($oldPost) || empty($oldPost)) {
+                // redirect to referrer page
+                Jaws_Header::Referrer();
             }
+
+            $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ((time() - $oldPost['insert_time']) <= $edit_min_limit_time) {
+                $last_update_uid = 0;
+                $send_notification = false;
+                $post['update_reason'] = '';
+            }
+
+            $result = $pModel->UpdatePost(
+                $post['pid'],
+                $last_update_uid,
+                $post['message'],
+                $post['attachment'],
+                $oldPost['attachment_host_fname'],
+                $post['update_reason']
+            );
             $event_subject = _t('FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
             $event_message = _t('FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
@@ -511,16 +525,20 @@ class Forums_Actions_Posts extends ForumsHTML
             true,
             'site_url'
         );
-        $result = $pModel->PostNotification(
-            $topic['email'],
-            $event_subject,
-            $event_message,
-            $post_link,
-            $topic['subject'],
-            $this->ParseText($post['message'])
-        );
-        if (Jaws_Error::IsError($result)) {
-            // do nothing
+
+        // send email notification
+        if ($send_notification) {
+            $result = $pModel->PostNotification(
+                $topic['email'],
+                $event_subject,
+                $event_message,
+                $post_link,
+                $topic['subject'],
+                $this->ParseText($post['message'])
+            );
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
         }
 
         // redirect to topic posts page

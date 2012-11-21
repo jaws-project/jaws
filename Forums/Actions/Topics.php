@@ -297,6 +297,10 @@ class Forums_Actions_Topics extends ForumsHTML
             }
         }
 
+        $send_notification = true;
+        // edit min limit time
+        $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
             $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
@@ -316,22 +320,33 @@ class Forums_Actions_Topics extends ForumsHTML
             $event_message = _t('FORUMS_TOPICS_NEW_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
-            $result = $tModel->GetTopic($topic['tid'], $topic['fid']);
-            if (!Jaws_Error::IsError($result) && !empty($result)) {
-                $topic['forum_title'] = $result['forum_title'];
-                $result = $tModel->UpdateTopic(
-                    $topic['fid'],
-                    $topic['tid'],
-                    $result['first_post_id'],
-                    $GLOBALS['app']->Session->GetAttribute('user'),
-                    $topic['subject'],
-                    $topic['message'],
-                    $topic['attachment'],
-                    $result['attachment_host_fname'],
-                    $topic['published'],
-                    $topic['update_reason']
-                );
+            $oldTopic = $tModel->GetTopic($topic['tid'], $topic['fid']);
+            if (Jaws_Error::IsError($oldTopic) || empty($oldTopic)) {
+                // redirect to referrer page
+                Jaws_Header::Referrer();
             }
+
+            $last_update_uid = $GLOBALS['app']->Session->GetAttribute('user');
+            if ((time() - $oldTopic['first_post_time']) <= $edit_min_limit_time) {
+                $last_update_uid = 0;
+                $send_notification = false;
+                $topic['update_reason'] = '';
+            }
+
+            $topic['forum_title'] = $oldTopic['forum_title'];
+            $result = $tModel->UpdateTopic(
+                $topic['fid'],
+                $topic['tid'],
+                $oldTopic['first_post_id'],
+                $last_update_uid,
+                $topic['subject'],
+                $topic['message'],
+                $topic['attachment'],
+                $oldTopic['attachment_host_fname'],
+                $topic['published'],
+                $topic['update_reason']
+            );
+
             $event_subject = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
             $event_message = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE');
             $error_message = _t('FORUMS_TOPICS_EDIT_ERROR');
@@ -350,15 +365,18 @@ class Forums_Actions_Topics extends ForumsHTML
             true,
             'site_url'
         );
-        $result = $tModel->TopicNotification(
-            $event_subject,
-            $event_message,
-            $topic_link,
-            $topic['subject'],
-            $this->ParseText($topic['message'])
-        );
-        if (Jaws_Error::IsError($result)) {
-            // do nothing
+
+        if ($send_notification) {
+            $result = $tModel->TopicNotification(
+                $event_subject,
+                $event_message,
+                $topic_link,
+                $topic['subject'],
+                $this->ParseText($topic['message'])
+            );
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
         }
 
         // redirect to topic posts page
