@@ -278,7 +278,7 @@ class Jaws_DB
         if (PEAR::IsError($result)) {
             return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
                                   $result->getCode(),
-                                  JAWS_ERROR_ERROR,
+                                  $error_level,
                                   1);
         }
 
