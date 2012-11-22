@@ -793,6 +793,9 @@ class Jaws_Session
      */
     function GetSessions()
     {
+        // remove expired session
+        $this->DeleteExpiredSessions();
+
         $sql = '
             SELECT
                 [sid], [domain], [user], [type], [longevity], [ip], [agent], [referrer],
