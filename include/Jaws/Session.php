@@ -786,6 +786,46 @@ class Jaws_Session
     }
 
     /**
+     * Returns the sessions attributes
+     *
+     * @access  public
+     * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
+     */
+    function GetSessions()
+    {
+        $sql = '
+            SELECT
+                [sid], [domain], [user], [type], [longevity], [ip], [agent], [referrer],
+                [data], [createtime], [updatetime]
+            FROM
+                [[session]]';
+
+        $types = array(
+            'integer', 'text', 'text', 'text', 'integer', 'integer', 'text', 'text',
+            'text', 'integer', 'integer',
+        );
+        $sessions = $GLOBALS['db']->queryAll($sql, null, $types);
+        if (Jaws_Error::isError($sessions)) {
+            return $sessions;
+        }
+
+        foreach ($sessions as $key => $session) {
+            if ($data = @unserialize($session['data'])) {
+                $sessions[$key]['internal']   = $data['internal'];
+                $sessions[$key]['username']   = $data['username'];
+                $sessions[$key]['superadmin'] = $data['superadmin'];
+                $sessions[$key]['groups']     = $data['groups'];
+                $sessions[$key]['nickname']   = $data['nickname'];
+                $sessions[$key]['email']      = $data['email'];
+                $sessions[$key]['avatar']     = $data['avatar'];
+                unset($sessions[$key]['data']);
+            }
+        }
+
+        return $sessions;
+    }
+
+    /**
      * Push response data
      *
      * @access  public
