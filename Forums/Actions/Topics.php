@@ -421,7 +421,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $event_message,
                 $topic_link,
                 $topic['subject'],
-                $this->ParseText($topic['message'])
+                $this->ParseText($topic['message'], 'Forums')
             );
             if (Jaws_Error::IsError($result)) {
                 // do nothing
@@ -491,7 +491,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $event_message,
                     $forum_link,
                     $topic['subject'],
-                    $this->ParseText($topic['message'])
+                    $this->ParseText($topic['message'], 'Forums')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
@@ -600,7 +600,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $event_message,
             $topic_link,
             $topic['subject'],
-            $this->ParseText($topic['message'])
+            $this->ParseText($topic['message'], 'Forums')
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing
