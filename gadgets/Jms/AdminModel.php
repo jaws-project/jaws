@@ -193,25 +193,4 @@ class JmsAdminModel extends Jaws_Gadget_Model
         return $plugin;
     }
 
-    /**
-     * Get the ACL keys of a gadget
-     *
-     * @access  public
-     * @param   string  $gadget  Gadget keys to fetch
-     * @return  array   Array with registry keys
-     */
-    function GetGadgetACLKeys($gadget)
-    {
-        $rs = array();
-        $fileKeys = $GLOBALS['app']->ACL->LoadFile($gadget, 'gadgets', true);
-        foreach ($fileKeys as $key => $value) {
-            $rs[] = array(
-                'name'  => $key,
-                'value' => $value,
-            );
-        }
-
-        return $rs;
-    }
-
 }
