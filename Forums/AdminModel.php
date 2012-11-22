@@ -37,8 +37,8 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/topics_limit', '15');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/posts_limit',  '10');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'd MN Y G:i');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_min_limit_time', '120');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_max_limit_time', '600');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_min_limit_time', '300');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_max_limit_time', '900');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/enable_attachment',   'true');
 
         return true;
