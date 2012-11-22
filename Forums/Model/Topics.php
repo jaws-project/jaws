@@ -324,7 +324,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             WHERE
                 [[forums_posts]].[tid] = {tid}
             ORDER BY
-                [insert_time] DESC';
+                [id] DESC';
 
         $types = array('integer', 'integer' , 'integer');
         $last_post = $GLOBALS['db']->queryRow($sql, $params, $types);

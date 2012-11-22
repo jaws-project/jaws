@@ -110,11 +110,9 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
         $sql = "
             UPDATE [[forums]] SET
                 [last_topic_id] = (
-                    SELECT [[forums_topics]].[id]
+                    SELECT MAX([[forums_topics]].[id])
                     FROM [[forums_topics]]
                     WHERE [[forums_topics]].[fid] = {fid}
-                    ORDER BY [last_post_time] DESC
-                    LIMIT 1
                 ),
                 [topics] = (
                     SELECT COUNT([[forums_topics]].[id])
