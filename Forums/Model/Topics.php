@@ -82,11 +82,15 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 [[forums_topics]].[id], [fid], [subject], [views], [replies],
                 [first_post_id], [first_post_uid], [first_post_time],
                 [last_post_id], [last_post_uid], [last_post_time],
-                [username], [nickname], [locked], [published]
+                fuser.[username] as first_username, fuser.[nickname] as first_nickname,
+                luser.[username] as last_username, luser.[nickname] as last_nickname,
+                [locked], [published]
             FROM
                 [[forums_topics]]
             LEFT JOIN 
-                [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
+                [[users]] as fuser ON [[forums_topics]].[first_post_uid] = fuser.[id]
+            LEFT JOIN 
+                [[users]] as luser ON [[forums_topics]].[last_post_uid] = luser.[id]
             WHERE
                 [fid] = {fid}
             ORDER BY
@@ -96,7 +100,9 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             'integer', 'integer', 'text', 'integer', 'integer',
             'integer', 'integer', 'integer',
             'integer', 'integer', 'integer',
-            'text', 'text', 'boolean', 'boolean',
+            'text', 'text',
+            'text', 'text',
+            'boolean', 'boolean',
         );
 
         if (!empty($limit)) {

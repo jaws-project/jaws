@@ -14,7 +14,10 @@
       <!-- BEGIN topic -->
       <li>
         <dl>
-          <dt class="topic_status_{status}"><a href="{url}">{title}</a></dt>
+          <dt class="topic_status_{status}">
+            <a href="{url}">{title}</a><br/>
+            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>{firstpost_date}
+          </dt>
           <dd class="topics_replies">{replies}</dd>
           <dd class="topics_views">{views}</dd>
           <dd class="topics_lastpost">

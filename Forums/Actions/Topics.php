@@ -67,17 +67,24 @@ class Forums_Actions_Topics extends ForumsHTML
             );
             $tpl->SetVariable('replies', $topic['replies']);
             $tpl->SetVariable('views', $topic['views']);
+            // first post
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $topic['first_username']);
+            $tpl->SetVariable('nickname', $topic['first_nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['first_username']))
+            );
 
             // last post
             if (!empty($topic['last_post_id'])) {
                 $tpl->SetBlock('topics/topic/lastpost');
                 $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
-
-                $tpl->SetVariable('username', $topic['username']);
-                $tpl->SetVariable('nickname', $topic['nickname']);
+                $tpl->SetVariable('username', $topic['last_username']);
+                $tpl->SetVariable('nickname', $topic['last_nickname']);
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+                    $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['last_username']))
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
