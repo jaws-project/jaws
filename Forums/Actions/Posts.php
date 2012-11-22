@@ -121,14 +121,14 @@ class Forums_Actions_Posts extends ForumsHTML
             if ($post['last_update_uid'] != 0) {
                 $tpl->SetBlock('posts/post/update');
                 $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POSTS_UPDATEDBY'));
-                $tpl->SetVariable('username', $post['username']);
-                $tpl->SetVariable('nickname', $post['nickname']);
+                $tpl->SetVariable('username', $post['updater_username']);
+                $tpl->SetVariable('nickname', $post['updater_nickname']);
                 $tpl->SetVariable(
                     'user_url',
                     $GLOBALS['app']->Map->GetURLFor(
                         'Users',
                         'Profile',
-                        array('user' => $post['username'])
+                        array('user' => $post['updater_username'])
                     )
                 );
                 $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time'], $date_format));

@@ -93,12 +93,15 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
                 [[forums_posts]].[id], [uid], [message],
                 [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [last_update_uid],
                 [last_update_reason], [last_update_time], [[forums_posts]].[insert_time], [[forums_posts]].[status],
-                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
-                [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
+                cuser.[username], cuser.[nickname], cuser.[registered_date] as user_registered_date,
+                cuser.[email], cuser.[avatar], cuser.[last_update] as user_last_update,
+                uuser.[username] as updater_username, uuser.[nickname] as updater_nickname
             FROM
-                [[forums_posts]] 
+                [[forums_posts]]
             LEFT JOIN
-                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+                [[users]] as cuser ON [[forums_posts]].[uid] = cuser.[id]
+            LEFT JOIN
+                [[users]] as uuser ON [[forums_posts]].[last_update_uid] = uuser.[id]
             WHERE
                 [tid] = {tid}
             ORDER BY
