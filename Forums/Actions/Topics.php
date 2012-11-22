@@ -75,6 +75,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['first_username']))
             );
+            $tpl->SetVariable('firstpost_date', $objDate->Format($topic['first_post_time'], $date_format));
 
             // last post
             if (!empty($topic['last_post_id'])) {
