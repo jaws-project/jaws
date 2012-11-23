@@ -549,7 +549,6 @@ class Jaws
         $type   = trim($type);
         $gadget = urlencode(trim(strip_tags($gadget)));
         $type_class_name = $gadget . ucfirst($type);
-        $load_registry = true;
         if (!isset($this->_Gadgets[$gadget][$type])) {
             if (!is_dir(JAWS_PATH . 'gadgets/' . $gadget)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
@@ -574,16 +573,6 @@ class Jaws
 
             // Load gadget's language file
             $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
-
-            switch ($type) {
-                case 'Info':
-                    $load_registry = false;
-                    break;
-                case 'HTML':
-                case 'AdminHTML':
-                    break;
-            }
-
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/' . $type . '.php';
             if (file_exists($file)) {
                 include_once $file;
@@ -596,8 +585,7 @@ class Jaws
                 return $error;
             }
 
-            if ($load_registry &&
-               (!isset($this->_Gadgets[$gadget]) || !isset($this->_Gadgets[$gadget]['Registry'])))
+            if (!isset($this->_Gadgets[$gadget]) || !isset($this->_Gadgets[$gadget]['Registry']))
             {
                 $this->_Gadgets[$gadget]['Registry'] = true;
                 if (isset($this->ACL)) {
