@@ -41,7 +41,7 @@ class UsersAdminHTML extends Jaws_Gadget_HTML
      */
     function MenuBar($action)
     {
-        $actions = array('Users', 'Groups', 'Properties');
+        $actions = array('Users', 'Groups', 'OnlineUsers', 'Properties');
         if (!in_array($action, $actions)) {
             $action = 'Users';
         }
@@ -59,6 +59,12 @@ class UsersAdminHTML extends Jaws_Gadget_HTML
                                 _t('USERS_GROUPS_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Users&amp;action=Groups',
                                 'gadgets/Users/images/groups_mini.png');
+        }
+        if ($this->GetPermission('ManageOnlineUsers')) {
+            $menubar->AddOption('OnlineUsers',
+                _t('USERS_ONLINE_USERS_LIST'),
+                BASE_SCRIPT . '?gadget=Users&amp;action=OnlineUsers',
+                STOCK_PREFERENCES);
         }
         if ($this->GetPermission('ManageProperties')) {
             $menubar->AddOption('Properties',

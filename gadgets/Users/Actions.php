@@ -28,6 +28,7 @@ $actions['Users']        = array('AdminAction:Users');
 $actions['MyAccount']    = array('AdminAction:MyAccount');
 $actions['Groups']       = array('AdminAction:Groups');
 $actions['Properties']   = array('AdminAction:Properties');
+$actions['OnlineUsers']  = array('AdminAction:OnlineUsers');
 
 $actions['LoadAvatar']   = array('StandaloneAdminAction:Avatar');
 $actions['UploadAvatar'] = array('StandaloneAdminAction:Avatar');

@@ -107,6 +107,18 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
     }
 
     /**
+     * Gets list of online users
+     *
+     * @access  public
+     * @return  array   Online users list
+     */
+    function GetOnlineUsers()
+    {
+        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'OnlineUsers');
+        return $usrHTML->GetOnlineUsers();
+    }
+
+    /**
      * Gets number of users
      *
      * @access  public
@@ -271,6 +283,106 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
                 $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_DELETED', $profile['username']),
                                                            RESPONSE_NOTICE);
             }
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Disable an user
+     *
+     * @access  public
+     * @param   int     $sid   Session ID
+     * @param   int     $uid   User ID
+     * @return  array   Response array (notice or error)
+     */
+    function DisableUser($sid, $uid)
+    {
+        $this->CheckSession('Users', 'ManageUsers');
+        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE_SELF'),
+                                                       RESPONSE_ERROR);
+        } else {
+            $profile = $this->_UserModel->GetUser((int)$uid);
+            if (!$GLOBALS['app']->Session->IsSuperAdmin() && $profile['superadmin']) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE', $profile['username']),
+                                                           RESPONSE_ERROR);
+                return $GLOBALS['app']->Session->PopLastResponse();
+            }
+
+            if (!$this->_UserModel->DisableUser($sid, $uid)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE', $profile['username']),
+                                                           RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_DISABLED', $profile['username']),
+                                                           RESPONSE_NOTICE);
+            }
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Logout an user
+     *
+     * @access  public
+     * @param   int     $sid    Session ID
+     * @param   int     $uid    User's ID
+     * @return  array   Response array (notice or error)
+     */
+    function LogoutUser($sid, $uid)
+    {
+        $this->CheckSession('Users', 'ManageUsers');
+        $profile = $this->_UserModel->GetUser((int)$uid);
+
+        if (!$this->_UserModel->LogoutUser($sid)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_LOGOUT', $profile['username']),
+                RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_LOGOUT', $profile['username']),
+                RESPONSE_NOTICE);
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Block Users's IP address
+     *
+     * @access  public
+     * @param   string  $ip
+     * @return  array   Response array (notice or error)
+     */
+    function IPBlock($ip)
+    {
+        $this->CheckSession('Policy', 'ManageIPs');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+
+        if (!$mPolicy->AddIPRange($ip, $ip, true)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_IP_BLOCK', $ip),
+                RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_IP_BLOCKED', $ip),
+                RESPONSE_NOTICE);
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Block Users's agent
+     *
+     * @access  public
+     * @param   string  $agent
+     * @return  array   Response array (notice or error)
+     */
+    function AgentBlock($agent)
+    {
+        $this->CheckSession('Policy', 'ManageAgents');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+
+        if (!$mPolicy->AddAgent($agent, true)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_AGENT_BLOCK'),
+                RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_AGENT_BLOCKED'),
+                RESPONSE_NOTICE);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }

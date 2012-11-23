@@ -40,7 +40,7 @@ class Jaws_User
      * @access  public
      * @param   string  $user      User to validate
      * @param   string  $password  Password of the user
-     * @param   string  $onlyAdmin Only validate for admins
+     * @param   bool    $onlyAdmin Only validate for admins
      * @return  bool    Returns true if the user is valid and false if not
      */
     function Valid($user, $password, $onlyAdmin = false)
@@ -163,6 +163,10 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $user  The username or ID
+     * @param   bool    $account
+     * @param   bool    $personal
+     * @param   bool    $preferences
+     * @param   bool    $extra
      * @return  mixed   Returns an array with the info of the user and false on error
      */
     function GetUser($user, $account = true, $personal = false, $preferences = false, $extra = false)
@@ -316,7 +320,7 @@ class Jaws_User
      * @param   string   $avatar    User's avatar
      * @param   string   $email     User's email address
      * @param   integer  $size      Avatar size
-     * @param   integer  $time      An integer for force browser to refresh it cache
+     * @param   string   $time      An integer for force browser to refresh it cache
      * @return  string   Url to avatar image
      */
     function GetAvatar($avatar, $email, $size = 48, $time = '')
@@ -376,6 +380,8 @@ class Jaws_User
      * @param   int     $status     User's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
      * @param   string  $term       Search term(searched in username, nickname and email)
      * @param   string  $orderBy    Field to order by
+     * @param   int     $limit
+     * @param   int    $offset
      * @return  array   Returns an array of the available users and false on error
      */
     function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = '[nickname]',
@@ -529,6 +535,8 @@ class Jaws_User
      * @access  public
      * @param   bool    $enabled    enabled groups?(null for both)
      * @param   string  $orderBy    field to order by
+     * @param   int     $limit
+     * @param   int     $offset
      * @return  array   Returns an array of the available groups and false on error
      */
     function GetGroups($enabled = null, $orderBy = 'name', $limit = 0, $offset = null)
@@ -629,7 +637,7 @@ class Jaws_User
      * @param   string  $nickname   User's display name
      * @param   string  $email      User's email
      * @param   string  $password   User's password
-     * @param   string  $superadmin Is superadmin (superadmin or normal)
+     * @param   bool    $superadmin Is superadmin (superadmin or normal)
      * @param   int     $status     User's status
      * @param   int     $concurrent_logins  Concurrent logins limitation
      * @param   string  $logon_hours        Logon hours
@@ -1106,7 +1114,7 @@ class Jaws_User
      *
      * @access  public
      * @param   int     $id     User's ID
-     * @return  bool    Returns true if user was sucessfully deleted, false if not
+     * @return  bool    Returns true if user was successfully deleted, false if not
      */
     function DeleteUser($id)
     {
@@ -1149,13 +1157,67 @@ class Jaws_User
         return true;
     }
 
+    /**
+     * Disable an user
+     *
+     * @access  public
+     * @param   int     $sid     Session ID
+     * @param   int     $uid     User's ID
+     * @return  bool    Returns true if user was successfully disabled, false if not
+     */
+    function DisableUser($sid, $uid)
+    {
+        $params = array();
+        $params['id'] = $uid;
+        $sql = 'UPDATE [[users]] SET [status]=0 WHERE [id] = {id}';
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        if (isset($GLOBALS['app']->Session)) {
+            $res = $GLOBALS['app']->Session->Delete($sid);
+            if (!$res) {
+                return false;
+            }
+        }
+
+        // Let everyone know that an user has been disabled
+        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
+        $res = $GLOBALS['app']->Shouter->Shout('onDisableUser', $uid);
+        if (Jaws_Error::IsError($res) || !$res) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Logout an user
+     *
+     * @access  public
+     * @param   int     $sid     Session ID
+     * @return  bool    Returns true if user was successfully logout, false if not
+     */
+    function LogoutUser($sid)
+    {
+        if (isset($GLOBALS['app']->Session)) {
+            $res = $GLOBALS['app']->Session->Delete($sid);
+            if (!$res) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /**
      * Deletes a group
      *
      * @access  public
      * @param   int     $id     Group's ID
-     * @return  bool    Returns true if group was sucessfully deleted, false if not
+     * @return  bool    Returns true if group was successfully deleted, false if not
      */
     function DeleteGroup($id)
     {

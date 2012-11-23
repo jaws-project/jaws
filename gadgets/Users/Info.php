@@ -46,6 +46,7 @@ class UsersInfo extends Jaws_Gadget
         'EditUserContact',
         'EditUserPreferences',
         'ManageAuthenticationMethod',
+        'ManageOnlineUsers',
     );
 
 }

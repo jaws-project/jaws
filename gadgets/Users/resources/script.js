@@ -73,6 +73,29 @@ var UsersCallback = {
         showResponse(response);
     },
 
+    disableuser: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            getDG('onlineusers_datagrid');
+        }
+        showResponse(response);
+    },
+
+    logoutuser: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            $('onlineusers_datagrid').deleteItem();
+            getDG('onlineusers_datagrid');
+        }
+        showResponse(response);
+    },
+
+    ipblock: function(response) {
+        showResponse(response);
+    },
+
+    agentblock: function(response) {
+        showResponse(response);
+    },
+
     addgroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopGroupAction();
@@ -168,6 +191,19 @@ function getGroups(name, offset, reset)
     if (reset) {
         $(name).setCurrentPage(0);
         var total = usersSync.getgroupscount();
+    }
+    resetGrid(name, result, total);
+}
+
+/**
+ * Get online users list
+ */
+function getOnlineUsers(name, offset, reset)
+{
+    var result = usersSync.getonlineusers();
+    if (reset) {
+        $(name).setCurrentPage(0);
+        var total = result.length;
     }
     resetGrid(name, result, total);
 }
@@ -270,6 +306,41 @@ function saveUser()
             break;
     }
 
+}
+
+/**
+ * Disable an user
+ */
+function disableUser(rowElement, sid, uid)
+{
+    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
+    if (confirm(confirmUserDisable)) {
+        usersAsync.disableuser(sid, uid);
+    }
+    unselectGridRow('onlineusers_datagrid');
+}
+
+/**
+ * Logout an user
+ */
+function logoutUser(rowElement, sid, uid) {
+    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
+    usersAsync.logoutuser(sid, uid);
+    unselectGridRow('onlineusers_datagrid');
+}
+
+/**
+ * User's IP block
+ */
+function userIPBlock(rowElement,ip) {
+    usersAsync.ipblock(ip);
+}
+
+/**
+ * User's Agent block
+ */
+function userAgentBlock(rowElement,agent) {
+    usersAsync.agentblock(agent);
 }
 
 /**
