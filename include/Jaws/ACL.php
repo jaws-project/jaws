@@ -397,7 +397,6 @@ class Jaws_ACL
      */
     function GetAclPermissions($user)
     {
-        $this->LoadAllFiles();
         $this->LoadKeysOf($user, 'users');
         $result = $this->GetAsQuery();
         $perms = array();
@@ -427,7 +426,6 @@ class Jaws_ACL
      */
     function GetAllAclPermissions()
     {
-        $this->LoadAllFiles();
         $result = $this->GetAsQuery();
         $perms = array();
         foreach ($result as $r) {
@@ -452,7 +450,6 @@ class Jaws_ACL
      */
     function GetGroupAclPermissions($id)
     {
-        $this->LoadAllFiles();
         $this->LoadKeysOf($id, 'groups');
         $result = $this->GetAsQuery();
         $perms = array();
@@ -544,176 +541,23 @@ class Jaws_ACL
     }
 
     /**
-     * Creates the JAWS_CACHE . 'registry|acl' . directory to store keys
-     *
-     * @access  public
-     */
-    function CreateCacheDirectory()
-    {
-        $new_dirs = array();
-        $new_dirs[] = JAWS_CACHE;
-        $new_dirs[] = JAWS_CACHE. 'acl';
-        $new_dirs[] = JAWS_CACHE. 'acl'. DIRECTORY_SEPARATOR. 'gadgets';
-        $new_dirs[] = JAWS_CACHE. 'acl'. DIRECTORY_SEPARATOR. 'plugins';
-        foreach ($new_dirs as $new_dir) {
-            if (!Jaws_Utils::mkdir($new_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_REGISTRY_CACHEDIR_NOT_WRITABLE', $new_dir),
-                                      __FUNCTION__);
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Deletes the cache file of a certain component
-     *
-     * @acess   public
-     * @access  protected
-     * @param   string     $name       Component name
-     * @param   string     $type       Type of component (gadget or plugin)
-     * @return  bool       Success/Failure
-     */
-    function deleteCacheFile($name, $type = 'gadgets')
-    {
-        $type = strtolower($type);
-        if (empty($name) || !in_array($type, array('gadgets', 'plugins'))) {
-            return false;
-        }
-
-        $file = JAWS_CACHE . "acl/$type/$name.php";
-        if (file_exists($file)) {
-            unlink($file);
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Saves the key array file in JAWS_CACHE . 'acl(gadgets|plugins)' . $component
-     *
-     * @access  public
-     * @param   string Component's name
-     * @param   string The type of the component, (plugin or a gadget) only
-     *               if the component name is not empty
-     */
-    function Commit($comp, $type = 'gadgets', $regexp = '')
-    {
-        //We don't accept full commits
-        if (empty($comp)) {
-            return false;
-        }
-
-        $res = $this->CreateCacheDirectory();
-        if (Jaws_Error::isError($res)) {
-            return false;
-        }
-
-        $search = '/' . $comp . '/';
-        $type = strtolower($type);
-        if (!in_array($type, array('gadgets', 'plugins'))) {
-            return false;
-        }
-
-        $result = "\$registry = array();\n";
-        foreach ($this->_Registry as $key => $value) {
-            if (strpos($key, $search) === false) {
-                continue;
-            }
-
-            /**
-             * Since we don't add /enabled and /version keys to cache files we should
-             * check it for them
-             */
-            $exclude = substr($key, -8);
-            if ($exclude == '/enabled' || $exclude == '/version') {
-                continue;
-            }
-
-            $result .= "\$registry['".$key."'] = '".addslashes($value)."';\n";
-
-        }
-
-        $this->CommitWriteFile($result, $comp, $type);
-        return true;
-    }
-
-    /**
-     * Commits an string of registry-keys to a cache file
-     *
-     * @access  private
-     * @param   string An string of registry-keys
-     * @param   string Component that is being added
-     * @param   string What kind of registry-keys does $data has?
-     *                   Possible values are:
-     *                    - gadgets
-     *                    - plugins
-     */
-    function CommitWriteFile($data, $comp, $type)
-    {
-        $type = strtolower($type);
-        $file  = JAWS_CACHE . "acl/$type/$comp.php";
-        $content = "<?php\n" . $data;
-        $fp = file_put_contents($file, $content);
-        if ($fp !== false) {
-            Jaws_Utils::chmod($file);
-        }
-    }
-
-    /**
      * Loads the keys of a component and optionally it returns the keys found in the file
      *
      * @access  public
      * @param   string  $component Component's name
      */
-    function LoadFile($component, $type = 'gadgets', $return = false)
+    function LoadFile($component, $type = 'gadgets')
     {
-        $type = strtolower($type);
-        $file = JAWS_CACHE . "acl/$type/$component.php";
-        $exists = file_exists($file);
-        if ($exists) {
-            require $file;
-            $this->_LoadedFiles[$component] = $component;
-            // $registry comes from the file loaded
-            if (isset($registry) && is_array($registry)) {
-                foreach ($registry as $key => $value) {
-                    if (!$this->KeyExists($key)) {
-                        $this->_Registry[$key] = stripslashes($value);
-                    }
-                }
-
-                if ($return) {
-                    return $registry;
-                }
+        if (!array_key_exists($component, $this->_LoadedFiles)) {
+            $type = strtolower($type);
+            if ($res = $this->_regenerateInternalRegistry($component, $type)) {
+                $this->_LoadedFiles[$component] = $component;
             }
 
-            return true;
-        } else {
-            // Cache file doesn't exist, lets generate it
-            $res = $this->_regenerateInternalRegistry($component, $type);
-            if (!$res) {
-                return;
-            }
-            $this->commit($component, $type);
-            return $this->loadFile($component, $type, $return);
-        }
-    }
-
-    /**
-     * Loads all the component files
-     *
-     * @access  public
-     */
-    function LoadAllFiles()
-    {
-        $gs = array_filter(explode(',', $GLOBALS['app']->Registry->Get('/gadgets/enabled_items')));
-        foreach ($gs as $gadget) {
-            $this->LoadFile($gadget);
+            return $res;
         }
 
-        $ci = array_filter(explode(',', $GLOBALS['app']->Registry->Get('/gadgets/core_items')));
-        foreach ($ci as $gadget) {
-            $this->LoadFile($gadget);
-        }
+        return true;
     }
 
     /**
