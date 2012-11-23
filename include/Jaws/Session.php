@@ -89,6 +89,7 @@ class Jaws_Session
     function &factory()
     {
         $SessionType = ucfirst(strtolower(APP_TYPE));
+        $SessionType = preg_replace('/[^[:alnum:]_-]/', '', $SessionType);
         $sessionFile = JAWS_PATH . 'include/Jaws/Session/'. $SessionType .'.php';
         if (!file_exists($sessionFile)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading session $SessionType failed.");
@@ -111,6 +112,7 @@ class Jaws_Session
     function Init()
     {
         $this->_AuthMethod = $GLOBALS['app']->Registry->Get('/config/auth_method');
+        $this->_AuthMethod = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthMethod);
         $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthMethod . '.php';
         if (empty($this->_AuthMethod) || !file_exists($authFile)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR,
@@ -148,7 +150,7 @@ class Jaws_Session
 
         if ($username !== '' && $password !== '') {
             if (!empty($authmethod)) {
-                $authmethod = preg_replace('#[^[:alnum:]_-]#', '', $authmethod);
+                $authmethod = preg_replace('/[^[:alnum:]_-]/', '', $authmethod);
             } else {
                 $authmethod = $this->_AuthMethod;
             }

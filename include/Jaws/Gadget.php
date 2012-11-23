@@ -159,6 +159,7 @@ class Jaws_Gadget
      */
     function Jaws_Gadget($gadget)
     {
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->_Gadget = $gadget;
         if (substr($gadget, -5, 5) == 'Model') {
             $gadget = substr($gadget, 0, strlen($gadget) - 5);

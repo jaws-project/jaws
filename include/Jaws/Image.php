@@ -122,6 +122,7 @@ class Jaws_Image
         if (empty($imgDriver)) {
             $imgDriver = $GLOBALS['app']->Registry->Get('/config/img_driver');
         }
+        $imgDriver = preg_replace('/[^[:alnum:]_-]/', '', $imgDriver);
 
         if (empty($imgDriver) || !in_array($imgDriver, $extensions)) {
             return Jaws_Error::raiseError('No image library specified and none can be found.',

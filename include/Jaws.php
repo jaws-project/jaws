@@ -286,6 +286,14 @@ class Jaws
             $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
         }
 
+        // filter non validate character
+        $this->_Theme            = preg_replace('/[^[:alnum:]_-]/', '', $this->_Theme);
+        $this->_Language         = preg_replace('/[^[:alnum:]_-]/', '', $this->_Language);
+        $this->_Editor           = preg_replace('/[^[:alnum:]_-]/', '', $this->_Editor);
+        $this->_Timezone         = $this->_Preferences['timezone'];
+        $this->_CalendarType     = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarType);
+        $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarLanguage);
+
         require_once PEAR_PATH. 'Net/Detect.php';
         $bFlags = explode(',', $this->Registry->Get('/config/browsers_flag'));
         $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
@@ -546,8 +554,11 @@ class Jaws
      */
     function LoadGadget($gadget, $type = 'HTML', $filename = '')
     {
-        $type   = trim($type);
-        $gadget = urlencode(trim(strip_tags($gadget)));
+        // filter non validate character
+        $type = preg_replace('/[^[:alnum:]_]/', '', $type);
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+        $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
+
         $type_class_name = $gadget . ucfirst($type);
         if (!isset($this->_Gadgets[$gadget][$type])) {
             if (!is_dir(JAWS_PATH . 'gadgets/' . $gadget)) {
@@ -670,7 +681,9 @@ class Jaws
      */
     function LoadPlugin($plugin)
     {
-        $plugin = urlencode(trim(strip_tags($plugin)));
+        // filter non validate character
+        $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
+
         if (!isset($this->_Plugins[$plugin])) {
             if (!is_dir(JAWS_PATH . 'plugins/' . $plugin)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
@@ -794,9 +807,11 @@ class Jaws
      */
     function GetGadgetActions($gadget, $type = '')
     {
+        // filter non validate character
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+
         if (!isset($this->_Gadgets[$gadget]['actions'])) {
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
-
             if (file_exists($file)) {
                 require_once $file;
                 if (isset($actions)) {
@@ -903,6 +918,9 @@ class Jaws
      */
     function loadClass($property, $class)
     {
+        // filter non validate character
+        $class = preg_replace('/[^[:alnum:]_]/', '', $class);
+
         if (!isset($this->{$property})) {
             $file = JAWS_PATH . 'include'. DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
             if (!file_exists($file)) {
@@ -1115,7 +1133,11 @@ class Jaws
      */
     function loadHook($gadget, $hook)
     {
-        $hookName = $gadget.$hook.'Hook';
+        // filter non validate character
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+        $hook   = preg_replace('/[^[:alnum:]_]/', '', $hook);
+
+        $hookName = $gadget. $hook. 'Hook';
         if (!isset($this->_Classes[$hookName])) {
             $hookFile = JAWS_PATH . 'gadgets/' . $gadget . '/hooks/' . $hook . '.php';
             if (file_exists($hookFile)) {
