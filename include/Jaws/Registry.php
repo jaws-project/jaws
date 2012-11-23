@@ -165,12 +165,6 @@ class Jaws_Registry
      */
     function Set($name, $value)
     {
-        if (!$this->KeyExists($name)) {
-            return false;
-        }
-
-        $this->_Registry[$name] = $value;
-
         $params = array();
         $params['name']  = $name;
         $params['value'] = $value;
@@ -185,6 +179,7 @@ class Jaws_Registry
             return false;
         }
 
+        $this->_Registry[$name] = $value;
         return $this->UpdateLastUpdate();
     }
 
