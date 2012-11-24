@@ -62,7 +62,7 @@ class UsersAdminHTML extends Jaws_Gadget_HTML
         }
         if ($this->GetPermission('ManageOnlineUsers')) {
             $menubar->AddOption('OnlineUsers',
-                _t('USERS_ONLINE_USERS_LIST'),
+                _t('USERS_ONLINE_USERS'),
                 BASE_SCRIPT . '?gadget=Users&amp;action=OnlineUsers',
                 STOCK_PREFERENCES);
         }

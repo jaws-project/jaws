@@ -35,6 +35,7 @@ class UsersInfo extends Jaws_Gadget
     var $_ACLs = array(
         'ManageUsers',
         'ManageGroups',
+        'ManageOnlineUsers',
         'ManageProperties',
         'ManageUserACLs',
         'ManageGroupACLs',
@@ -46,7 +47,6 @@ class UsersInfo extends Jaws_Gadget
         'EditUserContact',
         'EditUserPreferences',
         'ManageAuthenticationMethod',
-        'ManageOnlineUsers',
     );
 
 }

@@ -288,63 +288,32 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
     }
 
     /**
-     * Disable an user
-     *
-     * @access  public
-     * @param   int     $sid   Session ID
-     * @param   int     $uid   User ID
-     * @return  array   Response array (notice or error)
-     */
-    function DisableUser($sid, $uid)
-    {
-        $this->CheckSession('Users', 'ManageUsers');
-        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE_SELF'),
-                                                       RESPONSE_ERROR);
-        } else {
-            $profile = $this->_UserModel->GetUser((int)$uid);
-            if (!$GLOBALS['app']->Session->IsSuperAdmin() && $profile['superadmin']) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE', $profile['username']),
-                                                           RESPONSE_ERROR);
-                return $GLOBALS['app']->Session->PopLastResponse();
-            }
-
-            if (!$this->_UserModel->DisableUser($sid, $uid)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DISABLE', $profile['username']),
-                                                           RESPONSE_ERROR);
-            } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_DISABLED', $profile['username']),
-                                                           RESPONSE_NOTICE);
-            }
-        }
-        return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
-     * Logout an user
+     * Delete a session
      *
      * @access  public
      * @param   int     $sid    Session ID
-     * @param   int     $uid    User's ID
      * @return  array   Response array (notice or error)
      */
-    function LogoutUser($sid, $uid)
+    function DeleteSession($sid)
     {
-        $this->CheckSession('Users', 'ManageUsers');
-        $profile = $this->_UserModel->GetUser((int)$uid);
-
-        if (!$this->_UserModel->LogoutUser($sid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_LOGOUT', $profile['username']),
-                RESPONSE_ERROR);
+        $this->CheckSession('Users', 'ManageOnlineUsers');
+        if ($GLOBALS['app']->Session->Delete($sid)) {
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('USERS_ONLINE_SESSION_DELETED'),
+                RESPONSE_NOTICE
+            );
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_LOGOUT', $profile['username']),
-                RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('USERS_ONLINE_SESSION_NOT_DELETED'),
+                RESPONSE_ERROR
+            );
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Block Users's IP address
+     * Block IP address
      *
      * @access  public
      * @param   string  $ip
@@ -352,21 +321,27 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
      */
     function IPBlock($ip)
     {
+        $this->CheckSession('Users', 'ManageOnlineUsers');
         $this->CheckSession('Policy', 'ManageIPs');
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
 
-        if (!$mPolicy->AddIPRange($ip, $ip, true)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_IP_BLOCK', $ip),
-                RESPONSE_ERROR);
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+        if ($mPolicy->AddIPRange($ip, null, true)) {
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('POLICY_RESPONSE_IP_ADDED'),
+                RESPONSE_NOTICE
+            );
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_IP_BLOCKED', $ip),
-                RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('POLICY_RESPONSE_IP_NOT_ADDED'),
+                RESPONSE_ERROR
+            );
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Block Users's agent
+     * Block agent
      *
      * @access  public
      * @param   string  $agent
@@ -374,16 +349,22 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
      */
     function AgentBlock($agent)
     {
+        $this->CheckSession('Users', 'ManageOnlineUsers');
         $this->CheckSession('Policy', 'ManageAgents');
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
 
-        if (!$mPolicy->AddAgent($agent, true)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_AGENT_BLOCK'),
-                RESPONSE_ERROR);
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+        if ($mPolicy->AddAgent($agent, true)) {
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('POLICY_RESPONSE_AGENT_ADDED'),
+                RESPONSE_NOTICE
+            );
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_AGENT_BLOCKED'),
-                RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'),
+                RESPONSE_ERROR
+            );
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
