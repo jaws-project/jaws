@@ -17,6 +17,7 @@ define('_EN_USERS_DESCRIPTION', "User administration.");
 define('_EN_USERS_ACL_DEFAULT', "Use users");
 define('_EN_USERS_ACL_MANAGEUSERS', "User management");
 define('_EN_USERS_ACL_MANAGEGROUPS', "Group management");
+define('_EN_USERS_ACL_MANAGEONLINEUSERS', "Manage online users");
 define('_EN_USERS_ACL_MANAGEPROPERTIES', "Properties management");
 define('_EN_USERS_ACL_MANAGEUSERACLS', "User's ACLs management");
 define('_EN_USERS_ACL_MANAGEGROUPACLS', "Group's ACLs management");
@@ -28,7 +29,6 @@ define('_EN_USERS_ACL_EDITUSERPERSONAL', "Edit user's personal data by user");
 define('_EN_USERS_ACL_EDITUSERCONTACT', "Edit user's contact data by user");
 define('_EN_USERS_ACL_EDITUSERPREFERENCES', "Edit user's preferences by user");
 define('_EN_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Manage authentication method");
-define('_EN_USERS_ACL_MANAGEONLINEUSERS', "Manage online users");
 
 /* Layout */
 define('_EN_USERS_LAYOUT_LOGINBOX', "Login Box");
@@ -181,6 +181,21 @@ define('_EN_USERS_USERS_CANT_DELETE_SELF', "Can't delete your same user");
 define('_EN_USERS_USERS_PERSONALINFO_NOT_UPDATED', "There was a problem updating personal information");
 define('_EN_USERS_USERS_NOT_ADVANCED_UPDATED', "There was a problem updating advanced user options");
 
+/* Online Users */
+define('_EN_USERS_ONLINE_USERS', "Online users");
+define('_EN_USERS_ONLINE_ADMIN', "Admin");
+define('_EN_USERS_ONLINE_ANONY', "Anonymous");
+define('_EN_USERS_ONLINE_ACTIVE', "Active");
+define('_EN_USERS_ONLINE_INACTIVE', "Inactive");
+define('_EN_USERS_ONLINE_LAST_ACTIVETIME', "Last Active Time");
+define('_EN_USERS_ONLINE_BLOCKING_IP', "Block IP");
+define('_EN_USERS_ONLINE_BLOCKING_AGENT', "Block agent");
+define('_EN_USERS_ONLINE_CONFIRM_THROWOUT', "Are you sure you want to throwout this user?");
+define('_EN_USERS_ONLINE_CONFIRM_BLOCKIP', "Are you sure you want to block this IP address?");
+define('_EN_USERS_ONLINE_CONFIRM_BLOCKAGENT', "Are you sure you want to block this browser/robot agent?");
+define('_EN_USERS_ONLINE_SESSION_DELETED', "Session has been deleted");
+define('_EN_USERS_ONLINE_SESSION_NOT_DELETED', "There was a problem deleting  session");
+
 /* Properties */
 define('_EN_USERS_PROPERTIES_ANON_REGISTER', "Anonymous users can register");
 define('_EN_USERS_PROPERTIES_ANON_REPETITIVE_EMAIL', "Anonymous can register by repetitive email");
@@ -206,7 +221,7 @@ define('_EN_USERS_REGISTER_VALID_USERNAMES', "No periods, slash, special symbols
 define('_EN_USERS_REGISTER_EMAIL_NOT_VALID', "The email is not totally valid, please check it");
 define('_EN_USERS_REGISTER_SUBJECT', "User registration - {0}");
 define('_EN_USERS_REGISTER_HELLO', "Hello {0}");
-define('_EN_USERS_REGISTER_ADMIN_MAIL_MSG', "A new account has been created");
+define('_EN_USERS_REGISTER_ADMIN_MAIL_MSG', "A new account has been created"); 
 define('_EN_USERS_REGISTER_MAIL_MSG', "We got an account registration that points to your email.\nIf you think this is an error please reply back telling us the error.");
 define('_EN_USERS_REGISTER_ACTIVATION_MAIL_MSG', "Your account has been created.\nHowever, you need activate your account before use this website.");
 define('_EN_USERS_REGISTER_ACTIVATION_SENDMAIL_FAILED', "There was a problem while sending the activation link to {0}, however, for security reasons we deleted your user from the database");
@@ -240,23 +255,3 @@ define('_EN_USERS_FORGOT_PASSWORD_CHANGED', "The new password (auto-generated) h
 define('_EN_USERS_FORGOT_PASSWORD_CHANGED_SUBJECT', "New password");
 define('_EN_USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', "A new password has been asigned to your account, you can find it below. In order to change it you need to login with your username ({0}) and this password, then you can update your profile.");
 define('_EN_USERS_FORGOT_ERROR_CHANGING_PASSWORD', "There was an error while changing your password");
-
-/* Online users */
-define('_EN_USERS_ONLINE_USERS_LIST', "Online users list");
-define('_EN_USERS_USERS_IP', "IP address");
-define('_EN_USERS_USERS_AGENT', "Agent");
-define('_EN_USERS_USERS_LOGIN_TIME', "Login time");
-define('_EN_USERS_USERS_IP_BLOCKING', "IP blocking");
-define('_EN_USERS_USERS_AGENT_BLOCKING', "Agent blocking");
-define('_EN_USERS_USERS_CANT_DISABLE_SELF', "Can't disable your same user");
-define('_EN_USERS_USERS_CANT_DISABLE', "There was a problem disabling user {0}.");
-define('_EN_USERS_USER_DISABLED', "User {0} has been disabled.");
-define('_EN_USERS_USERS_CANT_LOGOUT', "There was a problem logout user {0}.");
-define('_EN_USERS_USER_LOGOUT', "User {0} has been logout.");
-define('_EN_USERS_USER_STATUS_ACTIVE', "Active");
-define('_EN_USERS_USER_STATUS_INACTIVE', "Inactive");
-define('_EN_USERS_USER_CONFIRM_DISABLE', "Disable this user?");
-define('_EN_USERS_USERS_CANT_IP_BLOCK', "There was a problem in blocking IP.");
-define('_EN_USERS_USER_IP_BLOCKED', "IP {0} has been blocked.");
-define('_EN_USERS_USERS_CANT_AGENT_BLOCK', "There was a problem in blocking agent.");
-define('_EN_USERS_USER_AGENT_BLOCKED', "Agent has been blocked.");

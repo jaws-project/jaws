@@ -11,10 +11,11 @@
  */
 
 define('_FA_USERS_NAME', "کاربران");
-define('_FA_USERS_DESCRIPTION', "مدیریت کاربران");
-define('_FA_USERS_ACL_DEFAULT', "دسترسی به ابزار مدیریت کاربران");
-define('_FA_USERS_ACL_MANAGEUSERS', "مدیریت کاربران");
-define('_FA_USERS_ACL_MANAGEGROUPS', "مدیریت گروههای کاربری");
+define('_FA_USERS_DESCRIPTION', "راهبری کاربران");
+define('_FA_USERS_ACL_DEFAULT', "دسترسی به ابزار راهبری کاربران");
+define('_FA_USERS_ACL_MANAGEUSERS', "راهبری کاربران");
+define('_FA_USERS_ACL_MANAGEGROUPS', "راهبری گروههای کاربری");
+define('_FA_USERS_ACL_MANAGEONLINEUSERS', "راهبری کاربران برخط");
 define('_FA_USERS_ACL_MANAGEPROPERTIES', "ویرایش تنظیمات ابزار کاربران");
 define('_FA_USERS_ACL_MANAGEUSERACLS', "ویرایش دسترسیهای کاربران");
 define('_FA_USERS_ACL_MANAGEGROUPACLS', "ویرایش دسترسیهای گروههای کاربری");
@@ -25,8 +26,7 @@ define('_FA_USERS_ACL_EDITUSERPASSWORD', "ویرایش گذرواژه از سو�
 define('_FA_USERS_ACL_EDITUSERPERSONAL', "ویرایش شناسه‌های فردی از سوی کاربر");
 define('_FA_USERS_ACL_EDITUSERCONTACT', "ویرایش شناسه‌های تماس از سوی کاربر");
 define('_FA_USERS_ACL_EDITUSERPREFERENCES', "ویرایش تنظیمات از سوی کاربر");
-define('_FA_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "مدیریت روش تایید اعتبار کاربران");
-define('_FA_USERS_ACL_MANAGEONLINEUSERS', "مدیریت کاربران برخط");
+define('_FA_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "ویرایش روش تایید اعتبار کاربران");
 define('_FA_USERS_LAYOUT_LOGINBOX', "بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINBOX_DESC', "نمایش بلوک لاگین");
 define('_FA_USERS_LAYOUT_LOGINLINKS', "پیوندهای کاربری");
@@ -162,6 +162,19 @@ define('_FA_USERS_USERS_CANT_DELETE', "خطا هنگام حذف کاربر {0}")
 define('_FA_USERS_USERS_CANT_DELETE_SELF', "کد کاربری خود را نمیتوانید حذف کنید");
 define('_FA_USERS_USERS_PERSONALINFO_NOT_UPDATED', "خطا هنگام ثبت تغییرات مربوط به تنظیمات شخصی کاربر");
 define('_FA_USERS_USERS_NOT_ADVANCED_UPDATED', "خطا هنگام ثبت تغییرات مربوط به تنظیمات کاربر");
+define('_FA_USERS_ONLINE_USERS', "کاربران برخط");
+define('_FA_USERS_ONLINE_ADMIN', "سرپرست");
+define('_FA_USERS_ONLINE_ANONY', "ناشناس");
+define('_FA_USERS_ONLINE_ACTIVE', "پویا");
+define('_FA_USERS_ONLINE_INACTIVE', "ناپویا");
+define('_FA_USERS_ONLINE_LAST_ACTIVETIME', "واپسین زمان پویایی");
+define('_FA_USERS_ONLINE_BLOCKING_IP', "بستن IP");
+define('_FA_USERS_ONLINE_BLOCKING_AGENT', "بستن Agent");
+define('_FA_USERS_ONLINE_CONFIRM_THROWOUT', "آیا شما می خواهید این کاربر را بیرون نمایید؟");
+define('_FA_USERS_ONLINE_CONFIRM_BLOCKIP', "آیا شما می خواهید این IP را ببندید؟");
+define('_FA_USERS_ONLINE_CONFIRM_BLOCKAGENT', "آیا شما می خواهید این Agent را ببندید؟");
+define('_FA_USERS_ONLINE_SESSION_DELETED', "نشت دلخواه شما زدوده شد");
+define('_FA_USERS_ONLINE_SESSION_NOT_DELETED', "نارسایی در زدودن نشست دلخواه شما روی داد");
 define('_FA_USERS_PROPERTIES_ANON_REGISTER', "امکان هموند شدن بازید کنندگان");
 define('_FA_USERS_PROPERTIES_ANON_REPETITIVE_EMAIL', "امکان استفاده از ایمیل تکراری برای هموند شدن");
 define('_FA_USERS_PROPERTIES_ANON_ACTIVATION', "نحوه فعال‌سازی ");
@@ -212,21 +225,3 @@ define('_FA_USERS_FORGOT_PASSWORD_CHANGED', "گذرواژه تازه به پست
 define('_FA_USERS_FORGOT_PASSWORD_CHANGED_SUBJECT', "گذرواژه فرستادن");
 define('_FA_USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', "گذرواژه فرستاده شده برای شناسه کاربری شما تعریف شد. شما می توانید گذرواژه خود را در زیر ببینید. برای ویرایش آن با نام کاربری و گذرواژه زیر لاگین کنید.");
 define('_FA_USERS_FORGOT_ERROR_CHANGING_PASSWORD', "بروز خطا هنگام تغییر گذرواژه");
-define('_FA_USERS_ONLINE_USERS_LIST', "لیست کاربران برخط");
-define('_FA_USERS_USERS_IP', "آدرس IP");
-define('_FA_USERS_USERS_AGENT', "Agent");
-define('_FA_USERS_USERS_LOGIN_TIME', "زمان ورود");
-define('_FA_USERS_USERS_IP_BLOCKING', "محدود کردن IP");
-define('_FA_USERS_USERS_AGENT_BLOCKING', "محدود کردن Agent");
-define('_FA_USERS_USERS_CANT_DISABLE_SELF', "کد کاربری خود را نمیتوانید غیر فعال کنید");
-define('_FA_USERS_USERS_CANT_DISABLE', "خطا هنگام غیر فعال کردن کاربر {0}");
-define('_FA_USERS_USER_DISABLED', "کاربر {0} غیر فعال شد");
-define('_FA_USERS_USERS_CANT_LOGOUT', "خطا هنگام خروج کاربر {0}");
-define('_FA_USERS_USER_LOGOUT', "کاربر {0} خارج شد");
-define('_FA_USERS_USER_STATUS_ACTIVE', "فعال");
-define('_FA_USERS_USER_STATUS_INACTIVE', "غیر فعال");
-define('_FA_USERS_USER_CONFIRM_DISABLE', "آیا این کاربر غیر فعال شود؟");
-define('_FA_USERS_USERS_CANT_IP_BLOCK', "خطا هنگام مسدود کردن IP {0}");
-define('_FA_USERS_USER_IP_BLOCKED', "IP {0} مسدود شد");
-define('_FA_USERS_USERS_CANT_AGENT_BLOCK', "خطا هنگام مسدود کردن Agent");
-define('_FA_USERS_USER_AGENT_BLOCKED', "Agent مسدود شد");

@@ -5,12 +5,12 @@
  * @category   GadgetAdmin
  * @package    Users
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
 {
-
     /**
      * Builds online users datagrid
      *
@@ -20,40 +20,28 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
     function OnlineUsersDataGrid()
     {
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-//        $datagrid->TotalRows($total);
+        $datagrid->pageBy(1024);
         $datagrid->SetID('onlineusers_datagrid');
-
-        $column1 = Piwi::CreateWidget('Column', _t('USERS_USERS_NICKNAME'), null, false);
+        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'));
+        $column1->SetStyle('width:100px;');
         $datagrid->AddColumn($column1);
-
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
+        $column2 = Piwi::CreateWidget('Column', _t('USERS_USERS_NICKNAME'), false, null);
         $datagrid->AddColumn($column2);
-
-        $column3 = Piwi::CreateWidget('Column', _t('USERS_USERS_TYPE_SUPERADMIN'), null, false);
+        $column3 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_ADMIN'), false, null);
+        $column3->SetStyle('width:80px;');
         $datagrid->AddColumn($column3);
-
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_STATUS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_IP'), false, null);
+        $column4->SetStyle('width:100px;');
         $datagrid->AddColumn($column4);
-
-        $column5 = Piwi::CreateWidget('Column', _t('USERS_USERS_IP'), null, false);
+        $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
+        $column5->SetStyle('width:128px;');
         $datagrid->AddColumn($column5);
-
-        $column6 = Piwi::CreateWidget('Column', _t('USERS_USERS_AGENT'), null, false);
-        $datagrid->AddColumn($column6);
-
-        $column7 = Piwi::CreateWidget('Column', _t('USERS_USERS_LOGIN_TIME'), null, false);
-        $datagrid->AddColumn($column7);
-
-
-        $action_column = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $action_column->SetStyle('width: 120px;');
+        $action_column = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), false, null);
+        $action_column->SetStyle('width:60px;');
         $datagrid->AddColumn($action_column);
-
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
-
         return $datagrid->Get();
     }
-
 
     /**
      * Prepares list of online users for datagrid
@@ -63,57 +51,62 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
      */
     function GetOnlineUsers()
     {
-        $onlineUsers = $GLOBALS['app']->Session->GetSessions();
-        if (Jaws_Error::IsError($onlineUsers)) {
+        $sessions = $GLOBALS['app']->Session->GetSessions();
+        if (Jaws_Error::IsError($sessions)) {
             return array();
         }
 
         $retData = array();
         $objDate = $GLOBALS['app']->loadDate();
 
-        foreach ($onlineUsers as $onlineUser) {
+        $idle_timeout = (int)$GLOBALS['app']->Registry->Get('/policy/session_idle_timeout');
+        foreach ($sessions as $session) {
             $usrData = array();
-            $usrData['nickname'] = $onlineUser['nickname'];
-            $usrData['username'] = $onlineUser['username'];
-            $usrData['type'] = $onlineUser['type'] == true ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
-            $usrData['status'] = $onlineUser['updatetime'] < (time() - ($GLOBALS['app']->Registry->Get('/policy/session_idle_timeout') * 60)) ?
-                _t('USERS_USER_STATUS_INACTIVE') : _t('USERS_USER_STATUS_ACTIVE');
-            $usrData['ip'] = long2ip($onlineUser['ip']);
-            $usrData['agent'] = $onlineUser['agent'];
-            $usrData['logintime'] = $objDate->Format($onlineUser['updatetime'], 'Y-m-d H:i:s');
-
-            $actions = '';
-            if ($this->GetPermission('ManageUsers')) {
-
-                $link =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_DISABLE'),
-                    "javascript: disableUser(this, " . $onlineUser['sid'] . "," . $onlineUser['user'] . ");",
-                    STOCK_DELETE);
-                $actions .= $link->Get() . '&nbsp;';
-
-                $link =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_LOGOUT'),
-                    "javascript: logoutUser(this, '" . $onlineUser['sid'] . "," . $onlineUser['user'] . "');",
-                    STOCK_EXIT);
-                $actions .= $link->Get() . '&nbsp;';
+            if (empty($session['username'])) {
+                $usrData['username'] = _t('USERS_ONLINE_ANONY');
+            } else {
+                $uProfile =& Piwi::CreateWidget(
+                    'Link',
+                    $session['username'],
+                    $this->GetURLFor('Profile',  array('user' => $session['username']))
+                );
+                $usrData['username'] = $uProfile->Get();
+            }
+            $usrData['nickname'] = $session['nickname'];
+            $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
+            if ($session['updatetime'] > (time() - ($idle_timeout * 60))) {
+                $usrData['last_activetime'] = "<label title='"._t('USERS_ONLINE_ACTIVE')."'>".
+                    $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
+            } else {
+                $usrData['last_activetime'] = "<s title='"._t('USERS_ONLINE_INACTIVE')."'>".
+                    $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</s>";
             }
 
+            $link =& Piwi::CreateWidget(
+                'Link',
+                _t('GLOBAL_DELETE'),
+                "javascript: deleteSession(this, '{$session['sid']}');",
+                STOCK_DELETE);
+            $actions = $link->Get() . '&nbsp;';
+
             if ($this->GetPermission('ManageIPs', 'Policy')) {
-                $link =& Piwi::CreateWidget('Link',
-                    _t('USERS_USERS_IP_BLOCKING'),
-                    "javascript: userIPBlock(this, '" . long2ip($onlineUser['ip']) . "');",
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('USERS_ONLINE_BLOCKING_IP'),
+                    "javascript: ipBlock(this, '" . long2ip($session['ip']) . "');",
                     STOCK_STOP);
                 $actions .= $link->Get() . '&nbsp;';
             }
 
             if ($this->GetPermission('ManageAgents', 'Policy')) {
-                $link =& Piwi::CreateWidget('Link',
-                    _t('USERS_USERS_AGENT_BLOCKING'),
-                    "javascript: userAgentBlock(this, '" . $onlineUser['agent'] . "');",
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('USERS_ONLINE_BLOCKING_AGENT'),
+                    "javascript: agentBlock(this, '{$session['agent']}');",
                     STOCK_STOP);
-                $actions .= $link->Get() . '&nbsp;';
+                $actions .= $link->Get();
             }
-
 
             $usrData['actions'] = $actions;
             $retData[] = $usrData;
@@ -122,12 +115,11 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
         return $retData;
     }
 
-
     /**
-     * Builds admin online users UI
+     * Builds online users admin UI
      *
      * @access  public
-     * @return  string  XHTML form
+     * @return  string  XHTML content
      */
     function OnlineUsers()
     {
@@ -141,7 +133,9 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());
         $tpl->SetVariable('menubar', $this->MenuBar('OnlineUsers'));
 
-        $tpl->SetVariable('confirmUserDisable', _t('USERS_USER_CONFIRM_DISABLE'));
+        $tpl->SetVariable('confirmThrowout',   _t('USERS_ONLINE_CONFIRM_THROWOUT'));
+        $tpl->SetVariable('confirmBlockIP',    _t('USERS_ONLINE_CONFIRM_BLOCKIP'));
+        $tpl->SetVariable('confirmBlockAgent', _t('USERS_ONLINE_CONFIRM_BLOCKAGENT'));
         $tpl->ParseBlock('OnlineUsers');
 
         return $tpl->Get();
