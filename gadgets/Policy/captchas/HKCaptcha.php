@@ -301,7 +301,7 @@ class HKCaptcha
         }
         $value = $this->GetValue($key);
 
-        $font = "gadgets/Policy/captchas/HKCaptcha/comicbd.ttf";
+        $font = JAWS_PATH. 'gadgets/Policy/captchas/HKCaptcha/comicbd.ttf';
         $width  = 15 * imagefontwidth (5);
         $height = 4 * imagefontheight (5);
 
