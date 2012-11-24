@@ -25,6 +25,9 @@ class UsersAdminHTML extends Jaws_Gadget_HTML
         } elseif ($this->GetPermission('ManageGroups')) {
             $groupHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Groups');
             return $groupHTML->Groups();
+        } elseif ($this->GetPermission('ManageOnlineUsers')) {
+            $onlineHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'OnlineUsers');
+            return $onlineHTML->OnlineUsers();
         }
 
         $this->CheckPermission('ManageProperties');
