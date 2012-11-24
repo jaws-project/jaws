@@ -791,12 +791,17 @@ class Jaws_Session
      * Returns the sessions attributes
      *
      * @access  public
+     * @param   bool    $onlyActive     Only return active session
      * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
      */
-    function GetSessions()
+    function GetSessions($onlyActive = true)
     {
         // remove expired session
         $this->DeleteExpiredSessions();
+
+        $idle_timeout = (int)$GLOBALS['app']->Registry->Get('/policy/session_idle_timeout');
+        $params = array();
+        $params['onlinetime'] = time() - ($idle_timeout * 60);
 
         $sql = '
             SELECT
@@ -804,14 +809,19 @@ class Jaws_Session
                 [data], [createtime], [updatetime]
             FROM
                 [[session]]
-            ORDER BY
-                [updatetime] DESC';
+            ';
+
+        if ($onlyActive) {
+            $sql.= 'WHERE [updatetime] >= {onlinetime}';
+        }
+
+        $sql.= ' ORDER BY [updatetime] DESC';
 
         $types = array(
             'integer', 'text', 'text', 'text', 'integer', 'integer', 'text', 'text',
             'text', 'integer', 'integer',
         );
-        $sessions = $GLOBALS['db']->queryAll($sql, null, $types);
+        $sessions = $GLOBALS['db']->queryAll($sql, $params, $types);
         if (Jaws_Error::isError($sessions)) {
             return $sessions;
         }
@@ -825,6 +835,7 @@ class Jaws_Session
                 $sessions[$key]['nickname']   = $data['nickname'];
                 $sessions[$key]['email']      = $data['email'];
                 $sessions[$key]['avatar']     = $data['avatar'];
+                $sessions[$key]['online']     = $session['updatetime'] > (time() - ($idle_timeout * 60));
                 unset($sessions[$key]['data']);
             }
         }
