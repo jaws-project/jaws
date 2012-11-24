@@ -51,7 +51,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
      */
     function GetOnlineUsers()
     {
-        $sessions = $GLOBALS['app']->Session->GetSessions();
+        $sessions = $GLOBALS['app']->Session->GetSessions(false);
         if (Jaws_Error::IsError($sessions)) {
             return array();
         }
@@ -59,7 +59,6 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
         $retData = array();
         $objDate = $GLOBALS['app']->loadDate();
 
-        $idle_timeout = (int)$GLOBALS['app']->Registry->Get('/policy/session_idle_timeout');
         foreach ($sessions as $session) {
             $usrData = array();
             if (empty($session['username'])) {
@@ -75,7 +74,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
             $usrData['nickname'] = $session['nickname'];
             $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
-            if ($session['updatetime'] > (time() - ($idle_timeout * 60))) {
+            if ($session['online']) {
                 $usrData['last_activetime'] = "<label title='"._t('USERS_ONLINE_ACTIVE')."'>".
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
             } else {
