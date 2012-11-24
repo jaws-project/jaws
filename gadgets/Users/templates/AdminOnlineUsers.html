@@ -1,0 +1,16 @@
+<!-- BEGIN OnlineUsers -->
+{menubar}
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="vertical-align: top;">
+      {online_users_datagrid}
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+  var confirmThrowOut   = "{confirmThrowout}";
+  var confirmBlockIP    = "{confirmBlockIP}";
+  var confirmBlockAgent = "{confirmBlockAgent}";
+  initDataGrid('onlineusers_datagrid', new usersadminajax, getOnlineUsers);
+</script>
+<!-- END OnlineUsers -->

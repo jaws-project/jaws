@@ -67,32 +67,9 @@ var UsersCallback = {
     deleteuser: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopUserAction();
-            $('users_datagrid').deleteItem();          
+            $('users_datagrid').deleteItem();
             getDG('users_datagrid');
         }
-        showResponse(response);
-    },
-
-    disableuser: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            getDG('onlineusers_datagrid');
-        }
-        showResponse(response);
-    },
-
-    logoutuser: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            $('onlineusers_datagrid').deleteItem();
-            getDG('onlineusers_datagrid');
-        }
-        showResponse(response);
-    },
-
-    ipblock: function(response) {
-        showResponse(response);
-    },
-
-    agentblock: function(response) {
         showResponse(response);
     },
 
@@ -134,6 +111,22 @@ var UsersCallback = {
         if (response[0]['css'] == 'notice-message') {
             stopGroupAction();
         }
+        showResponse(response);
+    },
+
+    deletesession: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            clearTimeout(fTimeout);
+            getOnlineUsers('onlineusers_datagrid');
+        }
+        showResponse(response);
+    },
+
+    ipblock: function(response) {
+        showResponse(response);
+    },
+
+    agentblock: function(response) {
         showResponse(response);
     },
 
@@ -201,11 +194,8 @@ function getGroups(name, offset, reset)
 function getOnlineUsers(name, offset, reset)
 {
     var result = usersSync.getonlineusers();
-    if (reset) {
-        $(name).setCurrentPage(0);
-        var total = result.length;
-    }
-    resetGrid(name, result, total);
+    resetGrid(name, result, result.length);
+    fTimeout = setTimeout("getOnlineUsers('onlineusers_datagrid');", 30000);
 }
 
 /**
@@ -309,38 +299,37 @@ function saveUser()
 }
 
 /**
- * Disable an user
- */
-function disableUser(rowElement, sid, uid)
-{
-    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(confirmUserDisable)) {
-        usersAsync.disableuser(sid, uid);
-    }
-    unselectGridRow('onlineusers_datagrid');
-}
-
 /**
  * Logout an user
  */
-function logoutUser(rowElement, sid, uid) {
+function deleteSession(rowElement, sid) {
     selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
-    usersAsync.logoutuser(sid, uid);
+    if (confirm(confirmThrowOut)) {
+        usersAsync.deletesession(sid);
+    }
     unselectGridRow('onlineusers_datagrid');
 }
 
 /**
  * User's IP block
  */
-function userIPBlock(rowElement,ip) {
-    usersAsync.ipblock(ip);
+function ipBlock(rowElement, ip) {
+    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
+    if (confirm(confirmBlockIP)) {
+        usersAsync.ipblock(ip);
+    }
+    unselectGridRow('onlineusers_datagrid');
 }
 
 /**
  * User's Agent block
  */
-function userAgentBlock(rowElement,agent) {
-    usersAsync.agentblock(agent);
+function agentBlock(rowElement, agent) {
+    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
+    if (confirm(confirmBlockAgent)) {
+        usersAsync.agentblock(agent);
+    }
+    unselectGridRow('onlineusers_datagrid');
 }
 
 /**
@@ -786,6 +775,9 @@ usersSync.serverErrorFunc = Jaws_Ajax_ServerError;
 usersSync.onInit = showWorkingNotification;
 usersSync.onComplete = hideWorkingNotification;
 
+// timeout id
+var fTimeout = null;
+    
 //current group
 var selectedGroup = null;
 //show all users
