@@ -338,17 +338,34 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $email          Topic creator's email 
-     * @param   string  $event_subject  Event subject
-     * @param   string  $event_message  Event message
+     * @param   string  $event_type     Event type
+     * @param   string  $forum_title    Forum title
      * @param   string  $post_link      Link of the post
      * @param   string  $topic_subject  Topic subject
      * @param   string  $post_message   Post message content
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function PostNotification($email, $event_subject, $event_message, $post_link, $topic_subject, $post_message)
+    function PostNotification($email, $event_type, $forum_title, $post_link, $topic_subject, $post_message)
     {
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $GLOBALS['app']->Registry->Get('/config/site_name');
+        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_name  = $GLOBALS['app']->Registry->Get('/config/site_name');
+        $event_type = strtoupper($event_type);
+
+        // user profile link
+        $lnkProfile =& Piwi::CreateWidget(
+            'Link',
+            $GLOBALS['app']->Session->GetAttribute('nickname'),
+            $GLOBALS['app']->Map->GetURLFor(
+                'Users',
+                'Profile',
+                array('user' => $GLOBALS['app']->Session->GetAttribute('username')),
+                true,
+                'site_url'
+            )
+        );
+
+        $event_subject = _t("FORUMS_POSTS_{$event_type}_NOTIFICATION_SUBJECT", $forum_title);
+        $event_message = _t("FORUMS_POSTS_{$event_type}_NOTIFICATION_MESSAGE", $lnkProfile->Get());
 
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('PostNotification.html');

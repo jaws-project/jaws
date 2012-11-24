@@ -509,8 +509,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $post['message'],
                 $post['attachment']
             );
-            $event_subject = _t('FORUMS_POSTS_NEW_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_POSTS_NEW_NOTIFICATION_MESSAGE');
+            $event_type = 'new';
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
         } else {
             $oldPost = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
@@ -544,8 +543,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $oldPost['attachment_host_fname'],
                 $post['update_reason']
             );
-            $event_subject = _t('FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE');
+            $event_type = 'edit';
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
         }
 
@@ -567,8 +565,8 @@ class Forums_Actions_Posts extends ForumsHTML
         if ($send_notification) {
             $result = $pModel->PostNotification(
                 $topic['email'],
-                $event_subject,
-                $event_message,
+                $event_type,
+                $topic['forum_title'],
                 $post_link,
                 $topic['subject'],
                 $this->ParseText($post['message'], 'Forums')
@@ -641,12 +639,11 @@ class Forums_Actions_Posts extends ForumsHTML
                     Jaws_Header::Referrer();
                 }
 
-                $event_subject = _t('FORUMS_POSTS_DELETE_NOTIFICATION_SUBJECT', $post['forum_title']);
-                $event_message = _t('FORUMS_POSTS_DELETE_NOTIFICATION_MESSAGE');
+                $event_type = 'delete';
                 $result = $pModel->PostNotification(
                     $post['email'],
-                    $event_subject,
-                    $event_message,
+                    $event_type,
+                    $post['forum_title'],
                     $topic_link,
                     $post['subject'],
                     $this->ParseText($post['message'], 'Forums')

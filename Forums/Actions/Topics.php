@@ -383,8 +383,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['published']
                 );
             }
-            $event_subject = _t('FORUMS_TOPICS_NEW_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_TOPICS_NEW_NOTIFICATION_MESSAGE');
+            $event_type = 'new';
             $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
             $oldTopic = $tModel->GetTopic($topic['tid'], $topic['fid']);
@@ -434,11 +433,9 @@ class Forums_Actions_Topics extends ForumsHTML
             // fill forum id with target forum id
             if ($topic['fid'] != $topic['target']) {
                 $topic['fid'] = $topic['target'];
-                $event_subject = _t('FORUMS_TOPICS_MOVE_NOTIFICATION_SUBJECT', $topic['forum_title']);
-                $event_message = _t('FORUMS_TOPICS_MOVE_NOTIFICATION_MESSAGE');
+                $event_type = 'move';
             } else {
-                $event_subject = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
-                $event_message = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE');
+                $event_type = 'edit';
             }
 
             $error_message = _t('FORUMS_TOPICS_EDIT_ERROR');
@@ -460,8 +457,8 @@ class Forums_Actions_Topics extends ForumsHTML
 
         if ($send_notification) {
             $result = $tModel->TopicNotification(
-                $event_subject,
-                $event_message,
+                $event_type,
+                $topic['forum_title'],
                 $topic_link,
                 $topic['subject'],
                 $this->ParseText($topic['message'], 'Forums')
@@ -521,8 +518,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     Jaws_Header::Referrer();
                 }
 
-                $event_subject = _t('FORUMS_TOPICS_DELETE_NOTIFICATION_SUBJECT', $topic['forum_title']);
-                $event_message = _t('FORUMS_TOPICS_DELETE_NOTIFICATION_MESSAGE');
+                $event_type = 'delete';
                 $forum_link = $this->GetURLFor(
                     'Topics',
                     array('fid' => $topic['fid']),
@@ -530,8 +526,8 @@ class Forums_Actions_Topics extends ForumsHTML
                     'site_url'
                 );
                 $result = $tModel->TopicNotification(
-                    $event_subject,
-                    $event_message,
+                    $event_type,
+                    $topic['forum_title'],
                     $forum_link,
                     $topic['subject'],
                     $this->ParseText($topic['message'], 'Forums')
@@ -624,14 +620,7 @@ class Forums_Actions_Topics extends ForumsHTML
             // do nothing
         }
 
-        if ($topic['locked']) {
-            $event_subject = _t('FORUMS_TOPICS_UNLOCK_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_TOPICS_UNLOCK_NOTIFICATION_MESSAGE');
-        } else {
-            $event_subject = _t('FORUMS_TOPICS_LOCK_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_TOPICS_LOCK_NOTIFICATION_MESSAGE');
-        }
-
+        $event_type = $topic['locked']? 'unlock' : 'lock';
         $topic_link = $this->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
@@ -639,8 +628,8 @@ class Forums_Actions_Topics extends ForumsHTML
             'site_url'
         );
         $result = $tModel->TopicNotification(
-            $event_subject,
-            $event_message,
+            $event_type,
+            $topic['forum_title'],
             $topic_link,
             $topic['subject'],
             $this->ParseText($topic['message'], 'Forums')
