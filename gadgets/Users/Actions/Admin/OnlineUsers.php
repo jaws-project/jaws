@@ -75,10 +75,10 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
             $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
             if ($session['online']) {
-                $usrData['last_activetime'] = "<label title='"._t('USERS_ONLINE_ACTIVE')."'>".
+                $usrData['last_activetime'] = "<label class='lastactive' title='"._t('USERS_ONLINE_ACTIVE')."'>".
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
             } else {
-                $usrData['last_activetime'] = "<s title='"._t('USERS_ONLINE_INACTIVE')."'>".
+                $usrData['last_activetime'] = "<s class='lastactive' title='"._t('USERS_ONLINE_INACTIVE')."'>".
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</s>";
             }
 

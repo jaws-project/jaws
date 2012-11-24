@@ -229,3 +229,6 @@ font-size:30px;
 opacity:0;
 filter:alpha(opacity=0);
 }
+#onlineusers_datagrid td .lastactive {
+font-weight:normal;
+}
