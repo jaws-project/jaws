@@ -803,7 +803,9 @@ class Jaws_Session
                 [sid], [domain], [user], [type], [longevity], [ip], [agent], [referrer],
                 [data], [createtime], [updatetime]
             FROM
-                [[session]]';
+                [[session]]
+            ORDER BY
+                [updatetime] DESC';
 
         $types = array(
             'integer', 'text', 'text', 'text', 'integer', 'integer', 'text', 'text',
