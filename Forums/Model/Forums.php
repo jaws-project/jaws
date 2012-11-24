@@ -48,10 +48,11 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      * @param   bool    $last_topic_detail
      * @return  mixed   Array with all the available forums or Jaws_Error on error
      */
-    function GetForums($gid, $onlyPublished = false, $last_topic_detail = false)
+    function GetForums($gid = false, $onlyPublished = false, $last_topic_detail = false)
     {
         $params = array();
-        $params['gid'] = $gid;
+        $params['gid']  = $gid;
+        $params['true'] = true;
         $params['published'] = true;
 
         if ($last_topic_detail) {
@@ -64,7 +65,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
                 FROM [[forums]]
                 LEFT JOIN [[forums_topics]] ON [[forums]].[last_topic_id] = [[forums_topics]].[id]
                 LEFT JOIN [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
-                WHERE [gid] = {gid}';
+                WHERE {true} = {true}';
 
             $types = array(
                 'integer', 'text', 'text',
@@ -78,12 +79,16 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
                     [id], [title], [description], [fast_url], [topics], [posts],
                     [locked], [published]
                 FROM [[forums]]
-                WHERE [gid] = {gid}';
+                WHERE {true} = {true}';
 
             $types = array(
                 'integer', 'text', 'text', 'text', 'integer', 'integer',
                 'boolean', 'boolean'
             );
+        }
+
+        if (!empty($gid)) {
+            $sql .= ' AND [gid] = {gid}';
         }
 
         if ($onlyPublished) {

@@ -143,12 +143,18 @@ class Forums_Actions_Topics extends ForumsHTML
      */
     function EditTopic()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid'));
         if (empty($rqst['fid'])) {
             return false;
         }
 
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!empty($rqst['tid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
@@ -159,8 +165,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $title = _t('FORUMS_TOPICS_EDIT_TITLE');
             $btn_title = _t('FORUMS_TOPICS_EDIT_BUTTON');
         } else {
-            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
-            $forum  = $fModel->GetForum($rqst['fid']);
+            $forum = $fModel->GetForum($rqst['fid']);
             if (Jaws_Error::IsError($forum) || empty($forum)) {
                 return false;
             }
@@ -191,12 +196,14 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('fid', $rqst['fid']);
         $tpl->SetVariable('tid', $topic['id']);
 
+        // response
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdateTopic')) {
             $tpl->SetBlock('topic/response');
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('topic/response');
         }
 
+        // first post meta
         if (!empty($topic['id'])) {
             // date format
             $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
@@ -214,6 +221,25 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
             $tpl->ParseBlock('topic/post_meta');
+        }
+
+        // move topic
+        if (!empty($topic['id']) && $this->GetPermission('MoveTopic')) {
+            $tpl->SetBlock('topic/target');
+            $tpl->SetVariable('lbl_target', _t('FORUMS_TOPICS_MOVEDTO'));
+            $forums = $fModel->GetForums(false, true);
+            foreach ($forums as $forum) {
+                $tpl->SetBlock('topic/target/item');
+                $tpl->SetVariable('fid', $forum['id']);
+                $tpl->SetVariable('title', $forum['title']);
+                if ($forum['id'] == $topic['fid']) {
+                    $tpl->SetVariable('selected', 'selected="selected"');
+                } else {
+                    $tpl->SetVariable('selected', '');
+                }
+                $tpl->ParseBlock('topic/target/item');
+            }
+            $tpl->ParseBlock('topic/target');
         }
 
         // subject
@@ -281,7 +307,10 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $request =& Jaws_Request::getInstance();
         $topic = $request->get(
-            array('fid', 'tid', 'subject', 'message', 'remove_attachment', 'update_reason', 'published'),
+            array(
+                'fid', 'tid', 'target', 'subject', 'message', 'remove_attachment',
+                'update_reason', 'published'
+            ),
             'post'
         );
         $topic['forum_title'] = '';
@@ -382,8 +411,14 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['update_reason'] = '';
             }
 
+            // set target topic for move
+            if (!$this->GetPermission('MoveTopic') || empty($topic['target'])) {
+                $topic['target'] = $topic['fid'];
+            }
+
             $topic['forum_title'] = $oldTopic['forum_title'];
             $result = $tModel->UpdateTopic(
+                $topic['target'],
                 $topic['fid'],
                 $topic['tid'],
                 $oldTopic['first_post_id'],
@@ -396,8 +431,16 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['update_reason']
             );
 
-            $event_subject = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
-            $event_message = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE');
+            // fill forum id with target forum id
+            if ($topic['fid'] != $topic['target']) {
+                $topic['fid'] = $topic['target'];
+                $event_subject = _t('FORUMS_TOPICS_MOVE_NOTIFICATION_SUBJECT', $topic['forum_title']);
+                $event_message = _t('FORUMS_TOPICS_MOVE_NOTIFICATION_MESSAGE');
+            } else {
+                $event_subject = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', $topic['forum_title']);
+                $event_message = _t('FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE');
+            }
+
             $error_message = _t('FORUMS_TOPICS_EDIT_ERROR');
         }
 

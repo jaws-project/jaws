@@ -180,7 +180,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Update topic
      *
      * @access  public
-     * @param   int     $fid            Forum ID
+     * @param   int     $target         Forum ID
+     * @param   int     $fid            Old forum ID
      * @param   int     $tid            Topic ID
      * @param   int     $pid            Topic first post ID
      * @param   int     $uid            User's ID
@@ -192,12 +193,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($fid, $tid, $pid, $uid, $subject, $message, $attachment = null, $old_attachment = '',
+    function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null, $old_attachment = '',
         $published = null, $update_reason = '')
     {
         $params = array();
-        $params['fid'] = (int)$fid;
-        $params['tid'] = (int)$tid;
+        $params['target']    = (int)$target;
+        $params['tid']       = (int)$tid;
         $params['subject']   = $subject;
         $params['published'] = true;
 
@@ -206,7 +207,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $sql = '
             UPDATE [[forums_topics]] SET
-                [fid]       = {fid},
+                [fid]       = {target},
                 [subject]   = {subject},
                 [published] = {published}
             WHERE
@@ -229,6 +230,22 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         //Commit Transaction
         $GLOBALS['db']->dbc->commit();
+
+        // update forums statistics if topic moved
+        if ($target != $fid) {
+            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+            // old forum
+            $result = $fModel->UpdateForumStatistics($fid);
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
+
+            // new forum
+            $result = $fModel->UpdateForumStatistics($target);
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
+        }
 
         return  $tid;
     }

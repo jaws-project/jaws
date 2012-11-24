@@ -20,6 +20,7 @@ define('_EN_FORUMS_ACL_LOCKFORUM', "Lock forum");
 define('_EN_FORUMS_ACL_DELETEFORUM', "Delete forum");
 define('_EN_FORUMS_ACL_ADDTOPIC', "Add topic");
 define('_EN_FORUMS_ACL_EDITTOPIC', "Edit topic");
+define('_EN_FORUMS_ACL_MOVETOPIC', "Move topic");
 define('_EN_FORUMS_ACL_EDITOTHERSTOPIC', "Edit others topic");
 define('_EN_FORUMS_ACL_EDITLOCKEDTOPIC', "Edit locked topic");
 define('_EN_FORUMS_ACL_EDITOUTDATEDTOPIC', "Edit outdated topic");
@@ -58,6 +59,7 @@ define('_EN_FORUMS_LASTPOST', "Last Post");
 
 /* Topics */
 define('_EN_FORUMS_TOPICS_SUBJECT', "Subject");
+define('_EN_FORUMS_TOPICS_MOVEDTO', "Moved to");
 define('_EN_FORUMS_TOPICS_NEW', "New Topic");
 define('_EN_FORUMS_TOPICS_NEW_TITLE', "New topic");
 define('_EN_FORUMS_TOPICS_NEW_BUTTON', "Add new topic");
@@ -70,6 +72,8 @@ define('_EN_FORUMS_TOPICS_EDIT_BUTTON', "Update topic");
 define('_EN_FORUMS_TOPICS_EDIT_ERROR', "There was a problem while updating topic");
 define('_EN_FORUMS_TOPICS_EDIT_NOTIFICATION_SUBJECT', "Forums topic edited - {0}");
 define('_EN_FORUMS_TOPICS_EDIT_NOTIFICATION_MESSAGE', "The following topic was modified in the forum.");
+define('_EN_FORUMS_TOPICS_MOVE_NOTIFICATION_SUBJECT', "Forums topic moved - {0}");
+define('_EN_FORUMS_TOPICS_MOVE_NOTIFICATION_MESSAGE', "The following topic was moved in the forum.");
 define('_EN_FORUMS_TOPICS_DELETE', "Delete Topic");
 define('_EN_FORUMS_TOPICS_DELETE_TITLE', "Delete topic");
 define('_EN_FORUMS_TOPICS_DELETE_BUTTON', "Delete topic");

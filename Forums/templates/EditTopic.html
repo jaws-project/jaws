@@ -20,6 +20,16 @@
         &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
       </div>
       <!-- END post_meta -->
+      <!-- BEGIN target -->
+      <div>
+        <label for="target">{lbl_target}:</label>
+        <select name="target" id="target">
+          <!-- BEGIN item -->
+          <option value="{fid}" {selected}>{title}</option>
+          <!-- END item -->
+        </select>
+      </div>
+      <!-- END target -->
       <!-- BEGIN subject -->
       <div>
         <label for="subject">{lbl_subject}:</label>
