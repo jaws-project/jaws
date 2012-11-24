@@ -1192,9 +1192,9 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_SETTINGS'), STOCK_SAVE);
         $save->SetSubmit();
 
-        // Cancel Button
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "window.location = BASE_SCRIPT . '?gadget=Phoo'");
+        // Reset Button
+        $reset =& Piwi::CreateWidget('Button', 'reset', _t('GLOBAL_RESET'), STOCK_RESET);
+        $reset->setReset(true);
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $settings = $model->GetSettings();
@@ -1348,7 +1348,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
-        $buttonbox->PackStart($cancel);
+        $buttonbox->PackStart($reset);
         $buttonbox->PackStart($save);
 
         $form->Add($buttonbox);
