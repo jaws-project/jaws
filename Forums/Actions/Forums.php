@@ -77,6 +77,7 @@ class Forums_Actions_Forums extends ForumsHTML
                     );
                     $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time'], $date_format));
+                    $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$forum['last_post_time']));
                     $url_params = array('fid' => $forum['id'], 'tid'=> $forum['last_topic_id']);
                     $last_post_page = floor(($forum['replies'] - 1)/$posts_limit) + 1;
                     if ($last_post_page > 1) {

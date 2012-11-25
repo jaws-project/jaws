@@ -16,13 +16,17 @@
         <dl>
           <dt class="topic_status_{status}">
             <a href="{url}">{title}</a><br/>
-            <span>{postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a> &raquo; <small>{firstpost_date}</small></span>
+            <span>
+              {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a> &raquo;
+              <abbr title="{firstpost_date_iso}">{firstpost_date}</abbr>
+            </span>
           </dt>
           <dd class="topics_replies">{replies}</dd>
           <dd class="topics_views">{views}</dd>
           <dd class="topics_lastpost">
             <!-- BEGIN lastpost -->
-            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a><br/>{lastpost_date}
+            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+            <br/><abbr title="{lastpost_date_iso}">{lastpost_date}</abbr>
             <a href="{lastpost_url}" title="{lastpost_lbl}">
               <img src="gadgets/Forums/images/topic_latest{.dir}.png" alt="{lastpost_lbl}"/>
             </a>

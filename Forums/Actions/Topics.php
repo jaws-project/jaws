@@ -76,6 +76,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['first_username']))
             );
             $tpl->SetVariable('firstpost_date', $objDate->Format($topic['first_post_time'], $date_format));
+            $tpl->SetVariable('firstpost_date_iso', $objDate->ToISO((int)$topic['first_post_time']));
 
             // last post
             if (!empty($topic['last_post_id'])) {
@@ -89,6 +90,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
+                $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$topic['last_post_time']));
                 $url_params = array('fid' => $topic['fid'], 'tid'=> $topic['id']);
                 $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
                 if ($last_post_page > 1) {
