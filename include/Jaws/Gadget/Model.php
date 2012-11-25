@@ -247,7 +247,6 @@ class Jaws_Gadget_Model
         }
 
         $GLOBALS['app']->ACL->NewKeyEx($acls);
-        $GLOBALS['app']->ACL->commit($this->_Gadget);
     }
 
     /**
@@ -261,8 +260,6 @@ class Jaws_Gadget_Model
         foreach($info->GetACLs() as $acl => $opts){
             $GLOBALS['app']->ACL->DeleteKey($acl);
         }
-
-        $GLOBALS['app']->ACL->Commit($this->_Gadget);
     }
 
     /**

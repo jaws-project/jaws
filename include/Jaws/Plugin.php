@@ -285,7 +285,6 @@ class Jaws_Plugin
         $GLOBALS['app']->Registry->Commit('core');
 
         $GLOBALS['app']->Registry->deleteCacheFile($plugin, 'plugins');
-        $GLOBALS['app']->ACL->deleteCacheFile($plugin, 'plugins');
 
         // Everything is done
         $res = $GLOBALS['app']->Shouter->Shout('onAfterDisablePlugin', $plugin);

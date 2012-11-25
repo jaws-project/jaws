@@ -166,10 +166,6 @@ class Jaws_Gadget
         }
         $GLOBALS['app']->Registry->LoadFile($gadget);
 
-        if (isset($GLOBALS['app']->ACL)) {
-            $GLOBALS['app']->ACL->LoadFile($gadget);
-        }
-
         $this->_Name        = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
         $this->LoadActions();
@@ -779,7 +775,6 @@ class Jaws_Gadget
         $GLOBALS['app']->Registry->Commit('core'); //Commit all changes to core
 
         $GLOBALS['app']->Registry->deleteCacheFile($gadget);
-        $GLOBALS['app']->ACL->deleteCacheFile($gadget);
 
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterUninstallingGadget', $gadget);
@@ -908,10 +903,7 @@ class Jaws_Gadget
             $GLOBALS['app']->Registry->Set('/gadgets/'.$gadget.'/version', $newVersion);
         }
 
-        // commit acl and registry keys
-        if (isset($GLOBALS['app']->ACL)) {
-            $GLOBALS['app']->ACL->Commit($gadget);
-        }
+        // commit registry keys
         $GLOBALS['app']->Registry->Commit($gadget);
 
         //Autoload feature
