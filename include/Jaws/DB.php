@@ -276,7 +276,8 @@ class Jaws_DB
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->exec($sql);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   $error_level,
                                   1);
@@ -304,7 +305,8 @@ class Jaws_DB
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryOne($sql, $type);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
@@ -337,7 +339,8 @@ class Jaws_DB
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryRow($sql, $types, $fetchmode);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
@@ -375,7 +378,8 @@ class Jaws_DB
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryAll($sql, $types, $fetchmode, $rekey, $force_array, $group);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
@@ -403,7 +407,8 @@ class Jaws_DB
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryCol($sql, $type, $colnum);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
@@ -563,7 +568,8 @@ class Jaws_DB
     {
         $result = $this->dbc->setLimit($limit, $offset);
         if (PEAR::IsError($result)) {
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
@@ -713,9 +719,9 @@ class Jaws_DB
         $result = $this->schema->$method($file, $file_update, $variables);
 
         if (PEAR::isError($result)) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Schema: ' . $result->getMessage());
             $this->schema->disconnect();
-            return new Jaws_Error($result->getMessage(). ' : '. $result->getUserInfo(),
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
                                   JAWS_ERROR_ERROR,
                                   1);
