@@ -22,6 +22,8 @@ class Division extends Box
     function Division()
     {
         parent::init();
+        $this->_class = 'piwi_division';
+
     }
 
     /**
@@ -51,7 +53,7 @@ class Division extends Box
      */
     function buildXHTML()
     {
-        $this->_XHTML  = "<div class=\"piwi_division\"";
+        $this->_XHTML  = "<div ";
         $this->_XHTML .= $this->buildBasicXHTML();
         if (!empty($this->_Width)) {
             $this->_XHTML .= " width = \"{$this->_Width}\"";
