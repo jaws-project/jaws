@@ -4,6 +4,7 @@
  *
  * @version  $Id $
  * @author   Pablo Fischer <pablo@pablo.com.mx>
+ * @author   Ali Fazelzadeh <afz@php.net>
  *
  * <c> Pablo Fischer 2004
  * <c> Piwi
@@ -16,22 +17,10 @@ class Toolbar extends Container
     /**
      * Public constructor
      *
-     * @param  string $direction Direction of the toolbar. Must be horizontal or vertical
-     * @param  string $spacing   Spacing of the container
-     * @param  string $border    Border of the container
      * @access public
      */
-    function Toolbar($direction = 'horizontal', $spacing = 0, $border = 0)
+    function Toolbar()
     {
-        $this->_border    = $border;
-        $this->_spacing   = $spacing;
-        $this->_direction = $direction;
-        $this->_name      = 'toolbar' . rand(1,100);
-
-        if ($direction != 'horizontal' && $direction != 'vertical') {
-            $this->_direction = 'horizontal';
-        }
-
         parent::init();
     }
 
@@ -85,47 +74,26 @@ class Toolbar extends Container
     function buildXHTML()
     {
         if (count($this->_items) > 0) {
-            $this->_XHTML = "<table cellpadding=\"0\"";
-
+            $this->_XHTML = "<div class=\"piwi_editor_toolbar\"";
             $this->_XHTML.= $this->buildBasicXHTML();
             $this->_XHTML.= ">\n";
             $this->_JS =  '';
 
-            if ($this->_direction == 'vertical') {
-                foreach ($this->_items as $item) {
-                    $this->_XHTML.= "<tr>\n";
-                    $this->_XHTML.= " <td valign=\"top\">\n";
-                    if (is_subclass_of($item, 'Bin')) {
-                        $item->rebuildJS();
-                    } else {
-                        $item->rebuild();
-                    }
-                    $this->addJS($item->getJS());
-                    $this->addFiles($item->getFiles());
-                    $this->_XHTML.= $item->get(false);
-                    $this->_XHTML.= " </td>\n";
-                    $this->_XHTML.= "</tr>\n";
+            foreach ($this->_items as $item) {
+                if (is_subclass_of($item, 'Bin')) {
+                    $item->rebuildJS();
+                } else {
+                    $item->rebuild();
                 }
-            } else {
-                $this->_XHTML.= "<tr>\n";
-                foreach ($this->_items as $item) {
-                    $this->_XHTML.= " <td valign=\"top\">\n";
-                    if (is_subclass_of($item, 'Bin')) {
-                        $item->rebuildJS();
-                    } else {
-                        $item->rebuild();
-                    }
-                    $this->addJS($item->getJS());
-                    $this->addFiles($item->getFiles());
-                    $this->_XHTML.= $item->get(false);
-                    $this->_XHTML.= " </td>\n";
-                }
-                $this->_XHTML.= "</tr>\n";
+                $this->addJS($item->getJS());
+                $this->addFiles($item->getFiles());
+                $this->_XHTML.= $item->get(false);
             }
-            $this->_XHTML.= "</table>";
+
+            $this->_XHTML.= "</div>";
         } else {
             $this->_XHTML = '';
         }
     }
+
 }
-?>
