@@ -137,7 +137,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
 
-        $this->_Container =& Piwi::CreateWidget('VBox');
+        $this->_Container =& Piwi::CreateWidget('Division');
         parent::init();
     }
 
@@ -185,16 +185,14 @@ class Jaws_Widgets_TinyMCE extends Container
 
         $this->_XHTML.= "<script type=\"text/javascript\">\n";
 
-        $fbrowser = '';
-        $objFB = $GLOBALS['app']->LoadGadget('FileBrowser', 'Info');
-        if ($objFB->IsGadgetInstalled()) {
-            $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
+        $ibrowser = '';
+        if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
+            $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
         }
 
-        $ibrowser = '';
-        $objFO = $GLOBALS['app']->LoadGadget('Phoo', 'Info');
-        if ($objFO->IsGadgetInstalled()) {
-            $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
+        $fbrowser = '';
+        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
+            $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
         $this->_XHTML.= "function jaws_filebrowser_callback(field_name, url, type, win) {\n";

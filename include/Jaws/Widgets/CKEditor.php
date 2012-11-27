@@ -222,7 +222,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Language = $GLOBALS['app']->GetLanguage();
         $this->_Direction = _t('GLOBAL_LANG_DIRECTION');
 
-        $this->_Container =& Piwi::CreateWidget('VBox');
+        $this->_Container =& Piwi::CreateWidget('Division');
         parent::init();
     }
 
@@ -304,16 +304,14 @@ class Jaws_Widgets_CKEditor extends Container
         }
 
         $siteURL = $GLOBALS['app']->GetSiteURL();
-        $objFB = $GLOBALS['app']->LoadGadget('FileBrowser', 'Info');
-        if ($objFB->IsGadgetInstalled()) {
+        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
             $this->_Config['filebrowserBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
             $this->_Config['filebrowserFlashBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
-        $objFO = $GLOBALS['app']->LoadGadget('Phoo', 'Info');
-        if ($objFO->IsGadgetInstalled()) {
+        if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
             $this->_Config['filebrowserImageBrowseUrl'] =
                    $siteURL. '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
         }
