@@ -255,7 +255,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     {
         $this->_usingAjax = true;
         $name = $this->_Gadget;
-        $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Ajax/Ajax.js');
+        $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $GLOBALS['app']->Layout->AddScriptLink(BASE_SCRIPT.'?gadget='.
                                                $name.
                                                '&amp;action=Ajax&amp;jpspan');
