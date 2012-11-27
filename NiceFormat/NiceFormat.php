@@ -35,8 +35,7 @@ class NiceFormat extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetSpacing(0);
+        $buttonbox =& Piwi::CreateWidget('Division');
 
         $bold =& Piwi::CreateWidget('Button', 'bold', '', STOCK_TEXT_BOLD);
         $bold->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '**','**','".
