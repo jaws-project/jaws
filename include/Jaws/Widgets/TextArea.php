@@ -203,7 +203,7 @@ class Jaws_Widgets_TextArea extends Container
      */
     function extraBuild()
     {
-        $availablePlugins = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items'));
+        $availablePlugins = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items'));
         foreach ($availablePlugins as $plugin) {
             if (empty($plugin)) {
                 continue;

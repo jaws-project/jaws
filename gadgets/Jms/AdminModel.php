@@ -145,7 +145,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $ei = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items'));
+                $ei = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items'));
                 $ei = str_replace(' ', '', $ei);
                 $pInstalled = in_array($plugin, $ei);
 

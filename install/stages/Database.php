@@ -421,6 +421,7 @@ class Installer_Database extends JawsInstallerStage
                     array('/gadgets/core_items', ''),
                     array('/gadgets/autoload_items', ''),
                     array('/plugins/parse_text/enabled_items', ''),
+                    array('/plugins/parse_text/admin_enabled_items', ''),
                     array('/network/ftp_enabled', 'false'),
                     array('/network/ftp_host', '127.0.0.1'),
                     array('/network/ftp_port', '21'),

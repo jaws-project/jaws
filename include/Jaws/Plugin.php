@@ -184,7 +184,7 @@ class Jaws_Plugin
 
         $pluginkey   = '/plugins/parse_text/' . $plugin . '/enabled';
         $pluginusein = '/plugins/parse_text/' . $plugin . '/use_in';
-        $pluginskey  = '/plugins/parse_text/enabled_items';
+        $pluginskey  = '/plugins/parse_text/admin_enabled_items';
 
         if (
             !$GLOBALS['app']->Registry->NewKey($pluginkey, 'true') ||
@@ -267,10 +267,10 @@ class Jaws_Plugin
         }
 
 
-        $pull = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
+        $pull = $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items');
         $new  = str_replace(',' . $plugin, '', $pull);
 
-        $GLOBALS['app']->Registry->Set('/plugins/parse_text/enabled_items', $new);
+        $GLOBALS['app']->Registry->Set('/plugins/parse_text/admin_enabled_items', $new);
         $GLOBALS['app']->Registry->DeleteKey('/plugins/parse_text/' . $plugin . '/enabled');
         $GLOBALS['app']->Registry->DeleteKey('/plugins/parse_text/' . $plugin . '/use_in');
 

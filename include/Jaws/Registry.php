@@ -533,7 +533,9 @@ class Jaws_Registry
                    OR
                     [key_name] LIKE '/crypt/%'
                    OR
-                    [key_name] IN('/version', '/last_update', '/plugins/parse_text/enabled_items',
+                    [key_name] IN('/version', '/last_update',
+                                  '/plugins/parse_text/enabled_items',
+                                  '/plugins/parse_text/admin_enabled_items',
                                   '/gadgets/enabled_items',
                                   '/gadgets/autoload_items', '/gadgets/core_items')
                 ORDER BY [key_name]";
@@ -572,7 +574,7 @@ class Jaws_Registry
         ///FIXME check for errors
         $gs = explode(',', $this->get('/gadgets/enabled_items'));
         $ci = explode(',', $this->get('/gadgets/core_items'));
-        $ps = explode(',', $this->get('/plugins/parse_text/enabled_items'));
+        $ps = explode(',', $this->get('/plugins/parse_text/admin_enabled_items'));
 
         $ci = str_replace(' ', '', $ci);
         $ps = str_replace(' ', '', $ps);

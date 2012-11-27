@@ -634,7 +634,7 @@ class Jaws_Gadget
         }
 
         if (!empty($gadget)) {
-            $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
+            $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items');
             if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
                 $plugins = array_filter(explode(',', $plugins));
                 foreach ($plugins as $plugin) {

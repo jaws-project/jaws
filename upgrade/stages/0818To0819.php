@@ -72,6 +72,9 @@ class Upgrader_0818To0819 extends JawsUpgraderStage
         $timestamp = $GLOBALS['db']->Date();
 
         // Registry keys
+        $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
+        $GLOBALS['app']->Registry->Set('/plugins/parse_text/enabled_items', '');
+        $GLOBALS['app']->Registry->NewKey('/plugins/parse_text/admin_enabled_items', $plugins);
         $GLOBALS['app']->Registry->NewKey('/config/global_website', 'true');
         $GLOBALS['app']->Registry->DeleteKey('/config/frontend_ajaxed');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/allowurl_items');
