@@ -33,6 +33,7 @@ class UsersAdminModel extends Jaws_Gadget_Model
 
         // Rregistry keys.
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/pluggable', 'false');
+        $GLOBALS['app']->Registry->NewKey('/gadgets/Users/latest_limit', '10');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/password_recovery', 'false');
         $GLOBALS['app']->Registry->NewKey('/gadgets/Users/register_notification', 'true');
 
@@ -123,6 +124,9 @@ class UsersAdminModel extends Jaws_Gadget_Model
                 $layoutModel->EditGadgetLayoutAction('Users', 'LoginBox', 'LoginBox', 'LoginBox');
                 $layoutModel->EditGadgetLayoutAction('Users', 'LoginLinks', 'LoginLinks', 'LoginBox');
             }
+
+            // Registry key
+            $GLOBALS['app']->Registry->NewKey('/gadgets/Users/latest_limit', '10');
 
             // ACL keys
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');
