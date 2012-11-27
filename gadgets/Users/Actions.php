@@ -12,22 +12,42 @@
 $actions = array();
 
 /* Layout actions */
-$actions['LoginBox']   = array('NormalAction:Login,LayoutAction:Login',
-                               _t('USERS_LAYOUT_LOGINBOX'),
-                               _t('USERS_LAYOUT_LOGINBOX_DESC'));
-$actions['LoginLinks'] = array('LayoutAction:Login',
-                               _t('USERS_LAYOUT_LOGINLINKS'),
-                               _t('USERS_LAYOUT_LOGINLINKS_DESC'));
-$actions['Profile']    = array('NormalAction:Profile,LayoutAction:Profile',
-                               _t('USERS_LAYOUT_PROFILE'),
-                               _t('USERS_LAYOUT_PROFILE_DESC'),
-                               true);
+$actions['LoginBox'] = array(
+    'NormalAction:Login,LayoutAction:Login',
+    _t('USERS_LAYOUT_LOGINBOX'),
+    _t('USERS_LAYOUT_LOGINBOX_DESC')
+);
+$actions['LoginLinks'] = array(
+    'LayoutAction:Login',
+    _t('USERS_LAYOUT_LOGINLINKS'),
+    _t('USERS_LAYOUT_LOGINLINKS_DESC')
+);
+$actions['OnlineUsers'] = array(
+    'LayoutAction:Statistics,AdminAction:OnlineUsers',
+    _t('USERS_LAYOUT_ONLINE_USERS'),
+    _t('USERS_LAYOUT_ONLINE_USERS_DESC'),
+);
+$actions['OnlineStatistics'] = array(
+    'LayoutAction:Statistics',
+    _t('USERS_LAYOUT_ONLINE_STATISTICS'),
+    _t('USERS_LAYOUT_ONLINE_STATISTICS_DESC'),
+);
+$actions['LatestRegistered'] = array(
+    'LayoutAction:Statistics',
+    _t('USERS_LAYOUT_LATEST_REGISTERED'),
+    _t('USERS_LAYOUT_LATEST_REGISTERED_DESC'),
+);
+$actions['Profile'] = array(
+    'NormalAction:Profile,LayoutAction:Profile',
+    _t('USERS_LAYOUT_PROFILE'),
+    _t('USERS_LAYOUT_PROFILE_DESC'),
+    true
+);
 
 /* Admin actions */
 $actions['Users']        = array('AdminAction:Users');
 $actions['MyAccount']    = array('AdminAction:MyAccount');
 $actions['Groups']       = array('AdminAction:Groups');
-$actions['OnlineUsers']  = array('AdminAction:OnlineUsers');
 $actions['Properties']   = array('AdminAction:Properties');
 
 $actions['LoadAvatar']   = array('StandaloneAdminAction:Avatar');

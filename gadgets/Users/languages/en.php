@@ -35,6 +35,12 @@ define('_EN_USERS_LAYOUT_LOGINBOX', "Login Box");
 define('_EN_USERS_LAYOUT_LOGINBOX_DESC', "Display Login Box.");
 define('_EN_USERS_LAYOUT_LOGINLINKS', "Login links");
 define('_EN_USERS_LAYOUT_LOGINLINKS_DESC', "Display some links related to login stuff.");
+define('_EN_USERS_LAYOUT_ONLINE_USERS', "Online users");
+define('_EN_USERS_LAYOUT_ONLINE_USERS_DESC', "Display online registered users");
+define('_EN_USERS_LAYOUT_ONLINE_STATISTICS', "Online users statistics");
+define('_EN_USERS_LAYOUT_ONLINE_STATISTICS_DESC', "Display statistics of online users/guests");
+define('_EN_USERS_LAYOUT_LATEST_REGISTERED', "Latest registered users");
+define('_EN_USERS_LAYOUT_LATEST_REGISTERED_DESC', "Display Latest registered users");
 define('_EN_USERS_LAYOUT_PROFILE', "About a user");
 define('_EN_USERS_LAYOUT_PROFILE_DESC', "Display user's profile information");
 
@@ -195,6 +201,9 @@ define('_EN_USERS_ONLINE_CONFIRM_BLOCKIP', "Are you sure you want to block this 
 define('_EN_USERS_ONLINE_CONFIRM_BLOCKAGENT', "Are you sure you want to block this browser/robot agent?");
 define('_EN_USERS_ONLINE_SESSION_DELETED', "Session has been deleted");
 define('_EN_USERS_ONLINE_SESSION_NOT_DELETED', "There was a problem deleting  session");
+define('_EN_USERS_ONLINE_NO_ONLINE', "There is no online registered user");
+define('_EN_USERS_ONLINE_REGISTERED_COUNT', "Online registered");
+define('_EN_USERS_ONLINE_GUESTS_COUNT', "Online guests");
 
 /* Properties */
 define('_EN_USERS_PROPERTIES_ANON_REGISTER', "Anonymous users can register");
