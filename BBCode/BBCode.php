@@ -1,0 +1,212 @@
+<?php
+/**
+ * Jaws BBCode plugin
+ *
+ * @category   Plugin
+ * @package    BBCode
+ * @author     Ali Fazelzadeh <afz@php.net>
+ * @copyright  2012 Jaws Development Group
+ * @license    http://www.gnu.org/copyleft/gpl.html
+ */
+class BBCode extends Jaws_Plugin
+{
+    /**
+     * Main Constructor
+     *
+     * @access  public
+     * @return  void
+     */
+    function BBCode()
+    {
+        $this->_Name = 'BBCode';
+        $this->_Description = _t('PLUGINS_BBCODE_DESCRIPTION');
+        $this->_Example     = _t('PLUGINS_BBCODE_SAMPLES');
+        $this->_IsFriendly  = true;
+        $this->_Version     = '0.1';
+    }
+
+    /**
+     * Overrides, Gets the WebControl of this plugin
+     *
+     * @access  public
+     * @param   string  $textarea   The textarea
+     * @return  string  XHTML WebControl
+     */
+    function GetWebControl($textarea)
+    {
+        $buttonbox =& Piwi::CreateWidget('Division');
+
+        $bold =& Piwi::CreateWidget('Button', 'bold', '<strong>B</strong>');
+        $bold->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[b]','[/b]','');");
+        $bold->SetTitle(_t('PLUGINS_BBCODE_BOLD_SAMPLE'));
+
+        $italic =& Piwi::CreateWidget('Button', 'italic', '<em>i</em>');
+        $italic->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[i]','[/i]','');");
+        $italic->SetTitle(_t('PLUGINS_BBCODE_ITALIC_SAMPLE'));
+
+        $underline =& Piwi::CreateWidget('Button', 'underline', '<u>u</u>');
+        $underline->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[u]','[/u]','');");
+        $underline->SetTitle(_t('PLUGINS_BBCODE_UNDERLINE_SAMPLE'));
+
+        $strike =& Piwi::CreateWidget('Button', 'strike', '<s>s</s>');
+        $strike->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[s]','[/s]','');");
+        $strike->SetTitle(_t('PLUGINS_BBCODE_STRIKE_SAMPLE'));
+
+        $quote =& Piwi::CreateWidget('Button', 'quote', 'Quote');
+        $quote->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[quote]','[/quote]','');");
+        $quote->SetTitle(_t('PLUGINS_BBCODE_QUOTE_SAMPLE'));
+
+        $code =& Piwi::CreateWidget('Button', 'code', 'Code');
+        $code->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[code]','[/code]','');");
+        $code->SetTitle(_t('PLUGINS_BBCODE_CODE_SAMPLE'));
+
+        $image =& Piwi::CreateWidget('Button', 'image', 'Image');
+        $image->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[img]','[/img]','');");
+        $image->SetTitle(_t('PLUGINS_BBCODE_IMAGE_SAMPLE'));
+
+        $url =& Piwi::CreateWidget('Button', 'url', 'URL');
+        $url->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[url]','[/url]','');");
+        $url->SetTitle(_t('PLUGINS_BBCODE_URL_SAMPLE'));
+
+        $size =& Piwi::CreateWidget('Combo', 'size');
+        $size->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[size='+this[this.selectedIndex].value+']','[/size]','');");
+        $size->SetTitle(_t('PLUGINS_BBCODE_SIZE_SAMPLE'));
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_TINY'),    8);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_SMALL'),   9);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_NORMALL'), 11);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_LARGE'),   14);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_HUGE'),    16);
+        $size->SetDefault(11);
+
+        $color =& Piwi::CreateWidget('Combo', 'color');
+        $color->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[color='+this[this.selectedIndex].value+']','[/color]','');");
+        $color->SetTitle(_t('PLUGINS_BBCODE_COLOR_SAMPLE'));
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_000000'), '#000000');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_0000FF'), '#0000FF');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_00FFFF'), '#00FFFF');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_00FF00'), '#00FF00');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FFFF00'), '#FFFF00');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FF0000'), '#FF0000');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FF00FF'), '#FF00FF');
+        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FFFFFF'), '#FFFFFF');
+        $color->SetDefault('#0000FF');
+
+        $buttonbox->PackStart($bold);
+        $buttonbox->PackStart($italic);
+        $buttonbox->PackStart($underline);
+        $buttonbox->PackStart($strike);
+        $buttonbox->PackStart($quote);
+        $buttonbox->PackStart($code);
+        $buttonbox->PackStart($image);
+        $buttonbox->PackStart($url);
+        $buttonbox->PackStart($size);
+        $buttonbox->PackStart($color);
+        return $buttonbox;
+    }
+
+    /**
+     * Overrides, Parses the text
+     *
+     * @access  public
+     * @param   string  $html   HTML to be parsed
+     * @return  string  Parsed content
+     */
+    function ParseText($html)
+    {
+        $tags = 'youtube|size|url|img|code|list|color|left|center|justify|right|quote|';
+        $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
+        while (preg_match_all('#\[('.$tags.')=?(.*?)\](.+?)\[/\1\]#is', $html, $matches)) {
+            foreach ($matches[0] as $key => $match) {
+                list($tag, $param, $innertext) = array($matches[1][$key], $matches[2][$key], $matches[3][$key]);
+                switch ($tag) {
+                    case 'h':
+                        $param = ((int)$param == 0)? 3 : (int)$param;
+                        $replacement = "<h$param>$innertext</h$param>";
+                        break;
+
+                    case 'hr':
+                        $replacement = "<hr/>";
+                        break;
+
+                    case 'b':
+                        $replacement = "<strong>$innertext</strong>";
+                        break;
+
+                    case 'i':
+                        $replacement = "<em>$innertext</em>";
+                        break;
+
+                    case 's':
+                    case 'u':
+                    case 'ol':
+                    case 'ul':
+                    case 'li':
+                    case 'tr':
+                    case 'th':
+                    case 'td':
+                    case 'table':
+                        $replacement = "<$tag>$innertext</$tag>";
+                        break;
+
+                    case 'code':
+                        $replacement = "<pre>$innertext</pre>";
+                        break;
+
+                    case 'list':
+                        $replacement = "<ul>$innertext</ul>";
+                        break;
+
+                    case '*':
+                        $replacement = "<li>$innertext</li>";
+                        break;
+
+                    case 'size':
+                        $replacement = "<span style=\"font-size:{$param}px;\">$innertext</span>";
+                        break;
+
+                    case 'color':
+                        $replacement = "<span style=\"color:$param;\">$innertext</span>";
+                        break;
+
+                    case 'left':
+                    case 'center':
+                    case 'justify':
+                    case 'right':
+                        $replacement = "<div style=\"text-align:$tag;\">$innertext</div>";
+                        break;
+
+                    case 'quote':
+                        $replacement = $param? "<cite>$param</cite>" : '';
+                        $replacement.= "<blockquote>$innertext</blockquote>";
+                        break;
+
+                    case 'url':
+                        $replacement = '<a href="' . ($param? $param : $innertext) . "\">$innertext</a>";
+                        break;
+
+                    case 'img':
+                        @list($width, $height) = preg_split('#x#i', $param);
+                        $replacement = "<img src=\"$innertext\" ";
+                        $replacement.= is_numeric($width)? "width=\"$width\" " : '';
+                        $replacement.= is_numeric($height)? "height=\"$height\" " : '';
+                        $replacement.= '/>';
+                        break;
+
+                    case 'youtube':
+                        @list($width, $height) = preg_split('#x#i', $param);
+                        $replacement = "<iframe type=\"text/html\" frameborder=\"0\" ";
+                        $replacement.= is_numeric($width)? "width=\"$width\" " : '';
+                        $replacement.= is_numeric($height)? "height=\"$height\" " : '';
+                        $replacement.= "src=\"http://www.youtube.com/embed/$innertext\">\n";
+                        $replacement.= "</iframe>";
+                        break;
+                }
+
+                $html = str_replace($match, $replacement, $html);
+            }
+        }
+
+        return $html;
+    }
+
+}
