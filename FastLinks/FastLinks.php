@@ -37,8 +37,7 @@ class FastLinks extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetSpacing(0);
+        $buttonbox =& Piwi::CreateWidget('Division');
 
         $linkbutton =& Piwi::CreateWidget('Button', 'linkbutton', '',
                             $GLOBALS['app']->getSiteURL('/plugins/FastLinks/images/stock-fastlink.png', true));
