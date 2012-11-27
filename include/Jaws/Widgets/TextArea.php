@@ -90,7 +90,7 @@ class Jaws_Widgets_TextArea extends Container
         $this->TextArea->SetStyle('width: 99%;');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
-        $this->_Container =& Piwi::CreateWidget('VBox');
+        $this->_Container =& Piwi::CreateWidget('Division');
         $this->_Container->AddFile('include/Jaws/Widgets/TextArea.js');
 
         parent::init();
