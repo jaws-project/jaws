@@ -187,7 +187,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
             'friendly'    => $objPlugin->IsFriendly(),
             'accesskey'   => $objPlugin->GetAccessKey(),
             'example'     => $objPlugin->GetExample(),
-            'description' => _t('_PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
+            'description' => _t('PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
         );
 
         return $plugin;

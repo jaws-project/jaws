@@ -717,17 +717,17 @@ class Jaws
                 return $error;
             }
 
+            // load registry file
+            $this->Registry->LoadFile($plugin, 'plugins');
+            // load plugin's language file
+            $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
+
             $obj = new $plugin();
             if (Jaws_Error::IsError($obj)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $plugin),
                                         'Plugin file loading');
                 return $error;
             }
-
-            // load registry file
-            $this->Registry->LoadFile($plugin, 'plugins');
-            // load plugin's language file
-            $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
 
             $this->_Plugins[$plugin] = $obj;
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded plugin: ' . $plugin);
