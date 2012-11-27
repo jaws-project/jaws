@@ -45,7 +45,7 @@ class Jaws_Widgets_TextArea extends Container
      *
      * @var mixed
      */
-    var $_Width = '100%';
+    var $_Width = '';
 
     /**
      * @access  private
@@ -87,10 +87,10 @@ class Jaws_Widgets_TextArea extends Container
         $this->_ToolbarControl->SetID('toolbar_'.$name);
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $value, '', '14', '106');
-        $this->TextArea->SetStyle('width: 99%;');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_Container =& Piwi::CreateWidget('Division');
+        $this->_Container->SetClass('jaws_textarea_editor');
         $this->_Container->AddFile('include/Jaws/Widgets/TextArea.js');
 
         parent::init();
