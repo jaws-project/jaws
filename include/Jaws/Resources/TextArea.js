@@ -3,7 +3,7 @@
  * of selection if there is none copied and adapted from phpBB
  */
 function insertTags(txtarea, tagOpen, tagClose, sampleText) {
-  txtarea = $(txtarea);
+  txtarea = document.getElementById(txtarea)
   var agt = navigator.userAgent.toLowerCase();
   var is_gecko = (agt.indexOf('gecko') != -1);
   // IE
