@@ -1013,6 +1013,10 @@ border: 1px dashed #CCCCCC;
   width: 45em;
 }
 
+/*--------------- Piwi Toolbar Style ----------------*/
+.piwi_editor_toolbar .piwi_division {display: inline-block; padding:0 4px 2px 0;}
+.piwi_editor_toolbar .piwi_division  button {margin:0;}
+
 /*--------------- Piwi Options Style ----------------*/
 .piwi_option_odd { background-color: #edf3fe; }
 .piwi_option_even { background-color: #fff; }
