@@ -73,7 +73,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
-            $tpl->SetVariable('message',  $this->ParseText($post['message'], 'Forums'));
+            $tpl->SetVariable('message',  $this->ParseText($post['message'], 'Forums', 'index'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             // user's avatar
@@ -378,8 +378,11 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         // message
-        $tpl->SetVariable('message', $post['message']);
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $post['message'], false);
+        $message->setId('message');
+        $message->TextArea->SetRows(8);
+        $tpl->SetVariable('message', $message->Get());
 
         // attachment
         if ($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
@@ -569,7 +572,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 $topic['forum_title'],
                 $post_link,
                 $topic['subject'],
-                $this->ParseText($post['message'], 'Forums')
+                $this->ParseText($post['message'], 'Forums', 'index')
             );
             if (Jaws_Error::IsError($result)) {
                 // do nothing
@@ -646,7 +649,7 @@ class Forums_Actions_Posts extends ForumsHTML
                     $post['forum_title'],
                     $topic_link,
                     $post['subject'],
-                    $this->ParseText($post['message'], 'Forums')
+                    $this->ParseText($post['message'], 'Forums', 'index', 'index')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing

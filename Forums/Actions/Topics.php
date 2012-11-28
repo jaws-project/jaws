@@ -251,8 +251,11 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->ParseBlock('topic/subject');
 
         // message
-        $tpl->SetVariable('message', $topic['message']);
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $topic['message'], false);
+        $message->setId('message');
+        $message->TextArea->SetRows(8);
+        $tpl->SetVariable('message', $message->Get());
 
         // attachment
         if ($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
@@ -463,7 +466,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['forum_title'],
                 $topic_link,
                 $topic['subject'],
-                $this->ParseText($topic['message'], 'Forums')
+                $this->ParseText($topic['message'], 'Forums', 'index')
             );
             if (Jaws_Error::IsError($result)) {
                 // do nothing
@@ -532,7 +535,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['forum_title'],
                     $forum_link,
                     $topic['subject'],
-                    $this->ParseText($topic['message'], 'Forums')
+                    $this->ParseText($topic['message'], 'Forums', 'index')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
@@ -634,7 +637,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $topic['forum_title'],
             $topic_link,
             $topic['subject'],
-            $this->ParseText($topic['message'], 'Forums')
+            $this->ParseText($topic['message'], 'Forums', 'index')
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing
