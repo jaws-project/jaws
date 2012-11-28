@@ -162,11 +162,11 @@ class Jaws_User
      * Get the info of an user by the username or ID
      *
      * @access  public
-     * @param   mixed   $user  The username or ID
-     * @param   bool    $account
-     * @param   bool    $personal
-     * @param   bool    $preferences
-     * @param   bool    $extra
+     * @param   mixed   $user           The username or ID
+     * @param   bool    $account        Account information
+     * @param   bool    $personal       Personal information
+     * @param   bool    $preferences    Preferences options
+     * @param   bool    $extra          Extra information
      * @return  mixed   Returns an array with the info of the user and false on error
      */
     function GetUser($user, $account = true, $personal = false, $preferences = false, $extra = false)
@@ -381,7 +381,7 @@ class Jaws_User
      * @param   string  $term       Search term(searched in username, nickname and email)
      * @param   string  $orderBy    Field to order by
      * @param   int     $limit
-     * @param   int    $offset
+     * @param   int     $offset
      * @return  array   Returns an array of the available users and false on error
      */
     function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = '[nickname]',
@@ -633,12 +633,12 @@ class Jaws_User
      * Adds a new user
      *
      * @access  public
-     * @param   string  $username   The username
-     * @param   string  $nickname   User's display name
-     * @param   string  $email      User's email
-     * @param   string  $password   User's password
-     * @param   bool    $superadmin Is superadmin (superadmin or normal)
-     * @param   int     $status     User's status
+     * @param   string  $username           The username
+     * @param   string  $nickname           User's display name
+     * @param   string  $email              User's email
+     * @param   string  $password           User's password
+     * @param   bool    $superadmin         Is superadmin (superadmin or normal)
+     * @param   int     $status             User's status
      * @param   int     $concurrent_logins  Concurrent logins limitation
      * @param   string  $logon_hours        Logon hours
      * @param   string  $expiry_date        Expiry date
