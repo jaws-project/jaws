@@ -79,8 +79,6 @@ require JAWS_PATH . 'include/Jaws/Request.php';
 $request =& Jaws_Request::getInstance();
 
 // Add request filters
-///FIXME these should only be added in the web bootstrappers
-$request->addFilter('htmlstrip', 'strip_tags');
 $request->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
 $request->addFilter('ambiguous', array('Jaws_Request', 'strip_ambiguous'));
 
