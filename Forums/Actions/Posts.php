@@ -544,6 +544,8 @@ class Forums_Actions_Posts extends ForumsHTML
                 $post['update_reason']
             );
             $event_type = 'edit';
+            // no notification for topic creator
+            $topic['email'] = '';
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
         }
 
@@ -641,7 +643,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
                 $event_type = 'delete';
                 $result = $pModel->PostNotification(
-                    $post['email'],
+                    '',
                     $event_type,
                     $post['forum_title'],
                     $topic_link,

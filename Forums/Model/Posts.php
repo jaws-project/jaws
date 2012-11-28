@@ -385,8 +385,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         require_once JAWS_PATH . '/include/Jaws/Mail.php';
         $ObjMail = new Jaws_Mail;
         $ObjMail->SetFrom();
-        $ObjMail->AddRecipient($email);
-        $ObjMail->AddRecipient('', 'cc');
+        if (empty($email)) {
+            $ObjMail->AddRecipient('', 'to');
+        } else {
+            $ObjMail->AddRecipient($email);
+            $ObjMail->AddRecipient('', 'cc');
+        }
         $ObjMail->SetSubject($event_subject);
         $ObjMail->SetBody($template, 'html');
         return $ObjMail->send();
