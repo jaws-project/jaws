@@ -443,10 +443,6 @@ class Forums_Actions_Posts extends ForumsHTML
             'post'
         );
 
-        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
-            $post['message'] = $request->get('message', 'post', false);
-        }
-
         if (empty($post['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),

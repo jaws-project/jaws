@@ -320,10 +320,6 @@ class Forums_Actions_Topics extends ForumsHTML
         );
         $topic['forum_title'] = '';
 
-        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
-            $topic['message'] = $request->get('message', 'post', false);
-        }
-
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
