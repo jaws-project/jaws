@@ -243,12 +243,16 @@ class Jaws
             }
 
             // editor
-            if (empty($this->_Editor)) {
-                if ($cookie_precedence && !is_null($cookies['editor'])) {
-                    $this->_Editor = $cookies['editor'];
-                } else {
-                    $this->_Editor = $this->_Preferences['editor'];
+            if (JAWS_SCRIPT == 'admin') {
+                if (empty($this->_Editor)) {
+                    if ($cookie_precedence && !is_null($cookies['editor'])) {
+                        $this->_Editor = $cookies['editor'];
+                    } else {
+                        $this->_Editor = $this->_Preferences['editor'];
+                    }
                 }
+            } else {
+                $this->_Editor = 'TextArea';
             }
 
             // timezone

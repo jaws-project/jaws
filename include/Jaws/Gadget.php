@@ -619,12 +619,14 @@ class Jaws_Gadget
      * Parses the input text
      *
      * @access  public
-     * @param   string  $text   The Text to parse
-     * @param   string  $gadget The Gadget's name
+     * @param   string  $text           The Text to parse
+     * @param   string  $gadget         The Gadget name
+     * @param   string  $plugins_set    Plugins set name(admin or index)
      * @param   bool    $auto_paragraph If parse text should move new lines to paragraphs
+     * @param   bool    $clean          htmlentities
      * @return  string  Returns the parsed text
      */
-    function ParseText($text, $gadget = null, $auto_paragraph = true, $clean = false)
+    function ParseText($text, $gadget = null, $plugins_set = 'admin', $auto_paragraph = true, $clean = false)
     {
         $res = $text;
 
@@ -634,13 +636,20 @@ class Jaws_Gadget
         }
 
         if (!empty($gadget)) {
-            $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items');
+            if ($plugins_set == 'admin') {
+                $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items');
+            } else {
+                $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
+            }
             if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
                 $plugins = array_filter(explode(',', $plugins));
                 foreach ($plugins as $plugin) {
                     $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
                     if (!Jaws_Error::IsError($objPlugin)) {
-                        $use_in = $GLOBALS['app']->Registry->Get('/plugins/parse_text/' . $plugin . '/use_in');
+                        $use_in = '*';
+                        if ($plugins_set == 'admin') {
+                            $use_in = $GLOBALS['app']->Registry->Get('/plugins/parse_text/' . $plugin . '/use_in');
+                        }
                         if (!Jaws_Error::isError($use_in) &&
                            ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
                         {
