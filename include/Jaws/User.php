@@ -181,9 +181,9 @@ class Jaws_User
                                                'integer', 'integer', 'integer', 'integer'));
         }
         if ($personal) {
-            $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar],
+            $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar], [public],
                        [privacy], [about], [experiences], [occupations], [interests]';
-            $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text',
+            $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text', 'boolean',
                                                'boolean', 'text', 'text', 'text', 'text'));
         }
         if ($preferences) {
@@ -320,7 +320,7 @@ class Jaws_User
      * @param   string   $avatar    User's avatar
      * @param   string   $email     User's email address
      * @param   integer  $size      Avatar size
-     * @param   string   $time      An integer for force browser to refresh it cache
+     * @param   integer  $time      An integer for force browser to refresh it cache
      * @return  string   Url to avatar image
      */
     function GetAvatar($avatar, $email, $size = 48, $time = '')
@@ -1152,60 +1152,6 @@ class Jaws_User
         $res = $GLOBALS['app']->Shouter->Shout('onDeleteUser', $id);
         if (Jaws_Error::IsError($res) || !$res) {
             return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Disable an user
-     *
-     * @access  public
-     * @param   int     $sid     Session ID
-     * @param   int     $uid     User's ID
-     * @return  bool    Returns true if user was successfully disabled, false if not
-     */
-    function DisableUser($sid, $uid)
-    {
-        $params = array();
-        $params['id'] = $uid;
-        $sql = 'UPDATE [[users]] SET [status]=0 WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        if (isset($GLOBALS['app']->Session)) {
-            $res = $GLOBALS['app']->Session->Delete($sid);
-            if (!$res) {
-                return false;
-            }
-        }
-
-        // Let everyone know that an user has been disabled
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onDisableUser', $uid);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Logout an user
-     *
-     * @access  public
-     * @param   int     $sid     Session ID
-     * @return  bool    Returns true if user was successfully logout, false if not
-     */
-    function LogoutUser($sid)
-    {
-        if (isset($GLOBALS['app']->Session)) {
-            $res = $GLOBALS['app']->Session->Delete($sid);
-            if (!$res) {
-                return false;
-            }
         }
 
         return true;

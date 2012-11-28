@@ -123,6 +123,13 @@
         </field>
 
         <field>
+            <name>public</name>
+            <type>boolean</type>
+            <default>false</default>
+            <description>is profile information public</description>
+        </field>
+
+        <field>
             <name>privacy</name>
             <type>boolean</type>
             <default>true</default>

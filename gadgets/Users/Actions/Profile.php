@@ -93,25 +93,38 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         // $tplFile is Profile.html or AboutUser.html
         $tpl->Load($tplFile);
         $tpl->SetBlock('profile');
-        $tpl->SetVariable('title',           $tplTitle);
-        $tpl->SetVariable('lbl_username',    _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('lbl_fname',       _t('USERS_USERS_FIRSTNAME'));
-        $tpl->SetVariable('lbl_lname',       _t('USERS_USERS_LASTNAME'));
-        $tpl->SetVariable('lbl_nickname',    _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('lbl_gender',      _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('lbl_dob',         _t('USERS_USERS_BIRTHDAY'));
-        $tpl->SetVariable('lbl_url',         _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_about',       _t('USERS_USERS_ABOUT'));
-        $tpl->SetVariable('lbl_experiences', _t('USERS_USERS_EXPERIENCES'));
-        $tpl->SetVariable('lbl_occupations', _t('USERS_USERS_OCCUPATIONS'));
-        $tpl->SetVariable('lbl_interests',   _t('USERS_USERS_INTERESTS'));
+        $tpl->SetVariable('title',  $tplTitle);
+        $tpl->SetVariable('avatar', $user['avatar']);
+        // username
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username',     $user['username']);
+        // nickname
+        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('nickname',     $user['nickname']);
+        // registered_date
         $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
-        $tpl->SetVariablesArray($user);
-        if (!empty($user['url'])) {
-            $tpl->SetBlock('profile/website');
-            $tpl->SetVariable('url', $user['url']);
-            $tpl->ParseBlock('profile/website');
+        $tpl->SetVariable('registered_date',     $user['registered_date']);
+
+        if ($user['public']) {
+            $tpl->SetBlock('profile/public');
+            $tpl->SetVariable('lbl_fname',       _t('USERS_USERS_FIRSTNAME'));
+            $tpl->SetVariable('lbl_lname',       _t('USERS_USERS_LASTNAME'));
+            $tpl->SetVariable('lbl_gender',      _t('USERS_USERS_GENDER'));
+            $tpl->SetVariable('lbl_dob',         _t('USERS_USERS_BIRTHDAY'));
+            $tpl->SetVariable('lbl_url',         _t('GLOBAL_URL'));
+            $tpl->SetVariable('lbl_about',       _t('USERS_USERS_ABOUT'));
+            $tpl->SetVariable('lbl_experiences', _t('USERS_USERS_EXPERIENCES'));
+            $tpl->SetVariable('lbl_occupations', _t('USERS_USERS_OCCUPATIONS'));
+            $tpl->SetVariable('lbl_interests',   _t('USERS_USERS_INTERESTS'));
+            $tpl->SetVariablesArray($user);
+            if (!empty($user['url'])) {
+                $tpl->SetBlock('profile/public/website');
+                $tpl->SetVariable('url', $user['url']);
+                $tpl->ParseBlock('profile/public/website');
+            }
+            $tpl->ParseBlock('profile/public');
         }
+        
         $tpl->ParseBlock('profile');
         return $tpl->Get();
     }
