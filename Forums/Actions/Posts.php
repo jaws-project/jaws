@@ -378,8 +378,9 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         // message
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $post['message'], false);
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $xss->defilter($post['message']), false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());

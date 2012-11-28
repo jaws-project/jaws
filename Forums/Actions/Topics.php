@@ -251,8 +251,9 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->ParseBlock('topic/subject');
 
         // message
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $topic['message'], false);
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $xss->defilter($topic['message']), false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
