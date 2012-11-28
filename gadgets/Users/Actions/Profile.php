@@ -105,7 +105,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
-        if ($user['public']) {
+        if ($user['public'] || $GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('profile/public');
             $tpl->SetVariable('lbl_fname',       _t('USERS_USERS_FIRSTNAME'));
             $tpl->SetVariable('lbl_lname',       _t('USERS_USERS_LASTNAME'));
