@@ -1709,10 +1709,6 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetEntry($id, $published = false)
     {
-        if (!$this->DoesEntryExists($id)) {
-            return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
-        }
-
         $params = array();
         $params['id'] = $id;
         // super admins can get/show drafted entries
@@ -1768,7 +1764,7 @@ class BlogModel extends Jaws_Gadget_Model
         }
 
         $entry = array();
-        if ($row) {
+        if (!empty($row)) {
             $entry = $row;
             require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);
