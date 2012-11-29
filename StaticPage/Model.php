@@ -22,6 +22,10 @@ class StaticPageModel extends Jaws_Gadget_Model
      */
     function GetPage($id, $language = '')
     {
+        $params = array();
+        $params['id']       = $id;
+        $params['language'] = $language;
+
         $sql = '
             SELECT
                 sp.[page_id], sp.[group_id], spt.[translation_id], spt.[language], spt.[title],
@@ -43,21 +47,8 @@ class StaticPageModel extends Jaws_Gadget_Model
 
         $types = array('integer', 'integer', 'integer', 'text', 'text', 'text', 'boolean',
                        'boolean', 'text', 'integer', 'text', 'text', 'timestamp');
-
-        $params = array();
-        $params['id']       = $id;
-        $params['language'] = $language;
-
         $row = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'), _t('STATICPAGE_NAME'));
-        }
-
-        if (isset($row['page_id'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'), _t('STATICPAGE_NAME'));
+        return $row;
     }
 
     /**

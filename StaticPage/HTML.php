@@ -58,7 +58,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
         }
 
         $page = $model->GetPage($page_id,  $page_language);
-        if (Jaws_Error::IsError($page)) {
+        if (Jaws_Error::IsError($page) || empty($page)) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         } else {
