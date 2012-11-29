@@ -481,7 +481,7 @@ class Forums_Actions_Posts extends ForumsHTML
                 JAWS_DATA. 'forums',
                 '',
                 'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
-                false
+                null
             );
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdatePost');
