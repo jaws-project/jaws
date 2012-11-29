@@ -29,12 +29,17 @@ class PreferencesHTML extends Jaws_Gadget_HTML
      */
     function Save()
     {
-        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
-
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('theme', 'editor', 'language', 'calendar_type', 'calendar_language',
-                                    'date_format', 'timezone'), 'post');
-        $expire_age = 150*24*60; //don't expired for 150 days per minute
+        $post = $request->get(
+            array(
+                'theme', 'editor', 'language', 'calendar_type', 'calendar_language',
+                'date_format', 'timezone'
+            ),
+            'post'
+        );
+
+        $expire_age = 150*24*60; //don't expired for 150 days
+        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
         $model->SavePreferences($post, $expire_age);
 
         Jaws_Header::Referrer();
@@ -51,7 +56,8 @@ class PreferencesHTML extends Jaws_Gadget_HTML
         $language = $request->get('lang', 'get');
 
         if (!is_dir(JAWS_PATH . 'languages/' . $language) &&
-            !is_dir(JAWS_DATA . 'languages/' . $language)) {
+            !is_dir(JAWS_DATA . 'languages/' . $language))
+        {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
@@ -59,10 +65,11 @@ class PreferencesHTML extends Jaws_Gadget_HTML
         $preferences = $GLOBALS['app']->Session->GetCookie('preferences');
         $preferences['language'] = $language;
 
+        $expire_age = 150*24*60; //don't expired for 150 days
         $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
-        $expire_age = 150*24*60; //don't expired for 150 days per minute
         $model->SavePreferences($preferences, $expire_age);
 
         Jaws_Header::Referrer();
     }
+
 }

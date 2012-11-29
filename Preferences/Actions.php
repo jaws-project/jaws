@@ -15,6 +15,8 @@ $actions['Save']        = array('NormalAction');
 $actions['SetLanguage'] = array('NormalAction');
 
 /* Layout actions */
-$actions['Display']     = array('LayoutAction', 
-                                _t('PREFERENCES_LAYOUT_DISPLAY'),
-                                _t('PREFERENCES_LAYOUT_DISPLAY_DESCRIPTION'));                                
+$actions['Display'] = array(
+    'LayoutAction',
+    _t('PREFERENCES_LAYOUT_DISPLAY'),
+    _t('PREFERENCES_LAYOUT_DISPLAY_DESCRIPTION'),
+);

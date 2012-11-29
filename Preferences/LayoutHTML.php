@@ -26,15 +26,9 @@ class PreferencesLayoutHTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('PREFERENCES_ACTION_TITLE'));
 
-        $user_preferences        = $GLOBALS['app']->Session->GetCookie('preferences');
-
-        $user_theme              = $user_preferences['theme'];
-        $user_editor             = $user_preferences['editor'];
-        $user_language           = $user_preferences['language'];
-        $user_calendar_type      = $user_preferences['calendar_type'];
-        $user_calendar_language  = $user_preferences['calendar_language'];
-        $user_date_format        = $user_preferences['date_format'];
-        $user_timezone           = $user_preferences['timezone'];
+        // load cookies preferences
+        $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+        $cookies = @array_filter($cookies);
 
         $displayTheme            = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_theme') == 'true');
         $displayeEditor          = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_editor') == 'true');
@@ -71,8 +65,8 @@ class PreferencesLayoutHTML
                 $pTheme->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
             }
 
-            if (!empty($user_theme) && array_key_exists($user_theme, $themes)) {
-                $pTheme->SetDefault($user_theme);
+            if (!empty($cookies['theme']) && array_key_exists($cookies['theme'], $themes)) {
+                $pTheme->SetDefault($cookies['theme']);
             } else {
                 $pTheme->SetDefault(false);
             }
@@ -92,8 +86,8 @@ class PreferencesLayoutHTML
                 $editors->AddOption($key_editor, $editor);
             }
 
-            if (!empty($user_editor) && array_key_exists($user_editor, $editorlist)) {
-                $editors->SetDefault($user_editor);
+            if (!empty($cookies['editor']) && array_key_exists($cookies['editor'], $editorlist)) {
+                $editors->SetDefault($cookies['editor']);
             } else {
                 $editors->SetDefault(false);
             }
@@ -114,8 +108,8 @@ class PreferencesLayoutHTML
                 $languages->AddOption($key_lang, $language);
             }
 
-            if (!empty($user_language) && array_key_exists($user_language, $languagelist)) {
-                $languages->SetDefault($user_language);
+            if (!empty($cookies['language']) && array_key_exists($cookies['language'], $languagelist)) {
+                $languages->SetDefault($cookies['language']);
             } else {
                 $languages->SetDefault(false);
             }
@@ -135,8 +129,8 @@ class PreferencesLayoutHTML
                 $calendar_types->AddOption($calendar, $calendar);
             }
 
-            if (!empty($user_calendar_type) && in_array($user_calendar_type, $calendarlist)) {
-                $calendar_types->SetDefault($user_calendar_type);
+            if (!empty($cookies['calendar_type']) && in_array($cookies['calendar_type'], $calendarlist)) {
+                $calendar_types->SetDefault($cookies['calendar_type']);
             } else {
                 $calendar_types->SetDefault(false);
             }
@@ -161,8 +155,8 @@ class PreferencesLayoutHTML
                 $calendar_languages->AddOption($key_lang, $language);
             }
 
-            if (!empty($user_calendar_language) && array_key_exists($user_calendar_language, $languagelist)) {
-                $calendar_languages->SetDefault($user_calendar_language);
+            if (!empty($cookies['calendar_language']) && array_key_exists($cookies['calendar_language'], $languagelist)) {
+                $calendar_languages->SetDefault($cookies['calendar_language']);
             } else {
                 $calendar_languages->SetDefault(false);
             }
@@ -182,8 +176,8 @@ class PreferencesLayoutHTML
                 $date_formats->AddOption($key_dtfmt, $dtfmt);
             }
 
-            if (!empty($user_date_format) && array_key_exists($user_date_format, $dtfmtlist)) {
-                $date_formats->SetDefault($user_date_format);
+            if (!empty($cookies['date_format']) && array_key_exists($cookies['date_format'], $dtfmtlist)) {
+                $date_formats->SetDefault($cookies['date_format']);
             } else {
                 $date_formats->SetDefault(false);
             }
@@ -204,8 +198,8 @@ class PreferencesLayoutHTML
                 $timezone->AddOption($key_tz, $tz);
             }
 
-            if (array_key_exists($user_timezone, $timezonelist)) {
-                $timezone->SetDefault($user_timezone);
+            if (array_key_exists('timezone', $cookies) && array_key_exists($cookies['timezone'], $timezonelist)) {
+                $timezone->SetDefault($cookies['timezone']);
             } else {
                 $timezone->SetDefault(false);
             }
