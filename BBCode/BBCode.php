@@ -72,11 +72,11 @@ class BBCode extends Jaws_Plugin
         $size->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[size='+this[this.selectedIndex].value+']','[/size]','');");
         $size->SetTitle(_t('PLUGINS_BBCODE_SIZE_SAMPLE'));
         $size->AddOption(_t('PLUGINS_BBCODE_SIZE_TINY'),    8);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_SMALL'),   9);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_NORMALL'), 11);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_LARGE'),   14);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_HUGE'),    16);
-        $size->SetDefault(11);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_SMALL'),   11);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_NORMALL'), 13);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_LARGE'),   16);
+        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_HUGE'),    18);
+        $size->SetDefault(13);
 
         $color =& Piwi::CreateWidget('Combo', 'color');
         $color->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[color='+this[this.selectedIndex].value+']','[/color]','');");
