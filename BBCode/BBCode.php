@@ -181,7 +181,7 @@ class BBCode extends Jaws_Plugin
                         break;
 
                     case 'url':
-                        $replacement = '<a href="' . ($param? $param : $innertext) . "\">$innertext</a>";
+                        $replacement = '<a href="' . ($param? $param : $innertext) . "\" rel=\"nofollow\">$innertext</a>";
                         break;
 
                     case 'img':
