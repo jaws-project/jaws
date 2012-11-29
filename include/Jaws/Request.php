@@ -280,6 +280,12 @@ class Jaws_Request
 
         if (isset($this->data[$type][$key])) {
             $value = $json_decode? Jaws_UTF8::json_decode($this->data[$type][$key]) : $this->data[$type][$key];
+            // try unserialize value
+            if (false !== $tvalue = @unserialize($value)) {
+                $value = $tvalue;
+                unset($tvalue);
+            }
+
             if ($filter) {
                 if (is_array($value)) {
                     array_walk_recursive($value, array(&$this, 'filter'));
