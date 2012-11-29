@@ -373,6 +373,7 @@ class Jaws_Utils
      * @param   string  $allowFormats   permitted file format
      * @param   string  $denyFormats    not permitted file format
      * @param   bool    $overwrite      overwite file or generate random filename
+     *                                  null: random, true/false: overwrite?
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
@@ -427,14 +428,19 @@ class Jaws_Utils
                     }
                 }
 
-                if (!$overwrite || empty($fileinfo['filename'])) {
+                if (is_null($overwrite) || empty($fileinfo['filename'])) {
                     $host_filename = uniqid(floor(microtime()*1000));
                     if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                         $host_filename.= '.'. $fileinfo['extension'];
                     }
+                } elseif (!$overwrite && file_exists($dest . $host_filename)) {
+                    $host_filename = $fileinfo['filename']. '_'. uniqid(floor(microtime()*1000));
+                    if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                        $host_filename.= '.'. $fileinfo['extension'];
+                    }
                 }
-                $uploadfile = $dest . $host_filename;
 
+                $uploadfile = $dest . $host_filename;
                 if (is_uploaded_file($file['tmp_name'])) {
                     if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
                         return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $host_filename),
