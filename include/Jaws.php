@@ -213,14 +213,7 @@ class Jaws
             $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
 
             // load cookies preferences
-            $cookies = array(
-                'theme'             => $this->Session->GetCookie('theme'),
-                'language'          => $this->Session->GetCookie('language'),
-                'editor'            => $this->Session->GetCookie('editor'),
-                'timezone'          => $this->Session->GetCookie('timezone'),
-                'calendar_type'     => $this->Session->GetCookie('calendar_type'),
-                'calendar_language' => $this->Session->GetCookie('calendar_language'),
-            );
+            $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
 
             // theme
             if (empty($this->_Theme)) {
