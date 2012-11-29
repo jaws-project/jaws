@@ -370,15 +370,15 @@ class Jaws_Utils
      * @access  public
      * @param   array   $files          $_FILES array
      * @param   string  $dest           destination directory(include end directory separator)
-     * @param   string  $allowFormats   permitted file format
-     * @param   string  $denyFormats    not permitted file format
+     * @param   string  $allow_formats  permitted file format
+     * @param   string  $deny_formats   not permitted file format
      * @param   bool    $overwrite      overwite file or generate random filename
      *                                  null: random, true/false: overwrite?
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
-    function UploadFiles($files, $dest, $allowFormats = '', $denyFormats = '',
+    function UploadFiles($files, $dest, $allow_formats = '', $deny_formats = '',
                          $overwrite = true, $move_files = true, $max_size = null)
     {
         if (empty($files) || !is_array($files)) {
@@ -391,8 +391,8 @@ class Jaws_Utils
         }
 
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
-        $allowFormats = array_filter(explode(',', $allowFormats));
-        $denyFormats  = array_filter(explode(',', $denyFormats));
+        $allow_formats = array_filter(explode(',', $allow_formats));
+        $deny_formats  = array_filter(explode(',', $deny_formats));
         foreach($files as $key => $listFiles) {
             if (!is_array($listFiles['tmp_name'])) {
                 $listFiles = array_map(create_function('$item','return array($item);'), $listFiles);
@@ -420,8 +420,8 @@ class Jaws_Utils
                 $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/ui", "", $user_filename));
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                    if (in_array($fileinfo['extension'], $denyFormats) ||
-                       (!empty($allowFormats) && !in_array($fileinfo['extension'], $allowFormats)))
+                    if (in_array($fileinfo['extension'], $deny_formats) ||
+                       (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)))
                     {
                         return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
                                               __FUNCTION__);
