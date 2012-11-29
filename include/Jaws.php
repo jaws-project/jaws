@@ -207,6 +207,9 @@ class Jaws
             if ($cookie_precedence) {
                 // load cookies preferences
                 $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+                if (!is_array($cookies)) {
+                    $cookies = array();
+                }
             }
 
             // load from session
