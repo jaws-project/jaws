@@ -54,7 +54,7 @@ text-decoration: none;
 text-decoration: underline;
 }
 
-.forum_groups {
+.forums_group_area {
 margin:  0px;
 padding: 2px;
 padding-bottom: 4px;
@@ -63,36 +63,30 @@ background-color: #f7f7f7;
 border-bottom: 1px dotted #d3d7cf;
 }
 
-.forum_tree_items {
+.forums_group {
 clear: both;
 font-size: 11px;
 text-align: right;
 padding-bottom: 16px;
 }
 
-.forum_groups .forum_tree_items {
+.forums_group_area .forums_group {
 background-color: #ddd;
 }
-
-.forum_levels .forum_tree_items {
-background-color: #f7f7f7;
-}
-
-.forum_tree_items .title {
+.forums_group .title {
 float: left;
 }
-
-.forum_tree_items .actions {
+.forums_group .actions {
 float: right;
 }
 
-.forum_levels .forum_tree_items .actions {
-visibility: hidden;
-}
-
-div.forum_levels {
+.forums_group_item {
 padding: 0px;
 margin: 1px 0px 1px 14px;
+}
+
+.forums_group_item a {
+cursor:pointer;
 }
 
 #work_area {

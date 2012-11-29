@@ -48,19 +48,25 @@ function unselectTreeRow()
     selectedRowColor = null;
 }
 
+/**
+ *
+ */
 function AddNewForumGroup(gid) {
     var mainDiv = document.createElement('div');
     var div =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
-    mainDiv.className = 'forum_groups';
+    mainDiv.className = 'forums_group_area';
     mainDiv.id = "group_"+gid;
     mainDiv.appendChild(div);
     $('forums_tree').appendChild(mainDiv);
     var links = mainDiv.getElementsByTagName('a');
     links[0].href      = 'javascript: editGroup('+gid+');';
     links[0].innerHTML = $('title').value;
-    links[1].href = 'javascript: addForum('+gid+', 0);';
+    links[1].href = 'javascript: addForum('+gid+');';
 }
 
+/**
+ *
+ */
 function AddNewForumItem(gid, fid, order)
 {
     var mainDiv = document.createElement('div');
@@ -170,28 +176,19 @@ function saveForums()
     }
 }
 
-function setOrdersCombo(gid, pid, selected) {
+/**
+ *
+ */
+function setOrdersCombo(gid, selected) {
     $('order').options.length = 0;
-    if (pid == 0) {
-        var new_parentNode = $('group_'+gid);
-    } else {
-        var new_parentNode = $('forum_'+pid);
-    }
-    var order = new_parentNode.childNodes.length;
-    order = order - 1;
-
-    if (($('fid').value < 1) || ($('forum_'+$('fid').value).parentNode != new_parentNode)) {
-        order = order + 1;
-    }
-
+    var new_parentNode = $('group_'+gid);
+    var order = new_parentNode.getElementsByTagName('div').length;
+    order = order - ((selected == null)? 2 : 3);
     for(var i = 0; i < order; i++) {
         $('order').options[i] = new Option(i+1, i+1);
     }
-    if (selected == null) {
-        $('order').value = order;
-    } else {
-        $('order').value = selected;
-    }
+
+    $('order').value = (selected == null)? order : selected;
 }
 
 /**
@@ -237,7 +234,7 @@ function mm_leave(eid)
 /**
  * Add forum
  */
-function addForum(gid, pid)
+function addForum(gid)
 {
     if (cacheForumForm == null) {
         cacheForumForm = forumsSync.getforumui();
@@ -245,15 +242,8 @@ function addForum(gid, pid)
 
     stopAction();
     currentAction = 'Forums';
-
-    if (pid == 0) {
-        $('edit_area').getElementsByTagName('span').innerHTML =
-            addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
-    } else {
-        $('edit_area').getElementsByTagName('span').innerHTML =
-            addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML +
-            ' - ' + $('forum_'+pid).getElementsByTagName('a').innerHTML;
-    }
+    $('edit_area').getElementsByTagName('span').innerHTML =
+        addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
 
     selectedForum = null;
     $('btn_cancel').style.display = 'inline';
@@ -261,9 +251,9 @@ function addForum(gid, pid)
     $('btn_save').style.display   = 'inline';
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheForumForm;
-
     $('gid').value = gid;
-    setOrdersCombo(gid, pid);
+
+    setOrdersCombo($('gid').value);
 }
 
 /**
@@ -326,7 +316,7 @@ function editForum(element, fid)
     $('description').value = forum['description'];
     $('fast_url').value    = forum['fast_url'];
 
-    $('order').value       = forum['order'];
+    setOrdersCombo(forum['gid'], forum['order']);
 
     $('locked').value      = Number(forum['locked']);
     $('published').value   = Number(forum['published']);

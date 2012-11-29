@@ -6,13 +6,13 @@
     </div>
     <div id="forums_tree">
       <!-- BEGIN group -->
-      <div class="forum_groups" id="{mg_id}">
-        <div class="forum_tree_items" onmouseover="mm_enter(this);" onmouseout="mm_leave(this);">
+      <div class="forums_group_area" id="group_{gid}">
+        <div class="forums_group">
           <div class="title"><img class="icon" src="{icon}" alt="icon" /><a href="javascript: {js_edit_func};">{title}</a></div>
           <div class="actions"><a href="javascript: {js_add_func};" title="{add_title}"><img src="{add_icon}" alt="add" /></a></div>
         </div>
         <!-- BEGIN forum -->
-        <div id="{fid}">
+        <div class="forums_group_item" id="{fid}">
           <img class="icon" src="{icon}" alt="icon" /><a onclick="javascript: {js_edit_func};">{title}</a>
         </div>
         <!-- END forum -->

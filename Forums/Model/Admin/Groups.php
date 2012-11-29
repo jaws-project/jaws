@@ -43,14 +43,10 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
 
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
+            return $res;
         }
 
-        $gid = $GLOBALS['db']->lastInsertID('forums', 'id');
-        $GLOBALS['app']->Session->PushLastResponse($gid.'%%' . _t('FORUMS_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
-
-        return true;
+        return $GLOBALS['db']->lastInsertID('forums', 'id');;
     }
 
     /**
@@ -93,11 +89,9 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
 
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
+            return $res;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('FORUMS_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 

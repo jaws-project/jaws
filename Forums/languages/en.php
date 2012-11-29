@@ -57,6 +57,12 @@ define('_EN_FORUMS_LOCKED', "Locked");
 define('_EN_FORUMS_POSTEDBY', "Posted by");
 define('_EN_FORUMS_LASTPOST', "Last Post");
 
+/* Forums */
+define('_EN_FORUMS_TREE_TITLE', "Forums Tree");
+define('_EN_FORUMS_GROUP_NEW', "New group");
+define('_EN_FORUMS_GROUP_EDIT', "Edit group");
+define('_EN_FORUMS_FORUM_NEW', "New forum");
+
 /* Topics */
 define('_EN_FORUMS_TOPICS_SUBJECT', "Subject");
 define('_EN_FORUMS_TOPICS_MOVEDTO', "Moved to");

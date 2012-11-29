@@ -146,15 +146,19 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Forum', 'ManageForums');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
-        $res = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
-        if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_GROUP_CREATED'),
-                                                         RESPONSE_ERROR);
+        $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
+        if (Jaws_Error::IsError($gid)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_ERROR_GROUP_CREATED'),
+                RESPONSE_ERROR
+            );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_GROUP_CREATED'),
-                                                     RESPONSE_NOTICE,
-                                                     $res);
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FORUMS_NOTICE_GROUP_CREATED'),
+            RESPONSE_NOTICE,
+            $gid
+        );
     }
 
     /**
@@ -176,12 +180,16 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_GROUP_UPDATED'),
-                                                         RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_ERROR_GROUP_UPDATED'),
+                RESPONSE_ERROR
+            );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_GROUP_UPDATED'),
-                                                     RESPONSE_NOTICE);
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FORUMS_NOTICE_GROUP_UPDATED'),
+            RESPONSE_NOTICE
+        );
     }
 
 }

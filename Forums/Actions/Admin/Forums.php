@@ -30,13 +30,13 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
-            $tpl->SetVariable('mg_id', 'group_'.$group['id']);
+            $tpl->SetVariable('gid', $group['id']);
             $tpl->SetVariable('icon', 'gadgets/Forums/images/menu-group.png');
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$group['id']})");
-            $tpl->SetVariable('add_title', _t('FORUMS_ADD_FORUM'));
+            $tpl->SetVariable('add_title', _t('FORUMS_FORUM_NEW'));
             $tpl->SetVariable('add_icon', STOCK_NEW);
-            $tpl->SetVariable('js_add_func', "addForum({$group['id']}, 0)");
+            $tpl->SetVariable('js_add_func', "addForum({$group['id']})");
             $forums = $fModel->GetForums($group['id']);
             if (!Jaws_Error::IsError($forums)) {
                 foreach ($forums as $forum) {
@@ -51,7 +51,7 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
             $tpl->ParseBlock('forums/group');
         }
 
-        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('FORUMS_ADD_GROUP'), STOCK_NEW);
+        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('FORUMS_GROUP_NEW'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript: addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
@@ -71,9 +71,9 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('forum_tree_title', _t('FORUMS_TREE_TITLE'));
-        $tpl->SetVariable('addGroupTitle',   _t('FORUMS_ADD_GROUP'));
+        $tpl->SetVariable('addGroupTitle',   _t('FORUMS_GROUP_NEW'));
         $tpl->SetVariable('editGroupTitle',  _t('FORUMS_EDIT_GROUP'));
-        $tpl->SetVariable('addForumTitle',   _t('FORUMS_ADD_FORUM'));
+        $tpl->SetVariable('addForumTitle',   _t('FORUMS_FORUM_NEW'));
         $tpl->SetVariable('editForumTitle',  _t('FORUMS_EDIT_FORUM'));
         $tpl->SetVariable('delForumTitle',   _t('FORUMS_DELETE_FORUM'));
         $tpl->SetVariable('forumImageSrc',    'gadgets/Forums/images/menu-item.png');
