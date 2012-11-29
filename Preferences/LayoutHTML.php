@@ -26,13 +26,15 @@ class PreferencesLayoutHTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('PREFERENCES_ACTION_TITLE'));
 
-        $user_theme              = $GLOBALS['app']->Session->GetCookie('theme');
-        $user_editor             = $GLOBALS['app']->Session->GetCookie('editor');
-        $user_language           = $GLOBALS['app']->Session->GetCookie('language');
-        $user_calendar_type      = $GLOBALS['app']->Session->GetCookie('calendar_type');
-        $user_calendar_language  = $GLOBALS['app']->Session->GetCookie('calendar_language');
-        $user_date_format        = $GLOBALS['app']->Session->GetCookie('date_format');
-        $user_timezone           = $GLOBALS['app']->Session->GetCookie('timezone');
+        $user_preferences        = $GLOBALS['app']->Session->GetCookie('preferences');
+
+        $user_theme              = $user_preferences['theme'];
+        $user_editor             = $user_preferences['editor'];
+        $user_language           = $user_preferences['language'];
+        $user_calendar_type      = $user_preferences['calendar_type'];
+        $user_calendar_language  = $user_preferences['calendar_language'];
+        $user_date_format        = $user_preferences['date_format'];
+        $user_timezone           = $user_preferences['timezone'];
 
         $displayTheme            = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_theme') == 'true');
         $displayeEditor          = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_editor') == 'true');
@@ -63,7 +65,7 @@ class PreferencesLayoutHTML
             $pTheme->setStyle('direction: ltr;');
             $pTheme->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
             $pTheme->addGroup('remote', _t('LAYOUT_THEME_REMOTE'));
-            $pTheme->AddOption('local', _t('PREFERENCES_NOT_DEFINED'), 'false');
+            $pTheme->AddOption('local', _t('PREFERENCES_NOT_DEFINED'), false);
             $themes = Jaws_Utils::GetThemesList();
             foreach ($themes as $theme => $tInfo) {
                 $pTheme->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
@@ -72,7 +74,7 @@ class PreferencesLayoutHTML
             if (!empty($user_theme) && array_key_exists($user_theme, $themes)) {
                 $pTheme->SetDefault($user_theme);
             } else {
-                $pTheme->SetDefault('false');
+                $pTheme->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $pTheme->Get());
@@ -85,7 +87,7 @@ class PreferencesLayoutHTML
             $tpl->SetVariable('label', _t('PREFERENCES_EDITOR'));
             $editorlist = $settingsModel->GetEditorList();
             $editors =& Piwi::CreateWidget('Combo', 'editor');
-            $editors->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $editors->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($editorlist as $editor => $key_editor) {
                 $editors->AddOption($key_editor, $editor);
             }
@@ -93,7 +95,7 @@ class PreferencesLayoutHTML
             if (!empty($user_editor) && array_key_exists($user_editor, $editorlist)) {
                 $editors->SetDefault($user_editor);
             } else {
-                $editors->SetDefault('false');
+                $editors->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $editors->Get());
@@ -107,7 +109,7 @@ class PreferencesLayoutHTML
             $languagelist = Jaws_Utils::GetLanguagesList();
             $languages =& Piwi::CreateWidget('Combo', 'language');
             $languages->setStyle('direction: ltr;');
-            $languages->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $languages->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($languagelist as $language => $key_lang) {
                 $languages->AddOption($key_lang, $language);
             }
@@ -115,7 +117,7 @@ class PreferencesLayoutHTML
             if (!empty($user_language) && array_key_exists($user_language, $languagelist)) {
                 $languages->SetDefault($user_language);
             } else {
-                $languages->SetDefault('false');
+                $languages->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $languages->Get());
@@ -128,7 +130,7 @@ class PreferencesLayoutHTML
             $tpl->SetVariable('label', _t('PREFERENCES_CALENDAR_TYPE'));
             $calendarlist = $settingsModel->GetCalendarList();
             $calendar_types =& Piwi::CreateWidget('Combo', 'calendar_type');
-            $calendar_types->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $calendar_types->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($calendarlist as $calendar) {
                 $calendar_types->AddOption($calendar, $calendar);
             }
@@ -136,7 +138,7 @@ class PreferencesLayoutHTML
             if (!empty($user_calendar_type) && in_array($user_calendar_type, $calendarlist)) {
                 $calendar_types->SetDefault($user_calendar_type);
             } else {
-                $calendar_types->SetDefault('false');
+                $calendar_types->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $calendar_types->Get());
@@ -154,7 +156,7 @@ class PreferencesLayoutHTML
             }
             $calendar_languages =& Piwi::CreateWidget('Combo', 'calendar_language');
             $calendar_languages->setStyle('direction: ltr;');
-            $calendar_languages->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $calendar_languages->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($languagelist as $language => $key_lang) {
                 $calendar_languages->AddOption($key_lang, $language);
             }
@@ -162,7 +164,7 @@ class PreferencesLayoutHTML
             if (!empty($user_calendar_language) && array_key_exists($user_calendar_language, $languagelist)) {
                 $calendar_languages->SetDefault($user_calendar_language);
             } else {
-                $calendar_languages->SetDefault('false');
+                $calendar_languages->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $calendar_languages->Get());
@@ -175,7 +177,7 @@ class PreferencesLayoutHTML
             $tpl->SetVariable('label', _t('PREFERENCES_DATE_FORMAT'));
             $dtfmtlist = $settingsModel->GetDateFormatList();
             $date_formats =& Piwi::CreateWidget('Combo', 'date_format');
-            $date_formats->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $date_formats->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($dtfmtlist as $dtfmt => $key_dtfmt) {
                 $date_formats->AddOption($key_dtfmt, $dtfmt);
             }
@@ -183,7 +185,7 @@ class PreferencesLayoutHTML
             if (!empty($user_date_format) && array_key_exists($user_date_format, $dtfmtlist)) {
                 $date_formats->SetDefault($user_date_format);
             } else {
-                $date_formats->SetDefault('false');
+                $date_formats->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $date_formats->Get());
@@ -197,7 +199,7 @@ class PreferencesLayoutHTML
             $timezonelist = $settingsModel->GetTimeZonesList();
             $timezone =& Piwi::CreateWidget('Combo', 'timezone');
             $timezone->setStyle('direction: ltr;');
-            $timezone->AddOption(_t('PREFERENCES_NOT_DEFINED'), 'false');
+            $timezone->AddOption(_t('PREFERENCES_NOT_DEFINED'), false);
             foreach ($timezonelist as $tz => $key_tz) {
                 $timezone->AddOption($key_tz, $tz);
             }
@@ -205,7 +207,7 @@ class PreferencesLayoutHTML
             if (array_key_exists($user_timezone, $timezonelist)) {
                 $timezone->SetDefault($user_timezone);
             } else {
-                $timezone->SetDefault('false');
+                $timezone->SetDefault(false);
             }
 
             $tpl->SetVariable('value', $timezone->Get());

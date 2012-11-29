@@ -16,18 +16,14 @@ class PreferencesModel extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $Preferences
-     * @param   int     $expiretime
+     * @param   int     $expire_age
      * @return  bool    True/False
      */
     function SavePreferences($Preferences, $expire_age = 1440)
     {
-        foreach ($Preferences as $key => $value) {
-            if ($value == 'false') {
-                $GLOBALS['app']->Session->DestroyCookie($key);
-            } else {
-                $GLOBALS['app']->Session->SetCookie($key, $value, $expire_age);
-            }
-        }
+        $Preferences = array_filter($Preferences);
+        $GLOBALS['app']->Session->SetCookie('preferences', serialize($Preferences), $expire_age);
+
         return true;
     }
 }

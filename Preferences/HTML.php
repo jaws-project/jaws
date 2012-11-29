@@ -50,11 +50,19 @@ class PreferencesHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $language = $request->get('lang', 'get');
 
+        if (!is_dir(JAWS_PATH . 'languages/' . $language) &&
+            !is_dir(JAWS_DATA . 'languages/' . $language)) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(404);
+        }
+
+        $preferences = $GLOBALS['app']->Session->GetCookie('preferences');
+        $preferences['language'] = $language;
+
         $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
         $expire_age = 150*24*60; //don't expired for 150 days per minute
-        $model->SavePreferences(array('language' => $language), $expire_age);
+        $model->SavePreferences($preferences, $expire_age);
 
         Jaws_Header::Referrer();
     }
-
 }
