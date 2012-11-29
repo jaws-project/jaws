@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Forums
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2010 Jaws Development Group
+ * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -104,7 +104,7 @@ function saveForums()
 
     if (currentAction == 'Groups') {
         cacheForumForm = null;
-        if (selectedGroup == null) {
+        if ($('gid').value == 0) {
             var response = forumsSync.insertgroup(
                                     $('title').value,
                                     $('description').value,
@@ -128,7 +128,7 @@ function saveForums()
                                 $('published').value);
         }
     } else {
-        if (selectedForum == null) {
+        if ($('fid').value == 0) {
             var response = forumsSync.insertforum(
                                     $('gid').value,
                                     $('title').value,
@@ -179,11 +179,24 @@ function saveForums()
 /**
  *
  */
-function setOrdersCombo(gid, selected) {
+function groupsOrders(selected) {
     $('order').options.length = 0;
-    var new_parentNode = $('group_'+gid);
-    var order = new_parentNode.getElementsByTagName('div').length;
-    order = order - ((selected == null)? 2 : 3);
+    var order = $('forums_tree').select('div.forums_group_area').length;
+    order = order + ((selected == null)? 1 : 0);
+    for(var i = 0; i < order; i++) {
+        $('order').options[i] = new Option(i+1, i+1);
+    }
+
+    $('order').value = (selected == null)? order : selected;
+}
+
+/**
+ *
+ */
+function forumsOrders(gid, selected) {
+    $('order').options.length = 0;
+    var order = $('group_'+gid).select('div.forums_group_item').length;
+    order = order + ((selected == null)? 1 : 0);
     for(var i = 0; i < order; i++) {
         $('order').options[i] = new Option(i+1, i+1);
     }
@@ -202,33 +215,12 @@ function addGroup()
     currentAction = 'Groups';
 
     $('edit_area').getElementsByTagName('span').innerHTML = addGroupTitle;
-    selectedGroup = null;
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'none';
     $('btn_save').style.display   = 'inline';
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheGroupForm;
-}
-
-/**
- */
-function mm_enter(eid)
-{
-    m_bg_color = $(eid).style.backgroundColor;
-    if ($(eid).parentNode.className != 'forum_groups') {
-        $(eid).style.backgroundColor = "#f0f0f0";
-    }
-    $(eid).getElementsByTagName('div')[1].style.visibility = 'visible';
-}
-
-/**
- */
-function mm_leave(eid)
-{
-    $(eid).style.backgroundColor = m_bg_color;
-    if ($(eid).parentNode.className != 'forum_groups') {
-        $(eid).getElementsByTagName('div')[1].style.visibility = 'hidden';
-    }
+    groupsOrders();
 }
 
 /**
@@ -245,7 +237,6 @@ function addForum(gid)
     $('edit_area').getElementsByTagName('span').innerHTML =
         addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
 
-    selectedForum = null;
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'none';
     $('btn_save').style.display   = 'inline';
@@ -253,7 +244,7 @@ function addForum(gid)
     $('forums_edit').innerHTML = cacheForumForm;
     $('gid').value = gid;
 
-    setOrdersCombo($('gid').value);
+    forumsOrders($('gid').value);
 }
 
 /**
@@ -266,7 +257,6 @@ function editGroup(gid)
         cacheGroupForm = forumsSync.getgroupui();
     }
     currentAction = 'Groups';
-    selectedGroup = gid;
 
     $('edit_area').getElementsByTagName('span').innerHTML =
         editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
@@ -276,15 +266,15 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheGroupForm;  
 
-    var group = forumsSync.getgroup(selectedGroup);
+    var group = forumsSync.getgroup(gid);
 
     $('gid').value         = group['id'];
     $('title').value       = group['title'];
     $('description').value = group['description'];
     $('fast_url').value    = group['fast_url'];
-    $('order').value       = group['order'];
     $('locked').value      = Number(group['locked']);
     $('published').value   = Number(group['published']);
+    groupsOrders(group['order'])
 }
 
 /**
@@ -307,19 +297,15 @@ function editForum(element, fid)
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheForumForm;  
 
-    selectedForum = fid;
-    var forum = forumsSync.getforum(selectedForum);
-
+    var forum = forumsSync.getforum(fid);
     $('fid').value         = forum['id'];
     $('gid').value         = forum['gid'];
     $('title').value       = forum['title'];
     $('description').value = forum['description'];
     $('fast_url').value    = forum['fast_url'];
-
-    setOrdersCombo(forum['gid'], forum['order']);
-
     $('locked').value      = Number(forum['locked']);
     $('published').value   = Number(forum['published']);
+    forumsOrders(forum['gid'], forum['order']);
 }
 
 /**
@@ -328,7 +314,7 @@ function editForum(element, fid)
 function delForums()
 {
     if (currentAction == 'Groups') {
-        var gid = selectedGroup;
+        var gid = $('gid').value;
         var msg = confirmGroupDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
@@ -341,7 +327,7 @@ function delForums()
             showResponse(response);
         }
     } else {
-        var fid = selectedForum;
+        var fid = $('fid').value;
         var msg = confirmForumDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('forum_'+fid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
@@ -365,11 +351,17 @@ function stopAction()
     $('btn_save').style.display   = 'none';
     $('btn_add').style.display    = 'inline';
 
-    selectedForum  = null;
-    selectedGroup = null;
+    switch(currentAction) {
+        case 'Forums':
+            $('fid').value = 0;
+            break;
+        case 'Groups':
+            $('gid').value = 0;
+            break;
+    }
+
     currentAction = null;
     unselectTreeRow();
-
     $('forums_edit').innerHTML = '';
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
@@ -383,12 +375,6 @@ var forumsSync  = new forumsadminajax();
 forumsSync.serverErrorFunc = Jaws_Ajax_ServerError;
 forumsSync.onInit = showWorkingNotification;
 forumsSync.onComplete = hideWorkingNotification;
-
-//Current group
-var selectedGroup = null;
-
-//Current forum
-var selectedForum = null;
 
 //Cache for saving the group form template
 var cacheGroupForm = null;
