@@ -28,7 +28,9 @@ class PreferencesLayoutHTML
 
         // load cookies preferences
         $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
-        $cookies = @array_filter($cookies);
+        if (!is_array($cookies)) {
+            $cookies = array();
+        }
 
         $displayTheme            = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_theme') == 'true');
         $displayeEditor          = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_editor') == 'true');
