@@ -465,10 +465,10 @@ function editPreferences(rowElement, uid)
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = usersSync.getuser(uid, false, false, true);
-    $('language').value = uInfo['language'];
-    $('theme').value    = uInfo['theme'];
-    $('editor').value   = uInfo['editor'];
-    $('timezone').value = uInfo['timezone'];
+    $('language').value = uInfo['language'] == null? '-default-': uInfo['language'];
+    $('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
+    $('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
+    $('timezone').value = uInfo['timezone'] == null? '-default-': uInfo['timezone'];
 }
 
 /**
