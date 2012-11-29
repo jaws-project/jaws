@@ -202,7 +202,12 @@ class Jaws
     function loadDefaults()
     {
         if (APP_TYPE == 'web') {
+            $cookies = array();
             $cookie_precedence = ($this->Registry->Get('/config/cookie_precedence') == 'true');
+            if ($cookie_precedence) {
+                // load cookies preferences
+                $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+            }
 
             // load from session
             $this->_Theme            = $this->Session->GetAttribute('theme');
@@ -212,12 +217,9 @@ class Jaws
             $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
             $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
 
-            // load cookies preferences
-            $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
-
             // theme
             if (empty($this->_Theme)) {
-                if ($cookie_precedence && !empty($cookies['theme'])) {
+                if (array_key_exists('theme', $cookies)) {
                     $this->_Theme = $cookies['theme'];
                 } else {
                     $this->_Theme = $this->_Preferences['theme'];
@@ -228,7 +230,7 @@ class Jaws
             if (JAWS_SCRIPT == 'admin') {
                 $this->_Language = empty($this->_Language)? $this->_Preferences['language'] : $this->_Language;
             } else {
-                if ($cookie_precedence && !empty($cookies['language'])) {
+                if (array_key_exists('language', $cookies)) {
                     $this->_Language = $cookies['language'];
                 } else {
                     $this->_Language = $this->_Preferences['language'];
@@ -238,7 +240,7 @@ class Jaws
             // editor
             if (JAWS_SCRIPT == 'admin') {
                 if (empty($this->_Editor)) {
-                    if ($cookie_precedence && !is_null($cookies['editor'])) {
+                    if (array_key_exists('editor', $cookies)) {
                         $this->_Editor = $cookies['editor'];
                     } else {
                         $this->_Editor = $this->_Preferences['editor'];
@@ -250,7 +252,7 @@ class Jaws
 
             // timezone
             if (is_null($this->_Timezone)) {
-                if ($cookie_precedence && !is_null($cookies['timezone'])) {
+                if (array_key_exists('timezone', $cookies)) {
                     $this->_Timezone = $cookies['timezone'];
                 } else {
                     $this->_Timezone = $this->_Preferences['timezone'];
@@ -259,7 +261,7 @@ class Jaws
 
             // calendar type
             if (empty($this->_CalendarType)) {
-                if ($cookie_precedence && !is_null($cookies['calendar_type'])) {
+                if (array_key_exists('calendar_type', $cookies)) {
                     $this->_CalendarType = $cookies['calendar_type'];
                 } else {
                     $this->_CalendarType = $this->_Preferences['calendar_type'];
@@ -268,7 +270,7 @@ class Jaws
 
             // calendar language
             if (empty($this->_CalendarLanguage)) {
-                if ($cookie_precedence && !is_null($cookies['calendar_language'])) {
+                if (array_key_exists('calendar_language', $cookies)) {
                     $this->_CalendarLanguage = $cookies['calendar_language'];
                 } else {
                     $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
