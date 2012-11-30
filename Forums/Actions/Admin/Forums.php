@@ -72,13 +72,14 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
 
         $tpl->SetVariable('forum_tree_title', _t('FORUMS_TREE_TITLE'));
         $tpl->SetVariable('addGroupTitle',   _t('FORUMS_GROUP_NEW'));
-        $tpl->SetVariable('editGroupTitle',  _t('FORUMS_EDIT_GROUP'));
+        $tpl->SetVariable('editGroupTitle',  _t('FORUMS_GROUP_EDIT'));
         $tpl->SetVariable('addForumTitle',   _t('FORUMS_FORUM_NEW'));
-        $tpl->SetVariable('editForumTitle',  _t('FORUMS_EDIT_FORUM'));
-        $tpl->SetVariable('delForumTitle',   _t('FORUMS_DELETE_FORUM'));
+        $tpl->SetVariable('editForumTitle',  _t('FORUMS_FORUM_EDIT'));
+        $tpl->SetVariable('delForumTitle',   _t('FORUMS_FORUM_DELETE'));
         $tpl->SetVariable('forumImageSrc',    'gadgets/Forums/images/menu-item.png');
         $tpl->SetVariable('incompleteFields',   _t('FORUMS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmDeleteForum', _t('FORUMS_CONFIRM_DELETE_GROUP'));
+        $tpl->SetVariable('confirmForumDelete', _t('FORUMS_CONFIRM_DELETE_FORUM'));
+        $tpl->SetVariable('confirmGroupDelete', _t('FORUMS_CONFIRM_DELETE_GROUP'));
 
         $tpl->ParseBlock('forums');
         return $tpl->Get();

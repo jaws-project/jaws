@@ -95,4 +95,32 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
         return true;
     }
 
+    /**
+     * Delete a group
+     *
+     * @access  public
+     * @param   int     $gid    Group ID
+     * @return  mixed   True if query was successful or Jaws_Error on error
+     */
+    function DeleteGroup($gid)
+    {
+        $params = array();
+        $params['gid']  = (int)$gid;
+        $params['zero'] = 0;
+
+        $sql = '
+            DELETE FROM [[forums_groups]]
+            WHERE
+                [id] = {gid}
+              AND
+                (SELECT COUNT([id]) FROM [[forums]] WHERE [gid] = {gid}) = {zero}';
+
+        $res = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return (bool)$res;
+    }
+
 }

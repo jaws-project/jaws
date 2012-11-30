@@ -93,10 +93,7 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('FORUMS_ERROR_FORUM_CREATED'),
-                RESPONSE_ERROR
-            );
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->GetResponse(
@@ -126,12 +123,40 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_FORUM_UPDATED'),
-                                                         RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_FORUM_UPDATED'),
-                                                     RESPONSE_NOTICE);
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FORUMS_NOTICE_FORUM_UPDATED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Delete a forum
+     *
+     * @access  public
+     * @param   int     $fid    Forum ID
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteForum($fid)
+    {
+        $this->CheckSession('Forum', 'ManageForums');
+        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
+        $res = $fModel->DeleteForum($fid);
+        if (Jaws_Error::IsError($res)) {
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+        } elseif ($res) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_NOTICE_FORUM_DELETED'),
+                RESPONSE_NOTICE
+            );
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_ERROR_FORUM_NOT_EMPTY'),
+                RESPONSE_ERROR
+            );
+        }
     }
 
     /**
@@ -152,10 +177,7 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('FORUMS_ERROR_GROUP_CREATED'),
-                RESPONSE_ERROR
-            );
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->GetResponse(
@@ -184,16 +206,40 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('FORUMS_ERROR_GROUP_UPDATED'),
-                RESPONSE_ERROR
-            );
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->GetResponse(
             _t('FORUMS_NOTICE_GROUP_UPDATED'),
             RESPONSE_NOTICE
         );
+    }
+
+    /**
+     * Delete a group
+     *
+     * @access  public
+     * @param   int     $gid    Group ID
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteGroup($gid)
+    {
+        $this->CheckSession('Forum', 'ManageForums');
+        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
+        $res = $gModel->DeleteGroup($gid);
+        if (Jaws_Error::IsError($res)) {
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+        } elseif ($res) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_NOTICE_GROUP_DELETED'),
+                RESPONSE_NOTICE
+            );
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_ERROR_GROUP_NOT_EMPTY'),
+                RESPONSE_ERROR
+            );
+        }
     }
 
 }

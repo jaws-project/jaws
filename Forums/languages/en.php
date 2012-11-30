@@ -59,9 +59,20 @@ define('_EN_FORUMS_LASTPOST', "Last Post");
 
 /* Forums */
 define('_EN_FORUMS_TREE_TITLE', "Forums Tree");
-define('_EN_FORUMS_GROUP_NEW', "New group");
-define('_EN_FORUMS_GROUP_EDIT', "Edit group");
-define('_EN_FORUMS_FORUM_NEW', "New forum");
+define('_EN_FORUMS_GROUP_NEW', "New Group");
+define('_EN_FORUMS_GROUP_EDIT', "Edit Group");
+define('_EN_FORUMS_FORUM_NEW', "New Forum");
+define('_EN_FORUMS_FORUM_EDIT', "Edit Forum");
+define('_EN_FORUMS_NOTICE_FORUM_CREATED', "A new forum has been created");
+define('_EN_FORUMS_NOTICE_GROUP_CREATED', "A new group has been created");
+define('_EN_FORUMS_NOTICE_FORUM_UPDATED', "The forum has been updated");
+define('_EN_FORUMS_NOTICE_GROUP_UPDATED', "The group has been updated");
+define('_EN_FORUMS_NOTICE_FORUM_DELETED', "The forum has been deleted");
+define('_EN_FORUMS_NOTICE_GROUP_DELETED', "The group has been deleted");
+define('_EN_FORUMS_ERROR_FORUM_NOT_EMPTY', "This forum not empty");
+define('_EN_FORUMS_ERROR_GROUP_NOT_EMPTY', "This group not empty");
+define('_EN_FORUMS_CONFIRM_DELETE_FORUM', "Are you sure you want to delete forum (%s%)?");
+define('_EN_FORUMS_CONFIRM_DELETE_GROUP', "Are you sure you want to delete group (%s%)?");
 
 /* Topics */
 define('_EN_FORUMS_TOPICS_SUBJECT', "Subject");

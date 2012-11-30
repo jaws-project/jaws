@@ -197,7 +197,7 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('edit_area').getElementsByTagName('span').innerHTML = addGroupTitle;
+    $('work_area_title').innerHTML = addGroupTitle;
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'none';
     $('btn_save').style.display   = 'inline';
@@ -217,8 +217,7 @@ function addForum(gid)
 
     stopAction();
     currentAction = 'Forums';
-    $('edit_area').getElementsByTagName('span').innerHTML =
-        addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
+    $('work_area_title').innerHTML = addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
 
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'none';
@@ -241,8 +240,7 @@ function editGroup(gid)
     }
     currentAction = 'Groups';
 
-    $('edit_area').getElementsByTagName('span').innerHTML =
-        editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a').innerHTML;
+    $('work_area_title').innerHTML = editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'inline';
     $('btn_save').style.display   = 'inline';
@@ -272,8 +270,7 @@ function editForum(element, fid)
     }
     currentAction = 'Forums';
 
-    $('edit_area').getElementsByTagName('span').innerHTML =
-        editForumTitle + ' - ' + $('forum_'+fid).getElementsByTagName('a').innerHTML;
+    $('work_area_title').innerHTML = editForumTitle + ' - ' + $('forum_'+fid).getElementsByTagName('a')[0].innerHTML;
     $('btn_cancel').style.display = 'inline';
     $('btn_del').style.display    = 'inline';
     $('btn_save').style.display   = 'inline';
@@ -299,26 +296,30 @@ function delForums()
     if (currentAction == 'Groups') {
         var gid = $('gid').value;
         var msg = confirmGroupDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0,  msg.indexOf('%s%'))+
+              $('group_'+gid).getElementsByTagName('a')[0].innerHTML+
+              msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheForumForm = null;
             var response = forumsSync.deletegroup(gid);
             if (response['css'] == 'notice-message') {
                 Element.remove($('group_'+gid));
+                stopAction();
             }
-            stopAction();
             showResponse(response);
         }
     } else {
         var fid = $('fid').value;
         var msg = confirmForumDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('forum_'+fid).getElementsByTagName('a').innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0, msg.indexOf('%s%'))+
+              $('forum_'+fid).getElementsByTagName('a')[0].innerHTML+
+              msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             var response = forumsSync.deleteforum(fid);
             if (response['css'] == 'notice-message') {
                 Element.remove($('forum_'+fid));
+                stopAction();
             }
-            stopAction();
             showResponse(response);
         }
     }
@@ -346,7 +347,7 @@ function stopAction()
     currentAction = null;
     unselectTreeRow();
     $('forums_edit').innerHTML = '';
-    $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
+    $('work_area_title').innerHTML = '';
 }
 
 var forumsAsync = new forumsadminajax(ForumsCallback);

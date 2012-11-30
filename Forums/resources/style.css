@@ -55,10 +55,8 @@ text-decoration: underline;
 }
 
 .forums_group_area {
-margin:  0px;
-padding: 2px;
-padding-bottom: 4px;
-margin-bottom: 4px;
+margin:0px;
+padding:4px;
 background-color: #f7f7f7;
 border-bottom: 1px dotted #d3d7cf;
 }
@@ -82,17 +80,16 @@ float: right;
 
 .forums_group_item {
 padding: 0px;
-margin: 1px 0px 1px 14px;
+margin: 1px 0px 1px 10px;
 }
-
 .forums_group_item a {
 cursor:pointer;
 }
 
 #work_area {
 float: left;
-width: 432px;
-margin-left: 10px;
+width: 444px;
+margin-left: 3px;
 margin-bottom: 4px;
 }
 
@@ -106,11 +103,15 @@ height: 380px;
 border: 1px solid #d3d7cf;
 }
 
-#tbl_group, #tbl_menu {
+#tbl_group, #tbl_forum {
 padding:4px;
 text-align: left;
 }
 
-#tbl_group td, #tbl_menu td {
+#tbl_group td, #tbl_forum td {
 padding: 8px 0px 0px 10px;
 }
+
+#gid {width:258px;}
+#title, #description, #fast_url {width:250px;}
+#order, #locked, #published {width:120px}

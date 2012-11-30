@@ -100,4 +100,32 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         return true;
     }
 
+    /**
+     * Delete a forum
+     *
+     * @access  public
+     * @param   int     $fid    Forum ID
+     * @return  mixed   True if query was successful or Jaws_Error on error
+     */
+    function DeleteForum($fid)
+    {
+        $params = array();
+        $params['fid']  = (int)$fid;
+        $params['zero'] = 0;
+
+        $sql = '
+            DELETE FROM [[forums]]
+            WHERE
+                [id] = {fid}
+              AND
+                (SELECT COUNT([id]) FROM [[forums_topics]] WHERE [fid] = {fid}) = {zero}';
+
+        $res = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return (bool)$res;
+    }
+
 }
