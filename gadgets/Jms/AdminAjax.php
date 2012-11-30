@@ -328,6 +328,38 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
     }
 
     /**
+     * Updates gadget
+     *
+     * @access  public
+     * @param   string  $gadget  Gadget's name
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateGadget($gadget)
+    {
+        $this->CheckSession('Jms', 'ManageGadgets');
+
+        $gInfo = $GLOBALS['app']->loadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($gInfo)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $gadget), RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->PopLastResponse();
+        }
+
+        if (!Jaws_GadgetHTML::IsGadgetUpdated($gadget)) {
+            $return = Jaws_Gadget::UpdateGadget($gadget);
+            if (Jaws_Error::IsError($return)) {
+                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
+            } elseif (!$return) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $gInfo->getName()), RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_OK', $gInfo->getName()), RESPONSE_NOTICE);
+            }
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_NO_NEED', $gInfo->getName()), RESPONSE_ERROR);
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
      * Update the gadget list of a plugin.
      *
      * @access  public

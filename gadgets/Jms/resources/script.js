@@ -366,6 +366,16 @@ function purgeComponent()
 }
 
 /**
+ * Updates component
+ */
+function updateComponent()
+{
+    if (pluginsMode == false) {
+        jmsAsync.updategadget(selectedGadget);
+    }
+}
+
+/**
  * Fill the gadgets combo
  */
 function getGadgets()
