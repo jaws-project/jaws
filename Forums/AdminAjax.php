@@ -93,13 +93,17 @@ class ForumsAdminAjax extends Jaws_Gadget_Ajax
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_ERROR_FORUM_CREATED'),
-                                                         RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('FORUMS_ERROR_FORUM_CREATED'),
+                RESPONSE_ERROR
+            );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('FORUMS_NOTICE_FORUM_CREATED'),
-                                                     RESPONSE_NOTICE,
-                                                     $res);
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FORUMS_NOTICE_FORUM_CREATED'),
+            RESPONSE_NOTICE,
+            $res
+        );
     }
 
     /**

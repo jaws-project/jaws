@@ -59,9 +59,9 @@ function AddNewForumGroup(gid) {
     mainDiv.appendChild(div);
     $('forums_tree').appendChild(mainDiv);
     var links = mainDiv.getElementsByTagName('a');
-    links[0].href      = 'javascript: editGroup('+gid+');';
+    links[0].href      = 'javascript:editGroup('+gid+');';
     links[0].innerHTML = $('title').value;
-    links[1].href = 'javascript: addForum('+gid+');';
+    links[1].href = 'javascript:addForum('+gid+');';
 }
 
 /**
@@ -70,26 +70,20 @@ function AddNewForumGroup(gid) {
 function AddNewForumItem(gid, fid, order)
 {
     var mainDiv = document.createElement('div');
-    var div =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
-    mainDiv.className = 'forum_levels';
-    mainDiv.id = "forum_"+fid;
-    mainDiv.appendChild(div);
+    mainDiv.className = 'forums_group_item';
+    mainDiv.id = 'forum_'+fid;
     var parentNode = $('group_'+gid);
     parentNode.appendChild(mainDiv);
-    //set ordering
-    var oldOrder = $A(parentNode.childNodes).indexOf($('forum_'+fid));
-    if (order < oldOrder) {
-        parentNode.insertBefore($('forum_'+fid), parentNode.childNodes[order]);
-    }
-    //--
-    var links = mainDiv.getElementsByTagName('a');
-    links[0].href      = 'javascript: editForum(this, '+fid+');';
-    links[0].innerHTML = $('title').value;
-    links[1].href = 'javascript: addForum('+gid+', '+ fid +');';
-    var images = mainDiv.getElementsByTagName('img');
-    images[0].src = forumImageSrc;
-    // hide forum actions
-    mainDiv.getElementsByTagName('div')[2].style.visibility = 'hidden';
+    // image
+    var image = document.createElement('img');
+    image.className = 'icon';
+    image.src = forumImageSrc;
+    mainDiv.appendChild(image);
+    // link
+    var link  = document.createElement('a');
+    link.setAttribute('onclick', 'javascript:editForum(this, '+fid+');');
+    link.innerHTML = $('title').value;
+    mainDiv.appendChild(link);
 }
 
 /**
@@ -153,21 +147,10 @@ function saveForums()
                                     $('locked').value,
                                     $('published').value);
             if (response['css'] == 'notice-message') {
-                $('forum_'+$('fid').value).getElementsByTagName('a').innerHTML = $('title').value;
+                $('forum_'+$('fid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parentNode = $('group_'+$('gid').value);
                 if ($('forum_'+$('fid').value).parentNode != new_parentNode) {
-                    if ($('order').value > (new_parentNode.childNodes.length - 1)) {
-                        new_parentNode.appendChild($('forum_'+$('fid').value));
-                    } else {
-                        new_parentNode.insertBefore($('forum_'+$('fid').value), new_parentNode.childNodes[$('order').value]);
-                    }
-                } else {
-                    var oldOrder = $A(new_parentNode.childNodes).indexOf($('forum_'+$('fid').value));
-                    if ($('order').value > oldOrder) {
-                        new_parentNode.insertBefore($('forum_'+$('fid').value), new_parentNode.childNodes[$('order').value].nextSibling);
-                    } else {
-                        new_parentNode.insertBefore($('forum_'+$('fid').value), new_parentNode.childNodes[$('order').value]);
-                    }
+                    new_parentNode.appendChild($('forum_'+$('fid').value));
                 }
                 stopAction();
             }
@@ -375,6 +358,8 @@ var forumsSync  = new forumsadminajax();
 forumsSync.serverErrorFunc = Jaws_Ajax_ServerError;
 forumsSync.onInit = showWorkingNotification;
 forumsSync.onComplete = hideWorkingNotification;
+
+currentAction = null;
 
 //Cache for saving the group form template
 var cacheGroupForm = null;
