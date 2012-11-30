@@ -31,9 +31,6 @@ class Search_Actions_Results extends SearchHTML
             $page = 1;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $post['all'] = $xss->defilter($post['all']);
-
         $searchable = false;
         $model = $GLOBALS['app']->LoadGadget('Search', 'Model');
         $options = $model->parseSearch($post, $searchable);
