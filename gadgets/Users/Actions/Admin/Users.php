@@ -153,7 +153,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
 
         $this->AjaxMe('script.js', $this->GetVersion());
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminUsers.html');
+        $tpl->Load('Admin/Users.html');
         $tpl->SetBlock('Users');
 
         // Group Filter
@@ -267,7 +267,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     function UserUI()
     {
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminUser.html');
+        $tpl->Load('Admin/User.html');
         $tpl->SetBlock('user');
 
         $use_crypt = ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true')? true : false;
@@ -372,7 +372,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     function UserGroupsUI()
     {
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminUserGroups.html');
+        $tpl->Load('Admin/UserGroups.html');
         $tpl->SetBlock('user_groups');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
@@ -400,7 +400,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     function PersonalUI()
     {
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminPersonal.html');
+        $tpl->Load('Admin/Personal.html');
         $tpl->SetBlock('personal');
 
         // privacy
@@ -467,6 +467,14 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $url->Get());
 
+        // about
+        $about =& Piwi::CreateWidget('TextArea', 'about');
+        $about->SetID('about');
+        $about->SetRows(7);
+        $about->SetColumns(34);
+        $tpl->SetVariable('lbl_about', _t('USERS_USERS_ABOUT'));
+        $tpl->SetVariable('about', $about->Get());
+
         $tpl->ParseBlock('personal');
         return $tpl->Get();
     }
@@ -480,7 +488,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
     function PreferencesUI()
     {
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminPreferences.html');
+        $tpl->Load('Admin/Preferences.html');
         $tpl->SetBlock('preferences');
 
         // language

@@ -30,7 +30,7 @@ class Users_Actions_Admin_MyAccount extends UsersAdminHTML
 
         $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('MyAccount.html');
+        $tpl->Load('Admin/MyAccount.html');
         $tpl->SetBlock('MyAccount');
         $tpl->SetVariable('uid', $uInfo['id']);
         $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT_INFO'));

@@ -116,6 +116,11 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_experiences', _t('USERS_USERS_EXPERIENCES'));
             $tpl->SetVariable('lbl_occupations', _t('USERS_USERS_OCCUPATIONS'));
             $tpl->SetVariable('lbl_interests',   _t('USERS_USERS_INTERESTS'));
+
+            // auto paragraph content
+            $user['about'] = $this->ParseText($user['about']);
+
+            // set profile item data
             $tpl->SetVariablesArray($user);
             if (!empty($user['url'])) {
                 $tpl->SetBlock('profile/public/website');

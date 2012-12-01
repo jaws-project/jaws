@@ -23,7 +23,7 @@ class Users_Actions_Admin_Properties extends UsersAdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Properties.html');
+        $tpl->Load('Admin/Properties.html');
         $tpl->SetBlock('Properties');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');

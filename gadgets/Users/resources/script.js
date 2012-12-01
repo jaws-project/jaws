@@ -283,6 +283,7 @@ function saveUser()
                                       $('gender').value,
                                       $('dob').value,
                                       $('url').value,
+                                      $('about').value,
                                       $('avatar').value,
                                       $('privacy').value);
             break;
@@ -445,6 +446,7 @@ function editPersonal(rowElement, uid)
     $('gender').value  = Number(uInfo['gender']);
     $('dob').value     = uInfo['dob'];
     $('url').value     = uInfo['url'];
+    $('about').value   = uInfo['about'];
     $('avatar').value  = 'false';
     $('image').src     = uInfo['avatar']+ '?'+ (new Date()).getTime();
     $('privacy').value = Number(uInfo['privacy']);

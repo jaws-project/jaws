@@ -126,7 +126,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AdminOnlineUsers.html');
+        $tpl->Load('Admin/OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
 
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());

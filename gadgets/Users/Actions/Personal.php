@@ -70,8 +70,13 @@ class Users_Actions_Personal extends UsersHTML
         $tpl->SetVariable('dob_day',    $dob[2]);
         $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
-        $tpl->SetVariable('lbl_url',    _t('GLOBAL_URL'));
-        $tpl->SetVariable('url',        empty($personal['url'])? 'http://' : $personal['url']);
+        // website
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('url',     empty($personal['url'])? 'http://' : $personal['url']);
+
+        // about
+        $tpl->SetVariable('lbl_about', _t('USERS_USERS_ABOUT'));
+        $tpl->SetVariable('about',     $personal['about']);
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Personal.Response')) {
             $tpl->SetBlock('personal/response');
@@ -104,7 +109,7 @@ class Users_Actions_Personal extends UsersHTML
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
-            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url'),
+            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url', 'about'),
             'post'
         );
 
@@ -121,12 +126,15 @@ class Users_Actions_Personal extends UsersHTML
         }
 
         $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Personal');
-        $result = $model->UpdatePersonal($GLOBALS['app']->Session->GetAttribute('user'),
-                                         $post['fname'],
-                                         $post['lname'],
-                                         $post['gender'],
-                                         $post['dob'],
-                                         $post['url']);
+        $result = $model->UpdatePersonal(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $post['fname'],
+            $post['lname'],
+            $post['gender'],
+            $post['dob'],
+            $post['url'],
+            $post['about']
+        );
         if (!Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
                                                          'Users.Personal.Response');

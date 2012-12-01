@@ -21,17 +21,21 @@ class Users_Model_Personal extends Jaws_Gadget_Model
      * @param   string   $gender    User gender
      * @param   string   $dob       User birth date
      * @param   string   $url       User URL
+     * @param   string   $about     About user
      * @return  mixed    True on success or Jaws_Error on failure
      */
-    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url)
+    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $about)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        $pInfo = array('fname'  => $fname,
-                       'lname'  => $lname,
-                       'gender' => $gender,
-                       'dob'    => $dob,
-                       'url'    => $url);
+        $pInfo = array(
+            'fname'  => $fname,
+            'lname'  => $lname,
+            'gender' => $gender,
+            'dob'    => $dob,
+            'url'    => $url,
+            'about'  => $about
+        );
 
         $result = $jUser->UpdatePersonalInfo($uid, $pInfo);
         return $result;

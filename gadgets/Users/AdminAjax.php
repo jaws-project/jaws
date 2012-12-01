@@ -644,7 +644,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
      * @param   bool    $privacy  User's display name
      * @return  array   Response array (notice or error)
      */
-    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $avatar, $privacy)
+    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $about, $avatar, $privacy)
     {
         $dob = empty($dob)? null : $dob;
         if (!empty($dob)) {
@@ -653,14 +653,19 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
             $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d H:i:s');
         }
 
-        $res = $this->_UserModel->UpdatePersonalInfo($uid,
-                                                     array('fname'   => $fname,
-                                                           'lname'   => $lname,
-                                                           'gender'  => $gender,
-                                                           'dob'     => $dob,
-                                                           'url'     => $url,
-                                                           'avatar'  => ($avatar == 'false')? null : $avatar,
-                                                           'privacy' => (bool)$privacy));
+        $res = $this->_UserModel->UpdatePersonalInfo(
+            $uid,
+            array(
+                'fname'   => $fname,
+                'lname'   => $lname,
+                'gender'  => $gender,
+                'dob'     => $dob,
+                'url'     => $url,
+                'about'   => $about,
+                'avatar'  => ($avatar == 'false')? null : $avatar,
+                'privacy' => (bool)$privacy
+            )
+        );
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_NOT_UPDATED'),
                                                        RESPONSE_ERROR);
