@@ -151,7 +151,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'tid'));
+        $rqst = $request->get(array('fid', 'tid', 'target', 'subject', 'message', 'update_reason'));
         if (empty($rqst['fid'])) {
             return false;
         }
@@ -178,7 +178,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $topic['forum_title'] = $forum['title'];
             $topic['subject'] = '';
             $topic['message'] = '';
-            $topic['last_update_reason'] = '';
+            $topic['update_reason'] = '';
             $title = _t('FORUMS_TOPICS_NEW_TITLE');
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
         }
@@ -197,6 +197,19 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('title', $title);
         $tpl->SetVariable('fid', $rqst['fid']);
         $tpl->SetVariable('tid', $topic['id']);
+
+
+        // preview
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            $topic['target']  = $rqst['target'];
+            $topic['subject'] = $rqst['subject'];
+            $topic['message'] = $rqst['message'];
+            $topic['update_reason'] = $rqst['update_reason'];
+            $tpl->SetBlock('topic/preview');
+            $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
+            $tpl->SetVariable('message', $this->ParseText($topic['message'], 'Forums', 'index'));
+            $tpl->ParseBlock('topic/preview');
+        }
 
         // response
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdateTopic')) {
@@ -228,13 +241,14 @@ class Forums_Actions_Topics extends ForumsHTML
         // move topic
         if (!empty($topic['id']) && $this->GetPermission('MoveTopic')) {
             $tpl->SetBlock('topic/target');
+            $topic['target'] = isset($topic['target'])? $topic['target'] : $topic['fid'];
             $tpl->SetVariable('lbl_target', _t('FORUMS_TOPICS_MOVEDTO'));
             $forums = $fModel->GetForums(false, true);
             foreach ($forums as $forum) {
                 $tpl->SetBlock('topic/target/item');
                 $tpl->SetVariable('fid', $forum['id']);
                 $tpl->SetVariable('title', $forum['title']);
-                if ($forum['id'] == $topic['fid']) {
+                if ($forum['id'] == $topic['target']) {
                     $tpl->SetVariable('selected', 'selected="selected"');
                 } else {
                     $tpl->SetVariable('selected', '');
@@ -272,7 +286,7 @@ class Forums_Actions_Topics extends ForumsHTML
         if (!empty($topic['id'])) {
             $tpl->SetBlock('topic/update_reason');
             $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
-            $tpl->SetVariable('update_reason', $topic['last_update_reason']);
+            $tpl->SetVariable('update_reason', $topic['update_reason']);
             $tpl->ParseBlock('topic/update_reason');
         }
 
@@ -292,7 +306,8 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         // buttons
-        $tpl->SetVariable('btn_submit_title', $btn_title);
+        $tpl->SetVariable('btn_update_title', $btn_title);
+        $tpl->SetVariable('btn_preview_title', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
 
         $tpl->ParseBlock('topic');
@@ -395,9 +410,9 @@ class Forums_Actions_Topics extends ForumsHTML
             }
 
             // check permission for edit topic
-            $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ((!$this->GetPermission('EditTopic')) ||
-                ($oldTopic['first_post_uid'] != $last_update_uid &&
+                ($oldTopic['first_post_uid'] != $update_uid &&
                  !$this->GetPermission('EditOthersTopic')) ||
                 ($oldTopic['locked'] && !$this->GetPermission('EditLockedTopic')) ||
                 ((time() - $oldTopic['first_post_time']) > $edit_max_limit_time &&
@@ -407,7 +422,7 @@ class Forums_Actions_Topics extends ForumsHTML
             }
 
             if ((time() - $oldTopic['first_post_time']) <= $edit_min_limit_time) {
-                $last_update_uid = 0;
+                $update_uid = 0;
                 $send_notification = false;
                 $topic['update_reason'] = '';
             }
@@ -423,7 +438,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['fid'],
                 $topic['tid'],
                 $oldTopic['first_post_id'],
-                $last_update_uid,
+                $update_uid,
                 $topic['subject'],
                 $topic['message'],
                 $topic['attachment'],

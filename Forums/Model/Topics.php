@@ -32,7 +32,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 [[forums_topics]].[published], [[forums_topics]].[locked],
                 [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
                 [[forums]].[last_topic_id] as forum_last_topic_id,
-                [[forums_posts]].[message], [attachment_host_fname], [last_update_reason],
+                [[forums_posts]].[message], [attachment_host_fname], [update_reason],
                 [[users]].[username], [[users]].[nickname], [[users]].[email]
             FROM
                 [[forums_topics]]

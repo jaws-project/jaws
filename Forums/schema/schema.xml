@@ -293,20 +293,20 @@
         </field>
 
         <field>
-            <name>last_update_uid</name>
+            <name>update_uid</name>
             <type>integer</type>
             <default>0</default>
         </field>
 
         <field>
-            <name>last_update_reason</name>
+            <name>update_reason</name>
             <type>text</type>
             <length>256</length>
             <default></default>
         </field>
 
         <field>
-            <name>last_update_time</name>
+            <name>update_time</name>
             <type>integer</type>
             <length>16</length>
         </field>

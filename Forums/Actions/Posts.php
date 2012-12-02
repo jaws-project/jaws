@@ -118,7 +118,7 @@ class Forums_Actions_Posts extends ForumsHTML
             }
 
             // update information
-            if ($post['last_update_uid'] != 0) {
+            if ($post['update_uid'] != 0) {
                 $tpl->SetBlock('posts/post/update');
                 $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POSTS_UPDATEDBY'));
                 $tpl->SetVariable('username', $post['updater_username']);
@@ -131,12 +131,12 @@ class Forums_Actions_Posts extends ForumsHTML
                         array('user' => $post['updater_username'])
                     )
                 );
-                $tpl->SetVariable('update_time', $objDate->Format($post['last_update_time'], $date_format));
-                $tpl->SetVariable('update_time_iso', $objDate->ToISO((int)$post['last_update_time']));
-                if (!empty($post['last_update_reason'])) {
+                $tpl->SetVariable('update_time', $objDate->Format($post['update_time'], $date_format));
+                $tpl->SetVariable('update_time_iso', $objDate->ToISO((int)$post['update_time']));
+                if (!empty($post['update_reason'])) {
                     $tpl->SetBlock('posts/post/update/reason');
                     $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
-                    $tpl->SetVariable('update_reason', $post['last_update_reason']);
+                    $tpl->SetVariable('update_reason', $post['update_reason']);
                     $tpl->ParseBlock('posts/post/update/reason');
                 }
                 $tpl->ParseBlock('posts/post/update');
@@ -298,7 +298,7 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'tid', 'pid'), 'get');
+        $rqst = $request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
         if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
@@ -317,7 +317,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $post['forum_title'] = $topic['forum_title'];
             $post['subject'] = $topic['subject'];
             $post['message'] = '';
-            $post['last_update_reason'] = '';
+            $post['update_reason'] = '';
             $title = _t('FORUMS_POSTS_NEW_TITLE');
             $btn_title = _t('FORUMS_POSTS_NEW_BUTTON');
         } else {
@@ -351,6 +351,16 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('fid', $post['fid']);
         $tpl->SetVariable('tid', $post['tid']);
         $tpl->SetVariable('pid', $post['id']);
+
+        // preview
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            $post['message'] = $rqst['message'];
+            $post['update_reason'] = $rqst['update_reason'];
+            $tpl->SetBlock('post/preview');
+            $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
+            $tpl->SetVariable('message', $this->ParseText($post['message'], 'Forums', 'index'));
+            $tpl->ParseBlock('post/preview');
+        }
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdatePost')) {
             $tpl->SetBlock('post/response');
@@ -399,7 +409,7 @@ class Forums_Actions_Posts extends ForumsHTML
         if (!empty($post['id'])) {
             $tpl->SetBlock('post/update_reason');
             $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
-            $tpl->SetVariable('update_reason', $post['last_update_reason']);
+            $tpl->SetVariable('update_reason', $post['update_reason']);
             $tpl->ParseBlock('post/update_reason');
         }
 
@@ -419,7 +429,8 @@ class Forums_Actions_Posts extends ForumsHTML
         }
 
         // buttons
-        $tpl->SetVariable('btn_submit_title', $btn_title);
+        $tpl->SetVariable('btn_update_title', $btn_title);
+        $tpl->SetVariable('btn_preview_title', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
 
         $tpl->ParseBlock('post');
@@ -519,9 +530,9 @@ class Forums_Actions_Posts extends ForumsHTML
             }
 
             // check edit permissions
-            $last_update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ((!$this->GetPermission('EditPost')) ||
-                ($oldPost['uid'] != $last_update_uid && !$this->GetPermission('EditOthersPost')) ||
+                ($oldPost['uid'] != $update_uid && !$this->GetPermission('EditOthersPost')) ||
                 ($topic['locked'] && !$this->GetPermission('EditPostInLockedTopic')) ||
                 ((time() - $oldPost['insert_time']) > $edit_max_limit_time &&
                  !$this->GetPermission('EditOutdatedPost'))
@@ -530,14 +541,14 @@ class Forums_Actions_Posts extends ForumsHTML
             }
 
             if ((time() - $oldPost['insert_time']) <= $edit_min_limit_time) {
-                $last_update_uid = 0;
+                $update_uid = 0;
                 $send_notification = false;
                 $post['update_reason'] = '';
             }
 
             $result = $pModel->UpdatePost(
                 $post['pid'],
-                $last_update_uid,
+                $update_uid,
                 $post['message'],
                 $post['attachment'],
                 $oldPost['attachment_host_fname'],

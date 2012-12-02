@@ -31,7 +31,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             SELECT
                 [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[insert_time],
                 [attachment_host_fname], [attachment_user_fname], [attachment_hits_count],
-                [last_update_uid], [last_update_reason], [last_update_time], [[forums_posts]].[status],
+                [update_uid], [update_reason], [update_time], [[forums_posts]].[status],
                 [[forums_topics]].[fid], [[forums_topics]].[subject], [[forums_topics]].[locked] as topic_locked,
                 [first_post_id] as topic_first_post_id, [first_post_time] as topic_first_post_time,
                 [last_post_id] as topic_last_post_id, [last_post_time] as topic_last_post_time,
@@ -91,8 +91,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [[forums_posts]].[id], [uid], [message],
-                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [last_update_uid],
-                [last_update_reason], [last_update_time], [[forums_posts]].[insert_time], [[forums_posts]].[status],
+                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [update_uid],
+                [update_reason], [update_time], [[forums_posts]].[insert_time], [[forums_posts]].[status],
                 cuser.[username], cuser.[nickname], cuser.[registered_date] as user_registered_date,
                 cuser.[email], cuser.[avatar], cuser.[last_update] as user_last_update,
                 uuser.[username] as updater_username, uuser.[nickname] as updater_nickname
@@ -101,7 +101,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             LEFT JOIN
                 [[users]] as cuser ON [[forums_posts]].[uid] = cuser.[id]
             LEFT JOIN
-                [[users]] as uuser ON [[forums_posts]].[last_update_uid] = uuser.[id]
+                [[users]] as uuser ON [[forums_posts]].[update_uid] = uuser.[id]
             WHERE
                 [tid] = {tid}
             ORDER BY
@@ -249,12 +249,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $sql = "
             UPDATE [[forums_posts]] SET
                 [message]            = {message},
-                [last_update_uid]    = {uid},
+                [update_uid]    = {uid},
                 [attachment_host_fname] = $attachment_host_fname,
                 [attachment_user_fname] = $attachment_user_fname,
                 [attachment_hits_count] = $attachment_hits_count,
-                [last_update_reason] = {update_reason},
-                [last_update_time]   = {now}
+                [update_reason] = {update_reason},
+                [update_time]   = {now}
             WHERE
                 [id] = {pid}";
 

@@ -20,6 +20,12 @@
         &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
       </div>
       <!-- END post_meta -->
+      <!-- BEGIN preview -->
+      <div>
+        <label>{lbl_preview}:</label>
+        <div class="post_preview">{message}</div>
+      </div>
+      <!-- END preview -->
       <!-- BEGIN target -->
       <div>
         <label for="target">{lbl_target}:</label>
@@ -65,7 +71,8 @@
     </div>
     <div class="actions">
       <button type="button" name="cancel" onclick="window.location='{forum_url}'">{btn_cancel_title}</button>
-      <button type="submit" name="submit">{btn_submit_title}</button>
+      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{btn_preview_title}</button>
+      <button type="submit" name="update">{btn_update_title}</button>
     </div>
   </form>
 </div>
