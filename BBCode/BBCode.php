@@ -113,11 +113,16 @@ class BBCode extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        $tags = 'youtube|size|url|img|code|list|color|left|center|justify|right|quote|';
+        $tags = 'media|size|url|img|code|list|color|left|center|justify|right|quote|';
         $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[('.$tags.')=?(.*?)\](.+?)\[/\1\]#is', $html, $matches)) {
+        while (preg_match_all('#\[('.$tags.')=?([[:graph:]]*)\s*=?(.*?)\](.+?)\[/\1\]#is', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
-                list($tag, $param, $innertext) = array($matches[1][$key], $matches[2][$key], $matches[3][$key]);
+                list($tag, $param, $extra, $innertext) = array(
+                    $matches[1][$key],
+                    $matches[2][$key],
+                    $matches[3][$key],
+                    $matches[4][$key]
+                );
                 switch ($tag) {
                     case 'h':
                         $param = ((int)$param == 0)? 3 : (int)$param;
@@ -189,16 +194,36 @@ class BBCode extends Jaws_Plugin
                         $replacement = "<img src=\"$innertext\" ";
                         $replacement.= is_numeric($width)? "width=\"$width\" " : '';
                         $replacement.= is_numeric($height)? "height=\"$height\" " : '';
+                        $replacement.= !empty($extra)? "alt=\"$extra\" " : '';
                         $replacement.= '/>';
                         break;
 
-                    case 'youtube':
+                    case 'media':
                         @list($width, $height) = preg_split('#x#i', $param);
-                        $replacement = "<iframe type=\"text/html\" frameborder=\"0\" ";
-                        $replacement.= is_numeric($width)? "width=\"$width\" " : '';
-                        $replacement.= is_numeric($height)? "height=\"$height\" " : '';
-                        $replacement.= "src=\"http://www.youtube.com/embed/$innertext\">\n";
-                        $replacement.= "</iframe>";
+                        $mSource = 'youtube';
+                        if (!empty($extra)) {
+                            $mSource = preg_replace('/[^[:alnum:]_-]/', '', $extra);
+                        }
+                        $replacement = '';
+                        $mSourcePath = JAWS_PATH. "plugins/BBCode/templates/$mSource.html";
+                        if (file_exists($mSourcePath)) {
+                            $tpl = new Jaws_Template('plugins/BBCode/templates/');
+                            $tpl->Load("$mSource.html");
+                            $tpl->SetBlock('media');
+                            $tpl->SetVariable('vid', $innertext);
+                            if (is_numeric($width)) {
+                                $tpl->SetBlock('media/width');
+                                $tpl->SetVariable('width', $width);
+                                $tpl->ParseBlock('media/width');
+                            }
+                            if (is_numeric($height)) {
+                                $tpl->SetBlock('media/height');
+                                $tpl->SetVariable('height', $height);
+                                $tpl->ParseBlock('media/height');
+                            }
+                            $tpl->ParseBlock('media');
+                            $replacement = $tpl->Get();
+                        }
                         break;
                 }
 
