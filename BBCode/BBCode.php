@@ -115,7 +115,7 @@ class BBCode extends Jaws_Plugin
     {
         $tags = 'media|size|url|img|code|list|color|left|center|justify|right|quote|';
         $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[('.$tags.')=?([[:graph:]]*)\s*=?(.*?)\](.+?)\[/\1\]#is', $html, $matches)) {
+        while (preg_match_all('#\[('.$tags.')=?([\p{L}[:graph:]]*)\s*=?(.*?)\](.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
                 list($tag, $param, $extra, $innertext) = array(
                     $matches[1][$key],
