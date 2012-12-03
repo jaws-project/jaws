@@ -20,6 +20,7 @@ $actions['Posts']       = array('NormalAction:Posts');
 $actions['Post']        = array('NormalAction:Posts');
 $actions['NewPost']     = array('NormalAction:Posts');
 $actions['EditPost']    = array('NormalAction:Posts');
+$actions['ReplyPost']   = array('NormalAction:Posts');
 $actions['DeletePost']  = array('NormalAction:Posts');
 $actions['UpdatePost']  = array('StandaloneAction:Posts');
 $actions['Attachment']  = array('StandaloneAction:Attachment');

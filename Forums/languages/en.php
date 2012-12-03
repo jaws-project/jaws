@@ -118,6 +118,8 @@ define('_EN_FORUMS_POSTS_EDIT_BUTTON', "Update post");
 define('_EN_FORUMS_POSTS_EDIT_ERROR', "There was a problem while updating post");
 define('_EN_FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', "Forums post edited - {0}");
 define('_EN_FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE', "The following post was modified in the topic by {0}.");
+define('_EN_FORUMS_POSTS_REPLY', "Reply Post");
+define('_EN_FORUMS_POSTS_REPLY_TITLE', "Reply post");
 define('_EN_FORUMS_POSTS_DELETE', "Delete Post");
 define('_EN_FORUMS_POSTS_DELETE_TITLE', "Delete post");
 define('_EN_FORUMS_POSTS_DELETE_BUTTON', "Delete post");

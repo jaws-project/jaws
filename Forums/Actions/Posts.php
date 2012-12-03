@@ -227,6 +227,23 @@ class Forums_Actions_Posts extends ForumsHTML
                 }
             }
 
+            // reply: check permission for add post
+            if ($this->GetPermission('AddPost') &&
+                (!$topic['locked'] || $this->GetPermission('AddPostToLockedTopic'))
+            ) {
+                $tpl->SetBlock('posts/post/action');
+                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
+                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
+                $tpl->SetVariable(
+                    'action_url',
+                    $this->GetURLFor(
+                        'ReplyPost',
+                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
+                    )
+                );
+                $tpl->ParseBlock('posts/post/action');
+            }
+
             $tpl->ParseBlock('posts/post');
         } // foreach posts
 
@@ -285,12 +302,42 @@ class Forums_Actions_Posts extends ForumsHTML
     }
 
     /**
-     * Show edit post form
+     * Reply a post form
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function EditPost()
+    function ReplyPost()
+    {
+        $reply_to_message = '';
+        if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
+            $request =& Jaws_Request::getInstance();
+            $rqst = $request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
+            if (empty($rqst['fid']) || empty($rqst['tid'])) {
+                return false;
+            }
+
+            $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+            $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
+            if (Jaws_Error::IsError($post) || empty($post)) {
+                return false;
+            }
+
+            $reply_to_message = "[quote={$post['nickname']}]\n".$post['message']."\n[/quote]\n";
+        }
+
+        return $this->EditPost(true, $reply_to_message);
+    }
+
+    /**
+     * Show edit post form
+     *
+     * @access  public
+     * @param   bool    $reply              Reply mode
+     * @param   string  $reply_to_message   Reply to message content
+     * @return  string  XHTML template content
+     */
+    function EditPost($reply = false, $reply_to_message = '')
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -303,7 +350,7 @@ class Forums_Actions_Posts extends ForumsHTML
             return false;
         }
 
-        if (empty($rqst['pid'])) {
+        if ($reply || empty($rqst['pid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($topic) || empty($topic)) {
@@ -316,7 +363,7 @@ class Forums_Actions_Posts extends ForumsHTML
             $post['tid'] = $topic['id'];
             $post['forum_title'] = $topic['forum_title'];
             $post['subject'] = $topic['subject'];
-            $post['message'] = '';
+            $post['message'] = $reply_to_message;
             $post['update_reason'] = '';
             $title = _t('FORUMS_POSTS_NEW_TITLE');
             $btn_title = _t('FORUMS_POSTS_NEW_BUTTON');

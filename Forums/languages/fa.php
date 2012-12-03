@@ -108,6 +108,8 @@ define('_FA_FORUMS_POSTS_EDIT_BUTTON', "بروزرسانی");
 define('_FA_FORUMS_POSTS_EDIT_ERROR', "هنگام بروزرسانی نوشته، خطایی رخ داده است");
 define('_FA_FORUMS_POSTS_EDIT_NOTIFICATION_SUBJECT', "ویرایش نوشته در تالار گفتمان - {0}");
 define('_FA_FORUMS_POSTS_EDIT_NOTIFICATION_MESSAGE', "نوشته زیر بدست {0} در تالار گفتمان ویرایش شد.");
+define('_FA_FORUMS_POSTS_REPLY', "پاسخ به نوشته");
+define('_FA_FORUMS_POSTS_REPLY_TITLE', "پاسخ به نوشته");
 define('_FA_FORUMS_POSTS_DELETE', "زدودن نوشته");
 define('_FA_FORUMS_POSTS_DELETE_TITLE', "زدودن نوشته");
 define('_FA_FORUMS_POSTS_DELETE_BUTTON', "زدودن نوشته");
