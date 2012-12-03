@@ -115,18 +115,20 @@ class BBCode extends Jaws_Plugin
     {
         $tags = 'media|size|url|img|code|list|color|left|center|justify|right|quote|';
         $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[('.$tags.')=?([\p{L}[:graph:]]*)\s*=?(.*?)\](.+?)\[/\1\]#isu', $html, $matches)) {
+        while (preg_match_all('#\[('.$tags.')(.*?)\](.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
-                list($tag, $param, $extra, $innertext) = array(
+                list($tag, $params, $innertext) = array(
                     $matches[1][$key],
                     $matches[2][$key],
-                    $matches[3][$key],
-                    $matches[4][$key]
+                    $matches[3][$key]
                 );
+                $params = array_filter(array_map('trim', explode(' =', ' '.$params)));
+                $first  = array_shift($params);
+                $extra  = array_shift($params);
                 switch ($tag) {
                     case 'h':
-                        $param = ((int)$param == 0)? 3 : (int)$param;
-                        $replacement = "<h$param>$innertext</h$param>";
+                        $first = ((int)$first == 0)? 3 : (int)$first;
+                        $replacement = "<h$first>$innertext</h$first>";
                         break;
 
                     case 'hr':
@@ -166,11 +168,11 @@ class BBCode extends Jaws_Plugin
                         break;
 
                     case 'size':
-                        $replacement = "<span style=\"font-size:{$param}px;\">$innertext</span>";
+                        $replacement = "<span style=\"font-size:{$first}px;\">$innertext</span>";
                         break;
 
                     case 'color':
-                        $replacement = "<span style=\"color:$param;\">$innertext</span>";
+                        $replacement = "<span style=\"color:$first;\">$innertext</span>";
                         break;
 
                     case 'left':
@@ -181,16 +183,16 @@ class BBCode extends Jaws_Plugin
                         break;
 
                     case 'quote':
-                        $replacement = $param? "<cite>$param</cite>" : '';
-                        $replacement.= "<blockquote>$innertext</blockquote>";
+                        $replacement = $first? "<cite>$first:</cite>" : '';
+                        $replacement = "<blockquote>$replacement<div>$innertext</div></blockquote>";
                         break;
 
                     case 'url':
-                        $replacement = '<a href="' . ($param? $param : $innertext) . "\" rel=\"nofollow\">$innertext</a>";
+                        $replacement = '<a href="' . ($first? $first : $innertext) . "\" rel=\"nofollow\">$innertext</a>";
                         break;
 
                     case 'img':
-                        @list($width, $height) = preg_split('#x#i', $param);
+                        @list($width, $height) = preg_split('#x#i', $first);
                         $replacement = "<img src=\"$innertext\" ";
                         $replacement.= is_numeric($width)? "width=\"$width\" " : '';
                         $replacement.= is_numeric($height)? "height=\"$height\" " : '';
@@ -199,7 +201,7 @@ class BBCode extends Jaws_Plugin
                         break;
 
                     case 'media':
-                        @list($width, $height) = preg_split('#x#i', $param);
+                        @list($width, $height) = preg_split('#x#i', $first);
                         $mSource = 'youtube';
                         if (!empty($extra)) {
                             $mSource = preg_replace('/[^[:alnum:]_-]/', '', $extra);
