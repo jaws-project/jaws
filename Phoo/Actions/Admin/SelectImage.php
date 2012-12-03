@@ -52,7 +52,7 @@ class Phoo_Actions_Admin_SelectImage extends PhooAdminHTML
             $t->SetVariable('ckFuncIndex', $ckFuncIndex);
         }
 
-        $image = $model->GetImage($iGet['image'], $iGet['album']);
+        $image = $model->GetImageEntry($iGet['image']);
         if (Jaws_Error::IsError ($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
             JawsHeader::Location ("admin.php?gadget=Phoo&action=Admin");
@@ -82,7 +82,7 @@ class Phoo_Actions_Admin_SelectImage extends PhooAdminHTML
             $t->SetBlock('ImageSelect/selected');
             $t->SetVariable('extra_params', $extraParams);
             $filename = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
-            $title = (empty($image['name']))? '' : $image['name'];
+            $title = (empty($image['title']))? '' : $image['title'];
             $desc = $image['description'];
             if (isset($r_album)){
                 $t->SetVariable('album',$r_album);

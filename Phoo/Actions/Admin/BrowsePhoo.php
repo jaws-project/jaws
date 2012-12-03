@@ -112,10 +112,6 @@ class Phoo_Actions_Admin_BrowsePhoo extends PhooAdminHTML
             
             $firstAlbum = null;
             foreach ($albums as $a) {
-                if (!$a['published']) {
-                    continue;
-                }
-
                 if (is_null($firstAlbum)) {
                     $firstAlbum = $a['id'];
                 }
@@ -171,7 +167,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends PhooAdminHTML
 
                 foreach ($r_album as $albumId) {
                     $album = $model->GetAlbumImages($albumId, null, $day, $month, $year);
-                    if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
+                    if (!Jaws_Error::IsError($album) && !empty($album)) {
                         if ((isset($album['images']) && !is_array($album['images'])) &&
                            (count($album['images']) == 0) && (checkdate($month, 1, $year))) {
                             continue;
@@ -185,10 +181,6 @@ class Phoo_Actions_Admin_BrowsePhoo extends PhooAdminHTML
                         if ((isset($album['images']) && is_array($album['images'])) &&(count($album['images']) > 0)) {
                             // Show photos
                             foreach ($album['images'] as $img) {
-                                if (!$img['published']) {
-                                    continue;
-                                }
-
                                 $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $img['thumb']);
                                 $t->SetBlock ('phoo_browse/photos/albums/item');
                                 $t->SetVariable ('url',
