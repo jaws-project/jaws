@@ -107,10 +107,8 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
         if (preg_match("#^/ACL/gadgets/(.*?)/(.*?)#i", $key, $matches)) {
             $GLOBALS['app']->ACL->LoadFile($matches[1]);
             $GLOBALS['app']->ACL->Set($key, $value);
-            $GLOBALS['app']->ACL->Commit($matches[1]);
         } else {
             $GLOBALS['app']->ACL->Set($key, $value);
-            $GLOBALS['app']->ACL->Commit('core');
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('REGISTRY_KEY_SAVED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
