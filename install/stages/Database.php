@@ -482,13 +482,12 @@ class Installer_Database extends JawsInstallerStage
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
-                return $result;
+                return $objGadget;
             }
 
             $result = $objGadget->EnableGadget();
             if (Jaws_Error::IsError($result)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
-                $result->SetMessage(_t('INSTALL_DB_RESPONSE_GADGET_INSTALL', $gadget));
                 return $result;
             }
         }
