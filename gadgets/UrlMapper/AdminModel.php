@@ -27,9 +27,9 @@ class UrlMapperAdminModel extends UrlMapperModel
         }
 
         // Install listener for Add/Update/Removing gadget's maps
-        $GLOBALS['app']->Listener->NewListener($this->_Name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->_Name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->_Name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterEnablingGadget',      'AddGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
 
         //registry keys.
         $GLOBALS['app']->Registry->NewKey('/gadgets/UrlMapper/pluggable', 'false');
@@ -66,9 +66,9 @@ class UrlMapperAdminModel extends UrlMapperModel
             }
 
             // Install listener for Add/Update/Removing gadget's maps
-            $GLOBALS['app']->Listener->NewListener($this->_Name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->_Name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->_Name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterEnablingGadget',      'AddGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
