@@ -28,7 +28,6 @@ class Upgrader_Requirements extends JawsUpgraderStage
                                'data/cache/registry',
                                'data/cache/registry/gadgets',
                                'data/cache/registry/plugins',
-                               'data/maps',
                                'data/xml',
                             );
 
