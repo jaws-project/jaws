@@ -43,34 +43,10 @@ $stages[] = array(
     'file'  => 'Report',
 );
 
-// Upgrade from 0.8.14 to 0.8.15
+// Upgrade from 0.8 to 0.9.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.14', '0.8.15'),
-    'file'  => '0814To0815',
-);
-
-// Upgrade from 0.8.15 to 0.8.16
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.15', '0.8.16'),
-    'file'  => '0815To0816',
-);
-
-// Upgrade from 0.8.16 to 0.8.17
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.16', '0.8.17'),
-    'file'  => '0816To0817',
-);
-
-// Upgrade from 0.8.17 to 0.8.18
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.17', '0.8.18'),
-    'file'  => '0817To0818',
-);
-
-// Upgrade from 0.8.18 to 0.8.19
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.8.19'),
-    'file'  => '0818To0819',
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0'),
+    'file'  => '08To090',
 );
 
 // Saves the config file.
