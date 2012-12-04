@@ -31,10 +31,12 @@ class JmsAdminModel extends Jaws_Gadget_Model
      * @param   bool    $core_gadget accept true/false/null value
      * @param   bool    $installed   accept true/false/null value
      * @param   bool    $updated     accept true/false/null value
+     * @param   bool    $has_layout  accept true/false/null value
      * @param   bool    $has_html    accept true/false/null value
      * @return  array   A list of gadgets
      */
-    function GetGadgetsList($core_gadget = null, $installed = null, $updated = null, $has_html = null)
+    function GetGadgetsList($core_gadget = null, $installed = null, $updated = null,
+                            $has_layout = null, $has_html = null)
     {
         //TODO: implementing cache for this method
         static $gadgetsList;
@@ -95,7 +97,8 @@ class JmsAdminModel extends Jaws_Gadget_Model
                         'version'     => $objGadget->GetVersion(),
                         'installed'   => (bool)$gInstalled,
                         'updated'     => (bool)$gUpdated,
-                        'has_html'    => file_exists($gDir. $gadget. DIRECTORY_SEPARATOR. 'Actions.php'),
+                        'has_layout'  => file_exists($gDir . $gadget . DIRECTORY_SEPARATOR . 'LayoutHTML.php'),
+                        'has_html'    => file_exists($gDir . $gadget . DIRECTORY_SEPARATOR . 'HTML.php'),
                 );
             }
 
@@ -107,6 +110,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
             if ((is_null($core_gadget) || $gadget['core_gadget'] == $core_gadget) &&
                 (is_null($installed) || $gadget['installed'] == $installed) &&
                 (is_null($updated) || $gadget['updated'] == $updated) &&
+                (is_null($has_layout) || $gadget['has_layout'] == $has_layout) &&
                 (is_null($has_html) || $gadget['has_html'] == $has_html))
             {
                 $resList[$gadget['realname']] = $gadget;
