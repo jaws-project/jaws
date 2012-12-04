@@ -9,6 +9,14 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $actions = array();
+
+/* Layout actions */
+$actions['RecentPosts'] = array(
+    'LayoutAction:RecentPosts',
+    _t('FORUMS_LAYOUT_RECENT_POSTS'),
+    _t('FORUMS_LAYOUT_RECENT_POSTS_DESC'),
+    true
+);
 $actions['Forums']      = array('AdminAction,NormalAction:Forums');
 $actions['Topics']      = array('NormalAction:Topics');
 $actions['NewTopic']    = array('NormalAction:Topics');

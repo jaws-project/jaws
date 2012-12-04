@@ -40,9 +40,14 @@ define('_EN_FORUMS_ACL_DELETEOTHERSPOST', "Delete others post");
 define('_EN_FORUMS_ACL_DELETEOUTDATEDPOST', "Delete outdated post");
 define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
 
+/* Layout */
+define('_EN_FORUMS_LAYOUT_RECENT_POSTS', "Recent posts");
+define('_EN_FORUMS_LAYOUT_RECENT_POSTS_DESC', "Display recent posts of selected option");
+
 /* Commons */
 define('_EN_FORUMS_GROUP', "Group");
 define('_EN_FORUMS_GROUPS', "Groups");
+define('_EN_FORUMS_GROUPS_ALL', "All groups");
 define('_EN_FORUMS_FORUM', "Forum");
 define('_EN_FORUMS_FORUMS', "Forums");
 define('_EN_FORUMS_TOPIC', "Topic");

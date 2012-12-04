@@ -119,6 +119,50 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
     }
 
     /**
+     * Get recent posts
+     *
+     * @access  public
+     * @param   int     $gid    Group ID
+     * @param   int     $limit  Count of posts to be returned
+     * @return  mixed   Recent posts array or Jaws_Error on failure
+     */
+    function GetRecentPosts($gid = '', $limit = 0)
+    {
+        $params = array();
+        $params['gid'] = $gid;
+
+        $sql = '
+            SELECT
+                [[forums_posts]].[id], [[forums_posts]].[tid], [uid], [message], [[forums_posts]].[insert_time],
+                [[forums_topics]].[fid], [[forums_topics]].[subject], [[forums_topics]].[replies] as topic_replies,
+                [[users]].[username], [[users]].[nickname]
+            FROM
+                [[forums_posts]]
+            LEFT JOIN
+                [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
+            LEFT JOIN
+                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
+            LEFT JOIN
+                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
+            ';
+
+        if (!empty($gid)) {
+            $sql.= 'WHERE [[forums]].[gid] = {gid}';
+        }
+        $sql.= ' ORDER BY [[forums_posts]].[insert_time] DESC';
+
+        if (!empty($limit)) {
+            $result = $GLOBALS['db']->setLimit($limit, 0);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        $result = $GLOBALS['db']->queryAll($sql, $params);
+        return $result;
+    }
+
+    /**
      * Get posts count of user
      *
      * @access  public
