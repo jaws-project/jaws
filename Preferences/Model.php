@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PreferencesModel extends Jaws_Model
+class PreferencesModel extends Jaws_Gadget_Model
 {
     /**
      * Save the cookie, save the world
