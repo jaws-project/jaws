@@ -105,20 +105,25 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
+        // auto paragraph content
+        $user['about'] = $this->ParseText($user['about']);
+        $user = $user + array(
+            'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
+            'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
+            'lbl_gender'      => _t('USERS_USERS_GENDER'),
+            'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
+            'lbl_url'         => _t('GLOBAL_URL'),
+            'lbl_about'       => _t('USERS_USERS_ABOUT'),
+            'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
+            'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
+            'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
+        );
+
+        // set about item data
+        $tpl->SetVariablesArray($user);
+
         if ($user['public'] || $GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('profile/public');
-            $tpl->SetVariable('lbl_fname',       _t('USERS_USERS_FIRSTNAME'));
-            $tpl->SetVariable('lbl_lname',       _t('USERS_USERS_LASTNAME'));
-            $tpl->SetVariable('lbl_gender',      _t('USERS_USERS_GENDER'));
-            $tpl->SetVariable('lbl_dob',         _t('USERS_USERS_BIRTHDAY'));
-            $tpl->SetVariable('lbl_url',         _t('GLOBAL_URL'));
-            $tpl->SetVariable('lbl_about',       _t('USERS_USERS_ABOUT'));
-            $tpl->SetVariable('lbl_experiences', _t('USERS_USERS_EXPERIENCES'));
-            $tpl->SetVariable('lbl_occupations', _t('USERS_USERS_OCCUPATIONS'));
-            $tpl->SetVariable('lbl_interests',   _t('USERS_USERS_INTERESTS'));
-
-            // auto paragraph content
-            $user['about'] = $this->ParseText($user['about']);
 
             // set profile item data
             $tpl->SetVariablesArray($user);
@@ -129,7 +134,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             }
             $tpl->ParseBlock('profile/public');
         }
-        
+
         $tpl->ParseBlock('profile');
         return $tpl->Get();
     }
