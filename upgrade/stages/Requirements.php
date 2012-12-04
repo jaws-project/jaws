@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('MIN_PHP_VERSION', '4.3.6');
+define('MIN_PHP_VERSION', '5.2.0');
 
 class Upgrader_Requirements extends JawsUpgraderStage
 {
@@ -21,14 +21,10 @@ class Upgrader_Requirements extends JawsUpgraderStage
                              'interbase' => 'Interbase/Firebird',
                              'mssql'     => 'MSSQL Server',
                              'sqlsrv'    => 'MSSQL Server(Microsoft Driver)',
-                             'sqlite'    => 'SQLite 2',
                             );
 
     // Requirement writable directories in safe-mode
     var $_data_subdirs = array('data/cache',
-                               'data/cache/acl',
-                               'data/cache/acl/gadgets',
-                               'data/cache/acl/plugins',
                                'data/cache/registry',
                                'data/cache/registry/gadgets',
                                'data/cache/registry/plugins',
