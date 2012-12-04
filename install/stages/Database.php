@@ -300,13 +300,11 @@ class Installer_Database extends JawsInstallerStage
         }
 
         $variables = array();
-        $core_ok = $data_ok = $structure_ok = true;
         $variables['timestamp'] = $GLOBALS['db']->Date();
 
         $result = $GLOBALS['db']->installSchema('schema/schema.xml', $variables);
         _log(JAWS_LOG_DEBUG,"Installing core schema");
         if (Jaws_Error::isError($result)) {
-            $structure_ok = false;
             _log(JAWS_LOG_DEBUG,$result->getMessage());
             return $result;
         }
@@ -481,19 +479,21 @@ class Installer_Database extends JawsInstallerStage
         $GLOBALS['app']->Map = new Jaws_URLMapping();
 
         foreach ($gadgets as $gadget) {
-            $result = Jaws_Gadget::EnableGadget($gadget);
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            if (Jaws_Error::IsError($objGadget)) {
+                _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
+                return $result;
+            }
+
+            $result = $objGadget->EnableGadget();
             if (Jaws_Error::IsError($result)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
-                $core_ok = false;
-                return new Jaws_Error(_t('INSTALL_DB_RESPONSE_GADGET_INSTALL', $gadget), 0, JAWS_ERROR_ERROR);
+                $result->SetMessage(_t('INSTALL_DB_RESPONSE_GADGET_INSTALL', $gadget));
+                return $result;
             }
         }
 
-        if ($structure_ok && $core_ok) {
-            return true;
-        }
-
-        _log(JAWS_LOG_DEBUG,"There was a problem while setting up the database. Please contact jaws-dev@forge.novell.com for help.");
-        return new Jaws_Error(_t('INSTALL_DB_RESPONSE_SETTINGS'), 0, JAWS_ERROR_ERROR);
+        return true;
     }
+
 }
