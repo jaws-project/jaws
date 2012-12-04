@@ -45,7 +45,6 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
         if ($res) {
             $GLOBALS['app']->Registry->Commit('Users');
             $GLOBALS['app']->Registry->Commit('core');
-            $GLOBALS['app']->ACL->Commit('core');
             return true;
         }
 
