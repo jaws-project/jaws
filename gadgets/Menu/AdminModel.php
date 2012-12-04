@@ -34,7 +34,7 @@ class MenuAdminModel extends MenuModel
         }
 
         // Install listener for removing menu's item related to uninstalled gadget
-        $GLOBALS['app']->Listener->NewListener($this->_Name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
+        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
 
         // Registry keys.
         $GLOBALS['app']->Registry->NewKey('/gadgets/Menu/default_group_id', '1');
@@ -141,9 +141,9 @@ class MenuAdminModel extends MenuModel
         if (version_compare($old, '0.7.1', '<')) {
             //remove old event listener
             $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
-            $GLOBALS['app']->Listener->DeleteListener($this->_Name);
+            $GLOBALS['app']->Listener->DeleteListener($this->_Gadget);
             // Install listener for removing menu's item related to uninstalled gadget
-            $GLOBALS['app']->Listener->NewListener($this->_Name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
+            $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
         }
 
         $result = $this->installSchema('schema.xml', '', "0.7.0.xml");
