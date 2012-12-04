@@ -41,7 +41,7 @@ define('_EN_FORUMS_ACL_DELETEOUTDATEDPOST', "Delete outdated post");
 define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
 
 /* Layout */
-define('_EN_FORUMS_LAYOUT_RECENT_POSTS', "Recent posts");
+define('_EN_FORUMS_LAYOUT_RECENT_POSTS', "Recent forum posts");
 define('_EN_FORUMS_LAYOUT_RECENT_POSTS_DESC', "Display recent posts of selected option");
 
 /* Commons */

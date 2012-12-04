@@ -72,7 +72,7 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
             $posts_limit = $GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
             $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
-            $max_size = 255;
+            $max_size = 128;
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetBlock('recentposts');
             // title
