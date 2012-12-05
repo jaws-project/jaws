@@ -813,31 +813,29 @@ class Jaws
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
 
         if (!isset($this->_Gadgets[$gadget]['actions'])) {
-            $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
-            if (file_exists($file)) {
-                require_once $file;
-                if (isset($actions)) {
-                    $tmp = array();
+            // Load gadget's language file
+            $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
 
-                    // key: Action Name  value: Action Properties
-                    foreach ($actions as $action => $properties) {
-                        $name   = isset($properties[1])? $properties[1] : $action;
-                        $desc   = isset($properties[2])? $properties[2] : '';
-                        $params = isset($properties[3])? $properties[3] : false;
-                        $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
-                        $tmp[$action] = array('name'   => $name,
-                                              'desc'   => $desc,
-                                              'params' => $params);
-                        foreach ($modes as $mode) {
-                            @list($mode, $file) = array_filter(explode(':', $mode));
-                            $tmp[$action] = $tmp[$action] + array($mode => true);
-                            $tmp[$action] = $tmp[$action] + array('file' => $file);
-                        }
+            $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
+            if (@include_once($file)) {
+                $tmp = array();
+                // key: Action Name  value: Action Properties
+                foreach ($actions as $action => $properties) {
+                    $name   = isset($properties[1])? $properties[1] : $action;
+                    $desc   = isset($properties[2])? $properties[2] : '';
+                    $params = isset($properties[3])? $properties[3] : false;
+                    $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
+                    $tmp[$action] = array('name'   => $name,
+                                          'desc'   => $desc,
+                                          'params' => $params);
+                    foreach ($modes as $mode) {
+                        @list($mode, $file) = array_filter(explode(':', $mode));
+                        $tmp[$action] = $tmp[$action] + array($mode => true);
+                        $tmp[$action] = $tmp[$action] + array('file' => $file);
                     }
-                    $this->_Gadgets[$gadget]['actions'] = $tmp;
-                } else {
-                    $this->_Gadgets[$gadget]['actions'] = array();
                 }
+
+                $this->_Gadgets[$gadget]['actions'] = $tmp;
             } else {
                 $this->_Gadgets[$gadget]['actions'] = array();
             }
