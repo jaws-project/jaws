@@ -8,9 +8,11 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
-$actions = array();
+$index_actions = array();
+
 /* Layout actions */
-$actions['Display'] = array('LayoutAction',
-                            _t('FRIENDS_LAYOUT_DISPLAY'),
-                            _t('FRIENDS_LAYOUT_DISPLAY_DESC')); 
+$index_actions['Display'] = array(
+    'LayoutAction',
+    _t('FRIENDS_LAYOUT_DISPLAY'),
+    _t('FRIENDS_LAYOUT_DISPLAY_DESC')
+);

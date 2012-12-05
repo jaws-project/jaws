@@ -8,27 +8,31 @@
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
+
+/* Admin actions */
+$admin_actions['Forums'] = array('AdminAction:Forums');
 
 /* Layout actions */
-$actions['RecentPosts'] = array(
+$index_actions['RecentPosts'] = array(
     'LayoutAction:RecentPosts',
     _t('FORUMS_LAYOUT_RECENT_POSTS'),
     _t('FORUMS_LAYOUT_RECENT_POSTS_DESC'),
     true
 );
-$actions['Forums']      = array('AdminAction,NormalAction:Forums');
-$actions['Topics']      = array('NormalAction:Topics');
-$actions['NewTopic']    = array('NormalAction:Topics');
-$actions['EditTopic']   = array('NormalAction:Topics');
-$actions['DeleteTopic'] = array('NormalAction:Topics');
-$actions['UpdateTopic'] = array('StandaloneAction:Topics');
-$actions['LockTopic']   = array('StandaloneAction:Topics');
-$actions['Posts']       = array('NormalAction:Posts');
-$actions['Post']        = array('NormalAction:Posts');
-$actions['NewPost']     = array('NormalAction:Posts');
-$actions['EditPost']    = array('NormalAction:Posts');
-$actions['ReplyPost']   = array('NormalAction:Posts');
-$actions['DeletePost']  = array('NormalAction:Posts');
-$actions['UpdatePost']  = array('StandaloneAction:Posts');
-$actions['Attachment']  = array('StandaloneAction:Attachment');
+$index_actions['Forums']      = array('NormalAction:Forums');
+$index_actions['Topics']      = array('NormalAction:Topics');
+$index_actions['NewTopic']    = array('NormalAction:Topics');
+$index_actions['EditTopic']   = array('NormalAction:Topics');
+$index_actions['DeleteTopic'] = array('NormalAction:Topics');
+$index_actions['UpdateTopic'] = array('StandaloneAction:Topics');
+$index_actions['LockTopic']   = array('StandaloneAction:Topics');
+$index_actions['Posts']       = array('NormalAction:Posts');
+$index_actions['Post']        = array('NormalAction:Posts');
+$index_actions['NewPost']     = array('NormalAction:Posts');
+$index_actions['EditPost']    = array('NormalAction:Posts');
+$index_actions['ReplyPost']   = array('NormalAction:Posts');
+$index_actions['DeletePost']  = array('NormalAction:Posts');
+$index_actions['UpdatePost']  = array('StandaloneAction:Posts');
+$index_actions['Attachment']  = array('StandaloneAction:Attachment');

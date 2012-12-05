@@ -9,18 +9,21 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
 
-$actions['Display']       = array('NormalAction');
-$actions['FileInfo']      = array('NormalAction');
-$actions['Download']      = array('StandaloneAction');
+/* Admin actions */
+$admin_actions['Admin']         = array('AdminAction');
+$admin_actions['UploadFile']    = array('StandaloneAdminAction');
+$admin_actions['BrowseFile']    = array('StandaloneAdminAction');
+$admin_actions['DeleteFile']    = array('StandaloneAdminAction');
+$admin_actions['DeleteDir']     = array('StandaloneAdminAction');
 
-$actions['InitialFolder'] = array('LayoutAction',
-                                  _t('FILEBROWSER_INITIAL_FOLDER'),
-                                  _t('FILEBROWSER_INITIAL_FOLDER_DESC'));
-
-$actions['Admin']         = array('AdminAction');
-$actions['UploadFile']    = array('StandaloneAdminAction');
-$actions['BrowseFile']    = array('StandaloneAdminAction');
-$actions['DeleteFile']    = array('StandaloneAdminAction');
-$actions['DeleteDir']     = array('StandaloneAdminAction');
+$index_actions['Display']       = array('NormalAction');
+$index_actions['FileInfo']      = array('NormalAction');
+$index_actions['Download']      = array('StandaloneAction');
+$index_actions['InitialFolder'] = array(
+    'LayoutAction',
+    _t('FILEBROWSER_INITIAL_FOLDER'),
+    _t('FILEBROWSER_INITIAL_FOLDER_DESC')
+);

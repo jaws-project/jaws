@@ -8,21 +8,25 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
 
-$actions['View']         = array('NormalAction');
-$actions['ViewQuestion'] = array('NormalAction');
-$actions['ViewCategory'] = array('NormalAction');
+/* Admin actions */
+$admin_actions['Admin']           = array('AdminAction');
+$admin_actions['ManageQuestions'] = array('AdminAction');
+$admin_actions['NewQuestion']     = array('AdminAction');
+$admin_actions['EditQuestion']    = array('AdminAction');
+$admin_actions['UpdateQuestion']  = array('AdminAction');
+$admin_actions['NewCategory']     = array('AdminAction');
+$admin_actions['EditCategory']    = array('AdminAction');
+$admin_actions['UpdateCategory']  = array('AdminAction');
 
-$actions['ListCategories'] = array('LayoutAction',  
-                                   _t('FAQ_LAYOUT_LISTCATEGORIES'),
-                                   _t('FAQ_LAYOUT_LISTCATEGORIES_DESCRIPTION'));
+$index_actions['View']         = array('NormalAction');
+$index_actions['ViewQuestion'] = array('NormalAction');
+$index_actions['ViewCategory'] = array('NormalAction');
 
-$actions['Admin']           = array('AdminAction');
-$actions['ManageQuestions'] = array('AdminAction');
-$actions['NewQuestion']     = array('AdminAction');
-$actions['EditQuestion']    = array('AdminAction');
-$actions['UpdateQuestion']  = array('AdminAction');
-$actions['NewCategory']     = array('AdminAction');
-$actions['EditCategory']    = array('AdminAction');
-$actions['UpdateCategory']  = array('AdminAction');
+$index_actions['ListCategories'] = array(
+    'LayoutAction',  
+    _t('FAQ_LAYOUT_LISTCATEGORIES'),
+    _t('FAQ_LAYOUT_LISTCATEGORIES_DESCRIPTION')
+);

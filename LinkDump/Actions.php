@@ -9,25 +9,25 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
 
-$actions['Link']    = array('NormalAction');
-$actions['Archive'] = array('NormalAction');
-$actions['Group']   = array('NormalAction');
-$actions['Tag']     = array('NormalAction');
+$index_actions['Link']    = array('NormalAction');
+$index_actions['Archive'] = array('NormalAction');
+$index_actions['Group']   = array('NormalAction');
+$index_actions['Tag']     = array('NormalAction');
 
-$actions['Display'] = array(
+$index_actions['Display'] = array(
     'LayoutAction',
     _t('LINKDUMP_LAYOUT_DISPLAY'),
    _t('LINKDUMP_LAYOUT_DISPLAY_DESCRIPTION'),
    true
 );
-$actions['ShowCategories'] = array(
+$index_actions['ShowCategories'] = array(
     'LayoutAction',
     _t('LINKDUMP_LAYOUT_CATEGORIES'),
     _t('LINKDUMP_LAYOUT_CATEGORIES_DESCRIPTION')
 );
-$actions['ShowTagCloud'] = array(
+$index_actions['ShowTagCloud'] = array(
     'LayoutAction',
     _t('LINKDUMP_LAYOUT_TAG_CLOUD'),
     _t('LINKDUMP_LAYOUT_TAG_CLOUD_DESCRIPTION')
