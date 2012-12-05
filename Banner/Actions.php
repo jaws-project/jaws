@@ -9,21 +9,23 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
+
+/* Admin actions */
+$admin_actions['Admin']        = array('AdminAction');
+$admin_actions['Groups']       = array('AdminAction');
+$admin_actions['Reports']      = array('AdminAction');
+$admin_actions['UploadBanner'] = array('AdminAction');
+
 /* Layout actions */
-$actions['Display']      = array('LayoutAction',
+$index_actions['Display']      = array('LayoutAction',
                                  _t('BANNER_ACTION_DISPLAY_NAME'),
                                  _t('BANNER_ACTION_DISPLAY_DESCRIPTION'),
                                  true);
 
 /* Normal actions*/
-$actions['Click']        = array('NormalAction');
-
-/* Admin actions */
-$actions['Admin']        = array('AdminAction');
-$actions['Groups']       = array('AdminAction');
-$actions['Reports']      = array('AdminAction');
-$actions['UploadBanner'] = array('AdminAction');
+$index_actions['Click']        = array('NormalAction');
 
 /* Standalone actions*/
-$actions['BannerGroup']  = array('StandaloneAction');
+$index_actions['BannerGroup']  = array('StandaloneAction');

@@ -9,10 +9,10 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+$index_actions = array();
 
 /* Normal/Layout actions*/
-$actions = array();
-$actions['Block'] = array(
+$index_actions['Block'] = array(
     'NormalAction:Block,LayoutAction:Block',
     _t('BLOCKS_SHOW_BLOCK'),
    '',
