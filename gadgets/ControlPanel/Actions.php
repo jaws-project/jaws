@@ -8,9 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-
-$actions['DefaultAction']  = array('AdminAction');
-$actions['Logout']         = array('AdminAction');
-
-$actions['Backup']         = array('StandaloneAdminAction');
+$admin_actions = array();
+$admin_actions['DefaultAction']  = array('AdminAction');
+$admin_actions['Logout']         = array('AdminAction');
+$admin_actions['Backup']         = array('StandaloneAdminAction');

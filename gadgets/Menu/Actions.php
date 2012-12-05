@@ -8,16 +8,18 @@
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
+$index_actions = array();
+$admin_actions = array();
 
-$actions = array();
+/* Amin actions */
+$admin_actions['UploadImage'] = array('StandaloneAdminAction');
+$admin_actions['LoadImage']   = array('StandaloneAdminAction');
 
-$actions['Menu'] = array(
+/* Index actions */
+$index_actions['Menu'] = array(
     'LayoutAction:Menu',
     _t('MENU_LAYOUT_MENU'),
     _t('MENU_LAYOUT_MENU_DESCRIPTION'),
     true
 );
-
-/* Standalone actions */
-$actions['UploadImage'] = array('StandaloneAdminAction');
-$actions['LoadImage']   = array('StandaloneAdminAction,StandaloneAction');
+$index_actions['LoadImage'] = array('StandaloneAction');

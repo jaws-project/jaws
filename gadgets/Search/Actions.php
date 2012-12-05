@@ -9,28 +9,29 @@
  * @copyright   2004-2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
+
+/* Admin actions */
+$admin_actions['SaveChanges'] = array('AdminAction');
 
 /* Actions */
-$actions['Box'] = array(
+$index_actions['Box'] = array(
     'NormalAction:Search,LayoutAction:Search',
     _t('SEARCH_LAYOUT_BOX'),
     _t('SEARCH_LAYOUT_BOX_DESCRIPTION')
 );
 
-$actions['SimpleBox'] = array(
+$index_actions['SimpleBox'] = array(
     'NormalAction:Search,LayoutAction:Search',
     _t('SEARCH_LAYOUT_SIMPLEBOX'),
     _t('SEARCH_LAYOUT_SIMPLEBOX_DESCRIPTION')
 );
 
-$actions['AdvancedBox'] = array(
+$index_actions['AdvancedBox'] = array(
     'NormalAction:Search,LayoutAction:Search',
     _t('SEARCH_LAYOUT_ADVANCEDBOX'),
     _t('SEARCH_LAYOUT_ADVANCEDBOX_DESCRIPTION')
 );
 
-$actions['Results'] = array('NormalAction:Results');
-
-/* Admin actions */
-$actions['SaveChanges'] = array('AdminAction');
+$index_actions['Results'] = array('NormalAction:Results');

@@ -9,10 +9,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /* Actions*/
-$actions = array();
+$index_actions = array();
 
 /* Layout actions */
-$actions['Execute'] = array('NormalAction:Execute,LayoutAction:Execute',
-                            _t('LAUNCHER_SCRIPT'),
-                            _t('LAUNCHER_SCRIPT_DESC'),
-                            true);
+$index_actions['Execute'] = array(
+    'NormalAction:Execute,LayoutAction:Execute',
+    _t('LAUNCHER_SCRIPT'),
+    _t('LAUNCHER_SCRIPT_DESC'),
+    true
+);

@@ -9,12 +9,15 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
 
-$actions['IPBlocking']       = array('AdminAction');
-$actions['AgentBlocking']    = array('AdminAction');
-$actions['Encryption']       = array('AdminAction');
-$actions['AntiSpam']         = array('AdminAction');
-$actions['AdvancedPolicies'] = array('AdminAction');
+/* Admin actions */
+$admin_actions['IPBlocking']       = array('AdminAction');
+$admin_actions['AgentBlocking']    = array('AdminAction');
+$admin_actions['Encryption']       = array('AdminAction');
+$admin_actions['AntiSpam']         = array('AdminAction');
+$admin_actions['AdvancedPolicies'] = array('AdminAction');
 
-$actions['Captcha']       = array('StandaloneAction');
+/* Index actions */
+$index_actions['Captcha']       = array('StandaloneAction');

@@ -8,10 +8,9 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-
-$actions['DefaultAction']      = array('AdminAction');
-$actions['Plugins']            = array('AdminAction');
-$actions['Admin']              = array('AdminAction');
-$actions['UpdateGadget']       = array('AdminAction');
-$actions['EnableGadget']       = array('AdminAction');
+$admin_actions = array();
+$admin_actions['DefaultAction'] = array('AdminAction');
+$admin_actions['Plugins']       = array('AdminAction');
+$admin_actions['Admin']         = array('AdminAction');
+$admin_actions['UpdateGadget']  = array('AdminAction');
+$admin_actions['EnableGadget']  = array('AdminAction');

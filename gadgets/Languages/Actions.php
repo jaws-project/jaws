@@ -8,7 +8,6 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-
-$actions['Admin']  = array('AdminAction');
-$actions['Export'] = array('StandaloneAdminAction');
+$admin_actions = array();
+$admin_actions['Admin']  = array('AdminAction');
+$admin_actions['Export'] = array('StandaloneAdminAction');

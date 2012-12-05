@@ -9,12 +9,11 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-
-$actions['DefaultAction']    = array('AdminAction');
-$actions['Admin']            = array('AdminAction');
-$actions['AdvancedSettings'] = array('AdminAction');
-$actions['MetaSettings']     = array('AdminAction');
-$actions['MailSettings']     = array('AdminAction');
-$actions['FTPSettings']      = array('AdminAction');
-$actions['ProxySettings']    = array('AdminAction');
+$admin_actions = array();
+$admin_actions['DefaultAction']    = array('AdminAction');
+$admin_actions['Admin']            = array('AdminAction');
+$admin_actions['AdvancedSettings'] = array('AdminAction');
+$admin_actions['MetaSettings']     = array('AdminAction');
+$admin_actions['MailSettings']     = array('AdminAction');
+$admin_actions['FTPSettings']      = array('AdminAction');
+$admin_actions['ProxySettings']    = array('AdminAction');

@@ -612,7 +612,7 @@ class LayoutAdminModel extends LayoutModel
      */
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
-        $actions = $GLOBALS['app']->GetGadgetActions($g, 'LayoutAction');
+        $actions = $GLOBALS['app']->GetGadgetActions($g, 'LayoutAction', 'index');
         foreach ($actions as $key => $action) {
             if ($action['params'] !== false) {
                 // set initial params

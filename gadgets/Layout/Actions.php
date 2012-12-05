@@ -9,15 +9,14 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-
-$actions['Admin']                 = array('StandaloneAdminAction');
-$actions['ChangeTheme']           = array('StandaloneAdminAction');
-$actions['LayoutManager']         = array('AdminAction');
-$actions['LayoutBuilder']         = array('AdminAction');
-$actions['SetLayoutMode']         = array('AdminAction');
-$actions['DeleteLayoutElement']   = array('AdminAction');
-$actions['EditElementAction']     = array('StandaloneAdminAction');
-$actions['ChangeDisplayWhen']     = array('StandaloneAdminAction');
-$actions['AddLayoutElement']      = array('StandaloneAdminAction');
-$actions['SaveAddLayoutElement']  = array('AdminAction');
+$admin_actions = array();
+$admin_actions['Admin']                 = array('StandaloneAdminAction');
+$admin_actions['ChangeTheme']           = array('StandaloneAdminAction');
+$admin_actions['LayoutManager']         = array('AdminAction');
+$admin_actions['LayoutBuilder']         = array('AdminAction');
+$admin_actions['SetLayoutMode']         = array('AdminAction');
+$admin_actions['DeleteLayoutElement']   = array('AdminAction');
+$admin_actions['EditElementAction']     = array('StandaloneAdminAction');
+$admin_actions['ChangeDisplayWhen']     = array('StandaloneAdminAction');
+$admin_actions['AddLayoutElement']      = array('StandaloneAdminAction');
+$admin_actions['SaveAddLayoutElement']  = array('AdminAction');
