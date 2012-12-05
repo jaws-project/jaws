@@ -1,48 +1,50 @@
 <?php
 /**
- * Blocks Layout HTML file (for layout purposes)
+ * Blocks Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Blocks
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlocksLayoutHTML
+class Blocks_Actions_Block extends Jaws_Gadget_HTML
 {
     /**
-     * Loads layout actions
+     * Get Display action params
      *
      * @access  public
-     * @return  array   Actions array
+     * @return  array list of Display action params
      */
-    function LoadLayoutActions()
+    function BlockLayoutParams()
     {
-        $model   = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
-        $blocks  = $model->GetBlocks(true);
-        $actions = array();
+        $result = array();
+        $bModel = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
+        $blocks = $bModel->GetBlocks(true);
         if (!Jaws_Error::isError($blocks)) {
-            foreach ($blocks as $b) {
-                $actions['Display(' . $b['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $b['title'],
-                    'desc' => _t('BLOCKS_SHOW_BLOCK')
-                );
+            $pblocks = array();
+            foreach ($blocks as $block) {
+                $pblocks[$block['id']] = $block['title'];
             }
+
+            $result[] = array(
+                'title' => _t('BLOCKS_SHOW_BLOCK'),
+                'value' => $pblocks
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
-     * Show a Block
+     * Display a Block
      *
      * @access  public
      * @param   int     Block ID
      * @return  string  XHTML Template content
      */
-    function Display($id)
+    function Block($id)
     {
         $tpl = new Jaws_Template('gadgets/Blocks/templates/');
         $tpl->Load('Blocks.html');
@@ -63,4 +65,5 @@ class BlocksLayoutHTML
 
         return $tpl->Get();
     }
+
 }

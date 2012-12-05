@@ -9,6 +9,12 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
+
+/* Normal/Layout actions*/
 $actions = array();
-$actions['ViewBlock'] = array('NormalAction');
+$actions['Block'] = array(
+    'NormalAction:Block,LayoutAction:Block',
+    _t('BLOCKS_SHOW_BLOCK'),
+   '',
+   true
+);
