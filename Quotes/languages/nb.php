@@ -15,7 +15,7 @@ define('_NB_QUOTES_DESCRIPTION', "Vedlikeholder en liste med sitater som du vil 
 define('_NB_QUOTES_ACL_DEFAULT', "Bruk sitater");
 define('_NB_QUOTES_ACL_MANAGEQUOTES', "Behandle sitater");
 define('_NB_QUOTES_ACL_MANAGEQUOTEGROUPS', "Behandle sitatgrupper");
-define('_NB_QUOTES_ACTION_DISPLAY_NAME', "Sitater");
+define('_NB_QUOTES_ACTION_DISPLAY', "Sitater");
 define('_NB_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Viser {0} sitater vilkårlig i denne gruppen");
 define('_NB_QUOTES_LAYOUT_RECENT', "Siste sitater");
 define('_NB_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Viser siste sitater");

@@ -15,7 +15,7 @@ define('_IT_QUOTES_DESCRIPTION', "Mantieni una lista di citazioni da condividere
 define('_IT_QUOTES_ACL_DEFAULT', "Usa citazioni");
 define('_IT_QUOTES_ACL_MANAGEQUOTES', "Gestisci citazioni");
 define('_IT_QUOTES_ACL_MANAGEQUOTEGROUPS', "Gestisci gruppi di citazioni");
-define('_IT_QUOTES_ACTION_DISPLAY_NAME', "Citazioni");
+define('_IT_QUOTES_ACTION_DISPLAY', "Citazioni");
 define('_IT_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Mostra casualmente {0} citazioni incluse in questo gruppo");
 define('_IT_QUOTES_LAYOUT_RECENT', "Citazioni Recenti");
 define('_IT_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Mostra citazioni recenti.");

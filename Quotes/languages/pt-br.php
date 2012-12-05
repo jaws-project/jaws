@@ -15,7 +15,7 @@ define('_PT-BR_QUOTES_DESCRIPTION', "Mantém uma lista de citações que você g
 define('_PT-BR_QUOTES_ACL_DEFAULT', "Administrar Citações");
 define('_PT-BR_QUOTES_ACL_MANAGEQUOTES', "Gerenciar citações");
 define('_PT-BR_QUOTES_ACL_MANAGEQUOTEGROUPS', "Gerenciar grupos");
-define('_PT-BR_QUOTES_ACTION_DISPLAY_NAME', "Citações");
+define('_PT-BR_QUOTES_ACTION_DISPLAY', "Citações");
 define('_PT-BR_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Exibe {0} citações deste grupo escolhidas ao acaso");
 define('_PT-BR_QUOTES_LAYOUT_RECENT', "Citações recentes");
 define('_PT-BR_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Exibe as citações mais recentes");

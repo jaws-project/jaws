@@ -15,7 +15,7 @@ define('_FI_QUOTES_DESCRIPTION', "Sanonnat jotka ovat maininnan arvoiset sivuill
 define('_FI_QUOTES_ACL_DEFAULT', "Käytä sanontoja");
 define('_FI_QUOTES_ACL_MANAGEQUOTES', "Hallitse sanontoja");
 define('_FI_QUOTES_ACL_MANAGEQUOTEGROUPS', "Hallitse ryhmiä");
-define('_FI_QUOTES_ACTION_DISPLAY_NAME', "Sanonnat");
+define('_FI_QUOTES_ACTION_DISPLAY', "Sanonnat");
 define('_FI_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Näytä {0} sanonta satunnaisesti tässä ryhmässä");
 define('_FI_QUOTES_LAYOUT_RECENT', "Viimeisin sanonta");
 define('_FI_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Näytä viimeisimmät sanonnat");

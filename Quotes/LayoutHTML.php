@@ -11,33 +11,29 @@
 class QuotesLayoutHTML
 {
     /**
-     * Loads layout actions
+     * Get Display action params
      *
-     * @access  private
-     * @return  array   List of layout actions
+     * @access  public
+     * @return  array list of Display action params
      */
-    function LoadLayoutActions()
+    function DisplayLayoutParams()
     {
-        $actions = array();
-        $actions['RecentQuotes'] = array(
-            'mode' => 'LayoutAction',
-            'name' => _t('QUOTES_LAYOUT_RECENT'),
-            'desc' => _t('QUOTES_LAYOUT_RECENT_DESCRIPTION')
-        );
-
-        $model  = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
-        $groups = $model->GetGroups();
+        $result = array();
+        $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
+        $groups = $qModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
+            $pgroups = array();
             foreach ($groups as $group) {
-                $actions['Display(' . $group['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $group['title'],
-                    'desc' => _t('QUOTES_ACTION_DISPLAY_DESCRIPTION', $group['limit_count'])
-                );
+                $pgroups[$group['id']] = $group['title'];
             }
+
+            $result[] = array(
+                'title' => _t('QUOTES_ACTION_DISPLAY'),
+                'value' => $pgroups
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**

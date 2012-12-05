@@ -8,10 +8,22 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
 $actions = array();
+/* Layout actions*/
+$actions['Display'] = array(
+    'LayoutAction',
+    _t('QUOTES_ACTION_DISPLAY'),
+    _t('QUOTES_ACTION_DISPLAY_DESCRIPTION'),
+    true
+);
+$actions['RecentQuotes'] = array(
+    'NormalAction,LayoutAction',
+    _t('QUOTES_LAYOUT_RECENT'),
+    _t('QUOTES_LAYOUT_RECENT_DESCRIPTION')
+);
+
+/* Normal actions*/
 $actions['ViewQuote']       = array('NormalAction');
-$actions['RecentQuotes']    = array('NormalAction');
 $actions['ViewGroupQuotes'] = array('NormalAction');
 
 /* Admin actions */

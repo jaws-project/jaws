@@ -15,7 +15,7 @@ define('_JA_QUOTES_DESCRIPTION', "Maintaining a list of quotations that you find
 define('_JA_QUOTES_ACL_DEFAULT', "Use quotes");
 define('_JA_QUOTES_ACL_MANAGEQUOTES', "Manage quotes");
 define('_JA_QUOTES_ACL_MANAGEQUOTEGROUPS', "Manage quotes's groups");
-define('_JA_QUOTES_ACTION_DISPLAY_NAME', "Quotes");
+define('_JA_QUOTES_ACTION_DISPLAY', "Quotes");
 define('_JA_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Display {0} quotes randomly included with this group");
 define('_JA_QUOTES_LAYOUT_RECENT', "Recent Quotes");
 define('_JA_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Displays recent quotes.");

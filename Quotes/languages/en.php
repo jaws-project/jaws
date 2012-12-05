@@ -19,7 +19,7 @@ define('_EN_QUOTES_ACL_MANAGEQUOTES', "Manage quotes");
 define('_EN_QUOTES_ACL_MANAGEQUOTEGROUPS', "Manage quotes's groups");
 
 /* Layout Strings */
-define('_EN_QUOTES_ACTION_DISPLAY_NAME', "Quotes");
+define('_EN_QUOTES_ACTION_DISPLAY', "Quotes");
 define('_EN_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Display {0} quotes randomly included with this group");
 define('_EN_QUOTES_LAYOUT_RECENT', "Recent Quotes");
 define('_EN_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Displays recent quotes.");

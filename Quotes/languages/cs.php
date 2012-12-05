@@ -11,7 +11,7 @@
  */
 
 define('_CS_QUOTES_NAME', "Citáty");
-define('_CS_QUOTES_ACTION_DISPLAY_NAME', "Citace");
+define('_CS_QUOTES_ACTION_DISPLAY', "Citace");
 define('_CS_QUOTES_QUOTE', "Citace");
 define('_CS_QUOTES_QUOTE_ID', "ID");
 define('_CS_QUOTES_GROUP', "Skupina");

@@ -15,7 +15,7 @@ define('_CA_QUOTES_DESCRIPTION', "Gestiona una llista de cites interessants per 
 define('_CA_QUOTES_ACL_DEFAULT', "Usa cites");
 define('_CA_QUOTES_ACL_MANAGEQUOTES', "Gestionar les cites");
 define('_CA_QUOTES_ACL_MANAGEQUOTEGROUPS', "Gestiona grups de cites");
-define('_CA_QUOTES_ACTION_DISPLAY_NAME', "Cites");
+define('_CA_QUOTES_ACTION_DISPLAY', "Cites");
 define('_CA_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Mostra {0} cites aleatòriament incloses en aquest grup");
 define('_CA_QUOTES_LAYOUT_RECENT', "Cites recents");
 define('_CA_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Mostra les cites recents.");

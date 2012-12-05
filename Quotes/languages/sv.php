@@ -15,7 +15,7 @@ define('_SV_QUOTES_DESCRIPTION', "Upprätthållande av en lista för citat du ö
 define('_SV_QUOTES_ACL_DEFAULT', "Använd citat");
 define('_SV_QUOTES_ACL_MANAGEQUOTES', "Hantera citat");
 define('_SV_QUOTES_ACL_MANAGEQUOTEGROUPS', "Hantera citatgrupper");
-define('_SV_QUOTES_ACTION_DISPLAY_NAME', "Citat");
+define('_SV_QUOTES_ACTION_DISPLAY', "Citat");
 define('_SV_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Visa {0} slumpade citat för denna grupp");
 define('_SV_QUOTES_LAYOUT_RECENT', "Nyliga citat");
 define('_SV_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Visa nyliga citat");

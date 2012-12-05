@@ -15,7 +15,7 @@ define('_PL_QUOTES_DESCRIPTION', "Zarządzanie listą cytatów, które uważasz 
 define('_PL_QUOTES_ACL_DEFAULT', "Używanie Cytatów");
 define('_PL_QUOTES_ACL_MANAGEQUOTES', "Zarządzanie Cytatami");
 define('_PL_QUOTES_ACL_MANAGEQUOTEGROUPS', "Zarządzanie Grupami Cytatów");
-define('_PL_QUOTES_ACTION_DISPLAY_NAME', "Cytaty");
+define('_PL_QUOTES_ACTION_DISPLAY', "Cytaty");
 define('_PL_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Wyświetl losowo {0} cytatów zawartych w tej grupie");
 define('_PL_QUOTES_LAYOUT_RECENT', "Ostatnie Cytaty");
 define('_PL_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Wyświetl ostatnie Cytaty");

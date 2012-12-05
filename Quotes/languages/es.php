@@ -15,7 +15,7 @@ define('_ES_QUOTES_DESCRIPTION', "Mantiene una lista de citas para compartirlas 
 define('_ES_QUOTES_ACL_DEFAULT', "Usar citas");
 define('_ES_QUOTES_ACL_MANAGEQUOTES', "Administrar citas");
 define('_ES_QUOTES_ACL_MANAGEQUOTEGROUPS', "Administrar grupos de citas");
-define('_ES_QUOTES_ACTION_DISPLAY_NAME', "Citas");
+define('_ES_QUOTES_ACTION_DISPLAY', "Citas");
 define('_ES_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Muestra {0} citas aleatoriamente incluidas en este grupo");
 define('_ES_QUOTES_LAYOUT_RECENT', "Citas recientes");
 define('_ES_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Muestra citas recientes");

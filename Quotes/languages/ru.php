@@ -15,7 +15,7 @@ define('_RU_QUOTES_DESCRIPTION', "Поддержка списка цитат, к
 define('_RU_QUOTES_ACL_DEFAULT', "Использование цитат");
 define('_RU_QUOTES_ACL_MANAGEQUOTES', "Управление цитатами");
 define('_RU_QUOTES_ACL_MANAGEQUOTEGROUPS', "Управление группами цитат");
-define('_RU_QUOTES_ACTION_DISPLAY_NAME', "Цитаты");
+define('_RU_QUOTES_ACTION_DISPLAY', "Цитаты");
 define('_RU_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Показать {0} случайных цитат, включенных в эту группу");
 define('_RU_QUOTES_LAYOUT_RECENT', "Последние цитаты");
 define('_RU_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Показывает последние цитаты.");

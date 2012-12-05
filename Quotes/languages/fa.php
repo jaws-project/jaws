@@ -15,7 +15,7 @@ define('_FA_QUOTES_DESCRIPTION', "نگهداری و نمایش عبارات و �
 define('_FA_QUOTES_ACL_DEFAULT', "دسترسی به ابزار اطلاعیه");
 define('_FA_QUOTES_ACL_MANAGEQUOTES', "مدیریت اطلاعیه‌ها");
 define('_FA_QUOTES_ACL_MANAGEQUOTEGROUPS', "مدیریت دسته‌بندی اطلاعیه‌ها");
-define('_FA_QUOTES_ACTION_DISPLAY_NAME', "اعلامیه و بیانات");
+define('_FA_QUOTES_ACTION_DISPLAY', "اعلامیه و بیانات");
 define('_FA_QUOTES_ACTION_DISPLAY_DESCRIPTION', "نمایش {0} عبارت به شکل تصادفی که عضو این گروه می‌باشند");
 define('_FA_QUOTES_LAYOUT_RECENT', "اطلاعیه‌های اخیر");
 define('_FA_QUOTES_LAYOUT_RECENT_DESCRIPTION', "نمایش اطلاعیه‌های اخیر");

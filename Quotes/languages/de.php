@@ -15,7 +15,7 @@ define('_DE_QUOTES_DESCRIPTION', "Verwalten Sie eine Liste der Zitate für Ihre 
 define('_DE_QUOTES_ACL_DEFAULT', "Zitate verwenden");
 define('_DE_QUOTES_ACL_MANAGEQUOTES', "Zitate verwalten");
 define('_DE_QUOTES_ACL_MANAGEQUOTEGROUPS', "Zitategruppen verwalten");
-define('_DE_QUOTES_ACTION_DISPLAY_NAME', "Zitate");
+define('_DE_QUOTES_ACTION_DISPLAY', "Zitate");
 define('_DE_QUOTES_ACTION_DISPLAY_DESCRIPTION', "Zeige zufälligerweise {0} Zitate dieser Gruppe an");
 define('_DE_QUOTES_LAYOUT_RECENT', "Neueste Zitate");
 define('_DE_QUOTES_LAYOUT_RECENT_DESCRIPTION', "Zeige die neuesten Zitate an.");

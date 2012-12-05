@@ -15,7 +15,7 @@ define('_TR_QUOTES_DESCRIPTION', "Paylaşamaya değer alıntıları listesini ol
 define('_TR_QUOTES_ACL_DEFAULT', "Alıntı kullan");
 define('_TR_QUOTES_ACL_MANAGEQUOTES', "Alıntıları Yönet");
 define('_TR_QUOTES_ACL_MANAGEQUOTEGROUPS', "Alıntı gruplarını yönet");
-define('_TR_QUOTES_ACTION_DISPLAY_NAME', "Alıntılar");
+define('_TR_QUOTES_ACTION_DISPLAY', "Alıntılar");
 define('_TR_QUOTES_ACTION_DISPLAY_DESCRIPTION', "{0} Alıntı grubunu rasgele gösterir");
 define('_TR_QUOTES_LAYOUT_RECENT', "En Son Alıntılar");
 define('_TR_QUOTES_LAYOUT_RECENT_DESCRIPTION', "En Son alıntıları göster");
