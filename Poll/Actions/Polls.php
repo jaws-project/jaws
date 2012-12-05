@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_Actions_PollsX extends Jaws_Gadget_HTML
+class Poll_Actions_Polls extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params
@@ -17,7 +17,7 @@ class Poll_Actions_PollsX extends Jaws_Gadget_HTML
      * @access  public
      * @return  array list of Display action params
      */
-    function PollsXLayoutParams()
+    function PollsLayoutParams()
     {
         $result = array();
         $pModel = $GLOBALS['app']->LoadGadget('Poll', 'Model');
@@ -45,7 +45,7 @@ class Poll_Actions_PollsX extends Jaws_Gadget_HTML
      * @param   int     $gid    Poll group ID
      * @return  string  XHTML Template content
      */
-    function PollsX($gid = 0)
+    function Polls($gid = 0)
     {
         $tpl = new Jaws_Template('gadgets/Poll/templates/');
         $tpl->Load('Polls.html');

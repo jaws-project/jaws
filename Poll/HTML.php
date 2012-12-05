@@ -20,8 +20,8 @@ class PollHTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $this->SetTitle(_t('POLL_NAME'));
-        $pollHTML = $GLOBALS['app']->LoadGadget('Poll', 'HTML', 'PollsX');
-        return $pollHTML->PollsX();
+        $pollHTML = $GLOBALS['app']->LoadGadget('Poll', 'HTML', 'Polls');
+        return $pollHTML->Polls();
     }
 
     /**

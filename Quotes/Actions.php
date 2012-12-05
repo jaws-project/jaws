@@ -8,27 +8,29 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
+
+/* Admin actions */
+$admin_actions['Admin']       = array('AdminAction');
+$admin_actions['QuoteGroups'] = array('AdminAction');
+
 /* Layout actions*/
-$actions['Display'] = array(
+$index_actions['Display'] = array(
     'LayoutAction',
     _t('QUOTES_ACTION_DISPLAY'),
     _t('QUOTES_ACTION_DISPLAY_DESCRIPTION'),
     true
 );
-$actions['RecentQuotes'] = array(
+$index_actions['RecentQuotes'] = array(
     'NormalAction,LayoutAction',
     _t('QUOTES_LAYOUT_RECENT'),
     _t('QUOTES_LAYOUT_RECENT_DESCRIPTION')
 );
 
 /* Normal actions*/
-$actions['ViewQuote']       = array('NormalAction');
-$actions['ViewGroupQuotes'] = array('NormalAction');
-
-/* Admin actions */
-$actions['Admin']       = array('AdminAction');
-$actions['QuoteGroups'] = array('AdminAction');
+$index_actions['ViewQuote']       = array('NormalAction');
+$index_actions['ViewGroupQuotes'] = array('NormalAction');
 
 /* Standalone actions */
-$actions['QuotesByGroup'] = array('StandaloneAction');
+$index_actions['QuotesByGroup'] = array('StandaloneAction');

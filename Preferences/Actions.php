@@ -9,13 +9,13 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
-$actions = array();
-$actions['Save']        = array('NormalAction');
-$actions['SetLanguage'] = array('NormalAction');
+$index_actions = array();
+
+$index_actions['Save']        = array('NormalAction');
+$index_actions['SetLanguage'] = array('NormalAction');
 
 /* Layout actions */
-$actions['Display'] = array(
+$index_actions['Display'] = array(
     'LayoutAction',
     _t('PREFERENCES_LAYOUT_DISPLAY'),
     _t('PREFERENCES_LAYOUT_DISPLAY_DESCRIPTION'),

@@ -10,6 +10,6 @@
  */
 $maps[] = array('Poll', 'poll/last');
 $maps[] = array('Poll', 'poll/{id}');
-$maps[] = array('PollsX', 'polls[/list]');
-$maps[] = array('PollsX', 'polls/{gid}');
+$maps[] = array('Polls', 'polls[/list]');
+$maps[] = array('Polls', 'polls/{gid}');
 $maps[] = array('ViewResult', 'poll/results/{id}');

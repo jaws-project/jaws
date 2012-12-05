@@ -9,9 +9,10 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+
 /* Layout actions */
-$actions['Display'] = array(
+$index_actions['Display'] = array(
     'LayoutAction',
     _t('RSSREADER_LAYOUT_SHOW_TITLES'),
     _t('RSSREADER_LAYOUT_SHOW_TITLES_DESCRIPTION'),
@@ -19,4 +20,4 @@ $actions['Display'] = array(
 );
 
 /* Normal actions*/
-$actions['GetFeed']   = array('NormalAction');
+$index_actions['GetFeed'] = array('NormalAction');
