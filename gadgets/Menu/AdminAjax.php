@@ -255,10 +255,13 @@ class MenuAdminAjax extends Jaws_Gadget_Ajax
             $urls[] = array('url'   => 'javascript:void(0);',
                             'title' => _t('MENU_REFERENCES_NO_LINK'));
             return $urls;
-        } elseif (Jaws_Gadget::IsGadgetUpdated($request)) {
-            $hook = $GLOBALS['app']->loadHook($request, 'URLList');
-            if ($hook !== false) {
-                return $hook->Hook();
+        } else {
+            $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
+            if ($objGadget->IsGadgetUpdated()) {
+                $hook = $GLOBALS['app']->loadHook($request, 'URLList');
+                if ($hook !== false) {
+                    return $hook->Hook();
+                }
             }
         }
         return array();
