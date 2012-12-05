@@ -23,6 +23,12 @@ $actions['SaveComment']    = array('NormalAction:Comments');
 $actions['Archive']        = array('NormalAction:Archive');
 $actions['ShowCategory']   = array('NormalAction:Categories');
 
+$actions['EntriesByCategory'] = array(
+    'LayoutAction',
+    _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY'),
+    _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY_DESC'),
+    true
+);
 $actions['CategoriesList']  = array('NormalAction:Categories, LayoutAction',
                                     _t('BLOG_LAYOUT_CATEGORIES'),
                                     _t('BLOG_LAYOUT_CATEGORIES_DESC'));

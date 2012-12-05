@@ -13,27 +13,29 @@
 class BlogLayoutHTML
 {
     /**
-     * Load layout actions
+     * Get EntriesByCategory action params
      *
      * @access  private
-     * @return  array   Actions array
+     * @return  array    list of EntriesByCategory action params
      */
-    function LoadLayoutActions()
+    function EntriesByCategoryLayoutParams()
     {
-        $model      = $GLOBALS['app']->LoadGadget('Blog', 'Model');
-        $categories = $model->GetCategories();
-        $actions    = array();
+        $result = array();
+        $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $categories = $bModel->GetCategories();
         if (!Jaws_Error::isError($categories)) {
-            foreach ($categories as $c) {
-                $actions['EntriesByCategory(' . $c['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY', $c['name']),
-                    'desc' => _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY_DESC')
-                );
+            $pcats = array();
+            foreach ($categories as $cat) {
+                $pcats[$cat['id']] = $cat['name'];
             }
+
+            $result[] = array(
+                'title' => _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY'),
+                'value' => $pcats
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
