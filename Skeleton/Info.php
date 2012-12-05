@@ -18,4 +18,10 @@ class SkeletonInfo extends Jaws_Gadget
      */
     var $_Version = '0.6.0';
 
+    /**
+     * @var     boolean
+     * @access  private
+     */
+    var $_has_layout = false;
+
 }
