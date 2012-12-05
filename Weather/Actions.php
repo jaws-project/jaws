@@ -9,21 +9,22 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
+$index_actions = array();
+$admin_actions = array();
 
 /* Admin actions */
-$actions['Regions']           = array('AdminAction');
-$actions['Properties']        = array('AdminAction');
-$actions['GetGoogleMapImage'] = array('StandaloneAdminAction');
+$admin_actions['Regions']           = array('AdminAction');
+$admin_actions['Properties']        = array('AdminAction');
+$admin_actions['GetGoogleMapImage'] = array('StandaloneAdminAction');
 
 /* Normal actions*/
-$actions['RegionWeather'] = array(
+$index_actions['RegionWeather'] = array(
     'NormalAction,LayoutAction',
     _t('WEATHER_LAYOUT_REGION'),
     _t('WEATHER_LAYOUT_REGION_DESC'),
     true
 );
-$actions['AllRegionsWeather'] = array(
+$index_actions['AllRegionsWeather'] = array(
     'NormalAction,LayoutAction',
     _t('WEATHER_LAYOUT_REGIONS'),
     _t('WEATHER_LAYOUT_REGIONS_DESC')

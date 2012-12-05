@@ -8,13 +8,17 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
-$actions = array();
-/* Layout actions */
-$actions['Display'] = array('LayoutAction', 
-                            _t('WEBCAM_LAYOUT_DISPLAY'),
-                            _t('WEBCAM_LAYOUT_DISPLAY_DESC'));
+$index_actions = array();
 
-$actions['Random'] = array('LayoutAction', 
-                           _t('WEBCAM_LAYOUT_RANDOM'),
-                           _t('WEBCAM_LAYOUT_RANDOM_DESC'));
+/* Layout actions */
+$index_actions['Display'] = array(
+    'LayoutAction', 
+    _t('WEBCAM_LAYOUT_DISPLAY'),
+    _t('WEBCAM_LAYOUT_DISPLAY_DESC')
+);
+
+$index_actions['Random'] = array(
+    'LayoutAction', 
+    _t('WEBCAM_LAYOUT_RANDOM'),
+    _t('WEBCAM_LAYOUT_RANDOM_DESC')
+);
