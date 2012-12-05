@@ -476,6 +476,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $mail = new Jaws_Mail;
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);
+        $mail->AddRecipient('', 'cc');
         $mail->SetSubject($subject);
         $mail->SetBody($template, $format);
         $result = $mail->send();
