@@ -23,7 +23,8 @@ define('_EN_STATICPAGE_LAYOUT_PAGES_LIST', "Pages List");
 define('_EN_STATICPAGE_LAYOUT_PAGES_LIST_DESCRIPTION', "Lists the available static pages.");
 define('_EN_STATICPAGE_LAYOUT_GROUPS_LIST', "Groups List");
 define('_EN_STATICPAGE_LAYOUT_GROUPS_LIST_DESCRIPTION', "Lists the available groups of static pages.");
-define('_EN_STATICPAGE_LAYOUT_GROUP_PAGES', "Lists the available static pages in the this group");
+define('_EN_STATICPAGE_LAYOUT_GROUP_PAGES', "Group pages");
+define('_EN_STATICPAGE_LAYOUT_GROUP_PAGES_DESC', "Lists the available static pages in the this group");
 
 // ACLs
 define('_EN_STATICPAGE_ACL_DEFAULT', "Adminstrate Static Pages");

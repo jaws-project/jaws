@@ -10,30 +10,30 @@
  */
 class StaticPageLayoutHTML
 {
-
     /**
-     * Loads layout actions
+     * Get GroupPages action params
      *
-     * @access  private
-     * @return  array   List of actions
+     * @access  public
+     * @return  array list of GroupPages action params
      */
-    function LoadLayoutActions()
+    function GroupPagesLayoutParams()
     {
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model');
-        $groups = $model->GetGroups(true);
-
-        $actions = array();
+        $result = array();
+        $sModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model');
+        $groups = $sModel->GetGroups(true);
         if (!Jaws_Error::isError($groups)) {
+            $pgroups = array();
             foreach ($groups as $group) {
-                $actions['GroupPages(' . $group['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $group['title'],
-                    'desc' => _t('STATICPAGE_LAYOUT_GROUP_PAGES')
-                );
+                $pgroups[$group['id']] = $group['title'];
             }
+
+            $result[] = array(
+                'title' => _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
+                'value' => $pgroups
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**

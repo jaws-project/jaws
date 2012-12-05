@@ -11,17 +11,24 @@
  */
 $actions = array();
 
-$actions['Page']       = array('NormalAction');
-$actions['Pages']      = array('NormalAction');
-$actions['GroupPages'] = array('NormalAction');
-$actions['PagesTree']  = array('NormalAction');
-
+/* Layout actions */
+$actions['GroupPages'] = array(
+    'GroupPages,LayoutAction',
+    _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
+    _t('STATICPAGE_LAYOUT_GROUP_PAGES_DESC'),
+    true
+);
 $actions['PagesList']  = array('LayoutAction', 
                                _t('STATICPAGE_LAYOUT_PAGES_LIST'),
                                _t('STATICPAGE_LAYOUT_PAGES_LIST_DESCRIPTION'));
 $actions['GroupsList'] = array('LayoutAction', 
                                _t('STATICPAGE_LAYOUT_GROUPS_LIST'),
                                _t('STATICPAGE_LAYOUT_GROUPS_LIST_DESCRIPTION'));
+
+/* Normal actions */
+$actions['Page']       = array('NormalAction');
+$actions['Pages']      = array('NormalAction');
+$actions['PagesTree']  = array('NormalAction');
 
 $actions['AddPage']             = array('AdminAction');
 $actions['AddNewPage']          = array('AdminAction');
