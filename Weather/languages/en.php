@@ -19,6 +19,8 @@ define('_EN_WEATHER_ACL_MANAGEREGIONS', "Add/Edit/Delete regions");
 define('_EN_WEATHER_ACL_UPDATEPROPERTIES', "Update properties");
 
 /* Layout Actions */
+define('_EN_WEATHER_LAYOUT_REGION', "Region");
+define('_EN_WEATHER_LAYOUT_REGION_DESC', "Display region weather");
 define('_EN_WEATHER_LAYOUT_REGIONS', "All Regions");
 define('_EN_WEATHER_LAYOUT_REGIONS_DESC', "Displays weather of all regions.");
 

@@ -17,7 +17,14 @@ $actions['Properties']        = array('AdminAction');
 $actions['GetGoogleMapImage'] = array('StandaloneAdminAction');
 
 /* Normal actions*/
-$actions['RegionWeather']     = array('NormalAction');
-$actions['AllRegionsWeather'] = array('NormalAction,LayoutAction',
-                                      _t('WEATHER_LAYOUT_REGIONS'),
-                                      _t('WEATHER_LAYOUT_REGIONS_DESC'));
+$actions['RegionWeather'] = array(
+    'NormalAction,LayoutAction',
+    _t('WEATHER_LAYOUT_REGION'),
+    _t('WEATHER_LAYOUT_REGION_DESC'),
+    true
+);
+$actions['AllRegionsWeather'] = array(
+    'NormalAction,LayoutAction',
+    _t('WEATHER_LAYOUT_REGIONS'),
+    _t('WEATHER_LAYOUT_REGIONS_DESC')
+);

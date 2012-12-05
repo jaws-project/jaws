@@ -13,27 +13,29 @@
 class WeatherLayoutHTML
 {
     /**
-     * Loads layout actions
+     * Get RegionWeather action params
      *
-     * @access  private
-     * @return  array   List of actions
+     * @access  public
+     * @return  array   list of RegionWeather action params
      */
-    function LoadLayoutActions()
+    function RegionWeatherLayoutParams()
     {
-        $actions = array();
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model');
-        $regions = $model->GetRegions();
+        $result = array();
+        $wModel = $GLOBALS['app']->LoadGadget('Weather', 'Model');
+        $regions = $wModel->GetRegions();
         if (!Jaws_Error::isError($regions)) {
+            $pregions = array();
             foreach ($regions as $region) {
-                $actions['RegionWeather(' . $region['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $region['title'],
-                    'desc' => ''
-                );
+                $pregions[$region['id']] = $region['title'];
             }
+
+            $result[] = array(
+                'title' => _t('WEATHER_LAYOUT_REGION'),
+                'value' => $pregions
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
