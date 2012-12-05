@@ -153,6 +153,7 @@ class Blog_Actions_Post extends BlogHTML
                                                                        array('id' => empty($prev['fast_url']) ?
                                                                              $prev['id'] : $prev['fast_url'])));
                     $navtpl->SetVariable('title', $prev['title']);
+                    $navtpl->SetVariable('previous', _t('GLOBAL_PREVIOUS'));
                     $navtpl->ParseBlock('entry-navigation/previous');
                 }
 
@@ -162,6 +163,7 @@ class Blog_Actions_Post extends BlogHTML
                                                                    array('id' => empty($next['fast_url']) ?
                                                                          $next['id'] : $next['fast_url'])));
                     $navtpl->SetVariable('title', $next['title']);
+                    $navtpl->SetVariable('next', _t('GLOBAL_NEXT'));
                     $navtpl->ParseBlock('entry-navigation/next');
                 }
                 $navtpl->ParseBlock('entry-navigation');
