@@ -16,9 +16,19 @@ $actions['Archive'] = array('NormalAction');
 $actions['Group']   = array('NormalAction');
 $actions['Tag']     = array('NormalAction');
 
-$actions['ShowCategories']= array('LayoutAction',
-                                  _t('LINKDUMP_LAYOUT_CATEGORIES'),
-                                  _t('LINKDUMP_LAYOUT_CATEGORIES_DESCRIPTION'));
-$actions['ShowTagCloud']  = array('LayoutAction',
-                                  _t('LINKDUMP_LAYOUT_TAG_CLOUD'),
-                                  _t('LINKDUMP_LAYOUT_TAG_CLOUD_DESCRIPTION'));
+$actions['Display'] = array(
+    'LayoutAction',
+    _t('LINKDUMP_LAYOUT_DISPLAY'),
+   _t('LINKDUMP_LAYOUT_DISPLAY_DESCRIPTION'),
+   true
+);
+$actions['ShowCategories'] = array(
+    'LayoutAction',
+    _t('LINKDUMP_LAYOUT_CATEGORIES'),
+    _t('LINKDUMP_LAYOUT_CATEGORIES_DESCRIPTION')
+);
+$actions['ShowTagCloud'] = array(
+    'LayoutAction',
+    _t('LINKDUMP_LAYOUT_TAG_CLOUD'),
+    _t('LINKDUMP_LAYOUT_TAG_CLOUD_DESCRIPTION')
+);

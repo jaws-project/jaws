@@ -17,6 +17,7 @@ define('_FA_LINKDUMP_ACL_MANAGELINKS', "مديريت لینکها");
 define('_FA_LINKDUMP_ACL_MANAGEGROUPS', "مدیریت دسته لینکها");
 define('_FA_LINKDUMP_ACL_MANAGETAGS', "مدیريت برچسبها");
 define('_FA_LINKDUMP_ACL_UPDATEPROPERTIES', "ثبت مشخصات");
+define('_FA_LINKDUMP_LAYOUT_DISPLAY', "نمایش لینک ها");
 define('_FA_LINKDUMP_LAYOUT_DISPLAY_DESCRIPTION', "نمایش لینکها با محدودیت تعداد");
 define('_FA_LINKDUMP_LAYOUT_CATEGORIES', "لیست دسته بندیها");
 define('_FA_LINKDUMP_LAYOUT_CATEGORIES_DESCRIPTION', "نمایش لیست دسته بندیها");

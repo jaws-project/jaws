@@ -12,28 +12,29 @@
 class LinkDumpLayoutHTML
 {
     /**
-     * Loads layout actions
+     * Get Display action params
      *
-     * @access  private
-     * @return  array   actions array
+     * @access  public
+     * @return  array list of Display action params
      */
-    function LoadLayoutActions()
+    function DisplayLayoutParams()
     {
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model');
-        $groups = $model->GetGroups();
-
-        $actions = array();
+        $result = array();
+        $lModel = $GLOBALS['app']->LoadGadget('LinkDump', 'Model');
+        $groups = $lModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
+            $pgroups = array();
             foreach ($groups as $group) {
-                $actions['Display(' . $group['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $group['title'],
-                    'desc' => _t('LINKDUMP_LAYOUT_DISPLAY_DESCRIPTION')
-                );
+                $pgroups[$group['id']] = $group['title'];
             }
+
+            $result[] = array(
+                'title' => _t('LINKDUMP_LAYOUT_DISPLAY'),
+                'value' => $pgroups
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**

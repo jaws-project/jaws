@@ -20,6 +20,7 @@ define('_EN_LINKDUMP_ACL_MANAGETAGS', "Tags management");
 define('_EN_LINKDUMP_ACL_UPDATEPROPERTIES', "Update properties");
 
 /* Layout */
+define('_EN_LINKDUMP_LAYOUT_DISPLAY', "Link dump");
 define('_EN_LINKDUMP_LAYOUT_DISPLAY_DESCRIPTION', "Show links with the group's limitation count");
 define('_EN_LINKDUMP_LAYOUT_CATEGORIES', "Categories");
 define('_EN_LINKDUMP_LAYOUT_CATEGORIES_DESCRIPTION', "Show list of links's categories");
