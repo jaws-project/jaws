@@ -338,23 +338,23 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Jms', 'ManageGadgets');
 
-        $gInfo = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($gInfo)) {
+        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $gadget), RESPONSE_ERROR);
             return $GLOBALS['app']->Session->PopLastResponse();
         }
 
-        if (!Jaws_GadgetHTML::IsGadgetUpdated($gadget)) {
-            $return = Jaws_Gadget::UpdateGadget($gadget);
+        if (!$objGadget->IsGadgetUpdated()) {
+            $return = $objGadget->UpdateGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $gInfo->getName()), RESPONSE_ERROR);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $objGadget->getName()), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_OK', $gInfo->getName()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_OK', $objGadget->getName()), RESPONSE_NOTICE);
             }
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_NO_NEED', $gInfo->getName()), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_NO_NEED', $objGadget->getName()), RESPONSE_ERROR);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }
