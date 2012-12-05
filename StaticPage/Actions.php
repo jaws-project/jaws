@@ -13,7 +13,7 @@ $actions = array();
 
 /* Layout actions */
 $actions['GroupPages'] = array(
-    'GroupPages,LayoutAction',
+    'NormalAction,LayoutAction',
     _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
     _t('STATICPAGE_LAYOUT_GROUP_PAGES_DESC'),
     true
