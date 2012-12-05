@@ -28,6 +28,12 @@ class LayoutInfo extends Jaws_Gadget
     var $_IsCore = true;
 
     /**
+     * @var     boolean
+     * @access  private
+     */
+    var $_has_layout = false;
+
+    /**
      * Gadget ACLs
      *
      * @var     array

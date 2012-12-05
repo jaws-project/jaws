@@ -97,7 +97,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                         'version'     => $objGadget->GetVersion(),
                         'installed'   => (bool)$gInstalled,
                         'updated'     => (bool)$gUpdated,
-                        'has_layout'  => file_exists($gDir . $gadget . DIRECTORY_SEPARATOR . 'LayoutHTML.php'),
+                        'has_layout'  => $objGadget->_has_layout,
                         'has_html'    => file_exists($gDir . $gadget . DIRECTORY_SEPARATOR . 'HTML.php'),
                 );
             }
