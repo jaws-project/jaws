@@ -11,30 +11,30 @@
  */
 class RssReaderLayoutHTML
 {
-
     /**
-     * Loads layout actions
+     * Get Display action params
      *
-     * @access  private
-     * @return  array   List of actions
+     * @access  public
+     * @return  array list of Display action params
      */
-    function LoadLayoutActions()
+    function DisplayLayoutParams()
     {
-        $model = $GLOBALS['app']->LoadGadget('RssReader', 'Model');
-        $sites = $model->GetRSSs();
-
-        $actions = array();
+        $result = array();
+        $rModel = $GLOBALS['app']->LoadGadget('RssReader', 'Model');
+        $sites = $rModel->GetRSSs();
         if (!Jaws_Error::isError($sites)) {
+            $psites = array();
             foreach ($sites as $site) {
-                $actions['Display(' . $site['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $site['title'],
-                    'desc' => _t('RSSREADER_LAYOUT_SHOW_TITLES_DESCRIPTION')
-                );
+                $psites[$site['id']] = $site['title'];
             }
+
+            $result[] = array(
+                'title' => _t('RSSREADER_LAYOUT_SHOW_TITLES'),
+                'value' => $psites
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
