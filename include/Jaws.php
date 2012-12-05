@@ -805,9 +805,10 @@ class Jaws
      * @access  public
      * @param   string  $gadget Gadget's name
      * @param   string  $type   Action's type(LayoutAction, NormalAction, AdminAction, ... or empty for all type)
+     * @param   string  $script Action belongs to index or admin
      * @return  array   Gadget actions
      */
-    function GetGadgetActions($gadget, $type = '')
+    function GetGadgetActions($gadget, $type = '', $script = JAWS_SCRIPT)
     {
         // filter non validate character
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
@@ -819,8 +820,8 @@ class Jaws
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
             if (@include_once($file)) {
                 $tmp = array();
-                // key: Action Name  value: Action Properties
-                foreach ($actions as $action => $properties) {
+                $index_actions = isset($index_actions)? $index_actions : array();
+                foreach ($index_actions as $action => $properties) {
                     $name   = isset($properties[1])? $properties[1] : $action;
                     $desc   = isset($properties[2])? $properties[2] : '';
                     $params = isset($properties[3])? $properties[3] : false;
@@ -834,8 +835,27 @@ class Jaws
                         $tmp[$action] = $tmp[$action] + array('file' => $file);
                     }
                 }
+                // index actions
+                $this->_Gadgets[$gadget]['actions']['index'] = $tmp;
 
-                $this->_Gadgets[$gadget]['actions'] = $tmp;
+                $tmp = array();
+                $admin_actions = isset($admin_actions)? $admin_actions : array();
+                foreach ($admin_actions as $action => $properties) {
+                    $name   = isset($properties[1])? $properties[1] : $action;
+                    $desc   = isset($properties[2])? $properties[2] : '';
+                    $params = isset($properties[3])? $properties[3] : false;
+                    $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
+                    $tmp[$action] = array('name'   => $name,
+                                          'desc'   => $desc,
+                                          'params' => $params);
+                    foreach ($modes as $mode) {
+                        @list($mode, $file) = array_filter(explode(':', $mode));
+                        $tmp[$action] = $tmp[$action] + array($mode => true);
+                        $tmp[$action] = $tmp[$action] + array('file' => $file);
+                    }
+                }
+                // admin actions
+                $this->_Gadgets[$gadget]['actions']['admin'] = $tmp;
             } else {
                 $this->_Gadgets[$gadget]['actions'] = array();
             }
@@ -845,7 +865,7 @@ class Jaws
             return $this->_Gadgets[$gadget]['actions'];
         } else {
             return array_filter(
-                $this->_Gadgets[$gadget]['actions'],
+                $this->_Gadgets[$gadget]['actions'][$script],
                 create_function('$item', 'return isset($item[\''.$type.'\']);')
             );
         }

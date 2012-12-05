@@ -188,19 +188,24 @@ class Jaws_Gadget
     {
         if (!$this->_LoadedActions) {
             $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->_Gadget);
-            if (!isset($this->_ValidAction['DefaultAction'])) {
-                $this->_ValidAction['DefaultAction'] = array('name' => 'DefaultAction',
-                                                             'NormalAction' => true,
-                                                             'desc' => '',
-                                                             'file' => null);
+            if (!isset($this->_ValidAction['index']['DefaultAction'])) {
+                $this->_ValidAction['index']['DefaultAction'] = array(
+                    'name' => 'DefaultAction',
+                    'NormalAction' => true,
+                    'desc' => '',
+                    'file' => null
+                );
             }
 
-            if (!isset($this->_ValidAction['Admin'])) {
-                $this->_ValidAction['Admin'] = array('name' => 'Admin',
-                                                     'AdminAction' => true,
-                                                     'desc' => '',
-                                                     'file' => null);
+            if (!isset($this->_ValidAction['admin']['Admin'])) {
+                $this->_ValidAction['admin']['Admin'] = array(
+                    'name' => 'Admin',
+                    'AdminAction' => true,
+                    'desc' => '',
+                    'file' => null
+                );
             }
+
             $this->_LoadedActions = true;
         }
     }
@@ -476,11 +481,13 @@ class Jaws_Gadget
             Jaws_Error::Fatal('Invalid action: '. $action);
         }
 
-        $file = $this->_ValidAction[$action]['file'];
+        $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (!empty($file)) {
-            $objAction = $GLOBALS['app']->loadGadget($this->_Gadget,
-                                                     JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
-                                                     $file);
+            $objAction = $GLOBALS['app']->LoadGadget(
+                $this->_Gadget,
+                JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
+                $file
+            );
         }
 
         $action2execute = $this->_Action;
@@ -501,16 +508,19 @@ class Jaws_Gadget
      * Adds a new Action
      *
      * @access  protected
-     * @param   string  $name Action's name
-     * @param   string  $mode Action's mode
+     * @param   string  $name   Action name
+     * @param   string  $script Action script
+     * @param   string  $mode   Action mode
      * @param   string  $description Action's description
      */
-    function AddAction($action, $mode, $description, $file = null)
+    function AddAction($action, $script, $mode, $description, $file = null)
     {
-        $this->_ValidAction[$action] = array('name' => $action,
-                                             $mode => true,
-                                             'desc' => $description,
-                                             'file' => $file);
+        $this->_ValidAction[$script][$action] = array(
+            'name' => $action,
+            $mode => true,
+            'desc' => $description,
+            'file' => $file
+        );
     }
 
     /**
@@ -524,11 +534,13 @@ class Jaws_Gadget
      */
     function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
-        $this->_ValidAction[$new_mode][$action] = array('name' => $action,
-                                                        $new_mode => true,
-                                                        $old_mode => false,
-                                                        'desc' => $desc,
-                                                        'file' => $file);
+        $this->_ValidAction[JAWS_SCRIPT][$action] = array(
+            'name' => $action,
+            $new_mode => true,
+            $old_mode => false,
+            'desc' => $desc,
+            'file' => $file
+        );
     }
 
     /**
@@ -541,7 +553,7 @@ class Jaws_Gadget
      */
     function NormalAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'NormalAction', $description);
+        $this->AddAction($action, 'index', 'NormalAction', $description);
     }
 
     /**
@@ -554,7 +566,7 @@ class Jaws_Gadget
      */
     function AdminAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'AdminAction', $description);
+        $this->AddAction($action, 'admin', 'AdminAction', $description);
     }
 
     /**
@@ -566,11 +578,11 @@ class Jaws_Gadget
      */
     function IsAdmin($action)
     {
-        if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction[$action]['AdminAction']) &&
-                    $this->_ValidAction[$action]['AdminAction']) ||
-                   (isset($this->_ValidAction[$action]['StandaloneAdminAction']) &&
-                    $this->_ValidAction[$action]['StandaloneAdminAction']);
+        if ($this->IsValidAction($action, 'admin')) {
+            return (isset($this->_ValidAction['admin'][$action]['AdminAction']) &&
+                    $this->_ValidAction['admin'][$action]['AdminAction']) ||
+                   (isset($this->_ValidAction['admin'][$action]['StandaloneAdminAction']) &&
+                    $this->_ValidAction['admin'][$action]['StandaloneAdminAction']);
         }
 
         return false;
@@ -589,11 +601,11 @@ class Jaws_Gadget
             $action = 'DefaultAction';
         }
 
-        if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction[$action]['NormalAction']) &&
-                    $this->_ValidAction[$action]['NormalAction']) ||
-                   (isset($this->_ValidAction[$action]['StandaloneAction']) &&
-                    $this->_ValidAction[$action]['StandaloneAction']);
+        if ($this->IsValidAction($action, 'index')) {
+            return (isset($this->_ValidAction['index'][$action]['NormalAction']) &&
+                    $this->_ValidAction['index'][$action]['NormalAction']) ||
+                   (isset($this->_ValidAction['index'][$action]['StandaloneAction']) &&
+                    $this->_ValidAction['index'][$action]['StandaloneAction']);
         }
 
         return false;
@@ -618,9 +630,9 @@ class Jaws_Gadget
      * @param   string  $action Action to validate
      * @return  mixed   Action mode if action is valid, otherwise false
      */
-    function IsValidAction($action)
+    function IsValidAction($action, $script = JAWS_SCRIPT)
     {
-        return isset($this->_ValidAction[$action]);
+        return isset($this->_ValidAction[$script][$action]);
     }
 
     /**

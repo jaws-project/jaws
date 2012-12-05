@@ -63,7 +63,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function LayoutAction($action, $name, $description = null)
     {
-        $this->AddAction($action, 'LayoutAction', $name, $description);
+        $this->AddAction($action, 'index', 'LayoutAction', $name, $description);
     }
 
     /**
@@ -76,7 +76,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function StandaloneAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'StandaloneAction', $name, $description);
+        $this->AddAction($action, 'index', 'StandaloneAction', $name, $description);
     }
 
     /**
@@ -89,7 +89,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function StandaloneAdminAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'StandaloneAdminAction', $name, $description);
+        $this->AddAction($action, 'admin', 'StandaloneAdminAction', $name, $description);
     }
 
     /**
@@ -101,9 +101,9 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function IsStandAlone($action)
     {
-        if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction[$action]['StandaloneAction']) &&
-                    $this->_ValidAction[$action]['StandaloneAction']);
+        if ($this->IsValidAction($action, 'index')) {
+            return (isset($this->_ValidAction['index'][$action]['StandaloneAction']) &&
+                    $this->_ValidAction['index'][$action]['StandaloneAction']);
         }
         return false;
     }
@@ -117,9 +117,9 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function IsStandAloneAdmin($action)
     {
-        if ($this->IsValidAction($action)) {
-            return (isset($this->_ValidAction[$action]['StandaloneAdminAction']) &&
-                    $this->_ValidAction[$action]['StandaloneAdminAction']);
+        if ($this->IsValidAction($action, 'admin')) {
+            return (isset($this->_ValidAction['admin'][$action]['StandaloneAdminAction']) &&
+                    $this->_ValidAction['admin'][$action]['StandaloneAdminAction']);
         }
         return false;
     }
