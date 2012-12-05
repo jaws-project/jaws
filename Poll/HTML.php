@@ -20,7 +20,8 @@ class PollHTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $this->SetTitle(_t('POLL_NAME'));
-        return $this->ListOfPolls();
+        $pollHTML = $GLOBALS['app']->LoadGadget('Poll', 'HTML', 'PollsX');
+        return $pollHTML->PollsX();
     }
 
     /**
@@ -49,44 +50,6 @@ class PollHTML extends Jaws_Gadget_HTML
 
         $GLOBALS['app']->Session->PushSimpleResponse(_t('POLL_THANKS'), 'Poll');
         Jaws_Header::Referrer();
-    }
-
-    /**
-     * Calls the LastPoll action to print it
-     *
-     * @access  public
-     * @return  string  The last poll to show to normal users
-     */
-    function LastPoll()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Poll', 'LayoutHTML');
-        return $layoutGadget->LastPoll();
-    }
-
-    /**
-     * Prints all the enabled polls as a layout
-     *
-     * @access  public
-     * @return  string  XHTML view of a list of polls
-     */
-    function ListOfPolls()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Poll', 'LayoutHTML');
-        return $layoutGadget->ListOfPolls();
-    }
-
-    /**
-     * Calls the default action to print a specific poll
-     *
-     * @access  public
-     * @return  string  The poll to show to normal users
-     */
-    function ViewPoll()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Poll', 'LayoutHTML');
-        $request =& Jaws_Request::getInstance();
-        $pid = $request->get('id', 'get');
-        return $layoutGadget->Display($pid);
     }
 
     /**

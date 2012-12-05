@@ -9,11 +9,24 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-/* Normal actions*/
+
+/* Layout actions*/
 $actions = array();
-$actions['LastPoll']    = array('NormalAction');
-$actions['ListOfPolls'] = array('NormalAction');
-$actions['ViewPoll']    = array('NormalAction');
+$actions['Poll'] = array(
+    'NormalAction:Poll,LayoutAction:Poll',
+    _t('POLL_LAYOUT_POLL'),
+    _t('POLL_LAYOUT_POLL_DESC'),
+   true
+);
+
+$actions['PollsX'] = array(
+    'NormalAction:PollsX,LayoutAction:PollsX',
+    _t('POLL_LAYOUT_POLLS'),
+    _t('POLL_LAYOUT_POLLS_DESC'),
+   true
+);
+
+/* Normal actions*/
 $actions['ViewResult']  = array('NormalAction');
 $actions['Vote']        = array('NormalAction');
 

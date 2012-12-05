@@ -8,7 +8,8 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('LastPoll', 'poll/last');
-$maps[] = array('ListOfPolls', 'poll/list');
-$maps[] = array('ViewPoll', 'poll/{id}');
+$maps[] = array('Poll', 'poll/last');
+$maps[] = array('Poll', 'poll/{id}');
+$maps[] = array('PollsX', 'polls[/list]');
+$maps[] = array('PollsX', 'polls/{gid}');
 $maps[] = array('ViewResult', 'poll/results/{id}');

@@ -1,119 +1,51 @@
 <?php
 /**
- * Poll Layout HTML file (for layout purposes)
+ * Poll Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Poll
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PollLayoutHTML
+class Poll_Actions_Poll extends Jaws_Gadget_HTML
 {
-
     /**
-     * Loads layout actions
-     *
-     * @access  private
-     * @return  array   actions array
-     */
-    function LoadLayoutActions()
-    {
-        $actions = array();
-        $actions['LastPoll'] = array(
-            'mode' => 'LayoutAction',
-            'name' =>  _t('POLL_LAYOUT_DISPLAY_LAST'),
-            'desc' => _t('POLL_LAYOUT_DISPLAY_LAST_DESC')
-        );
-        $actions['ListOfPolls'] = array(
-            'mode' => 'LayoutAction',
-            'name' => _t('POLL_LAYOUT_LIST_POLLS'),
-            'desc' => _t('POLL_LAYOUT_LIST_POLLS_DESC')
-        );
-
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
-        $pollGroups = $model->GetPollGroups();
-        if (!Jaws_Error::isError($pollGroups)) {
-            foreach ($pollGroups as $pGroup) {
-                $actions['ListOfPolls(' . $pGroup['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $pGroup['title'],
-                    'desc' => _t('POLL_LAYOUT_LIST_INGROUP_POLLS_DESC')
-                );
-            }
-        }
-
-        $polls = $model->GetPolls();
-        if (!Jaws_Error::isError($polls)) {
-            foreach ($polls as $poll) {
-                $actions['Display(' . $poll['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $poll['question'],
-                    'desc' => ''
-                );
-            }
-        }
-
-        return $actions;
-    }
-
-    /**
-     * Print the last poll
+     * Get Display action params
      *
      * @access  public
-     * @return  string  The poll form or the poll results
+     * @return  array list of Display action params
      */
-    function LastPoll()
+    function PollLayoutParams()
     {
-        return $this->Display(0);
-    }
-
-    /**
-     * Prints all the enabled polls as a layout
-     *
-     * @access  public
-     * @param   int     $gid    group ID
-     * @return  string  HTML view of a list of polls
-     */
-    function ListOfPolls($gid = null)
-    {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('Polls.html');
-        $tpl->SetBlock('Polls');
-
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
-        if (!empty($gid)) {
-            $group = $model->GetPollGroup($gid);
-            if (Jaws_Error::isError($group) || empty($group)) {
-                $group['title'] = '';
-            }
-            $tpl->SetVariable('title', _t('POLL_ACTION_POLLS_INGROUP_TITLE', $group['title']));
-        } else {
-            $tpl->SetVariable('title', _t('POLL_ACTION_POLLS_TITLE'));
-        }
-
-        $polls = $model->GetPolls($gid, true);
+        $result = array();
+        $pModel = $GLOBALS['app']->LoadGadget('Poll', 'Model');
+        $polls = $pModel->GetPolls();
         if (!Jaws_Error::isError($polls)) {
+            $ppollss = array();
             foreach ($polls as $poll) {
-                $tpl->SetBlock('Polls/poll');
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Poll', 'ViewPoll', array('id' => $poll['id'])));
-                $tpl->SetVariable('question', $poll['question']);
-                $tpl->ParseBlock('Polls/poll');
+                $ppollss[$poll['id']] = $poll['question'];
             }
+
+            $ppollss = array('0' => _t('POLL_LAYOUT_LAST')) + $ppollss;
+            $result[] = array(
+                'title' => _t('POLL_LAYOUT_POLL'),
+                'value' => $ppollss
+            );
         }
-        $tpl->ParseBlock('Polls');
-        return $tpl->Get();
+
+        return $result;
     }
 
     /**
      * Builds the default template with polls and answers
      *
      * @access  public
-     * @param   string  $pid    Poll ID
-     * @return  string  The poll form or the poll results
+     * @param   int     $pid    Poll ID
+     * @return  string  XHTML Template content
      */
-    function Display($pid = 0)
+    function Poll($pid = 0)
     {
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
         if (empty($pid)) {
