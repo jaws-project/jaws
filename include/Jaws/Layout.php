@@ -616,7 +616,12 @@ class Jaws_Layout
                 $output = $goGadget->Execute();
             }
         } else {
-            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
+            if (empty($filename)) {
+                // DEPRECATED: will be removed after all jaws official gadget converted
+                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'LayoutHTML');
+            } else {
+                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
+            }
             if (!Jaws_Error::isError($goGadget)) {
                 $GLOBALS['app']->Registry->LoadFile($gadget);
                 if (method_exists($goGadget, $action)) {
