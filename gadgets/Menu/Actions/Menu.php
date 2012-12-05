@@ -1,15 +1,15 @@
 <?php
 /**
- * Menu Layout HTML file (for layout purposes)
+ * Menu Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Menu
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class MenuLayoutHTML
+class Menu_Actions_Menu extends Jaws_Gadget_HTML
 {
     /**
      * Request URL
@@ -20,38 +20,39 @@ class MenuLayoutHTML
     var $_ReqURL = '';
 
     /**
-     * Loads layout actions
+     * Get Display action params
      *
-     * @access  private
-     * @return  array   Actions array
+     * @access  public
+     * @return  array list of Display action params
      */
-    function LoadLayoutActions()
+    function MenuLayoutParams()
     {
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model');
-        $groups = $model->GetGroups();
-
-        $actions = array();
+        $result = array();
+        $mModel = $GLOBALS['app']->LoadGadget('Menu', 'Model');
+        $groups = $mModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
+            $pgroups = array();
             foreach ($groups as $group) {
-                $actions['Display(' . $group['id'] . ')'] = array(
-                    'mode' => 'LayoutAction',
-                    'name' => $group['title'],
-                    'desc' => _t('MENU_LAYOUT_DISPLAY_DESCRIPTION')
-                );
+                $pgroups[$group['id']] = $group['title'];
             }
+
+            $result[] = array(
+                'title' => _t('MENU_LAYOUT_MENU'),
+                'value' => $pgroups
+            );
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
      * Displays the menus with their items
      *
      * @access  public
-     * @param   int     $gid    group ID
-     * @return  string  XHTML content with menu and menu items
+     * @param   int     $gid    Menu group ID
+     * @return  string  XHTML template content
      */
-    function Display($gid = 0)
+    function Menu($gid = 0)
     {
         $model = $GLOBALS['app']->LoadGadget('Menu', 'Model');
         $group = $model->GetGroups($gid);
@@ -153,4 +154,5 @@ class MenuLayoutHTML
         $tpl->ParseBlock('levels');
         return $tpl->Get();
     }
+
 }

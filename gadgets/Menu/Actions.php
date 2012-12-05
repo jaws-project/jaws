@@ -11,6 +11,13 @@
 
 $actions = array();
 
+$actions['Menu'] = array(
+    'LayoutAction:Menu',
+    _t('MENU_LAYOUT_MENU'),
+    _t('MENU_LAYOUT_MENU_DESCRIPTION'),
+    true
+);
+
 /* Standalone actions */
 $actions['UploadImage'] = array('StandaloneAdminAction');
 $actions['LoadImage']   = array('StandaloneAdminAction,StandaloneAction');

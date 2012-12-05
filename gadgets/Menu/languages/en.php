@@ -19,8 +19,8 @@ define('_EN_MENU_ACL_MANAGEMENUS', "Modify menus");
 define('_EN_MENU_ACL_MANAGEGROUPS', "Modify menus's groups");
 
 /* Layout Strings */
-define('_EN_MENU_LAYOUT_DISPLAY', "Display");
-define('_EN_MENU_LAYOUT_DISPLAY_DESCRIPTION', "Display the menus.");
+define('_EN_MENU_LAYOUT_MENU', "Display");
+define('_EN_MENU_LAYOUT_MENU_DESCRIPTION', "Display the menus.");
 
 /* Strings */
 define('_EN_MENU_TREE_TITLE', "Menus's Tree");
