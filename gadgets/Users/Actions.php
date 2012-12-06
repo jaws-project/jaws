@@ -12,54 +12,89 @@
 $actions = array();
 
 $actions['LoginBox'] = array(
-    'NormalAction:Login,LayoutAction:Login',
-    _t('USERS_LAYOUT_LOGINBOX'),
-    _t('USERS_LAYOUT_LOGINBOX_DESC')
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Login',
 );
 $actions['LoginLinks'] = array(
-    'LayoutAction:Login',
-    _t('USERS_LAYOUT_LOGINLINKS'),
-    _t('USERS_LAYOUT_LOGINLINKS_DESC')
+    'layout' => true,
+    'file'   => 'Login',
 );
 $actions['OnlineUsers'] = array(
-    'LayoutAction:Statistics',
-    _t('USERS_LAYOUT_ONLINE_USERS'),
-    _t('USERS_LAYOUT_ONLINE_USERS_DESC'),
+    'layout' => true,
+    'file'   => 'Statistics',
 );
 $actions['OnlineStatistics'] = array(
-    'LayoutAction:Statistics',
-    _t('USERS_LAYOUT_ONLINE_STATISTICS'),
-    _t('USERS_LAYOUT_ONLINE_STATISTICS_DESC'),
+    'layout' => true,
+    'file'   => 'Statistics',
 );
 $actions['LatestRegistered'] = array(
-    'LayoutAction:Statistics',
-    _t('USERS_LAYOUT_LATEST_REGISTERED'),
-    _t('USERS_LAYOUT_LATEST_REGISTERED_DESC'),
+    'layout' => true,
+    'file'   => 'Statistics',
 );
 $actions['Profile'] = array(
-    'NormalAction:Profile,LayoutAction:Profile',
-    _t('USERS_LAYOUT_PROFILE'),
-    _t('USERS_LAYOUT_PROFILE_DESC'),
-    true
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Profile',
+    'parametric' => true,
 );
-
-/* Normal actions */
-$actions['Login']          = array('NormalAction:Login');
-$actions['Logout']         = array('NormalAction:Login');
-$actions['ForgotLogin']    = array('NormalAction:Login');
-$actions['SendRecoverKey'] = array('NormalAction:Login');
-
-$actions['Registration'] = array('NormalAction:Registration');
-$actions['DoRegister']   = array('NormalAction:Registration');
-$actions['Registered']   = array('NormalAction:Registration');
-$actions['ActivateUser'] = array('NormalAction:Registration');
-
-$actions['Account']        = array('NormalAction:Account');
-$actions['ChangePassword'] = array('NormalAction:Account');
-$actions['UpdateAccount']  = array('StandaloneAction:Account');
-
-$actions['Personal']       = array('NormalAction:Personal');
-$actions['UpdatePersonal'] = array('StandaloneAction:Personal');
-
-$actions['Preferences']       = array('NormalAction:Preferences');
-$actions['UpdatePreferences'] = array('StandaloneAction:Preferences');
+$actions['Login'] = array(
+    'normal' => true,
+    'file'   => 'Login',
+);
+$actions['Logout'] = array(
+    'normal' => true,
+    'file'   => 'Login',
+);
+$actions['ForgotLogin'] = array(
+    'normal' => true,
+    'file'   => 'Login',
+);
+$actions['SendRecoverKey'] = array(
+    'normal' => true,
+    'file'   => 'Login',
+);
+$actions['Registration'] = array(
+    'normal' => true,
+    'file'   => 'Registration',
+);
+$actions['DoRegister'] = array(
+    'normal' => true,
+    'file'   => 'Registration',
+);
+$actions['Registered'] = array(
+    'normal' => true,
+    'file'   => 'Registration',
+);
+$actions['ActivateUser'] = array(
+    'normal' => true,
+    'file'   => 'Registration',
+);
+$actions['Account'] = array(
+    'normal' => true,
+    'file'   => 'Account',
+);
+$actions['ChangePassword'] = array(
+    'normal' => true,
+    'file'   => 'Account',
+);
+$actions['UpdateAccount'] = array(
+    'standalone' => true,
+    'file'       => 'Account',
+);
+$actions['Personal'] = array(
+    'normal' => true,
+    'file'   => 'Personal',
+);
+$actions['UpdatePersonal'] = array(
+    'standalone' => true,
+    'file'       => 'Personal',
+);
+$actions['Preferences'] = array(
+    'normal' => true,
+    'file'   => 'Preferences',
+);
+$actions['UpdatePreferences'] = array(
+    'standalone' => true,
+    'file'       => 'Preferences',
+);

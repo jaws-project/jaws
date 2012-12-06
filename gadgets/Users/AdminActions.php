@@ -10,10 +10,31 @@
  */
 $actions = array();
 
-$actions['Users']        = array('AdminAction:Users');
-$actions['MyAccount']    = array('AdminAction:MyAccount');
-$actions['Groups']       = array('AdminAction:Groups');
-$actions['OnlineUsers']  = array('AdminAction:OnlineUsers');
-$actions['Properties']   = array('AdminAction:Properties');
-$actions['LoadAvatar']   = array('StandaloneAdminAction:Avatar');
-$actions['UploadAvatar'] = array('StandaloneAdminAction:Avatar');
+$actions['Users'] = array(
+    'normal' => true,
+    'file'   => 'Users',
+);
+$actions['MyAccount'] = array(
+    'normal' => true,
+    'file'   => 'MyAccount',
+);
+$actions['Groups'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);
+$actions['OnlineUsers'] = array(
+    'normal' => true,
+    'file'   => 'OnlineUsers',
+);
+$actions['Properties'] = array(
+    'normal' => true,
+    'file'   => 'Properties',
+);
+$actions['LoadAvatar'] = array(
+    'standalone' => true,
+    'file'       => 'Avatar',
+);
+$actions['UploadAvatar'] = array(
+    'standalone' => true,
+    'file'       => 'Avatar',
+);
