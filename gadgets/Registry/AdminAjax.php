@@ -71,7 +71,6 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
      */
     function GetAllACL()
     {
-        $GLOBALS['app']->ACL->LoadAllFiles();
         $simpleArray = $GLOBALS['app']->ACL->GetSimpleArray();
         ksort($simpleArray);
 
