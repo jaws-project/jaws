@@ -10,6 +10,12 @@
  */
 $actions = array();
 
-$actions['Regions'] = array('AdminAction');
-$actions['Properties'] = array('AdminAction');
-$actions['GetGoogleMapImage'] = array('StandaloneAdminAction');
+$actions['Regions'] = array(
+    'normal' => true,
+);
+$actions['Properties'] = array(
+    'normal' => true,
+);
+$actions['GetGoogleMapImage'] = array(
+    'standalone' => true,
+);

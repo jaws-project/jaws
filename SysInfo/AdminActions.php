@@ -10,7 +10,15 @@
  */
 $actions = array();
 
-$actions['SysInfo'] = array('AdminAction');
-$actions['PHPInfo'] = array('AdminAction');
-$actions['JawsInfo'] = array('AdminAction');
-$actions['DirInfo'] = array('AdminAction');
+$actions['SysInfo'] = array(
+    'normal' => true,
+);
+$actions['PHPInfo'] = array(
+    'normal' => true,
+);
+$actions['JawsInfo'] = array(
+    'normal' => true,
+);
+$actions['DirInfo'] = array(
+    'normal' => true,
+);

@@ -10,30 +10,85 @@
  */
 $actions = array();
 
-$actions['Admin'] = array('AdminAction');
-$actions['UploadPhotos'] = array('AdminAction');
-$actions['UploadPhotosStep2'] = array('AdminAction');
-$actions['EditPhoto'] = array('AdminAction');
-$actions['SaveEditPhoto'] = array('AdminAction');
-$actions['AdminPhotos'] = array('AdminAction');
-$actions['ManageAlbums'] = array('AdminAction');
-$actions['DeletePhoto'] = array('AdminAction');
-$actions['NewAlbum'] = array('AdminAction');
-$actions['SaveNewAlbum'] = array('AdminAction');
-$actions['EditAlbum'] = array('AdminAction');
-$actions['SaveEditAlbum'] = array('AdminAction');
-$actions['DeleteAlbum'] = array('AdminAction');
-$actions['RotateLeft'] = array('AdminAction');
-$actions['RotateRight'] = array('AdminAction');
-$actions['ManageComments'] = array('AdminAction');
-$actions['EditComment'] = array('AdminAction');
-$actions['SaveEditComment'] = array('AdminAction');
-$actions['DeleteComment'] = array('AdminAction');
-$actions['AdditionalSettings'] = array('AdminAction');
-$actions['SaveAdditionalSettings'] = array('AdminAction');
-$actions['Import'] = array('AdminAction');
-$actions['FinishImport'] = array('AdminAction');
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['UploadPhotos'] = array(
+    'normal' => true,
+);
+$actions['UploadPhotosStep2'] = array(
+    'normal' => true,
+);
+$actions['EditPhoto'] = array(
+    'normal' => true,
+);
+$actions['SaveEditPhoto'] = array(
+    'normal' => true,
+);
+$actions['AdminPhotos'] = array(
+    'normal' => true,
+);
+$actions['ManageAlbums'] = array(
+    'normal' => true,
+);
+$actions['DeletePhoto'] = array(
+    'normal' => true,
+);
+$actions['NewAlbum'] = array(
+    'normal' => true,
+);
+$actions['SaveNewAlbum'] = array(
+    'normal' => true,
+);
+$actions['EditAlbum'] = array(
+    'normal' => true,
+);
+$actions['SaveEditAlbum'] = array(
+    'normal' => true,
+);
+$actions['DeleteAlbum'] = array(
+    'normal' => true,
+);
+$actions['RotateLeft'] = array(
+    'normal' => true,
+);
+$actions['RotateRight'] = array(
+    'normal' => true,
+);
+$actions['ManageComments'] = array(
+    'normal' => true,
+);
+$actions['EditComment'] = array(
+    'normal' => true,
+);
+$actions['SaveEditComment'] = array(
+    'normal' => true,
+);
+$actions['DeleteComment'] = array(
+    'normal' => true,
+);
+$actions['AdditionalSettings'] = array(
+    'normal' => true,
+);
+$actions['SaveAdditionalSettings'] = array(
+    'normal' => true,
+);
+$actions['Import'] = array(
+    'normal' => true,
+);
+$actions['FinishImport'] = array(
+    'normal' => true,
+);
 /* Standalone Admin Actions */
-$actions['Thumb'] = array('StandaloneAdminAction:Thumb');
-$actions['BrowsePhoo'] = array('StandaloneAdminAction:BrowsePhoo');
-$actions['SelectImage'] = array('StandaloneAdminAction:SelectImage');
+$actions['Thumb'] = array(
+    'standalone' => true,
+    'file' => 'Thumb',
+);
+$actions['BrowsePhoo'] = array(
+    'standalone' => true,
+    'file' => 'BrowsePhoo',
+);
+$actions['SelectImage'] = array(
+    'standalone' => true,
+    'file' => 'SelectImage',
+);

@@ -10,6 +10,12 @@
  */
 $actions = array();
 
-$actions['Polls'] = array('AdminAction');
-$actions['PollGroups'] = array('AdminAction');
-$actions['Reports'] = array('AdminAction');
+$actions['Polls'] = array(
+    'normal' => true,
+);
+$actions['PollGroups'] = array(
+    'normal' => true,
+);
+$actions['Reports'] = array(
+    'normal' => true,
+);

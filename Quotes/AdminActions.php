@@ -10,5 +10,9 @@
  */
 $actions = array();
 
-$actions['Admin'] = array('AdminAction');
-$actions['QuoteGroups'] = array('AdminAction');
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['QuoteGroups'] = array(
+    'normal' => true,
+);

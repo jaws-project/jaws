@@ -11,13 +11,33 @@
 $actions = array();
 
 /* Admin actions */
-$actions['AddPage'] = array('AdminAction');
-$actions['AddNewPage'] = array('AdminAction');
-$actions['EditPage'] = array('AdminAction');
-$actions['SaveEditPage'] = array('AdminAction');
-$actions['Groups'] = array('AdminAction');
-$actions['Properties'] = array('AdminAction');
-$actions['AddNewTranslation'] = array('AdminAction');
-$actions['AddTranslation'] = array('AdminAction');
-$actions['EditTranslation'] = array('AdminAction');
-$actions['SaveEditTranslation'] = array('AdminAction');
+$actions['AddPage'] = array(
+    'normal' => true,
+);
+$actions['AddNewPage'] = array(
+    'normal' => true,
+);
+$actions['EditPage'] = array(
+    'normal' => true,
+);
+$actions['SaveEditPage'] = array(
+    'normal' => true,
+);
+$actions['Groups'] = array(
+    'normal' => true,
+);
+$actions['Properties'] = array(
+    'normal' => true,
+);
+$actions['AddNewTranslation'] = array(
+    'normal' => true,
+);
+$actions['AddTranslation'] = array(
+    'normal' => true,
+);
+$actions['EditTranslation'] = array(
+    'normal' => true,
+);
+$actions['SaveEditTranslation'] = array(
+    'normal' => true,
+);
