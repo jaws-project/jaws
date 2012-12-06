@@ -10,9 +10,6 @@
  */
 $actions = array();
 
-/* Layout actions */
 $actions['Display'] = array(
-    'LayoutAction', 
-    _t('SKELETON_ACTION_DISPLAY'),
-    _t('SKELETON_ACTION_DISPLAY_DESC')
+    'layout' => true, 
 );

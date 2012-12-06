@@ -11,22 +11,18 @@
 $actions = array();
 
 $actions['SysInfo'] = array(
-    'LayoutAction,NormalAction',
-    _t('SYSINFO_SYSINFO'),
-    _t('SYSINFO_SYSINFO_DESC')
+    'normal' => true,
+	'layout' => true,
 );
 $actions['PHPInfo'] = array(
-    'LayoutAction,NormalAction',
-    _t('SYSINFO_PHPINFO'),
-    _t('SYSINFO_PHPINFO_DESC')
+    'normal' => true,
+	'layout' => true,
 );
 $actions['JawsInfo'] = array(
-    'LayoutAction,NormalAction',
-    _t('SYSINFO_JAWSINFO'),
-    _t('SYSINFO_JAWSINFO_DESC')
+    'normal' => true,
+	'layout' => true,
 );
 $actions['DirInfo'] = array(
-    'LayoutAction,NormalAction',
-    _t('SYSINFO_DIRINFO'),
-    _t('SYSINFO_DIRINFO_DESC')
+    'normal' => true,
+	'layout' => true,
 );

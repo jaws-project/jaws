@@ -12,13 +12,9 @@ $actions = array();
 
 /* Layout actions */
 $actions['Display'] = array(
-    'LayoutAction', 
-    _t('WEBCAM_LAYOUT_DISPLAY'),
-    _t('WEBCAM_LAYOUT_DISPLAY_DESC')
+    'layout' => true, 
 );
 
 $actions['Random'] = array(
-    'LayoutAction', 
-    _t('WEBCAM_LAYOUT_RANDOM'),
-    _t('WEBCAM_LAYOUT_RANDOM_DESC')
+    'layout' => true, 
 );

@@ -12,13 +12,11 @@
 $actions = array();
 
 $actions['RegionWeather'] = array(
-    'NormalAction,LayoutAction',
-    _t('WEATHER_LAYOUT_REGION'),
-    _t('WEATHER_LAYOUT_REGION_DESC'),
+    'normal' => true,
+    'layout' => true,
     true
 );
 $actions['AllRegionsWeather'] = array(
-    'NormalAction,LayoutAction',
-    _t('WEATHER_LAYOUT_REGIONS'),
-    _t('WEATHER_LAYOUT_REGIONS_DESC')
+    'normal' => true,
+    'layout' => true,
 );

@@ -11,25 +11,23 @@
  */
 $actions = array();
 
-/* Layout actions */
 $actions['GroupPages'] = array(
-    'NormalAction,LayoutAction',
-    _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
-    _t('STATICPAGE_LAYOUT_GROUP_PAGES_DESC'),
+    'normal' => true,
+    'layout' => true,
     true
 );
 $actions['PagesList'] = array(
-    'LayoutAction', 
-    _t('STATICPAGE_LAYOUT_PAGES_LIST'),
-    _t('STATICPAGE_LAYOUT_PAGES_LIST_DESCRIPTION')
+    'layout' => true, 
 );
 $actions['GroupsList'] = array(
-    'LayoutAction', 
-    _t('STATICPAGE_LAYOUT_GROUPS_LIST'),
-    _t('STATICPAGE_LAYOUT_GROUPS_LIST_DESCRIPTION')
+    'layout' => true, 
 );
-
-/* Normal actions */
-$actions['Page'] = array('NormalAction');
-$actions['Pages'] = array('NormalAction');
-$actions['PagesTree'] = array('NormalAction');
+$actions['Page'] = array(
+    'normal' => true,
+);
+$actions['Pages'] = array(
+    'normal' => true,
+);
+$actions['PagesTree'] = array(
+    'normal' => true,
+);

@@ -13,22 +13,14 @@ $actions = array();
 
 /* Layout actions */
 $actions['DisplayOnline'] = array(
-    'LayoutAction',
-    _t('VISITCOUNTER_ONLINE_VISITORS'),
-    _t('VISITCOUNTER_ACTION_DESC_ONLINE')
+    'layout' => true,
 );
 $actions['DisplayToday'] = array(
-    'LayoutAction',
-    _t('VISITCOUNTER_TODAY_VISITORS'),
-    _t('VISITCOUNTER_ACTION_DESC_TODAY')
+    'layout' => true,
 );
 $actions['DisplayTotal'] = array(
-    'LayoutAction',
-    _t('VISITCOUNTER_TOTAL_VISITORS'),
-    _t('VISITCOUNTER_ACTION_DESC_TOTAL')
+    'layout' => true,
 );
 $actions['Display'] = array(
-    'LayoutAction',
-    _t('VISITCOUNTER_ACTION_CUSTOM'),
-    _t('VISITCOUNTER_ACTION_DESC_CUSTOM')
+    'layout' => true,
 );
