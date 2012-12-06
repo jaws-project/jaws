@@ -12,12 +12,16 @@
 $actions = array();
 
 $actions['Poll'] = array(
-    'NormalAction:Poll,LayoutAction:Poll',
-   true
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Poll',
+    'parametric' => true,
 );
 $actions['Polls'] = array(
-    'NormalAction:Polls,LayoutAction:Polls',
-    true
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Polls',
+    'parametric' => true,
 );
 $actions['ViewResult'] = array(
     'normal' => true,

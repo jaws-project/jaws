@@ -11,8 +11,9 @@
  */
 $actions = array();
 
-/* Normal/Layout actions*/
 $actions['Block'] = array(
-    'NormalAction:Block,LayoutAction:Block',
-    true
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Block',
+    'parametric' => true,
 );

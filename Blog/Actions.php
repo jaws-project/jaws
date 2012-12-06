@@ -12,45 +12,58 @@
 $actions = array();
 
 $actions['LastPost'] = array(
-    'NormalAction:Post'
+    'normal' => true,
+    'file'   => 'Post',
 );
 $actions['SingleView'] = array(
-    'NormalAction:Post'
+    'normal' => true,
+    'file'   => 'Post',
 );
 $actions['ViewPage'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['ViewDatePage'] = array(
-    'NormalAction:DatePosts'
+    'normal' => true,
+    'file'   => 'DatePosts',
 );
 $actions['ViewAuthorPage'] = array(
-    'NormalAction:AuthorPosts'
+    'normal' => true,
+    'file'   => 'AuthorPosts',
 );
 $actions['Comment'] = array(
-    'NormalAction:Comments'
+    'normal' => true,
+    'file'   => 'Comments',
 );
 $actions['Reply'] = array(
-    'NormalAction:Comments'
+    'normal' => true,
+    'file'   => 'Comments',
 );
 $actions['Preview'] = array(
-    'NormalAction:Comments'
+    'normal' => true,
+    'file'   => 'Comments',
 );
 $actions['SaveComment'] = array(
-    'NormalAction:Comments'
+    'normal' => true,
+    'file'   => 'Comments',
 );
 $actions['Archive'] = array(
-    'NormalAction:Archive'
+    'normal' => true,
+    'file'   => 'Archive',
 );
 $actions['ShowCategory'] = array(
-    'NormalAction:Categories'
+    'normal' => true,
+    'file'   => 'Categories',
 );
 
 $actions['EntriesByCategory'] = array(
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['CategoriesList'] = array(
-    'NormalAction:Categories,LayoutAction',
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Categories',
 );
 $actions['PopularPosts'] = array(
     'normal' => true,
@@ -88,32 +101,42 @@ $actions['ShowTagCloud'] = array(
     'layout' => true,
 );
 $actions['Trackback'] = array(
-    'StandaloneAction:Trackbacks'
+    'standalone' => true,
+    'file' => 'Trackbacks',
 );
 $actions['Pingback'] = array(
-    'StandaloneAction:Pingback'
+    'standalone' => true,
+    'file' => 'Pingback',
 );
 $actions['RSS'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['Atom'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['ShowRSSCategory'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['ShowAtomCategory'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['RecentCommentsRSS'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['RecentCommentsAtom'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['CommentsRSS'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );
 $actions['CommentsAtom'] = array(
-    'StandaloneAction:Feeds'
+    'standalone' => true,
+    'file' => 'Feeds',
 );

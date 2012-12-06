@@ -11,51 +11,67 @@
 $actions = array();
 
 $actions['RecentPosts'] = array(
-    'LayoutAction:RecentPosts',
-    true
+    'layout' => true,
+    'file'   => 'RecentPosts',
+    'parametric' => true,
 );
 $actions['Forums'] = array(
-    'NormalAction:Forums'
+    'normal' => true,
+    'file'   => 'Forums',
 );
 $actions['Topics'] = array(
-    'NormalAction:Topics'
+    'normal' => true,
+    'file'   => 'Topics',
 );
 $actions['NewTopic'] = array(
-    'NormalAction:Topics'
+    'normal' => true,
+    'file'   => 'Topics',
 );
 $actions['EditTopic'] = array(
-    'NormalAction:Topics'
+    'normal' => true,
+    'file'   => 'Topics',
 );
 $actions['DeleteTopic'] = array(
-    'NormalAction:Topics'
+    'normal' => true,
+    'file'   => 'Topics',
 );
 $actions['UpdateTopic'] = array(
-    'StandaloneAction:Topics'
+    'standalone' => true,
+    'file'   => 'Topics',
 );
 $actions['LockTopic'] = array(
-    'StandaloneAction:Topics'
+    'standalone' => true,
+    'file'   => 'Topics',
 );
 $actions['Posts'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['Post'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['NewPost'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['EditPost'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['ReplyPost'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['DeletePost'] = array(
-    'NormalAction:Posts'
+    'normal' => true,
+    'file'   => 'Posts',
 );
 $actions['UpdatePost'] = array(
-    'StandaloneAction:Posts'
+    'standalone' => true,
+    'file'   => 'Posts',
 );
 $actions['Attachment'] = array(
-    'StandaloneAction:Attachment'
+    'standalone' => true,
+    'file'   => 'Attachment',
 );
