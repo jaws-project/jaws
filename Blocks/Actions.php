@@ -14,7 +14,5 @@ $actions = array();
 /* Normal/Layout actions*/
 $actions['Block'] = array(
     'NormalAction:Block,LayoutAction:Block',
-    _t('BLOCKS_SHOW_BLOCK'),
-   '',
-   true
+    true
 );

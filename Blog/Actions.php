@@ -11,60 +11,109 @@
  */
 $actions = array();
 
-$actions['LastPost'] = array('NormalAction:Post');
-$actions['SingleView'] = array('NormalAction:Post');
-$actions['ViewPage'] = array('NormalAction:Posts');
-$actions['ViewDatePage'] = array('NormalAction:DatePosts');
-$actions['ViewAuthorPage'] = array('NormalAction:AuthorPosts');
-$actions['Comment'] = array('NormalAction:Comments');
-$actions['Reply'] = array('NormalAction:Comments');
-$actions['Preview'] = array('NormalAction:Comments');
-$actions['SaveComment'] = array('NormalAction:Comments');
-$actions['Archive'] = array('NormalAction:Archive');
-$actions['ShowCategory'] = array('NormalAction:Categories');
+$actions['LastPost'] = array(
+    'NormalAction:Post'
+);
+$actions['SingleView'] = array(
+    'NormalAction:Post'
+);
+$actions['ViewPage'] = array(
+    'NormalAction:Posts'
+);
+$actions['ViewDatePage'] = array(
+    'NormalAction:DatePosts'
+);
+$actions['ViewAuthorPage'] = array(
+    'NormalAction:AuthorPosts'
+);
+$actions['Comment'] = array(
+    'NormalAction:Comments'
+);
+$actions['Reply'] = array(
+    'NormalAction:Comments'
+);
+$actions['Preview'] = array(
+    'NormalAction:Comments'
+);
+$actions['SaveComment'] = array(
+    'NormalAction:Comments'
+);
+$actions['Archive'] = array(
+    'NormalAction:Archive'
+);
+$actions['ShowCategory'] = array(
+    'NormalAction:Categories'
+);
 
 $actions['EntriesByCategory'] = array(
-    'LayoutAction',
-    _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY'),
-    _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY_DESC'),
+    'layout' => true,
     true
 );
-$actions['CategoriesList'] = array('NormalAction:Categories, LayoutAction',
-                                    _t('BLOG_LAYOUT_CATEGORIES'),
-                                    _t('BLOG_LAYOUT_CATEGORIES_DESC'));
-$actions['PopularPosts'] = array('NormalAction, LayoutAction',
-                                    _t('BLOG_LAYOUT_POPULAR_POSTS'),
-                                    _t('BLOG_LAYOUT_POPULAR_POSTS_DESC'));
-$actions['PostsAuthors'] = array('NormalAction, LayoutAction',
-                                    _t('BLOG_LAYOUT_POSTS_AUTHORS'),
-                                    _t('BLOG_LAYOUT_POSTS_AUTHORS_DESC'));
-
-$actions['MonthlyHistory'] = array('LayoutAction', _t('BLOG_LAYOUT_MONTHLY'), 
-                                                           _t('BLOG_LAYOUT_MONTHLY_DESC'));
-$actions['RecentPosts'] = array('LayoutAction', _t('BLOG_LAYOUT_RECENT'),
-                                                           _t('BLOG_LAYOUT_RECENT_DESC'));
-$actions['RecentComments'] = array('LayoutAction', _t('BLOG_LAYOUT_RECENTCOMMENTS'),
-                                                           _t('BLOG_LAYOUT_RECENTCOMMENTS_DESC'));
-$actions['Calendar'] = array('LayoutAction', _t('BLOG_LAYOUT_CALENDAR'),
-                                                           _t('BLOG_LAYOUT_CALENDAR_DESC'));
-$actions['RSSLink'] = array('LayoutAction', _t('BLOG_LAYOUT_RSS'),
-                                                           _t('BLOG_LAYOUT_RSS_DESC'));
-$actions['AtomLink'] = array('LayoutAction', _t('BLOG_LAYOUT_ATOM'),
-                                                           _t('BLOG_LAYOUT_ATOM_DESC'));
-$actions['RecentCommentsRSSLink'] = array('LayoutAction', _t('BLOG_LAYOUT_COMMENTS_RSS'),
-                                                           _t('BLOG_LAYOUT_COMMENTS_RSS_DESC'));
-$actions['RecentCommentsAtomLink'] = array('LayoutAction', _t('BLOG_LAYOUT_COMMENTS_ATOM'),
-                                                           _t('BLOG_LAYOUT_COMMENTS_ATOM_DESC'));
-$actions['ShowTagCloud'] = array('LayoutAction', _t('BLOG_LAYOUT_TAGCLOUD'),
-                                                           _t('BLOG_LAYOUT_TAGCLOUD_DESC'));
-
-$actions['Trackback'] = array('StandaloneAction:Trackbacks');
-$actions['Pingback'] = array('StandaloneAction:Pingback');
-$actions['RSS'] = array('StandaloneAction:Feeds');
-$actions['Atom'] = array('StandaloneAction:Feeds');
-$actions['ShowRSSCategory'] = array('StandaloneAction:Feeds');
-$actions['ShowAtomCategory'] = array('StandaloneAction:Feeds');
-$actions['RecentCommentsRSS'] = array('StandaloneAction:Feeds');
-$actions['RecentCommentsAtom'] = array('StandaloneAction:Feeds');
-$actions['CommentsRSS'] = array('StandaloneAction:Feeds');
-$actions['CommentsAtom'] = array('StandaloneAction:Feeds');
+$actions['CategoriesList'] = array(
+    'NormalAction:Categories,LayoutAction',
+);
+$actions['PopularPosts'] = array(
+    'normal' => true,
+    'layout' => true,
+);
+$actions['PostsAuthors'] = array(
+    'normal' => true,
+    'layout' => true,
+);
+$actions['MonthlyHistory'] = array(
+    'layout' => true,
+);
+$actions['RecentPosts'] = array(
+    'layout' => true,
+);
+$actions['RecentComments'] = array(
+    'layout' => true,
+);
+$actions['Calendar'] = array(
+    'layout' => true,
+);
+$actions['RSSLink'] = array(
+    'layout' => true,
+);
+$actions['AtomLink'] = array(
+    'layout' => true,
+);
+$actions['RecentCommentsRSSLink'] = array(
+    'layout' => true,
+);
+$actions['RecentCommentsAtomLink'] = array(
+    'layout' => true,
+);
+$actions['ShowTagCloud'] = array(
+    'layout' => true,
+);
+$actions['Trackback'] = array(
+    'StandaloneAction:Trackbacks'
+);
+$actions['Pingback'] = array(
+    'StandaloneAction:Pingback'
+);
+$actions['RSS'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['Atom'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['ShowRSSCategory'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['ShowAtomCategory'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['RecentCommentsRSS'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['RecentCommentsAtom'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['CommentsRSS'] = array(
+    'StandaloneAction:Feeds'
+);
+$actions['CommentsAtom'] = array(
+    'StandaloneAction:Feeds'
+);
