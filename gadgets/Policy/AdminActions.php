@@ -10,8 +10,8 @@
  */
 $actions = array();
 
-$actions['IPBlocking']       = array('AdminAction');
-$actions['AgentBlocking']    = array('AdminAction');
-$actions['Encryption']       = array('AdminAction');
-$actions['AntiSpam']         = array('AdminAction');
+$actions['IPBlocking'] = array('AdminAction');
+$actions['AgentBlocking'] = array('AdminAction');
+$actions['Encryption'] = array('AdminAction');
+$actions['AntiSpam'] = array('AdminAction');
 $actions['AdvancedPolicies'] = array('AdminAction');

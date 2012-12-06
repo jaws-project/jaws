@@ -10,6 +10,6 @@
  */
 $actions = array();
 
-$actions['Admin']          = array('AdminAction');
-$actions['Aliases']        = array('AdminAction');
-$actions['Properties']     = array('AdminAction');
+$actions['Admin'] = array('AdminAction');
+$actions['Aliases'] = array('AdminAction');
+$actions['Properties'] = array('AdminAction');

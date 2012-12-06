@@ -9,5 +9,5 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['Admin']  = array('AdminAction');
+$actions['Admin'] = array('AdminAction');
 $actions['Export'] = array('StandaloneAdminAction');

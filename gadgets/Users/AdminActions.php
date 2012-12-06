@@ -12,29 +12,29 @@ $actions = array();
 
 $actions['Users'] = array(
     'normal' => true,
-    'file'   => 'Users',
+    'file' => 'Users',
 );
 $actions['MyAccount'] = array(
     'normal' => true,
-    'file'   => 'MyAccount',
+    'file' => 'MyAccount',
 );
 $actions['Groups'] = array(
     'normal' => true,
-    'file'   => 'Groups',
+    'file' => 'Groups',
 );
 $actions['OnlineUsers'] = array(
     'normal' => true,
-    'file'   => 'OnlineUsers',
+    'file' => 'OnlineUsers',
 );
 $actions['Properties'] = array(
     'normal' => true,
-    'file'   => 'Properties',
+    'file' => 'Properties',
 );
 $actions['LoadAvatar'] = array(
     'standalone' => true,
-    'file'       => 'Avatar',
+    'file' => 'Avatar',
 );
 $actions['UploadAvatar'] = array(
     'standalone' => true,
-    'file'       => 'Avatar',
+    'file' => 'Avatar',
 );

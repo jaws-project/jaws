@@ -10,7 +10,7 @@
  */
 $actions = array();
 $actions['DefaultAction'] = array('AdminAction');
-$actions['Plugins']       = array('AdminAction');
-$actions['Admin']         = array('AdminAction');
-$actions['UpdateGadget']  = array('AdminAction');
-$actions['EnableGadget']  = array('AdminAction');
+$actions['Plugins'] = array('AdminAction');
+$actions['Admin'] = array('AdminAction');
+$actions['UpdateGadget'] = array('AdminAction');
+$actions['EnableGadget'] = array('AdminAction');

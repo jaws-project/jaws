@@ -11,4 +11,4 @@
 $actions = array();
 
 $actions['UploadImage'] = array('StandaloneAdminAction');
-$actions['LoadImage']   = array('StandaloneAdminAction');
+$actions['LoadImage'] = array('StandaloneAdminAction');

@@ -14,87 +14,87 @@ $actions = array();
 $actions['LoginBox'] = array(
     'normal' => true,
     'layout' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['LoginLinks'] = array(
     'layout' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['OnlineUsers'] = array(
     'layout' => true,
-    'file'   => 'Statistics',
+    'file' => 'Statistics',
 );
 $actions['OnlineStatistics'] = array(
     'layout' => true,
-    'file'   => 'Statistics',
+    'file' => 'Statistics',
 );
 $actions['LatestRegistered'] = array(
     'layout' => true,
-    'file'   => 'Statistics',
+    'file' => 'Statistics',
 );
 $actions['Profile'] = array(
     'normal' => true,
     'layout' => true,
-    'file'   => 'Profile',
+    'file' => 'Profile',
     'parametric' => true,
 );
 $actions['Login'] = array(
     'normal' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['Logout'] = array(
     'normal' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['ForgotLogin'] = array(
     'normal' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['SendRecoverKey'] = array(
     'normal' => true,
-    'file'   => 'Login',
+    'file' => 'Login',
 );
 $actions['Registration'] = array(
     'normal' => true,
-    'file'   => 'Registration',
+    'file' => 'Registration',
 );
 $actions['DoRegister'] = array(
     'normal' => true,
-    'file'   => 'Registration',
+    'file' => 'Registration',
 );
 $actions['Registered'] = array(
     'normal' => true,
-    'file'   => 'Registration',
+    'file' => 'Registration',
 );
 $actions['ActivateUser'] = array(
     'normal' => true,
-    'file'   => 'Registration',
+    'file' => 'Registration',
 );
 $actions['Account'] = array(
     'normal' => true,
-    'file'   => 'Account',
+    'file' => 'Account',
 );
 $actions['ChangePassword'] = array(
     'normal' => true,
-    'file'   => 'Account',
+    'file' => 'Account',
 );
 $actions['UpdateAccount'] = array(
     'standalone' => true,
-    'file'       => 'Account',
+    'file' => 'Account',
 );
 $actions['Personal'] = array(
     'normal' => true,
-    'file'   => 'Personal',
+    'file' => 'Personal',
 );
 $actions['UpdatePersonal'] = array(
     'standalone' => true,
-    'file'       => 'Personal',
+    'file' => 'Personal',
 );
 $actions['Preferences'] = array(
     'normal' => true,
-    'file'   => 'Preferences',
+    'file' => 'Preferences',
 );
 $actions['UpdatePreferences'] = array(
     'standalone' => true,
-    'file'       => 'Preferences',
+    'file' => 'Preferences',
 );
