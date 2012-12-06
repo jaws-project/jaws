@@ -612,6 +612,77 @@ class Jaws_Gadget
     }
 
     /**
+     * Adds a layout action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function LayoutAction($action, $name, $description = null)
+    {
+        $this->AddAction($action, 'index', 'LayoutAction', $name, $description);
+    }
+
+    /**
+     * Adds a standalone action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function StandaloneAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'index', 'StandaloneAction', $name, $description);
+    }
+
+    /**
+     * Adds a standalone/admin action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function StandaloneAdminAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'admin', 'StandaloneAdminAction', $name, $description);
+    }
+
+    /**
+     * Verifies if action is a standalone
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is standalone, if not, returns false
+     */
+    function IsStandAlone($action)
+    {
+        if ($this->IsValidAction($action, 'index')) {
+            return (isset($this->_ValidAction['index'][$action]['StandaloneAction']) &&
+                    $this->_ValidAction['index'][$action]['StandaloneAction']);
+        }
+        return false;
+    }
+
+    /**
+     * Verifies if action is a standalone of controlpanel
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is standalone of the controlpanel if not, returns false
+     */
+    function IsStandAloneAdmin($action)
+    {
+        if ($this->IsValidAction($action, 'admin')) {
+            return (isset($this->_ValidAction['admin'][$action]['StandaloneAdminAction']) &&
+                    $this->_ValidAction['admin'][$action]['StandaloneAdminAction']);
+        }
+        return false;
+    }
+
+    /**
      * Uses the admin of the gadget(in controlpanel)
      *
      * @access  public

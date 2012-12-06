@@ -820,8 +820,7 @@ class Jaws
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
             if (@include_once($file)) {
                 $tmp = array();
-                $index_actions = isset($index_actions)? $index_actions : array();
-                foreach ($index_actions as $action => $properties) {
+                foreach ($actions as $action => $properties) {
                     $name   = isset($properties[1])? $properties[1] : $action;
                     $desc   = isset($properties[2])? $properties[2] : '';
                     $params = isset($properties[3])? $properties[3] : false;
@@ -837,10 +836,14 @@ class Jaws
                 }
                 // index actions
                 $this->_Gadgets[$gadget]['actions']['index'] = $tmp;
+            } else {
+                $this->_Gadgets[$gadget]['actions']['index'] = array();
+            }
 
+            $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
+            if (@include_once($file)) {
                 $tmp = array();
-                $admin_actions = isset($admin_actions)? $admin_actions : array();
-                foreach ($admin_actions as $action => $properties) {
+                foreach ($actions as $action => $properties) {
                     $name   = isset($properties[1])? $properties[1] : $action;
                     $desc   = isset($properties[2])? $properties[2] : '';
                     $params = isset($properties[3])? $properties[3] : false;
@@ -857,7 +860,7 @@ class Jaws
                 // admin actions
                 $this->_Gadgets[$gadget]['actions']['admin'] = $tmp;
             } else {
-                $this->_Gadgets[$gadget]['actions'] = array();
+                $this->_Gadgets[$gadget]['actions']['admin'] = array();
             }
         }
 
