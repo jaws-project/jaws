@@ -23,10 +23,9 @@ $actions['Group'] = array(
 $actions['Tag'] = array(
     'normal' => true,
 );
-
 $actions['Display'] = array(
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['ShowCategories'] = array(
     'layout' => true,

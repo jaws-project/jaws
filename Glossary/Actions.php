@@ -13,7 +13,6 @@ $actions = array();
 $actions['ViewTerm'] = array(
     'normal' => true,
 );
-
 $actions['RandomTerms'] = array(
     'layout' => true,  
 );

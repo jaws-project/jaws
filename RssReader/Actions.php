@@ -13,7 +13,7 @@ $actions = array();
 
 $actions['Display'] = array(
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['GetFeed'] = array(
     'normal' => true,

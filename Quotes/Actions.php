@@ -12,7 +12,7 @@ $actions = array();
 
 $actions['Display'] = array(
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['RecentQuotes'] = array(
     'normal' => true,

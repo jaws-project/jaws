@@ -14,7 +14,7 @@ $actions = array();
 $actions['RegionWeather'] = array(
     'normal' => true,
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['AllRegionsWeather'] = array(
     'normal' => true,

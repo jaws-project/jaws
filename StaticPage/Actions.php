@@ -14,7 +14,7 @@ $actions = array();
 $actions['GroupPages'] = array(
     'normal' => true,
     'layout' => true,
-    true
+    'parametric' => true,
 );
 $actions['PagesList'] = array(
     'layout' => true, 
