@@ -2,20 +2,20 @@
 /**
  * Preferences Actions file
  *
- * @category   GadgetActions
- * @package    Preferences
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2012 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetActions
+ * @package     Preferences
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2012 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$index_actions = array();
+$actions = array();
 
-$index_actions['Save']        = array('NormalAction');
-$index_actions['SetLanguage'] = array('NormalAction');
+$actions['Save']        = array('NormalAction');
+$actions['SetLanguage'] = array('NormalAction');
 
 /* Layout actions */
-$index_actions['Display'] = array(
+$actions['Display'] = array(
     'LayoutAction',
     _t('PREFERENCES_LAYOUT_DISPLAY'),
     _t('PREFERENCES_LAYOUT_DISPLAY_DESCRIPTION'),

@@ -111,7 +111,7 @@ $maps[] = array('ShowCategory',
                 '',
                 array('id' => '[[:alnum:]-_\.]+',)
                 );
-$maps[] = array( 'CategoriesList', 'blog/categories');
+$maps[] = array('CategoriesList', 'blog/categories');
 $maps[] = array('Trackback', 'trackback/{id}');
 $maps[] = array('Archive', 'blog/archive');
 $maps[] = array('PopularPosts', 'blog/popular');
