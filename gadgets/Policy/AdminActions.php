@@ -10,8 +10,18 @@
  */
 $actions = array();
 
-$actions['IPBlocking'] = array('AdminAction');
-$actions['AgentBlocking'] = array('AdminAction');
-$actions['Encryption'] = array('AdminAction');
-$actions['AntiSpam'] = array('AdminAction');
-$actions['AdvancedPolicies'] = array('AdminAction');
+$actions['IPBlocking'] = array(
+    'normal' => true,
+);
+$actions['AgentBlocking'] = array(
+    'normal' => true,
+);
+$actions['Encryption'] = array(
+    'normal' => true,
+);
+$actions['AntiSpam'] = array(
+    'normal' => true,
+);
+$actions['AdvancedPolicies'] = array(
+    'normal' => true,
+);

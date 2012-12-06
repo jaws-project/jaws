@@ -9,7 +9,16 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['DefaultAction'] = array('AdminAction');
-$actions['Admin'] = array('AdminAction');
-$actions['EditACL'] = array('AdminAction');
-$actions['EditRegistry'] = array('AdminAction');
+
+$actions['DefaultAction'] = array(
+    'normal' => true,
+);
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['EditACL'] = array(
+    'normal' => true,
+);
+$actions['EditRegistry'] = array(
+    'normal' => true,
+);

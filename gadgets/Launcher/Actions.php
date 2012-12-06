@@ -13,8 +13,8 @@ $actions = array();
 
 /* Layout actions */
 $actions['Execute'] = array(
-    'NormalAction:Execute,LayoutAction:Execute',
-    _t('LAUNCHER_SCRIPT'),
-    _t('LAUNCHER_SCRIPT_DESC'),
-    true
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Execute',
+    'parametric' => true,
 );

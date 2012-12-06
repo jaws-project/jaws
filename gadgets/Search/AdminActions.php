@@ -10,4 +10,6 @@
  */
 $actions = array();
 
-$actions['SaveChanges'] = array('AdminAction');
+$actions['SaveChanges'] = array(
+    'normal' => true,
+);

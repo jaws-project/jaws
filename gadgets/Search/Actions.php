@@ -12,21 +12,22 @@
 $actions = array();
 
 $actions['Box'] = array(
-    'NormalAction:Search,LayoutAction:Search',
-    _t('SEARCH_LAYOUT_BOX'),
-    _t('SEARCH_LAYOUT_BOX_DESCRIPTION')
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Search',
 );
-
 $actions['SimpleBox'] = array(
-    'NormalAction:Search,LayoutAction:Search',
-    _t('SEARCH_LAYOUT_SIMPLEBOX'),
-    _t('SEARCH_LAYOUT_SIMPLEBOX_DESCRIPTION')
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Search',
 );
 
 $actions['AdvancedBox'] = array(
-    'NormalAction:Search,LayoutAction:Search',
-    _t('SEARCH_LAYOUT_ADVANCEDBOX'),
-    _t('SEARCH_LAYOUT_ADVANCEDBOX_DESCRIPTION')
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Search',
 );
-
-$actions['Results'] = array('NormalAction:Results');
+$actions['Results'] = array(
+    'normal' => true,
+    'file'   => 'Results',
+);

@@ -9,6 +9,12 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['DefaultAction'] = array('AdminAction');
-$actions['Logout'] = array('AdminAction');
-$actions['Backup'] = array('StandaloneAdminAction');
+$actions['DefaultAction'] = array(
+    'normal' => true,
+);
+$actions['Logout'] = array(
+    'normal' => true,
+);
+$actions['Backup'] = array(
+    'standalone' => true,
+);

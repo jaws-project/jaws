@@ -11,4 +11,6 @@
  */
 $actions = array();
 
-$actions['Captcha'] = array('StandaloneAction');
+$actions['Captcha'] = array(
+    'standalone' => true,
+);

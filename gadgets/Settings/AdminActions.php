@@ -9,10 +9,25 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['DefaultAction'] = array('AdminAction');
-$actions['Admin'] = array('AdminAction');
-$actions['AdvancedSettings'] = array('AdminAction');
-$actions['MetaSettings'] = array('AdminAction');
-$actions['MailSettings'] = array('AdminAction');
-$actions['FTPSettings'] = array('AdminAction');
-$actions['ProxySettings'] = array('AdminAction');
+
+$actions['DefaultAction'] = array(
+    'normal' => true,
+);
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['AdvancedSettings'] = array(
+    'normal' => true,
+);
+$actions['MetaSettings'] = array(
+    'normal' => true,
+);
+$actions['MailSettings'] = array(
+    'normal' => true,
+);
+$actions['FTPSettings'] = array(
+    'normal' => true,
+);
+$actions['ProxySettings'] = array(
+    'normal' => true,
+);

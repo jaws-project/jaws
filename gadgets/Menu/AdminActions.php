@@ -10,5 +10,9 @@
  */
 $actions = array();
 
-$actions['UploadImage'] = array('StandaloneAdminAction');
-$actions['LoadImage'] = array('StandaloneAdminAction');
+$actions['UploadImage'] = array(
+    'standalone' => true,
+);
+$actions['LoadImage'] = array(
+    'standalone' => true,
+);

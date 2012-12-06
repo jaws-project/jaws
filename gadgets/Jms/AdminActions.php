@@ -9,8 +9,18 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['DefaultAction'] = array('AdminAction');
-$actions['Plugins'] = array('AdminAction');
-$actions['Admin'] = array('AdminAction');
-$actions['UpdateGadget'] = array('AdminAction');
-$actions['EnableGadget'] = array('AdminAction');
+$actions['DefaultAction'] = array(
+    'normal' => true,
+);
+$actions['Plugins'] = array(
+    'normal' => true,
+);
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['UpdateGadget'] = array(
+    'normal' => true,
+);
+$actions['EnableGadget'] = array(
+    'normal' => true,
+);

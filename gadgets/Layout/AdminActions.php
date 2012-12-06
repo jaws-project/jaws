@@ -9,13 +9,33 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['Admin'] = array('StandaloneAdminAction');
-$actions['ChangeTheme'] = array('StandaloneAdminAction');
-$actions['LayoutManager'] = array('AdminAction');
-$actions['LayoutBuilder'] = array('AdminAction');
-$actions['SetLayoutMode'] = array('AdminAction');
-$actions['DeleteLayoutElement'] = array('AdminAction');
-$actions['EditElementAction'] = array('StandaloneAdminAction');
-$actions['ChangeDisplayWhen'] = array('StandaloneAdminAction');
-$actions['AddLayoutElement'] = array('StandaloneAdminAction');
-$actions['SaveAddLayoutElement'] = array('AdminAction');
+$actions['Admin'] = array(
+    'standalone' => true,
+);
+$actions['ChangeTheme'] = array(
+    'standalone' => true,
+);
+$actions['LayoutManager'] = array(
+    'normal' => true,
+);
+$actions['LayoutBuilder'] = array(
+    'normal' => true,
+);
+$actions['SetLayoutMode'] = array(
+    'normal' => true,
+);
+$actions['DeleteLayoutElement'] = array(
+    'normal' => true,
+);
+$actions['EditElementAction'] = array(
+    'standalone' => true,
+);
+$actions['ChangeDisplayWhen'] = array(
+    'standalone' => true,
+);
+$actions['AddLayoutElement'] = array(
+    'standalone' => true,
+);
+$actions['SaveAddLayoutElement'] = array(
+    'normal' => true,
+);
