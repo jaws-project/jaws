@@ -244,8 +244,8 @@ class Jaws_Log
             $trace = debug_backtrace();
         }
 
-        $file = $trace[$backtrace]['file'];
-        $line = $trace[$backtrace]['line'];
+        $file = @$trace[$backtrace]['file'];
+        $line = @$trace[$backtrace]['line'];
 
         $method = $this->_Method;
         $msg = "[$file,$line]: ". trim($msg);
