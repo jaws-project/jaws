@@ -10,6 +10,12 @@
  */
 $admin_actions = array();
 
-$admin_actions['EditEntry'] = array('AdminAction');
-$admin_actions['SaveEditEntry'] = array('AdminAction');
-$admin_actions['DeleteComment'] = array('AdminAction');
+$admin_actions['EditEntry'] = array(
+    'normal' => true,
+);
+$admin_actions['SaveEditEntry'] = array(
+    'normal' => true,
+);
+$admin_actions['DeleteComment'] = array(
+    'normal' => true,
+);

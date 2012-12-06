@@ -10,25 +10,91 @@
  */
 $actions = array();
 
-$actions['Summary'] = array('AdminAction:Summary');
-$actions['NewEntry'] = array('AdminAction:Entries');
-$actions['SaveNewEntry'] = array('AdminAction:Entries');
-$actions['PreviewNewEntry'] = array('AdminAction:Entries');
-$actions['ListEntries'] = array('AdminAction:Entries');
-$actions['EditEntry'] = array('AdminAction:Entries');
-$actions['PreviewEditEntry'] = array('AdminAction:Entries');
-$actions['SaveEditEntry'] = array('AdminAction:Entries');
-$actions['DeleteEntry'] = array('AdminAction:Entries');
-$actions['UpdateCategory'] = array('AdminAction:Categories');
-$actions['AddCategory'] = array('AdminAction:Categories');
-$actions['EditCategory'] = array('AdminAction:Categories');
-$actions['DeleteCategory'] = array('AdminAction:Categories');
-$actions['ManageCategories'] = array('AdminAction:Categories');
-$actions['ManageComments'] = array('AdminAction:Comments');
-$actions['EditComment'] = array('AdminAction:Comments');
-$actions['SaveEditComment'] = array('AdminAction:Comments');
-$actions['DeleteComment'] = array('AdminAction:Comments');
-$actions['ManageTrackbacks'] = array('AdminAction:Trackbacks');
-$actions['ViewTrackback'] = array('AdminAction:Trackbacks');
-$actions['AdditionalSettings'] = array('AdminAction:Settings');
-$actions['SaveAdditionalSettings'] = array('AdminAction:Settings');
+$actions['Summary'] = array(
+    'normal' => true,
+    'file'   => 'Summary',
+);
+$actions['NewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['SaveNewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['PreviewNewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['ListEntries'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['EditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['PreviewEditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['SaveEditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['DeleteEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$actions['UpdateCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$actions['AddCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$actions['EditCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$actions['DeleteCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$actions['ManageCategories'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$actions['ManageComments'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$actions['EditComment'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$actions['SaveEditComment'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$actions['DeleteComment'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$actions['ManageTrackbacks'] = array(
+    'normal' => true,
+    'file'   => 'Trackbacks',
+);
+$actions['ViewTrackback'] = array(
+    'normal' => true,
+    'file'   => 'Trackbacks',
+);
+$actions['AdditionalSettings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
+$actions['SaveAdditionalSettings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);

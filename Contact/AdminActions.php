@@ -11,8 +11,18 @@
 $actions = array();
 
 /* Admin actions */
-$actions['Admin'] = array('AdminAction');
-$actions['Recipients'] = array('AdminAction');
-$actions['Properties'] = array('AdminAction');
-$actions['Mailer'] = array('AdminAction');
-$actions['UploadFile'] = array('StandaloneAdminAction');
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['Recipients'] = array(
+    'normal' => true,
+);
+$actions['Properties'] = array(
+    'normal' => true,
+);
+$actions['Mailer'] = array(
+    'normal' => true,
+);
+$actions['UploadFile'] = array(
+    'standalone' => true,
+);
