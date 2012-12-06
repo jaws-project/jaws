@@ -13,18 +13,15 @@ $actions = array();
 
 $actions['Poll'] = array(
     'NormalAction:Poll,LayoutAction:Poll',
-    _t('POLL_LAYOUT_POLL'),
-    _t('POLL_LAYOUT_POLL_DESC'),
    true
 );
-
 $actions['Polls'] = array(
     'NormalAction:Polls,LayoutAction:Polls',
-    _t('POLL_LAYOUT_POLLS'),
-    _t('POLL_LAYOUT_POLLS_DESC'),
-   true
+    true
 );
-
-/* Normal actions*/
-$actions['ViewResult'] = array('NormalAction');
-$actions['Vote'] = array('NormalAction');
+$actions['ViewResult'] = array(
+    'normal' => true,
+);
+$actions['Vote'] = array(
+    'normal' => true,
+);

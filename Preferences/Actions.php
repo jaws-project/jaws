@@ -11,12 +11,12 @@
  */
 $actions = array();
 
-$actions['Save'] = array('NormalAction');
-$actions['SetLanguage'] = array('NormalAction');
-
-/* Layout actions */
+$actions['Save'] = array(
+    'normal' => true,
+);
+$actions['SetLanguage'] = array(
+    'normal' => true,
+);
 $actions['Display'] = array(
-    'LayoutAction',
-    _t('PREFERENCES_LAYOUT_DISPLAY'),
-    _t('PREFERENCES_LAYOUT_DISPLAY_DESCRIPTION'),
+    'layout' => true,
 );

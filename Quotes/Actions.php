@@ -10,22 +10,20 @@
  */
 $actions = array();
 
-/* Layout actions*/
 $actions['Display'] = array(
-    'LayoutAction',
-    _t('QUOTES_ACTION_DISPLAY'),
-    _t('QUOTES_ACTION_DISPLAY_DESCRIPTION'),
+    'layout' => true,
     true
 );
 $actions['RecentQuotes'] = array(
-    'NormalAction,LayoutAction',
-    _t('QUOTES_LAYOUT_RECENT'),
-    _t('QUOTES_LAYOUT_RECENT_DESCRIPTION')
+    'normal' => true,
+    'layout' => true,
 );
-
-/* Normal actions*/
-$actions['ViewQuote'] = array('NormalAction');
-$actions['ViewGroupQuotes'] = array('NormalAction');
-
-/* Standalone actions */
-$actions['QuotesByGroup'] = array('StandaloneAction');
+$actions['ViewQuote'] = array(
+    'normal' => true,
+);
+$actions['ViewGroupQuotes'] = array(
+    'normal' => true,
+);
+$actions['QuotesByGroup'] = array(
+    'standalone' => true,
+);

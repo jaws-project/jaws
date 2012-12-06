@@ -10,33 +10,40 @@
  */
 $actions = array();
 
-$actions['PhotoblogPortrait'] = array('NormalAction');
-$actions['AlbumList'] = array(
-    'NormalAction,LayoutAction',
-    _t('PHOO_ALBUMS'),
-    _t('PHOO_ALBUMS_DESC')
+$actions['PhotoblogPortrait'] = array(
+    'normal' => true,
 );
-$actions['ViewAlbum'] = array('NormalAction');
-$actions['ViewAlbumPage'] = array('NormalAction');
-$actions['ViewImage'] = array('NormalAction');
-$actions['Comment'] = array('NormalAction');
-$actions['Reply'] = array('NormalAction');
-$actions['Preview'] = array('NormalAction');
-$actions['SaveComment'] = array('NormalAction');
-
-/* LayoutActions */
+$actions['AlbumList'] = array(
+    'normal' => true,
+    'layout' => true,
+);
+$actions['ViewAlbum'] = array(
+    'normal' => true,
+);
+$actions['ViewAlbumPage'] = array(
+    'normal' => true,
+);
+$actions['ViewImage'] = array(
+    'normal' => true,
+);
+$actions['Comment'] = array(
+    'normal' => true,
+);
+$actions['Reply'] = array(
+    'normal' => true,
+);
+$actions['Preview'] = array(
+    'normal' => true,
+);
+$actions['SaveComment'] = array(
+    'normal' => true,
+);
 $actions['Random'] = array(
-    'LayoutAction',
-    _t('PHOO_RANDOM_IMAGE'),
-    _t('PHOO_RANDOM_IMAGE_DESC')
+    'layout' => true,
 );
 $actions['Moblog'] = array(
-    'LayoutAction',
-    _t('PHOO_MOBLOG'),
-    _t('PHOO_MOBLOG_DESC')
+    'layout' => true,
 );
 $actions['RecentComments'] = array(
-    'LayoutAction',
-    _t('PHOO_RECENT_COMMENTS'),
-    _t('PHOO_RECENT_COMMENTS_DESC')
+    'layout' => true,
 );

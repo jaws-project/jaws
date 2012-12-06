@@ -11,13 +11,10 @@
  */
 $actions = array();
 
-/* Layout actions */
 $actions['Display'] = array(
-    'LayoutAction',
-    _t('RSSREADER_LAYOUT_SHOW_TITLES'),
-    _t('RSSREADER_LAYOUT_SHOW_TITLES_DESCRIPTION'),
+    'layout' => true,
     true
 );
-
-/* Normal actions*/
-$actions['GetFeed'] = array('NormalAction');
+$actions['GetFeed'] = array(
+    'normal' => true,
+);
