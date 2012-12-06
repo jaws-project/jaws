@@ -11,11 +11,27 @@
 $actions = array();
 
 /* Admin actions */
-$actions['Admin'] = array('AdminAction');
-$actions['ManageQuestions'] = array('AdminAction');
-$actions['NewQuestion'] = array('AdminAction');
-$actions['EditQuestion'] = array('AdminAction');
-$actions['UpdateQuestion'] = array('AdminAction');
-$actions['NewCategory'] = array('AdminAction');
-$actions['EditCategory'] = array('AdminAction');
-$actions['UpdateCategory'] = array('AdminAction');
+$actions['Admin'] = array(
+    'normal' => true,
+);
+$actions['ManageQuestions'] = array(
+    'normal' => true,
+);
+$actions['NewQuestion'] = array(
+    'normal' => true,
+);
+$actions['EditQuestion'] = array(
+    'normal' => true,
+);
+$actions['UpdateQuestion'] = array(
+    'normal' => true,
+);
+$actions['NewCategory'] = array(
+    'normal' => true,
+);
+$actions['EditCategory'] = array(
+    'normal' => true,
+);
+$actions['UpdateCategory'] = array(
+    'normal' => true,
+);

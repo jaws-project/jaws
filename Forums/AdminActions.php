@@ -10,4 +10,7 @@
  */
 $actions = array();
 
-$actions['Forums'] = array('AdminAction:Forums');
+$actions['Forums'] = array(
+    'normal' => true,
+    'file'   => 'Forums',
+);
