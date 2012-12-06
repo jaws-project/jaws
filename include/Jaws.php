@@ -816,49 +816,33 @@ class Jaws
         if (!isset($this->_Gadgets[$gadget]['actions'])) {
             // Load gadget's language file
             $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
-
+            global $base_properties;
+            $base_properties= array(
+                'name'       => '',
+                'desc'       => '',
+                'normal'     => false,
+                'layout'     => false,
+                'parametric' => false,
+                'standalone' => false,
+                'file'       => false,
+            );
+            $func_merge = create_function(
+                '$properties',
+                'global $base_properties;
+                return array_merge($base_properties, $properties);'
+            );
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
             if (@include_once($file)) {
-                $tmp = array();
-                foreach ($actions as $action => $properties) {
-                    $name   = isset($properties[1])? $properties[1] : $action;
-                    $desc   = isset($properties[2])? $properties[2] : '';
-                    $params = isset($properties[3])? $properties[3] : false;
-                    $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
-                    $tmp[$action] = array('name'   => $name,
-                                          'desc'   => $desc,
-                                          'params' => $params);
-                    foreach ($modes as $mode) {
-                        @list($mode, $file) = array_filter(explode(':', $mode));
-                        $tmp[$action] = $tmp[$action] + array($mode => true);
-                        $tmp[$action] = $tmp[$action] + array('file' => $file);
-                    }
-                }
-                // index actions
-                $this->_Gadgets[$gadget]['actions']['index'] = $tmp;
+                $actions = array_map($func_merge, $actions);
+                $this->_Gadgets[$gadget]['actions']['index'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['index'] = array();
             }
 
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
             if (@include_once($file)) {
-                $tmp = array();
-                foreach ($actions as $action => $properties) {
-                    $name   = isset($properties[1])? $properties[1] : $action;
-                    $desc   = isset($properties[2])? $properties[2] : '';
-                    $params = isset($properties[3])? $properties[3] : false;
-                    $modes  = array_filter(array_map('trim', explode(',', $properties[0])));
-                    $tmp[$action] = array('name'   => $name,
-                                          'desc'   => $desc,
-                                          'params' => $params);
-                    foreach ($modes as $mode) {
-                        @list($mode, $file) = array_filter(explode(':', $mode));
-                        $tmp[$action] = $tmp[$action] + array($mode => true);
-                        $tmp[$action] = $tmp[$action] + array('file' => $file);
-                    }
-                }
-                // admin actions
-                $this->_Gadgets[$gadget]['actions']['admin'] = $tmp;
+                $actions = array_map($func_merge, $actions);
+                $this->_Gadgets[$gadget]['actions']['admin'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['admin'] = array();
             }

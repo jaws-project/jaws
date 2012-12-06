@@ -191,7 +191,7 @@ class Jaws_Gadget
             if (!isset($this->_ValidAction['index']['DefaultAction'])) {
                 $this->_ValidAction['index']['DefaultAction'] = array(
                     'name' => 'DefaultAction',
-                    'NormalAction' => true,
+                    'normal' => true,
                     'desc' => '',
                     'file' => null
                 );
@@ -200,7 +200,7 @@ class Jaws_Gadget
             if (!isset($this->_ValidAction['admin']['Admin'])) {
                 $this->_ValidAction['admin']['Admin'] = array(
                     'name' => 'Admin',
-                    'AdminAction' => true,
+                    'normal' => true,
                     'desc' => '',
                     'file' => null
                 );
@@ -553,7 +553,7 @@ class Jaws_Gadget
      */
     function NormalAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'index', 'NormalAction', $description);
+        $this->AddAction($action, 'index', 'normal', $description);
     }
 
     /**
@@ -566,7 +566,7 @@ class Jaws_Gadget
      */
     function AdminAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'admin', 'AdminAction', $description);
+        $this->AddAction($action, 'admin', 'normal', $description);
     }
 
     /**
@@ -579,10 +579,10 @@ class Jaws_Gadget
     function IsAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->_ValidAction['admin'][$action]['AdminAction']) &&
-                    $this->_ValidAction['admin'][$action]['AdminAction']) ||
-                   (isset($this->_ValidAction['admin'][$action]['StandaloneAdminAction']) &&
-                    $this->_ValidAction['admin'][$action]['StandaloneAdminAction']);
+            return (isset($this->_ValidAction['admin'][$action]['normal']) &&
+                    $this->_ValidAction['admin'][$action]['normal']) ||
+                   (isset($this->_ValidAction['admin'][$action]['standalone']) &&
+                    $this->_ValidAction['admin'][$action]['standalone']);
         }
 
         return false;
@@ -602,10 +602,10 @@ class Jaws_Gadget
         }
 
         if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->_ValidAction['index'][$action]['NormalAction']) &&
-                    $this->_ValidAction['index'][$action]['NormalAction']) ||
-                   (isset($this->_ValidAction['index'][$action]['StandaloneAction']) &&
-                    $this->_ValidAction['index'][$action]['StandaloneAction']);
+            return (isset($this->_ValidAction['index'][$action]['normal']) &&
+                    $this->_ValidAction['index'][$action]['normal']) ||
+                   (isset($this->_ValidAction['index'][$action]['standalone']) &&
+                    $this->_ValidAction['index'][$action]['standalone']);
         }
 
         return false;
@@ -621,7 +621,7 @@ class Jaws_Gadget
      */
     function LayoutAction($action, $name, $description = null)
     {
-        $this->AddAction($action, 'index', 'LayoutAction', $name, $description);
+        $this->AddAction($action, 'index', 'layout', $name, $description);
     }
 
     /**
@@ -634,7 +634,7 @@ class Jaws_Gadget
      */
     function StandaloneAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'index', 'StandaloneAction', $name, $description);
+        $this->AddAction($action, 'index', 'standalone', $name, $description);
     }
 
     /**
@@ -647,7 +647,7 @@ class Jaws_Gadget
      */
     function StandaloneAdminAction($action, $name = null, $description = null)
     {
-        $this->AddAction($action, 'admin', 'StandaloneAdminAction', $name, $description);
+        $this->AddAction($action, 'admin', 'standalone', $name, $description);
     }
 
     /**
@@ -660,8 +660,8 @@ class Jaws_Gadget
     function IsStandAlone($action)
     {
         if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->_ValidAction['index'][$action]['StandaloneAction']) &&
-                    $this->_ValidAction['index'][$action]['StandaloneAction']);
+            return (isset($this->_ValidAction['index'][$action]['standalone']) &&
+                    $this->_ValidAction['index'][$action]['standalone']);
         }
         return false;
     }
@@ -676,8 +676,8 @@ class Jaws_Gadget
     function IsStandAloneAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->_ValidAction['admin'][$action]['StandaloneAdminAction']) &&
-                    $this->_ValidAction['admin'][$action]['StandaloneAdminAction']);
+            return (isset($this->_ValidAction['admin'][$action]['standalone']) &&
+                    $this->_ValidAction['admin'][$action]['standalone']);
         }
         return false;
     }
