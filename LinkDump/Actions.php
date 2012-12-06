@@ -11,10 +11,10 @@
  */
 $actions = array();
 
-$actions['Link']    = array('NormalAction');
+$actions['Link'] = array('NormalAction');
 $actions['Archive'] = array('NormalAction');
-$actions['Group']   = array('NormalAction');
-$actions['Tag']     = array('NormalAction');
+$actions['Group'] = array('NormalAction');
+$actions['Tag'] = array('NormalAction');
 
 $actions['Display'] = array(
     'LayoutAction',

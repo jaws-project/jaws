@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['View']         = array('NormalAction');
+$actions['View'] = array('NormalAction');
 $actions['ViewQuestion'] = array('NormalAction');
 $actions['ViewCategory'] = array('NormalAction');
 

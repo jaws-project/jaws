@@ -24,7 +24,7 @@ $actions['RecentQuotes'] = array(
 );
 
 /* Normal actions*/
-$actions['ViewQuote']       = array('NormalAction');
+$actions['ViewQuote'] = array('NormalAction');
 $actions['ViewGroupQuotes'] = array('NormalAction');
 
 /* Standalone actions */

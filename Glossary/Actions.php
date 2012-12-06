@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['ViewTerm']    = array('NormalAction');
+$actions['ViewTerm'] = array('NormalAction');
 
 $actions['RandomTerms'] = array('LayoutAction',  
                                 _t('GLOSSARY_LAYOUT_RANDOM'),

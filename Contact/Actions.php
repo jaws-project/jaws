@@ -11,17 +11,17 @@
  */
 $actions = array();
 
-$actions['ContactMini']   = array('NormalAction');
+$actions['ContactMini'] = array('NormalAction');
 $actions['ContactSimple'] = array('NormalAction');
-$actions['ContactFull']   = array('NormalAction');
-$actions['Send']          = array('NormalAction');
+$actions['ContactFull'] = array('NormalAction');
+$actions['Send'] = array('NormalAction');
 
-$actions['Display']       = array(
+$actions['Display'] = array(
     'LayoutAction',
     _t('CONTACT_ACTION_DISPLAY'),
     _t('CONTACT_ACTION_DISPLAY_DESCRIPTION')
 );
-$actions['DisplayMini']   = array(
+$actions['DisplayMini'] = array(
     'LayoutAction',
     _t('CONTACT_ACTION_DISPLAY_MINI'),
     _t('CONTACT_ACTION_DISPLAY_MINI_DESCRIPTION')
@@ -31,7 +31,7 @@ $actions['DisplaySimple'] = array(
     _t('CONTACT_ACTION_DISPLAY_SIMPLE'),
     _t('CONTACT_ACTION_DISPLAY_SIMPLE_DESCRIPTION')
 );
-$actions['DisplayFull']   = array(
+$actions['DisplayFull'] = array(
     'LayoutAction',
     _t('CONTACT_ACTION_DISPLAY_FULL'),
     _t('CONTACT_ACTION_DISPLAY_FULL_DESCRIPTION')

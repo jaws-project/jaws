@@ -10,6 +10,6 @@
  */
 $actions = array();
 
-$actions['Themes']        = array('AdminAction');
-$actions['UploadTheme']   = array('AdminAction');
+$actions['Themes'] = array('AdminAction');
+$actions['UploadTheme'] = array('AdminAction');
 $actions['DownloadTheme'] = array('StandaloneAdminAction');

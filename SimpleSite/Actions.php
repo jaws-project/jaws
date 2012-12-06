@@ -10,8 +10,8 @@
  */
 $actions = array();
 
-$actions['Display']   = array('NormalAction');
-$actions['Sitemap']   = array('NormalAction');
+$actions['Display'] = array('NormalAction');
+$actions['Sitemap'] = array('NormalAction');
 /* Standalone actions */
 $actions['SitemapXML'] = array('StandaloneAction');
 /* Layout actions */
@@ -20,17 +20,17 @@ $actions['Show'] = array(
     _t('SIMPLESITE_SHOW'),
     _t('SIMPLESITE_SHOW_DESCRIPTION')
 );
-$actions['ShowWithoutTop']  = array(
+$actions['ShowWithoutTop'] = array(
     'LayoutAction',
     _t('SIMPLESITE_SHOWWITHOUTTOP'),
     _t('SIMPLESITE_SHOWWITHOUTTOP_DESCRIPTION')
 );
-$actions['TopMenu']         = array(
+$actions['TopMenu'] = array(
     'LayoutAction',
     _t('SIMPLESITE_TOPMENU'),
     _t('SIMPLESITE_TOPMENU_DESCRIPTION')
 );
-$actions['ShowTwoLevels']   = array(
+$actions['ShowTwoLevels'] = array(
     'LayoutAction',
     _t('SIMPLESITE_TWOLEVELS'),
     _t('SIMPLESITE_TWOLEVELS_DESCRIPTION')

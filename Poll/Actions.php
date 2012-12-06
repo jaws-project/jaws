@@ -27,4 +27,4 @@ $actions['Polls'] = array(
 
 /* Normal actions*/
 $actions['ViewResult'] = array('NormalAction');
-$actions['Vote']       = array('NormalAction');
+$actions['Vote'] = array('NormalAction');

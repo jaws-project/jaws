@@ -10,5 +10,5 @@
  */
 $actions = array();
 
-$actions['Admin']       = array('AdminAction');
+$actions['Admin'] = array('AdminAction');
 $actions['QuoteGroups'] = array('AdminAction');

@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['SysInfo']  = array('AdminAction');
-$actions['PHPInfo']  = array('AdminAction');
+$actions['SysInfo'] = array('AdminAction');
+$actions['PHPInfo'] = array('AdminAction');
 $actions['JawsInfo'] = array('AdminAction');
-$actions['DirInfo']  = array('AdminAction');
+$actions['DirInfo'] = array('AdminAction');

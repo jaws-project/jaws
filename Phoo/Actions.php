@@ -11,18 +11,18 @@
 $actions = array();
 
 $actions['PhotoblogPortrait'] = array('NormalAction');
-$actions['AlbumList']         = array(
+$actions['AlbumList'] = array(
     'NormalAction,LayoutAction',
     _t('PHOO_ALBUMS'),
     _t('PHOO_ALBUMS_DESC')
 );
-$actions['ViewAlbum']     = array('NormalAction');
+$actions['ViewAlbum'] = array('NormalAction');
 $actions['ViewAlbumPage'] = array('NormalAction');
-$actions['ViewImage']     = array('NormalAction');
-$actions['Comment']       = array('NormalAction');
-$actions['Reply']         = array('NormalAction');
-$actions['Preview']       = array('NormalAction');
-$actions['SaveComment']   = array('NormalAction');
+$actions['ViewImage'] = array('NormalAction');
+$actions['Comment'] = array('NormalAction');
+$actions['Reply'] = array('NormalAction');
+$actions['Preview'] = array('NormalAction');
+$actions['SaveComment'] = array('NormalAction');
 
 /* LayoutActions */
 $actions['Random'] = array(

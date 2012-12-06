@@ -10,6 +10,6 @@
  */
 $actions = array();
 
-$actions['Regions']           = array('AdminAction');
-$actions['Properties']        = array('AdminAction');
+$actions['Regions'] = array('AdminAction');
+$actions['Properties'] = array('AdminAction');
 $actions['GetGoogleMapImage'] = array('StandaloneAdminAction');

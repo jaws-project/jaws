@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Post']  = array('NormalAction');
+$actions['Post'] = array('NormalAction');
 $actions['Display'] = array(
     'LayoutAction',
     _t('CHATBOX_LAYOUT_DISPLAY'),

@@ -11,8 +11,8 @@
 $actions = array();
 
 /* Admin actions */
-$actions['Admin']         = array('AdminAction');
-$actions['UploadFile']    = array('StandaloneAdminAction');
-$actions['BrowseFile']    = array('StandaloneAdminAction');
-$actions['DeleteFile']    = array('StandaloneAdminAction');
-$actions['DeleteDir']     = array('StandaloneAdminAction');
+$actions['Admin'] = array('AdminAction');
+$actions['UploadFile'] = array('StandaloneAdminAction');
+$actions['BrowseFile'] = array('StandaloneAdminAction');
+$actions['DeleteFile'] = array('StandaloneAdminAction');
+$actions['DeleteDir'] = array('StandaloneAdminAction');

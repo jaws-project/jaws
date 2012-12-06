@@ -11,7 +11,7 @@
  */
 $actions = array();
 
-$actions['Save']        = array('NormalAction');
+$actions['Save'] = array('NormalAction');
 $actions['SetLanguage'] = array('NormalAction');
 
 /* Layout actions */

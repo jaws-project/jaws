@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Admin']        = array('AdminAction');
-$actions['Groups']       = array('AdminAction');
-$actions['Reports']      = array('AdminAction');
+$actions['Admin'] = array('AdminAction');
+$actions['Groups'] = array('AdminAction');
+$actions['Reports'] = array('AdminAction');
 $actions['UploadBanner'] = array('AdminAction');

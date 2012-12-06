@@ -11,13 +11,13 @@
  */
 $actions = array();
 
-$actions['Display']      = array('LayoutAction',
+$actions['Display'] = array('LayoutAction',
                                  _t('BANNER_ACTION_DISPLAY_NAME'),
                                  _t('BANNER_ACTION_DISPLAY_DESCRIPTION'),
                                  true);
 
 /* Normal actions*/
-$actions['Click']        = array('NormalAction');
+$actions['Click'] = array('NormalAction');
 
 /* Standalone actions*/
-$actions['BannerGroup']  = array('StandaloneAction');
+$actions['BannerGroup'] = array('StandaloneAction');

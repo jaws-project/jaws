@@ -11,9 +11,9 @@
  */
 $actions = array();
 
-$actions['Display']       = array('NormalAction');
-$actions['FileInfo']      = array('NormalAction');
-$actions['Download']      = array('StandaloneAction');
+$actions['Display'] = array('NormalAction');
+$actions['FileInfo'] = array('NormalAction');
+$actions['Download'] = array('StandaloneAction');
 $actions['InitialFolder'] = array(
     'LayoutAction',
     _t('FILEBROWSER_INITIAL_FOLDER'),

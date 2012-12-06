@@ -11,5 +11,5 @@
 $actions = array();
 
 /* Admin actions*/
-$actions['AddEmblem']  = array('AdminAction');
+$actions['AddEmblem'] = array('AdminAction');
 $actions['EditEmblem'] = array('AdminAction');

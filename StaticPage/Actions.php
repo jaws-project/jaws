@@ -18,7 +18,7 @@ $actions['GroupPages'] = array(
     _t('STATICPAGE_LAYOUT_GROUP_PAGES_DESC'),
     true
 );
-$actions['PagesList']  = array(
+$actions['PagesList'] = array(
     'LayoutAction', 
     _t('STATICPAGE_LAYOUT_PAGES_LIST'),
     _t('STATICPAGE_LAYOUT_PAGES_LIST_DESCRIPTION')
@@ -30,6 +30,6 @@ $actions['GroupsList'] = array(
 );
 
 /* Normal actions */
-$actions['Page']      = array('NormalAction');
-$actions['Pages']     = array('NormalAction');
+$actions['Page'] = array('NormalAction');
+$actions['Pages'] = array('NormalAction');
 $actions['PagesTree'] = array('NormalAction');
