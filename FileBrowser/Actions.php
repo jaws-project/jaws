@@ -11,11 +11,15 @@
  */
 $actions = array();
 
-$actions['Display'] = array('NormalAction');
-$actions['FileInfo'] = array('NormalAction');
-$actions['Download'] = array('StandaloneAction');
+$actions['Display'] = array(
+    'normal' => true,
+);
+$actions['FileInfo'] = array(
+    'normal' => true,
+);
+$actions['Download'] = array(
+    'standalone' => true,
+);
 $actions['InitialFolder'] = array(
-    'LayoutAction',
-    _t('FILEBROWSER_INITIAL_FOLDER'),
-    _t('FILEBROWSER_INITIAL_FOLDER_DESC')
+    'layout' => true,
 );

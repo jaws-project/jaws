@@ -10,11 +10,13 @@
  */
 $actions = array();
 
-$actions['ViewTerm'] = array('NormalAction');
+$actions['ViewTerm'] = array(
+    'normal' => true,
+);
 
-$actions['RandomTerms'] = array('LayoutAction',  
-                                _t('GLOSSARY_LAYOUT_RANDOM'),
-                                _t('GLOSSARY_LAYOUT_RANDOM_DESC'));
-$actions['ListOfTerms'] = array('LayoutAction', 
-                                _t('GLOSSARY_LAYOUT_LISTOF'),
-                                _t('GLOSSARY_LAYOUT_LISTOF_DESC'));
+$actions['RandomTerms'] = array(
+    'layout' => true,  
+);
+$actions['ListOfTerms'] = array(
+    'layout' => true, 
+);

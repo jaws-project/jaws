@@ -10,12 +10,15 @@
  */
 $actions = array();
 
-$actions['View'] = array('NormalAction');
-$actions['ViewQuestion'] = array('NormalAction');
-$actions['ViewCategory'] = array('NormalAction');
-
+$actions['View'] = array(
+    'normal' => true,
+);
+$actions['ViewQuestion'] = array(
+    'normal' => true,
+);
+$actions['ViewCategory'] = array(
+    'normal' => true,
+);
 $actions['ListCategories'] = array(
-    'LayoutAction',  
-    _t('FAQ_LAYOUT_LISTCATEGORIES'),
-    _t('FAQ_LAYOUT_LISTCATEGORIES_DESCRIPTION')
+    'layout' => true,
 );

@@ -10,9 +10,6 @@
  */
 $actions = array();
 
-/* Layout actions */
 $actions['Display'] = array(
-    'LayoutAction',
-    _t('EMBLEMS_ACTION_DISPLAY'),
-    _t('EMBLEMS_ACTION_DISPLAY_DESC')
+    'layout' => true,
 );
