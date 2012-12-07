@@ -141,15 +141,15 @@ class Jaws_Translate
 
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
-                $orig_i18n = JAWS_PATH . "gadgets/$module/languages/$language.php";
+                $orig_i18n = JAWS_PATH . "languages/$language/gadgets/$module.php";
                 $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.php";
-                $fall_back = JAWS_PATH . "gadgets/$module/languages/en.php";
+                $fall_back = JAWS_PATH . "languages/en/gadgets/$module.php";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
-                $orig_i18n = JAWS_PATH . "plugins/$module/languages/$language.php";
+                $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.php";
                 $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.php";
-                $fall_back = JAWS_PATH . "plugins/$module/languages/en.php";
+                $fall_back = JAWS_PATH . "languages/en/plugins/$module.php";
                 break;
 
             default:
