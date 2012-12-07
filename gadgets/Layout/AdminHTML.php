@@ -62,8 +62,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
 
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load();
-        $fakeLayout->AddScriptLink('libraries/prototype/prototype.js');
-        $fakeLayout->AddScriptLink('libraries/prototype/scriptaculous.js');
+        $fakeLayout->AddScriptLink('libraries/mootools/core.js');
         $fakeLayout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $fakeLayout->AddScriptLink(BASE_SCRIPT . '?gadget=Layout&amp;action=Ajax&amp;jpspan');
         $fakeLayout->AddScriptLink('gadgets/Layout/resources/script.js');

@@ -252,8 +252,7 @@ class Jaws_Layout
      */
     function LoadControlPanelHead()
     {
-        $this->AddScriptLink('libraries/prototype/prototype.js');
-        $this->AddScriptLink('libraries/prototype/scriptaculous.js');
+        $this->AddScriptLink('libraries/mootools/core.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $this->AddHeadLink('gadgets/ControlPanel/resources/public.css', 'stylesheet', 'text/css');
         $this->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css');
