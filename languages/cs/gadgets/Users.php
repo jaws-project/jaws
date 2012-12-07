@@ -1,0 +1,134 @@
+<?php
+/**
+ * Meta Data
+ *
+ * "Project-Id-Version: Users"
+ * "Last-Translator: Jaromír Červenka - cervajz@cervajz.com"
+ * "Language-Team: CS"
+ * "MIME-Version: 1.0"
+ * "Content-Type: text/plain; charset=UTF-8"
+ * "Content-Transfer-Encoding: 8bit"
+ */
+
+define('_CS_USERS_NAME', "Uživatelé");
+define('_CS_USERS_DESCRIPTION', "Správa uživatelů.");
+define('_CS_USERS_ACL_DEFAULT', "Use users");
+define('_CS_USERS_ACL_MANAGEUSERS', "Správa uživatelů");
+define('_CS_USERS_ACL_MANAGEGROUPS', "Správa skupin");
+define('_CS_USERS_LAYOUT_LOGINBOX', "Uživatelé");
+define('_CS_USERS_GROUPS_GROUPNAME', "Jméno skupiny");
+define('_CS_USERS_GROUPS_GROUPID', "ID skupiny");
+define('_CS_USERS_GROUPS_GROUPS', "Skupiny");
+define('_CS_USERS_GROUPS_ADD', "přidat skupinu");
+define('_CS_USERS_GROUPS_NO_SELECTION', "Prosím vyberte skupinu vlevo");
+define('_CS_USERS_GROUPS_GROUP_INFO', "Informace o skupině");
+define('_CS_USERS_GROUPS_ALREADY_EXISTS', "Skupina {0} již existuje");
+define('_CS_USERS_GROUPS_INCOMPLETE_FIELDS', "Prosím vyplňte jméno skupiny");
+define('_CS_USERS_GROUPS_UPDATE', "Uložit skupinu");
+define('_CS_USERS_GROUPS_EDIT', "Upravit skupinu");
+define('_CS_USERS_GROUPS_DELETE', "Smazat skupinu");
+define('_CS_USERS_GROUPS_PERMISSIONS', "Práva skupiny");
+define('_CS_USERS_GROUPS_ACL_UPDATED', "Práva skupiny byla uložena");
+define('_CS_USERS_GROUPS_GROUP_NOT_EXIST', "Požadovaná skupina neexistuje.");
+define('_CS_USERS_GROUPS_MEMBERS', "Přidat uživatele");
+define('_CS_USERS_GROUPS_ADD_USER', "Přidat uživatele do skupiny");
+define('_CS_USERS_GROUPS_CONFIRM_DELETE', "Jste si jistý, že chcete smazat tuto skupinu?");
+define('_CS_USERS_GROUPS_CURRENTLY_EDITING_GROUP', "Právě upravujete skupinu {0}");
+define('_CS_USERS_GROUPS_MARK_USERS', "Vyberte uživatele, které chcete přidat do skupiny");
+define('_CS_USERS_GROUPS_ACL_RESETED', "Práva skupiny byly přenastaveny na výchozí hodnoty");
+define('_CS_USERS_GROUPS_CREATED', "Skupina {0} byla vytvořena.");
+define('_CS_USERS_GROUPS_UPDATED', "informace o skupině {0} byly uloženy");
+define('_CS_USERS_GROUPS_DELETED', "Skupina {0} byla smazána.");
+define('_CS_USERS_GROUPS_UPDATED_USERS', "Vztahy mezi uživateli a skupinami byly upraveny");
+define('_CS_USERS_GROUPS_NOT_CREATED', "Došlo k problému při tvorbě skupiny {0}.");
+define('_CS_USERS_GROUPS_NOT_UPDATED', "Došlo k problému při úpravě skupiny {0}.");
+define('_CS_USERS_GROUPS_CANT_DELETE', "Došlo k problému při mazání skupiny {0}.");
+define('_CS_USERS_USERS_ADD', "Přidat uživatele");
+define('_CS_USERS_ACCOUNT_EDIT', "Upravit uživatele");
+define('_CS_USERS_ACCOUNT_DELETE', "Smazat uživatele");
+define('_CS_USERS_ACLRULES', "ACL práva");
+define('_CS_USERS_USERS_USERNAME', "Uživatelské jméno");
+define('_CS_USERS_USERS_PASSWORD', "Heslo");
+define('_CS_USERS_USERS_NICKNAME', "Opravdové jméno");
+define('_CS_USERS_USERS_USERID', "Uživatelovo ID");
+define('_CS_USERS_USERS_TYPE', "Typ");
+define('_CS_USERS_USERS_TYPE_SUPERADMIN', "Super administrátor");
+define('_CS_USERS_USERS_TYPE_ADMIN', "Administrátor");
+define('_CS_USERS_USERS_TYPE_NORMAL', "Uživatel");
+define('_CS_USERS_USERS_SHOW_ALL', "Ukázat vše");
+define('_CS_USERS_FIND_USER', "Najít uživatele");
+define('_CS_USERS_USERS_SEND_AUTO_PASSWORD', "Nechte prázdné pro zaslání náhodného hesla na Váš e-mail");
+define('_CS_USERS_USERS_PASSWORD_VERIFY', "Ověřit heslo");
+define('_CS_USERS_USERS_NO_SELECTION', "Prosím vyberte uživatele");
+define('_CS_USERS_USERS_PASSWORDS_DONT_MATCH', "Heslo nesouhlasí.");
+define('_CS_USERS_USERS_INCOMPLETE_FIELDS', "Některé položky formuláře nebyly vyplněny.");
+define('_CS_USERS_USERS_ALREADY_EXISTS', "Již existuje uživatel s loginem ({0}).");
+define('_CS_USERS_USERS_CONFIRM_NO_CHANGES', "Opravdu nechcete uložit data?");
+define('_CS_USERS_USERS_SELECT_A_USER', "Vyberte uživatele vlevo");
+define('_CS_USERS_USER_NOT_EXIST', "Požadovaný uživatel neexistuje.");
+define('_CS_USERS_USERS_EDIT', "Upravit uživatele");
+define('_CS_USERS_USERS_ACCOUNT_INFO', "Informace o účtu");
+define('_CS_USERS_USERS_ACCOUNT_UPDATE', "Uložit účet");
+define('_CS_USERS_USERS_PERMISSIONS', "Práva");
+define('_CS_USERS_USER_CONFIRM_DELETE', "Smazat uživatele a všechny informace, které sem kdy poslal?");
+define('_CS_USERS_USER_MEMBER_OF_GROUPS', "{0} is a member of the groups below");
+define('_CS_USERS_USER_MEMBER_OF_NO_GROUPS', "{0} není v žádné skupině");
+define('_CS_USERS_THIS_USER', "Tento uživatel");
+define('_CS_USERS_USER_CANT_AUTO_TURN_OFF_CP', "Můžete vypnout všechna práva pro celý ovládací panel");
+define('_CS_USERS_GROUPS', "Skupiny uživatelů");
+define('_CS_USERS_USER_CURRENTLY_EDITING', "Právě upravujete uživatele {0}");
+define('_CS_USERS_LOGIN_TITLE', "Login");
+define('_CS_USERS_NOCHANGE_PASSWORD', "Nechte prázdné pokud jej nechcete změnit");
+define('_CS_USERS_RESET_ACL', "Reset ACL");
+define('_CS_USERS_RESET_ACL_CONFIRM', "Opravdu chcete zresetovat (vymazat) oprávnění?");
+define('_CS_USERS_PREFERENCES', "Uživatelská nastavení");
+define('_CS_USERS_ADVANCED_OPTS_EDITOR', "Editor");
+define('_CS_USERS_ADVANCED_OPTS_LANGUAGE', "Preferovaný jazyk");
+define('_CS_USERS_ADVANCED_OPTS_THEME', "Preferované téma");
+define('_CS_USERS_ADVANCED_OPTS_NOT_YET', "Zatím nebyla definována žádná hodnota");
+define('_CS_USERS_MYACCOUNT_UPDATED', "Váš účet byl aktualizován.");
+define('_CS_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Vaše heslo nesouhlasí s heslem které jste zadali pro kontrolu.");
+define('_CS_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Pokud chcete upravit účet, budete muset vyplnit všechny položky formuláře.");
+define('_CS_USERS_MYACCOUNT', "Můj účet");
+define('_CS_USERS_EDIT_PERSONAL', "Upravit profil");
+define('_CS_USERS_CONTROLPANEL', "Ovladácí panel");
+define('_CS_USERS_USERS_CREATED', "Uživatel {0} byl vytvořen.");
+define('_CS_USERS_USERS_UPDATED', "Uživatel {0} byl upraven.");
+define('_CS_USERS_USERS_ACL_UPDATED', "Uživatelova privilegia byla upravena.");
+define('_CS_USERS_USER_DELETED', "Uživatel {0} byl smazán.");
+define('_CS_USERS_USERS_ACL_RESETED', "Uživatelova privilegia byla zresetována (smazána).");
+define('_CS_USERS_USERS_ADVANCED_UPDATED', "Pokročelé možnosti uživatele byly aktualizovány");
+define('_CS_USERS_USERS_NOT_CREATED', "Došlo k probému při tvorbě uživatele {0}.");
+define('_CS_USERS_USERS_NOT_UPDATED', "Došlo k problému při úpravě uživatele {0}.");
+define('_CS_USERS_USERS_CANT_DELETE', "Došlo k problému při mazání uživatele {0}.");
+define('_CS_USERS_USERS_CANT_DELETE_SELF', "Nemůžete se sám smazat");
+define('_CS_USERS_USERS_NOT_ADVANCED_UPDATED', "Vyskytl se problém při aktualizaci pokročilých možností uživatele");
+define('_CS_USERS_PROPERTIES_ANON_REGISTER', "Anonymní uživatelé se mohou registrovat");
+define('_CS_USERS_PROPERTIES_ANON_GROUP', "Standrardní skupina pro registrované uživatele");
+define('_CS_USERS_PROPERTIES_PASS_RECOVERY', "Uživatelé si mohou obnovit zapomenuté heslo");
+define('_CS_USERS_PROPERTIES_UPDATED', "Nastavení bylo uloženo");
+define('_CS_USERS_PROPERTIES_CANT_UPDATE', "Nastal problém s ukládáním nastavení");
+define('_CS_USERS_NO_PERMISSION_TITLE', "Nemáte příslušná oprávnění");
+define('_CS_USERS_NO_PERMISSION_DESC', "Nemáte dostatečné oprávnění vykonat tuto akci ({0} :: {1}).");
+define('_CS_USERS_NO_PERMISSION_ANON_DESC', "Problém je, že jste přihlášeni jako anonymní. Zkuste se <a href=\"{0}\">přihlásit znovu</a> s platnými údaji.");
+define('_CS_USERS_REGISTER', "Vytvořit účet");
+define('_CS_USERS_REGISTER_NOT_ENABLED', "Omlouváme se, ale anonymní uživatelé se nemohou registrovat, pro získání účtu kontaktujte administrátora");
+define('_CS_USERS_REGISTER_ALREADY_LOGGED', "Jste již přihlášen, klikněte <a href=\"{0}\">zde</a> pokud se chcete odhlásit");
+define('_CS_USERS_REGISTER_VALID_USERNAMES', "Žádné znaky jako podtržítka, tečky, pomlčky, symboly (@) nejsou povoleny.");
+define('_CS_USERS_REGISTER_EMAIL_NOT_VALID', "Zadaný email nemá správný formát, prosím zkontrolujte ho");
+define('_CS_USERS_REGISTER_SUBJECT', "Registrace uživatele  {0}");
+define('_CS_USERS_REGISTER_HELLO', "{0} vítej!");
+define('_CS_USERS_REGISTER_RANDOM_MAIL_MSG', "Obdrželi jsme registraci účtu, u něhož byla vaše e-mailová adresa. Také jste se rozhodli použít silně náhodně vytvořené heslo a proto vám ho zasíláme mailem. Pokud máte pocit, že někde je chyba, prosíme kontaktujte nás.");
+define('_CS_USERS_REGISTER_RANDOM_SENDMAIL_FAILED', "Došlo k problémům při odesílání hesla na {1}, z bezpečnostních důvodu jste byl smazán z databáze");
+define('_CS_USERS_REGISTER_REGISTERED', "Účet byl vytvořen");
+define('_CS_USERS_REGISTER_REGISTERED_MSG', "Váš účet byl vytvořen, můžete se <a href=\"{0}\">přihlásit</a> kdykoliv budete chtít. Pokud jste žádali o náhodné heslo, zkontrolujte svůj e-mail, mělo by vám přijít.");
+define('_CS_USERS_FORGOT_LOGIN', "Zapomněli jste heslo?");
+define('_CS_USERS_FORGOT_REMEMBER', "Pamatujete si heslo");
+define('_CS_USERS_FORGOT_MAIL_SENT', "Byl odeslán e-mail s informací o změně hesla");
+define('_CS_USERS_FORGOT_ERROR_SENDING_MAIL', "Nastala chyba při odesílání e-mailu s informací o změně hesla");
+define('_CS_USERS_FORGOT_MAIL_MESSAGE', "Někdo požádal o zapamatování hesla. Pro změnu klikněte na následující odkaz, , jinak tento mail ignorujte (heslo nebude změněno)");
+define('_CS_USERS_FORGOT_KEY_NOT_VALID', "Je nám líto, ale tento klíč není platný.");
+define('_CS_USERS_FORGOT_PASSWORD_CHANGED', "Nové (automaticky generované) heslo bylo zasláno na váš email");
+define('_CS_USERS_FORGOT_PASSWORD_CHANGED_SUBJECT', "Nové heslo");
+define('_CS_USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', "Bylo vám přiděleno nové heslo, najdete jej níže. Pro jeho změnu se přihlašte s vaším jménem ({0}) a tímto heslem. Pak můžete editovat svůj profil.");
+define('_CS_USERS_FORGOT_ERROR_CHANGING_PASSWORD', "Při změně vašeho hesla nastal problém");
