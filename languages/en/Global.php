@@ -1,8 +1,4 @@
 <?php
-// Global translations for commonly used strings (English).
-// Copyright (c) 2005, Jaws
-// Generated: Fri 4th March 2005, 6:30pm
-
 /**
  * Meta Data
  *
