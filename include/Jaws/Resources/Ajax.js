@@ -11,11 +11,12 @@ var JawsAjax = new Class({
      * @return  void
      */
     initialize: function (gadget, callback) {
-        //var base_script = url.substring(url.lastIndexOf('/')+1);
         this.gadget = gadget;
         this.callback = callback;
-        //this.baseURL = base_script + '?gadget=' + gadget + '&action=Ajax';
-        this.baseURL = 'index.php?gadget=' + gadget + '&action=Ajax';
+        var href = document.location.href,
+            path = document.location.pathname,
+            basePath = href.substr(0, href.indexOf(path) + path.length);
+        this.baseScript = basePath.replace($$('base')[0].href, '');
     },
 
     /**
@@ -34,10 +35,11 @@ var JawsAjax = new Class({
 
         async = (async === undefined)? true : async;
         options.async = async;
-        options.url = this.baseURL + '&method=' + func;
+        options.url = this.baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=' + func;
         options.func = func;
-        options.data = params;
-        options.noCache = true;
+        options.data = toJSON(params);
+        options.urlEncoded = false;
+        options.headers = {'Content-Type' : 'application/json; charset=UTF-8'};
         options.evalResponse = true;
         options.onRequest = this.onRequest.bind(this);
         options.onSuccess = async? this.onSuccess.bind(this, options) : voidFunc;
@@ -641,4 +643,94 @@ function showWorkingNotification(msg)
 function hideWorkingNotification()
 {
     $('working_notification').style.visibility = 'hidden';
+}
+
+/* Copyright (c) 2005 JSON.org */
+function toJSON(v) {
+    var m = {
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        },
+        s = {
+            'boolean': function (x) {
+                return String(x);
+            },
+            number: function (x) {
+                return isFinite(x) ? String(x) : 'null';
+            },
+            string: function (x) {
+                if (new RegExp("[\x00-\x1f\\\"]").test(x)) {
+                    x = x.replace(new RegExp("([\x00-\x1f\\\"])", 'g'), function(a, b) {
+                        var c = m[b];
+                        if (c) {
+                            return c;
+                        }
+                        c = b.charCodeAt();
+                        return '\\u00' +
+                            Math.floor(c / 16).toString(16) +
+                            (c % 16).toString(16);
+                    });
+                }
+                return '"' + x + '"';
+            },
+            object: function (x) {
+                if (x) {
+                    var a = [], b, f, i, l, v;
+                    if (x instanceof Array && x[0] != undefined) {
+                        a[0] = '[';
+                        l = x.length;
+                        for (i = 0; i < l; i += 1) {
+                            v = x[i];
+                            f = s[typeof v];
+                            if (f) {
+                                v = f(v);
+                                if (typeof v == 'string') {
+                                    if (b) {
+                                        a[a.length] = ',';
+                                    }
+                                    a[a.length] = v;
+                                    b = true;
+                                }
+                            }
+                        }
+                        a[a.length] = ']';
+                    } else if (x instanceof Object) {
+                        a[0] = '{';
+                        for (i in x) {
+                            v = x[i];
+                            f = s[typeof v];
+                            if (f) {
+                                v = f(v);
+                                if (typeof v == 'string') {
+                                    if (b) {
+                                        a[a.length] = ',';
+                                    }
+                                    a.push(s.string(i), ':', v);
+                                    b = true;
+                                }
+                            }
+                        }
+                        a[a.length] = '}';
+                    } else {
+                        return;
+                    }
+                    return a.join('');
+                }
+                return 'null';
+            }
+        };
+
+    var f = s[typeof v];
+    if (f) {
+        v = f(v);
+        if (typeof v == 'string') {
+            return v;
+        }
+    }
+    return null;
 }
