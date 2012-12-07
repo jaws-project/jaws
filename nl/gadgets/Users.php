@@ -1,0 +1,133 @@
+<?php
+/**
+ * Meta Data
+ *
+ * "Project-Id-Version: Users"
+ * "Last-Translator: Erwin Gjaltema <eddie@gjaltemaonline.nl>"
+ * "Language-Team: NL"
+ * "MIME-Version: 1.0"
+ * "Content-Type: text/plain; charset=UTF-8"
+ * "Content-Transfer-Encoding: 8bit"
+ */
+
+define('_NL_USERS_NAME', "Gebruikers");
+define('_NL_USERS_DESCRIPTION', "Beheer gebruikers.");
+define('_NL_USERS_ACL_DEFAULT', "Gebruik gebruikers.");
+define('_NL_USERS_ACL_MANAGEUSERS', "Gebruikersbeheer");
+define('_NL_USERS_ACL_MANAGEGROUPS', "Groepsbeheer");
+define('_NL_USERS_LAYOUT_LOGINBOX', "Loginbox");
+define('_NL_USERS_LAYOUT_LOGINBOX_DESC', "Toon loginbox");
+define('_NL_USERS_GROUPS_GROUPNAME', "Groepsnaam");
+define('_NL_USERS_GROUPS_GROUPID', "GroepsID");
+define('_NL_USERS_GROUPS_GROUPS', "Groepen");
+define('_NL_USERS_GROUPS_ADD', "Voeg een groep toe");
+define('_NL_USERS_GROUPS_NO_SELECTION', "Selecteer links een groep");
+define('_NL_USERS_GROUPS_GROUP_INFO', "Groep informatie");
+define('_NL_USERS_GROUPS_ALREADY_EXISTS', "Groep {0} bestaat reeds");
+define('_NL_USERS_GROUPS_INCOMPLETE_FIELDS', "Vul de groepsnaam in");
+define('_NL_USERS_GROUPS_UPDATE', "Werk groep bij");
+define('_NL_USERS_GROUPS_EDIT', "Wijzig groep");
+define('_NL_USERS_GROUPS_DELETE', "Verwijder groep");
+define('_NL_USERS_GROUPS_PERMISSIONS', "Groepsrechten");
+define('_NL_USERS_GROUPS_ACL_UPDATED', "Groepsrechten zijn bijgewerkt");
+define('_NL_USERS_GROUPS_GROUP_NOT_EXIST', "De gevraagde groep bestaat niet.");
+define('_NL_USERS_GROUPS_MEMBERS', "Voeg gebruikers toe");
+define('_NL_USERS_GROUPS_ADD_USER', "Voeg gebruiker aan groep toe");
+define('_NL_USERS_GROUPS_CONFIRM_DELETE', "Bent U zeker dat U deze groep wil verwijderen?");
+define('_NL_USERS_GROUPS_CURRENTLY_EDITING_GROUP', "U bent momenteel bezig met het wijzigen van groep {0}");
+define('_NL_USERS_GROUPS_MARK_USERS', "Selecteer de gebruikers die u in deze groep wil steken");
+define('_NL_USERS_GROUPS_ACL_RESETED', "Groepsrechten zijn heringesteld");
+define('_NL_USERS_GROUPS_CREATED', "Groep {0} is gemaakt.");
+define('_NL_USERS_GROUPS_UPDATED', "Groepsinformatie van {0} is bijgewerkt");
+define('_NL_USERS_GROUPS_DELETED', "Groep {0} is verwijderd.");
+define('_NL_USERS_GROUPS_UPDATED_USERS', "De relaties tussen groep en gebruikers is bijgewerkt");
+define('_NL_USERS_GROUPS_NOT_CREATED', "Er trad een probleem op tijdens het maken van groep {0}");
+define('_NL_USERS_GROUPS_NOT_UPDATED', "Er trad een probleem op tijdens het bijwerken van groep {0}.");
+define('_NL_USERS_GROUPS_CANT_DELETE', "Er trad een probleem op tijdens het verwijderen van groep {0}.");
+define('_NL_USERS_USERS_ADD', "Voeg gebruiker toe");
+define('_NL_USERS_ACCOUNT_EDIT', "Wijzig gebruiker");
+define('_NL_USERS_ACCOUNT_DELETE', "Verwijder gebruiker");
+define('_NL_USERS_ACLRULES', "ACL regels");
+define('_NL_USERS_USERS_USERNAME', "Gebruikersnaam");
+define('_NL_USERS_USERS_PASSWORD', "Wachtwoord");
+define('_NL_USERS_USERS_NICKNAME', "Echte naam");
+define('_NL_USERS_USERS_USERID', "GebruikersID");
+define('_NL_USERS_USERS_TYPE', "Type");
+define('_NL_USERS_USERS_TYPE_SUPERADMIN', "Hoofdbeheerder");
+define('_NL_USERS_USERS_TYPE_ADMIN', "Beheerder");
+define('_NL_USERS_USERS_TYPE_NORMAL', "Gewone gebruiker");
+define('_NL_USERS_USERS_SHOW_ALL', "Iedereen tonen");
+define('_NL_USERS_FIND_USER', "Zoek gebruiker");
+define('_NL_USERS_USERS_SEND_AUTO_PASSWORD', "Laat leeg voor het verzenden van een willekeurig wachtwoord naar je email");
+define('_NL_USERS_USERS_PASSWORD_VERIFY', "Controlewachwoord");
+define('_NL_USERS_USERS_NO_SELECTION', "Selecteer een gebruiker");
+define('_NL_USERS_USERS_PASSWORDS_DONT_MATCH', "De wachwoorden kwamen niet overeen.");
+define('_NL_USERS_USERS_INCOMPLETE_FIELDS', "Sommige velden zijn niet ingevuld.");
+define('_NL_USERS_USERS_ALREADY_EXISTS', "Er is reeds een andere gebruiker met dezelfde gebruikersnaam ({0}).");
+define('_NL_USERS_USERS_CONFIRM_NO_CHANGES', "Bent U zeker dat u de wijzigingen niet wilt opslaan?");
+define('_NL_USERS_USERS_SELECT_A_USER', "Selecteer links een gebruiker.");
+define('_NL_USERS_USER_NOT_EXIST', "De opgevraagde gebruiker bestaat niet.");
+define('_NL_USERS_USERS_EDIT', "Wijzig gebruiker.");
+define('_NL_USERS_USERS_ACCOUNT_INFO', "Accountinformatie");
+define('_NL_USERS_USERS_ACCOUNT_UPDATE', "Werk account bij");
+define('_NL_USERS_USERS_PERMISSIONS', "Rechten");
+define('_NL_USERS_USER_CONFIRM_DELETE', "Verwijder deze gebruiker en al zijn informatie?");
+define('_NL_USERS_USER_MEMBER_OF_GROUPS', "{0} is lid van de volgende groepen");
+define('_NL_USERS_USER_MEMBER_OF_NO_GROUPS', "{0} is in geen enkele groep");
+define('_NL_USERS_THIS_USER', "Deze gebruiker");
+define('_NL_USERS_USER_CANT_AUTO_TURN_OFF_CP', "U kunt niet alle rechten afzetten voor het Controlepaneel");
+define('_NL_USERS_GROUPS', "Gebruikersrechten");
+define('_NL_USERS_USER_CURRENTLY_EDITING', "U bent momenteel bezig met het wijzigen van gebruiker {0}");
+define('_NL_USERS_LOGIN_TITLE', "Inloggen");
+define('_NL_USERS_RESET_ACL', "ACL herinstellen");
+define('_NL_USERS_RESET_ACL_CONFIRM', "Bent U zeker dat U de rechten wil herinstellen?");
+define('_NL_USERS_PREFERENCES', "Gebruikersopties");
+define('_NL_USERS_ADVANCED_OPTS_EDITOR', "");
+define('_NL_USERS_ADVANCED_OPTS_LANGUAGE', "Voorkeurstaal");
+define('_NL_USERS_ADVANCED_OPTS_THEME', "Voorkeursthema");
+define('_NL_USERS_ADVANCED_OPTS_NOT_YET', "Nog geen waarde opgegeven");
+define('_NL_USERS_MYACCOUNT_UPDATED', "Uw accountgegevens zijn bijgewerkt.");
+define('_NL_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Uw wachtwoord en de controle kwamen niet overeen.");
+define('_NL_USERS_MYACCOUNT_INCOMPLETE_FIELDS', "Vul alle velden in als u uw account wil bijwerken");
+define('_NL_USERS_MYACCOUNT', "Mijn account");
+define('_NL_USERS_EDIT_PERSONAL', "Wijzig profiel");
+define('_NL_USERS_CONTROLPANEL', "Controlepaneel");
+define('_NL_USERS_USERS_CREATED', "Gebruiker {0} is gemaakt.");
+define('_NL_USERS_USERS_UPDATED', "Gebruiker {0} is bijgewerkt.");
+define('_NL_USERS_USERS_ACL_UPDATED', "Gebruikersrechten zijn bijgewerkt.");
+define('_NL_USERS_USER_DELETED', "Gebruiker {0} is verwijderd.");
+define('_NL_USERS_USERS_ACL_RESETED', "Gebruikersrechten zijn heringesteld.");
+define('_NL_USERS_USERS_ADVANCED_UPDATED', "Geavanceerde gebruikersopties zijn bijgwerkt");
+define('_NL_USERS_USERS_NOT_CREATED', "Er trad een probleem op tijdens het maken van gebruiker {0}.");
+define('_NL_USERS_USERS_NOT_UPDATED', "Er trad een probleem op tijdens het maken van gebruiker {0}.");
+define('_NL_USERS_USERS_CANT_DELETE', "Er trad een probleem op tijdens het verwijderen van gebruiker {0}.");
+define('_NL_USERS_USERS_CANT_DELETE_SELF', "Kan eigen gebruiker niet verwijderen");
+define('_NL_USERS_USERS_NOT_ADVANCED_UPDATED', "Er trad een probleem op tijdens het bijwerken van geavanceerde gebruikersopties.");
+define('_NL_USERS_PROPERTIES_ANON_REGISTER', "Anonieme gebruikers kunnen registreren");
+define('_NL_USERS_PROPERTIES_PASS_RECOVERY', "Gebruikers kunnen hun wachtwoord terug opvragen");
+define('_NL_USERS_PROPERTIES_UPDATED', "Prioriteiten zijn bijgewerkt");
+define('_NL_USERS_PROPERTIES_CANT_UPDATE', "Er trad een probleem op tijdens het bijwerken van instellingen");
+define('_NL_USERS_NO_PERMISSION_TITLE', "Geen toegang");
+define('_NL_USERS_NO_PERMISSION_DESC', "U hebt geen toegang om deze actie ({0}{1}) uit te voeren.");
+define('_NL_USERS_NO_PERMISSION_ANON_DESC', "De reden is dat u niet bent ingelogd. U kunt proberen <a href={0}>inloggen</a> met een geldige gebruikersnaam.");
+define('_NL_USERS_REGISTER', "Maak account");
+define('_NL_USERS_REGISTER_NOT_ENABLED', "Anonieme gebruikers kunnen niet registreren, vraag de administrator om een account.");
+define('_NL_USERS_REGISTER_ALREADY_LOGGED', "U bent reeds ingelogd, klik <a href=\"{0}\">hier</a> als u wil uitloggen");
+define('_NL_USERS_REGISTER_VALID_USERNAMES', "Underscores, komma's, liggende streepjes, symbolen (@), ... zijn niet geldig");
+define('_NL_USERS_REGISTER_EMAIL_NOT_VALID', "De e-mail is niet geldig");
+define('_NL_USERS_REGISTER_SUBJECT', "Gebruikersregistratie - {0}");
+define('_NL_USERS_REGISTER_HELLO', "Hallo {0}");
+define('_NL_USERS_REGISTER_RANDOM_MAIL_MSG', "");
+define('_NL_USERS_REGISTER_RANDOM_SENDMAIL_FAILED', "Er trad een probleem op tijdens het sturen van wachtwoord naar {1}, om veiligheidsredenen hebbben we Uw account uit de database verwijderd");
+define('_NL_USERS_REGISTER_REGISTERED', "Account gemaakt");
+define('_NL_USERS_REGISTER_REGISTERED_MSG', "");
+define('_NL_USERS_FORGOT_LOGIN', "Bent U uw wachtwoord vergeten?");
+define('_NL_USERS_FORGOT_REMEMBER', "Onthoud wachtwoord");
+define('_NL_USERS_FORGOT_MAIL_SENT', "");
+define('_NL_USERS_FORGOT_ERROR_SENDING_MAIL', "");
+define('_NL_USERS_FORGOT_MAIL_MESSAGE', "");
+define('_NL_USERS_FORGOT_KEY_NOT_VALID', "Deze sleutel is niet geldig");
+define('_NL_USERS_FORGOT_PASSWORD_CHANGED', "");
+define('_NL_USERS_FORGOT_PASSWORD_CHANGED_SUBJECT', "Nieuw wachtwoord");
+define('_NL_USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', "");
+define('_NL_USERS_FORGOT_ERROR_CHANGING_PASSWORD', "Er trad een probleem op tijdens het wijzigen van uw wachtwoord");
