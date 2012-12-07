@@ -1,4 +1,72 @@
 /**
+ * Ajax base class
+ */
+var JawsAjax = new Class({
+    /**
+     * Initiates the Ajax
+     *
+     * @param   string  gadget      Gadget Name
+     * @param   object  callback    Callback functions
+     *
+     * @return  void
+     */
+    initialize: function (gadget, callback) {
+        //var base_script = url.substring(url.lastIndexOf('/')+1);
+        this.gadget = gadget;
+        this.callback = callback;
+        //this.baseURL = base_script + '?gadget=' + gadget + '&action=Ajax';
+        this.baseURL = 'index.php?gadget=' + gadget + '&action=Ajax';
+    },
+
+    /**
+     * Performs Ajax request
+     *
+     * @param   string  func    Name of the function to be executed
+     * @param   object  params  Parameters passed to the function (optional)
+     * @param   bool    async   Whether use asynchronous request or not (optional)
+     *
+     * @return  mixed   Response text on synchronous mode or void otherwise
+     */
+    request: function (func, params, async) {
+        var voidFunc = function() {},
+            options = {},
+            req;
+
+        async = (async === undefined)? true : async;
+        options.async = async;
+        options.url = this.baseURL + '&method=' + func;
+        options.func = func;
+        options.data = params;
+        options.noCache = true;
+        options.evalResponse = true;
+        options.onRequest = this.onRequest.bind(this);
+        options.onSuccess = async? this.onSuccess.bind(this, options) : voidFunc;
+        options.onFailure = async? this.onFailure.bind(this, options) : voidFunc;
+        req = new Request(options).send();
+
+        if (!async) {
+            return req.response.text;
+        }
+    },
+
+    onRequest: function () {
+        // start loading..
+    },
+
+    onSuccess: function (reqOptions, responseText) {
+        var reqMethod = this.callback[reqOptions.func];
+        if (reqMethod) {
+            reqMethod(responseText);
+        }
+    },
+
+    onFailure: function () {
+        // alert failure message
+    }
+
+});
+
+/**
  * Shortcut function for using instead of getElementById
  */
 if (typeof Prototype  == 'undefined') {
