@@ -580,7 +580,7 @@ function Jaws_Ajax_ServerError(error)
 function showResponse(message, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
-        new Effect.ScrollTo($(document.body));
+        //new Effect.ScrollTo($(document.body));
     }
 
     messages = new Array();
@@ -597,7 +597,7 @@ function showResponse(message, goTop)
         messageDiv.innerHTML = messages[i]['message'];
         messageDiv.className = messages[i]['css'];
         messageDiv.id = 'msgbox_'+i;
-        new Effect.Appear(messageDiv);
+        //new Effect.Appear(messageDiv);
         hideResponseBox(messageDiv);
     }
 }
@@ -619,7 +619,7 @@ function hideResponseBox(name, timehide)
  */
 function hideResponseBoxCallback(name)
 {
-    new Effect.Fade(name);
+    //new Effect.Fade(name);
 }
 
 /**
