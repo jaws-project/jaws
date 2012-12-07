@@ -11,7 +11,7 @@
 class BBCode extends Jaws_Plugin
 {
     /**
-     * Main Constructor
+     * Constructor
      *
      * @access  public
      * @return  void
