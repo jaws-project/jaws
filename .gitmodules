@@ -1,6 +1,0 @@
-[submodule "languages"]
-	path = languages
-	url = git://github.com/jaws-project/languages.git
-[submodule "plugins"]
-	path = plugins
-	url = git://github.com/jaws-project/plugins.git
