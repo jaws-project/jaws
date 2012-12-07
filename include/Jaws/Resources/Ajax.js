@@ -67,22 +67,6 @@ var JawsAjax = new Class({
 });
 
 /**
- * Shortcut function for using instead of getElementById
- */
-if (typeof Prototype  == 'undefined') {
-    $ = function(element) {
-        return document.getElementById(element);
-    }
-}
-
-/**
- * Shortcut function for using instead of getElementsByName
- */
-function $N(name, doc) {
-  return $A((doc || document).getElementsByName(name));
-}
-
-/**
  * Repaints a combo
  */
 function paintCombo(combo, oddColor, evenColor)
