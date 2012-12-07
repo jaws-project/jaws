@@ -3,5 +3,4 @@
 	url = https://github.com/jaws-project/plugins
 [submodule "languages"]
 	path = languages
-    update = rebase
 	url = https://github.com/jaws-project/languages
