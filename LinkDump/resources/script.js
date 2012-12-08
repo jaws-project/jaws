@@ -64,12 +64,12 @@ function saveLink()
 
         cacheLinkForm = null;
         if (selectedGroup == null) {
-            var response = linkdumpSync.insertgroup(
-                                    $('title').value,
-                                    $('fast_url').value,
-                                    $('limit_count').value,
-                                    $('links_type').value,
-                                    $('order_type').value);
+            var response = LinkDumpAjax.callSync('insertgroup',
+                                                 $('title').value,
+                                                 $('fast_url').value,
+                                                 $('limit_count').value,
+                                                 $('links_type').value,
+                                                 $('order_type').value);
             if (response[0]['css'] == 'notice-message') {
                 var gid = response[0]['data'];
                 AddNewGroup(gid);
@@ -77,13 +77,13 @@ function saveLink()
             }
             showResponse(response);
         } else {
-            linkdump.updategroup(
-                                $('gid').value,
-                                $('title').value,
-                                $('fast_url').value,
-                                $('limit_count').value,
-                                $('links_type').value,
-                                $('order_type').value);
+            LinkDumpAjax.callAsync('updategroup',
+                                    $('gid').value,
+                                    $('title').value,
+                                    $('fast_url').value,
+                                    $('limit_count').value,
+                                    $('links_type').value,
+                                    $('order_type').value);
         }
     } else {
         if ($('title').value.blank()) {
@@ -91,14 +91,14 @@ function saveLink()
             return false;
         }
         if (selectedLink == null) {
-            var response = linkdumpSync.insertlink(
-                                            $('gid').value,
-                                            $('title').value,
-                                            $('url').value,
-                                            $('fast_url').value,
-                                            $('description').value,
-                                            $('tags').value,
-                                            $('rank').value);
+            var response = LinkDumpAjax.callSync('insertlink',
+                                                 $('gid').value,
+                                                 $('title').value,
+                                                 $('url').value,
+                                                 $('fast_url').value,
+                                                 $('description').value,
+                                                 $('tags').value,
+                                                 $('rank').value);
             if (response[0]['css'] == 'notice-message') {
                 var lid = response[0]['data'];
                 AddNewLinkItem($('gid').value, lid, $('rank').value);
@@ -106,15 +106,15 @@ function saveLink()
             }
             showResponse(response);
         } else {
-            var response = linkdumpSync.updatelink(
-                                            $('lid').value,
-                                            $('gid').value,
-                                            $('title').value,
-                                            $('url').value,
-                                            $('fast_url').value,
-                                            $('description').value,
-                                            $('tags').value,
-                                            $('rank').value);
+            var response = LinkDumpAjax.callSync('updatelink',
+                                                 $('lid').value,
+                                                 $('gid').value,
+                                                 $('title').value,
+                                                 $('url').value,
+                                                 $('fast_url').value,
+                                                 $('description').value,
+                                                 $('tags').value,
+                                                 $('rank').value);
             if (response[0]['css'] == 'notice-message') {
                 $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parent = $('links_group_'+$('gid').value);
@@ -201,7 +201,7 @@ function listLinks(gid, force_open)
     gFlagimage = gNode.getElementsByTagName('img')[0];
     divSubList = $('links_group_'+gid);
     if (divSubList.innerHTML == '') {
-        var links_list = linkdumpSync.getlinkslist(gid);
+        var links_list = LinkDumpAjax.callSync('getlinkslist', gid);
         if (!links_list.blank()) {
             divSubList.innerHTML = links_list;
         } else {
@@ -263,7 +263,7 @@ function stopAction()
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = linkdumpSync.getgroupui();
+        cacheGroupForm = LinkDumpAjax.callSync('getgroupui');
     }
     currentAction = 'Groups';
 
@@ -285,7 +285,7 @@ function addLink(gid)
         listLinks(gid);
     }
     if (cacheLinkForm == null) {
-        cacheLinkForm = linkdumpSync.getlinkui();
+        cacheLinkForm = LinkDumpAjax.callSync('getlinkui');
     }
     stopAction();
     currentAction = 'Links';
@@ -312,7 +312,7 @@ function editGroup(gid)
     if (gid == 0) return;
     unselectTreeRow();
     if (cacheGroupForm == null) {
-        cacheGroupForm = linkdumpSync.getgroupui();
+        cacheGroupForm = LinkDumpAjax.callSync('getgroupui');
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -323,9 +323,9 @@ function editGroup(gid)
     $('btn_del').style.display    = 'inline';
     $('btn_save').style.display   = 'inline';
     $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML   = cacheGroupForm;  
+    $('links_edit').innerHTML   = cacheGroupForm;
 
-    var groupInfo = linkdumpSync.getgroups(selectedGroup);
+    var groupInfo = LinkDumpAjax.callSync('getgroups', selectedGroup);
 
     $('gid').value         = groupInfo['id'];
     $('title').value       = groupInfo['title'].defilter();
@@ -343,7 +343,7 @@ function editLink(element, lid)
     if (lid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheLinkForm == null) {
-        cacheLinkForm = linkdumpSync.getlinkui();
+        cacheLinkForm = LinkDumpAjax.callSync('getlinkui');
     }
     currentAction = 'Links';
     selectedLink = lid;
@@ -354,9 +354,9 @@ function editLink(element, lid)
     $('btn_del').style.display    = 'inline';
     $('btn_save').style.display   = 'inline';
     $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheLinkForm;  
+    $('links_edit').innerHTML = cacheLinkForm;
 
-    var linkInfo = linkdumpSync.getlink(selectedLink);
+    var linkInfo = LinkDumpAjax.callSync('getlink', selectedLink);
 
     $('lid').value         = linkInfo['id'];
     $('gid').value         = linkInfo['gid'];
@@ -381,7 +381,7 @@ function delLinks()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[1].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = linkdumpSync.deletegroup(gid);
+            var response = LinkDumpAjax.callSync('deletegroup', gid);
             if (response[0]['css'] == 'notice-message') {
                 Element.destroy($('group_'+gid));
             }
@@ -395,7 +395,7 @@ function delLinks()
               $('link_'+lid).getElementsByTagName('a')[0].innerHTML+
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = linkdumpSync.deletelink(lid, $('gid').value, $('rank').value);
+            var response = LinkDumpAjax.callSync('deletelink', lid, $('gid').value, $('rank').value);
             if (response[0]['css'] == 'notice-message') {
                 link_parent = $('link_'+lid).parentNode;
                 Element.destroy($('link_'+lid));
@@ -427,15 +427,7 @@ function downCount()
     $('limit_count').value = lc;
 }
 
-var linkdump = new linkdumpadminajax(LinkDumpCallback);
-linkdump.serverErrorFunc = Jaws_Ajax_ServerError;
-linkdump.onInit = showWorkingNotification;
-linkdump.onComplete = hideWorkingNotification;
-
-var linkdumpSync  = new linkdumpadminajax();
-linkdumpSync.serverErrorFunc = Jaws_Ajax_ServerError;
-linkdumpSync.onInit = showWorkingNotification;
-linkdumpSync.onComplete = hideWorkingNotification;
+var LinkDumpAjax = new JawsAjax('LinkDump', LinkDumpCallback);
 
 //Current group
 var selectedGroup = null;
