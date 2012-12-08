@@ -82,7 +82,7 @@ function addWebcam(form)
     }
 
     try {
-        webcam.newwebcam(webcamTitle, webcamUrl, webcamRefresh);
+        WebcamAjax.callAsync('newwebcam', webcamTitle, webcamUrl, webcamRefresh);
     } catch(e) {
         alert(e);
     }
@@ -99,7 +99,7 @@ function updateWebcam(form)
     var webcamUrl     = form.elements['url'].value;
     var webcamRefresh = form.elements['refresh'].value;
     
-    webcam.updatewebcam(webcamId, webcamTitle, webcamUrl, webcamRefresh);
+    WebcamAjax.callAsync('updatewebcam', webcamId, webcamTitle, webcamUrl, webcamRefresh);
     cleanForm(form);
 }
 
@@ -120,7 +120,7 @@ function submitForm(form)
  */
 function deleteWebcam(id)
 {
-    webcam.deletewebcam(id);
+    WebcamAjax.callAsync('deletewebcam', id);
     cleanForm($('webcam_form'));
 }
 
@@ -129,7 +129,7 @@ function deleteWebcam(id)
  */
 function editWebcam(id)
 {
-    webcam.getwebcam(id);
+    WebcamAjax.callAsync('getwebcam', id);
 }
 
 /**
@@ -139,10 +139,7 @@ function editWebcam(id)
 function updateProperties(form)
 {
     var limitRandom = form.elements['limit_random'].value;
-    webcam.updateproperties(limitRandom);
+    WebcamAjax.callAsync('updateproperties', limitRandom);
 }
 
-var webcam = new webcamadminajax(WebcamCallback);
-webcam.serverErrorFunc = Jaws_Ajax_ServerError;
-webcam.onInit = showWorkingNotification;
-webcam.onComplete = hideWorkingNotification;
+var WebcamAjax = new JawsAjax('Webcam', WebcamCallback);
