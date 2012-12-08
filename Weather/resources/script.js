@@ -51,8 +51,8 @@ var WeatherCallback = {
 function initWeather()
 {
     stopAction();
-    $('latitude').setValue('51.30');
-    $('longitude').setValue('00.08');
+    $('latitude').value = '51.30';
+    $('longitude').value = '00.08';
     initDataGrid('weather_datagrid', WeatherAjax);
     setGoogleMapImage();
 }
@@ -66,10 +66,10 @@ function stopAction()
         $('weather_datagrid').unselectRow(selectedRow);
         selectedRow = null;
     }
-    $('id').clear();
-    $('title').clear();
-    $('fast_url').clear();
-    $('published').setValue(1);
+    $('id').value = '';
+    $('title').value = '';
+    $('fast_url').value = '';
+    $('published').value = 1;
     $('title').focus();
 }
 
@@ -84,7 +84,7 @@ function editRegion(rowElement, id)
     $('weather_datagrid').selectRow(rowElement);
     selectedRow = rowElement;
 
-    var geoPos = weatherSync.getregion(id);
+    var geoPos = WeatherAjax.callSync('getregion', id);
     $('id').value        = geoPos['id'];
     $('title').value     = geoPos['title'].defilter();
     $('fast_url').value  = geoPos['fast_url'];
@@ -108,14 +108,16 @@ function updateRegion()
     }
 
     if ($('id').value == 0) {
-        weatherAsync.insertregion(
+        WeatherAjax.callAsync(
+                        'insertregion',
                         $('title').value,
                         $('fast_url').value,
                         $('latitude').value,
                         $('longitude').value,
                         $('published').value);
     } else {
-        weatherAsync.updateregion(
+        WeatherAjax.callAsync(
+                        'updateregion',
                         $('id').value,
                         $('title').value,
                         $('fast_url').value,
@@ -133,7 +135,7 @@ function deleteRegion(rowElement, id)
     stopAction();
     $('weather_datagrid').selectRow(rowElement);
     if (confirm(confirmDelete)) {
-        weatherAsync.deleteregion(id);
+        WeatherAjax.callAsync('deleteregion', id);
     } else {
         $('weather_datagrid').unselectRow(rowElement);
         selectedRow = null;
@@ -145,10 +147,11 @@ function deleteRegion(rowElement, id)
  */
 function updateProperties()
 {
-    weatherAsync.updateproperties($('unit').value,
-                                  $('update_period').value,
-                                  $('date_format').value,
-                                  $('api_key').value);
+    WeatherAjax.callAsync('updateproperties',
+                          $('unit').value,
+                          $('update_period').value,
+                          $('date_format').value,
+                          $('api_key').value);
 }
 
 /**
@@ -245,16 +248,7 @@ function zoomMap(level)
     setGoogleMapImage();
 }
 
-
-var weatherAsync = new weatheradminajax(WeatherCallback);
-weatherAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-weatherAsync.onInit = showWorkingNotification;
-weatherAsync.onComplete = hideWorkingNotification;
-
-var weatherSync  = new weatheradminajax();
-weatherSync.serverErrorFunc = Jaws_Ajax_ServerError;
-weatherSync.onInit = showWorkingNotification;
-weatherSync.onComplete = hideWorkingNotification;
+var WeatherAjax = new JawsAjax('Weather', WeatherCallback);
 
 var selectedRow = null,
     selectedRowColor = null;
