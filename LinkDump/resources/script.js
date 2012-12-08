@@ -131,7 +131,7 @@ function saveLink()
                         old_parent.innerHTML = noLinkExists;
                     }
                 } else {
-                    var oldRank = $A(links_elements).indexOf($('link_'+$('lid').value)) + 1;
+                    var oldRank = Array.from(links_elements).indexOf($('link_'+$('lid').value)) + 1;
                     if ($('rank').value > oldRank) {
                         new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value]);
                     } else {
