@@ -48,7 +48,7 @@ function submitBasicForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    settings.updatebasicsettings(settingsArray);
+    SettingsAjax.callAsync('UpdateBasicSettings', settingsArray);
 }
 
 /**
@@ -61,7 +61,7 @@ function submitAdvancedForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    settings.updateadvancedsettings(settingsArray);
+    SettingsAjax.callAsync('updateadvancedsettings', settingsArray);
 }
 
 /**
@@ -101,8 +101,7 @@ function submitMetaForm()
         }
         customMeta.push([input.value, input.next().value]);
     });
-
-    settings.updatemetasettings(settingsArray, customMeta);
+    SettingsAjax.callAsync('updatemetasettings', settingsArray, customMeta);
 }
 
 /**
@@ -115,7 +114,7 @@ function submitMailSettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    settings.updatemailsettings(settingsArray);
+    SettingsAjax.callAsync('updatemailsettings', settingsArray);
 }
 
 /**
@@ -128,7 +127,7 @@ function submitFTPSettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    settings.updateftpsettings(settingsArray);
+    SettingsAjax.callAsync('updateftpsettings', settingsArray);
 }
 
 /**
@@ -141,7 +140,7 @@ function submitProxySettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    settings.updateproxysettings(settingsArray);
+    SettingsAjax.callAsync('updateproxysettings', settingsArray);
 }
 
 function toggleGR() 
@@ -199,7 +198,4 @@ function changeMailer()
     }
 }
 
-var settings = new settingsadminajax(SettingsCallback);
-settings.serverErrorFunc = Jaws_Ajax_ServerError;
-settings.onInit = showWorkingNotification;
-settings.onComplete = hideWorkingNotification;
+var SettingsAjax = new JawsAjax('Settings', SettingsCallback);
