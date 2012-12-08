@@ -62,7 +62,7 @@ var JawsAjax = new Class({
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
         var req = new Request(options).send();
-        return req.response.text;
+        return eval('(' + req.response.text + ')')
     },
 
     onRequest: function () {
@@ -504,7 +504,7 @@ function initDatePicker(name)
     var newScript = document.createElement('script');
     newScript.type = "text/javascript";
     newScript.text = script.text;
-    Element.remove(script);
+    Element.destroy(script);
     dpTable.parentNode.appendChild(newScript);
 }
 
