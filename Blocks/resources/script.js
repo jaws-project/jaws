@@ -14,7 +14,6 @@
 var BlocksCallback = {
 
     newblock: function(response) {
-        console.log(response);
         if (response['css'] == 'notice-message') {
             afterNewBlock(response['data']);
         }
@@ -30,7 +29,7 @@ var BlocksCallback = {
         var combo = $('block_id');
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
         selIndex = combo.selectedIndex;
-        combo.destroy(selIndex);
+        combo.options[selIndex].dispose();
         // Set option styles...
         for (i = selIndex; i <= combo.length - 1; i++) {
             aux = combo.options[i].style.backgroundColor;
@@ -93,7 +92,7 @@ function updateBlock()
         displayTitle = document.getElementsByName('display_title[]').item(0).checked;
         // Call function
         loading_message = updatingMessage;
-        blocksAsync.updateblock(id, title, contents, displayTitle);
+        BlocksAjax.callAsync('updateblock', id, title, contents, displayTitle);
         // Update Combo
         var combo = $('block_id');
         combo.options[combo.selectedIndex].text = title;
@@ -109,7 +108,7 @@ function deleteBlock()
     id = $('hidden_id').value;
     $('block_id').disabled = true;
     loading_message = deletingMessage;
-    blocksAsync.deleteblock(id);
+    BlocksAjax.callAsync('deleteblock', id);
 }
 
 /**
@@ -184,7 +183,7 @@ function edit(id)
     currentMode = 'edit';
     $('block_id').disabled = false;
     loading_message = retrievingMessage;
-    var block = blocksSync.getblock(id);
+    var block = BlocksAjax.callSync('getblock', id);
     fillEditorEntries(block);
     $('block_id_txt').innerHTML = id;
     switchTab('edit', block['title']);
@@ -200,7 +199,7 @@ function preview()
     $('preview_title').innerHTML = $('block_title').value;
 
     // Use this if you want to use plugins
-    blocksAsync.parsetext(block_contents);
+    BlocksAjax.callAsync('parsetext', block_contents);
     //$('preview_contents').innerHTML = block_contents;
 }
 
@@ -236,7 +235,7 @@ function newBlock()
     displayTitle = document.getElementsByName('display_title[]').item(0).checked;
     // Call function
     loading_message = savingMessage;
-    blocksAsync.newblock(title, contents, displayTitle);
+    BlocksAjax.callAsync('newblock', title, contents, displayTitle);
 }
 
 /**
@@ -270,7 +269,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = retrievingMessage;
-            var block = blocksSync.getblock(previousID);
+            var block = BlocksAjax.callSync('getblock', previousID);
             fillEditorEntries(block);
             b.disabled = false;
             combo.disabled = false;
@@ -297,17 +296,7 @@ function getFirst()
     }
 }
 
-var blocksAsync = new blocksadminajax(BlocksCallback);
-blocksAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-blocksAsync.onInit = showWorkingNotification;
-blocksAsync.onComplete = hideWorkingNotification;
-
-var blocksSync  = new blocksadminajax();
-blocksSync.serverErrorFunc = Jaws_Ajax_ServerError;
-blocksSync.onInit = showWorkingNotification;
-blocksSync.onComplete = hideWorkingNotification;
-
-
-var currentMode = 'edit';
-var previousID  = 'NEW';
-var editTitle   = '';
+var BlocksAjax = new JawsAjax('Blocks', BlocksCallback),
+    currentMode = 'edit',
+    previousID  = 'NEW',
+    editTitle   = '';
