@@ -19,39 +19,52 @@ var JawsAjax = new Class({
                 basePath = href.substr(0, href.indexOf(path) + path.length);
             baseScript = basePath.replace($$('base')[0].href, '');
         }
-        this.baseScript = baseScript;
+        this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
     },
 
     /**
-     * Performs Ajax request
+     * Performs asynchronous Ajax request
      *
      * @param   string  func    Name of the function to be executed
      * @param   object  params  Parameters passed to the function (optional)
-     * @param   bool    async   Whether use asynchronous request or not (optional)
-     *
-     * @return  mixed   Response text on synchronous mode or void otherwise
+     * @return  void
      */
-    request: function (func, params, async) {
-        var voidFunc = function() {},
-            options = {},
-            req;
-
-        async = (async === undefined)? true : async;
-        options.async = async;
-        options.url = this.baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=' + func;
+    callAsync: function (func, params) {
+        var options = {};
+        options.url = this.baseURL + func;
         options.func = func;
-        options.data = toJSON(params);
+        options.async = true;
+        arguments = Array.prototype.slice.call(arguments, 1);
+        options.data = toJSON(arguments);
         options.urlEncoded = false;
-        options.headers = {'Content-Type' : 'application/json; charset=UTF-8'};
+        options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.evalResponse = true;
         options.onRequest = this.onRequest.bind(this);
-        options.onSuccess = async? this.onSuccess.bind(this, options) : voidFunc;
-        options.onFailure = async? this.onFailure.bind(this, options) : voidFunc;
-        req = new Request(options).send();
+        options.onSuccess = this.onSuccess.bind(this, options);
+        options.onFailure = this.onFailure.bind(this, options);
+        var req = new Request(options).send();
+    },
 
-        if (!async) {
-            return req.response.text;
-        }
+    /**
+     * Performs synchronous Ajax request
+     *
+     * @param   string  func    Name of the function to be executed
+     * @param   object  params  Parameters passed to the function (optional)
+     * @return  mixed   Response text on synchronous mode or void otherwise
+     */
+    callSync: function (func, params) {
+        var options = {};
+        options.async = false;
+        options.url = this.baseURL + func;
+        options.func = func;
+        arguments = Array.prototype.slice.call(arguments, 1);
+        options.data = toJSON(arguments);
+        options.urlEncoded = false;
+        options.headers = {'content-type' : 'application/json; charset=utf-8'};
+        options.evalResponse = true;
+        options.onRequest = this.onRequest.bind(this);
+        var req = new Request(options).send();
+        return req.response.text;
     },
 
     onRequest: function () {
