@@ -51,6 +51,9 @@ function AddNewMenuGroup(gid) {
     links[1].href = 'javascript: addMenu('+gid+', 0);';
 }
 
+/**
+ *
+ */
 function AddNewMenuItem(gid, pid, mid, rank)
 {
     var mainDiv = document.createElement('div');
@@ -65,7 +68,7 @@ function AddNewMenuItem(gid, pid, mid, rank)
     }
     parentNode.appendChild(mainDiv);
     //set ranking
-    var oldRank = $A(parentNode.childNodes).indexOf($('menu_'+mid));
+    var oldRank = Array.from(parentNode.childNodes).indexOf($('menu_'+mid));
     if (rank < oldRank) {
         parentNode.insertBefore($('menu_'+mid), parentNode.childNodes[rank]);
     }
@@ -92,10 +95,10 @@ function saveMenus()
         }
         cacheMenuForm = null;
         if (selectedGroup == null) {
-            var response = menuSync.insertgroup(
-                                    $('title').value,
-                                    $('title_view').value,
-                                    $('visible').value);
+            var response = MenuAjax.callSync('insertgroup',
+                                             $('title').value,
+                                             $('title_view').value,
+                                             $('visible').value);
             if (response[0]['css'] == 'notice-message') {
                 var gid = response[0]['data'];
                 AddNewMenuGroup(gid);
@@ -103,11 +106,11 @@ function saveMenus()
             }
             showResponse(response);
         } else {
-            menuAsync.updategroup(
-                                $('gid').value,
-                                $('title').value,
-                                $('title_view').value,
-                                $('visible').value);
+            MenuAjax.callAsync('updategroup',
+                               $('gid').value,
+                               $('title').value,
+                               $('title_view').value,
+                               $('visible').value);
         }
     } else {
         if ($('title').value.blank() || ($('references').selectedIndex == -1)) {
@@ -115,7 +118,8 @@ function saveMenus()
             return false;
         }
         if (selectedMenu == null) {
-            var response = menuSync.insertmenu(
+            var response = MenuAjax.callSync(
+                                    'insertmenu',
                                     $('pid').value,
                                     $('gid').value,
                                     $('type').value,
@@ -133,7 +137,8 @@ function saveMenus()
             }
             showResponse(response);
         } else {
-            var response = menuSync.updatemenu(
+            var response = MenuAjax.callSync(
+                                    'updatemenu',
                                     $('mid').value,
                                     $('pid').value,
                                     $('gid').value,
@@ -158,7 +163,7 @@ function saveMenus()
                         new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value]);
                     }
                 } else {
-                    var oldRank = $A(new_parentNode.childNodes).indexOf($('menu_'+$('mid').value));
+                    var oldRank = Array.from(new_parentNode.childNodes()).indexOf($('menu_'+$('mid').value));
                     if ($('rank').value > oldRank) {
                         new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value].nextSibling);
                     } else {
@@ -202,7 +207,7 @@ function setRanksCombo(gid, pid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = menuSync.getgroupui();
+        cacheGroupForm = MenuAjax.callSync('getgroupui');
     }
     currentAction = 'Groups';
 
@@ -242,7 +247,7 @@ function mm_leave(eid)
 function addMenu(gid, pid)
 {
     if (cacheMenuForm == null) {
-        cacheMenuForm = menuSync.getmenuui();
+        cacheMenuForm = MenuAjax.callSync('getmenuui');
     }
 
     stopAction();
@@ -280,7 +285,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = menuSync.getgroupui();
+        cacheGroupForm = MenuAjax.callSync('getgroupui');
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -293,7 +298,7 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('menus_edit').innerHTML = cacheGroupForm;  
 
-    var groupInfo = menuSync.getgroups(selectedGroup);
+    var groupInfo = MenuAjax.callSync('getgroups', selectedGroup);
 
     $('gid').value         = groupInfo['id'];
     $('title').value       = groupInfo['title'].defilter();
@@ -308,7 +313,7 @@ function editMenu(mid)
 {
     if (mid == 0) return;
     if (cacheMenuForm == null) {
-        cacheMenuForm = menuSync.getmenuui();
+        cacheMenuForm = MenuAjax.callSync('getmenuui');
     }
     currentAction = 'Menus';
 
@@ -331,7 +336,7 @@ function editMenu(mid)
     $('menu_'+mid).getElementsByTagName('div')[0].style.backgroundColor = m_bg_color;
 
     selectedMenu = mid;
-    var menuInfo = menuSync.getmenu(selectedMenu);
+    var menuInfo = MenuAjax.callSync('getmenu', selectedMenu);
     getParentMenus(menuInfo['gid'], mid);
 
     $('mid').value         = menuInfo['id'];
@@ -371,7 +376,7 @@ function delMenus()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = menuSync.deletegroup(gid);
+            var response = MenuAjax.callSync('deletegroup', gid);
             if (response[0]['css'] == 'notice-message') {
                 Element.destroy($('group_'+gid));
             }
@@ -383,7 +388,7 @@ function delMenus()
         var msg = confirmMenuDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('menu_'+mid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = menuSync.deletemenu(mid);
+            var response = MenuAjax.callSync('deletemenu', mid);
             if (response[0]['css'] == 'notice-message') {
                 Element.destroy($('menu_'+mid));
             }
@@ -397,7 +402,7 @@ function delMenus()
  * Get list of menu levels
  */
 function getParentMenus(gid, mid) {
-    var parents = menuSync.getparentmenus(gid, mid);
+    var parents = MenuAjax.callSync('getparentmenus', gid, mid);
     $('pid').options.length = 0;
     for(var i = 0; i < parents.length; i++) {
         $('pid').options[i] = new Option(parents[i]['title'], parents[i]['pid']);
@@ -424,7 +429,7 @@ function getReferences(type)
         }
         return;
     }
-    var links = menuSync.getpublicurlist(type);
+    var links = MenuAjax.callSync('getpublicurlist', type);
     cacheReferences[type] = new Array();
     $('references').options.length = 0;
     for(var i = 0; i < links.length; i++) {
@@ -514,15 +519,7 @@ function removeImage() {
     $('image').src = 'gadgets/Menu/images/no-image.png?' + (new Date()).getTime();
 }
 
-var menuAsync = new menuadminajax(MenuCallback);
-menuAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-menuAsync.onInit = showWorkingNotification;
-menuAsync.onComplete = hideWorkingNotification;
-
-var menuSync  = new menuadminajax();
-menuSync.serverErrorFunc = Jaws_Ajax_ServerError;
-menuSync.onInit = showWorkingNotification;
-menuSync.onComplete = hideWorkingNotification;
+var MenuAjax = new JawsAjax('Menu', MenuCallback);
 
 //Current group
 var selectedGroup = null;
