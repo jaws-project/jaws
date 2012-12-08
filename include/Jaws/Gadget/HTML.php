@@ -118,6 +118,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     {
         $this->_usingAjax = true;
         $name = $this->_Gadget;
+         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
