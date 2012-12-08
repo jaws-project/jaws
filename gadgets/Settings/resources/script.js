@@ -13,27 +13,27 @@
  * Use async mode, create Callback
  */
 var SettingsCallback = {
-    updatebasicsettings: function(response) {
+    UpdateBasicSettings: function(response) {
         showResponse(response);
     },
 
-    updateadvancedsettings: function(response) {
+    UpdateAdvancedSettings: function(response) {
         showResponse(response);
     },
 
-    updatemetasettings: function(response) {
+    UpdateMetaSettings: function(response) {
         showResponse(response);
     },
 
-    updatemailsettings: function(response) {
+    UpdateMailSettings: function(response) {
         showResponse(response);
     },
 
-    updateftpsettings: function(response) {
+    UpdateFTPSettings: function(response) {
         showResponse(response);
     },
 
-    updateproxysettings: function(response) {
+    UpdateProxySettings: function(response) {
         showResponse(response);
     }
 }
@@ -61,7 +61,7 @@ function submitAdvancedForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    SettingsAjax.callAsync('updateadvancedsettings', settingsArray);
+    SettingsAjax.callAsync('UpdateAdvancedSettings', settingsArray);
 }
 
 /**
@@ -70,14 +70,14 @@ function submitAdvancedForm()
 function addCustomMeta()
 {
     var div = new Element('div', {'class':'fields'}),
-        label = new Element('label').update(custom_meta),
+        label = new Element('label').set('html', custom_meta),
         inputName  = new Element('input', {type:'text', title:'Meta Name', 'class':'meta-name'}),
         inputValue = new Element('input', {type:'text', title:'Meta Content', 'class':'meta-value'});
 
-    div.insert(label);
-    div.insert(inputName);
-    div.insert(inputValue);
-    $('customMeta').insert(div);
+    div.adopt(label);
+    div.adopt(inputName);
+    div.adopt(inputValue);
+    $('customMeta').adopt(div);
 }
 
 /**
@@ -93,15 +93,15 @@ function submitMetaForm()
     }
 
     var customMeta   = new Array(),
-        customInputs = $('customMeta').select('input.meta-name');
+        customInputs = $('customMeta').getElements('input.meta-name');
     customInputs.each(function(input) {
         if (input.value.blank()) {
-            input.up().remove();
+            input.getParent().destroy();
             return;
         }
-        customMeta.push([input.value, input.next().value]);
+        customMeta.include([input.value, input.getNext().value]);
     });
-    SettingsAjax.callAsync('updatemetasettings', settingsArray, customMeta);
+    SettingsAjax.callAsync('UpdateMetaSettings', settingsArray, customMeta);
 }
 
 /**
@@ -114,7 +114,7 @@ function submitMailSettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    SettingsAjax.callAsync('updatemailsettings', settingsArray);
+    SettingsAjax.callAsync('UpdateMailSettings', settingsArray);
 }
 
 /**
@@ -127,7 +127,7 @@ function submitFTPSettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    SettingsAjax.callAsync('updateftpsettings', settingsArray);
+    SettingsAjax.callAsync('UpdateFTPSettings', settingsArray);
 }
 
 /**
@@ -140,7 +140,7 @@ function submitProxySettingsForm()
     for (i=0; i<form.elements.length; i++) {
         settingsArray[form.elements[i].name] = form.elements[i].value;
     }
-    SettingsAjax.callAsync('updateproxysettings', settingsArray);
+    SettingsAjax.callAsync('UpdateProxySettings', settingsArray);
 }
 
 function toggleGR() 
