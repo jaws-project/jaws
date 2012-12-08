@@ -21,10 +21,8 @@ var ServerTimeCallback = {
  */
 function updateProperties(form)
 {
-    servertime.updateproperties($('date_format').value);
+    ServerTimeAjax.callAsync('updateproperties', $('date_format').value);
+
 }
 
-var servertime = new servertimeadminajax(ServerTimeCallback);
-servertime.serverErrorFunc = Jaws_Ajax_ServerError;
-servertime.onInit = showWorkingNotification;
-servertime.onComplete = hideWorkingNotification;
+var ServerTimeAjax = new JawsAjax('ServerTime', ServerTimeCallback);

@@ -87,7 +87,7 @@ function ImportImages()
         $('percent').innerHTML = percent + '%';
         $('img_percent').setAttribute('style', 'width:' + percent + '%;');
         var phoo = new phooadminajax(PhooCallback);
-        phoo.importimage(items[currentIndex]['image'], items[currentIndex]['name'], album);
+        PhooAjax.callAsync('importimage', items[currentIndex]['image'], items[currentIndex]['name'], album);
     } else {
         if (currentIndex == howmany) {
             $('nofm').innerHTML = finished_message;
@@ -130,7 +130,7 @@ function getDataOfLCForm()
  */
 function deleteComment(id)
 {
-    phoo.deletecomment(id);
+    PhooAjax.callAsync('deletecomment', id);
 }
 
 /**
@@ -203,10 +203,11 @@ function lastValues()
  */
 function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = phooSync.searchcomments(limit, filter, search, status);
+    result = PhooAjax.callSync('searchcomments', limit, filter, search, status);
+
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
-        var size = phooSync.sizeofcommentssearch(filter, search, status);
+        var size = PhooAjax.callSync('sizeofcommentssearch', filter, search, status);
         $('comments_datagrid').rowsSize    = size;
         $('comments_datagrid').setCurrentPage(0);
         $('comments_datagrid').updatePageCounter();
@@ -220,7 +221,7 @@ function commentDelete(row_id)
 {
     var confirmation = confirm(deleteConfirm);
     if (confirmation) {
-        phoo.deletecomments(row_id);
+        PhooAjax.callAsync('deletecomments', row_id);
     }
 }
 
@@ -239,12 +240,12 @@ function commentDGAction(combo)
         if (selectedRows) {
             var confirmation = confirm(deleteConfirm);
             if (confirmation) {
-                phoo.deletecomments(rows);
+                PhooAjax.callAsync('deletecomments', rows);
             }
         }
     } else {
         if (selectedRows) {
-            phoo.markas(rows, combo.value);
+            PhooAjax.callAsync('markas', rows, combo.value);
         }
     }
 }
@@ -267,7 +268,7 @@ function updatePhoto()
         }
     }
 
-    phoo.updatephoto(id, title, description, allow_comments, published, albums);
+    PhooAjax.callAsync('updatephoto', id, title, description, allow_comments, published, albums);
 }
 
 /**
@@ -282,16 +283,9 @@ function addEntry(title)
     $('phoo_addentry' + id).innerHTML = entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('phoo_addentry' + id).innerHTML + '</span>';
 }
 
-var num_entries = 5;
-var phoo = new phooadminajax(PhooCallback);
-phoo.serverErrorFunc = Jaws_Ajax_ServerError;
-phoo.onInit = showWorkingNotification;
-phoo.onComplete = hideWorkingNotification;
+var PhooAjax = new JawsAjax('Phoo', PhooCallback);
 
-var phooSync = new phooadminajax();
-phooSync.serverErrorFunc = Jaws_Ajax_ServerError;
-phooSync.onInit = showWorkingNotification;
-phooSync.onComplete = hideWorkingNotification;
+var num_entries = 5;
 
 var firstFetch = true;
 var currentIndex = 0;

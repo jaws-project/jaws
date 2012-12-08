@@ -194,6 +194,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('dui',  $this->GetDirectoryUI());
         $tpl->SetVariable('grid', $this->Datagrid($path));
 
+        $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
         $tpl->SetVariable('confirmDirDelete',  _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
 

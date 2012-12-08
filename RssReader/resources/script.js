@@ -124,24 +124,24 @@ function updateRSS()
     }
 
     if($('id').value==0) {
-        rssreader.insertrss(
-                        $('title').value,
-                        $('url').value,
-                        $('cache_time').value,
-                        $('view_type').value,
-                        $('count_entry').value,
-                        $('title_view').value,
-                        $('visible').value);
+            RssReaderAjax.callAsync('insertrss',
+                                $('title').value,
+                                $('url').value,
+                                $('cache_time').value,
+                                $('view_type').value,
+                                $('count_entry').value,
+                                $('title_view').value,
+                                $('visible').value);
     } else {
-        rssreader.updaterss(
-                        $('id').value,
-                        $('title').value,
-                        $('url').value,
-                        $('cache_time').value,
-                        $('view_type').value,
-                        $('count_entry').value,
-                        $('title_view').value,
-                        $('visible').value);
+        RssReaderAjax.callAsync('updaterss',
+                            $('id').value,
+                            $('title').value,
+                            $('url').value,
+                            $('cache_time').value,
+                            $('view_type').value,
+                            $('count_entry').value,
+                            $('title_view').value,
+                            $('visible').value);
     }
 }
 
@@ -154,7 +154,7 @@ function deleteRSS(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmFeedDelete);
     if (answer) {
-        rssreader.deleterss(id);
+        RssReaderAjax.callAsync('deleterss', id);
     }
     unselectDataGridRow();
 }
@@ -166,13 +166,10 @@ function deleteRSS(element, id)
 function editRSS(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-    rssreader.getrss(id);
+    RssReaderAjax.callAsync('getrss', id);
 }
 
-var rssreader = new rssreaderadminajax(RssReaderCallback);
-rssreader.serverErrorFunc = Jaws_Ajax_ServerError;
-rssreader.onInit = showWorkingNotification;
-rssreader.onComplete = hideWorkingNotification;
+var RssReaderAjax = new JawsAjax('RssReader', RssReaderCallback);
 
 //Which row selected in DataGrid
 var selectedRow = null;

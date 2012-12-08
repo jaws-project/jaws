@@ -220,7 +220,7 @@ class EmblemsAdminModel extends EmblemsModel
 
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
-            unlink($uploadfile);
+            @unlink($uploadfile);
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('EMBLEMS_ERROR_NOT_ADDED'), _t('EMBLEMS_NAME'));
         }
@@ -248,7 +248,7 @@ class EmblemsAdminModel extends EmblemsModel
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
 
-        if (!file_exists(JAWS_DATA . 'emblems/' . $src) || unlink(JAWS_DATA . 'emblems/' . $src)) {
+        if (!file_exists(JAWS_DATA . 'emblems/' . $src) || @unlink(JAWS_DATA . 'emblems/' . $src)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_DELETED'), RESPONSE_NOTICE);
             return true;
         }

@@ -169,7 +169,8 @@ function editPoll(element, pid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var pollInfo = pollSync.getpoll(selectedPoll);
+    var pollInfo = PollAjax.callSync('getpoll', selectedPoll);
+
     $('question').value    = pollInfo['question'].defilter();
     $('gid').value         = pollInfo['gid'];
     if (pollInfo['start_time'] == null) pollInfo['start_time'] = '';
@@ -194,14 +195,14 @@ function editPollAnswers(element, pid)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cachePollAnswersForm == null) {
-        cachePollAnswersForm = pollSync.pollanswersui();
+        cachePollAnswersForm = PollAjax.callSync('pollanswersui');
     }
     currentAction = 'PollAnswers';
 
     selectedPoll = pid;
     $('legend_title').innerHTML = editAnswers_title;
     $('p_work_area').innerHTML = cachePollAnswersForm;
-    var answersData = pollSync.getpollanswers(selectedPoll);
+    var answersData = PollAjax.callSync('getpollanswers', selectedPoll);
     var answers  = answersData['Answers'];
     $('question').value  = answersData['question'].defilter();
 
@@ -230,7 +231,7 @@ function savePoll()
             answers[i]['id']     = box.options[i].value;
             answers[i]['answer'] = box.options[i].text;
         }
-        pollAsync.updatepollanswers(selectedPoll, answers);
+        PollAjax.callAsync('updatepollanswers', selectedPoll, answers);
     } else {
         if ($('question').value.blank()) {
             alert(incompletePollsFields);
@@ -238,26 +239,26 @@ function savePoll()
         }
 
         if (selectedPoll == null) {
-            pollAsync.insertpoll(
-                    $('question').value,
-                    $('gid').value,
-                    $('start_time').value,
-                    $('stop_time').value,
-                    $('select_type').value,
-                    $('poll_type').value,
-                    $('result_view').value,
-                    $('visible').value);
+            PollAjax.callAsync('insertpoll',
+                                $('question').value,
+                                $('gid').value,
+                                $('start_time').value,
+                                $('stop_time').value,
+                                $('select_type').value,
+                                $('poll_type').value,
+                                $('result_view').value,
+                                $('visible').value);
         } else {
-            pollAsync.updatepoll(
-                    selectedPoll,
-                    $('question').value,
-                    $('gid').value,
-                    $('start_time').value,
-                    $('stop_time').value,
-                    $('select_type').value,
-                    $('poll_type').value,
-                    $('result_view').value,
-                    $('visible').value);
+            PollAjax.callAsync('updatepoll',
+                                selectedPoll,
+                                $('question').value,
+                                $('gid').value,
+                                $('start_time').value,
+                                $('stop_time').value,
+                                $('select_type').value,
+                                $('poll_type').value,
+                                $('result_view').value,
+                                $('visible').value);
         }
     }
 }
@@ -270,7 +271,7 @@ function deletePoll(element, pid)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(confirmPollDelete)) {
-        pollAsync.deletepoll(pid);
+        PollAjax.callAsync('deletepoll', pid);
     }
     unselectDataGridRow();
 }
@@ -391,7 +392,8 @@ function editPollGroup(element, gid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var groupInfo = pollSync.getpollgroup(selectedPollGroup);
+    var groupInfo = PollAjax.callSync('getpollgroup', selectedPollGroup);
+
     $('gid').value = groupInfo['id'];
     $('title').value  = groupInfo['title'].defilter();
     $('visible').selectedIndex = groupInfo['visible'];
@@ -409,7 +411,7 @@ function editPollGroupPolls(element, gid)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cachePollGroupPollsForm == null) {
-        cachePollGroupPollsForm = pollSync.pollgrouppollsui();
+        cachePollGroupPollsForm = PollAjax.callSync('pollgrouppollsui');
     }
 
     currentAction = 'PollGroupPolls';
@@ -417,7 +419,7 @@ function editPollGroupPolls(element, gid)
     $('legend_title').innerHTML = editPollGroupPolls_title;
     $('pg_work_area').innerHTML = cachePollGroupPollsForm;
 
-    var pollsData  = pollSync.getpollgrouppolls(selectedPollGroup);
+    var pollsData = PollAjax.callSync('getpollgrouppolls', selectedPollGroup);
     var pollsList  = pollsData['Polls'];
     $('title').value  = pollsData['title'];
     if ($('pg_polls_combo')) {
@@ -449,7 +451,8 @@ function savePollGroup()
                     counter++;
                 }
             }
-            pollAsync.addpollstopollgroup(selectedPollGroup, keys);
+            PollAjax.callAsync('addpollstopollgroup', selectedPollGroup, keys);
+
         }
     } else {
         if ($('title').value.blank()) {
@@ -458,14 +461,14 @@ function savePollGroup()
         }
 
         if (selectedPollGroup == null) {
-            pollAsync.insertpollgroup(
-                            $('title').value,
-                            $('visible').value);
+            PollAjax.callAsync('insertpollgroup',
+                                $('title').value,
+                                $('visible').value);
         } else {
-            pollAsync.updatepollgroup(
-                            selectedPollGroup,
-                            $('title').value,
-                            $('visible').value);
+            PollAjax.callAsync('updatepollgroup',
+                                selectedPollGroup,
+                                $('title').value,
+                                $('visible').value);
         }
     }
 }
@@ -478,7 +481,7 @@ function deletePollGroup(element, gid)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(confirmPollGroupDelete)) {
-        pollAsync.deletepollgroup(gid);
+        PollAjax.callAsync('deletepollgroup', gid)
     }
     unselectDataGridRow();
 }
@@ -490,7 +493,7 @@ function getGroupPolls(gid)
     $('result_area').innerHTML = '';
     $('result_box').getElementsByTagName('span')[0].innerHTML = '';
     if (gid == 0) return;
-    var polls = pollSync.getgrouppolls(gid);
+    var polls = PollAjax.callSync('getgrouppolls', gid);
     for(var i = 0; i < polls.length; i++) {
         var op = new Option(polls[i]['question'], polls[i]['id']);
         if (i % 2 == 0) {
@@ -507,18 +510,10 @@ function showResult(pid)
 {
     var box = $('grouppolls');
     $('result_box').getElementsByTagName('span')[0].innerHTML = box.options[box.selectedIndex].text;
-    $('result_area').innerHTML = pollSync.pollresultsui(pid);
+    $('result_area').innerHTML = PollAjax.callSync('pollresultsui', pid);
 }
 
-var pollAsync = new polladminajax(PollCallback);
-pollAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-pollAsync.onInit = showWorkingNotification;
-pollAsync.onComplete = hideWorkingNotification;
-
-var pollSync  = new polladminajax();
-pollSync.serverErrorFunc = Jaws_Ajax_ServerError;
-pollSync.onInit = showWorkingNotification;
-pollSync.onComplete = hideWorkingNotification;
+var PollAjax = new JawsAjax('Poll', PollCallback);
 
 //Current poll
 var selectedPoll = null;
