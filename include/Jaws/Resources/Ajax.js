@@ -62,7 +62,7 @@ var JawsAjax = new Class({
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
         var req = new Request(options).send();
-        return eval('(' + req.response.text + ')')
+        return eval('(' + req.response.text + ')');
     },
 
     onRequest: function () {
@@ -286,7 +286,7 @@ var JawsDataGrid = {
     getFirstValues: function() {
         var firstValues = $(this.name).getFirstPagerValues();
         var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.getdata(firstValues, $(this.name).id);
+        var result      = ajaxObject.callSync('getdata', firstValues, $(this.name).id);
         resetGrid($(this.name), result);
         $(this.name).firstPage();
     },
@@ -297,7 +297,7 @@ var JawsDataGrid = {
     getPreviousValues: function() {
         var previousValues = $(this.name).getPreviousPagerValues();
         var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.getdata(previousValues, $(this.name).id);
+        var result         = ajaxObject.callSync('getdata', previousValues, $(this.name).id);
         resetGrid($(this.name), result);
         $(this.name).previousPage();
     },
@@ -308,7 +308,7 @@ var JawsDataGrid = {
     getNextValues: function() {
         var nextValues     = $(this.name).getNextPagerValues();
         var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.getdata(nextValues, $(this.name).id);
+        var result         = ajaxObject.callSync('getdata', nextValues, $(this.name).id);
         resetGrid($(this.name), result);
         $(this.name).nextPage();
     },
@@ -319,7 +319,7 @@ var JawsDataGrid = {
     getLastValues: function() {
         var lastValues = $(this.name).getLastPagerValues();
         var ajaxObject = $(this.name).objectName;
-        var result     = ajaxObject.getdata(lastValues, $(this.name).id);
+        var result     = ajaxObject.callSync('getdata', lastValues, $(this.name).id);
         resetGrid($(this.name), result);
         $(this.name).lastPage();
     },
@@ -330,7 +330,7 @@ var JawsDataGrid = {
     getData: function() {
         var currentPage = $(this.name).getCurrentPage();
         var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.getdata(currentPage, $(this.name).id);
+        var result      = ajaxObject.callSync('getdata', currentPage, $(this.name).id);
         resetGrid($(this.name), result);
     }
 }
