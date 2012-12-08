@@ -118,11 +118,11 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = bannerSync.getbannersdatagrid(name, offset, $('bgroup_filter').value);
+    var banners = BannerAjax.callSync('getbannersdatagrid', name, offset, $('bgroup_filter').value);
     if (reset) {
         stopAction();
         $(name).setCurrentPage(0);
-        var total = bannerSync.getbannerscount($('bgroup_filter').value);
+        var total = BannerAjax.callSync('getbannerscount', $('bgroup_filter').value);
     }
 
     resetGrid(name, banners, total);
@@ -157,7 +157,7 @@ function changeThroughUpload(checked) {
 function getGroups()
 {
     resetCombo($('groups_combo'));
-    var groupList = bannerSync.getgroups(-1, -1);
+    var groupList = BannerAjax.callSync('getgroups', -1, -1);
     if (groupList != false) {
         var combo = $('groups_combo');
         var i = 0;
@@ -210,20 +210,20 @@ function saveBanner()
         return true;
     } else {
         if ($('bid').value == 0) {
-            bannerAsync.insertbanner(
-                                $('title').value,
-                                $('url').value,
-                                $('gid').value,
-                                $('banner').value,
-                                $('template').value,
-                                $('views_limit').value,
-                                $('clicks_limit').value,
-                                $('start_time').value,
-                                $('stop_time').value,
-                                $('random').value,
-                                $('published').value);
+            BannerAjax.callAsync('insertbanner',
+                                 $('title').value,
+                                 $('url').value,
+                                 $('gid').value,
+                                 $('banner').value,
+                                 $('template').value,
+                                 $('views_limit').value,
+                                 $('clicks_limit').value,
+                                 $('start_time').value,
+                                 $('stop_time').value,
+                                 $('random').value,
+                                 $('published').value);
         } else {
-            bannerAsync.updatebanner(
+            BannerAjax.callAsync('updatebanner',
                                 $('bid').value,
                                 $('title').value,
                                 $('url').value,
@@ -251,7 +251,7 @@ function saveGroup()
         for(var i = 0; i < box.length; i++) {
             keys[i] = box.options[i].value;
         }
-        bannerAsync.addbannerstogroup(selectedGroup, keys);
+        BannerAjax.callAsync('addbannerstogroup', selectedGroup, keys);
     } else {
         if ($('title').value.blank()) {
             alert(incompleteGroupFields);
@@ -260,7 +260,8 @@ function saveGroup()
 
         if (selectedGroup == null) {
             $('gid').value = 0;
-            bannerAsync.insertgroup(
+            BannerAjax.callAsync(
+                            'insertgroup',
                             $('title').value,
                             $('count').value,
                             $('show_title').value,
@@ -268,7 +269,8 @@ function saveGroup()
                             $('published').value);
         } else {
             $('gid').value = selectedGroup;
-            bannerAsync.updategroup(
+            BannerAjax.callAsync(
+                            'updategroup',
                             $('gid').value,
                             $('title').value,
                             $('count').value,
@@ -288,7 +290,7 @@ function deleteBanner(element, bid)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmBannerDelete);
     if (answer) {
-        bannerAsync.deletebanner(bid);
+        BannerAjax.callAsync('deletebanner', bid);
     }
     unselectDataGridRow();
 }
@@ -300,7 +302,7 @@ function resetViews(bid)
 {
     var answer = confirm(confirmResetBannerViews);
     if (answer) {
-        bannerAsync.resetviews(bid);
+        BannerAjax.callAsync('resetviews', bid);
     }
 }
 
@@ -311,7 +313,7 @@ function resetClicks(bid)
 {
     var answer = confirm(confirmResetBannerClicks);
     if (answer) {
-        bannerAsync.resetclicks(bid);
+        BannerAjax.callAsync('resetclicks', bid);
     }
 }
 
@@ -322,7 +324,7 @@ function deleteGroup()
 {
     var answer = confirm(confirmGroupDelete);
     if (answer) {
-        bannerAsync.deletegroup(selectedGroup);
+        BannerAjax.callAsync('deletegroup', selectedGroup);
     }
 }
 
@@ -332,7 +334,7 @@ function deleteGroup()
 function addGroup()
 {
     if (cacheMasterForm == null) {
-        cacheMasterForm = bannerSync.getgroupui();
+        cacheMasterForm = BannerAjax.callSync('getgroupui');
     }
     currentAction = 'AddGroup';
 
@@ -355,7 +357,7 @@ function editBanner(element, bid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var banner = bannerSync.getbanner(bid);
+    var banner = BannerAjax.callSync('getbanner', bid);
     $('bid').value    = banner['id'];
     $('title').value  = banner['title'].defilter();
     $('url').value    = banner['url'];
@@ -382,7 +384,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheMasterForm == null) {
-        cacheMasterForm = bannerSync.getgroupui();
+        cacheMasterForm = BannerAjax.callSync('getgroupui');
     }
 
     $('group_banners_area').innerHTML = '';
@@ -394,7 +396,7 @@ function editGroup(gid)
     $('add_group').style.display = 'none';
     $('group_area').innerHTML = cacheMasterForm;
     selectedGroup = gid;
-    var groupInfo = bannerSync.getgroup(selectedGroup);
+    var groupInfo = BannerAjax.callSync('getgroup', selectedGroup);
     $('gid').value   = groupInfo['id'];
     $('title').value = groupInfo['title'].defilter();
     $('count').value = groupInfo['limit_count'];
@@ -540,7 +542,7 @@ function editGroupBanners()
 {
     if (selectedGroup == null) {return;}
     if (cacheSlaveForm == null) {
-        cacheSlaveForm = bannerSync.getgroupbannersui();
+        cacheSlaveForm = BannerAjax.callSync('getgroupbannersui');
     }
     $('save_group').style.display = 'inline';
     $('add_banners').style.display = 'none';
@@ -552,7 +554,7 @@ function editGroupBanners()
     $('published').disabled = true;
     //--
     currentAction = 'ManageGroupBanners';
-    var banners = bannerSync.getbanners(-1, selectedGroup);
+    var banners = BannerAjax.callSync('getbanners', -1, selectedGroup);
     var box = $('group_members');
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {
@@ -560,15 +562,7 @@ function editGroupBanners()
     }
 }
 
-var bannerAsync = new banneradminajax(BannerCallback);
-bannerAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-bannerAsync.onInit = showWorkingNotification;
-bannerAsync.onComplete = hideWorkingNotification;
-
-var bannerSync  = new banneradminajax();
-bannerSync.serverErrorFunc = Jaws_Ajax_ServerError;
-bannerSync.onInit = showWorkingNotification;
-bannerSync.onComplete = hideWorkingNotification;
+var BannerAjax = new JawsAjax('Banner', BannerCallback);
 
 // can for submit?
 var can_submit = false;
