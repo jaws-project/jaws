@@ -295,7 +295,7 @@ function deleteElement(itemId, confirmMsg)
         items[comesFrom][itemDiv.id] = null;
         rebuildItemsOfSection(comesFrom);
         checkDeletedSection(comesFrom);
-        layoutAsync.deleteelement(itemId);
+        LayoutAjax.callAsync('deleteelement', itemId);
     }
 }
 
@@ -332,10 +332,13 @@ function moveItemOnSection(element, section, serialized)
         //$('log').innerHTML += 'Serial: ' + serialized + '<br />';
 
         rebuildItemsOfSection(sectionId);
-        layoutAsync.moveelement(sectionChanges[0].replace('item_', ''),
-                                sectionChanges[1],
-                                sectionChanges[2],
-                                items[sectionId]);
+        LayoutAjax.callAsync(
+            'moveelement',
+            sectionChanges[0].replace('item_', ''),
+            sectionChanges[1],
+            sectionChanges[2],
+            items[sectionId]
+        );
     } else {
         actionStep++;
         if (actionStep >= 3) {
@@ -354,10 +357,13 @@ function moveItemOnSection(element, section, serialized)
             movedNewElement = false;
             checkDeletedSection(deletedChanges[1]);
 
-            layoutAsync.moveelement(addedChanges[0].replace('item_', ''),
-                                    addedChanges[1],
-                                    addedChanges[2],
-                                    items[addedChanges[1]]);
+            LayoutAjax.callAsync(
+                'moveelement',
+                addedChanges[0].replace('item_', ''),
+                addedChanges[1],
+                addedChanges[2],
+                items[addedChanges[1]]
+            );
         }
     }
 }
@@ -452,7 +458,7 @@ function selectGadget(g)
     }
     $(g).setAttribute('class', 'gadget-item gadget-selected'); 
     $(g).setAttribute('className', 'gadget-item gadget-selected'); 
-    var actions = layoutSync.getgadgetactions(g);
+    var actions = LayoutAjax.callSync('getgadgetactions', g);
     if (actions.length > 0) {
         actions.each (function(item, actionIndex) {
             var li = new Element('li', {'id':'action_' + item['action']});
@@ -488,7 +494,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = params.split(',');
-    layoutAsync.addgadget(gadget, action, params);
+    LayoutAjax.callAsync('addgadget', gadget, action, params);
 }
 
 function getSelectedAction()
@@ -514,7 +520,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = params.split(',');
-    layoutAsync.addgadget(gadget, action, params);
+    LayoutAjax.callAsync('addgadget', gadget, action, params);
 }
 
 function saveElementAction(lid, gadget, action, params, title, desc)
@@ -523,12 +529,12 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    layoutAsync.editelementaction(lid, gadget, action, params);
+    LayoutAjax.callAsync('editelementaction', lid, gadget, action, params);
 }
 
 function saveChangeDW(itemId, dw) {
     // Ugly hack to update
-    fun = 'layoutAsync.changedisplaywhen(' + itemId + ',\'' + dw + '\')';
+    fun = 'LayoutAjax.callAsync(\'changedisplaywhen\', ' + itemId + ', \'' + dw + '\')';
     setTimeout(fun, 0);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
@@ -552,15 +558,8 @@ if (/MSIE 6/i.test(navigator.userAgent)) {
         }
     }
 }
-var layoutAsync = new layoutadminajax(LayoutCallback);
-layoutAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-layoutAsync.onInit = showWorkingNotification;
-layoutAsync.onComplete = hideWorkingNotification;
 
-var layoutSync  = new layoutadminajax();
-layoutSync.serverErrorFunc = Jaws_Ajax_ServerError;
-layoutSync.onInit = showWorkingNotification;
-layoutSync.onComplete = hideWorkingNotification;
+var LayoutAjax = new JawsAjax('Layout', LayoutCallback);
 
 var items = new Array();
 var newdrags = new Array();
