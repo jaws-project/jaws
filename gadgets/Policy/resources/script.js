@@ -132,9 +132,20 @@ function saveIPRange()
     }
 
     if ($('id').value == 0) {
-        policyAsync.addiprange($('from_ipaddress').value, $('to_ipaddress').value, $('blocked').value);
+        PolicyAjax.callAsync(
+            'addiprange',
+            $('from_ipaddress').value,
+            $('to_ipaddress').value,
+            $('blocked').value
+        );
     } else {
-        policyAsync.editiprange($('id').value, $('from_ipaddress').value, $('to_ipaddress').value, $('blocked').value);
+        PolicyAjax.callAsync(
+            'editiprange',
+            $('id').value,
+            $('from_ipaddress').value,
+            $('to_ipaddress').value,
+            $('blocked').value
+        );
     }
 }
 
@@ -146,7 +157,7 @@ function editIPRange(element, id)
 {
     currentAction = 'IPBlocking';
     selectDataGridRow(element.parentNode.parentNode);
-    var ipRange = policySync.getiprange(id);
+    var ipRange = PolicyAjax.callSync('getiprange', id);
 
     $('id').value = ipRange['id'];
     $('from_ipaddress').value = ipRange['from_ip'];
@@ -163,7 +174,7 @@ function deleteIPRange(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmIPRangeDelete);
     if (answer) {
-        policyAsync.deleteiprange(id);
+        PolicyAjax.callAsync('deleteiprange', id);
     }
     unselectDataGridRow();
 }
@@ -179,9 +190,9 @@ function saveAgent()
     }
 
     if ($('id').value == 0) {
-        policyAsync.addagent($('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('addagent', $('agent').value, $('blocked').value);
     } else {
-        policyAsync.editagent($('id').value, $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('editagent', $('id').value, $('agent').value, $('blocked').value);
     }
 }
 
@@ -193,7 +204,7 @@ function editAgent(element, id)
 {
     currentAction = 'AgentBlocking';
     selectDataGridRow(element.parentNode.parentNode);
-    var agent = policySync.getagent(id);
+    var agent = PolicyAjax.callSync('getagent', id);
 
     $('id').value    = agent['id'];
     console.log(agent['agent']);
@@ -211,7 +222,7 @@ function deleteAgent(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmAgentDelete);
     if (answer) {
-        policyAsync.deleteagent(id);
+        PolicyAjax.callAsync('deleteagent', id);
     }
     unselectDataGridRow();
 }
@@ -222,7 +233,7 @@ function deleteAgent(element, id)
 function setBlockUndefinedIP()
 {
     try {
-        policyAsync.ipblockingblockundefined($('block_undefined_ip').checked);
+        PolicyAjax.callAsync('ipblockingblockundefined', $('block_undefined_ip').checked);
     } catch(e) {
         alert(e);
     }
@@ -234,7 +245,10 @@ function setBlockUndefinedIP()
 function setBlockUndefinedAgent()
 {
     try {
-        policyAsync.agentblockingblockundefined($('block_undefined_agent').checked);
+        PolicyAjax.callAsync(
+            'agentblockingblockundefined',
+            $('block_undefined_agent').checked
+        );
     } catch(e) {
         alert(e);
     }
@@ -246,9 +260,12 @@ function setBlockUndefinedAgent()
 function saveEncryptionSettings()
 {
     try {
-        policyAsync.updateencryptionsettings($('enabled').value,
-                                             $('key_age').value,
-                                             $('key_len').value);
+        PolicyAjax.callAsync(
+            'updateencryptionsettings',
+            $('enabled').value,
+            $('key_age').value,
+            $('key_len').value
+        );
     } catch(e) {
         alert(e);
     }
@@ -260,11 +277,14 @@ function saveEncryptionSettings()
 function saveAntiSpamSettings()
 {
     try {
-        policyAsync.updateantispamsettings($('allow_duplicate').value,
-                                           $('filter').value,
-                                           $('captcha').value,
-                                           $('captcha_driver').value,
-                                           $('obfuscator').value);
+        PolicyAjax.callAsync(
+            'updateantispamsettings',
+            $('allow_duplicate').value,
+            $('filter').value,
+            $('captcha').value,
+            $('captcha_driver').value,
+            $('obfuscator').value
+        );
     } catch(e) {
         alert(e);
     }
@@ -276,14 +296,17 @@ function saveAntiSpamSettings()
 function saveAdvancedPolicies()
 {
     try {
-        policyAsync.updateadvancedpolicies($('passwd_complexity').value,
-                                           $('passwd_bad_count').value,
-                                           $('passwd_lockedout_time').value,
-                                           $('passwd_max_age').value,
-                                           $('passwd_min_length').value,
-                                           $('xss_parsing_level').value,
-                                           $('session_idle_timeout').value,
-                                           $('session_remember_timeout').value);
+        PolicyAjax.callAsync(
+            'updateadvancedpolicies',
+            $('passwd_complexity').value,
+            $('passwd_bad_count').value,
+            $('passwd_lockedout_time').value,
+            $('passwd_max_age').value,
+            $('passwd_min_length').value,
+            $('xss_parsing_level').value,
+            $('session_idle_timeout').value,
+            $('session_remember_timeout').value
+        );
     } catch(e) {
         alert(e);
     }
@@ -331,15 +354,7 @@ function stopAction()
     }
 }
 
-var policyAsync = new policyadminajax(PolicyCallback);
-policyAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-policyAsync.onInit = showWorkingNotification;
-policyAsync.onComplete = hideWorkingNotification;
-
-var policySync  = new policyadminajax();
-policySync.serverErrorFunc = Jaws_Ajax_ServerError;
-policySync.onInit = showWorkingNotification;
-policySync.onComplete = hideWorkingNotification;
+var PolicyAjax = new JawsAjax('Policy', PolicyCallback);
 
 //Which action are we runing?
 var currentAction = null;
