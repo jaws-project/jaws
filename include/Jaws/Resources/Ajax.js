@@ -10,13 +10,16 @@ var JawsAjax = new Class({
      *
      * @return  void
      */
-    initialize: function (gadget, callback) {
+    initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        var href = document.location.href,
-            path = document.location.pathname,
-            basePath = href.substr(0, href.indexOf(path) + path.length);
-        this.baseScript = basePath.replace($$('base')[0].href, '');
+        if (baseScript === undefined) {
+            var href = document.location.href,
+                path = document.location.pathname,
+                basePath = href.substr(0, href.indexOf(path) + path.length);
+            baseScript = basePath.replace($$('base')[0].href, '');
+        }
+        this.baseScript = baseScript;
     },
 
     /**
