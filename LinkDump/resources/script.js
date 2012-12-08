@@ -180,7 +180,7 @@ function AddNewLinkItem(gid, lid, rank)
     mainDiv.appendChild(img);
 
     //set ranking
-    var oldRank = $A(gLinksDiv.getElementsByTagName('div')).indexOf($('link_'+lid));
+    var oldRank = Array.from(gLinksDiv.getElementsByTagName('div')).indexOf($('link_'+lid));
     if (rank < oldRank) {
         gLinksDiv.insertBefore($('link_'+lid), gLinksDiv.getElementsByTagName('div')[rank -1]);
     }
