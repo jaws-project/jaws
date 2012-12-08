@@ -513,41 +513,41 @@ function initDatePicker(name)
  */
 function showDialogBox(name, dTitle, url, dHeight, dWidth)
 {
-    var dRect = document.viewport.getDimensions();
+    var dRect = document.getSize();
     var dLeft = (dWidth  > dRect.width )? 0 : Math.round(dRect.width  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.height)? 0 : Math.round(dRect.height / 2 - dHeight / 2) + 'px';
 
     if ($(name) == undefined) {
-        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
+        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).setStyle('display', 'none');
         var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
         var close   = new Element('span', {'class': 'dialog_box_close'});
-        var title   = new Element('div', {'class':'dialog_box_title'}).insert(dTitle).insert(close);
-        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).insert(title).insert(iframe).hide();
-        iframe.observe('load', function() {
+        var title   = new Element('div', {'class':'dialog_box_title'}).adopt(dTitle).adopt(close);
+        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).setStyle('display', 'none');
+        iframe.addEvent('load', function() {
             hideWorkingNotification();
-            dialog.show();
-            Event.observe(iframe.contentWindow.document, 'keydown', function(e) {
+            dialog.setStyle('display', 'block');
+            Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
                 if (e.keyCode == Event.KEY_ESC) {
                     hideDialogBox(name);
                 }
             });
         });
-        iframe.observe('cached:load', function() {
+        iframe.addEvent('cached:load', function() {
             hideWorkingNotification();
-            dialog.show();
+            dialog.setStyle('display', 'block');
         });
-        close.observe('click', function() {hideDialogBox(name);});
-        overlay.observe('mousedown', function(e) {Event.stop(e);});
-        document.observe('keydown', function(e) {
+        close.addEvent('click', function() {hideDialogBox(name);});
+        overlay.addEvent('mousedown', function(e) {Event.stop(e);});
+        document.addEvent('keydown', function(e) {
             if (dialog.visible() && e.keyCode == Event.KEY_ESC) {
                 hideDialogBox(name);
             }
         });
-        document.body.insert(overlay);
-        document.body.insert(dialog);
+        document.body.adopt(overlay);
+        document.body.adopt(dialog);
     }
 
-    $(name+'_overlay').show();
+    $(name+'_overlay').setStyle('display', 'block');
     showWorkingNotification();
     $(name+'_iframe').setStyle({height:dHeight+'px', width:dWidth+'px'});
     $(name).setStyle({left:dLeft, top:dTop});
@@ -563,8 +563,8 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
  */
 function hideDialogBox(name)
 {
-    $(name).hide();
-    $(name+'_overlay').hide();
+    $(name).setStyle('display', 'none');
+    $(name+'_overlay').setStyle('display', 'none');
 }
 
 /**
