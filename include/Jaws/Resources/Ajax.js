@@ -38,7 +38,6 @@ var JawsAjax = new Class({
         options.data = toJSON(arguments);
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.evalResponse = true;
         options.onRequest = this.onRequest.bind(this);
         options.onSuccess = this.onSuccess.bind(this, options);
         options.onFailure = this.onFailure.bind(this, options);
@@ -61,7 +60,6 @@ var JawsAjax = new Class({
         options.data = toJSON(arguments);
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.evalResponse = true;
         options.onRequest = this.onRequest.bind(this);
         var req = new Request(options).send();
         return req.response.text;
@@ -72,6 +70,7 @@ var JawsAjax = new Class({
     },
 
     onSuccess: function (reqOptions, responseText) {
+        responseText = eval('(' + responseText + ')');
         var reqMethod = this.callback[reqOptions.func];
         if (reqMethod) {
             reqMethod(responseText);
@@ -148,6 +147,13 @@ function getEditorValue(name)
     }
 
     return $(name).value;
+}
+
+/**
+ * Javascript blank string prototype
+ */
+String.prototype.blank = function() {
+    return /^\s*$/.test(this);
 }
 
 /**
