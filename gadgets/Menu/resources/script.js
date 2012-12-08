@@ -373,7 +373,7 @@ function delMenus()
             cacheMenuForm = null;
             var response = menuSync.deletegroup(gid);
             if (response[0]['css'] == 'notice-message') {
-                Element.remove($('group_'+gid));
+                Element.destroy($('group_'+gid));
             }
             stopAction();
             showResponse(response);
@@ -385,7 +385,7 @@ function delMenus()
         if (confirm(msg)) {
             var response = menuSync.deletemenu(mid);
             if (response[0]['css'] == 'notice-message') {
-                Element.remove($('menu_'+mid));
+                Element.destroy($('menu_'+mid));
             }
             stopAction();
             showResponse(response);
@@ -485,7 +485,7 @@ function stopAction()
 function upload() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('menus_edit').insert(iframe);
+    $('menus_edit').adopt(iframe);
     $('frm_image').submit();
 }
 
@@ -502,7 +502,7 @@ function onUpload(response) {
         $('image').src = base_script + '?gadget=Menu&action=LoadImage&file=' + filename;
         $('imagename').value = response.message;
     }
-    $('ifrm_upload').remove();
+    $('ifrm_upload').destroy();
 }
 
 /**

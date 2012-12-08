@@ -456,29 +456,29 @@ function selectGadget(g)
     if (actions.length > 0) {
         actions.each (function(item, actionIndex) {
             var li = new Element('li', {'id':'action_' + item['action']});
-            li.insert(new Element('input', {'id':'action_'+actionIndex,
+            li.adopt(new Element('input', {'id':'action_'+actionIndex,
                                             'name':'action',
                                             'type':'radio',
                                             'value':item['action'],
                                             'checked': actionIndex == 0}));
             // action label
-            li.insert(new Element('label', {'for':'action_' + actionIndex}).update(item['name']));
+            li.adopt(new Element('label', {'for':'action_' + actionIndex}).set('html', item['name']));
             // action params
             if (typeof(item['params']) === 'object') {
                 item['params'].each(function(param, index) {
                     select = new Element('select', {'name': param['title']});
                     Object.keys(param['value']).each(function(value) {
-                        select.insert(new Element('option', {'value': value}).update(param['value'][value]));
+                        select.adopt(new Element('option', {'value': value}).set('html', param['value'][value]));
                     });
-                    li.insert(select);
+                    li.adopt(select);
                 });
             }
             // action description
-            li.insert(new Element('span', {}).update(item['desc']));
+            li.adopt(new Element('span', {}).set('html', item['desc']));
             $('actions-list').appendChild(li);
         });
     } else {
-        var li = new Element('li', {'class':'action-msg'}).update(noActionsMsg);
+        var li = new Element('li', {'class':'action-msg'}).set('html', noActionsMsg);
         $('actions-list').appendChild(li);
     }
     prevGadget = g;
