@@ -70,7 +70,7 @@ function rebuildAliasCombo()
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
-    var aliases = urlmapperSync.getaliases();
+    var aliases = UrlMapperAjax.callSync('getaliases');
     if (aliases != false) {
         var i =0;
         aliases.each(function(value, index) {
@@ -92,7 +92,7 @@ function rebuildAliasCombo()
  */
 function editAlias(id)
 {
-    var alias = urlmapperSync.getalias(id);
+    var alias = UrlMapperAjax.callSync('getalias', id);
     $('alias_id').value   = id;
     $('custom_url').value = alias['real_url'];
     $('alias').value      = alias['alias_url'];
@@ -105,12 +105,14 @@ function editAlias(id)
 function saveAlias()
 {
     if ($('alias_id').value == '-') {
-        urlmapperAsync.addalias($('alias').value,
+        UrlMapperAjax.callAsync('addalias',
+                                $('alias').value,
                                 $('custom_url').value);
     } else {
-        urlmapperAsync.updatealias($('alias_id').value,
-                                   $('alias').value,
-                                   $('custom_url').value);
+        UrlMapperAjax.callAsync('updatealias',
+                                $('alias_id').value,
+                                $('alias').value,
+                                $('custom_url').value);
     }
 }
 
@@ -121,7 +123,7 @@ function deleteCurrentAlias()
 {
     var aliasCombo = $('alias-combo');
     if (aliasCombo.selectedIndex != -1) {
-        urlmapperAsync.deletealias(aliasCombo.value);
+        UrlMapperAjax.callAsync('deletealias', aliasCombo.value);
     }
     stopAction();
 }
@@ -131,10 +133,11 @@ function deleteCurrentAlias()
  */
 function updateProperties(form)
 {
-    urlmapperAsync.updatesettings(form.elements['enabled'].value,
-                                  form.elements['use_aliases'].value,
-                                  form.elements['custom_precedence'].value,
-                                  form.elements['extension'].value);
+    UrlMapperAjax.callAsync('updatesettings',
+                            form.elements['enabled'].value,
+                            form.elements['use_aliases'].value,
+                            form.elements['custom_precedence'].value,
+                            form.elements['extension'].value);
 }
 
 /**
@@ -142,10 +145,11 @@ function updateProperties(form)
  */
 function saveMap()
 {
-    urlmapperAsync.updatemap(selectedMap,
-                             $('custom_map_route').value,
-                             $('custom_map_ext').value,
-                             $('map_order').value);
+    UrlMapperAjax.callAsync('updatemap',
+                            selectedMap,
+                            $('custom_map_route').value,
+                            $('custom_map_ext').value,
+                            $('map_order').value);
 }
 
 /**
@@ -159,7 +163,7 @@ function editMap(element, mid)
     $('legend_title').innerHTML = editMap_title;
     selectDataGridRow(element.parentNode.parentNode);
 
-    var mapInfo = urlmapperSync.getmap(selectedMap);
+    var mapInfo = UrlMapperAjax.callSync('getmap', selectedMap);
     $('map_route').value  = mapInfo['map'];
     $('map_ext').value    = mapInfo['extension'];
     $('map_order').value  = mapInfo['order'];
@@ -185,7 +189,7 @@ function showActionMaps()
 
     resetGrid('maps_datagrid', '');
     //Get maps of this action and gadget
-    var result = urlmapperSync.getactionmaps($('gadgets_combo').value, $('actions_combo').value);
+    var result = UrlMapperAjax.callSync('getactionmaps', $('gadgets_combo').value, $('actions_combo').value);
     resetGrid('maps_datagrid', result);
     enableMapEditingArea(false);
 }
@@ -197,7 +201,7 @@ function rebuildActionCombo()
 {
     var combo = $('actions_combo');
     var selectedGadget = $('gadgets_combo').value;
-    var actions = urlmapperSync.getgadgetactions(selectedGadget);
+    var actions = UrlMapperAjax.callSync('getgadgetactions', selectedGadget);
 
     combo.options.length = 0;
     if (actions != false) {
@@ -282,15 +286,7 @@ function unselectDataGridRow()
     selectedRowColor = null;
 }
 
-var urlmapperAsync = new urlmapperadminajax(UrlMapperCallback);
-urlmapperAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-urlmapperAsync.onInit = showWorkingNotification;
-urlmapperAsync.onComplete = hideWorkingNotification;
-
-var urlmapperSync  = new urlmapperadminajax();
-urlmapperSync.serverErrorFunc = Jaws_Ajax_ServerError;
-urlmapperSync.onInit = showWorkingNotification;
-urlmapperSync.onComplete = hideWorkingNotification;
+var UrlMapperAjax = new JawsAjax('UrlMapper', UrlMapperCallback);
 
 var evenColor = '#fff';
 var oddColor  = '#edf3fe';
