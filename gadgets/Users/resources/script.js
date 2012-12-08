@@ -159,7 +159,8 @@ function searchUser()
  */
 function getUsers(name, offset, reset)
 {
-    var result = usersSync.getusers($('filter_group').value,
+    var result = UsersAjax.callSync('getusers',
+                                    $('filter_group').value,
                                     $('filter_type').value,
                                     $('filter_status').value,
                                     $('filter_term').value,
@@ -167,10 +168,11 @@ function getUsers(name, offset, reset)
                                     offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = usersSync.getuserscount($('filter_group').value,
-                                            $('filter_type').value,
-                                            $('filter_status').value,
-                                            $('filter_term').value);
+        var total = UsersAjax.callSync('getuserscount',
+                                       $('filter_group').value,
+                                       $('filter_type').value,
+                                       $('filter_status').value,
+                                       $('filter_term').value);
     }
     resetGrid(name, result, total);
 }
@@ -180,10 +182,10 @@ function getUsers(name, offset, reset)
  */
 function getGroups(name, offset, reset)
 {
-    var result = usersSync.getgroups(offset);
+    var result = UsersAjax.callSync('getgroups', offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = usersSync.getgroupscount();
+        var total = UsersAjax.callSync('getgroupscount');
     }
     resetGrid(name, result, total);
 }
@@ -193,7 +195,7 @@ function getGroups(name, offset, reset)
  */
 function getOnlineUsers(name, offset, reset)
 {
-    var result = usersSync.getonlineusers();
+    var result = UsersAjax.callSync('getonlineusers');
     resetGrid(name, result, result.length);
     fTimeout = setTimeout("getOnlineUsers('onlineusers_datagrid');", 30000);
 }
@@ -232,30 +234,32 @@ function saveUser()
                     return false;
                 }
 
-                usersAsync.adduser($('username').value,
-                                   password,
-                                   $('nickname').value,
-                                   $('email').value,
-                                   $('superadmin').value,
-                                   $('logins').value,
-                                   $('expiry_date').value,
-                                   $('status').value);
+                UsersAjax.callAsync('adduser',
+                                    $('username').value,
+                                    password,
+                                    $('nickname').value,
+                                    $('email').value,
+                                    $('superadmin').value,
+                                    $('logins').value,
+                                    $('expiry_date').value,
+                                    $('status').value);
             } else {
-                usersAsync.updateuser($('uid').value,
-                                      $('username').value,
-                                      password,
-                                      $('nickname').value,
-                                      $('email').value,
-                                      $('superadmin').value,
-                                      $('logins').value,
-                                      $('expiry_date').value,
-                                      $('status').value);
+                UsersAjax.callAsync('updateuser',
+                                    $('uid').value,
+                                    $('username').value,
+                                    password,
+                                    $('nickname').value,
+                                    $('email').value,
+                                    $('superadmin').value,
+                                    $('logins').value,
+                                    $('expiry_date').value,
+                                    $('status').value);
             }
 
             break;
 
         case 'UserACL':
-            usersAsync.updateuseracl($('uid').value, changedACLs);
+            UsersAjax.callAsync('updateuseracl', $('uid').value, changedACLs);
             break;
 
         case 'UserGroups':
@@ -273,27 +277,29 @@ function saveUser()
                 }
             }
 
-            usersAsync.addusertogroups($('uid').value, keys);
+            UsersAjax.callAsync('addusertogroups', $('uid').value, keys);
             break;
 
         case 'UserPersonal':
-            usersAsync.updatepersonal($('uid').value,
-                                      $('fname').value,
-                                      $('lname').value,
-                                      $('gender').value,
-                                      $('dob').value,
-                                      $('url').value,
-                                      $('about').value,
-                                      $('avatar').value,
-                                      $('privacy').value);
+            UsersAjax.callAsync('updatepersonal',
+                                $('uid').value,
+                                $('fname').value,
+                                $('lname').value,
+                                $('gender').value,
+                                $('dob').value,
+                                $('url').value,
+                                $('about').value,
+                                $('avatar').value,
+                                $('privacy').value);
             break;
 
         case 'UserPreferences':
-            usersAsync.updatepreferences($('uid').value,
-                                         $('language').value,
-                                         $('theme').value,
-                                         $('editor').value,
-                                         $('timezone').value);
+            UsersAjax.callAsync('updatepreferences',
+                                $('uid').value,
+                                $('language').value,
+                                $('theme').value,
+                                $('editor').value,
+                                $('timezone').value);
             break;
     }
 
@@ -306,7 +312,7 @@ function saveUser()
 function deleteSession(rowElement, sid) {
     selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmThrowOut)) {
-        usersAsync.deletesession(sid);
+        UsersAjax.callAsync('deletesession', sid);
     }
     unselectGridRow('onlineusers_datagrid');
 }
@@ -317,7 +323,7 @@ function deleteSession(rowElement, sid) {
 function ipBlock(rowElement, ip) {
     selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmBlockIP)) {
-        usersAsync.ipblock(ip);
+        UsersAjax.callAsync('ipblock', ip);
     }
     unselectGridRow('onlineusers_datagrid');
 }
@@ -328,7 +334,7 @@ function ipBlock(rowElement, ip) {
 function agentBlock(rowElement, agent) {
     selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmBlockAgent)) {
-        usersAsync.agentblock(agent);
+        UsersAjax.callAsync('agentblock', agent);
     }
     unselectGridRow('onlineusers_datagrid');
 }
@@ -341,7 +347,7 @@ function deleteUser(rowElement, uid)
     stopUserAction();
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmUserDelete)) {
-        usersAsync.deleteuser(uid);
+        UsersAjax.callAsync('deleteuser', uid);
     }
     unselectGridRow('users_datagrid');
 }
@@ -354,7 +360,7 @@ function deleteGroup(rowElement, gid)
     stopGroupAction();
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmGroupDelete)) {
-        usersAsync.deletegroup(gid);
+        UsersAjax.callAsync('deletegroup', gid);
     }
     unselectGridRow('groups_datagrid');
 }
@@ -364,7 +370,7 @@ function deleteGroup(rowElement, gid)
  */
 function saveGroupACL()
 {
-    usersAsync.savegroupacl(selectedGroup, changedACLs);
+    UsersAjax.callAsync('savegroupacl', selectedGroup, changedACLs);
 }
 
 /**
@@ -379,7 +385,7 @@ function editUser(rowElement, uid)
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = usersSync.getuser(uid, true);
+    var uInfo = UsersAjax.callSync('getuser', uid, true);
     $('username').value    = uInfo['username'];
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
@@ -397,7 +403,7 @@ function editUserACL(rowElement, uid)
     $('uid').value = uid;
     currentAction = 'UserACL';
     $('legend_title').innerHTML  = editUserACL_title;
-    var aclKeys = usersSync.getuseraclkeys(uid);
+    var aclKeys = UsersAjax.callSync('getuseraclkeys', uid);
     $('user_workarea').innerHTML = convertToTree(aclKeys);
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
     changedACLs = [];
@@ -412,12 +418,12 @@ function editUserGroups(rowElement, uid)
     currentAction = 'UserGroups';
     $('legend_title').innerHTML  = editUserGroups_title;
     if (cachedUserGroupsForm == null) {
-        cachedUserGroupsForm = usersSync.usergroupsui();
+        cachedUserGroupsForm = UsersAjax.callSync('usergroupsui');
     }
     $('user_workarea').innerHTML = cachedUserGroupsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uGroups = usersSync.getusergroups(uid);
+    var uGroups = UsersAjax.callSync('getusergroups', uid);
     uGroups.each(function(gid, index) {
         if ($('group_' + gid)) {
             $('group_' + gid).checked = true;
@@ -434,13 +440,13 @@ function editPersonal(rowElement, uid)
     currentAction = 'UserPersonal';
     $('legend_title').innerHTML  = editPersonal_title;
     if (cachedPersonalForm == null) {
-        cachedPersonalForm = usersSync.personalui();
+        cachedPersonalForm = UsersAjax.callSync('personalui');
     }
     $('user_workarea').innerHTML = cachedPersonalForm;
     initDatePicker('dob');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = usersSync.getuser(uid, false, true);
+    var uInfo = UsersAjax.callSync('getuser', uid, false, true);
     $('fname').value   = uInfo['fname'];
     $('lname').value   = uInfo['lname'];
     $('gender').value  = Number(uInfo['gender']);
@@ -461,12 +467,12 @@ function editPreferences(rowElement, uid)
     currentAction = 'UserPreferences';
     $('legend_title').innerHTML  = editPreferences_title;
     if (cachedPreferencesForm == null) {
-        cachedPreferencesForm = usersSync.preferencesui();
+        cachedPreferencesForm = UsersAjax.callSync('preferencesui');
     }
     $('user_workarea').innerHTML = cachedPreferencesForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = usersSync.getuser(uid, false, false, true);
+    var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
     $('language').value = uInfo['language'] == null? '-default-': uInfo['language'];
     $('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
     $('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
@@ -479,7 +485,7 @@ function editPreferences(rowElement, uid)
 function upload() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('user_workarea').insert(iframe);
+    $('user_workarea').adopt(iframe);
     $('frm_avatar').submit();
 }
 
@@ -496,7 +502,7 @@ function onUpload(response) {
         $('image').src = base_script + '?gadget=Users&action=LoadAvatar&file=' + filename;
         $('avatar').value = response.message;
     }
-    $('ifrm_upload').remove();
+    $('ifrm_upload').destroy();
 }
 
 /**
@@ -532,7 +538,7 @@ function editGroup(rowElement, gid)
     $('group_workarea').innerHTML = cachedGroupForm;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
-    var gInfo = usersSync.getgroup(gid);
+    var gInfo = UsersAjax.callSync('getgroup', gid);
     $('name').value        = gInfo['name'];
     $('title').value       = gInfo['title'].defilter();
     $('description').value = gInfo['description'].defilter();
@@ -547,7 +553,7 @@ function editGroupACL(rowElement, gid)
     $('gid').value = gid;
     currentAction = 'GroupACL';
     $('legend_title').innerHTML  = editGroupACL_title;
-    var aclKeys = usersSync.getgroupaclkeys(gid);
+    var aclKeys = UsersAjax.callSync('getgroupaclkeys', gid);
     $('group_workarea').innerHTML = convertToTree(aclKeys);
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     changedACLs = [];
@@ -562,12 +568,12 @@ function editGroupUsers(rowElement, gid)
     currentAction = 'GroupUsers';
     $('legend_title').innerHTML  = editGroupUsers_title;
     if (cachedGroupUsersForm == null) {
-        cachedGroupUsersForm = usersSync.groupusersui();
+        cachedGroupUsersForm = UsersAjax.callSync('groupusersui');
     }
     $('group_workarea').innerHTML = cachedGroupUsersForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var gUsers = usersSync.getgroupusers(gid);
+    var gUsers = UsersAjax.callSync('getgroupusers', gid);
     gUsers.each(function(user, index) {
         if ($('user_' + user['id'])) {
             $('user_' + user['id']).checked = true;
@@ -588,22 +594,24 @@ function saveGroup()
             }
 
             if ($('gid').value == 0) {
-                usersAsync.addgroup($('name').value,
+                UsersAjax.callAsync('addgroup', 
+                                    $('name').value,
                                     $('title').value,
                                     $('description').value,
                                     $('enabled').value);
             } else {
-                usersAsync.updategroup($('gid').value,
-                                      $('name').value,
-                                      $('title').value,
-                                      $('description').value,
-                                      $('enabled').value);
+                UsersAjax.callAsync('updategroup',
+                                    $('gid').value,
+                                    $('name').value,
+                                    $('title').value,
+                                    $('description').value,
+                                    $('enabled').value);
             }
 
             break;
 
         case 'GroupACL':
-            usersAsync.updategroupacl($('gid').value, changedACLs);
+            UsersAjax.callAsync('updategroupacl', $('gid').value, changedACLs);
             break;
 
         case 'GroupUsers':
@@ -621,7 +629,7 @@ function saveGroup()
                 }
             }
 
-            usersAsync.adduserstogroup($('gid').value, keys);
+            UsersAjax.callAsync('adduserstogroup', $('gid').value, keys);
             break;
     }
 
@@ -682,12 +690,12 @@ function convertToTree(keys)
             // Creates 3 state checkbox with its label and all that nice stuff
             var div   = new Element('div'),
                 img   = new Element('img'),
-                label = new Element('label').update(keys[gadget][aclKey]['desc']);
-            img.writeAttribute('id', keys[gadget][aclKey]['name']);
-            img.writeAttribute('alt', value);
-            img.writeAttribute('src', image);
-            div.insert(img);
-            div.insert(label);
+                label = new Element('label').set('html', keys[gadget][aclKey]['desc']);
+            img.setProperty('id', keys[gadget][aclKey]['name']);
+            img.setProperty('alt', value);
+            img.setProperty('src', image);
+            div.adopt(img);
+            div.adopt(label);
 
             var aclItem = new WebFXTreeItem(div.innerHTML, "javascript:onACLNodeClick('" + keys[gadget][aclKey]['name'] + "')");
             gadgetItem.add(aclItem);
@@ -703,7 +711,7 @@ function convertToTree(keys)
 function onACLNodeClick(imgID)
 {
     var img   = $(imgID),
-        value = img.readAttribute('alt');
+        value = img.getProperty('alt');
     switch (value) {
         case '0':
             img.alt = 1;
@@ -735,7 +743,7 @@ function saveSettings()
     var group      = $('anon_group').value;
     var recover    = $('password_recovery').value;
 
-    usersAsync.savesettings(method, anon, repetitive, act, group, recover);
+    UsersAjax.callAsync('savesettings', method, anon, repetitive, act, group, recover);
 }
 
 /**
@@ -760,22 +768,15 @@ function updateMyAccount()
         encryptedElement($('pass1'), $('exponent').value, $('modulus').value, true, 128);
         $('pass2').value = $('pass1').value;
     }
-    usersAsync.updatemyaccount($('uid').value,
-                               $('username').value,
-                               $('pass1').value,
-                               $('nickname').value,
-                               $('email').value);
+    UsersAjax.callAsync('updatemyaccount',
+                        $('uid').value,
+                        $('username').value,
+                        $('pass1').value,
+                        $('nickname').value,
+                        $('email').value);
 }
 
-var usersAsync = new usersadminajax(UsersCallback);
-usersAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-usersAsync.onInit = showWorkingNotification;
-usersAsync.onComplete = hideWorkingNotification;
-
-var usersSync  = new usersadminajax();
-usersSync.serverErrorFunc = Jaws_Ajax_ServerError;
-usersSync.onInit = showWorkingNotification;
-usersSync.onComplete = hideWorkingNotification;
+var UsersAjax = new JawsAjax('Users', UsersCallback);
 
 // timeout id
 var fTimeout = null;
