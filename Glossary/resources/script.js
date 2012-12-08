@@ -92,7 +92,7 @@ function updateTerm()
         combo.options[combo.selectedIndex].text = term;
         // Call function
         loading_message = updatingMessage;
-        glossaryAsync.updateterm(id, term, fast_url, contents);
+        GlossaryAjax.callAsync('updateterm', id, term, fast_url, contents);
     }
 }
 
@@ -103,7 +103,7 @@ function deleteTerm()
 {
     id = document.getElementById('term_id').value;
     loading_message = deletingMessage;
-    glossaryAsync.deleteterm(id);
+    GlossaryAjax.callAsync('deleteterm', id);
 }
 
 /**
@@ -177,7 +177,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     loading_message = retrievingMessage;
-    var termData = glossarySync.getterm(id);
+    var termData = GlossaryAjax.callSync('getterm', id);
     fillEditorEntries(termData);
     editTitle  = termData['term'];
     switchTab('edit', termData['term']);
@@ -193,7 +193,7 @@ function preview()
     $('preview_title').innerHTML = $('term_title').value;
 
     // Use this if you want to use plugins
-    glossaryAsync.parsetext(term_contents);
+    GlossaryAjax.callAsync('parsetext', term_contents);
     //$('preview_contents').innerHTML = term_contents;
 }
 
@@ -226,7 +226,7 @@ function newTerm()
     }
 
     loading_message = savingMessage;
-    glossaryAsync.newterm(term, fast_url, contents);
+    GlossaryAjax.callAsync('newterm', term, fast_url, contents);
 }
 
 /**
@@ -259,7 +259,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = retrievingMessage;
-            var termData = glossarySync.getterm(previousID);
+            var termData = GlossaryAjax.callSync('getterm', previousID);
             fillEditorEntries(termData);
             b.disabled = false;
             combo.disabled = false;
@@ -286,15 +286,7 @@ function getFirst()
     }
 }
 
-var glossaryAsync = new glossaryadminajax(GlossaryCallback);
-glossaryAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-glossaryAsync.onInit = showWorkingNotification;
-glossaryAsync.onComplete = hideWorkingNotification;
-
-var glossarySync  = new glossaryadminajax();
-glossarySync.serverErrorFunc = Jaws_Ajax_ServerError;
-glossarySync.onInit = showWorkingNotification;
-glossarySync.onComplete = hideWorkingNotification;
+var GlossaryAjax = new JawsAjax('Glossary', GlossaryCallback);
 
 var currentMode = 'edit';
 var previousID  = 'NEW';
