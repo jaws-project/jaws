@@ -123,7 +123,7 @@ function editGadget(gadget)
 
     cleanWorkingArea(true);
 
-    var gadgetInfo = jmsSync.getgadgetinfo(gadget);
+    var gadgetInfo = JmsAjax.callSync('getgadgetinfo', gadget);
     if (gadgetInfo == null) {
         return false; //Check
     }
@@ -147,7 +147,7 @@ function editPlugin(plugin)
         return false;
     }
 
-    var pluginInfo = jmsSync.getplugininfo(plugin);
+    var pluginInfo = JmsAjax.callSync('getplugininfo', plugin);
     if (pluginInfo == null) {
         return false; //Check
     }
@@ -223,9 +223,9 @@ function pluginUsage()
     tree.openIcon = 'gadgets/Jms/images/gadgets.png';
     tree.icon = 'gadgets/Jms/images/gadgets.png';
 
-    var gadgets = jmsSync.getgadgetsofplugin($('plugins_combo').value);
+    var gadgets = JmsAjax.callSync('getgadgetsofplugin', $('plugins_combo').value);
 
-    var useAllTime = jmsSync.usealways($('plugins_combo').value);
+    var useAllTime = JmsAjax.callSync('usealways', $('plugins_combo').value);
 
     var div = document.createElement('div');
 
@@ -308,7 +308,7 @@ function savePluginUsage()
     var plugin  = $('plugins_combo').value;
 
     if ($('use_always').checked == true) {
-        jmsAsync.updatepluginusage(plugin, '*');
+        JmsAjax.callAsync('updatepluginusage', plugin, '*');
         return true;
     }
 
@@ -322,7 +322,7 @@ function savePluginUsage()
         }
     }
 
-    jmsAsync.updatepluginusage(plugin, gadgets);
+    JmsAjax.callAsync('updatepluginusage', plugin, gadgets);
 }
 
 /**
@@ -331,9 +331,9 @@ function savePluginUsage()
 function installComponent()
 {
     if (pluginsMode == false) {
-        jmsAsync.installgadget(selectedGadget);
+        JmsAjax.callAsync('installgadget', selectedGadget);
     } else {
-        jmsAsync.installplugin(selectedPlugin);
+        JmsAjax.callAsync('installplugin', selectedPlugin);
     }
 }
 
@@ -345,9 +345,9 @@ function uninstallComponent()
     var answer = confirm(confirmUninstallComponent);
     if (answer) {
         if (pluginsMode == false) {
-            jmsAsync.uninstallgadget(selectedGadget);
+            JmsAjax.callAsync('uninstallgadget', selectedGadget);
         } else {
-            jmsAsync.uninstallplugin(selectedPlugin);
+            JmsAjax.callAsync('uninstallplugin', selectedPlugin);
         }
     }
 }
@@ -360,7 +360,7 @@ function purgeComponent()
     if (pluginsMode == false) {
         var answer = confirm(confirmPurgeComponent);
         if (answer) {
-            jmsAsync.purgegadget(selectedGadget);
+            JmsAjax.callAsync('purgegadget', selectedGadget);
         }
     }
 }
@@ -371,7 +371,7 @@ function purgeComponent()
 function updateComponent()
 {
     if (pluginsMode == false) {
-        jmsAsync.updategadget(selectedGadget);
+        JmsAjax.callAsync('updategadget', selectedGadget);
     }
 }
 
@@ -381,7 +381,7 @@ function updateComponent()
 function getGadgets()
 {
     resetCombo($('gadgets_combo'));
-    var gadgetsList = jmsSync.getgadgets($('only_show').value);
+    var gadgetsList = JmsAjax.callSync('getgadgets', $('only_show').value);
     var found       = false;
     for(gadget in gadgetsList) {
         if (gadgetsList[gadget]['realname'] == undefined) {
@@ -410,7 +410,7 @@ function getGadgets()
 function getPlugins(reset)
 {
     resetCombo($('plugins_combo'));
-    var pluginsList = jmsSync.getplugins($('only_show').value);
+    var pluginsList = JmsAjax.callSync('getplugins', $('only_show').value);
     var found = false;
     for(plugin in pluginsList) {
         if (pluginsList[plugin]['realname'] == undefined) {
@@ -447,15 +447,7 @@ function updateView()
     }
 }
 
-var jmsAsync = new jmsadminajax(JmsCallback);
-jmsAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-jmsAsync.onInit = showWorkingNotification;
-jmsAsync.onComplete = hideWorkingNotification;
-
-var jmsSync  = new jmsadminajax();
-jmsSync.serverErrorFunc = Jaws_Ajax_ServerError;
-jmsSync.onInit = showWorkingNotification;
-jmsSync.onComplete = hideWorkingNotification;
+var JmsAjax = new JawsAjax('Jms', JmsCallback);
 
 var selectedGadget = null;
 var selectedPlugin = null;
