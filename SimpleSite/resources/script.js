@@ -104,7 +104,7 @@ function createTree(data, depth) {
 }
 
 function getItems() {
-    var ssitems = ssSync.getitems();
+    var ssitems = SimpleSiteAjax.callSync('getitems');
     // Empty parent combo
     if ($('ssparent').length>0) {
         for (i=$('ssparent').options.length-1; i>=1; i--) {
@@ -243,7 +243,7 @@ function createReference(type) {
             // Already
             populateReferences(references[type]);
         } else {
-            ssAsync.getreferences(type);
+            SimpleSiteAjax.callAsync('getreferences', type);
         }
     }
 }
@@ -288,19 +288,21 @@ function saveCurrent() {
     changefreq = $('sschangefreq').value;
     priority   = $('sspriority').value;
     if (currentAction == 'NEW') {
-        ssAsync.newitem(parent_id, title, shortname, type, reference, changefreq, priority);
+        SimpleSiteAjax.callAsync('newitem', parent_id, title, shortname, 
+            type, reference, changefreq, priority);
     } else {
         if (id == parent_id) {
             alert(selfParentError);
             $('ssparent').focus();
             return;
         }
-        ssAsync.updateitem(id, parent_id, title, shortname, type, reference, changefreq, priority);
+        SimpleSiteAjax.callAsync('updateitem', id, parent_id, title, shortname, 
+            type, reference, changefreq, priority);
     }
 }
 
 function deleteCurrent() {
-    ssAsync.deleteitem(currentID);
+    SimpleSiteAjax.callAsync('deleteitem', currentID);
 }
 
 function newItem() {
@@ -322,19 +324,11 @@ function newItem() {
 }
 
 function moveItem(direction) {
-    ssAsync.moveitem(currentID, direction);
+    SimpleSiteAjax.callAsync('moveitem', currentID, direction);
 }
 
 function pingSitemap() {
-    ssAsync.pingsitemap();
+    SimpleSiteAjax.callAsync('pingsitemap');
 }
 
-var ssAsync = new simplesiteadminajax(SimpleSiteCallback);
-ssAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-ssAsync.onInit = showWorkingNotification;
-ssAsync.onComplete = hideWorkingNotification;
-
-var ssSync  = new simplesiteadminajax();
-ssSync.serverErrorFunc = Jaws_Ajax_ServerError;
-ssSync.onInit = showWorkingNotification;
-ssSync.onComplete = hideWorkingNotification;
+var SimpleSiteAjax = new JawsAjax('SimpleSite', SimpleSiteCallback);
