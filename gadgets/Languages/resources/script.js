@@ -43,7 +43,7 @@ function save_lang()
         !$('lang_name').value.blank())
     {
         lang_str = $('lang_code').value.trim() + ';' + $('lang_name').value.trim();
-        languagesAsync.savelanguage(lang_str);
+        LanguagesAjax.callAsync('savelanguage', lang_str);
     }
 }
 
@@ -137,7 +137,7 @@ function change_lang_option()
     {
         $('btn_save').style.visibility = 'visible';
         $('btn_cancel').style.visibility = 'visible';
-        $('lang_strings').innerHTML = languagesSync.getlangdataui($('component').value, $('lang').value);
+        $('lang_strings').innerHTML = LanguagesAjax.callSync('getlangdataui', $('component').value, $('lang').value);
         filterTranslated();
     }
 }
@@ -165,7 +165,7 @@ function save_lang_data()
         data['strings'][strings_elements[i].name] = strings_elements[i].value;
     }
 
-    languagesAsync.setlangdata(component, lang, data);
+    LanguagesAjax.callAsync('setlangdata', component, lang, data);
     LangDataChanged = false;
     data = null;
 }
@@ -190,15 +190,7 @@ function export_lang()
     window.location= base_script + '?gadget=Languages&action=Export&lang=' + $('lang').value;
 }
 
-var languagesAsync = new languagesadminajax(LanguagesCallback);
-languagesAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-languagesAsync.onInit = showWorkingNotification;
-languagesAsync.onComplete = hideWorkingNotification;
-
-var languagesSync  = new languagesadminajax();
-languagesSync.serverErrorFunc = Jaws_Ajax_ServerError;
-languagesSync.onInit = showWorkingNotification;
-languagesSync.onComplete = hideWorkingNotification;
+var LanguagesAjax = new JawsAjax('Languages', LanguagesCallback);
 
 //data language changed?
 var LangDataChanged = false
