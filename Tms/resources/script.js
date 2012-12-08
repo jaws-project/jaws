@@ -108,7 +108,7 @@ function editTheme(theme)
 
     cleanWorkingArea(true);
 
-    var themeInfo = tmsSync.getthemeinfo(theme);
+    var themeInfo = TmsAjax.callSync('getthemeinfo', theme);
     if (themeInfo == null) {
         return false; //Check
     }
@@ -179,7 +179,7 @@ function addRepository(form)
     var name = form.elements['name'].value;
     var url  = form.elements['url'].value;
     
-    tmsAsync.newrepository(name, url);
+    TmsAjax.callAsync('newrepository', name, url);
     cleanForm(form);
 }
 
@@ -192,7 +192,7 @@ function updateRepository(form)
     var url  = form.elements['url'].value;
     var id   = form.elements['id'].value;
 
-    tmsAsync.updaterepository(id, name, url);
+    TmsAjax.callAsync('updaterepository', id, name, url);
     cleanForm(form);
 }
 
@@ -213,7 +213,7 @@ function submitForm(form)
  */
 function deleteRepository(id)
 {
-    tmsAsync.deleterepository(id);
+    TmsAjax.callAsync('deleterepository', id);
     cleanForm($('repositories_form'));
 }
 
@@ -222,7 +222,7 @@ function deleteRepository(id)
  */
 function editRepository(id)
 {
-    tmsAsync.getrepository(id);
+    TmsAjax.callAsync('getrepository', id);
 }
 
 /**
@@ -230,20 +230,10 @@ function editRepository(id)
  */
 function saveSettings()
 {
-    tmsAsync.savesettings($('share_themes').value);
+    TmsAjax.callAsync('savesettings', $('share_themes').value);
 }
 
-var tmsAsync = new tmsadminajax(TmsCallback);
-tmsAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-tmsAsync.onInit = showWorkingNotification;
-tmsAsync.onComplete = hideWorkingNotification;
-
-var tmsSync  = new tmsadminajax();
-tmsSync.serverErrorFunc = Jaws_Ajax_ServerError;
-tmsSync.onInit = showWorkingNotification;
-tmsSync.onComplete = hideWorkingNotification;
-
-var selectedTheme = null;
-
-var evenColor = '#fff';
-var oddColor  = '#edf3fe';
+var TmsAjax = new JawsAjax('Tms', TmsCallback),
+    selectedTheme = null,
+    evenColor = '#fff',
+    oddColor  = '#edf3fe';
