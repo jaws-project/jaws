@@ -53,7 +53,7 @@ function initWeather()
     stopAction();
     $('latitude').setValue('51.30');
     $('longitude').setValue('00.08');
-    initDataGrid('weather_datagrid', new weatheradminajax);
+    initDataGrid('weather_datagrid', WeatherAjax);
     setGoogleMapImage();
 }
 
