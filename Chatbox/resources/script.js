@@ -97,7 +97,7 @@ function getDataOfLCForm()
  */
 function deleteComment(id)
 {
-    chatbox.deletecomment(id);
+    ChatboxAjax.callAsync('deletecomment', id);
 }
 
 /**
@@ -150,10 +150,10 @@ function nextValues()
  */
 function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = chatboxSync.searchcomments(limit, filter, search, status);
+    result = ChatboxAjax.callSync('searchcomments', limit, filter, search, status);
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
-        var size = chatboxSync.sizeofcommentssearch(filter, search, status);
+        var size = ChatboxAjax.callSync('sizeofcommentssearch', filter, search, status);
         $('comments_datagrid').rowsSize    = size;
         $('comments_datagrid').setCurrentPage(0);
         $('comments_datagrid').updatePageCounter();
@@ -167,7 +167,7 @@ function commentDelete(row_id)
 {
     var confirmation = confirm(deleteConfirm);
     if (confirmation) {
-        chatbox.deletecomments(row_id);
+        ChatboxAjax.callAsync('deletecomments', row_id);
     }
 }
 
@@ -186,12 +186,12 @@ function commentDGAction(combo)
         if (selectedRows) {
             var confirmation = confirm(deleteConfirm);
             if (confirmation) {
-                chatbox.deletecomments(rows);
+                ChatboxAjax.callAsync('deletecomments', rows);
             }
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            chatbox.markas(rows, combo.value);
+            ChatboxAjax.callAsync('markas', rows, combo.value);
         }
     }
 }
@@ -205,18 +205,10 @@ function updateProperties(form)
     var limitEntries = form.elements['limit_entries'].value;
     var max_strlen   = form.elements['max_strlen'].value;
     var authority    = form.elements['authority'].value;
-    chatbox.updateproperties(limitEntries, max_strlen, authority);
+    ChatboxAjax.callAsync('updateproperties', limitEntries, max_strlen, authority);
 }
 
-var chatbox = new chatboxadminajax(ChatboxCallback);
-chatbox.serverErrorFunc = Jaws_Ajax_ServerError;
-chatbox.onInit = showWorkingNotification;
-chatbox.onComplete = hideWorkingNotification;
-
-var chatboxSync = new chatboxadminajax();
-chatboxSync.serverErrorFunc = Jaws_Ajax_ServerError;
-chatboxSync.onInit = showWorkingNotification;
-chatboxSync.onComplete = hideWorkingNotification;
+var ChatboxAjax = new JawsAjax('Chatbox', ChatboxCallback);
 
 var firstFetch = true;
 var currentIndex = 0;

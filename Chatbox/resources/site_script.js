@@ -14,10 +14,10 @@
  */
 function GetMessages()
 {
-    var messages = chatbox.getmessages();
+    var messages = ChatboxAjax.callSync('getmessages');
     $('chatbox_messages').innerHTML = messages;
 }
 
-var chatbox = new chatboxajax();
-chatbox.serverErrorFunc = Jaws_Ajax_ServerError;
+
+var ChatboxAjax = new JawsAjax('Chatbox');
 setInterval("GetMessages()", 30*1000);
