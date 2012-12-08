@@ -39,10 +39,7 @@ function saveChanges(form)
     } else {
         gadgets = '*';
     }
-    search.savechanges(gadgets);
+    SearchAjax.callAsync('savechanges', gadgets);
 }
 
-var search = new searchadminajax(SearchCallback);
-search.serverErrorFunc = Jaws_Ajax_ServerError;
-search.onInit = showWorkingNotification;
-search.onComplete = hideWorkingNotification;
+var SearchAjax = new JawsAjax('Search', SearchCallback);
