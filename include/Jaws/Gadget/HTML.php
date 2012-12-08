@@ -55,24 +55,9 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
 
     /**
      * Ajax Admin stuff
-     * This method should be overridden by gadgets if a more complex operation
-     * is required, and then called with an array of objects to be provided
-     * to the client, like this:
-     *
-     * <code>
-     * <?php
-     * function Ajax()
-     * {
-     *     $objects = array();
-     *     $objects[] = new GadgetAPI();
-     *     $objects[] = new OtherAPI();
-     *
-     *     return parent::InitAjax($objects);
-     * }
-     * ?>
-     * </code>
      *
      * @access  public
+     * @return  string  JSON encoded string
      */
     function Ajax()
     {
@@ -91,67 +76,16 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
 
         $objAjax = new $ajaxClass($model);
         $request =& Jaws_Request::getInstance();
-        $jpspan  = $request->get('jpspan', 'get');
-        if (isset($jpspan)) {
-            $this->InitAjax($objAjax);
-        } else {
-            $output = '';
-            $method = $request->get('method', 'get');
-            $params = $request->getAll('post');
-            $output = call_user_func_array(array($objAjax, $method), $params);
-            // Set Headers
-            header('Content-Type: application/json; charset=utf-8');
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Pragma: no-cache');
-            return Jaws_UTF8::json_encode($output);
-        }
-    }
+        $method = $request->get('method', 'get');
+        $params = $request->getAll('post');
+        $output = call_user_func_array(array($objAjax, $method), $params);
 
-    /**
-     * Provides the Javascript interface for a gadget.
-     *
-     *
-     * @access  public
-     * @param   array   $objects    An array of objects to provide to the client.
-     * @return  string  The reply.
-     * @since   0.6
-     */
-    function InitAjax($object = null)
-    {
-        if (is_object($object)) {
-            // Load the JPSpan library
-            require_once JAWS_PATH . 'libraries/jpspan/JPSpan.php';
-            require_once JAWS_PATH . 'libraries/jpspan/JPSpan/Server/PostOffice.php';
+        // Set Headers
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
 
-            // Create a server object, set the URL to submit to, and export object.
-            $server = new JPSpan_Server_Postoffice();
-            $server->setServerUrl(BASE_SCRIPT.'?gadget='.$this->_Gadget.'&action=Ajax');
-            $server->addHandler($object);
-
-            // Display the client code.
-            define('JPSPAN_INCLUDE_COMPRESS', true);
-            $client = $server->displayClient();
-
-            header('Content-type: text/javascript; charset: UTF-8');
-            header('Content-Type: application/x-javascript');
-            header("Vary: Accept-Encoding");
-            //2592000 = 30 * 24 * 3600
-            header('Cache-Control: max-age=2592000, public, must-revalidate');
-            //header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 2592000) . ' GMT');
-            if ($GLOBALS['app']->GZipEnabled()) {
-                $client = @gzencode($client, COMPRESS_LEVEL, FORCE_GZIP);
-                header('Content-Length: '.strlen($client));
-                header('Content-Encoding: '.(strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')!== false? 'x-gzip' : 'gzip'));
-            } else {
-                header('Content-Length: '.strlen($client));
-            }
-
-            echo $client;
-            exit;
-        }
-
-        // Yeah, so it's a hack.
-        return "alert('The ".$this->_Gadget." gadget does not provide a Javascript interface.')";
+        return Jaws_UTF8::json_encode($output);
     }
 
     /**
@@ -185,16 +119,14 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
         $this->_usingAjax = true;
         $name = $this->_Gadget;
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
-        $GLOBALS['app']->Layout->AddScriptLink(BASE_SCRIPT.'?gadget='.
-                                               $name.
-                                               '&amp;action=Ajax&amp;jpspan');
-
         if (!empty($file)) {
-            $GLOBALS['app']->Layout->AddScriptLink('gadgets/'.
-                                                   $name.
-                                                   '/resources/'.
-                                                   $file.
-                                                   (empty($version)? '' : "?$version"));
+            $GLOBALS['app']->Layout->AddScriptLink(
+                'gadgets/'.
+                $name.
+                '/resources/'.
+                $file.
+                (empty($version)? '' : "?$version")
+            );
         }
 
         $config = array(
