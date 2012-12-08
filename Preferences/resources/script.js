@@ -32,10 +32,8 @@ function updatePreferences()
     preferences_config['display_timezone']          = document.getElementsByName('display[]')[6].checked;
     preferences_config['cookie_precedence']         = document.getElementsByName('display[]')[7].checked;
 
-    preferences.updatepreferences(preferences_config);
+    PreferencesAjax.callAsync('updatepreferences', preferences_config);
 }
 
-var preferences = new preferencesadminajax(PreferencesCallback);
-preferences.serverErrorFunc = Jaws_Ajax_ServerError;
-preferences.onInit = showWorkingNotification;
-preferences.onComplete = hideWorkingNotification;
+
+var PreferencesAjax = new JawsAjax('Preferences', PreferencesCallback);
