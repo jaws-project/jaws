@@ -77,10 +77,10 @@ function initUI(section)
     var keys  = null;
     var title = '';
     if (section == 'registry') {
-        keys  = registrySync.getallregistry();
+        keys  = RegistryAjax.callSync('getallregistry');
         title = registryMsg;
     } else {
-        keys  = registrySync.getallacl();
+        keys  = RegistryAjax.callSync('getallacl');
         title = aclMsg;
     }
     $('tree_area').innerHTML = convertToTree(keys, title);
@@ -94,9 +94,9 @@ function editKey(keyName)
 {
     var keyValue = '';
     if (currentSection == 'registry') {
-        keyValue = registrySync.getregistrykey(keyName);
+        keyValue = RegistryAjax.callSync('getregistrykey', keyName);
     } else {
-        keyValue = registrySync.getaclkey(keyName);
+        keyValue = RegistryAjax.callSync('getaclkey', keyName);
     }
     $('key_name').value = keyName;
     $('key_value').value = keyValue;
@@ -110,9 +110,9 @@ function editKey(keyName)
 function saveKey(form)
 {
     if (currentSection == 'registry') {
-        registryAsync.setregistrykey($('key_name').value, $('key_value').value);
+        RegistryAjax.callAsync('setregistrykey', $('key_name').value, $('key_value').value);
     } else {
-        registryAsync.setaclkey($('key_name').value, $('key_value').value);
+        RegistryAjax.callAsync('setaclkey', $('key_name').value, $('key_value').value);
     }
 }
 
@@ -128,14 +128,6 @@ function cancelKey(form)
 
 var currentSection = 'registry';
 
-var registryAsync = new registryadminajax(RegistryCallback);
-registryAsync.serverErrorFunc = Jaws_Ajax_ServerError;
-registryAsync.onInit = showWorkingNotification;
-registryAsync.onComplete = hideWorkingNotification;
-
-var registrySync  = new registryadminajax();
-registrySync.serverErrorFunc = Jaws_Ajax_ServerError;
-registrySync.onInit = showWorkingNotification;
-registrySync.onComplete = hideWorkingNotification;
+var RegistryAjax = new JawsAjax('Registry', RegistryCallback);
 
 var tree = null;
