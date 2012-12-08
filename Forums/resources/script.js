@@ -303,7 +303,7 @@ function delForums()
             cacheForumForm = null;
             var response = forumsSync.deletegroup(gid);
             if (response['css'] == 'notice-message') {
-                Element.remove($('group_'+gid));
+                Element.destroy($('group_'+gid));
                 stopAction();
             }
             showResponse(response);
@@ -317,7 +317,7 @@ function delForums()
         if (confirm(msg)) {
             var response = forumsSync.deleteforum(fid);
             if (response['css'] == 'notice-message') {
-                Element.remove($('forum_'+fid));
+                Element.destroy($('forum_'+fid));
                 stopAction();
             }
             showResponse(response);

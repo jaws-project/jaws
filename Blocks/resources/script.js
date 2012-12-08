@@ -30,7 +30,7 @@ var BlocksCallback = {
         var combo = $('block_id');
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
         selIndex = combo.selectedIndex;
-        combo.remove(selIndex);
+        combo.destroy(selIndex);
         // Set option styles...
         for (i = selIndex; i <= combo.length - 1; i++) {
             aux = combo.options[i].style.backgroundColor;

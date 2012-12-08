@@ -383,7 +383,7 @@ function delLinks()
             cacheMenuForm = null;
             var response = linkdumpSync.deletegroup(gid);
             if (response[0]['css'] == 'notice-message') {
-                Element.remove($('group_'+gid));
+                Element.destroy($('group_'+gid));
             }
             stopAction();
             showResponse(response);
@@ -398,7 +398,7 @@ function delLinks()
             var response = linkdumpSync.deletelink(lid, $('gid').value, $('rank').value);
             if (response[0]['css'] == 'notice-message') {
                 link_parent = $('link_'+lid).parentNode;
-                Element.remove($('link_'+lid));
+                Element.destroy($('link_'+lid));
                 if (link_parent.innerHTML.blank()) {
                     link_parent.innerHTML = noLinkExists;
                 }

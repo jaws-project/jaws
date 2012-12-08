@@ -129,7 +129,7 @@ function stopAction()
         break;
     case 'Contacts':
         $('id').value      = 0;
-        $('contact_ip').update('');
+        $('contact_ip').set('html', '');
         $('name').value    = '';
         $('email').value   = '';
         $('company').value = '';
@@ -179,7 +179,7 @@ function editContact(element, id)
 
     var contact = contactSync.getcontact(id);
     $('id').value      = contact['id'];
-    $('contact_ip').update(contact['ip']);
+    $('contact_ip').set('html', contact['ip']);
     $('name').value    = contact['name'];
     $('email').value   = contact['email'];
     $('company').value = contact['company'];
@@ -197,7 +197,7 @@ function editContact(element, id)
 
     if (contact['attachment']) {
         $('attachment').href = dataURL + contact['attachment'];
-        $('attachment').update(contact['attachment']);
+        $('attachment').set('html', contact['attachment']);
         $('tr_attachment').show();
     } else {
         $('tr_attachment').hide();
@@ -462,7 +462,7 @@ function toggleDisableForm(disabled)
 function uploadFile() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('send_email').insert(iframe);
+    $('send_email').adopt(iframe);
     $('attachment').hide();
     $('btn_upload').hide();
     $('attach_loading').show();
@@ -483,13 +483,13 @@ function onUpload(response) {
         $('attachment').show();
     } else {
         $('filename').value = response.filename;
-        $('file_link').update(response.filename);
-        $('file_size').update(response.filesize);
+        $('file_link').set('html', response.filename);
+        $('file_size').set('html', response.filesize);
         $('attach_actions').show();
         $('attachment').hide();
     }
     $('attach_loading').hide();
-    $('ifrm_upload').remove();
+    $('ifrm_upload').destroy();
 }
 
 /**
@@ -499,8 +499,8 @@ function removeAttachment() {
     $('filename').value = '';
     $('frm_file').reset();
     $('attach_actions').hide();
-    $('file_link').update('');
-    $('file_size').update('');
+    $('file_link').set('html', '');
+    $('file_size').set('html', '');
     $('btn_upload').show();
     $('attachment').show();
 }
