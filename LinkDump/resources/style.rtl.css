@@ -27,13 +27,13 @@
 
 #links_area {
     float: right;
-    width: 288px;
+    width: 350px;
 }
 
 #links_tree {
     margin: 0px;
     padding: 0px;
-    width: 286px;
+    width: 348px;
     height: 390px;
     border: 1px solid #d3d7cf;
     background-color: #f7f7f7;
@@ -98,7 +98,7 @@
 
 #edit_area {
     float: right;
-    width: 444px;
+    width: 620px;
     text-align: right;
     margin-right: 10px;
     margin-bottom: 4px;
