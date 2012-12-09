@@ -66,7 +66,7 @@ class Jaws_PingBack
         static $validateAdded;
 
         if (!isset($validateAdded)) {
-            require 'Validate.php';
+            require PEAR_PATH. 'Validate.php';
         }
         $matches = array();
         preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $message, $matches);
