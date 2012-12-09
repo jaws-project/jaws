@@ -101,7 +101,7 @@ font-size: x-small;
 }
 
 .notify-items {
-height: expression(this.scrollHeight > 188? '188px' : 'auto');
+height: expression(this.scrollHeight > 210? '210px' : 'auto');
 }
 
 .notify-items table {

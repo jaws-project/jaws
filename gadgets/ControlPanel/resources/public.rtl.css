@@ -18,7 +18,7 @@ margin: 0 auto;
 padding: 0;
 display: block;
 text-align: left;
-width: 990px;
+width: 980px;
 font-size: smaller;
 }
 
@@ -28,7 +28,7 @@ width: 980px;
 
 /* ----- HEADER ----- */
 #header {
-width: 990px;
+width: 980px;
 height: 72px;
 display: block;
 margin: 0 auto;
@@ -166,7 +166,7 @@ color: #000;
 border: 1px solid #d3d7cf;
 padding: 5px;
 float: left;
-width: 252px;
+width: 320px;
 font-size: small;
 }
 
@@ -177,7 +177,7 @@ float: left;
 background: #729fcf;
 border: 1px solid #3465a4;
 padding: 2px;
-margin: 5px;
+margin: 5px 0;
 padding-right: 20px;
 white-space: nowrap;
 }
@@ -266,7 +266,7 @@ img { border: 0; }
 
 /* ----- MAIN MENU ----- */
 #body {
-width: 712px;
+width: 640px;
 float: right;
 }
 
@@ -787,26 +787,33 @@ font-weight: bold;
 margin: 0px;
 text-align: right;
 }
-
-.notify-box .notify-items_tbl {
+.notify-desc {
+padding: 5px;
+}
+.notify-items {
+overflow: auto;
+padding: 0 5px;
+max-height: 210px;
+}
+.notify-items_tbl {
 width: 100%;
+border: 0px none;
 text-align: right;
 font-size: small;
-}
-
-.notify-items_tbl {
-border: 0px none;
 border-spacing: 0px;
 border-collapse: collapse;
+}
+.notify-items_tbl tr:hover {
+background-color: #729FCF;
 }
 .notify-items_tbl td {
 margin: 0px;
 padding: 0px;
 }
-
+.notify-items_tbl a:hover {color: #9e3;}
 .notify-box .install {
 text-align: center;
-width: 64px;
+min-width: 40px;
 }
 
 .notify-box .item img {

@@ -3,16 +3,16 @@
  <!-- BEGIN notifications -->
  <div class="notify-box">
   <h1>{notify-title}</h1>
-  <div class="notify-items" style="overflow: auto; max-height: 188px;">
-   <table class="notify-items_tbl">
-     <tr><td class="notify-desc" colspan="2">{notify_desc}</td></tr>
-     <!-- BEGIN item -->
-     <tr>
-      <td class="item"><img title="{title}" alt="{name}" src="{icon}" />{name}</td>
-      <td class="install"><a title="{title}" href="{url}">{install}</a></td>
-     </tr>
+  <div class="notify-desc">{notify_desc}</div>
+  <div class="notify-items">
+    <table class="notify-items_tbl">
+      <!-- BEGIN item -->
+      <tr>
+        <td class="item"><img title="{title}" alt="{name}" src="{icon}" />{name}</td>
+        <td class="install"><a title="{title}" href="{url}">{install}</a></td>
+      </tr>
      <!-- END item -->
-   </table>
+    </table>
   </div>
  </div>
  <!-- END notifications -->
