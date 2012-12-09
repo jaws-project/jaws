@@ -106,7 +106,7 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
         $total    = $model->TotalOfData('emblem');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-        $datagrid->SetStyle('width: 750px;');
+        $datagrid->SetStyle('width: 980px;');
         $datagrid->SetID('emblems_datagrid');
         $datagrid->TotalRows($total);
 
