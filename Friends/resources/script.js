@@ -74,7 +74,7 @@ function addFriend(form)
     var friendName = form.elements['friend'].value;
     var friendUrl  = form.elements['url'].value;
     
-    friends.newfriend(friendName, friendUrl);
+    FriendsAjax.callAsync('newfriend', friendName, friendUrl);
     cleanForm(form);
 }
 
@@ -88,7 +88,7 @@ function updateFriend(form)
     var friendUrl  = form.elements['url'].value;
     var friendId   = form.elements['id'].value;
 
-    friends.updatefriend(friendId, friendName, friendUrl);
+    FriendsAjax.callAsync('updatefriend', friendId, friendName, friendUrl);
     cleanForm(form);
 }
 
@@ -109,7 +109,7 @@ function submitForm(form)
  */
 function deleteFriend(id)
 {
-    friends.deletefriend(id);
+    FriendsAjax.callAsync('deletefriend', id);
     cleanForm($('friends_form'));
 }
 
@@ -119,7 +119,7 @@ function deleteFriend(id)
  */
 function editFriend(id)
 {
-    friends.getfriend(id);
+    FriendsAjax.callAsync('getfriend', id);
 }
 
 /**
@@ -129,10 +129,7 @@ function editFriend(id)
 function updateProperties(form)
 {
     var limitRandom = form.elements['limit_random'].value;
-    friends.updateproperties(limitRandom);
+    FriendsAjax.callAsync('updateproperties', limitRandom);
 }
 
-var friends = new friendsadminajax(FriendsCallback);
-friends.serverErrorFunc = Jaws_Ajax_ServerError;
-friends.onInit = showWorkingNotification;
-friends.onComplete = hideWorkingNotification;
+var FriendsAjax = new JawsAjax('Friends', FriendsCallback);
