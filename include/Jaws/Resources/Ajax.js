@@ -148,19 +148,45 @@ function getEditorValue(name)
 
     return $(name).value;
 }
-
-// Extend Element to add some useful methods
+/**
+ * Extends the Element native object to include some shortcut methods
+ */
 Element.implement({
 
-    show: function(how){
-        this.setStyle('display', how);
-        return this;
+    isDisplayed: function(){
+        return this.getStyle('display') != 'none';
+    },
+
+    isVisible: function(){
+        var w = this.offsetWidth,
+            h = this.offsetHeight;
+        return (w == 0 && h == 0) ? false : (w > 0 && h > 0) ? true : this.style.display != 'none';
+    },
+
+    toggle: function(){
+        return this[this.isDisplayed() ? 'hide' : 'show']();
     },
 
     hide: function(){
-        this.setStyle('display', 'none');
-        return this;
+        var d;
+        try {
+            //IE fails here if the element is not in the dom
+            d = this.getStyle('display');
+        } catch(e){}
+        if (d == 'none') return this;
+        return this.store('element:_originalDisplay', d || '').setStyle('display', 'none');
     },
+
+    show: function(display){
+        if (!display && this.isDisplayed()) return this;
+        display = display || this.retrieve('element:_originalDisplay') || 'block';
+        return this.setStyle('display', (display == 'none') ? 'block' : display);
+    },
+
+    swapClass: function(remove, add){
+        return this.removeClass(remove).addClass(add);
+    }
+
 });
 
 /**
@@ -528,45 +554,64 @@ function initDatePicker(name)
 function showDialogBox(name, dTitle, url, dHeight, dWidth)
 {
     var dRect = document.getSize();
-    var dLeft = (dWidth  > dRect.width )? 0 : Math.round(dRect.width  / 2 - dWidth  / 2) + 'px';
-    var dTop  = (dHeight > dRect.height)? 0 : Math.round(dRect.height / 2 - dHeight / 2) + 'px';
+    var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
+    var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
     if ($(name) == undefined) {
         var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
-        var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
+        var iframe  = new IFrame({
+            src : url,
+            id: name + '_iframe',
+
+            styles: {
+                height: dHeight+'px',
+                width: dWidth+'px',
+                border: 'none',
+            },
+
+            events: {
+                load: function(){
+                    hideWorkingNotification();
+                    this.getParent().show('block');
+                }
+            }
+        });
+
+        //var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
         var close   = new Element('span', {'class': 'dialog_box_close'});
         var title   = new Element('div', {'class':'dialog_box_title'}).adopt(dTitle).adopt(close);
         var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).hide();
-        iframe.addEvent('load', function() {
-            hideWorkingNotification();
-            dialog.show('block');
-            Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
-                if (e.keyCode == Event.KEY_ESC) {
-                    hideDialogBox(name);
-                }
-            });
-        });
-        iframe.addEvent('cached:load', function() {
-            hideWorkingNotification();
-            dialog.show('block');
-        });
+        // iframe.addEvent('load', function() {
+            // hideWorkingNotification();
+            // this.getParent().show('block');
+            // Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
+                // if (e.keyCode == Event.KEY_ESC) {
+                    // hideDialogBox(this.getParent());
+                // }
+            // });
+        // });
+        // iframe.addEvent('cached:load', function() {
+            // hideWorkingNotification();
+            // dialog.show('block');
+        // });
         close.addEvent('click', function() {hideDialogBox(name);});
-        overlay.addEvent('mousedown', function(e) {Event.stop(e);});
-        document.addEvent('keydown', function(e) {
-            if (dialog.visible() && e.keyCode == Event.KEY_ESC) {
-                hideDialogBox(name);
+        overlay.addEvent('mousedown', function(e) {e.stop();});
+         document.addEvent('keydown', function(e) {
+            var dialog = document.body.getLast();
+            if (e.keyCode == Event.KEY_ESC && dialog.isVisible()) {
+                hideDialogBox(dialog.id);
             }
         });
         document.body.adopt(overlay);
         document.body.adopt(dialog);
+        console.log(dLeft);
+        dialog.setStyles({left:dLeft, top:dTop});
     }
 
     $(name+'_overlay').show('block');
     showWorkingNotification();
-    $(name+'_iframe').setStyle({height:dHeight+'px', width:dWidth+'px'});
-    $(name).setStyle({left:dLeft, top:dTop});
     if ($(name+'_iframe').src == url) {
-        $(name+'_iframe').fire('cached:load');
+        $(name+'_iframe').fireEvent('load');
     } else {
         $(name+'_iframe').src = url;
     }
