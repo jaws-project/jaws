@@ -17,17 +17,17 @@ margin: 0 auto;
 padding: 0;
 display: block;
 text-align: left;
-width: 758px;
+width: 990px;
 font-size: smaller;
 }
 
 html>body #container{
-width: 748px;
+width: 980px;
 }
 
 /* ----- HEADER ----- */
 #header {
-width: 758px;
+width: 990px;
 height: 72px;
 display: block;
 margin: 0 auto;
@@ -262,7 +262,7 @@ img { border: 0; }
 
 /* ----- MAIN MENU ----- */
 #body {
-width: 480px;
+width: 712px;
 }
 
 .main-menu {
