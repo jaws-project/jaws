@@ -122,7 +122,6 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
             $fieldset = new Jaws_Widgets_FieldSet(_t('CHATBOX_SETTINGS'));
             $fieldset->SetDirection('vertical');
-            $fieldset->SetStyle('width: 180px;');
 
             //
             $limitcombo =& Piwi::CreateWidget('Combo', 'limit_entries');
