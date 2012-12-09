@@ -4,7 +4,7 @@
 }
 
 #c_datagrid  {
-    width: 352px;
+    width: 400px;
 }
 
 #c_datagrid label  {
@@ -32,6 +32,7 @@
     font-weight: bold;
     border: 1px solid #d3d7cf;
     text-align: right;
+    width: 100%;
 }
 
 #send_email {
