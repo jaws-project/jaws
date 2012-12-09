@@ -1,16 +1,16 @@
 #ssadminarea {
-    width: 670px;
+    width: 785px;
     margin: auto;
 }
 
 #ssitemsarea {
-    width: 235px;
+    width: 360px;
     height: 250px;
     float: left;
 }
 
 #ssitems {
-    width: 235px;
+    width: 360px;
     height: 366px;
     overflow: auto;
     border-left: 1px solid #999;

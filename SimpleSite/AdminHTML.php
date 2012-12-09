@@ -66,12 +66,12 @@ class SimpleSiteAdminHTML extends Jaws_Gadget_HTML
 
         $title =& Piwi::CreateWidget('Entry', 'title', '', _t('GLOBAL_TITLE'));
         $title->SetId('sstitle');
-        $title->SetStyle('width: 300px;');
+        $title->SetStyle('width: 330px;');
         $fieldset->Add($title);
 
         $shortname =& Piwi::CreateWidget('Entry', 'shortname', '', _t('SIMPLESITE_SHORTNAME'));
         $shortname->SetId('ssshortname');
-        $shortname->SetStyle('width: 300px;');
+        $shortname->SetStyle('width: 330px;');
         $fieldset->Add($shortname);
 
         $type =& Piwi::CreateWidget('Combo', 'type');
@@ -87,21 +87,21 @@ class SimpleSiteAdminHTML extends Jaws_Gadget_HTML
         if (Jaws_Gadget::IsGadgetInstalled('Launcher')) {
             $type->AddOption(_t('SIMPLESITE_LAUNCHER'), 'Launcher');
         }
-        $type->SetStyle('width: 300px;');
+        $type->SetStyle('width: 330px;');
         $type->AddEvent(ON_CHANGE, 'createReference(this.value);');
         $fieldset->Add($type);
 
         $ref =& Piwi::CreateWidget('Combo', 'reference');
         $ref->SetTitle(_t('SIMPLESITE_REFERENCE'));
         $ref->SetId('ssreference');
-        $ref->SetStyle('width: 300px;');
+        $ref->SetStyle('width: 330px;');
         $fieldset->Add($ref);
 
         $parent =& Piwi::CreateWidget('Combo', 'parent');
         $parent->SetTitle(_t('SIMPLESITE_PARENT'));
         $parent->AddOption(_t('SIMPLESITE_TOP'), 0);
         $parent->SetId('ssparent');
-        $parent->SetStyle('width: 300px;');
+        $parent->SetStyle('width: 330px;');
         $fieldset->Add($parent);
 
         $changeFreq =& Piwi::CreateWidget('Combo', 'changefreq');
@@ -116,7 +116,7 @@ class SimpleSiteAdminHTML extends Jaws_Gadget_HTML
         $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_NEVER'), 'never');
         $changeFreq->SetDefault('none');
         $changeFreq->SetId('sschangefreq');
-        $changeFreq->SetStyle('width: 300px;');
+        $changeFreq->SetStyle('width: 330px;');
         $fieldset->Add($changeFreq);
 
         $priority =& Piwi::CreateWidget('Combo', 'priority');
@@ -127,7 +127,7 @@ class SimpleSiteAdminHTML extends Jaws_Gadget_HTML
         $priority->AddOption('1.0', '1.0');
         $priority->SetDefault('0.5');
         $priority->SetId('sspriority');
-        $priority->SetStyle('width: 300px;');
+        $priority->SetStyle('width: 330px;');
         $fieldset->Add($priority);
 
         $form->Add($fieldset);
