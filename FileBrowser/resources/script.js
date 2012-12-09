@@ -133,6 +133,7 @@ function cwd(dir)
 {
     $('path').value = dir;
     getDG('fb_datagrid', 0, true);
+    stopAction('dir');
 }
 
 /**
@@ -151,7 +152,7 @@ function editFile(element, fname)
     switchTab('file');
     $('upload_switch').disabled = false;
 
-    var dbfile = filebrowserSync.dbfileinfo($('path').value, fname);
+    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, fname);
     if (dbfile['id']) {
         $('file_title').value       = dbfile['title'].defilter();
         $('file_description').value = dbfile['description'].defilter();
@@ -175,7 +176,7 @@ function saveFile()
     {
         document.fb_form.submit();
     } else {
-        filebrowser.updatedbfileinfo(
+        FileBrowserAjax.callAsync('updatedbfileinfo',
                                 $('path').value,
                                 $('filename').value,
                                 $('file_title').value,
@@ -192,7 +193,7 @@ function saveFile()
 function delFile(element, file)
 {
     if (confirm(confirmFileDelete)) {
-        filebrowser.deletefile($('path').value, file);
+        FileBrowserAjax.callAsync('deletefile', $('path').value, file);
     }
 }
 
@@ -209,7 +210,7 @@ function editDir(element, dirname)
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
-    var dbfile = filebrowserSync.dbfileinfo($('path').value, dirname);
+    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, dirname);
     if (dbfile['id']) {
         $('dir_title').value       = dbfile['title'];
         $('dir_description').value = dbfile['description'];
@@ -227,7 +228,7 @@ function saveDir()
         return false;
     }
 
-    filebrowser.updatedbdirinfo(
+    FileBrowserAjax.callAsync('updatedbdirinfo',
                             $('path').value,
                             $('dirname').value,
                             $('dir_title').value,
@@ -243,7 +244,7 @@ function saveDir()
 function delDir(element, dir)
 {
     if (confirm(confirmDirDelete)) {
-        filebrowser.deletedir($('path').value, dir);
+        FileBrowserAjax.callAsync('deletedir', $('path').value, dir);
     }
     
 }
@@ -253,10 +254,10 @@ function delDir(element, dir)
  */
 function getFiles(name, offset, reset)
 {
-    var result = filebrowserSync.getdirectory($('path').value, offset, $('order_type').value);
+    var result = FileBrowserAjax.callSync('getdirectory', $('path').value, offset, $('order_type').value);
     if (reset) {
-        var total = filebrowserSync.getdircontentscount($('path').value);
-        var loc   = filebrowserSync.getlocation($('path').value);
+        var total = FileBrowserAjax.callSync('getdircontentscount', $('path').value);
+        var loc   = FileBrowserAjax.callSync('getlocation', $('path').value);
         $('location').innerHTML = loc;
     }
     resetGrid(name, result, total);
@@ -287,15 +288,7 @@ function stopAction(tab)
     $('dir_fast_url').value     = '';
 }
 
-var filebrowser = new filebrowseradminajax(FileBrowserCallback);
-filebrowser.serverErrorFunc = Jaws_Ajax_ServerError;
-filebrowser.onInit = showWorkingNotification;
-filebrowser.onComplete = hideWorkingNotification;
-
-var filebrowserSync = new filebrowseradminajax();
-filebrowserSync.serverErrorFunc = Jaws_Ajax_ServerError;
-filebrowserSync.onInit = showWorkingNotification;
-filebrowserSync.onComplete = hideWorkingNotification;
+var FileBrowserAjax = new JawsAjax('FileBrowser', FileBrowserCallback);
 
 //Which row selected in DataGrid
 var selectedRow = null;
