@@ -513,7 +513,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_pollgroups', _t('POLL_GROUPS'));
         $groupsCombo =& Piwi::CreateWidget('Combo', 'pollgroups');
         $groupsCombo->SetID('pollgroups');
-        $groupsCombo->SetStyle('width: 240px;');
+        $groupsCombo->SetStyle('width: 300px;');
         $groupsCombo->AddEvent(ON_CHANGE, "javascript: getGroupPolls(this.value);");
         $groups = $model->GetPollGroups();
         $groupsCombo->AddOption('', 0);
@@ -525,7 +525,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_grouppolls', _t('POLL_POLLS'));
         $pollsCombo =& Piwi::CreateWidget('Combo', 'grouppolls');
         $pollsCombo->SetID('grouppolls');
-        $pollsCombo->SetStyle('height: 254px; width: 240px;');
+        $pollsCombo->SetStyle('height: 254px; width: 300px;');
         $pollsCombo->SetSize(15);
         $pollsCombo->AddEvent(ON_CHANGE, 'javascript: showResult(this.value);');
         $tpl->SetVariable('grouppolls_combo', $pollsCombo->Get());

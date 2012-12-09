@@ -3,7 +3,7 @@
 }
 
 #p_datagrid , #pg_datagrid {
-    width: 458px;
+    width: 690px;
 }
 
 #p_work_area, #pg_work_area {
@@ -72,12 +72,12 @@ div .titles {
 }
 
 #polls_box {
-    width: 240px;
+    width: 300px;
     float: right;
 }
 
 #result_box {
-    width: 494px;
+    width: 665px;
     float: left;
 }
 
