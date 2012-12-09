@@ -3,11 +3,11 @@
 }
 
 #b_datagrid , #bg_datagrid {
-    width: 340px;
+    width: 440px;
 }
 
 #b_work_area, #bg_work_area {
-    width: 388px;
+    width: 488px;
     padding: 4px;
 }
 
@@ -34,4 +34,9 @@
     width: 99%;
     padding: 4px;
     text-align: left;
+}
+
+#groups_combo {
+    width: 250px;
+    height: 358px;
 }

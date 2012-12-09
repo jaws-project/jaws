@@ -380,8 +380,8 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
 
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
+        $comboGroups->SetID('groups_combo');
         $comboGroups->SetSize(20);
-        $comboGroups->SetStyle('width: 200px; height: 358px;');
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
 
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
