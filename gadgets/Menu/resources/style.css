@@ -27,13 +27,13 @@
 
 #menus_area {
     float: left;
-    width: 300px;
+    width: 350px;
 }
 
 #menus_trees {
     margin: 0px;
     padding: 0px;
-    width: 298px;
+    width: 348px;
     height: 390px;
     border: 1px solid #d3d7cf;
     background-color: #f7f7f7;
@@ -97,7 +97,7 @@ div.menu_levels {
 
 #edit_area {
     float: left;
-    width: 432px;
+    width: 620px;
     margin-left: 10px;
     margin-bottom: 4px;
 }
