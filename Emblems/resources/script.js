@@ -10,7 +10,7 @@
 /**
  * Use async mode, create Callback
  */
-var EmblemsCallBack = {
+var EmblemsCallback = {
     updateproperties: function(response) {
         showResponse(response)
     },
@@ -42,7 +42,7 @@ function updateProperties(form)
         allow_url = 'false';
     }
 
-    emblems.updateproperties(rows, allow_url);
+    EmblemsAjax.callAsync('updateproperties', rows, allow_url);
 }
 
 /**
@@ -51,7 +51,7 @@ function updateProperties(form)
 function deleteEmblem(id, msg)
 {
     if(confirm(msg)){
-        emblems.deleteemblem(id);
+        EmblemsAjax.callAsync('deleteemblem', id);
     }
 }
 
@@ -66,10 +66,7 @@ function editEmblem(id)
     var type   = form.elements['type' + id].value;
     var status = form.elements['status' + id].value;
     
-    emblems.updateemblem(id, title, url, type, status);
+    EmblemsAjax.callAsync('updateemblem', id, title, url, type, status);
 }
 
-var emblems = new emblemsadminajax(EmblemsCallBack);
-emblems.serverErrorfunc = Jaws_Ajax_ServerError;
-emblems.onInit = showWorkingNotification;
-emblems.onComplete = hideWorkingNotification;
+var EmblemsAjax = new JawsAjax('Emblems', EmblemsCallback);
