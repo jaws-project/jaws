@@ -108,7 +108,7 @@ function showCategory(form)
  */
 function deleteQuestion(id, category)
 {
-    faq.deletequestion(id);
+    FaqAjax.callAsync('deletequestion', id);
     currentCategory = category;
 }
 
@@ -117,7 +117,7 @@ function deleteQuestion(id, category)
  */
 function deleteCategory(id)
 {
-    faq.deletecategory(id);
+    FaqAjax.callAsync('deletecategory', id);
     currentCategory = id;
 }
 
@@ -171,7 +171,7 @@ function deleteCategoryArea(category)
  */
 function moveQuestion(id, category, direction)
 {
-    faq.movequestion(id, direction);
+    FaqAjax.callAsync('movequestion', id, direction);
     currentCategory = category;
 }
 
@@ -278,7 +278,7 @@ function moveCategory(element, getList)
             }
         }
     }
-    faq.fixpositions(categoriesInfo);
+    FaqAjax.callAsync('fixpositions', categoriesInfo);
     rePopulateCatForm();
 }
 
@@ -290,10 +290,7 @@ function saveSelectedID(element)
     selectedID = element.id.replace('FaqCategory_', '');
 }
 
-var faq = new faqadminajax(FaqCallback);
-faq.serverErrorFunc = Jaws_Ajax_ServerError;
-faq.onInit = showWorkingNotification;
-faq.onComplete = hideWorkingNotification;
+var FaqAjax = new JawsAjax('Faq', FaqCallback);
 
 var selectedID      = 0;
 var currentCategory = false;
