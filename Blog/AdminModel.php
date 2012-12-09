@@ -109,7 +109,7 @@ class BlogAdminModel extends BlogModel
 
         // Recent comments
         require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $api->DeleteCommentsOfGadget();
 
         return true;
@@ -815,7 +815,7 @@ class BlogAdminModel extends BlogModel
         $params['permalink'] = $permalink;
         $params['status']    = $status;
 
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $res = $api->UpdateComment($params['id'],        $params['name'],
                                    $params['email'],     $params['url'],
                                    $params['title'],     $params['comments'],
@@ -846,7 +846,7 @@ class BlogAdminModel extends BlogModel
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $res = $api->DeleteComment($id);
 
         if (Jaws_Error::IsError($res)) {
@@ -883,7 +883,7 @@ class BlogAdminModel extends BlogModel
     function DeleteCommentsIn($id)
     {
         require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $res = $api->DeleteCommentsByReference($id);
     }
 
@@ -902,7 +902,7 @@ class BlogAdminModel extends BlogModel
         }
 
         require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
+        $api = new Jaws_Comment($this->_Gadget);
         $api->MarkAs($ids, $status);
 
         // Fix blog comment counter...
