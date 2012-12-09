@@ -71,15 +71,12 @@ class Jaws_Translate
     function Translate($lang, $string, $replacements = array())
     {
         $lang = strtoupper(empty($lang)? $this->_defaultLanguage : $lang);
-        $base_translate = "_EN_$string";
         $orig_translate = "_{$lang}_$string";
         $data_translate = "_{$lang}_DATA_$string";
         if (defined($data_translate)) {
             $string = constant($data_translate);
         } elseif (defined($orig_translate)) {
             $string = constant($orig_translate);
-        } elseif (defined($base_translate)) {
-            $string = constant($base_translate)."*";
         }
 
         $count = count($replacements);
@@ -143,19 +140,16 @@ class Jaws_Translate
             case JAWS_COMPONENT_GADGET:
                 $orig_i18n = JAWS_PATH . "languages/$language/gadgets/$module.php";
                 $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.php";
-                $fall_back = JAWS_PATH . "languages/en/gadgets/$module.php";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
                 $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.php";
                 $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.php";
-                $fall_back = JAWS_PATH . "languages/en/plugins/$module.php";
                 break;
 
             default:
                 $orig_i18n = JAWS_PATH . "languages/$language/$module.php";
                 $data_i18n = JAWS_DATA . "languages/$language/$module.php";
-                $fall_back = JAWS_PATH . "languages/en/$module.php";
         }
 
         $GLOBALS['i18n'][$language][] = array($module, $type);
@@ -169,17 +163,6 @@ class Jaws_Translate
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded translation for $module, language $language");
         } else {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "No translation could be found for $module for language $language");
-        }
-
-        if ($language != 'en') {
-            if (file_exists($fall_back)) {
-                require_once $fall_back;
-                $GLOBALS['i18n']['en'][] = array($module, $type);
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded fallback translation for $module, language en");
-            } else {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
-                                     "No fallback translation could be found for $module for language en");
-            }
         }
     }
 
