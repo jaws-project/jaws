@@ -149,6 +149,20 @@ function getEditorValue(name)
     return $(name).value;
 }
 
+// Extend Element to add some useful methods
+Element.implement({
+
+    show: function(how){
+        this.setStyle('display', how);
+        return this;
+    },
+
+    hide: function(){
+        this.setStyle('display', 'none');
+        return this;
+    },
+});
+
 /**
  * Javascript blank string prototype
  */
@@ -518,14 +532,14 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
     var dTop  = (dHeight > dRect.height)? 0 : Math.round(dRect.height / 2 - dHeight / 2) + 'px';
 
     if ($(name) == undefined) {
-        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).setStyle('display', 'none');
+        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
         var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
         var close   = new Element('span', {'class': 'dialog_box_close'});
         var title   = new Element('div', {'class':'dialog_box_title'}).adopt(dTitle).adopt(close);
-        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).setStyle('display', 'none');
+        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).hide();
         iframe.addEvent('load', function() {
             hideWorkingNotification();
-            dialog.setStyle('display', 'block');
+            dialog.show('block');
             Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
                 if (e.keyCode == Event.KEY_ESC) {
                     hideDialogBox(name);
@@ -534,7 +548,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
         });
         iframe.addEvent('cached:load', function() {
             hideWorkingNotification();
-            dialog.setStyle('display', 'block');
+            dialog.show('block');
         });
         close.addEvent('click', function() {hideDialogBox(name);});
         overlay.addEvent('mousedown', function(e) {Event.stop(e);});
@@ -547,7 +561,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
         document.body.adopt(dialog);
     }
 
-    $(name+'_overlay').setStyle('display', 'block');
+    $(name+'_overlay').show('block');
     showWorkingNotification();
     $(name+'_iframe').setStyle({height:dHeight+'px', width:dWidth+'px'});
     $(name).setStyle({left:dLeft, top:dTop});
@@ -563,8 +577,8 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
  */
 function hideDialogBox(name)
 {
-    $(name).setStyle('display', 'none');
-    $(name+'_overlay').setStyle('display', 'none');
+    $(name).hide();
+    $(name+'_overlay').hide();
 }
 
 /**
@@ -604,7 +618,7 @@ function Jaws_Ajax_ServerError(error)
 function showResponse(message, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
-        //new Effect.ScrollTo($(document.body));
+        $(document.body).scrollTo(0, 0);
     }
 
     messages = new Array();
@@ -621,7 +635,7 @@ function showResponse(message, goTop)
         messageDiv.innerHTML = messages[i]['message'];
         messageDiv.className = messages[i]['css'];
         messageDiv.id = 'msgbox_'+i;
-        //new Effect.Appear(messageDiv);
+        messageDiv.fade('show');
         hideResponseBox(messageDiv);
     }
 }
@@ -643,7 +657,7 @@ function hideResponseBox(name, timehide)
  */
 function hideResponseBoxCallback(name)
 {
-    //new Effect.Fade(name);
+    $(name).fade('out');
 }
 
 /**
