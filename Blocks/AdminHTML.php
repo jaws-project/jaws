@@ -31,7 +31,6 @@ class BlocksAdminHTML extends Jaws_Gadget_HTML
         $blocks = $model->GetBlocks(false);
         $blocksCombo =& Piwi::CreateWidget('Combo', 'block_id');
         $blocksCombo->SetID('block_id');
-        $blocksCombo->SetStyle('width: 100%; max-width: 210px; margin-bottom: 10px;');
         $blocksCombo->SetSize(16);
         $blocksCombo->AddEvent(ON_CHANGE, 'edit(this.value, \'' . _t('GLOBAL_EDIT') . '\');');
         $selected = 0;
