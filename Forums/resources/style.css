@@ -27,13 +27,13 @@ margin-right: 2px;
 
 #forums_area {
 float: left;
-width: 300px;
+width: 350px;
 }
 
 #forums_tree {
 margin: 0px;
 padding: 0px;
-width: 298px;
+width: 348px;
 height: 410px;
 border: 1px solid #d3d7cf;
 background-color: #f7f7f7;
@@ -88,7 +88,7 @@ cursor:pointer;
 
 #work_area {
 float: left;
-width: 444px;
+width: 625px;
 margin-left: 3px;
 margin-bottom: 4px;
 }
