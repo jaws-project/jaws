@@ -81,23 +81,23 @@ class Blog_Actions_Admin_Categories extends BlogAdminHTML
 
         $catName =& Piwi::CreateWidget('Entry', 'name', $name);
         $catName->SetTitle(_t('BLOG_CATEGORY'));
-        $catName->setStyle('width: 250px;');
+        $catName->setStyle('width: 300px;');
 
         $catFastURL =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
         $catFastURL->SetTitle(_t('BLOG_FASTURL'));
-        $catFastURL->setStyle('width: 250px;');
+        $catFastURL->setStyle('width: 300px;');
 
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $meta_keywords);
         $metaKeywords->SetTitle(_t('GLOBAL_META_KEYWORDS'));
-        $metaKeywords->setStyle('width: 250px;');
+        $metaKeywords->setStyle('width: 300px;');
 
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
         $metaDesc->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
-        $metaDesc->setStyle('width: 250px;');
+        $metaDesc->setStyle('width: 300px;');
 
         $catDescription =& Piwi::CreateWidget('TextArea', 'description', $description);
         $catDescription->SetTitle(_t('GLOBAL_DESCRIPTION'));
-        $catDescription->setStyle('width: 250px;');
+        $catDescription->setStyle('width: 300px;');
 
         $fieldset->Add($catName);
         $fieldset->Add($catFastURL);
