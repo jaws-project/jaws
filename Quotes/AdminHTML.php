@@ -81,8 +81,8 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
 
         //Group Filter
         $combo =& Piwi::CreateWidget('Combo', 'group_filter');
-        $combo->setStyle('width:200px;');
-        $combo->AddEvent(ON_CHANGE, 'fillQuotesCombo()');
+        $combo->setStyle('width:250px;');
+        $combo->AddEvent(ON_CHANGE, 'javascript: fillQuotesCombo();');
         $combo->AddOption('', -1);
         foreach($groups as $group) {
             $combo->AddOption($group['title'], $group['id']);
@@ -93,7 +93,7 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         //Fill the quotes combo..
         $comboQuotes =& Piwi::CreateWidget('Combo', 'quotes_combo');
         $comboQuotes->SetSize(20);
-        $comboQuotes->SetStyle('width: 200px; height: 358px;');
+        $comboQuotes->SetStyle('width: 250px; height: 358px;');
         $comboQuotes->AddEvent(ON_CHANGE, 'javascript: editQuote(this.value);');
 
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'AdminModel');
@@ -213,7 +213,7 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
         $comboGroups->SetSize(20);
-        $comboGroups->SetStyle('width: 200px; height: 358px;');
+        $comboGroups->SetStyle('width: 250px; height: 358px;');
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'AdminModel');
         $groups = $model->GetGroups(-1);
