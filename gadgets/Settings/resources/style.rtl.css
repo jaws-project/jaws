@@ -1,11 +1,11 @@
 #jaws-sidebar-settings {
-    width: 180px;
+    width: 220px;
     float: right;
     border: 1px solid #d3d7cf;
 }
 
 #settings {
-    width: 560px;
+    width: 752px;
     float: left;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -32,7 +32,7 @@ div.fields label {
     float: right;
     font-weight: bold;
     cursor: pointer;
-    width: 15em;
+    width: 17em;
 }
 
 div.fields select {
@@ -43,7 +43,7 @@ div.fields select {
     width: 6em;
     direction:ltr;
 }
-.meta-value {
+input.meta-value {
     width: 17em;
     direction:ltr;
     margin-left: 0.4em;
@@ -54,5 +54,5 @@ div.fields select {
     direction: ltr;
 }
 .add-button input, .add-button button {
-    margin-right: 15.6em;
+    margin-right: 17.6em;
 }
