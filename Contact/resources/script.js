@@ -326,7 +326,7 @@ function updateRecipient()
         return;
     }
 
-    if($('id').value==0) {
+    if($('id').value == 0) {
         ContactAjax.callAsync('insertrecipient',
                         $('name').value,
                         $('email').value,
@@ -381,18 +381,14 @@ function switchEmailTarget(value)
 {
     switch (value) {
         case '1':
-            if ($('batch_mail').visible()) break;
-            new Effect.BlindUp('free_mail', {
-                duration: 0.5,
-                afterFinish: function() {$('batch_mail').blindDown({duration:0.5});}
-            });
+            if ($('batch_mail').isDisplayed()) break;
+            $('free_mail').hide();
+            $('batch_mail').show();
             break;
         case '2':
-            if ($('free_mail').visible()) break;
-            new Effect.BlindUp('batch_mail', {
-                duration: 0.5,
-                afterFinish: function() {$('free_mail').blindDown({duration:0.5});}
-            });
+            if ($('free_mail').isDisplayed()) break;
+            $('batch_mail').hide();
+            $('free_mail').show();
             break;
     }
 }
@@ -513,9 +509,9 @@ function previewMessage()
     var preview  = ContactAjax.callSync('getmessagepreview', getEditorValue('message')),
         width    = 750,
         height   = 500,
-        viewport = document.viewport.getDimensions(),
-        left     = (viewport.width - width) / 2,
-        top      = (viewport.height - height) / 2,
+        docDim   = document.getSize(),
+        left     = (docDim.x - width) / 2,
+        top      = (docDim.y - height) / 2,
         specs    = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top,
         popup    = window.open('about:blank', '', specs, true);
     popup.document.write(preview);
@@ -537,7 +533,10 @@ function sendEmail()
     } else {
         // Already we have isValidEmail() but validation becomes 
         // too complicated in case of 3 fields (to, cc, bcc) so let server do the job
-        if (!$('to').present() && !$('cc').present() && !$('bcc').present()) {
+        if ($('to').value.blank() &&
+            $('cc').value.blank() &&
+            $('bcc').value.blank())
+        {
             alert(incompleteMailerFields);
             $('to').focus();
             return;
@@ -547,7 +546,7 @@ function sendEmail()
                       'bcc': $('bcc').value};
     }
 
-    if (!$('subject').present()) {
+    if ($('subject').value.blank()) {
         alert(incompleteMailerFields);
         $('subject').focus();
         return;
