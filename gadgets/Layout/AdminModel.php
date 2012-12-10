@@ -612,11 +612,11 @@ class LayoutAdminModel extends LayoutModel
      */
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
-        $actions = $GLOBALS['app']->GetGadgetActions($g, 'LayoutAction', 'index');
+        $actions = $GLOBALS['app']->GetGadgetActions($g, 'layout', 'index');
         foreach ($actions as $key => $action) {
-            if ($action['params'] !== false) {
+            if ($action['parametric']) {
                 // set initial params
-                $actions[$key]['params'] = false;
+                $actions[$key]['parametric'] = false;
                 $lParamsMethod = $key. 'LayoutParams';
                 if (empty($action['file'])) {
                     // DEPRECATED: will be removed after all jaws official gadget converted
@@ -631,7 +631,6 @@ class LayoutAdminModel extends LayoutModel
             }
 
             $actions[$key] = array_merge(array('action' => $key), $actions[$key]);
-            unset($actions[$key]['mode']);
         }
 
         return $associated_by_action? $actions : array_values($actions);
