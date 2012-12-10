@@ -196,7 +196,7 @@ class RadioButtons extends Bin
             }
             $item .= '/> ';
 
-            $this->_XHTML .= '<label for="' . $this->_name . '_' . $value . '">';
+            $this->_XHTML .= '<label for="' . $baseName . '_' . $value . '">';
             $this->_XHTML .= $item . $option->getText() . '</label>';
 
             if ($this->_direction == 'vertical') {
