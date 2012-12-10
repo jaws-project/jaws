@@ -604,7 +604,6 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
         });
         document.body.adopt(overlay);
         document.body.adopt(dialog);
-        console.log(dLeft);
         dialog.setStyles({left:dLeft, top:dTop});
     }
 
