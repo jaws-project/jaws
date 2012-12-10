@@ -818,8 +818,6 @@ class Jaws
             $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
             global $base_properties;
             $base_properties= array(
-                'name'       => '',
-                'desc'       => '',
                 'normal'     => false,
                 'layout'     => false,
                 'parametric' => false,
@@ -827,13 +825,15 @@ class Jaws
                 'file'       => false,
             );
             $func_merge = create_function(
-                '$properties',
+                '&$properties, $action, $gadget',
                 'global $base_properties;
-                return array_merge($base_properties, $properties);'
+                $base_properties["name"] = _t(strtoupper($gadget."_ACTIONS_".$action));
+                $base_properties["desc"] = _t(strtoupper($gadget."_ACTIONS_".$action."_DESC"));
+                $properties = array_merge($base_properties, $properties);'
             );
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
             if (@include_once($file)) {
-                $actions = array_map($func_merge, $actions);
+                array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['index'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['index'] = array();
@@ -841,7 +841,7 @@ class Jaws
 
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
             if (@include_once($file)) {
-                $actions = array_map($func_merge, $actions);
+                array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['admin'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['admin'] = array();
@@ -853,7 +853,7 @@ class Jaws
         } else {
             return array_filter(
                 $this->_Gadgets[$gadget]['actions'][$script],
-                create_function('$item', 'return isset($item[\''.$type.'\']);')
+                create_function('$item', 'return $item[\''.$type.'\'];')
             );
         }
     }
