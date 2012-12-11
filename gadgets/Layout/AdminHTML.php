@@ -60,6 +60,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $t_item->SetVariable('display_never',    _t('LAYOUT_NEVER'));
         $t_item->SetVariable('displayWhenTitle', _t('LAYOUT_CHANGE_DW'));
         $t_item->SetVariable('actionsTitle',     _t('LAYOUT_ACTIONS'));
+        $t_item->SetVariable('confirmDelete',    _t('LAYOUT_CONFIRM_DELETE'));
         $dragdrop = $t_item->ParseBlock('drag_drop');
         $t_item->Blocks['drag_drop']->Parsed = '';
 
@@ -128,7 +129,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                             $controls = '';
                             $t_item->SetBlock('item');
                             $t_item->SetVariable('section_id', $name);
-                            $delete_url = "javascript: deleteElement('".$gadget['id']."','"._t('LAYOUT_CONFIRM_DELETE')."');";
 
                             $objGadget = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
                             $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
@@ -149,7 +149,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                             $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
                             $t_item->SetVariable(
                                 'delete',
-                                'deleteElement(\''.$gadget['id'].'\',\''._t('LAYOUT_CONFIRM_DELETE').'\');'
+                                "deleteElement('{$gadget['id']}');"
                             );
                             $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
                             if (isset($actions[$gadget['gadget_action']]) && $objGadget->IsGadgetUpdated()) {
@@ -595,24 +595,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('template');
         return $tpl->Get();
-    }
-
-    /**
-     * Delete an element from the layout
-     *
-     * @access  public
-     * @return  XHTML template content
-     */
-    function DeleteLayoutElement()
-    {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'get');
-
-        $model->DeleteElement($id);
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout&action=Admin');
     }
 
 }

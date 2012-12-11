@@ -125,7 +125,7 @@ class LayoutAdminAjax extends Jaws_Gadget_Ajax
             $el['eaonclick'] = "editElementAction('$url_ea');";
             unset($info);
             $el['icon']      = 'gadgets/'.$gadget.'/images/logo.png';
-            $el['delete']    = 'deleteElement(\''.$id.'\',\''._t('LAYOUT_CONFIRM_DELETE').'\');';
+            $el['delete']    = "deleteElement('{$id}');";
             $el['deleteimg'] = 'gadgets/Layout/images/delete-item.gif';
             $el['dwalways']  = _t('GLOBAL_ALWAYS');
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');

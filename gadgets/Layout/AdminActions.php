@@ -24,9 +24,6 @@ $actions['LayoutBuilder'] = array(
 $actions['SetLayoutMode'] = array(
     'normal' => true,
 );
-$actions['DeleteLayoutElement'] = array(
-    'normal' => true,
-);
 $actions['EditElementAction'] = array(
     'standalone' => true,
 );

@@ -90,11 +90,8 @@ var LayoutCallback = {
             dItemDw.appendChild(adw);
 
             $('layout_main').appendChild(dItem);
-
-            Effect.Appear(dItem.id, {duration:1});
-            items['main']['item_' + response['id']] = true; 
-            newdrags[response['id']] = new Draggable('item_' + response['id'], {revert:true,constraint:true});
-            
+            items['main']['item_' + response['id']] = true;
+            layoutSortable.addItems(dItem);
         }
         showResponse(response['message'], false);
     }
@@ -125,13 +122,13 @@ function getAddedChanges()
 /**
  * Deletes an element
  */
-function deleteElement(itemId, confirmMsg)
+function deleteElement(itemId)
 {
     var itemDiv  = $('item_' + itemId),
         section  = itemDiv.getParent().id.replace('layout_', ''),
         position = itemDiv.getParent().getElements('div.item[id]').indexOf(itemDiv);
 
-    var answer = confirm(confirmMsg);
+    var answer = confirm(confirmDelete);
     if (answer) {
         itemDiv.fade('out');
         (function(){this.destroy();}).delay(500, itemDiv);
@@ -149,7 +146,7 @@ function initUI()
         sections_selector += '#layout_' + sections[i] + ', ';
     }
 
-    new Sortables(sections_selector, {
+    layoutSortable = new Sortables( sections_selector, {
         clone: true,
         revert: true,
         opacity: 0.7,
@@ -277,13 +274,6 @@ function getSelectedAction()
     return "";
 }
 
-function addGadgetToLayout(gadget, action, params)
-{
-    hideDialogBox('gadgets_dialog');
-    params = params.split(',');
-    LayoutAjax.callAsync('addgadget', gadget, action, params);
-}
-
 function saveElementAction(lid, gadget, action, params, title, desc)
 {
     hideDialogBox('actions_dialog');
@@ -307,20 +297,9 @@ function saveChangeDW(itemId, dw) {
     hideDialogBox('dw_dialog');
 }
 
-var ver = navigator.appVersion;
-if (/MSIE 6/i.test(navigator.userAgent)) {
-    window.onload=function() {
-        window.onscroll = function() {
-            var clientHeight = document.documentElement.clientHeight;
-            clientHeight = (clientHeight == 0 )? document.body.offsetHeight : clientHeight;
-            var scrollTop = document.documentElement.scrollTop;
-            scrollTop = (scrollTop == 0 )? (document.body.scrollTop - 4) : scrollTop;
-            $('layout-controls').style.top = clientHeight + scrollTop - 64 + "px";
-        }
-    }
-}
-
 var LayoutAjax = new JawsAjax('Layout', LayoutCallback);
+
+var layoutSortable = null;
 
 var items = new Array();
 var newdrags = new Array();
