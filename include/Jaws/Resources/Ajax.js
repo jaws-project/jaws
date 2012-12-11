@@ -566,7 +566,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
             styles: {
                 height: dHeight+'px',
                 width: dWidth+'px',
-                border: 'none',
+                border: 'none'
             },
 
             events: {
@@ -579,7 +579,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
 
         //var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
         var close   = new Element('span', {'class': 'dialog_box_close'});
-        var title   = new Element('div', {'class':'dialog_box_title'}).adopt(dTitle).adopt(close);
+        var title   = new Element('div', {'class':'dialog_box_title'}).appendText(dTitle).adopt(close);
         var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).hide();
         // iframe.addEvent('load', function() {
             // hideWorkingNotification();
@@ -602,7 +602,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
                 hideDialogBox(dialog.id);
             }
         });
-        document.body.adopt(overlay);
+        $(document.body).adopt(overlay);
         document.body.adopt(dialog);
         dialog.setStyles({left:dLeft, top:dTop});
     }
@@ -674,11 +674,8 @@ function showResponse(message, goTop)
 
     $('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
-        var messageDiv = document.createElement('div');
+        var messageDiv  = new Element('div', {'id':'msgbox_'+i, 'class':messages[i]['css']}).appendText(messages[i]['message']);
         $('msgbox-wrapper').appendChild(messageDiv);
-        messageDiv.innerHTML = messages[i]['message'];
-        messageDiv.className = messages[i]['css'];
-        messageDiv.id = 'msgbox_'+i;
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
     }
