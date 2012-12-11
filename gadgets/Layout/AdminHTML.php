@@ -22,6 +22,12 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         return $this->LayoutManager();
     }
 
+    /**
+     * Returns the HTML content to manage the layout in the browser
+     *
+     * @access  public
+     * @return  string  XHTML template conent
+     */
     function LayoutManager()
     {
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
@@ -63,14 +69,14 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load();
         $fakeLayout->AddScriptLink('libraries/mootools/core.js');
+        $fakeLayout->AddScriptLink('libraries/mootools/more.js');
         $fakeLayout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $fakeLayout->AddScriptLink('gadgets/Layout/resources/script.js');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
-        $useLayoutMode = $fakeLayout->_Template->VariableExists('layout-mode');
         $layoutContent = preg_replace(
                             '$<body([^>]*)>$i',
-                            '<body\1>' . $working_box . $msg_box . $this->getLayoutControls($useLayoutMode),
+                            '<body\1>' . $working_box . $msg_box . $this->getLayoutControls(),
                             $layoutContent);
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
@@ -171,9 +177,9 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                 }
             }
 
-            $fakeLayout->_Template->SetVariable('ELEMENT', '<div class="layout-section" id="layout_'.$name.'_drop" title="'.$name.'">
-                                    <div id="layout_'.$name.'">'.$js_section_array.$t_item->Get().
-                                    '</div></div>');
+            $fakeLayout->_Template->SetVariable(
+                'ELEMENT', '<div id="layout_'.$name.'" class="layout-section" title="'.
+                $name.'">'.$js_section_array.$t_item->Get().'</div>');
 
             $fakeLayout->_Template->ParseBlock('layout/'.$name);
             $t_item->Blocks['item']->Parsed = '';
@@ -182,7 +188,11 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         return $fakeLayout->Get(true);
     }
 
-    function getLayoutControls($useLayoutMode)
+    /**
+     *
+     *
+     */
+    function getLayoutControls()
     {
         $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
 
@@ -217,20 +227,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $themeCombo->SetEnabled($this->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
 
-        if ($useLayoutMode) {
-            $tpl->SetVariable('mode', _t('LAYOUT_MODE').':');
-            $modeCombo =& Piwi::CreateWidget('ComboImage', 'mode');
-            $modeCombo->AddEvent(ON_CHANGE, 'changeLayoutMode();');
-            $modeCombo->SetImageSize(16, 16);
-            $modeCombo->AddOption(_t('LAYOUT_MODE_TWOBAR'),   1, 'gadgets/Layout/images/layout1.png');
-            $modeCombo->AddOption(_t('LAYOUT_MODE_LEFTBAR'),  2, 'gadgets/Layout/images/layout2.png');
-            $modeCombo->AddOption(_t('LAYOUT_MODE_RIGHTBAR'), 3, 'gadgets/Layout/images/layout3.png');
-            $modeCombo->AddOption(_t('LAYOUT_MODE_NOBAR'),    4, 'gadgets/Layout/images/layout4.png');
-            $modeCombo->SetDefault($GLOBALS['app']->Registry->Get('/config/layoutmode'));
-            $modeCombo->SetEnabled($this->GetPermission('ManageThemes'));
-            $tpl->SetVariable('mode_combo', $modeCombo->Get());
-        }
-
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
         $url = $GLOBALS['app']->getSiteURL().'/'.BASE_SCRIPT.'?gadget=Layout&amp;action=AddLayoutElement&amp;mode=new';
         $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
@@ -248,6 +244,10 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     *
+     *
+     */
     function ChangeTheme()
     {
         $this->CheckPermission('ManageThemes');

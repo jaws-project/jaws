@@ -13,20 +13,21 @@
 class LayoutAdminAjax extends Jaws_Gadget_Ajax
 {
     /**
-     * Change items position
+     * Move item
      *
      * @access  public
-     * @param   int     $item        Item ID
-     * @param   mixed   $section     Can be the section referenced by names or by ids
-     * @param   int     $pos         Position that will be used, all other positions will be placed under this
-     * @param   array   $sortedItems An array with the sorted items of $section. WARNING: keys have the item_ prefix
-     * @return  array   Response
+     * @param   int     $item           Item ID
+     * @param   string  $old_section    Old section name
+     * @param   int     $old_position   Position of item in old section
+     * @param   string  $new_section    Old section name
+     * @param   int     $new_position   Position of item in new section
+     * @return  array   Response array (notice or error)
      */
-    function MoveElement($item, $section, $position, $sortedItems)
+    function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
     {
-        $res = $this->_Model->MoveElementToSection($item, $section, $position, $sortedItems);
-        if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_MOVED'), RESPONSE_ERROR);
+        $result = $this->_Model->MoveElement($item, $old_section, $old_position, $new_section, $new_position);
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
         }
@@ -38,17 +39,20 @@ class LayoutAdminAjax extends Jaws_Gadget_Ajax
      * Deletes an element
      *
      * @access  public
-     * @param   int     $item    Item ID
-     * @return  array   Response
+     * @param   int     $item       Item ID
+     * @param   string  $section    Section name
+     * @param   int     $position   Position of item in section
+     * @return  array   Response array (notice or error)
      */
-    function DeleteElement($item)
+    function DeleteElement($item, $section, $position)
     {
-        $res = $this->_Model->DeleteElement($item);
-        if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_DELETED'), RESPONSE_ERROR);
+        $result = $this->_Model->DeleteElement($item, $section, $position);
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

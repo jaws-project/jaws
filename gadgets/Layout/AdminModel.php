@@ -206,242 +206,138 @@ class LayoutAdminModel extends LayoutModel
      * Delete an element
      *
      * @access  public
-     * @param   int     $id  Element ID
-     * @return  bool    Returns true if element was removed, if not it returns false
+     * @param   int     $id         Element ID
+     * @param   string  $section    Section name
+     * @param   int     $position   Position of item in section
+     * @return  bool    Returns true if element was removed otherwise it returns Jaws_Error
      */
-    function DeleteElement($id)
-    {
-        $element = $this->GetElement($id);
-        if (empty($element)) {
-            return false;
-        }
-
-        $sql = 'DELETE FROM [[layout]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        $res = $this->UpdateSectionPositions($element['section']);
-        if ($res === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-     /**
-     * Update the positions of a section
-     *
-     *  - If the position of an element doesn't match the sequence, a
-     *    temp value will be used instead with the current and next values
-     *  - If the position of an element is repeated, a temp value
-     *    will be used with that element and the next elements
-     *
-     * @access  public
-     * @param   int     $section       Section to move it
-     * @param   int     $highpriority  Item with high priority
-     * @return  bool    Success/Failure
-     */
-    function UpdateSectionPositions($section)
-    {
-        $sql = '
-            SELECT
-                [id], [layout_position]
-            FROM [[layout]]
-            WHERE [section] = {section}
-            ORDER BY [layout_position]';
-        $result = $GLOBALS['db']->queryAll($sql, array('section' => $section));
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        $elementsArray = array();
-        $posCounter    = 1;
-        $change        = false;
-        $posUsed       = array();
-        foreach ($result as $row) {
-            $res = array();
-            $res['id']       = $row['id'];
-            $res['position'] = $row['layout_position'];
-            if ($row['layout_position'] != $posCounter) {
-                $change = true;
-            }
-
-            $res['new_position'] = ($change === true ? $posCounter : false);
-            $posUsed[] = $posCounter;
-            $elementsArray[$row['id']] = $res;
-            $posCounter++;
-        }
-
-        foreach ($elementsArray as $element) {
-            if ($element['new_position'] == false) {
-                continue;
-            }
-
-            $params = array();
-            $params['position'] = $element['new_position'];
-            $params['section']  = $section;
-            $params['id']       = $element['id'];
-
-            $sql = 'UPDATE [[layout]] SET
-                     [layout_position] = {position}
-                    WHERE
-                     [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
- 
-
-    /**
-     * Move an element to a new section
-     *
-     * @access  public
-     * @param   int     $id            Element ID
-     * @param   int     $section       Section to move it
-     * @param   int     $pos           Position that will be used, all other positions will be placed under this
-     * @param   array   $sortedItems   An array with the sorted items of $section. WARNING: keys have the item_ prefix
-     * @return  bool    Success/Failure
-     */
-    function MoveElementToSection($id, $section, $pos, $sortedItems)
+    function DeleteElement($id, $section, $position)
     {
         $params = array();
-        $params['id']      = $id;
-        $params['section'] = $section;
-        $params['pos']     = $pos;
-
-        $element = $this->GetElement($id);
-        if ($element === false) {
-            return false;
-        }
+        $params['id'] = (int)$id;
 
         $sql = '
-            SELECT
-             COUNT([id])
-            FROM [[layout]]
+            DELETE
+                FROM [[layout]]
             WHERE
-             [section] = {section}';
-        $count = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($count)) {
-            return false;
-        }
-        $count = (int)$count;
+                [id] = {id}';
 
-        $sql = 'UPDATE [[layout]] SET
-                 [layout_position] = {pos},
-                 [section] = {section}
-                 WHERE
-                    [id] = {id}';
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
+
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            return false;
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
+
+            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_DELETED'));
+            return $result;
         }
 
-        if ($count > 0) {
-            $sortedItems = array_keys($sortedItems);
-            $gadgets     = $this->GetGadgetsInSection($section);
+        $params['section'] = $section;
+        $params['pos']     = (int)$position;
+        $params['one']     = 1;
 
-            foreach ($gadgets as $gadget) {
-                $newPos = array_search('item_'.$gadget['id'], $sortedItems);
-                if ($newPos === false) {
-                    continue;
-                }
+        $sql = '
+            UPDATE [[layout]] SET
+                [layout_position] = [layout_position] - {one}
+            WHERE
+                [section] = {section}
+              AND
+                [layout_position] >= {pos}';
 
-                $newPos = $newPos+1;
-                if ($newPos == $gadget['layout_position']) {
-                    continue;
-                }
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
 
-                $params        = array();
-                $params['pos'] = $newPos;
-                $params['id']  = $gadget['id'];
-
-
-                $sql = 'UPDATE [[layout]] SET
-                         [layout_position] = {pos}
-                        WHERE
-                         [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    return false;
-                }
-            }
+            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            return $result;
         }
 
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
         return true;
     }
 
     /**
-     * Move an element to another place
+     * Move item
      *
      * @access  public
-     * @param   int     $elementId Element ID
-     * @param   string  $section   Section where it is(header, left, main, right, footer)
-     * @param   string  $direction Where to move it
+     * @param   int     $item           Item ID
+     * @param   string  $old_section    Old section name
+     * @param   int     $old_position   Position of item in old section
+     * @param   string  $new_section    Old section name
+     * @param   int     $new_position   Position of item in new section
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function MoveElement($elementId, $section, $direction)
+    function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
     {
-        ///FIXME:  Move up/down/left/right properly
+        $params = array();
+        $params['section'] = $new_section;
+        $params['one']     = 1;
+        $params['pos']     = (int)$new_position;
+
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
+
         $sql = '
-            SELECT
-                [id], [layout_position]
-            FROM [[layout]]
-            WHERE [section] = {section}
-            ORDER BY [layout_position]';
-        ///FIXME check for errors
-        $result = $GLOBALS['db']->queryAll($sql, array('section' => $section));
+            UPDATE [[layout]] SET
+                [layout_position] = [layout_position] + {one}
+            WHERE
+                [section] = {section}
+              AND
+                [layout_position] >= {pos}';
 
-        $menu_array = array();
-        foreach ($result as $row) {
-            $res['id']              = $row['id'];
-            $res['position']        = $row['layout_position'];
-            $menu_array[$row['id']] = $res;
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
+
+            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            return $result;
         }
 
-        reset($menu_array);
-        $found = false;
-        while (!$found) {
-            $v = current($menu_array);
-            if ($v['id'] == $elementId) {
-                $found = true;
-                $position = $v['layout_position'];
-                $id = $v['id'];
-            } else {
-                next($menu_array);
-            }
+        $params['id'] = (int)$item;
+        $sql = '
+            UPDATE [[layout]] SET
+                [section] = {section},
+                [layout_position] = {pos}
+            WHERE
+                [id] = {id}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
+
+            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            return $result;
         }
 
-        $run_queries = false;
-        if ($direction == 'up') {
-            if (prev($menu_array)) {
-                $v           = current($menu_array);
-                $m_position  = $v['layout_position'];
-                $m_id        = $v['id'];
-                $run_queries = true;
-            }
-        } elseif ($direction == 'down') {
-            if (next($menu_array))   {
-                $v           = current($menu_array);
-                $m_position  = $v['layout_position'];
-                $m_id        = $v['id'];
-                $run_queries = true;
-            }
+        $params['section'] = $old_section;
+        $params['pos']     = (int)$old_position;
+
+        $sql = '
+            UPDATE [[layout]] SET
+                [layout_position] = [layout_position] - {one}
+            WHERE
+                [section] = {section}
+              AND
+                [layout_position] >= {pos}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
+
+            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            return $result;
         }
 
-        if ($run_queries) {
-            $sql = '
-                UPDATE [[layout]] SET
-                    [layout_position] = {position}
-                WHERE [id] = {id}';
-            $GLOBALS['db']->query($sql, array('position' => $m_position, 'id' => $id));
-
-            $GLOBALS['db']->query($sql, array('position' => $position, 'id' => $m_id));
-        }
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
+        return true;
     }
 
     /**

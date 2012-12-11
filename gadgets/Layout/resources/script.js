@@ -22,11 +22,11 @@ var LayoutCallback = {
         showResponse(response, false);
     },
 
-    moveelement: function(response) {
+    MoveElement: function(response) {
         showResponse(response, false);
     },
 
-    deleteelement: function(response) {
+    DeleteElement: function(response) {
         showResponse(response, false);
     },
 
@@ -41,8 +41,8 @@ var LayoutCallback = {
             dItem.setAttribute('title', response['tactiondesc']);
 
             var dItemIcon = dItem.appendChild(document.createElement('div'));
-            dItemIcon.setAttribute('class', 'item-icon');
-            dItemIcon.setAttribute('className', 'item-icon');
+            dItemIcon.setAttribute('class', 'item_icon');
+            dItemIcon.setAttribute('className', 'item_icon');
             var imgIcon = document.createElement('img');
             imgIcon.setAttribute('alt', 'icon');
             imgIcon.setAttribute('src', response['icon']);
@@ -101,113 +101,6 @@ var LayoutCallback = {
 }
 
 /**
- * Move items from one side to other
- */
-function moveItems(fromSection, toSection)
-{
-    var fromSectionName = 'layout_' + fromSection;
-    var toSectionName   = 'layout_' + toSection;
-
-    var fromSectionObj   = document.getElementById(fromSectionName);
-    var toSectionObj     = document.getElementById(toSectionName);
-
-    var itemsFromSection = $$('#'+fromSectionName + ' .item');
-
-    items[fromSection] = new Array();
-    items[toSection]   = new Array();
-    for(var i=0; i<itemsFromSection.length; i++) {
-        var item = itemsFromSection[i];
-
-        fromSectionObj.removeChild(item);
-        toSectionObj.appendChild(item);
-
-        items[toSection][item.id] = true;
-    }
-}
-
-/**
- * Returns the position on the current item and section
- */
-function getPositionOfItem(item, section)
-{
-    item = item.replace('item_', '');
-    
-    var pos = 1;
-    for(key in items[section]) {
-        if (typeof(items[section][key]) == 'function') {
-            continue;
-        }
-        var itemName = key.replace('item_', '');
-        if (itemName == item) {
-            return pos;
-        }
-        pos++;
-    }
-    return pos;
-}
-
-/**
- * Move an element to another section
- */
-function moveElement(element, movedTo)
-{
-    var comesFrom = element.parentNode;
-    var goesTo    = $(movedTo.id.replace('_drop', ''));
-    var clone     = element;
-
-    goesTo.appendChild(element);
-
-    var destiny   = document.getElementById(movedTo.id.replace('_drop', ''));
-    var emptyDivs = $$('#'+movedTo.id.replace('_drop', '') + ' .layout-message');
-
-    if (emptyDivs.length == 1) {
-        destiny.removeChild(emptyDivs[0]);
-    }
-
-    movedNewElement = true;
-    newEmptyRegion  = goesTo.id;
-    // $('log').innerHTML += 'Moved ' + element.id + ' from ' + comesFrom.id + ' to ' + goesTo.id + '<br />';
-}
-
-/**
- * Returns true if the total items of a section has changed
- */
-function itemMovedOnSameSection(section, serialized)
-{
-    var sectionName  = section.replace('layout_', '');
-    var newItemsSize = serialized.split('&').length;
-
-    var totalItems = 0;
-    for(key in items[sectionName]) {
-        if (typeof(items[sectionName][key]) == 'function') {
-            continue;
-        }
-        totalItems++;
-    }
-
-    if (serialized.blank()) {
-        newItemsSize = 0;
-    }
-    // $('log').innerHTML += ' + ' + section + ' antes tenía: ' + totalItems + ' ahora tiene ' + newItemsSize + '<br />';
-    //$('log').innerHTML += ' + serial data: ' + serialized + '<br />';
-    return totalItems == newItemsSize;
-}
-
-/**
- * Copies the items of a div (all those who have item as classname) to the
- * items section array (items[section])
- */
-function rebuildItemsOfSection(section)
-{
-    var itemsOfSection = $$('#layout_'+section + ' .item');
-    items[section] = new Array();
-    for(var i=0; i<itemsOfSection.length; i++) {
-        var item = itemsOfSection[i].id;
-        items[section][item] = true;
-    }
-}
-
-/**
  * Returns in an array the item that has been changed, the section (where it is now)
  * and the position that it use
  */
@@ -230,157 +123,20 @@ function getAddedChanges()
 }
 
 /**
- * Returns in an array the item that has changed, the item where the item is and
- * the new position
- */
-function getSectionChanges(section)
-{
-    var divsOfSection = $$('#layout_' + section+ ' .item');
-
-    var itemPos       = 1;
-    for(var j=0; j<divsOfSection.length; j++) {
-        var item    = divsOfSection[j].id;
-        var origPos = getPositionOfItem(item, section);
-        if (origPos != itemPos) {
-            return new Array(item, section, itemPos);
-        }
-        itemPos++;
-    }
-    return null;
-}
-
-/**
- * Returns in an array the item that has been deleted and the section where it was
- */
-function getDeletedChanges(item_added)
-{
-    for(var i=0; i<sections.length; i++) {
-        var section = sections[i];
-        if (items[section][item_added] == true) {
-            return new Array(item_added, section);
-        }
-    }
-    return null;
-}
-
-/**
- * Checks a section, if no items are found then a msg should be displayed
- * in the section
- */
-function checkDeletedSection(section)
-{
-    var divsOfSection = $$('#layout_'+section + ' .item');
-    if (divsOfSection.length == 0) {
-        var emptyDiv = document.createElement('div');
-        emptyDiv.className = 'layout-message';
-        $('layout_' + section).appendChild(emptyDiv);
-        emptyDiv.innerHTML = noItemsMsg;
-    }
-}
-
-/**
  * Deletes an element
  */
 function deleteElement(itemId, confirmMsg)
 {
-    var itemDiv     = $('item_' + itemId);
-    var parentDiv   = itemDiv.parentNode;
-    var comesFrom   = parentDiv.id.replace('layout_', '');
+    var itemDiv  = $('item_' + itemId),
+        section  = itemDiv.getParent().id.replace('layout_', ''),
+        position = itemDiv.getParent().getElements('div.item[id]').indexOf(itemDiv);
 
     var answer = confirm(confirmMsg);
     if (answer) {
-        Effect.Fade(itemDiv.id, {duration:1});
-        window.setTimeout('\'parentDiv.removeChild(itemDiv);\'', 800);
-
-        items[comesFrom][itemDiv.id] = null;
-        rebuildItemsOfSection(comesFrom);
-        checkDeletedSection(comesFrom);
-        LayoutAjax.callAsync('deleteelement', itemId);
+        itemDiv.fade('out');
+        (function(){this.destroy();}).delay(500, itemDiv);
+        LayoutAjax.callAsync('DeleteElement', itemId, section, position + 1);
     }
-}
-
-/**
- * Moves an item on the section or to another section
- */
-function moveItemOnSection(element, section, serialized)
-{
-    if (actionStep > 2) {
-        return false;
-    }
-
-    var sectionId = element.id.replace('layout_', '');
-
-    if (actionStep == 1) {
-        itemActions['to']   = sectionId;
-    }
-
-    if (actionStep == 2) {
-        itemActions['from'] = sectionId;
-    }
-
-    if (itemMovedOnSameSection(section, serialized) && !movedNewElement) {
-        var sectionChanges = getSectionChanges(sectionId);
-        if (sectionChanges == null) {
-            return false;
-        }
-        actionStep = 4;
-        itemActions['from'] = sectionId;
-        actionStep = 1;
-
-        //$('log').innerHTML += '*)El item ' + sectionChanges[0] + ' fue cambiado a ' + sectionChanges[1] + ' en la posición: '
-        //                   + sectionChanges[2] + ', el serial es: ' + serialized + '<br />';
-        //$('log').innerHTML += 'Serial: ' + serialized + '<br />';
-
-        rebuildItemsOfSection(sectionId);
-        LayoutAjax.callAsync(
-            'moveelement',
-            sectionChanges[0].replace('item_', ''),
-            sectionChanges[1],
-            sectionChanges[2],
-            items[sectionId]
-        );
-    } else {
-        actionStep++;
-        if (actionStep >= 3) {
-            var addedChanges   = getAddedChanges();
-            var deletedChanges = getDeletedChanges(addedChanges[0]);
-
-            // $('log').innerHTML += 'El item ' + addedChanges[0] + ' fue cambiado a ' + addedChanges[1] + ' en la posición: ' 
-            //                    + addedChanges[2] + ', el serial es: ' + serialized + '<br />';
-
-            rebuildItemsOfSection(addedChanges[1]);
-            rebuildItemsOfSection(deletedChanges[1]);
-
-            actionStep = 1;
-            itemActions = new Array();
-
-            movedNewElement = false;
-            checkDeletedSection(deletedChanges[1]);
-
-            LayoutAjax.callAsync(
-                'moveelement',
-                addedChanges[0].replace('item_', ''),
-                addedChanges[1],
-                addedChanges[2],
-                items[addedChanges[1]]
-            );
-        }
-    }
-}
-
-/**
- * Creates a random string (for ids)
- */
-function randomString()
-{
-    var chars  = '0123456789abcdefghijklmnopqrstuvwxyz';
-    var length = 8;
-    var str    = '';
-    for (var i=0; i<length; i++) {
-        var num = Math.floor(Math.random() * chars.length);
-        str += chars.substring(num, num+1);
-    }
-    return str;
 }
 
 /**
@@ -388,40 +144,45 @@ function randomString()
  */
 function initUI()
 {
+    var sections_selector = '';
     for(var i=0; i<sections.length; i++) {
-        var layoutSection = 'layout_' + sections[i];
-        var layoutDrop    = 'layout_' + sections[i] + '_drop';
-
-        objects['sort'][layoutSection] = Sortable.create(layoutSection,
-        {
-            tag:'div',
-            only: 'item',
-            dropOnEmpty: true,
-            revert: true,
-            constraint: true,
-            onUpdate: function(element) {
-                moveItemOnSection(element, layoutSection, Sortable.serialize(layoutSection)); 
-            }
-        }
-        );
-
-        objects['drop'][layoutDrop] = Droppables.add(layoutDrop, {
-            accept: 'item',
-            hoverclass: 'layout-section-hover',
-            overlap: 'horizontal',
-            onDrop: function(draggableElement, droppableElement) {
-                moveElement(draggableElement, droppableElement);
-            }
-        });
+        sections_selector += '#layout_' + sections[i] + ', ';
     }
+
+    new Sortables(sections_selector, {
+        clone: true,
+        revert: true,
+        opacity: 0.7,
+        onStart: function(el) {
+            el.setProperties({
+                old_section  : el.getParent().id.replace('layout_', ''),
+                old_position : el.getParent().getElements('div.item[id]').indexOf(el),
+            });
+        },
+
+        onComplete: function(el) {
+            var new_section  = el.getParent().id.replace('layout_', ''),
+                new_position = el.getParent().getElements('div.item[id]').indexOf(el);
+
+            if (el.getProperty('old_section') &&
+                (new_section != el.getProperty('old_section') ||
+                 new_position != el.getProperty('old_position'))
+            ) {
+                LayoutAjax.callAsync(
+                    'MoveElement',
+                    el.id.replace('item_', ''),         /* item id */
+                    el.getProperty('old_section'),      /* old section name */
+                    el.getProperty('old_position') + 1, /* position in old section */
+                    new_section,                        /* new section name */
+                    new_position + 1                    /* position in new section */
+                );
+            }
+            el.removeProperties('old_section', 'old_position');
+        },
+    });
 }
 
 function changeTheme()
-{
-    $('controls').submit();
-}
-
-function changeLayoutMode()
 {
     $('controls').submit();
 }
@@ -579,7 +340,6 @@ var objects = new Array();
 objects['sort'] = new Array();
 objects['drop'] = new Array();
 
-var movedNewElement = false;
 var newEmptyRegion  = '';
 
 //selectd layout mode
