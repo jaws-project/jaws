@@ -153,7 +153,7 @@ function initUI()
         onStart: function(el) {
             el.setProperties({
                 old_section  : el.getParent().id.replace('layout_', ''),
-                old_position : el.getParent().getElements('div.item[id]').indexOf(el),
+                old_position : el.getParent().getElements('div.item[id]').indexOf(el)
             });
         },
 
@@ -175,7 +175,7 @@ function initUI()
                 );
             }
             el.removeProperties('old_section', 'old_position');
-        },
+        }
     });
 }
 
