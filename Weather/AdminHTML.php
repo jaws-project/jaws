@@ -117,9 +117,9 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
         $tpl->SetVariable('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('default_latitude',
-                          $GLOBALS['app']->Registry->Get('/gadgets/Weather/latitude'));
+                          $this->GetRegistry('latitude'));
         $tpl->SetVariable('default_longitude',
-                          $GLOBALS['app']->Registry->Get('/gadgets/Weather/longitude'));
+                          $this->GetRegistry('longitude'));
 
         $tpl->ParseBlock('Weather');
         return $tpl->Get();
@@ -258,7 +258,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $unit =& Piwi::CreateWidget('Combo', 'unit');
         $unit->AddOption(_t('WEATHER_UNIT_METRIC'), 'metric');
         $unit->AddOption(_t('WEATHER_UNIT_IMPERIAL'), 'imperial');
-        $unit->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Weather/unit'));
+        $unit->SetDefault($this->GetRegistry('unit'));
         $tpl->SetVariable('lbl_unit', _t('WEATHER_UNIT'));
         $tpl->SetVariable('unit', $unit->Get());
 
@@ -270,7 +270,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   6),  21600);
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   8),  28800);
         $period->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
-        $period->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Weather/update_period'));
+        $period->SetDefault($this->GetRegistry('update_period'));
         $tpl->SetVariable('lbl_update_period', _t('WEATHER_UPDATE_PERIOD'));
         $tpl->SetVariable('update_period', $period->Get());
 
@@ -281,13 +281,13 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
         $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
-        $dFormat->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Weather/date_format'));
+        $dFormat->SetDefault($this->GetRegistry('date_format'));
         $tpl->SetVariable('lbl_date_format', _t('WEATHER_DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
 
         $apikey =& Piwi::CreateWidget('Entry',
                                       'api_key',
-                                      $GLOBALS['app']->Registry->Get('/gadgets/Weather/api_key'));
+                                      $this->GetRegistry('api_key'));
         $apikey->setStyle('width:200px; direction: ltr;');
         $tpl->SetVariable('lbl_api_key', _t('WEATHER_API_KEY'));
         $tpl->SetVariable('lbl_api_key_desc', _t('WEATHER_API_KEY_DESC'));

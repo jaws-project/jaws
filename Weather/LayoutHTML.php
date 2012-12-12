@@ -70,12 +70,12 @@ class WeatherLayoutHTML
         }
 
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
-        $metric = $GLOBALS['app']->Registry->Get('/gadgets/Weather/unit') == 'metric';
+        $metric = $this->GetRegistry('unit') == 'metric';
         $wService = new Underground_Weather(
-                                $GLOBALS['app']->Registry->Get('/gadgets/Weather/api_key'),
+                                $this->GetRegistry('api_key'),
                                 $metric,
                                 JAWS_DATA . 'weather',
-                                $GLOBALS['app']->Registry->Get('/gadgets/Weather/update_period'),
+                                $this->GetRegistry('update_period'),
                                 $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
@@ -103,7 +103,7 @@ class WeatherLayoutHTML
                 $objDate = $GLOBALS['app']->loadDate();
                 $tpl->SetBlock('weather/forecast');
                 $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
-                $dFormat = $GLOBALS['app']->Registry->Get('/gadgets/Weather/date_format');
+                $dFormat = $this->GetRegistry('date_format');
                 foreach ($rWeather['forecast'] as $dayIndex => $fWeather) {
                     $tpl->SetBlock('weather/forecast/item');
                     //86400 = 3600 * 24 
@@ -157,10 +157,10 @@ class WeatherLayoutHTML
             }
 
             require_once JAWS_PATH . 'gadgets/Weather/include/Google.php';
-            $metric = $GLOBALS['app']->Registry->Get('/gadgets/Weather/unit') == 'metric';
+            $metric = $this->GetRegistry('unit') == 'metric';
             $wService = new Google_Weather($metric,
                                            JAWS_DATA . 'weather',
-                                           $GLOBALS['app']->Registry->Get('/gadgets/Weather/update_period'),
+                                           $this->GetRegistry('update_period'),
                                            $options);
             foreach ($regions as $region) {
                 $rWeather = $wService->getWeather($region['latitude'],
