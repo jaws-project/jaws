@@ -50,7 +50,7 @@ class ChatboxModel extends Jaws_Gadget_Model
      */
     function NewEntry($name, $message, $email = '', $url = '', $ip = '', $set_cookie = true)
     {
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
 
         ///FIXME: Lets get a better ip detection ;)
         if (empty($ip)) {
@@ -63,20 +63,15 @@ class ChatboxModel extends Jaws_Gadget_Model
             $message = $GLOBALS['app']->UTF8->substr($message, 0, $max_strlen - 3).'...';
         }
 
-        $api = new Jaws_Comment('Chatbox');
         $status = $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Chatbox', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
-        $res = $api->NewComment(0,
-                                strip_tags($name),
-                                strip_tags($email),
-                                strip_tags($url),
-                                '',
-                                strip_tags($message),
-                                $ip, $permalink, 0, $status);
-
+        $res = $cModel->NewComment(
+            $this->_Gadget, 0, $name, $email,
+            $url, '', $message, $ip, $permalink, 0, $status
+        );
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error($res->getMessage(), _t('CHATBOX_NAME'));
         }
@@ -102,9 +97,8 @@ class ChatboxModel extends Jaws_Gadget_Model
      */
     function GetEntries($limit = 10)
     {
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
-        $api = new Jaws_Comment('Chatbox');
-        $entries = $api->GetRecentComments($limit, true, false, false, true);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $entries = $cModel->GetRecentComments($this->_Gadget, $limit, true, false, false, true);
         return $entries;
     }
 

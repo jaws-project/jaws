@@ -31,4 +31,14 @@ class ChatboxInfo extends Jaws_Gadget
         'UpdateProperties',
     );
 
+    /**
+     * Required gadgets
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_Requires = array(
+        'Comments',
+    );
+
 }

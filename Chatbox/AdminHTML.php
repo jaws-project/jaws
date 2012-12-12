@@ -31,11 +31,8 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
      */
     function CommentsDatagrid()
     {
-        require_once JAWS_PATH . 'include/Jaws/Widgets/CommentUI.php';
-
-        $commentUI = new Jaws_Widgets_CommentUI($this->_Name);
-        $commentUI->SetEditAction(BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}');
-        return $commentUI->Get();
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHtml->Get($this->_Gadget);
     }
 
     /**
@@ -50,11 +47,15 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
      */
     function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        require_once JAWS_PATH . 'include/Jaws/Widgets/CommentUI.php';
-
-        $commentUI = new Jaws_Widgets_CommentUI($this->_Name);
-        $commentUI->SetEditAction(BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}');
-        return $commentUI->GetDataAsArray($filter, $search, $status, $limit);
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHtml->GetDataAsArray(
+            $this->_Gadget,
+            BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}',
+            $filter,
+            $search,
+            $status,
+            $limit
+        );
     }
 
     /**
@@ -180,12 +181,11 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
      */
     function EditEntry()
     {
-        $model = $GLOBALS['app']->LoadGadget('Chatbox', 'AdminModel');
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
-        $comment = $api->GetComment($id);
+
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comment = $cModel->GetComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($comment)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox&action=ManageComments');
         }

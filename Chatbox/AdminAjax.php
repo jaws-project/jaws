@@ -38,8 +38,7 @@ class ChatboxAdminAjax extends Jaws_Gadget_Ajax
      */
     function SizeOfCommentsSearch($filter, $search, $status)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment('Chatbox');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $filterMode = null;
         switch($filter) {
         case 'name':
@@ -67,7 +66,8 @@ class ChatboxAdminAjax extends Jaws_Gadget_Ajax
             $filterMode = null;
             break;
         }
-        return $api->HowManyFilteredComments($filterMode, $search, $status, false);
+
+        return $cModel->HowManyFilteredComments($this->_Gadget, $filterMode, $search, $status, false);
     }
 
     /**

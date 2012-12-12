@@ -8,14 +8,14 @@
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$admin_actions = array();
+$actions = array();
 
-$admin_actions['EditEntry'] = array(
+$actions['EditEntry'] = array(
     'normal' => true,
 );
-$admin_actions['SaveEditEntry'] = array(
+$actions['SaveEditEntry'] = array(
     'normal' => true,
 );
-$admin_actions['DeleteComment'] = array(
+$actions['DeleteComment'] = array(
     'normal' => true,
 );

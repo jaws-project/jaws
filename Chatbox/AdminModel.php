@@ -92,9 +92,8 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
             return true;
         }
 
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment('Chatbox');
-        $api->MarkAs($ids, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel->MarkAs($this->_Gadget, $ids, $status);
         $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
     }
@@ -108,16 +107,14 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
      */
     function DeleteComment($id)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment('Chatbox');
-
-        $comment = $api->GetComment($id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $comment = $cModel->GetComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($comment)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
         }
 
-        $res = $api->DeleteComment($id);
+        $res = $cModel->DeleteComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
@@ -164,11 +161,8 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
      */
     function UpdateComment($id, $name, $url, $email, $comments)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-
-        $api = new Jaws_Comment('Chatbox');
-
-        $prev = $api->GetComment($id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $prev = $cModel->GetComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($prev)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), _t('CHATBOX_NAME'));
@@ -185,15 +179,22 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         $params['permalink'] = $permalink = $GLOBALS['app']->GetSiteURL();
         $params['status']    = $prev['status'];
 
-        $res = $api->UpdateComment($params['id'],        $params['name'],
-                                   $params['email'],     $params['url'],
-                                   $params['title'],     $params['comments'],
-                                   $params['permalink'], $params['status']);
-
+        $res = $cModel->UpdateComment(
+            $this->_Gadget,
+            $params['id'],
+            $params['name'],
+            $params['email'],
+            $params['url'],
+            $params['title'],
+            $params['comments'],
+            $params['permalink'],
+            $params['status']
+        );
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), _t('CHATBOX_NAME'));
         }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_COMMENT_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
