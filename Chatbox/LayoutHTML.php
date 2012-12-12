@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ChatboxLayoutHTML extends ChatboxHTML
+class ChatboxLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays the chatbox
