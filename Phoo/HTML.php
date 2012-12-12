@@ -499,8 +499,8 @@ class PhooHTML extends Jaws_Gadget_HTML
                 $email = $c['email'];
 
                 $GLOBALS['app']->Registry->LoadFile('Policy');
-                $_obfuscator = $GLOBALS['app']->Registry->Get('/gadgets/Policy/obfuscator');
-                if (($_obfuscator != 'DISABLED') && (!empty($email))){
+                $_obfuscator = $this->GetRegistry('obfuscator', 'Policy');
+                if (($_obfuscator != 'DISABLED') && (!empty($email))) {
                     require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';
                     $obf = new $_obfuscator();
                     $tpl->SetVariable('email', $obf->Get($email, _t('GLOBAL_EMAIL')));

@@ -111,7 +111,7 @@ class CommentsModel extends Jaws_Gadget_Model
 
         $message_key = md5($title.$message);
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/allow_duplicate') == 'no') {
+        if ($this->GetRegistry('allow_duplicate', 'Policy') == 'no') {
             if ($this->IsMessageDuplicated($message_key)) {
                 return new Jaws_Error(_t('GLOBAL_SPAM_POSSIBLE_DUPLICATE_MESSAGE'), _t('COMMENTS_NAME'));
             }
@@ -123,7 +123,7 @@ class CommentsModel extends Jaws_Gadget_Model
         }
 
         // Comment Status...
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/filter') != 'DISABLED') {
+        if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
             require_once JAWS_PATH . 'gadgets/Policy/SpamFilter.php';
             $filter = new SpamFilter();
             if ($filter->IsSpam($permalink, $gadget, $name, $email, $url, $message)) {

@@ -104,7 +104,7 @@ class CommentsAdminModel extends CommentsModel
         }
 
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/filter') != 'DISABLED') {
+        if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
             require_once JAWS_PATH . 'gadgets/Policy/SpamFilter.php';
             $filter = new SpamFilter();
             $origComment = $this->GetComment($gadget, $id);
@@ -235,7 +235,7 @@ class CommentsAdminModel extends CommentsModel
         // FIXME: Update replies counter...
         if ($status == COMMENT_STATUS_SPAM) {
             $GLOBALS['app']->Registry->LoadFile('Policy');
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/filter') != 'DISABLED') {
+            if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
                 // Submit spam...
                 $sql     = "SELECT
                               [id],
