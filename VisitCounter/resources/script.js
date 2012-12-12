@@ -44,7 +44,7 @@ var VisitCounterCallback = {
  */
 function resetCounter()
 {
-    visitcounter.resetcounter();    
+    VisitCounterAjax.callAsync('resetcounter');    
 }
 
 /**
@@ -52,7 +52,7 @@ function resetCounter()
  */
 function cleanEntries()
 {
-    visitcounter.cleanentries();    
+    VisitCounterAjax.callAsync('cleanentries');    
 }
 
 /**
@@ -81,10 +81,7 @@ function updateProperties(form)
     var mode       = form.elements['mode'].value;
     var customText = form.elements['custom_text'].value;
     
-    visitcounter.updateproperties(online, today, total, custom, numDays, type, mode, customText);
+    VisitCounterAjax.callAsync('updateproperties', online, today, total, custom, numDays, type, mode, customText);
 }
 
-var visitcounter = new visitcounteradminajax(VisitCounterCallback);
-visitcounter.serverErrorFunc = Jaws_Ajax_ServerError;
-visitcounter.onInit = showWorkingNotification;
-visitcounter.onComplete = hideWorkingNotification;
+var VisitCounterAjax = new JawsAjax('VisitCounter', VisitCounterCallback);
