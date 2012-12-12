@@ -94,7 +94,7 @@ class VisitCounterModel extends Jaws_Gadget_Model
      */
     function GetCookiePeriod()
     {
-        $rs = $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/period');
+        $rs = $this->GetRegistry('period');
         if (Jaws_Error::IsError($rs)) {
             $rs = 5;
         }
@@ -110,7 +110,7 @@ class VisitCounterModel extends Jaws_Gadget_Model
     */
     function GetOnlineVisitorsTimeout()
     {
-        $rs = $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/timeout');
+        $rs = $this->GetRegistry('timeout');
         if (!$rs || Jaws_Error::IsError($rs)) {
             $rs = 600;
         }
@@ -126,7 +126,7 @@ class VisitCounterModel extends Jaws_Gadget_Model
      */
     function GetStartDate()
     {
-        $rs = $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/start');
+        $rs = $this->GetRegistry('start');
         if (!$rs || Jaws_Error::IsError($rs)) {
             $rs = date('Y-m-d H:i:s');
         }
@@ -235,7 +235,7 @@ class VisitCounterModel extends Jaws_Gadget_Model
      */
     function GetVisitType()
     {
-        $type = $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/type');
+        $type = $this->GetRegistry('type');
         if (!$type || Jaws_Error::IsError($type)) {
             return 'unique';
         }

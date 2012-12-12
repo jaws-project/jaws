@@ -87,7 +87,7 @@ class VisitCounterAdminModel extends VisitCounterModel
             // Registry keys.
             $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/visit_counters',  'online,today,total');
             $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/custom_text', 
-                                              $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/custom'));
+                                              $this->GetRegistry('custom'));
             $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/online');
             $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/today');
             $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/total');
@@ -96,7 +96,7 @@ class VisitCounterAdminModel extends VisitCounterModel
 
         if (version_compare($old, '0.8.1', '<')) {
             // fix using Y-m-d G:i:s instead of Y-m-d H:i:s in version 0.6.x
-            $startDate = $GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/start');
+            $startDate = $this->GetRegistry('start');
             if (strlen($startDate) == 18) {
                 $startDate = substr_replace($startDate, '0', 11, 0);
                 $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/start', $startDate);

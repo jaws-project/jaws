@@ -27,7 +27,7 @@ class VisitCounterLayoutHTML
         $tpl->SetVariable('title', _t('VISITCOUNTER_ACTION_TITLE'));
 
         $model    = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model');
-        $viewMode = strtolower($GLOBALS['app']->Registry->Get('/gadgets/VisitCounter/mode'));
+        $viewMode = strtolower($this->GetRegistry('mode'));
         $theme    = $GLOBALS['app']->GetTheme();
         if (is_dir($theme['path'] . 'VisitCounter/images/')) {
             $counter_image = $theme['url'] . 'VisitCounter/images/';
@@ -70,7 +70,7 @@ class VisitCounterLayoutHTML
         }
 
         if (in_array('custom', $visit_counters)) {
-            $custom = stripslashes($GLOBALS['app']->Registry->get('/gadgets/VisitCounter/custom_text'));
+            $custom = stripslashes($this->GetRegistry('custom_text'));
             if (trim($custom) == '') {
                 $res = "$total_count - $startdate";
             } else {
@@ -108,7 +108,7 @@ class VisitCounterLayoutHTML
      */
     function Display()
     {
-        $visit_counters = $GLOBALS['app']->Registry->get('/gadgets/VisitCounter/visit_counters');
+        $visit_counters = $this->GetRegistry('visit_counters');
         return $this->GetVisitorsFormat(explode(',', $visit_counters));
     }
 

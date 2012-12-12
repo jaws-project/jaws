@@ -133,7 +133,7 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
             $fieldset_config->SetDirection('vertical');
             $fieldset_config->SetStyle('white-space: nowrap; width: 228px;');
 
-            $visit_counters = explode(',', $GLOBALS['app']->Registry->get('/gadgets/VisitCounter/visit_counters'));
+            $visit_counters = explode(',', $this->GetRegistry('visit_counters'));
             $check_counters =& Piwi::CreateWidget('CheckButtons', 'c_kind', 'vertical');
             $check_counters->SetTitle(_t('VISITCOUNTER_DISPLAY_COUNTER'));
             $check_counters->AddOption(_t('VISITCOUNTER_ONLINE_VISITORS'), '0', null, in_array('online', $visit_counters));
@@ -159,14 +159,14 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
 
             $mode =& Piwi::CreateWidget('Combo', 'mode');
             $mode->SetTitle(_t('VISITCOUNTER_MODE'));
-            $mode_reg = $GLOBALS['app']->Registry->get('/gadgets/VisitCounter/mode');
+            $mode_reg = $this->GetRegistry('mode');
             $mode->AddOption(_t('VISITCOUNTER_MODE_TEXT'), 'text');
             $mode->AddOption(_t('VISITCOUNTER_MODE_IMAGE'), 'image');
             $mode->SetDefault($mode_reg);
             $mode->SetId('custom');
             $fieldset_config->Add($mode);
 
-            $custom_reg = stripslashes($GLOBALS['app']->Registry->get('/gadgets/VisitCounter/custom_text'));
+            $custom_reg = stripslashes($this->GetRegistry('custom_text'));
             $customText =& Piwi::CreateWidget('Entry', 'custom_text');
             $customText->SetTitle(_t('VISITCOUNTER_CUSTOM_TEXT'));
             $customText->SetValue($custom_reg);
