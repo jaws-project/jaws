@@ -62,7 +62,7 @@ class Blog_Actions_Categories extends BlogHTML
             $tpl->SetVariable('title', $name);
 
             $total  = $model->GetCategoryNumberOfPages($catInfo['id']);
-            $limit  = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+            $limit  = $this->GetRegistry('last_entries_limit');
             $params = array('id'  => $cat);
             $tpl->SetVariable('navigation',
                               $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params));

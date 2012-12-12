@@ -66,7 +66,7 @@ class Blog_Actions_Post extends BlogHTML
             $res = $model->ViewEntry($entry['id']);
             $entry['clicks']++;
 
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/pingback') == 'true') {
+            if ($this->GetRegistry('pingback') == 'true') {
                 require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
                 $pback->showHeaders($this->GetURLFor('Pingback', null, false, 'site_url'));
@@ -96,7 +96,7 @@ class Blog_Actions_Post extends BlogHTML
             }
 
             $allow_comments = $entry['allow_comments'] === true &&
-                              $GLOBALS['app']->Registry->Get('/gadgets/Blog/allow_comments') == 'true' &&
+                              $this->GetRegistry('allow_comments') == 'true' &&
                               $allow_comments_config;
 
             $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');

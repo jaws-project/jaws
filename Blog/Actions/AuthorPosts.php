@@ -52,7 +52,7 @@ class Blog_Actions_AuthorPosts extends BlogHTML
             $tpl->SetVariable('title', $title);
 
             $total  = $bModel->GetAuthorNumberOfPages($user);
-            $limit  = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+            $limit  = $this->GetRegistry('last_entries_limit');
             $params = array('id'  => $user);
             $tpl->SetVariable('navigation',
                               $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewAuthorPage', $params));

@@ -50,7 +50,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                 $catChecks->AddOption($a['name'], $a['id']);
             }
         }
-        $catDefault = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/Blog/default_category'));
+        $catDefault = explode(',', $this->GetRegistry('default_category'));
         $catChecks->SetDefault($catDefault);
         $catChecks->SetColumns(3);
 
@@ -75,7 +75,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $tpl->SetVariable('editor', $editor->Get());
 
         // Allow Comments
-        $allow = $GLOBALS['app']->Registry->Get('/gadgets/Blog/allow_comments') == 'true';
+        $allow = $this->GetRegistry('allow_comments') == 'true';
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
         $comments->AddOption(_t('BLOG_ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
@@ -153,7 +153,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+        if ($this->GetRegistry('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', '');
@@ -199,7 +199,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                                $post['published'], $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+            if ($this->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
                 $link = $this->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
                 $title = $post['title'];
@@ -406,7 +406,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         // Trackback
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+        if ($this->GetRegistry('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', $entry['trackbacks']);
@@ -464,7 +464,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                             $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+            if ($this->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
                 $link = $this->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
                 $title = $post['title'];

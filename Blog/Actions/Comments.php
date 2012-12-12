@@ -408,7 +408,7 @@ class Blog_Actions_Comments extends BlogHTML
 
         // Check if comments are allowed.
         if ($entry['allow_comments'] !== true ||
-            $GLOBALS['app']->Registry->Get('/gadgets/Blog/allow_comments') != 'true' ||
+            $this->GetRegistry('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
             Jaws_Header::Location($url, true);

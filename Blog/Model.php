@@ -492,7 +492,7 @@ class BlogModel extends Jaws_Gadget_Model
                 ORDER BY [[blog]].[publishtime] DESC ';
 
             if (is_null($extralimit)) {
-                    $extralimit =  $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+                    $extralimit =  $this->GetRegistry('last_entries_limit');
             }
             $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
             if (Jaws_Error::IsError($result)) {
@@ -508,7 +508,7 @@ class BlogModel extends Jaws_Gadget_Model
             $sql .= " ORDER BY [[blog]].[publishtime] DESC ";
 
             if (is_null($extralimit)) {
-                    $extralimit =  $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+                    $extralimit =  $this->GetRegistry('last_entries_limit');
             }
             $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
             if (Jaws_Error::IsError($result)) {
@@ -566,7 +566,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+        $limit = $this->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
 
         $params = array();
@@ -636,7 +636,7 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetRecentComments()
     {
-        $recentcommentsLimit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_recentcomments_limit');
+        $recentcommentsLimit = $this->GetRegistry('last_recentcomments_limit');
 
         require_once JAWS_PATH.'include/Jaws/Comment.php';
         $api = new Jaws_Comment($this->_Name);
@@ -849,7 +849,7 @@ class BlogModel extends Jaws_Gadget_Model
 
         if ($id) {
             require_once JAWS_PATH.'include/Jaws/Comment.php';
-            $status = $GLOBALS['app']->Registry->Get('/gadgets/Blog/comment_status');
+            $status = $this->GetRegistry('comment_status');
             if ($GLOBALS['app']->Session->GetPermission('Blog', 'ManageComments')) {
                 $status = COMMENT_STATUS_APPROVED;
             }
@@ -1026,7 +1026,7 @@ class BlogModel extends Jaws_Gadget_Model
         $sql.= '[published] = {published} AND [[blog]].[publishtime] <= {now}
                 ORDER BY [[blog]].[publishtime] DESC';
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+        $limit = $this->GetRegistry('last_entries_limit');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_ENTRIES'), _t('BLOG_NAME'));
@@ -1088,7 +1088,7 @@ class BlogModel extends Jaws_Gadget_Model
                 [[blog]].[publishtime] <= {now}
             ORDER BY [[blog]].[publishtime] DESC';
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/xml_limit');
+        $limit = $this->GetRegistry('xml_limit');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
@@ -1667,7 +1667,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+        $limit = $this->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
         $result = $this->GetEntries($category, null, null, $limit, $offset);
         if (Jaws_Error::IsError($result)) {
@@ -1926,7 +1926,7 @@ class BlogModel extends Jaws_Gadget_Model
         $params           = array();
         $params['id']     = $id;
         $params['status'] = 'approved';
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+        if ($this->GetRegistry('trackback') == 'true') {
             $sql = '
                 SELECT
                     [id],
@@ -2110,9 +2110,9 @@ class BlogModel extends Jaws_Gadget_Model
         $params['excerpt']   = strip_tags($excerpt);
         $params['blog_name'] = strip_tags($blog_name);
         $params['ip']        = $ip;
-        $params['status']    = $GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback_status');
+        $params['status']    = $this->GetRegistry('trackback_status');
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Blog/trackback') == 'true') {
+        if ($this->GetRegistry('trackback') == 'true') {
             if (!$this->DoesEntryExists($parent_id)) {
                 return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
             }
@@ -2202,7 +2202,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Blog/last_entries_limit');
+        $limit = $this->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
 
         $res = $this->GetEntries($cat, $condition, $extraparams, $limit, $offset);
@@ -2384,7 +2384,7 @@ class BlogModel extends Jaws_Gadget_Model
         $ip    = $_SERVER['REMOTE_ADDR'];
 
         $api = new Jaws_Comment($this->_Name);
-        $status = $GLOBALS['app']->Registry->Get('/gadgets/Blog/comment_status');
+        $status = $this->GetRegistry('comment_status');
 
         $res = $api->NewComment($postID,
                                 $name, $email, $sourceURI, $title, $content,
@@ -2528,7 +2528,7 @@ class BlogModel extends Jaws_Gadget_Model
             WHERE [published] = {published} AND [[blog]].[publishtime] <= {now} 
             ORDER BY [[blog]].[clicks] DESC ';
 
-        $limit_count = $GLOBALS['app']->Registry->Get('/gadgets/Blog/popular_limit');
+        $limit_count = $this->GetRegistry('popular_limit');
         $result = $GLOBALS['db']->setLimit((int) $limit_count);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('BLOG_NAME'));

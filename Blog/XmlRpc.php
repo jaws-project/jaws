@@ -218,13 +218,13 @@ function metaWeblog_newPost($params)
     if (!empty($data['mt_allow_comments'])) {
         $allow_c = $data['mt_allow_comments'];
     } else {
-        $allow_c = $GLOBALS['app']->Registry->Get('/gadgets/Blog/allow_comments');
+        $allow_c = $this->GetRegistry('allow_comments');
         $allow_c = $allow_c == 'true' ? 1 : 0;
     }
 
     if (empty($categories)) {
         $GLOBALS['app']->Registry->LoadFile('Blog');
-        $categories = array($GLOBALS['app']->Registry->Get('/gadgets/Blog/default_category'));
+        $categories = array($this->GetRegistry('default_category'));
     }
     $publish  = getScalarValue($params, 4);
 
@@ -279,7 +279,7 @@ function metaWeblog_editPost($params)
     }
 
     // Allow Comments ?
-    $allow_c = $GLOBALS['app']->Registry->Get('/gadgets/Blog/allow_comments');
+    $allow_c = $this->GetRegistry('allow_comments');
     $allow_c = $allow_c == 'true' ? 1 : 0;
 
     $publish = getScalarValue($params, 4);
