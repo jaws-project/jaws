@@ -34,25 +34,25 @@ class PreferencesAdminHTML extends Jaws_Gadget_HTML
         $fieldset->SetDirection('vertical');
 
         $checks =& Piwi::CreateWidget('CheckButtons', 'display','vertical');
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_theme') == 'true');
+        $checked = ($this->GetRegistry('display_theme') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_THEME'), 'theme', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_editor') == 'true');
+        $checked = ($this->GetRegistry('display_editor') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_EDITOR'), 'editor', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_language') == 'true');
+        $checked = ($this->GetRegistry('display_language') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_LANGUAGE'), 'language', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_calendar_type') == 'true');
+        $checked = ($this->GetRegistry('display_calendar_type') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_CALENDAR_TYPE'), 'calendar_type', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_calendar_language') == 'true');
+        $checked = ($this->GetRegistry('display_calendar_language') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_CALENDAR_LANGUAGE'), 'calendar_language', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_date_format') == 'true');
+        $checked = ($this->GetRegistry('display_date_format') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_DATE_FORMAT'), 'date_format', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_timezone') == 'true');
+        $checked = ($this->GetRegistry('display_timezone') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_TIMEZONE'), 'timezone', null, $checked);
 
         $checked = ($GLOBALS['app']->Registry->Get('/config/cookie_precedence') == 'true');

@@ -32,13 +32,13 @@ class PreferencesLayoutHTML
             $cookies = array();
         }
 
-        $displayTheme            = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_theme') == 'true');
-        $displayeEditor          = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_editor') == 'true');
-        $displayLanguage         = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_language') == 'true');
-        $displayCalendarType     = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_calendar_type') == 'true');
-        $displayCalendarLanguage = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_calendar_language') == 'true');
-        $displayDateFormat       = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_date_format') == 'true');
-        $displayTimeZone         = ($GLOBALS['app']->Registry->Get('/gadgets/Preferences/display_timezone') == 'true');
+        $displayTheme            = ($this->GetRegistry('display_theme') == 'true');
+        $displayeEditor          = ($this->GetRegistry('display_editor') == 'true');
+        $displayLanguage         = ($this->GetRegistry('display_language') == 'true');
+        $displayCalendarType     = ($this->GetRegistry('display_calendar_type') == 'true');
+        $displayCalendarLanguage = ($this->GetRegistry('display_calendar_language') == 'true');
+        $displayDateFormat       = ($this->GetRegistry('display_date_format') == 'true');
+        $displayTimeZone         = ($this->GetRegistry('display_timezone') == 'true');
 
         if ($displayTheme || $displayeEditor || $displayLanguage || $displayCalendarType ||
             $displayCalendarLanguage || $displayDateFormat || $displayTimeZone) {
