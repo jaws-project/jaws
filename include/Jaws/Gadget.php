@@ -707,6 +707,64 @@ class Jaws_Gadget
     }
 
     /**
+     * Get registry key value
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  mixed   Returns key value if exists otherwise null
+     */
+    function GetRegistry($name, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        return $GLOBALS['app']->Registry->Get("/gadgets/$gadget/$name");
+    }
+
+    /**
+     * Set registry key value
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $value  Key value
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  bool    Returns True or False
+     */
+    function SetRegistry($name, $value, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        return $GLOBALS['app']->Registry->Set("/gadgets/$gadget/$name", $value);
+    }
+
+    /**
+     * Add registry key value
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $value  Key value
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  bool    Returns True or False
+     */
+    function AddRegistry($name, $value, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        return $GLOBALS['app']->Registry->NewKey("/gadgets/$gadget/$name", $value);
+    }
+
+    /**
+     * Delete registry key
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  bool    Returns True or False
+     */
+    function DelRegistry($name, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        return $GLOBALS['app']->Registry->DeleteKey("/gadgets/$gadget/$name");
+    }
+
+    /**
      * Parses the input text
      *
      * @access  public
