@@ -46,11 +46,11 @@ class QuotesLayoutHTML
     {
         $group['id']          = 0;
         $group['title']       = _t('QUOTES_GROUPS_RECENT');
-        $group['view_mode']   = $GLOBALS['app']->Registry->Get('/gadgets/Quotes/last_entries_view_mode');
-        $group['view_type']   = $GLOBALS['app']->Registry->Get('/gadgets/Quotes/last_entries_view_type');
-        $group['show_title']  = $GLOBALS['app']->Registry->Get('/gadgets/Quotes/last_entries_show_title') == 'true';
-        $group['limit_count'] = $GLOBALS['app']->Registry->Get('/gadgets/Quotes/last_entries_limit');
-        $group['random']      = $GLOBALS['app']->Registry->Get('/gadgets/Quotes/last_entries_view_random') == 'true';
+        $group['view_mode']   = $this->GetRegistry('last_entries_view_mode');
+        $group['view_type']   = $this->GetRegistry('last_entries_view_type');
+        $group['show_title']  = $this->GetRegistry('last_entries_show_title') == 'true';
+        $group['limit_count'] = $this->GetRegistry('last_entries_limit');
+        $group['random']      = $this->GetRegistry('last_entries_view_random') == 'true';
 
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
         $quotes = $model->GetRecentQuotes($group['limit_count'], $group['random']);
