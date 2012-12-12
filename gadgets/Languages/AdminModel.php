@@ -84,7 +84,7 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
             if (preg_match("/^([a-z]{2})$|^([a-z]{2}[-][a-z]{2})$/", $lang_code)) {
                 $lang_name = substr($lang_str, strpos($lang_str, ';')+1);
                 if (!empty($lang_name) || trim($lang_name) == $lang_name) {
-                    $use_data_lang = $GLOBALS['app']->Registry->Get('/gadgets/Languages/use_data_lang') == 'true';
+                    $use_data_lang = $this->GetRegistry('use_data_lang') == 'true';
                     $jaws_lang_dir = ($use_data_lang? JAWS_DATA : JAWS_PATH) . "languages";
 
                     $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
@@ -289,7 +289,7 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
                 $orig_file = JAWS_PATH . "languages/$langTo/$module.php";
         }
 
-        $update_default_lang = $GLOBALS['app']->Registry->Get('/gadgets/Languages/update_default_lang') == 'true';
+        $update_default_lang = $this->GetRegistry('update_default_lang') == 'true';
         if (file_exists($orig_file)) {
             require_once $orig_file;
         }
