@@ -292,7 +292,7 @@ class FileBrowserAdminModel extends FileBrowserModel
 
         require_once PEAR_PATH. 'File/Util.php';
         $realpath = File_Util::realpath($dir);
-        $blackList = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/FileBrowser/black_list'));
+        $blackList = explode(',', $this->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         if (!File_Util::pathInRoot($realpath, $this->GetFileBrowserRootDir()) ||
@@ -327,7 +327,7 @@ class FileBrowserAdminModel extends FileBrowserModel
 
         $file = $path . ((empty($path)? '': DIRECTORY_SEPARATOR)) . $filename;
         $filename = $this->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
-        $blackList = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/FileBrowser/black_list'));
+        $blackList = explode(',', $this->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         require_once PEAR_PATH. 'File/Util.php';
@@ -384,7 +384,7 @@ class FileBrowserAdminModel extends FileBrowserModel
         require_once PEAR_PATH. 'File/Util.php';
         $oldfile = File_Util::realpath($oldfile);
         $newfile = File_Util::realpath($newfile);
-        $blackList = explode(',', $GLOBALS['app']->Registry->Get('/gadgets/FileBrowser/black_list'));
+        $blackList = explode(',', $this->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         if (!File_Util::pathInRoot($oldfile, $this->GetFileBrowserRootDir()) ||

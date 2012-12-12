@@ -24,7 +24,7 @@ class FileBrowserLayoutHTML
             return false;
         }
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/FileBrowser/frontend_avail') != 'true') {
+        if ($this->GetRegistry('frontend_avail') != 'true') {
             return false;
         }
 

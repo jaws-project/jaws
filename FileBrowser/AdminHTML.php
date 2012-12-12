@@ -333,7 +333,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             $res = Jaws_Utils::UploadFiles($_FILES,
                                            $uploaddir,
                                            '',
-                                           $GLOBALS['app']->Registry->Get('/gadgets/FileBrowser/black_list'));
+                                           $this->GetRegistry('black_list'));
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
