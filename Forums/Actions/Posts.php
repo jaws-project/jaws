@@ -29,7 +29,7 @@ class Forums_Actions_Posts extends ForumsHTML
             return false;
         }
 
-        $limit = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/posts_limit');
+        $limit = (int)$this->GetRegistry('posts_limit');
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $posts = $pModel->GetPosts($rqst['tid'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($posts)) {
@@ -53,12 +53,12 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('url', $this->GetURLFor('Posts', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
 
         // date format
-        $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+        $date_format = $this->GetRegistry('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
         // edit max/min limit time
-        $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
-        $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+        $edit_max_limit_time = (int)$this->GetRegistry('edit_max_limit_time');
+        $edit_min_limit_time = (int)$this->GetRegistry('edit_min_limit_time');
 
         $objDate = $GLOBALS['app']->loadDate();
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -417,7 +417,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
         if (!empty($post['id'])) {
             // date format
-            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = $this->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetBlock('post/post_meta');
@@ -443,7 +443,7 @@ class Forums_Actions_Posts extends ForumsHTML
         $tpl->SetVariable('message', $message->Get());
 
         // attachment
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
+        if ($this->GetRegistry('enable_attachment') == 'true' &&
             $this->GetPermission('AddPostAttachment'))
         {
             $tpl->SetBlock('post/attachment');
@@ -531,7 +531,7 @@ class Forums_Actions_Posts extends ForumsHTML
         // attachment
         $post['attachment'] = is_null($post['remove_attachment'])? null : false;
         if (is_null($post['attachment']) &&
-            $GLOBALS['app']->Registry->Get('/gadgets/Forums/enable_attachment') == 'true' &&
+            $this->GetRegistry('enable_attachment') == 'true' &&
             $this->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
@@ -555,8 +555,8 @@ class Forums_Actions_Posts extends ForumsHTML
 
         $send_notification = true;
         // edit min/max limit time
-        $edit_min_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
-        $edit_max_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_max_limit_time');
+        $edit_min_limit_time = (int)$this->GetRegistry('edit_min_limit_time');
+        $edit_max_limit_time = (int)$this->GetRegistry('edit_max_limit_time');
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
@@ -671,7 +671,7 @@ class Forums_Actions_Posts extends ForumsHTML
 
             if (!is_null($rqst['confirm'])) {
                 // delete min limit time
-                $delete_limit_time = (int)$GLOBALS['app']->Registry->Get('/gadgets/Forums/edit_min_limit_time');
+                $delete_limit_time = (int)$this->GetRegistry('edit_min_limit_time');
 
                 // check delete permissions
                 if ((!$this->GetPermission('DeletePost')) ||
@@ -745,7 +745,7 @@ class Forums_Actions_Posts extends ForumsHTML
             }
 
             // date format
-            $date_format = $GLOBALS['app']->Registry->Get('/gadgets/Forums/date_format');
+            $date_format = $this->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
