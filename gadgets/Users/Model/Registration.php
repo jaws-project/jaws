@@ -90,7 +90,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $site_name    = $GLOBALS['app']->Registry->Get('/config/site_name');
         $site_author  = $GLOBALS['app']->Registry->Get('/config/site_author');
         $activation   = $GLOBALS['app']->Registry->Get('/config/anon_activation');
-        $notification = $GLOBALS['app']->Registry->Get('/gadgets/Users/register_notification');
+        $notification = $this->GetRegistry('register_notification');
         $delete_user  = false;
         $message      = '';
 

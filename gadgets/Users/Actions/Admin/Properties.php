@@ -76,7 +76,7 @@ class Users_Actions_Admin_Properties extends UsersAdminHTML
         $passRecovery->SetTitle(_t('USERS_PROPERTIES_PASS_RECOVERY'));
         $passRecovery->AddOption(_t('GLOBAL_YES'), 'true');
         $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
-        $passRecovery->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery'));
+        $passRecovery->SetDefault($this->GetRegistry('password_recovery'));
 
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet('');

@@ -20,7 +20,7 @@ class Users_Actions_Login extends UsersHTML
      */
     function SendRecoverKey()
     {
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery') !== 'true') {
+        if ($this->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -53,7 +53,7 @@ class Users_Actions_Login extends UsersHTML
      */
     function ForgotLogin()
     {
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery') !== 'true') {
+        if ($this->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -164,7 +164,7 @@ class Users_Actions_Login extends UsersHTML
             $tpl->SetVariable('user-register', $link->Get());
         }
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery') == 'true') {
+        if ($this->GetRegistry('password_recovery') == 'true') {
             $link =& Piwi::CreateWidget('Link', _t('USERS_FORGOT_LOGIN'),
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));
             $tpl->SetVariable('forgot-password', $link->Get());
@@ -279,7 +279,7 @@ class Users_Actions_Login extends UsersHTML
             }
 
             // forget user/password
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery') == 'true') {
+            if ($this->GetRegistry('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
                 $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
                 $tpl->SetVariable('forgot_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));

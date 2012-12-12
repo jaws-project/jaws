@@ -88,7 +88,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('USERS_LAYOUT_LATEST_REGISTERED'));
 
         // latest registered users limit
-        $limit = (int)$GLOBALS['app']->Registry->Get('/gadgets/Users/latest_limit');
+        $limit = (int)$this->GetRegistry('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
         require_once JAWS_PATH . 'include/Jaws/User.php';

@@ -168,7 +168,7 @@ class Users_Actions_Account extends UsersHTML
      */
     function ChangePassword()
     {
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Users/password_recovery') !== 'true') {
+        if ($this->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 
