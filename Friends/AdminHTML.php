@@ -113,7 +113,7 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
                 $limitcombo->AddOption($i, $i);
             }
 
-            $limit = $GLOBALS['app']->Registry->Get('/gadgets/Friends/limit');
+            $limit = $this->GetRegistry('limit');
             if (Jaws_Error::IsError($limit) || !$limit) {
                 $limit = 10;
             }
