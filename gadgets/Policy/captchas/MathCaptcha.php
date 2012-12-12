@@ -74,6 +74,7 @@ class MathCaptcha
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle($title);
         $res['captcha']->SetID('captcha_img_'.rand());
+        $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($img);
         $res['entry'] =& Piwi::CreateWidget('Entry', $prefix . $key, '');
         $res['entry']->SetID('captcha_'.rand());
