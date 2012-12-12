@@ -58,12 +58,12 @@ class ChatboxModel extends Jaws_Gadget_Model
         }
 
         $permalink = $GLOBALS['app']->GetSiteURL();
-        $max_strlen = (int)$GLOBALS['app']->Registry->Get('/gadgets/Chatbox/max_strlen');
+        $max_strlen = (int)$this->GetRegistry('max_strlen');
         if ($GLOBALS['app']->UTF8->strlen($message) > $max_strlen) {
             $message = $GLOBALS['app']->UTF8->substr($message, 0, $max_strlen - 3).'...';
         }
 
-        $status = $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/comment_status');
+        $status = $this->GetRegistry('comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Chatbox', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }

@@ -168,7 +168,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), _t('CHATBOX_NAME'));
         }
 
-        $max_strlen = (int)$GLOBALS['app']->Registry->Get('/gadgets/Chatbox/max_strlen');
+        $max_strlen = (int)$this->GetRegistry('max_strlen');
         $params              = array();
         $params['id']        = $id;
         $params['name']      = strip_tags($name);

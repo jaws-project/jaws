@@ -25,7 +25,7 @@ class ChatboxLayoutHTML
         $tpl->SetVariable('title', _t('CHATBOX_NAME'));
 
         if ($GLOBALS['app']->Session->Logged() ||
-            $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/anon_post_authority') == 'true')
+            $this->GetRegistry('anon_post_authority') == 'true')
         {
             $tpl->SetBlock('chatbox/fieldset');
             $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -96,7 +96,7 @@ class ChatboxLayoutHTML
     function GetMessages()
     {
         $model = $GLOBALS['app']->LoadGadget('Chatbox', 'Model');
-        $entries = $model->GetEntries($GLOBALS['app']->Registry->Get('/gadgets/Chatbox/limit'));
+        $entries = $model->GetEntries($this->GetRegistry('limit'));
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = new Jaws_Template('gadgets/Chatbox/templates/');
             $tpl->Load('Chatbox.html');

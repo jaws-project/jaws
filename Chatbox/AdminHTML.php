@@ -130,7 +130,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 20; ++$i) {
                 $limitcombo->AddOption($i, $i);
             }
-            $limit = $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/limit');
+            $limit = $this->GetRegistry('limit');
             if (Jaws_Error::IsError($limit)) {
                 $limit = 10;
             }
@@ -143,7 +143,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 10; ++$i) {
                 $max_lencombo->AddOption($i*25, $i*25);
             }
-            $max_strlen = $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/max_strlen');
+            $max_strlen = $this->GetRegistry('max_strlen');
             if (Jaws_Error::IsError($max_strlen)) {
                 $max_strlen = 125;
             }
@@ -155,7 +155,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             $authority->SetTitle(_t('CHATBOX_ANON_POST_AUTHORITY'));
             $authority->AddOption(_t('GLOBAL_DISABLED'), 'false');
             $authority->AddOption(_t('GLOBAL_ENABLED'),  'true');
-            $anon_authority = $GLOBALS['app']->Registry->Get('/gadgets/Chatbox/anon_post_authority');
+            $anon_authority = $this->GetRegistry('anon_post_authority');
             $authority->SetDefault($anon_authority == 'true'? 'true' : 'false');
             $fieldset->Add($authority);
 
