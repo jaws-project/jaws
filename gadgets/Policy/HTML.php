@@ -28,7 +28,7 @@ class PolicyHTML extends Jaws_Gadget_HTML
      */
     function Captcha()
     {
-        $status = $GLOBALS['app']->Registry->Get('/gadgets/Policy/captcha');
+        $status = $this->GetRegistry('captcha');
         if (($status == 'DISABLED') ||
             ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
             return false;
@@ -39,7 +39,7 @@ class PolicyHTML extends Jaws_Gadget_HTML
             $objCaptcha = array();
         }
 
-        $dCaptcha = $GLOBALS['app']->Registry->Get('/gadgets/Policy/captcha_driver');
+        $dCaptcha = $this->GetRegistry('captcha_driver');
         if (!isset($objCaptcha[$dCaptcha])) {
             require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
             $objCaptcha[$dCaptcha] = new $dCaptcha();

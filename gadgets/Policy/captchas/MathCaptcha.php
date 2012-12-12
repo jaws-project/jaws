@@ -19,7 +19,7 @@ class MathCaptcha
     {
         // If not installed try to install it
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/math_captcha') != 'ver2_installed') {
+        if ($this->GetRegistry('math_captcha') != 'ver2_installed') {
             $schema = JAWS_PATH . 'gadgets/Policy/captchas/MathCaptcha/schema.xml';
             if (!file_exists($schema)) {
                 Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
@@ -43,7 +43,7 @@ class MathCaptcha
     function Get()
     {
         list($key, $value1, $oprt, $value2) = $this->GetKey();
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/math_accessibility') === 'true') {
+        if ($this->GetRegistry('math_accessibility') === 'true') {
             switch ($oprt) {
                 case '+':
                     $title = _t('POLICY_CAPTCHA_MATH_PLUS', $value1, $value2);

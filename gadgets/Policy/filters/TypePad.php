@@ -110,7 +110,7 @@ class TypePad
             $GLOBALS['app']->Registry->Commit('Policy');
         }
 
-        $this->apiKey    = $GLOBALS['app']->Registry->Get('/gadgets/Policy/typepad_key');
+        $this->apiKey    = $this->GetRegistry('typepad_key');
         $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
         $jaws_version    = $GLOBALS['app']->Registry->Get('/version');
         $this->userAgent = "Jaws/{$jaws_version} | TypePad/{$this->apiVersion}";

@@ -6,7 +6,7 @@ class SpamFilter
     function SpamFilter()
     {
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        $filter = $GLOBALS['app']->Registry->Get('/gadgets/Policy/filter');
+        $filter = $this->GetRegistry('filter');
         if ($filter != 'DISABLED') {
             if (file_exists(JAWS_PATH . 'gadgets/Policy/filters/'. $filter . '.php')) {
                 require_once JAWS_PATH . 'gadgets/Policy/filters/'. $filter . '.php';

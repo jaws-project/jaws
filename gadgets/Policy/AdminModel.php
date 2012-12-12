@@ -52,7 +52,7 @@ class PolicyAdminModel extends PolicyModel
     {
         if (version_compare($old, '0.1.1', '<')) {
             // Registry keys
-            $obfuscator = $GLOBALS['app']->Registry->Get('/gadgets/Policy/obfuscator');
+            $obfuscator = $this->GetRegistry('obfuscator');
             if ($obfuscator == 'HideEmail') {
                 $GLOBALS['app']->Registry->Set('/gadgets/Policy/obfuscator', 'EmailEncoder');
             }
@@ -77,7 +77,7 @@ class PolicyAdminModel extends PolicyModel
         }
 
         if (version_compare($old, '0.1.3', '<')) {
-            $old_captch = $GLOBALS['app']->Registry->Get('/gadgets/Policy/captcha');
+            $old_captch = $this->GetRegistry('captcha');
             if ($old_captch !== 'DISABLED') {
                 $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha', 'ANONYMOUS');
                 $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/captcha_driver', $old_captch);

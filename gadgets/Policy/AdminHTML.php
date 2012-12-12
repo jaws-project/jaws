@@ -166,7 +166,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sidebar', $this->SideBar('IPBlocking'));
         $tpl->SetVariable('blocked_ips_datagrid', $this->IPsDatagrid());
 
-        $default = $GLOBALS['app']->Registry->Get('/gadgets/Policy/block_undefined_ip') == 'true';
+        $default = $this->GetRegistry('block_undefined_ip') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'ipblocking');
         $blockUndefined->AddOption(_t('POLICY_IP_BLOCK_UNDEFINED'),
                               'true',
@@ -296,7 +296,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sidebar', $this->SideBar('AgentBlocking'));
         $tpl->SetVariable('blocked_agents_datagrid', $this->AgentsDatagrid());
 
-        $default = $GLOBALS['app']->Registry->Get('/gadgets/Policy/block_undefined_agent') == 'true';
+        $default = $this->GetRegistry('block_undefined_agent') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'agentblocking');
         $blockUndefined->AddOption(_t('POLICY_AGENT_BLOCK_UNDEFINED'),
                               'true',
@@ -429,7 +429,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $allowDuplicate =& Piwi::CreateWidget('Combo', 'allow_duplicate');
         $allowDuplicate->AddOption(_t('GLOBAL_YES'), 'yes');
         $allowDuplicate->AddOption(_t('GLOBAL_NO'),  'no');
-        $allowDuplicate->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Policy/allow_duplicate'));
+        $allowDuplicate->SetDefault($this->GetRegistry('allow_duplicate'));
         $tpl->SetVariable('lbl_allow_duplicate', _t('POLICY_ANTISPAM_ALLOWDUPLICATE'));
         $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
 
@@ -440,7 +440,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         foreach ($fs as $f) {
             $filters->AddOption($f, $f);
         }
-        $filters->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Policy/filter'));
+        $filters->SetDefault($this->GetRegistry('filter'));
         $tpl->SetVariable('lbl_filter', _t('POLICY_ANTISPAM_FILTER'));
         $tpl->SetVariable('filter', $filters->Get());
 
@@ -449,7 +449,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
-        $captchaValue = $GLOBALS['app']->Registry->Get('/gadgets/Policy/captcha');
+        $captchaValue = $this->GetRegistry('captcha');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript: toggleCaptcha();");
         $tpl->SetVariable('lbl_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
@@ -461,7 +461,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         foreach ($dCaptchas as $dCaptcha) {
             $captchaDriver->AddOption($dCaptcha, $dCaptcha);
         }
-        $captchaDriver->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Policy/captcha_driver'));
+        $captchaDriver->SetDefault($this->GetRegistry('captcha_driver'));
         if ($captchaValue === 'DISABLED') {
             $captchaDriver->SetEnabled(false);
         }
@@ -474,7 +474,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         foreach ($os as $o) {
             $useEmailProtector->AddOption($o, $o);
         }
-        $useEmailProtector->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Policy/obfuscator'));
+        $useEmailProtector->SetDefault($this->GetRegistry('obfuscator'));
         $tpl->SetVariable('lbl_obfuscator', _t('POLICY_ANTISPAM_PROTECTEMAIL'));
         $tpl->SetVariable('obfuscator', $useEmailProtector->Get());
 

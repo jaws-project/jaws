@@ -25,7 +25,7 @@ class reCAPTCHA
     {
         // If not installed try to install it ;-)
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/reCAPTCHA') != 'installed') {
+        if ($this->GetRegistry('reCAPTCHA') != 'installed') {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA', 'installed');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA_public_key', 'UNDEFINED');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA_private_key', 'UNDEFINED');
@@ -36,7 +36,7 @@ class reCAPTCHA
     function Get()
     {
         $res = array();
-        $publickey = $GLOBALS['app']->Registry->Get('/gadgets/Policy/reCAPTCHA_public_key');
+        $publickey = $this->GetRegistry('reCAPTCHA_public_key');
         $reCAPTCHA = recaptcha_get_html($publickey, $this->_error);
         $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
         $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
@@ -50,7 +50,7 @@ class reCAPTCHA
     {
         $request =& Jaws_Request::getInstance();
         if ($request->get('recaptcha_response_field','post')) {
-            $privatekey = $GLOBALS['app']->Registry->Get('/gadgets/Policy/reCAPTCHA_private_key');
+            $privatekey = $this->GetRegistry('reCAPTCHA_private_key');
             $resp = recaptcha_check_answer ($privatekey,
                                             $_SERVER["REMOTE_ADDR"],
                                             $request->get('recaptcha_challenge_field', 'post'),

@@ -20,7 +20,7 @@ class HKCaptcha
     {
         // If not installed try to install it
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/hkcaptcha') != 'installed') {
+        if ($this->GetRegistry('hkcaptcha') != 'installed') {
             $schema = JAWS_PATH . 'gadgets/Policy/captchas/HKCaptcha/schema.xml';
             if (!file_exists($schema)) {
                 Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
