@@ -164,13 +164,13 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 20; $i++) {
                 $rowscombo->AddOption($i, $i);
             }
-            $rowscombo->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Emblems/rows'));
+            $rowscombo->SetDefault($this->GetRegistry('rows'));
             $propsfieldset->Add($rowscombo);
             $urlradio =& Piwi::CreateWidget('RadioButtons', 'allow_url');
             $urlradio->SetTitle(_t('EMBLEMS_ALLOW_URL'));
             $urlradio->AddOption(_t('GLOBAL_YES'), 'true');
             $urlradio->AddOption(_t('GLOBAL_NO'), 'false');
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Emblems/allow_url') == 'true') {
+            if ($this->GetRegistry('allow_url') == 'true') {
                 $urlradio->SetDefault('true');
             } else {
                 $urlradio->SetDefault('false');
