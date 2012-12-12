@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowserLayoutHTML
+class FileBrowserLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Prints all the files with their titles and contents of initial folder

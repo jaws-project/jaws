@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class EmblemsLayoutHTML 
+class EmblemsLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays the emblems in our site

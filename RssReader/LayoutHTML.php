@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderLayoutHTML
+class RssReaderLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params

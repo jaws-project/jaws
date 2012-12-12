@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ChatboxLayoutHTML
+class ChatboxLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays the chatbox
@@ -79,9 +79,7 @@ class ChatboxLayoutHTML
             $tpl->ParseBlock('chatbox/response');
         }
 
-        $hModel = $GLOBALS['app']->LoadGadget('Chatbox', 'HTML');
-        $hModel->AjaxMe('site_script.js');
-
+        $this->AjaxMe('site_script.js');
         $tpl->SetVariable('chatbox_messages', $this->GetMessages());
         $tpl->ParseBlock('chatbox');
         return $tpl->Get();

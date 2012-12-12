@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ContactLayoutHTML
+class ContactLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Show contact us form

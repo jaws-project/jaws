@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTimeLayoutHTML 
+class ServerTimeLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays the server time

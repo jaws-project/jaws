@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class GlossaryLayoutHTML
+class GlossaryLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Look for a random term and prints it

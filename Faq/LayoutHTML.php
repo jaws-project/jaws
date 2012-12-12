@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FaqLayoutHTML
+class FaqLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays a list with links to each category

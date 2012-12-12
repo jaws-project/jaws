@@ -8,7 +8,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteLayoutHTML
+class SimpleSiteLayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
