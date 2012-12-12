@@ -33,7 +33,7 @@ class ContactLayoutHTML
                 break;
             default:
                 $items_array = array_filter(explode(',',
-                                            $GLOBALS['app']->Registry->Get('/gadgets/Contact/default_items')));
+                                            $this->GetRegistry('default_items')));
                 break;
         }
 
@@ -43,7 +43,7 @@ class ContactLayoutHTML
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('CONTACT_US'));
-        $comments = $GLOBALS['app']->Registry->Get('/gadgets/Contact/comments');
+        $comments = $this->GetRegistry('comments');
         $tpl->SetVariable('comments', Jaws_Gadget::ParseText($comments, 'Contact'));
         $tpl->SetVariable('send', _t('CONTACT_SEND'));
 
@@ -181,7 +181,7 @@ class ContactLayoutHTML
 
         //attachment
         if (in_array('attachment', $items_array) &&
-            ($GLOBALS['app']->Registry->Get('/gadgets/Contact/enable_attachment') == 'true') &&
+            ($this->GetRegistry('enable_attachment') == 'true') &&
             $GLOBALS['app']->Session->GetPermission('Contact', 'AllowAttachment'))
         {
             $tpl->SetBlock('contact/attachment');

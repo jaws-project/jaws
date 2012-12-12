@@ -435,7 +435,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             $from_email = $recipient['email'];
         }
 
-        $format = $GLOBALS['app']->Registry->Get('/gadgets/Contact/email_format');
+        $format = $this->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $reply = $this->ParseText($contact['reply'], 'Contact');
@@ -659,7 +659,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
 
-        $use_antispam = $GLOBALS['app']->Registry->Get('/gadgets/Contact/use_antispam');
+        $use_antispam = $this->GetRegistry('use_antispam');
         $antispamCombo =& Piwi::CreateWidget('Combo', 'use_antispam');
         $antispamCombo->SetID('use_antispam');
         $antispamCombo->setStyle('width: 140px;');
@@ -669,7 +669,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_use_antispam', _t('CONTACT_PROPERTIES_USE_ANTISPAM'));
         $tpl->SetVariable('use_antispam', $antispamCombo->Get());
 
-        $email_format = $GLOBALS['app']->Registry->Get('/gadgets/Contact/email_format');
+        $email_format = $this->GetRegistry('email_format');
         $formatCombo =& Piwi::CreateWidget('Combo', 'email_format');
         $formatCombo->SetID('email_format');
         $formatCombo->setStyle('width: 140px;');
@@ -679,7 +679,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_email_format', _t('CONTACT_PROPERTIES_EMAIL_FORMAT'));
         $tpl->SetVariable('email_format', $formatCombo->Get());
 
-        $attachment = $GLOBALS['app']->Registry->Get('/gadgets/Contact/enable_attachment');
+        $attachment = $this->GetRegistry('enable_attachment');
         $combo =& Piwi::CreateWidget('Combo', 'enable_attachment');
         $combo->setStyle('width: 140px;');
         $combo->AddOption(_t('GLOBAL_NO'), 'false');
@@ -689,7 +689,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('enable_attachment', $combo->Get());
 
         // Comments
-        $comments = $GLOBALS['app']->Registry->Get('/gadgets/Contact/comments');
+        $comments = $this->GetRegistry('comments');
         $editor =& $GLOBALS['app']->LoadEditor('Contact', 'comments', $comments, false);
         $editor->SetId('comments');
         $editor->TextArea->SetStyle('width: 100%;');
@@ -897,7 +897,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
     function PrepareMessage($message)
     {
         $this->CheckPermission('AccessToMailer');
-        $format = $GLOBALS['app']->Registry->Get('/gadgets/Contact/email_format');
+        $format = $this->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = $this->ParseText($message, 'Contact');
@@ -981,7 +981,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         }
 
         $message = $this->PrepareMessage($message);
-        $format = $GLOBALS['app']->Registry->Get('/gadgets/Contact/email_format');
+        $format = $this->GetRegistry('email_format');
         $mail->SetBody($message, $format);
         if (!empty($attachment)) {
             $attachment = Jaws_Utils::upload_tmp_dir() . '/' . $attachment;

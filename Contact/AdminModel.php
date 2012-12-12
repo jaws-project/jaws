@@ -92,7 +92,7 @@ class ContactAdminModel extends ContactModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/EditSentMessage',  'true');
 
             // Registry keys.
-            $send_html = $GLOBALS['app']->Registry->Get('/gadgets/Contact/send_html') == 'true';
+            $send_html = $this->GetRegistry('send_html') == 'true';
             $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/use_captcha', 'true');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/email_format', $send_html? 'html' : 'text');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/enable_attachment', 'false');
