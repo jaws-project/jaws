@@ -54,7 +54,7 @@ class WebcamModel extends Jaws_Gadget_Model
             FROM [[webcam]]
             ORDER BY ' . $rand;
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Webcam/limit_random');
+        $limit = $this->GetRegistry('limit_random');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');

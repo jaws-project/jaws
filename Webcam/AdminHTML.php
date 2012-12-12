@@ -161,7 +161,7 @@ class WebcamAdminHTML extends Jaws_Gadget_HTML
                 $limitcombo->AddOption($i, $i);
             }
 
-            $limit = $GLOBALS['app']->Registry->Get('/gadgets/Webcam/limit_random');
+            $limit = $this->GetRegistry('limit_random');
             if (!$limit || Jaws_Error::IsError($limit)) {
                 $limit = 10;
             }
