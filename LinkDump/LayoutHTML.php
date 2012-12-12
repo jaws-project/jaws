@@ -52,7 +52,7 @@ class LinkDumpLayoutHTML
             return false;
         }
 
-        $target = $GLOBALS['app']->Registry->Get('/gadgets/LinkDump/links_target');
+        $target = $this->GetRegistry('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';
         $block  = ($group['link_type']==0)? 'list' : 'link';
 
