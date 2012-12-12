@@ -25,12 +25,12 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
      * Build a new array with filtered data
      *
      * @access  public
-     * @param   string  $gadget   Gadget's name
-     * @param   string  $action  Edit's action
-     * @param   string  $filterby Filter to use(postid, author, email, url, title, comment)
-     * @param   string  $filter   Filter data
-     * @param   string  $status   Spam status (approved, waiting, spam)
-     * @param   mixed   $limit    Data limit (numeric/boolean)
+     * @param   string  $gadget     Gadget name
+     * @param   string  $editAction Edit action
+     * @param   string  $filterby   Filter to use(postid, author, email, url, title, comment)
+     * @param   string  $filter     Filter data
+     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @param   mixed   $limit      Data limit (numeric/boolean)
      * @return  array   Filtered Comments
      */
     function GetDataAsArray($gadget, $editAction, $filterby, $filter, $status, $limit)
@@ -76,22 +76,26 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
             return array();
         }
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $date = $GLOBALS['app']->loadDate();
+        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $data = array();
         foreach ($comments as $row) {
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
-            $newRow['name']    = $xss->filter($row['name']);
+            $newRow['name']    = $row['name'];
+            if (empty($row['title'])) {
+                $row['title'] = Jaws_UTF8::substr(strip_tags($xss->defilter($row['msg_txt'])),0, 50);
+            }
+
             $row['title'] = preg_replace("/(\r\n|\r)/", " ", $row['title']);
             if (!empty($editAction)) {
                 $url = str_replace('{id}', $row['id'], $editAction);
-                $newRow['title']   = '<a href="'.$url.'">'.$xss->filter($row['title']).'</a>';
+                $newRow['title'] = '<a href="'.$url.'">'.$row['title'].'</a>';
             } else {
-                $newRow['title']   = $row['title'];
+                $newRow['title'] = $row['title'];
             }
             $newRow['created'] = $date->Format($row['createtime']);
-            $newRow['status']  = $row['status'];
+            $newRow['status']  = _t('GLOBAL_STATUS_'. strtoupper($row['status']));
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
@@ -111,8 +115,8 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
      * Builds and returns the UI
      *
      * @access  public
-     * @param   string  $gadget   Gadget's name
-     * @return  string  UI's XHTML
+     * @param   string  $gadget   Gadget name
+     * @return  string  UI XHTML
      */
     function Get($gadget)
     {
@@ -165,6 +169,5 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
         return $gridBox->Get();
     }
-
 
 }
