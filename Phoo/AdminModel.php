@@ -140,7 +140,7 @@ class PhooAdminModel extends PhooModel
         }
 
         if (version_compare($old, '0.8.1', '<')) {
-            $albums_order_type = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/order_type');
+            $albums_order_type = $this->GetRegistry('order_type');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/albums_order_type',
                                               Jaws_Error::IsError($albums_order_type)? 'name' : $albums_order_type);
             $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/photos_order_type', 'id');
@@ -349,8 +349,8 @@ class PhooAdminModel extends PhooModel
             return Jaws_Error::raiseError($objImage->getMessage(), _t('PHOO_NAME'));
         }
 
-        $thumbSize  = explode('x', $GLOBALS['app']->Registry->Get('/gadgets/Phoo/thumbsize'));
-        $mediumSize = explode('x', $GLOBALS['app']->Registry->Get('/gadgets/Phoo/mediumsize'));
+        $thumbSize  = explode('x', $this->GetRegistry('thumbsize'));
+        $mediumSize = explode('x', $this->GetRegistry('mediumsize'));
 
         $objImage->load($uploadfile);
         $objImage->resize($thumbSize[0], $thumbSize[1]);
@@ -377,7 +377,7 @@ class PhooAdminModel extends PhooModel
         $params['title']       = $title;
         $params['description'] = $description;
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments') == 'true' &&
+        if ($this->GetRegistry('allow_comments') == 'true' &&
             $album['allow_comments'])
         {
             $params['allow_comments'] = true;
@@ -385,7 +385,7 @@ class PhooAdminModel extends PhooModel
             $params['allow_comments'] = false;
         }
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/published') == 'true' &&
+        if ($this->GetRegistry('published') == 'true' &&
             $album['published'] === true &&
             $GLOBALS['app']->Session->GetPermission('Phoo', 'ManageAlbums'))
         {
@@ -421,7 +421,7 @@ class PhooAdminModel extends PhooModel
         }
 
         // Lets remove the original if keep_original = false
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/keep_original') == 'false') {
+        if ($this->GetRegistry('keep_original') == 'false') {
             @unlink(JAWS_DATA . 'phoo/' . $params['filename']);
         }
 

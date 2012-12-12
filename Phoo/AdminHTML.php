@@ -749,7 +749,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments') === 'true') {
+        if ($this->GetRegistry('allow_comments') === 'true') {
             $selected = true;
         } else {
             $selected = false;
@@ -762,7 +762,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $statCombo->setId('published');
         $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
         $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Phoo/published') === 'true') {
+        if ($this->GetRegistry('published') === 'true') {
             $published = true;
         } else {
             $published = false;

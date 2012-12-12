@@ -32,7 +32,7 @@ class PhooSearchHook
      */
     function Hook($pSql = array())
     {
-        $orderType = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/albums_order_type');
+        $orderType = $this->GetRegistry('albums_order_type');
         if (!in_array($orderType, array('createtime DESC',
                                         'createtime',
                                         'name DESC',

@@ -241,7 +241,7 @@ class PhooHTML extends Jaws_Gadget_HTML
 
         $allow_comments = $image['allow_comments'] === true &&
                           $image['album_allow_comments'] === true &&
-                          $GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments') == 'true' &&
+                          $this->GetRegistry('allow_comments') == 'true' &&
                           $allow_comments_config;
 
         if (empty($reply_to_comment)) {
@@ -840,7 +840,7 @@ class PhooHTML extends Jaws_Gadget_HTML
         // Check if comments are allowed.
         if ($image['allow_comments'] !== true ||
             $image['album_allow_comments'] !== true ||
-            $GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments') != 'true' ||
+            $this->GetRegistry('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
             Jaws_Header::Location($url, true);

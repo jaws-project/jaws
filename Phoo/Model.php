@@ -224,7 +224,7 @@ class PhooModel extends Jaws_Gadget_Model
                 [[phoo_image]].[published] = {published}
               AND (';
 
-        $album = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/moblog_album');
+        $album = $this->GetRegistry('moblog_album');
         if (Jaws_Error::isError($album)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
         }
@@ -236,7 +236,7 @@ class PhooModel extends Jaws_Gadget_Model
         $sql  = substr($sql, 0, -3);
         $sql .= ') ORDER BY [[phoo_image]].[createtime] DESC';
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/moblog_limit');
+        $limit = $this->GetRegistry('moblog_limit');
         if (Jaws_Error::isError($limit)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
         }
@@ -507,7 +507,7 @@ class PhooModel extends Jaws_Gadget_Model
     function GetAlbumPager($id, $page)
     {
         $count = $this->GetAlbumCount($id);
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/thumbnail_limit');
+        $limit = $this->GetRegistry('thumbnail_limit');
         $pager = array();
         if ($limit != 0) {
             $pager['first'] = 1;
@@ -532,7 +532,7 @@ class PhooModel extends Jaws_Gadget_Model
         $paginator_size = 4;
         $tail = 1;
         $total = $this->GetAlbumCount($id);
-        $page_size = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/thumbnail_limit');
+        $page_size = $this->GetRegistry('thumbnail_limit');
         $pages = array();
         if ($page_size == 0) {
             return $pages;
@@ -708,7 +708,7 @@ class PhooModel extends Jaws_Gadget_Model
             $sql2 .= ' ORDER BY [[phoo_image]].'. $this->GetOrderType('photos_order_type');
         }
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/thumbnail_limit');
+        $limit = $this->GetRegistry('thumbnail_limit');
         if (!empty($page) && !empty($limit)) {
             $starting_image = ($page - 1) * $limit;
             $result = $GLOBALS['db']->setLimit($limit, $starting_image);
@@ -887,7 +887,7 @@ class PhooModel extends Jaws_Gadget_Model
         }
 
         // EXIF STUFF
-        $show = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/show_exif_info');
+        $show = $this->GetRegistry('show_exif_info');
         if ($show == 'true' && function_exists('exif_read_data')) {
             if ($data = @exif_read_data(JAWS_DATA . 'phoo/' . $r['filename'], 1, true)) {
                 $cameraimg = '';
@@ -1009,7 +1009,7 @@ class PhooModel extends Jaws_Gadget_Model
             INNER JOIN [[phoo_album]] ON [[phoo_album]].[id] = [[phoo_image_album]].[phoo_album_id]
             WHERE [[phoo_image]].[published] = {published} AND (';
 
-        $album = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/photoblog_album');
+        $album = $this->GetRegistry('photoblog_album');
         foreach (explode(',', $album) as $v) {
             $sql .= "([[phoo_album]].[name] = '".$v."') OR ";
         }
@@ -1017,7 +1017,7 @@ class PhooModel extends Jaws_Gadget_Model
         $sql .= ') ';
         $sql .= ' ORDER BY [[phoo_image]].[id] DESC';
 
-        $limit = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/photoblog_limit');
+        $limit = $this->GetRegistry('photoblog_limit');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETASPORTRAIT'), _t('PHOO_NAME'));
@@ -1265,7 +1265,7 @@ class PhooModel extends Jaws_Gadget_Model
             }
 
             $api = new Jaws_Comment($this->_Name);
-            $status = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/comment_status');
+            $status = $this->GetRegistry('comment_status');
             if ($GLOBALS['app']->Session->GetPermission('Phoo', 'ManageComments')) {
                 $status = COMMENT_STATUS_APPROVED;
             }
@@ -1391,21 +1391,21 @@ class PhooModel extends Jaws_Gadget_Model
     function GetSettings()
     {
         $ret = array();
-        $ret['default_action']    = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/default_action');
-        $ret['resize_method']     = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/resize_method');
-        $ret['moblog_album']      = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/moblog_album');
-        $ret['moblog_limit']      = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/moblog_limit');
-        $ret['photoblog_album']   = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/photoblog_album');
-        $ret['photoblog_limit']   = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/photoblog_limit');
-        $ret['allow_comments']    = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/allow_comments');
-        $ret['published']         = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/published');
-        $ret['show_exif_info']    = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/show_exif_info');
-        $ret['keep_original']     = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/keep_original');
-        $ret['thumbnail_limit']   = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/thumbnail_limit');
-        $ret['comment_status']    = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/comment_status');
-        $ret['use_antispam']      = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/use_antispam');
-        $ret['albums_order_type'] = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/albums_order_type');
-        $ret['photos_order_type'] = $GLOBALS['app']->Registry->Get('/gadgets/Phoo/photos_order_type');
+        $ret['default_action']    = $this->GetRegistry('default_action');
+        $ret['resize_method']     = $this->GetRegistry('resize_method');
+        $ret['moblog_album']      = $this->GetRegistry('moblog_album');
+        $ret['moblog_limit']      = $this->GetRegistry('moblog_limit');
+        $ret['photoblog_album']   = $this->GetRegistry('photoblog_album');
+        $ret['photoblog_limit']   = $this->GetRegistry('photoblog_limit');
+        $ret['allow_comments']    = $this->GetRegistry('allow_comments');
+        $ret['published']         = $this->GetRegistry('published');
+        $ret['show_exif_info']    = $this->GetRegistry('show_exif_info');
+        $ret['keep_original']     = $this->GetRegistry('keep_original');
+        $ret['thumbnail_limit']   = $this->GetRegistry('thumbnail_limit');
+        $ret['comment_status']    = $this->GetRegistry('comment_status');
+        $ret['use_antispam']      = $this->GetRegistry('use_antispam');
+        $ret['albums_order_type'] = $this->GetRegistry('albums_order_type');
+        $ret['photos_order_type'] = $this->GetRegistry('photos_order_type');
 
         foreach ($ret as $r) {
             if (Jaws_Error::IsError($r)) {
