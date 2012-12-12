@@ -108,7 +108,7 @@ function AutoDraft()
     }
     var content   = getEditorValue('content');
 
-    staticpage.autodraft(id, group, fasturl, showtitle, title, content, language, published);
+    StaticPageAjax.callAsync('autodraft', id, group, fasturl, showtitle, title, content, language, published);
     setTimeout('startAutoDrafting();', 120000);
 }
 
@@ -134,8 +134,7 @@ function parseText(form)
     var title   = form.elements['title'].value;
     var content = getEditorValue('content');
 
-    content = staticpageSync.parsetext(content);
-    
+    content = StaticPageAjax.callSync('parsetext', content);
     var preview = document.getElementById('preview');
     preview.style.display = 'block';
 
@@ -154,13 +153,13 @@ function deletePage(id, redirect)
     var confirmation = confirm(confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = staticpageSync.deletepage(id);
+            var response = StaticPageAjax.callSync('deletepage', id);
             showResponse(response);
             if (response[0]['css'] == 'notice-message') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
-            staticpage.deletepage(id);
+            StaticPageAjax.callAsync('deletepage', id);
         }
     }
 }
@@ -173,13 +172,13 @@ function deleteTranslation(id, redirect)
     var confirmation = confirm(confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = staticpageSync.deletetranslation(id);
+            var response = StaticPageAjax.callSync('deletetranslation', id);
             showResponse(response);
             if (response[0]['css'] == 'notice-message') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
-            staticpage.deletetranslation(id);
+            StaticPageAjax.callAsync('deletetranslation', id);
         }
     }
 }
@@ -193,7 +192,7 @@ function massiveDelete()
     if (rows.length > 0) {
         var confirmation = confirm(confirmMassiveDelete);
         if (confirmation) {
-            staticpage.massivedelete(rows);
+            StaticPageAjax.callAsync('massivedelete', rows);
         }
     }
 }
@@ -205,7 +204,7 @@ function updateSettings()
 {
     var defaultPage = $('default_page').value;
     var multiLang   = $('multilanguage').value;
-    staticpage.updatesettings(defaultPage, multiLang);
+    StaticPageAjax.callAsync('updatesettings', defaultPage, multiLang);
 }
 
 /**
@@ -221,14 +220,20 @@ function searchPage()
  */
 function getPages(name, offset, reset)
 {
-    var result = staticpageSync.searchpages($('group').value,
-                                            $('status').value,
-                                            $('search').value,
-                                            offset);
+    var result = StaticPageAjax.callSync(
+        'searchpages',
+        $('group').value,
+        $('status').value,
+        $('search').value,
+        offset
+    );
     if (reset) {
-        var total = staticpageSync.sizeofsearch($('group').value,
-                                                $('status').value,
-                                                $('search').value);
+        var total = StaticPageAjax.callSync(
+            'sizeofsearch',
+            $('group').value,
+            $('status').value,
+            $('search').value
+        );
     }
     resetGrid(name, result, total);
 }
@@ -238,9 +243,9 @@ function getPages(name, offset, reset)
  */
 function getPagesGroups(name, offset, reset)
 {
-    var groups = staticpageSync.getgroupsgrid(offset);
+    var groups = StaticPageAjax.callSync('getgroupsgrid', offset);
     if (reset) {
-        var total = staticpageSync.getgroupscount();
+        var total = StaticPageAjax.callSync('getgroupscount');
     }
 
     resetGrid(name, groups, total);
@@ -254,7 +259,7 @@ function editGroup(rowElement, gid)
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('legend_title').set('html', edit_group_title);
-    var group = staticpageSync.getgroup(selectedGroup);
+    var group = StaticPageAjax.callSync('getgroup', selectedGroup);
     $('title').value     = group['title'].defilter();
     $('meta_keys').value = group['meta_keywords'].defilter();
     $('meta_desc').value = group['meta_description'].defilter();
@@ -275,18 +280,24 @@ function saveGroup()
     }
 
     if (selectedGroup == 0) {
-        staticpage.insertgroup($('title').value,
-                               $('fast_url').value,
-                               $('meta_keys').value,
-                               $('meta_desc').value,
-                               $('visible').value);
+        StaticPageAjax.callAsync(
+            'insertgroup',
+            $('title').value,
+            $('fast_url').value,
+            $('meta_keys').value,
+            $('meta_desc').value,
+            $('visible').value
+        );
     } else {
-        staticpage.updategroup(selectedGroup,
-                               $('title').value,
-                               $('fast_url').value,
-                               $('meta_keys').value,
-                               $('meta_desc').value,
-                               $('visible').value);
+        StaticPageAjax.callAsync(
+            'updategroup',
+            selectedGroup,
+            $('title').value,
+            $('fast_url').value,
+            $('meta_keys').value,
+            $('meta_desc').value,
+            $('visible').value
+        );
     }
 }
 
@@ -297,7 +308,7 @@ function deleteGroup(rowElement, gid)
 {
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirm_group_delete)) {
-        staticpage.deletegroup(gid);
+        StaticPageAjax.callAsync('deletegroup', gid);
     }
 
     stopAction();
@@ -337,15 +348,7 @@ function stopAction()
     $('title').focus();
 }
 
-var staticpage = new staticpageadminajax(StaticPageCallback);
-staticpage.serverErrorFunc = Jaws_Ajax_ServerError;
-staticpage.onInit = showWorkingNotification;
-staticpage.onComplete = hideWorkingNotification;
-
-var staticpageSync = new staticpageadminajax();
-staticpageSync.serverErrorFunc = Jaws_Ajax_ServerError;
-staticpageSync.onInit = showWorkingNotification;
-staticpageSync.onComplete = hideWorkingNotification;
+var StaticPageAjax = new JawsAjax('StaticPage', StaticPageCallback);
 
 selectedGroup = 0;
 var autoDraftDone = false;
