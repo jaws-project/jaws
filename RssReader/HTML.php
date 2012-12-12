@@ -21,7 +21,7 @@ class RssReaderHTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $layoutGadget = $GLOBALS['app']->LoadGadget('RssReader', 'LayoutHTML');
-        return $layoutGadget->Display($GLOBALS['app']->Registry->Get('/gadgets/RssReader/default_feed'));
+        return $layoutGadget->Display($this->GetRegistry('default_feed'));
     }
 
     /**
