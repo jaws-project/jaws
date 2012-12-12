@@ -93,7 +93,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         foreach($pages as $page) {
             $defaultPage->addOption($page['title'], $page['base_id']);
         }        
-        $defaultPage->setDefault($GLOBALS['app']->Registry->Get('/gadgets/StaticPage/default_page'));
+        $defaultPage->setDefault($this->GetRegistry('default_page'));
         $fieldset->add($defaultPage);
 
         // Use multilanguage pages?
@@ -101,7 +101,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
         $multiLanguage->addOption(_t('GLOBAL_YES'), 'yes');
         $multiLanguage->addOption(_t('GLOBAL_NO'), 'no');           
-        $multiLanguage->setDefault($GLOBALS['app']->Registry->Get('/gadgets/StaticPage/multilanguage'));
+        $multiLanguage->setDefault($this->GetRegistry('multilanguage'));
         $fieldset->add($multiLanguage);
 
         // Save Button

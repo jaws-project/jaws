@@ -19,7 +19,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        return $this->Page($GLOBALS['app']->Registry->Get('/gadgets/StaticPage/default_page'));
+        return $this->Page($this->GetRegistry('default_page'));
     }
 
     /**
@@ -90,7 +90,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('page/title');
                 }
 
-                if ($GLOBALS['app']->Registry->Get('/gadgets/StaticPage/multilanguage') == 'yes') {
+                if ($this->GetRegistry('multilanguage') == 'yes') {
                     $translations = $model->GetTranslationsOfPage($page['page_id'], true);
                     if (!Jaws_Error::isError($translations) && count($translations)>1) {
                         $tpl->SetBlock('page/translations');
