@@ -10,35 +10,8 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Model
+class Jaws_Gadget_Model extends Jaws_Gadget
 {
-    /**
-     * Model's name
-     * @var     string
-     * @access  private
-     * @see SetName()
-     * @see GetName()
-     */
-    var $_Gadget;
-
-    /**
-     * Model's name
-     * @var     string
-     * @access  private
-     * @see SetDescription()
-     * @see GetDescription()
-     */
-    var $_Description;
-
-    /**
-     * Model's name
-     * @var     string
-     * @access  private
-     * @see SetVersion()
-     * @see GetVersion()
-     */
-    var $_Version;
-
     /**
      * Refactor Init, Jaws_Model::Init()
      *
@@ -48,73 +21,7 @@ class Jaws_Gadget_Model
      */
     function Jaws_Gadget_Model($gadget = '')
     {
-        $this->_Gadget = $gadget;
-    }
-
-    /**
-     * Set the model's name
-     *
-     * @access  public
-     * @param   string  $value Model's name
-     */
-    function SetName($value)
-    {
-        $this->_Gadget = $value;
-    }
-
-    /**
-     * Get the Model's name
-     *
-     * @access  public
-     * @return  string  Returns the Model's name
-     */
-    function GetName()
-    {
-        return $this->_Gadget;
-    }
-
-    /**
-     * Set the Model's mode
-     *
-     * @access  public
-     * @param   string  $value Model's mode
-     */
-    function SetVersion($value)
-    {
-        $this->_Version = $value;
-    }
-
-    /**
-     * Get the Model's mode
-     *
-     * @access  public
-     * @return  string  Returns the Model's version
-     */
-    function GetVersion()
-    {
-        return $this->_Version;
-    }
-
-    /**
-     * Set the Model's description
-     *
-     * @access  public
-     * @param   string  $value Model's description
-     */
-    function SetDescription($value)
-    {
-        $this->_Description = $value;
-    }
-
-    /**
-     * Get the Model's description
-     *
-     * @access  public
-     * @return  string  Returns the Model's description
-     */
-    function GetDescription()
-    {
-        return $this->_Description;
+        parent::Jaws_Gadget($gadget);
     }
 
     /**
