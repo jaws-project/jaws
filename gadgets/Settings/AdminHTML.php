@@ -113,7 +113,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $site_status->AddOption(_t('GLOBAL_DISABLED'), 'disabled');
         $site_status->AddOption(_t('GLOBAL_ENABLED'), 'enabled');
-        $site_status->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_status'));
+        $site_status->SetDefault($this->GetRegistry('site_status'));
         $tpl->SetVariable('field-name', 'site_status');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_STATUS'));
         $tpl->SetVariable('field', $site_status->Get());
@@ -123,7 +123,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $sitename =& Piwi::CreateWidget('Entry',
                                         'site_name',
-                                        $xss->defilter($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name')));
+                                        $xss->defilter($this->GetRegistry('site_name')));
         $sitename->setSize(40);
         $sitename->setID('site_name');
         $tpl->SetVariable('field-name', 'site_name');
@@ -135,7 +135,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $sitedesc =& Piwi::CreateWidget('Entry',
                                         'site_slogan',
-                                        $xss->defilter($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_slogan')));
+                                        $xss->defilter($this->GetRegistry('site_slogan')));
         $sitedesc->setSize(40);
         $sitedesc->setID('site_slogan');
         $tpl->SetVariable('field-name', 'site_slogan');
@@ -151,7 +151,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         foreach ($languages as $k => $v) {
             $lang->AddOption($v, $k);
         }
-        $lang->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_language'));
+        $lang->SetDefault($this->GetRegistry('site_language'));
         $tpl->SetVariable('field-name', 'site_language');
         $tpl->SetVariable('label', _t('SETTINGS_DEFAULT_SITE_LANGUAGE'));
         $tpl->SetVariable('field', $lang->Get());
@@ -164,7 +164,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         foreach ($languages as $k => $v) {
             $lang->AddOption($v, $k);
         }
-        $lang->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/admin_language'));
+        $lang->SetDefault($this->GetRegistry('admin_language'));
         $tpl->SetVariable('field-name', 'admin_language');
         $tpl->SetVariable('label', _t('SETTINGS_ADMIN_LANGUAGE'));
         $tpl->SetVariable('field', $lang->Get());
@@ -181,7 +181,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         foreach ($installedgadgets as $g => $tg) {
             $gdt->AddOption($tg['name'], $g);
         }
-        $gdt->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget'));
+        $gdt->SetDefault($this->GetRegistry('main_gadget'));
         $tpl->SetVariable('field-name', 'main_gadget');
         $tpl->SetVariable('label', _t('SETTINGS_MAIN_GADGET'));
         $tpl->SetVariable('field', $gdt->Get());
@@ -191,7 +191,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $siteemail =& Piwi::CreateWidget('Entry',
                                         'site_email',
-                                        $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_email'));
+                                        $this->GetRegistry('site_email'));
         $siteemail->setSize(40);
         $siteemail->setID('site_email');
         $tpl->SetVariable('field-name', 'site_email');
@@ -203,7 +203,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $sitecomment =& Piwi::CreateWidget('TextArea',
                                            'site_comment',
-                                           $xss->defilter($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_comment')));
+                                           $xss->defilter($this->GetRegistry('site_comment')));
         $sitecomment->SetRows(4);
         $sitecomment->SetStyle('width: 252px;');
         $sitecomment->setID('site_comment');
@@ -245,7 +245,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         foreach ($dtfmts as $k => $v) {
             $date_format->AddOption($v, $k);
         }
-        $date_format->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/date_format'));
+        $date_format->SetDefault($this->GetRegistry('date_format'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'date_format');
         $tpl->SetVariable('label', _t('SETTINGS_DATE_FORMAT'));
@@ -259,7 +259,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         foreach ($calendars as $calendar) {
             $date_calendar->AddOption($calendar, $calendar);
         }
-        $current_cal = $GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_type');
+        $current_cal = $this->GetRegistry('calendar_type');
         if (Jaws_Error::isError($current_cal)) {
             $date_calendar->SetDefault('Gregorian');
         } else {
@@ -280,14 +280,14 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
             $lang->AddOption($v, $k);
         }
         $lang->SetStyle('width: 250px;');
-        $lang->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_language'));
+        $lang->SetDefault($this->GetRegistry('calendar_language'));
         $tpl->SetVariable('field-name', 'calendar_language');
         $tpl->SetVariable('label', _t('SETTINGS_CALENDAR_LANGUAGE'));
         $tpl->SetVariable('field', $lang->Get());
         $tpl->ParseBlock('settings/item');
 
         // Use gravatar? or local images?
-        $use_gravatar = $GLOBALS['app']->Registry->Get('/gadgets/Settings/use_gravatar');
+        $use_gravatar = $this->GetRegistry('use_gravatar');
         $gravatar =& Piwi::CreateWidget('Combo', 'use_gravatar');
         $gravatar->setID('use_gravatar');
         $gravatar->AddOption(_t('GLOBAL_YES'), 'yes');
@@ -308,7 +308,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $gravatar->AddOption(_t('SETTINGS_GRAVATAR_R'), 'R');
         $gravatar->AddOption(_t('SETTINGS_GRAVATAR_X'), 'X');
         $gravatar->SetStyle('width: 250px;');
-        $gravatar->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/gravatar_rating'));
+        $gravatar->SetDefault($this->GetRegistry('gravatar_rating'));
         $gravatar->SetEnabled($use_gravatar == 'yes');
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'gravatar_rating');
@@ -322,7 +322,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $comments->AddOption(_t('GLOBAL_YES'), 'true');
         $comments->AddOption(_t('SETTINGS_ALLOW_COMMENTS_RESTRICTED'), 'restricted');
         $comments->AddOption(_t('GLOBAL_NO'), 'false');
-        $comments->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/allow_comments'));
+        $comments->SetDefault($this->GetRegistry('allow_comments'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'allow_comments');
         $tpl->SetVariable('label', _t('SETTINGS_ALLOW_COMMENTS'));
@@ -334,7 +334,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $viewSite->setID('show_viewsite');
         $viewSite->AddOption(_t('GLOBAL_YES'), 'true');
         $viewSite->AddOption(_t('GLOBAL_NO'), 'false');
-        $viewSite->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/show_viewsite'));
+        $viewSite->SetDefault($this->GetRegistry('show_viewsite'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'show_viewsite');
         $tpl->SetVariable('label', _t('SETTINGS_SHOW_VIEWSITE'));
@@ -348,7 +348,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_PIPE'), '|');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DASH'), '-');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DOUBLECOLON'), '::');
-        $defaultTitle->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/title_separator'));
+        $defaultTitle->SetDefault($this->GetRegistry('title_separator'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'title_separator');
         $tpl->SetVariable('label', _t('SETTINGS_TITLE_SEPARATOR'));
@@ -363,7 +363,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
             $editorCombo->AddOption($v, $k);
         }
         $editorCombo->SetStyle('width: 250px;');
-        $editorCombo->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/editor'));
+        $editorCombo->SetDefault($this->GetRegistry('editor'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'editor');
         $tpl->SetVariable('label', _t('SETTINGS_EDITOR'));
@@ -378,7 +378,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
             $timezone->AddOption($v, $k);
         }
         $timezone->SetStyle('direction: ltr; width: 250px;');
-        $timezone->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/timezone'));
+        $timezone->SetDefault($this->GetRegistry('timezone'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'timezone');
         $tpl->SetVariable('label', _t('GLOBAL_TIMEZONE'));
@@ -423,7 +423,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $sitedesc =& Piwi::CreateWidget('TextArea',
                                         'site_description',
-                                        $xss->defilter($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_description')));
+                                        $xss->defilter($this->GetRegistry('site_description')));
         $sitedesc->SetRows(5);
         $sitedesc->setStyle('width: 24em;');
         $sitedesc->setID('site_description');
@@ -435,7 +435,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         // Site keywords
         $tpl->SetBlock('settings/item');
         $sitekeys =& Piwi::CreateWidget('Entry', 'site_keywords',
-                                        $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_keywords'));
+                                        $this->GetRegistry('site_keywords'));
         $sitekeys->setID('site_keywords');
         $sitekeys->setStyle('direction: ltr; width: 24em;');
         $tpl->SetVariable('field-name', 'site_keywords');
@@ -445,7 +445,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Site author
         $tpl->SetBlock('settings/item');
-        $author =& Piwi::CreateWidget('Entry', 'site_author', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'));
+        $author =& Piwi::CreateWidget('Entry', 'site_author', $this->GetRegistry('site_author'));
         $author->setID('site_author');
         $author->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'site_author');
@@ -455,7 +455,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // License
         $tpl->SetBlock('settings/item');
-        $license =& Piwi::CreateWidget('Entry', 'site_license', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_license'));
+        $license =& Piwi::CreateWidget('Entry', 'site_license', $this->GetRegistry('site_license'));
         $license->setID('site_license');
         $license->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'site_license');
@@ -465,7 +465,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Copyright
         $tpl->SetBlock('settings/item');
-        $copyright =& Piwi::CreateWidget('Entry', 'copyright', $GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
+        $copyright =& Piwi::CreateWidget('Entry', 'copyright', $this->GetRegistry('copyright'));
         $copyright->setID('copyright');
         $copyright->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'copyright');
@@ -474,7 +474,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('settings/item');
 
         // Custom META
-        $Metas = @unserialize($GLOBALS['app']->Registry->Get('/gadgets/Settings/custom_meta'));
+        $Metas = @unserialize($this->GetRegistry('custom_meta'));
         if (!empty($Metas)) {
             foreach ($Metas as $meta) {
                 $tpl->SetBlock('settings/custom');
