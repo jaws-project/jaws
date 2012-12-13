@@ -640,7 +640,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function SubmitSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'))
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
@@ -668,7 +668,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function SubmitHam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'))
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
