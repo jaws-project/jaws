@@ -184,7 +184,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
         } else {
-            $guid = $GLOBALS['app']->Registry->Get('/config/anon_group');
+            $guid = $this->GetRegistry('anon_group');
             if (!empty($guid)) {
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }

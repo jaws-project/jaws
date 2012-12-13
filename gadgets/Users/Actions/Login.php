@@ -158,7 +158,7 @@ class Users_Actions_Login extends UsersHTML
         }
         $tpl->ParseBlock('LoginBox/remember');
 
-        if ($GLOBALS['app']->Registry->Get('/config/anon_register') == 'true') {
+        if ($this->GetRegistry('anon_register') == 'true') {
             $link =& Piwi::CreateWidget('Link', _t('USERS_REGISTER'),
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
             $tpl->SetVariable('user-register', $link->Get());
@@ -271,7 +271,7 @@ class Users_Actions_Login extends UsersHTML
             $tpl->SetVariable('login_url', $login_url);
 
             // registeration
-            if ($GLOBALS['app']->Registry->Get('/config/anon_register') == 'true') {
+            if ($this->GetRegistry('anon_register') == 'true') {
                 $tpl->SetBlock('LoginLinks/registeration');
                 $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
                 $tpl->SetVariable('registeration_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));

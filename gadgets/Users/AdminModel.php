@@ -31,11 +31,18 @@ class UsersAdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
         }
 
-        // Rregistry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Users/pluggable', 'false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Users/latest_limit', '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Users/password_recovery', 'false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Users/register_notification', 'true');
+        // Registry keys
+        $GLOBALS['app']->Registry->NewKeyEx(
+            array('/gadgets/Users/pluggable', 'false'),
+            array('/gadgets/Users/latest_limit', '10'),
+            array('/gadgets/Users/password_recovery', 'false'),
+            array('/gadgets/Users/register_notification', 'true'),
+            array('/gadgets/Users/auth_method', 'Default'),
+            array('/gadgets/Users/anon_register', 'false'),
+            array('/gadgets/Users/anon_repetitive_email', 'true'),
+            array('/gadgets/Users/anon_activation', 'user'),
+            array('/gadgets/Users/anon_group', '')
+        );
 
         // Create the group 'Jaws_Users'
         require_once JAWS_PATH . 'include/Jaws/User.php';

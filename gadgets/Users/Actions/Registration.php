@@ -25,7 +25,7 @@ class Users_Actions_Registration extends UsersHTML
         $tpl->SetBlock('registered');
         $tpl->SetVariable('title', _t('USERS_REGISTER_REGISTERED'));
 
-        switch ($GLOBALS['app']->Registry->Get('/config/anon_activation')) {
+        switch ($this->GetRegistry('anon_activation')) {
             case 'admin':
                 $message = _t('USERS_ACTIVATE_ACTIVATION_BY_ADMIN_MSG');
                 break;
@@ -49,7 +49,7 @@ class Users_Actions_Registration extends UsersHTML
      */
     function DoRegister()
     {
-        if ($GLOBALS['app']->Registry->Get('/config/anon_register') !== 'true') {
+        if ($this->GetRegistry('anon_register') !== 'true') {
             return parent::_404();
         }
 
@@ -96,7 +96,7 @@ class Users_Actions_Registration extends UsersHTML
                                               $dob,
                                               $post['url'],
                                               $post['password'],
-                                              $GLOBALS['app']->Registry->Get('/config/anon_group'));
+                                              $this->GetRegistry('anon_group'));
                 if ($result === true) {
                     Jaws_Header::Location($this->GetURLFor('Registered'));
                 }
@@ -126,7 +126,7 @@ class Users_Actions_Registration extends UsersHTML
             Jaws_Header::Location('');
         }
 
-        if ($GLOBALS['app']->Registry->Get('/config/anon_register') !== 'true') {
+        if ($this->GetRegistry('anon_register') !== 'true') {
             return parent::_404();
         }
 
@@ -208,7 +208,7 @@ class Users_Actions_Registration extends UsersHTML
             Jaws_Header::Location('');
         }
 
-        if ($GLOBALS['app']->Registry->Get('/config/anon_register') !== 'true') {
+        if ($this->GetRegistry('anon_register') !== 'true') {
             return parent::_404();
         }
 
@@ -222,7 +222,7 @@ class Users_Actions_Registration extends UsersHTML
         }
 
         if ($result) {
-            if ($GLOBALS['app']->Registry->Get('/config/anon_activation') == 'user') {
+            if ($this->GetRegistry('anon_activation') == 'user') {
                 return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->GetURLFor('LoginBox'));
             } else {
                 return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');

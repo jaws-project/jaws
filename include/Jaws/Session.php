@@ -111,7 +111,7 @@ class Jaws_Session
      */
     function Init()
     {
-        $this->_AuthMethod = $GLOBALS['app']->Registry->Get('/config/auth_method');
+        $this->_AuthMethod = $GLOBALS['app']->Registry->Get('/gadgets/Users/auth_method');
         $this->_AuthMethod = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthMethod);
         $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthMethod . '.php';
         if (empty($this->_AuthMethod) || !file_exists($authFile)) {
