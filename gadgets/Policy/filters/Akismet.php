@@ -106,11 +106,11 @@ class Akismet
     function Akismet()
     {
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if (!$GLOBALS['app']->Registry->KeyExists('/gadgets/Policy/akismet_key')) {
+        if (is_null($GLOBALS['app']->Registry->Get('/gadgets/Policy/akismet_key'))) {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/akismet_key', '');
         }
 
-        $this->apiKey    = $this->GetRegistry('akismet_key');
+        $this->apiKey    = $GLOBALS['app']->Registry->Get('/gadgets/Policy/akismet_key');
         $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
         $jaws_version    = $GLOBALS['app']->Registry->Get('/version');
         $this->userAgent = "Jaws/{$jaws_version} | Akismet/{$this->apiVersion}";

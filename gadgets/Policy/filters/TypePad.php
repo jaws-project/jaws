@@ -105,11 +105,11 @@ class TypePad
     function TypePad()
     {
         $GLOBALS['app']->Registry->LoadFile('Policy');
-        if (!$GLOBALS['app']->Registry->KeyExists('/gadgets/Policy/typepad_key')) {
+        if (is_null($GLOBALS['app']->Registry->Get('/gadgets/Policy/typepad_key'))) {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/typepad_key', '');
         }
 
-        $this->apiKey    = $this->GetRegistry('typepad_key');
+        $this->apiKey    = $GLOBALS['app']->Registry->Get('/gadgets/Policy/typepad_key');
         $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
         $jaws_version    = $GLOBALS['app']->Registry->Get('/version');
         $this->userAgent = "Jaws/{$jaws_version} | TypePad/{$this->apiVersion}";
