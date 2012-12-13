@@ -531,7 +531,7 @@ class Jaws_Registry
                    OR
                     [key_name] LIKE '/policy/%'
                    OR
-                    [key_name] LIKE '/crypt/%'
+                    [key_name] LIKE '/gadgets/Policy/crypt_%'
                    OR
                     [key_name] IN('/version', '/last_update',
                                   '/plugins/parse_text/enabled_items',

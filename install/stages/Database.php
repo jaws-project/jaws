@@ -453,13 +453,7 @@ class Installer_Database extends JawsInstallerStage
                     array('/map/custom_precedence', 'false'),
                     array('/map/restrict_multimap', 'false'),
                     array('/map/extensions', 'html'),
-                    array('/map/use_aliases', 'false'),
-                    array('/crypt/enabled', $_SESSION['install']['secure']? 'true' : 'false'),
-                    array('/crypt/pub_key', $_SESSION['pub_key']),
-                    array('/crypt/pvt_key', $_SESSION['pvt_key']),
-                    array('/crypt/key_len', '128'),
-                    array('/crypt/key_age', '86400'),
-                    array('/crypt/key_start_date', $_SESSION['install']['secure']? time() : '0')
+                    array('/map/use_aliases', 'false')
         );
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_DEBUG,$result->getMessage());

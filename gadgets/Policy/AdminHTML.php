@@ -361,7 +361,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $useEncryption->setID('enabled');
         $useEncryption->AddOption(_t('GLOBAL_NO'),  'false');
         $useEncryption->AddOption(_t('GLOBAL_YES'), 'true');
-        $useEncryption->SetDefault($GLOBALS['app']->Registry->Get('/crypt/enabled'));
+        $useEncryption->SetDefault($this->GetRegistry('crypt_enabled'));
         $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
         $tpl->SetVariable('enabled', $useEncryption->Get());
 
@@ -372,7 +372,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $keyAge->AddOption(_t('GLOBAL_DATE_HOURS',   5),  18000);
         $keyAge->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
         $keyAge->AddOption(_t('GLOBAL_DATE_WEEKS',   1), 604800);
-        $keyAge->SetDefault($GLOBALS['app']->Registry->Get('/crypt/key_age'));
+        $keyAge->SetDefault($this->GetRegistry('crypt_key_age'));
         $keyAge->SetEnabled($this->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_age', _t('POLICY_ENCRYPTION_KEY_AGE'));
         $tpl->SetVariable('key_age', $keyAge->Get());
@@ -383,14 +383,14 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_256BIT'),  '256');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_512BIT'),  '512');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_1024BIT'), '1024');
-        $keyLen->SetDefault($GLOBALS['app']->Registry->Get('/crypt/key_len'));
+        $keyLen->SetDefault($this->GetRegistry('crypt_key_len'));
         $keyLen->SetEnabled($this->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_len', _t('POLICY_ENCRYPTION_KEY_LEN'));
         $tpl->SetVariable('key_len', $keyLen->Get());
 
         $date = $GLOBALS['app']->loadDate();
         $keyStartDate =& Piwi::CreateWidget('Entry', 'key_start_date',
-                                            $date->Format((int)$GLOBALS['app']->Registry->Get('/crypt/key_start_date')));
+                                            $date->Format((int)$this->GetRegistry('crypt_key_start_date')));
         $keyStartDate->setID('key_start_date');
         $keyStartDate->setSize(30);
         $keyStartDate->SetEnabled(false);

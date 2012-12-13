@@ -143,7 +143,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
      */
     function ShowLoginForm($message = '')
     {
-        $use_crypt = ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true')? true : false;
+        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();

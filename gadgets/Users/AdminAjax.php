@@ -159,7 +159,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
                      $expiry_date, $status)
     {
         $this->CheckSession('Users', 'ManageUsers');
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true') {
+        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -214,7 +214,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
                         $expiry_date, $status)
     {
         $this->CheckSession('Users', 'ManageUsers');
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true') {
+        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -551,7 +551,7 @@ class UsersAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Users', 'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true') {
+        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();

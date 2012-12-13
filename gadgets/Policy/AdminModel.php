@@ -34,8 +34,14 @@ class PolicyAdminModel extends PolicyModel
                                             array('/gadgets/Policy/captcha',         'DISABLED'),
                                             array('/gadgets/Policy/captcha_driver',  'MathCaptcha'),
                                             array('/gadgets/Policy/obfuscator',      'DISABLED'),
-                                            array('/gadgets/Policy/akismet_key',     ''),
-                                            array('/gadgets/Policy/typepad_key',     '')
+                                            array('/gadgets/Policy/akismet_key',          ''),
+                                            array('/gadgets/Policy/typepad_key',          ''),
+                                            array('/gadgets/Policy/crypt_enabled',        'false'),
+                                            array('/gadgets/Policy/crypt_pub_key',        ''),
+                                            array('/gadgets/Policy/crypt_pvt_key',        ''),
+                                            array('/gadgets/Policy/crypt_key_len',        '128'),
+                                            array('/gadgets/Policy/crypt_key_age',        '86400'),
+                                            array('/gadgets/Policy/crypt_key_start_date', '0')
                                             );
         return true;
     }
@@ -483,12 +489,12 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
-        $GLOBALS['app']->Registry->Set('/crypt/enabled', ($enabled? 'true' : 'false'));
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_enabled', ($enabled? 'true' : 'false'));
         if ($GLOBALS['app']->Session->GetPermission('Policy', 'ManageEncryptionKey')) {
-            $GLOBALS['app']->Registry->Set('/crypt/key_age', (int)$key_age);
-            if ($GLOBALS['app']->Registry->Get('/crypt/key_len') != $key_len) {
-                $GLOBALS['app']->Registry->Set('/crypt/key_len', (int)$key_len);
-                $GLOBALS['app']->Registry->Set('/crypt/key_start_date', 0);
+            $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_age', (int)$key_age);
+            if ($this->GetRegistry('crypt_key_len') != $key_len) {
+                $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_len', (int)$key_len);
+                $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_start_date', 0);
             }
         }
         $GLOBALS['app']->Registry->Commit('core');

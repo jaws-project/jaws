@@ -147,7 +147,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
         // xtree
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
         // RSA encryption
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true') {
+        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
         }
 
@@ -270,7 +270,7 @@ class Users_Actions_Admin_Users extends UsersAdminHTML
         $tpl->Load('Admin/User.html');
         $tpl->SetBlock('user');
 
-        $use_crypt = ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true')? true : false;
+        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();

@@ -43,27 +43,27 @@ class Jaws_Crypt
             return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available',
                                           __FUNCTION__);
         }
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') != 'true') {
+        if ($GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_enabled') != 'true') {
             return false;
         }
 
-        $pvt_key = $GLOBALS['app']->Registry->Get('/crypt/pvt_key');
-        $pub_key = $GLOBALS['app']->Registry->Get('/crypt/pub_key');
-        $key_len = $GLOBALS['app']->Registry->Get('/crypt/key_len');
-        $key_age = $GLOBALS['app']->Registry->Get('/crypt/key_age');
-        $key_start_date = $GLOBALS['app']->Registry->Get('/crypt/key_start_date');
+        $pvt_key = $GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_pvt_key');
+        $pub_key = $GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_pub_key');
+        $key_len = $GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_key_len');
+        $key_age = $GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_key_age');
+        $key_start_date = $GLOBALS['app']->Registry->Get('/gadgets/Policy/crypt_key_start_date');
         if (time() > ($key_start_date + $key_age)) {
             $result = $this->Generate_RSA_KeyPair($key_len);
             if (Jaws_Error::isError($result)) {
-                $GLOBALS['app']->Registry->Set('/crypt/enabled', 'false');
+                $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_enabled', 'false');
                 $GLOBALS['app']->Registry->Commit('core');
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Error in RSA key generation..");
                 return false;
             }
 
-            $GLOBALS['app']->Registry->Set('/crypt/pvt_key', $this->pvt_key->toString());
-            $GLOBALS['app']->Registry->Set('/crypt/pub_key', $this->pub_key->toString());
-            $GLOBALS['app']->Registry->Set('/crypt/key_start_date', time());
+            $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_pvt_key', $this->pvt_key->toString());
+            $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_pub_key', $this->pub_key->toString());
+            $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_start_date', time());
             $GLOBALS['app']->Registry->Commit('core');
         } else {
             $this->pvt_key = Crypt_RSA_Key::fromString($pvt_key, $this->wrapper);

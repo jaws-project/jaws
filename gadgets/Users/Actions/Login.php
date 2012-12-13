@@ -103,7 +103,7 @@ class Users_Actions_Login extends UsersHTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('LoginBox.html');
 
-        $use_crypt = ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true')? true : false;
+        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -304,7 +304,7 @@ class Users_Actions_Login extends UsersHTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('username', 'password', 'remember', 'usecrypt', 'referrer'), 'post');
 
-        if ($GLOBALS['app']->Registry->Get('/crypt/enabled') == 'true' && isset($post['usecrypt'])) {
+        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
