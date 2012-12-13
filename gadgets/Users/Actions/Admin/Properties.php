@@ -35,7 +35,7 @@ class Users_Actions_Admin_Properties extends UsersAdminHTML
         foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
             $authmethod->AddOption($method, $method);
         }
-        $authmethod->SetDefault($$this->GetRegistry('auth_method'));
+        $authmethod->SetDefault($this->GetRegistry('auth_method'));
         $authmethod->SetEnabled($this->GetPermission('ManageAuthenticationMethod'));
 
         $anonRegister =& Piwi::CreateWidget('Combo', 'anon_register');
