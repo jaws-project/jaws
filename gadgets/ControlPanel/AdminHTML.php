@@ -195,7 +195,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
         $passEntry->SetTitle(_t('GLOBAL_PASSWORD'));
         $fieldset->Add($passEntry);
 
-        $auth_method = $$this->GetRegistry('auth_method', 'Users');
+        $auth_method = $this->GetRegistry('auth_method', 'Users');
         if (!empty($reqpost['auth_method']) || $auth_method !== 'Default') {
             $authmethod =& Piwi::CreateWidget('Combo', 'auth_method');
             $authmethod->SetTitle(_t('CONTROLPANEL_AUTH_METHOD'));
