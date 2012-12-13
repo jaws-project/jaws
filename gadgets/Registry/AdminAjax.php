@@ -54,10 +54,8 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
         if (preg_match("#^/(gadgets|plugins\/parse_text)/(.*?)/(.*?)#i", $key, $matches)) {
             $GLOBALS['app']->Registry->LoadFile($matches[2]);
             $GLOBALS['app']->Registry->Set($key, $value);
-            $GLOBALS['app']->Registry->Commit($matches[2]);
         } else {
             $GLOBALS['app']->Registry->Set($key, $value);
-            $GLOBALS['app']->Registry->Commit('core');
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('REGISTRY_KEY_SAVED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();

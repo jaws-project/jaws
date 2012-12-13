@@ -30,7 +30,6 @@ class HKCaptcha
                 Jaws_Error::Fatal("Can't install HKCaptcha schema", __FILE__, __LINE__);
             }
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/hkcaptcha', 'installed');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
     }
 

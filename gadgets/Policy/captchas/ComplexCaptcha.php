@@ -29,7 +29,6 @@ class ComplexCaptcha
                 Jaws_Error::Fatal("Can't install ComplexCaptcha schema", __FILE__, __LINE__);
             }
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/complex_captcha', 'installed');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
     }
 

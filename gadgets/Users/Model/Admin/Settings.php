@@ -43,8 +43,6 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $res && $GLOBALS['app']->Registry->Set('/config/anon_group', (int)$group);
         $res = $res && $GLOBALS['app']->Registry->Set('/gadgets/Users/password_recovery', $recover);
         if ($res) {
-            $GLOBALS['app']->Registry->Commit('Users');
-            $GLOBALS['app']->Registry->Commit('core');
             return true;
         }
 

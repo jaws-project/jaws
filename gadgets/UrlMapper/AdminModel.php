@@ -730,7 +730,6 @@ class UrlMapperAdminModel extends UrlMapperModel
             return new Jaws_Error(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), _t('URLMAPPER_NAME'));
         }
 
-        $GLOBALS['app']->Registry->commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }

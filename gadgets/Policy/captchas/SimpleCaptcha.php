@@ -29,7 +29,6 @@ class SimpleCaptcha
                 Jaws_Error::Fatal("Can't install SimpleCaptcha schema", __FILE__, __LINE__);
             }
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/simple_captcha', 'installed');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
     }
 

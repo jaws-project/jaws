@@ -30,7 +30,6 @@ class MathCaptcha
             }
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/math_captcha', 'ver2_installed');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/math_accessibility', 'false');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
     }
 

@@ -386,7 +386,6 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
         } else {
             $GLOBALS['app']->Registry->Set('/plugins/parse_text/'.$plugin.'/use_in', '*');
         }
-        $GLOBALS['app']->Registry->Commit($plugin, 'plugins');
 
         $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_SAVED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();

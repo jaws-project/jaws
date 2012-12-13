@@ -107,7 +107,6 @@ class TypePad
         $GLOBALS['app']->Registry->LoadFile('Policy');
         if (!$GLOBALS['app']->Registry->KeyExists('/gadgets/Policy/typepad_key')) {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/typepad_key', '');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
 
         $this->apiKey    = $this->GetRegistry('typepad_key');

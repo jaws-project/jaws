@@ -108,7 +108,6 @@ class Akismet
         $GLOBALS['app']->Registry->LoadFile('Policy');
         if (!$GLOBALS['app']->Registry->KeyExists('/gadgets/Policy/akismet_key')) {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/akismet_key', '');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
 
         $this->apiKey    = $this->GetRegistry('akismet_key');

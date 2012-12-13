@@ -81,7 +81,6 @@ class SearchAdminModel extends SearchModel
             $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'), _t('SEARCH_NAME'));
         }
-        $GLOBALS['app']->Registry->Commit('Search');
         $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_SAVED'), RESPONSE_NOTICE);
         return true;
     }

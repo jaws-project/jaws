@@ -69,7 +69,6 @@ class HttpBl
     {
         if (!$GLOBALS['app']->Registry->KeyExists('/gadgets/Policy/prjhoneypot_key')) {
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/prjhoneypot_key', 'UNDEFINED');
-            $GLOBALS['app']->Registry->Commit('Policy');
         } 
         $value = $this->GetRegistry('prjhoneypot_key');
         return (!empty($value) && $value !== 'UNDEFINED');

@@ -463,10 +463,6 @@ class PolicyAdminModel extends PolicyModel
     {
         $res = $GLOBALS['app']->Registry->Set('/gadgets/Policy/block_undefined_ip',
                                               $blocked? 'true' : 'false');
-        if (!Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Registry->Commit('Policy');
-        }
-
         return $res;
     }
 
@@ -481,10 +477,6 @@ class PolicyAdminModel extends PolicyModel
     {
         $res = $GLOBALS['app']->Registry->Set('/gadgets/Policy/block_undefined_agent',
                                               $blocked? 'true' : 'false');
-        if (!Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Registry->Commit('Policy');
-        }
-
         return $res;
     }
 
@@ -507,7 +499,6 @@ class PolicyAdminModel extends PolicyModel
                 $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_start_date', 0);
             }
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ENCRYPTION_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -530,7 +521,6 @@ class PolicyAdminModel extends PolicyModel
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha',         $captcha);
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha_driver',  $captcha_driver);
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/obfuscator',      $obfuscator);
-        $GLOBALS['app']->Registry->Commit('Policy');
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -561,7 +551,6 @@ class PolicyAdminModel extends PolicyModel
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_idle_timeout',     (int)$session_idle_timeout);
         $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_remember_timeout', (int)$session_remember_timeout);
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

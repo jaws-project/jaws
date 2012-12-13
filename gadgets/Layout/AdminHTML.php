@@ -343,7 +343,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         if ($mode != '') {
             $GLOBALS['app']->Registry->Set('/config/layoutmode', $mode);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }

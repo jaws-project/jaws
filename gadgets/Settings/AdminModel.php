@@ -232,7 +232,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
 
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
@@ -274,7 +273,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             }
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
@@ -310,7 +308,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             }
             $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
@@ -355,7 +352,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
 
             $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
@@ -397,7 +393,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
 
             $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
@@ -438,7 +433,6 @@ class SettingsAdminModel extends Jaws_Gadget_Model
 
             $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
-        $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }

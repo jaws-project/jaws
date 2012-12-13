@@ -29,7 +29,6 @@ class reCAPTCHA
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA', 'installed');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA_public_key', 'UNDEFINED');
             $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/reCAPTCHA_private_key', 'UNDEFINED');
-            $GLOBALS['app']->Registry->Commit('Policy');
         }
     }
 
