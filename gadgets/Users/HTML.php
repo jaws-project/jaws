@@ -41,8 +41,8 @@ class UsersHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('nopermission', _t('USERS_NO_PERMISSION_TITLE'));
         $tpl->SetVariable('description', _t('USERS_NO_PERMISSION_DESC', $gadget, $action));
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
-        $tpl->SetVariable('site-name', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
-        $tpl->SetVariable('site-slogan', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_slogan'));
+        $tpl->SetVariable('site-name', $this->GetRegistry('site_name', 'Settings'));
+        $tpl->SetVariable('site-slogan', $this->GetRegistry('site_slogan', 'Settings'));
         $tpl->SetVariable('BASE_URL', $GLOBALS['app']->GetSiteURL('/'));
         $tpl->SetVariable('.dir', _t('GLOBAL_LANG_DIRECTION') == 'rtl' ? '.' . _t('GLOBAL_LANG_DIRECTION') : '');
         if (!$GLOBALS['app']->Session->Logged()) {

@@ -87,8 +87,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $mail = new Jaws_Mail;
 
         $site_url     = $GLOBALS['app']->getSiteURL('/');
-        $site_name    = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
-        $site_author  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author');
+        $site_name    = $this->GetRegistry('site_name', 'Settings');
+        $site_author  = $this->GetRegistry('site_author', 'Settings');
         $activation   = $this->GetRegistry('anon_activation');
         $notification = $this->GetRegistry('register_notification');
         $delete_user  = false;
@@ -264,7 +264,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             }
 
             $site_url    = $GLOBALS['app']->getSiteURL('/');
-            $site_name   = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+            $site_name   = $this->GetRegistry('site_name', 'Settings');
 
             $tpl = new Jaws_Template('gadgets/Users/templates/');
             $tpl->Load('RecoverPassword.txt');
@@ -338,7 +338,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+        $site_name = $this->GetRegistry('site_name', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('UserNotification.txt');

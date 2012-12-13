@@ -281,7 +281,7 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
      */
     function _commonDisableGadget($gadget, $type)
     {
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget') == $gadget) {
+        if ($this->GetRegistry('main_gadget', 'Settings') == $gadget) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_SIDEBAR_DISABLE_MAIN_FAILURE'), RESPONSE_ERROR);
             return $GLOBALS['app']->Session->PopLastResponse();
         }

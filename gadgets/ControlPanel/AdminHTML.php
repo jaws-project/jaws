@@ -54,7 +54,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
             }
         }
 
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/show_viewsite') == 'true') {
+        if ($this->GetRegistry('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
                                                  'tname' => _t('CONTROLPANEL_GENERAL_VIEWSITE'),
                                                  'desc'  => _t('CONTROLPANEL_GENERAL_VIEWSITE'));

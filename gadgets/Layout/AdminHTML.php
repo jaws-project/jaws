@@ -82,7 +82,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
 
-        $fakeLayout->_Template->SetVariable('site-title', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
+        $fakeLayout->_Template->SetVariable('site-title', $this->GetRegistry('site_name', 'Settings'));
 
         $fakeLayout->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css', 'default');
         $fakeLayout->AddHeadLink('gadgets/Layout/resources/style.css', 'stylesheet', 'text/css');
@@ -222,7 +222,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         foreach ($themes as $theme => $tInfo) {
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
-        $themeCombo->SetDefault($GLOBALS['app']->Registry->Get('/gadgets/Settings/theme'));
+        $themeCombo->SetDefault($this->GetRegistry('theme', 'Settings'));
         $themeCombo->AddEvent(ON_CHANGE, "changeTheme();");
         $themeCombo->SetEnabled($this->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
