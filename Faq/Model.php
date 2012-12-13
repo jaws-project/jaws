@@ -141,11 +141,7 @@ class FaqModel extends Jaws_Gadget_Model
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
 
-        if (isset($row['question'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'));
+        return $row;
     }
 
     /**

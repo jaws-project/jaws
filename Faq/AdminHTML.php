@@ -241,7 +241,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Faq'));
         if (!is_null($get['id'])) {
             $q = $model->GetQuestion($get['id']);
-            if (Jaws_Error::IsError($q)) {
+            if (Jaws_Error::IsError($q) || empty($q)) {
                 Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq');
             }
 

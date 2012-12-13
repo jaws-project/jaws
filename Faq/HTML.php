@@ -42,7 +42,7 @@ class FaqHTML extends Jaws_Gadget_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Faq', 'Model');
         $q = $model->GetQuestion($qid);
-        if (!Jaws_Error::IsError($q)) {
+        if (!Jaws_Error::IsError($q) && !empty($q)) {
             $this->SetTitle($q['question']);
             $tpl->SetVariable('title', $q['question']);
             $tpl->SetVariable('answer', $this->ParseText($q['answer'], 'Faq'));
