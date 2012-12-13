@@ -193,10 +193,6 @@ class Installer_Settings extends JawsInstallerStage
             $GLOBALS['app']->Registry->NewKey($key, $value);
         }
 
-        // Commit the changes
-        _log(JAWS_LOG_DEBUG,"Saving settings changes");
-        $GLOBALS['app']->Registry->commit('core');
-
         require_once JAWS_PATH . 'include/Jaws/URLMapping.php';
         $GLOBALS['app']->Map = new Jaws_URLMapping();
 

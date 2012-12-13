@@ -419,9 +419,6 @@ class Installer_Database extends JawsInstallerStage
             //return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_ADDING_REGISTRY_KEY'), 'CORE');
         }
 
-        // Commit the changes so they get saved
-        $GLOBALS['app']->Registry->commit('core');
-
         $gadgets = array(
             'Settings', 'Layout', 'Registry', 'ControlPanel',
             'Jms', 'UrlMapper', 'Users', 'Policy',

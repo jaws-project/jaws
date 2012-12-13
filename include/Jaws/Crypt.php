@@ -56,7 +56,6 @@ class Jaws_Crypt
             $result = $this->Generate_RSA_KeyPair($key_len);
             if (Jaws_Error::isError($result)) {
                 $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_enabled', 'false');
-                $GLOBALS['app']->Registry->Commit('core');
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Error in RSA key generation..");
                 return false;
             }
@@ -64,7 +63,6 @@ class Jaws_Crypt
             $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_pvt_key', $this->pvt_key->toString());
             $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_pub_key', $this->pub_key->toString());
             $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_start_date', time());
-            $GLOBALS['app']->Registry->Commit('core');
         } else {
             $this->pvt_key = Crypt_RSA_Key::fromString($pvt_key, $this->wrapper);
             $this->pub_key = Crypt_RSA_Key::fromString($pub_key, $this->wrapper);

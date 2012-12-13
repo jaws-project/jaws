@@ -878,8 +878,6 @@ class Jaws_Gadget
         ) {
             $GLOBALS['app']->Registry->Set('/gadgets/' . $gadget . '/enabled', 'false');
         }
-        $GLOBALS['app']->Registry->Commit('core'); //Commit all changes to core
-
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterDisablingGadget', $gadget);
         if (Jaws_Error::IsError($res) || !$res) {
@@ -929,10 +927,6 @@ class Jaws_Gadget
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/enabled');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/version');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/requires');
-        $GLOBALS['app']->Registry->Commit($gadget); //Commit all changes
-        $GLOBALS['app']->Registry->Commit('core'); //Commit all changes to core
-
-        $GLOBALS['app']->Registry->deleteCacheFile($gadget);
 
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterUninstallingGadget', $gadget);
@@ -1061,9 +1055,6 @@ class Jaws_Gadget
             $GLOBALS['app']->Registry->Set('/gadgets/'.$gadget.'/version', $newVersion);
         }
 
-        // commit registry keys
-        $GLOBALS['app']->Registry->Commit($gadget);
-
         //Autoload feature
         $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Autoload.php');
         $data    = $GLOBALS['app']->Registry->Get('/gadgets/autoload_items');
@@ -1079,9 +1070,6 @@ class Jaws_Gadget
             }
             $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $data);
         }
-
-        // Commit all the recent core changes
-        $GLOBALS['app']->Registry->Commit('core');
 
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterUpdatingGadget', $gadget);
@@ -1148,9 +1136,6 @@ class Jaws_Gadget
                                                 );
             // ACL keys
             $model->InstallACLs();
-
-            // Commit registry this late since a gadget can have no install function
-            $GLOBALS['app']->Registry->Commit($gadget);
         }
 
         $type = $this->_IsCore ? 'core_items' : 'enabled_items';
@@ -1170,10 +1155,6 @@ class Jaws_Gadget
                 $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $data);
             }
         }
-
-        // Commit all the recent core changes with Set if any,
-        // don't pass $gadget, it was commited above
-        $GLOBALS['app']->Registry->Commit('core');
 
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterEnablingGadget', $gadget);

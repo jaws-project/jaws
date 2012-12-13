@@ -208,9 +208,6 @@ class Jaws_Plugin
                                      __FUNCTION__);
         }
 
-        $GLOBALS['app']->Registry->Commit($plugin, 'plugins');
-        $GLOBALS['app']->Registry->Commit('core');
-
         // Everything is done
         $res = $GLOBALS['app']->Shouter->Shout('onAfterEnablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
@@ -281,10 +278,6 @@ class Jaws_Plugin
             return new Jaws_Error(_t('JMS_PLUGINS_DISABLE_FAILURE', $plugin),
                                      __FUNCTION__);
         }
-        $GLOBALS['app']->Registry->Commit($plugin, 'plugins');
-        $GLOBALS['app']->Registry->Commit('core');
-
-        $GLOBALS['app']->Registry->deleteCacheFile($plugin, 'plugins');
 
         // Everything is done
         $res = $GLOBALS['app']->Shouter->Shout('onAfterDisablePlugin', $plugin);
