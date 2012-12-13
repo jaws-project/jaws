@@ -342,61 +342,10 @@ class Installer_Database extends JawsInstallerStage
         // Input datas
         $timestamp = $GLOBALS['db']->Date();
 
-        /**
-         * Create a jaws key (should be unique)
-         *
-         * We use RFC 4122 (http://www.ietf.org/rfc/rfc4122.txt) for generating unique
-         * ids
-         */
-        $uniqueKey =  sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-                              mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-                              mt_rand( 0, 0x0fff ) | 0x4000,
-                              mt_rand( 0, 0x3fff ) | 0x8000,
-                              mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ) );
-        $uniqueKey = md5($uniqueKey);
-
-        $robots = array('Yahoo! Slurp',
-                        'Baiduspider',
-                        'Googlebot',
-                        'msnbot',
-                        'Gigabot',
-                        'ia_archiver',
-                        'yacybot',
-                        'http://www.WISEnutbot.com',
-                        'psbot',
-                        'msnbot-media',
-                        'Ask Jeeves',
-                        );
-
         //registry keys.
         $result = $GLOBALS['app']->Registry->NewKeyEx(
                     array('/last_update', $timestamp),
                     array('/version', JAWS_VERSION),
-                    array('/config/admin_script', ''),
-                    array('/config/http_auth', 'false'),
-                    array('/config/realm', 'Jaws Control Panel'),
-                    array('/config/key', $uniqueKey),
-                    array('/config/theme', 'jaws'),
-                    array('/config/date_format', 'd MN Y'),
-                    array('/config/calendar_type', 'Gregorian'),
-                    array('/config/calendar_language', 'en'),
-                    array('/config/timezone', 'UTC'),
-                    array('/config/gzip_compression', 'false'),
-                    array('/config/use_gravatar', 'no'),
-                    array('/config/gravatar_rating', 'G'),
-                    array('/config/editor', 'TextArea'),
-                    array('/config/editor_tinymce_toolbar', ''),
-                    array('/config/editor_ckeditor_toolbar', ''),
-                    array('/config/browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
-                    array('/config/allow_comments', 'true'),
-                    array('/config/controlpanel_name', 'ControlPanel'),
-                    array('/config/show_viewsite', 'true'),
-                    array('/config/site_url', ''),
-                    array('/config/cookie_precedence', 'false'),
-                    array('/config/robots', implode(',', $robots)),
-                    array('/config/connection_timeout', '5'),           // per second
-                    array('/config/global_website', 'true'),            // global website?
-                    array('/config/img_driver', 'GD'),                  // image driver
                     array('/gadgets/enabled_items', ''),
                     array('/gadgets/core_items', ''),
                     array('/gadgets/autoload_items', ''),

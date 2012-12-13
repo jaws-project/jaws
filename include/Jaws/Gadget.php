@@ -303,7 +303,7 @@ class Jaws_Gadget
     {
         $jawsVersion = $this->_Req_JawsVersion;
         if (empty($jawsVersion)) {
-            $jawsVersion = $GLOBALS['app']->Registry->Get('/config/version');
+            $jawsVersion = $GLOBALS['app']->Registry->Get('/gadgets/Settings/version');
         }
 
         return $jawsVersion;
@@ -874,7 +874,7 @@ class Jaws_Gadget
 
         if (
             $GLOBALS['app']->Registry->Get('/gadgets/' . $gadget . '/enabled') == 'true' &&
-            $GLOBALS['app']->Registry->Get('/config/main_gadget') != $gadget
+            $GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget') != $gadget
         ) {
             $GLOBALS['app']->Registry->Set('/gadgets/' . $gadget . '/enabled', 'false');
         }
@@ -940,7 +940,7 @@ class Jaws_Gadget
     function _commonPreDisableGadget()
     {
         if ($this->IsGadgetInstalled() &&
-            $GLOBALS['app']->Registry->Get('/config/main_gadget') == $this->_Gadget
+            $GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget') == $this->_Gadget
         ) {
             return false;
         }
@@ -1224,7 +1224,7 @@ class Jaws_Gadget
     function CanRunInCoreVersion()
     {
         if ($this->IsGadgetInstalled()) {
-            $coreVersion     = $GLOBALS['app']->Registry->Get('/config/version');
+            $coreVersion     = $GLOBALS['app']->Registry->Get('/gadgets/Settings/version');
             $requiredVersion = $this->GetRequiredJawsVersion();
 
             if ($requiredVersion == $coreVersion) {

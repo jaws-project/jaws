@@ -216,7 +216,7 @@ class Jaws_Date_Jalali extends Jaws_Date
         $jalali_array['date']   = $date;
 
         if (empty($format)) {
-            $format = $GLOBALS['app']->Registry->Get('/config/date_format');
+            $format = $GLOBALS['app']->Registry->Get('/gadgets/Settings/date_format');
         }
 
         return ($format == 'since')? $this->SinceFormat($jalali_array['date']) : $this->DateFormat($format, $jalali_array);

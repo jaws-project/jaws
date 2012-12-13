@@ -172,24 +172,16 @@ class Installer_Settings extends JawsInstallerStage
 
         _log(JAWS_LOG_DEBUG,"Setting up main settings (site name, description, languages, copyrights, etc");
         $settings = array();
-        $settings['/config/site_status']      = 'enabled';
-        $settings['/config/site_name']        = $post['site_name'];
-        $settings['/config/site_slogan']      = $post['site_slogan'];
-        $settings['/config/site_comment']     = '';
-        $settings['/config/site_keywords']    = '';
-        $settings['/config/site_description'] = '';
-        $settings['/config/custom_meta']      = '';
-        $settings['/config/site_author']      = $_SESSION['install']['CreateUser']['nickname'];
-        $settings['/config/site_license']     = '';
-        $settings['/config/site_favicon']     = 'images/jaws.png';
-        $settings['/config/title_separator']  = '-';
-        $settings['/config/main_gadget']      = $post['default_gadget'];
-        $settings['/config/copyright']        = date('Y'). ', '. $post['site_name'];
-        $settings['/config/site_language']    = $post['site_language'];
-        $settings['/config/admin_language']   = $post['site_language'];
-        $settings['/config/site_email']       = $_SESSION['install']['CreateUser']['email'];
+        $settings['/gadgets/Settings/site_name']      = $post['site_name'];
+        $settings['/gadgets/Settings/site_slogan']    = $post['site_slogan'];
+        $settings['/gadgets/Settings/site_author']    = $_SESSION['install']['CreateUser']['nickname'];
+        $settings['/gadgets/Settings/main_gadget']    = $post['default_gadget'];
+        $settings['/gadgets/Settings/copyright']      = date('Y'). ', '. $post['site_name'];
+        $settings['/gadgets/Settings/site_language']  = $post['site_language'];
+        $settings['/gadgets/Settings/admin_language'] = $post['site_language'];
+        $settings['/gadgets/Settings/site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
-            $GLOBALS['app']->Registry->NewKey($key, $value);
+            $GLOBALS['app']->Registry->Set($key, $value);
         }
 
         require_once JAWS_PATH . 'include/Jaws/URLMapping.php';

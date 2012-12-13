@@ -100,7 +100,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
         $date = $GLOBALS['app']->UTC2UserTime($date);
 
         if (empty($format)) {
-            $format = $GLOBALS['app']->Registry->Get('/config/date_format');
+            $format = $GLOBALS['app']->Registry->Get('/gadgets/Settings/date_format');
         }
 
         if ($format == 'since') {

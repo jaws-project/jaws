@@ -23,7 +23,7 @@ class Jaws_Cache
      */
     function &factory()
     {
-        $this->_Driver = $this->Registry->Get('/config/cache/driver');
+        $this->_Driver = $this->Registry->Get('/gadgets/Settings/cache/driver');
         $this->_Driver = preg_replace('/[^[:alnum:]_-]/', '', $this->_Driver);
         $driverFile = JAWS_PATH . 'include/Jaws/Cache/'. $this->_Driver . '.php';
         if (!file_exists($driverFile)) {

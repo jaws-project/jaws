@@ -118,8 +118,8 @@ class Jaws_Mail
         $this->gate_title = $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_title');
         $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_vrfy') == 'true';
 
-        $this->site_email = $GLOBALS['app']->Registry->Get('/config/site_email');
-        $this->site_name  = $GLOBALS['app']->Registry->Get('/config/site_name');
+        $this->site_email = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_email');
+        $this->site_name  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
 
         $params = array();
         $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/sendmail_path');

@@ -20,12 +20,12 @@ class Jaws_Gravatar
             $defaultImage = "gadgets/Users/images/photo{$size}px.png";
         }
 
-        if (empty($email) || $GLOBALS['app']->Registry->Get('/config/use_gravatar') == 'no') {
+        if (empty($email) || $GLOBALS['app']->Registry->Get('/gadgets/Settings/use_gravatar') == 'no') {
             return $defaultImage;
         }
 
         $id = md5($email);
-        $rating = $GLOBALS['app']->Registry->Get('/config/gravatar_rating');
+        $rating = $GLOBALS['app']->Registry->Get('/gadgets/Settings/gravatar_rating');
         if (Jaws_Error::isError($rating)) {
             $rating = 'g';
         }
