@@ -114,9 +114,9 @@ class LinkDumpHTML extends Jaws_Gadget_HTML
         }
 
         $url    = $GLOBALS['app']->GetSiteURL('/');
-        $title  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
-        $desc   = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_description');
-        $author = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author');
+        $title  = $this->GetRegistry('site_name', 'Settings');
+        $desc   = $this->GetRegistry('site_description', 'Settings');
+        $author = $this->GetRegistry('site_author', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
         $tpl->Load('Rdf.html');

@@ -98,7 +98,7 @@ class StaticPageAdminModel extends StaticPageModel
                 return $pages;
             }
 
-            $site_language = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_language');
+            $site_language = $this->GetRegistry('site_language', 'Settings');
             foreach ($pages as $page) {
                 $result = $this->AddPage($page['title'], 0, $page['fast_url'], $page['show_title'],
                                          $page['content'], $site_language, $page['published']);

@@ -738,13 +738,13 @@ class BlogAdminModel extends BlogModel
     {
         $title = urlencode(stripslashes($title));
         $excerpt = urlencode(stripslashes($excerpt));
-        $blog_name = urlencode(stripslashes($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name')));
+        $blog_name = urlencode(stripslashes($this->GetRegistry('site_name', 'Settings')));
         $permalink = urlencode($permalink);
 
         require_once PEAR_PATH. 'HTTP/Request.php';
 
         $options = array();
-        $timeout = (int)$GLOBALS['app']->Registry->Get('/gadgets/Settings/connection_timeout');
+        $timeout = (int)$this->GetRegistry('connection_timeout', 'Settings');
         $options['timeout'] = $timeout;
         if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
             if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {

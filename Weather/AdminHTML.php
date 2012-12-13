@@ -203,7 +203,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
                    '&sensor=false';
 
         $options = array();
-        $options['timeout'] = (int)$GLOBALS['app']->Registry->Get('/gadgets/Settings/connection_timeout');
+        $options['timeout'] = (int)$this->GetRegistry('connection_timeout', 'Settings');
         if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
             if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {
                 $options['proxy_user'] = $this->GetRegistry('proxy_user', 'Settings');

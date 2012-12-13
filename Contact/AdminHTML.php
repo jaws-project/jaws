@@ -198,7 +198,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $recipientCombo->setStyle('width: 220px;');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
         $recipientCombo->AddOption('', -1);
-        $recipientCombo->AddOption($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'), 0);
+        $recipientCombo->AddOption($this->GetRegistry('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -312,7 +312,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
         $recipientCombo->SetID('rid');
         $recipientCombo->setStyle('width: 262px;');
-        $recipientCombo->AddOption($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'), 0);
+        $recipientCombo->AddOption($this->GetRegistry('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -445,8 +445,8 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         $jDate = $GLOBALS['app']->loadDate();
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
-        $site_language = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_language');
+        $site_name = $this->GetRegistry('site_name', 'Settings');
+        $site_language = $this->GetRegistry('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
@@ -905,7 +905,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             $message = strip_tags($message);
         }
 
-        $site_language = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_language');
+        $site_language = $this->GetRegistry('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
@@ -915,7 +915,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('message', $message);
 
-        $site_name = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+        $site_name = $this->GetRegistry('site_name', 'Settings');
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);

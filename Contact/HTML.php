@@ -184,7 +184,7 @@ class ContactHTML extends Jaws_Gadget_HTML
         $from_name  = $contact['name'];
         $from_email = $contact['email'];
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+        $site_name  = $this->GetRegistry('site_name', 'Settings');
 
         $format = $this->GetRegistry('email_format');
         if ($format == 'html') {

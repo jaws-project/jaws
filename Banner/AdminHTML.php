@@ -297,8 +297,8 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
-        $startTime->setLanguageCode($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_language'));
-        $startTime->setCalType($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_type'));
+        $startTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
+        $startTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
@@ -309,8 +309,8 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_language'));
-        $stopTime->setCalType($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_type'));
+        $stopTime->setLanguageCode($this->GetRegistry('calendar_language'));
+        $stopTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 

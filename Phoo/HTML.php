@@ -227,7 +227,7 @@ class PhooHTML extends Jaws_Gadget_HTML
             $t->SetVariable('url', 'javascript: void();');
         }
 
-        $allow_comments_config = $GLOBALS['app']->Registry->Get('/gadgets/Settings/allow_comments');
+        $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
         switch ($allow_comments_config) {
             case 'restricted':
                 $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -833,7 +833,7 @@ class PhooHTML extends Jaws_Gadget_HTML
 
         $url = $this->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
 
-        $allow_comments_config = $GLOBALS['app']->Registry->Get('/gadgets/Settings/allow_comments');
+        $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
         $restricted = $allow_comments_config == 'restricted';
         $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
 
