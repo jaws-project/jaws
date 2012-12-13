@@ -386,7 +386,6 @@ class Installer_Database extends JawsInstallerStage
                     array('/config/cookie/session', 'false'),
                     array('/config/cookie/secure', 'false'),
                     array('/config/gzip_compression', 'false'),
-                    array('/config/layoutmode', '4'),
                     array('/config/use_gravatar', 'no'),
                     array('/config/gravatar_rating', 'G'),
                     array('/config/editor', 'TextArea'),

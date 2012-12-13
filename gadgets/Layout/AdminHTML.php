@@ -254,7 +254,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $theme = $request->get('theme', 'post');
-        $mode = $request->get('mode', 'post');
 
         $tpl = new Jaws_Template('', JAWS_COMPONENT_OTHERS);
         $layout_file = JAWS_THEMES. $theme . '/layout.html';
@@ -281,41 +280,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
         $sections = $model->GetLayoutSections();
 
-        // Backwards compatibility for layoutmode
-        if ($mode != $GLOBALS['app']->Registry->Get('/config/layoutmode')) {
-            switch($mode) {
-                // Two bars...
-                case 1: 
-                        // Do nothing...
-                        break;
-                // Left bar
-                case 2: 
-                        // Disable right bar (bar2)
-                        if (isset($tpl->Blocks['layout']->InnerBlock['bar2'])) {
-                            $tpl->Blocks['layout']->InnerBlock['bar2'] = null;
-                        }
-                        break;
-                // Right bar 
-                case 3: 
-                        // Disable left bar (bar1)
-                        if (isset($tpl->Blocks['layout']->InnerBlock['bar1'])) {
-                            $tpl->Blocks['layout']->InnerBlock['bar1'] = null;
-                        }
-                        break;
-                // No bars
-                case 4:
-                        // Disable left bar (bar1)
-                        if (isset($tpl->Blocks['layout']->InnerBlock['bar1'])) {
-                            $tpl->Blocks['layout']->InnerBlock['bar1'] = null;
-                        }
-                        // Disable right bar (bar2)
-                        if (isset($tpl->Blocks['layout']->InnerBlock['bar2'])) {
-                            $tpl->Blocks['layout']->InnerBlock['bar2'] = null;
-                        }
-                        break;
-            }
-        }
-
         foreach ($sections as $s) {
             if (!isset($tpl->Blocks['layout']->InnerBlock[$s['section']])) {
                 if (isset($tpl->Blocks['layout']->InnerBlock[$s['section'] . '_narrow'])) {
@@ -338,11 +302,6 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         }
         
         $GLOBALS['app']->Registry->Set('/config/theme', $theme);
-
-        // Save mode if exists...
-        if ($mode != '') {
-            $GLOBALS['app']->Registry->Set('/config/layoutmode', $mode);
-        }
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }
