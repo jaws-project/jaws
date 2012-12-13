@@ -237,7 +237,7 @@ class SysInfoModel extends Jaws_Gadget_Model
                     array('title' => "Default gadget",
                           'value' => $this->GetRegistry('main_gadget', 'Settings')),
                     array('title' => "Authentication method",
-                          'value' => $$this->GetRegistry('auth_method', 'Users')),
+                          'value' => $this->GetRegistry('auth_method', 'Users')),
                     array('title' => "Mailer",
                           'value' => $this->GetRegistry('mailer', 'Settings')),
                     array('title' => "FTP",
