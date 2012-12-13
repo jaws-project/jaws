@@ -20,9 +20,62 @@ class SettingsAdminModel extends Jaws_Gadget_Model
      */
     function InstallGadget()
     {
+        $robots = array(
+            'Yahoo! Slurp', 'Baiduspider', 'Googlebot', 'msnbot', 'Gigabot', 'ia_archiver',
+            'yacybot', 'http://www.WISEnutbot.com', 'psbot', 'msnbot-media', 'Ask Jeeves',
+        );
+
+        $uniqueKey =  sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                              mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+                              mt_rand( 0, 0x0fff ) | 0x4000,
+                              mt_rand( 0, 0x3fff ) | 0x8000,
+                              mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ) );
+        $uniqueKey = md5($uniqueKey);
+
         // Registry keys
         $GLOBALS['app']->Registry->NewKeyEx(
             array('/gadgets/Settings/pluggable',   'false'),
+            array('/gadgets/Settings/admin_script', ''),
+            array('/gadgets/Settings/http_auth', 'false'),
+            array('/gadgets/Settings/realm', 'Jaws Control Panel'),
+            array('/gadgets/Settings/key', $uniqueKey),
+            array('/gadgets/Settings/theme', 'jaws'),
+            array('/gadgets/Settings/date_format', 'd MN Y'),
+            array('/gadgets/Settings/calendar_type', 'Gregorian'),
+            array('/gadgets/Settings/calendar_language', 'en'),
+            array('/gadgets/Settings/timezone', 'UTC'),
+            array('/gadgets/Settings/gzip_compression', 'false'),
+            array('/gadgets/Settings/use_gravatar', 'no'),
+            array('/gadgets/Settings/gravatar_rating', 'G'),
+            array('/gadgets/Settings/editor', 'TextArea'),
+            array('/gadgets/Settings/editor_tinymce_toolbar', ''),
+            array('/gadgets/Settings/editor_ckeditor_toolbar', ''),
+            array('/gadgets/Settings/browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
+            array('/gadgets/Settings/allow_comments', 'true'),
+            array('/gadgets/Settings/controlpanel_name', 'ControlPanel'),
+            array('/gadgets/Settings/show_viewsite', 'true'),
+            array('/gadgets/Settings/site_url', ''),
+            array('/gadgets/Settings/cookie_precedence', 'false'),
+            array('/gadgets/Settings/robots', implode(',', $robots)),
+            array('/gadgets/Settings/connection_timeout', '5'),           // per second
+            array('/gadgets/Settings/global_website', 'true'),            // global website?
+            array('/gadgets/Settings/img_driver', 'GD'),                  // image driver
+            array('/gadgets/Settings/site_status', 'enabled'),
+            array('/gadgets/Settings/site_name', ''),
+            array('/gadgets/Settings/site_slogan', ''),
+            array('/gadgets/Settings/site_comment', ''),
+            array('/gadgets/Settings/site_keywords', ''),
+            array('/gadgets/Settings/site_description', ''),
+            array('/gadgets/Settings/custom_meta', ''),
+            array('/gadgets/Settings/site_author', ''),
+            array('/gadgets/Settings/site_license', ''),
+            array('/gadgets/Settings/site_favicon', 'images/jaws.png'),
+            array('/gadgets/Settings/title_separator', '-'),
+            array('/gadgets/Settings/main_gadget', ''),
+            array('/gadgets/Settings/copyright', ''),
+            array('/gadgets/Settings/site_language', 'en'),
+            array('/gadgets/Settings/admin_language', 'en'),
+            array('/gadgets/Settings/site_email', ''),
             array('/gadgets/Settings/cookie_domain', ''),
             array('/gadgets/Settings/cookie_path', '/'),
             array('/gadgets/Settings/cookie_version', '0.4'),
@@ -235,7 +288,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 $settingValue = $settingValue;
             }
 
-            $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -276,7 +329,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             if (is_string($settingValue) && !empty($settingValue)) {
                 $settingValue = $settingValue;
             }
-            $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -311,7 +364,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             if (is_string($settingValue) && !empty($settingValue)) {
                 $settingValue = $settingValue;
             }
-            $GLOBALS['app']->Registry->Set('/config/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;

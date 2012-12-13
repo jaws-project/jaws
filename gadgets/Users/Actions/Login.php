@@ -241,7 +241,7 @@ class Users_Actions_Login extends UsersHTML
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
-                $admin_script = $GLOBALS['app']->Registry->Get('/config/admin_script');
+                $admin_script = $GLOBALS['app']->Registry->Get('/gadgets/Settings/admin_script');
                 $tpl->SetVariable('cpanel_url', empty($admin_script)? 'admin.php' : $admin_script);
                 $tpl->ParseBlock('UserLinks/cpanel');
             }

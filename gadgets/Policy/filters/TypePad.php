@@ -145,7 +145,7 @@ class TypePad
 
         require_once PEAR_PATH. 'HTTP/Request.php';
         $options = array();
-        $timeout = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');
+        $timeout = (int)$GLOBALS['app']->Registry->Get('/gadgets/Settings/connection_timeout');
         $options['timeout'] = $timeout;
         if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_enabled') == 'true') {
             if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_auth') == 'true') {
