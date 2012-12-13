@@ -128,8 +128,8 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $startTime->setLanguageCode($GLOBALS['app']->Registry->Get('/config/calendar_language'));
-        $startTime->setCalType($GLOBALS['app']->Registry->Get('/config/calendar_type'));
+        $startTime->setLanguageCode($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_language'));
+        $startTime->setCalType($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_type'));
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
 
@@ -140,8 +140,8 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($GLOBALS['app']->Registry->Get('/config/calendar_language'));
-        $stopTime->setCalType($GLOBALS['app']->Registry->Get('/config/calendar_type'));
+        $stopTime->setLanguageCode($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_language'));
+        $stopTime->setCalType($GLOBALS['app']->Registry->Get('/gadgets/Settings/calendar_type'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 

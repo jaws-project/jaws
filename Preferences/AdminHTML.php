@@ -55,7 +55,7 @@ class PreferencesAdminHTML extends Jaws_Gadget_HTML
         $checked = ($this->GetRegistry('display_timezone') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_TIMEZONE'), 'timezone', null, $checked);
 
-        $checked = ($GLOBALS['app']->Registry->Get('/config/cookie_precedence') == 'true');
+        $checked = ($GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_precedence') == 'true');
         $checks->AddOption(_t('PREFERENCES_COOKIE_PRECEDENCE'), 'cookie', null, $checked);
 
         $submit =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_UPDATE', _t('GLOBAL_SETTINGS')), STOCK_SAVE);

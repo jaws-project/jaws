@@ -61,7 +61,7 @@ class RssReaderLayoutHTML extends Jaws_Gadget_HTML
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
         $options = array();
-        $timeout = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');
+        $timeout = (int)$GLOBALS['app']->Registry->Get('/gadgets/Settings/connection_timeout');
         $options['timeout'] = $timeout;
         if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
             if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {

@@ -776,7 +776,7 @@ class BlogModel extends Jaws_Gadget_Model
         }
 
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $GLOBALS['app']->Registry->Get('/config/site_name');
+        $site_name  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('SendComment.html');
@@ -1109,15 +1109,15 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $this->_Atom->SetTitle($GLOBALS['app']->Registry->Get('/config/site_name'));
+        $this->_Atom->SetTitle($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
         $this->_Atom->SetLink($url);
         $this->_Atom->SetId($siteURL);
-        $this->_Atom->SetTagLine($GLOBALS['app']->Registry->Get('/config/site_slogan'));
-        $this->_Atom->SetAuthor($GLOBALS['app']->Registry->Get('/config/site_author'),
+        $this->_Atom->SetTagLine($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_slogan'));
+        $this->_Atom->SetAuthor($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $GLOBALS['app']->Registry->Get('/config/gate_email'));
+                                $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email'));
         $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
-        $this->_Atom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
+        $this->_Atom->SetCopyright($GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
 
         $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
@@ -1306,15 +1306,15 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $categoryAtom->SetTitle($GLOBALS['app']->Registry->Get('/config/site_name'));
+        $categoryAtom->SetTitle($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
         $categoryAtom->SetLink($url);
         $categoryAtom->SetId($siteURL);
         $categoryAtom->SetTagLine($catInfo['name']);
-        $categoryAtom->SetAuthor($GLOBALS['app']->Registry->Get('/config/site_author'),
+        $categoryAtom->SetAuthor($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'),
                                  $siteURL,
-                                 $GLOBALS['app']->Registry->Get('/config/gate_email'));
+                                 $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email'));
         $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
-        $categoryAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
+        $categoryAtom->SetCopyright($GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
         $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
         $objDate = $GLOBALS['app']->loadDate();
@@ -1460,14 +1460,14 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $commentAtom->SetTitle($GLOBALS['app']->Registry->Get('/config/site_name'));
+        $commentAtom->SetTitle($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
         $commentAtom->SetLink($url);
         $commentAtom->SetId($siteURL);
-        $commentAtom->SetAuthor($GLOBALS['app']->Registry->Get('/config/site_author'),
+        $commentAtom->SetAuthor($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $GLOBALS['app']->Registry->Get('/config/gate_email'));
+                                $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
-        $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
+        $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
@@ -1566,14 +1566,14 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $commentAtom->SetTitle($GLOBALS['app']->Registry->Get('/config/site_name'));
+        $commentAtom->SetTitle($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
         $commentAtom->SetLink($url);
         $commentAtom->SetId($siteURL);
-        $commentAtom->SetAuthor($GLOBALS['app']->Registry->Get('/config/site_author'),
+        $commentAtom->SetAuthor($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $GLOBALS['app']->Registry->Get('/config/gate_email'));
+                                $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
-        $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/config/copyright'));
+        $commentAtom->SetCopyright($GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
@@ -2379,8 +2379,8 @@ class BlogModel extends Jaws_Gadget_Model
         /**
          * TODO: Find some other default values for pingbacks/trackbacks
          */
-        $email = $GLOBALS['app']->Registry->Get('/config/gate_email');
-        $name  = $GLOBALS['app']->Registry->Get('/config/site_author');
+        $email = $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email');
+        $name  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author');
         $ip    = $_SERVER['REMOTE_ADDR'];
 
         $api = new Jaws_Comment($this->_Name);

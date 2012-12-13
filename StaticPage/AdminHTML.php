@@ -579,7 +579,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
             $vBox->Add($titleShowCombo);
         }
 
-        $language = (empty($language)) ? $GLOBALS['app']->Registry->Get('/config/site_language') : $language;
+        $language = (empty($language)) ? $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_language') : $language;
         $languageCombo =& Piwi::CreateWidget('Combo', 'language');
         //Load the Settings AdminModel to get a list of all available languages
         $languages = Jaws_Utils::GetLanguagesList();

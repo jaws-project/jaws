@@ -27,7 +27,7 @@ class ChatboxModel extends Jaws_Gadget_Model
 
         $subject  = _t('CHATBOX_COMMENT_MAIL_TITLE');
         $comment .= "<br /><br />";
-        $comment .= _t("CHATBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $GLOBALS['app']->Registry->Get('/config/site_name'));
+        $comment .= _t("CHATBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name'));
 
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');

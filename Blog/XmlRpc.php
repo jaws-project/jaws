@@ -100,7 +100,7 @@ function metaWeblog_getUsersBlogs($params)
 
     $struct = array();
     $siteurl = $GLOBALS['app']->GetSiteURL();
-    $sitename = $GLOBALS['app']->Registry->Get('/config/site_name');
+    $sitename = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
 
     $data = array(
         'isAdmin'  => new XML_RPC_Value('1', 'boolean'),

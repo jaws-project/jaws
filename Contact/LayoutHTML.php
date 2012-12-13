@@ -156,7 +156,7 @@ class ContactLayoutHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($recipients) || empty($recipients)) {
                 $recipients   = array();
                 $recipients[] = array('id'   => 0,
-                                      'name' => $GLOBALS['app']->Registry->Get('/config/site_author'));
+                                      'name' => $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'));
             }
 
             $rcpt = isset($last_message['contact_recipient'])? $last_message['contact_recipient'] : '';

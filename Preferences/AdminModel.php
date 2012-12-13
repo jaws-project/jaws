@@ -30,7 +30,7 @@ class PreferencesAdminModel extends PreferencesModel
         $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_timezone',          'true');
 
         //enable cookie precedence
-        $GLOBALS['app']->Registry->Set('/config/cookie_precedence', 'true');
+        $GLOBALS['app']->Registry->Set('/gadgets/Settings/cookie_precedence', 'true');
 
         return true;
     }
@@ -53,7 +53,7 @@ class PreferencesAdminModel extends PreferencesModel
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_timezone');
 
         //disable cookie precedence
-        $GLOBALS['app']->Registry->Set('/config/cookie_precedence', 'false');
+        $GLOBALS['app']->Registry->Set('/gadgets/Settings/cookie_precedence', 'false');
 
         return true;
     }
@@ -80,7 +80,7 @@ class PreferencesAdminModel extends PreferencesModel
         $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_timezone',          'true');
 
         //enable cookie precedence
-        $GLOBALS['app']->Registry->Set('/config/cookie_precedence', 'true');
+        $GLOBALS['app']->Registry->Set('/gadgets/Settings/cookie_precedence', 'true');
 
         return true;
     }
@@ -108,7 +108,7 @@ class PreferencesAdminModel extends PreferencesModel
             }
         }
 
-        $GLOBALS['app']->Registry->Set('/config/cookie_precedence', (empty($preferences_config['cookie_precedence'])? 'false' : 'true'));
+        $GLOBALS['app']->Registry->Set('/gadgets/Settings/cookie_precedence', (empty($preferences_config['cookie_precedence'])? 'false' : 'true'));
         $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
