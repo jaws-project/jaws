@@ -31,8 +31,16 @@ class UrlMapperAdminModel extends UrlMapperModel
         $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterEnablingGadget',      'AddGadgetMaps');
         $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
 
-        //registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/UrlMapper/pluggable', 'false');
+        // Registry keys
+        $GLOBALS['app']->Registry->NewKeyEx(array('/gadgets/UrlMapper/map_enabled',     'true'),
+                                            array('/gadgets/UrlMapper/map_use_file',    'true'),
+                                            array('/gadgets/UrlMapper/map_use_rewrite', 'false'),
+                                            array('/gadgets/UrlMapper/map_map_to_use',  'both'),
+                                            array('/gadgets/UrlMapper/map_custom_precedence', 'false'),
+                                            array('/gadgets/UrlMapper/map_restrict_multimap', 'false'),
+                                            array('/gadgets/UrlMapper/map_extensions',  'html'),
+                                            array('/gadgets/UrlMapper/map_use_aliases', 'true')
+                                            );
 
         return true;
     }
@@ -712,10 +720,10 @@ class UrlMapperAdminModel extends UrlMapperModel
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {
-        $res = $GLOBALS['app']->Registry->Set('/map/enabled', ($enabled === true)? 'true' : 'false');
-        $res = $res && $GLOBALS['app']->Registry->Set('/map/custom_precedence', ($precedence === true)?  'true' : 'false');
-        $res = $res && $GLOBALS['app']->Registry->Set('/map/extensions',  $extension);
-        $res = $res && $GLOBALS['app']->Registry->Set('/map/use_aliases', ($use_aliases === true)? 'true' : 'false');
+        $res = $GLOBALS['app']->Registry->Set('/gadgets/UrlMapper/map_enabled', ($enabled === true)? 'true' : 'false');
+        $res = $res && $GLOBALS['app']->Registry->Set('/gadgets/UrlMapper/map_custom_precedence', ($precedence === true)?  'true' : 'false');
+        $res = $res && $GLOBALS['app']->Registry->Set('/gadgets/UrlMapper/map_extensions',  $extension);
+        $res = $res && $GLOBALS['app']->Registry->Set('/gadgets/UrlMapper/map_use_aliases', ($use_aliases === true)? 'true' : 'false');
 
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);

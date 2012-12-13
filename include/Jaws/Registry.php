@@ -525,7 +525,7 @@ class Jaws_Registry
                 WHERE
                     [key_name] LIKE '/config/%'
                    OR
-                    [key_name] LIKE '/map/%'
+                    [key_name] LIKE '/gadgets/UrlMapper/map_%'
                    OR
                     [key_name] LIKE '/network/%'
                    OR

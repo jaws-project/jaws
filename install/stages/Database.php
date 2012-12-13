@@ -445,15 +445,7 @@ class Installer_Database extends JawsInstallerStage
                     array('/network/smtp_auth', 'false'),
                     array('/network/pipelining', 'false'),
                     array('/network/smtp_user', ''),
-                    array('/network/smtp_pass', ''),
-                    array('/map/enabled', 'true'),
-                    array('/map/use_file', 'true'),
-                    array('/map/use_rewrite', 'false'),
-                    array('/map/map_to_use', 'both'),
-                    array('/map/custom_precedence', 'false'),
-                    array('/map/restrict_multimap', 'false'),
-                    array('/map/extensions', 'html'),
-                    array('/map/use_aliases', 'false')
+                    array('/network/smtp_pass', '')
         );
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_DEBUG,$result->getMessage());

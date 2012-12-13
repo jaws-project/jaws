@@ -46,26 +46,26 @@ class Jaws_URLMapping
     function Jaws_URLMapping($enabled = null, $use_rewrite = null, $use_aliases = null, $extension = null)
     {
         if ($enabled === null) {
-            $enabled = ($GLOBALS['app']->Registry->Get('/map/enabled') == 'true');
+            $enabled = ($GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_enabled') == 'true');
         }
 
         if ($use_rewrite === null) {
-            $use_rewrite = ($GLOBALS['app']->Registry->Get('/map/use_rewrite') == 'true');
+            $use_rewrite = ($GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_use_rewrite') == 'true');
         }
 
         if ($use_aliases === null) {
-            $use_aliases = ($GLOBALS['app']->Registry->Get('/map/use_aliases') == 'true');
+            $use_aliases = ($GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_use_aliases') == 'true');
         }
 
         if ($extension === null) {
-            $extension = $GLOBALS['app']->Registry->Get('/map/extensions');
+            $extension = $GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_extensions');
         }
 
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
         $this->_use_rewrite       = $use_rewrite;
         $this->_use_aliases       = $use_aliases;
-        $this->_custom_precedence = $GLOBALS['app']->Registry->Get('/map/custom_precedence') == 'true';
-        $this->_restrict_multimap = $GLOBALS['app']->Registry->Get('/map/restrict_multimap') == 'true';
+        $this->_custom_precedence = $GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_custom_precedence') == 'true';
+        $this->_restrict_multimap = $GLOBALS['app']->Registry->Get('/gadgets/UrlMapper/map_restrict_multimap') == 'true';
         if (!empty($extension) && $extension{0} != '.') {
             $extension = '.'.$extension;
         }
