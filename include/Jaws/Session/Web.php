@@ -89,11 +89,11 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function SetCookie($name, $value, $minutes = 0, $httponly = false)
     {
-        $version = $GLOBALS['app']->Registry->Get('/config/cookie/version');
+        $version = $GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_version');
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
         $path    = $GLOBALS['app']->getSiteURL('/', true);
-        $domain  = '';//$GLOBALS['app']->Registry->Get('/config/cookie/domain');
-        $secure  = ($GLOBALS['app']->Registry->Get('/config/cookie/secure') == 'false') ? false : true;
+        $domain  = '';//$GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_domain');
+        $secure  = ($GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_secure') == 'false') ? false : true;
         $domain .= $httponly? '; HttpOnly' : '';
         setcookie($name, $value, $expires, $path, $domain);
     }
@@ -107,7 +107,7 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function GetCookie($name)
     {
-        $version = $GLOBALS['app']->Registry->Get('/config/cookie/version');
+        $version = $GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_version');
         $request =& Jaws_Request::getInstance();
         return $request->get($name, 'cookie');
     }

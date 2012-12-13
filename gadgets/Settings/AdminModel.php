@@ -23,6 +23,11 @@ class SettingsAdminModel extends Jaws_Gadget_Model
         // Registry keys
         $GLOBALS['app']->Registry->NewKeyEx(
             array('/gadgets/Settings/pluggable',   'false'),
+            array('/gadgets/Settings/cookie_domain', ''),
+            array('/gadgets/Settings/cookie_path', '/'),
+            array('/gadgets/Settings/cookie_version', '0.4'),
+            array('/gadgets/Settings/cookie_session', 'false'),
+            array('/gadgets/Settings/cookie_secure', 'false'),
             array('/gadgets/Settings/ftp_enabled', 'false'),
             array('/gadgets/Settings/ftp_host', '127.0.0.1'),
             array('/gadgets/Settings/ftp_port', '21'),

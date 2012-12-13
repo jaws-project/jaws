@@ -188,7 +188,6 @@ class Installer_Settings extends JawsInstallerStage
         $settings['/config/site_language']    = $post['site_language'];
         $settings['/config/admin_language']   = $post['site_language'];
         $settings['/config/site_email']       = $_SESSION['install']['CreateUser']['email'];
-        $settings['/config/cookie/domain']    = '';
         foreach ($settings as $key => $value) {
             $GLOBALS['app']->Registry->NewKey($key, $value);
         }
