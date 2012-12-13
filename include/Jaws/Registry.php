@@ -527,7 +527,7 @@ class Jaws_Registry
                    OR
                     [key_name] LIKE '/gadgets/UrlMapper/map_%'
                    OR
-                    [key_name] LIKE '/network/%'
+                    [key_name] LIKE '/gadgets/Settings/%'
                    OR
                     [key_name] LIKE '/gadgets/Policy/%'
                    OR

@@ -523,7 +523,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $mailer->AddOption('sendmail',   'sendmail');
         $mailer->AddOption('SMTP',       'smtp');
         $mailer->AddEvent(ON_CHANGE, 'javascript: changeMailer();');
-        $mailer->SetDefault($GLOBALS['app']->Registry->Get('/network/mailer'));
+        $mailer->SetDefault($this->GetRegistry('mailer'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'mailer');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_MAILER'));
@@ -533,7 +533,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Site email
         $tpl->SetBlock('settings/item');
-        $siteEmail =& Piwi::CreateWidget('Entry', 'gate_email', $GLOBALS['app']->Registry->Get('/network/gate_email'));
+        $siteEmail =& Piwi::CreateWidget('Entry', 'gate_email', $this->GetRegistry('gate_email'));
         $siteEmail->setID('gate_email');
         $siteEmail->setSize(24);
         $siteEmail->setStyle('direction: ltr');
@@ -545,7 +545,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Email title
         $tpl->SetBlock('settings/item');
-        $emailName =& Piwi::CreateWidget('Entry', 'gate_title', $GLOBALS['app']->Registry->Get('/network/gate_title'));
+        $emailName =& Piwi::CreateWidget('Entry', 'gate_title', $this->GetRegistry('gate_title'));
         $emailName->setID('gate_title');
         $emailName->setSize(24);
         $tpl->SetVariable('field-name', 'gate_title');
@@ -558,7 +558,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $smtpVrfy->setID('smtp_vrfy');
         $smtpVrfy->AddOption(_t('GLOBAL_NO'),  'false');
         $smtpVrfy->AddOption(_t('GLOBAL_YES'), 'true');
-        $smtpVrfy->SetDefault($GLOBALS['app']->Registry->Get('/network/smtp_vrfy'));
+        $smtpVrfy->SetDefault($this->GetRegistry('smtp_vrfy'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_vrfy');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_VRFY'));
@@ -568,7 +568,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // sendmail path
         $tpl->SetBlock('settings/item');
-        $sendmailPath =& Piwi::CreateWidget('Entry', 'sendmail_path', $GLOBALS['app']->Registry->Get('/network/sendmail_path'));
+        $sendmailPath =& Piwi::CreateWidget('Entry', 'sendmail_path', $this->GetRegistry('sendmail_path'));
         $sendmailPath->setID('sendmail_path');
         $sendmailPath->setSize(24);
         $sendmailPath->setStyle('direction: ltr');
@@ -580,7 +580,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // SMTP Host
         $tpl->SetBlock('settings/item');
-        $smtpHost =& Piwi::CreateWidget('Entry', 'smtp_host', $GLOBALS['app']->Registry->Get('/network/smtp_host'));
+        $smtpHost =& Piwi::CreateWidget('Entry', 'smtp_host', $this->GetRegistry('smtp_host'));
         $smtpHost->setID('smtp_host');
         $smtpHost->setSize(24);
         $smtpHost->setStyle('direction: ltr');
@@ -592,7 +592,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // SMTP Port
         $tpl->SetBlock('settings/item');
-        $smtpPort =& Piwi::CreateWidget('Entry', 'smtp_port', $GLOBALS['app']->Registry->Get('/network/smtp_port'));
+        $smtpPort =& Piwi::CreateWidget('Entry', 'smtp_port', $this->GetRegistry('smtp_port'));
         $smtpPort->setID('smtp_port');
         $smtpPort->setSize(10);
         $smtpPort->setStyle('direction: ltr');
@@ -606,7 +606,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $smtpAuth->setID('smtp_auth');
         $smtpAuth->AddOption(_t('GLOBAL_NO'),  'false');
         $smtpAuth->AddOption(_t('GLOBAL_YES'), 'true');
-        $smtpAuth->SetDefault($GLOBALS['app']->Registry->Get('/network/smtp_auth'));
+        $smtpAuth->SetDefault($this->GetRegistry('smtp_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_auth');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_AUTH'));
@@ -615,7 +615,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // SMTPAuth Username
         $tpl->SetBlock('settings/item');
-        $smtpUser =& Piwi::CreateWidget('Entry', 'smtp_user', $GLOBALS['app']->Registry->Get('/network/smtp_user'));
+        $smtpUser =& Piwi::CreateWidget('Entry', 'smtp_user', $this->GetRegistry('smtp_user'));
         $smtpUser->setID('smtp_user');
         $smtpUser->setSize(24);
         $smtpUser->setStyle('direction: ltr');
@@ -664,7 +664,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $useFTP->setID('ftp_enabled');
         $useFTP->AddOption(_t('GLOBAL_NO'),  'false');
         $useFTP->AddOption(_t('GLOBAL_YES'), 'true');
-        $useFTP->SetDefault($GLOBALS['app']->Registry->Get('/network/ftp_enabled'));
+        $useFTP->SetDefault($this->GetRegistry('ftp_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'ftp_enabled');
         $tpl->SetVariable('label', _t('GLOBAL_ENABLED'));
@@ -674,7 +674,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // FTP Host
         $tpl->SetBlock('settings/item');
-        $ftpHost =& Piwi::CreateWidget('Entry', 'ftp_host', $GLOBALS['app']->Registry->Get('/network/ftp_host'));
+        $ftpHost =& Piwi::CreateWidget('Entry', 'ftp_host', $this->GetRegistry('ftp_host'));
         $ftpHost->setID('ftp_host');
         $ftpHost->setSize(24);
         $ftpHost->setStyle('direction: ltr');
@@ -686,7 +686,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // FTP Port
         $tpl->SetBlock('settings/item');
-        $ftpPort =& Piwi::CreateWidget('Entry', 'ftp_port', $GLOBALS['app']->Registry->Get('/network/ftp_port'));
+        $ftpPort =& Piwi::CreateWidget('Entry', 'ftp_port', $this->GetRegistry('ftp_port'));
         $ftpPort->setID('ftp_port');
         $ftpPort->setSize(10);
         $ftpPort->setStyle('direction: ltr');
@@ -700,7 +700,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $ftpMode->setID('ftp_mode');
         $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_ACTIVE'),  'active');
         $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_PASSIVE'), 'passive');
-        $ftpMode->SetDefault($GLOBALS['app']->Registry->Get('/network/ftp_mode'));
+        $ftpMode->SetDefault($this->GetRegistry('ftp_mode'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'ftp_mode');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_MODE'));
@@ -709,7 +709,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // FTP Username
         $tpl->SetBlock('settings/item');
-        $ftpUser =& Piwi::CreateWidget('Entry', 'ftp_user', $GLOBALS['app']->Registry->Get('/network/ftp_user'));
+        $ftpUser =& Piwi::CreateWidget('Entry', 'ftp_user', $this->GetRegistry('ftp_user'));
         $ftpUser->setID('ftp_user');
         $ftpUser->setSize(24);
         $ftpUser->setStyle('direction: ltr');
@@ -731,7 +731,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // FTP Root Path
         $tpl->SetBlock('settings/item');
-        $ftpRoot =& Piwi::CreateWidget('Entry', 'ftp_root', $GLOBALS['app']->Registry->Get('/network/ftp_root'));
+        $ftpRoot =& Piwi::CreateWidget('Entry', 'ftp_root', $this->GetRegistry('ftp_root'));
         $ftpRoot->setID('ftp_root');
         $ftpRoot->setSize(24);
         $ftpRoot->setStyle('direction: ltr');
@@ -769,7 +769,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $useProxy->setID('proxy_enabled');
         $useProxy->AddOption(_t('GLOBAL_NO'),  'false');
         $useProxy->AddOption(_t('GLOBAL_YES'), 'true');
-        $useProxy->SetDefault($GLOBALS['app']->Registry->Get('/network/proxy_enabled'));
+        $useProxy->SetDefault($this->GetRegistry('proxy_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_enabled');
         $tpl->SetVariable('label', _t('GLOBAL_ENABLED'));
@@ -779,7 +779,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Proxy Host
         $tpl->SetBlock('settings/item');
-        $proxyHost =& Piwi::CreateWidget('Entry', 'proxy_host', $GLOBALS['app']->Registry->Get('/network/proxy_host'));
+        $proxyHost =& Piwi::CreateWidget('Entry', 'proxy_host', $this->GetRegistry('proxy_host'));
         $proxyHost->setID('proxy_host');
         $proxyHost->setSize(24);
         $proxyHost->setStyle('direction: ltr');
@@ -791,7 +791,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Proxy Port
         $tpl->SetBlock('settings/item');
-        $proxyPort =& Piwi::CreateWidget('Entry', 'proxy_port', $GLOBALS['app']->Registry->Get('/network/proxy_port'));
+        $proxyPort =& Piwi::CreateWidget('Entry', 'proxy_port', $this->GetRegistry('proxy_port'));
         $proxyPort->setID('proxy_port');
         $proxyPort->setSize(10);
         $proxyPort->setStyle('direction: ltr');
@@ -805,7 +805,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
         $proxyAuth->setID('proxy_auth');
         $proxyAuth->AddOption(_t('GLOBAL_NO'),  'false');
         $proxyAuth->AddOption(_t('GLOBAL_YES'), 'true');
-        $proxyAuth->SetDefault($GLOBALS['app']->Registry->Get('/network/proxy_auth'));
+        $proxyAuth->SetDefault($this->GetRegistry('proxy_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_auth');
         $tpl->SetVariable('label', _t('SETTINGS_PROXY_AUTH'));
@@ -814,7 +814,7 @@ class SettingsAdminHTML extends Jaws_Gadget_HTML
 
         // Proxy Username
         $tpl->SetBlock('settings/item');
-        $proxyUser =& Piwi::CreateWidget('Entry', 'proxy_user', $GLOBALS['app']->Registry->Get('/network/proxy_user'));
+        $proxyUser =& Piwi::CreateWidget('Entry', 'proxy_user', $this->GetRegistry('proxy_user'));
         $proxyUser->setID('proxy_user');
         $proxyUser->setSize(24);
         $proxyUser->setStyle('direction: ltr');

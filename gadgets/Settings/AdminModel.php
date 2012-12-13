@@ -20,7 +20,37 @@ class SettingsAdminModel extends Jaws_Gadget_Model
      */
     function InstallGadget()
     {
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Settings/pluggable', 'false');
+        // Registry keys
+        $GLOBALS['app']->Registry->NewKeyEx(
+            array('/gadgets/Settings/pluggable',   'false'),
+            array('/gadgets/Settings/ftp_enabled', 'false'),
+            array('/gadgets/Settings/ftp_host', '127.0.0.1'),
+            array('/gadgets/Settings/ftp_port', '21'),
+            array('/gadgets/Settings/ftp_mode', 'passive'),
+            array('/gadgets/Settings/ftp_user', ''),
+            array('/gadgets/Settings/ftp_pass', ''),
+            array('/gadgets/Settings/ftp_root', ''),
+            array('/gadgets/Settings/proxy_enabled', 'false'),
+            array('/gadgets/Settings/proxy_type', 'http'),
+            array('/gadgets/Settings/proxy_host', ''),
+            array('/gadgets/Settings/proxy_port', '80'),
+            array('/gadgets/Settings/proxy_auth', 'false'),
+            array('/gadgets/Settings/proxy_user', ''),
+            array('/gadgets/Settings/proxy_pass', ''),
+            array('/gadgets/Settings/mailer', 'phpmail'),
+            array('/gadgets/Settings/gate_email', ''),
+            array('/gadgets/Settings/gate_title', ''),
+            array('/gadgets/Settings/smtp_vrfy', 'false'),
+            array('/gadgets/Settings/sendmail_path', '/usr/sbin/sendmail'),
+            array('/gadgets/Settings/sendmail_args', ''),
+            array('/gadgets/Settings/smtp_host', '127.0.0.1'),
+            array('/gadgets/Settings/smtp_port', '25'),
+            array('/gadgets/Settings/smtp_auth', 'false'),
+            array('/gadgets/Settings/pipelining', 'false'),
+            array('/gadgets/Settings/smtp_user', ''),
+            array('/gadgets/Settings/smtp_pass', '')
+        );
+
         return true;
     }
 
@@ -323,7 +353,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $GLOBALS['app']->Registry->Set('/network/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
@@ -365,7 +395,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $GLOBALS['app']->Registry->Set('/network/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
@@ -406,7 +436,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $GLOBALS['app']->Registry->Set('/network/' . $settingKey, $settingValue);
+            $GLOBALS['app']->Registry->Set('/gadgets/Settings/' . $settingKey, $settingValue);
         }
         $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);

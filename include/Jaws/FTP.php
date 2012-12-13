@@ -82,12 +82,12 @@ class Jaws_FTP
      */
     function LoadFTPSettings()
     {
-        $this->_hostname  = $GLOBALS['app']->Registry->Get('/network/ftp_host');
-        $this->_port      = $GLOBALS['app']->Registry->Get('/network/ftp_port');
-        $this->_passive   = $GLOBALS['app']->Registry->Get('/network/ftp_mode') == 'passive';
-        $this->_username  = $GLOBALS['app']->Registry->Get('/network/ftp_user');
-        $this->_password  = $GLOBALS['app']->Registry->Get('/network/ftp_pass');
-        $this->_root      = $GLOBALS['app']->Registry->Get('/network/ftp_root');
+        $this->_hostname  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_host');
+        $this->_port      = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_port');
+        $this->_passive   = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_mode') == 'passive';
+        $this->_username  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_user');
+        $this->_password  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_pass');
+        $this->_root      = $GLOBALS['app']->Registry->Get('/gadgets/Settings/ftp_root');
 
         return true;
     }
