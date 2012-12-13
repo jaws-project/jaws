@@ -297,7 +297,7 @@ class Jaws_URLMapping
      * @access  public
      * @param   string  $option   Can be:
      *
-     *          - site_url: Will take what is in /config/url
+     *          - site_url: Will take what is in /gadgets/Settings/url
      *          - uri_location: Will use the URI location (NO HTTP protocol defined)
      *          - nothing: Use nothing
      * @return  string URI prefix

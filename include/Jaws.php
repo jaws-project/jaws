@@ -184,8 +184,8 @@ class Jaws
         $this->_Preferences = array(
             'theme'             => $this->Registry->Get('/gadgets/Settings/theme'),
             'language'          => $this->Registry->Get(JAWS_SCRIPT == 'index'?
-                                                        '/config/site_language':
-                                                        '/config/admin_language'),
+                                                        '/gadgets/Settings/site_language':
+                                                        '/gadgets/Settings/admin_language'),
             'editor'            => $this->Registry->Get('/gadgets/Settings/editor'),
             'timezone'          => $this->Registry->Get('/gadgets/Settings/timezone'),
             'calendar_type'     => $this->Registry->Get('/gadgets/Settings/calendar_type'),
@@ -867,7 +867,7 @@ class Jaws
      * @param   string  $value   Value of the editor/content (optional)
      * @param   bool    $filter  Convert special characters to HTML entities
      * @param   string  $label   Label that the editor will have (optional)
-     * @return  object  The editor in /config/editor
+     * @return  object  The editor in /gadgets/Settings/editor
      */
     function &LoadEditor($gadget, $name, $value = '', $filter = true, $label = '')
     {
