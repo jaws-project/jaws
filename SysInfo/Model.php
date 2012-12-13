@@ -247,7 +247,7 @@ class SysInfoModel extends Jaws_Gadget_Model
                     array('title' => "Default theme",
                           'value' => $theme['name']),
                     array('title' => "Encryption",
-                          'value' => $GLOBALS['app']->Registry->Get('/crypt/enabled')),
+                          'value' => $this->GetRegistry('crypt_enabled', 'Policy')),
                     array('title' => "GZip compression",
                           'value' => $GLOBALS['app']->Registry->Get('/config/gzip_compression')),
                     array('title' => "WWW-Authentication",
