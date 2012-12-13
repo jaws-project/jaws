@@ -626,4 +626,60 @@ class PolicyAdminModel extends PolicyModel
         return $result;
     }
 
+    /**
+     * Submit spam
+     *
+     * @access  public
+     * @param   string  $permalink
+     * @param   string  $type
+     * @param   string  $author
+     * @param   string  $author_email
+     * @param   string  $author_url
+     * @param   string  $content
+     * @return  void
+     */
+    function SubmitSpam($permalink, $type, $author, $author_email, $author_url, $content)
+    {
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'))
+        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        {
+            return false;
+        }
+
+        static $objFilter;
+        if (!isset($objFilter)) {
+            $objFilter = new $filter();
+        }
+
+        $objFilter->SubmitSpam($permalink, $type, $author, $author_email, $author_url, $content);
+    }
+
+    /**
+     * Submit ham
+     *
+     * @access  public
+     * @param   string  $permalink
+     * @param   string  $type
+     * @param   string  $author
+     * @param   string  $author_email
+     * @param   string  $author_url
+     * @param   string  $content
+     * @return  void
+     */
+    function SubmitHam($permalink, $type, $author, $author_email, $author_url, $content)
+    {
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'))
+        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        {
+            return false;
+        }
+
+        static $objFilter;
+        if (!isset($objFilter)) {
+            $objFilter = new $filter();
+        }
+
+        $objFilter->SubmitHam($permalink, $type, $author, $author_email, $author_url, $content);
+    }
+
 }

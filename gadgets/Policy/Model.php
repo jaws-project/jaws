@@ -72,7 +72,7 @@ class PolicyModel extends Jaws_Gadget_Model
         return $this->GetRegistry('block_undefined_agent') == 'true';
     }
 
-   /**
+    /**
      * Load and get captcha
      *
      * @access  public
@@ -109,7 +109,7 @@ class PolicyModel extends Jaws_Gadget_Model
         return true;
     }
 
-   /**
+    /**
      * Load and get captcha
      *
      * @access  public
@@ -141,6 +141,34 @@ class PolicyModel extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+    /**
+     * Is spam?
+     *
+     * @access  public
+     * @param   string  $permalink
+     * @param   string  $type
+     * @param   string  $author
+     * @param   string  $author_email
+     * @param   string  $author_url
+     * @param   string  $content
+     * @return  bool    True if spam otherwise false
+     */
+    function IsSpam($permalink, $type, $author, $author_email, $author_url, $content)
+    {
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'))
+        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        {
+            return false;
+        }
+
+        static $objFilter;
+        if (!isset($objFilter)) {
+            $objFilter = new $filter();
+        }
+
+        return $objFilter->IsSpam($permalink, $type, $author, $author_email, $author_url, $content);
     }
 
 }
