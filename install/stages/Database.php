@@ -407,14 +407,6 @@ class Installer_Database extends JawsInstallerStage
                     array('/config/connection_timeout', '5'),           // per second
                     array('/config/global_website', 'true'),            // global website?
                     array('/config/img_driver', 'GD'),                  // image driver
-                    array('/policy/passwd_bad_count',         '7'),
-                    array('/policy/passwd_lockedout_time',    '60'),    // per second
-                    array('/policy/passwd_max_age',           '0'),     // per day  0 = resistant
-                    array('/policy/passwd_min_length',        '0'),
-                    array('/policy/passwd_complexity',        'no'),
-                    array('/policy/xss_parsing_level',        'paranoid'),
-                    array('/policy/session_idle_timeout',     '30'),    // per minute
-                    array('/policy/session_remember_timeout', '720'),   // hours = 1 month
                     array('/gadgets/enabled_items', ''),
                     array('/gadgets/core_items', ''),
                     array('/gadgets/autoload_items', ''),

@@ -529,7 +529,7 @@ class Jaws_Registry
                    OR
                     [key_name] LIKE '/network/%'
                    OR
-                    [key_name] LIKE '/policy/%'
+                    [key_name] LIKE '/gadgets/Policy/%'
                    OR
                     [key_name] LIKE '/gadgets/Policy/crypt_%'
                    OR

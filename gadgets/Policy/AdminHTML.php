@@ -509,7 +509,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $complexity =& Piwi::CreateWidget('Combo', 'passwd_complexity');
         $complexity->AddOption(_t('GLOBAL_YES'), 'yes');
         $complexity->AddOption(_t('GLOBAL_NO'),  'no');
-        $complexity->SetDefault($GLOBALS['app']->Registry->Get('/policy/passwd_complexity'));
+        $complexity->SetDefault($this->GetRegistry('passwd_complexity'));
         $tpl->SetVariable('lbl_passwd_complexity', _t('POLICY_PASSWD_COMPLEXITY'));
         $tpl->SetVariable('passwd_complexity', $complexity->Get());
 
@@ -519,7 +519,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $badCount->AddOption(_t('GLOBAL_TIMES', 3), '3');
         $badCount->AddOption(_t('GLOBAL_TIMES', 5), '5');
         $badCount->AddOption(_t('GLOBAL_TIMES', 7), '7');
-        $badCount->SetDefault($GLOBALS['app']->Registry->Get('/policy/passwd_bad_count'));
+        $badCount->SetDefault($this->GetRegistry('passwd_bad_count'));
         $tpl->SetVariable('lbl_passwd_bad_count', _t('POLICY_PASSWD_BAD_COUNT'));
         $tpl->SetVariable('passwd_bad_count', $badCount->Get());
 
@@ -531,7 +531,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES',  5), 300);
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 10), 600);
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 900);
-        $lockedout->SetDefault($GLOBALS['app']->Registry->Get('/policy/passwd_lockedout_time'));
+        $lockedout->SetDefault($this->GetRegistry('passwd_lockedout_time'));
         $tpl->SetVariable('lbl_passwd_lockedout_time', _t('POLICY_PASSWD_LOCKEDOUT_TIME'));
         $tpl->SetVariable('passwd_lockedout_time', $lockedout->Get());
 
@@ -544,7 +544,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $maxAge->AddOption(_t('GLOBAL_DATE_WEEKS', 2),   14);
         $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 1),   30);
         $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 3),   90);
-        $maxAge->SetDefault($GLOBALS['app']->Registry->Get('/policy/passwd_max_age'));
+        $maxAge->SetDefault($this->GetRegistry('passwd_max_age'));
         $tpl->SetVariable('lbl_passwd_max_age', _t('POLICY_PASSWD_MAX_AGE'));
         $tpl->SetVariable('passwd_max_age', $maxAge->Get());
 
@@ -556,14 +556,14 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $minLen->AddOption('8',   8);
         $minLen->AddOption('10', 10);
         $minLen->AddOption('15', 15);
-        $minLen->SetDefault($GLOBALS['app']->Registry->Get('/policy/passwd_min_length'));
+        $minLen->SetDefault($this->GetRegistry('passwd_min_length'));
         $tpl->SetVariable('lbl_passwd_min_length', _t('POLICY_PASSWD_MIN_LEN'));
         $tpl->SetVariable('passwd_min_length', $minLen->Get());
 
         $parsingLevel =& Piwi::CreateWidget('Combo', 'xss_parsing_level');
         $parsingLevel->AddOption(_t('POLICY_XSS_PARSING_NORMAL'),   'normal');
         $parsingLevel->AddOption(_t('POLICY_XSS_PARSING_PARANOID'), 'paranoid');
-        $parsingLevel->SetDefault($GLOBALS['app']->Registry->Get('/policy/xss_parsing_level'));
+        $parsingLevel->SetDefault($this->GetRegistry('xss_parsing_level'));
         $tpl->SetVariable('lbl_xss_parsing_level', _t('POLICY_XSS_PARSING_LEVEL'));
         $tpl->SetVariable('xss_parsing_level', $parsingLevel->Get());
 
@@ -574,7 +574,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 15);
         $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 30), 30);
         $idleTimeout->AddOption(_t('GLOBAL_DATE_HOURS',    1), 60);
-        $idleTimeout->SetDefault($GLOBALS['app']->Registry->Get('/policy/session_idle_timeout'));
+        $idleTimeout->SetDefault($this->GetRegistry('session_idle_timeout'));
         $tpl->SetVariable('lbl_session_idle_timeout', _t('POLICY_SESSION_IDLE_TIMEOUT'));
         $tpl->SetVariable('session_idle_timeout', $idleTimeout->Get());
 
@@ -587,7 +587,7 @@ class PolicyAdminHTML extends Jaws_Gadget_HTML
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  1),  720);
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  6), 4320);
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH', 12), 8640);
-        $rememberTimeout->SetDefault($GLOBALS['app']->Registry->Get('/policy/session_remember_timeout'));
+        $rememberTimeout->SetDefault($this->GetRegistry('session_remember_timeout'));
         $tpl->SetVariable('lbl_session_remember_timeout', _t('POLICY_SESSION_REMEMBER_TIMEOUT'));
         $tpl->SetVariable('session_remember_timeout', $rememberTimeout->Get());
 

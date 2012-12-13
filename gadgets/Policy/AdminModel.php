@@ -27,22 +27,32 @@ class PolicyAdminModel extends PolicyModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKeyEx(array('/gadgets/Policy/block_undefined_ip',    'false'),
-                                            array('/gadgets/Policy/block_undefined_agent', 'false'),
-                                            array('/gadgets/Policy/allow_duplicate', 'no'),
-                                            array('/gadgets/Policy/filter',          'DISABLED'),
-                                            array('/gadgets/Policy/captcha',         'DISABLED'),
-                                            array('/gadgets/Policy/captcha_driver',  'MathCaptcha'),
-                                            array('/gadgets/Policy/obfuscator',      'DISABLED'),
-                                            array('/gadgets/Policy/akismet_key',          ''),
-                                            array('/gadgets/Policy/typepad_key',          ''),
-                                            array('/gadgets/Policy/crypt_enabled',        'false'),
-                                            array('/gadgets/Policy/crypt_pub_key',        ''),
-                                            array('/gadgets/Policy/crypt_pvt_key',        ''),
-                                            array('/gadgets/Policy/crypt_key_len',        '128'),
-                                            array('/gadgets/Policy/crypt_key_age',        '86400'),
-                                            array('/gadgets/Policy/crypt_key_start_date', '0')
-                                            );
+        $GLOBALS['app']->Registry->NewKeyEx(
+            array('/gadgets/Policy/block_undefined_ip',    'false'),
+            array('/gadgets/Policy/block_undefined_agent', 'false'),
+            array('/gadgets/Policy/allow_duplicate', 'no'),
+            array('/gadgets/Policy/filter',          'DISABLED'),
+            array('/gadgets/Policy/captcha',         'DISABLED'),
+            array('/gadgets/Policy/captcha_driver',  'MathCaptcha'),
+            array('/gadgets/Policy/obfuscator',      'DISABLED'),
+            array('/gadgets/Policy/akismet_key',          ''),
+            array('/gadgets/Policy/typepad_key',          ''),
+            array('/gadgets/Policy/crypt_enabled',        'false'),
+            array('/gadgets/Policy/crypt_pub_key',        ''),
+            array('/gadgets/Policy/crypt_pvt_key',        ''),
+            array('/gadgets/Policy/crypt_key_len',        '128'),
+            array('/gadgets/Policy/crypt_key_age',        '86400'),
+            array('/gadgets/Policy/crypt_key_start_date', '0'),
+            array('/gadgets/Policy/passwd_bad_count',         '7'),
+            array('/gadgets/Policy/passwd_lockedout_time',    '60'),    // per second
+            array('/gadgets/Policy/passwd_max_age',           '0'),     // per day  0 = resistant
+            array('/gadgets/Policy/passwd_min_length',        '0'),
+            array('/gadgets/Policy/passwd_complexity',        'no'),
+            array('/gadgets/Policy/xss_parsing_level',        'paranoid'),
+            array('/gadgets/Policy/session_idle_timeout',     '30'),    // per minute
+            array('/gadgets/Policy/session_remember_timeout', '720')    // hours = 1 month
+        );
+
         return true;
     }
 
@@ -543,14 +553,14 @@ class PolicyAdminModel extends PolicyModel
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
                                     $session_idle_timeout, $session_remember_timeout)
     {
-        $GLOBALS['app']->Registry->Set('/policy/passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
-        $GLOBALS['app']->Registry->Set('/policy/passwd_bad_count',      (int)$passwd_bad_count);
-        $GLOBALS['app']->Registry->Set('/policy/passwd_lockedout_time', (int)$passwd_lockedout_time);
-        $GLOBALS['app']->Registry->Set('/policy/passwd_max_age',        (int)$passwd_max_age);
-        $GLOBALS['app']->Registry->Set('/policy/passwd_min_length',     (int)$passwd_min_length);
-        $GLOBALS['app']->Registry->Set('/policy/xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
-        $GLOBALS['app']->Registry->Set('/policy/session_idle_timeout',     (int)$session_idle_timeout);
-        $GLOBALS['app']->Registry->Set('/policy/session_remember_timeout', (int)$session_remember_timeout);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_bad_count',      (int)$passwd_bad_count);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_lockedout_time', (int)$passwd_lockedout_time);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_max_age',        (int)$passwd_max_age);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_min_length',     (int)$passwd_min_length);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_idle_timeout',     (int)$session_idle_timeout);
+        $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_remember_timeout', (int)$session_remember_timeout);
         $GLOBALS['app']->Registry->Commit('core');
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;

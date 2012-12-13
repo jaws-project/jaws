@@ -57,7 +57,7 @@ class Jaws_Session_Web extends Jaws_Session
         // Create cookie
         $this->SetCookie(JAWS_SESSION_NAME,
                          $this->_SessionID.'-'.$this->GetAttribute('salt'),
-                         $remember? 60*(int)$GLOBALS['app']->Registry->Get('/policy/session_remember_timeout') : 0,
+                         $remember? 60*(int)$GLOBALS['app']->Registry->Get('/gadgets/Policy/session_remember_timeout') : 0,
                          false);
     }
 
