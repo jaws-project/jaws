@@ -60,13 +60,13 @@ class WeatherLayoutHTML extends Jaws_Gadget_HTML
 
         $options = array();
         $options['timeout'] = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');
-        if ($GLOBALS['app']->Registry->Get('/network/proxy_enabled') == 'true') {
-            if ($GLOBALS['app']->Registry->Get('/network/proxy_auth') == 'true') {
-                $options['proxy_user'] = $GLOBALS['app']->Registry->Get('/network/proxy_user');
-                $options['proxy_pass'] = $GLOBALS['app']->Registry->Get('/network/proxy_pass');
+        if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
+            if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->GetRegistry('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->GetRegistry('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $GLOBALS['app']->Registry->Get('/network/proxy_host');
-            $options['proxy_port'] = $GLOBALS['app']->Registry->Get('/network/proxy_port');
+            $options['proxy_host'] = $this->GetRegistry('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->GetRegistry('proxy_port', 'Settings');
         }
 
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
@@ -147,13 +147,13 @@ class WeatherLayoutHTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::isError($regions)) {
             $options = array();
             $options['timeout'] = (int)$GLOBALS['app']->Registry->Get('/config/connection_timeout');
-            if ($GLOBALS['app']->Registry->Get('/network/proxy_enabled') == 'true') {
-                if ($GLOBALS['app']->Registry->Get('/network/proxy_auth') == 'true') {
-                    $options['proxy_user'] = $GLOBALS['app']->Registry->Get('/network/proxy_user');
-                    $options['proxy_pass'] = $GLOBALS['app']->Registry->Get('/network/proxy_pass');
+            if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
+                if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {
+                    $options['proxy_user'] = $this->GetRegistry('proxy_user', 'Settings');
+                    $options['proxy_pass'] = $this->GetRegistry('proxy_pass', 'Settings');
                 }
-                $options['proxy_host'] = $GLOBALS['app']->Registry->Get('/network/proxy_host');
-                $options['proxy_port'] = $GLOBALS['app']->Registry->Get('/network/proxy_port');
+                $options['proxy_host'] = $this->GetRegistry('proxy_host', 'Settings');
+                $options['proxy_port'] = $this->GetRegistry('proxy_port', 'Settings');
             }
 
             require_once JAWS_PATH . 'gadgets/Weather/include/Google.php';

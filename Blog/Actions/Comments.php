@@ -281,7 +281,7 @@ class Blog_Actions_Comments extends BlogHTML
         $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
 
         /*
-        if ($GLOBALS['app']->Registry->Get('/network/mailer') !== 'DISABLED') {
+        if ($this->GetRegistry('mailer', 'Settings') !== 'DISABLED') {
             $tpl->SetBlock('commentform/mail_me');
             $tpl->SetVariable('mail_me', _t('BLOG_MAIL_COMMENT_TO_ME'));
             $tpl->ParseBlock('commentform/mail_me');

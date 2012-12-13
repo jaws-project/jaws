@@ -123,12 +123,9 @@ class CommentsModel extends Jaws_Gadget_Model
         }
 
         // Comment Status...
-        if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
-            require_once JAWS_PATH . 'gadgets/Policy/SpamFilter.php';
-            $filter = new SpamFilter();
-            if ($filter->IsSpam($permalink, $gadget, $name, $email, $url, $message)) {
-                $status = COMMENT_STATUS_SPAM;
-            }
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        if ($mPolicy->IsSpam($permalink, $gadget, $name, $email, $url, $message)) {
+            $status = COMMENT_STATUS_SPAM;
         }
 
         $sql = '

@@ -787,8 +787,8 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_bcc', $label->Get());
 
         // From
-        $from_title = $GLOBALS['app']->Registry->Get('/network/gate_title');
-        $from_email = $GLOBALS['app']->Registry->Get('/network/gate_email');
+        $from_title = $this->GetRegistry('gate_title', 'Settings');
+        $from_email = $this->GetRegistry('gate_email', 'Settings');
         if (!empty($from_email)) {
             $from = !empty($from_title)? "$from_title <$from_email>" : $from_email;
         } else {

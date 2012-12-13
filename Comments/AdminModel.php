@@ -103,20 +103,18 @@ class CommentsAdminModel extends CommentsModel
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), _t('COMMENTS_NAME'));
         }
 
-        $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
-            require_once JAWS_PATH . 'gadgets/Policy/SpamFilter.php';
-            $filter = new SpamFilter();
-            $origComment = $this->GetComment($gadget, $id);
-            if (($origComment['status'] == COMMENT_STATUS_SPAM) &&
-                ($status == COMMENT_STATUS_APPROVED)) {
-                $filter->SubmitHam($permalink, $gadget, $name, $email, $url, $message);
-            }
-            if (($origComment['status'] != COMMENT_STATUS_SPAM) &&
-                ($status == COMMENT_STATUS_SPAM)) {
-                $filter->SubmitSpam($permalink, $gadget, $name, $email, $url, $message);
+        $origComment = $this->GetComment($gadget, $id);
+        if (($status == COMMENT_STATUS_SPAM ||$origComment['status'] == COMMENT_STATUS_SPAM) &&
+            $origComment['status'] != $status)
+        {
+            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+            if ($status == COMMENT_STATUS_SPAM) {
+                $mPolicy->SubmitSpam($permalink, $gadget, $name, $email, $url, $message);
+            } else {
+                $mPolicy->SubmitHam($permalink, $gadget, $name, $email, $url, $message);
             }
         }
+
         return true;
     }
 
@@ -234,37 +232,25 @@ class CommentsAdminModel extends CommentsModel
 
         // FIXME: Update replies counter...
         if ($status == COMMENT_STATUS_SPAM) {
-            $GLOBALS['app']->Registry->LoadFile('Policy');
-            if ($this->GetRegistry('filter', 'Policy') != 'DISABLED') {
-                // Submit spam...
-                $sql     = "SELECT
-                              [id],
-                              [gadget_reference],
-                              [gadget],
-                              [parent],
-                              [name],
-                              [email],
-                              [url],
-                              [ip],
-                              [title],
-                              [msg_txt],
-                              [replies],
-                              [status],
-                              [createtime]
-                          FROM [[comments]]
-                          WHERE [id] IN (" . $list . ")";
-                $items = $GLOBALS['db']->queryAll($sql);
-                require_once JAWS_PATH . 'gadgets/Policy/SpamFilter.php';
-                $filter = new SpamFilter();
-                foreach ($items as $i) {
-                    if ($i['status'] != COMMENT_STATUS_SPAM) {
-                        // FIXME Get $permalink
-                        $permalink = '';
-                        $filter->SubmitSpam($permalink, $gadget, $i['name'], $i['email'], $i['url'], $i['message']);
-                    }
+            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
+            // Submit spam...
+            $sql =
+                "SELECT
+                    [id], [gadget_reference], [gadget], [parent], [name], [email], [url], [ip],
+                    [title], [msg_txt], [replies], [status], [createtime]
+                FROM [[comments]]
+                WHERE [id] IN (" . $list . ")";
+
+            $items = $GLOBALS['db']->queryAll($sql);
+            foreach ($items as $i) {
+                if ($i['status'] != COMMENT_STATUS_SPAM) {
+                    // FIXME Get $permalink
+                    $permalink = '';
+                    $mPolicy->SubmitSpam($permalink, $gadget, $i['name'], $i['email'], $i['url'], $i['message']);
                 }
             }
         }
+
         return true;
     }
 
