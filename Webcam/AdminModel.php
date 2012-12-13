@@ -170,7 +170,6 @@ class WebcamAdminModel extends WebcamModel
     {
         $res = $GLOBALS['app']->Registry->Set('/gadgets/Webcam/limit_random', $limit);
         if ($res || !Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Registry->Commit('Webcam');
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
         }

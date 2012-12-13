@@ -218,7 +218,6 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('CHATBOX_ERROR_SETTINGS_NOT_UPDATED'), _t('CHATBOX_NAME'));
         }
 
-        $GLOBALS['app']->Registry->Commit('Chatbox');
         $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_SETTINGS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

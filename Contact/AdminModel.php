@@ -498,7 +498,7 @@ class ContactAdminModel extends ContactModel
                 return new Jaws_Error(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'), _t('CONTACT_NAME'));
             }
         }
-        $GLOBALS['app']->Registry->Commit('Contact');
+
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

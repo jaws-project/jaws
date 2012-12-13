@@ -109,9 +109,6 @@ class PreferencesAdminModel extends PreferencesModel
         }
 
         $GLOBALS['app']->Registry->Set('/config/cookie_precedence', (empty($preferences_config['cookie_precedence'])? 'false' : 'true'));
-        $GLOBALS['app']->Registry->Commit('core');
-
-        $GLOBALS['app']->Registry->Commit('Preferences');
         $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

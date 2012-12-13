@@ -409,7 +409,7 @@ class BlogAdminModel extends BlogModel
                 return new Jaws_Error(_t('BLOG_ERROR_SETTINGS_NOT_SAVE'), _t('BLOG_NAME'));
             }
         }
-        $GLOBALS['app']->Registry->Commit('Blog');
+
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }

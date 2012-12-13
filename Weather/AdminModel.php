@@ -245,7 +245,6 @@ class WeatherAdminModel extends WeatherModel
             }
         }
 
-        $GLOBALS['app']->Registry->Commit('Weather');
         $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

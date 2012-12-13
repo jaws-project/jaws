@@ -214,7 +214,6 @@ class VisitCounterAdminModel extends VisitCounterModel
         $rs5 = $GLOBALS['app']->Registry->Set('/gadgets/VisitCounter/custom_text', $custom_text);
         if ($rs1 && $rs2 && $rs3 && $rs4 && $rs5) {
             $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
-            $GLOBALS['app']->Registry->Commit('VisitCounter');
             return true;
         }
 
@@ -235,7 +234,6 @@ class VisitCounterAdminModel extends VisitCounterModel
         if (!$rs || Jaws_Error::IsError($rs)) {
             return new Jaws_Error(_t('VISITCOUNTER_ERROR_COULD_NOT_CHANGE_STARTDATE'), _t('VISITCOUNTER_NAME'));
         }
-        $GLOBALS['app']->Registry->Commit('VisitCounter');
         return true;
     }
 

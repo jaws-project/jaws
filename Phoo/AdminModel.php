@@ -703,7 +703,6 @@ class PhooAdminModel extends PhooModel
             }
         }
 
-        $GLOBALS['app']->Registry->Commit('Phoo');
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_SETTINGS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

@@ -676,7 +676,6 @@ class StaticPageAdminModel extends StaticPageModel
                 return new Jaws_Error(_t('STATICPAGE_ERROR_SETTINGS_NOT_SAVED'), _t('STATICPAGE_NAME'));
             }
         }
-        $GLOBALS['app']->Registry->Commit('StaticPage');
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }

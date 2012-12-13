@@ -186,7 +186,6 @@ class EmblemsAdminModel extends EmblemsModel
                                  _t('EMBLEMS_NAME'));
         }
 
-        $GLOBALS['app']->Registry->Commit('Emblems');
         $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
