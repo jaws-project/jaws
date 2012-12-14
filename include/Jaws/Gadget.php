@@ -1139,7 +1139,7 @@ class Jaws_Gadget
         }
 
         $type = $this->_IsCore ? 'core_items' : 'enabled_items';
-        $items = $GLOBALS['app']->Registry->Get('/gadgets/' . $type);
+        $items = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
         $gadgets = explode(',', $items);
         if (!in_array($gadget, $gadgets)) {
             $items .= ',' . $gadget;
