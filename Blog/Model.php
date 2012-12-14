@@ -1116,7 +1116,7 @@ class BlogModel extends Jaws_Gadget_Model
         $this->_Atom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
                                 $this->GetRegistry('gate_email', 'Settings'));
-        $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
+        $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
         $this->_Atom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
 
         $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
@@ -1313,7 +1313,7 @@ class BlogModel extends Jaws_Gadget_Model
         $categoryAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
                                  $siteURL,
                                  $this->GetRegistry('gate_email', 'Settings'));
-        $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
+        $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
         $categoryAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
         $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
@@ -1466,7 +1466,7 @@ class BlogModel extends Jaws_Gadget_Model
         $commentAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
                                 $this->GetRegistry('gate_email', 'Settings'));
-        $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
+        $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
         $commentAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
@@ -1572,7 +1572,7 @@ class BlogModel extends Jaws_Gadget_Model
         $commentAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
                                 $this->GetRegistry('gate_email', 'Settings'));
-        $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('/version'));
+        $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
         $commentAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
