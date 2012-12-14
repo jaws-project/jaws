@@ -16,9 +16,10 @@
 }
 
 #preview {
-    width: 530px;
-    height: 325px;
-    min-height: 325px;
+    padding: 2px;
+    width: 99%;
+    height: 363px;
+    min-height: 363px;
     display: none;
 }
 
@@ -38,8 +39,8 @@
 
 #preview_contents {
     border: 1px solid #c7c7c7;
-    height: 260px;
-    max-height: 260px;
+    height: 320px;
+    max-height: 320px;
     text-align: left;
     overflow: auto;
 }
@@ -91,3 +92,5 @@ ul#tabs span.current {
     height: 362px;
     margin-bottom: 10px;
 }
+
+#block_contents {height: 258px;}
