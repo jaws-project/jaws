@@ -174,12 +174,12 @@ class EmblemsAdminModel extends EmblemsModel
      */
     function UpdateProperties($rows, $allow_url)
     {
-        $result = $GLOBALS['app']->Registry->Set('/gadgets/Emblems/rows', $rows);
+        $result = $this->SetRegistry('rows', $rows);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('EMBLEMS_ERROR_PROPERTIES_NOT_UPDATED'), _t('EMBLEMS_NAME'));
         }
-        $result = $GLOBALS['app']->Registry->Set('/gadgets/Emblems/allow_url', $allow_url);
+        $result = $this->SetRegistry('allow_url', $allow_url);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('EMBLEMS_ERROR_PROPERTIES_NOT_UPDATED'),
