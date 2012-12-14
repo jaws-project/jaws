@@ -22,14 +22,6 @@ class Installer_Requirements extends JawsInstallerStage
                              'sqlite'    => 'SQLite 2',
                             );
 
-    // Requirement writable directories in safe-mode
-    var $_data_subdirs = array('data/cache',
-                               'data/cache/registry',
-                               'data/cache/registry/gadgets',
-                               'data/cache/registry/plugins',
-                               'data/xml',
-                            );
-
     /**
      * Builds the upgrader page stage
      *
@@ -138,27 +130,6 @@ class Installer_Requirements extends JawsInstallerStage
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
 
-        // Try to create and set permission for data subdirectories
-        foreach ($this->_data_subdirs as $path) {
-            Jaws_Utils::mkdir(JAWS_PATH. $path);
-        }
-
-        // Check data subdirectories
-        $tpl->setBlock('Requirements/req_item');
-        $result = $this->_check_path($this->_data_subdirs, 'rw');
-        $tpl->setVariable('item', implode('<br/>', $this->_data_subdirs));
-        $tpl->setVariable('item_requirement', _t('INSTALL_REQ_WRITABLE'));
-        $tpl->setVariable('item_actual', implode('<br/>', $this->_get_perms($this->_data_subdirs)));
-        if ($result) {
-            _log(JAWS_LOG_DEBUG,"data directory has read and write permission privileges");
-            $result_txt = '<span style="color: #0b0;">'._t('INSTALL_REQ_OK').'</span>';
-        } else {
-            _log(JAWS_LOG_DEBUG,"data directory doesn't have read and write permission privileges");
-            $result_txt = '<span style="color: #b00;">'._t('INSTALL_REQ_BAD').'</span>';
-        }
-        $tpl->setVariable('result', $result_txt);
-        $tpl->parseBlock('Requirements/req_item');
-
         // File Upload
         $tpl->setBlock('Requirements/rec_item');
         $tpl->setVariable('item', _t('INSTALL_REQ_FILE_UPLOAD'));
@@ -254,11 +225,6 @@ class Installer_Requirements extends JawsInstallerStage
             } else {
                 $text = _t('INSTALL_REQ_RESPONSE_DIR_PERMISSION', 'data');
             }
-            $type = JAWS_ERROR_ERROR;
-        }
-
-        if (!$this->_check_path($this->_data_subdirs, 'rw')) {
-            $text = _t('INSTALL_REQ_RESPONSE_DIR_PERMISSION', _t('INSTALL_REQ_BAD'));
             $type = JAWS_ERROR_ERROR;
         }
 
