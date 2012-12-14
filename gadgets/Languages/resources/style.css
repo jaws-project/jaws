@@ -8,7 +8,7 @@ div .titles {
 }
 
 #lang_box {
-    width: 200px;
+    width: 220px;
     float: left;
 }
 
@@ -18,18 +18,17 @@ div .titles {
 }
 
 #add_lang input {
-    width: 190px;
+    width: 210px;
     margin-bottom: 2px;
 }
 
 #set_box {
-    width: 534px;
+    width: 752px;
     float: right;
 }
 
 #lang, #component {
-    width: 200px;
-    max-width: 200px;
+    width: 220px;
 }
 
 #buttons {
@@ -41,7 +40,7 @@ div .titles {
 
 #head_strings {
     border: 1px solid #ddd;
-    width: 534px;
+    width: 752px;
 }
 
 #head_strings th {
@@ -58,12 +57,12 @@ div .titles {
 #meta_lang {
     text-align: left;
     padding: 2px;
-    width: 508px;
+    width: 725px;
     border-bottom: 1px solid #ddd;
 }
 
 #meta_lang input {
-    width: 500px;
+    width: 720px;
 }
 
 #lang_strings {
@@ -71,13 +70,13 @@ div .titles {
     font-weight: normal;
     float: right;
     height: 392px;
-    width: 532px;
+    width: 750px;
     overflow: auto;
     margin-bottom: 4px;
 }
 
 #tbl_strings {
-    width: 510px;
+    width: 730px;
 }
 
 #tbl_strings td {
@@ -87,7 +86,7 @@ div .titles {
 
 #tbl_strings .td_from {
     padding-left: 4px;
-    width: 252px;
+    width: 360px;
     vertical-align: top;
     border-bottom: 1px solid #ddd;
 }
@@ -97,7 +96,7 @@ div .titles {
 
 #tbl_strings textarea {
     padding: 0px;
-    width: 252px;
+    width: 375px;
 }
 
 .even td {

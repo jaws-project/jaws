@@ -155,7 +155,7 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
             }
             $dir = scandir($mDir);
             foreach($dir as $file) {
-                if ($file != '.' && $file != '..' && !strpos($file, '.php') && $file != '.svn') {
+                if ($file{0} != '.' && is_dir($mDir . $file)) {
                     $modules[] = $file;
                 }
             }
@@ -185,14 +185,14 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
                 $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
-                $orig_file = JAWS_PATH . "gadgets/$module/languages/$langTo.php";
-                $from_file = JAWS_PATH . "gadgets/$module/languages/$langFrom.php";
+                $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.php";
+                $from_file = JAWS_PATH . "languages/$langFrom/gadgets/$module.php";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
                 $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
-                $orig_file = JAWS_PATH . "plugins/$module/languages/$langTo.php";
-                $from_file = JAWS_PATH . "plugins/$module/languages/$langFrom.php";
+                $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.php";
+                $from_file = JAWS_PATH . "languages/$langFrom/plugins/$module.php";
                 $module = 'Plugins_' . $module;
                 break;
 

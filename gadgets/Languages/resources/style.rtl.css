@@ -8,7 +8,7 @@ div .titles {
 }
 
 #lang_box {
-    width: 200px;
+    width: 220px;
     float: right;
 }
 
@@ -22,18 +22,18 @@ div .titles {
 }
 
 #add_lang input {
-    width: 190px;
+    width: 210px;
     direction: ltr;
     margin-bottom: 2px;
 }
 
 #set_box {
-    width: 534px;
+    width: 752px;
     float: left;
 }
 
 #lang, #component {
-    width: 200px;
+    width: 220px;
     max-width: 200px;
     direction: ltr;
 }
@@ -47,7 +47,7 @@ div .titles {
 
 #head_strings {
     border: 1px solid #ddd;
-    width: 534px;
+    width: 752px;
 }
 
 #head_strings th {
@@ -66,12 +66,12 @@ div .titles {
     text-align: left;
     float: left;
     padding: 2px;
-    width: 508px;
+    width: 525px;
     border-bottom: 1px solid #ddd;
 }
 
 #meta_lang input {
-    width: 500px;
+    width: 720px;
 }
 
 #lang_strings {
@@ -79,14 +79,14 @@ div .titles {
     font-weight: normal;
     float: left;
     height: 392px;
-    width: 530px;
+    width: 750px;
     overflow: auto;
     margin-bottom: 4px;
 }
 
 #tbl_strings {
     float: left;
-    width: 510px;
+    width: 730px;
 }
 
 #tbl_strings td {
@@ -96,7 +96,7 @@ div .titles {
 
 #tbl_strings .td_from {
     padding-right: 4px;
-    width: 252px;
+    width: 360px;
     vertical-align: top;
     border-bottom: 1px solid #ddd;
 }
@@ -106,7 +106,7 @@ div .titles {
 
 #tbl_strings textarea {
     padding: 0px;
-    width: 252px;
+    width: 375px;
 }
 
 
