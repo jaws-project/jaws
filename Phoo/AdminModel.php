@@ -682,19 +682,19 @@ class PhooAdminModel extends PhooModel
                           $comment_status, $albums_order_type, $photos_order_type)
     {
         $rs = array();
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/default_action',    $default_action);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/published',         $published);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/allow_comments',    $allow_comments);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/moblog_album',      $moblog_album);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/moblog_limit',      $moblog_limit);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/photoblog_album',   $photoblog_album);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/photoblog_limit',   $photoblog_limit);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/show_exif_info',    $show_exif_info);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/keep_original',     $keep_original);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/thumbnail_limit',   $thumb_limit);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/comment_status',    $comment_status);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/albums_order_type', $albums_order_type);
-        $rs[] = $GLOBALS['app']->Registry->Set('/gadgets/Phoo/photos_order_type', $photos_order_type);
+        $rs[] = $this->SetRegistry('default_action',    $default_action);
+        $rs[] = $this->SetRegistry('published',         $published);
+        $rs[] = $this->SetRegistry('allow_comments',    $allow_comments);
+        $rs[] = $this->SetRegistry('moblog_album',      $moblog_album);
+        $rs[] = $this->SetRegistry('moblog_limit',      $moblog_limit);
+        $rs[] = $this->SetRegistry('photoblog_album',   $photoblog_album);
+        $rs[] = $this->SetRegistry('photoblog_limit',   $photoblog_limit);
+        $rs[] = $this->SetRegistry('show_exif_info',    $show_exif_info);
+        $rs[] = $this->SetRegistry('keep_original',     $keep_original);
+        $rs[] = $this->SetRegistry('thumbnail_limit',   $thumb_limit);
+        $rs[] = $this->SetRegistry('comment_status',    $comment_status);
+        $rs[] = $this->SetRegistry('albums_order_type', $albums_order_type);
+        $rs[] = $this->SetRegistry('photos_order_type', $photos_order_type);
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || $r === false) {
