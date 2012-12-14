@@ -100,7 +100,7 @@ class PreferencesAdminModel extends PreferencesModel
 
         foreach ($preferences_config as $Key => $Value) {
             if (in_array($Key, $prefKeys)) {
-                $res = $GLOBALS['app']->Registry->Set("/gadgets/Preferences/$Key", (empty($Value)? 'false' : 'true'));
+                $res = $this->SetRegistry($Key, (empty($Value)? 'false' : 'true'));
                 if (!$res) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), _t('PREFERENCES_NAME'));
