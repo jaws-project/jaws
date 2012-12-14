@@ -29,15 +29,17 @@ class Installer_Settings extends JawsInstallerStage
             'default_gadget'   => ''
         );
 
-        // Connect to the database and setup registry and similar.
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['install']['Database']);
-        // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->create();
-        $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
-        $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
+        if (!isset($GLOBALS['app'])) {
+            // Connect to the database and setup registry and similar.
+            require_once JAWS_PATH . 'include/Jaws/DB.php';
+            $GLOBALS['db'] = new Jaws_DB($_SESSION['install']['Database']);
+            // Create application
+            include_once JAWS_PATH . 'include/Jaws.php';
+            $GLOBALS['app'] = new Jaws();
+            $GLOBALS['app']->create();
+            $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
+            $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
+        }
     }
 
     /**
@@ -103,7 +105,7 @@ class Installer_Settings extends JawsInstallerStage
         $gdt->AddOption(_t('GLOBAL_NOGADGET'), '');
         $gadgets = $model->GetGadgetsList(null, null, null, null, true);
         foreach ($gadgets as $gadget => $tg) {
-            $gdt->AddOption($tg['realname'], $g);
+            $gdt->AddOption($tg['realname'], $gadget);
         }
         $gdt->SetDefault($values['default_gadget']);
 
