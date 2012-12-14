@@ -137,7 +137,7 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
 
         if (version_compare($old, '0.8.3', '<')) {
-            $GLOBALS['app']->Registry->Set('/gadgets/FileBrowser/black_list', 'htaccess');
+            $this->SetRegistry('black_list', 'htaccess');
         }
 
         return true;
