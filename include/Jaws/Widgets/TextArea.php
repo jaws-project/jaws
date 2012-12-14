@@ -203,9 +203,9 @@ class Jaws_Widgets_TextArea extends Container
      */
     function extraBuild()
     {
-        $pluginKey = '/plugins/parse_text/admin_enabled_items';
+        $pluginKey = 'plugins_admin_enabled_items';
         if (JAWS_SCRIPT != 'admin') {
-            $pluginKey = '/plugins/parse_text/enabled_items';
+            $pluginKey = 'plugins_enabled_items';
         }
         $availablePlugins = explode(',', $GLOBALS['app']->Registry->Get($pluginKey));
         foreach ($availablePlugins as $plugin) {

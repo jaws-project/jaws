@@ -786,9 +786,9 @@ class Jaws_Gadget
 
         if (!empty($gadget)) {
             if ($plugins_set == 'admin') {
-                $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items');
+                $plugins = $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items');
             } else {
-                $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
+                $plugins = $GLOBALS['app']->Registry->Get('plugins_enabled_items');
             }
             if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
                 $plugins = array_filter(explode(',', $plugins));
@@ -947,7 +947,7 @@ class Jaws_Gadget
 
         // Check if it's a core gadget, thus can't be removed.
         ///FIXME check for errors
-        $core = $GLOBALS['app']->Registry->Get('/gadgets/core_items');
+        $core = $GLOBALS['app']->Registry->Get('gadgets_core_items');
         if (stristr($core, $this->_Gadget)) {
             return false;
         }
@@ -987,18 +987,18 @@ class Jaws_Gadget
     function _commonDisableGadget()
     {
         $gadget = $this->_Gadget;
-        $pull = $GLOBALS['app']->Registry->Get('/gadgets/enabled_items');
+        $pull = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
         if (stristr($pull, $gadget)) {
             $pull = str_replace(',' . $gadget, '', $pull);
         }
-        $GLOBALS['app']->Registry->Set('/gadgets/enabled_items', $pull);
+        $GLOBALS['app']->Registry->Set('gadgets_enabled_items', $pull);
 
         //Autoload stuff
-        $gadgets = $GLOBALS['app']->Registry->Get('/gadgets/autoload_items');
+        $gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
         if (stristr($gadgets, $gadget)) {
             $gadgets = str_replace(','.$gadget, '', $gadgets);
         }
-        $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $gadgets);
 
         //Delete the layout items
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
@@ -1057,18 +1057,18 @@ class Jaws_Gadget
 
         //Autoload feature
         $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Autoload.php');
-        $data    = $GLOBALS['app']->Registry->Get('/gadgets/autoload_items');
+        $data    = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
         $gadgets = explode(',', $data);
         if ($autoloadFeature) {
             if (!in_array($gadget, $gadgets)) {
                 $data .= ',' . $gadget;
-                $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $data);
+                $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $data);
             }
         } elseif (in_array($gadget, $gadgets)) {
             if (stristr($data, $gadget)) {
                 $data = str_replace(','.$gadget, '', $data);
             }
-            $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $data);
+            $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $data);
         }
 
         // After anything finished
@@ -1148,11 +1148,11 @@ class Jaws_Gadget
 
         $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Autoload.php');
         if ($autoloadFeature) {
-            $data    = $GLOBALS['app']->Registry->Get('/gadgets/autoload_items');
+            $data    = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
             $gadgets = explode(',', $data);
             if (!in_array($gadget, $gadgets)) {
                 $data .= ',' . $gadget;
-                $GLOBALS['app']->Registry->Set('/gadgets/autoload_items', $data);
+                $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $data);
             }
         }
 
@@ -1174,12 +1174,12 @@ class Jaws_Gadget
     function IsGadgetInstalled()
     {
         ///FIXME registry get has to be checked for errors
-        $items = trim($GLOBALS['app']->Registry->Get('/gadgets/enabled_items'));
+        $items = trim($GLOBALS['app']->Registry->Get('gadgets_enabled_items'));
         if (!empty($items) && substr($items,-1) != ',') {
             $items .= ',';
         }
 
-        $items.= $GLOBALS['app']->Registry->Get('/gadgets/core_items');
+        $items.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
         if (is_dir(JAWS_PATH . 'gadgets/' . $this->_Gadget) &&
             $GLOBALS['app']->Registry->Get('/gadgets/'.$this->_Gadget.'/enabled') == 'true' &&
             in_array($this->_Gadget, explode(',', $items)))

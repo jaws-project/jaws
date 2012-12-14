@@ -99,8 +99,8 @@ class UrlMapperAdminModel extends UrlMapperModel
             }
 
             // Add all gadgets maps
-            $gadgets  = $GLOBALS['app']->Registry->Get('/gadgets/enabled_items');
-            $cgadgets = $GLOBALS['app']->Registry->Get('/gadgets/core_items');
+            $gadgets  = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+            $cgadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
             $gadgets  = explode(',', $gadgets);
             $cgadgets = explode(',', $cgadgets);
             $final = array_merge($gadgets, $cgadgets);
@@ -121,8 +121,8 @@ class UrlMapperAdminModel extends UrlMapperModel
             }
 
             // Update all gadgets maps
-            $gadgets  = $GLOBALS['app']->Registry->Get('/gadgets/enabled_items');
-            $cgadgets = $GLOBALS['app']->Registry->Get('/gadgets/core_items');
+            $gadgets  = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+            $cgadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
             $gadgets  = explode(',', $gadgets);
             $cgadgets = explode(',', $cgadgets);
             $final = array_merge($gadgets, $cgadgets);

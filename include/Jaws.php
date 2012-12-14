@@ -1118,7 +1118,7 @@ class Jaws
      */
     function RunAutoload()
     {
-        $data    = $GLOBALS['app']->Registry->Get('/gadgets/autoload_items');
+        $data    = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
         $gadgets = array_filter(explode(',', $data));
         foreach($gadgets as $gadgetName) {
             $gadget = $this->loadGadget($gadgetName, 'Autoload');

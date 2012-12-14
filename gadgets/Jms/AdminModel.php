@@ -47,7 +47,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The gadgets directory does not exists!', __FILE__, __LINE__);
             }
 
-            $coreitems = $GLOBALS['app']->Registry->Get('/gadgets/core_items');
+            $coreitems = $GLOBALS['app']->Registry->Get('gadgets_core_items');
             $coreitems = array_filter(explode(',', $coreitems));
 
             $gadgets = scandir($gDir);
@@ -149,7 +149,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $ei = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/admin_enabled_items'));
+                $ei = explode(',', $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items'));
                 $ei = str_replace(' ', '', $ei);
                 $pInstalled = in_array($plugin, $ei);
 

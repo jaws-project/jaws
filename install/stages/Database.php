@@ -339,23 +339,10 @@ class Installer_Database extends JawsInstallerStage
             _log(JAWS_LOG_DEBUG,"Can't delete $path");
         }
 
-        // Input datas
-        $timestamp = $GLOBALS['db']->Date();
-
-        //registry keys.
-        $result = $GLOBALS['app']->Registry->NewKeyEx(
-                    array('/last_update', $timestamp),
-                    array('/version', JAWS_VERSION),
-                    array('/gadgets/enabled_items', ''),
-                    array('/gadgets/core_items', ''),
-                    array('/gadgets/autoload_items', ''),
-                    array('/plugins/parse_text/enabled_items', ''),
-                    array('/plugins/parse_text/admin_enabled_items', '')
-        );
+        // registry keys
+        $result = $GLOBALS['app']->Registry->NewKey('version', JAWS_VERSION);
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_DEBUG,$result->getMessage());
-            // No return error for reinstall Jaws
-            //return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_ADDING_REGISTRY_KEY'), 'CORE');
         }
 
         $gadgets = array(
