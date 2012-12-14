@@ -64,7 +64,7 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
      */
     function UpdateProperties($format)
     {
-        $res = $GLOBALS['app']->Registry->Set('/gadgets/ServerTime/date_format', $format);
+        $res = $this->SetRegistry('date_format', $format);
         if ($res) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SERVERTIME_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
