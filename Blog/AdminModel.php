@@ -390,18 +390,18 @@ class BlogAdminModel extends BlogModel
                           $pingback)
     {
         $result = array();
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/default_view', $view);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/last_entries_limit', $limit);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/popular_limit', $popularLimit);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/default_category', $category);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/xml_limit', $xml_limit);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/allow_comments', $comments);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/comment_status', $comment_status);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/trackback', $trackback);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/trackback_status', $trackback_status);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/last_comments_limit', $commentsLimit);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/last_recentcomments_limit', $recentcommentsLimit);
-        $result[] = $GLOBALS['app']->Registry->Set('/gadgets/Blog/pingback', $pingback);
+        $result[] = $this->SetRegistry('default_view', $view);
+        $result[] = $this->SetRegistry('last_entries_limit', $limit);
+        $result[] = $this->SetRegistry('popular_limit', $popularLimit);
+        $result[] = $this->SetRegistry('default_category', $category);
+        $result[] = $this->SetRegistry('xml_limit', $xml_limit);
+        $result[] = $this->SetRegistry('allow_comments', $comments);
+        $result[] = $this->SetRegistry('comment_status', $comment_status);
+        $result[] = $this->SetRegistry('trackback', $trackback);
+        $result[] = $this->SetRegistry('trackback_status', $trackback_status);
+        $result[] = $this->SetRegistry('last_comments_limit', $commentsLimit);
+        $result[] = $this->SetRegistry('last_recentcomments_limit', $recentcommentsLimit);
+        $result[] = $this->SetRegistry('pingback', $pingback);
 
         foreach ($result as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
