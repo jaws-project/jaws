@@ -309,7 +309,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($this->GetRegistry('calendar_language'));
+        $stopTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
         $stopTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
