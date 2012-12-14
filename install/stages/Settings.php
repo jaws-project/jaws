@@ -101,7 +101,8 @@ class Installer_Settings extends JawsInstallerStage
         $gdt =& Piwi::CreateWidget('Combo', 'default_gadget');
         $gdt->SetID('default_gadget');
         $gdt->AddOption(_t('GLOBAL_NOGADGET'), '');
-        foreach ($model->GetGadgetsList(false, null, true) as $g => $tg) {
+        $gadgets = $model->GetGadgetsList(null, null, null, null, true);
+        foreach ($gadgets as $gadget => $tg) {
             $gdt->AddOption($tg['realname'], $g);
         }
         $gdt->SetDefault($values['default_gadget']);

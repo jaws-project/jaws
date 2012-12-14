@@ -838,8 +838,9 @@ class Jaws
             } else {
                 $this->_Gadgets[$gadget]['actions']['index'] = array();
             }
-
+_log_var_dump($gadget);
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
+_log_var_dump($file);
             if (@include_once($file)) {
                 array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['admin'] = $actions;

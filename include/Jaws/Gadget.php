@@ -1143,7 +1143,7 @@ class Jaws_Gadget
         $gadgets = explode(',', $items);
         if (!in_array($gadget, $gadgets)) {
             $items .= ',' . $gadget;
-            $GLOBALS['app']->Registry->Set('/gadgets/' . $type, $items);
+            $GLOBALS['app']->Registry->Set('gadgets_' . $type, $items);
         }
 
         $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Autoload.php');
