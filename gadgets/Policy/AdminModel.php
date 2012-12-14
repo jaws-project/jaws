@@ -70,7 +70,7 @@ class PolicyAdminModel extends PolicyModel
             // Registry keys
             $obfuscator = $this->GetRegistry('obfuscator');
             if ($obfuscator == 'HideEmail') {
-                $GLOBALS['app']->Registry->Set('/gadgets/Policy/obfuscator', 'EmailEncoder');
+                $this->SetRegistry('obfuscator', 'EmailEncoder');
             }
 
             $tables = array('complexcaptcha',
@@ -95,7 +95,7 @@ class PolicyAdminModel extends PolicyModel
         if (version_compare($old, '0.1.3', '<')) {
             $old_captch = $this->GetRegistry('captcha');
             if ($old_captch !== 'DISABLED') {
-                $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha', 'ANONYMOUS');
+                $this->SetRegistry('captcha', 'ANONYMOUS');
                 $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/captcha_driver', $old_captch);
             } else {
                 $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/captcha_driver', 'MathCaptcha');
@@ -461,7 +461,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function IPBlockingBlockUndefined($blocked)
     {
-        $res = $GLOBALS['app']->Registry->Set('/gadgets/Policy/block_undefined_ip',
+        $res = $this->SetRegistry('block_undefined_ip',
                                               $blocked? 'true' : 'false');
         return $res;
     }
@@ -475,7 +475,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function AgentBlockingBlockUndefined($blocked)
     {
-        $res = $GLOBALS['app']->Registry->Set('/gadgets/Policy/block_undefined_agent',
+        $res = $this->SetRegistry('block_undefined_agent',
                                               $blocked? 'true' : 'false');
         return $res;
     }
@@ -491,12 +491,12 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_enabled', ($enabled? 'true' : 'false'));
+        $this->SetRegistry('crypt_enabled', ($enabled? 'true' : 'false'));
         if ($GLOBALS['app']->Session->GetPermission('Policy', 'ManageEncryptionKey')) {
-            $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_age', (int)$key_age);
+            $this->SetRegistry('crypt_key_age', (int)$key_age);
             if ($this->GetRegistry('crypt_key_len') != $key_len) {
-                $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_len', (int)$key_len);
-                $GLOBALS['app']->Registry->Set('/gadgets/Policy/crypt_key_start_date', 0);
+                $this->SetRegistry('crypt_key_len', (int)$key_len);
+                $this->SetRegistry('crypt_key_start_date', 0);
             }
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ENCRYPTION_UPDATED'), RESPONSE_NOTICE);
@@ -516,11 +516,11 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/allow_duplicate', $allow_duplicate);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/filter',          $filter);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha',         $captcha);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/captcha_driver',  $captcha_driver);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/obfuscator',      $obfuscator);
+        $this->SetRegistry('allow_duplicate', $allow_duplicate);
+        $this->SetRegistry('filter',          $filter);
+        $this->SetRegistry('captcha',         $captcha);
+        $this->SetRegistry('captcha_driver',  $captcha_driver);
+        $this->SetRegistry('obfuscator',      $obfuscator);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -543,14 +543,14 @@ class PolicyAdminModel extends PolicyModel
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
                                     $session_idle_timeout, $session_remember_timeout)
     {
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_bad_count',      (int)$passwd_bad_count);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_lockedout_time', (int)$passwd_lockedout_time);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_max_age',        (int)$passwd_max_age);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/passwd_min_length',     (int)$passwd_min_length);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_idle_timeout',     (int)$session_idle_timeout);
-        $GLOBALS['app']->Registry->Set('/gadgets/Policy/session_remember_timeout', (int)$session_remember_timeout);
+        $this->SetRegistry('passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
+        $this->SetRegistry('passwd_bad_count',      (int)$passwd_bad_count);
+        $this->SetRegistry('passwd_lockedout_time', (int)$passwd_lockedout_time);
+        $this->SetRegistry('passwd_max_age',        (int)$passwd_max_age);
+        $this->SetRegistry('passwd_min_length',     (int)$passwd_min_length);
+        $this->SetRegistry('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
+        $this->SetRegistry('session_idle_timeout',     (int)$session_idle_timeout);
+        $this->SetRegistry('session_remember_timeout', (int)$session_remember_timeout);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
