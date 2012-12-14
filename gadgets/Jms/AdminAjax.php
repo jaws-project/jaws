@@ -103,7 +103,7 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
 
         $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
         $GLOBALS['app']->Registry->loadFile($plugin, 'plugins');
-        $use_in_gadgets = explode(',', $GLOBALS['app']->Registry->Get('/plugins/parse_text/'.$plugin.'/use_in'));
+        $use_in_gadgets = explode(',', $GLOBALS['app']->Registry->Get('/plugins/'.$plugin.'/use_in'));
 
         $useIn = array();
         if (count($gadgets) > 0) {
@@ -133,7 +133,7 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Jms', 'ManagePlugins');
         $GLOBALS['app']->Registry->loadFile($plugin, 'plugins');
-        return ($GLOBALS['app']->Registry->Get('/plugins/parse_text/'.$plugin.'/use_in') == '*');
+        return ($GLOBALS['app']->Registry->Get('/plugins/'.$plugin.'/use_in') == '*');
     }
 
     /**
@@ -373,18 +373,18 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
 
         $GLOBALS['app']->Registry->loadFile($plugin, 'plugins');
         if (is_array($selection)) {
-            if ($GLOBALS['app']->Registry->Get('/plugins/parse_text/'.$plugin.'/use_in') == '*')
-                $GLOBALS['app']->Registry->Set('/plugins/parse_text/'.$plugin.'/use_in', '');
+            if ($GLOBALS['app']->Registry->Get('/plugins/'.$plugin.'/use_in') == '*')
+                $GLOBALS['app']->Registry->Set('/plugins/'.$plugin.'/use_in', '');
 
             $use_in = '';
             if (count($selection) > 0) {
                 $use_in = implode(',', $selection);
-                $GLOBALS['app']->Registry->Set('/plugins/parse_text/'.$plugin.'/use_in', $use_in);
+                $GLOBALS['app']->Registry->Set('/plugins/'.$plugin.'/use_in', $use_in);
             } else {
-                $GLOBALS['app']->Registry->Set('/plugins/parse_text/'.$plugin.'/use_in', '');
+                $GLOBALS['app']->Registry->Set('/plugins/'.$plugin.'/use_in', '');
             }
         } else {
-            $GLOBALS['app']->Registry->Set('/plugins/parse_text/'.$plugin.'/use_in', '*');
+            $GLOBALS['app']->Registry->Set('/plugins/'.$plugin.'/use_in', '*');
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_SAVED'), RESPONSE_NOTICE);
