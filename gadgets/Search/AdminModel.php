@@ -76,7 +76,7 @@ class SearchAdminModel extends SearchModel
     function SetSearchableGadgets($gadgets)
     {
         $list = is_array($gadgets)? implode(', ', $gadgets) : '*';
-        $res = $GLOBALS['app']->Registry->Set('/gadgets/Search/searchable_gadgets', $list);
+        $res = $this->SetRegistry('searchable_gadgets', $list);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'), _t('SEARCH_NAME'));
