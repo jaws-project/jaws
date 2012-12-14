@@ -86,6 +86,7 @@ class Jaws_Registry
      * @access  public
      * @param   string  $name  The key
      * @param   string  $value The value
+     * @return  bool    True is set otherwise False
      */
     function Set($name, $value)
     {
@@ -93,10 +94,10 @@ class Jaws_Registry
         $params['name']  = $name;
         $params['value'] = $value;
 
-        $sql = "
+        $sql = '
         UPDATE [[registry]] SET
             [key_value] = {value}
-        WHERE [key_name] = {name}";
+        WHERE [key_name] = {name}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -104,6 +105,7 @@ class Jaws_Registry
         }
 
         $this->_Registry[$name] = $value;
+        return true;
     }
 
     /**
