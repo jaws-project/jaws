@@ -215,7 +215,7 @@ class Jaws_Widgets_TextArea extends Container
 
             $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
             if (!Jaws_Error::IsError($objPlugin)) {
-                $use_in = '/plugins/parse_text/' . $plugin . '/use_in';
+                $use_in = '/plugins/' . $plugin . '/use_in';
                 if ($GLOBALS['app']->Registry->Get($use_in) == '*' ||
                     in_array($this->_Gadget, explode(',', $GLOBALS['app']->Registry->Get($use_in))))
                 {

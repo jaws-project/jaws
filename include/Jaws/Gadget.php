@@ -797,7 +797,7 @@ class Jaws_Gadget
                     if (!Jaws_Error::IsError($objPlugin)) {
                         $use_in = '*';
                         if ($plugins_set == 'admin') {
-                            $use_in = $GLOBALS['app']->Registry->Get('/plugins/parse_text/' . $plugin . '/use_in');
+                            $use_in = $GLOBALS['app']->Registry->Get('/plugins/' . $plugin . '/use_in');
                         }
                         if (!Jaws_Error::isError($use_in) &&
                            ($use_in == '*' || in_array($gadget, explode(',', $use_in))))

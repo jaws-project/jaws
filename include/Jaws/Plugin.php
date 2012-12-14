@@ -182,8 +182,8 @@ class Jaws_Plugin
                                      __FUNCTION__);
         }
 
-        $pluginkey   = '/plugins/parse_text/' . $plugin . '/enabled';
-        $pluginusein = '/plugins/parse_text/' . $plugin . '/use_in';
+        $pluginkey   = '/plugins/' . $plugin . '/enabled';
+        $pluginusein = '/plugins/' . $plugin . '/use_in';
         $pluginskey  = 'plugins_admin_enabled_items';
 
         if (
@@ -268,8 +268,8 @@ class Jaws_Plugin
         $new  = str_replace(',' . $plugin, '', $pull);
 
         $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $new);
-        $GLOBALS['app']->Registry->DeleteKey('/plugins/parse_text/' . $plugin . '/enabled');
-        $GLOBALS['app']->Registry->DeleteKey('/plugins/parse_text/' . $plugin . '/use_in');
+        $GLOBALS['app']->Registry->DeleteKey('/plugins/' . $plugin . '/enabled');
+        $GLOBALS['app']->Registry->DeleteKey('/plugins/' . $plugin . '/use_in');
 
         require_once $file;
         $pluginObj = new $plugin;
