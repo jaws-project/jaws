@@ -33,8 +33,8 @@
 
 #preview_contents {
     border: 1px solid #c7c7c7;
-    height: 260px;
-    max-height: 260px;
+    height: 350px;
+    max-height: 350px;
     text-align: right;
     overflow: auto;
 }
