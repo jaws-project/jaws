@@ -185,8 +185,9 @@ class Jaws_Layout
     function Load($layout_path = '', $layout_file = '')
     {
         if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/site_status') == 'disabled' &&
-            !$GLOBALS['app']->Session->IsSuperAdmin())
-        {
+           (JAWS_SCRIPT != 'admin' || $GLOBALS['app']->Session->Logged()) &&
+           !$GLOBALS['app']->Session->IsSuperAdmin()
+        ) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             echo Jaws_HTTPError::Get(503);
             exit;
