@@ -221,30 +221,30 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
 
         $filename =& Piwi::CreateWidget('Entry', 'filename', '');
         $filename->SetID('filename');
-        $filename->SetStyle('width: 200px;');
+        $filename->SetStyle('width: 270px;');
         $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
         $tpl->SetVariable('filename', $filename->Get());
 
         $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
         $uploadfile->SetID('uploadfile');
-        $uploadfile->SetStyle('width: 208px;');
+        $uploadfile->SetStyle('width: 270px;');
         $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $title =& Piwi::CreateWidget('Entry', 'file_title', '');
-        $title->SetStyle('width: 200px;');
+        $title->SetStyle('width: 270px;');
         $tpl->SetVariable('title', $title->Get());
 
         $desc =& Piwi::CreateWidget('TextArea', 'file_description', '');
         $desc->SetID('file_description');
         $desc->SetRows(5);
-        $desc->SetStyle('width: 200px;');
+        $desc->SetStyle('width: 270px;');
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('description', $desc->Get());
 
         $tpl->SetVariable('lbl_fast_url', _t('FILEBROWSER_FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'file_fast_url', '');
-        $fasturl->SetStyle('direction:ltr; width:200px;');
+        $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         if ($this->GetPermission('ManageFiles')) {
@@ -275,25 +275,25 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
 
         $dirname =& Piwi::CreateWidget('Entry', 'dirname', '');
         $dirname->SetID('dirname');
-        $dirname->SetStyle('width: 200px;');
+        $dirname->SetStyle('width: 270px;');
         $tpl->SetVariable('lbl_dirname', _t('FILEBROWSER_DIR_NAME'));
         $tpl->SetVariable('dirname', $dirname->Get());
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $title =& Piwi::CreateWidget('Entry', 'dir_title', '');
-        $title->SetStyle('width: 200px;');
+        $title->SetStyle('width: 270px;');
         $tpl->SetVariable('title', $title->Get());
 
         $desc =& Piwi::CreateWidget('TextArea', 'dir_description', '');
         $desc->SetID('dir_description');
         $desc->SetRows(5);
-        $desc->SetStyle('width: 200px;');
+        $desc->SetStyle('width: 270px;');
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('description', $desc->Get());
 
         $tpl->SetVariable('lbl_fast_url', _t('FILEBROWSER_FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'dir_fast_url', '');
-        $fasturl->SetStyle('direction:ltr; width:200px;');
+        $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         if ($this->GetPermission('ManageDirectories')) {
