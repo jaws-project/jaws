@@ -280,7 +280,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         //url
         $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
-        $nameEntry->setStyle('width: 256px;');
+        $nameEntry->setStyle('width: 310px;');
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $nameEntry->Get());
 
@@ -304,14 +304,14 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         //address
         $nameEntry =& Piwi::CreateWidget('Entry', 'address', '');
-        $nameEntry->setStyle('width: 256px;');
+        $nameEntry->setStyle('width: 310px;');
         $tpl->SetVariable('lbl_address', _t('CONTACT_ADDRESS'));
         $tpl->SetVariable('address', $nameEntry->Get());
 
         //recipient
         $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
         $recipientCombo->SetID('rid');
-        $recipientCombo->setStyle('width: 262px;');
+        $recipientCombo->setStyle('width: 318px;');
         $recipientCombo->AddOption($this->GetRegistry('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
@@ -325,13 +325,13 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         //subject
         $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $subjectEntry->setStyle('width: 256px;');
+        $subjectEntry->setStyle('width: 310px;');
         $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
         $messageText =& Piwi::CreateWidget('TextArea', 'message','');
-        $messageText->SetStyle('width: 256px;');
+        $messageText->SetStyle('width: 310px;');
         $messageText->SetRows(8);
         $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
         $tpl->SetVariable('message', $messageText->Get());
@@ -368,14 +368,14 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         //subject
         $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $subjectEntry->setStyle('width: 256px;');
+        $subjectEntry->setStyle('width: 310px;');
         $subjectEntry->SetReadOnly(true);
         $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
         $messageText =& Piwi::CreateWidget('TextArea', 'message','');
-        $messageText->SetStyle('width: 256px;');
+        $messageText->SetStyle('width: 310px;');
         $messageText->SetReadOnly(true);
         $messageText->SetRows(8);
         $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
@@ -383,7 +383,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         //reply
         $replyText =& Piwi::CreateWidget('TextArea', 'reply','');
-        $replyText->SetStyle('width: 256px;');
+        $replyText->SetStyle('width: 310px;');
         $replyText->SetRows(10);
         $tpl->SetVariable('lbl_reply', _t('CONTACT_REPLY'));
         $tpl->SetVariable('reply', $replyText->Get());
@@ -582,27 +582,27 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('legend_title', _t('CONTACT_RECIPIENTS_ADD'));
 
         $titleentry =& Piwi::CreateWidget('Entry', 'name', '');
-        $titleentry->setStyle('width: 160px;');
+        $titleentry->setStyle('width: 250px;');
         $tpl->SetVariable('lbl_name', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('name', $titleentry->Get());
 
         $emailentry =& Piwi::CreateWidget('Entry', 'email', '');
-        $emailentry->setStyle('direction: ltr; width: 160px;');
+        $emailentry->setStyle('direction: ltr; width: 250px;');
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
         $tpl->SetVariable('email', $emailentry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'tel', '');
-        $entry->setStyle('width: 160px;');
+        $entry->setStyle('width: 250px;');
         $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
         $tpl->SetVariable('tel', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fax', '');
-        $entry->setStyle('width: 160px;');
+        $entry->setStyle('width: 250px;');
         $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
         $tpl->SetVariable('fax', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'mobile', '');
-        $entry->setStyle('width: 160px;');
+        $entry->setStyle('width: 250px;');
         $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
         $tpl->SetVariable('mobile', $entry->Get());
 
