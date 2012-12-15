@@ -106,13 +106,13 @@ class RssReaderAdminHTML extends Jaws_Gadget_HTML
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleentry->SetID('title');
-        $titleentry->setStyle('width: 192px;');
+        $titleentry->setStyle('width: 270px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $titleentry->Get());
 
         $urlentry =& Piwi::CreateWidget('Entry', 'url', 'http://');
         $urlentry->SetID('url');
-        $urlentry->setStyle('width: 192px;');
+        $urlentry->setStyle('width: 270px;');
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $urlentry->Get());
 
