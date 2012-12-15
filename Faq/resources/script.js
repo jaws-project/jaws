@@ -51,10 +51,8 @@ function parseQuestionText(form)
     var answerArea   = document.getElementById('answerPreview');
     var questionArea = document.getElementById('questionPreview');
 
-    var f          = new faqadminajax();
-    var parsedText = f.parsetext(answer);
-
-    answerArea.innerHTML   = parsedText;
+    answer = FaqAjax.callAsync('parsetext', answer);
+    answerArea.innerHTML   = answer;
     questionArea.innerHTML = question;
 }
 
@@ -72,10 +70,8 @@ function parseCategoryText(form)
     var descriptionArea = document.getElementById('descriptionPreview');
     var categoryArea    = document.getElementById('categoryPreview');
 
-    var f          = new faqadminajax();
-    var parsedText = f.parsetext(description);
-
-    descriptionArea.innerHTML = parsedText;
+    description = FaqAjax.callAsync('parsetext', description);
+    descriptionArea.innerHTML = description;
     categoryArea.innerHTML    = category;
 }
 

@@ -284,13 +284,13 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $question = isset($q) ? $q['question'] : '';
         $qentry =& Piwi::CreateWidget('Entry', 'question', $question);
         $qentry->SetTitle(_t('FAQ_QUESTION'));
-        $qentry->SetStyle('width: 300px;');
+        $qentry->SetStyle('width: 500px;');
         $qbox->PackStart($qentry);
 
         $fasturl = isset($q) ? $q['fast_url'] : '';
         $qfasturl =& Piwi::CreateWidget('Entry', 'fast_url', $fasturl);
         $qfasturl->SetTitle(_t('FAQ_FASTURL'));
-        $qfasturl->SetStyle('direction: ltr; width: 300px;');
+        $qfasturl->SetStyle('direction: ltr; width: 500px;');
         $qbox->PackStart($qfasturl);
 
         $answer = isset($q) ? $q['answer'] : '';
@@ -317,7 +317,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $submit->SetSubmit();
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT . '?gadget=Faq&amp;action=Admin'."';");
-        $preview =& Piwi::CreateWidget('Button', 'preview', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
+        $preview =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript: parseQuestionText(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
@@ -429,13 +429,13 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $catTitle = isset($cat) ? $cat['category'] : '';
         $catentry =& Piwi::CreateWidget('Entry', 'category', $catTitle);
         $catentry->SetTitle(_t('FAQ_CATEGORY'));
-        $catentry->SetStyle('width: 300px;');
+        $catentry->SetStyle('width: 500px;');
         $catbox->PackStart($catentry);
 
         $fasturl = isset($cat) ? $cat['fast_url'] : '';
         $cfasturl =& Piwi::CreateWidget('Entry', 'fast_url', $fasturl);
         $cfasturl->SetTitle(_t('FAQ_FASTURL'));
-        $cfasturl->SetStyle('direction: ltr; width: 300px;');
+        $cfasturl->SetStyle('direction: ltr; width: 500px;');
         $catbox->PackStart($cfasturl);
 
         $desc = isset($cat) ? $cat['description'] : '';
@@ -453,7 +453,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $submit->SetSubmit();
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT.'?gadget=Faq&amp;action=Admin'."';");
-        $preview =& Piwi::CreateWidget('Button', 'preview', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
+        $preview =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript: parseCategoryText(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
