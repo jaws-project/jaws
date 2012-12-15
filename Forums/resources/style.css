@@ -27,13 +27,13 @@ margin-right: 2px;
 
 #forums_area {
 float: left;
-width: 350px;
+width: 304px;
 }
 
 #forums_tree {
 margin: 0px;
 padding: 0px;
-width: 348px;
+width: 302px;
 height: 410px;
 border: 1px solid #d3d7cf;
 background-color: #f7f7f7;
@@ -88,7 +88,7 @@ cursor:pointer;
 
 #work_area {
 float: left;
-width: 625px;
+width: 671px;
 margin-left: 3px;
 margin-bottom: 4px;
 }
@@ -113,5 +113,5 @@ padding: 8px 0px 0px 10px;
 }
 
 #gid {width:258px;}
-#title, #description, #fast_url {width:250px;}
+#title, #description, #fast_url {width:480px;}
 #order, #locked, #published {width:120px}
