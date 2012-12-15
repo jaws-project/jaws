@@ -219,18 +219,18 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('BannerInfo');
 
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $titleEntry->SetStyle('width: 256px;');
+        $titleEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
-        $urlEntry->SetStyle('width: 256px;');
+        $urlEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $urlEntry->Get());
 
         $group_combo =& Piwi::CreateWidget('Combo', 'gid');
         $group_combo->SetID('gid');
-        $group_combo->setStyle('width: 262px;');
+        $group_combo->setStyle('width: 352px;');
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
@@ -246,7 +246,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
 
         $bannerEntry =& Piwi::CreateWidget('Entry', 'banner', '');
         $bannerEntry->SetID('banner');
-        $bannerEntry->SetStyle('width: 256px;');
+        $bannerEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_banner', _t('BANNER_BANNERS_BANNER'));
         $tpl->SetVariable('banner', $bannerEntry->Get());
 
@@ -258,7 +258,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $template =& Piwi::CreateWidget('TextArea', 'template', '');
         $template->SetID('template');
         $template->SetRows(6);
-        $template->SetStyle('width: 256px;');
+        $template->SetStyle('width: 310px;');
         $tpl->SetVariable('lbl_template', _t('BANNER_BANNERS_TEMPLATE'));
         $tpl->SetVariable('template', $template->Get());
 
@@ -525,7 +525,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_banners', _t('BANNER_GROUPS_MARK_BANNERS'));
         $bannersCombo =& Piwi::CreateWidget('Combo', 'banners_combo');
         $bannersCombo->SetID('banners_combo');
-        $bannersCombo->SetStyle('width: 480px;');
+        $bannersCombo->SetStyle('width: 670px;');
         $banners = $model->GetBanners(-1, -1);
         foreach ($banners as $banner) {
             $bannersCombo->AddOption($banner['title'] . ' (' . $banner['url']. ')', $banner['id'], false);
@@ -540,7 +540,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $bannersList =& Piwi::CreateWidget('Combo', 'group_members');
         $bannersList->SetID('group_members');
         $bannersList->SetSize('8');
-        $bannersList->SetStyle('width: 480px;');
+        $bannersList->SetStyle('width: 670px;');
         $tpl->SetVariable('group_members', $bannersList->Get());
 
         $btnDel =& Piwi::CreateWidget('Button','btn_del', '', STOCK_CANCEL);
