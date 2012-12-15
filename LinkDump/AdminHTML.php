@@ -208,7 +208,7 @@ class LinkDumpAdminHTML extends Jaws_Gadget_HTML
         $groups = $model->GetGroups();
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
-        $groupCombo->setStyle('width: 256px;');
+        $groupCombo->setStyle('width: 356px;');
         foreach ($groups as $group) {
             $groupCombo->AddOption($group['title'], $group['id']);
         }
@@ -219,22 +219,22 @@ class LinkDumpAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $titleEntry->SetStyle('width: 256px;');
+        $titleEntry->SetStyle('width: 356px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
-        $urlEntry->SetStyle('direction: ltr;width: 256px;');
+        $urlEntry->SetStyle('direction: ltr;width: 356px;');
         $tpl->SetVariable('url', $urlEntry->Get());
 
         $tpl->SetVariable('lbl_fast_url', _t('LINKDUMP_FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
-        $fasturl->SetStyle('direction: ltr; width: 256px;');
+        $fasturl->SetStyle('direction: ltr; width: 356px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         $linkdesc =& Piwi::CreateWidget('TextArea', 'description', '');
         $linkdesc->SetRows(4);
-        $linkdesc->SetStyle('width: 256px;');
+        $linkdesc->SetStyle('width: 356px;');
         $tpl->SetVariable('desc', $linkdesc->Get());
         $tpl->SetVariable('lbl_desc', _t('GLOBAL_DESCRIPTION'));
 
@@ -246,7 +246,7 @@ class LinkDumpAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('lbl_tag', _t('LINKDUMP_LINKS_TAGS'));
         $linktags  =& Piwi::CreateWidget('Entry', 'tags', '');
-        $linktags->SetStyle('direction: ltr; width: 256px;');
+        $linktags->SetStyle('direction: ltr; width: 356px;');
         $tpl->SetVariable('tag', $linktags->Get());
 
         $tpl->SetVariable('lbl_clicks', _t('LINKDUMP_LINKS_CLICKS'));
