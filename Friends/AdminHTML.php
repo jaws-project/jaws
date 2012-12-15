@@ -153,13 +153,14 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
                                                (isset($friend['friend']) ?
                                                 $xss->filter($friend['friend']) : ''));
             $friendentry->SetTitle(_t('FRIENDS_FRIEND'));
+            $friendentry->SetStyle('width: 250px;');
             $fieldset_friebd->Add($friendentry);
 
             $urlentry =& Piwi::CreateWidget('Entry', 'url',
                                             (isset($friend['url']) ?
                                              $xss->filter($friend['url']) : 'http://'));
             $urlentry->SetTitle(_t('GLOBAL_URL'));
-            $urlentry->SetStyle('direction: ltr;');
+            $urlentry->SetStyle('direction: ltr; width: 250px;');
             $fieldset_friebd->Add($urlentry);
 
             $buttonbox =& Piwi::CreateWidget('HBox');
