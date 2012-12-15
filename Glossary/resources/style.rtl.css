@@ -16,9 +16,9 @@
 }
 
 #preview {
-    width: 500px;
-    height: 325px;
-    min-height: 325px;
+    height: 413px;
+    min-height: 413px;
+    width: 100%;
     display: none;
 }
 

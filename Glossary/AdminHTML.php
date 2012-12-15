@@ -33,7 +33,7 @@ class GlossaryAdminHTML extends Jaws_Gadget_HTML
         $termsCombo =& Piwi::CreateWidget('Combo', 'term_id');
         $termsCombo->SetID('term_id');
         $termsCombo->SetStyle('width: 100%; margin-bottom: 10px;');
-        $termsCombo->SetSize(20);
+        $termsCombo->SetSize(25);
         $termsCombo->AddEvent(ON_CHANGE, 'edit(this.value, \'' . _t('GLOBAL_EDIT') . '\');');
         foreach ($terms as $term) {
             if (!isset($selected_content)) {
@@ -77,8 +77,8 @@ class GlossaryAdminHTML extends Jaws_Gadget_HTML
         $selected_content = isset($selected_content)? $selected_content : '';
         $contents =& $GLOBALS['app']->LoadEditor('Glossary', 'term_contents', $selected_content);
         $contents->setID('term_contents');
-        $contents->TextArea->SetStyle('width: 100%;');
-        $contents->SetWidth('100%');
+        $contents->TextArea->SetStyle('width: 99%; height: 260px;');
+        $contents->SetWidth('99%');
         $tpl->SetVariable('contents', _t('GLOSSARY_DESC'));
         $tpl->SetVariable('contents_field', $contents->Get());
         $dispTitle =& Piwi::CreateWidget('CheckButtons', 'display_title');
