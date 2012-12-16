@@ -57,7 +57,7 @@ class Jaws_Session_Web extends Jaws_Session
         // Create cookie
         $this->SetCookie(JAWS_SESSION_NAME,
                          $this->_SessionID.'-'.$this->GetAttribute('salt'),
-                         $remember? 60*(int)$GLOBALS['app']->Registry->Get('/gadgets/Policy/session_remember_timeout') : 0,
+                         $remember? 60*(int)$GLOBALS['app']->Registry->Get('session_remember_timeout', 'Policy', JAWS_COMPONENT_GADGET) : 0,
                          false);
     }
 
@@ -89,11 +89,11 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function SetCookie($name, $value, $minutes = 0, $httponly = false)
     {
-        $version = $GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_version');
+        $version = $GLOBALS['app']->Registry->Get('cookie_version', 'Settings', JAWS_COMPONENT_GADGET);
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
         $path    = $GLOBALS['app']->getSiteURL('/', true);
-        $domain  = '';//$GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_domain');
-        $secure  = ($GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_secure') == 'false') ? false : true;
+        $domain  = '';//$GLOBALS['app']->Registry->Get('cookie_domain', 'Settings', JAWS_COMPONENT_GADGET);
+        $secure  = ($GLOBALS['app']->Registry->Get('cookie_secure', 'Settings', JAWS_COMPONENT_GADGET) == 'false') ? false : true;
         $domain .= $httponly? '; HttpOnly' : '';
         setcookie($name, $value, $expires, $path, $domain);
     }
@@ -107,7 +107,7 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function GetCookie($name)
     {
-        $version = $GLOBALS['app']->Registry->Get('/gadgets/Settings/cookie_version');
+        $version = $GLOBALS['app']->Registry->Get('cookie_version', 'Settings', JAWS_COMPONENT_GADGET);
         $request =& Jaws_Request::getInstance();
         return $request->get($name, 'cookie');
     }
