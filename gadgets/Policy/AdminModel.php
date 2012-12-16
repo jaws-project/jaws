@@ -27,31 +27,31 @@ class PolicyAdminModel extends PolicyModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKeyEx(
-            array('/gadgets/Policy/block_undefined_ip',    'false'),
-            array('/gadgets/Policy/block_undefined_agent', 'false'),
-            array('/gadgets/Policy/allow_duplicate', 'no'),
-            array('/gadgets/Policy/filter',          'DISABLED'),
-            array('/gadgets/Policy/captcha',         'DISABLED'),
-            array('/gadgets/Policy/captcha_driver',  'MathCaptcha'),
-            array('/gadgets/Policy/obfuscator',      'DISABLED'),
-            array('/gadgets/Policy/akismet_key',          ''),
-            array('/gadgets/Policy/typepad_key',          ''),
-            array('/gadgets/Policy/crypt_enabled',        'false'),
-            array('/gadgets/Policy/crypt_pub_key',        ''),
-            array('/gadgets/Policy/crypt_pvt_key',        ''),
-            array('/gadgets/Policy/crypt_key_len',        '128'),
-            array('/gadgets/Policy/crypt_key_age',        '86400'),
-            array('/gadgets/Policy/crypt_key_start_date', '0'),
-            array('/gadgets/Policy/passwd_bad_count',         '7'),
-            array('/gadgets/Policy/passwd_lockedout_time',    '60'),    // per second
-            array('/gadgets/Policy/passwd_max_age',           '0'),     // per day  0 = resistant
-            array('/gadgets/Policy/passwd_min_length',        '0'),
-            array('/gadgets/Policy/passwd_complexity',        'no'),
-            array('/gadgets/Policy/xss_parsing_level',        'paranoid'),
-            array('/gadgets/Policy/session_idle_timeout',     '30'),    // per minute
-            array('/gadgets/Policy/session_remember_timeout', '720')    // hours = 1 month
-        );
+        $this->AddRegistry(array(
+            'block_undefined_ip' => 'false',
+            'block_undefined_agent' => 'false',
+            'allow_duplicate' => 'no',
+            'filter' => 'DISABLED',
+            'captcha' => 'DISABLED',
+            'captcha_driver' => 'MathCaptcha',
+            'obfuscator' => 'DISABLED',
+            'akismet_key' => '',
+            'typepad_key' => '',
+            'crypt_enabled' => 'false',
+            'crypt_pub_key' => '',
+            'crypt_pvt_key' => '',
+            'crypt_key_len' => '128',
+            'crypt_key_age' => '86400',
+            'crypt_key_start_date' => '0',
+            'passwd_bad_count' => '7',
+            'passwd_lockedout_time' => '60',      // per second
+            'passwd_max_age' => '0',              // per day  0 = resistant
+            'passwd_min_length' => '0',
+            'passwd_complexity' => 'no',
+            'xss_parsing_level' => 'paranoid',
+            'session_idle_timeout' => '30',       // per minute
+            'session_remember_timeout' => '720',  // hours = 1 month
+        ));
 
         return true;
     }
