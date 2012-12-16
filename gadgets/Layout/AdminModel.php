@@ -31,9 +31,8 @@ class LayoutAdminModel extends LayoutModel
             return $result;
         }
 
-        //registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Layout/pluggable', 'false');
-
+        // registry keys
+        $this->AddRegistry('pluggable', 'false');
         return true;
     }
 
