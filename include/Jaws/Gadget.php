@@ -172,7 +172,6 @@ class Jaws_Gadget
         if (substr($gadget, -5, 5) == 'Model') {
             $gadget = substr($gadget, 0, strlen($gadget) - 5);
         }
-        $GLOBALS['app']->Registry->LoadFile($gadget);
 
         $this->_Name        = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
@@ -303,7 +302,7 @@ class Jaws_Gadget
     {
         $jawsVersion = $this->_Req_JawsVersion;
         if (empty($jawsVersion)) {
-            $jawsVersion = $GLOBALS['app']->Registry->Get('/gadgets/Settings/version');
+            $jawsVersion = $GLOBALS['app']->Registry->Get('version');
         }
 
         return $jawsVersion;
@@ -464,7 +463,7 @@ class Jaws_Gadget
     {
         // is an empty action?
         if (empty($this->_Action) || $this->_Action == 'DefaultAction') {
-            $this->_Action = $GLOBALS['app']->Registry->Get('/gadgets/' . $this->_Gadget . '/default_action');
+            $this->_Action = $this->GetRegistry('default_action');
             if (empty($this->_Action)) {
                 $this->_Action = 'DefaultAction';
             }
@@ -717,7 +716,7 @@ class Jaws_Gadget
     function GetRegistry($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->_Gadget : $gadget;
-        return $GLOBALS['app']->Registry->Get("/gadgets/$gadget/$name");
+        return $GLOBALS['app']->Registry->Get($name, $gadget, JAWS_COMPONENT_GADGET);
     }
 
     /**
@@ -732,7 +731,7 @@ class Jaws_Gadget
     function SetRegistry($name, $value, $gadget = '')
     {
         $gadget = empty($gadget)? $this->_Gadget : $gadget;
-        return $GLOBALS['app']->Registry->Set("/gadgets/$gadget/$name", $value);
+        return $GLOBALS['app']->Registry->Set($name, $value, $gadget, JAWS_COMPONENT_GADGET);
     }
 
     /**
@@ -744,10 +743,15 @@ class Jaws_Gadget
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function AddRegistry($name, $value, $gadget = '')
+    function AddRegistry($name, $value = '', $gadget = '')
     {
-        $gadget = empty($gadget)? $this->_Gadget : $gadget;
-        return $GLOBALS['app']->Registry->NewKey("/gadgets/$gadget/$name", $value);
+        if (is_array($name)) {
+            $gadget = empty($value)? $this->_Gadget : $value;
+            return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget, JAWS_COMPONENT_GADGET);
+        } else {
+            $gadget = empty($gadget)? $this->_Gadget : $gadget;
+            return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget, JAWS_COMPONENT_GADGET);
+        }
     }
 
     /**
@@ -761,7 +765,7 @@ class Jaws_Gadget
     function DelRegistry($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->_Gadget : $gadget;
-        return $GLOBALS['app']->Registry->DeleteKey("/gadgets/$gadget/$name");
+        return $GLOBALS['app']->Registry->DeleteKey($name, $gadget, JAWS_COMPONENT_GADGET);
     }
 
     /**
@@ -797,7 +801,7 @@ class Jaws_Gadget
                     if (!Jaws_Error::IsError($objPlugin)) {
                         $use_in = '*';
                         if ($plugins_set == 'admin') {
-                            $use_in = $GLOBALS['app']->Registry->Get('/plugins/' . $plugin . '/use_in');
+                            $use_in = $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
                         }
                         if (!Jaws_Error::isError($use_in) &&
                            ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
@@ -839,7 +843,7 @@ class Jaws_Gadget
 
         // Check if gadget is enabled
         ///FIXME check for errors
-        if ($GLOBALS['app']->Registry->Get('/gadgets/' . $gadget . '/enabled') != 'true') {
+        if ($GLOBALS['app']->Registry->Get('enabled', $gadget, JAWS_COMPONENT_GADGET) != 'true') {
             // Gadget is not found or disabled
             return false;
         }
@@ -873,10 +877,10 @@ class Jaws_Gadget
         }
 
         if (
-            $GLOBALS['app']->Registry->Get('/gadgets/' . $gadget . '/enabled') == 'true' &&
-            $GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget') != $gadget
+            $this->GetRegistry('enabled') == 'true' &&
+            $this->GetRegistry('main_gadget', 'Settings') != $gadget
         ) {
-            $GLOBALS['app']->Registry->Set('/gadgets/' . $gadget . '/enabled', 'false');
+            $$this->SetRegistry('enabled', 'false');
         }
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterDisablingGadget', $gadget);
@@ -924,9 +928,9 @@ class Jaws_Gadget
 
         $model->UninstallACLs();
 
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/enabled');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/version');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/' . $gadget . '/requires');
+        $this->DelRegistry('enabled');
+        $this->DelRegistry('version');
+        $this->DelRegistry('requires');
 
         // After anything finished
         $res = $GLOBALS['app']->Shouter->Shout('onAfterUninstallingGadget', $gadget);
@@ -940,7 +944,7 @@ class Jaws_Gadget
     function _commonPreDisableGadget()
     {
         if ($this->IsGadgetInstalled() &&
-            $GLOBALS['app']->Registry->Get('/gadgets/Settings/main_gadget') == $this->_Gadget
+            $this->GetRegistry('main_gadget', 'Settings') == $this->_Gadget
         ) {
             return false;
         }
@@ -952,24 +956,25 @@ class Jaws_Gadget
             return false;
         }
 
+        $params = array();
+        $params['name']  = 'requires';
+        $params['value'] = '%'. $this->_Gadget. '%';
+
         $sql = '
-            SELECT [key_name] FROM [[registry]]
-            WHERE [key_name] LIKE {name} AND [key_value] LIKE {search}';
-        $params = array(
-            'name' => '/gadgets/%/requires',
-            'search' => '%' . $this->_Gadget . '%'
-        );
+            SELECT
+                [key_name]
+            FROM [[registry]]
+            WHERE
+                [key_name] = {name}
+              AND
+                [key_value] LIKE {value}';
 
         $result = $GLOBALS['db']->queryOne($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        if ($result > 0) {
-            return false;
-        }
-
-        return true;
+        return empty($result);
     }
 
     /**
@@ -1020,7 +1025,7 @@ class Jaws_Gadget
     function UpdateGadget()
     {
         $gadget = $this->_Gadget;
-        $currentVersion = $GLOBALS['app']->Registry->Get('/gadgets/'.$gadget.'/version');
+        $currentVersion = $this->GetRegistry('version', $gadget);
         $newVersion     = $this->_Version;
         if (version_compare($currentVersion, $newVersion, ">=")) {
             return true;
@@ -1049,10 +1054,10 @@ class Jaws_Gadget
 
         if (is_string($instance)) {
             //Instance has the new version number
-            $GLOBALS['app']->Registry->Set('/gadgets/'.$gadget.'/version', $instance);
+            $this->SetRegistry('version', $instance);
         } else {
             //Use the latest (current) version
-            $GLOBALS['app']->Registry->Set('/gadgets/'.$gadget.'/version', $newVersion);
+            $this->SetRegistry('version', $newVersion);
         }
 
         //Autoload feature
@@ -1109,10 +1114,9 @@ class Jaws_Gadget
             return $res;
         }
 
-        $enabled = '/gadgets/' . $gadget . '/enabled';
-        $status = $GLOBALS['app']->Registry->Get($enabled);
+        $status = $this->GetRegistry('enabled');
         if ($status !== null) {
-            $GLOBALS['app']->Registry->Set($enabled, 'true');
+            $this->SetRegistry('enabled', 'true');
         } else {
             //This can fail if user doesn't name the gadget model as: $gadgetAdminModel
             $model = $GLOBALS['app']->loadGadget($gadget, 'AdminModel');
@@ -1130,10 +1134,14 @@ class Jaws_Gadget
 
             // Applying the keys that every gadget gets
             $requires = implode($this->_Requires, ', ');
-            $GLOBALS['app']->Registry->NewKeyEx(array($enabled, 'true'),
-                                                array('/gadgets/' . $gadget . '/version', $this->_Version),
-                                                array('/gadgets/' . $gadget . '/requires', $requires)
-                                                );
+            $this->AddRegistry(
+                array(
+                    'enabled'  => 'true',
+                    'version'  => $this->_Version,
+                    'requires' => $requires,
+                )
+            );
+
             // ACL keys
             $model->InstallACLs();
         }
@@ -1181,7 +1189,7 @@ class Jaws_Gadget
 
         $items.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
         if (is_dir(JAWS_PATH . 'gadgets/' . $this->_Gadget) &&
-            $GLOBALS['app']->Registry->Get('/gadgets/'.$this->_Gadget.'/enabled') == 'true' &&
+            $this->GetRegistry('enabled') == 'true' &&
             in_array($this->_Gadget, explode(',', $items)))
         {
             return true;
@@ -1200,7 +1208,7 @@ class Jaws_Gadget
     {
         if ($GLOBALS['app']->IsGadgetMarkedAsUpdated($this->_Gadget) === null) {
             if ($this->IsGadgetInstalled()) {
-                $current_version = $GLOBALS['app']->Registry->Get('/gadgets/'.$this->_Gadget.'/version');
+                $current_version = $this->GetRegistry('version');
                 //If the new gadget version is > than the current version (installed)
                 $status = version_compare($this->_Version, $current_version, '>') ? false : true;
             } else {
@@ -1224,7 +1232,7 @@ class Jaws_Gadget
     function CanRunInCoreVersion()
     {
         if ($this->IsGadgetInstalled()) {
-            $coreVersion     = $GLOBALS['app']->Registry->Get('/gadgets/Settings/version');
+            $coreVersion     = $GLOBALS['app']->Registry->Get('version');
             $requiredVersion = $this->GetRequiredJawsVersion();
 
             if ($requiredVersion == $coreVersion) {
