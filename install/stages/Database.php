@@ -341,12 +341,14 @@ class Installer_Database extends JawsInstallerStage
 
         // registry keys
         $result = $GLOBALS['app']->Registry->NewKeyEx(
-                    array('version', JAWS_VERSION),
-                    array('gadgets_enabled_items', ''),
-                    array('gadgets_core_items', ''),
-                    array('gadgets_autoload_items', ''),
-                    array('plugins_enabled_items', ''),
-                    array('plugins_admin_enabled_items', '')
+            array(
+                'version' => JAWS_VERSION,
+                'gadgets_enabled_items' => '',
+                'gadgets_core_items' => '',
+                'gadgets_autoload_items' => '',
+                'plugins_enabled_items' => '',
+                'plugins_admin_enabled_items' => '',
+            )
         );
 
         if (Jaws_Error::isError($result)) {

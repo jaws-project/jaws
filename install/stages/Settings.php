@@ -175,16 +175,16 @@ class Installer_Settings extends JawsInstallerStage
 
         _log(JAWS_LOG_DEBUG,"Setting up main settings (site name, description, languages, copyrights, etc");
         $settings = array();
-        $settings['/gadgets/Settings/site_name']      = $post['site_name'];
-        $settings['/gadgets/Settings/site_slogan']    = $post['site_slogan'];
-        $settings['/gadgets/Settings/site_author']    = $_SESSION['install']['CreateUser']['nickname'];
-        $settings['/gadgets/Settings/main_gadget']    = $post['default_gadget'];
-        $settings['/gadgets/Settings/copyright']      = date('Y'). ', '. $post['site_name'];
-        $settings['/gadgets/Settings/site_language']  = $post['site_language'];
-        $settings['/gadgets/Settings/admin_language'] = $post['site_language'];
-        $settings['/gadgets/Settings/site_email']     = $_SESSION['install']['CreateUser']['email'];
+        $settings['site_name']      = $post['site_name'];
+        $settings['site_slogan']    = $post['site_slogan'];
+        $settings['site_author']    = $_SESSION['install']['CreateUser']['nickname'];
+        $settings['main_gadget']    = $post['default_gadget'];
+        $settings['copyright']      = date('Y'). ', '. $post['site_name'];
+        $settings['site_language']  = $post['site_language'];
+        $settings['admin_language'] = $post['site_language'];
+        $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
-            $GLOBALS['app']->Registry->Set($key, $value);
+            $GLOBALS['app']->Registry->Set($key, $value, 'Settings', JAWS_COMPONENT_GADGET);
         }
 
         require_once JAWS_PATH . 'include/Jaws/URLMapping.php';
