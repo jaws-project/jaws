@@ -32,17 +32,17 @@ class UsersAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKeyEx(
-            array('/gadgets/Users/pluggable', 'false'),
-            array('/gadgets/Users/latest_limit', '10'),
-            array('/gadgets/Users/password_recovery', 'false'),
-            array('/gadgets/Users/register_notification', 'true'),
-            array('/gadgets/Users/auth_method', 'Default'),
-            array('/gadgets/Users/anon_register', 'false'),
-            array('/gadgets/Users/anon_repetitive_email', 'true'),
-            array('/gadgets/Users/anon_activation', 'user'),
-            array('/gadgets/Users/anon_group', '')
-        );
+        $this->AddRegistry(array(
+            'pluggable' => 'false',
+            'latest_limit' => '10',
+            'password_recovery' => 'false',
+            'register_notification' => 'true',
+            'auth_method' => 'Default',
+            'anon_register' => 'false',
+            'anon_repetitive_email' => 'true',
+            'anon_activation' => 'user',
+            'anon_group' => '',
+        ));
 
         // Create the group 'Jaws_Users'
         require_once JAWS_PATH . 'include/Jaws/User.php';
