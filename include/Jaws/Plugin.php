@@ -182,22 +182,18 @@ class Jaws_Plugin
                                      __FUNCTION__);
         }
 
-        $pluginkey   = '/plugins/' . $plugin . '/enabled';
-        $pluginusein = '/plugins/' . $plugin . '/use_in';
-        $pluginskey  = 'plugins_admin_enabled_items';
-
         if (
-            !$GLOBALS['app']->Registry->NewKey($pluginkey, 'true') ||
-            !$GLOBALS['app']->Registry->NewKey($pluginusein, '*')
+            !$GLOBALS['app']->Registry->NewKey('enabled', 'true', $plugin, JAWS_COMPONENT_PLUGIN) ||
+            !$GLOBALS['app']->Registry->NewKey('use_in', '*', $plugin, JAWS_COMPONENT_PLUGIN)
         ) {
             return new Jaws_Error(_t('JMS_PLUGINS_ENABLED_FAILURE', $plugin),
                                      __FUNCTION__);
         }
 
         // Put it in the enabled plugin record
-        $items = $GLOBALS['app']->Registry->Get($pluginskey);
+        $items = $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items');
         if (!in_array($plugin, explode(',', $items))) {
-            $GLOBALS['app']->Registry->Set($pluginskey, $items.','.$plugin);
+            $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $items.','.$plugin);
         }
 
         require_once $file;
@@ -268,8 +264,8 @@ class Jaws_Plugin
         $new  = str_replace(',' . $plugin, '', $pull);
 
         $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $new);
-        $GLOBALS['app']->Registry->DeleteKey('/plugins/' . $plugin . '/enabled');
-        $GLOBALS['app']->Registry->DeleteKey('/plugins/' . $plugin . '/use_in');
+        $GLOBALS['app']->Registry->DeleteKey('enabled', $plugin, JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->DeleteKey('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
 
         require_once $file;
         $pluginObj = new $plugin;
