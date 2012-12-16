@@ -19,8 +19,8 @@ class ControlPanelAdminModel extends Jaws_Gadget_Model
      */
     function InstallGadget()
     {
-        //registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/ControlPanel/pluggable', 'false');
+        // registry keys
+        $this->AddRegistry('pluggable', 'false');
         return true;
     }
 
