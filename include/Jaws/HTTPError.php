@@ -57,7 +57,7 @@ class Jaws_HTTPError
 
         // if current theme has a error code html file, return it, if not return the messages.
         $theme = $GLOBALS['app']->GetTheme();
-        $site_name = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+        $site_name = $GLOBALS['app']->Registry->Get('site_name', 'Settings', JAWS_COMPONENT_GADGET);
         if (file_exists($theme['path'] . "$code.html")) {
             $tpl = new Jaws_Template();
             $tpl->Load("$code.html");
@@ -73,10 +73,10 @@ class Jaws_HTTPError
             $tpl->SetVariable('.browser', $brow);
             $tpl->SetVariable('site-name',   $site_name);
             $tpl->SetVariable('site-title',  $site_name);
-            $tpl->SetVariable('site-slogan', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_slogan'));
-            $tpl->SetVariable('site-author',      $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_author'));
-            $tpl->SetVariable('site-copyright',   $GLOBALS['app']->Registry->Get('/gadgets/Settings/copyright'));
-            $tpl->SetVariable('site-description', $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_description'));
+            $tpl->SetVariable('site-slogan', $GLOBALS['app']->Registry->Get('site_slogan', 'Settings', JAWS_COMPONENT_GADGET));
+            $tpl->SetVariable('site-author',      $GLOBALS['app']->Registry->Get('site_author', 'Settings', JAWS_COMPONENT_GADGET));
+            $tpl->SetVariable('site-copyright',   $GLOBALS['app']->Registry->Get('copyright', 'Settings', JAWS_COMPONENT_GADGET));
+            $tpl->SetVariable('site-description', $GLOBALS['app']->Registry->Get('site_description', 'Settings', JAWS_COMPONENT_GADGET));
 
             $tpl->SetVariable('title',   $title);
             $tpl->SetVariable('content', $message);

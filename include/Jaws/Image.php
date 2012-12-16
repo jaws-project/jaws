@@ -120,7 +120,7 @@ class Jaws_Image
         }
 
         if (empty($imgDriver)) {
-            $imgDriver = $GLOBALS['app']->Registry->Get('/gadgets/Settings/img_driver');
+            $imgDriver = $GLOBALS['app']->Registry->Get('img_driver', 'Settings', JAWS_COMPONENT_GADGET);
         }
         $imgDriver = preg_replace('/[^[:alnum:]_-]/', '', $imgDriver);
 

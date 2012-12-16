@@ -31,7 +31,7 @@ class Jaws_XSS
         }
 
         if (is_null($strict)) {
-            $strict = ($GLOBALS['app']->Registry->Get('/gadgets/Policy/xss_parsing_level') == "paranoid")? true : false;
+            $strict = ($GLOBALS['app']->Registry->Get('xss_parsing_level', 'Policy', JAWS_COMPONENT_GADGET) == "paranoid")? true : false;
         }
 
         $string = $this->safeXSS->parse($string, $strict);

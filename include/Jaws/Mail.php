@@ -113,23 +113,23 @@ class Jaws_Mail
         }
 
         // Get the Mail settings data from Registry
-        $this->mailer     = $GLOBALS['app']->Registry->Get('/gadgets/Settings/mailer');
-        $this->gate_email = $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_email');
-        $this->gate_title = $GLOBALS['app']->Registry->Get('/gadgets/Settings/gate_title');
-        $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_vrfy') == 'true';
+        $this->mailer     = $GLOBALS['app']->Registry->Get('mailer', 'Settings', JAWS_COMPONENT_GADGET);
+        $this->gate_email = $GLOBALS['app']->Registry->Get('gate_email', 'Settings', JAWS_COMPONENT_GADGET);
+        $this->gate_title = $GLOBALS['app']->Registry->Get('gate_title', 'Settings', JAWS_COMPONENT_GADGET);
+        $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('smtp_vrfy', 'Settings', JAWS_COMPONENT_GADGET) == 'true';
 
-        $this->site_email = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_email');
-        $this->site_name  = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+        $this->site_email = $GLOBALS['app']->Registry->Get('site_email', 'Settings', JAWS_COMPONENT_GADGET);
+        $this->site_name  = $GLOBALS['app']->Registry->Get('site_name', 'Settings', JAWS_COMPONENT_GADGET);
 
         $params = array();
-        $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/sendmail_path');
-        $params['sendmail_args'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/sendmail_args');
-        $params['host']          = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_host');
-        $params['port']          = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_port');
-        $params['auth']          = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_auth')  == 'true';
-        $params['pipelining']    = $GLOBALS['app']->Registry->Get('/gadgets/Settings/pipelining') == 'true';
-        $params['username']      = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_user');
-        $params['password']      = $GLOBALS['app']->Registry->Get('/gadgets/Settings/smtp_pass');
+        $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('sendmail_path', 'Settings', JAWS_COMPONENT_GADGET);
+        $params['sendmail_args'] = $GLOBALS['app']->Registry->Get('sendmail_args', 'Settings', JAWS_COMPONENT_GADGET);
+        $params['host']          = $GLOBALS['app']->Registry->Get('smtp_host', 'Settings', JAWS_COMPONENT_GADGET);
+        $params['port']          = $GLOBALS['app']->Registry->Get('smtp_port', 'Settings', JAWS_COMPONENT_GADGET);
+        $params['auth']          = $GLOBALS['app']->Registry->Get('smtp_auth', 'Settings', JAWS_COMPONENT_GADGET)  == 'true';
+        $params['pipelining']    = $GLOBALS['app']->Registry->Get('pipelining', 'Settings', JAWS_COMPONENT_GADGET) == 'true';
+        $params['username']      = $GLOBALS['app']->Registry->Get('smtp_user', 'Settings', JAWS_COMPONENT_GADGET);
+        $params['password']      = $GLOBALS['app']->Registry->Get('smtp_pass', 'Settings', JAWS_COMPONENT_GADGET);
 
         $this->params = $params;
         return $this->params;
