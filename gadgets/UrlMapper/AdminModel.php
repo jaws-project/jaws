@@ -32,15 +32,16 @@ class UrlMapperAdminModel extends UrlMapperModel
         $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKeyEx(array('/gadgets/UrlMapper/map_enabled',     'true'),
-                                            array('/gadgets/UrlMapper/map_use_file',    'true'),
-                                            array('/gadgets/UrlMapper/map_use_rewrite', 'false'),
-                                            array('/gadgets/UrlMapper/map_map_to_use',  'both'),
-                                            array('/gadgets/UrlMapper/map_custom_precedence', 'false'),
-                                            array('/gadgets/UrlMapper/map_restrict_multimap', 'false'),
-                                            array('/gadgets/UrlMapper/map_extensions',  'html'),
-                                            array('/gadgets/UrlMapper/map_use_aliases', 'true')
-                                            );
+        $this->AddRegistry(array(
+            'map_enabled' => 'true',
+            'map_use_file' => 'true',
+            'map_use_rewrite' => 'false',
+            'map_map_to_use' => 'both',
+            'map_custom_precedence' => 'false',
+            'map_restrict_multimap' => 'false',
+            'map_extensions' => 'html',
+            'map_use_aliases' => 'true',
+        ));
 
         return true;
     }
