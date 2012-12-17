@@ -36,9 +36,9 @@ class StaticPageAdminModel extends StaticPageModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/hide_title', 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/default_page', '1');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/multilanguage', 'yes');
+        $this->AddRegistry('hide_title', 'true');
+        $this->AddRegistry('default_page', '1');
+        $this->AddRegistry('multilanguage', 'yes');
 
         return true;
     }
@@ -65,9 +65,9 @@ class StaticPageAdminModel extends StaticPageModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/hide_title');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/default_page');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/StaticPage/multilanguage');
+        $this->DelRegistry('hide_title');
+        $this->DelRegistry('default_page');
+        $this->DelRegistry('multilanguage');
 
         return true;
     }
@@ -116,7 +116,7 @@ class StaticPageAdminModel extends StaticPageModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/Properties', 'true');
 
             // Registry keys
-            $GLOBALS['app']->Registry->NewKey('/gadgets/StaticPage/multilanguage', 'yes');
+            $this->AddRegistry('multilanguage', 'yes');
 
             $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
         }
