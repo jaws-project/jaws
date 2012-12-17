@@ -37,7 +37,7 @@ class RssReaderAdminModel extends RssReaderModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/RssReader/default_feed', '0');
+        $this->AddRegistry('default_feed', '0');
 
         return true;
     }
@@ -58,8 +58,8 @@ class RssReaderAdminModel extends RssReaderModel
             return new Jaws_Error($errMsg, $gName);
         }
 
-        //registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/RssReader/default_feed');
+        // registry keys
+        $this->DelRegistry('default_feed');
 
         return true;
     }
@@ -84,10 +84,10 @@ class RssReaderAdminModel extends RssReaderModel
         $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/RssReader/UpdateProperties');
 
         //registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/RssReader/default_feed', '0');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/RssReader/limit_entries');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/RssReader/order_type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/RssReader/sort_type');
+        $this->AddRegistry('default_feed', '0');
+        $this->DelRegistry('limit_entries');
+        $this->DelRegistry('order_type');
+        $this->DelRegistry('sort_type');
 
         return true;
     }
