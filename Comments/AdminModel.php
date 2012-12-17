@@ -408,7 +408,7 @@ class CommentsAdminModel extends CommentsModel
         }
 
         if (!in_array($status, array('approved', 'waiting', 'spam'))) {
-            if ($GLOBALS['app']->Registry->Get('/gadget/' . $gadget . '/default_status') == COMMENT_STATUS_WAITING) {
+            if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
                 $status = COMMENT_STATUS_WAITING;
             } else {
                 $status = COMMENT_STATUS_APPROVED;

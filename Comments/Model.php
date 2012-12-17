@@ -110,7 +110,6 @@ class CommentsModel extends Jaws_Gadget_Model
         }
 
         $message_key = md5($title.$message);
-        $GLOBALS['app']->Registry->LoadFile('Policy');
         if ($this->GetRegistry('allow_duplicate', 'Policy') == 'no') {
             if ($this->IsMessageDuplicated($message_key)) {
                 return new Jaws_Error(_t('GLOBAL_SPAM_POSSIBLE_DUPLICATE_MESSAGE'), _t('COMMENTS_NAME'));
@@ -373,7 +372,7 @@ class CommentsModel extends Jaws_Gadget_Model
     function TotalOfComments($gadget, $status)
     {
         if (!in_array($status, array('approved', 'waiting', 'spam'))) {
-            if ($GLOBALS['app']->Registry->Get('/gadget/' . $gadget . '/default_status') == COMMENT_STATUS_WAITING) {
+            if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
                 $status = COMMENT_STATUS_WAITING;
             } else {
                 $status = COMMENT_STATUS_APPROVED;
