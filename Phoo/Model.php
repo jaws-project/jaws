@@ -115,7 +115,7 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function GetOrderType($resource)
     {
-        $orderType = $GLOBALS['app']->Registry->Get("/gadgets/Phoo/$resource");
+        $orderType = $this->GetRegistry($resource);
         if ($resource == 'photos_order_type') {
             if (!in_array($orderType, array('createtime DESC', 'createtime', 'title DESC', 'title', 'id DESC','id' )))
             {

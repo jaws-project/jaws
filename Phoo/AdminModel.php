@@ -37,23 +37,23 @@ class PhooAdminModel extends PhooModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/default_action',    'AlbumList');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/thumbsize',         '133x100');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/mediumsize',        '400x300');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/moblog_album',      '');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/moblog_limit',      '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/photoblog_album',   '');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/photoblog_limit',   '5');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/allow_comments',    'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/published',         'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/plugabble',         'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/show_exif_info',    'false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/keep_original',     'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/thumbnail_limit',   '0');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/use_antispam',      'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/comment_status',    'approved');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/albums_order_type', 'name');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/photos_order_type', 'id');
+        $this->AddRegistry('default_action',    'AlbumList');
+        $this->AddRegistry('thumbsize',         '133x100');
+        $this->AddRegistry('mediumsize',        '400x300');
+        $this->AddRegistry('moblog_album',      '');
+        $this->AddRegistry('moblog_limit',      '10');
+        $this->AddRegistry('photoblog_album',   '');
+        $this->AddRegistry('photoblog_limit',   '5');
+        $this->AddRegistry('allow_comments',    'true');
+        $this->AddRegistry('published',         'true');
+        $this->AddRegistry('plugabble',         'true');
+        $this->AddRegistry('show_exif_info',    'false');
+        $this->AddRegistry('keep_original',     'true');
+        $this->AddRegistry('thumbnail_limit',   '0');
+        $this->AddRegistry('use_antispam',      'true');
+        $this->AddRegistry('comment_status',    'approved');
+        $this->AddRegistry('albums_order_type', 'name');
+        $this->AddRegistry('photos_order_type', 'id');
 
         return true;
     }
@@ -80,23 +80,23 @@ class PhooAdminModel extends PhooModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/default_action');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/thumbsize');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/mediumsize');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/moblog_album');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/moblog_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/photoblog_album');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/photoblog_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/allow_comments');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/published');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/plugabble');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/show_exif_info');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/keep_original');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/thumbnail_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/use_antispam');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/comment_status');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/albums_order_type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/photos_order_type');
+        $this->DelRegistry('default_action');
+        $this->DelRegistry('thumbsize');
+        $this->DelRegistry('mediumsize');
+        $this->DelRegistry('moblog_album');
+        $this->DelRegistry('moblog_limit');
+        $this->DelRegistry('photoblog_album');
+        $this->DelRegistry('photoblog_limit');
+        $this->DelRegistry('allow_comments');
+        $this->DelRegistry('published');
+        $this->DelRegistry('plugabble');
+        $this->DelRegistry('show_exif_info');
+        $this->DelRegistry('keep_original');
+        $this->DelRegistry('thumbnail_limit');
+        $this->DelRegistry('use_antispam');
+        $this->DelRegistry('comment_status');
+        $this->DelRegistry('albums_order_type');
+        $this->DelRegistry('photos_order_type');
 
         // Recent comments
         require_once JAWS_PATH.'include/Jaws/Comment.php';
@@ -122,7 +122,7 @@ class PhooAdminModel extends PhooModel
                 return $result;
             }
 
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/image_quality', '75');
+            $this->AddRegistry('image_quality', '75');
         }
 
         if ($old == '0.7.0') {
@@ -135,16 +135,16 @@ class PhooAdminModel extends PhooModel
                                      _t('PHOO_NAME'));
             }
 
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/comment_status', 'approved');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/order_type','name');
+            $this->AddRegistry('comment_status', 'approved');
+            $this->AddRegistry('order_type','name');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             $albums_order_type = $this->GetRegistry('order_type');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/albums_order_type',
+            $this->AddRegistry('albums_order_type',
                                               Jaws_Error::IsError($albums_order_type)? 'name' : $albums_order_type);
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Phoo/photos_order_type', 'id');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/order_type');
+            $this->AddRegistry('photos_order_type', 'id');
+            $this->DelRegistry('order_type');
         }
 
         if (version_compare($old, '0.8.2', '<')) {
@@ -181,8 +181,8 @@ class PhooAdminModel extends PhooModel
                 return $result;
             }
 
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/resize_method');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Phoo/image_quality');
+            $this->DelRegistry('resize_method');
+            $this->DelRegistry('image_quality');
         }
 
         return true;
