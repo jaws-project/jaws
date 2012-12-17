@@ -31,11 +31,11 @@ class QuotesAdminModel extends QuotesModel
         }
 
         // Registry keys
-        $$this->AddRegistry('last_entries_limit',       '10');
-        $$this->AddRegistry('last_entries_view_mode',   '0');
-        $$this->AddRegistry('last_entries_view_type',   '0');
-        $$this->AddRegistry('last_entries_show_title',  'true');
-        $$this->AddRegistry('last_entries_view_random', 'false');
+        $this->AddRegistry('last_entries_limit',       '10');
+        $this->AddRegistry('last_entries_view_mode',   '0');
+        $this->AddRegistry('last_entries_view_type',   '0');
+        $this->AddRegistry('last_entries_show_title',  'true');
+        $this->AddRegistry('last_entries_view_random', 'false');
 
         return true;
     }
