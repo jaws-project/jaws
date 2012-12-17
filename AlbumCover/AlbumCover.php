@@ -54,7 +54,7 @@ class AlbumCover extends Jaws_Plugin
      */
     function UninstallPlugin()
     {
-        $GLOBALS['app']->Registry->DeleteKey('/plugins/AlbumCover/devtag');
+        $GLOBALS['app']->Registry->Delete('devtag', 'AlbumCover', JAWS_COMPONENT_PLUGIN);
         return true;
     }
 
