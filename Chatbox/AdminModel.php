@@ -21,11 +21,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function InstallGadget()
     {
         // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/limit', '7');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/use_antispam', 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/max_strlen', '125');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/comment_status', 'approved');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/anon_post_authority', 'true');
+        $this->AddRegistry('limit', '7');
+        $this->AddRegistry('use_antispam', 'true');
+        $this->AddRegistry('max_strlen', '125');
+        $this->AddRegistry('comment_status', 'approved');
+        $this->AddRegistry('anon_post_authority', 'true');
 
         return true;
     }
@@ -39,11 +39,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function UninstallGadget()
     {
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Chatbox/limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Chatbox/use_antispam');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Chatbox/max_strlen');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Chatbox/comment_status');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Chatbox/anon_post_authority');
+        $this->DelRegistry('limit');
+        $this->DelRegistry('use_antispam');
+        $this->DelRegistry('max_strlen');
+        $this->DelRegistry('comment_status');
+        $this->DelRegistry('anon_post_authority');
 
         return true;
     }
@@ -66,11 +66,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         */
 
         // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/max_strlen', '125');
+        $this->AddRegistry('max_strlen', '125');
 
         if (version_compare($old, '0.8.1', '<')) {
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/comment_status', 'approved');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Chatbox/anon_post_authority', 'true');
+            $this->AddRegistry('comment_status', 'approved');
+            $this->AddRegistry('anon_post_authority', 'true');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Chatbox/ManageComments',  'false');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Chatbox/DeleteEntry');
         }
