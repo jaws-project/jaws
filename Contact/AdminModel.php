@@ -32,13 +32,16 @@ class ContactAdminModel extends ContactModel
         }
 
         //registry keys.
-        $GLOBALS['app']->Registry->NewKeyEx(array('/gadgets/Contact/use_antispam',      'true'),
-                                            array('/gadgets/Contact/email_format',      'html'),
-                                            array('/gadgets/Contact/enable_attachment', 'false'),
-                                            array('/gadgets/Contact/comments',          ''),
-                                            array('/gadgets/Contact/default_items',
-                                                  'name,email,url,recipient,subject,attachment,message')
-                                            );
+        $this->AddRegistry(
+            array(
+                'use_antispam' => 'true',
+                'email_format' => 'html',
+                'enable_attachment' => 'false',
+                'comments' => '',
+                'default_items' => 'name,email,url,recipient,subject,attachment,message',
+            )
+        );
+
         return true;
     }
 
@@ -63,11 +66,11 @@ class ContactAdminModel extends ContactModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/use_antispam');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/email_format');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/enable_attachment');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/comments');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/default_items');
+        $this->DelRegistry('use_antispam');
+        $this->DelRegistry('email_format');
+        $this->DelRegistry('enable_attachment');
+        $this->DelRegistry('comments');
+        $this->DelRegistry('default_items');
 
         return true;
     }
@@ -93,15 +96,15 @@ class ContactAdminModel extends ContactModel
 
             // Registry keys.
             $send_html = $this->GetRegistry('send_html') == 'true';
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/use_captcha', 'true');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/email_format', $send_html? 'html' : 'text');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/enable_attachment', 'false');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/send_html');
+            $this->AddRegistry('use_captcha', 'true');
+            $this->AddRegistry('email_format', $send_html? 'html' : 'text');
+            $this->AddRegistry('enable_attachment', 'false');
+            $this->DelRegistry('send_html');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/comments', '');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/comment');
+            $this->AddRegistry('comments', '');
+            $this->DelRegistry('comment');
         }
 
         if (version_compare($old, '0.3.2', '<')) {
@@ -110,7 +113,7 @@ class ContactAdminModel extends ContactModel
                 return $result;
             }
 
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Contact/use_captcha');
+            $this->DelRegistry('use_captcha');
         }
 
         if (version_compare($old, '0.3.3', '<')) {
@@ -128,7 +131,7 @@ class ContactAdminModel extends ContactModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/AllowAttachment', 'false');
 
             // Registry keys
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Contact/default_items',
+            $this->AddRegistry('default_items',
                                               'name,email,url,recipient,subject,attachment,message');
 
             $new_dir = JAWS_DATA . 'contact';
