@@ -264,8 +264,8 @@ class Jaws_Plugin
         $new  = str_replace(',' . $plugin, '', $pull);
 
         $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $new);
-        $GLOBALS['app']->Registry->DeleteKey('enabled', $plugin, JAWS_COMPONENT_PLUGIN);
-        $GLOBALS['app']->Registry->DeleteKey('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->Delete('enabled', $plugin, JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->Delete('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
 
         require_once $file;
         $pluginObj = new $plugin;
