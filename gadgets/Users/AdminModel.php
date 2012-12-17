@@ -133,7 +133,7 @@ class UsersAdminModel extends Jaws_Gadget_Model
             }
 
             // Registry key
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Users/latest_limit', '10');
+            $this->AddRegistry('latest_limit', '10');
 
             // ACL keys
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');

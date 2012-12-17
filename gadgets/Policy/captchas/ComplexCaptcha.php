@@ -18,8 +18,7 @@ class ComplexCaptcha
     function ComplexCaptcha()
     {
         // If not installed try to install it
-        $GLOBALS['app']->Registry->LoadFile('Policy');
-        if ($this->GetRegistry('complex_captcha') != 'installed') {
+        if ($GLOBALS['app']->Registry->Get('complex_captcha', 'Policy', JAWS_COMPONENT_GADGET) != 'installed') {
             $schema = JAWS_PATH . 'gadgets/Policy/captchas/ComplexCaptcha/schema.xml';
             if (!file_exists($schema)) {
                 Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
@@ -28,7 +27,7 @@ class ComplexCaptcha
             if (Jaws_Error::IsError($result)) {
                 Jaws_Error::Fatal("Can't install ComplexCaptcha schema", __FILE__, __LINE__);
             }
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/complex_captcha', 'installed');
+            $GLOBALS['app']->Registry->NewKey('complex_captcha', 'installed', 'Policy', JAWS_COMPONENT_GADGET);
         }
     }
 

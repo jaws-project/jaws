@@ -83,22 +83,23 @@ class PolicyAdminModel extends PolicyModel
                 }
             }
 
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Policy/complex_captcha');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Policy/math_captcha');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Policy/simple_captcha');
+            $this->DelRegistry('complex_captcha');
+            $this->DelRegistry('math_captcha');
+            $this->DelRegistry('simple_captcha');
+            $this->DelRegistry('hkcaptcha');
         }
 
         if (version_compare($old, '0.1.2', '<')) {
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/typepad_key', '');
+            $this->AddRegistry('typepad_key', '');
         }
 
         if (version_compare($old, '0.1.3', '<')) {
             $old_captch = $this->GetRegistry('captcha');
             if ($old_captch !== 'DISABLED') {
                 $this->SetRegistry('captcha', 'ANONYMOUS');
-                $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/captcha_driver', $old_captch);
+                $this->AddRegistry('captcha_driver', $old_captch);
             } else {
-                $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/captcha_driver', 'MathCaptcha');
+                $this->AddRegistry('captcha_driver', 'MathCaptcha');
             }
 
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Policy/ManageEncryptionKey', 'false');
@@ -110,10 +111,10 @@ class PolicyAdminModel extends PolicyModel
                 return $result;
             }
 
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Policy/block_by_ip');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Policy/block_by_agent');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/block_undefined_ip',    'false');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/block_undefined_agent', 'false');
+            $this->AddRegistry('block_by_ip');
+            $this->AddRegistry('block_by_agent');
+            $this->AddRegistry('block_undefined_ip',    'false');
+            $this->AddRegistry('block_undefined_agent', 'false');
         }
 
         return true;

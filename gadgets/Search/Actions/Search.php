@@ -43,7 +43,7 @@ class Search_Actions_Search extends SearchHTML
         // Create Select box.
         if ($gadgets_combo) {
             $gadgetList = $model->GetSearchableGadgets();
-            $gSearchable = $GLOBALS['app']->Registry->Get('/gadgets/Search/searchable_gadgets');
+            $gSearchable = $this->GetRegistry('searchable_gadgets');
             $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
 
             $gchk =& Piwi::CreateWidget('Combo', 'gadgets');
@@ -123,7 +123,7 @@ class Search_Actions_Search extends SearchHTML
 
         //Gadgets filter combo
         $gadgetList = $model->GetSearchableGadgets();
-        $gSearchable = $GLOBALS['app']->Registry->Get('/gadgets/Search/searchable_gadgets');
+        $gSearchable = $this->GetRegistry('searchable_gadgets');
         $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
 
         $gchk =& Piwi::CreateWidget('Combo', 'gadgets');

@@ -35,9 +35,9 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_NAME'));
         }
 
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Languages/base_lang', 'en');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Languages/update_default_lang', 'false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Languages/pluggable', 'false');
+        $this->AddRegistry('base_lang', 'en');
+        $this->AddRegistry('update_default_lang', 'false');
+        $this->AddRegistry('pluggable', 'false');
         return true;
     }
 
@@ -61,8 +61,8 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Languages/use_data_lang');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Languages/update_default_lang', 'false');
+        $this->DelRegistry('use_data_lang');
+        $this->AddRegistry('update_default_lang', 'false');
 
         // ACL keys
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Languages/ModifyLanguageProperties', 'false');

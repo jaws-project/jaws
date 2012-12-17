@@ -17,7 +17,6 @@ class PolicyAutoload
      */
     function Execute()
     {
-        $GLOBALS['app']->Registry->LoadFile('Policy');
         $this->BlockIPHook();
         $this->BlockAgentHook();
     }

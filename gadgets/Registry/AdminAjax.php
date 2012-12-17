@@ -19,7 +19,6 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
      */
     function GetAllRegistry()
     {
-        $GLOBALS['app']->Registry->LoadAllFiles();
         $simpleArray = $GLOBALS['app']->Registry->GetSimpleArray();
         ksort($simpleArray);
 
@@ -35,9 +34,6 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
      */
     function GetRegistryKey($key)
     {
-        if (preg_match("#^/(gadgets|plugins\/parse_text)/(.*?)/(.*?)#i", $key, $matches)) {
-            $GLOBALS['app']->Registry->LoadFile($matches[2]);
-        }
         return $GLOBALS['app']->Registry->Get($key);
     }
 

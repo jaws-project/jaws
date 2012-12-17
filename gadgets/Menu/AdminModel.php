@@ -36,8 +36,8 @@ class MenuAdminModel extends MenuModel
         // Install listener for removing menu's item related to uninstalled gadget
         $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
 
-        // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Menu/default_group_id', '1');
+        // Registry keys
+        $this->AddRegistry('default_group_id', '1');
 
         return true;
     }
@@ -63,7 +63,7 @@ class MenuAdminModel extends MenuModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Menu/default_group_id');
+        $this->DelRegistry('default_group_id');
 
         return true;
     }
@@ -134,8 +134,8 @@ class MenuAdminModel extends MenuModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Menu/ManageMenus',  'true');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Menu/ManageGroups', 'true');
 
-            // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Menu/default_group_id', '1');
+            // Registry keys
+            $this->AddRegistry('default_group_id', '1');
         }
 
         if (version_compare($old, '0.7.1', '<')) {

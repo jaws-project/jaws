@@ -21,10 +21,10 @@ class SearchAdminModel extends SearchModel
     function InstallGadget()
     {
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Search/searchable_gadgets', '*');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Search/min_key_len', '3');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Search/max_result_len', '500');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Search/results_limit', '10');
+        $this->AddRegistry('searchable_gadgets', '*');
+        $this->AddRegistry('min_key_len', '3');
+        $this->AddRegistry('max_result_len', '500');
+        $this->AddRegistry('results_limit', '10');
 
         return true;
     }
@@ -38,10 +38,10 @@ class SearchAdminModel extends SearchModel
     function UninstallGadget()
     {
         // registry key
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Search/searchable_gadgets');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Search/min_key_len');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Search/max_result_len');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Search/results_limit');
+        $this->DelRegistry('searchable_gadgets');
+        $this->DelRegistry('min_key_len');
+        $this->DelRegistry('max_result_len');
+        $this->DelRegistry('results_limit');
 
         return true;
     }
@@ -58,10 +58,10 @@ class SearchAdminModel extends SearchModel
     {
         if (version_compare($old, '0.7.0', '<')) {
             // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Search/min_key_len', '3');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Search/max_result_len', '500');
+            $this->AddRegistry('min_key_len', '3');
+            $this->AddRegistry('max_result_len', '500');
         }
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Search/results_limit', '10');
+        $this->AddRegistry('results_limit', '10');
 
         return true;
     }

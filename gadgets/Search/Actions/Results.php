@@ -46,14 +46,14 @@ class Search_Actions_Results extends SearchHTML
         }
         $query_string .= '&page=';
 
-        $results_limit = (int) $GLOBALS['app']->Registry->Get('/gadgets/Search/results_limit');
+        $results_limit = (int)$this->GetRegistry('results_limit');
         if (empty($results_limit)) {
             $results_limit = 10;
         }
 
         if (!$searchable) {
             $tpl->SetBlock('results/notfound');
-            $min_key_len = $GLOBALS['app']->Registry->Get('/gadgets/Search/min_key_len');
+            $min_key_len = $this->GetRegistry('Search/min_key_len');
             $tpl->SetVariable('message', _t('SEARCH_STRING_TOO_SHORT', $min_key_len));
             $tpl->ParseBlock('results/notfound');
         } elseif (count($items) > 1) {
@@ -72,7 +72,7 @@ class Search_Actions_Results extends SearchHTML
             unset($items['_totalItems']);
 
             $date = $GLOBALS['app']->loadDate();
-            $max_result_len = (int)$GLOBALS['app']->Registry->Get('/gadgets/Search/max_result_len');
+            $max_result_len = (int)$this->GetRegistry('max_result_len');
             if (empty($max_result_len)) {
                 $max_result_len = 500;
             }

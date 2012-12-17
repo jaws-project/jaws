@@ -104,12 +104,11 @@ class TypePad
      */
     function TypePad()
     {
-        $GLOBALS['app']->Registry->LoadFile('Policy');
-        if (is_null($GLOBALS['app']->Registry->Get('/gadgets/Policy/typepad_key'))) {
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Policy/typepad_key', '');
+        if (is_null($GLOBALS['app']->Registry->Get('typepad_key', 'Policy', JAWS_COMPONENT_GADGET))) {
+            $GLOBALS['app']->Registry->NewKey('typepad_key', '', 'Policy', JAWS_COMPONENT_GADGET);
         }
 
-        $this->apiKey    = $GLOBALS['app']->Registry->Get('/gadgets/Policy/typepad_key');
+        $this->apiKey    = $GLOBALS['app']->Registry->Get('typepad_key', 'Policy', JAWS_COMPONENT_GADGET);
         $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
         $jaws_version    = $GLOBALS['app']->Registry->Get('version');
         $this->userAgent = "Jaws/{$jaws_version} | TypePad/{$this->apiVersion}";
@@ -145,15 +144,15 @@ class TypePad
 
         require_once PEAR_PATH. 'HTTP/Request.php';
         $options = array();
-        $timeout = (int)$GLOBALS['app']->Registry->Get('/gadgets/Settings/connection_timeout');
+        $timeout = (int)$GLOBALS['app']->Registry->Get('connection_timeout', 'Settings', JAWS_COMPONENT_GADGET);
         $options['timeout'] = $timeout;
-        if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_enabled') == 'true') {
-            if ($GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_auth') == 'true') {
-                $options['proxy_user'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_user');
-                $options['proxy_pass'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_pass');
+        if ($GLOBALS['app']->Registry->Get('proxy_enabled', 'Settings', JAWS_COMPONENT_GADGET) == 'true') {
+            if ($GLOBALS['app']->Registry->Get('proxy_auth', 'Settings', JAWS_COMPONENT_GADGET) == 'true') {
+                $options['proxy_user'] = $GLOBALS['app']->Registry->Get('proxy_user', 'Settings', JAWS_COMPONENT_GADGET);
+                $options['proxy_pass'] = $GLOBALS['app']->Registry->Get('proxy_pass', 'Settings', JAWS_COMPONENT_GADGET);
             }
-            $options['proxy_host'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_host');
-            $options['proxy_port'] = $GLOBALS['app']->Registry->Get('/gadgets/Settings/proxy_port');
+            $options['proxy_host'] = $GLOBALS['app']->Registry->Get('proxy_host', 'Settings', JAWS_COMPONENT_GADGET);
+            $options['proxy_port'] = $GLOBALS['app']->Registry->Get('proxy_port', 'Settings', JAWS_COMPONENT_GADGET);
         }
 
         $httpRequest = new HTTP_Request('', $options);

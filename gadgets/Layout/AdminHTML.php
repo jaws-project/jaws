@@ -103,7 +103,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                 if (file_exists(JAWS_PATH . 'gadgets/'. $gadget['gadget']. '/'. 'Actions.php') ||
                     ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                 {
-                    if (($GLOBALS['app']->Registry->Get('/gadgets/'.$gadget['gadget'].'/enabled') == 'true') ||
+                    if (($this->GetRegistry('enabled', $gadget['gadget']) == 'true') ||
                         ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                     {
                         if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
