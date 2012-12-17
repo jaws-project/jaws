@@ -27,7 +27,7 @@ class FriendsAdminModel extends FriendsModel
         }
 
         //registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Friends/limit', '5');
+        $this->AddRegistry('limit', '5');
 
         return true;
     }
@@ -49,7 +49,7 @@ class FriendsAdminModel extends FriendsModel
         }
 
         //registry keys.
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Friends/limit');
+        $this->DelRegistry('limit');
 
         return true;
     }
