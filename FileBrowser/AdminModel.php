@@ -37,12 +37,12 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
 
         //registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/black_list', 'htaccess');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/root_dir', 'files');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/frontend_avail', 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/virtual_links', 'false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/order_type', 'filename, false');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/views_limit', '0');
+        $this->AddRegistry('black_list', 'htaccess');
+        $this->AddRegistry('root_dir', 'files');
+        $this->AddRegistry('frontend_avail', 'true');
+        $this->AddRegistry('virtual_links', 'false');
+        $this->AddRegistry('order_type', 'filename, false');
+        $this->AddRegistry('views_limit', '0');
 
         return true;
     }
@@ -64,12 +64,12 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/black_list');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/root_dir');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/frontend_avail');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/virtual_links');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/order_type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/FileBrowser/views_limit');
+        $this->DelRegistry('black_list');
+        $this->DelRegistry('root_dir');
+        $this->DelRegistry('frontend_avail');
+        $this->DelRegistry('virtual_links');
+        $this->DelRegistry('order_type');
+        $this->DelRegistry('views_limit');
 
         return true;
     }
@@ -91,12 +91,12 @@ class FileBrowserAdminModel extends FileBrowserModel
             }
 
             // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/black_list', '.htaccess');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/frontend_avail', 'true');
+            $this->AddRegistry('black_list', '.htaccess');
+            $this->AddRegistry('frontend_avail', 'true');
         }
 
         if (version_compare($old, '0.7.1', '<')) {
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/root_dir', 'files');
+            $this->AddRegistry('root_dir', 'files');
         }
 
         if (version_compare($old, '0.8.0', '<')) {
@@ -120,13 +120,13 @@ class FileBrowserAdminModel extends FileBrowserModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/ShareDir');
 
             //Registry key
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/virtual_links', 'false');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/order_type', 'filename, false');
+            $this->AddRegistry('virtual_links', 'false');
+            $this->AddRegistry('order_type', 'filename, false');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             //Registry key
-            $GLOBALS['app']->Registry->NewKey('/gadgets/FileBrowser/views_limit', '0');
+            $this->AddRegistry('views_limit', '0');
         }
 
         if (version_compare($old, '0.8.2', '<')) {

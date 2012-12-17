@@ -23,7 +23,6 @@ class FileBrowserSearchHook
             return array();
         }
 
-        $GLOBALS['app']->Registry->LoadFile('FileBrowser');
         if ($this->GetRegistry('frontend_avail') != 'true') {
             return array();
         }
