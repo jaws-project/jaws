@@ -34,13 +34,13 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/topics_limit', '15');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/posts_limit',  '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/recent_limit',  '5');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/date_format', 'd MN Y G:i');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_min_limit_time', '300');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/edit_max_limit_time', '900');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Forums/enable_attachment',   'true');
+        $this->AddRegistry('topics_limit', '15');
+        $this->AddRegistry('posts_limit',  '10');
+        $this->AddRegistry('recent_limit',  '5');
+        $this->AddRegistry('date_format', 'd MN Y G:i');
+        $this->AddRegistry('edit_min_limit_time', '300');
+        $this->AddRegistry('edit_max_limit_time', '900');
+        $this->AddRegistry('enable_attachment',   'true');
 
         return true;
     }
@@ -70,13 +70,13 @@ class ForumsAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/topics_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/posts_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/recent_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/date_format');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/edit_min_limit_time');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/edit_max_limit_time');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Forums/enable_attachment');
+        $this->DelRegistry('topics_limit');
+        $this->DelRegistry('posts_limit');
+        $this->DelRegistry('recent_limit');
+        $this->DelRegistry('date_format');
+        $this->DelRegistry('edit_min_limit_time');
+        $this->DelRegistry('edit_max_limit_time');
+        $this->DelRegistry('enable_attachment');
 
         return true;
     }
