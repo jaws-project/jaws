@@ -20,7 +20,7 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function InstallGadget()
     {
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/ServerTime/date_format',  'DN d MN Y');
+        $this->AddRegistry('date_format',  'DN d MN Y');
 
         return true;
     }
@@ -34,7 +34,7 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function UninstallGadget()
     {
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/ServerTime/date_format');
+        $this->DelRegistry('date_format');
 
         return true;
     }
@@ -50,8 +50,8 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function UpdateGadget($old, $new)
     {
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/ServerTime/display_format');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/ServerTime/date_format',  'DN d MN Y');
+        $this->DelRegistry('display_format');
+        $this->AddRegistry('date_format',  'DN d MN Y');
         return true;
     }
 
