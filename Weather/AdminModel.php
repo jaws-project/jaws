@@ -38,10 +38,10 @@ class WeatherAdminModel extends WeatherModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/unit', 'metric');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/date_format', 'DN d MN');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/update_period', '3600');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/api_key', '');
+        $this->AddRegistry('unit', 'metric');
+        $this->AddRegistry('date_format', 'DN d MN');
+        $this->AddRegistry('update_period', '3600');
+        $this->AddRegistry('api_key', '');
 
         return true;
     }
@@ -63,10 +63,10 @@ class WeatherAdminModel extends WeatherModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/unit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/date_format');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/update_period');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/api_key');
+        $this->DelRegistry('unit');
+        $this->DelRegistry('date_format');
+        $this->DelRegistry('update_period');
+        $this->DelRegistry('api_key');
 
         return true;
     }
@@ -100,19 +100,19 @@ class WeatherAdminModel extends WeatherModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
 
             // Registry keys
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/unit', 'metric');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/date_format', 'DN d MN');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/update_period', '3600');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/refresh');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/cities');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/units');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/forecast');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/partner_id');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/Weather/license_key');
+            $this->AddRegistry('unit', 'metric');
+            $this->AddRegistry('date_format', 'DN d MN');
+            $this->AddRegistry('update_period', '3600');
+            $this->DelRegistry('refresh');
+            $this->DelRegistry('cities');
+            $this->DelRegistry('units');
+            $this->DelRegistry('forecast');
+            $this->DelRegistry('partner_id');
+            $this->DelRegistry('license_key');
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Weather/api_key', '');
+        $this->AddRegistry('api_key', '');
 
         return true;
     }
