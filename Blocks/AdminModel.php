@@ -26,7 +26,7 @@ class BlocksAdminModel extends BlocksModel
         }
 
         // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blocks/pluggable',  'false');
+        $this->AddRegistry('pluggable',  'false');
 
         return true;
     }
@@ -48,7 +48,7 @@ class BlocksAdminModel extends BlocksModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blocks/pluggable');
+        $this->DelRegistry('pluggable');
 
         return true;
     }
@@ -69,7 +69,7 @@ class BlocksAdminModel extends BlocksModel
         }
 
         // Registry keys.
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blocks/searchable');
+        $this->DelRegistry('searchable');
 
         return true;
     }
