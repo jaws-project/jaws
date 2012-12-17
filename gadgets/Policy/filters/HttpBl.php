@@ -48,7 +48,6 @@ class HttpBl
      */    
     function HttpBl()
     {
-        $GLOBALS['app']->Registry->LoadFile('Policy');
         $this->Version = '0.1';
         if (!$this->VerifyKey()) {
             $this->IsKeyValid = false;

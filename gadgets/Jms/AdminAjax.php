@@ -131,7 +131,6 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
     function UseAlways($plugin)
     {
         $this->CheckSession('Jms', 'ManagePlugins');
-        $GLOBALS['app']->Registry->loadFile($plugin, 'plugins');
         return ($GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN) == '*');
     }
 
@@ -370,7 +369,6 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
     {
         $this->CheckSession('Jms', 'ManagePlugins');
 
-        $GLOBALS['app']->Registry->loadFile($plugin, 'plugins');
         if (is_array($selection)) {
             if ($GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN) == '*')
                 $GLOBALS['app']->Registry->Set('use_in', '', $plugin, JAWS_COMPONENT_PLUGIN);

@@ -105,7 +105,6 @@ class Akismet
      */
     function Akismet()
     {
-        $GLOBALS['app']->Registry->LoadFile('Policy');
         if (is_null($GLOBALS['app']->Registry->Get('akismet_key', 'Policy', JAWS_COMPONENT_GADGET))) {
             $GLOBALS['app']->Registry->NewKey('akismet_key', '', 'Policy', JAWS_COMPONENT_GADGET);
         }

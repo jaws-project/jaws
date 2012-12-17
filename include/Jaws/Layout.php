@@ -623,7 +623,6 @@ class Jaws_Layout
                 $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
             }
             if (!Jaws_Error::isError($goGadget)) {
-                $GLOBALS['app']->Registry->LoadFile($gadget);
                 if (method_exists($goGadget, $action)) {
                     if (is_array($params)) {
                         $output = call_user_func_array(array($goGadget, $action), $params);

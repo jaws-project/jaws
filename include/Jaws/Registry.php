@@ -265,23 +265,4 @@ class Jaws_Registry
         return $this->_Registry;
     }
 
-    /**
-     * Loads the keys of a component and optionally it returns the keys found in the file
-     *
-     * @access  public
-     * @param   string  $component Component's name
-     */
-    function LoadFile($component, $type = 'gadgets', $return = false)
-    {
-    }
-
-    /**
-     * Loads all the component files
-     *
-     * @access  public
-     */
-    function LoadAllFiles()
-    {
-    }
-
 }

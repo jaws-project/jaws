@@ -48,7 +48,6 @@ class RegistryAdminAjax extends Jaws_Gadget_Ajax
     function SetRegistryKey($key, $value)
     {
         if (preg_match("#^/(gadgets|plugins\/parse_text)/(.*?)/(.*?)#i", $key, $matches)) {
-            $GLOBALS['app']->Registry->LoadFile($matches[2]);
             $GLOBALS['app']->Registry->Set($key, $value);
         } else {
             $GLOBALS['app']->Registry->Set($key, $value);
