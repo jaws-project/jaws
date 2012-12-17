@@ -32,7 +32,7 @@ class PollAdminModel extends PollModel
         }
 
         // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Poll/cookie_period',  '150');
+        $this->AddRegistry('cookie_period',  '150');
 
         return true;
     }
@@ -59,7 +59,7 @@ class PollAdminModel extends PollModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Poll/cookie_period');
+        $this->DelRegistry('cookie_period');
 
         return true;
     }
@@ -95,7 +95,7 @@ class PollAdminModel extends PollModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/UpdateProperties');
 
             // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/Poll/cookie_period',  '150');
+            $this->AddRegistry('cookie_period',  '150');
         }
 
         $result = $this->installSchema('schema.xml', '', "0.8.0.xml");
