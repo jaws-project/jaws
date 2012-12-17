@@ -36,8 +36,8 @@ class LinkDumpAdminModel extends LinkDumpModel
         }
 
         // Registry key
-        $GLOBALS['app']->Registry->NewKey('/gadgets/LinkDump/max_limit_count', '100');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/LinkDump/links_target', 'blank');
+        $this->AddRegistry('max_limit_count', '100');
+        $this->AddRegistry('links_target', 'blank');
 
         return true;
     }
@@ -65,8 +65,8 @@ class LinkDumpAdminModel extends LinkDumpModel
         }
 
         // registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/LinkDump/max_limit_count');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/LinkDump/links_target');
+        $this->DelRegistry('max_limit_count');
+        $this->DelRegistry('links_target');
 
         return true;
     }
@@ -101,10 +101,10 @@ class LinkDumpAdminModel extends LinkDumpModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/LinkDump/DeleteLink');
 
             // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/LinkDump/max_limit_count', '100');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/LinkDump/links_target', 'blank');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/LinkDump/limitation');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/LinkDump/target');
+            $this->AddRegistry('max_limit_count', '100');
+            $this->AddRegistry('links_target', 'blank');
+            $this->DelRegistry('limitation');
+            $this->DelRegistry('target');
         }
 
         return true;
