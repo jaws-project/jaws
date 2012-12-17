@@ -100,7 +100,7 @@ function metaWeblog_getUsersBlogs($params)
 
     $struct = array();
     $siteurl = $GLOBALS['app']->GetSiteURL();
-    $sitename = $GLOBALS['app']->Registry->Get('/gadgets/Settings/site_name');
+    $sitename = $GLOBALS['app']->Registry->Get('site_name', 'Settings', JAWS_COMPONENT_GADGET);
 
     $data = array(
         'isAdmin'  => new XML_RPC_Value('1', 'boolean'),
@@ -223,7 +223,6 @@ function metaWeblog_newPost($params)
     }
 
     if (empty($categories)) {
-        $GLOBALS['app']->Registry->LoadFile('Blog');
         $categories = array($this->GetRegistry('default_category'));
     }
     $publish  = getScalarValue($params, 4);

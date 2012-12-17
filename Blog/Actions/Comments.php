@@ -45,7 +45,6 @@ class Blog_Actions_Comments extends BlogHTML
                 $tpl->SetVariable('name', $c['name']);
                 $email =$c['email'];
 
-                $GLOBALS['app']->Registry->LoadFile('Policy');
                 $_obfuscator = $this->GetRegistry('obfuscator', 'Policy');
                 if (($_obfuscator != 'DISABLED') && (!empty($email))){
                     require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';

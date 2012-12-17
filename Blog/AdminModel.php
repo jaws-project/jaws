@@ -45,23 +45,23 @@ class BlogAdminModel extends BlogModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/columns',                   '1');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/default_view',              'last_entries');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/last_entries_limit',        '20');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/popular_limit',             '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/xml_limit',                 '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/default_category',          '1');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/allow_comments',            'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/comment_status',            'approved');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/last_comments_limit',       '20');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/last_recentcomments_limit', '20');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/generate_xml',              'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/generate_category_xml',     'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/trackback',                 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/trackback_status',          'approved');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/plugabble',                 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/use_antispam',              'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Blog/pingback',                  'true');
+        $this->AddRegistry('columns',                   '1');
+        $this->AddRegistry('default_view',              'last_entries');
+        $this->AddRegistry('last_entries_limit',        '20');
+        $this->AddRegistry('popular_limit',             '10');
+        $this->AddRegistry('xml_limit',                 '10');
+        $this->AddRegistry('default_category',          '1');
+        $this->AddRegistry('allow_comments',            'true');
+        $this->AddRegistry('comment_status',            'approved');
+        $this->AddRegistry('last_comments_limit',       '20');
+        $this->AddRegistry('last_recentcomments_limit', '20');
+        $this->AddRegistry('generate_xml',              'true');
+        $this->AddRegistry('generate_category_xml',     'true');
+        $this->AddRegistry('trackback',                 'true');
+        $this->AddRegistry('trackback_status',          'approved');
+        $this->AddRegistry('plugabble',                 'true');
+        $this->AddRegistry('use_antispam',              'true');
+        $this->AddRegistry('pingback',                  'true');
 
         return true;
     }
@@ -89,23 +89,23 @@ class BlogAdminModel extends BlogModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/columns');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/default_view');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/last_entries_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/popular_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/xml_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/default_category');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/allow_comments');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/comment_status');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/last_comments_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/last_recentcomments_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/generate_xml');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/generate_category_xml');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/trackback');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/trackback_status');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/plugabble');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/use_antispam');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Blog/pingback');
+        $this->DelRegistry('columns');
+        $this->DelRegistry('default_view');
+        $this->DelRegistry('last_entries_limit');
+        $this->DelRegistry('popular_limit');
+        $this->DelRegistry('xml_limit');
+        $this->DelRegistry('default_category');
+        $this->DelRegistry('allow_comments');
+        $this->DelRegistry('comment_status');
+        $this->DelRegistry('last_comments_limit');
+        $this->DelRegistry('last_recentcomments_limit');
+        $this->DelRegistry('generate_xml');
+        $this->DelRegistry('generate_category_xml');
+        $this->DelRegistry('trackback');
+        $this->DelRegistry('trackback_status');
+        $this->DelRegistry('plugabble');
+        $this->DelRegistry('use_antispam');
+        $this->DelRegistry('pingback');
 
         // Recent comments
         require_once JAWS_PATH.'include/Jaws/Comment.php';
@@ -1301,7 +1301,7 @@ class BlogAdminModel extends BlogModel
         }
 
         if ($status != 'various' && (!in_array($status, array('approved', 'waiting', 'spam')))) {
-            if ($GLOBALS['app']->Registry->Get('/gadget/blog/trackback_status') == 'waiting') {
+            if ($this->GetRegistry('trackback_status') == 'waiting') {
                 $status = 'waiting';
             } else {
                 $status = 'approved';
