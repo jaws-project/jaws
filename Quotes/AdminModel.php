@@ -31,11 +31,11 @@ class QuotesAdminModel extends QuotesModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_limit',       '10');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_view_mode',   '0');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_view_type',   '0');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_show_title',  'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Quotes/last_entries_view_random', 'false');
+        $$this->AddRegistry('last_entries_limit',       '10');
+        $$this->AddRegistry('last_entries_view_mode',   '0');
+        $$this->AddRegistry('last_entries_view_type',   '0');
+        $$this->AddRegistry('last_entries_show_title',  'true');
+        $$this->AddRegistry('last_entries_view_random', 'false');
 
         return true;
     }
@@ -61,11 +61,11 @@ class QuotesAdminModel extends QuotesModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_limit');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_view_mode');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_view_type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_show_title');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Quotes/last_entries_view_random');
+        $this->DelRegistry('last_entries_limit');
+        $this->DelRegistry('last_entries_view_mode');
+        $this->DelRegistry('last_entries_view_type');
+        $this->DelRegistry('last_entries_show_title');
+        $this->DelRegistry('last_entries_view_random');
 
         return true;
     }
