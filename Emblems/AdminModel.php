@@ -52,8 +52,8 @@ class EmblemsAdminModel extends EmblemsModel
         }
 
         // Put the config registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Emblems/rows', '1');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Emblems/allow_url', 'true');
+        $this->AddRegistry('rows', '1');
+        $this->AddRegistry('allow_url', 'true');
 
         return true;
     }
@@ -74,9 +74,9 @@ class EmblemsAdminModel extends EmblemsModel
             return new Jaws_Error($errMsg, $gName);
         }
 
-        //registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Emblems/rows');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Emblems/allow_url');
+        // registry keys
+        $this->DelRegistry('rows');
+        $this->DelRegistry('allow_url');
 
         return true;
     }
