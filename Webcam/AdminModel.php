@@ -27,7 +27,7 @@ class WebcamAdminModel extends WebcamModel
         }
 
         //Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Webcam/limit_random', '3');
+        $this->AddRegistry('limit_random', '3');
 
         return true;
     }
@@ -48,8 +48,8 @@ class WebcamAdminModel extends WebcamModel
             return new Jaws_Error($errMsg, $gName);
         }
 
-        //registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Webcam/limit_random');
+        // registry keys
+        $this->DelRegistry('limit_random');
 
         return true;
     }
