@@ -28,13 +28,13 @@ class VisitCounterAdminModel extends VisitCounterModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/visit_counters',  'online,today,total');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/timeout', '600');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/type', 'impressions');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/period', '0');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/start', date('Y-m-d H:i:s'));
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/mode', 'text');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/custom_text', 
+        $this->AddRegistry('visit_counters',  'online,today,total');
+        $this->AddRegistry('timeout', '600');
+        $this->AddRegistry('type', 'impressions');
+        $this->AddRegistry('period', '0');
+        $this->AddRegistry('start', date('Y-m-d H:i:s'));
+        $this->AddRegistry('mode', 'text');
+        $this->AddRegistry('custom_text', 
                                           '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
 
         return true;
@@ -57,13 +57,13 @@ class VisitCounterAdminModel extends VisitCounterModel
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/visit_counters');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/timeout');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/period');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/start');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/mode');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/custom_text');
+        $this->DelRegistry('visit_counters');
+        $this->DelRegistry('timeout');
+        $this->DelRegistry('type');
+        $this->DelRegistry('period');
+        $this->DelRegistry('start');
+        $this->DelRegistry('mode');
+        $this->DelRegistry('custom_text');
 
         return true;
     }
@@ -85,13 +85,13 @@ class VisitCounterAdminModel extends VisitCounterModel
 
         if (version_compare($old, '0.8.0', '<')) {
             // Registry keys.
-            $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/visit_counters',  'online,today,total');
-            $GLOBALS['app']->Registry->NewKey('/gadgets/VisitCounter/custom_text', 
+            $this->AddRegistry('visit_counters',  'online,today,total');
+            $this->AddRegistry('custom_text', 
                                               $this->GetRegistry('custom'));
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/online');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/today');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/total');
-            $GLOBALS['app']->Registry->DeleteKey('/gadgets/VisitCounter/custom');
+            $this->DelRegistry('online');
+            $this->DelRegistry('today');
+            $this->DelRegistry('total');
+            $this->DelRegistry('custom');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
