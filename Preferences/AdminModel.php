@@ -21,13 +21,13 @@ class PreferencesAdminModel extends PreferencesModel
      */
     function InstallGadget()
     {
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_theme',             'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_editor',            'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_language',          'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_calendar_type',     'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_calendar_language', 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_date_format',       'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_timezone',          'true');
+        $this->AddRegistry('display_theme',             'true');
+        $this->AddRegistry('display_editor',            'true');
+        $this->AddRegistry('display_language',          'true');
+        $this->AddRegistry('display_calendar_type',     'true');
+        $this->AddRegistry('display_calendar_language', 'true');
+        $this->AddRegistry('display_date_format',       'true');
+        $this->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
         $this->SetRegistry('cookie_precedence', 'true', 'Settings');
@@ -44,13 +44,13 @@ class PreferencesAdminModel extends PreferencesModel
     function UninstallGadget()
     {
         // registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_theme');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_editor');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_language');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_calendar_type');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_calendar_language');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_date_format');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Preferences/display_timezone');
+        $this->DelRegistry('display_theme');
+        $this->DelRegistry('display_editor');
+        $this->DelRegistry('display_language');
+        $this->DelRegistry('display_calendar_type');
+        $this->DelRegistry('display_calendar_language');
+        $this->DelRegistry('display_date_format');
+        $this->DelRegistry('display_timezone');
 
         //disable cookie precedence
         $this->SetRegistry('cookie_precedence', 'false', 'Settings');
@@ -73,11 +73,11 @@ class PreferencesAdminModel extends PreferencesModel
         $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Preferences/ChangeSettings');
 
         // Registry keys.
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_editor',            'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_calendar_type',     'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_calendar_language', 'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_date_format',       'true');
-        $GLOBALS['app']->Registry->NewKey('/gadgets/Preferences/display_timezone',          'true');
+        $this->AddRegistry('display_editor',            'true');
+        $this->AddRegistry('display_calendar_type',     'true');
+        $this->AddRegistry('display_calendar_language', 'true');
+        $this->AddRegistry('display_date_format',       'true');
+        $this->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
         $this->SetRegistry('cookie_precedence', 'true', 'Settings');
