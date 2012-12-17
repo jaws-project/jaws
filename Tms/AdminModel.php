@@ -60,8 +60,8 @@ class TmsAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Tms/pluggable');
-        $GLOBALS['app']->Registry->DeleteKey('/gadgets/Tms/share_mode');
+        $this->DelRegistry('pluggable');
+        $this->DelRegistry('share_mode');
 
         // ACL keys.
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Tms/UploadTheme',   'false'); 
