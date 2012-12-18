@@ -396,4 +396,85 @@ class CommentsModel extends Jaws_Gadget_Model
         return Jaws_Error::IsError($howMany) ? 0 : $howMany;
     }
 
+    /**
+     * Counts how many comments are with a given filter
+     *
+     * See Filter modes for more info
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget's name
+     * @param   string  $filterMode Which mode should be used to filter
+     * @param   string  $filterData Data that will be used in the filter
+     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @return  int     Returns how many comments exists with a given filter
+     */
+    function HowManyFilteredComments($gadget, $filterMode, $filterData, $status)
+    {
+        if (
+            $filterMode != COMMENT_FILTERBY_REFERENCE &&
+            $filterMode != COMMENT_FILTERBY_STATUS &&
+            $filterMode != COMMENT_FILTERBY_IP
+            ) {
+            $filterData = '%'.$filterData.'%';
+        }
+
+        if (!in_array($status, array('approved', 'waiting', 'spam'))) {
+            if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
+                $status = COMMENT_STATUS_WAITING;
+            } else {
+                $status = COMMENT_STATUS_APPROVED;
+            }
+        }
+
+        $params = array();
+        $params['filterData'] = $filterData;
+        $params['gadget']     = $gadget;
+        $params['status']     = $status;
+
+        $sql = '
+            SELECT
+                COUNT(*) AS howmany
+            FROM [[comments]]
+            WHERE [gadget] = {gadget}';
+
+        switch ($filterMode) {
+        case COMMENT_FILTERBY_REFERENCE:
+            $sql.= ' AND [gadget_reference] = {filterData}';
+            break;
+        case COMMENT_FILTERBY_NAME:
+            $sql.= ' AND [name] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_EMAIL:
+            $sql.= ' AND [email] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_URL:
+            $sql.= ' AND [url] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_TITLE:
+            $sql.= ' AND [title] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_IP:
+            $sql.= ' AND [ip] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_MESSAGE:
+            $sql.= ' AND [msg_txt] LIKE {filterData}';
+            break;
+        case COMMENT_FILTERBY_VARIOUS:
+            $sql.= ' AND ([name] LIKE {filterData}';
+            $sql.= ' OR [email] LIKE {filterData}';
+            $sql.= ' OR [url] LIKE {filterData}';
+            $sql.= ' OR [title] LIKE {filterData}';
+            $sql.= ' OR [msg_txt] LIKE {filterData})';
+            break;
+        }
+        $sql.= ' AND [status] = {status}';
+
+        $howmany = $GLOBALS['db']->queryOne($sql, $params);
+        if (Jaws_Error::IsError($rows)) {
+            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), _t('COMMENTS_NAME'));
+        }
+
+        return $howmany;
+    }
+
 }
