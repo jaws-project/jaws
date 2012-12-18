@@ -227,51 +227,53 @@ class PhooHTML extends Jaws_Gadget_HTML
             $t->SetVariable('url', 'javascript: void();');
         }
 
-        $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
-        switch ($allow_comments_config) {
-            case 'restricted':
-                $allow_comments_config = $GLOBALS['app']->Session->Logged();
-                $restricted = !$allow_comments_config;
-                break;
+        if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
+            switch ($allow_comments_config) {
+                case 'restricted':
+                    $allow_comments_config = $GLOBALS['app']->Session->Logged();
+                    $restricted = !$allow_comments_config;
+                    break;
 
-            default:
-                $restricted = false;
-                $allow_comments_config = $allow_comments_config == 'true';
-        }
-
-        $allow_comments = $image['allow_comments'] === true &&
-                          $image['album_allow_comments'] === true &&
-                          $this->GetRegistry('allow_comments') == 'true' &&
-                          $allow_comments_config;
-
-        if (empty($reply_to_comment)) {
-            $t->SetVariable('comments', $this->ShowComments($image['id'], $albumid, 0, 0, 1, 1));
-            if ($allow_comments) {
-                if ($preview_mode) {
-                    $t->SetVariable('preview', $this->ShowPreview());
-                }
-                $t->SetVariable('comment-form', $this->DisplayCommentForm($image['id'], $albumid, 0, _t('GLOBAL_RE').$image['name']));
-            } elseif ($restricted) {
-                $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                $t->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
+                default:
+                    $restricted = false;
+                    $allow_comments_config = $allow_comments_config == 'true';
             }
-        } else {
-            $t->SetVariable('comments', $this->ShowSingleComment($reply_to_comment));
-            if ($allow_comments) {
-                if ($preview_mode) {
-                    $t->SetVariable('preview', $this->ShowPreview());
+
+            $allow_comments = $image['allow_comments'] === true &&
+                              $image['album_allow_comments'] === true &&
+                              $this->GetRegistry('allow_comments') == 'true' &&
+                              $allow_comments_config;
+
+            if (empty($reply_to_comment)) {
+                $t->SetVariable('comments', $this->ShowComments($image['id'], $albumid, 0, 0, 1, 1));
+                if ($allow_comments) {
+                    if ($preview_mode) {
+                        $t->SetVariable('preview', $this->ShowPreview());
+                    }
+                    $t->SetVariable('comment-form', $this->DisplayCommentForm($image['id'], $albumid, 0, _t('GLOBAL_RE').$image['name']));
+                } elseif ($restricted) {
+                    $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                    $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                    $t->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
-                $title  = $image['name'];
-                $comment = $model->GetComment($reply_to_comment);
-                if (!Jaws_Error::IsError($comment)) {
-                    $title  = $comment['title'];
+            } else {
+                $t->SetVariable('comments', $this->ShowSingleComment($reply_to_comment));
+                if ($allow_comments) {
+                    if ($preview_mode) {
+                        $t->SetVariable('preview', $this->ShowPreview());
+                    }
+                    $title  = $image['name'];
+                    $comment = $model->GetComment($reply_to_comment);
+                    if (!Jaws_Error::IsError($comment)) {
+                        $title  = $comment['title'];
+                    }
+                    $t->SetVariable('comment-form', $this->DisplayCommentForm($image['id'], $albumid, $reply_to_comment, _t('GLOBAL_RE'). $title));
+                } elseif ($restricted) {
+                    $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                    $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                    $t->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
-                $t->SetVariable('comment-form', $this->DisplayCommentForm($image['id'], $albumid, $reply_to_comment, _t('GLOBAL_RE'). $title));
-            } elseif ($restricted) {
-                $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                $t->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
         }
 

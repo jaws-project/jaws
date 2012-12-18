@@ -41,7 +41,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?gadget=Phoo', STOCK_IMAGE);
 
-        if ($this->GetPermission('ManageComments')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('PHOO_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');
         }
@@ -980,8 +980,11 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     function ManageComments()
     {
         $this->CheckPermission('ManageComments');
-        $this->AjaxMe('script.js');
+        if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+        }
 
+        $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('ManageComments.html');
         $tpl->SetBlock('manage_comments');
