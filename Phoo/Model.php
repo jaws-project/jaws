@@ -1059,19 +1059,13 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function GetComments($id, $parent)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-
-        $api = new Jaws_Comment($this->_Name);
-        $comments = $api->GetComments($id, $parent, true, false, false, true);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comments = $cModel->GetComments($this->_Gadget, $id, $parent, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'), _t('PHOO_NAME'));
         }
 
-        $commentsNew = array();
-
         $this->_AdditionalCommentsData($comments);
-
         return $comments;
     }
 
@@ -1101,9 +1095,8 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function GetRecentComments()
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $comments = $api->GetRecentComments(10);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comments = $cModel->GetRecentComments($this->_Gadget, 10);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_RECENTCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1242,7 +1235,7 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function NewComment($name, $title, $url, $email, $comments, $parent, $parent_entry, $permalink, $ip = '', $set_cookie = true)
     {
-        $params              = array();
+        $params = array();
         $params['parent_id'] = $parent_entry;
         $params['allow_c']   = true;
 
@@ -1252,59 +1245,62 @@ class PhooModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_COMMENT'), _t('PHOO_NAME'));
         }
 
-        if ($id) {
-            require_once JAWS_PATH . 'include/Jaws/Comment.php';
-
-            ///FIXME: Lets get a better ip detection ;)
-            if (empty($ip)) {
-                $ip = $_SERVER['REMOTE_ADDR'];
-            }
-
-            if (!$parent) {
-                $parent = 0;
-            }
-
-            $api = new Jaws_Comment($this->_Name);
-            $status = $this->GetRegistry('comment_status');
-            if ($GLOBALS['app']->Session->GetPermission('Phoo', 'ManageComments')) {
-                $status = COMMENT_STATUS_APPROVED;
-            }
-
-            $res = $api->NewComment($parent_entry,
-                                    strip_tags($name),
-                                    strip_tags($email),
-                                    strip_tags($url),
-                                    strip_tags($title),
-                                    strip_tags($comments),
-                                    $ip, $permalink, $parent, $status);
-
-            //Update comments counter to +1
-            if (Jaws_Error::isError($res)) {
-                return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
-            }
-
-            //Send an email to website owner
-            $this->MailComment($permalink, $title, $email, $comments, $url);
-
-            $sql = 'UPDATE [[phoo_image]] SET [comments] = [comments] + 1 WHERE [id] = {parent_id}';
-            $params              = array();
-            $params['parent_id'] = $id;
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_COMMENT'), _t('PHOO_NAME'));
-            }
-
-            if ($set_cookie) {
-                $GLOBALS['app']->Session->SetCookie('visitor_name',  $name,  60*24*150);
-                $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
-                $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
-            }
-
-            return true;
+        if (empty($id)) {
+            return false;
         }
 
-        return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_COMMENT'), _t('PHOO_NAME'));
+        ///FIXME: Lets get a better ip detection ;)
+        if (empty($ip)) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if (!$parent) {
+            $parent = 0;
+        }
+
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $status = $this->GetRegistry('comment_status');
+        if ($GLOBALS['app']->Session->GetPermission('Phoo', 'ManageComments')) {
+            $status = COMMENT_STATUS_APPROVED;
+        }
+
+        $res = $cModel->NewComment(
+            $this->_Gadget, $parent_entry,
+            $name, $email, $url, $title, $comments,
+            $ip, $permalink, $parent, $status
+        );
+        if (Jaws_Error::isError($res)) {
+            return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
+        }
+
+        //Send an email to website owner
+        $this->MailComment($permalink, $title, $email, $comments, $url);
+        if ($res == COMMENT_STATUS_APPROVED) {
+            $params = array();
+            $params['id'] = $id;
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $id,
+                'approved'
+            );
+            if (!Jaws_Error::IsError($howmany)) {
+                $params['comments'] = $howmany;
+                $sql = 'UPDATE [[phoo_image]] SET [comments] = {comments} WHERE [id] = {id}';
+                $result = $GLOBALS['db']->query($sql, $params);
+                if (Jaws_Error::IsError($result)) {
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_COMMENT'), _t('PHOO_NAME'));
+                }
+            }
+        }
+
+        if ($set_cookie) {
+            $GLOBALS['app']->Session->SetCookie('visitor_name',  $name,  60*24*150);
+            $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
+            $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
+        }
+
+        return true;
     }
 
     /**
