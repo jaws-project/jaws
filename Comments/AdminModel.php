@@ -133,7 +133,11 @@ class CommentsAdminModel extends CommentsModel
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
         }
 
-        $params             = array();
+        if (empty($origComment)) {
+            return false;
+        }
+
+        $params = array();
         $params['id']       = $id;
         $params['gadget']   = $gadget;
         $params['parent']   = $origComment['parent'];
