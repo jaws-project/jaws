@@ -764,38 +764,6 @@ class Jaws
     }
 
     /**
-     * Set true|false if a gadget has been updated so we don't check it again and again
-     *
-     * @access  public
-     * @param   string  $gadget     Gadget's name
-     * @param   bool    $status     True if gadget is updated (installed and latest version)
-     * @return  void
-     */
-    function SetGadgetAsUpdated($gadget, $status = true)
-    {
-        if (!empty($gadget) && !isset($this->_Gadgets[$gadget]['is_updated'])) {
-            $this->_Gadgets[$gadget]['is_updated'] = $status;
-        }
-    }
-
-    /**
-     * Returns true or false is gadget has been marked as updated. If the gadget hasn't been marked
-     * it returns null.
-     *
-     * @access  public
-     * @param   string  $gadget  Gadget's name
-     * @return  mixed   True/False if gadget exist, otherwise Null
-     */
-    function IsGadgetMarkedAsUpdated($gadget)
-    {
-        if (!empty($gadget) && isset($this->_Gadgets[$gadget]['is_updated'])) {
-            return $this->_Gadgets[$gadget]['is_updated'];
-        }
-
-        return null;
-    }
-
-    /**
      * Gets the actions of a gadget
      *
      * @access  public
