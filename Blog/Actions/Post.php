@@ -95,52 +95,67 @@ class Blog_Actions_Post extends BlogHTML
                     $allow_comments_config = $allow_comments_config == 'true';
             }
 
-            $allow_comments = $entry['allow_comments'] === true &&
-                              $this->GetRegistry('allow_comments') == 'true' &&
-                              $allow_comments_config;
-
-            $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
-            if (empty($reply_to_comment)) {
-                $tpl->SetVariable(
-                    'comments',
-                    $commentsHTML->ShowComments(
-                        $entry['id'],
-                        $entry['fast_url'],
-                        0,
-                        0,
-                        1,
-                        (int)$allow_comments
-                    )
-                );
-                if ($allow_comments) {
-                    if ($preview_mode) {
-                        $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
+            if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+                $allow_comments = $entry['allow_comments'] === true &&
+                                  $this->GetRegistry('allow_comments') == 'true' &&
+                                  $allow_comments_config;
+                $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
+                if (empty($reply_to_comment)) {
+                    $tpl->SetVariable(
+                        'comments',
+                        $commentsHTML->ShowComments(
+                            $entry['id'],
+                            $entry['fast_url'],
+                            0,
+                            0,
+                            1,
+                            (int)$allow_comments
+                        )
+                    );
+                    if ($allow_comments) {
+                        if ($preview_mode) {
+                            $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
+                        }
+                        $tpl-> SetVariable(
+                            'comment-form',
+                            $commentsHTML->DisplayCommentForm(
+                                $entry['id'],
+                                0,
+                                _t('GLOBAL_RE').$entry['title']
+                            )
+                        );
+                    } elseif ($restricted) {
+                        $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                        $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                        $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                     }
-                    $tpl-> SetVariable('comment-form', $commentsHTML->DisplayCommentForm($entry['id'], 0,
-                                                                                _t('GLOBAL_RE').$entry['title']));
-                } elseif ($restricted) {
-                    $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                    $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                    $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
-                }
-
-            } else {
-                $tpl->SetVariable('comments', $commentsHTML->ShowSingleComment($reply_to_comment));
-                if ($allow_comments) {
-                    if ($preview_mode) {
-                        $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
+                } else {
+                    $tpl->SetVariable('comments', $commentsHTML->ShowSingleComment($reply_to_comment));
+                    if ($allow_comments) {
+                        if ($preview_mode) {
+                            $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
+                        }
+                        $title  = $entry['title'];
+                        $comment = $model->GetComment($reply_to_comment);
+                        if (!Jaws_Error::IsError($comment)) {
+                            $title  = $comment['title'];
+                        }
+                        $tpl->SetVariable(
+                            'comment-form',
+                            $commentsHTML->DisplayCommentForm(
+                                $entry['id'],
+                                $reply_to_comment,
+                                _t('GLOBAL_RE'). $title
+                            )
+                        );
+                    } elseif ($restricted) {
+                        $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                        $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                        $tpl->SetVariable(
+                            'comment-form',
+                            _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url)
+                        );
                     }
-                    $title  = $entry['title'];
-                    $comment = $model->GetComment($reply_to_comment);
-                    if (!Jaws_Error::IsError($comment)) {
-                        $title  = $comment['title'];
-                    }
-                    $tpl->SetVariable('comment-form', $commentsHTML->DisplayCommentForm($entry['id'], $reply_to_comment,
-                                                                                _t('GLOBAL_RE'). $title));
-                } elseif ($restricted) {
-                    $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                    $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                    $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
             }
 

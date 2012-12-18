@@ -50,7 +50,7 @@ class BlogAdminHTML extends Jaws_Gadget_HTML
         }
         $menubar->AddOption('ListEntries', _t('BLOG_LIST_ENTRIES'),
                             BASE_SCRIPT . '?gadget=Blog&amp;action=ListEntries', 'images/stock/edit.png');
-        if ($this->GetPermission('ManageComments')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('BLOG_MANAGE_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=ManageComments', 'images/stock/stock-comments.png');
         }

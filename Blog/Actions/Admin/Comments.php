@@ -56,8 +56,11 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     function ManageComments()
     {
         $this->CheckPermission('ManageComments');
-        $this->AjaxMe('script.js');
+        if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
+        }
 
+        $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('ManageComments.html');
         $tpl->SetBlock('manage_comments');

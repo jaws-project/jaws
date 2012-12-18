@@ -261,12 +261,6 @@ class BlogModel extends Jaws_Gadget_Model
             $summary['AvgEntriesPerWeek'] = null;
         }
 
-        $sql = 'SELECT COUNT([id]) FROM [[comments]] WHERE [gadget] = {gadget}';
-        $count = $GLOBALS['db']->queryOne($sql, array('gadget' => 'Blog'));
-        if (!Jaws_Error::IsError($count) && $count) {
-            $summary['CommentsQty'] = $count;
-        }
-
         // Recent entries
         $sql = '
             SELECT
@@ -287,21 +281,25 @@ class BlogModel extends Jaws_Gadget_Model
             }
         }
 
-        // Recent comments
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->_Gadget, 10);
-        if (Jaws_Error::IsError($comments)) {
-            return $comments;
-        }
+        if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+            // total comments
+            $summary['CommentsQty'] = $cModel->TotalOfComments($this->_Gadget);
+            // recent comments
+            $comments = $cModel->GetRecentComments($this->_Gadget, 10);
+            if (Jaws_Error::IsError($comments)) {
+                return $comments;
+            }
 
-        foreach ($comments as $r) {
-            $summary['Comments'][] = array(
-                'id'         => $r['id'],
-                'title'      => $r['title'],
-                'name'       => $r['name'],
-                'parent'     => $r['parent'],
-                'createtime' => $r['createtime']
-            );
+            foreach ($comments as $r) {
+                $summary['Comments'][] = array(
+                    'id'         => $r['id'],
+                    'title'      => $r['title'],
+                    'name'       => $r['name'],
+                    'parent'     => $r['parent'],
+                    'createtime' => $r['createtime']
+                );
+            }
         }
 
         return $summary;
