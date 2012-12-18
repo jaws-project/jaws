@@ -943,7 +943,7 @@ class Jaws_Gadget
 
     function _commonPreDisableGadget()
     {
-        if ($this->IsGadgetInstalled() &&
+        if (self::IsGadgetInstalled($this->_Gadget) &&
             $this->GetRegistry('main_gadget', 'Settings') == $this->_Gadget
         ) {
             return false;
@@ -1101,7 +1101,7 @@ class Jaws_Gadget
 
         foreach ($this->_Requires as $req) {
             $objGadget = $GLOBALS['app']->LoadGadget($req, 'Info');
-            if (!$objGadget->IsGadgetInstalled()) {
+            if (!self::IsGadgetInstalled($gadget)) {
                 return new Jaws_Error(_t('GLOBAL_GI_GADGET_REQUIRES', $req, $gadget),
                                       __FUNCTION__);
             }
@@ -1177,48 +1177,46 @@ class Jaws_Gadget
      * Return true or false if the gadget is correctly installed
      *
      * @access  public
+     * @param   string  $gadget Gadget name
      * @return  bool    True or false, depends of the gadget status
      */
-    function IsGadgetInstalled()
+    public static function IsGadgetInstalled($gadget)
     {
-        ///FIXME registry get has to be checked for errors
-        $items = trim($GLOBALS['app']->Registry->Get('gadgets_enabled_items'));
-        if (!empty($items) && substr($items,-1) != ',') {
-            $items .= ',';
+        static $enabled_gadgets;
+        if (!isset($enabled_gadgets)) {
+            $enabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+            $enabled_gadgets.= ',';
+            $enabled_gadgets.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
+            $enabled_gadgets = array_filter(array_map('trim', explode(',', $enabled_gadgets)));
         }
 
-        $items.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        if (is_dir(JAWS_PATH . 'gadgets/' . $this->_Gadget) &&
-            $this->GetRegistry('enabled') == 'true' &&
-            in_array($this->_Gadget, explode(',', $items)))
-        {
-            return true;
-        }
-
-        return false;
+        return in_array($gadget, $enabled_gadgets);
     }
 
     /**
      * Returns true or false if the gadget is running the version the Info.php says
      *
      * @access  public
+     * @param   string  $gadget Gadget name
      * @return  bool    True or false, depends of the jaws version
      */
-    function IsGadgetUpdated()
+    public static function IsGadgetUpdated($gadget)
     {
-        if ($GLOBALS['app']->IsGadgetMarkedAsUpdated($this->_Gadget) === null) {
-            if ($this->IsGadgetInstalled()) {
-                $current_version = $this->GetRegistry('version');
-                //If the new gadget version is > than the current version (installed)
-                $status = version_compare($this->_Version, $current_version, '>') ? false : true;
-            } else {
-                $status = false;
-            }
-
-            $GLOBALS['app']->SetGadgetAsUpdated($this->_Gadget, $status);
+        static $gadgets_status;
+        if (!isset($gadgets_status)) {
+            $gadgets_status = array();
         }
 
-        return $GLOBALS['app']->IsGadgetMarkedAsUpdated($this->_Gadget);
+        if (!array_key_exists($gadget, $gadgets_status)) {
+            $gadgets_status[$gadget] = false;
+            if (self::IsGadgetInstalled($gadget)) {
+                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $current_version = $objGadget->GetRegistry('version');
+                $gadgets_status[$gadget] = version_compare($objGadget->_Version, $current_version, '>')? false : true;
+            }
+        }
+
+        return $gadgets_status[$gadget];
     }
 
     /**
@@ -1231,7 +1229,7 @@ class Jaws_Gadget
      */
     function CanRunInCoreVersion()
     {
-        if ($this->IsGadgetInstalled()) {
+        if (self::IsGadgetInstalled($this->_Gadget)) {
             $coreVersion     = $GLOBALS['app']->Registry->Get('version');
             $requiredVersion = $this->GetRequiredJawsVersion();
 
