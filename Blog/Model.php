@@ -288,22 +288,20 @@ class BlogModel extends Jaws_Gadget_Model
         }
 
         // Recent comments
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Gadget);
-        $comments = $api->GetRecentComments(10);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comments = $cModel->GetRecentComments($this->_Gadget, 10);
         if (Jaws_Error::IsError($comments)) {
             return $comments;
         }
 
         foreach ($comments as $r) {
             $summary['Comments'][] = array(
-                                           'id'          => $r['id'],
-                                           'title'       => $r['title'],
-                                           'name'        => $r['name'],
-                                           'parent'      => $r['parent'],
-                                           'createtime'  => $r['createtime']
-                                           );
+                'id'         => $r['id'],
+                'title'      => $r['title'],
+                'name'       => $r['name'],
+                'parent'     => $r['parent'],
+                'createtime' => $r['createtime']
+            );
         }
 
         return $summary;
@@ -590,19 +588,13 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetComments($id, $parent)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-
-        $api = new Jaws_Comment($this->_Gadget);
-        $comments = $api->GetComments($id, $parent, true, false, false, true);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comments = $cModel->GetComments($this->_Gadget, $id, $parent, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
 
-        $commentsNew = array();
-
         $this->_AdditionalCommentsData($comments);
-
         return $comments;
     }
 
@@ -638,9 +630,8 @@ class BlogModel extends Jaws_Gadget_Model
     {
         $recentcommentsLimit = $this->GetRegistry('last_recentcomments_limit');
 
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $comments = $api->GetRecentComments($recentcommentsLimit);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comments = $cModel->GetRecentComments($this->_Gadget, $recentcommentsLimit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -830,66 +821,70 @@ class BlogModel extends Jaws_Gadget_Model
             $parent = 0;
         }
 
-        $params             = array();
+        $params = array();
         $params['allow_c']  = true;
         $params['parentId'] = $parentId;
 
-        $name     = strip_tags($name);
-        $email    = strip_tags($email);
-        $url      = strip_tags($url);
-        $title    = strip_tags($title);
-        $comments = strip_tags($comments);
-
-        $sql = 'SELECT [id] FROM [[blog]] WHERE [id] = {parentId} AND [allow_comments] = {allow_c}';
-
+        $sql = '
+            SELECT
+                [id]
+            FROM
+                [[blog]]
+            WHERE
+                [id] = {parentId} AND [allow_comments] = {allow_c}';
         $id = $GLOBALS['db']->queryOne($sql, $params);
         if (Jaws_Error::IsError($id)) {
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_ADDED'), _t('BLOG_NAME'));
         }
 
-        if ($id) {
-            require_once JAWS_PATH.'include/Jaws/Comment.php';
-            $status = $this->GetRegistry('comment_status');
-            if ($GLOBALS['app']->Session->GetPermission('Blog', 'ManageComments')) {
-                $status = COMMENT_STATUS_APPROVED;
-            }
+        if (empty ($id)) {
+            return false;
+        }
 
-            $api = new Jaws_Comment($this->_Name);
-            $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
-            $res = $api->NewComment($parentId,
-                                    $name, $email, $url, $title, $comments,
-                                    $ip, $permalink, $parent, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $status = $this->GetRegistry('comment_status');
+        if ($GLOBALS['app']->Session->GetPermission('Blog', 'ManageComments')) {
+            $status = COMMENT_STATUS_APPROVED;
+        }
 
-            //Update comments counter
-            if (!Jaws_Error::IsError($res)) {
-                //Send an email to blog entry author and website owner
-                $this->MailComment($parentId, $title, $email, $comments, $url);
-                if ($res == COMMENT_STATUS_APPROVED) {
-                    $params = array();
-                    $params['id'] = $id;
-                    $howmany = $api->HowManyFilteredComments('gadget_reference',
-                                                             $id,
-                                                             'approved');
-                    if (!Jaws_Error::IsError($howmany)) {
-                        $params['comments'] = $howmany;
-                        $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
-                        $result = $GLOBALS['db']->query($sql, $params);
-                        if (Jaws_Error::IsError($result)) {
-                            return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_ADDED'), _t('BLOG_NAME'));
-                        }
-                    }
-                }
-
-                if ($set_cookie) {
-                    $GLOBALS['app']->Session->SetCookie('visitor_name',  $name,  60*24*150);
-                    $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
-                    $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
-                }
-                return $res;
-            }
+        $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
+        $res = $cModel->NewComment(
+            $this->_Gadget, $parentId,
+            $name, $email, $url, $title, $comments,
+            $ip, $permalink, $parent, $status
+        );
+        if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), _t('BLOG_NAME'));
         }
-        return false;
+
+        //Send an email to blog entry author and website owner
+        $this->MailComment($parentId, $title, $email, $comments, $url);
+        if ($res == COMMENT_STATUS_APPROVED) {
+            $params = array();
+            $params['id'] = $id;
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $id,
+                'approved'
+            );
+            if (!Jaws_Error::IsError($howmany)) {
+                $params['comments'] = $howmany;
+                $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
+                $result = $GLOBALS['db']->query($sql, $params);
+                if (Jaws_Error::IsError($result)) {
+                    return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_ADDED'), _t('BLOG_NAME'));
+                }
+            }
+        }
+
+        if ($set_cookie) {
+            $GLOBALS['app']->Session->SetCookie('visitor_name',  $name,  60*24*150);
+            $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
+            $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
+        }
+
+        return $res;
     }
 
     /**

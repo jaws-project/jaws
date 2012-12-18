@@ -20,11 +20,8 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function CommentsDatagrid()
     {
-        require_once JAWS_PATH . 'include/Jaws/Widgets/CommentUI.php';
-
-        $commentUI = new Jaws_Widgets_CommentUI($this->_Name);
-        $commentUI->SetEditAction(BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}');
-        return $commentUI->Get();
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHtml->Get($this->_Gadget);
     }
 
     /**
@@ -39,11 +36,15 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        require_once JAWS_PATH . 'include/Jaws/Widgets/CommentUI.php';
-
-        $commentUI = new Jaws_Widgets_CommentUI($this->_Name);
-        $commentUI->SetEditAction(BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}');
-        return $commentUI->GetDataAsArray($filter, $search, $status, $limit);
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHtml->GetDataAsArray(
+            $this->_Gadget,
+            BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}',
+            $filter,
+            $search,
+            $status,
+            $limit
+        );
     }
 
     /**
