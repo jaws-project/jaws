@@ -369,9 +369,9 @@ class CommentsModel extends Jaws_Gadget_Model
      * @param   string  $status  Spam status (approved, waiting, spam)
      * @return  int     Number of comments
      */
-    function TotalOfComments($gadget, $status)
+    function TotalOfComments($gadget, $status = '')
     {
-        if (!in_array($status, array('approved', 'waiting', 'spam'))) {
+        if (!in_array($status, array('', 'approved', 'waiting', 'spam'))) {
             if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
                 $status = COMMENT_STATUS_WAITING;
             } else {
@@ -383,16 +383,18 @@ class CommentsModel extends Jaws_Gadget_Model
         $params['gadget'] = $gadget;
         $params['status'] = $status;
 
-
         $sql = '
             SELECT
               COUNT([id]) AS total
             FROM [[comments]]
-            WHERE [gadget] = {gadget} AND
-                  [status] = {status}';
+            WHERE
+                [gadget] = {gadget}
+            ';
+        if (!empty($status)) {
+            $sql.= 'AND [status] = {status}';
+        }
 
         $howMany = $GLOBALS['db']->queryOne($sql, $params);
-
         return Jaws_Error::IsError($howMany) ? 0 : $howMany;
     }
 
