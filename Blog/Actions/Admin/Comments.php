@@ -240,17 +240,11 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     function DeleteComment()
     {
         $this->CheckPermission('ManageComments');
-        $model   = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
         $request =& Jaws_Request::getInstance();
+        $id = $request->get('id');
 
-        $get_id  = $request->get('id', 'get');
-        $post_id = $request->get('id', 'post');
-
-        if (!is_null($get_id)) {
-            $model->DeleteComment($get_id);
-        } elseif(!is_null($post_id)) {
-            $model->DeleteComment($post_id);
-        }
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model->DeleteComment($id);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
     }

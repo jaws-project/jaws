@@ -865,6 +865,7 @@ class BlogAdminModel extends BlogModel
             }
         }
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -970,7 +971,6 @@ class BlogAdminModel extends BlogModel
             }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
