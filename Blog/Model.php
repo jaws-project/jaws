@@ -725,10 +725,8 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetComment($id)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $comment = $api->GetComment($id);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comment = $cModel->GetComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));
         }
@@ -739,6 +737,7 @@ class BlogModel extends Jaws_Gadget_Model
             $comment['createtime']    = $comment['createtime'];
             $comment['comments']      = $comment['msg_txt'];
         }
+
         return $comment;
     }
 

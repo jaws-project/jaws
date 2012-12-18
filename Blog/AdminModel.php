@@ -107,11 +107,6 @@ class BlogAdminModel extends BlogModel
         $this->DelRegistry('use_antispam');
         $this->DelRegistry('pingback');
 
-        // Recent comments
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Gadget);
-        $api->DeleteCommentsOfGadget();
-
         return true;
     }
 
@@ -803,28 +798,27 @@ class BlogAdminModel extends BlogModel
      */
     function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
     {
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
-
-        $params              = array();
+        $params = array();
         $params['id']        = $id;
-        $params['name']      = strip_tags($name);
-        $params['title']     = strip_tags($title);
-        $params['url']       = strip_tags($url);
-        $params['email']     = strip_tags($email);
-        $params['comments']  = strip_tags($comments);
+        $params['name']      = $name;
+        $params['title']     = $title;
+        $params['url']       = $url;
+        $params['email']     = $email;
+        $params['comments']  = $comments;
         $params['permalink'] = $permalink;
         $params['status']    = $status;
 
-        $api = new Jaws_Comment($this->_Gadget);
-        $res = $api->UpdateComment($params['id'],        $params['name'],
-                                   $params['email'],     $params['url'],
-                                   $params['title'],     $params['comments'],
-                                   $params['permalink'], $params['status']);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->UpdateComment(
+            $this->_Gadget, $params['id'], $params['name'],
+            $params['email'], $params['url'], $params['title'],
+            $params['comments'], $params['permalink'], $params['status']
+        );
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), _t('BLOG_NAME'));
         }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -838,17 +832,14 @@ class BlogAdminModel extends BlogModel
      */
     function DeleteComment($id)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-
         $comment = $this->GetComment($id);
         if (Jaws_Error::IsError($comment)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        $api = new Jaws_Comment($this->_Gadget);
-        $res = $api->DeleteComment($id);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->DeleteComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
@@ -857,9 +848,12 @@ class BlogAdminModel extends BlogModel
         if ($comment['status'] == COMMENT_STATUS_APPROVED) {
             $params = array();
             $params['id'] = $comment['gadget_reference'];
-            $howmany = $api->HowManyFilteredComments('gadget_reference',
-                                                     $comment['gadget_reference'],
-                                                     'approved');
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $comment['gadget_reference'],
+                'approved'
+            );
             if (!Jaws_Error::IsError($howmany)) {
                 $params['comments'] = $howmany;
                 $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
