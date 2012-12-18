@@ -152,7 +152,9 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                                 "deleteElement('{$gadget['id']}');"
                             );
                             $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
-                            if (isset($actions[$gadget['gadget_action']]) && $objGadget->IsGadgetUpdated()) {
+                            if (isset($actions[$gadget['gadget_action']]) &&
+                                Jaws_Gadget::IsGadgetUpdated($gadget['gadget'])
+                            ) {
                                 $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
                                 $t_item->SetVariable('item_status', 'none');
                             } else {

@@ -29,7 +29,7 @@ class Users_Model_Admin_UserACL extends Jaws_Gadget_Model
                     continue;
                 }
 
-                if (!$objGadget->IsGadgetUpdated()) {
+                if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
                     continue;
                 }
 

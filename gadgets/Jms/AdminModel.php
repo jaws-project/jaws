@@ -65,9 +65,9 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $gInstalled = $objGadget->IsGadgetInstalled();
+                $gInstalled = Jaws_Gadget::IsGadgetInstalled($gadget);
                 if ($gInstalled) {
-                    $gUpdated = $objGadget->IsGadgetUpdated();
+                    $gUpdated = Jaws_Gadget::IsGadgetUpdated($gadget);
                 } else {
                     $gUpdated = true;
                 }

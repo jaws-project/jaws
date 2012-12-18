@@ -342,7 +342,7 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
             return $GLOBALS['app']->Session->PopLastResponse();
         }
 
-        if (!$objGadget->IsGadgetUpdated()) {
+        if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
             $return = $objGadget->UpdateGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);

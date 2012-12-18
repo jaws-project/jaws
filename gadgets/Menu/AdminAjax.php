@@ -257,7 +257,7 @@ class MenuAdminAjax extends Jaws_Gadget_Ajax
             return $urls;
         } else {
             $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
-            if ($objGadget->IsGadgetUpdated()) {
+            if (Jaws_Gadget::IsGadgetUpdated($request)) {
                 $hook = $GLOBALS['app']->loadHook($request, 'URLList');
                 if ($hook !== false) {
                     return $hook->Hook();
