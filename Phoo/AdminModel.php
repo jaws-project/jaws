@@ -828,9 +828,29 @@ class PhooAdminModel extends PhooModel
             return true;
         }
 
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $api->MarkAs($ids, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel->MarkAs($this->_Gadget, $ids, $status);
+        foreach ($ids as $id) {
+            $comment = $cModel->GetComment($this->_Gadget, $id);
+            $params = array();
+            $params['id'] = $comment['gadget_reference'];
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $comment['gadget_reference'],
+                'approved'
+            );
+            if (!Jaws_Error::IsError($howmany)) {
+                $params['comments'] = $howmany;
+                $sql = 'UPDATE [[phoo_image]] SET [comments] = {comments} WHERE [id] = {id}';
+                $result = $GLOBALS['db']->query($sql, $params);
+                if (Jaws_Error::IsError($result)) {
+                    $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), RESPONSE_ERROR);
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('BLOG_NAME'));
+                }
+            }
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
     }

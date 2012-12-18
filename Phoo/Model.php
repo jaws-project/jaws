@@ -1114,9 +1114,7 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function GetCommentsFiltered($filterby, $filter)
     {
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $filterMode = '';
         switch($filterby) {
         case 'postid':
@@ -1148,7 +1146,7 @@ class PhooModel extends Jaws_Gadget_Model
             break;
         }
 
-        $comments = $api->GetFilteredComments($filterMode, $filter);
+        $comments = $cModel->GetFilteredComments($this->_Gadget, $filterMode, $filter);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_FILETEREDCOMMENTS'), _t('PHOO_NAME'));
         }

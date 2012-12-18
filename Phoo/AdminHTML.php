@@ -1156,11 +1156,10 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     function DeleteComment()
     {
         $this->CheckPermission('ManageComments');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-
         $request =& Jaws_Request::getInstance();
-        $id      = $request->get('id', 'get');
+        $id = $request->get('id', 'get');
 
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
         $model->DeleteComment($id);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
