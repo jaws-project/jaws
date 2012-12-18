@@ -89,9 +89,8 @@ class Jaws_EventListener
 
         if (count($listeners) > 0) {
             foreach ($listeners as $listener) {
-                $objGadget = $GLOBALS['app']->LoadGadget($listener['gadget'], 'Info');
-                if ($objGadget->IsGadgetInstalled()) {
-                    $gadget = $GLOBALS['app']->loadGadget($listener['gadget'], 'AdminModel');
+                if (Jaws_Gadget::IsGadgetInstalled($listener['gadget'])) {
+                    $gadget = $GLOBALS['app']->LoadGadget($listener['gadget'], 'AdminModel');
                     if (Jaws_Error::IsError($gadget)) {
                         return new Jaws_Error(_t('GLOBAL_ERROR_EVENTS_LISTENER_ERROR'),
                                               __FUNCTION__);

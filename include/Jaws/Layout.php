@@ -593,8 +593,7 @@ class Jaws_Layout
             return $output;
         }
 
-        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (!$objGadget->IsGadgetUpdated()) {
+        if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
             $GLOBALS['log']->Log(
                 JAWS_LOG_NOTICE,
                 'Trying to populate '. $gadget.
