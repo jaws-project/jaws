@@ -98,11 +98,6 @@ class PhooAdminModel extends PhooModel
         $this->DelRegistry('albums_order_type');
         $this->DelRegistry('photos_order_type');
 
-        // Recent comments
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $api->DeleteCommentsOfGadget();
-
         return true;
     }
 
@@ -730,6 +725,93 @@ class PhooAdminModel extends PhooModel
         }
 
         return array();
+    }
+
+    /**
+     * Updates a comment
+     * 
+     * @access  public
+     * @param   string  $id         Comment id
+     * @param   string  $name       Name of the author
+     * @param   string  $title      Title of the comment
+     * @param   string  $url        Url of the author
+     * @param   string  $email      Email of the author
+     * @param   string  $comments   Text of the comment
+     * @param   string  $permalink  Permalink
+     * @param   string  $status     Comment status
+     * @return  mixed   True if comment was added, and Jaws_Error if not.
+     */
+    function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
+    {
+        $params = array();
+        $params['id']        = $id;
+        $params['name']      = $name;
+        $params['title']     = $title;
+        $params['url']       = $url;
+        $params['email']     = $email;
+        $params['comments']  = $comments;
+        $params['permalink'] = $permalink;
+        $params['status']    = $status;
+
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->UpdateComment(
+            $this->_Gadget, $params['id'], $params['name'],
+            $params['email'], $params['url'], $params['title'],
+            $params['comments'], $params['permalink'], $params['status']
+        );
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('PHOO_NAME'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_UPDATED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+    /**
+     * Delete a comment
+     * 
+     * @access  public
+     * @param   int     $id         Comment id
+     * @return  mixed   True on Success or Jaws_Error on Failure
+     */
+    function DeleteComment($id)
+    {
+        $comment = $this->GetComment($id);
+        if (Jaws_Error::IsError($comment)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
+        }
+
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->DeleteComment($this->_Gadget, $id);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
+        }
+
+        if ($comment['status'] == COMMENT_STATUS_APPROVED) {
+            $params = array();
+            $params['id'] = $comment['gadget_reference'];
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $comment['gadget_reference'],
+                'approved'
+            );
+            if (!Jaws_Error::IsError($howmany)) {
+                $params['comments'] = $howmany;
+                $sql = 'UPDATE [[phoo_image]] SET [comments] = {comments} WHERE [id] = {id}';
+                $result = $GLOBALS['db']->query($sql, $params);
+                if (Jaws_Error::IsError($result)) {
+                    $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
+                }
+            }
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_DELETED'), RESPONSE_NOTICE);
+        return true;
     }
 
     /**

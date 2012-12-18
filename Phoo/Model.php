@@ -1173,9 +1173,8 @@ class PhooModel extends Jaws_Gadget_Model
      */
     function GetComment($id)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $comment = $api->GetComment($id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $comment = $cModel->GetComment($this->_Gadget, $id);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'), _t('PHOO_NAME'));
         }
@@ -1300,81 +1299,6 @@ class PhooModel extends Jaws_Gadget_Model
             $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
         }
 
-        return true;
-    }
-
-    /**
-     * Updates a comment
-     * 
-     * @access  public
-     * @param   string  $id         Comment id
-     * @param   string  $name       Name of the author
-     * @param   string  $title      Title of the comment
-     * @param   string  $url        Url of the author
-     * @param   string  $email      Email of the author
-     * @param   string  $comments   Text of the comment
-     * @param   string  $permalink  Permalink
-     * @param   string  $status     Comment status
-     * @return  mixed   True if comment was added, and Jaws_Error if not.
-     */
-    function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
-    {
-        $params              = array();
-        $params['id']        = $id;
-        $params['name']      = strip_tags($name);
-        $params['title']     = strip_tags($title);
-        $params['url']       = strip_tags($url);
-        $params['email']     = strip_tags($email);
-        $params['comments']  = $comments;
-        $params['permalink'] = $permalink;
-        $params['status'] = $status;
-
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $res = $api->UpdateComment($params['id'], $params['name'], $params['email'],
-                                   $params['url'], $params['title'], $params['comments'],
-                                   $params['permalink'], $params['status']);
-
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('PHOO_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_UPDATED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Delete a comment
-     * 
-     * @access  public
-     * @param   int     $id         Comment id
-     * @return  mixed   True on Success or Jaws_Error on Failure
-     */
-    function DeleteComment($id)
-    {
-        $comment = $this->GetComment($id);
-        if (Jaws_Error::IsError($comment)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
-        }
-
-        $sql = 'UPDATE [[phoo_image]] SET [comments] = [comments] - 1 WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $comment['gadget_reference']));
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
-        }
-
-        require_once JAWS_PATH . 'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-        $res = $api->DeleteComment($id);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
