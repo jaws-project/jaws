@@ -663,9 +663,7 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetCommentsFiltered($filterby, $filter, $status, $limit)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Name);
-
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $filterMode = '';
         switch($filterby) {
         case 'postid':
@@ -700,7 +698,7 @@ class BlogModel extends Jaws_Gadget_Model
             break;
         }
 
-        $comments = $api->GetFilteredComments($filterMode, $filter, $status, $limit);
+        $comments = $cModel->GetFilteredComments($this->_Gadget, $filterMode, $filter, $status, $limit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_FILTERED_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -2357,8 +2355,6 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function SavePingback($postID, $sourceURI, $permalink, $title, $content)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-
         $sourceURI = strip_tags($sourceURI);
         $permalink = strip_tags($permalink);
 
@@ -2377,12 +2373,12 @@ class BlogModel extends Jaws_Gadget_Model
         $name  = $this->GetRegistry('site_author', 'Settings');
         $ip    = $_SERVER['REMOTE_ADDR'];
 
-        $api = new Jaws_Comment($this->_Name);
         $status = $this->GetRegistry('comment_status');
-
-        $res = $api->NewComment($postID,
-                                $name, $email, $sourceURI, $title, $content,
-                                $ip, $permalink, 0, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $res = $cModel->NewComment(
+            $this->_Gadget, $postID, $name, $email, $sourceURI,
+            $title, $content, $ip, $permalink, 0, $status
+        );
     }
 
     /**

@@ -876,9 +876,8 @@ class BlogAdminModel extends BlogModel
      */
     function DeleteCommentsIn($id)
     {
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Gadget);
-        $res = $api->DeleteCommentsByReference($id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        return $cModel->DeleteCommentsByReference($this->_Gadget, $id);
     }
 
     /**
@@ -895,18 +894,18 @@ class BlogAdminModel extends BlogModel
             return true;
         }
 
-        require_once JAWS_PATH.'include/Jaws/Comment.php';
-        $api = new Jaws_Comment($this->_Gadget);
-        $api->MarkAs($ids, $status);
-
-        // Fix blog comment counter...
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel->MarkAs($this->_Gadget, $ids, $status);
         foreach ($ids as $id) {
-            $comment = $api->GetComment($id);
+            $comment = $cModel->GetComment($this->_Gadget, $id);
             $params = array();
             $params['id'] = $comment['gadget_reference'];
-            $howmany = $api->HowManyFilteredComments('gadget_reference',
-                                                     $comment['gadget_reference'],
-                                                     'approved');
+            $howmany = $cModel->HowManyFilteredComments(
+                $this->_Gadget,
+                'gadget_reference',
+                $comment['gadget_reference'],
+                'approved'
+            );
             if (!Jaws_Error::IsError($howmany)) {
                 $params['comments'] = $howmany;
                 $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
