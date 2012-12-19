@@ -680,10 +680,11 @@ function fillCatInfoForm(content)
 /**
  * Delete category
  */
-function deleteCategory(form)
+function deleteCategory()
 {
-    var id = form.elements['catid'].value;
-    BlogAjax.callAsync('deletecategory', id);
+    if (confirm(delete_message)) {
+        BlogAjax.callAsync('deletecategory', $('catid').value);
+    }
 }
 
 /**

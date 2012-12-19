@@ -1,10 +1,6 @@
 <!-- BEGIN categories -->
 {menubar}
 <div id="main" align="center">
-<!-- BEGIN manage -->
-<script type="text/javascript">
-var deleteMessage = "{delete_message}";
-</script>
   <table>
     <tr><td class="category_title" valign="top">
       <b>{categories}</b>
@@ -25,9 +21,22 @@ var deleteMessage = "{delete_message}";
       </table>
     </td>
     <td id="catinfoform" valign="top">
-      {new_form}
+      <input type="hidden" name="catid" id="catid" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="work_area">
+          <div><label for="name">{lbl_name}</label><br/>{name}</div>
+          <div><label for="fast_url">{lbl_fast_url}</label><br/>{fast_url}</div>
+          <div><label for="meta_keywords">{lbl_meta_keywords}</label><br/>{meta_keywords}</div>
+          <div><label for="meta_desc">{lbl_meta_desc}</label><br/>{meta_desc}</div>
+          <div><label for="description">{lbl_description}</label><br/>{description}</div>
+        </div>
+      </fieldset>
+      <div>{btn_delete}{btn_cancel}{btn_save}</div>
     </td></tr>
   </table>
-<!-- END manage -->
 </div>
+<script type="text/javascript">
+var deleteMessage = "{delete_message}";
+</script>
 <!-- END categories -->
