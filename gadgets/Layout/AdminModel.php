@@ -21,18 +21,18 @@ class LayoutAdminModel extends LayoutModel
      */
     function InstallGadget()
     {
-        $result = $this->installSchema('schema.xml');
+        $result = $this->gadget->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
+        $result = $this->gadget->installSchema('insert.xml', '', 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         // registry keys
-        $this->AddRegistry('pluggable', 'false');
+        $this->gadget->AddRegistry('pluggable', 'false');
         return true;
     }
 
@@ -47,7 +47,7 @@ class LayoutAdminModel extends LayoutModel
     function UpdateGadget($old, $new)
     {
         if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', '', "$old.xml");
+            $result = $this->gadget->installSchema('0.3.0.xml', '', "$old.xml");
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -59,14 +59,14 @@ class LayoutAdminModel extends LayoutModel
         }
 
         if (version_compare($old, '0.4.0', '<')) {
-            $result = $this->installSchema('0.4.0.xml', '', "0.3.0.xml");
+            $result = $this->gadget->installSchema('0.4.0.xml', '', "0.3.0.xml");
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
         if (version_compare($old, '0.5.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', "0.4.0.xml");
+            $result = $this->gadget->installSchema('schema.xml', '', "0.4.0.xml");
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
