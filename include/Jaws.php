@@ -161,6 +161,7 @@ class Jaws
     {
         $this->loadClass('Translate', 'Jaws_Translate');
         $this->loadClass('Registry', 'Jaws_Registry');
+        $this->loadClass('ACL', 'Jaws_ACL');
 
         $this->loadPreferences();
         $this->Registry->Init();
@@ -583,8 +584,6 @@ class Jaws
                 }
             }
 
-            // Load gadget's language file
-            $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/' . $type . '.php';
             if (file_exists($file)) {
                 include_once $file;
@@ -597,15 +596,18 @@ class Jaws
                 return $error;
             }
 
-            if (!isset($this->_Gadgets[$gadget]) || !isset($this->_Gadgets[$gadget]['Registry']))
-            {
-                $this->_Gadgets[$gadget]['Registry'] = true;
-                if (isset($this->ACL)) {
-                    $this->ACL->LoadFile($gadget);
+            // temporary
+            if (in_array($type, array('Model', 'AdminModel'))) {
+                if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
+                    $info_class_name = $gadget . 'Info';
+                    $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
+                    @include_once $ifile;
+                    $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
                 }
+                $obj = new $type_class_name($this->_Gadgets[$gadget]['Info']['base']);
+            } else {
+                $obj = new $type_class_name($gadget);
             }
-
-            $obj = new $type_class_name($gadget);
             if (Jaws_Error::IsError($obj)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $type_class_name),
                                         'Gadget file loading');
@@ -653,7 +655,13 @@ class Jaws
                     return $error;
                 }
 
-                $objFile = new $file_class_name($gadget);
+                // temporary
+                if (in_array($type, array('Model', 'AdminModel'))) {
+                    $objFile = new $file_class_name($this->_Gadgets[$gadget]['Info']['base']);
+                } else {
+                    $objFile = new $file_class_name($gadget);
+                }
+
                 if (Jaws_Error::IsError($objFile)) {
                     $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $file_class_name),
                                             'Gadget file loading');
