@@ -17,7 +17,7 @@ class Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Name = '';
+    var $_Title = '';
 
     /**
      * Language translate description of the gadget
@@ -173,7 +173,7 @@ class Jaws_Gadget
             $gadget = substr($gadget, 0, strlen($gadget) - 5);
         }
 
-        $this->_Name        = _t(strtoupper($gadget).'_NAME');
+        $this->_Title        = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
         $this->LoadActions();
     }
@@ -270,9 +270,9 @@ class Jaws_Gadget
      * @access  protected
      * @return  string   Gadget translated name
      */
-    function GetName()
+    function GetTitle()
     {
-        return $this->_Name;
+        return $this->_Title;
     }
 
     /**

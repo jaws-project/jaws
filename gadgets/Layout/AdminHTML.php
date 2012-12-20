@@ -136,7 +136,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                                 $t_item->SetVariable('gadget', $gadget['gadget']);
                                 $t_item->SetVariable('action', _t('LAYOUT_ACTIONS'));
                             } else {
-                                $t_item->SetVariable('gadget', $objGadget->GetName());
+                                $t_item->SetVariable('gadget', $objGadget->GetTitle());
                                 if (isset($actions[$gadget['gadget_action']]['name'])) {
                                     $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
                                 } else {
@@ -437,7 +437,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
 
         $gInfo = $GLOBALS['app']->LoadGadget($layoutElement['gadget'], 'Info');
         $tpl->SetVariable('gadget', $layoutElement['gadget']);
-        $tpl->SetVariable('gadget_name', $gInfo->GetName());
+        $tpl->SetVariable('gadget_name', $gInfo->GetTitle());
         $tpl->SetVariable('gadget_description', $gInfo->GetDescription());
 
         $btnSave =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);

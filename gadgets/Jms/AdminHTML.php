@@ -227,9 +227,9 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $objGadget->getName()), RESPONSE_ERROR);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $objGadget->GetTitle()), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->getName()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
             }
         }
         Jaws_Header::Location(BASE_SCRIPT);
@@ -284,7 +284,7 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('gadget', $gadget);
             $tpl->SetVariable('description', _t('JMS_GADGETS_NOT_EXISTS'));
         } else {
-            $tpl->SetVariable('gadget', $info->GetName());
+            $tpl->SetVariable('gadget', $info->GetTitle());
             $tpl->SetVariable('description', $info->GetDescription());
             // Requires
             $tpl->SetBlock('info/requires');

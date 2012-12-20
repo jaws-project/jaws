@@ -72,7 +72,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     $gUpdated = true;
                 }
 
-                $tName = $objGadget->GetName();
+                $tName = $objGadget->GetTitle();
                 $index = urlencode($tName);
                 $section = strtolower($objGadget->GetSection());
                 switch ($section) {
