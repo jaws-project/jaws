@@ -18,7 +18,173 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        return '';
+        // TODO: Check Permission For Manage Comments
+        return $this->Comments();
+    }
+
+    /**
+     * Prepares the comments menubar
+     *
+     * @access  public
+     * @param   string  $action   Selected action
+     * @return  string  XHTML of menubar
+     */
+    function MenuBar($action)
+    {
+        $actions = array('Comments');
+        if (!in_array($action, $actions)) {
+            $action = 'Comments';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+        // TODO: Check Permission For Manage Comments
+        $menubar->AddOption('Comments',
+                            _t('COMMENTS_NAME'),
+                            BASE_SCRIPT . '?gadget=Comments&amp;action=Admin',
+                            'gadgets/Comments/images/Comments_mini.png');
+
+        $menubar->Activate($action);
+        return $menubar->Get();
+    }
+
+    /**
+     * Show comments list
+     *
+     * @access  public
+     * @return  string XHTML template content
+     */
+    function Comments()
+    {
+        // TODO: Check Permission For Manage Comments
+        $this->AjaxMe('script.js');
+
+        $tpl = new Jaws_Template('gadgets/Comments/templates/');
+        $tpl->Load('AdminComments.html');
+        $tpl->SetBlock('Comments');
+
+        //Menu bar
+        $tpl->SetVariable('menubar', $this->MenuBar('Comments'));
+
+        //Recipient filter
+        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
+        $gadgetsCombo->SetID('gadgets_filter');
+        $gadgetsCombo->setStyle('width: 220px;');
+        $gadgetsCombo->AddEvent(ON_CHANGE, "getComments('comments_datagrid', 0, true)");
+        $gadgetsCombo->AddOption('', -1);
+        // TODO: Get List Of Gadget Which Use Comments
+        $gadgetsCombo->AddOption('Blog', 'Blog');
+        $gadgetsCombo->SetDefault(-1);
+        $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
+        $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
+
+        //DataGrid
+        $tpl->SetVariable('grid', $this->CommentsDataGrid());
+
+        //CommentUI
+        $tpl->SetVariable('comment_ui', $this->CommentUI());
+
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
+        $btnCancel->SetStyle('visibility: hidden;');
+        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
+
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        // TODO: Check Permission For Manage Comments
+        //$btnSave->SetEnabled($this->GetPermission('ManageComments'));
+        $btnSave->AddEvent(ON_CLICK, 'updateComment(false);');
+        $btnSave->SetStyle('visibility: hidden;');
+        $tpl->SetVariable('btn_save', $btnSave->Get());
+
+
+        $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmCommentsDelete',    _t('COMMENTS_CONFIRM_DELETE'));
+        $tpl->SetVariable('legend_title',            _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
+        $tpl->SetVariable('messageDetail_title',     _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
+
+        $tpl->ParseBlock('Comments');
+        return $tpl->Get();
+    }
+
+    /**
+     * Prepares the datagrid view (XHTML of datagrid)
+     *
+     * @access  public
+     * @return  string  XHTML template of datagrid
+     */
+    function CommentsDataGrid()
+    {
+        $model = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $total = $model->TotalOfData('comments');
+
+        $grid =& Piwi::CreateWidget('DataGrid', array());
+        $grid->SetID('comments_datagrid');
+        $grid->TotalRows($total);
+        $grid->pageBy(12);
+        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_NAME'), null, false);
+        $grid->AddColumn($column1);
+        $column2 = Piwi::CreateWidget('Column', '', null, false);
+        $grid->AddColumn($column2);
+        $column2->SetStyle('width:16px;');
+        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column3->SetStyle('width: 72px; white-space: nowrap;');
+        $grid->AddColumn($column3);
+        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column4->SetStyle('width: 64px; white-space: nowrap;');
+        $grid->AddColumn($column4);
+        $grid->SetStyle('margin-top: 0px; width: 100%;');
+
+        return $grid->Get();
+    }
+
+    /**
+     * Show a form to show/edit a given comments
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function CommentUI()
+    {
+        $tpl = new Jaws_Template('gadgets/Comments/templates/');
+        $tpl->Load('AdminComments.html');
+        $tpl->SetBlock('CommentUI');
+
+        //IP
+        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+
+        //name
+        $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
+        $nameEntry->setStyle('width: 160px;');
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('name', $nameEntry->Get());
+
+        //email
+        $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
+        $nameEntry->setStyle('width: 160px;');
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email', $nameEntry->Get());
+
+        //url
+        $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
+        $nameEntry->setStyle('width: 270px;');
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('url', $nameEntry->Get());
+
+        //subject
+        $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
+        $subjectEntry->setStyle('width: 270px;');
+        $tpl->SetVariable('lbl_subject', _t('COMMENTS_SUBJECT'));
+        $tpl->SetVariable('subject', $subjectEntry->Get());
+
+        //message
+        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
+        $messageText->SetStyle('width: 270px;');
+        $messageText->SetRows(8);
+        $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
+        $tpl->SetVariable('message', $messageText->Get());
+
+        $tpl->ParseBlock('CommentUI');
+        return $tpl->Get();
     }
 
     /**

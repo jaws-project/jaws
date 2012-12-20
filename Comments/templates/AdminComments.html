@@ -1,0 +1,43 @@
+<!-- BEGIN Comments -->
+{menubar}
+<div id="main">
+<table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td id="c_datagrid" valign="top" align="left">
+      <div><label for="recipient_filter">{lbl_gadgets_filter}: </label>{gadgets_filter}</div>
+      {grid}
+    </td>
+    <td style="vertical-align: top; width: 370px;">
+      <input type="hidden" name="id" id="id" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="c_work_area">{comment_ui}</div>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons" colspan="2">{btn_cancel}{btn_save}</td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  currentAction = 'Comments';
+  $('gadgets_filter').selectedIndex = 0;
+  initDataGrid('comments_datagrid', CommentsAjax, getComments);
+  var incompleteCommentFields = "{incompleteCommentFields}";
+  var confirmCommentDelete    = "{confirmCommentDelete}";
+  var messageDetail_title     = "{messageDetail_title}";
+</script>
+
+</div>
+<!-- END Comments -->
+<!-- BEGIN CommentUI -->
+<table id="comment_box" border="0" cellpadding="0" cellspacing="2">
+  <tr><td><label>{lbl_ip}:</label></td><td><label id="comment_ip"></label></td></tr>
+  <tr><td><label for="name">{lbl_name}:</label></td><td>{name}</td></tr>
+  <tr><td><label for="email">{lbl_email}:</label></td><td dir="ltr">{email}</td></tr>
+  <tr><td><label for="url">{lbl_url}:</label></td><td dir="ltr">{url}</td></tr>
+  <tr><td><label for="subject">{lbl_subject}:</label></td><td>{subject}</td></tr>
+  <tr><td><label for="message">{lbl_message}:</label></td><td>{message}</td></tr>
+</table>
+<!-- END CommentUI -->
