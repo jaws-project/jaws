@@ -129,8 +129,11 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
         $column3->SetStyle('width: 72px; white-space: nowrap;');
         $grid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_STATUS'), null, false);
         $column4->SetStyle('width: 64px; white-space: nowrap;');
+        $grid->AddColumn($column4);
+        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column5->SetStyle('width: 64px; white-space: nowrap;');
         $grid->AddColumn($column4);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
 
@@ -185,6 +188,74 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('CommentUI');
         return $tpl->Get();
+    }
+
+    /**
+     * Prepares the data of comments
+     *
+     * @access  public
+     * @param   int    $gadgets   Gadgets Name
+     * @param   int    $offset    Offset of data array
+     * @return  array  Data array
+     */
+    function GetContacts($gadgets = -1, $offset = null)
+    {
+        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel');
+
+        $contacts = $model->GetContacts($recipient, 12, $offset);
+        if (Jaws_Error::IsError($contacts)) {
+            return array();
+        }
+
+        $date = $GLOBALS['app']->loadDate();
+        $newData = array();
+        foreach ($contacts as $contact) {
+            $contactData = array();
+
+            // Name
+            $label =& Piwi::CreateWidget('Label', $contact['name']);
+            $label->setTitle($contact['subject']);
+            if (empty($contact['reply'])) {
+                $label->setStyle('font-weight:bold;');
+            }
+            $contactData['name'] = $label->get();
+
+            // Attachment
+            if (empty($contact['attachment'])) {
+                $contactData['attach'] = '';
+            } else {
+                $image =& Piwi::CreateWidget('Image', 'gadgets/Contact/images/attachment.png');
+                $image->setTitle($contact['attachment']);
+                $contactData['attach'] = $image->get();
+            }
+
+            // Date
+            $label =& Piwi::CreateWidget('Label', $date->Format($contact['createtime'],'Y-m-d'));
+            $label->setTitle($date->Format($contact['createtime'],'H:i:s'));
+            $contactData['time'] = $label->get();
+
+            // Actions
+            $actions = '';
+            if ($this->GetPermission('ManageContacts')) {
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                                            "javascript: editContact(this, '".$contact['id']."');",
+                                            STOCK_EDIT);
+                $actions.= $link->Get().'&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
+                                            "javascript: editReply(this, '" . $contact['id'] . "');",
+                                            'gadgets/Contact/images/contact_mini.png');
+                $actions.= $link->Get().'&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                                            "javascript: deleteContact(this, '".$contact['id']."');",
+                                            STOCK_DELETE);
+                $actions.= $link->Get().'&nbsp;';
+            }
+            $contactData['actions'] = $actions;
+            $newData[] = $contactData;
+        }
+        return $newData;
     }
 
     /**

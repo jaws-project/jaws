@@ -324,8 +324,11 @@ class CommentsAdminModel extends CommentsModel
                 [replies],
                 [status],
                 [createtime]
-            FROM [[comments]]
-            WHERE [gadget] = {gadget}';
+            FROM [[comments]]';
+
+        if (!is_null($gadget) && ($gadget != '')) {
+            $sql .= ' WHERE [gadget] = {gadget}';
+        }
 
         switch ($filterMode) {
         case COMMENT_FILTERBY_REFERENCE:
