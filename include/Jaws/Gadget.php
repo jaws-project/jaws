@@ -159,6 +159,22 @@ class Jaws_Gadget
     var $_LoadedActions = false;
 
     /**
+     * Store component objects for later use so we aren't running
+     * around with multiple copies
+     * @var     array
+     * @access  protected
+     */
+    var $components = array();
+
+    /**
+     * Store model objects for later use so we aren't running
+     * around with multiple copies
+     * @var     array
+     * @access  protected
+     */
+    var $models = array();
+
+    /**
      * Constructor
      *
      * @access  protected
@@ -169,13 +185,46 @@ class Jaws_Gadget
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
-        if (substr($gadget, -5, 5) == 'Model') {
-            $gadget = substr($gadget, 0, strlen($gadget) - 5);
-        }
 
-        $this->_Title        = _t(strtoupper($gadget).'_NAME');
+        // Load gadget's language file
+        $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
+        // load ACLs
+        $GLOBALS['app']->ACL->LoadFile($this->name);
+
+        $this->_Title       = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
         $this->LoadActions();
+    }
+
+    /**
+     * Loads the gadget model file in question, makes a instance and
+     * stores it globally for later use so we do not have duplicates
+     * of the same instance around in our code.
+     *
+     * @access  public
+     * @param   string  $model   Model name
+     * @return  mixed   Model class object on successful, Jaws_Error otherwise
+     */
+    function &load($extension)
+    {
+        // filter non validate character
+        $extension = preg_replace('/[^[:alnum:]_]/', '', $extension);
+        $model_class_name = "Jaws_Gadget_$extension";
+        if (!isset($this->components[$extension])) {
+            $file = JAWS_PATH. "include/Jaws/Gadget/$extension.php";
+            if (!@include_once($file)) {
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+            }
+
+            if (!Jaws::classExists($model_class_name)) {
+                return Jaws_Error::raiseError("Class [$model_class_name] not exists!", __FUNCTION__);
+            }
+
+            $this->components[$extension] = new $model_class_name($this);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
+        }
+
+        return $this->components[$extension];
     }
 
     /**
