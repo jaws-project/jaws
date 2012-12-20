@@ -43,23 +43,6 @@ class Installer_Settings extends JawsInstallerStage
     }
 
     /**
-     * Sorts an array of Jaws_GadgetInfo objects by name.
-     *
-     * @access protected
-     * @param  Jaws_GadgetInfo   $a
-     * @param  Jaws_GadgetInfo   $b
-     * @return int          1 = $a > $b, -1 = $b > $a, 0 = $a == $b
-     */
-    function SortGadgets($a, $b)
-    {
-        if ($a->GetName() == $b->GetName()) {
-            return 0;
-        }
-
-        return ($a->GetName() < $b->GetName()) ? -1 : 1;
-    }
-
-    /**
      * Builds the installer page.
      *
      * @access  public
