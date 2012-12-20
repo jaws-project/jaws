@@ -166,4 +166,81 @@ class UrlMapperAdminAjax extends Jaws_Gadget_Ajax
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
+    /**
+     * Gets all entries/records for error maps datagrid
+     *
+     * @access  public
+     * @param   int     $limit  Data limit to fetch
+     * @param   int     $offset
+     * @return  array   List of ErrorMaps
+     */
+    function GetErrorMaps($limit, $offset = null)
+    {
+        if (!is_numeric($limit)) {
+            $limit = 0;
+        }
+
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminHTML');
+        return $gadgetHTML->GetErrorMaps($limit, $offset);
+    }
+
+    /**
+     * Adds a new error map
+     *
+     * @access  public
+     * @param   string  $url        source url
+     * @param   string  $code       code
+     * @param   string  $new_url    destination url
+     * @param   string  $new_code   new code
+     * @return  array   Response array (notice or error)
+     */
+    function AddErrorMap($url, $code, $new_url, $new_code)
+    {
+        $this->_Model->AddErrorMap($url, $code, $new_url, $new_code);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Update the error map
+     *
+     * @access  public
+     * @param   int     $id         error map id
+     * @param   string  $url        source url
+     * @param   string  $code       code
+     * @param   string  $new_url    destination url
+     * @param   string  $new_code   new code
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateErrorMap($id, $url, $code, $new_url, $new_code)
+    {
+        $this->_Model->UpdateErrorMap($id, $url, $code, $new_url, $new_code);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Returns the error map
+     *
+     * @access  public
+     * @param   int     $id Error Map ID
+     * @return  Array of Error Map
+     */
+    function GetErrorMap($id)
+    {
+        return $this->_Model->GetErrorMap($id);
+    }
+
+    /**
+     * Deletes the error map
+     *
+     * @access  public
+     * @param   int     $id     Error map ID
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteErrorMap($id)
+    {
+        $this->_Model->DeleteErrorMap($id);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+
 }
