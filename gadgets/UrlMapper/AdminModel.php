@@ -6,7 +6,6 @@
  * @package    UrlMapper
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -22,20 +21,18 @@ class UrlMapperAdminModel extends UrlMapperModel
      */
     function InstallGadget()
     {
-        $result = $this->installSchema('schema.xml');
+        $result = $this->gadget->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         // Install listener for Add/Update/Removing gadget's maps
-        $GLOBALS['app']->Listener->NewListener($this->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
-        // Install listener for handling error maps
-//        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onHttpError', 'HandleHttpErrors');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
 
         // Registry keys
-        $this->AddRegistry(array(
+        $this->gadget->AddRegistry(array(
             'map_enabled' => 'true',
             'map_use_file' => 'true',
             'map_use_rewrite' => 'false',
@@ -60,14 +57,14 @@ class UrlMapperAdminModel extends UrlMapperModel
     function UpdateGadget($old, $new)
     {
         if (version_compare($old, '0.2.0', '<')) {
-            $result = $this->installSchema('0.2.0.xml', '', "$old.xml");
+            $result = $this->gadget->installSchema('0.2.0.xml', '', "$old.xml");
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
         if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', '', '0.2.0.xml');
+            $result = $this->gadget->installSchema('0.3.0.xml', '', '0.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -78,13 +75,13 @@ class UrlMapperAdminModel extends UrlMapperModel
             }
 
             // Install listener for Add/Update/Removing gadget's maps
-            $GLOBALS['app']->Listener->NewListener($this->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
-            $result = $this->installSchema('0.3.1.xml', '', '0.3.0.xml');
+            $result = $this->gadget->installSchema('0.3.1.xml', '', '0.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -97,7 +94,7 @@ class UrlMapperAdminModel extends UrlMapperModel
                 return $result;
             }
 
-            $result = $this->installSchema('0.3.2.xml', '', '0.3.1.xml');
+            $result = $this->gadget->installSchema('0.3.2.xml', '', '0.3.1.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -119,7 +116,7 @@ class UrlMapperAdminModel extends UrlMapperModel
         }
 
         if (version_compare($old, '0.4.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.3.2.xml');
+            $result = $this->gadget->installSchema('schema.xml', '', '0.3.2.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -138,17 +135,6 @@ class UrlMapperAdminModel extends UrlMapperModel
                     }
                 }
             }
-        }
-
-        if (version_compare($old, '0.4.1', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.4.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // Install listener for handling error maps
-//            $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onHttpError', 'HandleHttpErrors');
-
         }
 
         Jaws_Utils::Delete(JAWS_DATA . 'cache/maps.php');
@@ -172,32 +158,6 @@ class UrlMapperAdminModel extends UrlMapperModel
                 [map], [regexp], [extension], [vars_regexps],
                 [custom_map], [custom_regexp], [custom_extension], [order]
             FROM [[url_maps]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the error map
-     *
-     * @access  public
-     * @param   int     $id Error Map ID
-     * @return  Array of Error Map
-     */
-    function GetErrorMap($id)
-    {
-        $params = array();
-        $params['id'] = $id;
-
-        $sql = '
-            SELECT
-                [url], [code], [new_url], [new_code]
-            FROM [[url_error_maps]]
             WHERE [id] = {id}';
 
         $result = $GLOBALS['db']->queryRow($sql, $params);
@@ -665,120 +625,6 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Adds a new error map
-     *
-     * @access  public
-     * @param   string  $url        source url
-     * @param   string  $code       code
-     * @param   string  $new_url    destination url
-     * @param   string  $new_code   new code
-     * @return  mixed   True on success, Jaws_Error otherwise
-     */
-    function AddErrorMap($url, $code, $new_url, $new_code)
-    {
-        if (trim($url) == '') {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
-        }
-
-        $params = array();
-        $params['url'] = $url;
-        $params['code'] = $code;
-        $params['url_hash'] = md5($url);
-        $params['new_url'] = $new_url;
-        $params['new_code'] = $new_code;
-        $params['now'] = $GLOBALS['db']->Date();
-
-        if ($this->ErrorMapExists($params['url_hash'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
-        }
-
-        $sql = '
-            INSERT INTO [[url_error_maps]]
-                ([url], [url_hash], [code], [new_url], [new_code], [createtime], [updatetime])
-            VALUES
-                ({url}, {url_hash}, {code}, {new_url}, {new_code}, {now}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Update the error map
-     *
-     * @access  public
-     * @param   int     $id         error map id
-     * @param   string  $url        source url
-     * @param   string  $code       code
-     * @param   string  $new_url    destination url
-     * @param   string  $new_code   new code
-     * @return  array   Response array (notice or error)
-     */
-    function UpdateErrorMap($id, $url, $code, $new_url, $new_code)
-    {
-
-        if (trim($url) == '') {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
-        }
-
-        $params = array();
-        $params['id'] = $id;
-        $params['url'] = $url;
-        $params['code'] = $code;
-        $params['url_hash'] = md5($url);
-        $params['new_url'] = $new_url;
-        $params['new_code'] = $new_code;
-        $params['now'] = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [url_hash]
-            FROM [[url_error_maps]]
-            WHERE [id] = {id}';
-        $result = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
-        }
-
-        if ($result != $params['url_hash']) {
-            if ($this->ErrorMapExists($params['url_hash'])) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
-            }
-        }
-
-        $sql = '
-            UPDATE [[url_error_maps]] SET
-                [url] = {url},
-                [url_hash] = {url_hash},
-                [code] = {code},
-                [new_url] = {new_url},
-                [new_code] = {new_code},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_UPDATED'), RESPONSE_NOTICE);
-        return true;
-
-    }
-
-
-    /**
      * Updates the alias
      *
      * @access  public
@@ -864,109 +710,6 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
-     * Deletes the error map
-     *
-     * @access  public
-     * @param   int     $id     Error map ID
-     * @return  array   Response array (notice or error)
-     */
-    function DeleteErrorMap($id)
-    {
-        $params       = array();
-        $params['id'] = $id;
-
-        $sql = 'DELETE FROM [[url_error_maps]] WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), _t('URLMAPPER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Get list of error maps
-     *
-     * @access  public
-     * @param   int     $limit
-     * @param   int     $offset
-     * @return  array   Grid data
-     */
-    function GetErrorMaps($limit, $offset)
-    {
-        $sql = '
-            SELECT [id], [url], [code], [new_url], [new_code], [hits], [createtime], [updatetime]
-            FROM [[url_error_maps]]
-            ORDER BY [createtime]';
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql);
-        if (Jaws_Error::IsError($result)) {
-            return array();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Handle HTTP Errors
-     *
-     * @access  public
-     * @param   string  $url
-     * @param   int     $code
-     * @return  array
-     */
-    function HandleHttpErrors($url, $code)
-    {
-        $redirectData = array();
-        $params = array();
-        $params['url_hash'] = md5($url);
-
-        $sql = '
-            SELECT
-                [id], [new_url], [new_code]
-            FROM [[url_error_maps]]
-            WHERE [url_hash] = {url_hash}';
-
-        $errorMap = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($errorMap)) {
-            return array();
-        }
-
-        // find map for this url error
-        if ($errorMap != null) {
-            $params = array();
-            $params['id'] = $errorMap['id'];
-
-            $sql = "
-                UPDATE [[url_error_maps]] SET
-                    [hits] = [hits]+1
-                WHERE [id] = {id}";
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $redirectData['url'] = $errorMap['new_url'];
-            $redirectData['code'] = $errorMap['code'];
-            return ($redirectData);
-        }
-
-        $this->AddErrorMap($url, $code, null, null);
-        return array();
-    }
-
-    /**
      * Updates settings
      *
      * @access  public
@@ -978,10 +721,10 @@ class UrlMapperAdminModel extends UrlMapperModel
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {
-        $res = $this->SetRegistry('map_enabled', ($enabled === true)? 'true' : 'false');
-        $res = $res && $this->SetRegistry('map_custom_precedence', ($precedence === true)?  'true' : 'false');
-        $res = $res && $this->SetRegistry('map_extensions',  $extension);
-        $res = $res && $this->SetRegistry('map_use_aliases', ($use_aliases === true)? 'true' : 'false');
+        $res = $this->gadget->SetRegistry('map_enabled', ($enabled === true)? 'true' : 'false');
+        $res = $res && $this->gadget->SetRegistry('map_custom_precedence', ($precedence === true)?  'true' : 'false');
+        $res = $res && $this->gadget->SetRegistry('map_extensions',  $extension);
+        $res = $res && $this->gadget->SetRegistry('map_use_aliases', ($use_aliases === true)? 'true' : 'false');
 
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
