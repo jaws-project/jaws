@@ -129,7 +129,7 @@ class Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Gadget = '';
+    var $name = '';
 
     /**
      * Action that gadget will execute
@@ -168,7 +168,7 @@ class Jaws_Gadget
     function Jaws_Gadget($gadget)
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
-        $this->_Gadget = $gadget;
+        $this->name = $gadget;
         if (substr($gadget, -5, 5) == 'Model') {
             $gadget = substr($gadget, 0, strlen($gadget) - 5);
         }
@@ -186,7 +186,7 @@ class Jaws_Gadget
     function LoadActions()
     {
         if (!$this->_LoadedActions) {
-            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->_Gadget);
+            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->name);
             if (!isset($this->_ValidAction['index']['DefaultAction'])) {
                 $this->_ValidAction['index']['DefaultAction'] = array(
                     'name' => 'DefaultAction',
@@ -217,7 +217,7 @@ class Jaws_Gadget
      */
     function GetGadget()
     {
-        return $this->_Gadget;
+        return $this->name;
     }
 
     /**
@@ -335,7 +335,7 @@ class Jaws_Gadget
         $lang = $GLOBALS['app']->GetLanguage();
         return str_replace(array('{url}', '{lang}', '{page}', '{lower-page}',
                                  '{type}', '{lower-type}', '{types}', '{lower-types}'),
-                           array($this->_Wiki_URL, $lang, $this->_Gadget, strtolower($this->_Gadget),
+                           array($this->_Wiki_URL, $lang, $this->name, strtolower($this->name),
                                  'Gadget', 'gadget', 'Gadgets', 'gadgets'),
                            $this->_Wiki_Format);
     }
@@ -398,7 +398,7 @@ class Jaws_Gadget
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
             return _t(strtoupper('GLOBAL_ACL_'. $key));
         } else {
-            return _t(strtoupper($this->_Gadget. '_ACL_'. $key));
+            return _t(strtoupper($this->name. '_ACL_'. $key));
         }
     }
 
@@ -421,13 +421,13 @@ class Jaws_Gadget
                 $default = 'false';
                 $acl     = $value;
             }
-            $result['/ACL/gadgets/'. $this->_Gadget. '/'. $acl] = $default;
+            $result['/ACL/gadgets/'. $this->name. '/'. $acl] = $default;
         }
 
         // Adding common ACL keys
-        $result['/ACL/gadgets/'. $this->_Gadget. '/default'] = $this->_DefaultACL? 'true' : 'false';
-        $result['/ACL/gadgets/'. $this->_Gadget. '/default_admin'] = 'false';
-        $result['/ACL/gadgets/'. $this->_Gadget. '/default_registry'] = 'false';
+        $result['/ACL/gadgets/'. $this->name. '/default'] = $this->_DefaultACL? 'true' : 'false';
+        $result['/ACL/gadgets/'. $this->name. '/default_admin'] = 'false';
+        $result['/ACL/gadgets/'. $this->name. '/default_registry'] = 'false';
 
         return $result;
     }
@@ -483,7 +483,7 @@ class Jaws_Gadget
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (!empty($file)) {
             $objAction = $GLOBALS['app']->LoadGadget(
-                $this->_Gadget,
+                $this->name,
                 JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
                 $file
             );
@@ -715,7 +715,7 @@ class Jaws_Gadget
      */
     function GetRegistry($name, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        $gadget = empty($gadget)? $this->name : $gadget;
         return $GLOBALS['app']->Registry->Get($name, $gadget, JAWS_COMPONENT_GADGET);
     }
 
@@ -730,7 +730,7 @@ class Jaws_Gadget
      */
     function SetRegistry($name, $value, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        $gadget = empty($gadget)? $this->name : $gadget;
         return $GLOBALS['app']->Registry->Set($name, $value, $gadget, JAWS_COMPONENT_GADGET);
     }
 
@@ -746,10 +746,10 @@ class Jaws_Gadget
     function AddRegistry($name, $value = '', $gadget = '')
     {
         if (is_array($name)) {
-            $gadget = empty($value)? $this->_Gadget : $value;
+            $gadget = empty($value)? $this->name : $value;
             return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget, JAWS_COMPONENT_GADGET);
         } else {
-            $gadget = empty($gadget)? $this->_Gadget : $gadget;
+            $gadget = empty($gadget)? $this->name : $gadget;
             return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget, JAWS_COMPONENT_GADGET);
         }
     }
@@ -764,7 +764,7 @@ class Jaws_Gadget
      */
     function DelRegistry($name, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->_Gadget : $gadget;
+        $gadget = empty($gadget)? $this->name : $gadget;
         return $GLOBALS['app']->Registry->Delete($name, $gadget, JAWS_COMPONENT_GADGET);
     }
 
@@ -860,7 +860,7 @@ class Jaws_Gadget
     function DisableGadget()
     {
         // run prechecks
-        $gadget = $this->_Gadget;
+        $gadget = $this->name;
         if (!$this->_commonPreDisableGadget()) {
             return false;
         }
@@ -902,7 +902,7 @@ class Jaws_Gadget
     function UninstallGadget()
     {
         // run prechecks
-        $gadget = $this->_Gadget;
+        $gadget = $this->name;
         if (!$this->_commonPreDisableGadget()) {
             return false;
         }
@@ -943,8 +943,8 @@ class Jaws_Gadget
 
     function _commonPreDisableGadget()
     {
-        if (self::IsGadgetInstalled($this->_Gadget) &&
-            $this->GetRegistry('main_gadget', 'Settings') == $this->_Gadget
+        if (self::IsGadgetInstalled($this->name) &&
+            $this->GetRegistry('main_gadget', 'Settings') == $this->name
         ) {
             return false;
         }
@@ -952,13 +952,13 @@ class Jaws_Gadget
         // Check if it's a core gadget, thus can't be removed.
         ///FIXME check for errors
         $core = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        if (stristr($core, $this->_Gadget)) {
+        if (stristr($core, $this->name)) {
             return false;
         }
 
         $params = array();
         $params['name']  = 'requires';
-        $params['value'] = '%'. $this->_Gadget. '%';
+        $params['value'] = '%'. $this->name. '%';
 
         $sql = '
             SELECT
@@ -991,7 +991,7 @@ class Jaws_Gadget
      */
     function _commonDisableGadget()
     {
-        $gadget = $this->_Gadget;
+        $gadget = $this->name;
         $pull = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
         if (stristr($pull, $gadget)) {
             $pull = str_replace(',' . $gadget, '', $pull);
@@ -1024,7 +1024,7 @@ class Jaws_Gadget
      */
     function UpdateGadget()
     {
-        $gadget = $this->_Gadget;
+        $gadget = $this->name;
         $currentVersion = $this->GetRegistry('version', $gadget);
         $newVersion     = $this->_Version;
         if (version_compare($currentVersion, $newVersion, ">=")) {
@@ -1093,7 +1093,7 @@ class Jaws_Gadget
      */
     function EnableGadget()
     {
-        $gadget = $this->_Gadget;
+        $gadget = $this->name;
         if (strtolower($gadget) === 'core') {
             return new Jaws_Error(_t('GLOBAL_GADGETS_GADGET_CANT_HAVE_NAME_CORE', $gadget),
                                      __FUNCTION__);
@@ -1229,7 +1229,7 @@ class Jaws_Gadget
      */
     function CanRunInCoreVersion()
     {
-        if (self::IsGadgetInstalled($this->_Gadget)) {
+        if (self::IsGadgetInstalled($this->name)) {
             $coreVersion     = $GLOBALS['app']->Registry->Get('version');
             $requiredVersion = $this->GetRequiredJawsVersion();
 
@@ -1256,7 +1256,7 @@ class Jaws_Gadget
      */
     function GetPermission($task, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->_Gadget : $gadget, $task);
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $task);
     }
 
     /**
@@ -1270,7 +1270,7 @@ class Jaws_Gadget
      */
     function CheckPermission($task, $together = true, $gadget = false, $errorMessage = '')
     {
-        return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->_Gadget : $gadget,
+        return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->name : $gadget,
                                                          $task,
                                                          $together,
                                                          $errorMessage);
@@ -1286,7 +1286,7 @@ class Jaws_Gadget
     function GetIconURL($name = null)
     {
         if (empty($name)) {
-            $name = $this->_Gadget;
+            $name = $this->name;
         }
         $image = Jaws::CheckImage('gadgets/'.$name.'/images/logo.png');
         return $image;

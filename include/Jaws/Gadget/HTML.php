@@ -61,7 +61,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function Ajax()
     {
-        $name = $this->_Gadget;
+        $name = $this->name;
         require_once JAWS_PATH . 'include/Jaws/Gadget/Ajax.php';
 
         if (JAWS_SCRIPT == 'admin') {
@@ -117,7 +117,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     function AjaxMe($file = '', $version = '')
     {
         $this->_usingAjax = true;
-        $name = $this->_Gadget;
+        $name = $this->name;
          $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
@@ -232,7 +232,7 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function GetURLFor($action='', $params = null, $useExt = true, $URIPrefix = false)
     {
-        return $GLOBALS['app']->Map->GetURLFor($this->_Gadget, $action, $params, $useExt, $URIPrefix);
+        return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $useExt, $URIPrefix);
     }
 
 }

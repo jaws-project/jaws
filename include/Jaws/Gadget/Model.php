@@ -52,8 +52,8 @@ class Jaws_Gadget_Model extends Jaws_Gadget
      */
     function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
     {
-        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
-        $main_file = JAWS_PATH . 'gadgets/'. $this->_Gadget . '/schema/' . $main_schema;
+        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
+        $main_file = JAWS_PATH . 'gadgets/'. $this->name . '/schema/' . $main_schema;
         if (!file_exists($main_file)) {
             return new Jaws_Error (_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
                                    $info->GetAttribute('Name'),
@@ -63,7 +63,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget
 
         $base_file = false;
         if (!empty($base_schema)) {
-            $base_file = JAWS_PATH . 'gadgets/'. $this->_Gadget . '/schema/' . $base_schema;
+            $base_file = JAWS_PATH . 'gadgets/'. $this->name . '/schema/' . $base_schema;
             if (!file_exists($base_file)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
                                       $info->GetAttribute('Name'),
@@ -146,7 +146,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget
     function InstallACLs()
     {
         $acls = array();
-        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
         foreach ($info->GetACLs() as $acl => $default) {
             if (false === stripos(serialize($acls), "\"{$acl}\"")) {
                 $acls[] = array($acl, $default);
@@ -163,7 +163,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget
      */
     function UninstallACLs()
     {
-        $info = $GLOBALS['app']->LoadGadget($this->_Gadget, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
         foreach($info->GetACLs() as $acl => $opts){
             $GLOBALS['app']->ACL->DeleteKey($acl);
         }
@@ -254,7 +254,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget
      */
     function GetPermission($task, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->_Gadget : $gadget, $task);
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $task);
     }
 
 }
