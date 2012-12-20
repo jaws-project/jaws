@@ -33,7 +33,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
         $uniqueKey = md5($uniqueKey);
 
         // Registry keys
-        $this->AddRegistry(array(
+        $this->gadget->AddRegistry(array(
             'pluggable' => 'false',
             'admin_script' => '',
             'http_auth' => 'false',
@@ -288,7 +288,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 $settingValue = $settingValue;
             }
 
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -329,7 +329,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             if (is_string($settingValue) && !empty($settingValue)) {
                 $settingValue = $settingValue;
             }
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -364,7 +364,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
             if (is_string($settingValue) && !empty($settingValue)) {
                 $settingValue = $settingValue;
             }
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -408,7 +408,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -449,7 +449,7 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
@@ -489,9 +489,10 @@ class SettingsAdminModel extends Jaws_Gadget_Model
                 continue;
             }
 
-            $this->SetRegistry($settingKey, $settingValue);
+            $this->gadget->SetRegistry($settingKey, $settingValue);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
+
 }
