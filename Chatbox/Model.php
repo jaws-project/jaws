@@ -69,7 +69,7 @@ class ChatboxModel extends Jaws_Gadget_Model
         }
 
         $res = $cModel->NewComment(
-            $this->_Gadget, 0, $name, $email,
+            $this->name, 0, $name, $email,
             $url, '', $message, $ip, $permalink, 0, $status
         );
         if (Jaws_Error::isError($res)) {
@@ -98,7 +98,7 @@ class ChatboxModel extends Jaws_Gadget_Model
     function GetEntries($limit = 10)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $entries = $cModel->GetRecentComments($this->_Gadget, $limit, true, false, false, true);
+        $entries = $cModel->GetRecentComments($this->name, $limit, true, false, false, true);
         return $entries;
     }
 

@@ -32,7 +32,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->_Gadget);
+        return $cHtml->Get($this->name);
     }
 
     /**
@@ -49,7 +49,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->_Gadget,
+            $this->name,
             BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}',
             $filter,
             $search,
@@ -185,7 +185,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
         $id = $request->get('id', 'get');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->_Gadget, $id);
+        $comment = $cModel->GetComment($this->name, $id);
         if (Jaws_Error::IsError($comment)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox&action=ManageComments');
         }

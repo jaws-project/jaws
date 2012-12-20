@@ -244,7 +244,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
                 $filterMode = null;
                 break;
         }
-        return $cModel->HowManyFilteredComments($this->_Gadget, $filterMode, $search, $status, false);
+        return $cModel->HowManyFilteredComments($this->name, $filterMode, $search, $status, false);
     }
 
     /**

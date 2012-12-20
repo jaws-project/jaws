@@ -945,7 +945,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->_Gadget);
+        return $cHtml->Get($this->name);
     }
 
     /**
@@ -962,7 +962,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->_Gadget,
+            $this->name,
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
             $filter,
             $search,

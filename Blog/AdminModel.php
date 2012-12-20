@@ -810,7 +810,7 @@ class BlogAdminModel extends BlogModel
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $res = $cModel->UpdateComment(
-            $this->_Gadget, $params['id'], $params['name'],
+            $this->name, $params['id'], $params['name'],
             $params['email'], $params['url'], $params['title'],
             $params['comments'], $params['permalink'], $params['status']
         );
@@ -839,7 +839,7 @@ class BlogAdminModel extends BlogModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $res = $cModel->DeleteComment($this->_Gadget, $id);
+        $res = $cModel->DeleteComment($this->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
@@ -849,7 +849,7 @@ class BlogAdminModel extends BlogModel
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->_Gadget,
+                $this->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'
@@ -878,7 +878,7 @@ class BlogAdminModel extends BlogModel
     function DeleteCommentsIn($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        return $cModel->DeleteCommentsByReference($this->_Gadget, $id);
+        return $cModel->DeleteCommentsByReference($this->name, $id);
     }
 
     /**
@@ -896,13 +896,13 @@ class BlogAdminModel extends BlogModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $cModel->MarkAs($this->_Gadget, $ids, $status);
+        $cModel->MarkAs($this->name, $ids, $status);
         foreach ($ids as $id) {
-            $comment = $cModel->GetComment($this->_Gadget, $id);
+            $comment = $cModel->GetComment($this->name, $id);
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->_Gadget,
+                $this->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'

@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->_Gadget);
+        return $cHtml->Get($this->name);
     }
 
     /**
@@ -38,7 +38,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->_Gadget,
+            $this->name,
             BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}',
             $filter,
             $search,

@@ -93,7 +93,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $cModel->MarkAs($this->_Gadget, $ids, $status);
+        $cModel->MarkAs($this->name, $ids, $status);
         $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
     }
@@ -108,13 +108,13 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function DeleteComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $comment = $cModel->GetComment($this->_Gadget, $id);
+        $comment = $cModel->GetComment($this->name, $id);
         if (Jaws_Error::IsError($comment)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
         }
 
-        $res = $cModel->DeleteComment($this->_Gadget, $id);
+        $res = $cModel->DeleteComment($this->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
@@ -162,7 +162,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function UpdateComment($id, $name, $url, $email, $comments)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $prev = $cModel->GetComment($this->_Gadget, $id);
+        $prev = $cModel->GetComment($this->name, $id);
         if (Jaws_Error::IsError($prev)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), _t('CHATBOX_NAME'));
@@ -180,7 +180,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         $params['status']    = $prev['status'];
 
         $res = $cModel->UpdateComment(
-            $this->_Gadget,
+            $this->name,
             $params['id'],
             $params['name'],
             $params['email'],

@@ -1060,7 +1060,7 @@ class PhooModel extends Jaws_Gadget_Model
     function GetComments($id, $parent)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->_Gadget, $id, $parent, true, false, false, true);
+        $comments = $cModel->GetComments($this->name, $id, $parent, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1096,7 +1096,7 @@ class PhooModel extends Jaws_Gadget_Model
     function GetRecentComments()
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->_Gadget, 10);
+        $comments = $cModel->GetRecentComments($this->name, 10);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_RECENTCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1146,7 +1146,7 @@ class PhooModel extends Jaws_Gadget_Model
             break;
         }
 
-        $comments = $cModel->GetFilteredComments($this->_Gadget, $filterMode, $filter);
+        $comments = $cModel->GetFilteredComments($this->name, $filterMode, $filter);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_FILETEREDCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1172,7 +1172,7 @@ class PhooModel extends Jaws_Gadget_Model
     function GetComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->_Gadget, $id);
+        $comment = $cModel->GetComment($this->name, $id);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'), _t('PHOO_NAME'));
         }
@@ -1262,7 +1262,7 @@ class PhooModel extends Jaws_Gadget_Model
         }
 
         $res = $cModel->NewComment(
-            $this->_Gadget, $parent_entry,
+            $this->name, $parent_entry,
             $name, $email, $url, $title, $comments,
             $ip, $permalink, $parent, $status
         );
@@ -1276,7 +1276,7 @@ class PhooModel extends Jaws_Gadget_Model
             $params = array();
             $params['id'] = $id;
             $howmany = $cModel->HowManyFilteredComments(
-                $this->_Gadget,
+                $this->name,
                 'gadget_reference',
                 $id,
                 'approved'

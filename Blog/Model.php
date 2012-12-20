@@ -284,9 +284,9 @@ class BlogModel extends Jaws_Gadget_Model
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
             // total comments
-            $summary['CommentsQty'] = $cModel->TotalOfComments($this->_Gadget);
+            $summary['CommentsQty'] = $cModel->TotalOfComments($this->name);
             // recent comments
-            $comments = $cModel->GetRecentComments($this->_Gadget, 10);
+            $comments = $cModel->GetRecentComments($this->name, 10);
             if (Jaws_Error::IsError($comments)) {
                 return $comments;
             }
@@ -587,7 +587,7 @@ class BlogModel extends Jaws_Gadget_Model
     function GetComments($id, $parent)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->_Gadget, $id, $parent, true, false, false, true);
+        $comments = $cModel->GetComments($this->name, $id, $parent, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -629,7 +629,7 @@ class BlogModel extends Jaws_Gadget_Model
         $recentcommentsLimit = $this->GetRegistry('last_recentcomments_limit');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->_Gadget, $recentcommentsLimit);
+        $comments = $cModel->GetRecentComments($this->name, $recentcommentsLimit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -696,7 +696,7 @@ class BlogModel extends Jaws_Gadget_Model
             break;
         }
 
-        $comments = $cModel->GetFilteredComments($this->_Gadget, $filterMode, $filter, $status, $limit);
+        $comments = $cModel->GetFilteredComments($this->name, $filterMode, $filter, $status, $limit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_FILTERED_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -722,7 +722,7 @@ class BlogModel extends Jaws_Gadget_Model
     function GetComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->_Gadget, $id);
+        $comment = $cModel->GetComment($this->name, $id);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));
         }
@@ -844,7 +844,7 @@ class BlogModel extends Jaws_Gadget_Model
 
         $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
         $res = $cModel->NewComment(
-            $this->_Gadget, $parentId,
+            $this->name, $parentId,
             $name, $email, $url, $title, $comments,
             $ip, $permalink, $parent, $status
         );
@@ -858,7 +858,7 @@ class BlogModel extends Jaws_Gadget_Model
             $params = array();
             $params['id'] = $id;
             $howmany = $cModel->HowManyFilteredComments(
-                $this->_Gadget,
+                $this->name,
                 'gadget_reference',
                 $id,
                 'approved'
@@ -2374,7 +2374,7 @@ class BlogModel extends Jaws_Gadget_Model
         $status = $this->GetRegistry('comment_status');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $res = $cModel->NewComment(
-            $this->_Gadget, $postID, $name, $email, $sourceURI,
+            $this->name, $postID, $name, $email, $sourceURI,
             $title, $content, $ip, $permalink, 0, $status
         );
     }
