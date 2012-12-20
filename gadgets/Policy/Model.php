@@ -42,7 +42,7 @@ class PolicyModel extends Jaws_Gadget_Model
             }
         }
 
-        return $this->GetRegistry('block_undefined_ip') == 'true';
+        return $this->gadget->GetRegistry('block_undefined_ip') == 'true';
     }
 
     /**
@@ -69,7 +69,7 @@ class PolicyModel extends Jaws_Gadget_Model
             return $blocked;
         }
 
-        return $this->GetRegistry('block_undefined_agent') == 'true';
+        return $this->gadget->GetRegistry('block_undefined_agent') == 'true';
     }
 
     /**
@@ -83,7 +83,7 @@ class PolicyModel extends Jaws_Gadget_Model
      */
     function LoadCaptcha(&$captcha, &$entry, &$label, &$description)
     {
-        $status = $this->GetRegistry('captcha');
+        $status = $this->gadget->GetRegistry('captcha');
         if (($status == 'DISABLED') ||
             ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
             return false;
@@ -94,7 +94,7 @@ class PolicyModel extends Jaws_Gadget_Model
             $objCaptcha = array();
         }
 
-        $dCaptcha = $this->GetRegistry('captcha_driver');
+        $dCaptcha = $this->gadget->GetRegistry('captcha_driver');
         if (!isset($objCaptcha[$dCaptcha])) {
             require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
             $objCaptcha[$dCaptcha] = new $dCaptcha();
@@ -117,7 +117,7 @@ class PolicyModel extends Jaws_Gadget_Model
      */
     function CheckCaptcha()
     {
-        $status = $this->GetRegistry('captcha');
+        $status = $this->gadget->GetRegistry('captcha');
         if (($status == 'DISABLED') ||
             ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
             return true;
@@ -128,7 +128,7 @@ class PolicyModel extends Jaws_Gadget_Model
             $objCaptcha = array();
         }
 
-        $dCaptcha = $this->GetRegistry('captcha_driver');
+        $dCaptcha = $this->gadget->GetRegistry('captcha_driver');
         if (!isset($objCaptcha[$dCaptcha])) {
             require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
             $objCaptcha[$dCaptcha] = new $dCaptcha();
@@ -157,7 +157,7 @@ class PolicyModel extends Jaws_Gadget_Model
      */
     function IsSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'));
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->gadget->GetRegistry('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;

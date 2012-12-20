@@ -21,13 +21,13 @@ class PolicyAdminModel extends PolicyModel
     */
     function InstallGadget()
     {
-        $result = $this->installSchema('schema.xml');
+        $result = $this->gadget->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         // Registry keys
-        $this->AddRegistry(array(
+        $this->gadget->AddRegistry(array(
             'block_undefined_ip' => 'false',
             'block_undefined_agent' => 'false',
             'allow_duplicate' => 'no',
@@ -68,9 +68,9 @@ class PolicyAdminModel extends PolicyModel
     {
         if (version_compare($old, '0.1.1', '<')) {
             // Registry keys
-            $obfuscator = $this->GetRegistry('obfuscator');
+            $obfuscator = $this->gadget->GetRegistry('obfuscator');
             if ($obfuscator == 'HideEmail') {
-                $this->SetRegistry('obfuscator', 'EmailEncoder');
+                $this->gadget->SetRegistry('obfuscator', 'EmailEncoder');
             }
 
             $tables = array('complexcaptcha',
@@ -83,38 +83,38 @@ class PolicyAdminModel extends PolicyModel
                 }
             }
 
-            $this->DelRegistry('complex_captcha');
-            $this->DelRegistry('math_captcha');
-            $this->DelRegistry('simple_captcha');
-            $this->DelRegistry('hkcaptcha');
+            $this->gadget->DelRegistry('complex_captcha');
+            $this->gadget->DelRegistry('math_captcha');
+            $this->gadget->DelRegistry('simple_captcha');
+            $this->gadget->DelRegistry('hkcaptcha');
         }
 
         if (version_compare($old, '0.1.2', '<')) {
-            $this->AddRegistry('typepad_key', '');
+            $this->gadget->AddRegistry('typepad_key', '');
         }
 
         if (version_compare($old, '0.1.3', '<')) {
-            $old_captch = $this->GetRegistry('captcha');
+            $old_captch = $this->gadget->GetRegistry('captcha');
             if ($old_captch !== 'DISABLED') {
-                $this->SetRegistry('captcha', 'ANONYMOUS');
-                $this->AddRegistry('captcha_driver', $old_captch);
+                $this->gadget->SetRegistry('captcha', 'ANONYMOUS');
+                $this->gadget->AddRegistry('captcha_driver', $old_captch);
             } else {
-                $this->AddRegistry('captcha_driver', 'MathCaptcha');
+                $this->gadget->AddRegistry('captcha_driver', 'MathCaptcha');
             }
 
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Policy/ManageEncryptionKey', 'false');
         }
 
         if (version_compare($old, '0.2.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.1.0.xml');
+            $result = $this->gadget->installSchema('schema.xml', '', '0.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
 
-            $this->AddRegistry('block_by_ip');
-            $this->AddRegistry('block_by_agent');
-            $this->AddRegistry('block_undefined_ip',    'false');
-            $this->AddRegistry('block_undefined_agent', 'false');
+            $this->gadget->AddRegistry('block_by_ip');
+            $this->gadget->AddRegistry('block_by_agent');
+            $this->gadget->AddRegistry('block_undefined_ip',    'false');
+            $this->gadget->AddRegistry('block_undefined_agent', 'false');
         }
 
         return true;
@@ -462,7 +462,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function IPBlockingBlockUndefined($blocked)
     {
-        $res = $this->SetRegistry('block_undefined_ip',
+        $res = $this->gadget->SetRegistry('block_undefined_ip',
                                               $blocked? 'true' : 'false');
         return $res;
     }
@@ -476,8 +476,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function AgentBlockingBlockUndefined($blocked)
     {
-        $res = $this->SetRegistry('block_undefined_agent',
-                                              $blocked? 'true' : 'false');
+        $res = $this->gadget->SetRegistry('block_undefined_agent', $blocked? 'true' : 'false');
         return $res;
     }
 
@@ -492,12 +491,12 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
-        $this->SetRegistry('crypt_enabled', ($enabled? 'true' : 'false'));
+        $this->gadget->SetRegistry('crypt_enabled', ($enabled? 'true' : 'false'));
         if ($GLOBALS['app']->Session->GetPermission('Policy', 'ManageEncryptionKey')) {
-            $this->SetRegistry('crypt_key_age', (int)$key_age);
-            if ($this->GetRegistry('crypt_key_len') != $key_len) {
-                $this->SetRegistry('crypt_key_len', (int)$key_len);
-                $this->SetRegistry('crypt_key_start_date', 0);
+            $this->gadget->SetRegistry('crypt_key_age', (int)$key_age);
+            if ($this->gadget->GetRegistry('crypt_key_len') != $key_len) {
+                $this->gadget->SetRegistry('crypt_key_len', (int)$key_len);
+                $this->gadget->SetRegistry('crypt_key_start_date', 0);
             }
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ENCRYPTION_UPDATED'), RESPONSE_NOTICE);
@@ -517,11 +516,11 @@ class PolicyAdminModel extends PolicyModel
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
-        $this->SetRegistry('allow_duplicate', $allow_duplicate);
-        $this->SetRegistry('filter',          $filter);
-        $this->SetRegistry('captcha',         $captcha);
-        $this->SetRegistry('captcha_driver',  $captcha_driver);
-        $this->SetRegistry('obfuscator',      $obfuscator);
+        $this->gadget->SetRegistry('allow_duplicate', $allow_duplicate);
+        $this->gadget->SetRegistry('filter',          $filter);
+        $this->gadget->SetRegistry('captcha',         $captcha);
+        $this->gadget->SetRegistry('captcha_driver',  $captcha_driver);
+        $this->gadget->SetRegistry('obfuscator',      $obfuscator);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -544,14 +543,14 @@ class PolicyAdminModel extends PolicyModel
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
                                     $session_idle_timeout, $session_remember_timeout)
     {
-        $this->SetRegistry('passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
-        $this->SetRegistry('passwd_bad_count',      (int)$passwd_bad_count);
-        $this->SetRegistry('passwd_lockedout_time', (int)$passwd_lockedout_time);
-        $this->SetRegistry('passwd_max_age',        (int)$passwd_max_age);
-        $this->SetRegistry('passwd_min_length',     (int)$passwd_min_length);
-        $this->SetRegistry('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
-        $this->SetRegistry('session_idle_timeout',     (int)$session_idle_timeout);
-        $this->SetRegistry('session_remember_timeout', (int)$session_remember_timeout);
+        $this->gadget->SetRegistry('passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
+        $this->gadget->SetRegistry('passwd_bad_count',      (int)$passwd_bad_count);
+        $this->gadget->SetRegistry('passwd_lockedout_time', (int)$passwd_lockedout_time);
+        $this->gadget->SetRegistry('passwd_max_age',        (int)$passwd_max_age);
+        $this->gadget->SetRegistry('passwd_min_length',     (int)$passwd_min_length);
+        $this->gadget->SetRegistry('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
+        $this->gadget->SetRegistry('session_idle_timeout',     (int)$session_idle_timeout);
+        $this->gadget->SetRegistry('session_remember_timeout', (int)$session_remember_timeout);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -630,7 +629,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function SubmitSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'));
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->gadget->GetRegistry('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
@@ -658,7 +657,7 @@ class PolicyAdminModel extends PolicyModel
      */
     function SubmitHam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->GetRegistry('filter'));
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->gadget->GetRegistry('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
