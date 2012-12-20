@@ -16,6 +16,9 @@ $actions['Admin'] = array(
 $actions['Aliases'] = array(
     'normal' => true,
 );
+$actions['ErrorMaps'] = array(
+    'normal' => true,
+);
 $actions['Properties'] = array(
     'normal' => true,
 );

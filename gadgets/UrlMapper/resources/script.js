@@ -58,7 +58,43 @@ var UrlMapperCallback = {
             rebuildAliasCombo();
         }
         showResponse(response);
-    }    
+    },
+
+    /**
+     * Add a new error map
+     */
+    adderrormap: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            stopErrorMapAction();
+            $('errormaps_datagrid').addItem();
+            $('errormaps_datagrid').lastPage();
+            getDG('errormaps_datagrid');
+        }
+        showResponse(response);
+    },
+
+    /**
+     * delete an  error map
+     */
+    deleteerrormap: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            stopErrorMapAction();
+            $('errormaps_datagrid').deleteItem();
+            getDG('errormaps_datagrid');
+        }
+        showResponse(response);
+    },
+
+    /**
+     * update an  error map
+     */
+    updateerrormap: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            stopErrorMapAction();
+            getDG('errormaps_datagrid');
+        }
+        showResponse(response);
+    }
 }
 
 /**
@@ -150,6 +186,24 @@ function saveMap()
                             $('custom_map_route').value,
                             $('custom_map_ext').value,
                             $('map_order').value);
+}
+
+/**
+ * Prepares the UI to edit an error map
+ */
+function editErrorMap(element, emid)
+{
+    selectedErrorMap = emid;
+    $('legend_title').innerHTML = editErrorMap_title;
+    selectDataGridRow(element.parentNode.parentNode);
+
+    var errorMapInfo = UrlMapperAjax.callSync('geterrormap', selectedErrorMap);
+    $('url').value = errorMapInfo['url'];
+    $('code').value = errorMapInfo['code'];
+    $('new_url').value = errorMapInfo['new_url'];
+    $('new_code').value = errorMapInfo['new_code'];
+
+    $('btn_cancel').style.visibility = 'visible';
 }
 
 /**
@@ -248,6 +302,60 @@ function enableMapEditingArea(status)
 }
 
 /**
+ * Get error maps list
+ */
+function getErrorMaps(name, offset, reset)
+{
+    var result = UrlMapperAjax.callSync('geterrormaps', 10, offset);
+    if (reset) {
+        $(name).setCurrentPage(0);
+        var total = UrlMapperAjax.callSync('geterrormapscount', 10, offset);
+    }
+    resetGrid(name, result, total);
+}
+
+/**
+ * Delete error map
+ */
+function deleteErrorMap(element, emid)
+{
+    stopErrorMapAction();
+    selectDataGridRow(element.parentNode.parentNode);
+    var answer = confirm(confirmErrorMapDelete);
+    if (answer) {
+        UrlMapperAjax.callAsync('deleteerrormap', emid);
+    }
+    unselectDataGridRow();
+}
+
+/**
+ * Add/Edit an error map
+ */
+function saveErrorMap() {
+
+    if ($('url').value.blank()) {
+        alert(incompleteFieldsMsg);
+        return false;
+    }
+
+    if (selectedErrorMap != null && selectedErrorMap > 0) {
+        UrlMapperAjax.callAsync('updateerrormap',
+            selectedErrorMap,
+            $('url').value,
+            $('code').value,
+            $('new_url').value,
+            $('new_code').value);
+
+    } else {
+        UrlMapperAjax.callAsync('adderrormap',
+            $('url').value,
+            $('code').value,
+            $('new_url').value,
+            $('new_code').value);
+    }
+}
+
+/**
  * Stops doing a certain action
  */
 function stopAction()
@@ -257,6 +365,22 @@ function stopAction()
     $('custom_url').value = '';
     $('delete_button').style.visibility = 'hidden';
     $('alias-combo').selectedIndex = -1;
+}
+
+/**
+ * Stops doing error map action
+ */
+function stopErrorMapAction()
+{
+    $('legend_title').innerHTML = addErrorMap_title;
+    $('btn_cancel').style.visibility = 'hidden';
+    unselectDataGridRow();
+    selectedErrorMap = null;
+
+    $('url').value = '';
+    $('code').selectedIndex = -1;
+    $('new_url').value = '';
+    $('new_code').selectedIndex = -1;
 }
 
 /**
@@ -293,6 +417,9 @@ var oddColor  = '#edf3fe';
 
 //Current map
 var selectedMap = null;
+
+//Current error map
+var selectedErrorMap = null;
 
 var cacheMapTemplate = null;
 var cacheEditorMapTemplate = null;

@@ -17,7 +17,7 @@ class UrlMapperInfo extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.4.0';
+    var $_Version = '0.4.1';
 
     /**
      * Is this gadget core gadget?
@@ -41,6 +41,7 @@ class UrlMapperInfo extends Jaws_Gadget
      */
     var $_ACLs = array(
         'EditMaps',
+        'ManageErrorMaps',
     );
 
 }

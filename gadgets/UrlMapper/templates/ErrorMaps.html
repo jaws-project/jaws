@@ -1,0 +1,35 @@
+<!-- BEGIN ErrorMaps -->
+{menubar}
+<div id="main">
+<table style="width: 100%; border: 0px solid #ccc; padding: 0px; border-spacing: 0.1px;">
+  <!-- big work area -->
+  <tr>
+    <td style="width: 600px;" valign="top">
+      <label>{lbl_maps}:</label>
+      <br />
+      {datagrid}
+    </td>
+    <td style="width: 230px;" valign="top">
+      <fieldset id="map_area">
+      <legend><span id="legend_title">{legend_title}</span></legend>
+        <label for="url">{lbl_url}:</label><br/>{url}<br />
+        <label for="code">{lbl_code}:</label><br/>{code}<br />
+        <label for="new_url">{lbl_new_url}:</label><br/>{new_url}<br />
+        <label for="new_code">{lbl_new_code}:</label><br/>{new_code}<br />
+        <div id="buttons">{btn_cancel}{btn_save}</div>
+      </fieldset>
+    </td>
+  </tr>
+</table>
+</div>
+<script type="text/javascript">
+  var addErrorMap_title     = "{addErrorMap_title}";
+  var editErrorMap_title    = "{editErrorMap_title}";
+  var confirmErrorMapDelete = "{confirmErrorMapDelete}";
+  var incompleteFieldsMsg   = "{incompleteFieldsMsg}";
+  JawsDataGrid.name = 'errormaps_datagrid';
+  $('legend_title').innerHTML   = addErrorMap_title;
+  $('errormaps_datagrid').objectName = UrlMapperAjax;
+  initDataGrid('errormaps_datagrid', UrlMapperAjax, getErrorMaps);
+</script>
+<!-- END ErrorMaps -->

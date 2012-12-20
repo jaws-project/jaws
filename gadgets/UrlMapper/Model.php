@@ -124,6 +124,32 @@ class UrlMapperModel extends Jaws_Gadget_Model
     }
 
     /**
+     * Checks if hash already exists or not
+     *
+     * @access   public
+     * @param    string  $url_hash   URL HASH value
+     * @return   bool   Exists/Doesn't exists
+     */
+    function ErrorMapExists($url_hash)
+    {
+        $params         = array();
+        $params['url_hash'] = $url_hash;
+
+        $sql = '
+            SELECT
+                COUNT([id])
+            FROM [[url_error_maps]]
+            WHERE [url_hash] = {url_hash}';
+
+        $result = $GLOBALS['db']->queryOne($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return ($result == '0') ? false : true;
+    }
+
+    /**
      * Returns maps stored in DB
      *
      * @access  public
