@@ -147,6 +147,7 @@ class Jaws
         require_once JAWS_PATH . 'include/Jaws/Gadget.php';
         require_once JAWS_PATH . 'include/Jaws/Gadget/Model.php';
         require_once JAWS_PATH . 'include/Jaws/Gadget/HTML.php';
+        require_once JAWS_PATH . 'include/Jaws/Gadget/Installer.php';
 
         $this->loadClass('UTF8', 'Jaws_UTF8');
     }
@@ -597,7 +598,7 @@ class Jaws
             }
 
             // temporary
-            if (in_array($type, array('Model', 'AdminModel'))) {
+            if (in_array($type, array('Model', 'AdminModel', 'Installer'))) {
                 if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
                     $info_class_name = $gadget . 'Info';
                     $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
@@ -656,7 +657,7 @@ class Jaws
                 }
 
                 // temporary
-                if (in_array($type, array('Model', 'AdminModel'))) {
+                if (in_array($type, array('Model', 'AdminModel', 'Installer'))) {
                     $objFile = new $file_class_name($this->_Gadgets[$gadget]['Info']['base']);
                 } else {
                     $objFile = new $file_class_name($gadget);
