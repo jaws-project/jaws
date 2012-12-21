@@ -13,60 +13,6 @@ require_once JAWS_PATH . 'gadgets/Search/Model.php';
 class SearchAdminModel extends SearchModel
 {
     /**
-     * Installs the gadget
-     *
-     * @access  public
-     * @return  mixed   True on successful installation, Jaws_Error otherwise
-     */
-    function InstallGadget()
-    {
-        // Registry keys
-        $this->gadget->AddRegistry('searchable_gadgets', '*');
-        $this->gadget->AddRegistry('min_key_len', '3');
-        $this->gadget->AddRegistry('max_result_len', '500');
-        $this->gadget->AddRegistry('results_limit', '10');
-
-        return true;
-    }
-
-    /**
-     * Uninstalls the gadget
-     *
-     * @access  public
-     * @return  mixed   True on success, Jaws_Error otherwise
-     */
-    function UninstallGadget()
-    {
-        // registry key
-        $this->gadget->DelRegistry('searchable_gadgets');
-        $this->gadget->DelRegistry('min_key_len');
-        $this->gadget->DelRegistry('max_result_len');
-        $this->gadget->DelRegistry('results_limit');
-
-        return true;
-    }
-
-    /**
-     * Updates the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  mixed   True on success, Jaws_Error otherwise
-     */
-    function UpdateGadget($old, $new)
-    {
-        if (version_compare($old, '0.7.0', '<')) {
-            // Registry keys.
-            $this->gadget->AddRegistry('min_key_len', '3');
-            $this->gadget->AddRegistry('max_result_len', '500');
-        }
-        $this->gadget->AddRegistry('results_limit', '10');
-
-        return true;
-    }
-
-    /**
      * Sets searchable gadgets
      *
      * @access  public
