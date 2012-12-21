@@ -23,10 +23,10 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        // Install listener for Add/Update/Removing gadget's maps
-        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
+        // Install listener for Add/Upgrade/Removing gadget's maps
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_InstallGadget', 'AddGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_UpgradeGadget', 'UpdateGadgetMaps');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'Begin_UninstallGadget', 'RemoveGadgetMaps');
 
         // Registry keys
         $this->gadget->AddRegistry(array(
@@ -44,7 +44,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
     }
 
     /**
-     * Updates the gadget
+     * Upgrades the gadget
      *
      * @access  public
      * @param   string  $old    Current version (in registry)
@@ -72,9 +72,9 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
 
             // Install listener for Add/Update/Removing gadget's maps
-            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterEnablingGadget',      'AddGadgetMaps');
-            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onAfterUpdatingGadget',      'UpdateGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_InstallGadget', 'AddGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_UpgradeGadget', 'UpdateGadgetMaps');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'Begin_UninstallGadget', 'RemoveGadgetMaps');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
