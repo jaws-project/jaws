@@ -21,13 +21,13 @@ class PreferencesAdminModel extends PreferencesModel
      */
     function InstallGadget()
     {
-        $this->AddRegistry('display_theme',             'true');
-        $this->AddRegistry('display_editor',            'true');
-        $this->AddRegistry('display_language',          'true');
-        $this->AddRegistry('display_calendar_type',     'true');
-        $this->AddRegistry('display_calendar_language', 'true');
-        $this->AddRegistry('display_date_format',       'true');
-        $this->AddRegistry('display_timezone',          'true');
+        $this->gadget->AddRegistry('display_theme',             'true');
+        $this->gadget->AddRegistry('display_editor',            'true');
+        $this->gadget->AddRegistry('display_language',          'true');
+        $this->gadget->AddRegistry('display_calendar_type',     'true');
+        $this->gadget->AddRegistry('display_calendar_language', 'true');
+        $this->gadget->AddRegistry('display_date_format',       'true');
+        $this->gadget->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
         $this->SetRegistry('cookie_precedence', 'true', 'Settings');
@@ -44,13 +44,13 @@ class PreferencesAdminModel extends PreferencesModel
     function UninstallGadget()
     {
         // registry keys
-        $this->DelRegistry('display_theme');
-        $this->DelRegistry('display_editor');
-        $this->DelRegistry('display_language');
-        $this->DelRegistry('display_calendar_type');
-        $this->DelRegistry('display_calendar_language');
-        $this->DelRegistry('display_date_format');
-        $this->DelRegistry('display_timezone');
+        $this->gadget->DelRegistry('display_theme');
+        $this->gadget->DelRegistry('display_editor');
+        $this->gadget->DelRegistry('display_language');
+        $this->gadget->DelRegistry('display_calendar_type');
+        $this->gadget->DelRegistry('display_calendar_language');
+        $this->gadget->DelRegistry('display_date_format');
+        $this->gadget->DelRegistry('display_timezone');
 
         //disable cookie precedence
         $this->SetRegistry('cookie_precedence', 'false', 'Settings');
@@ -73,11 +73,11 @@ class PreferencesAdminModel extends PreferencesModel
         $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Preferences/ChangeSettings');
 
         // Registry keys.
-        $this->AddRegistry('display_editor',            'true');
-        $this->AddRegistry('display_calendar_type',     'true');
-        $this->AddRegistry('display_calendar_language', 'true');
-        $this->AddRegistry('display_date_format',       'true');
-        $this->AddRegistry('display_timezone',          'true');
+        $this->gadget->AddRegistry('display_editor',            'true');
+        $this->gadget->AddRegistry('display_calendar_type',     'true');
+        $this->gadget->AddRegistry('display_calendar_language', 'true');
+        $this->gadget->AddRegistry('display_date_format',       'true');
+        $this->gadget->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
         $this->SetRegistry('cookie_precedence', 'true', 'Settings');
