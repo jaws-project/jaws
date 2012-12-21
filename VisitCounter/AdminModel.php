@@ -28,13 +28,13 @@ class VisitCounterAdminModel extends VisitCounterModel
         }
 
         // Registry keys
-        $this->AddRegistry('visit_counters',  'online,today,total');
-        $this->AddRegistry('timeout', '600');
-        $this->AddRegistry('type', 'impressions');
-        $this->AddRegistry('period', '0');
-        $this->AddRegistry('start', date('Y-m-d H:i:s'));
-        $this->AddRegistry('mode', 'text');
-        $this->AddRegistry('custom_text', 
+        $this->gadget->AddRegistry('visit_counters',  'online,today,total');
+        $this->gadget->AddRegistry('timeout', '600');
+        $this->gadget->AddRegistry('type', 'impressions');
+        $this->gadget->AddRegistry('period', '0');
+        $this->gadget->AddRegistry('start', date('Y-m-d H:i:s'));
+        $this->gadget->AddRegistry('mode', 'text');
+        $this->gadget->AddRegistry('custom_text', 
                                           '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
 
         return true;
@@ -57,13 +57,13 @@ class VisitCounterAdminModel extends VisitCounterModel
         }
 
         // Registry keys
-        $this->DelRegistry('visit_counters');
-        $this->DelRegistry('timeout');
-        $this->DelRegistry('type');
-        $this->DelRegistry('period');
-        $this->DelRegistry('start');
-        $this->DelRegistry('mode');
-        $this->DelRegistry('custom_text');
+        $this->gadget->DelRegistry('visit_counters');
+        $this->gadget->DelRegistry('timeout');
+        $this->gadget->DelRegistry('type');
+        $this->gadget->DelRegistry('period');
+        $this->gadget->DelRegistry('start');
+        $this->gadget->DelRegistry('mode');
+        $this->gadget->DelRegistry('custom_text');
 
         return true;
     }
@@ -85,18 +85,18 @@ class VisitCounterAdminModel extends VisitCounterModel
 
         if (version_compare($old, '0.8.0', '<')) {
             // Registry keys.
-            $this->AddRegistry('visit_counters',  'online,today,total');
-            $this->AddRegistry('custom_text', 
-                                              $this->GetRegistry('custom'));
-            $this->DelRegistry('online');
-            $this->DelRegistry('today');
-            $this->DelRegistry('total');
-            $this->DelRegistry('custom');
+            $this->gadget->AddRegistry('visit_counters',  'online,today,total');
+            $this->gadget->AddRegistry('custom_text', 
+                                              $this->gadget->GetRegistry('custom'));
+            $this->gadget->DelRegistry('online');
+            $this->gadget->DelRegistry('today');
+            $this->gadget->DelRegistry('total');
+            $this->gadget->DelRegistry('custom');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             // fix using Y-m-d G:i:s instead of Y-m-d H:i:s in version 0.6.x
-            $startDate = $this->GetRegistry('start');
+            $startDate = $this->gadget->GetRegistry('start');
             if (strlen($startDate) == 18) {
                 $startDate = substr_replace($startDate, '0', 11, 0);
                 $this->SetRegistry('start', $startDate);
