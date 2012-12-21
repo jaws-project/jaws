@@ -161,7 +161,7 @@
  </table>
 
  <table>
-    <name><variable>table_prefix</variable>url_error_maps</name>
+    <name><variable>table_prefix</variable>url_errors</name>
     <declaration>
 
         <field>

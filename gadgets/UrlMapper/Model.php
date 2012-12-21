@@ -138,7 +138,7 @@ class UrlMapperModel extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 COUNT([id])
-            FROM [[url_error_maps]]
+            FROM [[url_errors]]
             WHERE [url_hash] = {url_hash}';
 
         $result = $GLOBALS['db']->queryOne($sql, $params);
