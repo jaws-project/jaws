@@ -223,11 +223,10 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
-            $return = $objGadget->EnableGadget();
+            $installer = $objGadget->load('Installer');
+            $return = $installer->InstallGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-            } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $objGadget->GetTitle()), RESPONSE_ERROR);
             } else {
                 $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
             }
@@ -249,13 +248,12 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
         $get = $request->get(array('location', 'comp'), 'get');
 
         $gadget = $get['comp'];
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
-            $return = $objGadget->UpdateGadget($gadget);
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $installer = $objGadget->load('Installer');
+            $return = $installer->UpgradeGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-            } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_FAILURE', $gadget), RESPONSE_ERROR);
             } else {
                 $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_OK', $gadget), RESPONSE_NOTICE);
             }
