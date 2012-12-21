@@ -45,23 +45,23 @@ class BlogAdminModel extends BlogModel
         }
 
         // Registry keys
-        $this->AddRegistry('columns',                   '1');
-        $this->AddRegistry('default_view',              'last_entries');
-        $this->AddRegistry('last_entries_limit',        '20');
-        $this->AddRegistry('popular_limit',             '10');
-        $this->AddRegistry('xml_limit',                 '10');
-        $this->AddRegistry('default_category',          '1');
-        $this->AddRegistry('allow_comments',            'true');
-        $this->AddRegistry('comment_status',            'approved');
-        $this->AddRegistry('last_comments_limit',       '20');
-        $this->AddRegistry('last_recentcomments_limit', '20');
-        $this->AddRegistry('generate_xml',              'true');
-        $this->AddRegistry('generate_category_xml',     'true');
-        $this->AddRegistry('trackback',                 'true');
-        $this->AddRegistry('trackback_status',          'approved');
-        $this->AddRegistry('plugabble',                 'true');
-        $this->AddRegistry('use_antispam',              'true');
-        $this->AddRegistry('pingback',                  'true');
+        $this->gadget->AddRegistry('columns',                   '1');
+        $this->gadget->AddRegistry('default_view',              'last_entries');
+        $this->gadget->AddRegistry('last_entries_limit',        '20');
+        $this->gadget->AddRegistry('popular_limit',             '10');
+        $this->gadget->AddRegistry('xml_limit',                 '10');
+        $this->gadget->AddRegistry('default_category',          '1');
+        $this->gadget->AddRegistry('allow_comments',            'true');
+        $this->gadget->AddRegistry('comment_status',            'approved');
+        $this->gadget->AddRegistry('last_comments_limit',       '20');
+        $this->gadget->AddRegistry('last_recentcomments_limit', '20');
+        $this->gadget->AddRegistry('generate_xml',              'true');
+        $this->gadget->AddRegistry('generate_category_xml',     'true');
+        $this->gadget->AddRegistry('trackback',                 'true');
+        $this->gadget->AddRegistry('trackback_status',          'approved');
+        $this->gadget->AddRegistry('plugabble',                 'true');
+        $this->gadget->AddRegistry('use_antispam',              'true');
+        $this->gadget->AddRegistry('pingback',                  'true');
 
         return true;
     }
@@ -89,23 +89,23 @@ class BlogAdminModel extends BlogModel
         }
 
         // Registry keys
-        $this->DelRegistry('columns');
-        $this->DelRegistry('default_view');
-        $this->DelRegistry('last_entries_limit');
-        $this->DelRegistry('popular_limit');
-        $this->DelRegistry('xml_limit');
-        $this->DelRegistry('default_category');
-        $this->DelRegistry('allow_comments');
-        $this->DelRegistry('comment_status');
-        $this->DelRegistry('last_comments_limit');
-        $this->DelRegistry('last_recentcomments_limit');
-        $this->DelRegistry('generate_xml');
-        $this->DelRegistry('generate_category_xml');
-        $this->DelRegistry('trackback');
-        $this->DelRegistry('trackback_status');
-        $this->DelRegistry('plugabble');
-        $this->DelRegistry('use_antispam');
-        $this->DelRegistry('pingback');
+        $this->gadget->DelRegistry('columns');
+        $this->gadget->DelRegistry('default_view');
+        $this->gadget->DelRegistry('last_entries_limit');
+        $this->gadget->DelRegistry('popular_limit');
+        $this->gadget->DelRegistry('xml_limit');
+        $this->gadget->DelRegistry('default_category');
+        $this->gadget->DelRegistry('allow_comments');
+        $this->gadget->DelRegistry('comment_status');
+        $this->gadget->DelRegistry('last_comments_limit');
+        $this->gadget->DelRegistry('last_recentcomments_limit');
+        $this->gadget->DelRegistry('generate_xml');
+        $this->gadget->DelRegistry('generate_category_xml');
+        $this->gadget->DelRegistry('trackback');
+        $this->gadget->DelRegistry('trackback_status');
+        $this->gadget->DelRegistry('plugabble');
+        $this->gadget->DelRegistry('use_antispam');
+        $this->gadget->DelRegistry('pingback');
 
         return true;
     }
@@ -217,7 +217,7 @@ class BlogAdminModel extends BlogModel
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), _t('BLOG_NAME'));
         }
 
-        if ($this->GetRegistry('generate_category_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_category_xml') == 'true') {
             $catAtom = $this->GetCategoryAtomStruct($cid);
             $this->MakeCategoryAtom($cid, $catAtom, true);
             $this->MakeCategoryRSS($cid, $catAtom, true);
@@ -291,7 +291,7 @@ class BlogAdminModel extends BlogModel
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
         }
-        if ($this->GetRegistry('generate_category_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_category_xml') == 'true') {
             $catAtom = $this->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
@@ -323,7 +323,7 @@ class BlogAdminModel extends BlogModel
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
         }
 
-        if ($this->GetRegistry('generate_category_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_category_xml') == 'true') {
             $catAtom = $this->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
@@ -346,18 +346,18 @@ class BlogAdminModel extends BlogModel
     function GetSettings()
     {
         $settings = array();
-        $settings['default_view']               = $this->GetRegistry('default_view');
-        $settings['last_entries_limit']         = $this->GetRegistry('last_entries_limit');
-        $settings['popular_limit']              = $this->GetRegistry('popular_limit');
-        $settings['default_category']           = $this->GetRegistry('default_category');
-        $settings['xml_limit']                  = $this->GetRegistry('xml_limit');
-        $settings['comments']                   = $this->GetRegistry('allow_comments');
-        $settings['trackback']                  = $this->GetRegistry('trackback');
-        $settings['trackback_status']           = $this->GetRegistry('trackback_status');
-        $settings['last_comments_limit']        = $this->GetRegistry('last_comments_limit');
-        $settings['last_recentcomments_limit']  = $this->GetRegistry('last_recentcomments_limit');
-        $settings['comment_status']             = $this->GetRegistry('comment_status');
-        $settings['pingback']                   = $this->GetRegistry('pingback');
+        $settings['default_view']               = $this->gadget->GetRegistry('default_view');
+        $settings['last_entries_limit']         = $this->gadget->GetRegistry('last_entries_limit');
+        $settings['popular_limit']              = $this->gadget->GetRegistry('popular_limit');
+        $settings['default_category']           = $this->gadget->GetRegistry('default_category');
+        $settings['xml_limit']                  = $this->gadget->GetRegistry('xml_limit');
+        $settings['comments']                   = $this->gadget->GetRegistry('allow_comments');
+        $settings['trackback']                  = $this->gadget->GetRegistry('trackback');
+        $settings['trackback_status']           = $this->gadget->GetRegistry('trackback_status');
+        $settings['last_comments_limit']        = $this->gadget->GetRegistry('last_comments_limit');
+        $settings['last_recentcomments_limit']  = $this->gadget->GetRegistry('last_recentcomments_limit');
+        $settings['comment_status']             = $this->gadget->GetRegistry('comment_status');
+        $settings['pingback']                   = $this->gadget->GetRegistry('pingback');
 
         return $settings;
     }
@@ -501,14 +501,14 @@ class BlogAdminModel extends BlogModel
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_ADDED'), RESPONSE_NOTICE);
         }
 
-        if ($this->GetRegistry('pingback') == 'true') {
+        if ($this->gadget->GetRegistry('pingback') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
             $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $max), false, 'site_url'),
                                    $params['content']);
         }
 
-        if ($this->GetRegistry('generate_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_xml') == 'true') {
             $this->MakeAtom(true);
             $this->MakeRSS(true);
         }
@@ -630,7 +630,7 @@ class BlogAdminModel extends BlogModel
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
         }
 
-        if ($this->GetRegistry('generate_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_xml') == 'true') {
             $this->MakeAtom(true);
             $this->MakeRSS (true);
         }
@@ -648,7 +648,7 @@ class BlogAdminModel extends BlogModel
             if (!in_array($category, $catAux)) {
                 $this->AddCategoryToEntry($params['id'], $category);
             } else {
-                if ($this->GetRegistry('generate_category_xml') == 'true') {
+                if ($this->gadget->GetRegistry('generate_category_xml') == 'true') {
                     $catAtom = $this->GetCategoryAtomStruct($category);
                     $this->MakeCategoryAtom($category, $catAtom, true);
                     $this->MakeCategoryRSS($category, $catAtom, true);
@@ -662,7 +662,7 @@ class BlogAdminModel extends BlogModel
             }
         }
 
-        if ($this->GetRegistry('pingback') == 'true') {
+        if ($this->gadget->GetRegistry('pingback') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
             $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $params['id']),
@@ -709,7 +709,7 @@ class BlogAdminModel extends BlogModel
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        if ($this->GetRegistry('generate_xml') == 'true') {
+        if ($this->gadget->GetRegistry('generate_xml') == 'true') {
             $this->MakeAtom(true);
             $this->MakeRSS (true);
         }
@@ -733,21 +733,21 @@ class BlogAdminModel extends BlogModel
     {
         $title = urlencode(stripslashes($title));
         $excerpt = urlencode(stripslashes($excerpt));
-        $blog_name = urlencode(stripslashes($this->GetRegistry('site_name', 'Settings')));
+        $blog_name = urlencode(stripslashes($this->gadget->GetRegistry('site_name', 'Settings')));
         $permalink = urlencode($permalink);
 
         require_once PEAR_PATH. 'HTTP/Request.php';
 
         $options = array();
-        $timeout = (int)$this->GetRegistry('connection_timeout', 'Settings');
+        $timeout = (int)$this->gadget->GetRegistry('connection_timeout', 'Settings');
         $options['timeout'] = $timeout;
-        if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
-            if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->GetRegistry('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->GetRegistry('proxy_pass', 'Settings');
+        if ($this->gadget->GetRegistry('proxy_enabled', 'Settings') == 'true') {
+            if ($this->gadget->GetRegistry('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->gadget->GetRegistry('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->gadget->GetRegistry('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $this->GetRegistry('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->GetRegistry('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->gadget->GetRegistry('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
         }
 
         $httpRequest = new HTTP_Request('', $options);
@@ -810,7 +810,7 @@ class BlogAdminModel extends BlogModel
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $res = $cModel->UpdateComment(
-            $this->name, $params['id'], $params['name'],
+            $this->gadget->name, $params['id'], $params['name'],
             $params['email'], $params['url'], $params['title'],
             $params['comments'], $params['permalink'], $params['status']
         );
@@ -839,7 +839,7 @@ class BlogAdminModel extends BlogModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $res = $cModel->DeleteComment($this->name, $id);
+        $res = $cModel->DeleteComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
@@ -849,7 +849,7 @@ class BlogAdminModel extends BlogModel
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->name,
+                $this->gadget->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'
@@ -878,7 +878,7 @@ class BlogAdminModel extends BlogModel
     function DeleteCommentsIn($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        return $cModel->DeleteCommentsByReference($this->name, $id);
+        return $cModel->DeleteCommentsByReference($this->gadget->name, $id);
     }
 
     /**
@@ -896,13 +896,13 @@ class BlogAdminModel extends BlogModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $cModel->MarkAs($this->name, $ids, $status);
+        $cModel->MarkAs($this->gadget->name, $ids, $status);
         foreach ($ids as $id) {
-            $comment = $cModel->GetComment($this->name, $id);
+            $comment = $cModel->GetComment($this->gadget->name, $id);
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->name,
+                $this->gadget->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'
@@ -1294,7 +1294,7 @@ class BlogAdminModel extends BlogModel
         }
 
         if ($status != 'various' && (!in_array($status, array('approved', 'waiting', 'spam')))) {
-            if ($this->GetRegistry('trackback_status') == 'waiting') {
+            if ($this->gadget->GetRegistry('trackback_status') == 'waiting') {
                 $status = 'waiting';
             } else {
                 $status = 'approved';

@@ -284,9 +284,9 @@ class BlogModel extends Jaws_Gadget_Model
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
             // total comments
-            $summary['CommentsQty'] = $cModel->TotalOfComments($this->name);
+            $summary['CommentsQty'] = $cModel->TotalOfComments($this->gadget->name);
             // recent comments
-            $comments = $cModel->GetRecentComments($this->name, 10);
+            $comments = $cModel->GetRecentComments($this->gadget->name, 10);
             if (Jaws_Error::IsError($comments)) {
                 return $comments;
             }
@@ -488,7 +488,7 @@ class BlogModel extends Jaws_Gadget_Model
                 ORDER BY [[blog]].[publishtime] DESC ';
 
             if (is_null($extralimit)) {
-                    $extralimit =  $this->GetRegistry('last_entries_limit');
+                    $extralimit =  $this->gadget->GetRegistry('last_entries_limit');
             }
             $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
             if (Jaws_Error::IsError($result)) {
@@ -504,7 +504,7 @@ class BlogModel extends Jaws_Gadget_Model
             $sql .= " ORDER BY [[blog]].[publishtime] DESC ";
 
             if (is_null($extralimit)) {
-                    $extralimit =  $this->GetRegistry('last_entries_limit');
+                    $extralimit =  $this->gadget->GetRegistry('last_entries_limit');
             }
             $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
             if (Jaws_Error::IsError($result)) {
@@ -562,7 +562,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $this->GetRegistry('last_entries_limit');
+        $limit = $this->gadget->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
 
         $params = array();
@@ -587,7 +587,7 @@ class BlogModel extends Jaws_Gadget_Model
     function GetComments($id, $parent)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->name, $id, $parent, true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, $id, $parent, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -626,10 +626,10 @@ class BlogModel extends Jaws_Gadget_Model
      */
     function GetRecentComments()
     {
-        $recentcommentsLimit = $this->GetRegistry('last_recentcomments_limit');
+        $recentcommentsLimit = $this->gadget->GetRegistry('last_recentcomments_limit');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->name, $recentcommentsLimit);
+        $comments = $cModel->GetRecentComments($this->gadget->name, $recentcommentsLimit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -696,7 +696,7 @@ class BlogModel extends Jaws_Gadget_Model
             break;
         }
 
-        $comments = $cModel->GetFilteredComments($this->name, $filterMode, $filter, $status, $limit);
+        $comments = $cModel->GetFilteredComments($this->gadget->name, $filterMode, $filter, $status, $limit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_FILTERED_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -722,7 +722,7 @@ class BlogModel extends Jaws_Gadget_Model
     function GetComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->name, $id);
+        $comment = $cModel->GetComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));
         }
@@ -762,7 +762,7 @@ class BlogModel extends Jaws_Gadget_Model
         }
 
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $this->GetRegistry('site_name', 'Settings');
+        $site_name  = $this->gadget->GetRegistry('site_name', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('SendComment.html');
@@ -837,14 +837,14 @@ class BlogModel extends Jaws_Gadget_Model
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $status = $this->GetRegistry('comment_status');
+        $status = $this->gadget->GetRegistry('comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Blog', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
         $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
         $res = $cModel->NewComment(
-            $this->name, $parentId,
+            $this->gadget->name, $parentId,
             $name, $email, $url, $title, $comments,
             $ip, $permalink, $parent, $status
         );
@@ -858,7 +858,7 @@ class BlogModel extends Jaws_Gadget_Model
             $params = array();
             $params['id'] = $id;
             $howmany = $cModel->HowManyFilteredComments(
-                $this->name,
+                $this->gadget->name,
                 'gadget_reference',
                 $id,
                 'approved'
@@ -1016,7 +1016,7 @@ class BlogModel extends Jaws_Gadget_Model
         $sql.= '[published] = {published} AND [[blog]].[publishtime] <= {now}
                 ORDER BY [[blog]].[publishtime] DESC';
 
-        $limit = $this->GetRegistry('last_entries_limit');
+        $limit = $this->gadget->GetRegistry('last_entries_limit');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_ENTRIES'), _t('BLOG_NAME'));
@@ -1078,7 +1078,7 @@ class BlogModel extends Jaws_Gadget_Model
                 [[blog]].[publishtime] <= {now}
             ORDER BY [[blog]].[publishtime] DESC';
 
-        $limit = $this->GetRegistry('xml_limit');
+        $limit = $this->gadget->GetRegistry('xml_limit');
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
@@ -1099,15 +1099,15 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $this->_Atom->SetTitle($this->GetRegistry('site_name', 'Settings'));
+        $this->_Atom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
         $this->_Atom->SetLink($url);
         $this->_Atom->SetId($siteURL);
-        $this->_Atom->SetTagLine($this->GetRegistry('site_slogan', 'Settings'));
-        $this->_Atom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
+        $this->_Atom->SetTagLine($this->gadget->GetRegistry('site_slogan', 'Settings'));
+        $this->_Atom->SetAuthor($this->gadget->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $this->GetRegistry('gate_email', 'Settings'));
+                                $this->gadget->GetRegistry('gate_email', 'Settings'));
         $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
-        $this->_Atom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
+        $this->_Atom->SetCopyright($this->gadget->GetRegistry('copyright', 'Settings'));
 
         $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
@@ -1296,15 +1296,15 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $categoryAtom->SetTitle($this->GetRegistry('site_name', 'Settings'));
+        $categoryAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
         $categoryAtom->SetLink($url);
         $categoryAtom->SetId($siteURL);
         $categoryAtom->SetTagLine($catInfo['name']);
-        $categoryAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
+        $categoryAtom->SetAuthor($this->gadget->GetRegistry('site_author', 'Settings'),
                                  $siteURL,
-                                 $this->GetRegistry('gate_email', 'Settings'));
+                                 $this->gadget->GetRegistry('gate_email', 'Settings'));
         $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
-        $categoryAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
+        $categoryAtom->SetCopyright($this->gadget->GetRegistry('copyright', 'Settings'));
         $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
 
         $objDate = $GLOBALS['app']->loadDate();
@@ -1450,14 +1450,14 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $commentAtom->SetTitle($this->GetRegistry('site_name', 'Settings'));
+        $commentAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
         $commentAtom->SetLink($url);
         $commentAtom->SetId($siteURL);
-        $commentAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
+        $commentAtom->SetAuthor($this->gadget->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $this->GetRegistry('gate_email', 'Settings'));
+                                $this->gadget->GetRegistry('gate_email', 'Settings'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
-        $commentAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
+        $commentAtom->SetCopyright($this->gadget->GetRegistry('copyright', 'Settings'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
@@ -1556,14 +1556,14 @@ class BlogModel extends Jaws_Gadget_Model
                                                true,
                                                'site_url');
 
-        $commentAtom->SetTitle($this->GetRegistry('site_name', 'Settings'));
+        $commentAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
         $commentAtom->SetLink($url);
         $commentAtom->SetId($siteURL);
-        $commentAtom->SetAuthor($this->GetRegistry('site_author', 'Settings'),
+        $commentAtom->SetAuthor($this->gadget->GetRegistry('site_author', 'Settings'),
                                 $GLOBALS['app']->GetSiteURL(),
-                                $this->GetRegistry('gate_email', 'Settings'));
+                                $this->gadget->GetRegistry('gate_email', 'Settings'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->Get('version'));
-        $commentAtom->SetCopyright($this->GetRegistry('copyright', 'Settings'));
+        $commentAtom->SetCopyright($this->gadget->GetRegistry('copyright', 'Settings'));
 
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
@@ -1657,7 +1657,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $this->GetRegistry('last_entries_limit');
+        $limit = $this->gadget->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
         $result = $this->GetEntries($category, null, null, $limit, $offset);
         if (Jaws_Error::IsError($result)) {
@@ -1916,7 +1916,7 @@ class BlogModel extends Jaws_Gadget_Model
         $params           = array();
         $params['id']     = $id;
         $params['status'] = 'approved';
-        if ($this->GetRegistry('trackback') == 'true') {
+        if ($this->gadget->GetRegistry('trackback') == 'true') {
             $sql = '
                 SELECT
                     [id],
@@ -2100,9 +2100,9 @@ class BlogModel extends Jaws_Gadget_Model
         $params['excerpt']   = strip_tags($excerpt);
         $params['blog_name'] = strip_tags($blog_name);
         $params['ip']        = $ip;
-        $params['status']    = $this->GetRegistry('trackback_status');
+        $params['status']    = $this->gadget->GetRegistry('trackback_status');
 
-        if ($this->GetRegistry('trackback') == 'true') {
+        if ($this->gadget->GetRegistry('trackback') == 'true') {
             if (!$this->DoesEntryExists($parent_id)) {
                 return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
             }
@@ -2192,7 +2192,7 @@ class BlogModel extends Jaws_Gadget_Model
             $page = 0;
         }
 
-        $limit = $this->GetRegistry('last_entries_limit');
+        $limit = $this->gadget->GetRegistry('last_entries_limit');
         $offset = $limit * $page;
 
         $res = $this->GetEntries($cat, $condition, $extraparams, $limit, $offset);
@@ -2367,14 +2367,14 @@ class BlogModel extends Jaws_Gadget_Model
         /**
          * TODO: Find some other default values for pingbacks/trackbacks
          */
-        $email = $this->GetRegistry('gate_email', 'Settings');
-        $name  = $this->GetRegistry('site_author', 'Settings');
+        $email = $this->gadget->GetRegistry('gate_email', 'Settings');
+        $name  = $this->gadget->GetRegistry('site_author', 'Settings');
         $ip    = $_SERVER['REMOTE_ADDR'];
 
-        $status = $this->GetRegistry('comment_status');
+        $status = $this->gadget->GetRegistry('comment_status');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $res = $cModel->NewComment(
-            $this->name, $postID, $name, $email, $sourceURI,
+            $this->gadget->name, $postID, $name, $email, $sourceURI,
             $title, $content, $ip, $permalink, 0, $status
         );
     }
@@ -2516,7 +2516,7 @@ class BlogModel extends Jaws_Gadget_Model
             WHERE [published] = {published} AND [[blog]].[publishtime] <= {now} 
             ORDER BY [[blog]].[clicks] DESC ';
 
-        $limit_count = $this->GetRegistry('popular_limit');
+        $limit_count = $this->gadget->GetRegistry('popular_limit');
         $result = $GLOBALS['db']->setLimit((int) $limit_count);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('BLOG_NAME'));
