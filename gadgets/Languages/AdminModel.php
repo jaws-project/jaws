@@ -35,9 +35,9 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_NAME'));
         }
 
-        $this->AddRegistry('base_lang', 'en');
-        $this->AddRegistry('update_default_lang', 'false');
-        $this->AddRegistry('pluggable', 'false');
+        $this->gadget->AddRegistry('base_lang', 'en');
+        $this->gadget->AddRegistry('update_default_lang', 'false');
+        $this->gadget->AddRegistry('pluggable', 'false');
         return true;
     }
 
@@ -61,8 +61,8 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
         }
 
         // Registry keys
-        $this->DelRegistry('use_data_lang');
-        $this->AddRegistry('update_default_lang', 'false');
+        $this->gadget->DelRegistry('use_data_lang');
+        $this->gadget->AddRegistry('update_default_lang', 'false');
 
         // ACL keys
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Languages/ModifyLanguageProperties', 'false');
@@ -84,7 +84,7 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
             if (preg_match("/^([a-z]{2})$|^([a-z]{2}[-][a-z]{2})$/", $lang_code)) {
                 $lang_name = substr($lang_str, strpos($lang_str, ';')+1);
                 if (!empty($lang_name) || trim($lang_name) == $lang_name) {
-                    $use_data_lang = $this->GetRegistry('use_data_lang') == 'true';
+                    $use_data_lang = $this->gadget->GetRegistry('use_data_lang') == 'true';
                     $jaws_lang_dir = ($use_data_lang? JAWS_DATA : JAWS_PATH) . "languages";
 
                     $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
@@ -289,7 +289,7 @@ class LanguagesAdminModel extends Jaws_Gadget_Model
                 $orig_file = JAWS_PATH . "languages/$langTo/$module.php";
         }
 
-        $update_default_lang = $this->GetRegistry('update_default_lang') == 'true';
+        $update_default_lang = $this->gadget->GetRegistry('update_default_lang') == 'true';
         if (file_exists($orig_file)) {
             require_once $orig_file;
         }
