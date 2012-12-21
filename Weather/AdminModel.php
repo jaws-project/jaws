@@ -38,10 +38,10 @@ class WeatherAdminModel extends WeatherModel
         }
 
         // Registry keys
-        $this->AddRegistry('unit', 'metric');
-        $this->AddRegistry('date_format', 'DN d MN');
-        $this->AddRegistry('update_period', '3600');
-        $this->AddRegistry('api_key', '');
+        $this->gadget->AddRegistry('unit', 'metric');
+        $this->gadget->AddRegistry('date_format', 'DN d MN');
+        $this->gadget->AddRegistry('update_period', '3600');
+        $this->gadget->AddRegistry('api_key', '');
 
         return true;
     }
@@ -63,10 +63,10 @@ class WeatherAdminModel extends WeatherModel
         }
 
         // Registry keys
-        $this->DelRegistry('unit');
-        $this->DelRegistry('date_format');
-        $this->DelRegistry('update_period');
-        $this->DelRegistry('api_key');
+        $this->gadget->DelRegistry('unit');
+        $this->gadget->DelRegistry('date_format');
+        $this->gadget->DelRegistry('update_period');
+        $this->gadget->DelRegistry('api_key');
 
         return true;
     }
@@ -100,19 +100,19 @@ class WeatherAdminModel extends WeatherModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
 
             // Registry keys
-            $this->AddRegistry('unit', 'metric');
-            $this->AddRegistry('date_format', 'DN d MN');
-            $this->AddRegistry('update_period', '3600');
-            $this->DelRegistry('refresh');
-            $this->DelRegistry('cities');
-            $this->DelRegistry('units');
-            $this->DelRegistry('forecast');
-            $this->DelRegistry('partner_id');
-            $this->DelRegistry('license_key');
+            $this->gadget->AddRegistry('unit', 'metric');
+            $this->gadget->AddRegistry('date_format', 'DN d MN');
+            $this->gadget->AddRegistry('update_period', '3600');
+            $this->gadget->DelRegistry('refresh');
+            $this->gadget->DelRegistry('cities');
+            $this->gadget->DelRegistry('units');
+            $this->gadget->DelRegistry('forecast');
+            $this->gadget->DelRegistry('partner_id');
+            $this->gadget->DelRegistry('license_key');
         }
 
         // Registry keys
-        $this->AddRegistry('api_key', '');
+        $this->gadget->AddRegistry('api_key', '');
 
         return true;
     }
