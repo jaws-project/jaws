@@ -80,7 +80,7 @@ class Jaws_Gadget_Model
                 return Jaws_Error::raiseError("Class [$type_class_name] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->models[$filename] = new $type_class_name($this);
+            $this->gadget->models[$filename] = new $type_class_name($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$type_class_name]");
         }
 
@@ -107,43 +107,6 @@ class Jaws_Gadget_Model
      */
     function UpdateGadget()
     {
-        return true;
-    }
-
-    /**
-     * @access  public
-     */
-    function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
-    {
-        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
-        $main_file = JAWS_PATH . 'gadgets/'. $this->name . '/schema/' . $main_schema;
-        if (!file_exists($main_file)) {
-            return new Jaws_Error (_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
-                                   $info->GetAttribute('Name'),
-                                   JAWS_ERROR_ERROR,
-                                   1);
-        }
-
-        $base_file = false;
-        if (!empty($base_schema)) {
-            $base_file = JAWS_PATH . 'gadgets/'. $this->name . '/schema/' . $base_schema;
-            if (!file_exists($base_file)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
-                                      $info->GetAttribute('Name'),
-                                      JAWS_ERROR_ERROR,
-                                      1);
-            }
-        }
-
-        $result = $GLOBALS['db']->installSchema($main_file, $variables, $base_file, $data, $create, $debug);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_QUERY_FILE',
-                                     $main_schema . (empty($base_schema)? '': "/$base_schema")),
-                                  $info->GetAttribute('Name'),
-                                  JAWS_ERROR_ERROR,
-                                  1);
-        }
-
         return true;
     }
 
