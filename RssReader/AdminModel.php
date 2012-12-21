@@ -37,7 +37,7 @@ class RssReaderAdminModel extends RssReaderModel
         }
 
         // Registry keys
-        $this->AddRegistry('default_feed', '0');
+        $this->gadget->AddRegistry('default_feed', '0');
 
         return true;
     }
@@ -59,7 +59,7 @@ class RssReaderAdminModel extends RssReaderModel
         }
 
         // registry keys
-        $this->DelRegistry('default_feed');
+        $this->gadget->DelRegistry('default_feed');
 
         return true;
     }
@@ -84,10 +84,10 @@ class RssReaderAdminModel extends RssReaderModel
         $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/RssReader/UpdateProperties');
 
         //registry keys
-        $this->AddRegistry('default_feed', '0');
-        $this->DelRegistry('limit_entries');
-        $this->DelRegistry('order_type');
-        $this->DelRegistry('sort_type');
+        $this->gadget->AddRegistry('default_feed', '0');
+        $this->gadget->DelRegistry('limit_entries');
+        $this->gadget->DelRegistry('order_type');
+        $this->gadget->DelRegistry('sort_type');
 
         return true;
     }
