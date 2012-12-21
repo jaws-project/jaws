@@ -21,10 +21,10 @@ class SearchAdminModel extends SearchModel
     function InstallGadget()
     {
         // Registry keys
-        $this->AddRegistry('searchable_gadgets', '*');
-        $this->AddRegistry('min_key_len', '3');
-        $this->AddRegistry('max_result_len', '500');
-        $this->AddRegistry('results_limit', '10');
+        $this->gadget->AddRegistry('searchable_gadgets', '*');
+        $this->gadget->AddRegistry('min_key_len', '3');
+        $this->gadget->AddRegistry('max_result_len', '500');
+        $this->gadget->AddRegistry('results_limit', '10');
 
         return true;
     }
@@ -38,10 +38,10 @@ class SearchAdminModel extends SearchModel
     function UninstallGadget()
     {
         // registry key
-        $this->DelRegistry('searchable_gadgets');
-        $this->DelRegistry('min_key_len');
-        $this->DelRegistry('max_result_len');
-        $this->DelRegistry('results_limit');
+        $this->gadget->DelRegistry('searchable_gadgets');
+        $this->gadget->DelRegistry('min_key_len');
+        $this->gadget->DelRegistry('max_result_len');
+        $this->gadget->DelRegistry('results_limit');
 
         return true;
     }
@@ -58,10 +58,10 @@ class SearchAdminModel extends SearchModel
     {
         if (version_compare($old, '0.7.0', '<')) {
             // Registry keys.
-            $this->AddRegistry('min_key_len', '3');
-            $this->AddRegistry('max_result_len', '500');
+            $this->gadget->AddRegistry('min_key_len', '3');
+            $this->gadget->AddRegistry('max_result_len', '500');
         }
-        $this->AddRegistry('results_limit', '10');
+        $this->gadget->AddRegistry('results_limit', '10');
 
         return true;
     }
@@ -76,7 +76,7 @@ class SearchAdminModel extends SearchModel
     function SetSearchableGadgets($gadgets)
     {
         $list = is_array($gadgets)? implode(', ', $gadgets) : '*';
-        $res = $this->SetRegistry('searchable_gadgets', $list);
+        $res = $this->gadget->SetRegistry('searchable_gadgets', $list);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'), _t('SEARCH_NAME'));
