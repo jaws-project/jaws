@@ -52,8 +52,8 @@ class EmblemsAdminModel extends EmblemsModel
         }
 
         // Put the config registry keys
-        $this->AddRegistry('rows', '1');
-        $this->AddRegistry('allow_url', 'true');
+        $this->gadget->AddRegistry('rows', '1');
+        $this->gadget->AddRegistry('allow_url', 'true');
 
         return true;
     }
@@ -75,8 +75,8 @@ class EmblemsAdminModel extends EmblemsModel
         }
 
         // registry keys
-        $this->DelRegistry('rows');
-        $this->DelRegistry('allow_url');
+        $this->gadget->DelRegistry('rows');
+        $this->gadget->DelRegistry('allow_url');
 
         return true;
     }
