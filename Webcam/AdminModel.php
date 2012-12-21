@@ -27,7 +27,7 @@ class WebcamAdminModel extends WebcamModel
         }
 
         //Registry keys.
-        $this->AddRegistry('limit_random', '3');
+        $this->gadget->AddRegistry('limit_random', '3');
 
         return true;
     }
@@ -49,7 +49,7 @@ class WebcamAdminModel extends WebcamModel
         }
 
         // registry keys
-        $this->DelRegistry('limit_random');
+        $this->gadget->DelRegistry('limit_random');
 
         return true;
     }
