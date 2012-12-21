@@ -37,23 +37,23 @@ class PhooAdminModel extends PhooModel
         }
 
         // Registry keys
-        $this->AddRegistry('default_action',    'AlbumList');
-        $this->AddRegistry('thumbsize',         '133x100');
-        $this->AddRegistry('mediumsize',        '400x300');
-        $this->AddRegistry('moblog_album',      '');
-        $this->AddRegistry('moblog_limit',      '10');
-        $this->AddRegistry('photoblog_album',   '');
-        $this->AddRegistry('photoblog_limit',   '5');
-        $this->AddRegistry('allow_comments',    'true');
-        $this->AddRegistry('published',         'true');
-        $this->AddRegistry('plugabble',         'true');
-        $this->AddRegistry('show_exif_info',    'false');
-        $this->AddRegistry('keep_original',     'true');
-        $this->AddRegistry('thumbnail_limit',   '0');
-        $this->AddRegistry('use_antispam',      'true');
-        $this->AddRegistry('comment_status',    'approved');
-        $this->AddRegistry('albums_order_type', 'name');
-        $this->AddRegistry('photos_order_type', 'id');
+        $this->gadget->AddRegistry('default_action',    'AlbumList');
+        $this->gadget->AddRegistry('thumbsize',         '133x100');
+        $this->gadget->AddRegistry('mediumsize',        '400x300');
+        $this->gadget->AddRegistry('moblog_album',      '');
+        $this->gadget->AddRegistry('moblog_limit',      '10');
+        $this->gadget->AddRegistry('photoblog_album',   '');
+        $this->gadget->AddRegistry('photoblog_limit',   '5');
+        $this->gadget->AddRegistry('allow_comments',    'true');
+        $this->gadget->AddRegistry('published',         'true');
+        $this->gadget->AddRegistry('plugabble',         'true');
+        $this->gadget->AddRegistry('show_exif_info',    'false');
+        $this->gadget->AddRegistry('keep_original',     'true');
+        $this->gadget->AddRegistry('thumbnail_limit',   '0');
+        $this->gadget->AddRegistry('use_antispam',      'true');
+        $this->gadget->AddRegistry('comment_status',    'approved');
+        $this->gadget->AddRegistry('albums_order_type', 'name');
+        $this->gadget->AddRegistry('photos_order_type', 'id');
 
         return true;
     }
@@ -80,23 +80,23 @@ class PhooAdminModel extends PhooModel
         }
 
         // Registry keys
-        $this->DelRegistry('default_action');
-        $this->DelRegistry('thumbsize');
-        $this->DelRegistry('mediumsize');
-        $this->DelRegistry('moblog_album');
-        $this->DelRegistry('moblog_limit');
-        $this->DelRegistry('photoblog_album');
-        $this->DelRegistry('photoblog_limit');
-        $this->DelRegistry('allow_comments');
-        $this->DelRegistry('published');
-        $this->DelRegistry('plugabble');
-        $this->DelRegistry('show_exif_info');
-        $this->DelRegistry('keep_original');
-        $this->DelRegistry('thumbnail_limit');
-        $this->DelRegistry('use_antispam');
-        $this->DelRegistry('comment_status');
-        $this->DelRegistry('albums_order_type');
-        $this->DelRegistry('photos_order_type');
+        $this->gadget->DelRegistry('default_action');
+        $this->gadget->DelRegistry('thumbsize');
+        $this->gadget->DelRegistry('mediumsize');
+        $this->gadget->DelRegistry('moblog_album');
+        $this->gadget->DelRegistry('moblog_limit');
+        $this->gadget->DelRegistry('photoblog_album');
+        $this->gadget->DelRegistry('photoblog_limit');
+        $this->gadget->DelRegistry('allow_comments');
+        $this->gadget->DelRegistry('published');
+        $this->gadget->DelRegistry('plugabble');
+        $this->gadget->DelRegistry('show_exif_info');
+        $this->gadget->DelRegistry('keep_original');
+        $this->gadget->DelRegistry('thumbnail_limit');
+        $this->gadget->DelRegistry('use_antispam');
+        $this->gadget->DelRegistry('comment_status');
+        $this->gadget->DelRegistry('albums_order_type');
+        $this->gadget->DelRegistry('photos_order_type');
 
         return true;
     }
@@ -117,7 +117,7 @@ class PhooAdminModel extends PhooModel
                 return $result;
             }
 
-            $this->AddRegistry('image_quality', '75');
+            $this->gadget->AddRegistry('image_quality', '75');
         }
 
         if ($old == '0.7.0') {
@@ -130,16 +130,16 @@ class PhooAdminModel extends PhooModel
                                      _t('PHOO_NAME'));
             }
 
-            $this->AddRegistry('comment_status', 'approved');
-            $this->AddRegistry('order_type','name');
+            $this->gadget->AddRegistry('comment_status', 'approved');
+            $this->gadget->AddRegistry('order_type','name');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
-            $albums_order_type = $this->GetRegistry('order_type');
-            $this->AddRegistry('albums_order_type',
+            $albums_order_type = $this->gadget->GetRegistry('order_type');
+            $this->gadget->AddRegistry('albums_order_type',
                                               Jaws_Error::IsError($albums_order_type)? 'name' : $albums_order_type);
-            $this->AddRegistry('photos_order_type', 'id');
-            $this->DelRegistry('order_type');
+            $this->gadget->AddRegistry('photos_order_type', 'id');
+            $this->gadget->DelRegistry('order_type');
         }
 
         if (version_compare($old, '0.8.2', '<')) {
@@ -176,8 +176,8 @@ class PhooAdminModel extends PhooModel
                 return $result;
             }
 
-            $this->DelRegistry('resize_method');
-            $this->DelRegistry('image_quality');
+            $this->gadget->DelRegistry('resize_method');
+            $this->gadget->DelRegistry('image_quality');
         }
 
         return true;
@@ -344,8 +344,8 @@ class PhooAdminModel extends PhooModel
             return Jaws_Error::raiseError($objImage->getMessage(), _t('PHOO_NAME'));
         }
 
-        $thumbSize  = explode('x', $this->GetRegistry('thumbsize'));
-        $mediumSize = explode('x', $this->GetRegistry('mediumsize'));
+        $thumbSize  = explode('x', $this->gadget->GetRegistry('thumbsize'));
+        $mediumSize = explode('x', $this->gadget->GetRegistry('mediumsize'));
 
         $objImage->load($uploadfile);
         $objImage->resize($thumbSize[0], $thumbSize[1]);
@@ -372,7 +372,7 @@ class PhooAdminModel extends PhooModel
         $params['title']       = $title;
         $params['description'] = $description;
 
-        if ($this->GetRegistry('allow_comments') == 'true' &&
+        if ($this->gadget->GetRegistry('allow_comments') == 'true' &&
             $album['allow_comments'])
         {
             $params['allow_comments'] = true;
@@ -380,7 +380,7 @@ class PhooAdminModel extends PhooModel
             $params['allow_comments'] = false;
         }
 
-        if ($this->GetRegistry('published') == 'true' &&
+        if ($this->gadget->GetRegistry('published') == 'true' &&
             $album['published'] === true &&
             $GLOBALS['app']->Session->GetPermission('Phoo', 'ManageAlbums'))
         {
@@ -416,7 +416,7 @@ class PhooAdminModel extends PhooModel
         }
 
         // Lets remove the original if keep_original = false
-        if ($this->GetRegistry('keep_original') == 'false') {
+        if ($this->gadget->GetRegistry('keep_original') == 'false') {
             @unlink(JAWS_DATA . 'phoo/' . $params['filename']);
         }
 
@@ -755,7 +755,7 @@ class PhooAdminModel extends PhooModel
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $res = $cModel->UpdateComment(
-            $this->name, $params['id'], $params['name'],
+            $this->gadget->name, $params['id'], $params['name'],
             $params['email'], $params['url'], $params['title'],
             $params['comments'], $params['permalink'], $params['status']
         );
@@ -784,7 +784,7 @@ class PhooAdminModel extends PhooModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $res = $cModel->DeleteComment($this->name, $id);
+        $res = $cModel->DeleteComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
@@ -794,7 +794,7 @@ class PhooAdminModel extends PhooModel
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->name,
+                $this->gadget->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'
@@ -829,13 +829,13 @@ class PhooAdminModel extends PhooModel
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $cModel->MarkAs($this->name, $ids, $status);
+        $cModel->MarkAs($this->gadget->name, $ids, $status);
         foreach ($ids as $id) {
-            $comment = $cModel->GetComment($this->name, $id);
+            $comment = $cModel->GetComment($this->gadget->name, $id);
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(
-                $this->name,
+                $this->gadget->name,
                 'gadget_reference',
                 $comment['gadget_reference'],
                 'approved'
