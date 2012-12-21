@@ -444,7 +444,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     function TopicNotification($event_type, $forum_title, $topic_link, $topic_subject, $topic_message)
     {
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $this->GetRegistry('site_name', 'Settings');
+        $site_name  = $this->gadget->GetRegistry('site_name', 'Settings');
         $event_type = strtoupper($event_type);
 
         // user profile link

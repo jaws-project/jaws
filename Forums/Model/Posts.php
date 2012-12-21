@@ -392,7 +392,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
     function PostNotification($email, $event_type, $forum_title, $post_link, $topic_subject, $post_message)
     {
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $this->GetRegistry('site_name', 'Settings');
+        $site_name  = $this->gadget->GetRegistry('site_name', 'Settings');
         $event_type = strtoupper($event_type);
 
         // user profile link
