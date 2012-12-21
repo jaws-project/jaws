@@ -175,6 +175,14 @@ class Jaws_Gadget
     var $models = array();
 
     /**
+     * Store installer objects for later use so we aren't running
+     * around with multiple copies
+     * @var     object
+     * @access  protected
+     */
+    var $installer;
+
+    /**
      * Constructor
      *
      * @access  protected
