@@ -27,7 +27,7 @@ class CommentsAdminModel extends CommentsModel
         }
 
         // Install listener for removing comments related to uninstalled gadget
-        $GLOBALS['app']->Listener->NewListener($this->name, 'onUninstallGadget', 'DeleteCommentsOfGadget');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onUninstallGadget', 'DeleteCommentsOfGadget');
 
         return true;
     }
