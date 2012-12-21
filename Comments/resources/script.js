@@ -35,7 +35,7 @@ function getData(limit)
  */
 function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = CommentsAjax.callSync('SearchComments', limit, '', '', '');
+    result = CommentsAjax.callSync('SearchComments', limit, $('gadgets_filter').value, '', '', '');
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('sizeofcommentssearch', '', '', '');
@@ -99,41 +99,20 @@ function stopAction()
  * Edit a Comment
  *
  */
-function editComment(element, id)
+function commentEdit(element, id)
 {
-    currentAction = 'Contacts';
-    $('legend_title').innerHTML = messageDetail_title;
-    if (cacheContactForm != null) {
-        $('c_work_area').innerHTML = cacheContactForm;
-    }
-
     selectDataGridRow(element.parentNode.parentNode);
 
-    var contact = ContactAjax.callSync('getcontact', id);
-    $('id').value      = contact['id'];
-    $('contact_ip').set('html', contact['ip']);
-    $('name').value    = contact['name'];
-    $('email').value   = contact['email'];
-    $('company').value = contact['company'];
-    $('url').value     = contact['url'];
-    $('tel').value     = contact['tel'];
-    $('fax').value     = contact['fax'];
-    $('mobile').value  = contact['mobile'];
-    $('address').value = contact['address'];
-    $('rid').value     = contact['recipient'];
-    $('subject').value = contact['subject'].defilter();
-    $('message').value = contact['msg_txt'].defilter();
-    $('btn_save_send').hide();
+    var comment = CommentsAjax.callSync('getcomment', $('gadgets_filter').value, id);
+    $('id').value      = comment['id'];
+    $('comment_ip').set('html', comment['ip']);
+    $('name').value    = comment['name'];
+    $('email').value   = comment['email'];
+    $('url').value     = comment['url'];
+    $('subject').value = comment['title'].defilter();
+    $('message').value = comment['msg_txt'].defilter();
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
-
-    if (contact['attachment']) {
-        $('attachment').href = dataURL + contact['attachment'];
-        $('attachment').set('html', contact['attachment']);
-        $('tr_attachment').show();
-    } else {
-        $('tr_attachment').hide();
-    }
 }
 
 /**
@@ -148,6 +127,20 @@ function deleteContact(element, id)
         ContactAjax.callAsync('deletecontact', id);
     }
     unselectDataGridRow();
+}
+
+/**
+ * Select DataGrid row
+ *
+ */
+function selectDataGridRow(rowElement)
+{
+    if (selectedRow) {
+        selectedRow.style.backgroundColor = selectedRowColor;
+    }
+    selectedRowColor = rowElement.style.backgroundColor;
+    rowElement.style.backgroundColor = '#ffffcc';
+    selectedRow = rowElement;
 }
 
 var CommentsAjax = new JawsAjax('Comments', CommentsCallback),

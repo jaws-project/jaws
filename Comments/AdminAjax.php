@@ -21,11 +21,11 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
      * @param   string  $status  Spam status (approved, waiting, spam)
      * @return  array   Data array
      */
-    function SearchComments($limit, $filter, $search, $status)
+    function SearchComments($limit, $gadget, $filter, $search, $status)
     {
         // TODO: Check Permission For Manage Comments
-        $gadget = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $gadget->GetDataAsArray('', BASE_SCRIPT . '?gadget=Comments&amp;action=EditComment&amp;id={id}', $filter, $search, $status, $limit);
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHTML->GetDataAsArray($gadget, "javascript: commentEdit(this, '{id}')", $filter, $search, $status, $limit);
     }
 
     /**
@@ -74,5 +74,21 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
                 break;
         }
         return $cModel->HowManyFilteredComments($this->_Gadget, $filterMode, $search, $status, false);
+    }
+
+    /**
+     * Get information of a Comment
+     *
+     * @access  public
+     * @param   int     $id     Comment ID
+     * @return  array   Comment info array
+     */
+    function GetComment($gadget, $id)
+    {
+        $comment = $this->_Model->GetComment($gadget, $id);
+        if (Jaws_Error::IsError($comment)) {
+            return false; //we need to handle errors on ajax
+        }
+        return $comment;
     }
 }

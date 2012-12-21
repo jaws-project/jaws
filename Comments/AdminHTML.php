@@ -79,7 +79,7 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
 
         //DataGrid
-        $tpl->SetVariable('grid', $this->CommentsDataGrid());
+        $tpl->SetVariable('grid', $this->Get(''));
 
         //CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
@@ -104,40 +104,6 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('Comments');
         return $tpl->Get();
-    }
-
-    /**
-     * Prepares the datagrid view (XHTML of datagrid)
-     *
-     * @access  public
-     * @return  string  XHTML template of datagrid
-     */
-    function CommentsDataGrid()
-    {
-        $model = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $total = $model->TotalOfData('comments');
-
-        $grid =& Piwi::CreateWidget('DataGrid', array());
-        $grid->SetID('comments_datagrid');
-        $grid->TotalRows($total);
-        $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_NAME'), null, false);
-        $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', '', null, false);
-        $grid->AddColumn($column2);
-        $column2->SetStyle('width:16px;');
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
-        $column3->SetStyle('width: 72px; white-space: nowrap;');
-        $grid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_STATUS'), null, false);
-        $column4->SetStyle('width: 64px; white-space: nowrap;');
-        $grid->AddColumn($column4);
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column5->SetStyle('width: 64px; white-space: nowrap;');
-        $grid->AddColumn($column4);
-        $grid->SetStyle('margin-top: 0px; width: 100%;');
-
-        return $grid->Get();
     }
 
     /**

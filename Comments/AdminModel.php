@@ -326,7 +326,7 @@ class CommentsAdminModel extends CommentsModel
                 [createtime]
             FROM [[comments]]';
 
-        if (!is_null($gadget) && ($gadget != '')) {
+        if (!is_null($gadget) && ($gadget != -1)) {
             $sql .= ' WHERE [gadget] = {gadget}';
         }
 

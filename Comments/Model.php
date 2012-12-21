@@ -207,10 +207,11 @@ class CommentsModel extends Jaws_Gadget_Model
                 [createtime]
             FROM [[comments]]
             WHERE
-                [id] = {id}
-              AND
-                [gadget] = {gadget}';
+                [id] = {id}';
 
+        if (!is_null($gadget) && ($gadget != -1)) {
+            $sql .= ' AND [gadget] = {gadget}';
+        }
         $row = $GLOBALS['db']->queryRow($sql, $params);
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_COMMENT'), _t('COMMENTS_NAME'));
