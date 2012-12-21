@@ -13,18 +13,6 @@
 class JmsAdminModel extends Jaws_Gadget_Model
 {
     /**
-     * Installs the gadget
-     *
-     * @access  public
-     * @return  bool    True
-     */
-    function InstallGadget()
-    {
-        $this->gadget->AddRegistry('pluggable', 'false');
-        return true;
-    }
-
-    /**
      * Get a list of gadgets, installed or non installed, core or not core, has layout or not,...
      *
      * @access  public
