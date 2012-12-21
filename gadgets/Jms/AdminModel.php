@@ -20,7 +20,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
      */
     function InstallGadget()
     {
-        $this->AddRegistry('pluggable', 'false');
+        $this->gadget->AddRegistry('pluggable', 'false');
         return true;
     }
 
@@ -56,7 +56,7 @@ class JmsAdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                if (!$this->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', $gadget)) {
+                if (!$this->gadget->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', $gadget)) {
                     continue;
                 }
 
