@@ -163,7 +163,7 @@ function saveMenus()
                         new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value]);
                     }
                 } else {
-                    var oldRank = Array.from(new_parentNode.childNodes()).indexOf($('menu_'+$('mid').value));
+                    var oldRank = Array.from(new_parentNode.getChildren()).indexOf($('menu_'+$('mid').value));
                     if ($('rank').value > oldRank) {
                         new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value].nextSibling);
                     } else {
