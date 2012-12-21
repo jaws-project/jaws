@@ -18,7 +18,7 @@ class RegistryAdminModel extends Jaws_Gadget_Model
      */
     function InstallGadget()
     {
-        $this->AddRegistry('pluggable', 'false');
+        $this->gadget->AddRegistry('pluggable', 'false');
         return true;
     }
 }
