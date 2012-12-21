@@ -32,7 +32,7 @@ class ContactAdminModel extends ContactModel
         }
 
         //registry keys.
-        $this->AddRegistry(
+        $this->gadget->AddRegistry(
             array(
                 'use_antispam' => 'true',
                 'email_format' => 'html',
@@ -66,11 +66,11 @@ class ContactAdminModel extends ContactModel
         }
 
         // Registry keys
-        $this->DelRegistry('use_antispam');
-        $this->DelRegistry('email_format');
-        $this->DelRegistry('enable_attachment');
-        $this->DelRegistry('comments');
-        $this->DelRegistry('default_items');
+        $this->gadget->DelRegistry('use_antispam');
+        $this->gadget->DelRegistry('email_format');
+        $this->gadget->DelRegistry('enable_attachment');
+        $this->gadget->DelRegistry('comments');
+        $this->gadget->DelRegistry('default_items');
 
         return true;
     }
@@ -95,16 +95,16 @@ class ContactAdminModel extends ContactModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/EditSentMessage',  'true');
 
             // Registry keys.
-            $send_html = $this->GetRegistry('send_html') == 'true';
-            $this->AddRegistry('use_captcha', 'true');
-            $this->AddRegistry('email_format', $send_html? 'html' : 'text');
-            $this->AddRegistry('enable_attachment', 'false');
-            $this->DelRegistry('send_html');
+            $send_html = $this->gadget->GetRegistry('send_html') == 'true';
+            $this->gadget->AddRegistry('use_captcha', 'true');
+            $this->gadget->AddRegistry('email_format', $send_html? 'html' : 'text');
+            $this->gadget->AddRegistry('enable_attachment', 'false');
+            $this->gadget->DelRegistry('send_html');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
-            $this->AddRegistry('comments', '');
-            $this->DelRegistry('comment');
+            $this->gadget->AddRegistry('comments', '');
+            $this->gadget->DelRegistry('comment');
         }
 
         if (version_compare($old, '0.3.2', '<')) {
@@ -113,7 +113,7 @@ class ContactAdminModel extends ContactModel
                 return $result;
             }
 
-            $this->DelRegistry('use_captcha');
+            $this->gadget->DelRegistry('use_captcha');
         }
 
         if (version_compare($old, '0.3.3', '<')) {
@@ -131,7 +131,7 @@ class ContactAdminModel extends ContactModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/AllowAttachment', 'false');
 
             // Registry keys
-            $this->AddRegistry('default_items',
+            $this->gadget->AddRegistry('default_items',
                                               'name,email,url,recipient,subject,attachment,message');
 
             $new_dir = JAWS_DATA . 'contact';
