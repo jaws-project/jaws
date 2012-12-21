@@ -21,11 +21,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function InstallGadget()
     {
         // Registry keys.
-        $this->AddRegistry('limit', '7');
-        $this->AddRegistry('use_antispam', 'true');
-        $this->AddRegistry('max_strlen', '125');
-        $this->AddRegistry('comment_status', 'approved');
-        $this->AddRegistry('anon_post_authority', 'true');
+        $this->gadget->AddRegistry('limit', '7');
+        $this->gadget->AddRegistry('use_antispam', 'true');
+        $this->gadget->AddRegistry('max_strlen', '125');
+        $this->gadget->AddRegistry('comment_status', 'approved');
+        $this->gadget->AddRegistry('anon_post_authority', 'true');
 
         return true;
     }
@@ -39,11 +39,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function UninstallGadget()
     {
         // Registry keys
-        $this->DelRegistry('limit');
-        $this->DelRegistry('use_antispam');
-        $this->DelRegistry('max_strlen');
-        $this->DelRegistry('comment_status');
-        $this->DelRegistry('anon_post_authority');
+        $this->gadget->DelRegistry('limit');
+        $this->gadget->DelRegistry('use_antispam');
+        $this->gadget->DelRegistry('max_strlen');
+        $this->gadget->DelRegistry('comment_status');
+        $this->gadget->DelRegistry('anon_post_authority');
 
         return true;
     }
@@ -66,11 +66,11 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         */
 
         // Registry keys.
-        $this->AddRegistry('max_strlen', '125');
+        $this->gadget->AddRegistry('max_strlen', '125');
 
         if (version_compare($old, '0.8.1', '<')) {
-            $this->AddRegistry('comment_status', 'approved');
-            $this->AddRegistry('anon_post_authority', 'true');
+            $this->gadget->AddRegistry('comment_status', 'approved');
+            $this->gadget->AddRegistry('anon_post_authority', 'true');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Chatbox/ManageComments',  'false');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Chatbox/DeleteEntry');
         }
@@ -93,7 +93,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         }
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $cModel->MarkAs($this->name, $ids, $status);
+        $cModel->MarkAs($this->gadget->name, $ids, $status);
         $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
     }
@@ -108,13 +108,13 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function DeleteComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $comment = $cModel->GetComment($this->name, $id);
+        $comment = $cModel->GetComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($comment)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
         }
 
-        $res = $cModel->DeleteComment($this->name, $id);
+        $res = $cModel->DeleteComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_ENTRY_NOT_DELETE'), _t('CHATBOX_NAME'));
@@ -162,13 +162,13 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
     function UpdateComment($id, $name, $url, $email, $comments)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $prev = $cModel->GetComment($this->name, $id);
+        $prev = $cModel->GetComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($prev)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_COMMENT_NOT_UPDATED'), _t('CHATBOX_NAME'));
         }
 
-        $max_strlen = (int)$this->GetRegistry('max_strlen');
+        $max_strlen = (int)$this->gadget->GetRegistry('max_strlen');
         $params              = array();
         $params['id']        = $id;
         $params['name']      = strip_tags($name);
@@ -180,7 +180,7 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
         $params['status']    = $prev['status'];
 
         $res = $cModel->UpdateComment(
-            $this->name,
+            $this->gadget->name,
             $params['id'],
             $params['name'],
             $params['email'],

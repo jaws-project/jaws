@@ -27,7 +27,7 @@ class ChatboxModel extends Jaws_Gadget_Model
 
         $subject  = _t('CHATBOX_COMMENT_MAIL_TITLE');
         $comment .= "<br /><br />";
-        $comment .= _t("CHATBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->GetRegistry('site_name', 'Settings'));
+        $comment .= _t("CHATBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->GetRegistry('site_name', 'Settings'));
 
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
@@ -58,18 +58,18 @@ class ChatboxModel extends Jaws_Gadget_Model
         }
 
         $permalink = $GLOBALS['app']->GetSiteURL();
-        $max_strlen = (int)$this->GetRegistry('max_strlen');
+        $max_strlen = (int)$this->gadget->GetRegistry('max_strlen');
         if ($GLOBALS['app']->UTF8->strlen($message) > $max_strlen) {
             $message = $GLOBALS['app']->UTF8->substr($message, 0, $max_strlen - 3).'...';
         }
 
-        $status = $this->GetRegistry('comment_status');
+        $status = $this->gadget->GetRegistry('comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Chatbox', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
         $res = $cModel->NewComment(
-            $this->name, 0, $name, $email,
+            $this->gadget->name, 0, $name, $email,
             $url, '', $message, $ip, $permalink, 0, $status
         );
         if (Jaws_Error::isError($res)) {
@@ -98,7 +98,7 @@ class ChatboxModel extends Jaws_Gadget_Model
     function GetEntries($limit = 10)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $entries = $cModel->GetRecentComments($this->name, $limit, true, false, false, true);
+        $entries = $cModel->GetRecentComments($this->gadget->name, $limit, true, false, false, true);
         return $entries;
     }
 
