@@ -20,7 +20,7 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function InstallGadget()
     {
         // Registry keys
-        $this->AddRegistry('date_format',  'DN d MN Y');
+        $this->gadget->AddRegistry('date_format',  'DN d MN Y');
 
         return true;
     }
@@ -34,7 +34,7 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function UninstallGadget()
     {
         // Registry keys
-        $this->DelRegistry('date_format');
+        $this->gadget->DelRegistry('date_format');
 
         return true;
     }
@@ -50,8 +50,8 @@ class ServerTimeAdminModel extends Jaws_Gadget_Model
     function UpdateGadget($old, $new)
     {
         // Registry keys
-        $this->DelRegistry('display_format');
-        $this->AddRegistry('date_format',  'DN d MN Y');
+        $this->gadget->DelRegistry('display_format');
+        $this->gadget->AddRegistry('date_format',  'DN d MN Y');
         return true;
     }
 
