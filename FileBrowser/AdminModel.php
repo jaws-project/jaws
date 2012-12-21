@@ -37,12 +37,12 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
 
         //registry keys.
-        $this->AddRegistry('black_list', 'htaccess');
-        $this->AddRegistry('root_dir', 'files');
-        $this->AddRegistry('frontend_avail', 'true');
-        $this->AddRegistry('virtual_links', 'false');
-        $this->AddRegistry('order_type', 'filename, false');
-        $this->AddRegistry('views_limit', '0');
+        $this->gadget->AddRegistry('black_list', 'htaccess');
+        $this->gadget->AddRegistry('root_dir', 'files');
+        $this->gadget->AddRegistry('frontend_avail', 'true');
+        $this->gadget->AddRegistry('virtual_links', 'false');
+        $this->gadget->AddRegistry('order_type', 'filename, false');
+        $this->gadget->AddRegistry('views_limit', '0');
 
         return true;
     }
@@ -64,12 +64,12 @@ class FileBrowserAdminModel extends FileBrowserModel
         }
 
         // Registry keys
-        $this->DelRegistry('black_list');
-        $this->DelRegistry('root_dir');
-        $this->DelRegistry('frontend_avail');
-        $this->DelRegistry('virtual_links');
-        $this->DelRegistry('order_type');
-        $this->DelRegistry('views_limit');
+        $this->gadget->DelRegistry('black_list');
+        $this->gadget->DelRegistry('root_dir');
+        $this->gadget->DelRegistry('frontend_avail');
+        $this->gadget->DelRegistry('virtual_links');
+        $this->gadget->DelRegistry('order_type');
+        $this->gadget->DelRegistry('views_limit');
 
         return true;
     }
@@ -91,12 +91,12 @@ class FileBrowserAdminModel extends FileBrowserModel
             }
 
             // Registry keys.
-            $this->AddRegistry('black_list', '.htaccess');
-            $this->AddRegistry('frontend_avail', 'true');
+            $this->gadget->AddRegistry('black_list', '.htaccess');
+            $this->gadget->AddRegistry('frontend_avail', 'true');
         }
 
         if (version_compare($old, '0.7.1', '<')) {
-            $this->AddRegistry('root_dir', 'files');
+            $this->gadget->AddRegistry('root_dir', 'files');
         }
 
         if (version_compare($old, '0.8.0', '<')) {
@@ -120,13 +120,13 @@ class FileBrowserAdminModel extends FileBrowserModel
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/ShareDir');
 
             //Registry key
-            $this->AddRegistry('virtual_links', 'false');
-            $this->AddRegistry('order_type', 'filename, false');
+            $this->gadget->AddRegistry('virtual_links', 'false');
+            $this->gadget->AddRegistry('order_type', 'filename, false');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             //Registry key
-            $this->AddRegistry('views_limit', '0');
+            $this->gadget->AddRegistry('views_limit', '0');
         }
 
         if (version_compare($old, '0.8.2', '<')) {
@@ -292,7 +292,7 @@ class FileBrowserAdminModel extends FileBrowserModel
 
         require_once PEAR_PATH. 'File/Util.php';
         $realpath = File_Util::realpath($dir);
-        $blackList = explode(',', $this->GetRegistry('black_list'));
+        $blackList = explode(',', $this->gadget->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         if (!File_Util::pathInRoot($realpath, $this->GetFileBrowserRootDir()) ||
@@ -327,7 +327,7 @@ class FileBrowserAdminModel extends FileBrowserModel
 
         $file = $path . ((empty($path)? '': DIRECTORY_SEPARATOR)) . $filename;
         $filename = $this->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
-        $blackList = explode(',', $this->GetRegistry('black_list'));
+        $blackList = explode(',', $this->gadget->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         require_once PEAR_PATH. 'File/Util.php';
@@ -384,7 +384,7 @@ class FileBrowserAdminModel extends FileBrowserModel
         require_once PEAR_PATH. 'File/Util.php';
         $oldfile = File_Util::realpath($oldfile);
         $newfile = File_Util::realpath($newfile);
-        $blackList = explode(',', $this->GetRegistry('black_list'));
+        $blackList = explode(',', $this->gadget->GetRegistry('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         if (!File_Util::pathInRoot($oldfile, $this->GetFileBrowserRootDir()) ||
