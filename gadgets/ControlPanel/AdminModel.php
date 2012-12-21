@@ -12,32 +12,5 @@
 class ControlPanelAdminModel extends Jaws_Gadget_Model
 {
     /**
-     * Installs the gadget
-     *
-     * @access  public
-     * @return  bool    True on successful installation or Jaws_Error otherwise
      */
-    function InstallGadget()
-    {
-        // registry keys
-        $this->gadget->AddRegistry('pluggable', 'false');
-        return true;
-    }
-
-    /**
-     * Update the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool    True on Success
-     */
-    function UpdateGadget($old, $new)
-    {
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/ControlPanel/Backup', 'false');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/ControlPanel/DatabaseBackups');
-
-        return true;
-    }
-
 }
