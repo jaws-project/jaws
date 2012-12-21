@@ -34,7 +34,7 @@ class SysInfoAdminModel extends SysInfoModel
     function UpdateGadget($old, $new)
     {
         // Registry keys
-        $this->DelRegistry('frontend_avail');
+        $this->gadget->DelRegistry('frontend_avail');
 
         // ACL keys
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/SysInfo',  'false');
