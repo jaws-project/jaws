@@ -23,21 +23,21 @@ class MenuAdminModel extends MenuModel
      */
     function InstallGadget()
     {
-        $result = $this->installSchema('schema.xml');
+        $result = $this->gadget->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
+        $result = $this->gadget->installSchema('insert.xml', '', 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         // Install listener for removing menu's item related to uninstalled gadget
-        $GLOBALS['app']->Listener->NewListener($this->name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
 
         // Registry keys
-        $this->AddRegistry('default_group_id', '1');
+        $this->gadget->AddRegistry('default_group_id', '1');
 
         return true;
     }
@@ -63,7 +63,7 @@ class MenuAdminModel extends MenuModel
         }
 
         // Registry keys
-        $this->DelRegistry('default_group_id');
+        $this->gadget->DelRegistry('default_group_id');
 
         return true;
     }
@@ -79,12 +79,12 @@ class MenuAdminModel extends MenuModel
     function UpdateGadget($old, $new)
     {
         if (version_compare($old, '0.7.0', '<')) {
-            $result = $this->installSchema('0.7.0.xml', '', "$old.xml");
+            $result = $this->gadget->installSchema('0.7.0.xml', '', "$old.xml");
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
 
-            $result = $this->installSchema('insert.xml', '', '0.7.0.xml', true);
+            $result = $this->gadget->installSchema('insert.xml', '', '0.7.0.xml', true);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -135,18 +135,18 @@ class MenuAdminModel extends MenuModel
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Menu/ManageGroups', 'true');
 
             // Registry keys
-            $this->AddRegistry('default_group_id', '1');
+            $this->gadget->AddRegistry('default_group_id', '1');
         }
 
         if (version_compare($old, '0.7.1', '<')) {
             //remove old event listener
             $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
-            $GLOBALS['app']->Listener->DeleteListener($this->name);
+            $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
             // Install listener for removing menu's item related to uninstalled gadget
-            $GLOBALS['app']->Listener->NewListener($this->name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onBeforeUninstallingGadget', 'RemoveMenusByType');
         }
 
-        $result = $this->installSchema('schema.xml', '', "0.7.0.xml");
+        $result = $this->gadget->installSchema('schema.xml', '', "0.7.0.xml");
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
