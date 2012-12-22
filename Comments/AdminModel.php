@@ -27,7 +27,7 @@ class CommentsAdminModel extends CommentsModel
         }
 
         // Install listener for removing comments related to uninstalled gadget
-        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'onUninstallGadget', 'DeleteCommentsOfGadget');
+        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onUninstallGadget', 'DeleteCommentsOfGadget');
 
         return true;
     }
@@ -100,6 +100,7 @@ class CommentsAdminModel extends CommentsModel
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), _t('COMMENTS_NAME'));
         }
 
@@ -115,6 +116,7 @@ class CommentsAdminModel extends CommentsModel
             }
         }
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -392,4 +394,27 @@ class CommentsAdminModel extends CommentsModel
         return $rows;
     }
 
+    /**
+     * Does a massive comment delete
+     *
+     * @access  public
+     * @param   array   $ids  Ids of comments
+     * @return  mixed   True on Success or Jaws_Error on Failure
+     */
+    function MassiveCommentDelete($ids)
+    {
+        if (!is_array($ids)) {
+            $ids = func_get_args();
+        }
+
+        foreach ($ids as $id) {
+            $res = $this->DeleteComment($id);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
+            }
+        }
+
+        return true;
+    }
 }

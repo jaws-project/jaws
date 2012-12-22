@@ -13,7 +13,14 @@
  * Use async mode, create Callback
  */
 var CommentsCallback = {
- 
+     updateComment: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            limit = $('comments_datagrid').getCurrentPage();
+            getData(limit);
+            stopAction();
+        }
+        showResponse(response);
+    }
 }
 
 /**
@@ -83,12 +90,14 @@ function unselectDataGridRow()
 function stopAction() 
 {
     $('id').value      = 0;
-    $('cmments_ip').set('html', '');
+    $('gadget').value  = '';
+    $('comment_ip').set('html', '');
     $('name').value    = '';
     $('email').value   = '';
     $('url').value     = '';
     $('subject').value = '';
     $('message').value = '';
+    $('status').value  = '';
     $('btn_save').style.visibility   = 'hidden';
     $('btn_cancel').style.visibility = 'hidden';
     unselectDataGridRow();
@@ -105,26 +114,43 @@ function commentEdit(element, id)
 
     var comment = CommentsAjax.callSync('getcomment', $('gadgets_filter').value, id);
     $('id').value      = comment['id'];
+    $('gadget').value  = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);
     $('name').value    = comment['name'];
     $('email').value   = comment['email'];
     $('url').value     = comment['url'];
     $('subject').value = comment['title'].defilter();
     $('message').value = comment['msg_txt'].defilter();
+    $('status').value  = comment['status'];
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
+}
+
+/**
+ * Update a Comment
+ */
+function updateComment()
+{
+    CommentsAjax.callAsync('updateComment',
+                    $('gadget').value,
+                    $('id').value,
+                    $('name').value,
+                    $('email').value,
+                    $('url').value,
+                    $('subject').value,
+                    $('message').value,
+                    $('status').value);
 }
 
 /**
  * Delete contact
  *
  */
-function deleteContact(element, id)
+function commentDelete(id)
 {
     stopAction();
-    selectDataGridRow(element.parentNode.parentNode);
-    if (confirm(confirmContactDelete)) {
-        ContactAjax.callAsync('deletecontact', id);
+    if (confirm(confirmCommentDelete)) {
+        CommentsAjax.callAsync('DeleteComments', id);
     }
     unselectDataGridRow();
 }

@@ -91,4 +91,38 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
         }
         return $comment;
     }
+
+    /**
+     * Update comment information
+     *
+     * @access  public
+     * @param   int     $id         Comment ID
+     * @param   string  $name       Name
+     * @param   string  $email      Email address
+     * @param   string  $url
+     * @param   string  $subject    Subject of message
+     * @param   string  $message    Message content
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateComment($gadget, $id, $name, $email, $url, $subject, $message, $status)
+    {
+        // TODO: Check Permission For Manage Comments
+        // TODO: Fill permalink In New Versions, Please!!
+        $this->_Model->UpdateComment($gadget, $id, $name, $email, $url, $subject, $message, '', $status);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Does a massive delete on comments
+     *
+     * @access  public
+     * @param   array   $ids     Comment ids
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteComments($ids)
+    {
+        // TODO: Check Permission For Manage Comments
+        $this->_Model->MassiveCommentDelete($ids);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
 }

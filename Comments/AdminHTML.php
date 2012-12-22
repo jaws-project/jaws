@@ -92,13 +92,12 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         // TODO: Check Permission For Manage Comments
         //$btnSave->SetEnabled($this->GetPermission('ManageComments'));
-        $btnSave->AddEvent(ON_CLICK, 'updateComment(false);');
+        $btnSave->AddEvent(ON_CLICK, 'updateComment();');
         $btnSave->SetStyle('visibility: hidden;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-
         $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmCommentsDelete',    _t('COMMENTS_CONFIRM_DELETE'));
+        $tpl->SetVariable('confirmCommentDelete',    _t('COMMENTS_CONFIRM_DELETE'));
         $tpl->SetVariable('legend_title',            _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
         $tpl->SetVariable('messageDetail_title',     _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
 
@@ -138,6 +137,16 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
         $nameEntry->setStyle('width: 270px;');
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $nameEntry->Get());
+
+        //Status
+        $status =& Piwi::CreateWidget('Combo', 'status');
+        $status->AddOption('&nbsp;','various');
+        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
+        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
+        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->SetDefault('various');
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status', $status->Get());
 
         //subject
         $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
