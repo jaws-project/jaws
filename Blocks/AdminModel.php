@@ -13,68 +13,6 @@ require_once JAWS_PATH . 'gadgets/Blocks/Model.php';
 class BlocksAdminModel extends BlocksModel
 {
     /**
-     * Install the gadget
-     *
-     * @access  public
-     * @return  mixed    Returns True if installation success or Jaws_Error on any error found
-     */
-    function InstallGadget()
-    {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Registry keys.
-        $this->gadget->AddRegistry('pluggable',  'false');
-
-        return true;
-    }
-
-    /**
-     * Uninstall the gadget
-     *
-     * @access  public
-     * @return  mixed   True on if successful or Jaws_Error otherwise
-     */
-    function UninstallGadget()
-    {
-        $result = $GLOBALS['db']->dropTable('blocks');
-        if (Jaws_Error::IsError($result)) {
-            $gName  = _t('BLOCKS_NAME');
-            $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-            $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
-            return new Jaws_Error($errMsg, $gName);
-        }
-
-        // Registry keys
-        $this->gadget->DelRegistry('pluggable');
-
-        return true;
-    }
-
-    /**
-     * Update the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool    True on Success or Jaws_Error on Failure
-     */
-    function UpdateGadget($old, $new)
-    {
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Registry keys.
-        $this->gadget->DelRegistry('searchable');
-
-        return true;
-    }
-
-    /**
      * Create a new Block
      *
      * @access  public
