@@ -45,7 +45,7 @@ class LanguagesAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lang_name', $langName->Get());
         $tpl->SetVariable('lbl_lang_name', _t('LANGUAGES_LANGUAGE_NAME'));
 
-        if ($this->GetPermission('ModifyLanguageProperties')) {
+        if ($this->gadget->GetPermission('ModifyLanguageProperties')) {
             $btnLang =& Piwi::CreateWidget('Button','btn_lang', '', STOCK_SAVE);
             $btnLang->AddEvent(ON_CLICK, 'javascript: save_lang();');
             $tpl->SetVariable('btn_lang', $btnLang->Get());
@@ -57,7 +57,7 @@ class LanguagesAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
 
         // Langs
-        $use_data_lang = $this->GetRegistry('use_data_lang') == 'true';
+        $use_data_lang = $this->gadget->GetRegistry('use_data_lang') == 'true';
         $langs = Jaws_Utils::GetLanguagesList($use_data_lang);
         $tpl->SetBlock('Languages/lang');
         $tpl->SetVariable('selected', '');
@@ -135,7 +135,7 @@ class LanguagesAdminHTML extends Jaws_Gadget_HTML
         $tpl->Load('LangStrings.html');
         $tpl->SetBlock('LangStrings');
 
-        $langFrom = $this->GetRegistry('base_lang');
+        $langFrom = $this->gadget->GetRegistry('base_lang');
         $data = $model->GetLangData($module, $type, $langTo, $langFrom);
         $color = 'even';
         if (count($data['strings']) > 0) {
