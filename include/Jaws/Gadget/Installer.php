@@ -336,7 +336,7 @@ class Jaws_Gadget_Installer
 
         // end install gadget event
         $res = $GLOBALS['app']->Shouter->Shout('End_InstallGadget', $this->gadget->name);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
