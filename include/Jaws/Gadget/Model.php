@@ -172,7 +172,7 @@ class Jaws_Gadget_Model
     function InstallACLs()
     {
         $acls = array();
-        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Info');
         foreach ($info->GetACLs() as $acl => $default) {
             if (false === stripos(serialize($acls), "\"{$acl}\"")) {
                 $acls[] = array($acl, $default);
@@ -189,7 +189,7 @@ class Jaws_Gadget_Model
      */
     function UninstallACLs()
     {
-        $info = $GLOBALS['app']->LoadGadget($this->name, 'Info');
+        $info = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Info');
         foreach($info->GetACLs() as $acl => $opts){
             $GLOBALS['app']->ACL->DeleteKey($acl);
         }
@@ -280,7 +280,7 @@ class Jaws_Gadget_Model
      */
     function GetPermission($task, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $task);
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->gadget->name : $gadget, $task);
     }
 
 }
