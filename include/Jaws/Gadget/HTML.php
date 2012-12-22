@@ -5,11 +5,20 @@
  * @category   Gadget
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_HTML extends Jaws_Gadget
+class Jaws_Gadget_HTML
 {
+    /**
+     * Jaws_Gadget object
+     *
+     * @var     object
+     * @access  protected
+     */
+    var $gadget = null;
+
     /**
      * Are we running Ajax?
      *
@@ -19,15 +28,25 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     var $_usingAjax = false;
 
     /**
+     * A list of actions that the gadget has
+     *
+     * @var     array
+     * @access  protected
+     * @see AddAction()
+     */
+    var $_ValidAction = array();
+
+    /**
      * Constructor
      *
      * @access  public
-     * @param   string $gadget Gadget's name(same as the filesystem name)
+     * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
     function Jaws_Gadget_HTML($gadget)
     {
-        parent::Jaws_Gadget($gadget);
+        $this->gadget = $gadget;
+        $this->LoadActions();
         if (APP_TYPE == 'web') {
             // Add ShowGadgetInfo action
             $this->StandaloneAction('ShowGadgetInfo','');
@@ -42,15 +61,32 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     }
 
     /**
-     * Refactor Init, Jaws_GadgetHTML::Init() loads the Piwi stuff
+     * Load the gadget's action stuff files
      *
      * @access  public
-     * @param   string $gadget Gadget's name(same as the filesystem name)
-     * @return  void
      */
-    function Init($gadget)
+    function LoadActions()
     {
-        $this->Jaws_GadgetHTML($gadget);
+        if (empty($this->_ValidAction)) {
+            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->gadget->name);
+            if (!isset($this->_ValidAction['index']['DefaultAction'])) {
+                $this->_ValidAction['index']['DefaultAction'] = array(
+                    'name' => 'DefaultAction',
+                    'normal' => true,
+                    'desc' => '',
+                    'file' => null
+                );
+            }
+
+            if (!isset($this->_ValidAction['admin']['Admin'])) {
+                $this->_ValidAction['admin']['Admin'] = array(
+                    'name' => 'Admin',
+                    'normal' => true,
+                    'desc' => '',
+                    'file' => null
+                );
+            }
+        }
     }
 
     /**
@@ -61,17 +97,16 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
      */
     function Ajax()
     {
-        $name = $this->name;
         require_once JAWS_PATH . 'include/Jaws/Gadget/Ajax.php';
 
         if (JAWS_SCRIPT == 'admin') {
-            $model = $GLOBALS['app']->LoadGadget($name, 'AdminModel');
-            require_once JAWS_PATH.'gadgets/' . $name . '/AdminAjax.php';
-            $ajaxClass = $name . 'AdminAjax';
+            $model = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
+            require_once JAWS_PATH.'gadgets/' . $this->gadget->name . '/AdminAjax.php';
+            $ajaxClass = $this->gadget->name . 'AdminAjax';
         } else {
-            $model = $GLOBALS['app']->LoadGadget($name, 'Model');
-            require_once JAWS_PATH.'gadgets/' . $name . '/Ajax.php';
-            $ajaxClass = $name . 'Ajax';
+            $model = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Model');
+            require_once JAWS_PATH.'gadgets/' . $this->gadget->name . '/Ajax.php';
+            $ajaxClass = $this->gadget->name . 'Ajax';
         }
 
         $objAjax = new $ajaxClass($model);
@@ -117,13 +152,12 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     function AjaxMe($file = '', $version = '')
     {
         $this->_usingAjax = true;
-        $name = $this->name;
-         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
                 'gadgets/'.
-                $name.
+                $this->gadget->name.
                 '/resources/'.
                 $file.
                 (empty($version)? '' : "?$version")
@@ -220,19 +254,276 @@ class Jaws_Gadget_HTML extends Jaws_Gadget
     }
 
     /**
-     * Search in map and return its url if found
+     * Set the action to execute
+     *
+     * @access  public
+     * @param   string  $value Gadget's Action
+     */
+    function SetAction($value)
+    {
+        $this->_Action = $value;
+    }
+
+    /**
+     * Get the gadget's action
+     *
+     * @access  public
+     * @return  string  Returns the gadget's action
+     */
+    function GetAction()
+    {
+        return $this->_Action;
+    }
+
+    /**
+     * Execute the action
+     *
+     * @access  public
+     */
+    function Execute()
+    {
+        // is an empty action?
+        if (empty($this->_Action) || $this->_Action == 'DefaultAction') {
+            $this->_Action = $this->gadget->GetRegistry('default_action');
+            if (empty($this->_Action)) {
+                $this->_Action = 'DefaultAction';
+            }
+        }
+
+        // Cut of the param part since we only want to validate the action name
+        if ($pos = strpos($this->_Action, '(')) {
+            $action = substr($this->_Action, 0, $pos);
+        } else {
+            $action = $this->_Action;
+        }
+
+        if (!$this->IsValidAction($action)) {
+            Jaws_Error::Fatal('Invalid action: '. $action);
+        }
+
+        $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
+        if (!empty($file)) {
+            $objAction = $GLOBALS['app']->LoadGadget(
+                $this->gadget->name,
+                JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
+                $file
+            );
+        }
+
+        $action2execute = $this->_Action;
+        if (strpos($action2execute, '(')) {
+            // FIXME: This is a hack to support actions with params,
+            //        currently only supports 1 parameter.
+            $regexp = "/([A-Za-z]+)\((.*)\)/sm";
+            preg_match ($regexp, $action2execute, $matches, PREG_OFFSET_CAPTURE);
+            $method = $matches[1][0];
+            $params = $matches[2][0];
+            return call_user_func(array($this, $method), $params);
+        }
+
+        return empty($file)? $this->$action2execute() : $objAction->$action2execute();
+    }
+
+    /**
+     * Adds a new Action
      *
      * @access  protected
-     * @param   string     $action    Gadget's action name
-     * @param   array      $params    Params that the URL map requires
-     * @param   array      $params    Params that the URL map requires
-     * @param   bool       $useExt    Append the extension? (if there's)
-     * @param   mixed      URIPrefix  Prefix to use: site_url (config/url), uri_location or false for nothing
-     * @return  string     The mapped URL
+     * @param   string  $name   Action name
+     * @param   string  $script Action script
+     * @param   string  $mode   Action mode
+     * @param   string  $description Action's description
      */
-    function GetURLFor($action='', $params = null, $useExt = true, $URIPrefix = false)
+    function AddAction($action, $script, $mode, $description, $file = null)
     {
-        return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $useExt, $URIPrefix);
+        $this->_ValidAction[$script][$action] = array(
+            'name' => $action,
+            $mode => true,
+            'desc' => $description,
+            'file' => $file
+        );
+    }
+
+    /**
+     * Set a Action mode
+     *
+     * @access  protected
+     * @param   string  $name       Action's name
+     * @param   string  $new_mode   Action's new mode
+     * @param   string  $old_mode   Action's old mode
+     * @param   string  $desc       Action's description
+     */
+    function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
+    {
+        $this->_ValidAction[JAWS_SCRIPT][$action] = array(
+            'name' => $action,
+            $new_mode => true,
+            $old_mode => false,
+            'desc' => $desc,
+            'file' => $file
+        );
+    }
+
+    /**
+     * Adds a normal action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function NormalAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'index', 'normal', $description);
+    }
+
+    /**
+     * Adds an admin action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function AdminAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'admin', 'normal', $description);
+    }
+
+    /**
+     * Verifies if the action is for admin users(for controlpanel)
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is for admin users, if not, returns false
+     */
+    function IsAdmin($action)
+    {
+        if ($this->IsValidAction($action, 'admin')) {
+            return (isset($this->_ValidAction['admin'][$action]['normal']) &&
+                    $this->_ValidAction['admin'][$action]['normal']) ||
+                   (isset($this->_ValidAction['admin'][$action]['standalone']) &&
+                    $this->_ValidAction['admin'][$action]['standalone']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifies if action is normal
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is normal, if not, returns false
+     */
+    function IsNormal($action)
+    {
+        if (empty($action)) {
+            $action = 'DefaultAction';
+        }
+
+        if ($this->IsValidAction($action, 'index')) {
+            return (isset($this->_ValidAction['index'][$action]['normal']) &&
+                    $this->_ValidAction['index'][$action]['normal']) ||
+                   (isset($this->_ValidAction['index'][$action]['standalone']) &&
+                    $this->_ValidAction['index'][$action]['standalone']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Adds a layout action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function LayoutAction($action, $name, $description = null)
+    {
+        $this->AddAction($action, 'index', 'layout', $name, $description);
+    }
+
+    /**
+     * Adds a standalone action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function StandaloneAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'index', 'standalone', $name, $description);
+    }
+
+    /**
+     * Adds a standalone/admin action
+     *
+     * @access  protected
+     * @param   string  $action Action
+     * @param   string  $name Action's name
+     * @param   string  $description Action's description
+     */
+    function StandaloneAdminAction($action, $name = null, $description = null)
+    {
+        $this->AddAction($action, 'admin', 'standalone', $name, $description);
+    }
+
+    /**
+     * Verifies if action is a standalone
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is standalone, if not, returns false
+     */
+    function IsStandAlone($action)
+    {
+        if ($this->IsValidAction($action, 'index')) {
+            return (isset($this->_ValidAction['index'][$action]['standalone']) &&
+                    $this->_ValidAction['index'][$action]['standalone']);
+        }
+        return false;
+    }
+
+    /**
+     * Verifies if action is a standalone of controlpanel
+     *
+     * @access  public
+     * @param   string  $action to Verify
+     * @return  bool    True if action is standalone of the controlpanel if not, returns false
+     */
+    function IsStandAloneAdmin($action)
+    {
+        if ($this->IsValidAction($action, 'admin')) {
+            return (isset($this->_ValidAction['admin'][$action]['standalone']) &&
+                    $this->_ValidAction['admin'][$action]['standalone']);
+        }
+        return false;
+    }
+
+    /**
+     * Uses the admin of the gadget(in controlpanel)
+     *
+     * @access  public
+     * @return  string  The text to show
+     */
+    function Admin()
+    {
+        $str = _t('GLOBAL_JG_NOADMIN');
+        return $str;
+    }
+
+    /**
+     * Validates if an action is valid
+     *
+     * @access  public
+     * @param   string  $action Action to validate
+     * @return  mixed   Action mode if action is valid, otherwise false
+     */
+    function IsValidAction($action, $script = JAWS_SCRIPT)
+    {
+        return isset($this->_ValidAction[$script][$action]);
     }
 
 }
