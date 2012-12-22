@@ -37,7 +37,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
                     $tpl->SetBlock('OnlineUsers/user');
                     $tpl->SetVariable('username', $session['username']);
                     $tpl->SetVariable('nickname', $session['nickname']);
-                    $tpl->SetVariable('url_user', $this->GetURLFor('Profile',  array('user' => $session['username'])));
+                    $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $session['username'])));
                     $tpl->ParseBlock('OnlineUsers/user');
                 }
             }
@@ -88,7 +88,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('USERS_LAYOUT_LATEST_REGISTERED'));
 
         // latest registered users limit
-        $limit = (int)$this->GetRegistry('latest_limit');
+        $limit = (int)$this->gadget->GetRegistry('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -98,7 +98,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
             $tpl->SetBlock('LatestRegistered/user');
             $tpl->SetVariable('username', $user['username']);
             $tpl->SetVariable('nickname', $user['nickname']);
-            $tpl->SetVariable('url_user', $this->GetURLFor('Profile',  array('user' => $user['username'])));
+            $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $user['username'])));
             $tpl->ParseBlock('LatestRegistered/user');
         }
 

@@ -146,7 +146,7 @@ class Users_Actions_Preferences extends UsersHTML
             $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(), 'Users.Preferences');
         }
 
-        Jaws_Header::Location($this->GetURLFor('Preferences'));
+        Jaws_Header::Location($this->gadget->GetURLFor('Preferences'));
     }
 
 }

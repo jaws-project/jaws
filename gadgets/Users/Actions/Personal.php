@@ -149,7 +149,7 @@ class Users_Actions_Personal extends UsersHTML
               $post['dob_year']);
 
         $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Personal.Data');
-        Jaws_Header::Location($this->GetURLFor('Personal'));
+        Jaws_Header::Location($this->gadget->GetURLFor('Personal'));
     }
 
 }

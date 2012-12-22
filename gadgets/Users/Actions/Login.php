@@ -20,7 +20,7 @@ class Users_Actions_Login extends UsersHTML
      */
     function SendRecoverKey()
     {
-        if ($this->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -32,7 +32,7 @@ class Users_Actions_Login extends UsersHTML
         $resCheck = $mPolicy->CheckCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Users.ForgotLogin');
-            Jaws_Header::Location($this->GetURLFor('ForgotLogin'));
+            Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
         }
 
         $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
@@ -42,7 +42,7 @@ class Users_Actions_Login extends UsersHTML
         } else {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_FORGOT_MAIL_SENT'), 'Users.ForgotLogin');
         }
-        Jaws_Header::Location($this->GetURLFor('ForgotLogin'));
+        Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
     }
 
     /**
@@ -53,7 +53,7 @@ class Users_Actions_Login extends UsersHTML
      */
     function ForgotLogin()
     {
-        if ($this->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -103,7 +103,7 @@ class Users_Actions_Login extends UsersHTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('LoginBox.html');
 
-        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -158,13 +158,13 @@ class Users_Actions_Login extends UsersHTML
         }
         $tpl->ParseBlock('LoginBox/remember');
 
-        if ($this->GetRegistry('anon_register') == 'true') {
+        if ($this->gadget->GetRegistry('anon_register') == 'true') {
             $link =& Piwi::CreateWidget('Link', _t('USERS_REGISTER'),
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
             $tpl->SetVariable('user-register', $link->Get());
         }
 
-        if ($this->GetRegistry('password_recovery') == 'true') {
+        if ($this->gadget->GetRegistry('password_recovery') == 'true') {
             $link =& Piwi::CreateWidget('Link', _t('USERS_FORGOT_LOGIN'),
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));
             $tpl->SetVariable('forgot-password', $link->Get());
@@ -241,7 +241,7 @@ class Users_Actions_Login extends UsersHTML
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
-                $admin_script = $this->GetRegistry('admin_script', 'Settings');
+                $admin_script = $this->gadget->GetRegistry('admin_script', 'Settings');
                 $tpl->SetVariable('cpanel_url', empty($admin_script)? 'admin.php' : $admin_script);
                 $tpl->ParseBlock('UserLinks/cpanel');
             }
@@ -271,7 +271,7 @@ class Users_Actions_Login extends UsersHTML
             $tpl->SetVariable('login_url', $login_url);
 
             // registeration
-            if ($this->GetRegistry('anon_register') == 'true') {
+            if ($this->gadget->GetRegistry('anon_register') == 'true') {
                 $tpl->SetBlock('LoginLinks/registeration');
                 $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
                 $tpl->SetVariable('registeration_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
@@ -279,7 +279,7 @@ class Users_Actions_Login extends UsersHTML
             }
 
             // forget user/password
-            if ($this->GetRegistry('password_recovery') == 'true') {
+            if ($this->gadget->GetRegistry('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
                 $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
                 $tpl->SetVariable('forgot_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));
@@ -304,7 +304,7 @@ class Users_Actions_Login extends UsersHTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('username', 'password', 'remember', 'usecrypt', 'referrer'), 'post');
 
-        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
+        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();

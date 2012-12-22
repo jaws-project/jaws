@@ -19,7 +19,7 @@ class Users_Actions_Admin_MyAccount extends UsersAdminHTML
      */
     function MyAccount()
     {
-        $this->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
+        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
         require_once JAWS_PATH.'include/Jaws/User.php';
         $uModel = new Jaws_User();
@@ -35,7 +35,7 @@ class Users_Actions_Admin_MyAccount extends UsersAdminHTML
         $tpl->SetVariable('uid', $uInfo['id']);
         $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT_INFO'));
 
-        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();

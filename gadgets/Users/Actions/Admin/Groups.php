@@ -64,7 +64,7 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
             $grpData['name']  = $group['name'];
 
             $actions = '';
-            if ($this->GetPermission('ManageGroups')) {
+            if ($this->gadget->CheckPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('GLOBAL_EDIT'),
                                             "javascript: editGroup(this, '".$group['id']."');",
@@ -72,7 +72,7 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->GetPermission('ManageGroupACLs')) {
+            if ($this->gadget->CheckPermission('ManageGroupACLs')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLRULES'),
                                             "javascript: editGroupACL(this, '".$group['id']."');",
@@ -80,7 +80,7 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->GetPermission('ManageGroups')) {
+            if ($this->gadget->CheckPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_GROUPS_MEMBERS'),
                                             "javascript: editGroupUsers(this, '".$group['id']."');",
@@ -88,7 +88,7 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->GetPermission('ManageGroups')) {
+            if ($this->gadget->CheckPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_GROUPS_DELETE'),
                                             "javascript: deleteGroup(this, '".$group['id']."');",
@@ -111,7 +111,7 @@ class Users_Actions_Admin_Groups extends UsersAdminHTML
      */
     function Groups()
     {
-        $this->CheckPermission('ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');

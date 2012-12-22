@@ -156,7 +156,7 @@ class Users_Actions_Account extends UsersHTML
         // unset unnecessary account data
         unset($post['password'], $post['chkpassword']);
         $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Account.Data');
-        Jaws_Header::Location($this->GetURLFor('Account'));
+        Jaws_Header::Location($this->gadget->GetURLFor('Account'));
     }
 
     /**
@@ -168,7 +168,7 @@ class Users_Actions_Account extends UsersHTML
      */
     function ChangePassword()
     {
-        if ($this->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
             return parent::_404();
         }
 

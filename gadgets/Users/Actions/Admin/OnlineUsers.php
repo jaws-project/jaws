@@ -67,7 +67,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
                 $uProfile =& Piwi::CreateWidget(
                     'Link',
                     $session['username'],
-                    $this->GetURLFor('Profile',  array('user' => $session['username']))
+                    $this->gadget->GetURLFor('Profile',  array('user' => $session['username']))
                 );
                 $usrData['username'] = $uProfile->Get();
             }
@@ -89,7 +89,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
                 STOCK_DELETE);
             $actions = $link->Get() . '&nbsp;';
 
-            if ($this->GetPermission('ManageIPs', 'Policy')) {
+            if ($this->gadget->CheckPermission('ManageIPs', 'Policy')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
                     _t('USERS_ONLINE_BLOCKING_IP'),
@@ -98,7 +98,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
                 $actions .= $link->Get() . '&nbsp;';
             }
 
-            if ($this->GetPermission('ManageAgents', 'Policy')) {
+            if ($this->gadget->CheckPermission('ManageAgents', 'Policy')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
                     _t('USERS_ONLINE_BLOCKING_AGENT'),
@@ -122,7 +122,7 @@ class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
      */
     function OnlineUsers()
     {
-        $this->CheckPermission('ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
