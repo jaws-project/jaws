@@ -598,7 +598,9 @@ class Jaws
             }
 
             // temporary
-            if (in_array($type, array('Model', 'AdminModel', 'Installer'))) {
+            if ($type == 'Info') {
+                $obj = new $type_class_name($gadget);
+            } else {
                 if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
                     $info_class_name = $gadget . 'Info';
                     $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
@@ -606,8 +608,6 @@ class Jaws
                     $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
                 }
                 $obj = new $type_class_name($this->_Gadgets[$gadget]['Info']['base']);
-            } else {
-                $obj = new $type_class_name($gadget);
             }
             if (Jaws_Error::IsError($obj)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $type_class_name),
@@ -657,12 +657,7 @@ class Jaws
                 }
 
                 // temporary
-                if (in_array($type, array('Model', 'AdminModel', 'Installer'))) {
-                    $objFile = new $file_class_name($this->_Gadgets[$gadget]['Info']['base']);
-                } else {
-                    $objFile = new $file_class_name($gadget);
-                }
-
+                $objFile = new $file_class_name($this->_Gadgets[$gadget]['Info']['base']);
                 if (Jaws_Error::IsError($objFile)) {
                     $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $file_class_name),
                                             'Gadget file loading');
