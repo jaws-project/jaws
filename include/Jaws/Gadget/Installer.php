@@ -81,9 +81,9 @@ class Jaws_Gadget_Installer
             return $res;
         }
 
-        if (!$this->_commonDisableGadget()) {
-            return false;
-        }
+        // if (!$this->_commonDisableGadget()) {
+            // return false;
+        // }
 
         if (
             $this->gadget->GetRegistry('enabled') == 'true' &&
@@ -101,6 +101,39 @@ class Jaws_Gadget_Installer
     }
 
     /**
+     * Gets gadgets that depend on a given gadget
+     *
+     * @access  public
+     * @return  mixed   Array of gadgets otherwise Jaws_Error
+     */
+    function dependOnGadgets()
+    {
+        if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
+            return false;
+        }
+
+        $params = array();
+        $params['name']  = 'requires';
+        $params['value'] = '%,'. $this->gadget->name. ',%';
+
+        $sql = '
+            SELECT
+                [component_name]
+            FROM [[registry]]
+            WHERE
+                [key_name] = {name}
+              AND
+                [key_value] LIKE {value}';
+
+        $requires = $GLOBALS['db']->queryAll($sql, $params);
+        if (Jaws_Error::IsError($requires)) {
+            return $requires;
+        }
+
+        return array_flip($requires);
+    }
+
+    /**
      * Does a complete uninstall to the gadget, removing acl keys, registry keys,
      * tables, data, etc..
      *
@@ -110,116 +143,64 @@ class Jaws_Gadget_Installer
      */
     function UninstallGadget()
     {
-        // run prechecks
-        $gadget = $this->gadget->name;
-        if (!$this->_commonPreDisableGadget()) {
-            return false;
+        if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
+            return Jaws_Error::raiseError(
+                "gadget [{$this->gadget->name}]not installed",
+                __FUNCTION__
+            );
         }
 
-        // Before anything starts
+        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $this->gadget->name) {
+            return Jaws_Error::raiseError(
+                "you can't uninstall main gadget",
+                __FUNCTION__
+            );
+        }
+
+        $core_gadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
+        if (false !== strpos($core_gadgets, $this->gadget->name)) {
+            return Jaws_Error::raiseError(
+                "you can't uninstall core gadgets",
+                __FUNCTION__
+            );
+        }
+        
+        $installer = $this->loadInstaller();
+        if (Jaws_Error::IsError($installer)) {
+            return $installer;
+        }
+
+        // begin uninstall gadget event
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onBeforeUninstallingGadget', $gadget);
+        $res = $GLOBALS['app']->Shouter->Shout('Begin_UninstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
 
-        $model = $GLOBALS['app']->loadGadget($gadget, 'AdminModel');
-        if (method_exists($model, 'UninstallGadget')) {
-            $res = $model->UninstallGadget();
-            if (Jaws_Error::IsError($res) || !$res) {
-                return $res;
-            }
-        }
-
-        if (!$this->_commonDisableGadget()) {
-            return false;
-        }
-
-        $model->UninstallACLs();
-
-        $this->gadget->DelRegistry('enabled');
-        $this->gadget->DelRegistry('version');
-        $this->gadget->DelRegistry('requires');
-
-        // After anything finished
-        $res = $GLOBALS['app']->Shouter->Shout('onAfterUninstallingGadget', $gadget);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
-        return true;
-    }
-
-    function _commonPreDisableGadget()
-    {
-        if (self::IsGadgetInstalled($this->gadget->name) &&
-            $this->gadget->GetRegistry('main_gadget', 'Settings') == $this->gadget->name
-        ) {
-            return false;
-        }
-
-        // Check if it's a core gadget, thus can't be removed.
-        ///FIXME check for errors
-        $core = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        if (stristr($core, $this->gadget->name)) {
-            return false;
-        }
-
-        $params = array();
-        $params['name']  = 'requires';
-        $params['value'] = '%'. $this->gadget->name. '%';
-
-        $sql = '
-            SELECT
-                [key_name]
-            FROM [[registry]]
-            WHERE
-                [key_name] = {name}
-              AND
-                [key_value] LIKE {value}';
-
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $result = $installer->Uninstall();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        return empty($result);
-    }
+        // removeing gadget from installed gadgets list
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+        $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_enabled_items', $installed_gadgets);
 
-    /**
-     * Operations that both UninstallGadget
-     * and DisableGadget use
-     *
-     * @param   string name of the gadget being uninstalled/disabled
-     * @return  void
-     *
-     * @see UninstallGadget
-     * @see DisableGadget
-     *
-     * @access  public
-     */
-    function _commonDisableGadget()
-    {
-        $gadget = $this->gadget->name;
-        $pull = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
-        if (stristr($pull, $gadget)) {
-            $pull = str_replace(',' . $gadget, '', $pull);
-        }
-        $GLOBALS['app']->Registry->Set('gadgets_enabled_items', $pull);
+        // removeing gadget from autoload gadgets list
+        $autoload_gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
+        $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
 
-        //Autoload stuff
-        $gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
-        if (stristr($gadgets, $gadget)) {
-            $gadgets = str_replace(','.$gadget, '', $gadgets);
-        }
-        $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $gadgets);
-
-        //Delete the layout items
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-        $model->DeleteGadgetElements($gadget);
-
+        // removed gadget listeners
         $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
-        $GLOBALS['app']->Listener->DeleteListener($gadget);
+        $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+
+        // end uninstall gadget event
+        $result = $GLOBALS['app']->Shouter->Shout('End_UninstallGadget', $this->gadget->name);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
 
         return true;
     }
@@ -340,25 +321,20 @@ class Jaws_Gadget_Installer
         $gModel = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
         $gModel->InstallACLs();
 
+        // adding gadget to installed gadgets list
         $type = $this->gadget->_IsCore ? 'core_items' : 'enabled_items';
-        $items = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
-        $gadgets = explode(',', $items);
-        if (!in_array($this->gadget->name, $gadgets)) {
-            $items .= ',' . $this->gadget->name;
-            $GLOBALS['app']->Registry->Set('gadgets_' . $type, $items);
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
+        $installed_gadgets.= $installed_gadgets. ',';
+        $GLOBALS['app']->Registry->Set('gadgets_' . $type, $installed_gadgets);
+
+        // adding gadget to autoload gadgets list
+        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {
+            $autoload_gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
+            $autoload_gadgets.= $this->gadget->name. ',';
+            $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
         }
 
-        $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $this->gadget->name . '/Autoload.php');
-        if ($autoloadFeature) {
-            $data    = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
-            $gadgets = explode(',', $data);
-            if (!in_array($this->gadget->name, $gadgets)) {
-                $data .= ',' . $this->gadget->name;
-                $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $data);
-            }
-        }
-
-        // After anything finished
+        // end install gadget event
         $res = $GLOBALS['app']->Shouter->Shout('End_InstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
