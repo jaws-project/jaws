@@ -917,15 +917,9 @@ class Jaws_Gadget
      */
     public static function IsGadgetInstalled($gadget)
     {
-        static $enabled_gadgets;
-        if (!isset($enabled_gadgets)) {
-            $enabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
-            $enabled_gadgets.= ',';
-            $enabled_gadgets.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
-            $enabled_gadgets = array_filter(array_map('trim', explode(',', $enabled_gadgets)));
-        }
-
-        return in_array($gadget, $enabled_gadgets);
+        $enabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+        $enabled_gadgets.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
+        return (false !== strpos($enabled_gadgets, ",{$gadget},"));
     }
 
     /**
