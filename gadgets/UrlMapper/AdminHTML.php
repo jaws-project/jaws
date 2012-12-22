@@ -72,7 +72,7 @@ class UrlMapperAdminHTML extends Jaws_Gadget_HTML
             $mapData = array();
             $mapData['map'] = $map['map'];
             $actions = '';
-            if ($this->GetPermission('EditMaps')) {
+            if ($this->gadget->GetPermission('EditMaps')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editMap(this, '".$map['id']."');",
                                             STOCK_EDIT);
@@ -171,7 +171,7 @@ class UrlMapperAdminHTML extends Jaws_Gadget_HTML
             $usrData['hits'] = $errorMap['hits'];
 
             $actions = '';
-            if ($this->GetPermission('ManageErrorMaps')) {
+            if ($this->gadget->GetPermission('ManageErrorMaps')) {
                 $link =& Piwi::CreateWidget('Link',
                     _t('GLOBAL_EDIT'),
                     "javascript: editErrorMap(this, '".$errorMap['id']."');",
@@ -454,22 +454,22 @@ class UrlMapperAdminHTML extends Jaws_Gadget_HTML
         $useMapCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_ENABLED'));
         $useMapCombo->AddOption(_t('GLOBAL_YES'), 'true');
         $useMapCombo->AddOption(_t('GLOBAL_NO'), 'false');
-        $useMapCombo->SetDefault($this->GetRegistry('map_enabled'));
+        $useMapCombo->SetDefault($this->gadget->GetRegistry('map_enabled'));
 
         $precedence =& Piwi::CreateWidget('Combo', 'custom_precedence');
         $precedence->SetTitle(_t('URLMAPPER_CUSTOM_MAP_PRECEDENCE'));
         $precedence->AddOption(_t('GLOBAL_YES'), 'true');
         $precedence->AddOption(_t('GLOBAL_NO'), 'false');
-        $precedence->SetDefault($this->GetRegistry('map_custom_precedence'));
+        $precedence->SetDefault($this->gadget->GetRegistry('map_custom_precedence'));
 
         $useAliasesCombo =& Piwi::CreateWidget('Combo', 'use_aliases');
         $useAliasesCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_USE_ALIASES'));
         $useAliasesCombo->AddOption(_t('GLOBAL_YES'), 'true');
         $useAliasesCombo->AddOption(_t('GLOBAL_NO'), 'false');
-        $useAliasesCombo->SetDefault($this->GetRegistry('map_use_aliases'));
+        $useAliasesCombo->SetDefault($this->gadget->GetRegistry('map_use_aliases'));
 
         $extension =& Piwi::CreateWidget('Entry', 'extension',
-                                         $this->GetRegistry('map_extensions'));
+                                         $this->gadget->GetRegistry('map_extensions'));
         $extension->SetTitle(_t('URLMAPPER_SETTINGS_MAP_EXTENSION'));
         $extension->SetStyle('direction: ltr;');
 
