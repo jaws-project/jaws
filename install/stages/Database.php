@@ -331,11 +331,11 @@ class Installer_Database extends JawsInstallerStage
         $result = $GLOBALS['app']->Registry->NewKeyEx(
             array(
                 'version' => JAWS_VERSION,
-                'gadgets_enabled_items' => '',
-                'gadgets_core_items' => '',
-                'gadgets_autoload_items' => '',
-                'plugins_enabled_items' => '',
-                'plugins_admin_enabled_items' => '',
+                'gadgets_enabled_items' => ',',
+                'gadgets_core_items' => ',',
+                'gadgets_autoload_items' => ',',
+                'plugins_enabled_items' => ',',
+                'plugins_admin_enabled_items' => ',',
             )
         );
 

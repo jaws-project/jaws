@@ -158,7 +158,7 @@ class Jaws_Gadget_Installer
         }
 
         $core_gadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        if (false !== strpos($core_gadgets, $this->gadget->name)) {
+        if (false !== strpos($core_gadgets, ",{$this->gadget->name},")) {
             return Jaws_Error::raiseError(
                 "you can't uninstall core gadgets",
                 __FUNCTION__
@@ -324,7 +324,7 @@ class Jaws_Gadget_Installer
         // adding gadget to installed gadgets list
         $type = $this->gadget->_IsCore ? 'core_items' : 'enabled_items';
         $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
-        $installed_gadgets.= $installed_gadgets. ',';
+        $installed_gadgets.= $this->gadget->name. ',';
         $GLOBALS['app']->Registry->Set('gadgets_' . $type, $installed_gadgets);
 
         // adding gadget to autoload gadgets list
