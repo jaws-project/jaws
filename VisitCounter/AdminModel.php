@@ -99,7 +99,7 @@ class VisitCounterAdminModel extends VisitCounterModel
             $startDate = $this->gadget->GetRegistry('start');
             if (strlen($startDate) == 18) {
                 $startDate = substr_replace($startDate, '0', 11, 0);
-                $this->SetRegistry('start', $startDate);
+                $this->gadget->SetRegistry('start', $startDate);
             }
         }
 
@@ -207,11 +207,11 @@ class VisitCounterAdminModel extends VisitCounterModel
         if ($custom) {
             $visit_counters[] = 'custom';
         }
-        $rs1 = $this->SetRegistry('visit_counters', implode(',', $visit_counters));
-        $rs2 = $this->SetRegistry('period', $numdays);
-        $rs3 = $this->SetRegistry('type',   $type);
-        $rs4 = $this->SetRegistry('mode', $mode);
-        $rs5 = $this->SetRegistry('custom_text', $custom_text);
+        $rs1 = $this->gadget->SetRegistry('visit_counters', implode(',', $visit_counters));
+        $rs2 = $this->gadget->SetRegistry('period', $numdays);
+        $rs3 = $this->gadget->SetRegistry('type',   $type);
+        $rs4 = $this->gadget->SetRegistry('mode', $mode);
+        $rs5 = $this->gadget->SetRegistry('custom_text', $custom_text);
         if ($rs1 && $rs2 && $rs3 && $rs4 && $rs5) {
             $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
@@ -230,7 +230,7 @@ class VisitCounterAdminModel extends VisitCounterModel
      */
     function SetStartDate($date)
     {
-        $rs = $this->SetRegistry('start', $date);
+        $rs = $this->gadget->SetRegistry('start', $date);
         if (!$rs || Jaws_Error::IsError($rs)) {
             return new Jaws_Error(_t('VISITCOUNTER_ERROR_COULD_NOT_CHANGE_STARTDATE'), _t('VISITCOUNTER_NAME'));
         }

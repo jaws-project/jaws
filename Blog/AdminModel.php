@@ -264,18 +264,18 @@ class BlogAdminModel extends BlogModel
                           $pingback)
     {
         $result = array();
-        $result[] = $this->SetRegistry('default_view', $view);
-        $result[] = $this->SetRegistry('last_entries_limit', $limit);
-        $result[] = $this->SetRegistry('popular_limit', $popularLimit);
-        $result[] = $this->SetRegistry('default_category', $category);
-        $result[] = $this->SetRegistry('xml_limit', $xml_limit);
-        $result[] = $this->SetRegistry('allow_comments', $comments);
-        $result[] = $this->SetRegistry('comment_status', $comment_status);
-        $result[] = $this->SetRegistry('trackback', $trackback);
-        $result[] = $this->SetRegistry('trackback_status', $trackback_status);
-        $result[] = $this->SetRegistry('last_comments_limit', $commentsLimit);
-        $result[] = $this->SetRegistry('last_recentcomments_limit', $recentcommentsLimit);
-        $result[] = $this->SetRegistry('pingback', $pingback);
+        $result[] = $this->gadget->SetRegistry('default_view', $view);
+        $result[] = $this->gadget->SetRegistry('last_entries_limit', $limit);
+        $result[] = $this->gadget->SetRegistry('popular_limit', $popularLimit);
+        $result[] = $this->gadget->SetRegistry('default_category', $category);
+        $result[] = $this->gadget->SetRegistry('xml_limit', $xml_limit);
+        $result[] = $this->gadget->SetRegistry('allow_comments', $comments);
+        $result[] = $this->gadget->SetRegistry('comment_status', $comment_status);
+        $result[] = $this->gadget->SetRegistry('trackback', $trackback);
+        $result[] = $this->gadget->SetRegistry('trackback_status', $trackback_status);
+        $result[] = $this->gadget->SetRegistry('last_comments_limit', $commentsLimit);
+        $result[] = $this->gadget->SetRegistry('last_recentcomments_limit', $recentcommentsLimit);
+        $result[] = $this->gadget->SetRegistry('pingback', $pingback);
 
         foreach ($result as $r) {
             if (!$r || Jaws_Error::IsError($r)) {

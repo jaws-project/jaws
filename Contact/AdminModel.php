@@ -360,10 +360,10 @@ class ContactAdminModel extends ContactModel
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
         $rs = array();
-        $rs[] = $this->SetRegistry('use_antispam',      $use_antispam);
-        $rs[] = $this->SetRegistry('email_format',      $email_format);
-        $rs[] = $this->SetRegistry('enable_attachment', $enable_attachment);
-        $rs[] = $this->SetRegistry('comments',          $comments);
+        $rs[] = $this->gadget->SetRegistry('use_antispam',      $use_antispam);
+        $rs[] = $this->gadget->SetRegistry('email_format',      $email_format);
+        $rs[] = $this->gadget->SetRegistry('enable_attachment', $enable_attachment);
+        $rs[] = $this->gadget->SetRegistry('comments',          $comments);
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || !$r) {

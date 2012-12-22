@@ -233,10 +233,10 @@ class WeatherAdminModel extends WeatherModel
     function UpdateProperties($unit, $update_period, $date_format, $api_key)
     {
         $res = array();
-        $res[] = $this->SetRegistry('unit', $unit);
-        $res[] = $this->SetRegistry('update_period', $update_period);
-        $res[] = $this->SetRegistry('date_format', $date_format);
-        $res[] = $this->SetRegistry('api_key', $api_key);
+        $res[] = $this->gadget->SetRegistry('unit', $unit);
+        $res[] = $this->gadget->SetRegistry('update_period', $update_period);
+        $res[] = $this->gadget->SetRegistry('date_format', $date_format);
+        $res[] = $this->gadget->SetRegistry('api_key', $api_key);
 
         foreach ($res as $r) {
             if (Jaws_Error::IsError($r) || !$r) {

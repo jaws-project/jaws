@@ -144,9 +144,9 @@ class ChatboxAdminModel extends Jaws_Gadget_Model
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {
-        $res = $this->SetRegistry('limit', $limit);
-        $res = $res && $this->SetRegistry('max_strlen', $max_strlen);
-        $res = $res && $this->SetRegistry('anon_post_authority', ($authority == true)? 'true' : 'false');
+        $res = $this->gadget->SetRegistry('limit', $limit);
+        $res = $res && $this->gadget->SetRegistry('max_strlen', $max_strlen);
+        $res = $res && $this->gadget->SetRegistry('anon_post_authority', ($authority == true)? 'true' : 'false');
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CHATBOX_ERROR_SETTINGS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CHATBOX_ERROR_SETTINGS_NOT_UPDATED'), _t('CHATBOX_NAME'));

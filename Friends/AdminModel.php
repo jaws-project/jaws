@@ -22,7 +22,7 @@ class FriendsAdminModel extends FriendsModel
      */
     function UpdateProperties($limit)
     {
-        $res = $this->SetRegistry('limit', $limit);
+        $res = $this->gadget->SetRegistry('limit', $limit);
         if ($res || !Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;

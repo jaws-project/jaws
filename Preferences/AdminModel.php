@@ -30,7 +30,7 @@ class PreferencesAdminModel extends PreferencesModel
         $this->gadget->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
-        $this->SetRegistry('cookie_precedence', 'true', 'Settings');
+        $this->gadget->SetRegistry('cookie_precedence', 'true', 'Settings');
 
         return true;
     }
@@ -53,7 +53,7 @@ class PreferencesAdminModel extends PreferencesModel
         $this->gadget->DelRegistry('display_timezone');
 
         //disable cookie precedence
-        $this->SetRegistry('cookie_precedence', 'false', 'Settings');
+        $this->gadget->SetRegistry('cookie_precedence', 'false', 'Settings');
 
         return true;
     }
@@ -80,7 +80,7 @@ class PreferencesAdminModel extends PreferencesModel
         $this->gadget->AddRegistry('display_timezone',          'true');
 
         //enable cookie precedence
-        $this->SetRegistry('cookie_precedence', 'true', 'Settings');
+        $this->gadget->SetRegistry('cookie_precedence', 'true', 'Settings');
 
         return true;
     }
@@ -100,7 +100,7 @@ class PreferencesAdminModel extends PreferencesModel
 
         foreach ($preferences_config as $Key => $Value) {
             if (in_array($Key, $prefKeys)) {
-                $res = $this->SetRegistry($Key, (empty($Value)? 'false' : 'true'));
+                $res = $this->gadget->SetRegistry($Key, (empty($Value)? 'false' : 'true'));
                 if (!$res) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), _t('PREFERENCES_NAME'));
@@ -108,7 +108,7 @@ class PreferencesAdminModel extends PreferencesModel
             }
         }
 
-        $this->SetRegistry(
+        $this->gadget->SetRegistry(
             'cookie_precedence',
             (empty($preferences_config['cookie_precedence'])? 'false' : 'true'),
             'Settings'

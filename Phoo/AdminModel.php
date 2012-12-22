@@ -507,19 +507,19 @@ class PhooAdminModel extends PhooModel
                           $comment_status, $albums_order_type, $photos_order_type)
     {
         $rs = array();
-        $rs[] = $this->SetRegistry('default_action',    $default_action);
-        $rs[] = $this->SetRegistry('published',         $published);
-        $rs[] = $this->SetRegistry('allow_comments',    $allow_comments);
-        $rs[] = $this->SetRegistry('moblog_album',      $moblog_album);
-        $rs[] = $this->SetRegistry('moblog_limit',      $moblog_limit);
-        $rs[] = $this->SetRegistry('photoblog_album',   $photoblog_album);
-        $rs[] = $this->SetRegistry('photoblog_limit',   $photoblog_limit);
-        $rs[] = $this->SetRegistry('show_exif_info',    $show_exif_info);
-        $rs[] = $this->SetRegistry('keep_original',     $keep_original);
-        $rs[] = $this->SetRegistry('thumbnail_limit',   $thumb_limit);
-        $rs[] = $this->SetRegistry('comment_status',    $comment_status);
-        $rs[] = $this->SetRegistry('albums_order_type', $albums_order_type);
-        $rs[] = $this->SetRegistry('photos_order_type', $photos_order_type);
+        $rs[] = $this->gadget->SetRegistry('default_action',    $default_action);
+        $rs[] = $this->gadget->SetRegistry('published',         $published);
+        $rs[] = $this->gadget->SetRegistry('allow_comments',    $allow_comments);
+        $rs[] = $this->gadget->SetRegistry('moblog_album',      $moblog_album);
+        $rs[] = $this->gadget->SetRegistry('moblog_limit',      $moblog_limit);
+        $rs[] = $this->gadget->SetRegistry('photoblog_album',   $photoblog_album);
+        $rs[] = $this->gadget->SetRegistry('photoblog_limit',   $photoblog_limit);
+        $rs[] = $this->gadget->SetRegistry('show_exif_info',    $show_exif_info);
+        $rs[] = $this->gadget->SetRegistry('keep_original',     $keep_original);
+        $rs[] = $this->gadget->SetRegistry('thumbnail_limit',   $thumb_limit);
+        $rs[] = $this->gadget->SetRegistry('comment_status',    $comment_status);
+        $rs[] = $this->gadget->SetRegistry('albums_order_type', $albums_order_type);
+        $rs[] = $this->gadget->SetRegistry('photos_order_type', $photos_order_type);
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || $r === false) {

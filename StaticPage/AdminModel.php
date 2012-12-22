@@ -667,8 +667,8 @@ class StaticPageAdminModel extends StaticPageModel
     function UpdateSettings($defaultPage, $multiLang)
     {
         $res = array();
-        $res[0] = $this->SetRegistry('default_page', $defaultPage);
-        $res[1] = $this->SetRegistry('multilanguage', $multiLang);
+        $res[0] = $this->gadget->SetRegistry('default_page', $defaultPage);
+        $res[1] = $this->gadget->SetRegistry('multilanguage', $multiLang);
         
         foreach($res as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
