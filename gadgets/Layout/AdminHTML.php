@@ -82,7 +82,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
 
-        $fakeLayout->_Template->SetVariable('site-title', $this->GetRegistry('site_name', 'Settings'));
+        $fakeLayout->_Template->SetVariable('site-title', $this->gadget->GetRegistry('site_name', 'Settings'));
 
         $fakeLayout->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css', 'default');
         $fakeLayout->AddHeadLink('gadgets/Layout/resources/style.css', 'stylesheet', 'text/css');
@@ -103,7 +103,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
                 if (file_exists(JAWS_PATH . 'gadgets/'. $gadget['gadget']. '/'. 'Actions.php') ||
                     ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                 {
-                    if (($this->GetRegistry('enabled', $gadget['gadget']) == 'true') ||
+                    if (($this->gadget->GetRegistry('enabled', $gadget['gadget']) == 'true') ||
                         ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                     {
                         if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
@@ -224,9 +224,9 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
         foreach ($themes as $theme => $tInfo) {
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
-        $themeCombo->SetDefault($this->GetRegistry('theme', 'Settings'));
+        $themeCombo->SetDefault($this->gadget->GetRegistry('theme', 'Settings'));
         $themeCombo->AddEvent(ON_CHANGE, "changeTheme();");
-        $themeCombo->SetEnabled($this->GetPermission('ManageThemes'));
+        $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
@@ -252,7 +252,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
      */
     function ChangeTheme()
     {
-        $this->CheckPermission('ManageThemes');
+        $this->gadget->CheckPermission('ManageThemes');
 
         $request =& Jaws_Request::getInstance();
         $theme = $request->get('theme', 'post');
@@ -303,7 +303,7 @@ class LayoutAdminHTML extends Jaws_Gadget_HTML
             }
         }
         
-        $this->SetRegistry('theme', $theme, 'Settings');
+        $this->gadget->SetRegistry('theme', $theme, 'Settings');
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }
