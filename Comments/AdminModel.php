@@ -14,49 +14,6 @@ require_once JAWS_PATH . 'gadgets/Comments/Model.php';
 class CommentsAdminModel extends CommentsModel
 {
     /**
-     * Install the gadget
-     *
-     * @access  public
-     * @return  mixed   True on success or Jaws_Error on failure
-     */
-    function InstallGadget()
-    {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Install listener for removing comments related to uninstalled gadget
-        $GLOBALS['app']->Listener->NewListener($this->_Gadget, 'onUninstallGadget', 'DeleteCommentsOfGadget');
-
-        return true;
-    }
-
-    /**
-     * Uninstalls the gadget
-     *
-     * @access  public
-     * @return  bool    Success/Failure (Jaws_Error)
-     */
-    function UninstallGadget()
-    {
-        return true;
-    }
-
-    /**
-     * Update the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  bool    Success/Failure (Jaws_Error)
-     */
-    function UpdateGadget($old, $new)
-    {
-        return true;
-    }
-
-    /**
      * Updates a comment
      *
      * @param   string  $gadget  Gadget's name
