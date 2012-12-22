@@ -28,6 +28,9 @@ class Layout_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Install listener for removing layout items related to uninstalled gadget
+        $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_UninstallGadget', 'DeleteGadgetElements');
+
         // registry keys
         $this->gadget->AddRegistry('pluggable', 'false');
         return true;
@@ -92,6 +95,9 @@ class Layout_Installer extends Jaws_Gadget_Installer
                     return $result;
                 }
             }
+
+            // Install listener for removing layout items related to uninstalled gadget
+            $GLOBALS['app']->Listener->NewListener($this->gadget->name, 'End_UninstallGadget', 'DeleteGadgetElements');
         }
 
         return true;
