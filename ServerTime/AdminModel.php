@@ -12,50 +12,6 @@
 class ServerTimeAdminModel extends Jaws_Gadget_Model
 {
     /**
-     * Installs the gadget
-     *
-     * @access  public
-     * @return  mixed   True on success and Jaws_Error on failure
-     */
-    function InstallGadget()
-    {
-        // Registry keys
-        $this->gadget->AddRegistry('date_format',  'DN d MN Y');
-
-        return true;
-    }
-
-    /**
-     * Uninstalls the gadget
-     *
-     * @access  public
-     * @return  mixed   True on success and Jaws_Error on failure
-     */
-    function UninstallGadget()
-    {
-        // Registry keys
-        $this->gadget->DelRegistry('date_format');
-
-        return true;
-    }
-
-    /**
-     * Updates the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  mixed   True on success and Jaws_Error on failure
-     */
-    function UpdateGadget($old, $new)
-    {
-        // Registry keys
-        $this->gadget->DelRegistry('display_format');
-        $this->gadget->AddRegistry('date_format',  'DN d MN Y');
-        return true;
-    }
-
-    /**
      * Updates the properties of ServerTime
      *
      * @access  public
