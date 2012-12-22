@@ -15,18 +15,6 @@
 class BannerModel extends Jaws_Gadget_Model
 {
     /**
-     * Get banners base directory name
-     *
-     * @access  public
-     * @param   string  $suffix
-     * @return  string  Directory name
-     */
-    function GetBannersDirectory($suffix = '')
-    {
-        return 'banners' . $suffix;
-    }
-
-    /**
      * Retrieve banner
      *
      * @access  public

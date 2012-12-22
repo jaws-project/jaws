@@ -34,4 +34,12 @@ class BannerInfo extends Jaws_Gadget
         'ViewReports'
     );
 
+    /**
+     * Banners data directory
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $DataDirectory = 'banners/';
+
 }

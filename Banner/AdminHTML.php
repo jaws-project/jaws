@@ -414,7 +414,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
         $res = Jaws_Utils::UploadFiles($_FILES,
-                                       JAWS_DATA . $model->GetBannersDirectory('/'),
+                                       JAWS_DATA . $this->DataDirectory,
                                        'jpg,gif,swf,png,jpeg,bmp,svg',
                                        '',
                                        false);
