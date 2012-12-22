@@ -258,14 +258,22 @@ class JmsAdminAjax extends Jaws_Gadget_Ajax
         }
 
         $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        $uninstall = $objGadget->UninstallGadget();
-        if (Jaws_Error::IsError($uninstall)) {
-            $GLOBALS['app']->Session->PushLastResponse($uninstall->GetMessage(), RESPONSE_ERROR);
-        } else if (!$uninstall) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_FAILURE', $gadget), RESPONSE_ERROR);
+        if (Jaws_Error::IsError($objGadget)) {
+            $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_OK', $gadget), RESPONSE_NOTICE);
+            $installer = $objGadget->load('Installer');
+            $return = $installer->UninstallGadget();
+            if (Jaws_Error::IsError($return)) {
+                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('JMS_GADGETS_DISABLE_OK',
+                    $objGadget->GetTitle()),
+                    RESPONSE_NOTICE
+                );
+            }
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
