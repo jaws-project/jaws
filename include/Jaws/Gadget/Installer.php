@@ -327,44 +327,44 @@ class Jaws_Gadget_Installer
         }
 
         // Applying the keys that every gadget gets
-        $requires = implode($objGadget->_Requires, ',');
-        $objGadget->AddRegistry(
+        $requires = implode($this->gadget->_Requires, ',');
+        $this->gadget->AddRegistry(
             array(
                 'enabled'  => 'true',
-                'version'  => $objGadget->_Version,
+                'version'  => $this->gadget->_Version,
                 'requires' => $requires,
             )
         );
 
         // ACL keys
-        $model = $GLOBALS['app']->LoadGadget($gadget, 'AdminModel');
-        $model->InstallACLs();
+        $gModel = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
+        $gModel->InstallACLs();
 
-        $type = $objGadget->_IsCore ? 'core_items' : 'enabled_items';
+        $type = $this->gadget->_IsCore ? 'core_items' : 'enabled_items';
         $items = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
         $gadgets = explode(',', $items);
-        if (!in_array($gadget, $gadgets)) {
-            $items .= ',' . $gadget;
+        if (!in_array($this->gadget->name, $gadgets)) {
+            $items .= ',' . $this->gadget->name;
             $GLOBALS['app']->Registry->Set('gadgets_' . $type, $items);
         }
 
-        $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $gadget . '/Autoload.php');
+        $autoloadFeature = file_exists(JAWS_PATH . 'gadgets/' . $this->gadget->name . '/Autoload.php');
         if ($autoloadFeature) {
             $data    = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
             $gadgets = explode(',', $data);
-            if (!in_array($gadget, $gadgets)) {
-                $data .= ',' . $gadget;
+            if (!in_array($this->gadget->name, $gadgets)) {
+                $data .= ',' . $this->gadget->name;
                 $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $data);
             }
         }
 
         // After anything finished
-        $res = $GLOBALS['app']->Shouter->Shout('AfterInstallGadget', $gadget);
+        $res = $GLOBALS['app']->Shouter->Shout('End_InstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
 
-        return $objGadget;
+        return $this->gadget;
     }
 
     /**
