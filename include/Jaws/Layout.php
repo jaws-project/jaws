@@ -525,7 +525,7 @@ class Jaws_Layout
     function Populate(&$goGadget, $is_index = false, $req_result = '', $onlyRequestedAction = false)
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
-        $this->_RequestedGadget = empty($goGadget)? '': $goGadget->GetGadget();
+        $this->_RequestedGadget = empty($goGadget)? '': $goGadget->gadget->GetGadget();
         $this->_RequestedAction = empty($goGadget)? '': $goGadget->GetAction();
         $items = $this->GetLayoutItems();
         if (is_array($items)) {
