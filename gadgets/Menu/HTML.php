@@ -22,7 +22,7 @@ class MenuHTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $layoutGadget = $GLOBALS['app']->LoadGadget('Menu', 'LayoutHTML');
-        return $layoutGadget->Display($this->GetRegistry('default_group_id'));
+        return $layoutGadget->Display($this->gadget->GetRegistry('default_group_id'));
     }
 
     /**
