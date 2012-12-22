@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Skeleton/Model.php';
 /**
  * Skeleton Model Admin
  *
@@ -8,8 +9,8 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Skeleton/Model.php';
 class SkeletonAdminModel extends SkeletonModel
 {
-    //Define your admin modeling actions (add/delete/edit/install/upgrade)
+    /**
+     */
 }
