@@ -29,7 +29,7 @@ class SearchAdminHTML extends Jaws_Gadget_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Search', 'AdminModel');
         $gadgetList = $model->GetSearchableGadgets();
-        $gSearchable = $this->GetRegistry('searchable_gadgets');
+        $gSearchable = $this->gadget->GetRegistry('searchable_gadgets');
         $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
 
         if (count($gadgetList) > 0) {
