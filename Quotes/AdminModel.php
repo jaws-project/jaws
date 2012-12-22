@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Quotes/Model.php';
 /**
  * Quotes Gadget
  *
@@ -8,86 +9,8 @@
  * @copyright   2007-2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Quotes/Model.php';
-
 class QuotesAdminModel extends QuotesModel
 {
-    /**
-     * Installs the gadget
-     *
-     * @access  public
-     * @return  mixed   True on successful installation, Jaws_Error otherwise
-     */
-    function InstallGadget()
-    {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        $result = $this->installSchema('insert.xml', null, 'schema.xml', true);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Registry keys
-        $this->gadget->AddRegistry('last_entries_limit',       '10');
-        $this->gadget->AddRegistry('last_entries_view_mode',   '0');
-        $this->gadget->AddRegistry('last_entries_view_type',   '0');
-        $this->gadget->AddRegistry('last_entries_show_title',  'true');
-        $this->gadget->AddRegistry('last_entries_view_random', 'false');
-
-        return true;
-    }
-
-    /**
-     * Uninstalls the gadget
-     *
-     * @access  public
-     * @return  mixed   True on Success or Jaws_Error on failure
-     */
-    function UninstallGadget()
-    {
-        $tables = array('quotes',
-                        'quotes_groups');
-        foreach ($tables as $table) {
-            $result = $GLOBALS['db']->dropTable($table);
-            if (Jaws_Error::IsError($result)) {
-                $gName  = _t('QUOTES_NAME');
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-                $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
-                return new Jaws_Error($errMsg, $gName);
-            }
-        }
-
-        // Registry keys
-        $this->gadget->DelRegistry('last_entries_limit');
-        $this->gadget->DelRegistry('last_entries_view_mode');
-        $this->gadget->DelRegistry('last_entries_view_type');
-        $this->gadget->DelRegistry('last_entries_show_title');
-        $this->gadget->DelRegistry('last_entries_view_random');
-
-        return true;
-    }
-
-    /**
-     * Updates the gadget
-     *
-     * @access  public
-     * @param   string  $old    Current version (in registry)
-     * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  mixed   True on Success or Jaws_Error on failure
-     */
-    function UpdateGadget($old, $new)
-    {
-        $result = $this->installSchema('schema.xml', '', "0.1.0.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return true;
-    }
-
     /**
      * Inserts a new quote
      *
