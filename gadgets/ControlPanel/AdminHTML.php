@@ -42,7 +42,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
         unset($gadgets['ControlPanel']);
 
         foreach ($gadgets as $gadget => $gInfo) {
-            if ($this->GetPermission('default_admin', $gadget)) {
+            if ($this->gadget->GetPermission('default_admin', $gadget)) {
                 $section = $gInfo['section'];
                 if (!isset($gadgetsections[$section])) {
                     $gadgetsections[$section] = array();
@@ -54,7 +54,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
             }
         }
 
-        if ($this->GetRegistry('show_viewsite', 'Settings') == 'true') {
+        if ($this->gadget->GetRegistry('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
                                                  'tname' => _t('CONTROLPANEL_GENERAL_VIEWSITE'),
                                                  'desc'  => _t('CONTROLPANEL_GENERAL_VIEWSITE'));
@@ -81,7 +81,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
             $tpl->ParseBlock('main');
         }
 
-        if ($this->GetPermission('default_admin', 'Jms')) {
+        if ($this->gadget->GetPermission('default_admin', 'Jms')) {
             $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
             //Count non-installed gadgets..
             $noninstalled = $jms->GetGadgetsList(null, false);
@@ -143,7 +143,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
      */
     function ShowLoginForm($message = '')
     {
-        $use_crypt = $this->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -195,7 +195,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
         $passEntry->SetTitle(_t('GLOBAL_PASSWORD'));
         $fieldset->Add($passEntry);
 
-        $auth_method = $this->GetRegistry('auth_method', 'Users');
+        $auth_method = $this->gadget->GetRegistry('auth_method', 'Users');
         if (!empty($reqpost['auth_method']) || $auth_method !== 'Default') {
             $authmethod =& Piwi::CreateWidget('Combo', 'auth_method');
             $authmethod->SetTitle(_t('CONTROLPANEL_AUTH_METHOD'));
@@ -270,7 +270,7 @@ class ControlPanelAdminHTML extends Jaws_Gadget_HTML
      */
     function Backup()
     {
-        $this->CheckPermission('Backup');
+        $this->gadget->CheckPermission('Backup');
         $tmpDir = sys_get_temp_dir();
         $domain = preg_replace("/^(www.)|(:{$_SERVER['SERVER_PORT']})$|[^a-z0-9-.]/", '', strtolower($_SERVER['HTTP_HOST']));
         $nameArchive = $domain . '-' . date('Y-m-d') . '.tar.gz';
