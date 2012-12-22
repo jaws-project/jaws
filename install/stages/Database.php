@@ -310,6 +310,7 @@ class Installer_Database extends JawsInstallerStage
         }
 
         //Make sure user don't have any data/cache/registry|acl stuff
+        _log(JAWS_LOG_DEBUG,"Cleaning previous registry and acl cache data files");
         $path = JAWS_DATA . 'cache/registry';
         if (!Jaws_Utils::Delete($path, false)) {
             _log(JAWS_LOG_DEBUG,"Can't delete $path");
@@ -325,19 +326,6 @@ class Installer_Database extends JawsInstallerStage
         $GLOBALS['app'] = new Jaws();
         $GLOBALS['app']->create();
         $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
-        $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
-
-        _log(JAWS_LOG_DEBUG,"Cleaning previous registry and acl cache data files");
-        //Make sure user don't have any data/cache/registry|acl stuff
-        $path = JAWS_DATA . 'cache/registry';
-        if (!Jaws_Utils::Delete($path, false)) {
-            _log(JAWS_LOG_DEBUG,"Can't delete $path");
-        }
-
-        $path = JAWS_DATA . 'cache/acl';
-        if (!Jaws_Utils::Delete($path, false)) {
-            _log(JAWS_LOG_DEBUG,"Can't delete $path");
-        }
 
         // registry keys
         $result = $GLOBALS['app']->Registry->NewKeyEx(
@@ -370,7 +358,8 @@ class Installer_Database extends JawsInstallerStage
                 return $objGadget;
             }
 
-            $result = $objGadget->EnableGadget();
+            $installer = $objGadget->load('Installer');
+            $result = $installer->InstallGadget();
             if (Jaws_Error::IsError($result)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
                 return $result;
