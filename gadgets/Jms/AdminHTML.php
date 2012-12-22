@@ -19,11 +19,11 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManageGadgets')) {
+        if ($this->gadget->GetPermission('ManageGadgets')) {
             return $this->ViewGadgets();
         }
 
-        $this->CheckPermission('ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
         return $this->Plugins();
     }
 
@@ -43,11 +43,11 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManageGadgets')) {
+        if ($this->gadget->GetPermission('ManageGadgets')) {
             $menubar->AddOption('Gadgets', _t('JMS_GADGETS'),
                                 BASE_SCRIPT . '?gadget=Jms&amp;action=Admin', 'gadgets/Jms/images/gadgets.png');
         }
-        if ($this->GetPermission('ManagePlugins')) {
+        if ($this->gadget->GetPermission('ManagePlugins')) {
             $menubar->AddOption('Plugins', _t('JMS_PLUGINS'),
                                 BASE_SCRIPT . '?gadget=Jms&amp;action=Plugins', 'gadgets/Jms/images/plugins.png');
         }
@@ -63,7 +63,7 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
      */
     function ViewGadgets()
     {
-        $this->CheckPermission('ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
@@ -136,7 +136,7 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
      */
     function Plugins()
     {
-        $this->CheckPermission('ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
 
@@ -214,7 +214,7 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
      */
     function EnableGadget()
     {
-        $this->CheckPermission('ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('location', 'comp'), 'get');
 
@@ -243,7 +243,7 @@ class JmsAdminHTML extends Jaws_Gadget_HTML
      */
     function UpdateGadget()
     {
-        $this->CheckPermission('ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('location', 'comp'), 'get');
 
