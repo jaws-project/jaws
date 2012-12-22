@@ -235,7 +235,7 @@ class Jaws_Registry
      * @param   string  $type       Component type
      * @return  bool    True is set otherwise False
      */
-    function DeleteKey($name, $component = '', $type = JAWS_COMPONENT_OTHER)
+    function Delete($name, $component = '', $type = JAWS_COMPONENT_OTHER)
     {
         $params = array();
         $params['name'] = $name;
