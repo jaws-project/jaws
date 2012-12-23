@@ -92,7 +92,7 @@ class PhooHTML extends Jaws_Gadget_HTML
                             continue;
                         }
                         $t->SetBlock('ViewAlbumPage/photos/item');
-                        $url = $this->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
+                        $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
                         $t->SetVariable('url',      $url);
                         $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
                         $t->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
@@ -122,7 +122,7 @@ class PhooHTML extends Jaws_Gadget_HTML
                         if ($v) {
                             $t->SetBlock('ViewAlbumPage/pager/item/next');
                             $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
-                            $url = $this->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                            $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                             $t->SetVariable('url_next', $url);
                             $t->ParseBlock('ViewAlbumPage/pager/item/next');
                         } else {
@@ -134,7 +134,7 @@ class PhooHTML extends Jaws_Gadget_HTML
                         if ($v) {
                             $t->SetBlock('ViewAlbumPage/pager/item/previous');
                             $t->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
-                            $url = $this->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                            $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                             $t->SetVariable('url_previous', $url);
                             $t->ParseBlock('ViewAlbumPage/pager/item/previous');
                         } else {
@@ -147,13 +147,13 @@ class PhooHTML extends Jaws_Gadget_HTML
                         $t->ParseBlock('ViewAlbumPage/pager/item/page_separator');
                     } elseif ($k == 'current') {
                         $t->SetBlock('ViewAlbumPage/pager/item/page_current');
-                        $url = $this->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                        $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                         $t->SetVariable('lbl_page', $v);
                         $t->SetVariable('url_page', $url);
                         $t->ParseBlock('ViewAlbumPage/pager/item/page_current');
                     } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                         $t->SetBlock('ViewAlbumPage/pager/item/page_number');
-                        $url = $this->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                        $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                         $t->SetVariable('lbl_page', $v);
                         $t->SetVariable('url_page', $url);
                         $t->ParseBlock('ViewAlbumPage/pager/item/page_number');
@@ -228,7 +228,7 @@ class PhooHTML extends Jaws_Gadget_HTML
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
+            $allow_comments_config = $this->gadget->GetRegistry('allow_comments', 'Settings');
             switch ($allow_comments_config) {
                 case 'restricted':
                     $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -242,7 +242,7 @@ class PhooHTML extends Jaws_Gadget_HTML
 
             $allow_comments = $image['allow_comments'] === true &&
                               $image['album_allow_comments'] === true &&
-                              $this->GetRegistry('allow_comments') == 'true' &&
+                              $this->gadget->GetRegistry('allow_comments') == 'true' &&
                               $allow_comments_config;
 
             if (empty($reply_to_comment)) {
@@ -281,16 +281,16 @@ class PhooHTML extends Jaws_Gadget_HTML
         $t->SetBlock('ViewImage/navigation');
         $t->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
         $t->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
-        $url = $this->GetURLFor('ViewAlbum', array('id' => $albumid));
+        $url = $this->gadget->GetURLFor('ViewAlbum', array('id' => $albumid));
         $t->SetVariable('url_thumbs', $url);
 
         if ($image['first'] != $image['id']) {
             $t->SetBlock('ViewImage/navigation/no-first-photo');
             $t->SetVariable('lbl_first', _t('PHOO_FIRST'));
-            $url = $this->GetURLFor('ViewImage', array('id' => $image['first'], 'albumid' => $albumid));
+            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['first'], 'albumid' => $albumid));
             $t->SetVariable('url_first', $url);
             $t->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
-            $url = $this->GetURLFor('ViewImage', array('id' => $image['previous'], 'albumid' => $albumid));
+            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['previous'], 'albumid' => $albumid));
             $t->SetVariable('url_prev', $url);
             $t->ParseBlock('ViewImage/navigation/no-first-photo');
         } else {
@@ -303,10 +303,10 @@ class PhooHTML extends Jaws_Gadget_HTML
         if ($image['last'] != $image['id']) {
             $t->SetBlock('ViewImage/navigation/no-last-photo');
             $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
-            $url = $this->GetURLFor('ViewImage', array('id' => $image['next'], 'albumid' => $albumid));
+            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['next'], 'albumid' => $albumid));
             $t->SetVariable('url_next', $url);
             $t->SetVariable('lbl_last', _t('PHOO_LAST'));
-            $url = $this->GetURLFor('ViewImage', array('id' => $image['last'], 'albumid' => $albumid));
+            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['last'], 'albumid' => $albumid));
             $t->SetVariable('url_last', $url);
             $t->ParseBlock('ViewImage/navigation/no-last-photo');
         } else {
@@ -403,7 +403,7 @@ class PhooHTML extends Jaws_Gadget_HTML
 
                     $t->SetBlock('photoblog_portrait/item');
                     $t->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
+                    $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $t->SetVariable('url', $url);
                     $t->SetVariable('title', $entry['name']);
                     $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
@@ -452,7 +452,7 @@ class PhooHTML extends Jaws_Gadget_HTML
 
                     $t->SetBlock('photoblog_portrait/item');
                     $t->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
+                    $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $t->SetVariable('url', $url);
                     $t->SetVariable('title', $entry['name']);
                     $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
@@ -500,7 +500,7 @@ class PhooHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('name', $c['name']);
                 $email = $c['email'];
 
-                $_obfuscator = $this->GetRegistry('obfuscator', 'Policy');
+                $_obfuscator = $this->gadget->GetRegistry('obfuscator', 'Policy');
                 if (($_obfuscator != 'DISABLED') && (!empty($email))) {
                     require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';
                     $obf = new $_obfuscator();
@@ -536,7 +536,7 @@ class PhooHTML extends Jaws_Gadget_HTML
                     $tpl->SetBlock('comment/reply-link');
                     $tpl->SetVariablesArray($c);
                     $tpl->SetVariable('reply-link', '<a href="'.
-                                      $this->GetURLFor('Reply', array('id' => $c['id'],
+                                      $this->gadget->GetURLFor('Reply', array('id' => $c['id'],
                                                                       'photoid' => $c['gadget_reference'],
                                                                       'albumid' => $albumid)).'">'.
                                       _t('PHOO_REPLY').'</a>');
@@ -714,7 +714,7 @@ class PhooHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
 
         /*
-        if ($this->GetRegistry('mailer', 'Settings') !== 'DISABLED') {
+        if ($this->gadget->GetRegistry('mailer', 'Settings') !== 'DISABLED') {
             $tpl->SetBlock('commentform/mail_me');
             $tpl->SetVariable('mail_me', _t('PHOO_MAIL_COMMENT_TO_ME'));
             $tpl->ParseBlock('commentform/mail_me');
@@ -754,7 +754,7 @@ class PhooHTML extends Jaws_Gadget_HTML
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
         }
 
         return $this->ViewImage($post['parent_id'], $post['albumid'], true);
@@ -829,19 +829,19 @@ class PhooHTML extends Jaws_Gadget_HTML
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
         }
 
-        $url = $this->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
+        $url = $this->gadget->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
 
-        $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
+        $allow_comments_config = $this->gadget->GetRegistry('allow_comments', 'Settings');
         $restricted = $allow_comments_config == 'restricted';
         $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
 
         // Check if comments are allowed.
         if ($image['allow_comments'] !== true ||
             $image['album_allow_comments'] !== true ||
-            $this->GetRegistry('allow_comments') != 'true' ||
+            $this->gadget->GetRegistry('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
             Jaws_Header::Location($url, true);

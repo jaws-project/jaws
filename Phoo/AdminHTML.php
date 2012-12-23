@@ -41,16 +41,16 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?gadget=Phoo', STOCK_IMAGE);
 
-        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->GetPermission('ManageComments')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('PHOO_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');
         }
-        if ($this->GetPermission('Settings')) {
+        if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('PHOO_ADDITIONAL_SETTINGS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=AdditionalSettings', 'images/stock/properties.png');
         }
 
-        if ($this->GetPermission('Import')) {
+        if ($this->gadget->GetPermission('Import')) {
             $menubar->AddOption('Import', _t('PHOO_IMPORT'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=Import', STOCK_IMAGE);
         }
@@ -151,7 +151,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
             $t->SetVariable('albums', _t('PHOO_ALBUMS'));
             $t->SetVariable('albums_combo', $albumcombo->Get());
 
-            if ($this->GetPermission('ManageAlbums') === true) {
+            if ($this->gadget->GetPermission('ManageAlbums') === true) {
                 $newalbum =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
                 $newalbum->AddEvent(ON_CLICK, "this.form.action.value='NewAlbum'; this.form.submit();");
                 $t->SetVariable('new_album', $newalbum->Get());
@@ -290,7 +290,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function EditPhoto()
     {
-        $this->CheckPermission('ManagePhotos');
+        $this->gadget->CheckPermission('ManagePhotos');
         $this->AjaxMe('script.js');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
 
@@ -587,7 +587,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function UploadPhotos()
     {
-        $this->CheckPermission('AddPhotos');
+        $this->gadget->CheckPermission('AddPhotos');
         $this->AjaxMe('script.js');
 
         $request =& Jaws_Request::getInstance();
@@ -728,7 +728,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function NewAlbum()
     {
-        $this->CheckPermission('ManageAlbums');
+        $this->gadget->CheckPermission('ManageAlbums');
 
         $request     =& Jaws_Request::getInstance();
         $action      = $request->get('action', 'get');
@@ -749,7 +749,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        if ($this->GetRegistry('allow_comments') === 'true') {
+        if ($this->gadget->GetRegistry('allow_comments') === 'true') {
             $selected = true;
         } else {
             $selected = false;
@@ -762,7 +762,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
         $statCombo->setId('published');
         $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
         $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
-        if ($this->GetRegistry('published') === 'true') {
+        if ($this->gadget->GetRegistry('published') === 'true') {
             $published = true;
         } else {
             $published = false;
@@ -801,7 +801,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveNewAlbum()
     {
-        $this->CheckPermission('ManageAlbums');
+        $this->gadget->CheckPermission('ManageAlbums');
         $request     =& Jaws_Request::getInstance();
         $post        = $request->get(array('name', 'allow_comments', 'published'), 'post');
         $description = $request->get('description', 'post', false);
@@ -821,7 +821,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function EditAlbum()
     {
-        $this->CheckPermission('ManageAlbums');
+        $this->gadget->CheckPermission('ManageAlbums');
         $this->AjaxMe('script.js');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
 
@@ -905,7 +905,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveEditAlbum()
     {
-        $this->CheckPermission('ManageAlbums');
+        $this->gadget->CheckPermission('ManageAlbums');
 
         $request     =& Jaws_Request::getInstance();
         $post        = $request->get(array('name', 'album', 'allow_comments', 'published'), 'post');
@@ -926,7 +926,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function DeleteAlbum()
     {
-        $this->CheckPermission('ManageAlbums');
+        $this->gadget->CheckPermission('ManageAlbums');
 
         $request =& Jaws_Request::getInstance();
         $album   = (int)$request->get('album', 'get');
@@ -945,7 +945,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->name);
+        return $cHtml->Get($this->gadget->name);
     }
 
     /**
@@ -962,7 +962,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->name,
+            $this->gadget->name,
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
             $filter,
             $search,
@@ -979,7 +979,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function ManageComments()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
@@ -1046,7 +1046,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function EditComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -1136,7 +1136,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveEditComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
 
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('id',  'name',  'title',
@@ -1158,7 +1158,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function DeleteComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id');
 
@@ -1176,7 +1176,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function AdditionalSettings()
     {
-        $this->CheckPermission('Settings');
+        $this->gadget->CheckPermission('Settings');
         $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('AdditionalSettings.html');
         $tpl->SetBlock('additional');
@@ -1369,7 +1369,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveAdditionalSettings()
     {
-        $this->CheckPermission('Settings');
+        $this->gadget->CheckPermission('Settings');
 
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('default_action', 'published', 'allow_comments', 'moblog_album',
@@ -1405,7 +1405,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function Import()
     {
-        $this->CheckPermission('Import');
+        $this->gadget->CheckPermission('Import');
         $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('Import.html');
         $tpl->SetBlock('import');
@@ -1467,7 +1467,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
      */
     function FinishImport()
     {
-        $this->CheckPermission('Import');
+        $this->gadget->CheckPermission('Import');
         $this->AjaxMe('script.js');
 
         $request =& Jaws_Request::getInstance();

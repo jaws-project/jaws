@@ -49,7 +49,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends PhooAdminHTML
             }
         }
 
-        if ($this->GetPermission('AddPhotos') && count($albums)>0) {
+        if ($this->gadget->GetPermission('AddPhotos') && count($albums)>0) {
             $t->SetBlock("phoo_browse/upload_photo");
             $t->SetVariable('base_script', BASE_SCRIPT);
             $t->SetVariable('extra_params', $extraParams);
