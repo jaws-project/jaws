@@ -18,15 +18,15 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('SysInfo')) {
+        if ($this->gadget->GetPermission('SysInfo')) {
             return $this->SysInfo();
-        } elseif ($this->GetPermission('PHPInfo')) {
+        } elseif ($this->gadget->GetPermission('PHPInfo')) {
             return $this->PHPInfo();
-        } elseif ($this->GetPermission('JawsInfo')) {
+        } elseif ($this->gadget->GetPermission('JawsInfo')) {
             return $this->JawsInfo();
         }
 
-        $this->CheckPermission('DirInfo');
+        $this->gadget->CheckPermission('DirInfo');
         return $this->DirInfo();
     }
 
@@ -47,25 +47,25 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/Widgets/Sidebar.php';
         $sidebar = new Jaws_Widgets_Sidebar('sysinfo');
 
-        if ($this->GetPermission('SysInfo')) {
+        if ($this->gadget->GetPermission('SysInfo')) {
             $sidebar->AddOption('SysInfo', _t('SYSINFO_SYSINFO'), 
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=SysInfo',
                                 'gadgets/SysInfo/images/sysinfo.png');
         }
 
-        if ($this->GetPermission('PHPInfo')) {
+        if ($this->gadget->GetPermission('PHPInfo')) {
             $sidebar->AddOption('PHPInfo', _t('SYSINFO_PHPINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=PHPInfo',
                                 'gadgets/SysInfo/images/phpinfo.png');
         }
 
-        if ($this->GetPermission('JawsInfo')) {
+        if ($this->gadget->GetPermission('JawsInfo')) {
             $sidebar->AddOption('JawsInfo', _t('SYSINFO_JAWSINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=JawsInfo',
                                 'gadgets/SysInfo/images/jawsinfo.png');
         }
 
-        if ($this->GetPermission('DirInfo')) {
+        if ($this->gadget->GetPermission('DirInfo')) {
             $sidebar->AddOption('DirInfo', _t('SYSINFO_DIRINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=DirInfo',
                                 'gadgets/SysInfo/images/dirinfo.png');
@@ -83,7 +83,7 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
      */
     function SysInfo()
     {
-        $this->CheckPermission('SysInfo');
+        $this->gadget->CheckPermission('SysInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
         $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
         $tpl->Load('AdminSysInfo.html');
@@ -114,7 +114,7 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
      */
     function PHPInfo()
     {
-        $this->CheckPermission('PHPInfo');
+        $this->gadget->CheckPermission('PHPInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
         $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
         $tpl->Load('AdminSysInfo.html');
@@ -145,7 +145,7 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
      */
     function JawsInfo()
     {
-        $this->CheckPermission('JawsInfo');
+        $this->gadget->CheckPermission('JawsInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
         $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
         $tpl->Load('AdminSysInfo.html');
@@ -176,7 +176,7 @@ class SysInfoAdminHTML extends Jaws_Gadget_HTML
      */
     function DirInfo()
     {
-        $this->CheckPermission('DirInfo');
+        $this->gadget->CheckPermission('DirInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
         $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
         $tpl->Load('AdminSysInfo.html');
