@@ -66,10 +66,10 @@ class Blog_Actions_Post extends BlogHTML
             $res = $model->ViewEntry($entry['id']);
             $entry['clicks']++;
 
-            if ($this->GetRegistry('pingback') == 'true') {
+            if ($this->gadget->GetRegistry('pingback') == 'true') {
                 require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
-                $pback->showHeaders($this->GetURLFor('Pingback', null, false, 'site_url'));
+                $pback->showHeaders($this->gadget->GetURLFor('Pingback', null, false, 'site_url'));
             }
 
             $this->SetTitle($entry['title']);
@@ -83,7 +83,7 @@ class Blog_Actions_Post extends BlogHTML
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
-            $allow_comments_config = $this->GetRegistry('allow_comments', 'Settings');
+            $allow_comments_config = $this->gadget->GetRegistry('allow_comments', 'Settings');
             switch ($allow_comments_config) {
                 case 'restricted':
                     $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -97,7 +97,7 @@ class Blog_Actions_Post extends BlogHTML
 
             if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
                 $allow_comments = $entry['allow_comments'] === true &&
-                                  $this->GetRegistry('allow_comments') == 'true' &&
+                                  $this->gadget->GetRegistry('allow_comments') == 'true' &&
                                   $allow_comments_config;
                 $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
                 if (empty($reply_to_comment)) {
@@ -164,7 +164,7 @@ class Blog_Actions_Post extends BlogHTML
                 $navtpl->Load('EntryNavigation.html');
                 if ($prev = $model->GetNOPEntry($entry['id'], 'previous')) {
                     $navtpl->SetBlock('entry-navigation/previous');
-                    $navtpl->SetVariable('url', $this->GetURLFor('SingleView',
+                    $navtpl->SetVariable('url', $this->gadget->GetURLFor('SingleView',
                                                                        array('id' => empty($prev['fast_url']) ?
                                                                              $prev['id'] : $prev['fast_url'])));
                     $navtpl->SetVariable('title', $prev['title']);
@@ -174,7 +174,7 @@ class Blog_Actions_Post extends BlogHTML
 
                 if ($next = $model->GetNOPEntry($entry['id'], 'next')) {
                     $navtpl->SetBlock('entry-navigation/next');
-                    $navtpl->SetVariable('url', $this->GetURLFor('SingleView',
+                    $navtpl->SetVariable('url', $this->gadget->GetURLFor('SingleView',
                                                                    array('id' => empty($next['fast_url']) ?
                                                                          $next['id'] : $next['fast_url'])));
                     $navtpl->SetVariable('title', $next['title']);

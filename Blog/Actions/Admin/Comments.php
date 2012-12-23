@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->name);
+        return $cHtml->Get($this->gadget->name);
     }
 
     /**
@@ -38,7 +38,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->name,
+            $this->gadget->name,
             BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}',
             $filter,
             $search,
@@ -55,7 +55,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function ManageComments()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
         }
@@ -121,7 +121,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function EditComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $request =& Jaws_Request::getInstance();
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
@@ -222,7 +222,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function SaveEditComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -242,7 +242,7 @@ class Blog_Actions_Admin_Comments extends BlogAdminHTML
      */
     function DeleteComment()
     {
-        $this->CheckPermission('ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id');
 

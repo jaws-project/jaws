@@ -55,9 +55,9 @@ class Blog_Actions_Trackbacks extends BlogHTML
         if (trim($id) == '') {
             Jaws_Header::Location('');
         } elseif (empty($title) && empty($url) && empty($blogname)) {
-            $url = $this->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
+            $url = $this->gadget->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
             Jaws_Header::Location($url);
-        } elseif ($this->GetRegistry('trackback') == 'true') {
+        } elseif ($this->gadget->GetRegistry('trackback') == 'true') {
             header('Content-Type: text/xml');
             $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
             $trackback = $model->NewTrackback($id, $url, $title, $excerpt, $blogname, $ip);
@@ -80,13 +80,13 @@ class Blog_Actions_Trackbacks extends BlogHTML
      */
     function ShowTrackbacks($id)
     {
-        if ($this->GetRegistry('trackback') == 'true') {
+        if ($this->gadget->GetRegistry('trackback') == 'true') {
             $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
             $trackbacks = $model->GetTrackbacks($id);
             $tpl = new Jaws_Template('gadgets/Blog/templates/');
             $tpl->Load('Trackbacks.html');
             $tpl->SetBlock('trackbacks');
-            $tburi = $this->GetURLFor('Trackback', array('id' => $id), false, 'site_url');
+            $tburi = $this->gadget->GetURLFor('Trackback', array('id' => $id), false, 'site_url');
             $tpl->SetVariable('TrackbackURI', $tburi);
             if (!Jaws_Error::IsError($trackbacks)) {
                 $date = $GLOBALS['app']->loadDate();

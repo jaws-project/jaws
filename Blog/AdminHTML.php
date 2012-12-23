@@ -44,25 +44,25 @@ class BlogAdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Summary',_t('BLOG_SUMMARY'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=Summary', 'images/stock/new.png');
-        if ($this->GetPermission('AddEntries')) {
+        if ($this->gadget->GetPermission('AddEntries')) {
             $menubar->AddOption('NewEntry', _t('BLOG_NEW_ENTRY'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=NewEntry', 'images/stock/new.png');
         }
         $menubar->AddOption('ListEntries', _t('BLOG_LIST_ENTRIES'),
                             BASE_SCRIPT . '?gadget=Blog&amp;action=ListEntries', 'images/stock/edit.png');
-        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->GetPermission('ManageComments')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('BLOG_MANAGE_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=ManageComments', 'images/stock/stock-comments.png');
         }
-        if ($this->GetPermission('ManageTrackbacks')) {
+        if ($this->gadget->GetPermission('ManageTrackbacks')) {
             $menubar->AddOption('ManageTrackbacks', _t('BLOG_MANAGE_TRACKBACKS'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=ManageTrackbacks', 'images/stock/stock-comments.png');
         }
-        if ($this->GetPermission('ManageCategories')) {
+        if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption('ManageCategories', _t('BLOG_CATEGORIES'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=ManageCategories', 'images/stock/edit.png');
         }
-        if ($this->GetPermission('Settings')) {
+        if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('BLOG_SETTINGS'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=AdditionalSettings', 'images/stock/properties.png');
         }

@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Categories extends BlogAdminHTML
      */
     function ManageCategories($second_action = '')
     {
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
@@ -96,7 +96,7 @@ class Blog_Actions_Admin_Categories extends BlogAdminHTML
     {
         $request =& Jaws_Request::getInstance();
 
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
         $model->NewCategory($request->get('catname', 'post'));
 
@@ -113,7 +113,7 @@ class Blog_Actions_Admin_Categories extends BlogAdminHTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('catid', 'catname'), 'post');
 
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
         $model->UpdateCategory($post['catid'], $post['catname']);
 
@@ -129,7 +129,7 @@ class Blog_Actions_Admin_Categories extends BlogAdminHTML
     {
         $request =& Jaws_Request::getInstance();
 
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
         $model->DeleteCategory($request->get('catid', 'post'));
 

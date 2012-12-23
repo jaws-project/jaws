@@ -20,7 +20,7 @@ class Blog_Actions_Admin_Settings extends BlogAdminHTML
      */
     function AdditionalSettings()
     {
-        $this->CheckPermission('Settings');
+        $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
@@ -200,7 +200,7 @@ class Blog_Actions_Admin_Settings extends BlogAdminHTML
      */
     function SaveAdditionalSettings()
     {
-        $this->CheckPermission('Settings');
+        $this->gadget->CheckPermission('Settings');
 
         $request =& Jaws_Request::getInstance();
         $names = array(

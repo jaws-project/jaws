@@ -64,7 +64,7 @@ class Blog_Actions_Posts extends BlogHTML
             $row = 0;
             $col = 0;
             $index = 0;
-            $columns = (int) $this->GetRegistry('columns');
+            $columns = (int) $this->gadget->GetRegistry('columns');
             $columns = ($columns <= 0)? 1 : $columns;
             foreach ($entries as $entry) {
                 if ($col == 0) {
@@ -89,7 +89,7 @@ class Blog_Actions_Posts extends BlogHTML
 
         if ($tpl->VariableExists('navigation')) {
             $total = $model->GetNumberOfPages($cat);
-            $limit = $this->GetRegistry('last_entries_limit');
+            $limit = $this->gadget->GetRegistry('last_entries_limit');
             $tpl->SetVariable('navigation', $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewPage'));
         }
         $tpl->ParseBlock('view');

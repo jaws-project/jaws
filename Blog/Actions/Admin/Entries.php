@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
      */
     function NewEntry($action = '')
     {
-        $this->CheckPermission('AddEntries');
+        $this->gadget->CheckPermission('AddEntries');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
@@ -50,7 +50,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                 $catChecks->AddOption($a['name'], $a['id']);
             }
         }
-        $catDefault = explode(',', $this->GetRegistry('default_category'));
+        $catDefault = explode(',', $this->gadget->GetRegistry('default_category'));
         $catChecks->SetDefault($catDefault);
         $catChecks->SetColumns(3);
 
@@ -75,7 +75,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $tpl->SetVariable('editor', $editor->Get());
 
         // Allow Comments
-        $allow = $this->GetRegistry('allow_comments') == 'true';
+        $allow = $this->gadget->GetRegistry('allow_comments') == 'true';
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
         $comments->AddOption(_t('BLOG_ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
@@ -86,7 +86,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $statCombo->setId('published');
         $statCombo->AddOption(_t('BLOG_DRAFT'), '0');
         $statCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
-        if ($this->GetPermission('PublishEntries')) {
+        if ($this->gadget->GetPermission('PublishEntries')) {
             $statCombo->SetDefault('1');
         } else {
             $statCombo->SetDefault('0');
@@ -132,8 +132,8 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
@@ -153,7 +153,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
-        if ($this->GetRegistry('trackback') == 'true') {
+        if ($this->gadget->GetRegistry('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', '');
@@ -176,7 +176,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
      */
     function SaveNewEntry()
     {
-        $this->CheckPermission('AddEntries');
+        $this->gadget->CheckPermission('AddEntries');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -199,9 +199,9 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                                $post['published'], $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
-            if ($this->GetRegistry('trackback') == 'true') {
+            if ($this->gadget->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
-                $link = $this->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
+                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
                 $title = $post['title'];
                 $text = $content['text_block'];
                 if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
@@ -222,7 +222,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
      */
     function PreviewNewEntry()
     {
-        $this->CheckPermission('AddEntries');
+        $this->gadget->CheckPermission('AddEntries');
         return $this->NewEntry('preview');
     }
 
@@ -250,7 +250,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         }
 
         if ($GLOBALS['app']->Session->GetAttribute('user') != $entry['user_id']) {
-            $this->CheckPermission('ModifyOthersEntries');
+            $this->gadget->CheckPermission('ModifyOthersEntries');
         }
 
         $this->AjaxMe('script.js');
@@ -337,7 +337,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $statCombo->AddOption(_t('BLOG_DRAFT'), '0');
         $statCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
         $statCombo->SetDefault($statData);
-        if (!$this->GetPermission('PublishEntries')) {
+        if (!$this->gadget->GetPermission('PublishEntries')) {
             $statCombo->SetEnabled(false);
         }
         $tpl->SetVariable('status_field', $statCombo->Get());
@@ -384,8 +384,8 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
@@ -406,7 +406,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         // Trackback
-        if ($this->GetRegistry('trackback') == 'true') {
+        if ($this->gadget->GetRegistry('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', $entry['trackbacks']);
@@ -464,9 +464,9 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                             $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
-            if ($this->GetRegistry('trackback') == 'true') {
+            if ($this->gadget->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
-                $link = $this->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
+                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
                 $title = $post['title'];
                 $text = $content['text_block'];
                 if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
@@ -487,7 +487,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
      */
     function DeleteEntry()
     {
-        $this->CheckPermission('DeleteEntries');
+        $this->gadget->CheckPermission('DeleteEntries');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -741,14 +741,14 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
                                        STOCK_EDIT);
             $actions = $link->Get().'&nbsp;';
 
-            if ($this->GetPermission('ManageComments')) {
+            if ($this->gadget->GetPermission('ManageComments')) {
                 $link = Piwi::CreateWidget('Link', _t('BLOG_COMMENTS'),
                                            $common_url.'&amp;action=ManageComments&amp;filterby=postid&amp;filter='.$id,
                                            'images/stock/stock-comments.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->GetPermission('DeleteEntries')) {
+            if ($this->gadget->GetPermission('DeleteEntries')) {
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                            $common_url.'&amp;action=DeleteEntry&amp;id='.$id,
                                            STOCK_DELETE);

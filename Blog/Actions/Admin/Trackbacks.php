@@ -36,7 +36,7 @@ class Blog_Actions_Admin_Trackbacks extends BlogAdminHTML
      */
     function ManageTrackbacks()
     {
-        $this->CheckPermission('ManageTrackbacks');
+        $this->gadget->CheckPermission('ManageTrackbacks');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
@@ -145,7 +145,7 @@ class Blog_Actions_Admin_Trackbacks extends BlogAdminHTML
      */
     function ViewTrackback()
     {
-        $this->CheckPermission('ManageTrackbacks');
+        $this->gadget->CheckPermission('ManageTrackbacks');
         $request =& Jaws_Request::getInstance();
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
