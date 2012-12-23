@@ -31,13 +31,13 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Admin', _t('VISITCOUNTER_ADMIN_ACTION'), '');
 
-        if ($this->GetPermission('ResetCounter')) {
+        if ($this->gadget->GetPermission('ResetCounter')) {
             $menubar->AddOption('ResetCounter', _t('VISITCOUNTER_RESET_COUNTER_ACTION'),
                                 "javascript: if (confirm('"._t("VISITCOUNTER_RESET_COUNTER_CONFIRM")."')) ".
                                 "resetCounter(); return false;");
         }
 
-        if ($this->GetPermission('CleanEntries')) {
+        if ($this->gadget->GetPermission('CleanEntries')) {
             $menubar->AddOption('CleanEntries', _t('VISITCOUNTER_CLEAN_COUNTER'),
                                 "javascript: if (confirm('"._t("VISITCOUNTER_CLEAN_COUNTER_CONFIRM")."')) ".
                                 "cleanEntries(); return false;");
@@ -123,7 +123,7 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('grid', $this->DataGrid());
         //Ok, the config..
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $config_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'VisitCounter'));
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
@@ -133,7 +133,7 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
             $fieldset_config->SetDirection('vertical');
             $fieldset_config->SetStyle('white-space: nowrap; width: 228px;');
 
-            $visit_counters = explode(',', $this->GetRegistry('visit_counters'));
+            $visit_counters = explode(',', $this->gadget->GetRegistry('visit_counters'));
             $check_counters =& Piwi::CreateWidget('CheckButtons', 'c_kind', 'vertical');
             $check_counters->SetTitle(_t('VISITCOUNTER_DISPLAY_COUNTER'));
             $check_counters->AddOption(_t('VISITCOUNTER_ONLINE_VISITORS'), '0', null, in_array('online', $visit_counters));
@@ -159,14 +159,14 @@ class VisitCounterAdminHTML extends Jaws_Gadget_HTML
 
             $mode =& Piwi::CreateWidget('Combo', 'mode');
             $mode->SetTitle(_t('VISITCOUNTER_MODE'));
-            $mode_reg = $this->GetRegistry('mode');
+            $mode_reg = $this->gadget->GetRegistry('mode');
             $mode->AddOption(_t('VISITCOUNTER_MODE_TEXT'), 'text');
             $mode->AddOption(_t('VISITCOUNTER_MODE_IMAGE'), 'image');
             $mode->SetDefault($mode_reg);
             $mode->SetId('custom');
             $fieldset_config->Add($mode);
 
-            $custom_reg = stripslashes($this->GetRegistry('custom_text'));
+            $custom_reg = stripslashes($this->gadget->GetRegistry('custom_text'));
             $customText =& Piwi::CreateWidget('Entry', 'custom_text');
             $customText->SetTitle(_t('VISITCOUNTER_CUSTOM_TEXT'));
             $customText->SetValue($custom_reg);
