@@ -36,13 +36,13 @@ class RssReaderAdminHTML extends Jaws_Gadget_HTML
             $siteData['title'].= '" target="_blank" style="text-decoration: none;">'.$site['title'].'</a></span>';
             $siteData['visible'] = ($site['visible']?_t('GLOBAL_YES') : _t('GLOBAL_NO'));
             $actions = '';
-            if ($this->GetPermission('ManageRSSSite')) {
+            if ($this->gadget->GetPermission('ManageRSSSite')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editRSS(this, '".$site['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
-            if ($this->GetPermission('ManageRSSSite')) {
+            if ($this->gadget->GetPermission('ManageRSSSite')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                             "javascript: deleteRSS(this, '".$site['id']."');",
                                             STOCK_DELETE);
@@ -165,7 +165,7 @@ class RssReaderAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
         $tpl->SetVariable('visible', $visibleType->Get());
 
-        if ($this->GetPermission('ManageRSSSite')) {
+        if ($this->gadget->GetPermission('ManageRSSSite')) {
             $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
             $btncancel->SetStyle('visibility: hidden;');
             $btncancel->AddEvent(ON_CLICK, 'stopAction();');
