@@ -98,7 +98,7 @@ class Search_Actions_Results extends SearchHTML
                     $tpl->SetVariable('image',  $item['image']);
 
                     if (!isset($item['parse_text']) || $item['parse_text']) {
-                        $item['snippet'] = Jaws_Gadget::ParseText($item['snippet'], $gadget);
+                        $item['snippet'] = $this->gadget->ParseText($item['snippet'], $gadget);
                     }
                     if (!isset($item['strip_tags']) || $item['strip_tags']) {
                         $item['snippet'] = strip_tags($item['snippet']);
