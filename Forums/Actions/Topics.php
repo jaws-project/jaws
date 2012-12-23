@@ -207,7 +207,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $topic['update_reason'] = $rqst['update_reason'];
             $tpl->SetBlock('topic/preview');
             $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
-            $tpl->SetVariable('message', $this->ParseText($topic['message'], 'Forums', 'index'));
+            $tpl->SetVariable('message', $this->gadget->ParseText($topic['message'], 'Forums', 'index'));
             $tpl->ParseBlock('topic/preview');
         }
 
@@ -478,7 +478,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 $topic['forum_title'],
                 $topic_link,
                 $topic['subject'],
-                $this->ParseText($topic['message'], 'Forums', 'index')
+                $this->gadget->ParseText($topic['message'], 'Forums', 'index')
             );
             if (Jaws_Error::IsError($result)) {
                 // do nothing
@@ -547,7 +547,7 @@ class Forums_Actions_Topics extends ForumsHTML
                     $topic['forum_title'],
                     $forum_link,
                     $topic['subject'],
-                    $this->ParseText($topic['message'], 'Forums', 'index')
+                    $this->gadget->ParseText($topic['message'], 'Forums', 'index')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
@@ -649,7 +649,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $topic['forum_title'],
             $topic_link,
             $topic['subject'],
-            $this->ParseText($topic['message'], 'Forums', 'index')
+            $this->gadget->ParseText($topic['message'], 'Forums', 'index')
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing

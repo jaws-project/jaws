@@ -192,7 +192,7 @@ class PhooAdminHTML extends Jaws_Gadget_HTML
                         }
                         $t->SetBlock('phoo/photos/albums');
                         $t->SetVariable('title', $album['name']);
-                        $t->SetVariable('description', $this->ParseText($album['description'], 'Phoo'));
+                        $t->SetVariable('description', $this->gadget->ParseText($album['description'], 'Phoo'));
                         $t->SetVariable('createtime', $objDate->Format($album['createtime']));
                         $upload_url = BASE_SCRIPT."?gadget=Phoo&amp;action=UploadPhotos&amp;album={$album['id']}";
                         $manageAlbumActions = "<a href=\"{$upload_url}\">"._t('PHOO_UPLOAD_PHOTOS')."</a>";

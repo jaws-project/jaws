@@ -108,7 +108,7 @@ class ChatboxLayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('email', $xss->filter($entry['email']));
                 $tpl->SetVariable('url', $xss->filter($entry['url']));
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
-                $tpl->SetVariable('message', Jaws_Gadget::ParseText($entry['msg_txt']));
+                $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt']));
                 if ($entry['status'] == 'spam') {
                    $tpl->SetVariable('status_message', _t('CHATBOX_COMMENT_IS_SPAM'));
                 } elseif ($entry['status'] == 'waiting') {

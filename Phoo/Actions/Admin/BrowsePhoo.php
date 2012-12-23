@@ -175,7 +175,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends PhooAdminHTML
 
                         $t->SetBlock ('phoo_browse/photos/albums');
                         $t->SetVariable ('title', $album['name']);
-                        $t->SetVariable ('description',$this->ParseText($album['description'], 'Phoo'));
+                        $t->SetVariable ('description',$this->gadget->ParseText($album['description'], 'Phoo'));
                         $t->SetVariable ('createtime', $objDate->Format($album['createtime']));
 
                         if ((isset($album['images']) && is_array($album['images'])) &&(count($album['images']) > 0)) {

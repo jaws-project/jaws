@@ -219,8 +219,8 @@ class BlogHTML extends Jaws_Gadget_HTML
         }
 
         $summary = empty($summary)? $text : $summary;
-        $summary = $this->ParseText($summary, 'Blog');
-        $text    = $this->ParseText($text, 'Blog');
+        $summary = $this->gadget->ParseText($summary, 'Blog');
+        $text    = $this->gadget->ParseText($text, 'Blog');
 
         if ($useMore){
             if (Jaws_UTF8::trim($text) != '') {

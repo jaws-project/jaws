@@ -45,7 +45,7 @@ class FaqHTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($q) && !empty($q)) {
             $this->SetTitle($q['question']);
             $tpl->SetVariable('title', $q['question']);
-            $tpl->SetVariable('answer', $this->ParseText($q['answer'], 'Faq'));
+            $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer'], 'Faq'));
         }
         $tpl->ParseBlock('faq_question');
 
@@ -77,7 +77,7 @@ class FaqHTML extends Jaws_Gadget_HTML
                 $tpl->SetBlock('faq_category');
                 $tpl->SetVariable('title', _t('FAQ_TITLE'));
                 $tpl->SetVariable('category', $cat['category']);
-                $tpl->SetVariable('description', $this->ParseText($cat['description'], 'Faq'));
+                $tpl->SetVariable('description', $this->gadget->ParseText($cat['description'], 'Faq'));
                 if (isset($cat['questions']) && is_array($cat['questions'])) {
                     $qPos = 0;
                 }
@@ -106,7 +106,7 @@ class FaqHTML extends Jaws_Gadget_HTML
                     $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                     $tpl->SetVariable('url', $this->GetURLFor('ViewQuestion', array('id' => $qid)));
                     $tpl->SetVariable('question', $q['question']);
-                    $tpl->SetVariable('answer', $this->ParseText($q['answer'], 'Faq'));
+                    $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer'], 'Faq'));
                     $tpl->ParseBlock('faq_category/item');
                 }
                 $tpl->ParseBlock('faq_category');
@@ -186,7 +186,7 @@ class FaqHTML extends Jaws_Gadget_HTML
                         $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                         $tpl->SetVariable('url', $this->GetURLFor('ViewQuestion', array('id' => $qid)));
                         $tpl->SetVariable('question', $q['question']);
-                        $tpl->SetVariable('answer', $this->ParseText($q['answer'], 'Faq'));
+                        $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer'], 'Faq'));
                         $tpl->ParseBlock('faq/answers/category/question');
                     }
                     $tpl->ParseBlock('faq/answers/category');

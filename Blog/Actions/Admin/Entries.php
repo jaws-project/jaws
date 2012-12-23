@@ -543,7 +543,7 @@ class Blog_Actions_Admin_Entries extends BlogAdminHTML
 
         $tpl->SetVariable('id', $idHidden->Get());
         $tpl->SetVariable('title', $entry['title']);
-        $tpl->SetVariable('text', $this->ParseText($entry['text'], 'Blog'));
+        $tpl->SetVariable('text', $this->gadget->ParseText($entry['text'], 'Blog'));
         $tpl->SetVariable('user', $entry['username']);
         $date = $GLOBALS['app']->loadDate();
         $tpl->SetVariable('createtime', $date->Format($entry['publishtime']));

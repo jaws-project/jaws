@@ -88,7 +88,7 @@ class QuotesHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('title', $group['title']);
         $tpl->SetVariable('quote_title', $quote['title']);
-        $tpl->SetVariable('quotation', $this->ParseText($quote['quotation'], 'Quotes'));
+        $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation'], 'Quotes'));
 
         $tpl->ParseBlock('quote');
         return $tpl->Get();

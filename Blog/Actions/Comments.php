@@ -61,7 +61,7 @@ class Blog_Actions_Comments extends BlogHTML
                 $tpl->SetVariable('title', $c['title']);
                 $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
-                $commentsText = $this->ParseText($c['msg_txt']);
+                $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
                 $tpl->SetVariable('createtime-iso',       $c['createtime']);
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
@@ -146,7 +146,7 @@ class Blog_Actions_Comments extends BlogHTML
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
             $tpl->SetVariable('replies', $comment['replies']);
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
-            $commentsText = $this->ParseText($comment['msg_txt']);
+            $commentsText = $this->gadget->ParseText($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
             $tpl->SetVariable('createtime-iso',       $comment['createtime']);
             $tpl->SetVariable('createtime',           $date->Format($comment['createtime']));
@@ -353,7 +353,7 @@ class Blog_Actions_Comments extends BlogHTML
             $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
         }
         $tpl->SetVariable('title', $post['title']);
-        $tpl->SetVariable('comments', $this->ParseText($post['comments']));
+        $tpl->SetVariable('comments', $this->gadget->ParseText($post['comments']));
         if (!isset($post['createtime'])) {
             $date = $GLOBALS['app']->loadDate();
             $post['createtime'] = $date->Format(time());

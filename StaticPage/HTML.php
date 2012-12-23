@@ -82,7 +82,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
                 $this->SetTitle($page['title']);
                 $this->AddToMetaKeywords($page['meta_keywords']);
                 $this->SetDescription($page['meta_description']);
-                $text = $this->ParseText($page['content'], 'StaticPage');
+                $text = $this->gadget->ParseText($page['content'], 'StaticPage');
                 $tpl->SetVariable('content', $text, false);
                 if ($page['show_title'] === true) {
                     $tpl->SetBlock('page/title');

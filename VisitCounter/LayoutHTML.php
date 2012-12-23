@@ -46,7 +46,7 @@ class VisitCounterLayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetBlock("VisiCounter/classic");
             $tpl->SetVariable('label', _t('VISITCOUNTER_ONLINE_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
-                                       Jaws_Gadget::ParseText($online_count, 'VisitCounter') :
+                                       $this->gadget->ParseText($online_count, 'VisitCounter') :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $online_count));
             $tpl->ParseBlock("VisiCounter/classic");
         }
@@ -55,7 +55,7 @@ class VisitCounterLayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetBlock("VisiCounter/classic");
             $tpl->SetVariable('label', _t('VISITCOUNTER_TODAY_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
-                                       Jaws_Gadget::ParseText($today_count, 'VisitCounter') :
+                                       $this->gadget->ParseText($today_count, 'VisitCounter') :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $today_count));
             $tpl->ParseBlock("VisiCounter/classic");
         }
@@ -64,7 +64,7 @@ class VisitCounterLayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetBlock("VisiCounter/classic");
             $tpl->SetVariable('label', _t('VISITCOUNTER_TOTAL_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
-                                       Jaws_Gadget::ParseText($total_count, 'VisitCounter') :
+                                       $this->gadget->ParseText($total_count, 'VisitCounter') :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $total_count));
             $tpl->ParseBlock("VisiCounter/classic");
         }
@@ -78,15 +78,15 @@ class VisitCounterLayoutHTML extends Jaws_Gadget_HTML
                 $tp->LoadFromString("<!-- BEGIN x -->$custom<!-- END x -->");
                 $tp->SetBlock('x');
                 $tp->SetVariable('online', $viewMode=='text'?
-                                           Jaws_Gadget::ParseText($online_count, 'VisitCounter') :
+                                           $this->gadget->ParseText($online_count, 'VisitCounter') :
                                            preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $online_count));
                 $tp->SetVariable('today',  $viewMode=='text'?
-                                           Jaws_Gadget::ParseText($today_count, 'VisitCounter') :
+                                           $this->gadget->ParseText($today_count, 'VisitCounter') :
                                            preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $today_count));
                 $tp->SetVariable('total',  $viewMode=='text'?
-                                           Jaws_Gadget::ParseText($total_count, 'VisitCounter') :
+                                           $this->gadget->ParseText($total_count, 'VisitCounter') :
                                            preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $total_count));
-                $tp->SetVariable('date',   Jaws_Gadget::ParseText($startdate,    'VisitCounter'));
+                $tp->SetVariable('date',   $this->gadget->ParseText($startdate,    'VisitCounter'));
                 $tp->ParseBlock('x');
                 $res = $tp->Get();
                 $tp = null;

@@ -438,7 +438,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $format = $this->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
-            $reply = $this->ParseText($contact['reply'], 'Contact');
+            $reply = $this->gadget->ParseText($contact['reply'], 'Contact');
         } else {
             $reply = $contact['reply'];
         }
@@ -900,7 +900,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $format = $this->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
-            $message = $this->ParseText($message, 'Contact');
+            $message = $this->gadget->ParseText($message, 'Contact');
         } else {
             $message = strip_tags($message);
         }

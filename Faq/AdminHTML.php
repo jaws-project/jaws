@@ -178,7 +178,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
                     $tpl->SetVariable('style', 'display: block;');
                 }
                 $tpl->SetVariable('name', $cat['category']);
-                $tpl->SetVariable('description', $this->ParseText($cat['description'], 'Faq'));
+                $tpl->SetVariable('description', $this->gadget->ParseText($cat['description'], 'Faq'));
                 if ($this->GetPermission('AddQuestion')) {
                     $add_url = BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;category='.$cat['id'];
                     $tpl->SetVariable('add_question', "<a href=\"{$add_url}\">"._t('FAQ_ADD_QUESTION').'</a>');
