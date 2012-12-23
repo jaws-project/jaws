@@ -32,7 +32,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
     function CommentsDatagrid()
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHtml->Get($this->name);
+        return $cHtml->Get($this->gadget->name);
     }
 
     /**
@@ -49,7 +49,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->name,
+            $this->gadget->name,
             BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}',
             $filter,
             $search,
@@ -115,7 +115,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('comments', $this->CommentsDatagrid($filterByData, $filterData));
 
         ///Config properties
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Chatbox'));
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
@@ -130,7 +130,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 20; ++$i) {
                 $limitcombo->AddOption($i, $i);
             }
-            $limit = $this->GetRegistry('limit');
+            $limit = $this->gadget->GetRegistry('limit');
             if (Jaws_Error::IsError($limit)) {
                 $limit = 10;
             }
@@ -143,7 +143,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 10; ++$i) {
                 $max_lencombo->AddOption($i*25, $i*25);
             }
-            $max_strlen = $this->GetRegistry('max_strlen');
+            $max_strlen = $this->gadget->GetRegistry('max_strlen');
             if (Jaws_Error::IsError($max_strlen)) {
                 $max_strlen = 125;
             }
@@ -155,7 +155,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
             $authority->SetTitle(_t('CHATBOX_ANON_POST_AUTHORITY'));
             $authority->AddOption(_t('GLOBAL_DISABLED'), 'false');
             $authority->AddOption(_t('GLOBAL_ENABLED'),  'true');
-            $anon_authority = $this->GetRegistry('anon_post_authority');
+            $anon_authority = $this->gadget->GetRegistry('anon_post_authority');
             $authority->SetDefault($anon_authority == 'true'? 'true' : 'false');
             $fieldset->Add($authority);
 
@@ -185,7 +185,7 @@ class ChatboxAdminHTML extends Jaws_Gadget_HTML
         $id = $request->get('id', 'get');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->name, $id);
+        $comment = $cModel->GetComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($comment)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox&action=ManageComments');
         }
