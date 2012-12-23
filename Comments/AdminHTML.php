@@ -91,7 +91,7 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         // TODO: Check Permission For Manage Comments
-        //$btnSave->SetEnabled($this->GetPermission('ManageComments'));
+        //$btnSave->SetEnabled($this->gadget->GetPermission('ManageComments'));
         $btnSave->AddEvent(ON_CLICK, 'updateComment();');
         $btnSave->SetStyle('visibility: hidden;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
@@ -211,7 +211,7 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
             // Actions
             $actions = '';
-            if ($this->GetPermission('ManageContacts')) {
+            if ($this->gadget->GetPermission('ManageContacts')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editContact(this, '".$contact['id']."');",
                                             STOCK_EDIT);
