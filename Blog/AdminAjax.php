@@ -20,7 +20,7 @@ class BlogAdminAjax extends Jaws_Gadget_Ajax
      */
     function ParseText($text)
     {
-        return $this->ParseText($text, 'Blog');
+        return $this->gadget->ParseText($text, 'Blog');
     }
 
     /**
