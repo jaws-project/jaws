@@ -774,6 +774,26 @@ class UrlMapperAdminModel extends UrlMapperModel
     }
 
     /**
+     * Gets records count for error maps datagrid
+     *
+     * @access  public
+     * @return  int   ErrorMaps row counts
+     */
+    function GetErrorMapsCount()
+    {
+        $sql = '
+            SELECT COUNT([id])
+            FROM [[url_errors]]';
+
+        $res = $GLOBALS['db']->queryOne($sql);
+        if (Jaws_Error::IsError($res)) {
+            return new Jaws_Error($res->getMessage(), 'SQL');
+        }
+
+        return $res;
+    }
+
+    /**
      * Handle HTTP Errors
      *
      * @access  public

@@ -185,6 +185,22 @@ class UrlMapperAdminAjax extends Jaws_Gadget_Ajax
     }
 
     /**
+     * Gets records count for error maps datagrid
+     *
+     * @access  public
+     * @return  int   ErrorMaps row counts
+     */
+    function GetErrorMapsCount()
+    {
+        $res = $this->_Model->GetErrorMapsCount();
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        return $res;
+    }
+
+    /**
      * Adds a new error map
      *
      * @access  public

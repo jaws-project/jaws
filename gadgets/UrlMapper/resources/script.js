@@ -309,7 +309,7 @@ function getErrorMaps(name, offset, reset)
     var result = UrlMapperAjax.callSync('geterrormaps', 10, offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = UrlMapperAjax.callSync('geterrormapscount', 10, offset);
+        var total = UrlMapperAjax.callSync('geterrormapscount');
     }
     resetGrid(name, result, total);
 }
