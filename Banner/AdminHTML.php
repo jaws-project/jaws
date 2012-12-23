@@ -21,13 +21,13 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManageBanners')) {
+        if ($this->gadget->GetPermission('ManageBanners')) {
             return $this->Banners();
-        } elseif ($this->GetPermission('ManageGroups')) {
+        } elseif ($this->gadget->GetPermission('ManageGroups')) {
             return $this->Groups();
         }
 
-        $this->CheckPermission('ViewReports');
+        $this->gadget->CheckPermission('ViewReports');
     }
 
     /**
@@ -46,15 +46,15 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManageBanners')) {
+        if ($this->gadget->GetPermission('ManageBanners')) {
             $menubar->AddOption('Banners', _t('BANNER_NAME'),
                                 BASE_SCRIPT . '?gadget=Banner&amp;action=Admin', 'gadgets/Banner/images/banners_mini.png');
         }
-        if ($this->GetPermission('ManageGroups')) {
+        if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('BANNER_GROUPS_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Banner&amp;action=Groups', 'gadgets/Banner/images/groups_mini.png');
         }
-        if ($this->GetPermission('ViewReports')) {
+        if ($this->gadget->GetPermission('ViewReports')) {
             $menubar->AddOption('Reports', _t('BANNER_REPORTS_REPORTS'),
                                 BASE_SCRIPT . '?gadget=Banner&amp;action=Reports', 'gadgets/Banner/images/reports_mini.png');
         }
@@ -83,7 +83,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
             $bannerData = array();
             $bannerData['title'] = $banner['title'];
             $actions = '';
-            if ($this->GetPermission('ManageBanners')) {
+            if ($this->gadget->GetPermission('ManageBanners')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editBanner(this, '".$banner['id']."');",
                                             STOCK_EDIT);
@@ -132,7 +132,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
      */
     function Banners()
     {
-        $this->CheckPermission('ManageBanners');
+        $this->gadget->CheckPermission('ManageBanners');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Banner/templates/');
@@ -297,8 +297,8 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
-        $startTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $startTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $startTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $startTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
@@ -309,8 +309,8 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $stopTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $stopTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $stopTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
@@ -344,7 +344,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
      */
     function Groups()
     {
-        $this->CheckPermission('ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Banner/templates/');
@@ -404,7 +404,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
      */
     function UploadBanner()
     {
-        $this->CheckPermission('ManageBanners');
+        $this->gadget->CheckPermission('ManageBanners');
 
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('bid', 'title', 'url', 'gid', 'type', 'banner',
@@ -600,7 +600,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
                                                     _t('BANNER_REPORTS_BANNERS_STATUS_INVISIBLE');
 
             $actions = '';
-            if ($this->GetPermission('ManageBanners')) {
+            if ($this->gadget->GetPermission('ManageBanners')) {
                 $link =& Piwi::CreateWidget('Link', _t('BANNER_BANNERS_RESET_VIEWS'),
                                             "javascript: resetViews('".$banner['id']."');",
                                             STOCK_REFRESH);
@@ -626,7 +626,7 @@ class BannerAdminHTML extends Jaws_Gadget_HTML
      */
     function Reports()
     {
-        $this->CheckPermission('ViewReports');
+        $this->gadget->CheckPermission('ViewReports');
         $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Banner/templates/');
         $tpl->Load('AdminBannerReports.html');
