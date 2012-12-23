@@ -19,7 +19,7 @@ class PreferencesAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $this->CheckPermission('UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Preferences/templates/');
@@ -34,28 +34,28 @@ class PreferencesAdminHTML extends Jaws_Gadget_HTML
         $fieldset->SetDirection('vertical');
 
         $checks =& Piwi::CreateWidget('CheckButtons', 'display','vertical');
-        $checked = ($this->GetRegistry('display_theme') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_theme') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_THEME'), 'theme', null, $checked);
 
-        $checked = ($this->GetRegistry('display_editor') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_editor') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_EDITOR'), 'editor', null, $checked);
 
-        $checked = ($this->GetRegistry('display_language') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_language') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_LANGUAGE'), 'language', null, $checked);
 
-        $checked = ($this->GetRegistry('display_calendar_type') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_calendar_type') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_CALENDAR_TYPE'), 'calendar_type', null, $checked);
 
-        $checked = ($this->GetRegistry('display_calendar_language') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_calendar_language') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_CALENDAR_LANGUAGE'), 'calendar_language', null, $checked);
 
-        $checked = ($this->GetRegistry('display_date_format') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_date_format') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_DATE_FORMAT'), 'date_format', null, $checked);
 
-        $checked = ($this->GetRegistry('display_timezone') == 'true');
+        $checked = ($this->gadget->GetRegistry('display_timezone') == 'true');
         $checks->AddOption(_t('PREFERENCES_DISPLAY_TIMEZONE'), 'timezone', null, $checked);
 
-        $checked = ($this->GetRegistry('cookie_precedence', 'Settings') == 'true');
+        $checked = ($this->gadget->GetRegistry('cookie_precedence', 'Settings') == 'true');
         $checks->AddOption(_t('PREFERENCES_COOKIE_PRECEDENCE'), 'cookie', null, $checked);
 
         $submit =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_UPDATE', _t('GLOBAL_SETTINGS')), STOCK_SAVE);

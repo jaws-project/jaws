@@ -32,13 +32,13 @@ class PreferencesLayoutHTML extends Jaws_Gadget_HTML
             $cookies = array();
         }
 
-        $displayTheme            = ($this->GetRegistry('display_theme') == 'true');
-        $displayeEditor          = ($this->GetRegistry('display_editor') == 'true');
-        $displayLanguage         = ($this->GetRegistry('display_language') == 'true');
-        $displayCalendarType     = ($this->GetRegistry('display_calendar_type') == 'true');
-        $displayCalendarLanguage = ($this->GetRegistry('display_calendar_language') == 'true');
-        $displayDateFormat       = ($this->GetRegistry('display_date_format') == 'true');
-        $displayTimeZone         = ($this->GetRegistry('display_timezone') == 'true');
+        $displayTheme            = ($this->gadget->GetRegistry('display_theme') == 'true');
+        $displayeEditor          = ($this->gadget->GetRegistry('display_editor') == 'true');
+        $displayLanguage         = ($this->gadget->GetRegistry('display_language') == 'true');
+        $displayCalendarType     = ($this->gadget->GetRegistry('display_calendar_type') == 'true');
+        $displayCalendarLanguage = ($this->gadget->GetRegistry('display_calendar_language') == 'true');
+        $displayDateFormat       = ($this->gadget->GetRegistry('display_date_format') == 'true');
+        $displayTimeZone         = ($this->gadget->GetRegistry('display_timezone') == 'true');
 
         if ($displayTheme || $displayeEditor || $displayLanguage || $displayCalendarType ||
             $displayCalendarLanguage || $displayDateFormat || $displayTimeZone) {
