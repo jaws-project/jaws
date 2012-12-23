@@ -74,7 +74,7 @@ class TmsAdminHTML extends Jaws_Gadget_HTML
         }
         $tpl->SetVariable('themes_combo', $themesCombo->Get());
 
-        if ($this->GetPermission('UploadTheme')) {
+        if ($this->gadget->GetPermission('UploadTheme')) {
             // Upload theme
             $tpl->SetBlock('Tms/UploadTheme');
             $fileEntry =& Piwi::CreateWidget('FileEntry', 'theme_upload');
@@ -160,7 +160,7 @@ class TmsAdminHTML extends Jaws_Gadget_HTML
      */
     function UploadTheme()
     {
-        $this->CheckPermission('UploadTheme');
+        $this->gadget->CheckPermission('UploadTheme');
 
         $res = Jaws_Utils::ExtractFiles($_FILES, JAWS_DATA . 'themes' . DIRECTORY_SEPARATOR, false);
         if (!Jaws_Error::IsError($res)) {
