@@ -45,7 +45,7 @@ class GlossaryAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('term_list', $termsCombo->Get());
 
         // New Button
-        if ($this->GetPermission('AddTerm')) {
+        if ($this->gadget->GetPermission('AddTerm')) {
             $newButton =& Piwi::CreateWidget('Button', 'newButton', _t('GLOBAL_CREATE', _t('GLOSSARY_TERM')), STOCK_NEW);
             $newButton->AddEvent(ON_CLICK, 'createNewTerm(\'' . _t('GLOBAL_CREATE', _t('GLOSSARY_TERM')) . '\');');
             $newButton->SetID('newButton');
@@ -117,9 +117,9 @@ class GlossaryAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sending_message',          _t('GLOSSARY_MSGSENDING'));
 
         // Acl
-        $tpl->SetVariable('acl_add', $this->GetPermission('AddTerm') ? 'true' : 'false');
-        $tpl->SetVariable('acl_edit', $this->GetPermission('EditTerm') ? 'true' : 'false');
-        $tpl->SetVariable('acl_delete', $this->GetPermission('DeleteTerm') ? 'true' : 'false');
+        $tpl->SetVariable('acl_add', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
+        $tpl->SetVariable('acl_edit', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
+        $tpl->SetVariable('acl_delete', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
 
         $tpl->ParseBlock('Glossary');
         return $tpl->Get();
