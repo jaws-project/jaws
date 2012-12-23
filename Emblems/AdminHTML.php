@@ -74,14 +74,14 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
                                         STOCK_HOME);
             $actions.= $link->Get().'&nbsp;';
 
-            if ($this->GetPermission('EditEmblem')) {
+            if ($this->gadget->GetPermission('EditEmblem')) {
                 $link =& Piwi::CreateWidget(
                                             'Link', _t('GLOBAL_SAVE'),
                                             "javascript: editEmblem('".$e['id']."');",
                                             STOCK_SAVE);
                 $actions.= $link->Get().'&nbsp;';
             }
-            if ($this->GetPermission('DeleteEmblem')) {
+            if ($this->gadget->GetPermission('DeleteEmblem')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                             "javascript: deleteEmblem('".$e['id']."', '" . _t('EMBLEMS_CONFIRM_DELETE') . "');",
                                             STOCK_DELETE);
@@ -149,7 +149,7 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
         $tpl->Load('AdminEmblems.html');
         $tpl->SetBlock('emblems');
 
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $tpl->SetBlock('emblems/properties');
             $propsform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
             $propsform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
@@ -164,13 +164,13 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 20; $i++) {
                 $rowscombo->AddOption($i, $i);
             }
-            $rowscombo->SetDefault($this->GetRegistry('rows'));
+            $rowscombo->SetDefault($this->gadget->GetRegistry('rows'));
             $propsfieldset->Add($rowscombo);
             $urlradio =& Piwi::CreateWidget('RadioButtons', 'allow_url');
             $urlradio->SetTitle(_t('EMBLEMS_ALLOW_URL'));
             $urlradio->AddOption(_t('GLOBAL_YES'), 'true');
             $urlradio->AddOption(_t('GLOBAL_NO'), 'false');
-            if ($this->GetRegistry('allow_url') == 'true') {
+            if ($this->gadget->GetRegistry('allow_url') == 'true') {
                 $urlradio->SetDefault('true');
             } else {
                 $urlradio->SetDefault('false');
@@ -187,7 +187,7 @@ class EmblemsAdminHTML extends Jaws_Gadget_HTML
             $tpl->ParseBlock('emblems/properties');
         }
 
-        if ($this->GetPermission('AddEmblem')) {
+        if ($this->gadget->GetPermission('AddEmblem')) {
             $tpl->SetBlock('emblems/addemblem');
             $addform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', 'multipart/form-data');
             $addform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
