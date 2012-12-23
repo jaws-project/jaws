@@ -32,12 +32,12 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
         $menubar->AddOption('ManageQuestions', _t('FAQ_LIST'),
                             BASE_SCRIPT . '?gadget=Faq&amp;action=ManageQuestions', STOCK_DOCUMENTS);
 
-        if ($this->GetPermission('AddNewQuestion')) {
+        if ($this->gadget->GetPermission('AddNewQuestion')) {
             $menubar->AddOption('AddNewQuestion', _t('FAQ_ADD_QUESTION'),
                                 BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion', STOCK_NEW);
         }
 
-        if ($this->GetPermission('ManageCategories')) {
+        if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption('AddNewCategory', _t('FAQ_ADD_CATEGORY'),
                                 BASE_SCRIPT . '?gadget=Faq&amp;action=EditCategory', STOCK_NEW);
         }
@@ -92,7 +92,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
 
             $grid->AddColumn(Piwi::CreateWidget('Column', _t('FAQ_QUESTION'), 'question', false, 'String', true,
                                                 BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;id={id}'));
-            if ($this->GetPermission('EditQuestion')) {
+            if ($this->gadget->GetPermission('EditQuestion')) {
                 $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_EDIT'),
                                                     BASE_SCRIPT . "?gadget=Faq&amp;action=EditQuestion&amp;".
                                                     "id={id}&amp;category={$cat}", STOCK_EDIT));
@@ -103,7 +103,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
             $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('FAQ_MOVEDOWN'),
                                                 "javascript: moveQuestion('{id}', '{category}', 'DOWN'); return false;",
                                                 STOCK_DOWN));
-            if ($this->GetPermission('DeleteQuestion')) {
+            if ($this->gadget->GetPermission('DeleteQuestion')) {
                 $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_DELETE'),
                                                     "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
                                                     "')) deleteQuestion('{id}', '{category}'); return false;",
@@ -179,12 +179,12 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
                 }
                 $tpl->SetVariable('name', $cat['category']);
                 $tpl->SetVariable('description', $this->gadget->ParseText($cat['description'], 'Faq'));
-                if ($this->GetPermission('AddQuestion')) {
+                if ($this->gadget->GetPermission('AddQuestion')) {
                     $add_url = BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;category='.$cat['id'];
                     $tpl->SetVariable('add_question', "<a href=\"{$add_url}\">"._t('FAQ_ADD_QUESTION').'</a>');
                 }
 
-                if ($this->GetPermission('ManageCategories')) {
+                if ($this->gadget->GetPermission('ManageCategories')) {
                     $edit_url = BASE_SCRIPT . '?gadget=Faq&amp;action=EditCategory&amp;category='.$cat['id'];
                     $delete_url = "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_CATEGORY').
                         "')) deleteCategory('".$cat['id']."'); return false;";
@@ -197,7 +197,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
                 } else {
                     $tpl->SetVariable('grid', '');
                     $tpl->SetBlock('ManageQuestions/category/noquestions');
-                    if ($this->GetPermission('AddQuestion')) {
+                    if ($this->gadget->GetPermission('AddQuestion')) {
                         $tpl->SetVariable('message', "<a href=\"{$add_url}\">"._t('FAQ_START_ADD')."</a>");
                     }
                     $tpl->ParseBlock('ManageQuestions/category/noquestions');
@@ -339,7 +339,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function NewQuestion()
     {
-        $this->CheckPermission('AddQuestion');
+        $this->gadget->CheckPermission('AddQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -360,7 +360,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function UpdateQuestion()
     {
-        $this->CheckPermission('EditQuestion');
+        $this->gadget->CheckPermission('EditQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -380,7 +380,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function DeleteQuestion()
     {
-        $this->CheckPermission('DeleteQuestion');
+        $this->gadget->CheckPermission('DeleteQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -399,7 +399,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function EditCategory()
     {
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
 
         $request  =& Jaws_Request::getInstance();
@@ -475,7 +475,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function NewCategory()
     {
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -494,7 +494,7 @@ class FaqAdminHTML extends Jaws_Gadget_HTML
      */
     function UpdateCategory()
     {
-        $this->CheckPermission('ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
