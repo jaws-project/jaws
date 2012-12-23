@@ -18,13 +18,13 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManageQuotes')) {
+        if ($this->gadget->GetPermission('ManageQuotes')) {
             return $this->Quotes();
-        } elseif ($this->GetPermission('ManageQuoteGroups')) {
+        } elseif ($this->gadget->GetPermission('ManageQuoteGroups')) {
             return $this->QuoteGroups();
         }
 
-        $this->CheckPermission('Properties');
+        $this->gadget->CheckPermission('Properties');
     }
 
     /**
@@ -43,11 +43,11 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManageQuotes')) {
+        if ($this->gadget->GetPermission('ManageQuotes')) {
             $menubar->AddOption('Quotes', _t('QUOTES_NAME'),
                                 BASE_SCRIPT . '?gadget=Quotes&amp;action=Admin', 'gadgets/Quotes/images/quotes_mini.png');
         }
-        if ($this->GetPermission('ManageQuoteGroups')) {
+        if ($this->gadget->GetPermission('ManageQuoteGroups')) {
             $menubar->AddOption('QuoteGroups', _t('QUOTES_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Quotes&amp;action=QuoteGroups', 'gadgets/Quotes/images/groups_mini.png');
         }
@@ -128,8 +128,8 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $startTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $startTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $startTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $startTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
 
@@ -140,8 +140,8 @@ class QuotesAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $stopTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $stopTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $stopTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
