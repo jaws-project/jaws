@@ -21,11 +21,11 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManageRegions')) {
+        if ($this->gadget->GetPermission('ManageRegions')) {
             return $this->Regions();
         }
 
-        $this->CheckPermission('UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         return $this->Properties();
     }
 
@@ -45,12 +45,12 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManageRegions')) {
+        if ($this->gadget->GetPermission('ManageRegions')) {
             $menubar->AddOption('Regions', _t('WEATHER_REGIONS'),
                                 BASE_SCRIPT . '?gadget=Weather&amp;action=Regions', 'gadgets/Weather/images/regions.png');
         }
 
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
                                 BASE_SCRIPT . '?gadget=Weather&amp;action=Properties', 'gadgets/Weather/images/properties.png');
         }
@@ -67,7 +67,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
      */
     function Regions()
     {
-        $this->CheckPermission('ManageRegions');
+        $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Weather/templates/');
@@ -117,9 +117,9 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
         $tpl->SetVariable('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('default_latitude',
-                          $this->GetRegistry('latitude'));
+                          $this->gadget->GetRegistry('latitude'));
         $tpl->SetVariable('default_longitude',
-                          $this->GetRegistry('longitude'));
+                          $this->gadget->GetRegistry('longitude'));
 
         $tpl->ParseBlock('Weather');
         return $tpl->Get();
@@ -168,7 +168,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
             $posData = array();
             $posData['title'] = $region['title'];
             $actions = '';
-            if ($this->GetPermission('ManageRegions')) {
+            if ($this->gadget->GetPermission('ManageRegions')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editRegion(this, '".$region['id']."');",
                                             STOCK_EDIT);
@@ -203,14 +203,14 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
                    '&sensor=false';
 
         $options = array();
-        $options['timeout'] = (int)$this->GetRegistry('connection_timeout', 'Settings');
-        if ($this->GetRegistry('proxy_enabled', 'Settings') == 'true') {
-            if ($this->GetRegistry('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->GetRegistry('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->GetRegistry('proxy_pass', 'Settings');
+        $options['timeout'] = (int)$this->gadget->GetRegistry('connection_timeout', 'Settings');
+        if ($this->gadget->GetRegistry('proxy_enabled', 'Settings') == 'true') {
+            if ($this->gadget->GetRegistry('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->gadget->GetRegistry('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->gadget->GetRegistry('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $this->GetRegistry('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->GetRegistry('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->gadget->GetRegistry('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
         }
 
         require_once 'HTTP/Request.php';
@@ -246,7 +246,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
      */
     function Properties()
     {
-        $this->CheckPermission('UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Weather/templates/');
@@ -258,7 +258,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $unit =& Piwi::CreateWidget('Combo', 'unit');
         $unit->AddOption(_t('WEATHER_UNIT_METRIC'), 'metric');
         $unit->AddOption(_t('WEATHER_UNIT_IMPERIAL'), 'imperial');
-        $unit->SetDefault($this->GetRegistry('unit'));
+        $unit->SetDefault($this->gadget->GetRegistry('unit'));
         $tpl->SetVariable('lbl_unit', _t('WEATHER_UNIT'));
         $tpl->SetVariable('unit', $unit->Get());
 
@@ -270,7 +270,7 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   6),  21600);
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   8),  28800);
         $period->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
-        $period->SetDefault($this->GetRegistry('update_period'));
+        $period->SetDefault($this->gadget->GetRegistry('update_period'));
         $tpl->SetVariable('lbl_update_period', _t('WEATHER_UPDATE_PERIOD'));
         $tpl->SetVariable('update_period', $period->Get());
 
@@ -281,19 +281,19 @@ class WeatherAdminHTML extends Jaws_Gadget_HTML
         $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
         $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
-        $dFormat->SetDefault($this->GetRegistry('date_format'));
+        $dFormat->SetDefault($this->gadget->GetRegistry('date_format'));
         $tpl->SetVariable('lbl_date_format', _t('WEATHER_DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
 
         $apikey =& Piwi::CreateWidget('Entry',
                                       'api_key',
-                                      $this->GetRegistry('api_key'));
+                                      $this->gadget->GetRegistry('api_key'));
         $apikey->setStyle('width:200px; direction: ltr;');
         $tpl->SetVariable('lbl_api_key', _t('WEATHER_API_KEY'));
         $tpl->SetVariable('lbl_api_key_desc', _t('WEATHER_API_KEY_DESC'));
         $tpl->SetVariable('api_key', $apikey->Get());
 
-        if ($this->GetPermission('UpdateSetting')) {
+        if ($this->gadget->GetPermission('UpdateSetting')) {
             $btnupdate =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnupdate->AddEvent(ON_CLICK, 'updateProperties();');
             $tpl->SetVariable('btn_save', $btnupdate->Get());
