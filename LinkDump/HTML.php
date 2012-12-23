@@ -58,7 +58,7 @@ class LinkDumpHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
         $tpl->SetVariable('linkdump_rdf', $GLOBALS['app']->getDataURL("xml/linkdump.$feedname.rdf", false));
 
-        $target = $this->GetRegistry('links_target');
+        $target = $this->gadget->GetRegistry('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';
         $block  = ($group['link_type']==0)? 'list' : 'link';
 
@@ -114,9 +114,9 @@ class LinkDumpHTML extends Jaws_Gadget_HTML
         }
 
         $url    = $GLOBALS['app']->GetSiteURL('/');
-        $title  = $this->GetRegistry('site_name', 'Settings');
-        $desc   = $this->GetRegistry('site_description', 'Settings');
-        $author = $this->GetRegistry('site_author', 'Settings');
+        $title  = $this->gadget->GetRegistry('site_name', 'Settings');
+        $desc   = $this->gadget->GetRegistry('site_description', 'Settings');
+        $author = $this->gadget->GetRegistry('site_author', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
         $tpl->Load('Rdf.html');
@@ -186,7 +186,7 @@ class LinkDumpHTML extends Jaws_Gadget_HTML
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tag = $xss->defilter($tag, true);
 
-        $target = $this->GetRegistry('links_target');
+        $target = $this->gadget->GetRegistry('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';
 
         $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
