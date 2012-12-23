@@ -36,18 +36,18 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         $menubar->AddOption('Admin', _t('STATICPAGE_MENU_PAGES'),
                             BASE_SCRIPT . '?gadget=StaticPage&amp;action=Admin', STOCK_DOCUMENTS);
 
-        if ($this->GetPermission('AddPage')) {
+        if ($this->gadget->GetPermission('AddPage')) {
             $menubar->AddOption('AddNewPage', _t('STATICPAGE_MENU_ADDPAGE'),
                                 BASE_SCRIPT . '?gadget=StaticPage&amp;action=AddNewPage', STOCK_NEW);
         }
 
-        if ($this->GetPermission('ManageGroups')) {
+        if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('STATICPAGE_GROUPS'),
                                 BASE_SCRIPT . '?gadget=StaticPage&amp;action=Groups', 
                                 'gadgets/StaticPage/images/groups.png');
         }
 
-        if ($this->GetPermission('Properties')) {
+        if ($this->gadget->GetPermission('Properties')) {
             $menubar->AddOption('Properties', _t('GLOBAL_SETTINGS'),
                                 BASE_SCRIPT . '?gadget=StaticPage&amp;action=Properties', 
                                 'images/stock/properties.png');
@@ -93,7 +93,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         foreach($pages as $page) {
             $defaultPage->addOption($page['title'], $page['base_id']);
         }        
-        $defaultPage->setDefault($this->GetRegistry('default_page'));
+        $defaultPage->setDefault($this->gadget->GetRegistry('default_page'));
         $fieldset->add($defaultPage);
 
         // Use multilanguage pages?
@@ -101,7 +101,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
         $multiLanguage->addOption(_t('GLOBAL_YES'), 'yes');
         $multiLanguage->addOption(_t('GLOBAL_NO'), 'no');           
-        $multiLanguage->setDefault($this->GetRegistry('multilanguage'));
+        $multiLanguage->setDefault($this->gadget->GetRegistry('multilanguage'));
         $fieldset->add($multiLanguage);
 
         // Save Button
@@ -207,14 +207,14 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
             }
             $pageData['date']  = $date->Format($page['updated'], 'Y-m-d H:i:s');
             $actions = '';
-            if ($this->GetPermission('EditPage')) {
+            if ($this->gadget->GetPermission('EditPage')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             $edit_url.$page['page_id'],
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->GetPermission('DeletePage')) {
+            if ($this->gadget->GetPermission('DeletePage')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                             "javascript: deletePage('{$page['page_id']}');",
                                             STOCK_DELETE);
@@ -321,7 +321,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function AddNewTranslation()
     {
-        $this->CheckPermission('AddPage');
+        $this->gadget->CheckPermission('AddPage');
 
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         //Get Id
@@ -345,7 +345,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function AddNewPage()
     {
-        $this->CheckPermission('AddPage');
+        $this->gadget->CheckPermission('AddPage');
         return $this->CreateForm('', '', '', '', '', false, true, '', '', '', 'AddPage');
     }
 
@@ -357,7 +357,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function AddPage()
     {
-        $this->CheckPermission('AddPage');
+        $this->gadget->CheckPermission('AddPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -379,7 +379,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function EditPage()
     {
-        $this->CheckPermission('EditPage');
+        $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
@@ -404,7 +404,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveEditPage()
     {
-        $this->CheckPermission('EditPage');
+        $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
         $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys', 'meta_desc', 'published', 'show_title');
@@ -427,7 +427,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function AddTranslation()
     {
-        $this->CheckPermission('EditPage');
+        $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
         $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'published');
@@ -458,7 +458,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function EditTranslation()
     {
-        $this->CheckPermission('AddPage');
+        $this->gadget->CheckPermission('AddPage');
 
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         //Get Id
@@ -483,7 +483,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function SaveEditTranslation()
     {
-        $this->CheckPermission('EditPage');
+        $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
         $request =& Jaws_Request::getInstance();
         $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'published');
@@ -579,7 +579,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
             $vBox->Add($titleShowCombo);
         }
 
-        $language = (empty($language)) ? $this->GetRegistry('site_language', 'Settings') : $language;
+        $language = (empty($language)) ? $this->gadget->GetRegistry('site_language', 'Settings') : $language;
         $languageCombo =& Piwi::CreateWidget('Combo', 'language');
         //Load the Settings AdminModel to get a list of all available languages
         $languages = Jaws_Utils::GetLanguagesList();
@@ -664,7 +664,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($preview);
         $buttonbox->PackStart($cancel);
-        if (isset($btnDelete) && $this->GetPermission('DeletePage')) {
+        if (isset($btnDelete) && $this->gadget->GetPermission('DeletePage')) {
             $buttonbox->PackStart($btnDelete);
         }
         $buttonbox->PackStart($submit);
@@ -686,7 +686,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
      */
     function Groups()
     {
-        $this->CheckPermission('ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
@@ -792,7 +792,7 @@ class StaticPageAdminHTML extends Jaws_Gadget_HTML
             $groupData['title']  = ($group['visible'])? $group['title'] : '<font color="#aaa">'.$group['title'].'</font>';;
 
             $actions = '';
-            if ($this->GetPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editGroup(this, '".$group['id']."');",
                                             STOCK_EDIT);

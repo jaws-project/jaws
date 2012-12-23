@@ -19,7 +19,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        return $this->Page($this->GetRegistry('default_page'));
+        return $this->Page($this->gadget->GetRegistry('default_page'));
     }
 
     /**
@@ -90,7 +90,7 @@ class StaticPageHTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('page/title');
                 }
 
-                if ($this->GetRegistry('multilanguage') == 'yes') {
+                if ($this->gadget->GetRegistry('multilanguage') == 'yes') {
                     $translations = $model->GetTranslationsOfPage($page['page_id'], true);
                     if (!Jaws_Error::isError($translations) && count($translations)>1) {
                         $tpl->SetBlock('page/translations');
@@ -103,11 +103,11 @@ class StaticPageHTML extends Jaws_Gadget_HTML
                                 $param = array('gid' => !empty($group['fast_url'])? $group['fast_url'] : $group['id'],
                                                'pid' => !empty($page['fast_url'])? $page['fast_url'] : $page['page_id'],
                                                'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->GetURLFor('Pages', $param));
+                                $tpl->SetVariable('url', $this->gadget->GetURLFor('Pages', $param));
                             } else {
                                 $param = array('pid' => !empty($page['fast_url']) ? $page['fast_url'] : $page['page_id'],
                                                'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->GetURLFor('Page', $param));
+                                $tpl->SetVariable('url', $this->gadget->GetURLFor('Page', $param));
                             }
                             $tpl->ParseBlock('page/translations/language');
                         }
