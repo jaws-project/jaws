@@ -101,6 +101,6 @@ class BlocksAdminAjax extends Jaws_Gadget_Ajax
         $request =& Jaws_Request::getInstance();
         $text = $request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML');
-        return $gadget->ParseText($text, 'Blocks');
+        return $gadget->gadget->ParseText($text, 'Blocks');
     }
 }
