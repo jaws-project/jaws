@@ -31,7 +31,7 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        if ($this->GetRegistry('frontend_avail') != 'true') {
+        if ($this->gadget->GetRegistry('frontend_avail') != 'true') {
             return false;
         }
 
@@ -88,11 +88,11 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
             $parentPath = $_path;
             if (empty($_path)) {
                 $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
-                $tpl->SetVariable('root-path', $this->GetURLFor('Display', array('path' => $_path), false));
+                $tpl->SetVariable('root-path', $this->gadget->GetURLFor('Display', array('path' => $_path), false));
             } else {
                 $tpl->SetBlock('filebrowser/tree');
                 $tpl->SetVariable('dir-name', $dirTitle);
-                $tpl->SetVariable('dir-path', $this->GetURLFor('Display', array('path' => $_path), false));
+                $tpl->SetVariable('dir-path', $this->gadget->GetURLFor('Display', array('path' => $_path), false));
                 $tpl->ParseBlock('filebrowser/tree');
             }
 
@@ -101,7 +101,7 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
             }
         }
 
-        $limit  = (int) $this->GetRegistry('views_limit');
+        $limit  = (int) $this->gadget->GetRegistry('views_limit');
         $offset = ($page - 1) * $limit;
         $items = $model->ReadDir($path, $limit, $offset);
         if (!Jaws_Error::IsError($items)) {
@@ -114,19 +114,19 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('title', $xss->filter($item['title']));
                 if ($item['is_dir']) {
                     $relative = $xss->filter($item['relative']) . '/';
-                    $url = $this->GetURLFor('Display', array('path' => $relative), false);
+                    $url = $this->gadget->GetURLFor('Display', array('path' => $relative), false);
                     $tpl->SetVariable('url', $url);
                 } else {
                     if (empty($item['id'])) {
                         $tpl->SetVariable('url', $xss->filter($item['url']));
                     } else {
                         $fid = empty($item['fast_url']) ? $item['id'] : $xss->filter($item['fast_url']);
-                        $tpl->SetVariable('url', $this->GetURLFor('Download',
+                        $tpl->SetVariable('url', $this->gadget->GetURLFor('Download',
                                                                   array('id' => $fid),
                                                                   false));
                         $tpl->SetBlock('filebrowser/item/info');
                         $tpl->SetVariable('lbl_info', _t('FILEBROWSER_FILEINFO'));
-                        $tpl->SetVariable('info_url', $this->GetURLFor('FileInfo',
+                        $tpl->SetVariable('info_url', $this->gadget->GetURLFor('FileInfo',
                                                                        array('id' => $fid),
                                                                        false));
                         $tpl->ParseBlock('filebrowser/item/info');
@@ -181,7 +181,7 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/next');
                         $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXT'));
-                        $url = $this->GetURLFor($action, $params);
+                        $url = $this->gadget->GetURLFor($action, $params);
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/next');
                     } else {
@@ -193,7 +193,7 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/previous');
                         $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUS'));
-                        $url = $this->GetURLFor($action, $params);
+                        $url = $this->gadget->GetURLFor($action, $params);
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/previous');
                     } else {
@@ -206,13 +206,13 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_separator');
                 } elseif ($k == 'current') {
                     $tpl->SetBlock('pager/numbered-navigation/item/page_current');
-                    $url = $this->GetURLFor($action, $params);
+                    $url = $this->gadget->GetURLFor($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_current');
                 } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                     $tpl->SetBlock('pager/numbered-navigation/item/page_number');
-                    $url = $this->GetURLFor($action, $params);
+                    $url = $this->gadget->GetURLFor($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_number');
@@ -285,11 +285,11 @@ class FileBrowserHTML extends Jaws_Gadget_HTML
             $parentPath = $path;
             if (empty($path)) {
                 $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
-                $tpl->SetVariable('root-path', $this->GetURLFor('Display', array('path' => $path), false));
+                $tpl->SetVariable('root-path', $this->gadget->GetURLFor('Display', array('path' => $path), false));
             } else {
                 $tpl->SetBlock('fileinfo/tree');
                 $tpl->SetVariable('dir-name', $dirTitle);
-                $tpl->SetVariable('dir-path', $this->GetURLFor('Display', array('path' => $path), false));
+                $tpl->SetVariable('dir-path', $this->gadget->GetURLFor('Display', array('path' => $path), false));
                 $tpl->ParseBlock('fileinfo/tree');
             }
         }

@@ -24,7 +24,7 @@ class FileBrowserLayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        if ($this->GetRegistry('frontend_avail') != 'true') {
+        if ($this->gadget->GetRegistry('frontend_avail') != 'true') {
             return false;
         }
 

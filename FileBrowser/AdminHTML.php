@@ -77,7 +77,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
                 $link->setStyle('float: left;');
                 $item['name'] = $link->Get();
 
-                if ($this->GetPermission('ManageDirectories')) {
+                if ($this->gadget->GetPermission('ManageDirectories')) {
                     //edit directory properties
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                                 "javascript: editDir(this, '{$file['filename']}');",
@@ -95,14 +95,14 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
                     $furl = $xss->filter($file['url']);
                 } else {
                     $fid = empty($file['fast_url'])? $file['id'] : $xss->filter($file['fast_url']);
-                    $furl = $this->GetURLFor('Download', array('id' => $fid), false);
+                    $furl = $this->gadget->GetURLFor('Download', array('id' => $fid), false);
                 }
 
                 $link =& Piwi::CreateWidget('Link', $file['filename'], $furl);
                 $link->setStyle('float: left;');
                 $item['name'] = $link->Get();
 
-                if ($this->GetPermission('ManageFiles')) {
+                if ($this->gadget->GetPermission('ManageFiles')) {
                    //edit file properties
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                                 "javascript: editFile(this, '{$file['filename']}');",
@@ -247,7 +247,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
         $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
-        if ($this->GetPermission('ManageFiles')) {
+        if ($this->gadget->GetPermission('ManageFiles')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
@@ -296,7 +296,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
         $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
-        if ($this->GetPermission('ManageDirectories')) {
+        if ($this->gadget->GetPermission('ManageDirectories')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript: saveDir();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
@@ -317,7 +317,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
      */
     function UploadFile()
     {
-        $this->CheckPermission('UploadFiles');
+        $this->gadget->CheckPermission('UploadFiles');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $request =& Jaws_Request::getInstance();
@@ -333,7 +333,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             $res = Jaws_Utils::UploadFiles($_FILES,
                                            $uploaddir,
                                            '',
-                                           $this->GetRegistry('black_list'));
+                                           $this->gadget->GetRegistry('black_list'));
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
@@ -395,7 +395,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('ckFuncIndex', $getParams['CKEditorFuncNum']);
         }
 
-        if ($this->GetPermission('UploadFiles')) {
+        if ($this->gadget->GetPermission('UploadFiles')) {
             $tpl->SetBlock("browse/upload_file");
 
             $tpl->SetVariable('path', $path);
@@ -468,7 +468,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
                     $link->SetTitle($file['title']);
                     $tpl->SetVariable('file_name', $link->Get());
 
-                    if ($this->GetPermission('ManageDirectories')) {
+                    if ($this->gadget->GetPermission('ManageDirectories')) {
                         $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                             "javascript: deleteDir('" . $file['filename'] . "');",
                             STOCK_DELETE);
@@ -481,14 +481,14 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
                         $furl = $xss->filter($file['url']);
                     } else {
                         $fid = empty($file['fast_url'])? $file['id'] : $xss->filter($file['fast_url']);
-                        $furl = $this->GetURLFor('Download', array('id' => $fid), false);
+                        $furl = $this->gadget->GetURLFor('Download', array('id' => $fid), false);
                     }
                     $link =& Piwi::CreateWidget('Link',
                                                 $file['filename'],
                                                 "javascript:selectFile('$furl', '{$file['title']}', '$editor')");
                     $tpl->SetVariable('file_name', $link->Get());
 
-                    if ($this->GetPermission('ManageFiles')) {
+                    if ($this->gadget->GetPermission('ManageFiles')) {
                         $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                             "javascript: deleteFile('" . $file['filename'] . "');",
                             STOCK_DELETE);
@@ -516,7 +516,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
      */
     function DeleteFile()
     {
-        $this->CheckPermission('ManageFiles');
+        $this->gadget->CheckPermission('ManageFiles');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $request =& Jaws_Request::getInstance();
@@ -537,7 +537,7 @@ class FileBrowserAdminHTML extends Jaws_Gadget_HTML
      */
     function DeleteDir()
     {
-        $this->CheckPermission('ManageDirectories');
+        $this->gadget->CheckPermission('ManageDirectories');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $request =& Jaws_Request::getInstance();
