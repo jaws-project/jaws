@@ -19,13 +19,13 @@ class PollAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManagePolls')) {
+        if ($this->gadget->GetPermission('ManagePolls')) {
             return $this->Polls();
-        } elseif ($this->GetPermission('ManageGroups')) {
+        } elseif ($this->gadget->GetPermission('ManageGroups')) {
             return $this->PollGroups();
         }
 
-        $this->CheckPermission('ViewReports');
+        $this->gadget->CheckPermission('ViewReports');
     }
 
     /**
@@ -44,15 +44,15 @@ class PollAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManagePolls')) {
+        if ($this->gadget->GetPermission('ManagePolls')) {
             $menubar->AddOption('Polls', _t('POLL_POLLS'),
                                 BASE_SCRIPT . '?gadget=Poll&amp;action=Polls', 'gadgets/Poll/images/polls_mini.png');
         }
-        if ($this->GetPermission('ManageGroups')) {
+        if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('PollGroups', _t('POLL_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Poll&amp;action=PollGroups', 'gadgets/Poll/images/groups_mini.png');
         }
-        if ($this->GetPermission('ViewReports')) {
+        if ($this->gadget->GetPermission('ViewReports')) {
             $menubar->AddOption('Reports', _t('POLL_REPORTS'),
                                 BASE_SCRIPT . '?gadget=Poll&amp;action=Reports', 'gadgets/Poll/images/reports_mini.png');
         }
@@ -86,7 +86,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
                 $pollData['visible'] = _t('GLOBAL_NO');
             }
             $actions = '';
-            if ($this->GetPermission('ManagePolls')) {
+            if ($this->gadget->GetPermission('ManagePolls')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editPoll(this, '".$poll['id']."');",
                                             STOCK_EDIT);
@@ -143,7 +143,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
      */
     function Polls()
     {
-        $this->CheckPermission('ManagePolls');
+        $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Poll/templates/');
@@ -231,8 +231,8 @@ class PollAdminHTML extends Jaws_Gadget_HTML
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
-        $startTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $startTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $startTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $startTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
@@ -243,8 +243,8 @@ class PollAdminHTML extends Jaws_Gadget_HTML
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
         $stopTime->SetIncludeJS(false);
-        $stopTime->setLanguageCode($this->GetRegistry('calendar_language', 'Settings'));
-        $stopTime->setCalType($this->GetRegistry('calendar_type', 'Settings'));
+        $stopTime->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $stopTime->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
@@ -341,7 +341,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
                 $groupData['visible'] = _t('GLOBAL_NO');
             }
             $actions = '';
-            if ($this->GetPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editPollGroup(this, '" . $group['id'] . "');",
                                             STOCK_EDIT);
@@ -398,7 +398,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
      */
     function PollGroups()
     {
-        $this->CheckPermission('ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Poll/templates/');
@@ -499,7 +499,7 @@ class PollAdminHTML extends Jaws_Gadget_HTML
      */
     function Reports()
     {
-        $this->CheckPermission('ViewReports');
+        $this->gadget->CheckPermission('ViewReports');
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel');
