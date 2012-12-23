@@ -60,13 +60,13 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
             }
             $friend['url'] = $url;
             $actions = '';
-            if ($this->GetPermission('EditFriend')) {
+            if ($this->gadget->GetPermission('EditFriend')) {
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                            "javascript: editFriend('".$friend['id']."');",
                                            STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
-            if ($this->GetPermission('DeleteFriend')) {
+            if ($this->gadget->GetPermission('DeleteFriend')) {
                 $actions = (empty($actions)) ? $actions : $actions . '|&nbsp;';
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                            "javascript: if (confirm('"._t("FRIENDS_CONFIRM_DELETE_FRIEND")."')) ".
@@ -98,7 +98,7 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('grid', $this->Datagrid());
 
         ///Config properties
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $config_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Friends'));
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
@@ -113,7 +113,7 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
                 $limitcombo->AddOption($i, $i);
             }
 
-            $limit = $this->GetRegistry('limit');
+            $limit = $this->gadget->GetRegistry('limit');
             if (Jaws_Error::IsError($limit) || !$limit) {
                 $limit = 10;
             }
@@ -133,7 +133,7 @@ class FriendsAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('config_form', $config_form->Get());
         }
 
-        if ($this->GetPermission('AddFriend')) {
+        if ($this->gadget->GetPermission('AddFriend')) {
             $friend = array();
             $friends_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', '', 'friends_form');
             $friends_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Friends'));
