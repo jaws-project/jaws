@@ -20,13 +20,13 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        if ($this->GetPermission('ManageContacts')) {
+        if ($this->gadget->GetPermission('ManageContacts')) {
             return $this->Contacts();
-        } elseif ($this->GetPermission('ManageRecipients')) {
+        } elseif ($this->gadget->GetPermission('ManageRecipients')) {
             return $this->Recipients();
         }
 
-        $this->CheckPermission('UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         return $this->Properties();
     }
 
@@ -46,25 +46,25 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        if ($this->GetPermission('ManageContacts')) {
+        if ($this->gadget->GetPermission('ManageContacts')) {
             $menubar->AddOption('Contacts',
                                 _t('CONTACT_NAME'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Admin',
                                 'gadgets/Contact/images/contact_mini.png');
         }
-        if ($this->GetPermission('ManageRecipients')) {
+        if ($this->gadget->GetPermission('ManageRecipients')) {
             $menubar->AddOption('Recipients',
                                 _t('CONTACT_RECIPIENTS'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Recipients',
                                 'gadgets/Contact/images/recipients_mini.png');
         }
-        if ($this->GetPermission('AccessToMailer')) {
+        if ($this->gadget->GetPermission('AccessToMailer')) {
             $menubar->AddOption('Mailer',
                                 _t('CONTACT_MAILER'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Mailer',
                                 'gadgets/Contact/images/email_send.png');
         }
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption('Properties',
                                 _t('GLOBAL_PROPERTIES'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Properties',
@@ -121,7 +121,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
             // Actions
             $actions = '';
-            if ($this->GetPermission('ManageContacts')) {
+            if ($this->gadget->GetPermission('ManageContacts')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editContact(this, '".$contact['id']."');",
                                             STOCK_EDIT);
@@ -182,7 +182,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function Contacts()
     {
-        $this->CheckPermission('ManageContacts');
+        $this->gadget->CheckPermission('ManageContacts');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
@@ -198,7 +198,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $recipientCombo->setStyle('width: 220px;');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
         $recipientCombo->AddOption('', -1);
-        $recipientCombo->AddOption($this->GetRegistry('site_author', 'Settings'), 0);
+        $recipientCombo->AddOption($this->gadget->GetRegistry('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -223,13 +223,13 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->SetEnabled($this->GetPermission('ManageContacts'));
+        $btnSave->SetEnabled($this->gadget->GetPermission('ManageContacts'));
         $btnSave->AddEvent(ON_CLICK, 'updateContact(false);');
         $btnSave->SetStyle('visibility: hidden;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnSaveSend =& Piwi::CreateWidget('Button', 'btn_save_send', _t('CONTACT_REPLAY_SAVE_SEND'), STOCK_SAVE);
-        $btnSaveSend->SetEnabled($this->GetPermission('ManageContacts'));
+        $btnSaveSend->SetEnabled($this->gadget->GetPermission('ManageContacts'));
         $btnSaveSend->AddEvent(ON_CLICK, 'updateContact(true);');
         $btnSaveSend->SetStyle('display: none;');
         $tpl->SetVariable('btn_save_send', $btnSaveSend->Get());
@@ -312,7 +312,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
         $recipientCombo->SetID('rid');
         $recipientCombo->setStyle('width: 318px;');
-        $recipientCombo->AddOption($this->GetRegistry('site_author', 'Settings'), 0);
+        $recipientCombo->AddOption($this->gadget->GetRegistry('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -435,7 +435,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             $from_email = $recipient['email'];
         }
 
-        $format = $this->GetRegistry('email_format');
+        $format = $this->gadget->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $reply = $this->gadget->ParseText($contact['reply'], 'Contact');
@@ -445,8 +445,8 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         $jDate = $GLOBALS['app']->loadDate();
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $this->GetRegistry('site_name', 'Settings');
-        $site_language = $this->GetRegistry('site_language', 'Settings');
+        $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
+        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
@@ -513,7 +513,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             $recipientData['email'] = $recipient['email'];
             $recipientData['visible'] = ($recipient['visible']?_t('GLOBAL_YES') : _t('GLOBAL_NO'));
             $actions = '';
-            if ($this->GetPermission('ManageRecipients')) {
+            if ($this->gadget->GetPermission('ManageRecipients')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editRecipient(this, '".$recipient['id']."');",
                                             STOCK_EDIT);
@@ -568,7 +568,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function Recipients()
     {
-        $this->CheckPermission('ManageRecipients');
+        $this->gadget->CheckPermission('ManageRecipients');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
@@ -629,7 +629,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->SetEnabled($this->GetPermission('ManageRecipients'));
+        $btnSave->SetEnabled($this->gadget->GetPermission('ManageRecipients'));
         $btnSave->AddEvent(ON_CLICK, 'updateRecipient();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
@@ -649,7 +649,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function Properties()
     {
-        $this->CheckPermission('UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
@@ -659,7 +659,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
 
-        $use_antispam = $this->GetRegistry('use_antispam');
+        $use_antispam = $this->gadget->GetRegistry('use_antispam');
         $antispamCombo =& Piwi::CreateWidget('Combo', 'use_antispam');
         $antispamCombo->SetID('use_antispam');
         $antispamCombo->setStyle('width: 140px;');
@@ -669,7 +669,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_use_antispam', _t('CONTACT_PROPERTIES_USE_ANTISPAM'));
         $tpl->SetVariable('use_antispam', $antispamCombo->Get());
 
-        $email_format = $this->GetRegistry('email_format');
+        $email_format = $this->gadget->GetRegistry('email_format');
         $formatCombo =& Piwi::CreateWidget('Combo', 'email_format');
         $formatCombo->SetID('email_format');
         $formatCombo->setStyle('width: 140px;');
@@ -679,7 +679,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_email_format', _t('CONTACT_PROPERTIES_EMAIL_FORMAT'));
         $tpl->SetVariable('email_format', $formatCombo->Get());
 
-        $attachment = $this->GetRegistry('enable_attachment');
+        $attachment = $this->gadget->GetRegistry('enable_attachment');
         $combo =& Piwi::CreateWidget('Combo', 'enable_attachment');
         $combo->setStyle('width: 140px;');
         $combo->AddOption(_t('GLOBAL_NO'), 'false');
@@ -689,7 +689,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('enable_attachment', $combo->Get());
 
         // Comments
-        $comments = $this->GetRegistry('comments');
+        $comments = $this->gadget->GetRegistry('comments');
         $editor =& $GLOBALS['app']->LoadEditor('Contact', 'comments', $comments, false);
         $editor->SetId('comments');
         $editor->TextArea->SetStyle('width: 100%;');
@@ -697,7 +697,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_comments', _t('CONTACT_PROPERTIES_COMMENTS'));
         $tpl->SetVariable('comments', $editor->Get());
 
-        if ($this->GetPermission('UpdateSetting')) {
+        if ($this->gadget->GetPermission('UpdateSetting')) {
             $btnupdate =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnupdate->AddEvent(ON_CLICK, 'updateProperties();');
             $tpl->SetVariable('btn_save', $btnupdate->Get());
@@ -715,7 +715,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function Mailer()
     {
-        $this->CheckPermission('AccessToMailer');
+        $this->gadget->CheckPermission('AccessToMailer');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
@@ -787,8 +787,8 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_bcc', $label->Get());
 
         // From
-        $from_title = $this->GetRegistry('gate_title', 'Settings');
-        $from_email = $this->GetRegistry('gate_email', 'Settings');
+        $from_title = $this->gadget->GetRegistry('gate_title', 'Settings');
+        $from_email = $this->gadget->GetRegistry('gate_email', 'Settings');
         if (!empty($from_email)) {
             $from = !empty($from_title)? "$from_title <$from_email>" : $from_email;
         } else {
@@ -896,8 +896,8 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function PrepareMessage($message)
     {
-        $this->CheckPermission('AccessToMailer');
-        $format = $this->GetRegistry('email_format');
+        $this->gadget->CheckPermission('AccessToMailer');
+        $format = $this->gadget->GetRegistry('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = $this->gadget->ParseText($message, 'Contact');
@@ -905,7 +905,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
             $message = strip_tags($message);
         }
 
-        $site_language = $this->GetRegistry('site_language', 'Settings');
+        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
@@ -915,7 +915,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('message', $message);
 
-        $site_name = $this->GetRegistry('site_name', 'Settings');
+        $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
@@ -936,7 +936,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
      */
     function SendEmail($target, $subject, $message, $attachment)
     {
-        $this->CheckPermission('AccessToMailer');
+        $this->gadget->CheckPermission('AccessToMailer');
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
@@ -981,7 +981,7 @@ class ContactAdminHTML extends Jaws_Gadget_HTML
         }
 
         $message = $this->PrepareMessage($message);
-        $format = $this->GetRegistry('email_format');
+        $format = $this->gadget->GetRegistry('email_format');
         $mail->SetBody($message, $format);
         if (!empty($attachment)) {
             $attachment = Jaws_Utils::upload_tmp_dir() . '/' . $attachment;
