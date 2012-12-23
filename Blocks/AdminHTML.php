@@ -43,7 +43,7 @@ class BlocksAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('block_list', $blocksCombo->Get());
 
         // New Button
-        if ($this->GetPermission('AddBlock')) {
+        if ($this->gadget->GetPermission('AddBlock')) {
             $newButton =& Piwi::CreateWidget('Button', 'newButton', _t('BLOCKS_NEW'), STOCK_NEW);
             $newButton->AddEvent(ON_CLICK, 'createNewBlock(\'' . _t('BLOCKS_NEW') . '\');');
             $newButton->SetID('newButton');
@@ -89,7 +89,7 @@ class BlocksAdminHTML extends Jaws_Gadget_HTML
         $save->AddEvent(ON_CLICK, 'updateBlock();');
         $tpl->SetVariable('save', $save->Get());
 
-        if ($this->GetPermission('DeleteBlock')) {
+        if ($this->gadget->GetPermission('DeleteBlock')) {
            $del =& Piwi::CreateWidget('Button', 'delete', _t('GLOBAL_DELETE'), STOCK_DELETE);
             $del->AddEvent(ON_CLICK, 'if (confirm(\'' . _t('BLOCKS_CONFIRM_DELETE_BLOCK') . '\')) { deleteBlock(); }');
             $del->SetID('delButton');
@@ -117,9 +117,9 @@ class BlocksAdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sending_message',       _t('BLOCKS_MSGSENDING'));
 
         // Acl
-        $tpl->SetVariable('acl_add', $this->GetPermission('AddBlock')?'true':'false');
-        $tpl->SetVariable('acl_edit', $this->GetPermission('EditBlock')?'true':'false');
-        $tpl->SetVariable('acl_delete', $this->GetPermission('DeleteBlock')?'true':'false');
+        $tpl->SetVariable('acl_add', $this->gadget->GetPermission('AddBlock')?'true':'false');
+        $tpl->SetVariable('acl_edit', $this->gadget->GetPermission('EditBlock')?'true':'false');
+        $tpl->SetVariable('acl_delete', $this->gadget->GetPermission('DeleteBlock')?'true':'false');
 
         $tpl->ParseBlock('blocks');
         return $tpl->Get();

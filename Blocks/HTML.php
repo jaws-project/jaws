@@ -19,7 +19,7 @@ class BlocksHTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        return $this->GetRegistry('site_name', 'Settings');
+        return $this->gadget->GetRegistry('site_name', 'Settings');
     }
 
     /**
