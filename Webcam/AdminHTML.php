@@ -48,13 +48,13 @@ class WebcamAdminHTML extends Jaws_Gadget_HTML
             $webcamData['title'] = $webcam['title'];
             $webcamData['url']   = $this->ShowShortURL($webcam['url']);
             $actions = '';
-            if ($this->GetPermission('EditWebcam')) {
+            if ($this->gadget->GetPermission('EditWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editWebcam('".$webcam['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
-            if ($this->GetPermission('DeleteWebcam')) {
+            if ($this->gadget->GetPermission('DeleteWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                             "javascript: if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
                                             "deleteWebcam('".$webcam['id']."');",
@@ -104,7 +104,7 @@ class WebcamAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('grid', $this->DataGrid());
 
-        if ($this->GetPermission('AddWebcam')) {
+        if ($this->gadget->GetPermission('AddWebcam')) {
             $cam_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', '', 'webcam_form');
             $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Webcam'));
             $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddWebcam'));
@@ -144,7 +144,7 @@ class WebcamAdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('webcam_form', $cam_form->Get());
         }
 
-        if ($this->GetPermission('UpdateProperties')) {
+        if ($this->gadget->GetPermission('UpdateProperties')) {
             $config_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Webcam'));
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
@@ -161,7 +161,7 @@ class WebcamAdminHTML extends Jaws_Gadget_HTML
                 $limitcombo->AddOption($i, $i);
             }
 
-            $limit = $this->GetRegistry('limit_random');
+            $limit = $this->gadget->GetRegistry('limit_random');
             if (!$limit || Jaws_Error::IsError($limit)) {
                 $limit = 10;
             }
