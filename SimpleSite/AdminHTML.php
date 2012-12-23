@@ -19,7 +19,7 @@ class SimpleSiteAdminHTML extends Jaws_Gadget_HTML
      */
     function Menubar()
     {
-        if ($this->GetPermission('PingSite')) {
+        if ($this->gadget->GetPermission('PingSite')) {
             require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
             $menubar = new Jaws_Widgets_Menubar();
             $menubar->AddOption('PingSite', _t('SIMPLESITE_PING_SITEMAP'),
