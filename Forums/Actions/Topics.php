@@ -29,7 +29,7 @@ class Forums_Actions_Topics extends ForumsHTML
             return false;
         }
 
-        $limit = (int)$this->GetRegistry('topics_limit');
+        $limit = (int)$this->gadget->GetRegistry('topics_limit');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topics = $tModel->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
@@ -42,20 +42,20 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetBlock('topics');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
         $tpl->SetVariable('title', $forum['title']);
-        $tpl->SetVariable('url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
+        $tpl->SetVariable('url', $this->gadget->GetURLFor('Topics', array('fid' => $forum['id'])));
         $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
         $tpl->SetVariable('lbl_replies', _t('FORUMS_REPLIES'));
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
         // date format
-        $date_format = $this->GetRegistry('date_format');
+        $date_format = $this->gadget->GetRegistry('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
         // posts per page
-        $posts_limit = $this->GetRegistry('posts_limit');
+        $posts_limit = $this->gadget->GetRegistry('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
@@ -63,7 +63,7 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable(
                 'url',
-                $this->GetURLFor('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']))
+                $this->gadget->GetURLFor('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']))
             );
             $tpl->SetVariable('replies', $topic['replies']);
             $tpl->SetVariable('views', $topic['views']);
@@ -96,7 +96,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('lastpost_url', $this->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
                 $tpl->ParseBlock('topics/topic/lastpost');
             }
 
@@ -115,10 +115,10 @@ class Forums_Actions_Topics extends ForumsHTML
             array('fid' => $forum['id'])
         );
 
-        if ($GLOBALS['app']->Session->Logged() && $this->GetPermission('AddTopic')) {
+        if ($GLOBALS['app']->Session->Logged() && $this->gadget->GetPermission('AddTopic')) {
             $tpl->SetBlock('topics/action');
             $tpl->SetVariable('action_lbl', _t('FORUMS_TOPICS_NEW'));
-            $tpl->SetVariable('action_url', $this->GetURLFor('NewTopic', array('fid' => $forum['id'])));
+            $tpl->SetVariable('action_url', $this->gadget->GetURLFor('NewTopic', array('fid' => $forum['id'])));
             $tpl->ParseBlock('topics/action');
         }
 
@@ -188,11 +188,11 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetBlock('topic');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
         $tpl->SetVariable('forum_title', $topic['forum_title']);
         $tpl->SetVariable(
             'forum_url',
-            $this->GetURLFor('Topics', array('fid' => $topic['fid']))
+            $this->gadget->GetURLFor('Topics', array('fid' => $topic['fid']))
         );
         $tpl->SetVariable('title', $title);
         $tpl->SetVariable('fid', $rqst['fid']);
@@ -221,7 +221,7 @@ class Forums_Actions_Topics extends ForumsHTML
         // first post meta
         if (!empty($topic['id'])) {
             // date format
-            $date_format = $this->GetRegistry('date_format');
+            $date_format = $this->gadget->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetBlock('topic/post_meta');
@@ -239,7 +239,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         // move topic
-        if (!empty($topic['id']) && $this->GetPermission('MoveTopic')) {
+        if (!empty($topic['id']) && $this->gadget->GetPermission('MoveTopic')) {
             $tpl->SetBlock('topic/target');
             $topic['target'] = isset($topic['target'])? $topic['target'] : $topic['fid'];
             $tpl->SetVariable('lbl_target', _t('FORUMS_TOPICS_MOVEDTO'));
@@ -273,8 +273,8 @@ class Forums_Actions_Topics extends ForumsHTML
         $tpl->SetVariable('message', $message->Get());
 
         // attachment
-        if ($this->GetRegistry('enable_attachment') == 'true' &&
-            $this->GetPermission('AddPostAttachment'))
+        if ($this->gadget->GetRegistry('enable_attachment') == 'true' &&
+            $this->gadget->GetPermission('AddPostAttachment'))
         {
             $tpl->SetBlock('topic/attachment');
             $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
@@ -358,8 +358,8 @@ class Forums_Actions_Topics extends ForumsHTML
         // attachment
         $topic['attachment'] = is_null($topic['remove_attachment'])? null : false;
         if (is_null($topic['attachment']) &&
-            $this->GetRegistry('enable_attachment') == 'true' &&
-            $this->GetPermission('AddPostAttachment'))
+            $this->gadget->GetRegistry('enable_attachment') == 'true' &&
+            $this->gadget->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
                 $_FILES,
@@ -382,8 +382,8 @@ class Forums_Actions_Topics extends ForumsHTML
 
         $send_notification = true;
         // edit min/max limit time
-        $edit_min_limit_time = (int)$this->GetRegistry('edit_min_limit_time');
-        $edit_max_limit_time = (int)$this->GetRegistry('edit_max_limit_time');
+        $edit_min_limit_time = (int)$this->gadget->GetRegistry('edit_min_limit_time');
+        $edit_max_limit_time = (int)$this->gadget->GetRegistry('edit_max_limit_time');
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
@@ -411,12 +411,12 @@ class Forums_Actions_Topics extends ForumsHTML
 
             // check permission for edit topic
             $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ((!$this->GetPermission('EditTopic')) ||
+            if ((!$this->gadget->GetPermission('EditTopic')) ||
                 ($oldTopic['first_post_uid'] != $update_uid &&
-                 !$this->GetPermission('EditOthersTopic')) ||
-                ($oldTopic['locked'] && !$this->GetPermission('EditLockedTopic')) ||
+                 !$this->gadget->GetPermission('EditOthersTopic')) ||
+                ($oldTopic['locked'] && !$this->gadget->GetPermission('EditLockedTopic')) ||
                 ((time() - $oldTopic['first_post_time']) > $edit_max_limit_time &&
-                 !$this->GetPermission('EditOutdatedTopic'))
+                 !$this->gadget->GetPermission('EditOutdatedTopic'))
             ) {
                 return Jaws_HTTPError::Get(403);
             }
@@ -428,7 +428,7 @@ class Forums_Actions_Topics extends ForumsHTML
             }
 
             // set target topic for move
-            if (!$this->GetPermission('MoveTopic') || empty($topic['target'])) {
+            if (!$this->gadget->GetPermission('MoveTopic') || empty($topic['target'])) {
                 $topic['target'] = $topic['fid'];
             }
 
@@ -465,7 +465,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $topic['tid'] = $result;
-        $topic_link = $this->GetURLFor(
+        $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['tid']),
             true,
@@ -513,14 +513,14 @@ class Forums_Actions_Topics extends ForumsHTML
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!is_null($rqst['confirm'])) {
                 // delete min limit time
-                $delete_limit_time = (int)$this->GetRegistry('edit_min_limit_time');
+                $delete_limit_time = (int)$this->gadget->GetRegistry('edit_min_limit_time');
 
                 // check delete permissions
-                if ((!$this->GetPermission('DeleteTopic')) ||
+                if ((!$this->gadget->GetPermission('DeleteTopic')) ||
                     ($topic['first_post_uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
-                     !$this->GetPermission('DeleteOthersTopic')) ||
+                     !$this->gadget->GetPermission('DeleteOthersTopic')) ||
                     ((time() - $topic['first_post_time']) > $delete_limit_time &&
-                     !$this->GetPermission('DeleteOutdatedTopic'))
+                     !$this->gadget->GetPermission('DeleteOutdatedTopic'))
                 ) {
                     return Jaws_HTTPError::Get(403);
                 }
@@ -536,7 +536,7 @@ class Forums_Actions_Topics extends ForumsHTML
                 }
 
                 $event_type = 'delete';
-                $forum_link = $this->GetURLFor(
+                $forum_link = $this->gadget->GetURLFor(
                     'Topics',
                     array('fid' => $topic['fid']),
                     true,
@@ -559,7 +559,7 @@ class Forums_Actions_Topics extends ForumsHTML
 
             // redirect to topic posts list
             Jaws_Header::Location(
-                $this->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id'])),
+                $this->gadget->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id'])),
                 true
             );
         } else {
@@ -570,11 +570,11 @@ class Forums_Actions_Topics extends ForumsHTML
             $tpl->SetVariable('fid', $topic['fid']);
             $tpl->SetVariable('tid', $topic['id']);
             $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-            $tpl->SetVariable('findex_url', $this->GetURLFor('Forums'));
+            $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
             $tpl->SetVariable('forum_title', $topic['forum_title']);
             $tpl->SetVariable(
                 'forum_url',
-                $this->GetURLFor('Topics', array('fid'=> $topic['fid']))
+                $this->gadget->GetURLFor('Topics', array('fid'=> $topic['fid']))
             );
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
 
@@ -586,7 +586,7 @@ class Forums_Actions_Topics extends ForumsHTML
             }
 
             // date format
-            $date_format = $this->GetRegistry('date_format');
+            $date_format = $this->gadget->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
@@ -638,7 +638,7 @@ class Forums_Actions_Topics extends ForumsHTML
         }
 
         $event_type = $topic['locked']? 'unlock' : 'lock';
-        $topic_link = $this->GetURLFor(
+        $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
             true,

@@ -30,14 +30,14 @@ class Forums_Actions_Forums extends ForumsHTML
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('url', $this->GetURLFor('Forums'));
+        $tpl->SetVariable('url', $this->gadget->GetURLFor('Forums'));
 
         // date format
-        $date_format = $this->GetRegistry('date_format');
+        $date_format = $this->gadget->GetRegistry('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
         // posts per page
-        $posts_limit = $this->GetRegistry('posts_limit');
+        $posts_limit = $this->gadget->GetRegistry('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
@@ -56,7 +56,7 @@ class Forums_Actions_Forums extends ForumsHTML
                 $tpl->SetBlock('forums/group/forum');
                 $tpl->SetVariable('status', (int)$forum['locked']);
                 $tpl->SetVariable('title', $forum['title']);
-                $tpl->SetVariable('url', $this->GetURLFor('Topics', array('fid' => $forum['id'])));
+                $tpl->SetVariable('url', $this->gadget->GetURLFor('Topics', array('fid' => $forum['id'])));
                 $tpl->SetVariable('description', $forum['description']);
                 $tpl->SetVariable('topics', (int)$forum['topics']);
                 $tpl->SetVariable('posts',  (int)$forum['posts']);
@@ -83,7 +83,7 @@ class Forums_Actions_Forums extends ForumsHTML
                     if ($last_post_page > 1) {
                         $url_params['page'] = $last_post_page;
                     }
-                    $tpl->SetVariable('lastpost_url', $this->GetURLFor('Posts', $url_params));
+                    $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
                     $tpl->ParseBlock('forums/group/forum/lastpost');
                 }
 

@@ -18,7 +18,7 @@ class Forums_Actions_Admin_Forums extends ForumsAdminHTML
      */
     function Forums()
     {
-        $this->CheckPermission('ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Forums/templates/');

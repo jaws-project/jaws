@@ -18,7 +18,7 @@ class Forums_Actions_Admin_Forum extends ForumsAdminHTML
      */
     function GetForumUI()
     {
-        $this->CheckPermission('default');
+        $this->gadget->CheckPermission('default');
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
         $tpl->Load('Admin/ForumUI.html');
         $tpl->SetBlock('ForumUI');

@@ -58,18 +58,18 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
         }
 
         // recent posts limit
-        $recent_limit = $this->GetRegistry('recent_limit');
+        $recent_limit = $this->gadget->GetRegistry('recent_limit');
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $posts = $pModel->GetRecentPosts($group['id'], $recent_limit);
         if (!Jaws_Error::IsError($posts)) {
             // date format
-            $date_format = $this->GetRegistry('date_format');
+            $date_format = $this->gadget->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
             // posts per page
-            $posts_limit = $this->GetRegistry('posts_limit');
+            $posts_limit = $this->gadget->GetRegistry('posts_limit');
             $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
             $max_size = 128;
@@ -86,7 +86,7 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
                 $tpl->SetVariable('lbl_topic', $post['subject']);
                 $tpl->SetVariable(
                     'url_topic',
-                    $this->GetURLFor(
+                    $this->gadget->GetURLFor(
                         'Posts',
                         array('fid' => $post['fid'], 'tid'=> $post['tid'])
                     )
@@ -123,7 +123,7 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('url_post', $this->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('url_post', $this->gadget->GetURLFor('Posts', $url_params));
 
                 $tpl->ParseBlock('recentposts/post');
             }

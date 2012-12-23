@@ -48,7 +48,7 @@ class ForumsHTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock("$base_block/pager/item/next");
                         $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
-                        $url = $this->GetURLFor($action, $params);
+                        $url = $this->gadget->GetURLFor(($action, $params);
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock("$base_block/pager/item/next");
                     } else {
@@ -60,7 +60,7 @@ class ForumsHTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock("$base_block/pager/item/previous");
                         $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
-                        $url = $this->GetURLFor($action, $params);
+                        $url = $this->gadget->GetURLFor(($action, $params);
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock("$base_block/pager/item/previous");
                     } else {
@@ -73,13 +73,13 @@ class ForumsHTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock("$base_block/pager/item/page_separator");
                 } elseif ($k == 'current') {
                     $tpl->SetBlock("$base_block/pager/item/page_current");
-                    $url = $this->GetURLFor($action, $params);
+                    $url = $this->gadget->GetURLFor(($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock("$base_block/pager/item/page_current");
                 } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                     $tpl->SetBlock("$base_block/pager/item/page_number");
-                    $url = $this->GetURLFor($action, $params);
+                    $url = $this->gadget->GetURLFor(($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock("$base_block/pager/item/page_number");
