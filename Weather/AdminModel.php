@@ -12,7 +12,7 @@ require_once JAWS_PATH . 'gadgets/Weather/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WeatherAdminModel extends WeatherModel
+class Weather_AdminModel extends Weather_Model
 {
     /**
      * Inserts a new region

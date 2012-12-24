@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WeatherAdminHTML extends Jaws_Gadget_HTML
+class Weather_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action of the gadget

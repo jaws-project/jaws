@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WeatherModel extends Jaws_Gadget_Model
+class Weather_Model extends Jaws_Gadget_Model
 {
     /**
      * Gets associated data for a region
