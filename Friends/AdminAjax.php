@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_AdminAjax extends Jaws_Gadget_Ajax
+class Friends_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Friends_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get information of a friend
      *
@@ -37,7 +50,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Ajax
      */
     function NewFriend($friend, $url)
     {
-        $this->CheckSession('Friends', 'AddFriend');
+        $this->gadget->CheckPermission('AddFriend');
         $this->_Model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -53,7 +66,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateFriend($old, $friend, $url)
     {
-        $this->CheckSession('Friends', 'EditFriend');
+        $this->gadget->CheckPermission('EditFriend');
         $this->_Model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -67,7 +80,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteFriend($friend)
     {
-        $this->CheckSession('Friends', 'DeleteFriend');
+        $this->gadget->CheckPermission('DeleteFriend');
         $this->_Model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -81,7 +94,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($limit)
     {
-        $this->CheckSession('Friends', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
