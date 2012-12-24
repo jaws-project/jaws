@@ -8,7 +8,7 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfoHTML extends Jaws_Gadget_HTML
+class SysInfo_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Gets system information

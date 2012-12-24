@@ -8,7 +8,7 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfoLayoutHTML extends Jaws_Gadget_HTML
+class SysInfo_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Dispays information around system(OS, WebServer, Database,...)

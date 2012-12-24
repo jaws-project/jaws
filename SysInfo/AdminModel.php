@@ -9,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/SysInfo/Model.php';
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfoAdminModel extends SysInfoModel
+class SysInfo_AdminModel extends SysInfo_Model
 {
     /**
      */

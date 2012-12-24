@@ -8,7 +8,7 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfoModel extends Jaws_Gadget_Model
+class SysInfo_Model extends Jaws_Gadget_Model
 {
     /**
      * Gets database server information
