@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
+class LinkDump_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function LinkDump_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Returns the group form
      *
@@ -96,7 +109,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertGroup($title, $fast_url, $limitation, $links_type, $order_type)
     {
-        $this->CheckSession('LinkDump', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->InsertGroup($title, $fast_url, $limitation, $links_type, $order_type);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -117,7 +130,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
-        $this->CheckSession('LinkDump', 'ManageLinks');
+        $this->gadget->CheckPermission('ManageLinks');
         $this->_Model->InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -137,7 +150,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type)
     {
-        $this->CheckSession('LinkDump', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -158,7 +171,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
-        $this->CheckSession('LinkDump', 'ManageLinks');
+        $this->gadget->CheckPermission('ManageLinks');
         $this->_Model->UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -174,7 +187,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteLink($id, $gid, $rank)
     {
-        $this->CheckSession('LinkDump', 'ManageLinks');
+        $this->gadget->CheckPermission('ManageLinks');
         $this->_Model->DeleteLink($id, $gid, $rank);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -188,7 +201,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteGroup($gid)
     {
-        $this->CheckSession('LinkDump', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
