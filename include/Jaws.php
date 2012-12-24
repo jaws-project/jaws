@@ -562,7 +562,7 @@ class Jaws
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
 
-        $type_class_name = $gadget . ucfirst($type);
+        $type_class_name = $gadget. '_'. $type;
         if (!isset($this->_Gadgets[$gadget][$type])) {
             if (!is_dir(JAWS_PATH . 'gadgets/' . $gadget)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
@@ -602,7 +602,7 @@ class Jaws
                 $obj = new $type_class_name($gadget);
             } else {
                 if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
-                    $info_class_name = $gadget . 'Info';
+                    $info_class_name = $gadget . '_Info';
                     $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
                     @include_once $ifile;
                     $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
