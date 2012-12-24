@@ -9,7 +9,7 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 
-class RegistryAdminAjax extends Jaws_Gadget_Ajax
+class Registry_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Returns the registry keys
