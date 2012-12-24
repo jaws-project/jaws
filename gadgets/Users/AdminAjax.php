@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_AdminAjax extends Jaws_Gadget_Ajax
+class Users_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * User model
@@ -23,12 +23,13 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      * Constructor
      *
      * @access  public
-     * @param   object $model Jaws_Model reference
+     * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Users_AdminAjax(&$model)
+    function Users_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_Ajax($model);
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $this->_UserModel = new Jaws_User();
     }
@@ -158,8 +159,8 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
     function AddUser($username, $password, $nickname, $email, $superadmin, $concurrent_logins,
                      $expiry_date, $status)
     {
-        $this->CheckSession('Users', 'ManageUsers');
-        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
+        $this->gadget->CheckPermission('ManageUsers');
+        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -184,7 +185,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
         } else {
-            $guid = $this->GetRegistry('anon_group');
+            $guid = $this->gadget->GetRegistry('anon_group');
             if (!empty($guid)) {
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }
@@ -213,8 +214,8 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
     function UpdateUser($uid, $username, $password, $nickname, $email, $superadmin, $concurrent_logins,
                         $expiry_date, $status)
     {
-        $this->CheckSession('Users', 'ManageUsers');
-        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
+        $this->gadget->CheckPermission('ManageUsers');
+        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -264,7 +265,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteUser($uid)
     {
-        $this->CheckSession('Users', 'ManageUsers');
+        $this->gadget->CheckPermission('ManageUsers');
         if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
@@ -296,7 +297,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteSession($sid)
     {
-        $this->CheckSession('Users', 'ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageOnlineUsers');
         if ($GLOBALS['app']->Session->Delete($sid)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_DELETED'),
@@ -321,8 +322,8 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function IPBlock($ip)
     {
-        $this->CheckSession('Users', 'ManageOnlineUsers');
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageIPs');
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
         if ($mPolicy->AddIPRange($ip, null, true)) {
@@ -349,8 +350,8 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AgentBlock($agent)
     {
-        $this->CheckSession('Users', 'ManageOnlineUsers');
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageAgents');
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
         if ($mPolicy->AddAgent($agent, true)) {
@@ -378,7 +379,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateUserACL($uid, $keys)
     {
-        $this->CheckSession('Users', 'ManageUserACLs');
+        $this->gadget->CheckPermission('ManageUserACLs');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UserACL');
         $res = $uModel->UpdateUserACL($uid, $keys);
         if (Jaws_Error::IsError($res)) {
@@ -402,7 +403,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroupACL($guid, $keys)
     {
-        $this->CheckSession('Users', 'ManageGroupACLs');
+        $this->gadget->CheckPermission('ManageGroupACLs');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'GroupACL');
         $res = $uModel->UpdateGroupACL($guid, $keys);
         if (Jaws_Error::IsError($res)) {
@@ -426,7 +427,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddUserToGroups($uid, $groups)
     {
-        $this->CheckSession('Users', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $oldGroups = $this->_UserModel->GetGroupsOfUser((int)$uid);
         if (!Jaws_Error::IsError($oldGroups)) {
             foreach ($groups as $group) {
@@ -462,7 +463,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddUsersToGroup($guid, $users)
     {
-        $this->CheckSession('Users', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UsersGroup');
         $res = $uModel->AddUsersToGroup($guid, $users);
         if (Jaws_Error::IsError($res)) {
@@ -487,7 +488,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
     {
-        $this->CheckSession('Users', 'ManageProperties');
+        $this->gadget->CheckPermission('ManageProperties');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'Settings');
         $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover);
         if (Jaws_Error::IsError($res)) {
@@ -507,7 +508,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetUserACLKeys($uid)
     {
-        $this->CheckSession('Users', 'ManageUserACLs');
+        $this->gadget->CheckPermission('ManageUserACLs');
         $profile = $this->_UserModel->GetUser((int)$uid);
         if (isset($profile['username'])) {
             $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UserACL');
@@ -526,7 +527,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGroupACLKeys($guid)
     {
-        $this->CheckSession('Users', 'ManageGroupACLs');
+        $this->gadget->CheckPermission('ManageGroupACLs');
         $profile = $this->_UserModel->GetGroup((int)$guid);
         if (isset($profile['name'])) {
             $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'GroupACL');
@@ -549,9 +550,9 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateMyAccount($uid, $username, $password, $nickname, $email)
     {
-        $this->CheckSession('Users', 'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
+        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
-        if ($this->GetRegistry('crypt_enabled', 'Policy') == 'true') {
+        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -764,7 +765,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddGroup($name, $title, $description, $enabled)
     {
-        $this->CheckSession('Users', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         if (trim($name) == '') {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_INCOMPLETE_FIELDS'),
                                                        RESPONSE_ERROR);
@@ -794,7 +795,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroup($guid, $name, $title, $description, $enabled)
     {
-        $this->CheckSession('Users', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $res = $this->_UserModel->UpdateGroup($guid, $name, $title, $description, (bool)$enabled);
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_NOT_UPDATED', $title),
@@ -816,7 +817,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteGroup($guid)
     {
-        $this->CheckSession('Users', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $currentUid = $GLOBALS['app']->Session->GetAttribute('user');
 
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
