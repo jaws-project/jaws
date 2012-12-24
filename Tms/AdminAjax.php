@@ -8,18 +8,19 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tms_AdminAjax extends Jaws_Gadget_Ajax
+class Tms_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
      *
      * @access  public
-     * @param   string  $model  TMS model
+     * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function TmsAdminAjax(&$model)
+    function Tms_AdminAjax($gadget)
     {
-        $this->_Model =& $model;
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
     }
 
     /**
