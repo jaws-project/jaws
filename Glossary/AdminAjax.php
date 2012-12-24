@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_AdminAjax extends Jaws_Gadget_Ajax
+class Glossary_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Glossary_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get a term
      *
@@ -38,7 +51,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_Ajax
      */
     function NewTerm($term, $fast_url, $contents)
     {
-        $this->CheckSession('Glossary', 'AddTerm');
+        $this->gadget->CheckPermission('AddTerm');
 
         $request =& Jaws_Request::getInstance();
         $contents = $request->get(2, 'post', false);
@@ -60,7 +73,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateTerm($id, $term, $fast_url, $contents)
     {
-        $this->CheckSession('Glossary', 'UpdateTerm');
+        $this->gadget->CheckPermission('UpdateTerm');
 
         $request =& Jaws_Request::getInstance();
         $contents = $request->get(3, 'post', false);
@@ -77,7 +90,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteTerm($id)
     {
-        $this->CheckSession('Glossary', 'DeleteTerm');
+        $this->gadget->CheckPermission('DeleteTerm');
         $this->_Model->DeleteTerm($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
