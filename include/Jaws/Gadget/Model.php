@@ -62,7 +62,7 @@ class Jaws_Gadget_Model
                 case 'AdminModel':
                     if (empty($filename)) {
                         $type_class_name = $this->gadget->name. '_AdminModel';
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. 'AdminModel.php';
+                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
                     } else {
                         $type_class_name = $this->gadget->name. "_Model_Admin_$filename";
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
