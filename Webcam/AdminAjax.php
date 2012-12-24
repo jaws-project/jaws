@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Webcam_AdminAjax extends Jaws_Gadget_Ajax
+class Webcam_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Webcam_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Gets information of a webcam
      *
@@ -38,7 +51,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_Ajax
      */
     function NewWebcam($title, $url, $refresh)
     {
-        $this->CheckSession('Webcam', 'AddWebcam');
+        $this->gadget->CheckPermission('AddWebcam');
         $this->_Model->NewWebcam($title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -55,7 +68,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateWebcam($id, $title, $url, $refresh)
     {
-        $this->CheckSession('Webcam', 'EditWebcam');
+        $this->gadget->CheckPermission('EditWebcam');
         $this->_Model->UpdateWebcam($id, $title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -69,7 +82,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteWebcam($id)
     {
-        $this->CheckSession('Webcam', 'DeleteWebcam');
+        $this->gadget->CheckPermission('DeleteWebcam');
         $this->_Model->DeleteWebcam($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -83,7 +96,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($limit)
     {
-        $this->CheckSession('Webcam', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
