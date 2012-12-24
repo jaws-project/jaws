@@ -8,8 +8,21 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_AdminAjax extends Jaws_Gadget_Ajax
+class Forums_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Forums_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get information of a group
      *
@@ -19,7 +32,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGroup($gid)
     {
-        $this->CheckSession('Forum', 'default');
+        $this->gadget->CheckPermission('default');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -38,7 +51,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetForum($fid)
     {
-        $this->CheckSession('Forum', 'default');
+        $this->gadget->CheckPermission('default');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $forum = $fModel->GetForum($fid);
         if (Jaws_Error::IsError($forum)) {
@@ -56,7 +69,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGroupUI()
     {
-        $this->CheckSession('Forum', 'default');
+        $this->gadget->CheckPermission('default');
         $gHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Group');
         return $gHTML->GetGroupUI();
     }
@@ -69,7 +82,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetForumUI()
     {
-        $this->CheckSession('Forum', 'default');
+        $this->gadget->CheckPermission('default');
         $fHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Forum');
         return $fHTML->GetForumUI();
     }
@@ -89,7 +102,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -119,7 +132,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -141,7 +154,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteForum($fid)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->DeleteForum($fid);
         if (Jaws_Error::IsError($res)) {
@@ -173,7 +186,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertGroup($title, $description, $fast_url, $order, $locked, $published)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
@@ -202,7 +215,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -224,7 +237,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteGroup($gid)
     {
-        $this->CheckSession('Forum', 'ManageForums');
+        $this->gadget->CheckPermission('ManageForums');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->DeleteGroup($gid);
         if (Jaws_Error::IsError($res)) {
