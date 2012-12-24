@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlocksModel extends Jaws_Gadget_Model
+class Blocks_Model extends Jaws_Gadget_Model
 {
     /**
      * Get a Block

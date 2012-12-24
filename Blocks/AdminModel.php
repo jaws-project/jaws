@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Blocks/Model.php';
 /**
  * Blocks Admin Gadget
  *
@@ -8,9 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Blocks/Model.php';
-
-class BlocksAdminModel extends BlocksModel
+class Blocks_AdminModel extends Blocks_Model
 {
     /**
      * Create a new Block

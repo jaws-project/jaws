@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlocksAdminAjax extends Jaws_Gadget_Ajax
+class Blocks_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get Block
