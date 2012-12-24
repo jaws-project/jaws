@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emblems_AdminAjax extends Jaws_Gadget_Ajax
+class Emblems_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Emblems_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Delete an emblem
      *
@@ -19,7 +32,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteEmblem($id)
     {
-        $this->CheckSession('Emblems', 'DeleteEmblem');
+        $this->gadget->CheckPermission('DeleteEmblem');
         $emblemInfo = $this->_Model->GetEmblem($id);
         $src = $emblemInfo['src'];
         $this->_Model->DeleteEmblem($id, $src);
@@ -39,7 +52,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateEmblem($id, $title, $url, $type, $status)
     {
-        $this->CheckSession('Emblems', 'EditEmblem');
+        $this->gadget->CheckPermission('EditEmblem');
         $this->_Model->UpdateEmblem($id, $title, $url, $type, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -53,7 +66,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($rows, $allow_url)
     {
-        $this->CheckSession('Emblems', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdateProperties($rows, $allow_url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
