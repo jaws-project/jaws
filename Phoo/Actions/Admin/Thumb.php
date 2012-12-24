@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_Thumb extends PhooAdminHTML
+class Phoo_Actions_Admin_Thumb extends Phoo_AdminHTML
 {
     /**
      * Resize an image on the fly

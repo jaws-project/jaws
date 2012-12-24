@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/Phoo/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooAdminModel extends PhooModel
+class Phoo_AdminModel extends Phoo_Model
 {
     /**
      * Update the information of an image

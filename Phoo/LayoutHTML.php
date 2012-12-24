@@ -11,7 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooLayoutHTML extends Jaws_Gadget_HTML
+class Phoo_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays a random image from one of the galleries.
