@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PreferencesLayoutHTML extends Jaws_Gadget_HTML
+class Preferences_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Display Action

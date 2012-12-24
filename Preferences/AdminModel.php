@@ -10,7 +10,7 @@ require_once JAWS_PATH . 'gadgets/Preferences/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PreferencesAdminModel extends PreferencesModel
+class Preferences_AdminModel extends Preferences_Model
 {
     /**
      * Update preferences
