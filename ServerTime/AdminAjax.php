@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTime_AdminAjax extends Jaws_Gadget_Ajax
+class ServerTime_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function ServerTime_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Updates properties
      *
