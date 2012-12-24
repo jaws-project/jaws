@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteAdminAjax extends Jaws_Gadget_Ajax
+class SimpleSite_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Gets simplesites with items

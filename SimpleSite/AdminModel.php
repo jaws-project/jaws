@@ -10,7 +10,7 @@ require_once JAWS_PATH . 'gadgets/SimpleSite/Model.php';
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteAdminModel extends SimpleSiteModel
+class SimpleSite_AdminModel extends SimpleSite_Model
 {
     /**
      * Gets max position for a given parent...
