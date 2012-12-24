@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_AdminAjax extends Jaws_Gadget_Ajax
+class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function VisitCounter_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Cleans all the entries (records)
      *
@@ -19,7 +32,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Ajax
      */
     function CleanEntries()
     {
-        $this->CheckSession('VisitCounter', 'ResetCounter');
+        $this->gadget->CheckPermission('ResetCounter');
         $this->_Model->ClearVisitors();
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -32,7 +45,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Ajax
      */
     function ResetCounter()
     {
-        $this->CheckSession('VisitCounter', 'ResetCounter');
+        $this->gadget->CheckPermission('ResetCounter');
         $this->_Model->SetStartDate(date('Y-m-d H:i:s'));
         $this->_Model->ResetCounter();
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -67,7 +80,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text)
     {
-        $this->CheckSession('VisitCounter', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
 
         $request =& Jaws_Request::getInstance();
         $custom_text = $request->get(7, 'post', false);
