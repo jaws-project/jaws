@@ -9,8 +9,21 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_AdminAjax extends Jaws_Gadget_Ajax
+class Policy_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Policy_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get blocked IP range
      *
@@ -20,7 +33,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetIPRange($id)
     {
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageIPs');
         $IPRange = $this->_Model->GetIPRange($id);
         if (Jaws_Error::IsError($IPRange)) {
             return false; //we need to handle errors on ajax
@@ -40,7 +53,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddIPRange($from_ip, $to_ip = null, $blocked)
     {
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageIPs');
         $this->_Model->AddIPRange($from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -57,7 +70,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function EditIPRange($id, $from_ip, $to_ip, $blocked)
     {
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageIPs');
         $this->_Model->EditIPRange($id, $from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -71,7 +84,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteIPRange($id)
     {
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageIPs');
         $this->_Model->DeleteIPRange($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -85,7 +98,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetAgent($id)
     {
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageAgents');
         $agent = $this->_Model->GetAgent($id);
         if (Jaws_Error::IsError($agent)) {
             return false; //we need to handle errors on ajax
@@ -104,7 +117,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddAgent($agent, $blocked)
     {
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageAgents');
         $this->_Model->AddAgent($agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -120,7 +133,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function EditAgent($id, $agent, $blocked)
     {
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageAgents');
         $this->_Model->EditAgent($id, $agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -134,7 +147,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteAgent($id)
     {
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageAgents');
         $this->_Model->DeleteAgent($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -148,7 +161,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function IPBlockingBlockUndefined($blocked)
     {
-        $this->CheckSession('Policy', 'ManageIPs');
+        $this->gadget->CheckPermission('ManageIPs');
         $res = $this->_Model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
@@ -168,7 +181,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AgentBlockingBlockUndefined($blocked)
     {
-        $this->CheckSession('Policy', 'ManageAgents');
+        $this->gadget->CheckPermission('ManageAgents');
         $res = $this->_Model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
@@ -190,7 +203,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
-        $this->CheckSession('Policy', 'Encryption');
+        $this->gadget->CheckPermission('Encryption');
         $this->_Model->UpdateEncryptionSettings($enabled == 'true', $key_age, $key_len);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -208,7 +221,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
     {
-        $this->CheckSession('Policy', 'AntiSpam');
+        $this->gadget->CheckPermission('AntiSpam');
         $this->_Model->UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -231,7 +244,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Ajax
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
                                     $session_idle_timeout, $session_remember_timeout)
     {
-        $this->CheckSession('Policy', 'AdvancedPolicies');
+        $this->gadget->CheckPermission('AdvancedPolicies');
         $this->_Model->UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
                                     $passwd_max_age, $passwd_min_length, $xss_parsing_level,
                                     $session_idle_timeout, $session_remember_timeout);
