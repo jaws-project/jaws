@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Emblems/Model.php';
 /**
  * Emblems Admin Gadget
  *
@@ -8,9 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Emblems/Model.php';
-
-class EmblemsAdminModel extends EmblemsModel
+class Emblems_AdminModel extends Emblems_Model
 {
     /**
      * Updates the emblem info in the database

@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class EmblemsModel extends Jaws_Gadget_Model
+class Emblems_Model extends Jaws_Gadget_Model
 {
     /**
      * Get Emblems
