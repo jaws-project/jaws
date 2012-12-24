@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/FileBrowser/Model.php';
 /**
  * Filebrowser Admin Gadget
  *
@@ -10,9 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/FileBrowser/Model.php';
-
-class FileBrowserAdminModel extends FileBrowserModel
+class FileBrowser_AdminModel extends FileBrowser_Model
 {
     /**
      * Add/Update file or directory information

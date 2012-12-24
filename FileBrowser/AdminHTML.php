@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowserAdminHTML extends Jaws_Gadget_HTML
+class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Builds the basic datagrid view
