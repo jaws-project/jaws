@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderHTML extends Jaws_Gadget_HTML
+class RssReader_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action to be run if no action is present

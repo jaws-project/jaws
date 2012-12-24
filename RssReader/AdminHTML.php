@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderAdminHTML extends Jaws_Gadget_HTML
+class RssReader_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Prepares data of RSS sites for data grid

@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/RssReader/Model.php';
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderAdminModel extends RssReaderModel
+class RssReader_AdminModel extends RssReader_Model
 {
     /**
      * Inserts a new RSS site

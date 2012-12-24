@@ -10,7 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReaderInfo extends Jaws_Gadget
+class RssReader_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
