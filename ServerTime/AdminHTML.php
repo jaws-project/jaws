@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTimeAdminHTML extends Jaws_Gadget_HTML
+class ServerTime_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays the administration page
