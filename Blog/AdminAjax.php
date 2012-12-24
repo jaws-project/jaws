@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogAdminAjax extends Jaws_Gadget_Ajax
+class Blog_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Parse text

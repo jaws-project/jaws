@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Comments extends BlogHTML
+class Blog_Actions_Comments extends Blog_HTML
 {
     /**
      * Recursively displays comments of a given post according to several parameters

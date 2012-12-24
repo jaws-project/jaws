@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Admin_Entries extends BlogAdminHTML
+class Blog_Actions_Admin_Entries extends Blog_AdminHTML
 {
     /**
      * Displays an editor to write a new blog entry or preview it before saving

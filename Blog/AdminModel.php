@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Blog/Model.php';
 /**
  * Blog Gadget
  *
@@ -10,9 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Blog/Model.php';
-
-class BlogAdminModel extends BlogModel
+class Blog_AdminModel extends Blog_Model
 {
     /**
      * Creates a new category

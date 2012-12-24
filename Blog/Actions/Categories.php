@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Categories extends BlogHTML
+class Blog_Actions_Categories extends Blog_HTML
 {
     /**
      * Displays a list of blog posts included on the given category

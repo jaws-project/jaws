@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Admin_Settings extends BlogAdminHTML
+class Blog_Actions_Admin_Settings extends Blog_AdminHTML
 {
     /**
      * Displays blog settings administration panel

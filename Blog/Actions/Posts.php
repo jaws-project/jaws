@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Posts extends BlogHTML
+class Blog_Actions_Posts extends Blog_HTML
 {
     /**
      * Generates XHTML template

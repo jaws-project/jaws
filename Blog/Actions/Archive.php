@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Archive extends BlogHTML
+class Blog_Actions_Archive extends Blog_HTML
 {
     /**
      * Displays a list of blog entries ordered by date

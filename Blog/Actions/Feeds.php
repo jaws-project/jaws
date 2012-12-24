@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Feeds extends BlogHTML
+class Blog_Actions_Feeds extends Blog_HTML
 {
     /**
      * Displays or writes a RSS feed for the blog

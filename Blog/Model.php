@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogModel extends Jaws_Gadget_Model
+class Blog_Model extends Jaws_Gadget_Model
 {
     /**
      * Has the Atom pointer to create the RSS/XML files
