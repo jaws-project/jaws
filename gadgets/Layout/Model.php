@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LayoutModel extends Jaws_Gadget_Model
+class Layout_Model extends Jaws_Gadget_Model
 {
     /**
      * Get the layout sections

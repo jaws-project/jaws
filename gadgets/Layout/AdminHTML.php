@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LayoutAdminHTML extends Jaws_Gadget_HTML
+class Layout_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Returns the HTML content to manage the layout in the browser

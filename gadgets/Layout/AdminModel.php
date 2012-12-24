@@ -11,7 +11,7 @@
  */
 require_once JAWS_PATH . 'gadgets/Layout/Model.php';
 
-class LayoutAdminModel extends LayoutModel
+class Layout_AdminModel extends Layout_Model
 {
     /**
      * Add a new element to the layout
