@@ -9,8 +9,21 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_AdminAjax extends Jaws_Gadget_Ajax
+class Preferences_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Preferences_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Update preferences
      *
@@ -20,8 +33,9 @@ class Preferences_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdatePreferences($preferences_config)
     {
-        $this->CheckSession('Preferences', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdatePreferences($preferences_config);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }
