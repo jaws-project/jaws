@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumsAdminModel extends Jaws_Gadget_Model
+class Forums_AdminModel extends Jaws_Gadget_Model
 {
     /**
      */

@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumsInfo extends Jaws_Gadget
+class Forums_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

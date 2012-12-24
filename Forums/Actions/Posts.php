@@ -9,7 +9,7 @@
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Posts extends ForumsHTML
+class Forums_Actions_Posts extends Forums_HTML
 {
     /**
      * Display topic posts

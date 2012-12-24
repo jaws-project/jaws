@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumsHTML extends Jaws_Gadget_HTML
+class Forums_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action

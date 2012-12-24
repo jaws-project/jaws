@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Admin_Group extends ForumsAdminHTML
+class Forums_Actions_Admin_Group extends Forums_AdminHTML
 {
     /**
      * Show a form to edit a given group

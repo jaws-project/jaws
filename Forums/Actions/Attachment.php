@@ -8,7 +8,7 @@
  * @copyright   2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Attachment extends ForumsHTML
+class Forums_Actions_Attachment extends Forums_HTML
 {
     /**
      * Download post attachment
