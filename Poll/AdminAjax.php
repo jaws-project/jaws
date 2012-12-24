@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_AdminAjax extends Jaws_Gadget_Ajax
+class Poll_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Poll_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get a Poll
      *
@@ -54,7 +67,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $this->CheckSession('Poll', 'ManagePolls');
+        $this->gadget->CheckPermission('ManagePolls');
         $this->_Model->InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -77,7 +90,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $this->CheckSession('Poll', 'ManagePolls');
+        $this->gadget->CheckPermission('ManagePolls');
         $this->_Model->UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -92,7 +105,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeletePoll($pid)
     {
-        $this->CheckSession('Poll', 'ManagePolls');
+        $this->gadget->CheckPermission('ManagePolls');
         $this->_Model->DeletePoll($pid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -142,7 +155,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdatePollAnswers($pid, $answers)
     {
-        $this->CheckSession('Poll', 'ManagePolls');
+        $this->gadget->CheckPermission('ManagePolls');
         $this->_Model->UpdatePollAnswers($pid, $answers);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -175,7 +188,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertPollGroup($title, $visible)
     {
-        $this->CheckSession('Poll', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->InsertPollGroup($title, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -192,7 +205,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdatePollGroup($gid, $title, $visible)
     {
-        $this->CheckSession('Poll', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->UpdatePollGroup($gid, $title, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -207,7 +220,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeletePollGroup($gid)
     {
-        $this->CheckSession('Poll', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->DeletePollGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -257,7 +270,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddPollsToPollGroup($gid, $polls)
     {
-        $this->CheckSession('Poll', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $res = $this->_Model->AddPollsToPollGroup($gid, $polls);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -288,7 +301,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Ajax
      */
     function PollResultsUI($pid)
     {
-        $this->CheckSession('Poll', 'ViewReports');
+        $this->gadget->CheckPermission('ViewReports');
         $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML');
         return $gadget->PollResultsUI($pid);
     }
