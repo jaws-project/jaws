@@ -8,8 +8,21 @@
  * @copyright  2010-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_AdminAjax extends Jaws_Gadget_Ajax
+class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function FileBrowser_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Gets information of the directory content
      *
@@ -81,7 +94,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
     {
-        $this->CheckSession('FileBrowser', 'ManageFiles');
+        $this->gadget->CheckPermission('ManageFiles');
         $res = true;
         if ($oldname != $file) {
             $res = $this->_Model->Rename($path, $oldname, $file);
@@ -108,7 +121,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)
     {
-        $this->CheckSession('FileBrowser', 'ManageDirectories');
+        $this->gadget->CheckPermission('ManageDirectories');
         $res = true;
         if (empty($oldname)) {
             $res = $this->_Model->MakeDir($path, $dir);
@@ -133,7 +146,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteFile($path, $file)
     {
-        $this->CheckSession('FileBrowser', 'ManageFiles');
+        $this->gadget->CheckPermission('ManageFiles');
         if ($this->_Model->Delete($path, $file)) {
             $this->_Model->DeleteDBFileInfo($path, $file);
         }
@@ -151,7 +164,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteDir($path, $dir)
     {
-        $this->CheckSession('FileBrowser', 'ManageDirectories');
+        $this->gadget->CheckPermission('ManageDirectories');
         if ($this->_Model->Delete($path, $dir)) {
             $this->_Model->DeleteDBFileInfo($path, $dir);
         }
