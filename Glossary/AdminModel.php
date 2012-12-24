@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Glossary/Model.php';
 /**
  * Glossary Gadget Admin
  *
@@ -9,9 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Glossary/Model.php';
-
-class GlossaryAdminModel extends GlossaryModel
+class Glossary_AdminModel extends Glossary_Model
 {
     /**
      * Deletes a term
