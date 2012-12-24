@@ -50,20 +50,18 @@ function getData(limit)
         limit = $('comments_datagrid').getCurrentPage();
     }
     //var formData = getDataOfLCForm();
-    updateCommentsDatagrid(limit, '',
-                           '', '',
-                           false);
+    updateCommentsDatagrid(limit, false);
 }
 
 /**
  * Update comments datagrid
  */
-function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
+function updateCommentsDatagrid(limit, resetCounter)
 {
-    result = CommentsAjax.callSync('SearchComments', limit, $('gadgets_filter').value, '', '', '');
+    result = CommentsAjax.callSync('SearchComments', limit, $('gadgets_filter').value, $('filterby').value, $('filter').value, $('status').value);
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
-        var size = CommentsAjax.callSync('SizeOfCommentsSearch', $('gadgets_filter').value, '', '', '');
+        var size = CommentsAjax.callSync('SizeOfCommentsSearch', $('gadgets_filter').value, $('filterby').value, $('filter').value, $('status').value);
         $('comments_datagrid').rowsSize    = size;
         $('comments_datagrid').setCurrentPage(0);
         $('comments_datagrid').updatePageCounter();
@@ -204,7 +202,7 @@ function commentDGAction(combo)
  */
 function searchComment()
 {
-    updateCommentsDatagrid(0, '', '', '', true);
+    updateCommentsDatagrid(0, true);
     return false;
 }
 
