@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanelInfo extends Jaws_Gadget
+class ControlPanel_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

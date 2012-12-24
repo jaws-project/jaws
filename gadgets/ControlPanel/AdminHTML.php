@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanelAdminHTML extends Jaws_Gadget_HTML
+class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default action(MainMenu)

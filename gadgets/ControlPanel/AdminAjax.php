@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanelAdminAjax extends Jaws_Gadget_Ajax
+class ControlPanel_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      *

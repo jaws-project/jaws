@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanelAdminModel extends Jaws_Gadget_Model
+class ControlPanel_AdminModel extends Jaws_Gadget_Model
 {
     /**
      */
