@@ -10,8 +10,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_AdminAjax extends Jaws_Gadget_Ajax
+class Weather_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Weather_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Gets associated data of the region
      *
@@ -42,7 +55,7 @@ class Weather_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertRegion($title, $fast_url, $latitude, $longitude, $published)
     {
-        $this->CheckSession('Weather', 'ManageRegions');
+        $this->gadget->CheckPermission('ManageRegions');
         $this->_Model->InsertRegion($title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -61,7 +74,7 @@ class Weather_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published)
     {
-        $this->CheckSession('Weather', 'ManageRegions');
+        $this->gadget->CheckPermission('ManageRegions');
         $this->_Model->UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -75,7 +88,7 @@ class Weather_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteRegion($id)
     {
-        $this->CheckSession('Weather', 'ManageRegions');
+        $this->gadget->CheckPermission('ManageRegions');
         $this->_Model->DeleteRegion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -92,7 +105,7 @@ class Weather_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($unit, $update_period, $date_format, $api_key)
     {
-        $this->CheckSession('Weather', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdateProperties($unit, $update_period, $date_format, $api_key);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
