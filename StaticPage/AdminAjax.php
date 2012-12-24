@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
+class StaticPage_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function StaticPage_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Deletes the page and all of its translations
      *
@@ -19,7 +32,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeletePage($id)
     {
-        $this->CheckSession('StaticPage', 'DeletePage');
+        $this->gadget->CheckPermission('DeletePage');
         $this->_Model->DeletePage($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -33,7 +46,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteTranslation($id)
     {
-        $this->CheckSession('StaticPage', 'DeletePage');
+        $this->gadget->CheckPermission('DeletePage');
         $this->_Model->DeleteTranslation($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -47,7 +60,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function MassiveDelete($pages)
     {
-        $this->CheckSession('StaticPage', 'DeletePage');
+        $this->gadget->CheckPermission('DeletePage');
         $this->_Model->MassiveDelete($pages);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -62,7 +75,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateSettings($defaultPage, $multiLang)
     {
-        $this->CheckSession('StaticPage', 'Properties');
+        $this->gadget->CheckPermission('Properties');
         $this->_Model->UpdateSettings($defaultPage, $multiLang);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -185,7 +198,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGroupsGrid($offset)
     {
-        $this->CheckSession('StaticPage', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
 
         return $gadget->GetGroupsGrid($offset);
@@ -199,7 +212,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGroupsCount()
     {
-        $this->CheckSession('StaticPage', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         return $this->_Model->GetGroupsCount();
     }
 
@@ -216,7 +229,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
-        $this->CheckSession('StaticPage', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $res = $this->_Model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -241,7 +254,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible)
     {
-        $this->CheckSession('StaticPage', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $res = $this->_Model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -261,7 +274,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteGroup($id)
     {
-        $this->CheckSession('StaticPage', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $res = $this->_Model->DeleteGroup($id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
