@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/Comments/Model.php';
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class CommentsAdminModel extends CommentsModel
+class Comments_AdminModel extends Comments_Model
 {
     /**
      * Updates a comment

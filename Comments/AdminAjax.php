@@ -9,7 +9,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class CommentsAdminAjax extends Jaws_Gadget_Ajax
+class Comments_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Search for comments and return the data in an array

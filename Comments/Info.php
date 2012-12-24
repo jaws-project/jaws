@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class CommentsInfo extends Jaws_Gadget
+class Comments_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

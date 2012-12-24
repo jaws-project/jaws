@@ -8,7 +8,7 @@
  * @copyright  2008-2009 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class CommentsAdminHTML extends Jaws_Gadget_HTML
+class Comments_AdminHTML extends Jaws_Gadget_HTML
 {
     /*
      * Admin of Gadget

@@ -24,7 +24,7 @@ define('COMMENT_STATUS_SPAM',        'spam');
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class CommentsModel extends Jaws_Gadget_Model
+class Comments_Model extends Jaws_Gadget_Model
 {
     /**
      * Get last ID of inserted comment (by some params to prevent duplicated entries)
