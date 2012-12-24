@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
+class Chatbox_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Chatbox_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Search for comments and return the data in an array
      *
@@ -22,7 +35,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SearchComments($limit, $filter, $search, $status)
     {
-        $this->CheckSession('Chatbox', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $gadget = $GLOBALS['app']->LoadGadget('Chatbox', 'AdminHTML');
         return $gadget->CommentsData($limit, $filter, $search, $status);
     }
@@ -67,7 +80,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
             break;
         }
 
-        return $cModel->HowManyFilteredComments($this->name, $filterMode, $search, $status, false);
+        return $cModel->HowManyFilteredComments($this->gadget->name, $filterMode, $search, $status, false);
     }
 
     /**
@@ -79,7 +92,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteComments($ids)
     {
-        $this->CheckSession('Chatbox', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MassiveCommentDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -94,7 +107,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
      */
     function MarkAs($ids, $status)
     {
-        $this->CheckSession('Chatbox', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MarkCommentsAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -110,7 +123,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {
-        $this->CheckSession('Chatbox', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $this->_Model->UpdateProperties($limit, $max_strlen, $authority == 'true');
         return $GLOBALS['app']->Session->PopLastResponse();
     }
