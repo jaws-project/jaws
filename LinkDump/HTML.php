@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDumpHTML extends Jaws_Gadget_HTML
+class LinkDump_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Dafault action

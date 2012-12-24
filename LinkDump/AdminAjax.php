@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDumpAdminAjax extends Jaws_Gadget_Ajax
+class LinkDump_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Returns the group form

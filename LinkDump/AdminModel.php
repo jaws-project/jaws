@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/LinkDump/Model.php';
 /**
  * LinkDump Gadget Admin
  *
@@ -9,8 +10,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/LinkDump/Model.php';
-class LinkDumpAdminModel extends LinkDumpModel
+class LinkDump_AdminModel extends LinkDump_Model
 {
     /**
     * Insert a link

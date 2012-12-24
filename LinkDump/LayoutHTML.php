@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDumpLayoutHTML extends Jaws_Gadget_HTML
+class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params
