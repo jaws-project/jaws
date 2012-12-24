@@ -8,7 +8,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LauncherModel extends Jaws_Gadget_Model
+class Launcher_Model extends Jaws_Gadget_Model
 {
     /**
      * Get all scripts

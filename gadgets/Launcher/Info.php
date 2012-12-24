@@ -8,7 +8,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LauncherInfo extends Jaws_Gadget
+class Launcher_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

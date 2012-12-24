@@ -10,6 +10,6 @@
  */
 require_once JAWS_PATH . 'gadgets/Launcher/Model.php';
 
-class LauncherAdminModel extends LauncherModel
+class Launcher_AdminModel extends Launcher_Model
 {
 }
