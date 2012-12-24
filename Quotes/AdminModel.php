@@ -9,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Quotes/Model.php';
  * @copyright   2007-2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class QuotesAdminModel extends QuotesModel
+class Quotes_AdminModel extends Quotes_Model
 {
     /**
      * Inserts a new quote

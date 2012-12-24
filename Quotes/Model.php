@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class QuotesModel extends Jaws_Gadget_Model
+class Quotes_Model extends Jaws_Gadget_Model
 {
     /**
      * Retrieves data of the quote
