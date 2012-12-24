@@ -37,9 +37,8 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
      * @param   string  $status  Spam status (approved, waiting, spam)
      * @return  int     Total of posts
      */
-    function SizeOfCommentsSearch($filter, $search, $status)
+    function SizeOfCommentsSearch($gadget, $filter, $search, $status)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $filterMode = null;
         switch($filter) {
             case 'postid':
@@ -73,7 +72,7 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
                 $filterMode = null;
                 break;
         }
-        return $cModel->HowManyFilteredComments($this->name, $filterMode, $search, $status, false);
+        return $this->_Model->HowManyFilteredComments($gadget, $filterMode, $search, $status);
     }
 
     /**
@@ -123,6 +122,21 @@ class CommentsAdminAjax extends Jaws_Gadget_Ajax
     {
         // TODO: Check Permission For Manage Comments
         $this->_Model->MassiveCommentDelete($ids);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Mark as different type a group of ids
+     *
+     * @access  public
+     * @param   array   $ids        Ids of comments
+     * @param   string  $status     New status
+     * @return  array   Response array (notice or error)
+     */
+    function MarkAs($gadget, $ids, $status)
+    {
+        // TODO: Check Permission For Manage Comments
+        $this->_Model->MarkAs($gadget, $ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 }

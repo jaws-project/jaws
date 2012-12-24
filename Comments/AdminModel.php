@@ -135,9 +135,10 @@ class CommentsAdminModel extends CommentsModel
              WHERE
                  [id] = {parent}
                AND
-                 [gadget_reference] = {gadgetId}
-               AND
-                [gadget] = {gadget}';
+                 [gadget_reference] = {gadgetId}';
+            // TODO: I dont know why use "gadget" in this query ( and also gadget_reference ) !!
+               //AND
+               // [gadget] = {gadget}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -214,6 +215,7 @@ class CommentsAdminModel extends CommentsModel
             }
         }
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -365,13 +367,14 @@ class CommentsAdminModel extends CommentsModel
         }
 
         foreach ($ids as $id) {
-            $res = $this->DeleteComment($id);
+            $res = $this->DeleteComment(null, $id);
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('GLOBAL_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
             }
         }
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 }

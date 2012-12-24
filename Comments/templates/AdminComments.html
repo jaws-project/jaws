@@ -3,10 +3,17 @@
 <div id="main">
 <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td id="c_datagrid" valign="top" align="left">
-      <div><label for="recipient_filter">{lbl_gadgets_filter}: </label>{gadgets_filter}</div>
-      {grid}
+    <td valign="top" align="left" colspan="2">
+      <div><label for="recipient_filter">{lbl_gadgets_filter}: </label>{gadgets_filter}
+           <label for="recipient_filter">{lbl_status}: </label>{status}
+           <label for="recipient_filter">{lbl_filter_by}: </label>{filter_by}
+           <label for="recipient_filter">{lbl_filter}: </label>{filter}
+           {filter_button}
+      </div>
     </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">{grid}</td>
     <td style="vertical-align: top; width: 370px;">
       <input type="hidden" name="id" id="id" value="0" />
       <input type="hidden" name="gadget" id="gadget" value="" />
@@ -17,7 +24,8 @@
     </td>
   </tr>
   <tr>
-    <td class="buttons" colspan="2">{btn_cancel}{btn_save}</td>
+    <td></td>
+    <td class="buttons">{btn_cancel}{btn_save}</td>
   </tr>
 </table>
 

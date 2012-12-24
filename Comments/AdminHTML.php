@@ -66,17 +66,53 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Comments'));
 
-        //Recipient filter
+        //Gadgets filter
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
         $gadgetsCombo->SetID('gadgets_filter');
-        $gadgetsCombo->setStyle('width: 220px;');
-        $gadgetsCombo->AddEvent(ON_CHANGE, "getComments('comments_datagrid', 0, true)");
+        $gadgetsCombo->setStyle('width: 100px;');
+        $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
         $gadgetsCombo->AddOption('', -1);
         // TODO: Get List Of Gadget Which Use Comments
         $gadgetsCombo->AddOption('Blog', 'Blog');
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
         $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
+
+        //Status
+        $status =& Piwi::CreateWidget('Combo', 'status');
+        $status->AddOption('&nbsp;','various');
+        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
+        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
+        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->SetDefault('various');
+        $status->AddEvent(ON_CHANGE, 'searchComment();');
+        $tpl->SetVariable('status', $status->Get());
+
+        // filter by
+        $request =& Jaws_Request::getInstance();
+        $filterByData = $request->get('filterby', 'get');
+        $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
+        $filterBy->AddOption('&nbsp;','various');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_POST_ID_IS'), 'postid');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_TITLE_CONTAINS'), 'title');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_COMMENT_CONTAINS'), 'comment');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_NAME_CONTAINS'), 'name');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_EMAIL_CONTAINS'), 'email');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_URL_CONTAINS'), 'url');
+        $filterBy->AddOption(_t('COMMENTS_SEARCH_IP_IS'), 'ip');
+        $filterBy->SetDefault(is_null($filterByData)? '' : $filterByData);
+        $tpl->SetVariable('filter_by', $filterBy->Get());
+
+        // filter
+        $filterData = $request->get('filter', 'get');
+        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
+        $filterEntry->setSize(20);
+        $tpl->SetVariable('filter', $filterEntry->Get());
+        $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
+                                            _t('COMMENTS_FILTER'), STOCK_SEARCH);
+        $filterButton->AddEvent(ON_CLICK, 'javascript: searchComment();');
+
+        $tpl->SetVariable('filter_button', $filterButton->Get());
 
         //DataGrid
         $tpl->SetVariable('grid', $this->Get(''));
@@ -163,74 +199,6 @@ class CommentsAdminHTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('CommentUI');
         return $tpl->Get();
-    }
-
-    /**
-     * Prepares the data of comments
-     *
-     * @access  public
-     * @param   int    $gadgets   Gadgets Name
-     * @param   int    $offset    Offset of data array
-     * @return  array  Data array
-     */
-    function GetContacts($gadgets = -1, $offset = null)
-    {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel');
-
-        $contacts = $model->GetContacts($recipient, 12, $offset);
-        if (Jaws_Error::IsError($contacts)) {
-            return array();
-        }
-
-        $date = $GLOBALS['app']->loadDate();
-        $newData = array();
-        foreach ($contacts as $contact) {
-            $contactData = array();
-
-            // Name
-            $label =& Piwi::CreateWidget('Label', $contact['name']);
-            $label->setTitle($contact['subject']);
-            if (empty($contact['reply'])) {
-                $label->setStyle('font-weight:bold;');
-            }
-            $contactData['name'] = $label->get();
-
-            // Attachment
-            if (empty($contact['attachment'])) {
-                $contactData['attach'] = '';
-            } else {
-                $image =& Piwi::CreateWidget('Image', 'gadgets/Contact/images/attachment.png');
-                $image->setTitle($contact['attachment']);
-                $contactData['attach'] = $image->get();
-            }
-
-            // Date
-            $label =& Piwi::CreateWidget('Label', $date->Format($contact['createtime'],'Y-m-d'));
-            $label->setTitle($date->Format($contact['createtime'],'H:i:s'));
-            $contactData['time'] = $label->get();
-
-            // Actions
-            $actions = '';
-            if ($this->gadget->GetPermission('ManageContacts')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript: editContact(this, '".$contact['id']."');",
-                                            STOCK_EDIT);
-                $actions.= $link->Get().'&nbsp;';
-
-                $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
-                                            "javascript: editReply(this, '" . $contact['id'] . "');",
-                                            'gadgets/Contact/images/contact_mini.png');
-                $actions.= $link->Get().'&nbsp;';
-
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: deleteContact(this, '".$contact['id']."');",
-                                            STOCK_DELETE);
-                $actions.= $link->Get().'&nbsp;';
-            }
-            $contactData['actions'] = $actions;
-            $newData[] = $contactData;
-        }
-        return $newData;
     }
 
     /**

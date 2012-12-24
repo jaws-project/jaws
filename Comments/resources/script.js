@@ -13,7 +13,25 @@
  * Use async mode, create Callback
  */
 var CommentsCallback = {
-     updateComment: function(response) {
+    UpdateComment: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            limit = $('comments_datagrid').getCurrentPage();
+            getData(limit);
+            stopAction();
+        }
+        showResponse(response);
+    },
+
+    DeleteComments: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            limit = $('comments_datagrid').getCurrentPage();
+            getData(limit);
+            stopAction();
+        }
+        showResponse(response);
+    },
+
+    MarkAs: function(response) {
         if (response[0]['css'] == 'notice-message') {
             limit = $('comments_datagrid').getCurrentPage();
             getData(limit);
@@ -45,7 +63,7 @@ function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
     result = CommentsAjax.callSync('SearchComments', limit, $('gadgets_filter').value, '', '', '');
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('sizeofcommentssearch', '', '', '');
+        var size = CommentsAjax.callSync('SizeOfCommentsSearch', $('gadgets_filter').value, '', '', '');
         $('comments_datagrid').rowsSize    = size;
         $('comments_datagrid').setCurrentPage(0);
         $('comments_datagrid').updatePageCounter();
@@ -131,7 +149,7 @@ function commentEdit(element, id)
  */
 function updateComment()
 {
-    CommentsAjax.callAsync('updateComment',
+    CommentsAjax.callAsync('UpdateComment',
                     $('gadget').value,
                     $('id').value,
                     $('name').value,
@@ -143,7 +161,7 @@ function updateComment()
 }
 
 /**
- * Delete contact
+ * Delete comment
  *
  */
 function commentDelete(id)
@@ -153,6 +171,41 @@ function commentDelete(id)
         CommentsAjax.callAsync('DeleteComments', id);
     }
     unselectDataGridRow();
+}
+
+
+/**
+ * Executes an action on comments
+ */
+function commentDGAction(combo)
+{
+    var rows = $('comments_datagrid').getSelectedRows();
+    var selectedRows = false;
+    if (rows.length > 0) {
+        selectedRows = true;
+    }
+
+     if (combo.value == 'delete') {
+        if (selectedRows) {
+            var confirmation = confirm(confirmCommentDelete);
+            if (confirmation) {
+                CommentsAjax.callAsync('DeleteComments', rows);
+            }
+        }
+    } else if (combo.value != '') {
+        if (selectedRows) {
+            CommentsAjax.callAsync('MarkAs', $('gadget').value, rows, combo.value);
+        }
+    }
+}
+
+/**
+ * search for a comment
+ */
+function searchComment()
+{
+    updateCommentsDatagrid(0, '', '', '', true);
+    return false;
 }
 
 /**
