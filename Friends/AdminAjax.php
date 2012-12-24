@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FriendsAdminAjax extends Jaws_Gadget_Ajax
+class Friends_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get information of a friend

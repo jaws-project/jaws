@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Friends/Model.php';
 /**
  * Friend Gadget
  *
@@ -9,9 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Friends/Model.php';
-
-class FriendsAdminModel extends FriendsModel
+class Friends_AdminModel extends Friends_Model
 {
     /**
      * Set properties of the gadget
