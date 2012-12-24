@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/UrlMapper/Model.php';
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapperAdminModel extends UrlMapperModel
+class UrlMapper_AdminModel extends UrlMapper_Model
 {
     /**
      * Returns only the map route of a certain map

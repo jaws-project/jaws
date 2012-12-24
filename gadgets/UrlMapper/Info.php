@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapperInfo extends Jaws_Gadget
+class UrlMapper_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
