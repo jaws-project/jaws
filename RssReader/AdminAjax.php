@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_AdminAjax extends Jaws_Gadget_Ajax
+class RssReader_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function RssReader_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Gets information of the RSS site
      *
@@ -43,7 +56,7 @@ class RssReader_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->CheckSession('RssReader', 'ManageRSSSite');
+        $this->gadget->CheckPermission('ManageRSSSite');
         $this->_Model->InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -64,7 +77,7 @@ class RssReader_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->CheckSession('RssReader', 'ManageRSSSite');
+        $this->gadget->CheckPermission('ManageRSSSite');
         $this->_Model->UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -78,7 +91,7 @@ class RssReader_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteRSS($id)
     {
-        $this->CheckSession('RssReader', 'ManageRSSSite');
+        $this->gadget->CheckPermission('ManageRSSSite');
         $this->_Model->DeleteRSS($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
