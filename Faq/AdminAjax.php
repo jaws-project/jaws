@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_AdminAjax extends Jaws_Gadget_Ajax
+class Faq_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Faq_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Delete a category
      *
@@ -19,7 +32,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteCategory($id)
     {
-        $this->CheckSession('Faq', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->_Model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -33,7 +46,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteQuestion($id)
     {
-        $this->CheckSession('Faq', 'DeleteQuestion');
+        $this->gadget->CheckPermission('DeleteQuestion');
         $this->_Model->DeleteQuestion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
