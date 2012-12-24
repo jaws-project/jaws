@@ -8,7 +8,7 @@
  * @copyright   2005-2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class SearchInfo extends Jaws_Gadget
+class Search_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

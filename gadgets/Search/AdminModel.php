@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Search/Model.php';
 /**
  * Search Gadget Admin
  *
@@ -8,9 +9,7 @@
  * @copyright   2005-2012 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'gadgets/Search/Model.php';
-
-class SearchAdminModel extends SearchModel
+class Search_AdminModel extends Search_Model
 {
     /**
      * Sets searchable gadgets
