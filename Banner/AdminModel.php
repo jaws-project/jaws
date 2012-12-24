@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Banner/Model.php';
 /**
  * Banner Admin Model
  *
@@ -11,9 +12,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Banner/Model.php';
-
-class BannerAdminModel extends BannerModel
+class Banner_AdminModel extends Banner_Model
 {
     /**
     * Insert a bannser

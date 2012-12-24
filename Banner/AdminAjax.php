@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BannerAdminAjax extends Jaws_Gadget_Ajax
+class Banner_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get a banner info
