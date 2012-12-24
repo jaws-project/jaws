@@ -10,8 +10,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Menu_AdminAjax extends Jaws_Gadget_Ajax
+class Menu_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Menu_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get all menus and groups data
      *
@@ -98,7 +111,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertGroup($title, $title_view, $visible)
     {
-        $this->CheckSession('Menu', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->InsertGroup($title, $title_view, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -121,7 +134,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
-        $this->CheckSession('Menu', 'ManageMenus');
+        $this->gadget->CheckPermission('ManageMenus');
         $this->_Model->InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -139,7 +152,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
-        $this->CheckSession('Menu', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->UpdateGroup($gid, $title, $title_view, $visible);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -163,7 +176,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
-        $this->CheckSession('Menu', 'ManageMenus');
+        $this->gadget->CheckPermission('ManageMenus');
         $this->_Model->UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -178,7 +191,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteGroup($gid)
     {
-        $this->CheckSession('Menu', 'ManageGroups');
+        $this->gadget->CheckPermission('ManageGroups');
         $this->_Model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -193,7 +206,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteMenu($mid)
     {
-        $this->CheckSession('Menu', 'ManageMenus');
+        $this->gadget->CheckPermission('ManageMenus');
         $result = $this->_Model->DeleteMenu($mid);
         if ($result) {
             $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_DELETED'), RESPONSE_NOTICE);
@@ -234,7 +247,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Ajax
      */
     function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
     {
-        $this->CheckSession('Menu', 'ManageMenus');
+        $this->gadget->CheckPermission('ManageMenus');
         $this->_Model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank);
 
         return $GLOBALS['app']->Session->PopLastResponse();
