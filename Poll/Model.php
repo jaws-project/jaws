@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PollModel extends Jaws_Gadget_Model
+class Poll_Model extends Jaws_Gadget_Model
 {
     /**
      * Add a new vote to the poll's answer
