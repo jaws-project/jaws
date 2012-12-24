@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_AdminAjax extends Jaws_Gadget_Ajax
+class Phoo_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Phoo_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Import an image located in 'import' folder
      *
@@ -20,7 +33,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Ajax
      */
     function ImportImage($image, $name, $album)
     {
-        $this->CheckSession('Phoo', 'Import');
+        $this->gadget->CheckPermission('Import');
         $file = array();
         $file['tmp_name'] = JAWS_DATA . 'phoo/import/' . $image;
         $file['name'] = $image;
@@ -47,7 +60,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SearchComments($limit, $filter, $search, $status)
     {
-        $this->CheckSession('Phoo', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $gadget = $GLOBALS['app']->LoadGadget('Phoo', 'AdminHTML');
         return $gadget->CommentsData($limit, $filter, $search, $status);
     }
@@ -98,7 +111,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Ajax
                 break;
         }
 
-        return $cModel->HowManyFilteredComments($this->name, $filterMode, $search, $status, false);
+        return $cModel->HowManyFilteredComments($this->gadget->name, $filterMode, $search, $status, false);
     }
 
     /**
@@ -110,7 +123,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteComments($ids)
     {
-        $this->CheckSession('Phoo', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MassiveCommentDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -125,7 +138,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Ajax
      */
     function MarkAs($ids, $status)
     {
-        $this->CheckSession('Phoo', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MarkCommentsAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
