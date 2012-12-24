@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SkeletonHTML extends Jaws_Gadget_HTML
+class Skeleton_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Executes the default action

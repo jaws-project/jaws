@@ -9,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Skeleton/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SkeletonAdminModel extends SkeletonModel
+class Skeleton_AdminModel extends Skeleton_Model
 {
     /**
      */

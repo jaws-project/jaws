@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SkeletonLayoutHTML extends Jaws_Gadget_HTML
+class Skeleton_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Displays version of Jaws
