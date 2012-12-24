@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jms_AdminAjax extends Jaws_Gadget_Ajax
+class Jms_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Jms_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get a list of installed / not installed gadgets
      *
@@ -19,7 +32,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGadgets($itemsToShow)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
 
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
         switch($itemsToShow) {
@@ -47,7 +60,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGadgetInfo($gadget)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
         $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
         return $html->GetGadgetInfo($gadget);
     }
@@ -61,7 +74,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetPluginInfo($plugin)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
         $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
         return $html->GetPluginInfo($plugin);
     }
@@ -75,7 +88,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetPlugins($itemsToShow)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
 
         switch($itemsToShow) {
         case 'installed':
@@ -99,7 +112,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetGadgetsOfPlugin($plugin)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
 
         $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
         $use_in_gadgets = explode(',', $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN));
@@ -130,7 +143,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UseAlways($plugin)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
         return ($GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN) == '*');
     }
 
@@ -143,7 +156,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InstallGadget($gadget)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
 
         $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
         if (Jaws_Error::IsError($objGadget)) {
@@ -178,7 +191,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InstallPlugin($plugin)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
 
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
 
@@ -200,7 +213,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UninstallGadget($gadget)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
 
         $result = $this->_commonDisableGadget($gadget, _t('JMS_UNINSTALLED'));
         if ($result !== true) {
@@ -228,7 +241,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UninstallPlugin($plugin)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
 
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
 
@@ -250,7 +263,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function PurgeGadget($gadget)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
 
         $result = $this->_commonDisableGadget($gadget, _t('JMS_PURGED'));
         if ($result !== true) {
@@ -287,7 +300,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function _commonDisableGadget($gadget, $type)
     {
-        if ($this->GetRegistry('main_gadget', 'Settings') == $gadget) {
+        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $gadget) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_SIDEBAR_DISABLE_MAIN_FAILURE'), RESPONSE_ERROR);
             return $GLOBALS['app']->Session->PopLastResponse();
         }
@@ -342,7 +355,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateGadget($gadget)
     {
-        $this->CheckSession('Jms', 'ManageGadgets');
+        $this->gadget->CheckPermission('ManageGadgets');
 
         $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
         if (Jaws_Error::IsError($objGadget)) {
@@ -375,7 +388,7 @@ class Jms_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdatePluginUsage($plugin, $selection)
     {
-        $this->CheckSession('Jms', 'ManagePlugins');
+        $this->gadget->CheckPermission('ManagePlugins');
 
         if (is_array($selection)) {
             if ($GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN) == '*')
