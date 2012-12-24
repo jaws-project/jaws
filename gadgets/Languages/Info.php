@@ -8,7 +8,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class LanguagesInfo extends Jaws_Gadget
+class Languages_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
