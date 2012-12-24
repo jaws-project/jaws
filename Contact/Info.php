@@ -9,7 +9,7 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ContactInfo extends Jaws_Gadget
+class Contact_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
