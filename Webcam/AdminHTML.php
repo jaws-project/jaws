@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WebcamAdminHTML extends Jaws_Gadget_HTML
+class Webcam_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Callback to display short URLs

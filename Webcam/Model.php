@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class WebcamModel extends Jaws_Gadget_Model
+class Webcam_Model extends Jaws_Gadget_Model
 {
     /**
      * Gets properties of the webcam
