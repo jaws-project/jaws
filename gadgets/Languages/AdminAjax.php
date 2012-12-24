@@ -8,8 +8,21 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Languages_AdminAjax extends Jaws_Gadget_Ajax
+class Languages_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Languages_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Saves language
      *
@@ -20,7 +33,7 @@ class Languages_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SaveLanguage($lang_str)
     {
-        $this->CheckSession('Languages', 'ModifyLanguageProperties');
+        $this->gadget->CheckPermission('ModifyLanguageProperties');
         $this->_Model->SaveLanguage($lang_str);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
