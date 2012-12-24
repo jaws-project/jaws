@@ -26,7 +26,7 @@ class Users_AdminAjax extends Jaws_Gadget_Ajax
      * @param   object $model Jaws_Model reference
      * @return  void
      */
-    function UsersAdminAjax(&$model)
+    function Users_AdminAjax(&$model)
     {
         parent::Jaws_Gadget_Ajax($model);
         require_once JAWS_PATH . 'include/Jaws/User.php';
