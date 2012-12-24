@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/VisitCounter/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounterAdminModel extends VisitCounterModel
+class VisitCounter_AdminModel extends VisitCounter_Model
 {
     /**
      * Gets list of IP visitors / date visited

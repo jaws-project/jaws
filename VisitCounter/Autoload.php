@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounterAutoload
+class VisitCounter_Autoload
 {
     /**
      * Autoload function
