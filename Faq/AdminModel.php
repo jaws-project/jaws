@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Faq/Model.php';
 /**
  * Faq Admin Gadget
  *
@@ -10,8 +11,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Faq/Model.php';
-class FaqAdminModel extends FaqModel
+class Faq_AdminModel extends Faq_Model
 {
     /**
      * Max question position

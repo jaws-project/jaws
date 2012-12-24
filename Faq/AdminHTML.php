@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FaqAdminHTML extends Jaws_Gadget_HTML
+class Faq_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Builds the menubar
