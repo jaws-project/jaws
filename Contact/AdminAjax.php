@@ -10,8 +10,21 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_AdminAjax extends Jaws_Gadget_Ajax
+class Contact_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Contact_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get information of a Contact
      *
@@ -49,7 +62,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message)
     {
-        $this->CheckSession('Contact', 'ManageContacts');
+        $this->gadget->CheckPermission('ManageContacts');
         $this->_Model->UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -65,7 +78,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateReply($id, $reply, $send_reply)
     {
-        $this->CheckSession('Contact', 'ManageContacts');
+        $this->gadget->CheckPermission('ManageContacts');
         $res = $this->_Model->UpdateReply($id, $reply);
         if (!Jaws_Error::IsError($res) && $send_reply) {
             $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
@@ -84,7 +97,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteContact($id)
     {
-        $this->CheckSession('Contact', 'ManageContacts');
+        $this->gadget->CheckPermission('ManageContacts');
         $this->_Model->DeleteContact($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -103,7 +116,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
             return false; //we need to handle errors on ajax
         }
         if (isset($replyData['id'])) {
-            $replyData['readonly'] = (bool)$replyData['reply_sent'] && !(bool)$this->GetPermission('Contact', 'EditSentMessage');
+            $replyData['readonly'] = (bool)$replyData['reply_sent'] && !(bool)$this->gadget->GetPermission('EditSentMessage');
         }
         return $replyData;
     }
@@ -152,7 +165,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
-        $this->CheckSession('Contact', 'ManageRecipients');
+        $this->gadget->CheckPermission('ManageRecipients');
         $this->_Model->InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -173,7 +186,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
-        $this->CheckSession('Contact', 'ManageRecipients');
+        $this->gadget->CheckPermission('ManageRecipients');
         $this->_Model->UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -187,7 +200,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteRecipient($id)
     {
-        $this->CheckSession('Contact', 'ManageRecipients');
+        $this->gadget->CheckPermission('ManageRecipients');
         $this->_Model->DeleteRecipient($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -204,7 +217,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
-        $this->CheckSession('Contact', 'UpdateProperties');
+        $this->gadget->CheckPermission('UpdateProperties');
         $request =& Jaws_Request::getInstance();
         $comments = $request->get(3, 'post', false);
 
@@ -270,7 +283,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetMessagePreview($message)
     {
-        $this->CheckSession('Contact', 'AccessToMailer');
+        $this->gadget->CheckPermission('AccessToMailer');
         $request =& Jaws_Request::getInstance();
         $message = $request->get(0, 'post', false);
 
@@ -290,7 +303,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SendEmail($target, $subject, $message, $attachment)
     {
-        $this->CheckSession('Contact', 'AccessToMailer');
+        $this->gadget->CheckPermission('AccessToMailer');
         $request =& Jaws_Request::getInstance();
         $message = $request->get(2, 'post', false);
 
