@@ -9,8 +9,21 @@
  * @copyright  2006-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_AdminAjax extends Jaws_Gadget_Ajax
+class SimpleSite_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function SimpleSite_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Gets simplesites with items
      *
@@ -204,7 +217,7 @@ class SimpleSite_AdminAjax extends Jaws_Gadget_Ajax
      */
     function PingSitemap()
     {
-        $this->CheckSession('SimpleSite', 'PingSite');
+        $this->gadget->CheckPermission('PingSite');
         $this->_Model->ping(true);
         $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_SITEMAP_SENT'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
