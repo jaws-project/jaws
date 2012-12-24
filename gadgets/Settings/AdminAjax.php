@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_AdminAjax extends Jaws_Gadget_Ajax
+class Settings_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Settings_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Updates basic settings
      *
@@ -21,7 +34,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateBasicSettings($settings)
     {
-        $this->CheckSession('Settings', 'BasicSettings');
+        $this->gadget->CheckPermission('BasicSettings');
         $this->_Model->SaveBasicSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -36,7 +49,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateAdvancedSettings($settings)
     {
-        $this->CheckSession('Settings', 'AdvancedSettings');
+        $this->gadget->CheckPermission('AdvancedSettings');
         $this->_Model->SaveAdvancedSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -52,7 +65,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateMetaSettings($settings, $customMeta)
     {
-        $this->CheckSession('Settings', 'MetaSettings');
+        $this->gadget->CheckPermission('MetaSettings');
         $settings['custom_meta'] = serialize($customMeta);
         $this->_Model->SaveMetaSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -68,7 +81,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateMailSettings($settings)
     {
-        $this->CheckSession('Settings', 'MailSettings');
+        $this->gadget->CheckPermission('MailSettings');
         $this->_Model->UpdateMailSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -83,7 +96,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateFTPSettings($settings)
     {
-        $this->CheckSession('Settings', 'FTPSettings');
+        $this->gadget->CheckPermission('FTPSettings');
         $this->_Model->UpdateFTPSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -98,7 +111,7 @@ class Settings_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateProxySettings($settings)
     {
-        $this->CheckSession('Settings', 'ProxySettings');
+        $this->gadget->CheckPermission('ProxySettings');
         $this->_Model->UpdateProxySettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
