@@ -8,7 +8,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageLayoutHTML extends Jaws_Gadget_HTML
+class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Get GroupPages action params

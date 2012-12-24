@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageAdminAjax extends Jaws_Gadget_Ajax
+class StaticPage_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Deletes the page and all of its translations

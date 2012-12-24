@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageModel extends Jaws_Gadget_Model
+class StaticPage_Model extends Jaws_Gadget_Model
 {
     /**
      * Gets a single page

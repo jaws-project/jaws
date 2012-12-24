@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/StaticPage/Model.php';
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageAdminModel extends StaticPageModel
+class StaticPage_AdminModel extends StaticPage_Model
 {
     /**
      * Creates a translation of the given page
