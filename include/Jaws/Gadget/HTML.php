@@ -97,19 +97,12 @@ class Jaws_Gadget_HTML
      */
     function Ajax()
     {
-        require_once JAWS_PATH . 'include/Jaws/Gadget/Ajax.php';
-
         if (JAWS_SCRIPT == 'admin') {
-            $model = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
-            require_once JAWS_PATH.'gadgets/' . $this->gadget->name . '/AdminAjax.php';
-            $ajaxClass = $this->gadget->name . 'AdminAjax';
+            $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminAjax');
         } else {
-            $model = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Model');
-            require_once JAWS_PATH.'gadgets/' . $this->gadget->name . '/Ajax.php';
-            $ajaxClass = $this->gadget->name . 'Ajax';
+            $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Ajax');
         }
 
-        $objAjax = new $ajaxClass($model);
         $request =& Jaws_Request::getInstance();
         $method = $request->get('method', 'get');
         $params = $request->getAll('post');
