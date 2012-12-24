@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_Properties extends UsersAdminHTML
+class Users_Actions_Admin_Properties extends Users_AdminHTML
 {
     /**
      * Builds admin properties UI

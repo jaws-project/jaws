@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Personal extends UsersHTML
+class Users_Actions_Personal extends Users_HTML
 {
     /**
      * Builds a simple form to update user personal (fname, lname, gender, ...)

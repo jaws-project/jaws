@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Registration extends UsersHTML
+class Users_Actions_Registration extends Users_HTML
 {
     /**
      * Tells the user the registation process is done

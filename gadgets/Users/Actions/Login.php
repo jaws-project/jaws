@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Login extends UsersHTML
+class Users_Actions_Login extends Users_HTML
 {
     /**
      * Verifies if user/email/(captcha) are valid, if they are a mail

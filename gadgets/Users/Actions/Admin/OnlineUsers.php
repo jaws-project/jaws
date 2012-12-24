@@ -9,7 +9,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_OnlineUsers extends UsersAdminHTML
+class Users_Actions_Admin_OnlineUsers extends Users_AdminHTML
 {
     /**
      * Builds online users datagrid

@@ -8,7 +8,7 @@
  * @copyright  2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_Avatar extends UsersAdminHTML
+class Users_Actions_Admin_Avatar extends Users_AdminHTML
 {
     /**
      * Uploads the avatar

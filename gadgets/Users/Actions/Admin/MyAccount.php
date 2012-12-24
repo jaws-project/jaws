@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_MyAccount extends UsersAdminHTML
+class Users_Actions_Admin_MyAccount extends Users_AdminHTML
 {
     /**
      * Builds account settings for logged users

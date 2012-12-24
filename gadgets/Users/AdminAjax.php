@@ -9,7 +9,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UsersAdminAjax extends Jaws_Gadget_Ajax
+class Users_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * User model

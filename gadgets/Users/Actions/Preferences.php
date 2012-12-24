@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Preferences extends UsersHTML
+class Users_Actions_Preferences extends Users_HTML
 {
     /**
      * Prepares a simple form to update user's data (name, email, password)
