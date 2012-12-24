@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyAutoload
+class Policy_Autoload
 {
     /**
      * Autoload load method

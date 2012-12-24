@@ -8,7 +8,7 @@
  * @copyright  2008-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyHTML extends Jaws_Gadget_HTML
+class Policy_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Calls default action

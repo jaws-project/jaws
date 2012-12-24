@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyAdminAjax extends Jaws_Gadget_Ajax
+class Policy_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get blocked IP range

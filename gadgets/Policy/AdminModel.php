@@ -11,7 +11,7 @@
  */
 require_once JAWS_PATH . 'gadgets/Policy/Model.php';
 
-class PolicyAdminModel extends PolicyModel
+class Policy_AdminModel extends Policy_Model
 {
     /**
      * Get blocked IP range

@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class PolicyInfo extends Jaws_Gadget
+class Policy_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
