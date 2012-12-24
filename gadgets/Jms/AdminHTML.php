@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class JmsAdminHTML extends Jaws_Gadget_HTML
+class Jms_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Main method

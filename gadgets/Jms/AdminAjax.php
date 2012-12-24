@@ -8,7 +8,7 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class JmsAdminAjax extends Jaws_Gadget_Ajax
+class Jms_AdminAjax extends Jaws_Gadget_Ajax
 {
     /**
      * Get a list of installed / not installed gadgets

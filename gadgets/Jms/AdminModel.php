@@ -10,7 +10,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class JmsAdminModel extends Jaws_Gadget_Model
+class Jms_AdminModel extends Jaws_Gadget_Model
 {
     /**
      * Get a list of gadgets, installed or non installed, core or not core, has layout or not,...
