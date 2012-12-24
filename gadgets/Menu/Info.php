@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class MenuInfo extends Jaws_Gadget
+class Menu_Info extends Jaws_Gadget
 {
     /**
      * Gadget version

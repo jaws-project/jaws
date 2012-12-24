@@ -13,7 +13,7 @@
  */
 require_once JAWS_PATH . 'gadgets/Menu/Model.php';
 
-class MenuAdminModel extends MenuModel
+class Menu_AdminModel extends Menu_Model
 {
     /**
     * Insert a group
