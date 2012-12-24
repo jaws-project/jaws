@@ -9,8 +9,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_AdminAjax extends Jaws_Gadget_Ajax
+class Blog_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Blog_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Parse text
      *
@@ -95,7 +108,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetCategoryForm($action, $id)
     {
-        $this->CheckSession('Blog', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
         return $gadget->CategoryForm($action, $id);
     }
@@ -113,7 +126,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function AddCategory($name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
-        $this->CheckSession('Blog', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->_Model->NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -132,7 +145,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
-        $this->CheckSession('Blog', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->_Model->UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -146,7 +159,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteCategory($id)
     {
-        $this->CheckSession('Blog', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $this->_Model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -159,7 +172,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function GetCategoryCombo()
     {
-        $this->CheckSession('Blog', 'ManageCategories');
+        $this->gadget->CheckPermission('ManageCategories');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
         return $gadget->GetCategoriesAsCombo();
     }
@@ -176,7 +189,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SearchComments($limit, $filter, $search, $status)
     {
-        $this->CheckSession('Blog', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Comments');
         return $gadget->CommentsData($limit, $filter, $search, $status);
     }
@@ -193,7 +206,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function SearchTrackbacks($limit, $filter, $search, $status)
     {
-        $this->CheckSession('Blog', 'ManageTrackbacks');
+        $this->gadget->CheckPermission('ManageTrackbacks');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Trackbacks');
         return $gadget->TrackbacksData($limit, $filter, $search, $status);
     }
@@ -243,7 +256,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
                 $filterMode = null;
                 break;
         }
-        return $cModel->HowManyFilteredComments($this->name, $filterMode, $search, $status, false);
+        return $cModel->HowManyFilteredComments($this->gadget->name, $filterMode, $search, $status, false);
     }
 
     /**
@@ -269,7 +282,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteComments($ids)
     {
-        $this->CheckSession('Blog', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MassiveCommentDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -283,7 +296,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteEntries($ids)
     {
-        $this->CheckSession('Blog', 'DeleteEntries');
+        $this->gadget->CheckPermission('DeleteEntries');
         $this->_Model->MassiveEntryDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -298,7 +311,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function ChangeEntryStatus($ids, $status)
     {
-        $this->CheckSession('Blog', 'PublishEntries');
+        $this->gadget->CheckPermission('PublishEntries');
         $this->_Model->ChangeEntryStatus($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -312,7 +325,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteTrackbacks($ids)
     {
-        $this->CheckSession('Blog', 'ManageTrackbacks');
+        $this->gadget->CheckPermission('ManageTrackbacks');
         $this->_Model->MassiveTrackbackDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -327,7 +340,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function MarkAs($ids, $status)
     {
-        $this->CheckSession('Blog', 'ManageComments');
+        $this->gadget->CheckPermission('ManageComments');
         $this->_Model->MarkCommentsAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -342,7 +355,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
      */
     function TrackbackMarkAs($ids, $status)
     {
-        $this->CheckSession('Blog', 'ManageTrackbacks');
+        $this->gadget->CheckPermission('ManageTrackbacks');
         $this->_Model->MarkTrackbacksAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -370,7 +383,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Ajax
     function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
                        $allow_comments, $trackbacks, $published, $timestamp)
     {
-        $this->CheckSession('Blog', 'AddEntries');
+        $this->gadget->CheckPermission('AddEntries');
 
         if ($id == 'NEW') {
             $res = $this->_Model->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
