@@ -8,8 +8,21 @@
  * @copyright  2005-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_AdminAjax extends Jaws_Gadget_Ajax
+class Blocks_AdminAjax extends Jaws_Gadget_HTML
 {
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   object $gadget Jaws_Gadget object
+     * @return  void
+     */
+    function Blocks_AdminAjax($gadget)
+    {
+        parent::Jaws_Gadget_HTML($gadget);
+        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+    }
+
     /**
      * Get Block
      *
@@ -38,7 +51,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_Ajax
      */
     function NewBlock($title, $contents, $displayTitle)
     {
-        $this->CheckSession('Blocks', 'AddBlock');
+        $this->gadget->CheckPermission('AddBlock');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $request =& Jaws_Request::getInstance();
@@ -66,7 +79,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_Ajax
      */
     function UpdateBlock($id, $title, $contents, $displayTitle)
     {
-        $this->CheckSession('Blocks', 'EditBlock');
+        $this->gadget->CheckPermission('EditBlock');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $request =& Jaws_Request::getInstance();
@@ -84,7 +97,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_Ajax
      */
     function DeleteBlock($id)
     {
-        $this->CheckSession('Blocks', 'DeleteBlock');
+        $this->gadget->CheckPermission('DeleteBlock');
         $this->_Model->DeleteBlock($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
