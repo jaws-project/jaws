@@ -9,7 +9,7 @@
  * @copyright  2004-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SettingsInfo extends Jaws_Gadget
+class Settings_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
