@@ -9,7 +9,7 @@
  * @copyright  2007-2012 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class TmsAdminModel extends Jaws_Gadget_Model
+class Tms_AdminModel extends Jaws_Gadget_Model
 {
     /**
      * Creates a .zip file of the theme in themes/ directory
