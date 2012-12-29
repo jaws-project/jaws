@@ -182,7 +182,7 @@ class Jaws_User
         }
         if ($personal) {
             $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar], [public],
-                       [privacy], [about], [experiences], [occupations], [interests]';
+                       [privacy], [signature], [about], [experiences], [occupations], [interests]';
             $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text', 'boolean',
                                                'boolean', 'text', 'text', 'text', 'text'));
         }
@@ -915,7 +915,7 @@ class Jaws_User
      */
     function UpdatePersonalInfo($id, $info = array())
     {
-        $validInfo = array('fname', 'lname', 'gender', 'dob', 'url', 'about', 'avatar', 'privacy');
+        $validInfo = array('fname', 'lname', 'gender', 'dob', 'url', 'signature', 'about', 'experiences', 'occupations', 'interests', 'avatar', 'privacy');
         $params = array();
         $params['last_update'] = time();
         $updateStr = '';

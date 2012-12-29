@@ -2,12 +2,16 @@
 <div class="gadget users personalbox">
   <h2>{title}</h2>
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <form name="personalbox" action="{base_script}" method="post">
+  <form name="personalbox" action="{base_script}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdatePersonal" />
   <div class="content">
     <fieldset>
-      <p><label for="personal_fname">{lbl_fname}:</label>
+      <p>
+          {avatar}
+      </p>
+
+        <p><label for="personal_fname">{lbl_fname}:</label>
         <input name="fname" id="personal_fname" value="{fname}" type="text" />
       </p>
       <p><label for="personal_lname">{lbl_lname}:</label>
@@ -30,9 +34,33 @@
       <p><label for="personal_url">{lbl_url}:</label>
         <input name="url" id="personal_url" value="{url}" type="text" style="direction: ltr;" />
       </p>
-      <p><label for="personal_about">{lbl_about}:</label>
-        <textarea name="about" id="personal_about" cols="45" rows="6">{about}</textarea>
-      </p>
+        <p>
+            <label for="personal_fname">{lbl_uploadavatar}:</label>
+            {uploadavatar}
+        </p>
+
+        <p>{delete_avatar}</p>
+
+        <p><label for="personal_signature">{lbl_signature}:</label>
+            <textarea name="signature" id="personal_signature" cols="45" rows="4">{signature}</textarea>
+        </p>
+
+        <p><label for="personal_about">{lbl_about}:</label>
+            <textarea name="about" id="personal_about" cols="45" rows="4">{about}</textarea>
+        </p>
+
+        <p><label for="personal_about">{lbl_experiences}:</label>
+            <textarea name="experiences" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
+        </p>
+
+        <p><label for="personal_about">{lbl_occupations}:</label>
+            <textarea name="occupations" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
+        </p>
+
+        <p><label for="personal_interests">{lbl_interests}:</label>
+            <textarea name="interests" id="personal_interests" cols="45" rows="4">{interests}</textarea>
+        </p>
+
     </fieldset>
   </div>
   <div class="actions"><button type="submit" value="{update}">{update}</button></div>
