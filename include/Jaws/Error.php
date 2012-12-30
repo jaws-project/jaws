@@ -57,8 +57,10 @@ class Jaws_Error
         $this->_Message = $message;
         $this->_Code    = $code;
         $this->_Level   = $level;
-        $backtrace++;
-        $GLOBALS['log']->Log($level, '[' . $code . ']: ' . $message, $backtrace);
+        if ($backtrace >= 0) {
+            $backtrace++;
+            $GLOBALS['log']->Log($level, '[' . $code . ']: ' . $message, $backtrace);
+        }
     }
 
     /**
@@ -70,9 +72,12 @@ class Jaws_Error
      * @param   int     $backtrace Log trace back level
      * @access  public
      */
-    function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR)
+    function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
-        $objError = new Jaws_Error($message, $code, $level, 1);
+        if ($backtrace >= 0) {
+            $backtrace++;
+        }
+        $objError = new Jaws_Error($message, $code, $level, $backtrace);
         return $objError;
     }
 
@@ -139,14 +144,17 @@ class Jaws_Error
      * @access  public
      * @param   string  $message Message to print
      */
-    function Fatal($message)
+    function Fatal($message, $backtrace = 0)
     {
         // Set Headers
         header('Content-Type: text/html; charset=utf-8');
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
 
-        $GLOBALS['log']->Log(JAWS_ERROR_FATAL, $message, 1);
+        if ($backtrace >= 0) {
+            $backtrace++;
+            $GLOBALS['log']->Log(JAWS_ERROR_FATAL, $message, $backtrace);
+        }
         //Get content
         $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/templates/FatalError.html');
         $content = str_replace('{message}', $message, $content);
