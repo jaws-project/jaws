@@ -35,6 +35,14 @@ class Jaws_ORM
     var $_identifier_quoting = array();
 
     /**
+     * Select distinct statement
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_distinct = '';
+
+    /**
      * Select columns list
      *
      * @var     array
@@ -252,6 +260,18 @@ class Jaws_ORM
         }
 
         return $value;
+    }
+
+    /**
+     * Select distinct statement
+     *
+     * @access  public
+     * @return  object  Jaws_ORM object
+     */
+    function distinct()
+    {
+        $this->_distinct = 'distinct ';
+        return $this;
     }
 
     /**
@@ -597,7 +617,7 @@ class Jaws_ORM
      */
     function get($select_type = 'raw')
     {
-        $sql = 'select '. implode(', ', $this->_columns) . "\n";
+        $sql = 'select '. $this->_distinct. implode(', ', $this->_columns) . "\n";
         $sql.= 'from '. $this->_table_quoted. "\n";
         $sql.= $this->_build_join();
         $sql.= $this->_build_where();
@@ -818,15 +838,16 @@ class Jaws_ORM
      */
     function reset()
     {
-        $this->_columns = array();
-        $this->_values  = array();
-        $this->_where   = array();
-        $this->_joins   = array();
-        $this->_groupBy = array();
-        $this->_having  = array();
-        $this->_orderBy = array();
-        $this->_limit   = null;
-        $this->_offset  = null;
+        $this->_distinct = '';
+        $this->_columns  = array();
+        $this->_values   = array();
+        $this->_where    = array();
+        $this->_joins    = array();
+        $this->_groupBy  = array();
+        $this->_having   = array();
+        $this->_orderBy  = array();
+        $this->_limit    = null;
+        $this->_offset   = null;
         $this->_query_command = '';
     }
 
