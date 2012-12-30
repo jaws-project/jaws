@@ -141,7 +141,7 @@ function stopAction()
         $('rid').selectedIndex = -1;
         $('subject').value = '';
         $('message').value = '';
-        $('btn_save_send').hide();
+        $('btn_save_send').style.visibility   = 'hidden';
         $('tr_attachment').hide();
         $('btn_save').style.visibility   = 'hidden';
         $('btn_cancel').style.visibility = 'hidden';
@@ -156,7 +156,7 @@ function stopAction()
         $('message').value = '';
         $('reply').value   = '';
         $('reply').readOnly = true;
-        $('btn_save_send').hide();
+        $('btn_save_send').style.visibility   = 'hidden';
         $('btn_save').style.visibility   = 'hidden';
         $('btn_cancel').style.visibility = 'hidden';
         unselectDataGridRow();
@@ -191,7 +191,7 @@ function editContact(element, id)
     $('rid').value     = contact['recipient'];
     $('subject').value = contact['subject'].defilter();
     $('message').value = contact['msg_txt'].defilter();
-    $('btn_save_send').hide();
+    $('btn_save_send').style.visibility   = 'hidden';
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
 
@@ -232,7 +232,7 @@ function editReply(element, id)
     $('reply').value   = replyData['reply'].defilter();
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
-    $('btn_save_send').show();
+    $('btn_save_send').style.visibility = 'visible';
     $('reply').readOnly = Boolean(replyData['readonly']);
     $('reply').focus();
 }

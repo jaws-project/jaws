@@ -231,7 +231,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $btnSaveSend =& Piwi::CreateWidget('Button', 'btn_save_send', _t('CONTACT_REPLAY_SAVE_SEND'), STOCK_SAVE);
         $btnSaveSend->SetEnabled($this->gadget->GetPermission('ManageContacts'));
         $btnSaveSend->AddEvent(ON_CLICK, 'updateContact(true);');
-        $btnSaveSend->SetStyle('display: none;');
+        $btnSaveSend->SetStyle('visibility: hidden;');
         $tpl->SetVariable('btn_save_send', $btnSaveSend->Get());
 
         $tpl->SetVariable('incompleteContactFields', _t('CONTACT_INCOMPLETE_FIELDS'));
