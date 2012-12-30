@@ -148,7 +148,8 @@ class Users_Actions_Personal extends Users_HTML
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
-            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature', 'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
+            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature', 'about',
+                'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'
         );
 
@@ -157,8 +158,7 @@ class Users_Actions_Personal extends Users_HTML
                 Jaws_Utils::upload_tmp_dir(),
                 'gif,jpg,jpeg,png');
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($res->GetMessage(),
-                    'Users.Personal.Response');
+                $GLOBALS['app']->Session->PushSimpleResponse($res->GetMessage(), 'Users.Personal.Response');
             } else {
                 $avatar = $res['avatar'][0]['host_filename'];
             }
@@ -195,18 +195,19 @@ class Users_Actions_Personal extends Users_HTML
         );
         if (!Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
-                                                         'Users.Personal.Response');
+                'Users.Personal.Response');
         } else {
             $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(),
-                                                         'Users.Personal.Response');
+                'Users.Personal.Response');
+
+            // unset unnecessary personal data
+            unset($post['dob_day'],
+            $post['dob_month'],
+            $post['dob_year']);
+
+            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Personal.Data');
         }
 
-        // unset unnecessary personal data
-        unset($post['dob_day'],
-              $post['dob_month'],
-              $post['dob_year']);
-
-        $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Personal.Data');
         Jaws_Header::Location($this->gadget->GetURLFor('Personal'));
     }
 
