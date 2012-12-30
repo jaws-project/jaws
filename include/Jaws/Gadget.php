@@ -597,7 +597,7 @@ class Jaws_Gadget
     {
         $enabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
         $enabled_gadgets.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        return (false !== strpos($enabled_gadgets, ",{$gadget},"));
+        return (false !== strpos($enabled_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
 
     /**
