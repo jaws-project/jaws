@@ -915,7 +915,8 @@ class Jaws_User
      */
     function UpdatePersonalInfo($id, $info = array())
     {
-        $validInfo = array('fname', 'lname', 'gender', 'dob', 'url', 'signature', 'about', 'experiences', 'occupations', 'interests', 'avatar', 'privacy');
+        $validInfo = array('fname', 'lname', 'gender', 'dob', 'url', 'signature', 'about', 'experiences',
+                           'occupations', 'interests', 'avatar', 'privacy');
         $params = array();
         $params['last_update'] = time();
         $updateStr = '';

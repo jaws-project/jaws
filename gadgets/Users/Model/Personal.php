@@ -29,7 +29,8 @@ class Users_Model_Personal extends Jaws_Gadget_Model
      * @param   string   $interests
      * @return  mixed    True on success or Jaws_Error on failure
      */
-    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $avatar, $signature, $about, $experiences, $occupations, $interests)
+    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $avatar, $signature, $about, $experiences,
+                            $occupations, $interests)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
