@@ -447,7 +447,10 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
         $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
+        $profile_url = $GLOBALS['app']->getSiteURL('/' . $GLOBALS['app']->Map->GetURLFor('Users', 'Profile',
+                                                  array('user' =>
+                                                       $GLOBALS['app']->Session->GetAttribute('username'))));
+        $GLOBALS['app']->Translate->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = new Jaws_Template('gadgets/Contact/templates/');
@@ -464,6 +467,8 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('message',     $contact['msg_txt']);
         $tpl->SetVariable('reply',       $reply);
         $tpl->SetVariable('createtime',  $jDate->Format($contact['createtime']));
+        $tpl->SetVariable('nickname',    $GLOBALS['app']->Session->GetAttribute('nickname'));
+        $tpl->SetVariable('profile_url', $profile_url);
         $tpl->SetVariable('site-name',   $site_name);
         $tpl->SetVariable('site-url',    $site_url);
         $tpl->ParseBlock($format);
