@@ -1,15 +1,14 @@
 <?php
+define('MIN_PHP_VERSION', '5.2.0');
 /**
  * Requirements to upgrade jaws.
  *
  * @category   Application
  * @package    InstallStage
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2012 Jaws Development Group
+ * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('MIN_PHP_VERSION', '5.2.0');
-
 class Installer_Requirements extends JawsInstallerStage
 {
     var $_db_drivers = array('mysql'     => 'MySQL',

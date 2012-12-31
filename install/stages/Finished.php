@@ -1,9 +1,12 @@
 <?php
 /**
- * The introduction page for the installer.
+ * The finish page for the installer.
  *
- * @author Jon Wood <jon@substance-it.co.uk>
- * @access public
+ * @category    Application
+ * @package     InstallStage
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Installer_Finished extends JawsInstallerStage
 {

@@ -2,11 +2,15 @@
 /**
  * Creates a first user.
  *
- * @author Jon Wood <jon@substance-it.co.uk>
- * @author Ali Fazelzadeh <afz@php.net>
- * @access public
+ * @category    Application
+ * @package     InstallStage
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_CreateUser extends JawsInstallerStage {
+class Installer_CreateUser extends JawsInstallerStage
+{
     /**
      * Default values
      *

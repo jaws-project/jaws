@@ -2,8 +2,12 @@
 /**
  * Sets up the default site settings.
  *
- * @author Jon Wood <jon@substance-it.co.uk>
- * @access public
+ * @category    Application
+ * @package     InstallStage
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Installer_Settings extends JawsInstallerStage
 {
