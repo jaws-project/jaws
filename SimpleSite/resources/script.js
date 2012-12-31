@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    SimpleSite
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
- * @copyright  2006-2012 Jaws Development Group
+ * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 var ssitems = new Array();
