@@ -5,7 +5,7 @@
  * @category   Widget
  * @package    Core
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2005-2012 Jaws Development Group
+ * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  */
 /**

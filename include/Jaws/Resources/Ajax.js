@@ -1,4 +1,15 @@
 /**
+ * General Javascript methods
+ *
+ * @category    Ajax
+ * @package     Core
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ */
+/**
  * Ajax base class
  */
 var JawsAjax = new Class({

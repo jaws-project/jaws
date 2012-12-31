@@ -6,7 +6,7 @@
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     David Coallier <davidc@jaws.com.mx>
- * @copyright  2005-2012 Jaws Development Group
+ * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_XSS
