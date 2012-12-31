@@ -5,7 +5,7 @@
  * @category   GadgetLayout
  * @package    Contact
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2012 Jaws Development Group
+ * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_LayoutHTML extends Jaws_Gadget_HTML
