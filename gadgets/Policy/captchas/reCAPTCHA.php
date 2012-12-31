@@ -12,7 +12,7 @@
  * @category   Captcha
  * @package    Policy
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2007-2012 Jaws Development Group
+ * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 require_once('reCAPTCHA/recaptchalib.php');
