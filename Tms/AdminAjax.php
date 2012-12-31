@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    TMS
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2012 Jaws Development Group
+ * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Tms_AdminAjax extends Jaws_Gadget_HTML
