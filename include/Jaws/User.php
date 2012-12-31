@@ -45,25 +45,16 @@ class Jaws_User
      */
     function Valid($user, $password, $onlyAdmin = false)
     {
-        $params = array();
-        $params['user'] = Jaws_UTF8::strtolower($user);
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $username = $GLOBALS['db']->dbc->function->lower('[username]');
-
-        $sql = "
-            SELECT [id], [passwd], [superadmin], [bad_passwd_count], [concurrent_logins],
-                   [logon_hours], [expiry_date], [last_access], [status]
-            FROM [[users]]
-            WHERE $username = {user}";
-
-        $types = array('integer', 'text', 'boolean', 'integer', 'integer',
-                       'text', 'integer', 'integer', 'integer');
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $tblUsers = Jaws_ORM::getInstance()->table('users');
+        $result = $tblUsers->select(
+            'id::integer', 'passwd', 'superadmin::boolean', 'bad_passwd_count',
+            'concurrent_logins::integer', 'logon_hours', 'expiry_date', 'last_access', 'status::integer'
+        )->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        if (isset($result['id'])) {
+        if (!empty($result)) {
             // bad_passwd_count & lockedout time
             if ($result['bad_passwd_count'] >= $GLOBALS['app']->Registry->Get('passwd_bad_count', 'Policy', JAWS_COMPONENT_GADGET) &&
                ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->Get('passwd_lockedout_time', 'Policy', JAWS_COMPONENT_GADGET)))
@@ -114,17 +105,10 @@ class Jaws_User
 
             } else {
                 // bad_passwd_count + 1
-                $params['id']          = $result['id'];
-                $params['bad_count']   = $result['bad_passwd_count'] + 1;
-                $params['last_access'] = time();
-
-                $sql = '
-                    UPDATE [[users]] SET
-                        [last_access]      = {last_access},
-                        [bad_passwd_count] = {bad_count}
-                    WHERE [id] = {id}';
-
-                $result = $GLOBALS['db']->query($sql, $params);
+                $tblUsers->update(array(
+                    'last_access' => time(),
+                    'bad_passwd_count' => $result['bad_passwd_count'] + 1)
+                )->where('id', '=', $result['id'])->execute();
             }
         }
 
