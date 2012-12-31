@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Registry
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2006-2012 Jaws Development Group
+ * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**
