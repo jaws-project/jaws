@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    ControlPanel
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012 Jaws Development Group
+ * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class ControlPanel_AdminAjax extends Jaws_Gadget_HTML
