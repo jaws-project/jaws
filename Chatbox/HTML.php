@@ -6,7 +6,7 @@
  * @package    Chatbox
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Jon Wood <jon@jellybob.co.uk>
- * @copyright  2004-2012 Jaws Development Group
+ * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Chatbox_HTML extends Jaws_Gadget_HTML
