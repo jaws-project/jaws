@@ -9,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Weather/Model.php';
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Mohsen Khahani <mohsen@khahani.com>
- * @copyright  2004-2012 Jaws Development Group
+ * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Weather_AdminModel extends Weather_Model
