@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    Webcam
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2012 Jaws Development Group
+ * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Webcam_AdminAjax extends Jaws_Gadget_HTML

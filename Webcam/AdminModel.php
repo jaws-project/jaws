@@ -7,7 +7,7 @@ require_once JAWS_PATH . 'gadgets/Webcam/Model.php';
  * @package    Webcam
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2012 Jaws Development Group
+ * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Webcam_AdminModel extends Webcam_Model
