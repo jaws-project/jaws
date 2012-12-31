@@ -14,9 +14,9 @@ class Jaws_ORM
      * Jaws_DB  object
      *
      * @var     pbject
-     * @access  private
+     * @access  public
      */
-    var $_jawsdb;
+    var $jawsdb;
 
     /**
      * The DB prefix for tables
@@ -171,6 +171,22 @@ class Jaws_ORM
     var $_query_command = '';
 
     /**
+     * return type of nested select
+     *
+     * @var     string
+     * @access  public
+     */
+    var $type = '';
+
+    /**
+     * Alias name of nested select
+     *
+     * @var     string
+     * @access  public
+     */
+    var $alias = '';
+
+    /**
      * Constructor
      *
      * @access  public
@@ -178,9 +194,9 @@ class Jaws_ORM
      */
     function __construct()
     {
-        $this->_jawsdb = &$GLOBALS['db'];
-        $this->_tbl_prefix = $this->_jawsdb->GetPrefix();
-        $this->_identifier_quoting = $this->_jawsdb->dbc->identifier_quoting;
+        $this->jawsdb = &$GLOBALS['db'];
+        $this->_tbl_prefix = $this->jawsdb->GetPrefix();
+        $this->_identifier_quoting = $this->jawsdb->dbc->identifier_quoting;
     }
 
     /**
@@ -205,7 +221,7 @@ class Jaws_ORM
     function table($table, $alias = '')
     {
         $this->_table = $table;
-        $this->_table_alias = empty($alias)? '': " as $alias";
+        $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
         $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
         return $this;
     }
@@ -261,17 +277,17 @@ class Jaws_ORM
     {
         if (is_array($value)) {
             // $value is array(value, type)
-            $value = $this->_jawsdb->dbc->quote($value[0], isset($value[1])? $value[1] : null);
+            $value = $this->jawsdb->dbc->quote($value[0], isset($value[1])? $value[1] : null);
         } else {
             // Add "N" character before text field value,
             // when using FreeTDS as MSSQL driver, to supporting unicode text
-            if ($this->_jawsdb->_dsn['phptype'] == 'mssql' &&
+            if ($this->jawsdb->_dsn['phptype'] == 'mssql' &&
                 is_string($value) &&
-                $this->_jawsdb->Is_FreeTDS_MSSQL_Driver())
+                $this->jawsdb->Is_FreeTDS_MSSQL_Driver())
             {
                 $value = 'N' . $this->dbc->quote($value);
             } else {
-                $value = $this->_jawsdb->dbc->quote($value);
+                $value = $this->jawsdb->dbc->quote($value);
             }
         }
 
@@ -301,26 +317,23 @@ class Jaws_ORM
     {
         $this->_columns = func_get_args();
         foreach($this->_columns as $key => $column) {
-            if (is_array($column)) {
-                @list($column, $alias, $type) = $column;
-                $alias = empty($alias)? '' : " as $alias";
-                if (empty($type)) {
-                    $this->_types[] = 'text';
-                } else {
-                    $this->_types[] = $type;
-                    $this->_passed_types = true;
-                }
+            if (is_object($column)) {
+                $colstr = '('. $column->get(). ')';
+                $type   = $column->type;
+                $alias  = $column->alias;
+                unset($column);
             } else {
-                $alias = '';
-                $this->_types[] = 'text';
+                @list($column, $alias, $type) = explode(':', $column);
+                $colstr = $this->quoteIdentifier($column);
             }
 
-            if ($column instanceof Jaws_ORM_Function) {
-                $column = $this->_build_function($column);
-            } elseif ($column instanceof Jaws_ORM) {
-                $column = '('. $column->get(). ')';
+            $this->_columns[$key] = $colstr. (empty($alias)? '' : (' as '. $this->quoteIdentifier($alias)));
+            if (empty($type)) {
+                $this->_types[] = 'text';
+            } else {
+                $this->_types[] = $type;
+                $this->_passed_types = true;
             }
-            $this->_columns[$key] = $column. $alias;
         }
 
         return $this;
@@ -380,13 +393,14 @@ class Jaws_ORM
         }
 
         // quote column identifier
-        if ($column instanceof Jaws_ORM_Function) {
-            $column = $this->_build_function($column);
+        if (is_object($column)) {
+            $colstr = $column->get();
+            unset($column);
         } else {
-            $column = $this->quoteIdentifier($column);
+            $colstr = $this->quoteIdentifier($column);
         }
 
-        $this->_where[] = "($column $opt $value)";
+        $this->_where[] = "($colstr $opt $value)";
         return $this;
     }
 
@@ -439,12 +453,14 @@ class Jaws_ORM
     {
         foreach(func_get_args() as $column) {
             // quote column identifier
-            if ($column instanceof Jaws_ORM_Function) {
-                $column = $this->_build_function($column);
+            if (is_object($column)) {
+                $colstr = $column->get();
+                unset($column);
             } else {
-                $column = $this->quoteIdentifier($column);
+                $colstr = $this->quoteIdentifier($column);
             }
-            $this->_groupBy[] = $column;
+
+            $this->_groupBy[] = $colstr;
         }
 
         return $this;
@@ -476,13 +492,14 @@ class Jaws_ORM
         }
 
         // quote column identifier
-        if ($column instanceof Jaws_ORM_Function) {
-            $column = $this->_build_function($column);
+        if (is_object($column)) {
+            $colstr = $column->get();
+            unset($column);
         } else {
-            $column = $this->quoteIdentifier($column);
+            $colstr = $this->quoteIdentifier($column);
         }
 
-        $this->_having[] = "($column $opt $value)";
+        $this->_having[] = "($colstr $opt $value)";
         return $this;
     }
 
@@ -497,8 +514,9 @@ class Jaws_ORM
     function orderBy($column, $sort = '')
     {
         // quote column identifier
-        if ($column instanceof Jaws_ORM_Function) {
-            $this->_orderBy[] = $this->_build_function($column). ' '. $sort;
+        if (is_object($column)) {
+            $this->_orderBy[] = $column->get(). ' '. $sort;
+            unset($column);
         } else {
             $this->_orderBy[] = $this->quoteIdentifier($column). ' '. $sort;
         }
@@ -519,6 +537,30 @@ class Jaws_ORM
         $this->_limit  = $limit;
         $this->_offset = $offset;
         return $this;
+    }
+
+    /**
+     * Return type of nested select
+     *
+     * @access  public
+     * @param   string  $type   Return type(text, boolean, integer, decimal, float, blob, clob, timestamp)
+     * @return  void
+     */
+    function type($type = '')
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * Alias name of nested select
+     *
+     * @access  public
+     * @param   string  $alias   Alias name
+     * @return  void
+     */
+    function alias($alias)
+    {
+        $this->alias = $alias;
     }
 
     /**
@@ -582,56 +624,6 @@ class Jaws_ORM
     }
 
     /**
-     * Builds function string
-     *
-     * @access  private
-     * @param   object  $objFunc    An object of Jaws_ORM_Function
-     * @return  string  Function string
-     */
-    private function _build_function(&$objFunc)
-    {
-        $params = $objFunc->params;
-        $method = $objFunc->method;
-        unset($objFunc);
-
-        $func_str = '';
-        $this->_jawsdb->dbc->loadModule('Function', null, true);
-        switch ($method) {
-            case 'lower':
-            case 'upper':
-            case 'length':
-                $params[0] = $this->quoteIdentifier($params[0]);
-                $func_str = $this->_jawsdb->dbc->function->$method($params[0]);
-                break;
-
-            case 'now':
-            case 'random':
-                $func_str = $this->_jawsdb->dbc->function->$method();
-                break;
-
-            case 'concat':
-            case 'replace':
-                foreach ($params as &$param) {
-                    if (is_array($param)) {
-                        $param = $this->quoteValue($param);
-                    } else {
-                        $param = $this->quoteIdentifier($param);
-                    }
-                }
-
-                $func_str = call_user_func_array(array($this->_jawsdb->dbc->function, $method), $params);
-                break;
-
-            case 'substring':
-                $params[0] = $this->quoteIdentifier($params[0]);
-                $func_str = call_user_func_array(array($this->_jawsdb->dbc->function, 'substring'), $params);
-                break;
-        }
-
-        return $func_str;
-    }
-
-    /**
      * Fetch data from the result set
      *
      * @access  public
@@ -655,28 +647,28 @@ class Jaws_ORM
         switch ($select_type) {
             // Fetch the values from the first row of the result set
             case 'row':
-                $result = $this->_jawsdb->dbc->queryRow($sql, $this->_types);
+                $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
                 break;
 
             // Fetch the value from the first column of each row of the result set
             case 'col':
-                $result = $this->_jawsdb->dbc->queryCol($sql, $this->_types);
+                $result = $this->jawsdb->dbc->queryCol($sql, $this->_types);
                 break;
 
             // Fetch the value from the first column of the first row of the result
             case 'one':
-                $result = $this->_jawsdb->dbc->queryone($sql, $this->_types);
+                $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
                 break;
 
             // Fetch all the rows of the result set into a two dimensional array
             case 'all':
                 if (!empty($this->_limit)) {
-                    $result = $this->_jawsdb->setLimit($this->_limit, $this->_offset);
+                    $result = $this->jawsdb->setLimit($this->_limit, $this->_offset);
                     if (Jaws_Error::IsError($result)) {
                         break;
                     }
                 }
-                $result = $this->_jawsdb->dbc->queryAll($sql, $this->_types);
+                $result = $this->jawsdb->dbc->queryAll($sql, $this->_types);
                 break;
 
             default:
@@ -711,7 +703,7 @@ class Jaws_ORM
                 $sql = "delete\n";
                 $sql.= 'from '. $this->_table_quoted. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->_jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
             case 'update':
@@ -724,7 +716,7 @@ class Jaws_ORM
                     $sql.= "$column = $value\n";
                 }
                 $sql.= $this->_build_where();
-                $result = $this->_jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
             // insert a rows
@@ -740,9 +732,9 @@ class Jaws_ORM
                             . $this->_identifier_quoting['end'];
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
-                $result = $this->_jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->dbc->exec($sql);
                 if (!PEAR::IsError($result) && !empty($result)) {
-                    $result = $this->_jawsdb->lastInsertID($this->_table, $this->_pk_field);
+                    $result = $this->jawsdb->lastInsertID($this->_table, $this->_pk_field);
                 }
                 break;
 
@@ -761,7 +753,7 @@ class Jaws_ORM
 
                 // build insert values list
                 $vsql = '';
-                $dbDriver  = $this->_jawsdb->getDriver();
+                $dbDriver  = $this->jawsdb->getDriver();
                 foreach ($this->_values as $values) {
                     $values_str = implode(', ', array_map(array($this, 'quoteValue'), $values));
                     switch ($dbDriver) {
@@ -784,7 +776,7 @@ class Jaws_ORM
                 }
 
                 $sql.= $vsql;
-                $result = $this->_jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
             default:
@@ -894,6 +886,14 @@ class Jaws_ORM
 class Jaws_ORM_Function
 {
     /**
+     * Jaws_ORM object
+     *
+     * @var     object
+     * @access  private
+     */
+    var $orm = '';
+
+    /**
      * Method name
      *
      * @var     string
@@ -910,15 +910,104 @@ class Jaws_ORM_Function
     var $params = array();
 
     /**
+     * return type
+     *
+     * @var     string
+     * @access  public
+     */
+    var $type = '';
+
+    /**
+     * Alias name of method statement in select command
+     *
+     * @var     string
+     * @access  public
+     */
+    var $alias = '';
+
+    /**
      * Constructor
      *
      * @access  public
      * @return  void
      */
-    function __construct($method, $params)
+    function __construct(&$orm, $method, $params)
     {
+        $this->orm    = $orm;
         $this->method = $method;
         $this->params = $params;
+        $this->orm->jawsdb->dbc->loadModule('Function', null, true);
+    }
+
+    /**
+     * Method return type
+     *
+     * @access  public
+     * @param   string  $type   Return type(text, boolean, integer, decimal, float, blob, clob, timestamp)
+     * @return  void
+     */
+    function type($type = '')
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * Alias name of method statement in select command
+     *
+     * @access  public
+     * @param   string  $alias   Alias name
+     * @return  void
+     */
+    function alias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    /**
+     * Builds function string
+     *
+     * @access  public
+     * @return  string  Function string
+     */
+    public function get(&$objFunc)
+    {
+        $params = $this->params;
+        $method = $this->method;
+
+        $func_str = '';
+        switch ($method) {
+            case 'lower':
+            case 'upper':
+            case 'length':
+                $params[0] = $this->orm->quoteIdentifier($params[0]);
+                $func_str = $this->orm->jawsdb->dbc->function->$method($params[0]);
+                break;
+
+            case 'now':
+            case 'random':
+                $func_str = $this->orm->jawsdb->dbc->function->$method();
+                break;
+
+            case 'concat':
+            case 'replace':
+                foreach ($params as &$param) {
+                    if (is_array($param)) {
+                        $param = $this->orm->quoteValue($param);
+                    } else {
+                        $param = $this->orm->quoteIdentifier($param);
+                    }
+                }
+
+                $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, $method), $params);
+                break;
+
+            case 'substring':
+                $params[0] = $this->orm->quoteIdentifier($params[0]);
+                $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, 'substring'), $params);
+                break;
+        }
+
+        return $func_str;
     }
 
 }
