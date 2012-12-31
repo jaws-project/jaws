@@ -7,7 +7,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2006-2012 Jaws Development Group
+ * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class UrlMapper_AdminHTML extends Jaws_Gadget_HTML

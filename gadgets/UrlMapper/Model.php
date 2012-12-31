@@ -5,7 +5,7 @@
  * @category   GadgetModel
  * @package    UrlMapper
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2012 Jaws Development Group
+ * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class UrlMapper_Model extends Jaws_Gadget_Model
