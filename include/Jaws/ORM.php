@@ -51,6 +51,22 @@ class Jaws_ORM
     var $_columns = array();
 
     /**
+     * Select columns types list
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_types = array();
+
+    /**
+     * Types passed to select?
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $_passed_types = false;
+
+    /**
      * Insert/Update columns/values pairs
      *
      * @var     array
@@ -286,10 +302,17 @@ class Jaws_ORM
         $this->_columns = func_get_args();
         foreach($this->_columns as $key => $column) {
             if (is_array($column)) {
-                @list($column, $alias) = $column;
-                $alias = " as $alias";
+                @list($column, $alias, $type) = $column;
+                $alias = empty($alias)? '' : " as $alias";
+                if (empty($type)) {
+                    $this->_types[] = 'text';
+                } else {
+                    $this->_types[] = $type;
+                    $this->_passed_types = true;
+                }
             } else {
                 $alias = '';
+                $this->_types[] = 'text';
             }
 
             if ($column instanceof Jaws_ORM_Function) {
@@ -617,6 +640,10 @@ class Jaws_ORM
      */
     function get($select_type = 'raw')
     {
+        if (!$this->_passed_types) {
+            $this->_types = array();
+        }
+
         $sql = 'select '. $this->_distinct. implode(', ', $this->_columns) . "\n";
         $sql.= 'from '. $this->_table_quoted. "\n";
         $sql.= $this->_build_join();
@@ -628,17 +655,17 @@ class Jaws_ORM
         switch ($select_type) {
             // Fetch the values from the first row of the result set
             case 'row':
-                $result = $this->_jawsdb->dbc->queryRow($sql);
+                $result = $this->_jawsdb->dbc->queryRow($sql, $this->_types);
                 break;
 
             // Fetch the value from the first column of each row of the result set
             case 'col':
-                $result = $this->_jawsdb->dbc->queryCol($sql);
+                $result = $this->_jawsdb->dbc->queryCol($sql, $this->_types);
                 break;
 
             // Fetch the value from the first column of the first row of the result
             case 'one':
-                $result = $this->_jawsdb->dbc->queryone($sql);
+                $result = $this->_jawsdb->dbc->queryone($sql, $this->_types);
                 break;
 
             // Fetch all the rows of the result set into a two dimensional array
@@ -649,7 +676,7 @@ class Jaws_ORM
                         break;
                     }
                 }
-                $result = $this->_jawsdb->dbc->queryAll($sql);
+                $result = $this->_jawsdb->dbc->queryAll($sql, $this->_types);
                 break;
 
             default:
@@ -840,6 +867,7 @@ class Jaws_ORM
     {
         $this->_distinct = '';
         $this->_columns  = array();
+        $this->_types    = array();
         $this->_values   = array();
         $this->_where    = array();
         $this->_joins    = array();
@@ -848,6 +876,7 @@ class Jaws_ORM
         $this->_orderBy  = array();
         $this->_limit    = null;
         $this->_offset   = null;
+        $this->_passed_types  = false;
         $this->_query_command = '';
     }
 
