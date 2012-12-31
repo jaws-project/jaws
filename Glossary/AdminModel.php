@@ -7,7 +7,7 @@ require_once JAWS_PATH . 'gadgets/Glossary/Model.php';
  * @package    Glossary
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2012 Jaws Development Group
+ * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Glossary_AdminModel extends Glossary_Model
