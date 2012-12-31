@@ -7,7 +7,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2005-2012 Jaws Development Group
+ * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Layout_AdminAjax extends Jaws_Gadget_HTML
