@@ -447,9 +447,11 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
         $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
-        $profile_url = $GLOBALS['app']->getSiteURL('/' . $GLOBALS['app']->Map->GetURLFor('Users', 'Profile',
-                                                  array('user' =>
-                                                       $GLOBALS['app']->Session->GetAttribute('username'))));
+        $profile_url = $GLOBALS['app']->getSiteURL('/'). $GLOBALS['app']->Map->GetURLFor(
+            'Users',
+            'Profile',
+            array('user' => $GLOBALS['app']->Session->GetAttribute('username'))
+        );
         $GLOBALS['app']->Translate->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
