@@ -709,12 +709,15 @@ class Jaws_ORM
             case 'update':
                 $sql = 'update '. $this->_table_quoted. " set\n";
                 foreach ($this->_values as $column => $value) {
-                    $value  = ', '. $this->quoteValue($value);
+                    $value  = $this->quoteValue($value);
                     $column = $this->_identifier_quoting['start']
                             . $column
                             . $this->_identifier_quoting['end'];
-                    $sql.= "$column = $value\n";
+                    $sql.= "$column = $value,\n";
                 }
+
+                // remove extra comma from end of query
+                $sql = substr_replace($sql, '', -2, 1);
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
