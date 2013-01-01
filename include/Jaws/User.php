@@ -45,11 +45,12 @@ class Jaws_User
      */
     function Valid($user, $password, $onlyAdmin = false)
     {
-        $tblUsers = Jaws_ORM::getInstance()->table('users');
-        $result = $tblUsers->select(
-            'id::integer', 'passwd', 'superadmin::boolean', 'bad_passwd_count',
-            'concurrent_logins::integer', 'logon_hours', 'expiry_date', 'last_access', 'status::integer'
-        )->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select(
+            'id:integer', 'passwd', 'superadmin:boolean', 'bad_passwd_count',
+            'concurrent_logins:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
+        );
+        $result = $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -65,10 +66,7 @@ class Jaws_User
             }
 
             // password
-            // compare md5ed password for backward compatibility
-            if ($result['passwd'] === Jaws_User::GetHashedPassword($password, $result['passwd']) ||
-                trim($result['passwd']) === md5($password))
-            {
+            if ($result['passwd'] === Jaws_User::GetHashedPassword($password, $result['passwd'])) {
                 // only superadmin
                 if ($onlyAdmin && !$result['superadmin']) {
                     return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_ONLY_ADMIN'),
@@ -105,9 +103,11 @@ class Jaws_User
 
             } else {
                 // bad_passwd_count + 1
-                $tblUsers->update(array(
-                    'last_access' => time(),
-                    'bad_passwd_count' => $result['bad_passwd_count'] + 1)
+                $usersTable->update(
+                    array(
+                        'last_access' => time(),
+                        'bad_passwd_count' => $usersTable->expr('bad_passwd_count + ?', 1)
+                    )
                 )->where('id', '=', $result['id'])->execute();
             }
         }
@@ -125,16 +125,8 @@ class Jaws_User
      */
     function updateLoginTime($user_id)
     {
-        $params = array();
-        $params['id']    = (int)$user_id;
-        $params['count'] = 0;
-
-        $sql = '
-            UPDATE [[users]] SET
-                [bad_passwd_count] = {count}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update(array('bad_passwd_count' => 0))->where('id', '=', (int)$user_id)->execute();
         if (Jaws_Error::isError($result)) {
             return false;
         }
@@ -155,45 +147,39 @@ class Jaws_User
      */
     function GetUser($user, $account = true, $personal = false, $preferences = false, $extra = false)
     {
-        $sql = 'SELECT [id]';
-        $types = array('integer');
-
+        $columns = array('id:integer',);
+        // account information
         if ($account) {
-            $sql .= ', [username], [nickname], [email], [superadmin], [concurrent_logins], [logon_hours],
-                       [expiry_date], [registered_date], [status], [last_update]';
-            $types = array_merge($types, array('text', 'text', 'text', 'boolean', 'integer', 'text',
-                                               'integer', 'integer', 'integer', 'integer'));
+            $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
+                'concurrent_logins', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
+                'last_update',)
+            );
         }
+
         if ($personal) {
-            $sql .= ', [fname], [lname], [gender], [dob], [url], [avatar], [public],
-                       [privacy], [signature], [about], [experiences], [occupations], [interests]';
-            $types = array_merge($types, array('text', 'text', 'integer', 'timestamp', 'text', 'text', 'boolean',
-                                               'boolean', 'text', 'text', 'text', 'text'));
+            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'dob', 'url', 'avatar',
+                '[public]:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
+                'interests',)
+            );
         }
+
         if ($preferences) {
-            $sql .= ', [language], [theme], [editor], [timezone]';
-            $types = array_merge($types, array('text', 'text', 'text', 'text'));
+            $columns = array_merge($columns, array('language', 'theme', 'editor', 'timezone'));
         }
+
         if ($extra) {
             //
         }
 
-        $params = array();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select($columns);
         if (is_int($user)) {
-            $params['id'] = $user;
-            $sql .= '
-                FROM [[users]]
-                WHERE [id] = {id}';
+            $usersTable->where('id', '=', $user);
         } else {
-            $params['user'] = Jaws_UTF8::strtolower($user);
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $username = $GLOBALS['db']->dbc->function->lower('[username]');
-            $sql .= "
-                FROM [[users]]
-                WHERE $username = {user}";
+             $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user));
         }
 
-        return $GLOBALS['db']->queryRow($sql, $params, $types);
+        return $usersTable->getRow();
     }
 
     /**
@@ -205,19 +191,10 @@ class Jaws_User
      */
     function GetUserInfoByEmail($email)
     {
-        $params = array();
-        $params['email'] = Jaws_UTF8::strtolower($email);
-
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $email = $GLOBALS['db']->dbc->function->lower('[email]');
-
-        $sql = "
-            SELECT [id], [username], [nickname], [email], [superadmin], [status]
-            FROM [[users]]
-            WHERE $email = {email}";
-
-        $types = array('integer', 'text', 'text', 'text', 'boolean', 'integer');
-        return $GLOBALS['db']->queryAll($sql, $params, $types);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'superadmin:boolean', 'status:integer');
+        $usersTable->where('lower(email)', '=', $email);
+        return $usersTable->getAll();
     }
 
     /**
@@ -229,19 +206,10 @@ class Jaws_User
      */
     function GetUserByEmailVerifyKey($key)
     {
-        $params = array();
-        $params['key'] = trim($key);
-
-        $sql = '
-            SELECT
-                [id], [username], [nickname], [email], [status]
-            FROM
-                [[users]]
-            WHERE
-                [email_verify_key] = {key}';
-
-        $types = array('integer', 'text', 'text', 'text', 'integer');
-        return $GLOBALS['db']->queryRow($sql, $params, $types);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
+        $usersTable->where('email_verify_key', '=', trim($key));
+        return $usersTable->getRow();
     }
 
     /**
@@ -253,19 +221,10 @@ class Jaws_User
      */
     function GetUserByPasswordVerifyKey($key)
     {
-        $params = array();
-        $params['key'] = trim($key);
-
-        $sql = '
-            SELECT
-                [id], [username], [nickname], [email], [status]
-            FROM
-                [[users]]
-            WHERE
-                [passwd_verify_key] = {key}';
-
-        $types = array('integer', 'text', 'text', 'text', 'integer');
-        return $GLOBALS['db']->queryRow($sql, $params, $types);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
+        $usersTable->where('passwd_verify_key', '=', trim($key));
+        return $usersTable->getRow();
     }
 
     /**
@@ -278,24 +237,12 @@ class Jaws_User
      */
     function UserEmailExists($email, $exclude = 0)
     {
-        $params = array();
-        $params['id']    = $exclude;
-        $params['email'] = Jaws_UTF8::strtolower($email);
-
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[users]]
-            WHERE
-                [email] = {email}
-              AND
-                [id] <> {id}';
-
-        $howmany = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($howmany) || empty($howmany)) {
-            return false;
-        }
-
-        return true;
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('count(id)');
+        $usersTable->where('email', '=', Jaws_UTF8::strtolower($email));
+        $usersTable->where('id', '<>', $exclude);
+        $howmany = $usersTable->getOne();
+        return !empty($howmany);
     }
 
     /**
@@ -329,30 +276,15 @@ class Jaws_User
      */
     function GetGroup($group)
     {
-        $sql = '
-            SELECT
-                [id], [name], [title], [description], [enabled]
-            FROM [[groups]]
-            ';
-
-        $params = array();
+        $groupsTable = Jaws_ORM::getInstance()->table('groups');
+        $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
         if (is_int($group)) {
-            $params['id'] = $group;
-            $sql .= 'WHERE [id] = {id}';
+            $groupsTable->where('id', '=', $group);
         } else {
-            $params['group'] = Jaws_UTF8::strtolower($group);
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $groupname = $GLOBALS['db']->dbc->function->lower('[name]');
-            $sql .= "WHERE $groupname = {group}";
+            $groupsTable->where('lower(name)', '=', Jaws_UTF8::strtolower($group));
         }
 
-        $types = array('integer', 'text', 'text', 'text', 'boolean');
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return $result;
+        return $groupsTable->getRow();
     }
 
     /**
@@ -368,85 +300,47 @@ class Jaws_User
      * @param   int     $offset
      * @return  array   Returns an array of the available users and false on error
      */
-    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = '[nickname]',
-                      $limit = 0, $offset = null)
+    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = 'nickname',
+        $limit = 0, $offset = null)
     {
-        $fields  = array(
-            '[id]',
-            '[id] DESC',
-            '[username]',
-            '[username] DESC',
-            '[nickname]',
-            '[nickname] DESC',
-            '[email]');
+        $fields = array(
+            'users.id', 'users.id DESC',
+            'username', 'username DESC',
+            'nickname', 'nickname DESC', 'email'
+        );
         if (!in_array($orderBy, $fields)) {
             $GLOBALS['log']->Log(JAWS_LOG_WARNING, _t('GLOBAL_ERROR_UNKNOWN_COLUMN'));
-            $orderBy = '[username]';
+            $orderBy = 'username';
         }
 
-        $params = array();
-        $params['true']       = true;
-        $params['gid']        = $group;
-        $params['superadmin'] = (bool)$superadmin;
-        $params['status']     = (int)$status;
-
-        $sql = '
-            SELECT
-                [[users]].[id], [username], [email], [url], [nickname], [fname], [lname],
-                [superadmin], [language], [theme], [editor], [timezone], [[users]].[status]
-            FROM [[users]]';
-
-        $types = array('integer', 'text', 'text', 'text', 'text', 'text', 'text',
-                       'boolean', 'text', 'text', 'text', 'text', 'integer');
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select(
+            'users.id:integer', 'username', 'email', 'url', 'nickname', 'fname', 'lname',
+            'superadmin:boolean', 'language', 'theme', 'editor', 'timezone', 'users.status:integer'
+        );
         if ($group !== false) {
-            $sql .= '
-                INNER JOIN [[users_groups]] ON [[users_groups]].[user_id] = [[users]].[id]
-                WHERE [[users_groups]].[group_id] = {gid}';
-        } else {
-            $sql .= '
-                WHERE {true} = {true}';
+            $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
+            $usersTable->where('group_id', '=', $group);
         }
 
         if (!is_null($superadmin)) {
-            $sql .= " AND [superadmin] = {superadmin}";
+            $usersTable->and()->where('superadmin', '=', (bool)$superadmin);
         }
 
         if (!is_null($status)) {
-            $sql .= ' AND [[users]].[status] = {status}';
+            $usersTable->and()->where('status', '=', (int)$status);
         }
 
         if (!empty($term)) {
-            $userTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[username]');
-            $nickTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[nickname]');
-            $emailTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[email]');
-            $sql.= " AND ($userTerm OR $nickTerm OR $emailTerm)";
+            $term = Jaws_UTF8::strtolower($term);
+            $usersTable->and()->openWhere('lower(username)', 'like',  $term);
+            $usersTable->or()->where('lower(nickname)', 'like',  $term);
+            $usersTable->or()->closeWhere('lower(email)', 'like',  $term);
         }
 
-        $sql .= '
-            ORDER BY [[users]].'. $orderBy;
-
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return false;
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return $result;
+        $usersTable->orderBy('users.'.$orderBy);
+        $usersTable->limit($limit, $offset);
+        return $usersTable->getAll();
     }
 
     /**
