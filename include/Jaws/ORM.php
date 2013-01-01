@@ -222,7 +222,7 @@ class Jaws_ORM
     {
         $this->_table = $table;
         $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
-        $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
+        $this->_table_quoted = $this->quoteIdentifier('['.$this->_tbl_prefix. $table.']');
         return $this;
     }
 
@@ -799,7 +799,9 @@ class Jaws_ORM
         switch ($method) {
             case 'or':
             case 'and':
-                $this->_where[] = " $method ";
+                if (!empty($this->_where)) {
+                    $this->_where[] = " $method ";
+                }
                 return $this;
 
             case 'insert':
