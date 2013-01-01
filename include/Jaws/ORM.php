@@ -315,7 +315,7 @@ class Jaws_ORM
      */
     function select($columns)
     {
-        $this->_columns = func_get_args();
+        $this->_columns = is_array($columns)? $columns : func_get_args();
         foreach($this->_columns as $key => $column) {
             if (is_object($column)) {
                 $colstr = '('. $column->get(). ')';
