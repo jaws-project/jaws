@@ -236,31 +236,23 @@ class Jaws_ORM
     function quoteIdentifier($column)
     {
         if (strpos($column, '.') !== false) {
-            $tbl_prefix = '';
-            $column = str_replace(
-                '.',
-                $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
-                $column
-            );
-        } else {
-            $tbl_prefix = $this->_tbl_prefix;
+            $column = str_replace('.', $this->_identifier_quoting['end'].'.', $column);
+            $pos = strpos($column, '(');
+            if ($pos === false) {
+                $column = $this->_identifier_quoting['start']. $this->_tbl_prefix. $column;
+            } else {
+                $column = substr_replace(
+                    $column,
+                    $this->_identifier_quoting['start']. $this->_tbl_prefix,
+                    $pos + 1,
+                    0
+                );
+            }
         }
 
-        if (false === strpos($column, '(')) {
-            $column = $this->_identifier_quoting['start']
-                    . $tbl_prefix. $column
-                    . $this->_identifier_quoting['end'];
-        } else {
-            $column = str_replace(
-                '(',
-                '('. $this->_identifier_quoting['start']. $tbl_prefix,
-                $column
-            );
-            $column = str_replace(
-                ')',
-                $this->_identifier_quoting['end']. ')',
-                $column
-            );
+        if (strpos($column, '[') !== false) {
+            $column = str_replace('[',  $this->_identifier_quoting['start'], $column);
+            $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
         }
 
         return $column;
@@ -275,23 +267,28 @@ class Jaws_ORM
      */
     function quoteValue($value)
     {
-        if (is_array($value)) {
-            // $value is array(value, type)
-            $value = $this->jawsdb->dbc->quote($value[0], isset($value[1])? $value[1] : null);
+        if (is_object($value)) {
+            $vstr = $value->get();
+            unset($value);
         } else {
-            // Add "N" character before text field value,
-            // when using FreeTDS as MSSQL driver, to supporting unicode text
-            if ($this->jawsdb->_dsn['phptype'] == 'mssql' &&
-                is_string($value) &&
-                $this->jawsdb->Is_FreeTDS_MSSQL_Driver())
-            {
-                $value = 'N' . $this->dbc->quote($value);
+            if (is_array($value)) {
+                // $value is array(value, type)
+                $vstr = $this->jawsdb->dbc->quote($value[0], isset($value[1])? $value[1] : null);
             } else {
-                $value = $this->jawsdb->dbc->quote($value);
+                // Add "N" character before text field value,
+                // when using FreeTDS as MSSQL driver, to supporting unicode text
+                if ($this->jawsdb->_dsn['phptype'] == 'mssql' &&
+                    is_string($value) &&
+                    $this->jawsdb->Is_FreeTDS_MSSQL_Driver())
+                {
+                    $vstr = 'N' . $this->dbc->quote($value);
+                } else {
+                    $vstr = $this->jawsdb->dbc->quote($value);
+                }
             }
         }
 
-        return $value;
+        return $vstr;
     }
 
     /**
@@ -318,16 +315,17 @@ class Jaws_ORM
         $this->_columns = is_array($columns)? $columns : func_get_args();
         foreach($this->_columns as $key => $column) {
             if (is_object($column)) {
-                $colstr = '('. $column->get(). ')';
+                $this->_columns[$key] = '('. $column->get(). ')';
                 $type   = $column->type;
                 $alias  = $column->alias;
+                $this->_columns[$key].= empty($alias)? '' : (' as '. $this->quoteIdentifier($alias));
                 unset($column);
             } else {
-                @list($column, $alias, $type) = explode(':', $column);
-                $colstr = $this->quoteIdentifier($column);
+                if ($type = trim(strrchr($column, ':'), ':')) {
+                    $this->_columns[$key] = $this->quoteIdentifier(substr($column, 0, strrpos($column, ':')));
+                }
             }
 
-            $this->_columns[$key] = $colstr. (empty($alias)? '' : (' as '. $this->quoteIdentifier($alias)));
             if (empty($type)) {
                 $this->_types[] = 'text';
             } else {
@@ -366,9 +364,9 @@ class Jaws_ORM
      * Where SQL command
      *
      * @access  public
-     * @param   string  $column Column
+     * @param   mixed   $column Column
      * @param   string  $opt    Operator condition
-     * @param   string  $value  Column value
+     * @param   mixed   $value  Column value
      * @return  object  Jaws_ORM object
      */
     function where($column, $opt, $value)
@@ -710,9 +708,7 @@ class Jaws_ORM
                 $sql = 'update '. $this->_table_quoted. " set\n";
                 foreach ($this->_values as $column => $value) {
                     $value  = $this->quoteValue($value);
-                    $column = $this->_identifier_quoting['start']
-                            . $column
-                            . $this->_identifier_quoting['end'];
+                    $column = $this->quoteIdentifier($column);
                     $sql.= "$column = $value,\n";
                 }
 
@@ -729,10 +725,7 @@ class Jaws_ORM
                 $sql = 'insert into '. $this->_table_quoted;
                 foreach ($this->_values as $column => $value) {
                     $values .= ', '. $this->quoteValue($value);
-                    $columns.= ', '
-                            . $this->_identifier_quoting['start']
-                            . $column
-                            . $this->_identifier_quoting['end'];
+                    $columns.= ', '. $this->quoteIdentifier($column);
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
                 $result = $this->jawsdb->dbc->exec($sql);
@@ -746,14 +739,7 @@ class Jaws_ORM
                 $columns = '';
                 $sql = 'insert into '. $this->_table_quoted;
                 // build insert columns list
-                foreach ($this->_columns as $column) {
-                    $columns.= ', '
-                            . $this->_identifier_quoting['start']
-                            . $column
-                            . $this->_identifier_quoting['end'];
-                }
-                $sql.= "\n(". trim($columns, ', '). ")\n";
-
+                $sql.= "\n". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). "\n";
                 // build insert values list
                 $vsql = '';
                 $dbDriver  = $this->jawsdb->getDriver();
@@ -837,6 +823,7 @@ class Jaws_ORM
                 return $this->get(strtolower(substr($method, 3)));
 
             case 'now':
+            case 'expr':
             case 'lower':
             case 'upper':
             case 'length':
@@ -844,7 +831,7 @@ class Jaws_ORM
             case 'concat':
             case 'replace':
             case 'substring':
-                return new Jaws_ORM_Function($method, $params);
+                return new Jaws_ORM_Function($this, $method, $params);
                 break;
 
             default:
@@ -972,7 +959,7 @@ class Jaws_ORM_Function
      * @access  public
      * @return  string  Function string
      */
-    public function get(&$objFunc)
+    public function get()
     {
         $params = $this->params;
         $method = $this->method;
@@ -1007,6 +994,15 @@ class Jaws_ORM_Function
             case 'substring':
                 $params[0] = $this->orm->quoteIdentifier($params[0]);
                 $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, 'substring'), $params);
+                break;
+
+            case 'expr':
+                $func_str = array_shift($params);
+                $func_str = $this->orm->quoteIdentifier($func_str);
+                foreach ($params as $param) {
+                    $func_str = preg_replace('/\?/', $this->orm->quoteValue($param), $func_str, 1);
+                }
+
                 break;
         }
 
