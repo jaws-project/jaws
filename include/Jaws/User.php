@@ -442,112 +442,90 @@ class Jaws_User
      */
     function GetGroupsOfUser($user)
     {
-        $params  = array();
-        $params['user'] = $user;
-        $sql = '
-            SELECT
-                [[groups]].[id]
-            FROM [[users_groups]]
-            INNER JOIN [[users]]  ON [[users]].[id] =  [[users_groups]].[user_id]
-            INNER JOIN [[groups]] ON [[groups]].[id] = [[users_groups]].[group_id]
-            ';
+        $ugroupsTable = Jaws_ORM::getInstance()->table('users_groups');
+        $ugroupsTable->select('groups.id:integer');
+        $ugroupsTable->join('inner', 'users',  'users.id',  'users_groups.user_id');
+        $ugroupsTable->join('inner', 'groups', 'groups.id', 'users_groups.group_id');
         if (is_int($user)) {
-            $sql .= 'WHERE [[users]].[id] = {user}';
+            $ugroupsTable->where('users.id', '=', $user);
         } else {
-            $sql .= 'WHERE [[users]].[username] = {user}';
+            $ugroupsTable->where('users.id', '=', $user);
         }
 
-        return $GLOBALS['db']->queryCol($sql, $params);
+        return $ugroupsTable->getCol();
     }
 
     /**
      * Adds a new user
      *
      * @access  public
-     * @param   string  $username           The username
-     * @param   string  $nickname           User's display name
-     * @param   string  $email              User's email
-     * @param   string  $password           User's password
-     * @param   bool    $superadmin         Is superadmin (superadmin or normal)
-     * @param   int     $status             User's status
-     * @param   int     $concurrent_logins  Concurrent logins limitation
-     * @param   string  $logon_hours        Logon hours
-     * @param   string  $expiry_date        Expiry date
-     * @return  bool    Returns true if user was successfully added, false if not
+     * @param   array   $uData  User information data
+     * @return  mixed   Returns user's id if user was successfully added, otherwise Jaws_Error
      */
-    function AddUser($username, $nickname, $email, $password, $superadmin = false,
-                     $status = 1, $concurrent_logins = 0, $logon_hours = null, $expiry_date = null)
-    {
+    function AddUser($uData) {
         // username
-        $username = trim($username, '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $username)) {
+        $uData['username'] = trim($uData['username'], '-_.@');
+        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_USERNAME'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
-        $username = strtolower($username);
+        $uData['username'] = strtolower($uData['username']);
 
         // nickname
-        $nickname = $GLOBALS['app']->UTF8->trim($nickname);
-        if (empty($nickname)) {
+        $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
+        if (empty($uData['nickname'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
 
         // email
-        $email = trim($email);
-        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $email)) {
+        $uData['email'] = trim($uData['email']);
+        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
-        $email = strtolower($email);
+        $uData['email'] = strtolower($uData['email']);
 
         // password & complexity
         $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
         $min = ($min == 0)? 1 : $min;
-        if (!preg_match("/^[[:print:]]{{$min},24}$/", $password)) {
+        if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
 
         if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
-            if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/', $password)) {
+            if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
+                    $uData['password'])
+            ) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
                                               __FUNCTION__,
                                               JAWS_ERROR_NOTICE);
             }
         }
 
-        $params = array();
-        $params['username']          = $username;
-        $params['nickname']          = $nickname;
-        $params['email']             = $email;
-        $params['password']          = Jaws_User::GetHashedPassword($password);
-        $params['superadmin']        = (bool)$superadmin;
-        $params['registered_date']   = time();
-        $params['status']            = (int)$status;
-        $params['last_update']       = time();
-        $params['concurrent_logins'] = (int)$concurrent_logins;
-        $params['logon_hours']       = empty($logon_hours)? str_pad('', 42, 'F') : $logon_hours;
-        $params['expiry_date']       = 0;
-        if (!empty($expiry_date)) {
+        $uData['last_update'] = time();
+        $uData['registered_date'] = time();
+        $uData['status'] = (int)$uData['status'];
+        $uData['superadmin'] = (bool)$uData['superadmin'];
+        $uData['concurrent_logins'] = (int)$uData['concurrent_logins'];
+        $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
+        $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
+        if (!empty($uData['expiry_date'])) {
             $objDate = $GLOBALS['app']->loadDate();
-            $expiry_date = (int)$objDate->ToBaseDate(preg_split('/[- :]/', $expiry_date), 'U');
-            $params['expiry_date'] = $GLOBALS['app']->UserTime2UTC($expiry_date);
+            $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
+            );
+        } else {
+            $uData['expiry_date'] = 0;
         }
 
-        $sql = '
-            INSERT INTO [[users]]
-                ([username], [nickname], [email], [password], [superadmin],
-                 [concurrent_logins], [logon_hours], [expiry_date], [registered_date], [status], [last_update])
-            VALUES
-                ({username}, {nickname}, {email}, {password}, {superadmin},
-                 {concurrent_logins}, {logon_hours}, {expiry_date}, {registered_date}, {status}, {last_update})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($uData)->execute();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
@@ -555,20 +533,14 @@ class Jaws_User
             return $result;
         }
 
-        // Fetch the id of the user that was just created
-        $id = $GLOBALS['db']->lastInsertID('users', 'id');
-        if (Jaws_Error::IsError($id)) {
-            return false;
-        }
-
         // Let everyone know a user has been added
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onAddUser', $id);
+        $res = $GLOBALS['app']->Shouter->Shout('onAddUser', $result);
         if (Jaws_Error::IsError($res) || !$res) {
             return false;
         }
 
-        return $id;
+        return $result;
     }
 
     /**
