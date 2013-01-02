@@ -48,7 +48,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select(
             'id:integer', 'password', 'superadmin:boolean', 'bad_password_count',
-            'concurrent_logins:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
+            'concurrents:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
         );
         $result = $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
         if (Jaws_Error::IsError($result)) {
@@ -99,7 +99,7 @@ class Jaws_User
 
                 return array('id' => $result['id'],
                             'superadmin' => $result['superadmin'],
-                            'concurrent_logins' => $result['concurrent_logins']);
+                            'concurrents' => $result['concurrents']);
 
             } else {
                 // bad_password_count + 1
@@ -151,7 +151,7 @@ class Jaws_User
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
-                'concurrent_logins', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
+                'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
                 'last_update',)
             );
         }
@@ -449,7 +449,7 @@ class Jaws_User
         if (is_int($user)) {
             $ugroupsTable->where('users.id', '=', $user);
         } else {
-            $ugroupsTable->where('users.id', '=', $user);
+            $ugroupsTable->where('users.username', '=', $user);
         }
 
         return $ugroupsTable->getCol();
@@ -510,9 +510,9 @@ class Jaws_User
 
         $uData['last_update'] = time();
         $uData['registered_date'] = time();
-        $uData['status'] = (int)$uData['status'];
+        $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
         $uData['superadmin'] = (bool)$uData['superadmin'];
-        $uData['concurrent_logins'] = (int)$uData['concurrent_logins'];
+        $uData['concurrents'] = isset($uData['concurrents'])? (int)$uData['concurrents'] : 0;
         $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
         $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
         if (!empty($uData['expiry_date'])) {
@@ -525,7 +525,7 @@ class Jaws_User
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($uData)->execute();
+        $result = $usersTable->insert($uData)->execute();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
@@ -554,13 +554,13 @@ class Jaws_User
      * @param   string  $password   User's password
      * @param   bool    $superadmin Is superadmin
      * @param   int     $status     User's status
-     * @param   int     $concurrent_logins  Concurrent logins limitation
-     * @param   string  $logon_hours        Logon hours
-     * @param   string  $expiry_date        Expiry date
+     * @param   int     $concurrents    Concurrent logins limitation
+     * @param   string  $logon_hours    Logon hours
+     * @param   string  $expiry_date    Expiry date
      * @return  bool    Returns true if user was successfully updated, false if not
      */
     function UpdateUser($id, $username, $nickname, $email, $password = null, $superadmin = null,
-                        $status = null, $concurrent_logins = null, $logon_hours = null, $expiry_date = null)
+                        $status = null, $concurrents = null, $logon_hours = null, $expiry_date = null)
     {
         // username
         $username = trim($username, '-_.@');
@@ -623,7 +623,7 @@ class Jaws_User
         $params['password_verify_key'] = '';
         $params['status']            = (int)$status;
         $params['last_update']       = time();
-        $params['concurrent_logins'] = (int)$concurrent_logins;
+        $params['concurrents']       = (int)$concurrents;
         $params['logon_hours']       = empty($logon_hours)? str_pad('', 42, 'F') : $logon_hours;
         $params['expiry_date']       = 0;
         if (!empty($expiry_date)) {
@@ -651,8 +651,8 @@ class Jaws_User
         if (!is_null($superadmin)) {
             $sql .= ', [superadmin] = {superadmin} ';
         }
-        if (!is_null($concurrent_logins)) {
-            $sql .= ', [concurrent_logins] = {concurrent_logins} ';
+        if (!is_null($concurrents)) {
+            $sql .= ', [concurrents] = {concurrents} ';
         }
         if (!is_null($expiry_date)) {
             $sql .= ', [expiry_date] = {expiry_date} ';

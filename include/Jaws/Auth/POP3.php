@@ -87,7 +87,7 @@ class Jaws_Auth_POP3
         $info['internal']   = false;
         $info['groups']     = array();
         $info['nickname']   = $this->_User;
-        $info['concurrent_logins'] = 0;
+        $info['concurrents'] = 0;
         $info['email']      = '';
         $info['url']        = '';
         $info['avatar']     = 'gadgets/Users/images/photo48px.png';

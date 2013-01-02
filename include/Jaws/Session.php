@@ -14,7 +14,7 @@ define('RESPONSE_NOTICE',  'RESPONSE_NOTICE');
 /**
  *
  */
-define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrent_logins,acl,updatetime");
+define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrents,acl,updatetime");
 
 /**
  * Class to manage User session.
@@ -163,11 +163,11 @@ class Jaws_Session
                 $result = $this->_AuthModel->GetAttributes();
                 if (!Jaws_Error::isError($result)) {
                     $existSessions = 0;
-                    if (!empty($result['concurrent_logins'])) {
+                    if (!empty($result['concurrents'])) {
                         $existSessions = $this->GetUserSessions($result['id'], true);
                     }
 
-                    if (empty($existSessions) || $result['concurrent_logins'] > $existSessions)
+                    if (empty($existSessions) || $result['concurrents'] > $existSessions)
                     {
                         $this->Create($result, $remember);
                         return true;
@@ -260,7 +260,7 @@ class Jaws_Session
 
             // concurrent logins
             if ($session['updatetime'] < $expTime) {
-                $logins = $this->GetAttribute('concurrent_logins');
+                $logins = $this->GetAttribute('concurrents');
                 $existSessions = $this->GetUserSessions($this->GetAttribute('user'), true);
                 if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
                     $GLOBALS['app']->Session->Logout();
@@ -330,7 +330,7 @@ class Jaws_Session
             $info['nickname']    = '';
             $info['logon_hours'] = '';
             $info['expiry_date'] = 0;
-            $info['concurrent_logins'] = 0;
+            $info['concurrents'] = 0;
             $info['email']      = '';
             $info['url']        = '';
             $info['avatar']     = '';
@@ -350,7 +350,7 @@ class Jaws_Session
         $this->SetAttribute('groups',      $info['groups']);
         $this->SetAttribute('logon_hours', $info['logon_hours']);
         $this->SetAttribute('expiry_date', $info['expiry_date']);
-        $this->SetAttribute('concurrent_logins', $info['concurrent_logins']);
+        $this->SetAttribute('concurrents', $info['concurrents']);
         $this->SetAttribute('longevity',  $remember?
                                           (int)$GLOBALS['app']->Registry->Get('session_remember_timeout', 'Policy', JAWS_COMPONENT_GADGET)*3600 : 0);
         $this->SetAttribute('logged',     !empty($info['id']));
@@ -387,7 +387,7 @@ class Jaws_Session
         $this->SetAttribute('groups',      array());
         $this->SetAttribute('logon_hours', '');
         $this->SetAttribute('expiry_date', 0);
-        $this->SetAttribute('concurrent_logins', 0);
+        $this->SetAttribute('concurrents', 0);
         $this->SetAttribute('longevity',  0);
         $this->SetAttribute('logged',     false);
         $this->SetAttribute('nickname',   '');
