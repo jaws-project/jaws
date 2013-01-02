@@ -22,14 +22,14 @@
         </field>
 
         <field>
-            <name>passwd</name>
+            <name>password</name>
             <type>text</type>
             <length>64</length>
             <notnull>true</notnull>
         </field>
 
         <field>
-            <name>passwd_verify_key</name>
+            <name>password_verify_key</name>
             <type>text</type>
             <length>48</length>
         </field>
@@ -214,7 +214,7 @@
         </field>
 
         <field>
-            <name>bad_passwd_count</name>
+            <name>bad_password_count</name>
             <type>integer</type>
             <length>2</length>
             <default>0</default>
@@ -228,7 +228,7 @@
         </field>
 
         <field>
-            <name>passwd_changed_date</name>
+            <name>password_changed_date</name>
             <type>integer</type>
             <length>16</length>
             <default>0</default>
