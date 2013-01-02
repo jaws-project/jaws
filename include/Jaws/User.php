@@ -47,7 +47,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select(
-            'id:integer', 'passwd', 'superadmin:boolean', 'bad_passwd_count',
+            'id:integer', 'password', 'superadmin:boolean', 'bad_password_count',
             'concurrent_logins:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
         );
         $result = $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
@@ -56,9 +56,9 @@ class Jaws_User
         }
 
         if (!empty($result)) {
-            // bad_passwd_count & lockedout time
-            if ($result['bad_passwd_count'] >= $GLOBALS['app']->Registry->Get('passwd_bad_count', 'Policy', JAWS_COMPONENT_GADGET) &&
-               ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->Get('passwd_lockedout_time', 'Policy', JAWS_COMPONENT_GADGET)))
+            // bad_password_count & lockedout time
+            if ($result['bad_password_count'] >= $GLOBALS['app']->Registry->Get('password_bad_count', 'Policy', JAWS_COMPONENT_GADGET) &&
+               ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->Get('password_lockedout_time', 'Policy', JAWS_COMPONENT_GADGET)))
             {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
                                               __FUNCTION__,
@@ -66,7 +66,7 @@ class Jaws_User
             }
 
             // password
-            if ($result['passwd'] === Jaws_User::GetHashedPassword($password, $result['passwd'])) {
+            if ($result['password'] === Jaws_User::GetHashedPassword($password, $result['password'])) {
                 // only superadmin
                 if ($onlyAdmin && !$result['superadmin']) {
                     return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_ONLY_ADMIN'),
@@ -102,11 +102,11 @@ class Jaws_User
                             'concurrent_logins' => $result['concurrent_logins']);
 
             } else {
-                // bad_passwd_count + 1
+                // bad_password_count + 1
                 $usersTable->update(
                     array(
                         'last_access' => time(),
-                        'bad_passwd_count' => $usersTable->expr('bad_passwd_count + ?', 1)
+                        'bad_password_count' => $usersTable->expr('bad_password_count + ?', 1)
                     )
                 )->where('id', '=', $result['id'])->execute();
             }
@@ -126,7 +126,7 @@ class Jaws_User
     function updateLoginTime($user_id)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('bad_passwd_count' => 0))->where('id', '=', (int)$user_id)->execute();
+        $result = $usersTable->update(array('bad_password_count' => 0))->where('id', '=', (int)$user_id)->execute();
         if (Jaws_Error::isError($result)) {
             return false;
         }
@@ -223,7 +223,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
-        $usersTable->where('passwd_verify_key', '=', trim($key));
+        $usersTable->where('password_verify_key', '=', trim($key));
         return $usersTable->getRow();
     }
 
@@ -505,7 +505,7 @@ class Jaws_User
         $email = strtolower($email);
 
         // password & complexity
-        $min = (int)$GLOBALS['app']->Registry->Get('passwd_min_length', 'Policy', JAWS_COMPONENT_GADGET);
+        $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
         $min = ($min == 0)? 1 : $min;
         if (!preg_match("/^[[:print:]]{{$min},24}$/", $password)) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
@@ -513,7 +513,7 @@ class Jaws_User
                                           JAWS_ERROR_NOTICE);
         }
 
-        if ($GLOBALS['app']->Registry->Get('passwd_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
+        if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
             if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/', $password)) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
                                               __FUNCTION__,
@@ -541,7 +541,7 @@ class Jaws_User
 
         $sql = '
             INSERT INTO [[users]]
-                ([username], [nickname], [email], [passwd], [superadmin],
+                ([username], [nickname], [email], [password], [superadmin],
                  [concurrent_logins], [logon_hours], [expiry_date], [registered_date], [status], [last_update])
             VALUES
                 ({username}, {nickname}, {email}, {password}, {superadmin},
@@ -618,14 +618,14 @@ class Jaws_User
 
         // password & complexity
         if (!is_null($password) && $password !== '') {
-            $min = (int)$GLOBALS['app']->Registry->Get('passwd_min_length', 'Policy', JAWS_COMPONENT_GADGET);
+            $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $password)) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
                                               __FUNCTION__,
                                               JAWS_ERROR_NOTICE);
             }
 
-            if ($GLOBALS['app']->Registry->Get('passwd_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
+            if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
                 if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/', $password)) {
                     return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
                                                   __FUNCTION__,
@@ -648,7 +648,7 @@ class Jaws_User
         $params['password']          = Jaws_User::GetHashedPassword($password);
         $params['superadmin']        = (bool)$superadmin;
         $params['email_verify_key']  = '';
-        $params['passwd_verify_key'] = '';
+        $params['password_verify_key'] = '';
         $params['status']            = (int)$status;
         $params['last_update']       = time();
         $params['concurrent_logins'] = (int)$concurrent_logins;
@@ -674,7 +674,7 @@ class Jaws_User
                 [nickname] = {nickname},
                 [email] = {email} ';
         if (!is_null($password) && $password !== '') {
-            $sql .= ', [passwd] = {password}, [passwd_verify_key] = {passwd_verify_key} ';
+            $sql .= ', [password] = {password}, [password_verify_key] = {password_verify_key} ';
         }
         if (!is_null($superadmin)) {
             $sql .= ', [superadmin] = {superadmin} ';
@@ -1164,7 +1164,7 @@ class Jaws_User
 
         $sql = '
             UPDATE [[users]] SET
-                [passwd_verify_key] = {key}
+                [password_verify_key] = {key}
             WHERE
                 [id] = {uid}';
 
