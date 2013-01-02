@@ -94,8 +94,6 @@ $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 #if (Jaws_Error::IsError($GLOBALS['db'])) {
 #    Jaws_Error::Fatal('Couldn\'t connect to database');
 #}
-// Jaws ORM
-require JAWS_PATH . 'include/Jaws/ORM.php';
 
 $GLOBALS['app']->loadClass('Registry', 'Jaws_Registry');
 $GLOBALS['app']->Registry->Init();

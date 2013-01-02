@@ -1,4 +1,7 @@
 <?php
+require_once PEAR_PATH. 'MDB2.php';
+require JAWS_PATH . 'include/Jaws/ORM.php';
+
 /**
  * Wrapper of Jaws queries and MDB2
  *
@@ -9,8 +12,6 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once PEAR_PATH. 'MDB2.php';
-
 class Jaws_DB
 {
     var $dbc = null;
