@@ -336,7 +336,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         // concurrent logins
         $logins =& Piwi::CreateWidget('Entry', 'logins', '0');
         $logins->SetID('logins');
-        $tpl->SetVariable('lbl_logins', _t('USERS_USERS_CONCURRENT_LOGINS'));
+        $tpl->SetVariable('lbl_logins', _t('USERS_USERS_concurrents'));
         $tpl->SetVariable('logins', $logins->Get());
 
         // expiry date

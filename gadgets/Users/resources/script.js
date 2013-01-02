@@ -390,7 +390,7 @@ function editUser(rowElement, uid)
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
     $('superadmin').value  = Number(uInfo['superadmin']);
-    $('logins').value      = uInfo['concurrent_logins'];
+    $('logins').value      = uInfo['concurrents'];
     $('expiry_date').value = uInfo['expiry_date'];
     $('status').value      = uInfo['status'];
 }

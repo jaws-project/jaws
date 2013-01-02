@@ -151,12 +151,12 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @param   string  $nickname   User's display name
      * @param   string  $email      User's email
      * @param   int     $superadmin User's type (superadmin or normal)
-     * @param   int     $concurrent_logins  Concurrent logins limitation
+     * @param   int     $concurrents  Concurrent logins limitation
      * @param   string  $expiry_date        Expiry date
      * @param   int     $status     User's status (null: all users, 0: disabled, 1: activated, 2: not verified)
      * @return  array   Response array (notice or error)
      */
-    function AddUser($username, $password, $nickname, $email, $superadmin, $concurrent_logins,
+    function AddUser($username, $password, $nickname, $email, $superadmin, $concurrents,
                      $expiry_date, $status)
     {
         $this->gadget->CheckPermission('ManageUsers');
@@ -178,7 +178,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                                           $password,
                                           $superadmin,
                                           $status,
-                                          $concurrent_logins,
+                                          $concurrents,
                                           null,
                                           $expiry_date);
         if (Jaws_Error::isError($res)) {
@@ -206,12 +206,12 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @param   string  $nickname   User's display name
      * @param   string  $email      User's email
      * @param   int     $superadmin User's type (ADMIN or NORMAL)
-     * @param   int     $concurrent_logins   Concurrent logins limitation
+     * @param   int     $concurrents   Concurrent logins limitation
      * @param   string  $expiry_date  Expiry date
      * @param   int     $status     user's status (null: all users, 0: disabled, 1: activated, 2: not verified)
      * @return  array   Response array (notice or error)
      */
-    function UpdateUser($uid, $username, $password, $nickname, $email, $superadmin, $concurrent_logins,
+    function UpdateUser($uid, $username, $password, $nickname, $email, $superadmin, $concurrents,
                         $expiry_date, $status)
     {
         $this->gadget->CheckPermission('ManageUsers');
@@ -244,7 +244,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                                              $password,
                                              $superadmin,
                                              $status,
-                                             $concurrent_logins,
+                                             $concurrents,
                                              null,
                                              $expiry_date);
         if (Jaws_Error::isError($res)) {
