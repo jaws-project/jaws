@@ -343,11 +343,12 @@ class Jaws_ORM
      * @access  public
      * @param   string  $join   Join type
      * @param   string  $table  Join target table
-     * @param   string  $target Join target field
      * @param   string  $source Join source field
+     * @param   string  $target Join target field
+     * @param   string  $opt    Join condition
      * @return  object  Jaws_ORM object
      */
-    function join($join, $table, $target, $source)
+    function join($join, $table, $source, $target, $opt = '=')
     {
         if (false === strpos($table, ' ')) {
             $table = $this->quoteIdentifier('['. $this->_tbl_prefix. $table. ']');
@@ -357,7 +358,7 @@ class Jaws_ORM
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
 
-        $this->_joins[] = "$join join $table on $source = $target";
+        $this->_joins[] = "$join join $table on $source $opt $target";
         return $this;
     }
 
@@ -677,7 +678,7 @@ class Jaws_ORM
 
         $this->reset();
         if (PEAR::IsError($result)) {
-            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 1);
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
