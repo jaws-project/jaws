@@ -173,11 +173,15 @@ class Installer_CreateUser extends JawsInstallerStage
                                               $post['password']);
             } else {
                 _log(JAWS_LOG_DEBUG,"Adding first/new admin user to Jaws");
-                $res = $userModel->AddUser($post['username'],
-                                           $post['nickname'],
-                                           $post['email'],
-                                           $post['password'],
-                                           true);
+                $res = $userModel->AddUser(
+                    array(
+                        'username' => $post['username'],
+                        'nickname' => $post['nickname'],
+                        'email'    => $post['email'],
+                        'password' => $post['password'],
+                        'superadmin' => true,
+                    )
+                );
             }
         } else {
             $res = $userInfo;
