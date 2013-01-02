@@ -349,10 +349,11 @@ class Jaws_ORM
      */
     function join($join, $table, $target, $source)
     {
-        $table = explode(' ', $table);
-        $table[0] = $this->quoteIdentifier($this->_tbl_prefix. $table[0]);
-        $table = implode(' ', $table);
-
+        if (false === strpos($table, ' ')) {
+            $table = $this->quoteIdentifier('['. $this->_tbl_prefix. $table. ']');
+        } else {
+            $table = $this->quoteIdentifier('['. $this->_tbl_prefix. str_replace(' ', '] ', $table));
+        }
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
 
@@ -505,18 +506,19 @@ class Jaws_ORM
      * Order by SQL command
      *
      * @access  public
-     * @param   string  $column Column
-     * @param   string  $sort   Sort type
+     * @param   mixed   $args   Order by expression
      * @return  object  Jaws_ORM object
      */
-    function orderBy($column, $sort = '')
+    function orderBy($args)
     {
-        // quote column identifier
-        if (is_object($column)) {
-            $this->_orderBy[] = $column->get(). ' '. $sort;
-            unset($column);
-        } else {
-            $this->_orderBy[] = $this->quoteIdentifier($column). ' '. $sort;
+        foreach(func_get_args() as $arg) {
+            // quote arg identifier
+            if (is_object($arg)) {
+                $this->_orderBy[] = $arg->get(). $arg->sort;
+                unset($arg);
+            } else {
+                $this->_orderBy[] = $this->quoteIdentifier($arg);
+            }
         }
 
         return $this;
@@ -918,6 +920,14 @@ class Jaws_ORM_Function
     var $alias = '';
 
     /**
+     * Sort type of Order by command
+     *
+     * @var     string
+     * @access  public
+     */
+    var $sort = '';
+
+    /**
      * Constructor
      *
      * @access  public
@@ -941,6 +951,7 @@ class Jaws_ORM_Function
     function type($type = '')
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -953,6 +964,20 @@ class Jaws_ORM_Function
     function alias($alias)
     {
         $this->alias = $alias;
+        return $this;
+    }
+
+    /**
+     * Sort type of Order by command
+     *
+     * @access  public
+     * @param   string  $sort   Sort type
+     * @return  void
+     */
+    function sort($sort)
+    {
+        $this->sort = ' '. $sort;
+        return $this;
     }
 
     /**
