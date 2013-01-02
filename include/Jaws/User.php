@@ -304,12 +304,11 @@ class Jaws_User
         $limit = 0, $offset = null)
     {
         $fields = array(
-            'users.id', 'users.id DESC',
+            'id', 'id DESC',
             'username', 'username DESC',
             'nickname', 'nickname DESC', 'email'
         );
         if (!in_array($orderBy, $fields)) {
-            $GLOBALS['log']->Log(JAWS_LOG_WARNING, _t('GLOBAL_ERROR_UNKNOWN_COLUMN'));
             $orderBy = 'username';
         }
 
@@ -333,9 +332,9 @@ class Jaws_User
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', 'like',  $term);
-            $usersTable->or()->where('lower(nickname)', 'like',  $term);
-            $usersTable->or()->closeWhere('lower(email)', 'like',  $term);
+            $usersTable->and()->openWhere('lower(username)', 'like', '%'.$term.'%');
+            $usersTable->or()->where('lower(nickname)',      'like', '%'.$term.'%');
+            $usersTable->or()->closeWhere('lower(email)',    'like', '%'.$term.'%');
         }
 
         $usersTable->orderBy('users.'.$orderBy);
@@ -355,51 +354,29 @@ class Jaws_User
      */
     function GetUsersCount($group = false, $superadmin = null, $status = null, $term = '')
     {
-        $params = array();
-        $params['true']       = true;
-        $params['gid']        = $group;
-        $params['superadmin'] = (bool)$superadmin;
-        $params['status']     = (int)$status;
-
-        $sql = '
-            SELECT
-                COUNT([[users]].[id])
-            FROM [[users]]';
-
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('count(users.id):integer');
         if ($group !== false) {
-            $sql .= '
-                INNER JOIN [[users_groups]] ON [[users_groups]].[user_id] = [[users]].[id]
-                WHERE [[users_groups]].[group_id] = {gid}';
-        } else {
-            $sql .= '
-                WHERE {true} = {true}';
+            $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
+            $usersTable->where('group_id', '=', $group);
         }
 
         if (!is_null($superadmin)) {
-            $sql .= " AND [superadmin] = {superadmin}";
+            $usersTable->and()->where('superadmin', '=', (bool)$superadmin);
         }
 
         if (!is_null($status)) {
-            $sql .= ' AND [[users]].[status] = {status}';
+            $usersTable->and()->where('status', '=', (int)$status);
         }
 
         if (!empty($term)) {
-            $userTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[username]');
-            $nickTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[nickname]');
-            $emailTerm = $GLOBALS['db']->dbc->datatype->matchPattern(
-                                                        array(1 => '%', $term, '%'),
-                                                        'ILIKE',
-                                                        '[[users]].[email]');
-            $sql.= " AND ($userTerm OR $nickTerm OR $emailTerm)";
+            $term = Jaws_UTF8::strtolower($term);
+            $usersTable->and()->openWhere('lower(username)', 'like',  $term);
+            $usersTable->or()->where('lower(nickname)', 'like',  $term);
+            $usersTable->or()->closeWhere('lower(email)', 'like',  $term);
         }
 
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $result = $usersTable->getOne();
         if (Jaws_Error::IsError($result)) {
             return 0;
         }
@@ -425,29 +402,13 @@ class Jaws_User
             $orderBy = 'name';
         }
 
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-        }
-
-        $params = array();
-        $params['enabled'] = (bool)$enabled;
-
-        $sql = '
-            SELECT
-                [id], [name], [title], [description], [enabled]
-            FROM [[groups]]
-            ';
-
+        $groupsTable = Jaws_ORM::getInstance()->table('groups');
+        $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
         if (!is_null($enabled)) {
-            $sql .= 'WHERE [enabled] = {enabled} ';
+            $groupsTable->where('enabled', '=', (bool)$enabled);
         }
-
-        $sql .= 'ORDER BY [' . $orderBy. ']';
-        $types = array('integer', 'text', 'text', 'text', 'boolean');
-        return $GLOBALS['db']->queryAll($sql, $params, $types);
+        $groupsTable->limit($limit, $offset)->orderBy($orderBy);
+        return $groupsTable->getAll();
     }
 
     /**
@@ -459,20 +420,12 @@ class Jaws_User
      */
     function GetGroupsCount($enabled = null)
     {
-        $params = array();
-        $params['enabled'] = (bool)$enabled;
-
-        $sql = '
-            SELECT
-                COUNT([id])
-            FROM [[groups]]
-            ';
-
+        $groupsTable = Jaws_ORM::getInstance()->table('groups');
+        $groupsTable->select('count(id):integer');
         if (!is_null($enabled)) {
-            $sql .= 'WHERE [enabled] = {enabled} ';
+            $groupsTable->where('enabled', '=', (bool)$enabled);
         }
-
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $result = $groupsTable->getOne();
         if (Jaws_Error::IsError($result)) {
             return 0;
         }
