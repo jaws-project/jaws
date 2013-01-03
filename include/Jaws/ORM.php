@@ -732,8 +732,8 @@ class Jaws_ORM
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
                 $result = $this->jawsdb->dbc->exec($sql);
-                if (!PEAR::IsError($result) && !empty($result)) {
-                    $result = $this->jawsdb->lastInsertID($this->_table, $this->_pk_field);
+                if (!PEAR::IsError($result) && !empty($result) && !empty($this->_pk_field)) {
+                    $result = $this->jawsdb->dbc->lastInsertID($this->_tbl_prefix. $this->_table, $this->_pk_field);
                 }
                 break;
 
@@ -863,6 +863,7 @@ class Jaws_ORM
         $this->_orderBy  = array();
         $this->_limit    = null;
         $this->_offset   = null;
+        $this->_pk_field = 'id';
         $this->_passed_types  = false;
         $this->_query_command = '';
     }
