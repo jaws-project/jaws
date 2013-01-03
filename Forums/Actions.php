@@ -15,6 +15,10 @@ $actions['RecentPosts'] = array(
     'file'   => 'RecentPosts',
     'parametric' => true,
 );
+$actions['UserPosts'] = array(
+    'normal' => true,
+    'file'   => 'UserPosts',
+);
 $actions['Forums'] = array(
     'normal' => true,
     'file'   => 'Forums',

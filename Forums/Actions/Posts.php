@@ -70,6 +70,9 @@ class Forums_Actions_Posts extends Forums_HTML
             $tpl->SetVariable('registered_date_lbl',_t('FORUMS_USERS_REGISTERED_DATE'));
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
+            $tpl->SetVariable('user_posts', $this->gadget->GetURLFor(
+                              'UserPosts',
+                              array('uid' => $post['uid'])));
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));

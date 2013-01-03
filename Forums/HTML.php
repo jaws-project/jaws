@@ -26,9 +26,12 @@ class Forums_HTML extends Jaws_Gadget_HTML
      * Get page navigation links
      *
      * @access  public
+     * @param   object  $tpl
+     * @param   string  $base_block
      * @param   int     $page       page number
      * @param   int     $page_size  Entries count per page
      * @param   int     $total      Total entries count
+     * @param   string  $total_string
      * @param   string  $action     Action name
      * @param   array   $params     Action params array
      * @return  string  XHTML template content

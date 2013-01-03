@@ -41,7 +41,7 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
      * Displays list of recent posts ordered by date
      *
      * @access  public
-     * @param   int     $gid    Group ID
+     * @param   int|string $gid Group ID
      * @return  string  XHTML content
      */
     function RecentPosts($gid = '')

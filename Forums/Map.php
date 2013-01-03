@@ -138,3 +138,12 @@ $maps[] = array(
         'pid' => '[[:alnum:]-_]+',
     )
 );
+$maps[] = array(
+    'UserPosts',
+    'forums/user/{uid}/posts[/page/{page}]',
+    '',
+    array(
+        'uid' => '[[:alnum:]-_]+',
+        'page' => '[[:digit:]]+',
+    )
+);
