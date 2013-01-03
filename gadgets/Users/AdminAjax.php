@@ -146,41 +146,25 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * Adds a new user
      *
      * @access  public
-     * @param   string  $username   Username
-     * @param   string  $password   Password
-     * @param   string  $nickname   User's display name
-     * @param   string  $email      User's email
-     * @param   int     $superadmin User's type (superadmin or normal)
-     * @param   int     $concurrents  Concurrent logins limitation
-     * @param   string  $expiry_date        Expiry date
-     * @param   int     $status     User's status (null: all users, 0: disabled, 1: activated, 2: not verified)
+     * @param   array   $uData  User information data
      * @return  array   Response array (notice or error)
      */
-    function AddUser($username, $password, $nickname, $email, $superadmin, $concurrents,
-                     $expiry_date, $status)
+    function AddUser($uData)
     {
         $this->gadget->CheckPermission('ManageUsers');
         if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
-            $password = $JCrypt->decrypt($password);
-            if (($password === false) || Jaws_Error::isError($password)) {
-                $password = null;
+            $uData['password'] = $JCrypt->decrypt($uData['password']);
+            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
+                $uData['password'] = '';
             }
         }
 
-        $status     = (int)$status;
-        $superadmin = $GLOBALS['app']->Session->IsSuperAdmin()? (bool)$superadmin : false;
-        $res = $this->_UserModel->AddUser($username,
-                                          $nickname,
-                                          $email,
-                                          $password,
-                                          $superadmin,
-                                          $status,
-                                          $concurrents,
-                                          null,
-                                          $expiry_date);
+        $uData['status'] = (int)$uData['status'];
+        $uData['superadmin'] = $GLOBALS['app']->Session->IsSuperAdmin()? (bool)$uData['superadmin'] : false;
+        $res = $this->_UserModel->AddUser($uData);
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
@@ -189,7 +173,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             if (!empty($guid)) {
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CREATED', $username),
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CREATED', $uData['username']),
                                                        RESPONSE_NOTICE);
         }
 
@@ -200,57 +184,39 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * Updates user information
      *
      * @access  public
-     * @param   int     $uid        User ID
-     * @param   string  $username   Username
-     * @param   string  $password   Password
-     * @param   string  $nickname   User's display name
-     * @param   string  $email      User's email
-     * @param   int     $superadmin User's type (ADMIN or NORMAL)
-     * @param   int     $concurrents   Concurrent logins limitation
-     * @param   string  $expiry_date  Expiry date
-     * @param   int     $status     user's status (null: all users, 0: disabled, 1: activated, 2: not verified)
+     * @param   int     $uid    User ID
+     * @param   array   $uData  User information data
      * @return  array   Response array (notice or error)
      */
-    function UpdateUser($uid, $username, $password, $nickname, $email, $superadmin, $concurrents,
-                        $expiry_date, $status)
+    function UpdateUser($uid, $uData)
     {
         $this->gadget->CheckPermission('ManageUsers');
         if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
-            $password = $JCrypt->decrypt($password);
-            if (($password === false) || Jaws_Error::isError($password)) {
-                $password = null;
+            $uData['password'] = $JCrypt->decrypt($uData['password']);
+            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
+                unset($uData['password']);
             }
         }
 
         if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
-            $status      = null;
-            $superadmin  = null;
-            $expiry_date = null;
+            unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
-            $status = (int)$status;
+            $uData['status'] = (int)$uData['status'];
             if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
-                $status      = null;
-                $superadmin  = null;
-                $expiry_date = null;
+                unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
             }
         }
-        $res = $this->_UserModel->UpdateUser($uid,
-                                             $username,
-                                             $nickname,
-                                             $email,
-                                             $password,
-                                             $superadmin,
-                                             $status,
-                                             $concurrents,
-                                             null,
-                                             $expiry_date);
+        $res = $this->_UserModel->UpdateUser($uid, $uData);
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_UPDATED', $username), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('USERS_USERS_UPDATED', $uData['username']),
+                RESPONSE_NOTICE
+            );
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -654,7 +620,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d H:i:s');
         }
 
-        $res = $this->_UserModel->UpdatePersonalInfo(
+        $res = $this->_UserModel->UpdatePersonal(
             $uid,
             array(
                 'fname'   => $fname,
@@ -707,11 +673,15 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             $timezone = null;
         }
 
-        $res = $this->_UserModel->UpdateAdvancedOptions($uid,
-                                                        array('language' => $lang, 
-                                                              'theme'    => $theme,
-                                                              'editor'   => $editor,
-                                                              'timezone' => $timezone));
+        $res = $this->_UserModel->UpdatePreferences(
+            $uid,
+            array(
+                'language' => $lang, 
+                'theme'    => $theme,
+                'editor'   => $editor,
+                'timezone' => $timezone
+            )
+        );
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_ADVANCED_UPDATED'),
                                                        RESPONSE_ERROR);
@@ -770,7 +740,14 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_INCOMPLETE_FIELDS'),
                                                        RESPONSE_ERROR);
         } else {
-            $res = $this->_UserModel->AddGroup($name, $title, $description, (bool)$enabled);
+            $res = $this->_UserModel->AddGroup(
+                array(
+                    'name' => $name,
+                    'title' => $title,
+                    'description' => $description,
+                    'enabled' => (bool)$enabled
+                )
+            );
             if ($res === false) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_NOT_CREATED', $title),
                                                            RESPONSE_ERROR);
@@ -796,7 +773,15 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroup($guid, $name, $title, $description, $enabled)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $res = $this->_UserModel->UpdateGroup($guid, $name, $title, $description, (bool)$enabled);
+        $res = $this->_UserModel->UpdateGroup(
+            $guid,
+            array(
+                'name' => $name,
+                'title' => $title,
+                'description' => $description,
+                'enabled' => (bool)$enabled
+            )
+        );
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_NOT_UPDATED', $title),
                                                        RESPONSE_ERROR);

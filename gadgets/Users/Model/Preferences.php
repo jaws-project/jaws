@@ -26,10 +26,14 @@ class Users_Model_Preferences extends Jaws_Gadget_Model
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser    = new Jaws_User;
-        $result = $jUser->UpdateAdvancedOptions($uid, array('language' => $language, 
-                                                            'theme' => $theme, 
-                                                            'editor' => $editor, 
-                                                            'timezone' => $timezone)); 
+        $result = $jUser->UpdatePreferences($uid,
+            array(
+                'language' => $language, 
+                'theme' => $theme, 
+                'editor' => $editor, 
+                'timezone' => $timezone,
+            )
+        ); 
         //TODO: catch error
         return $result;
     }

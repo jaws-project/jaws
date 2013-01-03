@@ -205,7 +205,7 @@ padding: 5px;
 padding: 5px 5px 10px;
 }
 
-#username, #email, #pass1, #pass2, #logins, #expiry_date,
+#username, #email, #pass1, #pass2, #concurrents, #expiry_date,
 #dob, #url, #timezone, #language, #theme {
 direction: ltr;
 }

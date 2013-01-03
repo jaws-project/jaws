@@ -74,7 +74,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                        'dob'    => $dob,
                        'url'    => $url);
 
-        $result = $jUser->UpdatePersonalInfo($user_id, $pInfo);
+        $result = $jUser->UpdatePersonal($user_id, $pInfo);
         if ($result === false) {
             //do nothing
         }

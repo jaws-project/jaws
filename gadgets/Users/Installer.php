@@ -43,11 +43,22 @@ class Users_Installer extends Jaws_Gadget_Installer
             'anon_group' => '',
         ));
 
-        // Create the group 'Jaws_Users'
+        // Create the group 'users'
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User;
-        $userModel->AddGroup('users', 'Users', '', true, false); //Don't check if it returns true or false
-        
+        $result = $userModel->AddGroup(
+            array(
+                'name' => 'users',
+                'title' => 'Users',
+                'description' => '',
+                'enabled' => true,
+                'removable' => false
+            )
+        );
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
         return true;
     }
 

@@ -48,7 +48,7 @@ class Users_Model_Personal extends Jaws_Gadget_Model
             'interests'    => $interests
         );
 
-        $result = $jUser->UpdatePersonalInfo($uid, $pInfo);
+        $result = $jUser->UpdatePersonal($uid, $pInfo);
         return $result;
     }
 

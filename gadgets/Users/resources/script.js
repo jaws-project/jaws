@@ -234,26 +234,32 @@ function saveUser()
                     return false;
                 }
 
-                UsersAjax.callAsync('adduser',
-                                    $('username').value,
-                                    password,
-                                    $('nickname').value,
-                                    $('email').value,
-                                    $('superadmin').value,
-                                    $('logins').value,
-                                    $('expiry_date').value,
-                                    $('status').value);
+                UsersAjax.callAsync(
+                    'adduser',
+                    {'username': $('username').value,
+                     'password': password,
+                     'nickname': $('nickname').value,
+                     'email'   : $('email').value,
+                     'status'  : $('status').value,
+                     'superadmin' : $('superadmin').value,
+                     'concurrents': $('concurrents').value,
+                     'expiry_date': $('expiry_date').value
+                    }
+                );
             } else {
-                UsersAjax.callAsync('updateuser',
-                                    $('uid').value,
-                                    $('username').value,
-                                    password,
-                                    $('nickname').value,
-                                    $('email').value,
-                                    $('superadmin').value,
-                                    $('logins').value,
-                                    $('expiry_date').value,
-                                    $('status').value);
+                UsersAjax.callAsync(
+                    'updateuser',
+                    $('uid').value,
+                    {'username': $('username').value,
+                     'password': password,
+                     'nickname': $('nickname').value,
+                     'email'   : $('email').value,
+                     'status'  : $('status').value,
+                     'superadmin' : $('superadmin').value,
+                     'concurrents': $('concurrents').value,
+                     'expiry_date': $('expiry_date').value
+                    }
+                );
             }
 
             break;
@@ -390,7 +396,7 @@ function editUser(rowElement, uid)
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
     $('superadmin').value  = Number(uInfo['superadmin']);
-    $('logins').value      = uInfo['concurrents'];
+    $('concurrents').value      = uInfo['concurrents'];
     $('expiry_date').value = uInfo['expiry_date'];
     $('status').value      = uInfo['status'];
 }

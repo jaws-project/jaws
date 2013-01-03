@@ -334,10 +334,10 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('pass2', $pass2->Get());
 
         // concurrent logins
-        $logins =& Piwi::CreateWidget('Entry', 'logins', '0');
-        $logins->SetID('logins');
-        $tpl->SetVariable('lbl_logins', _t('USERS_USERS_concurrents'));
-        $tpl->SetVariable('logins', $logins->Get());
+        $concurrents =& Piwi::CreateWidget('Entry', 'concurrents', '0');
+        $concurrents->SetID('concurrents');
+        $tpl->SetVariable('lbl_concurrents', _t('USERS_USERS_CONCURRENTS'));
+        $tpl->SetVariable('concurrents', $concurrents->Get());
 
         // expiry date
         $dExpiry =& Piwi::CreateWidget('DatePicker', 'expiry_date', '');
