@@ -166,11 +166,15 @@ class Installer_CreateUser extends JawsInstallerStage
             //username exists
             if (isset($userInfo['username'])) {
                 _log(JAWS_LOG_DEBUG,"Update existing user");
-                $res = $userModel->UpdateUser($userInfo['id'],
-                                              $post['username'], 
-                                              $post['nickname'],
-                                              $post['email'],
-                                              $post['password']);
+                $res = $userModel->UpdateUser(
+                    $userInfo['id'],
+                    array(
+                        'username' => $post['username'], 
+                        'nickname' => $post['nickname'],
+                        'email'    => $post['email'],
+                        'password' => $post['password'],
+                    )
+                );
             } else {
                 _log(JAWS_LOG_DEBUG,"Adding first/new admin user to Jaws");
                 $res = $userModel->AddUser(
