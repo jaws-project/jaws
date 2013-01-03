@@ -802,7 +802,7 @@ class Jaws_User
      */
     function AddGroup($gData)
     {
-        $gData['removable'] = isset($gData['removable'])? (bool)$gData['status'] : true;
+        $gData['removable'] = isset($gData['removable'])? (bool)$gData['removable'] : true;
         $gData['enabled'] = isset($gData['enabled'])? (bool)$gData['enabled'] : true;
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $result = $groupsTable->insert($gData)->exec();
