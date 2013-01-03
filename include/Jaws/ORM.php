@@ -367,11 +367,11 @@ class Jaws_ORM
      *
      * @access  public
      * @param   mixed   $column Column
-     * @param   string  $opt    Operator condition
      * @param   mixed   $value  Column value
+     * @param   string  $opt    Operator condition
      * @return  object  Jaws_ORM object
      */
-    function where($column, $opt, $value)
+    function where($column, $value, $opt = '=')
     {
         switch ($opt) {
             case 'in':
@@ -409,15 +409,15 @@ class Jaws_ORM
      *
      * @access  public
      * @param   string  $column Column
-     * @param   string  $opt    Operator condition
      * @param   string  $value  Column value
+     * @param   string  $opt    Operator condition
      * @return  object  Jaws_ORM object
      */
-    function openWhere($column = '', $opt = '', $value = '')
+    function openWhere($column = '', $value = '', $opt = '=')
     {
         $this->_where[] = '(';
         if (!empty($column)) {
-            $this->where($column, $opt, $value);
+            $this->where($column, $value, $opt);
         }
 
         return $this;
@@ -428,14 +428,14 @@ class Jaws_ORM
      *
      * @access  public
      * @param   string  $column Column
-     * @param   string  $opt    Operator condition
      * @param   string  $value  Column value
+     * @param   string  $opt    Operator condition
      * @return  object  Jaws_ORM object
      */
-    function closeWhere($column = '', $opt = '', $value = '')
+    function closeWhere($column = '', $value = '', $opt = '=')
     {
         if (!empty($column)) {
-            $this->where($column, $opt, $value);
+            $this->where($column, $value, $opt);
         }
 
         $this->_where[] = ')';
@@ -697,7 +697,7 @@ class Jaws_ORM
      * @param   int     $error_level  Sets this error level if errors occurred
      * @return  mixed   Query result or Jaws_Error on failure
      */
-    function execute($error_level = JAWS_ERROR_ERROR)
+    function exec($error_level = JAWS_ERROR_ERROR)
     {
         switch ($this->_query_command) {
             case 'delete':
