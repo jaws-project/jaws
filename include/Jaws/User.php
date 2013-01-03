@@ -462,7 +462,8 @@ class Jaws_User
      * @param   array   $uData  User information data
      * @return  mixed   Returns user's id if user was successfully added, otherwise Jaws_Error
      */
-    function AddUser($uData) {
+    function AddUser($uData)
+    {
         // username
         $uData['username'] = trim($uData['username'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
@@ -492,7 +493,9 @@ class Jaws_User
         // password & complexity
         $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
         $min = ($min == 0)? 1 : $min;
-        if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
+        if ($uData['password'] == '' ||
+            !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
+        ) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
@@ -510,18 +513,20 @@ class Jaws_User
 
         $uData['last_update'] = time();
         $uData['registered_date'] = time();
-        $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
         $uData['superadmin'] = (bool)$uData['superadmin'];
+        $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
         $uData['concurrents'] = isset($uData['concurrents'])? (int)$uData['concurrents'] : 0;
         $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
         $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
-        if (!empty($uData['expiry_date'])) {
-            $objDate = $GLOBALS['app']->loadDate();
-            $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
-            );
-        } else {
-            $uData['expiry_date'] = 0;
+        if (isset($uData['expiry_date'])) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = 0;
+            } else {
+                $objDate = $GLOBALS['app']->loadDate();
+                $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
+                    (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
+                );
+            }
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
@@ -536,7 +541,7 @@ class Jaws_User
         // Let everyone know a user has been added
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
         $res = $GLOBALS['app']->Shouter->Shout('onAddUser', $result);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             return false;
         }
 
@@ -547,63 +552,73 @@ class Jaws_User
      * Update the info of an user
      *
      * @access  public
-     * @param   int     $id         User's ID
-     * @param   string  $username   The username
-     * @param   string  $nickname   User's display name
-     * @param   string  $email      User's email
-     * @param   string  $password   User's password
-     * @param   bool    $superadmin Is superadmin
-     * @param   int     $status     User's status
-     * @param   int     $concurrents    Concurrent logins limitation
-     * @param   string  $logon_hours    Logon hours
-     * @param   string  $expiry_date    Expiry date
+     * @param   int     $id     User's ID
+     * @param   array   $uData  User information data
      * @return  bool    Returns true if user was successfully updated, false if not
      */
-    function UpdateUser($id, $username, $nickname, $email, $password = null, $superadmin = null,
-                        $status = null, $concurrents = null, $logon_hours = null, $expiry_date = null)
+    function UpdateUser($id, $uData)
     {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($uData),
+            array('username', 'nickname', 'email', 'password',
+                'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
+            )
+        );
+        foreach ($invalids as $invalid) {
+            unset($uData[$invalid]);
+        }
+
         // username
-        $username = trim($username, '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $username)) {
+        $uData['username'] = trim($uData['username'], '-_.@');
+        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_USERNAME'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
-        $username = strtolower($username);
+        $uData['username'] = strtolower($uData['username']);
 
         // nickname
-        $nickname = $GLOBALS['app']->UTF8->trim($nickname);
-        if (empty($nickname)) {
+        $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
+        if (empty($uData['nickname'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
 
         // email
-        $email = trim($email);
-        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $email)) {
+        $uData['email'] = trim($uData['email']);
+        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                                           __FUNCTION__,
                                           JAWS_ERROR_NOTICE);
         }
-        $email = strtolower($email);
+        $uData['email'] = strtolower($uData['email']);
 
         // password & complexity
-        if (!is_null($password) && $password !== '') {
+        if (isset($uData['password']) && $uData['password'] !== '') {
             $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
-            if (!preg_match("/^[[:print:]]{{$min},24}$/", $password)) {
+            if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
                                               __FUNCTION__,
                                               JAWS_ERROR_NOTICE);
             }
 
             if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
-                if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/', $password)) {
+                if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
+                        $uData['password'])
+                ) {
                     return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
                                                   __FUNCTION__,
                                                   JAWS_ERROR_NOTICE);
                 }
             }
+
+            // password hash
+            $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
+            $uData['password_verify_key'] = '';
+        } else {
+            unset($uData['password']);
         }
 
         // get user information, we need it for rename avatar
@@ -612,66 +627,33 @@ class Jaws_User
             return false;
         }
 
-        $params = array();
-        $params['id']                = $id;
-        $params['username']          = $username;
-        $params['nickname']          = $nickname;
-        $params['email']             = $email;
-        $params['password']          = Jaws_User::GetHashedPassword($password);
-        $params['superadmin']        = (bool)$superadmin;
-        $params['email_verify_key']  = '';
-        $params['password_verify_key'] = '';
-        $params['status']            = (int)$status;
-        $params['last_update']       = time();
-        $params['concurrents']       = (int)$concurrents;
-        $params['logon_hours']       = empty($logon_hours)? str_pad('', 42, 'F') : $logon_hours;
-        $params['expiry_date']       = 0;
-        if (!empty($expiry_date)) {
-            $objDate = $GLOBALS['app']->loadDate();
-            $expiry_date = (int)$objDate->ToBaseDate(preg_split('/[- :]/', $expiry_date), 'U');
-            $params['expiry_date'] = $GLOBALS['app']->UserTime2UTC($expiry_date);
-        }
-
         // set new avatar name if username changed
-        if (($username !== $user['username']) && !empty($user['avatar'])) {
+        if (($uData['username'] !== $user['username']) && !empty($user['avatar'])) {
             $fileinfo = pathinfo($user['avatar']);
             if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                $params['avatar'] = $username. '.'. $fileinfo['extension'];
+                $uData['avatar'] = $uData['username']. '.'. $fileinfo['extension'];
+            }
+        }
+        $uData['last_update'] = time();
+        if (isset($uData['status'])) {
+            $uData['status'] = (int)$uData['status'];
+            if ($uData['status'] == 1) {
+                $uData['email_verify_key'] = '';
+            }
+        }
+        if (isset($uData['expiry_date'])) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = 0;
+            } else {
+                $objDate = $GLOBALS['app']->loadDate();
+                $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
+                    (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
+                );
             }
         }
 
-        $sql = '
-            UPDATE [[users]] SET
-                [username] = {username},
-                [nickname] = {nickname},
-                [email] = {email} ';
-        if (!is_null($password) && $password !== '') {
-            $sql .= ', [password] = {password}, [password_verify_key] = {password_verify_key} ';
-        }
-        if (!is_null($superadmin)) {
-            $sql .= ', [superadmin] = {superadmin} ';
-        }
-        if (!is_null($concurrents)) {
-            $sql .= ', [concurrents] = {concurrents} ';
-        }
-        if (!is_null($expiry_date)) {
-            $sql .= ', [expiry_date] = {expiry_date} ';
-        }
-        if (!is_null($logon_hours)) {
-            $sql .= ', [logon_hours] = {logon_hours} ';
-        }
-        if (isset($params['avatar'])) {
-            $sql .= ', [avatar] = {avatar} ';
-        }
-        if (!is_null($status)) {
-            if ($params['status'] == 1) {
-                $sql .= ', [email_verify_key] = {email_verify_key} ';
-            }
-            $sql .= ', [status] = {status} ';
-        }
-        $sql .= ', [last_update] = {last_update} WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($uData)->where('id', '=', $id)->execute();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
@@ -680,20 +662,20 @@ class Jaws_User
         }
 
         // rename avatar name
-        if (isset($params['avatar'])) {
-            Jaws_Utils::Delete(AVATAR_PATH. $params['avatar']);
+        if (isset($uData['avatar'])) {
+            Jaws_Utils::Delete(AVATAR_PATH. $uData['avatar']);
             @rename(AVATAR_PATH. $user['avatar'],
-                    AVATAR_PATH. $params['avatar']);
+                    AVATAR_PATH. $uData['avatar']);
         }
 
         if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
-            $GLOBALS['app']->Session->SetAttribute('username', $username);
-            $GLOBALS['app']->Session->SetAttribute('nickname', $nickname);
-            $GLOBALS['app']->Session->SetAttribute('email',    $email);
-            if (isset($params['avatar'])) {
+            $GLOBALS['app']->Session->SetAttribute('username', $uData['username']);
+            $GLOBALS['app']->Session->SetAttribute('nickname', $uData['nickname']);
+            $GLOBALS['app']->Session->SetAttribute('email',    $uData['email']);
+            if (isset($uData['avatar'])) {
                 $GLOBALS['app']->Session->SetAttribute(
                     'avatar',
-                    $this->GetAvatar($v, $email, 48, $params['last_update'])
+                    $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
                 );
             }
         }
@@ -701,7 +683,7 @@ class Jaws_User
         // Let everyone know a user has been updated
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
         $res = $GLOBALS['app']->Shouter->Shout('onUpdateUser', $id);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             return false;
         }
 
@@ -712,27 +694,25 @@ class Jaws_User
      * Update personal information of a user such as fname, lname, gender, etc..
      *
      * @access  public
-     * @param   int     $id    User's ID
-     * @param   array   $info  Personal information
+     * @param   int     $id     User's ID
+     * @param   array   $pData  Personal information data
      * @return  bool    Returns true on success, false on failure
      */
-    function UpdatePersonalInfo($id, $info = array())
+    function UpdatePersonal($id, $pData)
     {
-        $validInfo = array('fname', 'lname', 'gender', 'dob', 'url', 'signature', 'about', 'experiences',
-                           'occupations', 'interests', 'avatar', 'privacy');
-        $params = array();
-        $params['last_update'] = time();
-        $updateStr = '';
-        foreach($info as $k => $v) {
-            if (in_array($k, $validInfo)) {
-                if (!is_null($v)) {
-                    $params[$k] = $v;
-                    $updateStr.= '['. $k . '] = {'.$k.'}, ';
-                }
-            }
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($pData),
+            array('fname', 'lname', 'gender', 'dob',
+                'url', 'signature', 'about', 'experiences',
+                'occupations', 'interests', 'avatar', 'privacy',
+            )
+        );
+        foreach ($invalids as $invalid) {
+            unset($pData[$invalid]);
         }
 
-        if (array_key_exists('avatar', $params)) {
+        if (array_key_exists('avatar', $pData)) {
             // get user information
             $user = Jaws_User::GetUser((int)$id, true, true);
             if (Jaws_Error::IsError($user) || empty($user)) {
@@ -743,40 +723,37 @@ class Jaws_User
                 Jaws_Utils::Delete(AVATAR_PATH. $user['avatar']);
             }
 
-            if (!empty($params['avatar'])) {
-                $fileinfo = pathinfo($params['avatar']);
+            if (!empty($pData['avatar'])) {
+                $fileinfo = pathinfo($pData['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png'))) {
                         return false;
                     } else {
                         $new_avatar = $user['username']. '.'. $fileinfo['extension'];
-                        @rename(Jaws_Utils::upload_tmp_dir(). '/'. $params['avatar'],
+                        @rename(Jaws_Utils::upload_tmp_dir(). '/'. $pData['avatar'],
                                 AVATAR_PATH. $new_avatar);
-                        $params['avatar'] = $new_avatar;
+                        $pData['avatar'] = $new_avatar;
                     }
                 }
             }
         }
 
-        if (count($params) > 0) {
-            $params['id'] = $id;
-            $updateStr.= '[last_update] = {last_update}';
-            $sql = 'UPDATE [[users]] SET '. $updateStr. ' WHERE [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
+        $pData['last_update'] = time();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($pData)->where('id', '=', $id)->execute();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
 
-            if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
-                foreach($params as $k => $v) {
-                    if ($k == 'avatar') {
-                        $GLOBALS['app']->Session->SetAttribute(
-                            $k,
-                            $this->GetAvatar($v, $user['email'], 48, $params['last_update'])
-                        );
-                    } else {
-                        $GLOBALS['app']->Session->SetAttribute($k, $v);
-                    }
+        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
+            foreach($pData as $k => $v) {
+                if ($k == 'avatar') {
+                    $GLOBALS['app']->Session->SetAttribute(
+                        $k,
+                        $this->GetAvatar($v, $user['email'], 48, $pData['last_update'])
+                    );
+                } else {
+                    $GLOBALS['app']->Session->SetAttribute($k, $v);
                 }
             }
         }
@@ -788,38 +765,31 @@ class Jaws_User
      * Update advanced options of a user such as language, theme, editor, etc..
      *
      * @access  public
-     * @param   int     $id    User's ID
-     * @param   array   $opts  Advanced options
+     * @param   int     $id     User's ID
+     * @param   array   $pData  Preferences information data
      * @return  bool    Returns true on success, false on failure
      */
-    function UpdateAdvancedOptions($id, $opts = array())
+    function UpdatePreferences($id, $pData)
     {
-        $validOptions = array('language', 'theme', 'editor', 'timezone');
-        $params = array();
-        $params['last_update'] = time();
-        $updateStr    = '';
-        foreach($opts as $k => $v) {
-            if (in_array($k, $validOptions)) {
-                $params[$k] = $v;
-                $updateStr.= '['. $k . '] = {'.$k.'}, ';
+        // unset invalid keys
+        $invalids = array_diff(array_keys($pData), array('language', 'theme', 'editor', 'timezone'));
+        foreach ($invalids as $invalid) {
+            unset($pData[$invalid]);
+        }
+
+        $pData['last_update'] = time();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($pData)->where('id', '=', $id)->execute();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
+            foreach($pData as $k => $v) {
+                $GLOBALS['app']->Session->SetAttribute($k, $v);
             }
         }
 
-        if (count($params) > 0) {
-            $params['id'] = $id;
-            $updateStr.= '[last_update] = {last_update}';
-            $sql = 'UPDATE [[users]] SET '. $updateStr. ' WHERE [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return false;
-            }
-
-            if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
-                foreach($params as $k => $v) {
-                    $GLOBALS['app']->Session->SetAttribute($k, $v);
-                }
-            }
-        }
         return true;
     }
 
@@ -827,78 +797,50 @@ class Jaws_User
      * Adds a new group
      *
      * @access  public
-     * @param   string  $name        Group's name
-     * @param   string  $title       Group's title
-     * @param   string  $description Group's description
-     * @param   bool    $enabled     Group's status
-     * @param   bool    $removable   (Optional) Can the group be removed by users (via UI)?
+     * @param   array   $gData  Group information data
      * @return  bool    Returns true if group  was sucessfully added, false if not
      */
-    function AddGroup($name, $title, $description, $enabled, $removable = true)
+    function AddGroup($gData)
     {
-        $params = array();
-        $params['name']        = $name;
-        $params['title']       = $title;
-        $params['description'] = $description;
-        $params['removable']   = (bool)$removable;
-        $params['enabled']     = (bool)$enabled;
-
-        $sql = '
-            INSERT INTO [[groups]]
-                ([name], [title], [description], [removable], [enabled])
-            VALUES
-                ({name}, {title}, {description}, {removable}, {enabled})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $gData['removable'] = isset($gData['removable'])? (bool)$gData['status'] : true;
+        $gData['enabled'] = isset($gData['enabled'])? (bool)$gData['enabled'] : true;
+        $groupsTable = Jaws_ORM::getInstance()->table('groups');
+        $result = $groupsTable->insert($gData)->execute();
         if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        // Fetch the id of the group that was just created
-        $id = $GLOBALS['db']->lastInsertID('groups', 'id');
-        if (Jaws_Error::IsError($id)) {
             return false;
         }
 
         // Let everyone know a group has been added
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onAddGroup', $id);
-        if (Jaws_Error::IsError($res) || !$res) {
+        $res = $GLOBALS['app']->Shouter->Shout('onAddGroup', $result);
+        if (Jaws_Error::IsError($res)) {
             //do nothing
         }
 
-        return $id;
+        return $result;
     }
 
     /**
      * Update the info of a group
      *
      * @access  public
-     * @param   int     $id          Group's ID
-     * @param   string  $name        Group's title
-     * @param   string  $title       Group's name
-     * @param   string  $description Group's description
-     * @param   bool    $enabled     Group's status
+     * @param   array   $gData  Group information data
      * @return  bool    Returns true if group was sucessfully updated, false if not
      */
-    function UpdateGroup($id, $name, $title, $description, $enabled)
+    function UpdateGroup($id, $gData)
     {
-        $params = array();
-        $params['id']          = $id;
-        $params['name']        = $name;
-        $params['title']       = $title;
-        $params['description'] = $description;
-        $params['enabled']     = (bool)$enabled;
+        // unset invalid keys
+        $invalids = array_diff(array_keys($gData), array('name', 'title', 'description', 'enabled'));
+        foreach ($invalids as $invalid) {
+            unset($gData[$invalid]);
+        }
 
-        $sql = '
-            UPDATE [[groups]] SET
-                [name]        = {name},
-                [title]       = {title},
-                [description] = {description},
-                [enabled]     = {enabled}
-            WHERE [id] = {id}';
+        if (isset($gData['enabled'])) {
+            $gData['enabled'] = (bool)$gData['enabled'];
+        }
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $groupsTable = Jaws_ORM::getInstance()->table('groups');
+        $result = $groupsTable->update($gData)->where('id', '=', $id)->execute();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -906,7 +848,7 @@ class Jaws_User
         // Let everyone know a group has been updated
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
         $res = $GLOBALS['app']->Shouter->Shout('onUpdateGroup', $id);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             //do nothing
         }
 
@@ -927,40 +869,32 @@ class Jaws_User
             return false;
         }
 
-        $params = array();
-        $params['id'] = $id;
-        $sql = 'DELETE FROM [[users]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $objORM = Jaws_ORM::getInstance();
+        $result = $objORM->delete()->table('users')->where('id', '=', $id)->execute();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $sql = 'DELETE FROM [[users_groups]] WHERE [user_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $objORM->delete()->table('users_groups')->where('user_id', '=', $id)->execute();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
         $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
         $GLOBALS['app']->ACL->DeleteUserACL($user['username']);
-
         if (isset($GLOBALS['app']->Session)) {
             $res = $GLOBALS['app']->Session->DeleteUserSessions($id);
-            if (!$res) {
-                return false;
-            }
         }
 
         // Let everyone know that a user has been deleted
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
         $res = $GLOBALS['app']->Shouter->Shout('onDeleteUser', $id);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             return false;
         }
 
         return true;
     }
-
 
     /**
      * Deletes a group
@@ -971,24 +905,15 @@ class Jaws_User
      */
     function DeleteGroup($id)
     {
-        $params = array();
-        $params['id'] = $id;
-        $params['removable'] = true;
-
-        $sql = '
-            DELETE FROM [[groups]]
-            WHERE
-                [id] = {id}
-              AND
-                [removable]';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result) || empty($result)) {
+        $objORM = Jaws_ORM::getInstance();
+        $objORM->delete()->table('groups');
+        $objORM->where('id', '=', $id)->and()->where('removable', '=', true);
+        $result = $objORM->execute();
+        if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $sql = 'DELETE FROM [[users_groups]] WHERE [group_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $objORM->delete()->table('users_groups')->where('group_id', '=', $id);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -998,7 +923,7 @@ class Jaws_User
         // Let everyone know a group has been deleted
         $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
         $res = $GLOBALS['app']->Shouter->Shout('onDeleteGroup', $id);
-        if (Jaws_Error::IsError($res) || !$res) {
+        if (Jaws_Error::IsError($res)) {
             return false;
         }
 
@@ -1015,22 +940,8 @@ class Jaws_User
      */
     function AddUserToGroup($user, $group)
     {
-        $params = array();
-        $params['user']  = $user;
-        $params['group'] = $group;
-
-        $sql = '
-            INSERT INTO [[users_groups]]
-                ([user_id], [group_id])
-            VALUES
-                ({user}, {group})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
+        return $usrgrpTable->insert(array('user_id' => $user, 'group_id' => $group))->execute();
     }
 
     /**
@@ -1043,23 +954,10 @@ class Jaws_User
      */
     function DeleteUserFromGroup($user, $group)
     {
-        $params = array();
-        $params['user']  = $user;
-        $params['group'] = $group;
-
-        $sql = '
-            DELETE FROM [[users_groups]]
-            WHERE
-                [user_id] = {user}
-              AND
-                [group_id] = {group}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
+        $usrgrpTable->delete();
+        $usrgrpTable->where('user_id', '=', $user)->and()->where('group_id', '=', $group);
+        return $usrgrpTable->execute();
     }
 
     /**
@@ -1072,24 +970,15 @@ class Jaws_User
      */
     function UserIsInGroup($user, $group)
     {
-        $params = array();
-        $params['user']  = $user;
-        $params['group'] = $group;
-
-        $sql = '
-            SELECT COUNT([user_id])
-            FROM [[users_groups]]
-            WHERE
-                [user_id] = {user}
-              AND
-                [group_id] = {group}';
-
-        $howmany = $GLOBALS['db']->queryOne($sql, $params);
+        $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
+        $usrgrpTable->select('count([user_id]):integer');
+        $usrgrpTable->where('user_id', '=', $user)->and()->where('group_id', '=', $group);
+        $howmany = $usrgrpTable->getOne();
         if (Jaws_Error::IsError($howmany)) {
             return false;
         }
 
-        return ($howmany == '0') ? false : true;
+        return (bool)$howmany;
     }
 
     /**
@@ -1102,17 +991,8 @@ class Jaws_User
     function UpdateEmailVerifyKey($uid)
     {
         $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-        $params = array();
-        $params['key'] = $key;
-        $params['uid'] = (int)$uid;
-
-        $sql = '
-            UPDATE [[users]] SET
-                [email_verify_key] = {key}
-            WHERE
-                [id] = {uid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update(array('email_verify_key' => $key))->where('id', '=', (int)$uid)->execute();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -1130,17 +1010,8 @@ class Jaws_User
     function UpdatePasswordVerifyKey($uid)
     {
         $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
-        $params = array();
-        $params['key'] = $key;
-        $params['uid'] = (int)$uid;
-
-        $sql = '
-            UPDATE [[users]] SET
-                [password_verify_key] = {key}
-            WHERE
-                [id] = {uid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update(array('password_verify_key' => $key))->where('id', '=', (int)$uid)->execute();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
