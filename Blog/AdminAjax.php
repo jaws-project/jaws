@@ -99,18 +99,28 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Prepare the Category form
+     * Get a category data
      *
      * @access  public
-     * @param   string  $action
      * @param   int     $id
-     * @return  string  XHTML of Category Form
+     * @return  Array  Category data
      */
-    function GetCategoryForm($action, $id)
+    function GetCategory($id)
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
-        return $gadget->CategoryForm($action, $id);
+        return $this->_Model->GetCategory($id);
+    }
+
+    /**
+     * Get all categories list
+     *
+     * @access  public
+     * @return  Array  list of all Categories
+     */
+    function GetCategories()
+    {
+        $this->gadget->CheckPermission('ManageCategories');
+        return $this->_Model->GetCategories();
     }
 
     /**
@@ -162,19 +172,6 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageCategories');
         $this->_Model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
-     * Retrieves the category combo (the big one)
-     *
-     * @access  public
-     * @return  string  XHTML of the combo
-     */
-    function GetCategoryCombo()
-    {
-        $this->gadget->CheckPermission('ManageCategories');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Categories');
-        return $gadget->GetCategoriesAsCombo();
     }
 
     /**

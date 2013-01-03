@@ -137,28 +137,27 @@ var BlogCallback = {
         fillCatInfoForm(response);
     },
 
-    getcategorycombo: function(response) {
-        updateCategoryCombo();
-    },
-
     addcategory: function(response) {
         showResponse(response);
         if (response[0]['css'] == 'notice-message') {
-            resetCategoryForms();
+            stopAction();
+            resetCategoryCombo();
         }
     },
 
     updatecategory: function(response) {
         showResponse(response);
         if (response[0]['css'] == 'notice-message') {
-            resetCategoryForms();
+            stopAction();
+            resetCategoryCombo();
         }
     },
 
     deletecategory: function(response) {
         showResponse(response);
         if (response[0]['css'] == 'notice-message') {
-            resetCategoryForms();
+            stopAction();
+            resetCategoryCombo();
         }
     },
 
@@ -611,7 +610,18 @@ function saveSettings(form)
  */
 function editCategory(id)
 {
-    BlogAjax.callAsync('getcategoryform', 'editcategory', id);
+    if (id == 0) return;
+    selectedCategory = id;
+
+    $('legend_title').innerHTML = editCategory_title;
+    $('btn_delete').style.display = 'inline';
+    var category = BlogAjax.callSync('getcategory', id);
+
+    $('name').value             = category['name'];
+    $('fast_url').value         = category['fast_url'];
+    $('meta_keywords').value    = category['meta_keywords'];
+    $('meta_desc').value        = category['meta_description'];
+    $('description').value      = category['description'];
 }
 
 /**
@@ -624,24 +634,18 @@ function resetCategoryForm()
 }
 
 /**
- * Update the category combo (the big one)
- */
-function updateCategoryCombo(content)
-{
-    var form   = document.getElementById('categoriesComboTable');
-    form.innerHTML = content;
-}
-
-/**
  * Get the big combo
  */
-function resetCategoryForms()
+function resetCategoryCombo()
 {
-    var categoryCombo = BlogAjax.callSync('getcategorycombo');
-    updateCategoryCombo(categoryCombo);
-
-    var catInfo = document.getElementById('catinfoform');
-    catInfo.innerHTML = BlogAjax.callSync('getcategoryform', 'new', 0);
+    var categories = BlogAjax.callSync('getcategories');
+    $('category_id').innerHTML = '';
+    categories.each(function (item, key){
+        var newoption = new Option(item['name'], item['id']);
+        $('category_id').add(newoption);
+        $$('#category_id > option:even').addClass('piwi_option_odd');
+        $$('#category_id > option:odd').addClass('piwi_option_even');
+    });
 }
 
 /**
@@ -649,21 +653,27 @@ function resetCategoryForms()
  */
 function saveCategory(form)
 {
-    action = form.elements['action'].value;
+    if ($('name').value.blank())
+    {
+        alert(incompleteCategoryFields);
+        return false;
+    }
 
-    if (action == 'AddCategory') {
-        BlogAjax.callAsync('addcategory', form.elements['name'].value,
-                         form.elements['description'].value,
-                         form.elements['fast_url'].value,
-                         form.elements['meta_keywords'].value,
-                         form.elements['meta_desc'].value);
+    if (selectedCategory == null) {
+        BlogAjax.callAsync('addcategory',
+                            $('name').value,
+                            $('description').value,
+                            $('fast_url').value,
+                            $('meta_keywords').value,
+                            $('meta_desc').value);
     } else {
-        BlogAjax.callAsync('updatecategory', form.elements['catid'].value,
-                            form.elements['name'].value,
-                            form.elements['description'].value,
-                            form.elements['fast_url'].value,
-                            form.elements['meta_keywords'].value,
-                            form.elements['meta_desc'].value);
+        BlogAjax.callAsync('updatecategory',
+                            selectedCategory,
+                            $('name').value,
+                            $('description').value,
+                            $('fast_url').value,
+                            $('meta_keywords').value,
+                            $('meta_desc').value);
     }
 }
 
@@ -682,8 +692,8 @@ function fillCatInfoForm(content)
  */
 function deleteCategory()
 {
-    if (confirm(delete_message)) {
-        BlogAjax.callAsync('deletecategory', $('catid').value);
+    if (confirm(deleteMessage)) {
+        BlogAjax.callAsync('deletecategory', selectedCategory);
     }
 }
 
@@ -795,7 +805,27 @@ function toggleUpdate(checked)
     }
 }
 
+/**
+ * Stops doing a certain action
+ */
+function stopAction() {
+    ('legend_title').innerHTML = addCategory_title;
+    $('btn_delete').style.display = 'none';
+    selectedCategory = null;
+
+    $('category_id').selectedIndex  = -1;
+
+    $('name').value             = '';
+    $('fast_url').value         = '';
+    $('meta_keywords').value    = '';
+    $('meta_desc').value        = '';
+    $('description').value      = '';
+}
+
 var BlogAjax = new JawsAjax('Blog', BlogCallback);
 
 var firstFetch = true;
 var autoDraftDone = false;
+
+//current group
+var selectedCategory = null;

@@ -72,6 +72,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
 
         $btnDelete =& Piwi::CreateWidget('Button', 'btn_delete', _t('GLOBAL_DELETE'), STOCK_DELETE);
         $btnDelete->AddEvent(ON_CLICK, 'javascript:deleteCategory();');
+        $btnDelete->SetStyle('display: none;');
         $tpl->SetVariable('btn_delete', $btnDelete->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
@@ -83,6 +84,9 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('delete_message',_t('BLOG_DELETE_CONFIRM_CATEGORY'));
+        $tpl->SetVariable('incompleteCategoryFields',_t('BLOG_CATEGORY_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('addCategory_title',_t('BLOG_NEW_CATEGORY'));
+        $tpl->SetVariable('editCategory_title',_t('BLOG_EDIT_CATEGORY'));
         $tpl->ParseBlock('categories');
         return $tpl->Get();
     }
