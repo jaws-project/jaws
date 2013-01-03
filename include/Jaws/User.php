@@ -50,7 +50,7 @@ class Jaws_User
             'id:integer', 'password', 'superadmin:boolean', 'bad_password_count',
             'concurrents:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
         );
-        $result = $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user))->getRow();
+        $result = $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user))->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -108,7 +108,7 @@ class Jaws_User
                         'last_access' => time(),
                         'bad_password_count' => $usersTable->expr('bad_password_count + ?', 1)
                     )
-                )->where('id', '=', $result['id'])->execute();
+                )->where('id', $result['id'])->exec();
             }
         }
 
@@ -126,7 +126,7 @@ class Jaws_User
     function updateLoginTime($user_id)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('bad_password_count' => 0))->where('id', '=', (int)$user_id)->execute();
+        $result = $usersTable->update(array('bad_password_count' => 0))->where('id', (int)$user_id)->exec();
         if (Jaws_Error::isError($result)) {
             return false;
         }
@@ -174,9 +174,9 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select($columns);
         if (is_int($user)) {
-            $usersTable->where('id', '=', $user);
+            $usersTable->where('id', $user);
         } else {
-             $usersTable->where('lower(username)', '=', Jaws_UTF8::strtolower($user));
+             $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
         }
 
         return $usersTable->getRow();
@@ -193,7 +193,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'superadmin:boolean', 'status:integer');
-        $usersTable->where('lower(email)', '=', $email);
+        $usersTable->where('lower(email)', $email);
         return $usersTable->getAll();
     }
 
@@ -208,7 +208,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
-        $usersTable->where('email_verify_key', '=', trim($key));
+        $usersTable->where('email_verify_key', trim($key));
         return $usersTable->getRow();
     }
 
@@ -223,7 +223,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
-        $usersTable->where('password_verify_key', '=', trim($key));
+        $usersTable->where('password_verify_key', trim($key));
         return $usersTable->getRow();
     }
 
@@ -239,8 +239,8 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(id)');
-        $usersTable->where('email', '=', Jaws_UTF8::strtolower($email));
-        $usersTable->where('id', '<>', $exclude);
+        $usersTable->where('email', Jaws_UTF8::strtolower($email));
+        $usersTable->where('id', $exclude, '<>');
         $howmany = $usersTable->getOne();
         return !empty($howmany);
     }
@@ -279,9 +279,9 @@ class Jaws_User
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
         if (is_int($group)) {
-            $groupsTable->where('id', '=', $group);
+            $groupsTable->where('id', $group);
         } else {
-            $groupsTable->where('lower(name)', '=', Jaws_UTF8::strtolower($group));
+            $groupsTable->where('lower(name)', Jaws_UTF8::strtolower($group));
         }
 
         return $groupsTable->getRow();
@@ -319,22 +319,22 @@ class Jaws_User
         );
         if ($group !== false) {
             $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', '=', $group);
+            $usersTable->where('group_id', $group);
         }
 
         if (!is_null($superadmin)) {
-            $usersTable->and()->where('superadmin', '=', (bool)$superadmin);
+            $usersTable->and()->where('superadmin', (bool)$superadmin);
         }
 
         if (!is_null($status)) {
-            $usersTable->and()->where('status', '=', (int)$status);
+            $usersTable->and()->where('status', (int)$status);
         }
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', 'like', '%'.$term.'%');
-            $usersTable->or()->where('lower(nickname)',      'like', '%'.$term.'%');
-            $usersTable->or()->closeWhere('lower(email)',    'like', '%'.$term.'%');
+            $usersTable->and()->openWhere('lower(username)', '%'.$term.'%', 'like');
+            $usersTable->or()->where('lower(nickname)',      '%'.$term.'%', 'like');
+            $usersTable->or()->closeWhere('lower(email)',    '%'.$term.'%', 'like');
         }
 
         $usersTable->orderBy('users.'.$orderBy);
@@ -358,22 +358,22 @@ class Jaws_User
         $usersTable->select('count(users.id):integer');
         if ($group !== false) {
             $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', '=', $group);
+            $usersTable->where('group_id', $group);
         }
 
         if (!is_null($superadmin)) {
-            $usersTable->and()->where('superadmin', '=', (bool)$superadmin);
+            $usersTable->and()->where('superadmin', (bool)$superadmin);
         }
 
         if (!is_null($status)) {
-            $usersTable->and()->where('status', '=', (int)$status);
+            $usersTable->and()->where('status', (int)$status);
         }
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', 'like',  $term);
-            $usersTable->or()->where('lower(nickname)', 'like',  $term);
-            $usersTable->or()->closeWhere('lower(email)', 'like',  $term);
+            $usersTable->and()->openWhere('lower(username)', $term, 'like');
+            $usersTable->or()->where('lower(nickname)',      $term, 'like');
+            $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
         }
 
         $result = $usersTable->getOne();
@@ -405,7 +405,7 @@ class Jaws_User
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
         if (!is_null($enabled)) {
-            $groupsTable->where('enabled', '=', (bool)$enabled);
+            $groupsTable->where('enabled', (bool)$enabled);
         }
         $groupsTable->limit($limit, $offset)->orderBy($orderBy);
         return $groupsTable->getAll();
@@ -423,7 +423,7 @@ class Jaws_User
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('count(id):integer');
         if (!is_null($enabled)) {
-            $groupsTable->where('enabled', '=', (bool)$enabled);
+            $groupsTable->where('enabled', (bool)$enabled);
         }
         $result = $groupsTable->getOne();
         if (Jaws_Error::IsError($result)) {
@@ -447,9 +447,9 @@ class Jaws_User
         $ugroupsTable->join('inner', 'users',  'users.id',  'users_groups.user_id');
         $ugroupsTable->join('inner', 'groups', 'groups.id', 'users_groups.group_id');
         if (is_int($user)) {
-            $ugroupsTable->where('users.id', '=', $user);
+            $ugroupsTable->where('users.id', $user);
         } else {
-            $ugroupsTable->where('users.username', '=', $user);
+            $ugroupsTable->where('users.username', $user);
         }
 
         return $ugroupsTable->getCol();
@@ -530,7 +530,7 @@ class Jaws_User
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->insert($uData)->execute();
+        $result = $usersTable->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
@@ -653,7 +653,7 @@ class Jaws_User
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($uData)->where('id', '=', $id)->execute();
+        $result = $usersTable->update($uData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
@@ -740,7 +740,7 @@ class Jaws_User
 
         $pData['last_update'] = time();
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($pData)->where('id', '=', $id)->execute();
+        $result = $usersTable->update($pData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -779,7 +779,7 @@ class Jaws_User
 
         $pData['last_update'] = time();
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($pData)->where('id', '=', $id)->execute();
+        $result = $usersTable->update($pData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -805,7 +805,7 @@ class Jaws_User
         $gData['removable'] = isset($gData['removable'])? (bool)$gData['status'] : true;
         $gData['enabled'] = isset($gData['enabled'])? (bool)$gData['enabled'] : true;
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
-        $result = $groupsTable->insert($gData)->execute();
+        $result = $groupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -840,7 +840,7 @@ class Jaws_User
         }
 
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
-        $result = $groupsTable->update($gData)->where('id', '=', $id)->execute();
+        $result = $groupsTable->update($gData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -870,12 +870,12 @@ class Jaws_User
         }
 
         $objORM = Jaws_ORM::getInstance();
-        $result = $objORM->delete()->table('users')->where('id', '=', $id)->execute();
+        $result = $objORM->delete()->table('users')->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('user_id', '=', $id)->execute();
+        $result = $objORM->delete()->table('users_groups')->where('user_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -907,13 +907,13 @@ class Jaws_User
     {
         $objORM = Jaws_ORM::getInstance();
         $objORM->delete()->table('groups');
-        $objORM->where('id', '=', $id)->and()->where('removable', '=', true);
-        $result = $objORM->execute();
+        $objORM->where('id', $id)->and()->where('removable', true);
+        $result = $objORM->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('group_id', '=', $id);
+        $result = $objORM->delete()->table('users_groups')->where('group_id', $id);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -941,7 +941,7 @@ class Jaws_User
     function AddUserToGroup($user, $group)
     {
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
-        return $usrgrpTable->insert(array('user_id' => $user, 'group_id' => $group))->execute();
+        return $usrgrpTable->insert(array('user_id' => $user, 'group_id' => $group))->exec();
     }
 
     /**
@@ -956,8 +956,8 @@ class Jaws_User
     {
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
         $usrgrpTable->delete();
-        $usrgrpTable->where('user_id', '=', $user)->and()->where('group_id', '=', $group);
-        return $usrgrpTable->execute();
+        $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
+        return $usrgrpTable->exec();
     }
 
     /**
@@ -972,7 +972,7 @@ class Jaws_User
     {
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
         $usrgrpTable->select('count([user_id]):integer');
-        $usrgrpTable->where('user_id', '=', $user)->and()->where('group_id', '=', $group);
+        $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
         $howmany = $usrgrpTable->getOne();
         if (Jaws_Error::IsError($howmany)) {
             return false;
@@ -992,7 +992,7 @@ class Jaws_User
     {
         $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('email_verify_key' => $key))->where('id', '=', (int)$uid)->execute();
+        $result = $usersTable->update(array('email_verify_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -1011,7 +1011,7 @@ class Jaws_User
     {
         $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('password_verify_key' => $key))->where('id', '=', (int)$uid)->execute();
+        $result = $usersTable->update(array('password_verify_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
