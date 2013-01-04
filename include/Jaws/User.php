@@ -318,7 +318,7 @@ class Jaws_User
             'superadmin:boolean', 'language', 'theme', 'editor', 'timezone', 'users.status:integer'
         );
         if ($group !== false) {
-            $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
+            $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
             $usersTable->where('group_id', $group);
         }
 
@@ -357,7 +357,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(users.id):integer');
         if ($group !== false) {
-            $usersTable->join('inner', 'users_groups', 'users_groups.user_id', 'users.id');
+            $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
             $usersTable->where('group_id', $group);
         }
 
@@ -444,8 +444,8 @@ class Jaws_User
     {
         $ugroupsTable = Jaws_ORM::getInstance()->table('users_groups');
         $ugroupsTable->select('groups.id:integer');
-        $ugroupsTable->join('inner', 'users',  'users.id',  'users_groups.user_id');
-        $ugroupsTable->join('inner', 'groups', 'groups.id', 'users_groups.group_id');
+        $ugroupsTable->join('users',  'users.id',  'users_groups.user_id');
+        $ugroupsTable->join('groups', 'groups.id', 'users_groups.group_id');
         if (is_int($user)) {
             $ugroupsTable->where('users.id', $user);
         } else {
