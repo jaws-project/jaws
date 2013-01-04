@@ -375,17 +375,23 @@ class Jaws_ORM
     {
         switch ($opt) {
             case 'in':
+            case 'not in':
                 $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
                 break;
 
             case 'between':
             case 'not between':
-                $value = $this->quoteValue($value[0]). ' AND '. $this->quoteValue($value[1]);
+                $value = $this->quoteValue($value[0]). ' and '. $this->quoteValue($value[1]);
                 break;
 
             case 'like':
             case 'not like':
                 $value  = $this->quoteValue($value);
+                break;
+
+            case 'is null':
+            case 'is not null':
+                $value  = '';
                 break;
 
             default:
@@ -480,11 +486,18 @@ class Jaws_ORM
     {
         switch ($opt) {
             case 'in':
+            case 'not in':
                 $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
                 break;
 
             case 'between':
-                $value = $this->quoteValue($value[0]). ' AND '. $this->quoteValue($value[1]);
+            case 'not between':
+                $value = $this->quoteValue($value[0]). ' and '. $this->quoteValue($value[1]);
+                break;
+
+            case 'is null':
+            case 'is not null':
+                $value  = '';
                 break;
 
             default:
