@@ -341,14 +341,14 @@ class Jaws_ORM
      * Join SQL command
      *
      * @access  public
-     * @param   string  $join   Join type
      * @param   string  $table  Join target table
      * @param   string  $source Join source field
      * @param   string  $target Join target field
+     * @param   string  $join   Join type
      * @param   string  $opt    Join condition
      * @return  object  Jaws_ORM object
      */
-    function join($join, $table, $source, $target, $opt = '=')
+    function join($table, $source, $target, $join = 'inner', $opt = '=')
     {
         if (false === strpos($table, ' ')) {
             $table = $this->quoteIdentifier('['. $this->_tbl_prefix. $table. ']');
