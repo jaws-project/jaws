@@ -15,7 +15,7 @@ require_once JAWS_PATH . 'gadgets/Banner/Model.php';
 class Banner_AdminModel extends Banner_Model
 {
     /**
-    * Insert a bannser
+    * Insert a banner
     * 
     * @access   public
     * @param    string  $title        banner title
@@ -34,40 +34,36 @@ class Banner_AdminModel extends Banner_Model
     function InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
-        $sql = '
-            INSERT INTO [[banners]]
-                ([title], [url], [gid], [banner], [template], [views], [views_limitation],
-                [clicks], [clicks_limitation], [start_time], [stop_time], [createtime], [updatetime],
-                [random], [published])
-            VALUES
-                ({title}, {url}, {gid}, {banner}, {template}, 0, {views_limit}, 0,
-                {clicks_limit}, {start_time}, {stop_time},{now}, {now}, {random}, {published})';
-
         $date = $GLOBALS['app']->loadDate();
-        $params                 = array();
-        $params['title']        = $title;
-        $params['url']          = $url;
-        $params['gid']          = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
-        $params['banner']       = $banner;
-        $params['template']     = $template;
-        $params['views_limit']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
-        $params['clicks_limit'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
+        $bData['title']             = $title;
+        $bData['url']               = $url;
+        $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
+        $bData['banner']            = $banner;
+        $bData['template']          = $template;
+        $bData['views']             = 0;
+        $bData['views_limitation']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
+        $bData['clicks']            = 0;
+        $bData['clicks_limitation'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
 
-        $params['start_time']   = null;
-        $params['stop_time']    = null;
+        $bData['start_time']        = null;
+        $bData['stop_time']         = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
-        $params['now']          = $GLOBALS['db']->Date();
-        $params['random']       = $random;
-        $params['published']    = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+        $bData['createtime']        = $GLOBALS['db']->Date();
+        $bData['updatetime']        = $GLOBALS['db']->Date();
+        $bData['random']            = $random;
+        $bData['published']         = (bool)$published;
+
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $res = $bannersTable->insert($bData)->exec();
+
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -78,7 +74,7 @@ class Banner_AdminModel extends Banner_Model
     }
 
     /**
-    * Update a bannser
+    * Update a banner
     * 
     * @access   public
     * @param    int     $bid         banner ID
@@ -98,48 +94,32 @@ class Banner_AdminModel extends Banner_Model
     function UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
-        $sql = '
-            UPDATE [[banners]] SET
-                [title]             = {title},
-                [url]               = {url},
-                [gid]               = {gid},
-                [banner]            = {banner},
-                [template]          = {template},
-                [views_limitation]  = {views_limit},
-                [clicks_limitation] = {clicks_limit},
-                [start_time]        = {start_time},
-                [stop_time]         = {stop_time},
-                [updatetime]        = {now},
-                [random]            = {random},
-                [published]         = {published}
-            WHERE [id] = {bid}';
-
         $date = $GLOBALS['app']->loadDate();
-        $params                 = array();
-        $params['bid']          = $bid;
-        $params['title']        = $title;
-        $params['url']          = $url;
-        $params['gid']          = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
-        $params['banner']       = $banner;
-        $params['template']     = $template;
-        $params['views_limit']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
-        $params['clicks_limit'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
+        $bData['title']             = $title;
+        $bData['url']               = $url;
+        $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
+        $bData['banner']            = $banner;
+        $bData['template']          = $template;
+        $bData['views_limitation']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
+        $bData['clicks_limitation'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
 
-        $params['start_time']   = null;
-        $params['stop_time']    = null;
+        $bData['start_time']        = null;
+        $bData['stop_time']         = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
-        $params['now']          = $GLOBALS['db']->Date();
-        $params['random']       = $random;
-        $params['published']    = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+        $bData['updatetime']        = $GLOBALS['db']->Date();
+        $bData['random']            = $random;
+        $bData['published']         = (bool)$published;
+
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $res = $bannersTable->update($bData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -158,20 +138,14 @@ class Banner_AdminModel extends Banner_Model
      */
     function GetBannersCount($gid = -1)
     {
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[banners]]';
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $bannersTable->select('count([id]):integer');
 
         if ($gid != -1) {
-            $sql .= ' WHERE [[banners]].[gid] = {gid}';
+            $bannersTable->where('gid', $gid);
         }
 
-        $res = $GLOBALS['db']->queryOne($sql, array('gid' => $gid));
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $bannersTable->getOne();
     }
 
     /**
@@ -187,19 +161,15 @@ class Banner_AdminModel extends Banner_Model
     */
     function InsertGroup($title, $limit_count, $show_title, $show_type, $published)
     {
-        $sql = '
-            INSERT INTO [[banners_groups]]
-                ([title], [limit_count], [show_title], [show_type], [published])
-            VALUES
-                ({title}, {limit_count}, {show_title}, {show_type}, {published})';
+        $bgData['title']       = $title;
+        $bgData['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
+        $bgData['show_title']  = (bool)$show_title;
+        $bgData['show_type']   = (int)$show_type;
+        $bgData['published']   = (bool)$published;
 
-        $params = array();
-        $params['title']       = $title;
-        $params['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
-        $params['show_title']  = (bool)$show_title;
-        $params['show_type']   = (int)$show_type;
-        $params['published']   = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+        $bgroupsTable = Jaws_ORM::getInstance()->table('banners_groups');
+        $res = $bgroupsTable->insert($bgData)->exec();
+
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -223,23 +193,15 @@ class Banner_AdminModel extends Banner_Model
     */
     function UpdateGroup($gid, $title, $limit_count, $show_title, $show_type, $published)
     {
-        $sql = '
-            UPDATE [[banners_groups]] SET
-                [title]       = {title},
-                [limit_count] = {limit_count},
-                [show_title]  = {show_title},
-                [show_type]   = {show_type},
-                [published]   = {published}
-            WHERE [id] = {id}';
+        $bgData['title']       = $title;
+        $bgData['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
+        $bgData['show_title']  = (bool)$show_title;
+        $bgData['show_type']   = (int)$show_type;
+        $bgData['published']   = (bool)$published;
 
-        $params = array();
-        $params['id']          = $gid;
-        $params['title']       = $title;
-        $params['limit_count'] = (empty($limit_count)  || !is_numeric($limit_count))? 0: $limit_count;
-        $params['show_title']  = (bool)$show_title;
-        $params['show_type']   = (int)$show_type;
-        $params['published']   = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+        $bgroupsTable = Jaws_ORM::getInstance()->table('banners_groups');
+        $res = $bgroupsTable->update($bgData)->where('id', $gid)->exec();
+
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -280,49 +242,26 @@ class Banner_AdminModel extends Banner_Model
      * @param   int     $gid        Group's ID
      * @param   int     $new_gid    Group's ID
      * @param   int     $rank
-     * @return  bool    Returns True if banner was sucessfully added to the group, False if not
+     * @return  bool    Returns True if banner was successfully added to the group, False if not
      */
     function UpdateBannerGroup($bid, $gid, $new_gid, $rank)
     {
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+
         $new_gid = ($rank == 0)? 0 : $new_gid;
         if (($bid != -1) && ($gid != -1)) {
-            $sql = '
-                UPDATE [[banners]] SET
-                    [gid]        = {new_gid},
-                    [rank]       = {rank},
-                    [updatetime] = {now}
-                WHERE [[banners]].[id] = {bid} AND [[banners]].[gid] = {gid}';
+            $bannersTable->where('id', $bid)->and()->where('gid', $gid);
         } elseif ($gid != -1) {
-            $sql = '
-                UPDATE [[banners]] SET
-                    [gid]        = {new_gid},
-                    [rank]       = {rank},
-                    [updatetime] = {now}
-                WHERE [[banners]].[gid] = {gid}';
+            $bannersTable->where('gid', $gid);
         } elseif ($bid != -1) {
-            $sql = '
-                UPDATE [[banners]] SET
-                    [gid]        = {new_gid},
-                    [rank]       = {rank},
-                    [updatetime] = {now}
-                WHERE [id] = {bid}';
-        } else {
-            $sql = '
-                UPDATE [[banners]] SET
-                    [gid]        = {new_gid},
-                    [rank]       = {rank},
-                    [updatetime] = {now}';
+            $bannersTable->where('id', $bid);
         }
 
-        $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['bid']     = $bid;
-        $params['gid']     = $gid;
-        $params['new_gid'] = $new_gid;
-        $params['rank']    = $rank;
-        $params['now']     = $GLOBALS['db']->Date();
+        $bgData['gid']     = $new_gid;
+        $bgData['rank']    = $rank;
+        $bgData['updatetime']     = $GLOBALS['db']->Date();
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $bannersTable->update($bgData)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -350,8 +289,8 @@ class Banner_AdminModel extends Banner_Model
             return false;
         }
 
-        $sql = 'DELETE FROM [[banners]] WHERE [id] = {bid}';
-        $res = $GLOBALS['db']->query($sql, array('bid' => $bid));
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $res = $bannersTable->delete()->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -383,18 +322,12 @@ class Banner_AdminModel extends Banner_Model
             return false;
         }
 
-        $sql = '
-            UPDATE [[banners]] SET
-                [views]      = {views},
-                [updatetime] = {now}
-            WHERE [[banners]].[id] = {bid}';
+        $bgData['views']        = 0;
+        $bgData['updatetime']   = $GLOBALS['db']->Date();
 
-        $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['bid']   = $bid;
-        $params['views'] = 0;
-        $params['now']   = $GLOBALS['db']->Date();
-        $result = $GLOBALS['db']->query($sql, $params);
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $result = $bannersTable->update($bgData)->where('id', $bid)->exec();
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -424,18 +357,11 @@ class Banner_AdminModel extends Banner_Model
             return false;
         }
 
-        $sql = '
-            UPDATE [[banners]] SET
-                [clicks]     = {clicks},
-                [updatetime] = {now}
-            WHERE [[banners]].[id] = {bid}';
+        $bgData['clicks']       = 0;
+        $bgData['updatetime']   = $GLOBALS['db']->Date();
 
-        $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['bid']    = $bid;
-        $params['clicks'] = 0;
-        $params['now']    = $GLOBALS['db']->Date();
-        $result = $GLOBALS['db']->query($sql, $params);
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $result = $bannersTable->update($bgData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -449,7 +375,7 @@ class Banner_AdminModel extends Banner_Model
      * Delete a group
      *
      * @access  public
-     * @param   int     $bid     The banner that will be deleted
+     * @param   int     $gid     The banner that will be deleted
      * @return  bool    True if query was successful and False on error
      */
     function DeleteGroup($gid)
@@ -470,8 +396,10 @@ class Banner_AdminModel extends Banner_Model
         }
 
         $this->UpdateBannerGroup(-1, $gid, 0, 0);
-        $sql = 'DELETE FROM [[banners_groups]] WHERE [id] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+
+        $bannersTable = Jaws_ORM::getInstance()->table('banners_groups');
+        $res = $bannersTable->delete()->where('id', $gid)->exec();
+
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;

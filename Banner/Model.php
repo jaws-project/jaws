@@ -23,23 +23,14 @@ class Banner_Model extends Jaws_Gadget_Model
      */
     function GetBanner($bid)
     {
-        $sql = '
-            SELECT  [id], [title], [url], [gid], [banner], [template], [views], [views_limitation],
-                    [clicks], [clicks_limitation], [start_time], [stop_time], [rank], [random], [published]
-            FROM [[banners]]
-            WHERE [id] = {bid}';
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $bannersTable->select(
+            'id:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+            'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
+            'stop_time', 'rank:integer', 'random:integer', 'published:boolean'
+        );
 
-        $params = array();
-        $params['bid'] = $bid;
-
-        $types = array('integer', 'text', 'text', 'integer', 'text', 'text', 'integer', 'integer',
-                       'integer', 'integer', 'timestamp', 'timestamp', 'integer', 'integer', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $bannersTable->where('id', $bid)->getRow();
     }
 
     /**
@@ -55,55 +46,28 @@ class Banner_Model extends Jaws_Gadget_Model
      */
     function GetBanners($bid = -1, $gid = -1, $limit = 0, $offset = null, $columns = null)
     {
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
         if (empty($columns)) {
-            $columns = '[id], [title], [url], [gid], [banner], [template], [views], [views_limitation],
-                        [clicks], [clicks_limitation], [start_time], [stop_time], [createtime], [updatetime],
-                        [random], [published]';
+            $columns = array('id:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+                        'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
+                        'stop_time', 'createtime', 'updatetime', 'random:integer', 'published:boolean');
         }
+
+        $bannersTable->select($columns);
 
         if (($bid != -1) && ($gid != -1)) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners]]
-                WHERE [[banners]].[id] = {bid} AND [[banners]].[gid] = {gid}
-                ORDER BY [[banners]].[rank] ASC';
+            $bannersTable->where('id', $bid)->and()->where('gid', $gid);
+            $bannersTable->orderBy('rank ASC');
         } elseif ($gid != -1) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners]]
-                WHERE [[banners]].[gid] = {gid}
-                ORDER BY [[banners]].[rank] ASC';
+            $bannersTable->where('gid', $gid);
+            $bannersTable->orderBy('rank ASC');
         } elseif ($bid != -1) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners]]
-                WHERE [id] = {bid}';
+            $bannersTable->where('id', $bid);
         } else {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners]]
-                ORDER BY [id] ASC';
+            $bannersTable->orderBy('id ASC');
         }
 
-        $params            = array();
-        $params['bid']     = $bid;
-        $params['gid']     = $gid;
-        $params['columns'] = $columns;
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $sql = str_replace("{columns}", $columns, $sql);
-        $res = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $bannersTable->limit($limit, $offset)->getAll();
     }
 
     /**
@@ -115,21 +79,12 @@ class Banner_Model extends Jaws_Gadget_Model
      */
     function GetGroup($gid)
     {
-        $sql = '
-            SELECT  [id], [title], [limit_count], [show_title], [show_type], [published]
-            FROM [[banners_groups]]
-            WHERE [id] = {gid}';
+        $bgroupsTable = Jaws_ORM::getInstance()->table('banners_groups');
+        $bgroupsTable->select(
+            'id:integer', 'title', 'limit_count:integer', 'show_title:boolean', 'show_type:integer', 'published:boolean'
+        );
 
-        $params = array();
-        $params['gid'] = $gid;
-
-        $types = array('integer', 'text', 'integer', 'boolean', 'integer', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $bgroupsTable->where('id', $gid)->getRow();
     }
 
     /**
@@ -143,48 +98,28 @@ class Banner_Model extends Jaws_Gadget_Model
      */
     function GetGroups($gid = -1, $bid = -1, $columns = null)
     {
+        $bgroupsTable = Jaws_ORM::getInstance()->table('banners_groups');
         if (empty($columns)) {
-            $columns = '[id], [title], [limit_count], [published]';
+            $columns = array('id:integer', 'title', 'limit_count:integer', 'published:boolean');
         }
+
+        $bgroupsTable->select($columns);
 
         if (($gid != -1) && ($bid != -1)) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners_groups]]
-                INNER JOIN [[banners]] ON [[banners_groups]].[id] = [[banners]].[gid]
-                WHERE [[banners_groups]].[id] = {gid} AND [[banners]].[id] = {bid}
-                ORDER BY [[banners_groups]].[id] ASC';
+            $bgroupsTable->join('banners', 'banners.gid', 'banners_groups.id');
+            $bgroupsTable->where('banners_groups.id', $gid)->and()->where('banners.id', $bid);
+            $bgroupsTable->orderBy('banners_groups.id ASC');
         } elseif ($bid != -1) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners_groups]]
-                INNER JOIN [[banners]] ON [[banners_groups]].[id] = [[banners]].[gid]
-                WHERE [[banners]].[id] = {bid}
-                ORDER BY [[banners_groups]].[id] ASC';
+            $bgroupsTable->join('banners', 'banners.gid', 'banners_groups.id');
+            $bgroupsTable->where('banners.id', $bid);
+            $bgroupsTable->orderBy('banners_groups.id ASC');
         } elseif ($gid != -1) {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners_groups]]
-                WHERE [id] = {gid}';
+            $bgroupsTable->where('id', $gid);
         } else {
-            $sql = '
-                SELECT {columns}
-                FROM [[banners_groups]]
-                ORDER BY [id] ASC';
+            $bgroupsTable->orderBy('id ASC');
         }
 
-        $params = array();
-        $params['gid']     = $gid;
-        $params['bid']     = $bid;
-        $params['columns'] = $columns;
-
-        $sql = str_replace("{columns}", $columns, $sql);
-        $res = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $bgroupsTable->getAll();
     }
 
     /**
@@ -192,40 +127,28 @@ class Banner_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $gid   group ID
-     * @param   bool    $random
+     * @param   int     $random
      * @return  mixed   An array of available banners or False on error
      */
     function GetEnableBanners($gid = 0, $random = 0)
     {
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $bannersTable->select('id:integer', 'title', 'url', 'banner', 'template');
+
+        $bannersTable->where('published', true)->and()->where('random', $random);
+        $bannersTable->and()->openWhere('views_limitation', 0)->or()->closeWhere('views', '[views_limitation]', '<');
+        $bannersTable->and()->openWhere('clicks_limitation', 0)->or()->closeWhere('clicks', '[clicks_limitation]', '<');
+        $bannersTable->and()->openWhere('start_time', '', 'IS NULL')->or()->closeWhere('start_time', $GLOBALS['db']->Date(), '<=');
+        $bannersTable->and()->openWhere('stop_time', '', 'IS NULL')->or()->closeWhere('stop_time', $GLOBALS['db']->Date(), '>=');
+
         if ($gid == 0) {
-            $sql = '
-                SELECT [id], [title], [url], [banner], [template]
-                FROM [[banners]]
-                WHERE ([published] = {published}) AND ([random] = {random}) AND 
-                    (([views_limitation] = 0) OR ([views] < [views_limitation])) AND
-                    (([clicks_limitation] = 0) OR ([clicks] < [clicks_limitation])) AND
-                    (([start_time] IS NULL) OR ({now} >= [start_time])) AND
-                    (([stop_time] IS NULL) OR ({now} <= [stop_time]))
-                ORDER BY [id] ASC';
+            $bannersTable->orderBy('id ASC');
         } else {
-            $sql = '
-                SELECT [id], [title], [url], [banner], [template]
-                FROM [[banners]]
-                WHERE ([[banners]].[gid] = {gid}) AND ([published] = {published}) AND ([random] = {random}) AND 
-                    (([views_limitation] = 0) OR ([views] < [views_limitation])) AND
-                    (([clicks_limitation] = 0) OR ([clicks] < [clicks_limitation])) AND
-                    (([start_time] IS NULL) OR ({now} >= [start_time])) AND
-                    (([stop_time] IS NULL) OR ({now} <= [stop_time]))
-                ORDER BY [[banners]].[id] ASC';
+            $bannersTable->and()->where('gid', $gid);
+            $bannersTable->orderBy('id ASC');
         }
 
-        $params = array();
-        $params['gid']       = $gid;
-        $params['random']    = $random;
-        $params['now']       = $GLOBALS['db']->Date();
-        $params['published'] = true;
-
-        $res = $GLOBALS['db']->queryAll($sql, $params);
+        $res = $bannersTable->getAll();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -280,8 +203,13 @@ class Banner_Model extends Jaws_Gadget_Model
      */
     function ClickBanner($bid)
     {
-        $sql = 'UPDATE [[banners]] SET [clicks] = [clicks] + 1 WHERE [id] = {bid}';
-        $res = $GLOBALS['db']->query($sql, array('bid' => $bid));
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $res = $bannersTable->update(
+            array(
+                'clicks' => $bannersTable->expr('clicks + ?', 1)
+            )
+        )->where('id', $bid)->exec();
+
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -293,13 +221,18 @@ class Banner_Model extends Jaws_Gadget_Model
      * Increment the number of views a banner has had by 1.
      *
      * @access  public
-     * @param   int     $bid     The id of the banenr to increment.
+     * @param   int     $bid     The id of the banner to increment.
      * @return  mixed   True on success and Jaws_Error on error
      */
     function ViewBanner($bid)
     {
-        $sql = 'UPDATE [[banners]] SET [views] = [views] + 1 WHERE [id] = {bid}';
-        $res = $GLOBALS['db']->query($sql, array('bid' => $bid));
+        $bannersTable = Jaws_ORM::getInstance()->table('banners');
+        $res = $bannersTable->update(
+            array(
+                'views' => $bannersTable->expr('views + ?', 1)
+            )
+        )->where('id', $bid)->exec();
+
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
