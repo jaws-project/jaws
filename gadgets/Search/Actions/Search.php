@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Actions_Search extends SearchHTML
+class Search_Actions_Search extends Search_HTML
 {
     /**
      * Builds the search box
