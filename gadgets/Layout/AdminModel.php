@@ -44,7 +44,7 @@ class Layout_AdminModel extends Layout_Model
         $params['gadget']          = $gadget;
         $params['action']          = $action;
         $params['action_params']   = serialize($action_params);
-        $params['action_filename'] = $action_filename;
+        $params['action_filename'] = empty($action_filename)? '' : $action_filename;
         $params['displayWhen']     = '*';
         $params['section']         = $section;
         $params['pos']             = $pos;
