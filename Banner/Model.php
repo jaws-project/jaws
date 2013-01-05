@@ -135,11 +135,15 @@ class Banner_Model extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $bannersTable->select('id:integer', 'title', 'url', 'banner', 'template');
 
-        $bannersTable->where('published', true)->and()->where('random', $random);
-        $bannersTable->and()->openWhere('views_limitation', 0)->or()->closeWhere('views', '[views_limitation]', '<');
-        $bannersTable->and()->openWhere('clicks_limitation', 0)->or()->closeWhere('clicks', '[clicks_limitation]', '<');
-        $bannersTable->and()->openWhere('start_time', '', 'IS NULL')->or()->closeWhere('start_time', $GLOBALS['db']->Date(), '<=');
-        $bannersTable->and()->openWhere('stop_time', '', 'IS NULL')->or()->closeWhere('stop_time', $GLOBALS['db']->Date(), '>=');
+        $bannersTable->where('published', true)->and()->where('random', $random)->and();
+        $bannersTable->openWhere('views_limitation', 0)->or();
+        $bannersTable->closeWhere('views', $bannersTable->expr('views_limitation'), '<')->and();
+        $bannersTable->openWhere('clicks_limitation', 0)->or();
+        $bannersTable->closeWhere('clicks', $bannersTable->expr('clicks_limitation'), '<')->and();
+        $bannersTable->openWhere('start_time', '', 'is null')->or();
+        $bannersTable->closeWhere('start_time', $GLOBALS['db']->Date(), '<=')->and();
+        $bannersTable->openWhere('stop_time', '', 'is null')->or();
+        $bannersTable->closeWhere('stop_time', $GLOBALS['db']->Date(), '>=');
 
         if ($gid == 0) {
             $bannersTable->orderBy('id ASC');

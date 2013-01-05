@@ -83,10 +83,10 @@ class Banner_LayoutHTML extends Jaws_Gadget_HTML
             $tpl_template->LoadFromString('<!-- BEGIN x -->'.$banner['template'].'<!-- END x -->');
             $tpl_template->SetBlock('x');
             $tpl_template->SetVariable('title',  $banner['title']);
-            if (file_exists(JAWS_DATA . $this->DataDirectory . $banner['banner'])) {
+            if (file_exists(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner'])) {
                 $tpl_template->SetVariable(
                     'banner',
-                    $GLOBALS['app']->getDataURL($this->DataDirectory . $banner['banner'])
+                    $GLOBALS['app']->getDataURL($this->gadget->DataDirectory . $banner['banner'])
                 );
             } else {
                 $tpl_template->SetVariable('banner', $banner['banner']);
