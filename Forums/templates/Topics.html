@@ -2,15 +2,15 @@
 <div class="gadget forums">
   <h2><a href="{findex_url}">{findex_title}</a> &rsaquo; <a href="{url}">{title}</a></h2>
   <div class="content">
-    <div class="topics_header">
+    <div class="forums_header">
       <dl>
         <dt>{lbl_topics}</dt>
-        <dd class="topics_replies">{lbl_replies}</dd>
-        <dd class="topics_views">{lbl_views}</dd>
-        <dd class="topics_lastpost">{lbl_lastpost}</dd>
+        <dd class="forums_stat">{lbl_replies}</dd>
+        <dd class="forums_stat">{lbl_views}</dd>
+        <dd class="forums_lastpost">{lbl_lastpost}</dd>
       </dl>
     </div>
-    <ul class="topics_list">
+    <ul class="forums_list">
       <!-- BEGIN topic -->
       <li>
         <dl>
@@ -21,9 +21,9 @@
               <abbr title="{firstpost_date_iso}">{firstpost_date}</abbr>
             </span>
           </dt>
-          <dd class="topics_replies">{replies}</dd>
-          <dd class="topics_views">{views}</dd>
-          <dd class="topics_lastpost">
+          <dd class="forums_stat">{replies}</dd>
+          <dd class="forums_stat">{views}</dd>
+          <dd class="forums_lastpost">
             <!-- BEGIN lastpost -->
             {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
             <br/><abbr title="{lastpost_date_iso}">{lastpost_date}</abbr>
