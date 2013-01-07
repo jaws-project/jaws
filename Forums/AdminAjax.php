@@ -190,7 +190,7 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse($gid->getMessage(), RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->GetResponse(
