@@ -20,35 +20,28 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function GetLink($id)
     {
-        $params = array();
-        $params['id'] = $id;
+        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
+        $linksTable->select(
+            'id:integer','gid:integer', 'title', 'description', 'url', 'fast_url', 'createtime', 'updatetime',
+            'clicks:integer', 'rank:integer'
+        );
 
-        $sql = '
-            SELECT
-                [id], [gid], [title], [description], [url], [fast_url], [createtime], [updatetime], [clicks], [rank]
-            FROM [[linkdump_links]]';
         if (is_numeric($id)) {
-            $sql .= '
-                WHERE [id] = {id}';
+            $linksTable->where('id', $id);
         } else {
-            $sql .= '
-                WHERE [fast_url] = {id}';
+            $linksTable->where('fast_url', $id);
         }
 
-        $link = $GLOBALS['db']->queryRow($sql, $params);
+        $link = $linksTable->getRow();
         if (Jaws_Error::IsError($link) || !array_key_exists('id', $link)) {
             return new Jaws_Error(Jaws_Error::IsError($link)? $link->getMessage() : _t('LINKDUMP_LINKS_NOT_EXISTS'),
                                   'LINKDUMP_NAME');
         }
 
-        $sql = '
-            SELECT 
-                [tag] 
-            FROM [[linkdump_links_tags]]
-            INNER JOIN [[linkdump_tags]] ON [tag_id] = [id]
-            WHERE [link_id] = {id}';
-        $params['id'] = $link['id'];
-        $tags = $GLOBALS['db']->queryCol($sql, $params);
+        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
+        $ltagsTable->select('tag')->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
+        $tags = $ltagsTable->where('link_id', $link['id'])->getCol();
+
         if (Jaws_Error::IsError($tags)) {
             return new Jaws_Error($tags->getMessage(), 'SQL');
         }
@@ -66,25 +59,25 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function GetTagLinks($tag)
     {
-        $sql = 'SELECT [id] FROM [[linkdump_tags]] WHERE [tag] = {tag}';
-        $res = $GLOBALS['db']->queryRow($sql, array('tag' => $tag));
+        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
+        $res = $ltagsTable->select('id:integer')->where('tag', $tag)->getRow();
+
         if (!Jaws_Error::IsError($res) && !empty($res)) {
             $tag_id = $res['id'];
-            $sql = '
-                SELECT
-                    [id], [title], [description], [url], [fast_url], [createtime], [updatetime], [clicks]
-                FROM [[linkdump_links]]
-                INNER JOIN [[linkdump_links_tags]] on [link_id] = [id]
-                WHERE [tag_id] = {tag_id}
-                ORDER BY [id] ASC';
-            $res  = $GLOBALS['db']->queryAll($sql, array('tag_id' => $tag_id));
+
+            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
+            $linksTable->select(
+                'id:integer', 'title', 'description', 'url', 'fast_url', 'createtime', 'updatetime', 'clicks:integer'
+            );
+            $linksTable->join('linkdump_links_tags', 'linkdump_links_tags.link_id', 'linkdump_links.id');
+            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id ASC')->getAll();
         }
 
         return $res;
     }
 
     /**
-     * Inrease the link's clicks by one
+     * Increase the link's clicks by one
      *
      * @access  public
      * @param   int     $id     Link's id
@@ -92,11 +85,13 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function Click($id)
     {
-        $params       = array();
-        $params['id'] = $id;
+        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
+        $res = $linksTable->update(
+            array(
+                'clicks' => $linksTable->expr('clicks + ?', 1)
+            )
+        )->where('id', $id)->exec();
 
-        $sql = 'UPDATE [[linkdump_links]] SET [clicks] = [clicks] + 1 WHERE [id] = {id}';
-        $res  = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -112,15 +107,11 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function CreateTagCloud()
     {
-        $sql = 'SELECT
-                    [tag_id], [tag], COUNT([tag_id]) as howmany
-                FROM [[linkdump_links_tags]]
-                INNER JOIN [[linkdump_tags]] ON [tag_id] = [id]
-                GROUP BY [tag_id], [tag]
-                ORDER BY [tag]';
+        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
+        $ltagsTable->select('tag_id:integer','tag' , 'count([tag_id]) as howmany:integer');
+        $ltagsTable->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
+        $res = $ltagsTable->groupBy('tag_id', 'tag')->orderBy('tag');
 
-        $types = array('integer', 'text', 'integer');
-        $res = $GLOBALS['db']->queryAll($sql, array(), $types);
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error(_t('LINKDUMP_ERROR_TAGCLOUD_CREATION_FAILED'), _t('BLOG_NAME'));
         }
@@ -137,22 +128,16 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function GetGroup($gid)
     {
-        $sql = '
-            SELECT
-                [id], [title], [fast_url], [limit_count], [link_type], [order_type]
-            FROM [[linkdump_groups]]';
+        $lgroupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
+        $lgroupsTable->select(
+            'id:integer', 'title', 'fast_url', 'limit_count:integer', 'link_type:integer', 'order_type:integer');
+
         if (is_numeric($gid)) {
-            $sql .= '
-                WHERE [id] = {gid}';
+            $lgroupsTable->where('id', $gid);
         } else {
-            $sql .= '
-                WHERE [fast_url] = {gid}';
+            $lgroupsTable->where('fast_url', $gid);
         }
-
-        $params = array();
-        $params['gid'] = $gid;
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $result = $lgroupsTable->getRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('LINKDUMP_NAME'));
         }
@@ -168,13 +153,10 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function GetGroups()
     {
-        $sql = '
-            SELECT
-                [id], [title], [fast_url], [limit_count], [link_type]
-            FROM [[linkdump_groups]]
-            ORDER BY [id] ASC';
+        $lgroupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
+        $lgroupsTable->select('id:integer', 'title', 'fast_url', 'limit_count:integer', 'link_type:integer');
+        $result = $lgroupsTable->orderBy('id ASC')->getAll();
 
-        $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('LINKDUMP_NAME'));
         }
@@ -193,48 +175,33 @@ class LinkDump_Model extends Jaws_Gadget_Model
      */
     function GetGroupLinks($gid = null, $limit = false, $orderBy = 'rank')
     {
-        $params = array();
-        $params['gid'] = $gid;
+        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
+        $linksTable->select(
+            'id:integer','gid:integer', 'title', 'description', 'url', 'fast_url', 'createtime', 'updatetime',
+            'clicks:integer', 'rank:integer'
+        );
 
-        $sql = '
-            SELECT
-                [id], [gid], [title], [description], [url], [fast_url], [createtime], [updatetime], [clicks], [rank]
-            FROM [[linkdump_links]]
-            ';
 
         if (empty($gid)) {
-            $orderSQL = 'ORDER BY [gid], [rank], [id] ASC';
+            $orderSQL = 'gid, rank, id ASC';
         } else {
-            $sql .= 'WHERE [gid] = {gid} ';
+            $linksTable->where('gid', $gid);
             switch ($orderBy) {
                 case 1:
-                    $orderSQL = 'ORDER BY [id] ASC';
+                    $orderSQL = 'id ASC';
                     break;
                 case 2:
-                    $orderSQL = 'ORDER BY [title] ASC';
+                    $orderSQL = 'title ASC';
                     break;
                 case 3:
-                    $orderSQL = 'ORDER BY [clicks] DESC';
+                    $orderSQL = 'clicks DESC';
                     break;
                 default:
-                    $orderSQL = 'ORDER BY [rank], [id] ASC';
+                    $orderSQL = 'rank, id ASC';
             }
         }
-        $sql .= $orderSQL;
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($rs->getMessage(), 'SQL');
-            }
-        }
-
-        $res = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        $linksTable->orderBy($orderSQL)->limit($limit);
+        return $linksTable->getAll();
     }
 
 }
