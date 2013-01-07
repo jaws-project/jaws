@@ -9,7 +9,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Actions_Results extends SearchHTML
+class Search_Actions_Results extends Search_HTML
 {
     /**
      * Displays search results
@@ -46,22 +46,26 @@ class Search_Actions_Results extends SearchHTML
         }
         $query_string .= '&page=';
 
-        $results_limit = (int)$this->GetRegistry('results_limit');
+        $results_limit = (int)$this->gadget->GetRegistry('results_limit');
         if (empty($results_limit)) {
             $results_limit = 10;
         }
 
         if (!$searchable) {
             $tpl->SetBlock('results/notfound');
-            $min_key_len = $this->GetRegistry('Search/min_key_len');
+            $min_key_len = $this->gadget->GetRegistry('Search/min_key_len');
             $tpl->SetVariable('message', _t('SEARCH_STRING_TOO_SHORT', $min_key_len));
             $tpl->ParseBlock('results/notfound');
         } elseif (count($items) > 1) {
-            $tpl->SetVariable('navigation',
-                              $this->GetNumberedPageNavigation($page,
-                                                                $results_limit,
-                                                                $items['_totalItems'],
-                                                                $query_string));
+            $tpl->SetVariable(
+                'navigation',
+                $this->GetNumberedPageNavigation(
+                    $page,
+                    $results_limit,
+                    $items['_totalItems'],
+                    $query_string
+                )
+            );
             if (count($items) > 2) {
                 $tpl->SetBlock('results/subtitle');
                 $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
@@ -72,7 +76,7 @@ class Search_Actions_Results extends SearchHTML
             unset($items['_totalItems']);
 
             $date = $GLOBALS['app']->loadDate();
-            $max_result_len = (int)$this->GetRegistry('max_result_len');
+            $max_result_len = (int)$this->gadget->GetRegistry('max_result_len');
             if (empty($max_result_len)) {
                 $max_result_len = 500;
             }
