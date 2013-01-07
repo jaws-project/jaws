@@ -451,7 +451,16 @@ class Jaws_DB
      */
     function lastInsertID($table = null, $field = null)
     {
-        return $this->dbc->lastInsertID($this->getPrefix() . $table, $field);
+        $result = $this->dbc->lastInsertID($this->getPrefix() . $table, $field);
+        if (PEAR::IsError($result)) {
+            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            return new Jaws_Error($result->getMessage(),
+                                  $result->getCode(),
+                                  JAWS_ERROR_ERROR,
+                                  1);
+        }
+
+        return $result;
     }
 
     /**
