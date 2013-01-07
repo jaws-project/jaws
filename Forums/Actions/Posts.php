@@ -145,6 +145,23 @@ class Forums_Actions_Posts extends Forums_HTML
                 $tpl->ParseBlock('posts/post/update');
             }
 
+            // reply: check permission for add post
+            if ($this->gadget->GetPermission('AddPost') &&
+                (!$topic['locked'] || $this->gadget->GetPermission('AddPostToLockedTopic'))
+            ) {
+                $tpl->SetBlock('posts/post/action');
+                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
+                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
+                $tpl->SetVariable(
+                    'action_url',
+                    $this->gadget->GetURLFor(
+                        'ReplyPost',
+                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
+                    )
+                );
+                $tpl->ParseBlock('posts/post/action');
+            }
+
             if ($topic['first_post_id'] == $post['id']) {
                 // check permission for edit topic
                 if ($this->gadget->GetPermission('EditTopic') &&
@@ -228,23 +245,6 @@ class Forums_Actions_Posts extends Forums_HTML
                     );
                     $tpl->ParseBlock('posts/post/action');
                 }
-            }
-
-            // reply: check permission for add post
-            if ($this->gadget->GetPermission('AddPost') &&
-                (!$topic['locked'] || $this->gadget->GetPermission('AddPostToLockedTopic'))
-            ) {
-                $tpl->SetBlock('posts/post/action');
-                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
-                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
-                $tpl->SetVariable(
-                    'action_url',
-                    $this->gadget->GetURLFor(
-                        'ReplyPost',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                    )
-                );
-                $tpl->ParseBlock('posts/post/action');
             }
 
             $tpl->ParseBlock('posts/post');
