@@ -14,31 +14,31 @@ $maps[] = array('PagesTree', 'page/index');
 $maps[] = array('Page', 
                 'page/{pid}/{language}',
                 '',
-                array('pid'      => '[[:alnum:][:space:][:punct:]]+',
+                array('pid'      => '[\p{L}[:digit:]-_\.]+',
                       'language' => '[[:lower:]-]+',)
                 );
 $maps[] = array('Page', 
                 'page/{pid}',
                 '',
-                array('pid' => '[[:alnum:][:space:][:punct:]]+',)
+                array('pid' => '[\p{L}[:digit:]-_\.]+',)
                 );
 // new maps
 $maps[] = array('Pages', 
                 'pages/{gid}/{pid}/{language}',
                 '',
-                array('gid'      => '[[:alnum:][:space:][:punct:]]+',
-                      'pid'      => '[[:alnum:][:space:][:punct:]]+',
+                array('gid'      => '[\p{L}[:digit:]-_\.]+',
+                      'pid'      => '[\p{L}[:digit:]-_\.]+',
                       'language' => '[[:lower:]-]+',)
                 );
 $maps[] = array('Pages', 
                 'pages/{gid}/{pid}',
                 '',
-                array('gid' => '[[:alnum:][:space:][:punct:]]+',
-                      'pid' => '[[:alnum:][:space:][:punct:]]+',)
+                array('gid' => '[\p{L}[:digit:]-_\.]+',
+                      'pid' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('GroupPages',
                 'pages/{gid}',
                 '',
-                array('gid' => '[[:alnum:][:space:][:punct:]]+',)
+                array('gid' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('GroupsList', 'pages');

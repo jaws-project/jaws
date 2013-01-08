@@ -14,20 +14,20 @@ $maps[] = array('DefaultAction', 'links/groups');
 $maps[] = array('Archive',
                 'links/archive/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
+                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('Group',
                 'links/group/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
+                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('Tag',
                 'links/tag/{tag}',
                 '',
-                array('tag' =>  '[[:alnum:][:space:][:punct:]]+',)
+                array('tag' =>  '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('Link', 
                 'links/{id}',
                 '',
-                array('id' => '[[:alnum:][:space:][:punct:]]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );

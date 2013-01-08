@@ -24,10 +24,10 @@ $maps[] = array('Display',
 $maps[] = array('FileInfo', 
                 'file/info/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
+                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('Download', 
                 'download/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
+                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
                 );

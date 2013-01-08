@@ -12,5 +12,5 @@ $maps[] = array('DefaultAction', 'glossary');
 $maps[] = array('ViewTerm', 
                 'glossary/{term}',
                 '',
-                array('term' => '[[:alnum:][:space:][:punct:]]+',)
+                array('term' => '[\p{L}[:digit:]-_\.]+',)
                 );

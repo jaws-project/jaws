@@ -57,59 +57,59 @@ $maps[] = array('RSS', 'blog/rss');
 $maps[] = array('ShowRSSCategory',
                 'blog/rss/category/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('RecentCommentsRSS', 'blog/rss/comments');
 $maps[] = array('CommentsRSS',
                 'blog/rss/comment/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('Atom', 'blog/atom');
 $maps[] = array('ShowAtomCategory',
                 'blog/atom/category/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('RecentCommentsAtom', 'blog/atom/comments');
 $maps[] = array('CommentsAtom',
                 'blog/atom/comment/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('SingleView', 
                 'blog/show/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('ViewAuthorPage',
                 'blog/author/{id}/page/{page}',
                 '',
-                array('id'   => '[[:alnum:]-_\.]+',
+                array('id'   => '[\p{L}[:digit:]-_\.]+',
                       'page' => '[[:digit:]]+',)
                 );
 $maps[] = array('ViewAuthorPage',
                 'blog/author/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('ViewPage', 'blog/page/{page}');
 $maps[] = array('Reply',
                 'blog/show/{id}/reply/{comment_id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',
+                array('id' => '[\p{L}[:digit:]-_\.]+',
                       'comment_id' => '[[:digit:]]+',)
                 );
 $maps[] = array('ShowCategory',
                 'blog/category/{id}/page/{page}',
                 '',
-                array('id'   => '[[:alnum:]-_\.]+',
+                array('id'   => '[\p{L}[:digit:]-_\.]+',
                       'page' => '[[:digit:]]+',)
                 );
 $maps[] = array('ShowCategory',
                 'blog/category/{id}',
                 '',
-                array('id' => '[[:alnum:]-_\.]+',)
+                array('id' => '[\p{L}[:digit:]-_\.]+',)
                 );
 $maps[] = array('CategoriesList', 'blog/categories');
 $maps[] = array('Trackback', 'trackback/{id}');
