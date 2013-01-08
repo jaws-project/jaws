@@ -53,13 +53,10 @@ if (ini_get('register_globals')) {
 if (get_magic_quotes_gpc()) {
     $input = array(&$_GET, &$_POST, &$_REQUEST, &$_COOKIE, &$_ENV, &$_SERVER);
 
-    // between 5.0.0 and 5.1.0, array keys in the superglobals were escaped even with register_globals off
-    $keybug = (version_compare(PHP_VERSION, '5.0.0', '>=') && version_compare(PHP_VERSION, '5.1.0', '<'));
-
     while (list($k, $v) = each($input)) {
         foreach ($v as $key => $val) {
             if (!is_array($val)) {
-                $key = $keybug ? $key : stripslashes($key);
+                $key = stripslashes($key);
                 $input[$k][$key] = stripslashes($val);
                 continue;
             }

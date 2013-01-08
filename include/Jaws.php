@@ -1141,10 +1141,7 @@ class Jaws
      */
     function classExists($classname)
     {
-        if (version_compare(PHP_VERSION, '5.0', '>=')) {
-            return class_exists($classname, false);
-        }
-        return class_exists($classname);
+        return class_exists($classname, false);
     }
 
     /**

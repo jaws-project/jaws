@@ -734,25 +734,7 @@ class Jaws_UTF8
      */
     function html_entity_decode($string, $quote_style = ENT_QUOTES)
     {
-        // A bug that never got fixed in PHP 4 http://bugs.php.net/bug.php?id=25670
-        if (version_compare(PHP_VERSION, 5, '>=')) {
-            return html_entity_decode($string, $quote_style, 'UTF-8');
-        }
-
-        static $trans_tbl;
-
-        // replace numeric entities
-        $string = preg_replace('~&#x([0-9a-f]+);~ei', 'Jaws_UTF8::chr(hexdec("\\1"))', $string);
-        $string = preg_replace('~&#([0-9]+);~e', 'Jaws_UTF8::chr(\\1)', $string);
-        // replace literal entities
-        if (!isset($trans_tbl)) {
-            $trans_tbl = array();
-            foreach (get_html_translation_table(HTML_ENTITIES, $quote_style) as $val=>$key) {
-                $trans_tbl[$key] = utf8_encode($val);
-            }
-        }
-
-       return strtr($string, $trans_tbl);
+        return html_entity_decode($string, $quote_style, 'UTF-8');
     }
 
     /**

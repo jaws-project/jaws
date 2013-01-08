@@ -216,15 +216,9 @@ class Jaws_Gadget_Model
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $fast_url = $xss->defilter($fast_url, true);
 
-        if (version_compare(PHP_VERSION, '5.1.0', '<')) {
-            $fast_url = preg_replace(array('#[^[:alnum:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
-                                     array('', '-', '-'),
-                                     $GLOBALS['app']->UTF8->strtolower($fast_url));
-        } else {
-            $fast_url = preg_replace(array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
-                                     array('', '-', '-'),
-                                     $GLOBALS['app']->UTF8->strtolower($fast_url));
-        }
+        $fast_url = preg_replace(array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
+                                 array('', '-', '-'),
+                                 $GLOBALS['app']->UTF8->strtolower($fast_url));
 
         if (!$unique_check) {
             return $fast_url;

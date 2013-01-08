@@ -12,9 +12,8 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 
-if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
-    date_default_timezone_set('UTC');
-}
+// set default timezone to utc
+date_default_timezone_set('UTC');
 
 if (!defined('PEAR_PATH')) {
     define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
