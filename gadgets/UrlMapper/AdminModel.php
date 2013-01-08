@@ -278,7 +278,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
 
             // Adding delimiter to regular expression
             $regexp = str_replace('@', '\\@', $regexp);
-            $regexp = '@^' . $regexp . '$@';
+            $regexp = '@^' . $regexp . '$@u';
         }
 
         return $regexp;
