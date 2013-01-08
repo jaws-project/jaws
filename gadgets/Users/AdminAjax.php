@@ -209,6 +209,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                 unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
             }
         }
+
         $res = $this->_UserModel->UpdateUser($uid, $uData);
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -507,32 +508,30 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * Updates my account
      *
      * @access  public
-     * @param   string  $uid        User ID
-     * @param   string  $username   Username
-     * @param   string  $password   Password
-     * @param   string  $nickname   User display name
-     * @param   string  $email      User email
+     * @param   string  $uid    User ID
+     * @param   array   $uData  User information data
      * @return  array   Response array (notice or error)
      */
-    function UpdateMyAccount($uid, $username, $password, $nickname, $email)
+    function UpdateMyAccount($uid, $uData)
     {
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
+        // unset invalid keys
+        $invalids = array_diff(array_keys($uData), array('username', 'nickname', 'email', 'password'));
+        foreach ($invalids as $invalid) {
+            unset($uData[$invalid]);
+        }
 
         if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
-            $password = $JCrypt->decrypt($password);
-            if (($password === false) || Jaws_Error::isError($password)) {
-                $password = null;
+            $uData['password'] = $JCrypt->decrypt($uData['password']);
+            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
+                unset($uData['password']);
             }
         }
 
-        $res = $this->_UserModel->UpdateUser($uid,
-                                             $username,
-                                             $nickname,
-                                             $email,
-                                             $password);
+        $res = $this->_UserModel->UpdateUser($uid, $uData);
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);

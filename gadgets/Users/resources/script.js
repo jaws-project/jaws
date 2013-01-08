@@ -774,12 +774,15 @@ function updateMyAccount()
         encryptedElement($('pass1'), $('exponent').value, $('modulus').value, true, 128);
         $('pass2').value = $('pass1').value;
     }
-    UsersAjax.callAsync('updatemyaccount',
-                        $('uid').value,
-                        $('username').value,
-                        $('pass1').value,
-                        $('nickname').value,
-                        $('email').value);
+    UsersAjax.callAsync(
+        'updatemyaccount',
+        $('uid').value,
+        {'username': $('username').value,
+         'password': $('pass1').value,
+         'nickname': $('nickname').value,
+         'email'   : $('email').value
+        }
+    );
 }
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);
