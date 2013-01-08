@@ -629,8 +629,9 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         // Editor
         $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
+        $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
-        $editor->SetWidth('750px');
+        $editor->SetWidth('96%');
         $pageform->Add($editor);
 
         if ($mode == 'base') {
