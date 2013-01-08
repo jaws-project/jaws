@@ -1,56 +1,43 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <!-- BEGIN layout -->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="{site-languages}">
 <head>
-  <base href="{BASE_URL}" />
+  <base href="{base_url}" />
   <title>{site-title}</title>
   <meta name="author" content="{site-author}" />
   <meta name="keywords" content="{site-keywords}" />
   <meta name="description" content="{site-description}" />
-  <meta http-equiv="content-language" content="{site-languages}" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="{THEME}blog{.dir}.css" media="screen" />
-  <link rel="stylesheet" type="text/css" href="{THEME}style{.dir}.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="{theme_url}style{.dir}.css" media="screen" />
+  <meta name="viewport" content="width=device-width; maximum-scale=2.0; initial-scale=1.0;"/>
   <!-- BEGIN head -->{ELEMENT}<!-- END head -->
 </head>
-<body>
-  <div id="container" class="clearfix">
+<body id="requested_gadget_{requested_gadget}">
 
-    <div id="top_header"><h1><a href="{site-url}">{site-name}</a></h1>
-      <p>{site-slogan}</p>
-    </div>
-
-    <div id="header" class="wide clearfix">
-    <!-- BEGIN header -->{ELEMENT}<!-- END header -->
-    </div>
-
-    <div id="main-section" class="clearfix">
-
-      <div id="bar1" class="narrow">
-      <!-- BEGIN bar1 narrow="yes" -->{ELEMENT}<!-- END bar1 -->
+  <div id="container" class="wrapper">
+    <div id="header" class="clearfix">
+      <div id="title">
+        <h1><a href="{site-url}">{site-name}</a></h1>
+        <p>{site-slogan}</p>
       </div>
-
-      <div id="main" class="wide">
-      <!-- BEGIN main -->{ELEMENT}<!-- END main -->
+      <div id="headbar">
+        <!-- BEGIN header -->{ELEMENT}<!-- END header -->
       </div>
-
-      <div id="bar2" class="narrow">
-      <!-- BEGIN bar2 narrow="yes" -->{ELEMENT}<!-- END bar2 -->
-      </div>
-
     </div>
 
-    <div id="footer" class="wide">
-    <!-- BEGIN footer -->{ELEMENT}<!-- END footer -->
+    <div id="content" class="clearfix">
+      <div id="mainbar"><!-- BEGIN main -->{ELEMENT}<!-- END main --></div>
+      <div id="bar1" class="sidebar"><!-- BEGIN bar1 -->{ELEMENT}<!-- END bar1 --></div>
+      <div id="bar2" class="sidebar"><!-- BEGIN bar2 -->{ELEMENT}<!-- END bar2 --></div>
     </div>
-
-    <div id="sub_footer">
-      <p><strong>{site-name}</strong><br />{site-slogan}</p>
-      <p>Powered by the <a href="http://www.jaws-project.com" rel="external">Jaws Project</a></p>
-    </div>
-
   </div>
+
+  <div id="footer">
+    <div class="wrapper">
+      {site-copyright} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
+    </div>
+  </div>
+
 </body>
 </html>
 <!-- END layout -->
