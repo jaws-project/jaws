@@ -59,7 +59,7 @@ class TextArea extends Bin
      * @param    int     Number of columns
      * @access   public
      */
-    function TextArea($name, $value = '', $title = '', $rows = 5, $cols = 20)
+    function TextArea($name, $value = '', $title = '', $rows = 0, $cols = 0)
     {
         $this->_name       = $name;
         $this->_value      = $value;
@@ -176,7 +176,12 @@ class TextArea extends Bin
     function buildXHTML()
     {
         $this->_XHTML  = '<textarea';
-        $this->_XHTML .= " rows=\"".$this->_rows."\" cols=\"".$this->_cols."\"";
+        if (!empty($this->_rows)) {
+            $this->_XHTML .= " rows='{$this->_rows}'";
+        }
+        if (!empty($this->_cols)) {
+            $this->_XHTML .= " cols='{$this->_cols}'";
+        }
 
         if (!$this->_isEnabled) {
             $this->_XHTML .= ' disabled="disabled"';
