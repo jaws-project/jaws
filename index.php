@@ -18,7 +18,8 @@ define('APP_TYPE',    'web');
 // Redirect to the installer if JawsConfig can't be found.
 $root = dirname(__FILE__);
 if (!file_exists($root . '/config/JawsConfig.php')) {
-    header('Location: install/index.php');
+    require_once 'include/Jaws/Utils.php';
+    header('Location: '. Jaws_Utils::getBaseURL('/'). 'install/index.php');
     exit;
 } else {
     require $root . '/config/JawsConfig.php';
