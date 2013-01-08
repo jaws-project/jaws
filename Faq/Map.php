@@ -13,10 +13,10 @@ $maps[] = array('View', 'faq');
 $maps[] = array('ViewQuestion',
                 'faq/question/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+$',)
+                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
                 );
 $maps[] = array('ViewCategory',
                 'faq/category/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+$',)
+                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
                 );

@@ -14,7 +14,7 @@ $maps[] = array('Display',
                 'files/{path}/page/{page}',
                 '',
                 array('path' => '.*',
-                      'page' => '[[:digit:]]+$')
+                      'page' => '[[:digit:]]+')
                 );
 $maps[] = array('Display',
                 'files/{path}',
@@ -24,10 +24,10 @@ $maps[] = array('Display',
 $maps[] = array('FileInfo', 
                 'file/info/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+$',)
+                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
                 );
 $maps[] = array('Download', 
                 'download/{id}',
                 '',
-                array('id' =>  '[[:alnum:][:space:][:punct:]]+$',)
+                array('id' =>  '[[:alnum:][:space:][:punct:]]+',)
                 );

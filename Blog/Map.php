@@ -20,7 +20,7 @@ $maps[] = array('ViewDatePage',
                 array('year'  => '\d{4}',
                       'month' => '[01]?\d',
                       'day'   => '[0-3]?\d',
-                      'page'  => '[[:digit:]]+$')
+                      'page'  => '[[:digit:]]+')
                 );
 $maps[] = array('ViewDatePage',
                 'blog/{year}/{month}/{day}',
@@ -34,7 +34,7 @@ $maps[] = array('ViewDatePage',
                 '',
                 array('year' => '\d{4}',
                       'month' => '[01]?\d',
-                      'page'  => '[[:digit:]]+$')
+                      'page'  => '[[:digit:]]+')
                 );
 $maps[] = array('ViewDatePage',
                 'blog/{year}/{month}',
@@ -46,7 +46,7 @@ $maps[] = array('ViewDatePage',
                 'blog/{year}/page/{page}',
                 '',
                 array('year' => '\d{4}',
-                      'page'  => '[[:digit:]]+$')
+                      'page'  => '[[:digit:]]+')
                 );
 $maps[] = array('ViewDatePage',
                 'blog/{year}',
@@ -86,7 +86,7 @@ $maps[] = array('ViewAuthorPage',
                 'blog/author/{id}/page/{page}',
                 '',
                 array('id'   => '[[:alnum:]-_\.]+',
-                      'page' => '[[:digit:]]+$',)
+                      'page' => '[[:digit:]]+',)
                 );
 $maps[] = array('ViewAuthorPage',
                 'blog/author/{id}',
@@ -98,13 +98,13 @@ $maps[] = array('Reply',
                 'blog/show/{id}/reply/{comment_id}',
                 '',
                 array('id' => '[[:alnum:]-_\.]+',
-                      'comment_id' => '[[:digit:]]+$',)
+                      'comment_id' => '[[:digit:]]+',)
                 );
 $maps[] = array('ShowCategory',
                 'blog/category/{id}/page/{page}',
                 '',
                 array('id'   => '[[:alnum:]-_\.]+',
-                      'page' => '[[:digit:]]+$',)
+                      'page' => '[[:digit:]]+',)
                 );
 $maps[] = array('ShowCategory',
                 'blog/category/{id}',
