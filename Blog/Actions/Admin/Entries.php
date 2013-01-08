@@ -70,6 +70,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('text', _t('BLOG_ENTRY_BODY'));
         $editor =& $GLOBALS['app']->LoadEditor('Blog', 'text_block', '', false);
         $editor->setId('text_block');
+        $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->SetWidth('96%');
         $tpl->SetVariable('editor', $editor->Get());
@@ -312,6 +313,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('text', _t('BLOG_BODY'));
         $editor =& $GLOBALS['app']->LoadEditor('Blog', 'text_block', $entry['text'], false);
         $editor->setId('text_block');
+        $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->SetWidth('96%');
         $tpl->SetVariable('editor', $editor->Get());
