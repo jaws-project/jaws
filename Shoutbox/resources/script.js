@@ -1,8 +1,8 @@
 /**
- * Chatbox Javascript actions
+ * Shoutbox Javascript actions
  *
  * @category   Ajax
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
@@ -10,7 +10,7 @@
 /**
  * Use async mode, create Callback
  */
-var ChatboxCallback = {
+var ShoutboxCallback = {
 
     updateproperties: function(response) {
         showResponse(response);
@@ -97,7 +97,7 @@ function getDataOfLCForm()
  */
 function deleteComment(id)
 {
-    ChatboxAjax.callAsync('deletecomment', id);
+    ShoutboxAjax.callAsync('deletecomment', id);
 }
 
 /**
@@ -150,10 +150,10 @@ function nextValues()
  */
 function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = ChatboxAjax.callSync('searchcomments', limit, filter, search, status);
+    result = ShoutboxAjax.callSync('searchcomments', limit, filter, search, status);
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
-        var size = ChatboxAjax.callSync('sizeofcommentssearch', filter, search, status);
+        var size = ShoutboxAjax.callSync('sizeofcommentssearch', filter, search, status);
         $('comments_datagrid').rowsSize    = size;
         $('comments_datagrid').setCurrentPage(0);
         $('comments_datagrid').updatePageCounter();
@@ -167,7 +167,7 @@ function commentDelete(row_id)
 {
     var confirmation = confirm(deleteConfirm);
     if (confirmation) {
-        ChatboxAjax.callAsync('deletecomments', row_id);
+        ShoutboxAjax.callAsync('deletecomments', row_id);
     }
 }
 
@@ -186,12 +186,12 @@ function commentDGAction(combo)
         if (selectedRows) {
             var confirmation = confirm(deleteConfirm);
             if (confirmation) {
-                ChatboxAjax.callAsync('deletecomments', rows);
+                ShoutboxAjax.callAsync('deletecomments', rows);
             }
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            ChatboxAjax.callAsync('markas', rows, combo.value);
+            ShoutboxAjax.callAsync('markas', rows, combo.value);
         }
     }
 }
@@ -205,10 +205,10 @@ function updateProperties(form)
     var limitEntries = form.elements['limit_entries'].value;
     var max_strlen   = form.elements['max_strlen'].value;
     var authority    = form.elements['authority'].value;
-    ChatboxAjax.callAsync('updateproperties', limitEntries, max_strlen, authority);
+    ShoutboxAjax.callAsync('updateproperties', limitEntries, max_strlen, authority);
 }
 
-var ChatboxAjax = new JawsAjax('Chatbox', ChatboxCallback);
+var ShoutboxAjax = new JawsAjax('Shoutbox', ShoutboxCallback);
 
 var firstFetch = true;
 var currentIndex = 0;

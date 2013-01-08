@@ -1,17 +1,17 @@
 <?php
 /**
- * Chatbox Installer
+ * Shoutbox Installer
  *
  * @category    GadgetModel
- * @package     Chatbox
+ * @package     Shoutbox
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_Installer extends Jaws_Gadget_Installer
+class Shoutbox_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Install Chatbox gadget in Jaws
+     * Install Shoutbox gadget in Jaws
      *
      * @access  public
      * @return  bool    True on successful installation
@@ -69,8 +69,8 @@ class Chatbox_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '0.8.1', '<')) {
             $this->gadget->AddRegistry('comment_status', 'approved');
             $this->gadget->AddRegistry('anon_post_authority', 'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Chatbox/ManageComments',  'false');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Chatbox/DeleteEntry');
+            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Shoutbox/ManageComments',  'false');
+            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Shoutbox/DeleteEntry');
         }
 
         return true;

@@ -1,15 +1,15 @@
 <?php
 /**
- * Chatbox Gadget
+ * Shoutbox Gadget
  *
  * @category   GadgetModel
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_Model extends Jaws_Gadget_Model
+class Shoutbox_Model extends Jaws_Gadget_Model
 {
     /**
      * This function mails the comments to the owner
@@ -25,9 +25,9 @@ class Chatbox_Model extends Jaws_Gadget_Model
         require_once JAWS_PATH . '/include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
 
-        $subject  = _t('CHATBOX_COMMENT_MAIL_TITLE');
+        $subject  = _t('SHOUTBOX_COMMENT_MAIL_TITLE');
         $comment .= "<br /><br />";
-        $comment .= _t("CHATBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->GetRegistry('site_name', 'Settings'));
+        $comment .= _t("SHOUTBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->GetRegistry('site_name', 'Settings'));
 
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
@@ -37,7 +37,7 @@ class Chatbox_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Create a new entry in the chatbox table
+     * Create a new entry in the shoutbox table
      *
      * @access  public
      * @param   string  $name           Who is posting?
@@ -64,7 +64,7 @@ class Chatbox_Model extends Jaws_Gadget_Model
         }
 
         $status = $this->gadget->GetRegistry('comment_status');
-        if ($GLOBALS['app']->Session->GetPermission('Chatbox', 'ManageComments')) {
+        if ($GLOBALS['app']->Session->GetPermission('Shoutbox', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
@@ -73,7 +73,7 @@ class Chatbox_Model extends Jaws_Gadget_Model
             $url, '', $message, $ip, $permalink, 0, $status
         );
         if (Jaws_Error::isError($res)) {
-            return new Jaws_Error($res->getMessage(), _t('CHATBOX_NAME'));
+            return new Jaws_Error($res->getMessage(), _t('SHOUTBOX_NAME'));
         }
 
         //Send an email to website owner

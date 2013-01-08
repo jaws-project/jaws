@@ -1,14 +1,14 @@
 <?php
 /**
- * Chatbox - URL List gadget hook
+ * Shoutbox - URL List gadget hook
  *
  * @category   GadgetHook
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ChatboxURLListHook
+class ShoutboxURLListHook
 {
     /**
      * Returns an array with all available items the Menu gadget 
@@ -19,8 +19,8 @@ class ChatboxURLListHook
      */
     function Hook()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Chatbox', 'DefaultAction'),
-                        'title' => _t('CHATBOX_NAME'));
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'DefaultAction'),
+                        'title' => _t('SHOUTBOX_NAME'));
         return $urls;
     }
 }

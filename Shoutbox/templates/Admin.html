@@ -1,10 +1,10 @@
-<!-- BEGIN chatbox_admin -->
+<!-- BEGIN shoutbox_admin -->
 <div align="center">
 <table style="width: 100%">
     <tr>
         <td valign="top">
             <form action="{base_script}" name="ListComments" onsubmit="return searchComment();" method="post">
-            <input type="hidden" name="gadget" value="Chatbox" />
+            <input type="hidden" name="gadget" value="Shoutbox" />
             <table style="width: 100%">
               <tr>
                 <td align="right" nowrap="nowrap">{status_label} {status} {comments_where} {filter_by} {filter} {filter_button}</td>
@@ -21,4 +21,4 @@
 var deleteConfirm = "{deleteConfirm}";
 getData();
 </script>
-<!-- END chatbox_admin -->
+<!-- END shoutbox_admin -->

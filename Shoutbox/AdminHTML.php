@@ -1,16 +1,16 @@
 <?php
 /**
- * Chatbox Gadget
+ * Shoutbox Gadget
  *
  * @category   GadgetAdmin
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_AdminHTML extends Jaws_Gadget_HTML
+class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Returns the default administration action to use if none is specified.
@@ -50,7 +50,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
             $this->gadget->name,
-            BASE_SCRIPT . '?gadget=Chatbox&amp;action=EditEntry&amp;id={id}',
+            BASE_SCRIPT . '?gadget=Shoutbox&amp;action=EditEntry&amp;id={id}',
             $filter,
             $search,
             $status,
@@ -59,7 +59,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Displays chatbox admin (comments manager)
+     * Displays shoutbox admin (comments manager)
      *
      * @access  public
      * @return  string  XHTML template content
@@ -68,14 +68,14 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Chatbox/templates/');
+        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
         $tpl->Load('Admin.html');
-        $tpl->SetBlock('chatbox_admin');
+        $tpl->SetBlock('shoutbox_admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('comments_where', _t('CHATBOX_COMMENTS_WHERE'));
+        $tpl->SetVariable('comments_where', _t('SHOUTBOX_COMMENTS_WHERE'));
         $tpl->SetVariable('status_label',   _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('deleteConfirm',  _t('CHATBOX_CONFIRM_MASIVE_DELETE_ENTRIES'));
+        $tpl->SetVariable('deleteConfirm',  _t('SHOUTBOX_CONFIRM_MASIVE_DELETE_ENTRIES'));
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
@@ -91,12 +91,12 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         $filterByData = '';
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
-        $filterBy->AddOption(_t('CHATBOX_ID'), 'id');
-        $filterBy->AddOption(_t('CHATBOX_ENTRY_CONTAINS'), 'comment');
-        $filterBy->AddOption(_t('CHATBOX_NAME_CONTAINS'), 'name');
-        $filterBy->AddOption(_t('CHATBOX_EMAIL_CONTAINS'), 'email');
-        $filterBy->AddOption(_t('CHATBOX_URL_CONTAINS'), 'url');
-        $filterBy->AddOption(_t('CHATBOX_IP_CONTAINS'), 'ip');
+        $filterBy->AddOption(_t('SHOUTBOX_ID'), 'id');
+        $filterBy->AddOption(_t('SHOUTBOX_ENTRY_CONTAINS'), 'comment');
+        $filterBy->AddOption(_t('SHOUTBOX_NAME_CONTAINS'), 'name');
+        $filterBy->AddOption(_t('SHOUTBOX_EMAIL_CONTAINS'), 'email');
+        $filterBy->AddOption(_t('SHOUTBOX_URL_CONTAINS'), 'url');
+        $filterBy->AddOption(_t('SHOUTBOX_IP_CONTAINS'), 'ip');
         $filterBy->SetDefault($filterByData);
         $tpl->SetVariable('filter_by', $filterBy->Get());
 
@@ -106,7 +106,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         $filterEntry->setSize(20);
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
-                                            _t('CHATBOX_FILTER'), STOCK_SEARCH);
+                                            _t('SHOUTBOX_FILTER'), STOCK_SEARCH);
         $filterButton->AddEvent(ON_CLICK, 'javascript: searchComment();');
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
@@ -117,16 +117,16 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         ///Config properties
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Chatbox'));
+            $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Shoutbox'));
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
 
             include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-            $fieldset = new Jaws_Widgets_FieldSet(_t('CHATBOX_SETTINGS'));
+            $fieldset = new Jaws_Widgets_FieldSet(_t('SHOUTBOX_SETTINGS'));
             $fieldset->SetDirection('vertical');
 
             //
             $limitcombo =& Piwi::CreateWidget('Combo', 'limit_entries');
-            $limitcombo->SetTitle(_t('CHATBOX_ENTRY_LIMIT'));
+            $limitcombo->SetTitle(_t('SHOUTBOX_ENTRY_LIMIT'));
             for ($i = 1; $i <= 20; ++$i) {
                 $limitcombo->AddOption($i, $i);
             }
@@ -139,7 +139,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
 
             // max length
             $max_lencombo =& Piwi::CreateWidget('Combo', 'max_strlen');
-            $max_lencombo->SetTitle(_t('CHATBOX_ENTRY_MAX_LEN'));
+            $max_lencombo->SetTitle(_t('SHOUTBOX_ENTRY_MAX_LEN'));
             for ($i = 1; $i <= 10; ++$i) {
                 $max_lencombo->AddOption($i*25, $i*25);
             }
@@ -152,7 +152,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
 
             //Anonymous post authority
             $authority =& Piwi::CreateWidget('Combo', 'authority');
-            $authority->SetTitle(_t('CHATBOX_ANON_POST_AUTHORITY'));
+            $authority->SetTitle(_t('SHOUTBOX_ANON_POST_AUTHORITY'));
             $authority->AddOption(_t('GLOBAL_DISABLED'), 'false');
             $authority->AddOption(_t('GLOBAL_ENABLED'),  'true');
             $anon_authority = $this->gadget->GetRegistry('anon_post_authority');
@@ -168,7 +168,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         }
 
 
-        $tpl->ParseBlock('chatbox_admin');
+        $tpl->ParseBlock('shoutbox_admin');
 
         return $tpl->Get();
     }
@@ -187,15 +187,15 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $comment = $cModel->GetComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($comment)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox&action=ManageComments');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Shoutbox&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Chatbox/templates/');
+        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
         $tpl->Load('EditComment.html');
         $tpl->SetBlock('edit_comment');
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Chatbox'));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Shoutbox'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveEditEntry'));
 
         $name =& Piwi::CreateWidget('Entry', 'name', $comment['name']);
@@ -219,7 +219,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
-        $comment->SetTitle(_t('CHATBOX_ENTRY'));
+        $comment->SetTitle(_t('SHOUTBOX_ENTRY'));
 
         $cancelButton =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');
@@ -260,7 +260,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
      */
     function SaveEditEntry()
     {
-        $model = $GLOBALS['app']->LoadGadget('Chatbox', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'AdminModel');
         $req =& Jaws_Request::getInstance();
 
         $res = $model->UpdateComment($req->get('id', 'post'),
@@ -269,7 +269,7 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
                               $req->get('email', 'post'),
                               $req->get('comments', 'post'));
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Shoutbox');
     }
 
     /**
@@ -281,9 +281,9 @@ class Chatbox_AdminHTML extends Jaws_Gadget_HTML
     {
         $req =& Jaws_Request::getInstance();
 
-        $model = $GLOBALS['app']->LoadGadget('Chatbox', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'AdminModel');
         $model->DeleteComment($req->get('id', 'post'));
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Chatbox');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Shoutbox');
     }
 }

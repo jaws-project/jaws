@@ -1,14 +1,14 @@
 <?php
 /**
- * Chatbox AJAX API
+ * Shoutbox AJAX API
  *
  * @category   Ajax
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_AdminAjax extends Jaws_Gadget_HTML
+class Shoutbox_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
@@ -17,7 +17,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_HTML
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Chatbox_AdminAjax($gadget)
+    function Shoutbox_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
         $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
@@ -36,7 +36,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_HTML
     function SearchComments($limit, $filter, $search, $status)
     {
         $this->gadget->CheckPermission('ManageComments');
-        $gadget = $GLOBALS['app']->LoadGadget('Chatbox', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Shoutbox', 'AdminHTML');
         return $gadget->CommentsData($limit, $filter, $search, $status);
     }
 
@@ -116,7 +116,7 @@ class Chatbox_AdminAjax extends Jaws_Gadget_HTML
      * Update the properties
      *
      * @access  public
-     * @param   int     $limit      Limit of chatbox entries
+     * @param   int     $limit      Limit of shoutbox entries
      * @param   int     $max_strlen Maximum length of comment entry
      * @param   bool    $authority
      * @return  array   Response array (notice or error)

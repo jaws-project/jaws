@@ -1,36 +1,36 @@
 <?php
 /**
- * Chatbox Layout HTML file (for layout purposes)
+ * Shoutbox Layout HTML file (for layout purposes)
  *
  * @category   GadgetLayout
- * @package    Chatbox
+ * @package    Shoutbox
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Chatbox_LayoutHTML extends Jaws_Gadget_HTML
+class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Displays the chatbox
+     * Displays the shoutbox
      *
      * @access  public
      * @return  string  XHTML template content
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Chatbox/templates/');
-        $tpl->Load('Chatbox.html');
-        $tpl->SetBlock('chatbox');
-        $tpl->SetVariable('title', _t('CHATBOX_NAME'));
+        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
+        $tpl->Load('Shoutbox.html');
+        $tpl->SetBlock('shoutbox');
+        $tpl->SetVariable('title', _t('SHOUTBOX_NAME'));
 
         if ($GLOBALS['app']->Session->Logged() ||
             $this->gadget->GetRegistry('anon_post_authority') == 'true')
         {
-            $tpl->SetBlock('chatbox/fieldset');
+            $tpl->SetBlock('shoutbox/fieldset');
             $tpl->SetVariable('base_script', BASE_SCRIPT);
-            $tpl->SetVariable('message', _t('CHATBOX_MESSAGE'));
-            $tpl->SetVariable('send', _t('CHATBOX_SEND'));
+            $tpl->SetVariable('message', _t('SHOUTBOX_MESSAGE'));
+            $tpl->SetVariable('send', _t('SHOUTBOX_SEND'));
 
             $name  = $GLOBALS['app']->Session->GetCookie('visitor_name');
             $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
@@ -40,7 +40,7 @@ class Chatbox_LayoutHTML extends Jaws_Gadget_HTML
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
             if (!$GLOBALS['app']->Session->Logged()) {
-                $tpl->SetBlock('chatbox/fieldset/info-box');
+                $tpl->SetBlock('shoutbox/fieldset/info-box');
                 $url_value = empty($url)? 'http://' : $xss->filter($url);
                 $tpl->SetVariable('url', _t('GLOBAL_URL'));
                 $tpl->SetVariable('urlvalue', $url_value);
@@ -49,55 +49,55 @@ class Chatbox_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('namevalue', isset($name) ? $xss->filter($name) : '');
                 $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
                 $tpl->SetVariable('emailvalue', isset($email) ? $xss->filter($email) : '');
-                $tpl->ParseBlock('chatbox/fieldset/info-box');
+                $tpl->ParseBlock('shoutbox/fieldset/info-box');
             }
 
             $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
             if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
-                $tpl->SetBlock('chatbox/fieldset/captcha');
+                $tpl->SetBlock('shoutbox/fieldset/captcha');
                 $tpl->SetVariable('lbl_captcha', $label);
                 $tpl->SetVariable('captcha', $captcha);
                 if (!empty($entry)) {
                     $tpl->SetVariable('captchavalue', $entry);
                 }
                 $tpl->SetVariable('captcha_msg', $description);
-                $tpl->ParseBlock('chatbox/fieldset/captcha');
+                $tpl->ParseBlock('shoutbox/fieldset/captcha');
             }
 
-            $tpl->ParseBlock('chatbox/fieldset');
+            $tpl->ParseBlock('shoutbox/fieldset');
         } else {
-            $tpl->SetBlock('chatbox/unregistered');
+            $tpl->SetBlock('shoutbox/unregistered');
             $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
                                         $GLOBALS['app']->Map->GetURLFor('Users', 'Registration')));
-            $tpl->ParseBlock('chatbox/unregistered');
+            $tpl->ParseBlock('shoutbox/unregistered');
         }
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Chatbox')) {
-            $tpl->SetBlock('chatbox/response');
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Shoutbox')) {
+            $tpl->SetBlock('shoutbox/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('chatbox/response');
+            $tpl->ParseBlock('shoutbox/response');
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl->SetVariable('chatbox_messages', $this->GetMessages());
-        $tpl->ParseBlock('chatbox');
+        $tpl->SetVariable('shoutbox_messages', $this->GetMessages());
+        $tpl->ParseBlock('shoutbox');
         return $tpl->Get();
     }
 
     /**
-     * Get the chatbox messages list
+     * Get the shoutbox messages list
      *
      * @access  public
      * @return  string  XHTML template content
      */
     function GetMessages()
     {
-        $model = $GLOBALS['app']->LoadGadget('Chatbox', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'Model');
         $entries = $model->GetEntries($this->gadget->GetRegistry('limit'));
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
-            $tpl = new Jaws_Template('gadgets/Chatbox/templates/');
-            $tpl->Load('Chatbox.html');
+            $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
+            $tpl->Load('Shoutbox.html');
             $tpl->SetBlock('messages');
 
             $date = $GLOBALS['app']->loadDate();
@@ -110,9 +110,9 @@ class Chatbox_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
                 $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt']));
                 if ($entry['status'] == 'spam') {
-                   $tpl->SetVariable('status_message', _t('CHATBOX_COMMENT_IS_SPAM'));
+                   $tpl->SetVariable('status_message', _t('SHOUTBOX_COMMENT_IS_SPAM'));
                 } elseif ($entry['status'] == 'waiting') {
-                    $tpl->SetVariable('status_message', _t('CHATBOX_COMMENT_IS_WAITING'));
+                    $tpl->SetVariable('status_message', _t('SHOUTBOX_COMMENT_IS_WAITING'));
                 } else {
                     $tpl->SetVariable('status_message', '&nbsp;');
                 }
