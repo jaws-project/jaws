@@ -152,4 +152,5 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         $this->_Model->MarkAs($gadget, $ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }

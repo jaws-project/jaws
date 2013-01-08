@@ -15,57 +15,55 @@
 var CommentsCallback = {
     UpdateComment: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            limit = $('comments_datagrid').getCurrentPage();
-            getData(limit);
             stopAction();
+            getDG('comments_datagrid');
         }
         showResponse(response);
     },
 
     DeleteComments: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            limit = $('comments_datagrid').getCurrentPage();
-            getData(limit);
             stopAction();
+            getDG('comments_datagrid');
         }
         showResponse(response);
     },
 
     MarkAs: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            limit = $('comments_datagrid').getCurrentPage();
-            getData(limit);
             stopAction();
+            getDG('comments_datagrid');
         }
         showResponse(response);
     }
 }
 
 /**
- * Get data
+ * Fetches comments data to fills the data grid
  */
-function getData(limit)
+function getCommentsDataGrid(name, offset, reset)
 {
-    if (limit == undefined) {
-        limit = $('comments_datagrid').getCurrentPage();
+    var comments = CommentsAjax.callSync(
+        'SearchComments',
+        offset,
+        $('gadgets_filter').value,
+        $('filterby').value,
+        $('filter').value,
+        $('status').value
+    );
+    if (reset) {
+        stopAction();
+        $(name).setCurrentPage(0);
+        var total = CommentsAjax.callSync(
+            'SizeOfCommentsSearch',
+            $('gadgets_filter').value,
+            $('filterby').value,
+            $('filter').value,
+            $('status').value
+        );
     }
-    //var formData = getDataOfLCForm();
-    updateCommentsDatagrid(limit, false);
-}
 
-/**
- * Update comments datagrid
- */
-function updateCommentsDatagrid(limit, resetCounter)
-{
-    result = CommentsAjax.callSync('SearchComments', limit, $('gadgets_filter').value, $('filterby').value, $('filter').value, $('status').value);
-    resetGrid('comments_datagrid', result);
-    if (resetCounter) {
-        var size = CommentsAjax.callSync('SizeOfCommentsSearch', $('gadgets_filter').value, $('filterby').value, $('filter').value, $('status').value);
-        $('comments_datagrid').rowsSize    = size;
-        $('comments_datagrid').setCurrentPage(0);
-        $('comments_datagrid').updatePageCounter();
-    }
+    resetGrid(name, comments, total);
 }
 
 function isValidEmail(email) {
@@ -202,8 +200,7 @@ function commentDGAction(combo)
  */
 function searchComment()
 {
-    updateCommentsDatagrid(0, true);
-    return false;
+    getCommentsDataGrid('comments_datagrid', 0, true);
 }
 
 /**

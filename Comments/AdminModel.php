@@ -253,103 +253,63 @@ class Comments_AdminModel extends Comments_Model
      * @param   string  $filterMode Which mode should be used to filter
      * @param   string  $filterData Data that will be used in the filter
      * @param   string  $status     Spam status (approved, waiting, spam)
-     * @param   mixed   $limit      Limit of data (numeric/boolean: no limit)
+     * @param   mixed   $offset     Offset of data
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
      */
-    function GetFilteredComments($gadget, $filterMode, $filterData, $status, $limit)
+    function GetFilteredComments($gadget, $filterMode, $filterData, $status, $offset)
     {
-        if (
-            $filterMode != COMMENT_FILTERBY_REFERENCE &&
-            $filterMode != COMMENT_FILTERBY_STATUS &&
-            $filterMode != COMMENT_FILTERBY_IP
-            ) {
-            $filterData = '%'.$filterData.'%';
-        }
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->select(
+            'id', 'gadget_reference', 'gadget', 'parent', 'name','email',
+            'url', 'ip', 'title', 'msg_txt', 'replies', 'status', 'createtime'
+        );
 
-        $params = array();
-        $params['filterData'] = $filterData;
-        $params['gadget'] = $gadget;
-
-        $sql = '
-            SELECT
-                [id],
-                [gadget_reference],
-                [gadget],
-                [parent],
-                [name],
-                [email],
-                [url],
-                [ip],
-                [title],
-                [msg_txt],
-                [replies],
-                [status],
-                [createtime]
-            FROM [[comments]]';
-
-        if (!is_null($gadget) && ($gadget != -1)) {
-            $sql .= ' WHERE [gadget] = {gadget}';
-        }
-
-        switch ($filterMode) {
-        case COMMENT_FILTERBY_REFERENCE:
-            $sql.= ' AND [gadget_reference] = {filterData}';
-            break;
-        case COMMENT_FILTERBY_NAME:
-            $sql.= ' AND [name] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_EMAIL:
-            $sql.= ' AND [email] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_URL:
-            $sql.= ' AND [url] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_TITLE:
-            $sql.= ' AND [title] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_IP:
-            $sql.= ' AND [ip] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_MESSAGE:
-            $sql.= ' AND [msg_txt] LIKE {filterData}';
-            break;
-        case COMMENT_FILTERBY_VARIOUS:
-            $sql.= ' AND ([name] LIKE {filterData}';
-            $sql.= ' OR [email] LIKE {filterData}';
-            $sql.= ' OR [url] LIKE {filterData}';
-            $sql.= ' OR [title] LIKE {filterData}';
-            $sql.= ' OR [msg_txt] LIKE {filterData})';
-            break;
-        default:
-            if (is_bool($limit)) {
-                $limit = false;
-                //By default we get the last 20 comments
-                $result = $GLOBALS['db']->setLimit('20');
-                if (Jaws_Error::IsError($result)) {
-                    return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), _t('COMMENTS_NAME'));
-                }
-            }
-            break;
+        if (!empty($gadget)) {
+            $commentsTable->where('gadget', $gadget);
         }
 
         if (in_array($status, array('approved', 'waiting', 'spam'))) {
-            $params['status'] = $status;
-            $sql.= ' AND [status] = {status}';
+            $commentsTable->and()->where('status', $status);
         }
 
-        if (is_numeric($limit)) {
-            $result = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), _t('COMMENTS_NAME'));
+        if (!empty($filterData)) {
+            switch ($filterMode) {
+                case COMMENT_FILTERBY_REFERENCE:
+                    $commentsTable->and()->where('gadget_reference', $filterData);
+                    break;
+                case COMMENT_FILTERBY_NAME:
+                    $commentsTable->and()->where('name', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_EMAIL:
+                    $commentsTable->and()->where('email', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_URL:
+                    $commentsTable->and()->where('url', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_TITLE:
+                    $commentsTable->and()->where('title', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_IP:
+                    $commentsTable->and()->where('ip', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_MESSAGE:
+                    $commentsTable->and()->where('msg_txt', '%'.$filterData.'%', 'like');
+                    break;
+                case COMMENT_FILTERBY_VARIOUS:
+                    $commentsTable->and()->openWhere('gadget_reference', $filterData);
+                    $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
+                    $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
+                    $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
+                    $commentsTable->or()->where('title', '%'.$filterData.'%', 'like');
+                    $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
+                    break;
             }
         }
-        $sql.= ' ORDER BY [createtime] DESC';
 
-        $rows = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), _t('COMMENTS_NAME'));
-        }
-
+        
+        $commentsTable->limit(10, $offset);
+        $commentsTable->orderBy('createtime desc');
+        $rows = $commentsTable->getAll();
         return $rows;
     }
 

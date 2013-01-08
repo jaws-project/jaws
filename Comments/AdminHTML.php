@@ -39,10 +39,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         // TODO: Check Permission For Manage Comments
-        $menubar->AddOption('Comments',
-                            _t('COMMENTS_NAME'),
-                            BASE_SCRIPT . '?gadget=Comments&amp;action=Admin',
-                            'gadgets/Comments/images/Comments_mini.png');
+        $menubar->AddOption(
+            'Comments',
+            _t('COMMENTS_NAME'),
+            BASE_SCRIPT . '?gadget=Comments&amp;action=Admin');
 
         $menubar->Activate($action);
         return $menubar->Get();
@@ -71,10 +71,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $gadgetsCombo->SetID('gadgets_filter');
         $gadgetsCombo->setStyle('width: 100px;');
         $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
-        $gadgetsCombo->AddOption('', -1);
+        $gadgetsCombo->AddOption('', '');
         // TODO: Get List Of Gadget Which Use Comments
         $gadgetsCombo->AddOption('Blog', 'Blog');
-        $gadgetsCombo->SetDefault(-1);
+        $gadgetsCombo->SetDefault('');
         $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
         $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
 
