@@ -1,4 +1,5 @@
 <?php
+define('MIN_PHP_VERSION', '5.2.1');
 /**
  * Requirements to upgrade jaws.
  *
@@ -9,8 +10,6 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('MIN_PHP_VERSION', '5.2.0');
-
 class Upgrader_Requirements extends JawsUpgraderStage
 {
     // Supported databases

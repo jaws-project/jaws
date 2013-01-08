@@ -1,5 +1,5 @@
 <?php
-define('MIN_PHP_VERSION', '5.2.0');
+define('MIN_PHP_VERSION', '5.2.1');
 /**
  * Requirements to upgrade jaws.
  *
