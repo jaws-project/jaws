@@ -16,18 +16,18 @@ require_once JAWS_PATH . 'gadgets/Menu/Model.php';
 class Menu_AdminModel extends Menu_Model
 {
     /**
-    * Insert a group
-    *
-    * @access  public
-    * @param   string   $title
-    * @param   string   $title_view
-    * @param   bool     $visible        is visible
-    * @return  bool     True on success or False on failure
-    */
+     * Insert a group
+     *
+     * @access  public
+     * @param   string   $title
+     * @param   string   $title_view
+     * @param   bool     $visible        is visible
+     * @return  bool     True on success or False on failure
+     */
     function InsertGroup($title, $title_view, $visible)
     {
-        $sql = 'SELECT COUNT([id]) FROM [[menus_groups]] WHERE [title] = {title}';
-        $gc = $GLOBALS['db']->queryOne($sql, array('title' => $title));
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $gc = $mgroupsTable->select('count([id]):integer')->where('title', $title)->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -38,69 +38,57 @@ class Menu_AdminModel extends Menu_Model
             return false;
         }
 
-        $sql = '
-            INSERT INTO [[menus_groups]]
-                ([title], [title_view], [visible])
-            VALUES
-                ({title}, {title_view}, {visible})';
-
-        $params = array();
-        $params['title']      = $title;
-        $params['title_view'] = $title_view;
-        $params['visible']    = $visible;
-        $res = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
+        $gData['title']      = $title;
+        $gData['title_view'] = $title_view;
+        $gData['visible']    = $visible;
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $gid = $mgroupsTable->insert($gData)->exec();
+        if (Jaws_Error::IsError($gid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $gid = $GLOBALS['db']->lastInsertID('menus_groups', 'id');
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
 
         return true;
     }
 
     /**
-    * Insert a menu
-    *
-    * @access  public
-    * @param    int     $pid
-    * @param    int     $gid        group ID
-    * @param    string  $type
-    * @param    string  $title
-    * @param    string  $url
-    * @param    string  $url_target
-    * @param    string  $rank
-    * @param    bool    $visible    is visible
-    * @param    string  $image
-    * @return   bool    True on success or False on failure
-    */
+     * Insert a menu
+     *
+     * @access  public
+     * @param    int     $pid
+     * @param    int     $gid        group ID
+     * @param    string  $type
+     * @param    string  $title
+     * @param    string  $url
+     * @param    string  $url_target
+     * @param    string  $rank
+     * @param    bool    $visible    is visible
+     * @param    string  $image
+     * @return   bool    True on success or False on failure
+     */
     function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
-        $sql = '
-            INSERT INTO [[menus]]
-                ([pid], [gid], [menu_type], [title], [url], [url_target], [rank], [visible], [image])
-            VALUES
-                ({pid}, {gid}, {type}, {title}, {url}, {url_target}, {rank}, {visible}, {image})';
-
-        $params = array();
-        $params['pid']        = $pid;
-        $params['gid']        = $gid;
-        $params['type']       = $type;
-        $params['title']      = $title;
-        $params['url']        = $url;
-        $params['url_target'] = $url_target;
-        $params['rank']       = $rank;
-        $params['visible']    = $visible;
+        $mData['pid']        = $pid;
+        $mData['gid']        = $gid;
+        $mData['menu_type']  = $type;
+        $mData['title']      = $title;
+        $mData['url']        = $url;
+        $mData['url_target'] = $url_target;
+        $mData['rank']       = $rank;
+        $mData['visible']    = $visible;
         if (empty($image)) {
-            $params['image']  = null;
+            $mData['image']  = null;
         } else {
             $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-            $params['image']  = array('type'=> 'blob', 'value' => 'File://' . $filename);
+            $mData['image']  = array('type'=> 'blob', 'value' => 'File://' . $filename);
         }
 
-        $res = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $mid = $menusTable->insert($mData)->exec();
+
+        if (Jaws_Error::IsError($mid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
@@ -109,7 +97,6 @@ class Menu_AdminModel extends Menu_Model
             Jaws_Utils::Delete($filename);
         }
 
-        $mid = $GLOBALS['db']->lastInsertID('menus', 'id');
         $this->MoveMenu($mid, $gid, $gid, $pid, $pid, $rank, null);
         $GLOBALS['app']->Session->PushLastResponse($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
 
@@ -117,25 +104,20 @@ class Menu_AdminModel extends Menu_Model
     }
 
     /**
-    * Update a group
-    *
-    * @access  public
-    * @param    int     $gid            group ID
-    * @param    string  $title
-    * @param    string  $title_view
-    * @param    bool    $visible        is visible
-    * @return   bool    True on success or False on failure
-    */
+     * Update a group
+     *
+     * @access  public
+     * @param    int     $gid            group ID
+     * @param    string  $title
+     * @param    string  $title_view
+     * @param    bool    $visible        is visible
+     * @return   bool    True on success or False on failure
+     */
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
-        $sql = '
-            SELECT
-                COUNT([id])
-            FROM [[menus_groups]]
-            WHERE
-                [id] != {gid} AND [title] = {title}';
-
-        $gc = $GLOBALS['db']->queryOne($sql, array('gid' => $gid, 'title' => $title));
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $mgroupsTable->select('count([id]):integer')->where('id', $gid, '!=')->and()->where('title', $title);
+        $gc = $mgroupsTable->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -146,19 +128,12 @@ class Menu_AdminModel extends Menu_Model
             return false;
         }
 
-        $sql = '
-            UPDATE [[menus_groups]] SET
-                [title]       = {title},
-                [title_view]  = {title_view},
-                [visible]     = {visible}
-            WHERE [id] = {gid}';
+        $gData['title']      = $title;
+        $gData['title_view'] = $title_view;
+        $gData['visible']    = $visible;
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
 
-        $params = array();
-        $params['gid']        = $gid;
-        $params['title']      = $title;
-        $params['title_view'] = $title_view;
-        $params['visible']    = $visible;
-        $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -169,21 +144,21 @@ class Menu_AdminModel extends Menu_Model
     }
 
     /**
-    * Update a menu
-    *
-    * @access  public
-    * @param    int     $mid        menu ID
-    * @param    int     $pid
-    * @param    int     $gid        group ID
-    * @param    string  $type
-    * @param    string  $title
-    * @param    string  $url
-    * @param    string  $url_target
-    * @param    string  $rank
-    * @param    bool    $visible    is visible
-    * @param    string  $image
-    * @return   bool    True on success or False on failure
-    */
+     * Update a menu
+     *
+     * @access  public
+     * @param    int     $mid        menu ID
+     * @param    int     $pid
+     * @param    int     $gid        group ID
+     * @param    string  $type
+     * @param    string  $title
+     * @param    string  $url
+     * @param    string  $url_target
+     * @param    string  $rank
+     * @param    bool    $visible    is visible
+     * @param    string  $image
+     * @return   bool    True on success or False on failure
+     */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
     {
         $oldMenu = $this->GetMenu($mid);
@@ -192,40 +167,26 @@ class Menu_AdminModel extends Menu_Model
             return false;
         }
 
-        $params = array();
-        $params['mid']        = $mid;
-        $params['pid']        = $pid;
-        $params['gid']        = $gid;
-        $params['type']       = $type;
-        $params['title']      = $title;
-        $params['url']        = $url;
-        $params['url_target'] = $url_target;
-        $params['rank']       = $rank;
-        $params['visible']    = $visible;
-
-        $sql = '
-            UPDATE [[menus]] SET
-                [pid]         = {pid},
-                [gid]         = {gid},
-                [menu_type]   = {type},
-                [title]       = {title},
-                [url]         = {url},
-                [url_target]  = {url_target},
-                [rank]        = {rank},
-                [visible]     = {visible}';
+        $mData['pid']        = $pid;
+        $mData['gid']        = $gid;
+        $mData['menu_type']  = $type;
+        $mData['title']      = $title;
+        $mData['url']        = $url;
+        $mData['url_target'] = $url_target;
+        $mData['rank']       = $rank;
+        $mData['visible']    = $visible;
         if ($image !== 'true') {
-            $sql.= ', [image] = {image}';
             if (empty($image)) {
-                $params['image'] = null;
+                $mData['image'] = null;
             } else {
                 $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
                 $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-                $params['image'] = array('type'=> 'blob', 'value' => 'File://' . $filename);
+                $mData['image'] = array('type'=> 'blob', 'value' => 'File://' . $filename);
             }
         }
-        $sql .= ' WHERE [id] = {mid}';
 
-        $res = $GLOBALS['db']->query($sql, $params);
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $res = $menusTable->update($mData)->where('id', $mid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -264,15 +225,15 @@ class Menu_AdminModel extends Menu_Model
             return false;
         }
 
-        $sql = 'DELETE FROM [[menus]] WHERE [gid] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $res = $menusTable->delete()->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $sql = 'DELETE FROM [[menus_groups]] WHERE [id] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $res = $mgroupsTable->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -299,8 +260,8 @@ class Menu_AdminModel extends Menu_Model
         }
 
         if(isset($menu['id'])) {
-            $sql  = 'SELECT [id] FROM [[menus]] WHERE [pid] = {mid}';
-            $pids = $GLOBALS['db']->queryAll($sql, array('mid' => $mid));
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $pids = $menusTable->select('id')->where('pid', $mid)->getAll();
             if (Jaws_Error::IsError($pids)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -313,8 +274,8 @@ class Menu_AdminModel extends Menu_Model
             }
 
             $this->MoveMenu($mid, $menu['gid'], $menu['gid'], $menu['pid'], $menu['pid'], 0xfff, $menu['rank']);
-            $sql = 'DELETE FROM [[menus]] WHERE [id] = {mid}';
-            $res = $GLOBALS['db']->query($sql, array('mid' => $mid));
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $res = $menusTable->delete()->where('id', $mid)->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -325,7 +286,7 @@ class Menu_AdminModel extends Menu_Model
     }
 
     /**
-     * Delete a all menu related with a gadget (type = %gadget%)
+     * Delete all menu related with a gadget (type = %gadget%)
      *
      * @access  public
      * @param   string  $type
@@ -333,8 +294,8 @@ class Menu_AdminModel extends Menu_Model
      */
     function RemoveMenusByType($type)
     {
-        $sql  = 'SELECT [id] FROM [[menus]] WHERE [menu_type] = {type}';
-        $mids = $GLOBALS['db']->queryAll($sql, array('type' => $type));
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $mids = $menusTable->select('id')->where('menu_type', $type)->exec();
         if (Jaws_Error::IsError($mids)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -344,7 +305,7 @@ class Menu_AdminModel extends Menu_Model
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -368,14 +329,9 @@ class Menu_AdminModel extends Menu_Model
             $sub_menus = $this->GetLevelsMenus($mid);
             if (!Jaws_Error::IsError($sub_menus)) {
                 foreach ($sub_menus as $menu) {
-                    $sql = '
-                        UPDATE [[menus]]
-                        SET [gid]  = {gid}
-                        WHERE [id] = {mid} OR [pid] = {mid}';
-                    $params         = array();
-                    $params['mid']  = $menu['id'];
-                    $params['gid']  = $new_gid;
-                    $res = $GLOBALS['db']->query($sql, $params);
+                    $menusTable = Jaws_ORM::getInstance()->table('menus');
+                    $menusTable->update(array('gid' => $new_gid))->where('id', $menu['id'])->or();
+                    $res = $menusTable->where('pid', $menu['id'])->exec();
                     if (Jaws_Error::IsError($res)) {
                         $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                         return false;
@@ -386,21 +342,13 @@ class Menu_AdminModel extends Menu_Model
 
         if (($new_pid != $old_pid) || ($new_gid != $old_gid)) {
             // resort menu items in old_pid
-            $sql = '
-                UPDATE [[menus]] SET
-                    [rank] = [rank] - 1
-                WHERE
-                    [pid] = {pid}
-                  AND
-                    [gid] = {gid}
-                  AND
-                    [rank] > {rank}';
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $res = $menusTable->update(
+                array(
+                    'rank' => $menusTable->expr('rank - ?', 1)
+                )
+            )->where('pid', $old_pid)->and()->where('gid', $old_gid)->and()->where('rank', $old_rank, '>')->exec();
 
-            $params         = array();
-            $params['gid']  = $old_gid;
-            $params['pid']  = $old_pid;
-            $params['rank'] = $old_rank;
-            $res = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -409,101 +357,51 @@ class Menu_AdminModel extends Menu_Model
 
         if (($new_pid != $old_pid) || ($new_gid != $old_gid)) {
             // resort menu items in new_pid
-            $sql = '
-                UPDATE [[menus]] SET
-                    [rank] = [rank] + 1
-                WHERE
-                    [id] <> {mid}
-                  AND
-                    [gid] = {gid}
-                  AND
-                    [pid] = {pid}
-                  AND
-                    [rank] >= {new_rank}';
-
-            $params             = array();
-            $params['mid']      = $mid;
-            $params['gid']      = $new_gid;
-            $params['pid']      = $new_pid;
-            $params['new_rank'] = $new_rank;
-            $res = $GLOBALS['db']->query($sql, $params);
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $menusTable->update(
+                array(
+                    'rank' => $menusTable->expr('rank + ?', 1)
+                )
+            )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
+            $res = $menusTable->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif (empty($old_rank)) {
-            $sql = '
-                UPDATE [[menus]] SET
-                    [rank] = [rank] + 1
-                WHERE
-                    [id] <> {mid}
-                  AND
-                    [gid] = {gid}
-                  AND
-                    [pid] = {pid}
-                  AND
-                    [rank] >= {new_rank}';
-
-            $params             = array();
-            $params['mid']      = $mid;
-            $params['gid']      = $new_gid;
-            $params['pid']      = $new_pid;
-            $params['new_rank'] = $new_rank;
-            $res = $GLOBALS['db']->query($sql, $params);
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $menusTable->update(
+                array(
+                    'rank' => $menusTable->expr('rank + ?', 1)
+                )
+            )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
+            $res = $menusTable->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank > $old_rank) {
             // resort menu items in new_pid
-            $sql = '
-                UPDATE [[menus]] SET
-                    [rank] = [rank] - 1
-                WHERE
-                    [id] <> {mid}
-                  AND
-                    [gid] = {gid}
-                  AND
-                    [pid] = {pid}
-                  AND
-                    [rank] > {old_rank}
-                  AND
-                    [rank] <= {new_rank}';
-
-            $params             = array();
-            $params['mid']      = $mid;
-            $params['gid']      = $new_gid;
-            $params['pid']      = $new_pid;
-            $params['old_rank'] = $old_rank;
-            $params['new_rank'] = $new_rank;
-            $res = $GLOBALS['db']->query($sql, $params);
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $menusTable->update(
+                array(
+                    'rank' => $menusTable->expr('rank - ?', 1)
+                )
+            )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
+            $res = $menusTable->and()->where('rank', $old_rank, '>')->and()->where('rank', $new_rank, '<=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank < $old_rank) {
             // resort menu items in new_pid
-            $sql = '
-                UPDATE [[menus]] SET
-                    [rank] = [rank] + 1
-                WHERE
-                    [id] <> {mid}
-                  AND
-                    [gid] = {gid}
-                  AND
-                    [pid] = {pid}
-                  AND
-                    [rank] >= {new_rank}
-                  AND
-                    [rank] < {old_rank}';
-
-            $params             = array();
-            $params['mid']      = $mid;
-            $params['gid']      = $new_gid;
-            $params['pid']      = $new_pid;
-            $params['old_rank'] = $old_rank;
-            $params['new_rank'] = $new_rank;
-            $res = $GLOBALS['db']->query($sql, $params);
+            $menusTable = Jaws_ORM::getInstance()->table('menus');
+            $menusTable->update(
+                array(
+                    'rank' => $menusTable->expr('rank + ?', 1)
+                )
+            )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
+            $res = $menusTable->and()->where('rank', $new_rank, '>=')->and()->where('rank', $old_rank, '<')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -532,7 +430,7 @@ class Menu_AdminModel extends Menu_Model
         foreach ($parents as $parent) {
             if ($parent['id'] == $excluded_mid) continue;
             $result[] = array('pid'=> $parent['id'],
-                              'title'=> $menu_str . '\\' . $parent['title']);
+                'title'=> $menu_str . '\\' . $parent['title']);
             $this->GetParentMenus($parent['id'], $gid, $excluded_mid, $result, $menu_str . '\\' . $parent['title']);
         }
         return true;

@@ -22,18 +22,12 @@ class Menu_Model extends Jaws_Gadget_Model
      */
     function GetMenu($mid)
     {
-        $sql = '
-            SELECT
-                [id], [pid], [gid], [menu_type], [title], [url], [url_target], [rank], [visible], [image]
-            FROM [[menus]]
-            WHERE
-                [id] = {mid}';
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $menusTable->select(
+            'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'url_target:integer',
+            'rank:integer', 'visible:boolean', 'image');
+        $result = $menusTable->where('id', $mid)->getRow();
 
-        $params = array();
-        $params['mid'] = $mid;
-
-        $types  = array('integer', 'integer', 'integer', 'text', 'text', 'text', 'integer', 'integer', 'integer', 'boolean');
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('MENU_ERROR_GET_MENUS'), _t('MENU_NAME'));
         }
@@ -52,22 +46,16 @@ class Menu_Model extends Jaws_Gadget_Model
      */
     function GetLevelsMenus($pid, $gid = null, $onlyVisible = false)
     {
-        $sql = '
-            SELECT [id], [gid], [title], [url], [url_target], [image], [visible]
-                FROM [[menus]]
-                WHERE ';
-        $sql.= (empty($gid)? '' : '[gid] = {gid} AND ') . '[pid] = {pid}'.
-               ($onlyVisible?' AND [visible] = {visible} ':' ');
-        $sql.= 'ORDER BY [rank] ASC';
-
-        $params = array();
-        $params['gid']     = $gid;
-        $params['pid']     = $pid;
-        $params['visible'] = 1;
-
         // using boolean type for blob to check it empty or not
-        $types = array('integer', 'integer', 'text', 'text', 'integer', 'boolean', 'integer');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $menusTable->select(
+            'id:integer', 'gid:integer', 'title', 'url', 'url_target:integer', 'visible:integer', 'image:boolean');
+
+        if(!empty($gid)) {
+            $menusTable->where('gid', $gid)->and();
+        }
+        $result = $menusTable->where('pid', $pid)->and()->where('visible', 1)->orderBy('rank ASC')->getAll();
+
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('MENU_ERROR_GET_MENUS'), _t('MENU_NAME'));
         }
@@ -84,15 +72,8 @@ class Menu_Model extends Jaws_Gadget_Model
      */
     function GetMenuImage($id)
     {
-        $sql = '
-            SELECT [image]
-            FROM [[menus]]
-            WHERE [id] = {id}';
-
-        $params = array();
-        $params['id'] = (int)$id;
-        $types  = array('blob');
-        $blob = $GLOBALS['db']->queryOne($sql, $params, $types);
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $blob = $menusTable->select('image:blob')->where('id', (int)$id)->getOne();
         if (Jaws_Error::IsError($blob)) {
             return new Jaws_Error($blob->getMessage(), 'SQL');
         }
@@ -113,19 +94,17 @@ class Menu_Model extends Jaws_Gadget_Model
      */
     function GetGroups($gid = null)
     {
-        $sql = '
-            SELECT
-                [id], [title], [title_view], [view_type], [rank], [visible]
-            FROM [[menus_groups]] ';
-        $sql.= (empty($gid)? '' : 'WHERE [id] = {gid} ') . 'ORDER BY [rank] DESC';
-
-        $params = array();
-        $params['gid'] = $gid;
+        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
+        $mgroupsTable->select('id:integer', 'title', 'title_view', 'view_type', 'rank:integer', 'visible:boolean');
+        if(!empty($gid)) {
+            $mgroupsTable->where('id', $gid);
+        }
+        $mgroupsTable->orderBy('rank DESC');
 
         if (!empty($gid)) {
-            $result = $GLOBALS['db']->queryRow($sql, $params);
+            $result = $mgroupsTable->getRow();
         } else {
-            $result = $GLOBALS['db']->queryAll($sql, $params);
+            $result = $mgroupsTable->getAll();
         }
         if (Jaws_Error::IsError($result)) {
             //add language word for this
