@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Menu/Model.php';
 /**
  * Menu Gadget
  *
@@ -11,8 +12,6 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-require_once JAWS_PATH . 'gadgets/Menu/Model.php';
-
 class Menu_AdminModel extends Menu_Model
 {
     /**
@@ -41,14 +40,13 @@ class Menu_AdminModel extends Menu_Model
         $gData['title']      = $title;
         $gData['title_view'] = $title_view;
         $gData['visible']    = $visible;
-        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gid = $mgroupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -82,7 +80,7 @@ class Menu_AdminModel extends Menu_Model
         } else {
             $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-            $mData['image']  = array('type'=> 'blob', 'value' => 'File://' . $filename);
+            $mData['image']  = array('File://' . $filename, 'blob');
         }
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
@@ -116,7 +114,7 @@ class Menu_AdminModel extends Menu_Model
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $mgroupsTable->select('count([id]):integer')->where('id', $gid, '!=')->and()->where('title', $title);
+        $mgroupsTable->select('count([id]):integer')->where('id', $gid, '<>')->and()->where('title', $title);
         $gc = $mgroupsTable->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -131,15 +129,13 @@ class Menu_AdminModel extends Menu_Model
         $gData['title']      = $title;
         $gData['title_view'] = $title_view;
         $gData['visible']    = $visible;
-        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
-
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -181,7 +177,7 @@ class Menu_AdminModel extends Menu_Model
             } else {
                 $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
                 $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-                $mData['image'] = array('type'=> 'blob', 'value' => 'File://' . $filename);
+                $mData['image'] = array('File://' . $filename, 'blob');
             }
         }
 
@@ -225,22 +221,20 @@ class Menu_AdminModel extends Menu_Model
             return false;
         }
 
-        $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $res = $menusTable->delete()->where('gid', $gid)->exec();
+        $objORM = Jaws_ORM::getInstance();
+        $res = $objORM->delete()->table('menus')->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $res = $mgroupsTable->delete()->where('id', $gid)->exec();
+        $res = $objORM->delete()->table('menus_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
-
         return true;
     }
 
@@ -274,7 +268,6 @@ class Menu_AdminModel extends Menu_Model
             }
 
             $this->MoveMenu($mid, $menu['gid'], $menu['gid'], $menu['pid'], $menu['pid'], 0xfff, $menu['rank']);
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $res = $menusTable->delete()->where('id', $mid)->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -300,6 +293,7 @@ class Menu_AdminModel extends Menu_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
+
         foreach ($mids as $mid) {
             if (!$this->DeleteMenu($mid['id'])) {
                 return false;
@@ -324,12 +318,12 @@ class Menu_AdminModel extends Menu_Model
      */
     function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
     {
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
         if ($new_gid != $old_gid) {
             // set gid of submenu items
             $sub_menus = $this->GetLevelsMenus($mid);
             if (!Jaws_Error::IsError($sub_menus)) {
                 foreach ($sub_menus as $menu) {
-                    $menusTable = Jaws_ORM::getInstance()->table('menus');
                     $menusTable->update(array('gid' => $new_gid))->where('id', $menu['id'])->or();
                     $res = $menusTable->where('pid', $menu['id'])->exec();
                     if (Jaws_Error::IsError($res)) {
@@ -342,7 +336,6 @@ class Menu_AdminModel extends Menu_Model
 
         if (($new_pid != $old_pid) || ($new_gid != $old_gid)) {
             // resort menu items in old_pid
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $res = $menusTable->update(
                 array(
                     'rank' => $menusTable->expr('rank - ?', 1)
@@ -353,11 +346,8 @@ class Menu_AdminModel extends Menu_Model
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
-        }
 
-        if (($new_pid != $old_pid) || ($new_gid != $old_gid)) {
             // resort menu items in new_pid
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $menusTable->update(
                 array(
                     'rank' => $menusTable->expr('rank + ?', 1)
@@ -369,7 +359,6 @@ class Menu_AdminModel extends Menu_Model
                 return false;
             }
         } elseif (empty($old_rank)) {
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $menusTable->update(
                 array(
                     'rank' => $menusTable->expr('rank + ?', 1)
@@ -382,7 +371,6 @@ class Menu_AdminModel extends Menu_Model
             }
         } elseif ($new_rank > $old_rank) {
             // resort menu items in new_pid
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $menusTable->update(
                 array(
                     'rank' => $menusTable->expr('rank - ?', 1)
@@ -395,7 +383,6 @@ class Menu_AdminModel extends Menu_Model
             }
         } elseif ($new_rank < $old_rank) {
             // resort menu items in new_pid
-            $menusTable = Jaws_ORM::getInstance()->table('menus');
             $menusTable->update(
                 array(
                     'rank' => $menusTable->expr('rank + ?', 1)

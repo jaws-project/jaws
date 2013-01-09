@@ -25,14 +25,8 @@ class Menu_Model extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'url_target:integer',
-            'rank:integer', 'visible:boolean', 'image');
-        $result = $menusTable->where('id', $mid)->getRow();
-
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('MENU_ERROR_GET_MENUS'), _t('MENU_NAME'));
-        }
-
-        return $result;
+            'rank:integer', 'visible:boolean', 'image:boolean');
+        return $menusTable->where('id', $mid)->getRow();
     }
 
     /**
@@ -49,18 +43,13 @@ class Menu_Model extends Jaws_Gadget_Model
         // using boolean type for blob to check it empty or not
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
-            'id:integer', 'gid:integer', 'title', 'url', 'url_target:integer', 'visible:integer', 'image:boolean');
-
+            'id:integer', 'gid:integer', 'title', 'url', 'url_target:integer',
+            'visible:integer', 'image:boolean'
+        );
         if(!empty($gid)) {
             $menusTable->where('gid', $gid)->and();
         }
-        $result = $menusTable->where('pid', $pid)->and()->where('visible', 1)->orderBy('rank ASC')->getAll();
-
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('MENU_ERROR_GET_MENUS'), _t('MENU_NAME'));
-        }
-
-        return $result;
+        return $menusTable->where('pid', $pid)->and()->where('visible', 1)->orderBy('rank ASC')->getAll();
     }
 
     /**
@@ -75,7 +64,7 @@ class Menu_Model extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $blob = $menusTable->select('image:blob')->where('id', (int)$id)->getOne();
         if (Jaws_Error::IsError($blob)) {
-            return new Jaws_Error($blob->getMessage(), 'SQL');
+            return $blob;
         }
 
         $result = '';
@@ -95,20 +84,15 @@ class Menu_Model extends Jaws_Gadget_Model
     function GetGroups($gid = null)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $mgroupsTable->select('id:integer', 'title', 'title_view', 'view_type', 'rank:integer', 'visible:boolean');
-        if(!empty($gid)) {
-            $mgroupsTable->where('id', $gid);
-        }
+        $mgroupsTable->select(
+            'id:integer', 'title', 'title_view:integer', 'view_type:integer',
+            'rank:integer', 'visible:integer'
+        );
         $mgroupsTable->orderBy('rank DESC');
-
-        if (!empty($gid)) {
-            $result = $mgroupsTable->getRow();
-        } else {
+        if(empty($gid)) {
             $result = $mgroupsTable->getAll();
-        }
-        if (Jaws_Error::IsError($result)) {
-            //add language word for this
-            return new Jaws_Error(_t('MENU_ERROR_GET_GROUPS'), _t('MENU_NAME'));
+        } else {
+            $result = $mgroupsTable->where('id', $gid)->getRow();
         }
 
         return $result;
