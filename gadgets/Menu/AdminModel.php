@@ -295,7 +295,7 @@ class Menu_AdminModel extends Menu_Model
     function RemoveMenusByType($type)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $mids = $menusTable->select('id')->where('menu_type', $type)->exec();
+        $mids = $menusTable->select('id')->where('menu_type', $type)->getAll();
         if (Jaws_Error::IsError($mids)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
