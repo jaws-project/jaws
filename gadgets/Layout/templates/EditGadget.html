@@ -7,24 +7,16 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/resources/style{.dir}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/resources/style2{.dir}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
-<!--[if lt IE 7]>
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/resources/public{.dir}.ie.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/resources/style{.dir}.ie.css" />
-<script src="gadgets/ControlPanel/resources/ie-bug-fix.js" type="text/javascript"></script>
-<style type="text/css">
-img {filter: expression(this.onpropertychange ? '!important' : fixpngTransparency(this));}
-</style>
-<![endif]-->
 <script type="text/javascript">
   function getAction(lid, gadget) {
-    var action = Form.getInputs('form_actions_list','radio','action').find(function(radio){return radio.checked;});
+    var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
     if (!action) {
         alert('!!!!!!!!!!');
         return;
     }
 
     var params = new Array();
-    var paramElemets = $A($('action_'+action.value).getElementsByTagName('select'));
+    var paramElemets = Array.from($('action_'+action.value).getElements('select'));
     paramElemets.each(function(elParam, index) {
         params[index] = elParam.value;
     });
