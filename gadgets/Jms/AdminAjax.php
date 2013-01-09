@@ -157,28 +157,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     function InstallGadget($gadget)
     {
         $this->gadget->CheckPermission('ManageGadgets');
-
-        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($objGadget)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
-        }
-
-        $return = $objGadget->EnableGadget();
-        if (Jaws_Error::IsError($return)) {
-            $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-        } elseif (!$return) {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('JMS_GADGETS_ENABLED_FAILURE', $objGadget->GetTitle()),
-                RESPONSE_ERROR
-            );
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('JMS_GADGETS_ENABLED_OK',
-                $objGadget->GetTitle()),
-                RESPONSE_NOTICE
-            );
-        }
+        $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $html->EnableGadget($gadget, false);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

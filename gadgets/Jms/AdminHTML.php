@@ -210,15 +210,18 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
      * Jaws_Gadget_HTML::EnableGadget method, then redirects to admin area
      *
      * @access  public
+     * @param   bool    $redirect   Redirect to root page
      * @return  void
      */
-    function EnableGadget()
+    function EnableGadget($gadget = '', $redirect = true)
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        $request =& Jaws_Request::getInstance();
-        $get = $request->get(array('location', 'comp'), 'get');
+        if (empty($gadget)) {
+            $request =& Jaws_Request::getInstance();
+            $get = $request->get('comp', 'get');
+            $gadget = $get['comp'];
+        }
 
-        $gadget = $get['comp'];
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
@@ -231,7 +234,10 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
                 $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
             }
         }
-        Jaws_Header::Location(BASE_SCRIPT);
+
+        if ($redirect) {
+            Jaws_Header::Location(BASE_SCRIPT);
+        }
     }
 
     /**
