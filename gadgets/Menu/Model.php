@@ -25,7 +25,7 @@ class Menu_Model extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'url_target:integer',
-            'rank:integer', 'visible:boolean', 'image:boolean');
+            'rank:integer', 'visible:integer', 'image:boolean');
         return $menusTable->where('id', $mid)->getRow();
     }
 
@@ -46,10 +46,17 @@ class Menu_Model extends Jaws_Gadget_Model
             'id:integer', 'gid:integer', 'title', 'url', 'url_target:integer',
             'visible:integer', 'image:boolean'
         );
+        $menusTable->where('pid', $pid);
+
         if(!empty($gid)) {
-            $menusTable->where('gid', $gid)->and();
+            $menusTable->and()->where('gid', $gid);
         }
-        return $menusTable->where('pid', $pid)->and()->where('visible', 1)->orderBy('rank ASC')->getAll();
+
+        if($onlyVisible) {
+            $menusTable->and()->where('visible', 1);
+        }
+
+        return $menusTable->orderBy('rank ASC')->getAll();
     }
 
     /**
