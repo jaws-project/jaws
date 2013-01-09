@@ -218,8 +218,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $request =& Jaws_Request::getInstance();
-            $get = $request->get('comp', 'get');
-            $gadget = $get['comp'];
+            $gadget = $request->get('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
