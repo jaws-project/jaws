@@ -500,7 +500,7 @@ class Jaws_Gadget
     function DelRegistry($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Delete($name, $gadget, JAWS_COMPONENT_GADGET);
+        return $GLOBALS['app']->Registry->Delete($gadget, $name, JAWS_COMPONENT_GADGET);
     }
 
     /**
