@@ -230,21 +230,29 @@ class Jaws_Registry
      * Deletes a key
      *
      * @access  public
-     * @param   string  $name  The key
      * @param   string  $component  Component name
+     * @param   string  $name       The key
      * @param   string  $type       Component type
      * @return  bool    True is set otherwise False
      */
-    function Delete($name, $component = '', $type = JAWS_COMPONENT_OTHER)
+    function Delete($component, $name = '', $type = JAWS_COMPONENT_OTHER)
     {
         $params = array();
         $params['name'] = $name;
+        $params['component_name'] = $component;
+        $params['component_type'] = $type;
 
         $sql = '
             DELETE
                 FROM [[registry]]
             WHERE
-                [key_name] = {name}';
+                [component_name] = {component_name}
+              AND
+                [component_type] = {component_type}
+            ';
+        if (!empty($name)) {
+            $sql.= ' AND [key_name] = {name}';
+        }
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
