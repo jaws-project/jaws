@@ -179,16 +179,16 @@ class Comments_Model extends Jaws_Gadget_Model
     /**
      * Gets a comment
      *
-     * @param   string  $gadget   Gadget's name
-     * @param   int     $id    Comment's ID
+     * @param   int     $id     Comment's ID
+     * @param   string  $gadget Gadget name
      * @return  array   Returns an array with comment data or Jaws_Error on error
      * @access  public
      */
-    function GetComment($gadget, $id)
+    function GetComment($id, $gadget = '')
     {
-        $params             = array();
-        $params['id']       = $id;
-        $params['gadget']   = $gadget;
+        $params = array();
+        $params['id']     = $id;
+        $params['gadget'] = $gadget;
 
         $sql = '
             SELECT
@@ -209,15 +209,11 @@ class Comments_Model extends Jaws_Gadget_Model
             WHERE
                 [id] = {id}';
 
-        if (!is_null($gadget) && ($gadget != -1)) {
+        if (!empty($gadget)) {
             $sql .= ' AND [gadget] = {gadget}';
         }
-        $row = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_COMMENT'), _t('COMMENTS_NAME'));
-        }
 
-        return $row;
+        return $GLOBALS['db']->queryRow($sql, $params);
     }
 
     /**

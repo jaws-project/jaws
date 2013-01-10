@@ -38,7 +38,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHTML->GetDataAsArray($gadget, "javascript: commentEdit(this, '{id}')", $filter, $search, $status, $limit);
+        return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $filter, $search, $status, $limit);
     }
 
     /**
@@ -92,12 +92,12 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * Get information of a Comment
      *
      * @access  public
-     * @param   int     $id     Comment ID
+     * @param   int     $id Comment ID
      * @return  array   Comment info array
      */
-    function GetComment($gadget, $id)
+    function GetComment($id)
     {
-        $comment = $this->_Model->GetComment($gadget, $id);
+        $comment = $this->_Model->GetComment($id);
         if (Jaws_Error::IsError($comment)) {
             return false; //we need to handle errors on ajax
         }

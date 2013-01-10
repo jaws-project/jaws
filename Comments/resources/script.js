@@ -3,7 +3,6 @@
  *
  * @category   Ajax
  * @package    Comments
- * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2012-2013 Jaws Development Group
@@ -122,11 +121,10 @@ function stopAction()
  * Edit a Comment
  *
  */
-function commentEdit(element, id)
+function editComment(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-
-    var comment = CommentsAjax.callSync('getcomment', $('gadgets_filter').value, id);
+    var comment = CommentsAjax.callSync('getcomment', id);
     $('id').value      = comment['id'];
     $('gadget').value  = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);

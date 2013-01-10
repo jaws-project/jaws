@@ -74,6 +74,8 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $gadgetsCombo->AddOption('', '');
         // TODO: Get List Of Gadget Which Use Comments
         $gadgetsCombo->AddOption('Blog', 'Blog');
+        $gadgetsCombo->AddOption('Phoo', 'Photo Organizer');
+        $gadgetsCombo->AddOption('Shoutbox', 'Shoutbox');
         $gadgetsCombo->SetDefault('');
         $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
         $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());

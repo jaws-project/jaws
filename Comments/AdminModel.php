@@ -61,7 +61,7 @@ class Comments_AdminModel extends Comments_Model
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), _t('COMMENTS_NAME'));
         }
 
-        $origComment = $this->GetComment($gadget, $id);
+        $origComment = $this->GetComment($id, $gadget);
         if (($status == COMMENT_STATUS_SPAM ||$origComment['status'] == COMMENT_STATUS_SPAM) &&
             $origComment['status'] != $status)
         {
@@ -87,7 +87,7 @@ class Comments_AdminModel extends Comments_Model
      */
     function DeleteComment($gadget, $id)
     {
-        $origComment = $this->GetComment($gadget, $id);
+        $origComment = $this->GetComment($id, $gadget);
         if (Jaws_Error::IsError($id)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
         }
