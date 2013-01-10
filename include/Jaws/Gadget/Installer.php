@@ -192,9 +192,12 @@ class Jaws_Gadget_Installer
         $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
         $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
 
-        // removed gadget listeners
+        // removeing gadget listeners
         $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
         $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+
+        // removeing gadget registry keys
+        $GLOBALS['app']->Registry->Delete($this->gadget->name, '', JAWS_COMPONENT_GADGET);
 
         // end uninstall gadget event
         $result = $GLOBALS['app']->Shouter->Shout('End_UninstallGadget', $this->gadget->name);
