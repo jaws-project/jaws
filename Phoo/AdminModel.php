@@ -661,7 +661,7 @@ class Phoo_AdminModel extends Phoo_Model
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $cModel->MarkAs($this->gadget->name, $ids, $status);
         foreach ($ids as $id) {
-            $comment = $cModel->GetComment($this->gadget->name, $id);
+            $comment = $cModel->GetComment($id, $this->gadget->name);
             $params = array();
             $params['id'] = $comment['gadget_reference'];
             $howmany = $cModel->HowManyFilteredComments(

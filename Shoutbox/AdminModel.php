@@ -42,7 +42,7 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
     function DeleteComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $comment = $cModel->GetComment($this->gadget->name, $id);
+        $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SHOUTBOX_ERROR_ENTRY_NOT_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SHOUTBOX_ERROR_ENTRY_NOT_DELETE'), _t('SHOUTBOX_NAME'));
@@ -96,7 +96,7 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
     function UpdateComment($id, $name, $url, $email, $comments)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $prev = $cModel->GetComment($this->gadget->name, $id);
+        $prev = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($prev)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SHOUTBOX_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SHOUTBOX_ERROR_COMMENT_NOT_UPDATED'), _t('SHOUTBOX_NAME'));

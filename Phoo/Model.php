@@ -1172,7 +1172,7 @@ class Phoo_Model extends Jaws_Gadget_Model
     function GetComment($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->gadget->name, $id);
+        $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'), _t('PHOO_NAME'));
         }

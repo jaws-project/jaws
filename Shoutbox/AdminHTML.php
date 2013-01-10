@@ -185,7 +185,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
         $id = $request->get('id', 'get');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comment = $cModel->GetComment($this->gadget->name, $id);
+        $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Shoutbox&action=ManageComments');
         }
