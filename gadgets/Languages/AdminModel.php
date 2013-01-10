@@ -223,12 +223,12 @@ class Languages_AdminModel extends Jaws_Gadget_Model
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
                 $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
-                $orig_file = JAWS_PATH . "gadgets/$module/languages/$langTo.php";
+                $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.php";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
                 $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
-                $orig_file = JAWS_PATH . "plugins/$module/languages/$langTo.php";
+                $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.php";
                 $module_name = 'Plugins_' . $module;
                 break;
 
