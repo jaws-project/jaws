@@ -19,7 +19,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
      * @access  public
      * @param   int     $albumid    album ID
      * @return  string   XHTML template content
-     * @see PhooModel::GetRandomImage()
+     * @see Phoo_Model::GetRandomImage()
      */
     function Random($albumid = null)
     {

@@ -367,7 +367,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
      * I'm not sure what this does... gets the authors photo maybe?
      *
      * @access  public
-     * @see PhooModel::GetAsPortrait()
+     * @see Phoo_Model::GetAsPortrait()
      * @return  string   XHTML template content
      * @todo Better docblock
      */

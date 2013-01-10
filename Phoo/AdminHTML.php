@@ -657,9 +657,9 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      *
      * @access  public
      * @see Phoo::UploadPhotos()
-     * @see PhooModel::AddEntryToAlbum()
-     * @see PhooModel::AddCategoryToEntry()
-     * @see PhooModel::NewAlbum()
+     * @see Phoo_Model::AddEntryToAlbum()
+     * @see Phoo_Model::AddCategoryToEntry()
+     * @see Phoo_Model::NewAlbum()
      */
     function UploadPhotosStep2()
     {
@@ -723,7 +723,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      * 
      * @access  public
      * @return  string  XHTML template content
-     * @see PhooModel::SaveNewAlbum()
+     * @see Phoo_Model::SaveNewAlbum()
      * @see Phoo::AdminPhotos()
      */
     function NewAlbum()
@@ -796,7 +796,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      * Creates a new album based on input data from the New Album
      *
      * @access  public
-     * @see PhooModel::NewAlbum()
+     * @see Phoo_Model::NewAlbum()
      * @see Phoo::AdminPhotos()
      */
     function SaveNewAlbum()
@@ -816,7 +816,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      * 
      * @access  public
      * @return  string  XHTML template content
-     * @see PhooModel::SaveEditAlbum()
+     * @see Phoo_Model::SaveEditAlbum()
      * @see Phoo::AdminPhotos()
      */
     function EditAlbum()
@@ -900,7 +900,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      * Updates a given album with the given info
      *
      * @access  public
-     * @see PhooModel::NewAlbum()
+     * @see Phoo_Model::NewAlbum()
      * @see Phoo::AdminPhotos()
      */
     function SaveEditAlbum()
@@ -921,7 +921,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      * Delete an album and all its images
      * 
      * @access  public
-     * @see PhooModel::DeleteAlbum()
+     * @see Phoo_Model::DeleteAlbum()
      * @see Phoo::AdminPhotos()
      */
     function DeleteAlbum()

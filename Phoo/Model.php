@@ -967,9 +967,9 @@ class Phoo_Model extends Jaws_Gadget_Model
         foreach ($rs as $i) {
             if (empty($entry)) {
                 $entry['id']             = $i['id'];
-                $entry['thumb']          = PhooModel::GetThumbPath($i['filename']);
-                $entry['medium']         = PhooModel::GetMediumPath($i['filename']);
-                $entry['image']          = PhooModel::GetOriginalPath($i['filename']);
+                $entry['thumb']          = Phoo_Model::GetThumbPath($i['filename']);
+                $entry['medium']         = Phoo_Model::GetMediumPath($i['filename']);
+                $entry['image']          = Phoo_Model::GetOriginalPath($i['filename']);
                 $entry['description']    = $i['description'];
                 $entry['title']          = $i['title'];
                 $entry['allow_comments'] = $i['allow_comments'];
