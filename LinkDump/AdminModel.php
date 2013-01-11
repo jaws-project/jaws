@@ -30,6 +30,7 @@ class LinkDump_AdminModel extends LinkDump_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_links');
 
+        $lData = array();
         $lData['title']       = $title;
         $lData['description'] = $desc;
         $lData['url']         = $url;
@@ -41,20 +42,13 @@ class LinkDump_AdminModel extends LinkDump_Model
 
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         $lid = $linksTable->insert($lData)->exec();
-
         if (Jaws_Error::IsError($lid)) {
             $GLOBALS['app']->Session->PushLastResponse($lid->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('LINKDUMP_LINKS_ADD_ERROR', 'AddLink'), _t('LINKDUMP_NAME'));
         }
 
         $this->MoveLink($lid, $gid, $gid, $rank, null);
-
-        $tags = preg_replace('#/|\\\#', '-', $tags);
-        $tags = preg_replace('#&|"|\'|<|>#', '', $tags);
-
-        $tags = array_filter(explode(',', $tags));
-        $tags = array_map( array('Jaws_UTF8', 'trim') , $tags);
-
+        $tags = array_filter(array_map(array('Jaws_UTF8', 'trim'), explode(',', $tags)));
         foreach ($tags as $tag) {
             $res = $this->AddTagToLink($lid, $tag);
             if (Jaws_Error::IsError($res)) {
@@ -93,6 +87,7 @@ class LinkDump_AdminModel extends LinkDump_Model
             return new Jaws_Error($oldLink->getMessage(), 'SQL');
         }
 
+        $lData = array();
         $lData['gid']         = (int)$gid;
         $lData['title']       = $title;
         $lData['description'] = $desc;
@@ -103,20 +98,14 @@ class LinkDump_AdminModel extends LinkDump_Model
 
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         $res = $linksTable->update($lData)->where('id', $id)->exec();
-
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return $res;
         }
 
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
-        $tags = preg_replace('#/|\\\#', '-', $tags);
-        $tags = preg_replace('#&|"|\'|<|>#', '', $tags);
-
-        $tags = array_filter(explode(',', $tags));
-        $tags = array_map( array('Jaws_UTF8', 'trim') , $tags);
-
+        $tags = array_filter(array_map(array('Jaws_UTF8', 'trim'), explode(',', $tags)));
         $to_be_added_tags = array_diff($tags, $oldLink['tags']);
         foreach ($to_be_added_tags as $newtag) {
             $res = $this->AddTagToLink($id, $newtag);
@@ -157,70 +146,58 @@ class LinkDump_AdminModel extends LinkDump_Model
      */
     function MoveLink($lid, $new_gid, $old_gid, $new_rank, $old_rank)
     {
+        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         if ($new_gid != $old_gid) {
             // resort menu items in old_pid
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
             $res = $linksTable->update(
                 array(
                     'rank' => $linksTable->expr('rank - ?', 1)
                 )
             )->where('gid', $old_gid)->and()->where('rank', $old_rank, '>')->exec();
-
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
-        }
 
-        if ($new_gid != $old_gid) {
             // resort menu items in new_pid
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
             $res = $linksTable->update(
                 array(
                     'rank' => $linksTable->expr('rank + ?', 1)
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
-
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif (empty($old_rank)) {
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
             $res = $linksTable->update(
                 array(
                     'rank' => $linksTable->expr('rank + ?', 1)
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
-
-
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank > $old_rank) {
             // resort menu items in new_pid
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
             $linksTable->update(
                 array(
                     'rank' => $linksTable->expr('rank - ?', 1)
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $old_rank, '>');
             $res = $linksTable->and()->where('rank', $new_rank, '<=')->exec();
-
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank < $old_rank) {
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
             $linksTable->update(
                 array(
                     'rank' => $linksTable->expr('rank + ?', 1)
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=');
             $res = $linksTable->and()->where('rank', $old_rank, '<')->exec();
-
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -240,29 +217,32 @@ class LinkDump_AdminModel extends LinkDump_Model
      */
     function AddTagToLink($lid, $tag)
     {
-        $tagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
-        $tagsTable->select('id')->where('tag', Jaws_UTF8::str_replace(' ', '_', Jaws_UTF8::strtolower($tag)));
-        $tid = $tagsTable->getOne();
+        $tag = preg_replace(
+            array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
+            array('', '-', '-'),
+            $GLOBALS['app']->UTF8->strtolower($tag)
+        );
+
+        $objORM = Jaws_ORM::getInstance()->table('linkdump_tags');
+        $tid = $objORM->select('id')->where('tag', $tag)->getOne();
         if (Jaws_Error::IsError($tid)) {
-            return new Jaws_Error($tid->getMessage(), 'SQL');
+            return $tid;
         }
 
         if (empty($tid)) {
-            $tagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
-            $tid = $tagsTable->insert(array('tag'=>$tag))->exec();
+            $tid = $objORM->table('linkdump_tags')->insert(array('tag'=>$tag))->exec();
             if (Jaws_Error::IsError($tid)) {
-                return new Jaws_Error($tid->getMessage(), 'SQL');
+                return $tid;
             }
         }
 
+        $tData = array();
         $tData['link_id'] = (int)$lid;
         $tData['tag_id']  = (int)$tid;
 
-        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-        $res = $ltagsTable->insert($tData)->exec();
-
+        $res = $objORM->table('linkdump_links_tags')->insert($tData)->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return $res;
         }
 
         return true;
@@ -278,19 +258,23 @@ class LinkDump_AdminModel extends LinkDump_Model
     */
     function RemoveTagFromLink($id, $tag)
     {
-        $tag = Jaws_UTF8::str_replace(' ', '_', Jaws_UTF8::strtolower($tag));
-        $tagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
-        $tid = $tagsTable->select('id')->where('tag', trim($tag))->getOne();
-
+        $tag = preg_replace(
+            array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
+            array('', '-', '-'),
+            $GLOBALS['app']->UTF8->strtolower($tag)
+        );
+        $objORM = Jaws_ORM::getInstance();
+        $tid = $objORM->select('id')->table('linkdump_tags')->where('tag', $tag)->getOne();
         if (Jaws_Error::IsError($tid)) {
-            return new Jaws_Error($tid->getMessage(), 'SQL');
+            return $tid;
         }
 
         if (!empty($tid)) {
-            $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-            $res = $ltagsTable->delete()->where('link_id', (int)$id)->and()->where('tag_id', $tid)->exec();
+            $res = $objORM->delete()->table('linkdump_links_tags')
+                ->where('link_id', (int)$id)->and()->where('tag_id', $tid)
+                ->exec();
             if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
+                return $res;
             }
         }
 
@@ -308,22 +292,19 @@ class LinkDump_AdminModel extends LinkDump_Model
      */
     function DeleteLink($lid, $gid = '', $rank = 0)
     {
-        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
-        $res = $linksTable->delete()->where('id', $lid)->exec();
-
+        $objORM = Jaws_ORM::getInstance();
+        $res = $objORM->delete()->table('linkdump_links')->where('id', $lid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return $res;
         }
 
         $this->MoveLink($lid, $gid, $gid, 0xfff, $rank);
 
-        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-        $res = $ltagsTable->delete()->where('link_id', $lid)->exec();
-
+        $res = $objORM->delete()->table('linkdump_links_tags')->where('link_id', $lid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return $res;
         }
 
         $this->PopulateFeed($gid);
@@ -381,14 +362,13 @@ class LinkDump_AdminModel extends LinkDump_Model
         $gData['order_type']  = $order_type;
 
         $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
-        $res = $groupsTable->insert($gData)->exec();
-        if (Jaws_Error::IsError($res)) {
+        $gid = $groupsTable->insert($gData)->exec();
+        if (Jaws_Error::IsError($gid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $gid = $GLOBALS['db']->lastInsertID('linkdump_groups', 'id');
-        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -451,32 +431,29 @@ class LinkDump_AdminModel extends LinkDump_Model
             return false;
         }
 
+        $objORM = Jaws_ORM::getInstance()->table('linkdump_links_tags');
         $links = $this->GetGroupLinks($gid);
         foreach ($links as $link) {
-            $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-            $res = $ltagsTable->delete()->where('link_id', $link['id'])->exec();
+            $res = $objORM->delete()->where('link_id', $link['id'])->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         }
 
-        $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
-        $res = $linksTable->delete()->where('gid', $gid)->exec();
+        $res = $objORM->delete()->table('linkdump_links')->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
-        $res = $groupsTable->delete()->where('id', $gid)->exec();
+        $res = $objORM->delete()->table('linkdump_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
-
         return true;
     }
 
