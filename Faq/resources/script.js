@@ -51,7 +51,7 @@ function parseQuestionText(form)
     var answerArea   = document.getElementById('answerPreview');
     var questionArea = document.getElementById('questionPreview');
 
-    answer = FaqAjax.callAsync('parsetext', answer);
+    answer = FaqAjax.callSync('parsetext', answer);
     answerArea.innerHTML   = answer;
     questionArea.innerHTML = question;
 }
@@ -70,7 +70,7 @@ function parseCategoryText(form)
     var descriptionArea = document.getElementById('descriptionPreview');
     var categoryArea    = document.getElementById('categoryPreview');
 
-    description = FaqAjax.callAsync('parsetext', description);
+    description = FaqAjax.callSync('parsetext', description);
     descriptionArea.innerHTML = description;
     categoryArea.innerHTML    = category;
 }
