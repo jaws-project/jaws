@@ -45,36 +45,42 @@ class Jaws_URLMapping
      */
     function Jaws_URLMapping($enabled = null, $use_rewrite = null, $use_aliases = null, $extension = null)
     {
+        $urlMapper = $GLOBALS['app']->LoadGadget('UrlMapper', 'Info');
+        if (Jaws_Error::isError($urlMapper)) {
+            Jaws_Error::Fatal($urlMapper->getMessage());
+        }
+
         if ($enabled === null) {
-            $enabled = ($GLOBALS['app']->Registry->Get('map_enabled', 'UrlMapper', JAWS_COMPONENT_GADGET) == 'true');
+            $enabled = $urlMapper->GetRegistry('map_enabled') == 'true';
         }
 
         if ($use_rewrite === null) {
-            $use_rewrite = ($GLOBALS['app']->Registry->Get('map_use_rewrite', 'UrlMapper', JAWS_COMPONENT_GADGET) == 'true');
+            $use_rewrite = $urlMapper->GetRegistry('map_use_rewrite') == 'true';
         }
 
         if ($use_aliases === null) {
-            $use_aliases = ($GLOBALS['app']->Registry->Get('map_use_aliases', 'UrlMapper', JAWS_COMPONENT_GADGET) == 'true');
+            $use_aliases = $urlMapper->GetRegistry('map_use_aliases') == 'true';
         }
 
         if ($extension === null) {
-            $extension = $GLOBALS['app']->Registry->Get('map_extensions', 'UrlMapper', JAWS_COMPONENT_GADGET);
+            $extension = $urlMapper->GetRegistry('map_extensions');
         }
 
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
         $this->_use_rewrite       = $use_rewrite;
         $this->_use_aliases       = $use_aliases;
-        $this->_custom_precedence = $GLOBALS['app']->Registry->Get('map_custom_precedence', 'UrlMapper', JAWS_COMPONENT_GADGET) == 'true';
-        $this->_restrict_multimap = $GLOBALS['app']->Registry->Get('map_restrict_multimap', 'UrlMapper', JAWS_COMPONENT_GADGET) == 'true';
+        $this->_custom_precedence = $urlMapper->GetRegistry('map_custom_precedence') == 'true';
+        $this->_restrict_multimap = $urlMapper->GetRegistry('map_restrict_multimap') == 'true';
         if (!empty($extension) && $extension{0} != '.') {
             $extension = '.'.$extension;
         }
         $this->_extension = $extension;
 
-        $this->_Model = $GLOBALS['app']->loadGadget('UrlMapper', 'Model');
+        $this->_Model = $urlMapper->load('Model')->loadModel('Model');
         if (Jaws_Error::isError($this->_Model)) {
             Jaws_Error::Fatal($this->_Model->getMessage());
         }
+
     }
 
     /**
