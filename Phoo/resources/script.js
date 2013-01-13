@@ -86,13 +86,12 @@ function ImportImages()
 
         $('percent').innerHTML = percent + '%';
         $('img_percent').setAttribute('style', 'width:' + percent + '%;');
-        var phoo = new phooadminajax(PhooCallback);
         PhooAjax.callAsync('importimage', items[currentIndex]['image'], items[currentIndex]['name'], album);
     } else {
         if (currentIndex == howmany) {
             $('nofm').innerHTML = finished_message;
             $('indicator').src = ok_image;
-            new Effect.Fade($('warning'));
+            $('warning').fade('out');
         }
     }
 }
