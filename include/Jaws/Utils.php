@@ -417,7 +417,7 @@ class Jaws_Utils
                                           __FUNCTION__);
                 }
 
-                $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/ui", "", $user_filename));
+                $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/", "", $user_filename));
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     if (in_array($fileinfo['extension'], $deny_formats) ||
