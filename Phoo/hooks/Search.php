@@ -27,12 +27,12 @@ class PhooSearchHook
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
+     * @param   array   $pSql Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
     function Hook($pSql = array())
     {
-        $orderType = $this->GetRegistry('albums_order_type');
+        $orderType = $GLOBALS['app']->Registry->Get('albums_order_type', 'Phoo', JAWS_COMPONENT_GADGET);
         if (!in_array($orderType, array('createtime DESC',
                                         'createtime',
                                         'name DESC',

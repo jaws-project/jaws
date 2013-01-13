@@ -23,7 +23,7 @@ class FileBrowserSearchHook
             return array();
         }
 
-        if ($this->GetRegistry('frontend_avail') != 'true') {
+        if ($GLOBALS['app']->Registry->Get('frontend_avail', 'FileBrowser', JAWS_COMPONENT_GADGET) != 'true') {
             return array();
         }
 
