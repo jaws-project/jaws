@@ -20,19 +20,12 @@ class Contact_Model extends Jaws_Gadget_Model
      */
     function GetContact($id)
     {
-        $sql = '
-            SELECT
-                [id], [ip], [name], [email], [company], [url], [tel], [fax], [mobile], [address],
-                [recipient], [subject], [msg_txt], [attachment], [createtime], [updatetime]
-            FROM [[contacts]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, array('id' => $id));
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $cntctTable->select(
+            'id:integer', 'ip', 'name', 'email', 'company', 'url', 'tel', 'fax', 'mobile', 'address',
+            'recipient:integer', 'subject', 'msg_txt', 'attachment', 'createtime', 'updatetime'
+        );
+        return $cntctTable->where('id', $id)->getRow();
     }
 
     /**
@@ -44,22 +37,9 @@ class Contact_Model extends Jaws_Gadget_Model
      */
     function GetRecipient($id)
     {
-        $sql = '
-            SELECT
-                [id], [name], [email], [tel], [fax], [mobile], [inform_type], [visible]
-            FROM [[contacts_recipients]]
-            WHERE [id] = {id}';
-
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id));
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
-        }
-
-        if (isset($row['id'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'), _t('CONTACT_NAME'));
+        $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
+        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type:integer', 'visible:boolean');
+        return $rcpTable->where('id', $id)->getRow();
     }
 
     /**
@@ -73,37 +53,14 @@ class Contact_Model extends Jaws_Gadget_Model
      */
     function GetRecipients($onlyVisible = false, $limit = false, $offset = null)
     {
-        if (is_numeric($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
+        $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
+        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'visible:boolean');
         if ($onlyVisible) {
-            $sql = '
-                SELECT
-                    [id], [name], [email], [tel], [fax], [mobile]
-                FROM [[contacts_recipients]]
-                WHERE [visible] = {visible}
-                ORDER BY [id] ASC';
-        } else {
-            $sql = '
-                SELECT
-                    [id], [name], [email], [tel], [fax], [mobile], [visible]
-                FROM [[contacts_recipients]]
-                ORDER BY [id] ASC';
+            $rcpTable->where('visible', 1);
         }
-
-        $params = array();
-        $params['visible'] = 1;
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $rcpTable->orderBy('id');
+        $rcpTable->limit($limit, $offset);
+        return $rcpTable->getAll();
     }
 
     /**
@@ -125,36 +82,31 @@ class Contact_Model extends Jaws_Gadget_Model
      * @return  bool    True on Success or False on Failure
      */
     function InsertContact($name, $email, $company, $url, $tel, $fax, $mobile,
-                           $address, $rcipient, $subject, $attachment, $message)
+                           $address, $recipient, $subject, $attachment, $message)
     {
-        $sql = "
-            INSERT INTO [[contacts]]
-                ([user], [ip], [name], [email], [company], [url], [tel], [fax], [mobile], [address], [recipient],
-                 [subject], [attachment], [msg_txt], [reply], [reply_sent], [createtime], [updatetime])
-            VALUES
-                ({user}, {ip}, {name}, {email}, {company}, {url}, {tel}, {fax}, {mobile}, {address}, {rcipient},
-                 {subject}, {attachment}, {message}, {reply}, {reply_sent}, {now}, {now})";
+        $now = $GLOBALS['db']->Date();
+        $data = array();
+        $data['[user]']     = $GLOBALS['app']->Session->GetAttribute('user');
+        $data['ip']         = $_SERVER['REMOTE_ADDR'];
+        $data['name']       = $name;
+        $data['email']      = $email;
+        $data['company']    = $company;
+        $data['url']        = $url;
+        $data['tel']        = $tel;
+        $data['fax']        = $fax;
+        $data['mobile']     = $mobile;
+        $data['address']    = $address;
+        $data['recipient']  = (int)$recipient;
+        $data['subject']    = $subject;
+        $data['attachment'] = $attachment;
+        $data['msg_txt']    = $message;
+        $data['reply']      = '';
+        $data['reply_sent'] = 0;
+        $data['createtime'] = $now;
+        $data['updatetime'] = $now;
 
-        $params = array();
-        $params['user']       = $GLOBALS['app']->Session->GetAttribute('user');
-        $params['ip']         = $_SERVER['REMOTE_ADDR'];
-        $params['name']       = $name;
-        $params['email']      = $email;
-        $params['company']    = $company;
-        $params['url']        = $url;
-        $params['tel']        = $tel;
-        $params['fax']        = $fax;
-        $params['mobile']     = $mobile;
-        $params['address']    = $address;
-        $params['rcipient']   = (int)$rcipient;
-        $params['subject']    = $subject;
-        $params['attachment'] = $attachment;
-        $params['message']    = $message;
-        $params['reply']      = '';
-        $params['reply_sent'] = 0;
-        $params['now']      = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $result = $cntctTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
