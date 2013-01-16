@@ -21,18 +21,12 @@ class Contact_AdminModel extends Contact_Model
      */
     function GetReply($id)
     {
-        $sql = '
-            SELECT
-                [id], [name], [email], [recipient], [subject], [msg_txt], [reply], [reply_sent], [createtime]
-            FROM [[contacts]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, array('id' => $id));
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $cntctTable->select(
+            'id:integer', 'name', 'email', 'recipient:integer', 'subject', 
+            'msg_txt', 'reply', 'reply_sent:integer', 'createtime'
+        );
+        return $cntctTable->where('id', $id)->getRow();
     }
 
     /**
@@ -46,29 +40,19 @@ class Contact_AdminModel extends Contact_Model
      */
     function GetContacts($recipient = -1, $limit = false, $offset = null)
     {
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $cntctTable->select(
+            'id:integer', 'name', 'email', 'subject', 'attachment', 
+            'recipient:integer', 'reply', 'createtime'
+        );
+        if ($recipient != -1) {
+            $cntctTable->where('recipient', (int)$recipient);
+        }
+        $cntctTable->orderBy('id DESC');
         if (is_numeric($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
+            $cntctTable->limit($limit, $offset);
         }
-        $sql = '
-            SELECT
-                [id], [name], [email], [subject], [attachment], [recipient], [reply], [createtime]
-            FROM [[contacts]]';
-
-            if ($recipient != -1) {
-                $sql .= ' WHERE [recipient] =  {recipient}';
-            }
-
-            $sql .= ' ORDER BY [id] DESC';
-
-        $result = $GLOBALS['db']->queryAll($sql, array('recipient' => (int) $recipient));
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        return $cntctTable->getAll();
     }
 
     /**
@@ -80,20 +64,12 @@ class Contact_AdminModel extends Contact_Model
      */
     function GetContactsCount($recipient = -1)
     {
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[contacts]]';
-
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $cntctTable->select('count([id]):integer');
         if ($recipient != -1) {
-            $sql .= ' WHERE [[contacts]].[recipient] = {recipient}';
+            $cntctTable->where('recipient', (int)$recipient);
         }
-
-        $res = $GLOBALS['db']->queryOne($sql, array('recipient' => (int) $recipient));
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        return $cntctTable->getOne();
     }
 
     /**
@@ -116,38 +92,22 @@ class Contact_AdminModel extends Contact_Model
      */
     function UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message)
     {
-        $sql = '
-            UPDATE [[contacts]] SET
-                [name]       = {name},
-                [email]      = {email},
-                [company]    = {company},
-                [url]        = {url},
-                [tel]        = {tel},
-                [fax]        = {fax},
-                [mobile]     = {mobile},
-                [address]    = {address},
-                [recipient]  = {recipient},
-                [subject]    = {subject},
-                [msg_txt]    = {message},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
+        $data = array();
+        $data['name']       = $name;
+        $data['email']      = $email;
+        $data['company']    = $company;
+        $data['url']        = $url;
+        $data['tel']        = $tel;
+        $data['fax']        = $fax;
+        $data['mobile']     = $mobile;
+        $data['address']    = $address;
+        $data['recipient']  = (int)$recipient;
+        $data['subject']    = $subject;
+        $data['msg_txt']    = $message;
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
-        $params = array();
-        $params['id']        = (int)$id;
-        $params['name']      = $name;
-        $params['email']     = $email;
-        $params['company']   = $company;
-        $params['url']       = $url;
-        $params['tel']       = $tel;
-        $params['fax']       = $fax;
-        $params['mobile']    = $mobile;
-        $params['address']   = $address;
-        $params['recipient'] = (int)$recipient;
-        $params['subject']   = $subject;
-        $params['message']   = $message;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
@@ -167,18 +127,12 @@ class Contact_AdminModel extends Contact_Model
      */
     function UpdateReply($id, $reply)
     {
-        $sql = '
-            UPDATE [[contacts]] SET
-                [reply]      = {reply},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
+        $data               = array();
+        $data['reply']      = $reply;
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
-        $params          = array();
-        $params['id']    = (int)$id;;
-        $params['reply'] = $reply;
-        $params['now']   = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
@@ -198,18 +152,12 @@ class Contact_AdminModel extends Contact_Model
      */
     function UpdateReplySent($id, $reply_sent)
     {
-        $sql = '
-            UPDATE [[contacts]] SET
-                [reply_sent] = {reply_sent},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
+        $data = array();
+        $data['reply_sent'] = (int)$reply_sent;
+        $data['now']        = $GLOBALS['db']->Date();
 
-        $params = array();
-        $params['id']         = (int)$id;;
-        $params['reply_sent'] = (int)$reply_sent;
-        $params['now']        = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $cntctTable = Jaws_ORM::getInstance()->table('contacts');
+        $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
@@ -228,8 +176,8 @@ class Contact_AdminModel extends Contact_Model
      */
     function DeleteContact($id)
     {
-        $sql = 'DELETE FROM [[contacts]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $objORM = Jaws_ORM::getInstance();
+        $result = $objORM->delete()->table('contacts')->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_NOT_DELETED'), _t('CONTACT_NAME'));
@@ -254,22 +202,17 @@ class Contact_AdminModel extends Contact_Model
      */
     function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
-        $sql = '
-            INSERT INTO [[contacts_recipients]]
-                ([name], [email], [tel], [fax], [mobile], [inform_type], [visible])
-            VALUES
-                ({name}, {email}, {tel}, {fax}, {mobile}, {inform_type}, {visible})';
+        $data = array();
+        $data['name']        = $name;
+        $data['email']       = $email;
+        $data['tel']         = $tel;
+        $data['fax']         = $fax;
+        $data['mobile']      = $mobile;
+        $data['inform_type'] = (int)$inform_type;
+        $data['visible']     = (int)$visible;
 
-        $params = array();
-        $params['name']        = $name;
-        $params['email']       = $email;
-        $params['tel']         = $tel;
-        $params['fax']         = $fax;
-        $params['mobile']      = $mobile;
-        $params['inform_type'] = (int)$inform_type;
-        $params['visible']     = (int)$visible;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
+        $result = $rcptTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'),_t('CONTACT_NAME'));
@@ -295,28 +238,17 @@ class Contact_AdminModel extends Contact_Model
      */
     function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
     {
-        $sql = '
-            UPDATE [[contacts_recipients]] SET
-                [name]        = {name},
-                [email]       = {email},
-                [tel]         = {tel},
-                [fax]         = {fax},
-                [mobile]      = {mobile},
-                [inform_type] = {inform_type},
-                [visible]     = {visible}
-            WHERE [id] = {id}';
+        $data = array();
+        $data['name']        = $name;
+        $data['email']       = $email;
+        $data['tel']         = $tel;
+        $data['fax']         = $fax;
+        $data['mobile']      = $mobile;
+        $data['inform_type'] = (int)$inform_type;
+        $data['visible']     = (int)$visible;
 
-        $params = array();
-        $params['id']          = (int)$id;
-        $params['name']        = $name;
-        $params['email']       = $email;
-        $params['tel']         = $tel;
-        $params['fax']         = $fax;
-        $params['mobile']      = $mobile;
-        $params['inform_type'] = (int)$inform_type;
-        $params['visible']     = (int)$visible;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
+        $result = $rcptTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'), _t('CONTACT_NAME'));
@@ -335,8 +267,8 @@ class Contact_AdminModel extends Contact_Model
      */
     function DeleteRecipient($id)
     {
-        $sql = 'DELETE FROM [[contacts_recipients]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $objORM = Jaws_ORM::getInstance();
+        $result = $objORM->delete()->table('contacts_recipients')->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'), _t('CONTACT_NAME'));

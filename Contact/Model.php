@@ -38,7 +38,7 @@ class Contact_Model extends Jaws_Gadget_Model
     function GetRecipient($id)
     {
         $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
-        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type:integer', 'visible:boolean');
+        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type:integer', 'visible:integer');
         return $rcpTable->where('id', $id)->getRow();
     }
 
@@ -54,7 +54,7 @@ class Contact_Model extends Jaws_Gadget_Model
     function GetRecipients($onlyVisible = false, $limit = false, $offset = null)
     {
         $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
-        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'visible:boolean');
+        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'visible:integer');
         if ($onlyVisible) {
             $rcpTable->where('visible', 1);
         }
