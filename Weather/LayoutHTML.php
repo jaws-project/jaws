@@ -156,12 +156,15 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
                 $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
             }
 
-            require_once JAWS_PATH . 'gadgets/Weather/include/Google.php';
+            require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
             $metric = $this->gadget->GetRegistry('unit') == 'metric';
-            $wService = new Google_Weather($metric,
-                                           JAWS_DATA . 'weather',
-                                           $this->gadget->GetRegistry('update_period'),
-                                           $options);
+            $wService = new Underground_Weather(
+                                            $this->gadget->GetRegistry('api_key'),
+                                            $metric,
+                                            JAWS_DATA . 'weather',
+                                            $this->gadget->GetRegistry('update_period'),
+                                            $options);
+
             foreach ($regions as $region) {
                 $rWeather = $wService->getWeather($region['latitude'],
                                                   $region['longitude']);
