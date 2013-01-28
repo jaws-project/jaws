@@ -126,10 +126,11 @@ class Jaws_URLMapping
 
             foreach ($maps as $map) {
                 $this->_map[$map['gadget']][$map['action']][] = array(
-                                    'map'       => $map['map'],
-                                    'params'    => null,
-                                    'regexp'    => $map['regexp'],
-                                    'extension' => $map['extension'],
+                                    'map'         => $map['map'],
+                                    'params'      => null,
+                                    'regexp'      => $map['regexp'],
+                                    'extension'   => $map['extension'],
+                                    'regexp_vars' => array_keys(unserialize($map['vars_regexps'])),
                                     'custom_map'       => $map['custom_map'],
                                     'custom_regexp'    => $map['custom_regexp'],
                                     'custom_extension' => $map['custom_extension'],
@@ -339,8 +340,9 @@ class Jaws_URLMapping
      * @param   mixed   URIPrefix Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = null, $useExt = true, $URIPrefix = false)
+    function GetURLFor($gadget, $action='', $params = array(), $useExt = true, $URIPrefix = false)
     {
+        $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_map[$gadget][$action])) {
             foreach ($this->_map[$gadget][$action] as $map) {
                 if ($this->_custom_precedence && !empty($map['custom_map'])) {
@@ -350,13 +352,20 @@ class Jaws_URLMapping
                     $url = $map['map'];
                     $ext = $map['extension'];
                 }
-                if (is_array($params)) {
-                    foreach ($params as $key => $value) {
-                        $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                        $url = str_replace('{' . $key . '}', $value, $url);
-                    }
+
+                // all params variables must exist in regexp variables
+                $not_exist_vars = array_diff($params_vars, $map['regexp_vars']);
+                if (!empty($not_exist_vars)) {
+                    continue;
                 }
 
+                // set map variables by params values 
+                foreach ($params as $key => $value) {
+                    $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                    $url = str_replace('{' . $key . '}', $value, $url);
+                }
+
+                // remove not fill optional part of map
                 do {
                     $rpl_url = $url;
                     $url = preg_replace('$\[[[:word:]/]*{\w+}[[:word:]/]*\]$u', '', $url);
