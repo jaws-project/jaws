@@ -135,8 +135,7 @@ function parseText(form)
     var content = getEditorValue('content');
 
     content = StaticPageAjax.callSync('parsetext', content);
-    var preview = document.getElementById('preview');
-    preview.style.display = 'block';
+    $('preview').style.display   = 'table';
 
     var titlePreview   = document.getElementById('previewTitle');
     var contentPreview = document.getElementById('previewContent');
