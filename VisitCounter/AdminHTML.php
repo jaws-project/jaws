@@ -67,7 +67,7 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         foreach($visits as $visit) {
             $visitData = array();
             $visitData['ip']     = $visit['ip'];
-            $visitData['date']   = $date->Format($visit['visit_date'],'Y-m-d H:i:s');
+            $visitData['date']   = $date->Format($visit['visit_time'], 'Y-m-d H:i:s');
             $visitData['visits'] = $visit['visits'];
 
             $newData[] = $visitData;
@@ -189,7 +189,7 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_STATS_FROM'));
         $date = $GLOBALS['app']->loadDate();
-        $tpl->SetVariable('value',  $date->Format($startDate,'Y-m-d'));
+        $tpl->SetVariable('value', $date->Format($startDate, 'Y-m-d'));
         $tpl->SetVariable('item_id', 'stats_from');
         $tpl->ParseBlock('visitcounter/item');
         $tpl->SetBlock('visitcounter/item');

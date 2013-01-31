@@ -15,9 +15,9 @@
         </field>
 
         <field>
-            <name>visit_date</name>
-            <was>date</was>
-            <type>timestamp</type>
+            <name>visit_time</name>
+            <type>integer</type>
+            <length>16</length>
             <notnull>true</notnull>
         </field>
 
@@ -36,7 +36,7 @@
                 <name>ip</name>
             </field>
             <field>
-                <name>visit_date</name>
+                <name>visit_time</name>
             </field>
         </index>
 
@@ -48,9 +48,9 @@
         </index>
 
         <index>
-            <name><variable>table_prefix</variable>ipvisitor_vd</name>
+            <name><variable>table_prefix</variable>ipvisitor_vt</name>
             <field>
-                <name>visit_date</name>
+                <name>visit_time</name>
             </field>
         </index>
 

@@ -24,14 +24,14 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry('visit_counters',  'online,today,total');
+        $this->gadget->AddRegistry('visit_counters',  'online,today,yesterday,total');
         $this->gadget->AddRegistry('timeout', '600');
         $this->gadget->AddRegistry('type', 'impressions');
         $this->gadget->AddRegistry('period', '0');
         $this->gadget->AddRegistry('start', date('Y-m-d H:i:s'));
         $this->gadget->AddRegistry('mode', 'text');
-        $this->gadget->AddRegistry('custom_text', 
-                                          '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
+        $this->gadget->AddRegistry('custom_text', '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
+        $this->gadget->AddRegistry('visits', '0');
 
         return true;
     }
@@ -60,6 +60,7 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
         $this->gadget->DelRegistry('start');
         $this->gadget->DelRegistry('mode');
         $this->gadget->DelRegistry('custom_text');
+        $this->gadget->DelRegistry('visits');
 
         return true;
     }

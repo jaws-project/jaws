@@ -24,10 +24,10 @@ class VisitCounter_AdminModel extends VisitCounter_Model
     {
         $sql = '
             SELECT
-                [ip], [visit_date], [visits]
+                [ip], [visit_time], [visits]
             FROM [[ipvisitor]]';
         if (!is_null($limit)) {
-            $sql .= ' ORDER BY [visit_date] DESC';
+            $sql .= ' ORDER BY [visit_time] DESC';
 
             $result = $GLOBALS['db']->setLimit(15, $limit);
             if (Jaws_Error::IsError($result)) {
@@ -51,7 +51,7 @@ class VisitCounter_AdminModel extends VisitCounter_Model
      */
     function ClearVisitors()
     {
-        $sql    = 'DELETE FROM [[ipvisitor]]';
+        $sql = 'DELETE FROM [[ipvisitor]]';
         $result = $GLOBALS['db']->query($sql);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_VISITORS_NOT_CLEARED'), RESPONSE_ERROR);
