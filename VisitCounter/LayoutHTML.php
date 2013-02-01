@@ -36,8 +36,9 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $online_count = $model->GetOnlineVisitors();
-        $today_count  = $model->GetTodayVisitors();
-        $total_count  = $model->GetTotalVisitors();
+        $today_count = $model->GetTodayVisitors();
+        $yesterday_count = $model->GetYesterdayVisitors();
+        $total_count = $model->GetTotalVisitors();
 
         $date = $GLOBALS['app']->loadDate();
         $startdate = $date->Format($model->GetStartDate());
@@ -57,6 +58,15 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('value', $viewMode=='text'?
                                        $this->gadget->ParseText($today_count, 'VisitCounter') :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $today_count));
+            $tpl->ParseBlock("VisiCounter/classic");
+        }
+
+        if (in_array('yesterday', $visit_counters)) {
+            $tpl->SetBlock("VisiCounter/classic");
+            $tpl->SetVariable('label', _t('VISITCOUNTER_YESTERDAY_VISITORS'));
+            $tpl->SetVariable('value', $viewMode=='text'?
+                                       $this->gadget->ParseText($yesterday_count, 'VisitCounter') :
+                                       preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $yesterday_count));
             $tpl->ParseBlock("VisiCounter/classic");
         }
 
@@ -83,6 +93,9 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
                 $tp->SetVariable('today',  $viewMode=='text'?
                                            $this->gadget->ParseText($today_count, 'VisitCounter') :
                                            preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $today_count));
+                $tp->SetVariable('yesterday',  $viewMode=='text'?
+                                           $this->gadget->ParseText($yesterday_count, 'VisitCounter') :
+                                           preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $yesterday_count));
                 $tp->SetVariable('total',  $viewMode=='text'?
                                            $this->gadget->ParseText($total_count, 'VisitCounter') :
                                            preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $total_count));
@@ -132,6 +145,17 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
     function DisplayToday()
     {
         return $this->GetVisitorsFormat(array('today'));
+    }
+
+    /**
+     * Displays number of yesterday visitors
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function DisplayYesterday()
+    {
+        return $this->GetVisitorsFormat(array('yesterday'));
     }
 
     /**

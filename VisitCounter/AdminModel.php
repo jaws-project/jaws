@@ -90,33 +90,18 @@ class VisitCounter_AdminModel extends VisitCounter_Model
      * Updates VisitCounter settings
      *
      * @access  public
-     * @param   bool    $online     Include online visitors
-     * @param   bool    $today      Include today visitors
-     * @param   bool    $total      Include total visitors
-     * @param   bool    $custom     Display custom text
+     * @param   string  $counters   Enabled visit counters
      * @param   int     $numdays    Number of days
      * @param   int     $type       Type of calculation (unique/impressions)
      * @param   int     $mode       Display type (text/image)
      * @param   string  $custom_text    Custome text to be displayed
      * @return  bool    True if change was successful, otherwise returns Jaws_Error
      */
-    function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text='')
+    function UpdateProperties($counters, $numdays, $type, $mode, $custom_text='')
     {
-        if ($online) {
-            $visit_counters[] = 'online';
-        }
-        if ($today) {
-            $visit_counters[] = 'today';
-        }
-        if ($total) {
-            $visit_counters[] = 'total';
-        }
-        if ($custom) {
-            $visit_counters[] = 'custom';
-        }
-        $rs1 = $this->gadget->SetRegistry('visit_counters', implode(',', $visit_counters));
+        $rs1 = $this->gadget->SetRegistry('visit_counters', $counters);
         $rs2 = $this->gadget->SetRegistry('period', $numdays);
-        $rs3 = $this->gadget->SetRegistry('type',   $type);
+        $rs3 = $this->gadget->SetRegistry('type', $type);
         $rs4 = $this->gadget->SetRegistry('mode', $mode);
         $rs5 = $this->gadget->SetRegistry('custom_text', $custom_text);
         if ($rs1 && $rs2 && $rs3 && $rs4 && $rs5) {

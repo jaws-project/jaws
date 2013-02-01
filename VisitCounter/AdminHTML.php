@@ -113,6 +113,8 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         $num_online       = $model->GetOnlineVisitors();
         $uniqueToday      = $model->GetTodayVisitors('unique');
         $impressionsToday = $model->GetTodayVisitors('impressions');
+        $uniqueYesterday  = $model->GetYesterdayVisitors('unique');
+        $imprsnsYesterday = $model->GetYesterdayVisitors('impressions');
         $uniqueTotal      = $model->GetTotalVisitors('unique');
         $impressionsTotal = $model->GetTotalVisitors('impressions');
         $startDate        = $model->GetStartDate();
@@ -136,10 +138,21 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
             $visit_counters = explode(',', $this->gadget->GetRegistry('visit_counters'));
             $check_counters =& Piwi::CreateWidget('CheckButtons', 'c_kind', 'vertical');
             $check_counters->SetTitle(_t('VISITCOUNTER_DISPLAY_COUNTER'));
-            $check_counters->AddOption(_t('VISITCOUNTER_ONLINE_VISITORS'), '0', null, in_array('online', $visit_counters));
-            $check_counters->AddOption(_t('VISITCOUNTER_TODAY_VISITORS'),  '1', null, in_array('today',  $visit_counters));
-            $check_counters->AddOption(_t('VISITCOUNTER_TOTAL_VISITORS'),  '2', null, in_array('total',  $visit_counters));
-            $check_counters->AddOption(_t('VISITCOUNTER_CUSTOM_VISITORS'), '3', null, in_array('custom', $visit_counters));
+            $check_counters->AddOption(
+                _t('VISITCOUNTER_ONLINE_VISITORS'), 'online', null, in_array('online', $visit_counters)
+            );
+            $check_counters->AddOption(
+                _t('VISITCOUNTER_TODAY_VISITORS'), 'today', null, in_array('today', $visit_counters)
+            );
+            $check_counters->AddOption(
+                _t('VISITCOUNTER_YESTERDAY_VISITORS'), 'yesterday', null, in_array('yesterday', $visit_counters)
+            );
+            $check_counters->AddOption(
+                _t('VISITCOUNTER_TOTAL_VISITORS'), 'total', null, in_array('total', $visit_counters)
+            );
+            $check_counters->AddOption(
+                _t('VISITCOUNTER_CUSTOM_VISITORS'), 'custom', null, in_array('custom', $visit_counters)
+            );
             $fieldset_config->Add($check_counters);
 
             $type =& Piwi::CreateWidget('Combo', 'type');
@@ -186,32 +199,50 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
 
         //Stats..
         $tpl->SetVariable('visitor_stats', _t('VISITCOUNTER_VISITOR_STATS'));
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_STATS_FROM'));
         $date = $GLOBALS['app']->loadDate();
         $tpl->SetVariable('value', $date->Format($startDate, 'Y-m-d'));
         $tpl->SetVariable('item_id', 'stats_from');
         $tpl->ParseBlock('visitcounter/item');
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_ONLINE_VISITORS'));
         $tpl->SetVariable('value', $num_online);
         $tpl->SetVariable('item_id', 'visitors');
         $tpl->ParseBlock('visitcounter/item');
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_TODAY_UNIQUE_VISITORS'));
         $tpl->SetVariable('value', $uniqueToday);
         $tpl->SetVariable('item_id', 'impressions');
         $tpl->ParseBlock('visitcounter/item');
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_TODAY_PAGE_IMPRESSIONS'));
         $tpl->SetVariable('value', $impressionsToday);
         $tpl->SetVariable('item_id', 'impressions');
         $tpl->ParseBlock('visitcounter/item');
+
+        $tpl->SetBlock('visitcounter/item');
+        $tpl->SetVariable('label', _t('VISITCOUNTER_YESTERDAY_UNIQUE_VISITORS'));
+        $tpl->SetVariable('value', $uniqueYesterday);
+        $tpl->SetVariable('item_id', 'impressions');
+        $tpl->ParseBlock('visitcounter/item');
+
+        $tpl->SetBlock('visitcounter/item');
+        $tpl->SetVariable('label', _t('VISITCOUNTER_YESTERDAY_PAGE_IMPRESSIONS'));
+        $tpl->SetVariable('value', $imprsnsYesterday);
+        $tpl->SetVariable('item_id', 'impressions');
+        $tpl->ParseBlock('visitcounter/item');
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_TOTAL_UNIQUE_VISITORS'));
         $tpl->SetVariable('value', $uniqueTotal);
         $tpl->SetVariable('item_id', 'impressions');
         $tpl->ParseBlock('visitcounter/item');
+
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_TOTAL_PAGE_IMPRESSIONS'));
         $tpl->SetVariable('value', $impressionsTotal);

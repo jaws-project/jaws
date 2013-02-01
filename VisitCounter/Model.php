@@ -155,16 +155,52 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets the number of today visitors
+     * Gets number of today visitors
      *
      * @access  public
      * @param   string  $type   Type of calculation
-     * @return  int The number of today visitors or Jaws_Error on failure
+     * @return  mixed   Number of today visitors or Jaws_Error on failure
     */
     function GetTodayVisitors($type = null)
     {
         $params = array();
         $params['date'] = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
+        if (is_null($type)) {
+            $type = $this->GetVisitType();
+        }
+
+        if ($type == 'unique') {
+            $sql = '
+                SELECT COUNT([ip])
+                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_time] >= {date}) AS visitors';
+        } else {
+            $sql = '
+                SELECT SUM([visits])
+                FROM [[ipvisitor]]
+                WHERE [visit_time] >= {date}';
+        }
+
+        $visits = $GLOBALS['db']->queryOne($sql, $params);
+        if (Jaws_Error::IsError($visits)) {
+            return '-';
+        }
+
+        return $visits;
+    }
+
+    /**
+     * Gets number of yesterday visitors
+     *
+     * @access  public
+     * @param   string  $type   Type of calculation
+     * @return  mixed   Number of yesterday visitors or Jaws_Error on failure
+    */
+    function GetYesterdayVisitors($type = null)
+    {
+        $params = array();
+        $params['date'] = $GLOBALS['app']->UserTime2UTC(
+            $GLOBALS['app']->UTC2UserTime(time() - 24 * 3600, 'Y-m-d 00:00:00')
+        );
         if (is_null($type)) {
             $type = $this->GetVisitType();
         }

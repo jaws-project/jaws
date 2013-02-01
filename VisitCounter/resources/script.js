@@ -60,9 +60,7 @@ function cleanEntries()
  */
 function updateStats()
 {
-    var vcSync = new visitcounteradminajax();
-
-    $('stats_from').innerHTML  = vcSync.getstartdate();
+    $('stats_from').innerHTML  = VisitCounterAjax.callSync('getstartdate');
     $('visitors').innerHTML    = 0;
     $('impressions').innerHTML = 0;
 }
@@ -72,16 +70,19 @@ function updateStats()
  */
 function updateProperties(form)
 {
-    var online     = form.elements['c_kind[]'].item(0).checked;
-    var today      = form.elements['c_kind[]'].item(1).checked;
-    var total      = form.elements['c_kind[]'].item(2).checked;
-    var custom     = form.elements['c_kind[]'].item(3).checked;
-    var numDays    = form.elements['period'].value;
-    var type       = form.elements['type'].value;
-    var mode       = form.elements['mode'].value;
-    var customText = form.elements['custom_text'].value;
-    
-    VisitCounterAjax.callAsync('updateproperties', online, today, total, custom, numDays, type, mode, customText);
+    var numDays    = form.elements['period'].value,
+        type       = form.elements['type'].value,
+        mode       = form.elements['mode'].value,
+        customText = form.elements['custom_text'].value,
+        counters   = [];
+
+    form.getElements('input[name=c_kind[]]').each(function(input) {
+        if (input.checked) {
+            counters.push(input.value);
+        }
+    });
+
+    VisitCounterAjax.callAsync('updateproperties', counters.join(), numDays, type, mode, customText);
 }
 
 var VisitCounterAjax = new JawsAjax('VisitCounter', VisitCounterCallback);

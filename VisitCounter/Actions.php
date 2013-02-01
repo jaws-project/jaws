@@ -18,6 +18,9 @@ $actions['DisplayOnline'] = array(
 $actions['DisplayToday'] = array(
     'layout' => true,
 );
+$actions['DisplayYesterday'] = array(
+    'layout' => true,
+);
 $actions['DisplayTotal'] = array(
     'layout' => true,
 );

@@ -68,23 +68,20 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      * Updates properties
      *
      * @access  public
-     * @param   int     $online         Number of online visitors
-     * @param   int     $today          Number of today visitors
-     * @param   int     $total          Number of total visitors
-     * @param   string  $custom         Custome text to be displayed
+     * @param   string  $counters       Enabled visit counters
      * @param   int     $numdays        Cookie lifetime in days
      * @param   string  $type           The type of visits being displayed
      * @param   int     $mode           Display mode
      * @param   string  $custom_text    User defined text to be displayed
      * @return  array   Response array (notice or error)
      */
-    function UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text)
+    function UpdateProperties($counters, $numdays, $type, $mode, $custom_text)
     {
         $this->gadget->CheckPermission('UpdateProperties');
 
         $request =& Jaws_Request::getInstance();
-        $custom_text = $request->get(7, 'post', false);
-        $this->_Model->UpdateProperties($online, $today, $total, $custom, $numdays, $type, $mode, $custom_text);
+        $custom_text = $request->get(4, 'post', false);
+        $this->_Model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
