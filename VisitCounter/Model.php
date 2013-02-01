@@ -185,7 +185,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             return '-';
         }
 
-        return $visits;
+        return (int)$visits;
     }
 
     /**
@@ -198,8 +198,11 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     function GetYesterdayVisitors($type = null)
     {
         $params = array();
-        $params['date'] = $GLOBALS['app']->UserTime2UTC(
+        $params['begin'] = $GLOBALS['app']->UserTime2UTC(
             $GLOBALS['app']->UTC2UserTime(time() - 24 * 3600, 'Y-m-d 00:00:00')
+        );
+        $params['end'] = $GLOBALS['app']->UserTime2UTC(
+            $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00')
         );
         if (is_null($type)) {
             $type = $this->GetVisitType();
@@ -208,12 +211,16 @@ class VisitCounter_Model extends Jaws_Gadget_Model
         if ($type == 'unique') {
             $sql = '
                 SELECT COUNT([ip])
-                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_time] >= {date}) AS visitors';
+                FROM (
+                    SELECT DISTINCT [ip] 
+                    FROM [[ipvisitor]] 
+                    WHERE [visit_time] >= {begin} AND [visit_time] < {end}
+                ) AS visitors';
         } else {
             $sql = '
                 SELECT SUM([visits])
                 FROM [[ipvisitor]]
-                WHERE [visit_time] >= {date}';
+                WHERE [visit_time] >= {begin} AND [visit_time] < {end}';
         }
 
         $visits = $GLOBALS['db']->queryOne($sql, $params);
@@ -221,7 +228,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             return '-';
         }
 
-        return $visits;
+        return (int)$visits;
     }
 
     /**
