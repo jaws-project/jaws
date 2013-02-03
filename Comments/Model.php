@@ -328,8 +328,14 @@ class Comments_Model extends Jaws_Gadget_Model
                 [replies],
                 [status],
                 [createtime]
-            FROM [[comments]]
-            WHERE [gadget] = {gadget} AND (';
+            FROM [[comments]]';
+
+        if(empty($gadget)) {
+            $sql .= ' WHERE (';
+        } else {
+            $sql .= ' WHERE [gadget] = {gadget} AND (';
+        }
+
         if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
         if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
         if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
