@@ -88,7 +88,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
                     'url_topic',
                     $this->gadget->GetURLFor(
                         'Posts',
-                        array('fid' => $topic['id'], 'tid'=> $topic['id'])
+                        array('fid' => $topic['fid'], 'tid'=> $topic['id'])
                     )
                 );
 
