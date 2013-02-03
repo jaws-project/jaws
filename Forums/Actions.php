@@ -10,9 +10,9 @@
  */
 $actions = array();
 
-$actions['RecentPosts'] = array(
+$actions['RecentTopics'] = array(
     'layout' => true,
-    'file'   => 'RecentPosts',
+    'file'   => 'RecentTopics',
     'parametric' => true,
 );
 $actions['UserPosts'] = array(

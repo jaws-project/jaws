@@ -8,15 +8,15 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
+class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
 {
     /**
-     * Get RecentPosts action params
+     * Get RecentTopics action params
      *
      * @access  public
-     * @return  array list of RecentPosts action params
+     * @return  array list of RecentTopics action params
      */
-    function RecentPostsLayoutParams()
+    function RecentTopicsLayoutParams()
     {
         $result = array();
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
@@ -38,16 +38,16 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
     }
 
     /**
-     * Displays list of recent posts ordered by date
+     * Displays list of recent updated topics ordered by date
      *
      * @access  public
-     * @param   int|string $gid Group ID
+     * @param   mixed   $gid Group ID
      * @return  string  XHTML content
      */
-    function RecentPosts($gid = '')
+    function RecentTopics($gid = '')
     {
         $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('RecentPosts.html');
+        $tpl->Load('RecentTopics.html');
 
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $group = $gModel->GetGroup($gid);
@@ -61,9 +61,9 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
         $recent_limit = $this->gadget->GetRegistry('recent_limit');
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $posts = $pModel->GetRecentPosts($group['id'], $recent_limit);
-        if (!Jaws_Error::IsError($posts)) {
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topics = $tModel->GetRecentTopics($group['id'], $recent_limit);
+        if (!Jaws_Error::IsError($topics)) {
             // date format
             $date_format = $this->gadget->GetRegistry('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
@@ -74,38 +74,38 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
 
             $max_size = 128;
             $objDate = $GLOBALS['app']->loadDate();
-            $tpl->SetBlock('recentposts');
+            $tpl->SetBlock('recenttopics');
             // title
             $tpl->SetVariable('action_title', _t('FORUMS_LAYOUT_RECENT_POSTS'));
             $tpl->SetVariable('group_title', $group['title']);
 
-            foreach ($posts as $post) {
-                $tpl->SetBlock('recentposts/post');
+            foreach ($topics as $topic) {
+                $tpl->SetBlock('recenttopics/topic');
 
                 // topic subject/link
-                $tpl->SetVariable('lbl_topic', $post['subject']);
+                $tpl->SetVariable('lbl_topic', $topic['subject']);
                 $tpl->SetVariable(
                     'url_topic',
                     $this->gadget->GetURLFor(
                         'Posts',
-                        array('fid' => $post['fid'], 'tid'=> $post['tid'])
+                        array('fid' => $topic['id'], 'tid'=> $topic['id'])
                     )
                 );
 
                 // post author
-                $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-                $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
+                $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
+                $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$topic['last_post_time']));
                 $tpl->SetVariable(
                     'message',
                     $GLOBALS['app']->UTF8->substr(
-                        strip_tags($this->gadget->ParseText($post['message'], 'Forums', 'index')),
+                        strip_tags($this->gadget->ParseText($topic['message'], 'Forums', 'index')),
                         0,
                         $max_size
                     ). ' ...'
                 );
                 $tpl->SetVariable('lbl_postedby',_t('FORUMS_POSTEDBY'));
-                $tpl->SetVariable('username', $post['username']);
-                $tpl->SetVariable('nickname', $post['nickname']);
+                $tpl->SetVariable('username', $topic['username']);
+                $tpl->SetVariable('nickname', $topic['nickname']);
 
                 // user's profile
                 $tpl->SetVariable(
@@ -113,21 +113,21 @@ class Forums_Actions_RecentPosts extends Jaws_Gadget_HTML
                     $GLOBALS['app']->Map->GetURLFor(
                         'Users',
                         'Profile',
-                        array('user' => $post['username'])
+                        array('user' => $topic['username'])
                     )
                 );
 
                 // post url
-                $url_params = array('fid' => $post['fid'], 'tid'=> $post['tid']);
-                $last_post_page = floor(($post['topic_replies'] - 1)/$posts_limit) + 1;
+                $url_params = array('fid' => $topic['fid'], 'tid'=> $topic['id']);
+                $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('url_post', $this->gadget->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
 
-                $tpl->ParseBlock('recentposts/post');
+                $tpl->ParseBlock('recenttopics/topic');
             }
-            $tpl->ParseBlock('recentposts');
+            $tpl->ParseBlock('recenttopics');
         }
         return $tpl->Get();
     }

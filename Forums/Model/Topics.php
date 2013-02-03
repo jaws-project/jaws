@@ -117,6 +117,50 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     }
 
     /**
+     * Get recent updated topics
+     *
+     * @access  public
+     * @param   int     $gid    Group ID
+     * @param   int     $limit  Count of topics to be returned
+     * @return  mixed   Recent topics array or Jaws_Error on failure
+     */
+    function GetRecentTopics($gid = '', $limit = 0)
+    {
+        $params = array();
+        $params['gid'] = $gid;
+
+        $sql = '
+            SELECT
+                [[forums_topics]].[id], [fid], [subject], [[forums_posts]].[message],
+                [replies], [last_post_id], [last_post_uid], [last_post_time],
+                [[users]].[username], [[users]].[nickname]
+            FROM
+                [[forums_topics]]
+            LEFT JOIN
+                [[forums_posts]] ON [[forums_topics]].[last_post_uid] = [[forums_posts]].[id]
+            LEFT JOIN
+                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
+            LEFT JOIN
+                [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
+            ';
+
+        if (!empty($gid)) {
+            $sql.= 'WHERE [[forums]].[gid] = {gid}';
+        }
+        $sql.= ' ORDER BY [[forums_topics]].[last_post_time] DESC';
+
+        if (!empty($limit)) {
+            $result = $GLOBALS['db']->setLimit($limit, 0);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        $result = $GLOBALS['db']->queryAll($sql, $params);
+        return $result;
+    }
+
+    /**
      * Insert new topic
      *
      * @access  public
