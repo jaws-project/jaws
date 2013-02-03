@@ -1,16 +1,16 @@
 <?php
-require_once JAWS_PATH . 'gadgets/SimpleSite/Model.php';
+require_once JAWS_PATH . 'gadgets/Sitemap/Model.php';
 /**
- * SimpleSite Gadget
+ * Sitemap Gadget
  *
  * @category   GadgetModel
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_AdminModel extends SimpleSite_Model
+class Sitemap_AdminModel extends Sitemap_Model
 {
     /**
      * Gets max position for a given parent...
@@ -21,7 +21,7 @@ class SimpleSite_AdminModel extends SimpleSite_Model
      */
     function GetMaxPosition($parent_id)
     {
-        $sql = 'SELECT MAX([rank]) FROM [[simplesite]] WHERE [parent_id] = {parent_id}';
+        $sql = 'SELECT MAX([rank]) FROM [[sitemap]] WHERE [parent_id] = {parent_id}';
         $mp = $GLOBALS['db']->queryOne($sql, array('parent_id' => $parent_id));
         return Jaws_Error::IsError($mp) ? 1 : $mp + 1;
     }
@@ -39,26 +39,26 @@ class SimpleSite_AdminModel extends SimpleSite_Model
      *                              monthly, yearly, never
      * @param   string  $priority   (Optional) Priority of this item relative to other items on the site. Can be 
      *                              values from 1 to 5 (only numbers!).
-     * @return  bool    True if the simplesite was added without errors, otherwise returns false
+     * @return  bool    True if the sitemap was added without errors, otherwise returns false
      */
     function NewItem($parent_id, $title, $shortname, $type, $reference, $change = '', $priority = '')
     {
         if (empty($title) || empty($shortname)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_NEW_ITEM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_NEW_ITEM'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
         }
         
         if (!empty($priority) && is_numeric($priority)) {
             if ($priority < 0 && $priority > 1) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('SIMPLESITE_ERROR_PRIORITY_FORMAT'), _t('SIMPLESITE_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), _t('SITEMAP_NAME'));
             }            
         }
 
         if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly', 
                                                         'yearly', 'never'))) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_CHANGE_FREQ_FORMAT'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
 
         $position = $this->GetMaxPosition($parent_id);
@@ -81,7 +81,7 @@ class SimpleSite_AdminModel extends SimpleSite_Model
         }
 
         $sql = '
-            INSERT INTO [[simplesite]]
+            INSERT INTO [[sitemap]]
                 ([parent_id], [title], [shortname], [rfc_type], [reference], [rank],
                  [path], [changefreq], [priority], [createtime], [updatetime])
             VALUES
@@ -90,23 +90,23 @@ class SimpleSite_AdminModel extends SimpleSite_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_NEW_ITEM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_NEW_ITEM'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
         }
 
         $sql = 'SELECT
                 [id], [parent_id], [title], [shortname], [rfc_type], [changefreq],
                 [priority], [reference], [rank], [createtime], [updatetime]
-                FROM [[simplesite]]
+                FROM [[sitemap]]
                 WHERE [createtime] = {now}';
 
         $result = $GLOBALS['db']->queryRow($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_NEW_ITEM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_NEW_ITEM'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_CREATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_CREATED'), RESPONSE_NOTICE);
         return $result;
 
     }
@@ -122,20 +122,20 @@ class SimpleSite_AdminModel extends SimpleSite_Model
     {
         $item = $this->GetItem($id);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_DELETE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_DELETE'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_DELETE'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_DELETE'), _t('SITEMAP_NAME'));
         }
 
         // Delete item and children
         $path = $item['path'] . '%';
-        $sql = 'DELETE FROM [[simplesite]] WHERE [path] LIKE {path}';
+        $sql = 'DELETE FROM [[sitemap]] WHERE [path] LIKE {path}';
         $result = $GLOBALS['db']->query($sql, array('path' => $path));
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_DELETE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_DELETE'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_DELETE'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_DELETE'), _t('SITEMAP_NAME'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_DELETED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -144,7 +144,7 @@ class SimpleSite_AdminModel extends SimpleSite_Model
      * Updates the item
      *
      * @access  public
-     * @param   int     $id         ID of the SimpleSite
+     * @param   int     $id         ID of the Sitemap
      * @param   int     $parent_id  Parent ID
      * @param   string  $title      Item title
      * @param   string  $shortname  Item shortname (used as link)
@@ -160,22 +160,22 @@ class SimpleSite_AdminModel extends SimpleSite_Model
     {
         $item = $this->GetItem($id);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_UPDATE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_UPDATE'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_UPDATE'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
         }
 
         
         if (!empty($priority) && is_numeric($priority)) {
             if ($priority < 0 && $priority > 1) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('SIMPLESITE_ERROR_PRIORITY_FORMAT'), _t('SIMPLESITE_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), _t('SITEMAP_NAME'));
             }            
         }
 
         if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly', 
                                                         'yearly', 'never'))) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_CHANGE_FREQ_FORMAT'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
 
         $params = array();
@@ -205,7 +205,7 @@ class SimpleSite_AdminModel extends SimpleSite_Model
 
 
         $sql = '
-            UPDATE [[simplesite]] SET
+            UPDATE [[sitemap]] SET
                 [title]      = {title},
                 [shortname]  = {shortname},
                 [rfc_type]   = {type},
@@ -220,17 +220,17 @@ class SimpleSite_AdminModel extends SimpleSite_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_UPDATE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_UPDATE'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_UPDATE'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
         }
 
         // If shortname has been changed we need to update all its children paths...
         if ($item['path'] != $params['path']) {
             $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $replace_path = $GLOBALS['db']->dbc->function->replace('[[simplesite]].[path]', "'".$item['path']."'", "'".$params['path']."'");
+            $replace_path = $GLOBALS['db']->dbc->function->replace('[[sitemap]].[path]', "'".$item['path']."'", "'".$params['path']."'");
 
             $sql = "
-                UPDATE [[simplesite]] SET
+                UPDATE [[sitemap]] SET
                     [path] = $replace_path
                 WHERE [path] LIKE {likepath}";
             $cparams = array();
@@ -238,17 +238,17 @@ class SimpleSite_AdminModel extends SimpleSite_Model
 
             $result = $GLOBALS['db']->query($sql, $cparams);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_UPDATE'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('SIMPLESITE_ERROR_UPDATE'), _t('SIMPLESITE_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_UPDATE'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
             }
         }
         
-        $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_UPDATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
     /**
-     * Moves simplesite item to some direction
+     * Moves sitemap item to some direction
      *
      * @access  public
      * @param   int     $id         Item id
@@ -261,14 +261,14 @@ class SimpleSite_AdminModel extends SimpleSite_Model
         $sql = '
             SELECT
                 [id], [rank]
-            FROM [[simplesite]]
+            FROM [[sitemap]]
             WHERE [parent_id] = {parent}
             ORDER BY [rank] ASC';
 
         $result = $GLOBALS['db']->queryAll($sql, array('parent' => $item['parent_id']));
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_MOVE_ITEM'), _t('SIMPLESITE_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
         }
 
         $items = array ();
@@ -315,15 +315,15 @@ class SimpleSite_AdminModel extends SimpleSite_Model
             $params['position'] = $m_position;
 
             $sql = '
-                UPDATE [[simplesite]] SET
+                UPDATE [[sitemap]] SET
                     [rank] = {position},
                     [updatetime] = {now}
                 WHERE [id] = {id}';
 
             $result = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('SIMPLESITE_ERROR_MOVE_ITEM'), _t('SIMPLESITE_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
             }
 
             $params = array();
@@ -332,19 +332,19 @@ class SimpleSite_AdminModel extends SimpleSite_Model
             $params['position'] = $position;
 
             $sql = '
-                UPDATE [[simplesite]] SET
+                UPDATE [[sitemap]] SET
                     [rank] = {position},
                     [updatetime] = {now}
                 WHERE [id] = {id}';
 
             $result = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('SIMPLESITE_ERROR_MOVE_ITEM'), _t('SIMPLESITE_NAME'));
+                $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
             }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_ITEM_MOVED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ITEM_MOVED'), RESPONSE_NOTICE);
         return true;
     }
 }

@@ -1,8 +1,8 @@
 /**
- * SimpleSite JS actions
+ * Sitemap JS actions
  *
  * @category   Ajax
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
@@ -16,7 +16,7 @@ var firstElement = '';
 var editLegend = '';
 var currentAction = 'EDIT';
 
-var SimpleSiteCallback = {
+var SitemapCallback = {
     getreferences: function(response) {
         references[currentType] = response;
         populateReferences(response);
@@ -104,7 +104,7 @@ function createTree(data, depth) {
 }
 
 function getItems() {
-    var ssitems = SimpleSiteAjax.callSync('getitems');
+    var ssitems = SitemapAjax.callSync('getitems');
     // Empty parent combo
     if ($('ssparent').length>0) {
         for (i=$('ssparent').options.length-1; i>=1; i--) {
@@ -174,7 +174,7 @@ function selectItem(id) {
     if (selectedItems.inArray(id)) {
         // CLOSE
         selectedItems.splice(id,1);
-        $('ssa' + id).style.backgroundImage = 'url(\'gadgets/SimpleSite/images/folder.png\')';
+        $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder.png\')';
         if ($('ssd' + id + 'childs')) {
             $('ssd' + id + 'childs').style.display = 'none';
         }
@@ -182,7 +182,7 @@ function selectItem(id) {
         // OPEN
         selectedItems[id] = id;
         if ($('ssd' + id + 'childs')) {
-            $('ssa' + id).style.backgroundImage = 'url(\'gadgets/SimpleSite/images/folder-open.png\')';
+            $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder-open.png\')';
             $('ssd' + id + 'childs').style.display = 'block';
         }
     }
@@ -243,7 +243,7 @@ function createReference(type) {
             // Already
             populateReferences(references[type]);
         } else {
-            SimpleSiteAjax.callAsync('getreferences', type);
+            SitemapAjax.callAsync('getreferences', type);
         }
     }
 }
@@ -288,7 +288,7 @@ function saveCurrent() {
     changefreq = $('sschangefreq').value;
     priority   = $('sspriority').value;
     if (currentAction == 'NEW') {
-        SimpleSiteAjax.callAsync('newitem', parent_id, title, shortname, 
+        SitemapAjax.callAsync('newitem', parent_id, title, shortname, 
             type, reference, changefreq, priority);
     } else {
         if (id == parent_id) {
@@ -296,13 +296,13 @@ function saveCurrent() {
             $('ssparent').focus();
             return;
         }
-        SimpleSiteAjax.callAsync('updateitem', id, parent_id, title, shortname, 
+        SitemapAjax.callAsync('updateitem', id, parent_id, title, shortname, 
             type, reference, changefreq, priority);
     }
 }
 
 function deleteCurrent() {
-    SimpleSiteAjax.callAsync('deleteitem', currentID);
+    SitemapAjax.callAsync('deleteitem', currentID);
 }
 
 function newItem() {
@@ -324,11 +324,11 @@ function newItem() {
 }
 
 function moveItem(direction) {
-    SimpleSiteAjax.callAsync('moveitem', currentID, direction);
+    SitemapAjax.callAsync('moveitem', currentID, direction);
 }
 
 function pingSitemap() {
-    SimpleSiteAjax.callAsync('pingsitemap');
+    SitemapAjax.callAsync('pingsitemap');
 }
 
-var SimpleSiteAjax = new JawsAjax('SimpleSite', SimpleSiteCallback);
+var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);

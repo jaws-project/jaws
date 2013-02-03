@@ -1,15 +1,15 @@
 <?php
 /**
- * SimpleSite AJAX API
+ * Sitemap AJAX API
  *
  * @category   Ajax
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_AdminAjax extends Jaws_Gadget_HTML
+class Sitemap_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
@@ -18,14 +18,14 @@ class SimpleSite_AdminAjax extends Jaws_Gadget_HTML
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function SimpleSite_AdminAjax($gadget)
+    function Sitemap_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
         $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
     }
 
     /**
-     * Gets simplesites with items
+     * Gets sitemaps with items
      *
      * @access  public
      * @return  array   List of items
@@ -219,7 +219,7 @@ class SimpleSite_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('PingSite');
         $this->_Model->ping(true);
-        $GLOBALS['app']->Session->PushLastResponse(_t('SIMPLESITE_SITEMAP_SENT'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_SITEMAP_SENT'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

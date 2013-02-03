@@ -1,15 +1,15 @@
 <?php
 /**
- * SimpleSite Admin Gadget
+ * Sitemap Admin Gadget
  *
  * @category   GadgetAdmin
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
+class Sitemap_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Prepares the menubar
@@ -22,7 +22,7 @@ class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
         if ($this->gadget->GetPermission('PingSite')) {
             require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
             $menubar = new Jaws_Widgets_Menubar();
-            $menubar->AddOption('PingSite', _t('SIMPLESITE_PING_SITEMAP'),
+            $menubar->AddOption('PingSite', _t('SITEMAP_PING_SITEMAP'),
                                 'javascript: pingSitemap();',
                                 STOCK_RESET);
             return $menubar->Get();
@@ -41,17 +41,17 @@ class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
-        $tpl->Load('AdminSimpleSite.html');
-        $tpl->SetBlock('simplesite');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
+        $tpl->Load('AdminSitemap.html');
+        $tpl->SetBlock('sitemap');
         
-        $tpl->SetVariable('empty_message', _t('SIMPLESITE_EMPTY'));
+        $tpl->SetVariable('empty_message', _t('SITEMAP_EMPTY'));
         $tpl->SetVariable('new_message',   _t('GLOBAL_NEW'));
-        $tpl->SetVariable('self_parent_error', _t('SIMPLESITE_ERROR_SAME_PARENT'));
-        $tpl->SetVariable('shortname_error',   _t('SIMPLESITE_ERROR_SHORTNAME_ERROR'));
+        $tpl->SetVariable('self_parent_error', _t('SITEMAP_ERROR_SAME_PARENT'));
+        $tpl->SetVariable('shortname_error',   _t('SITEMAP_ERROR_SHORTNAME_ERROR'));
         $tpl->SetVariable('menubar', $this->Menubar(''));
         
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'AdminModel');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
 
@@ -69,58 +69,58 @@ class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
         $title->SetStyle('width: 330px;');
         $fieldset->Add($title);
 
-        $shortname =& Piwi::CreateWidget('Entry', 'shortname', '', _t('SIMPLESITE_SHORTNAME'));
+        $shortname =& Piwi::CreateWidget('Entry', 'shortname', '', _t('SITEMAP_SHORTNAME'));
         $shortname->SetId('ssshortname');
         $shortname->SetStyle('width: 330px;');
         $fieldset->Add($shortname);
 
         $type =& Piwi::CreateWidget('Combo', 'type');
         $type->SetId('sstype');
-        $type->SetTitle(_t('SIMPLESITE_TYPE'));
+        $type->SetTitle(_t('SITEMAP_TYPE'));
         $type->AddOption(_t('GLOBAL_URL'), 'url');
         if (Jaws_Gadget::IsGadgetInstalled('StaticPage')) {
-            $type->AddOption(_t('SIMPLESITE_STATICPAGE'), 'StaticPage');
+            $type->AddOption(_t('SITEMAP_STATICPAGE'), 'StaticPage');
         }
         if (Jaws_Gadget::IsGadgetInstalled('Blog')) {
-            $type->AddOption(_t('SIMPLESITE_BLOG'), 'Blog');
+            $type->AddOption(_t('SITEMAP_BLOG'), 'Blog');
         }
         if (Jaws_Gadget::IsGadgetInstalled('Launcher')) {
-            $type->AddOption(_t('SIMPLESITE_LAUNCHER'), 'Launcher');
+            $type->AddOption(_t('SITEMAP_LAUNCHER'), 'Launcher');
         }
         $type->SetStyle('width: 330px;');
         $type->AddEvent(ON_CHANGE, 'createReference(this.value);');
         $fieldset->Add($type);
 
         $ref =& Piwi::CreateWidget('Combo', 'reference');
-        $ref->SetTitle(_t('SIMPLESITE_REFERENCE'));
+        $ref->SetTitle(_t('SITEMAP_REFERENCE'));
         $ref->SetId('ssreference');
         $ref->SetStyle('width: 330px;');
         $fieldset->Add($ref);
 
         $parent =& Piwi::CreateWidget('Combo', 'parent');
-        $parent->SetTitle(_t('SIMPLESITE_PARENT'));
-        $parent->AddOption(_t('SIMPLESITE_TOP'), 0);
+        $parent->SetTitle(_t('SITEMAP_PARENT'));
+        $parent->AddOption(_t('SITEMAP_TOP'), 0);
         $parent->SetId('ssparent');
         $parent->SetStyle('width: 330px;');
         $fieldset->Add($parent);
 
         $changeFreq =& Piwi::CreateWidget('Combo', 'changefreq');
-        $changeFreq->SetTitle(_t('SIMPLESITE_CHANGE_FREQ'));
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_NONE'), 'none');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_ALWAYS'), 'always');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_HOURLY'), 'hourly');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_DAILY'), 'daily');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_WEEKLY'), 'weekly');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_MONTHLY'), 'monthly');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_YEARLY'), 'yearly');
-        $changeFreq->AddOption(_t('SIMPLESITE_CHANGE_FREQ_NEVER'), 'never');
+        $changeFreq->SetTitle(_t('SITEMAP_CHANGE_FREQ'));
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NONE'), 'none');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_ALWAYS'), 'always');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_HOURLY'), 'hourly');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_DAILY'), 'daily');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_WEEKLY'), 'weekly');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_MONTHLY'), 'monthly');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_YEARLY'), 'yearly');
+        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NEVER'), 'never');
         $changeFreq->SetDefault('none');
         $changeFreq->SetId('sschangefreq');
         $changeFreq->SetStyle('width: 330px;');
         $fieldset->Add($changeFreq);
 
         $priority =& Piwi::CreateWidget('Combo', 'priority');
-        $priority->SetTitle(_t('SIMPLESITE_PRIORITY'));
+        $priority->SetTitle(_t('SITEMAP_PRIORITY'));
         for($i=1; $i<10; $i++) {
             $priority->AddOption('0.'.$i, '0.'.$i);
         }
@@ -158,13 +158,13 @@ class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
 
         $up =& Piwi::CreateWidget('Button', 'up', '', STOCK_UP);
         $up->AddEvent (ON_CLICK, 'moveItem(\'up\');');
-        $up->SetTitle(_t('SIMPLESITE_MOVEUP'));
+        $up->SetTitle(_t('SITEMAP_MOVEUP'));
         $up->SetId('up_button');
         $hbox2->Add($up);
 
         $down =& Piwi::CreateWidget('Button', 'down', '', STOCK_DOWN);
         $down->AddEvent (ON_CLICK, 'moveItem(\'down\');');
-        $down->SetTitle(_t('SIMPLESITE_MOVEDOWN'));
+        $down->SetTitle(_t('SITEMAP_MOVEDOWN'));
         $down->SetId('down_button');
         $hbox2->Add($down);
 
@@ -172,7 +172,7 @@ class SimpleSite_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('buttons', $btns->Get());
 
-        $tpl->ParseBlock('simplesite');
+        $tpl->ParseBlock('sitemap');
 
         return $tpl->Get();
     }

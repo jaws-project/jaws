@@ -1,14 +1,14 @@
 <?php
 /**
- * SimpleSite - URL List gadget hook
+ * Sitemap - URL List gadget hook
  *
  * @category   GadgetHook
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSiteURLListHook
+class SitemapURLListHook
 {
     /**
      * Returns an array with all available items the Menu gadget can use
@@ -18,8 +18,8 @@ class SimpleSiteURLListHook
      */
     function Hook()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('SimpleSite', 'Sitemap'),
-                        'title' => _t('SIMPLESITE_SITEMAP'));
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Sitemap', 'Sitemap'),
+                        'title' => _t('SITEMAP_SITEMAP'));
         return $urls;
     }
 }

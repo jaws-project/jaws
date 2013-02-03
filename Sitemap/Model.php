@@ -1,15 +1,15 @@
 <?php
 /**
- * SimpleSite Gadget
+ * Sitemap Gadget
  *
  * @category   GadgetModel
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_Model extends Jaws_Gadget_Model
+class Sitemap_Model extends Jaws_Gadget_Model
 {
     /**
      * Internal variable to load items 
@@ -23,31 +23,31 @@ class SimpleSite_Model extends Jaws_Gadget_Model
      * Returns an item
      *
      * @access  public
-     * @param   int     $id The ID of the simplesite to return
-     * @return  array   Array that has the properties of a specific simplesite
+     * @param   int     $id The ID of the sitemap to return
+     * @return  array   Array that has the properties of a specific sitemap
      */
     function GetItem($id)
     {
         $sql = '
             SELECT [id], [parent_id], [title], [shortname], [rfc_type], [reference], [priority],
                    [changefreq], [rank], [path], [createtime], [updatetime]
-            FROM [[simplesite]] 
+            FROM [[sitemap]] 
             WHERE [id] = {id}';
 
         $result = $GLOBALS['db']->queryRow($sql, array('id' => $id));
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_GET_ITEM'), _t('SIMPLESITE_NAME'));
+            return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
 
         return $result;
     }
 
     /**
-     * Gets list of simplesites with their items
+     * Gets list of sitemaps with their items
      *
      * @access  public
      * @param   int     $levels Displays N levels
-     * @return  array   Array that contains all the simplesites with their items
+     * @return  array   Array that contains all the sitemaps with their items
      */
     function GetItems($levels = false)
     {
@@ -106,11 +106,11 @@ class SimpleSite_Model extends Jaws_Gadget_Model
             SELECT
                 [id], [parent_id], [title], [shortname], [rfc_type], [reference],
                 [path], [rank], [changefreq], [priority]
-            FROM [[simplesite]] 
+            FROM [[sitemap]] 
             ORDER BY [parent_id], [rank] ";
         $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_GET_ALL_ITEMS'), _t('SIMPLESITE_NAME'));
+            return new Jaws_Error(_t('SITEMAP_ERROR_GET_ALL_ITEMS'), _t('SITEMAP_NAME'));
         }
 
         foreach ($result as $row) {
@@ -138,7 +138,7 @@ class SimpleSite_Model extends Jaws_Gadget_Model
                 if ($item['rfc_type'] == 'url') {
                     $result[$index]['url'] = $item['reference'];
                 } else {
-                    $result[$index]['url'] = $GLOBALS['app']->Map->GetURLFor('SimpleSite', 'Display', array('path' => $item['path']));
+                    $result[$index]['url'] = $GLOBALS['app']->Map->GetURLFor('Sitemap', 'Display', array('path' => $item['path']));
                 }
                 $result[$index]['childs'] = $this->_CreateItemsArray($items, $item['id']);
             }
@@ -153,16 +153,16 @@ class SimpleSite_Model extends Jaws_Gadget_Model
      * @param   string  $title  Item title 
      * @return  array   Array of item properties
      */
-    function GetSimpleSiteItemByTitle($title)
+    function GetSitemapItemByTitle($title)
     {
-        $sql = 'SELECT [id] FROM [[simplesite]] WHERE [title] = {title}';
+        $sql = 'SELECT [id] FROM [[sitemap]] WHERE [title] = {title}';
         $result = $GLOBALS['db']->queryRow($sql, array('title' => $title));
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_GET_ITEM'), _t('SIMPLESITE_NAME'));
+            return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
 
         if (!isset($result['id'])) {
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_GET_ITEM'), _t('SIMPLESITE_NAME'));
+            return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
 
         return $result;
@@ -178,10 +178,10 @@ class SimpleSite_Model extends Jaws_Gadget_Model
     function GetContent($path)
     {
         // Get type and reference
-        $sql = "SELECT [rfc_type], [reference] FROM [[simplesite]] WHERE [path] = {path}";
+        $sql = "SELECT [rfc_type], [reference] FROM [[sitemap]] WHERE [path] = {path}";
         $result = $GLOBALS['db']->queryRow($sql, array('path' => $path));
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('SIMPLESITE_ERROR_GET_ITEM'), _t('SIMPLESITE_NAME'));
+            return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
 
         if (!isset($result['rfc_type'])) {
@@ -247,7 +247,7 @@ class SimpleSite_Model extends Jaws_Gadget_Model
             SELECT
                 [id], [parent_id], [title], [reference], [rank], [priority],
                 [changefreq], [updatetime]
-            FROM [[simplesite]]
+            FROM [[sitemap]]
             ORDER BY [id], [priority]';
 
         $result = $GLOBALS['db']->queryAll($sql);
@@ -339,7 +339,7 @@ class SimpleSite_Model extends Jaws_Gadget_Model
     {
 
         $breadcrumb = array();
-        $breadcrumb['/'] = _t('SIMPLESITE_HOME');
+        $breadcrumb['/'] = _t('SITEMAP_HOME');
         $apath = explode('/',$path);
         $a = $this->_items;
         for ($i = 0; $i < count($apath); $i++) {

@@ -1,9 +1,9 @@
 <?php
 /**
- * SimpleSite Actions file
+ * Sitemap Actions file
  *
  * @category    GadgetActions
- * @package     SimpleSite
+ * @package     Sitemap
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html

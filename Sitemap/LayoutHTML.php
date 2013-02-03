@@ -1,19 +1,19 @@
 <?php
 /**
- * SimpleSite Layout HTML file (for layout purposes)
+ * Sitemap Layout HTML file (for layout purposes)
  *
  * @category   GadgetLayout
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
+class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
      */
-    function SimpleSiteLayoutHTML()
+    function SitemapLayoutHTML()
     {
         // Nothing here
     }
@@ -27,11 +27,11 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Show($levels = false)
     {
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         $request =& Jaws_Request::getInstance();
         $items = $model->GetItems($levels);
 
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('Show.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
@@ -42,10 +42,10 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
                         $tplString);
         $tplString = '<!-- BEGIN branch -->' . $tplString . '<!-- END branch -->';
 
-        $tpl->SetBlock('simplesite_show');
+        $tpl->SetBlock('sitemap_show');
         $tpl->SetVariable('title', '');
         $tpl->SetVariable('menus_tree', $this->DisplayMenu($items, $tplString));
-        $tpl->ParseBlock('simplesite_show');
+        $tpl->ParseBlock('sitemap_show');
 
         return $tpl->get();
     }
@@ -105,7 +105,7 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('url', $item['url']);
                 $tpl->SetVariable('title', $item['title']);
                 $active = '';
-                if (($GLOBALS['app']->Layout->GetRequestedGadget() == 'SimpleSite') && 
+                if (($GLOBALS['app']->Layout->GetRequestedGadget() == 'Sitemap') && 
                     ($request->get('path', 'get') == $item['path'])) {
                         $active = 'active';
                 }
@@ -131,12 +131,12 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
      */
     function TopMenu()
     {
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('TopMenu.html');
         $tpl->SetBlock('topmenu');
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
 
-        if ($GLOBALS['app']->Layout->GetRequestedGadget() == 'SimpleSite') {
+        if ($GLOBALS['app']->Layout->GetRequestedGadget() == 'Sitemap') {
             $request =& Jaws_Request::getInstance();
             $items = $model->GetItems($request->get('path', 'get'));
         } else {
@@ -176,7 +176,7 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
      */
     function DisplayLevel($depth = 1) 
     {
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         $request =& Jaws_Request::getInstance();
         $path = $request->get('path', 'get');
         $aux = explode('/',$path);
@@ -185,7 +185,7 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
         if ($find == '') return '';
         $branch = $this->GetBranch($model->_items, $find);
 
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('DisplayLevel.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
@@ -196,10 +196,10 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
                         $tplString);
         $tplString = '<!-- BEGIN branch -->' . $tplString . '<!-- END branch -->';
 
-        $tpl->SetBlock('simplesite_show');
+        $tpl->SetBlock('sitemap_show');
         $tpl->SetVariable('title', '');
         $tpl->SetVariable('menus_tree', $this->DisplayMenu($branch, $tplString));
-        $tpl->ParseBlock('simplesite_show');
+        $tpl->ParseBlock('sitemap_show');
 
         return $tpl->get();
     }
@@ -212,30 +212,30 @@ class SimpleSite_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Breadcrumb()
     {
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         $request =& Jaws_Request::getInstance();
         $path = $request->get('path', 'get');
         $bc = $model->GetBreadcrumb($path); 
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('Breadcrumb.html');
-        $tpl->SetBlock('simplesite_breadcrumb');
+        $tpl->SetBlock('sitemap_breadcrumb');
         $c = 1; 
         $t = count($bc);
         foreach ($bc as $url => $title) {
             if ($c == $t) {
-                $tpl->SetBlock('simplesite_breadcrumb/last');
+                $tpl->SetBlock('sitemap_breadcrumb/last');
                 $tpl->SetVariable('url', $url);
                 $tpl->SetVariable('title', $title);
-                $tpl->ParseBlock('simplesite_breadcrumb/last');
+                $tpl->ParseBlock('sitemap_breadcrumb/last');
             } else {
-                $tpl->SetBlock('simplesite_breadcrumb/item');
+                $tpl->SetBlock('sitemap_breadcrumb/item');
                 $tpl->SetVariable('url', $url);
                 $tpl->SetVariable('title', $title);
-                $tpl->ParseBlock('simplesite_breadcrumb/item');
+                $tpl->ParseBlock('sitemap_breadcrumb/item');
             }
             $c++;
         }
-        $tpl->ParseBlock('simplesite_breadcrumb');
+        $tpl->ParseBlock('sitemap_breadcrumb');
         return $tpl->get();
     }
 

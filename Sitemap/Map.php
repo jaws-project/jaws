@@ -1,9 +1,9 @@
 <?php
 /**
- * Simplesite URL maps
+ * Sitemap URL maps
  *
  * @category   GadgetMaps
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2007-2013 Jaws Development Group

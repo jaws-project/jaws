@@ -1,14 +1,14 @@
 <?php
 /**
- * SimpleSite gadget info
+ * Sitemap gadget info
  *
  * @category   GadgetInfo
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_Info extends Jaws_Gadget
+class Sitemap_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
@@ -16,7 +16,7 @@ class SimpleSite_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.7.0';
+    var $_Version = '0.8.0';
 
     /**
      * Gadget ACLs

@@ -1,14 +1,14 @@
 <?php
 /**
- * SimpleSite Installer
+ * Sitemap Installer
  *
  * @category    GadgetModel
- * @package     SimpleSite
+ * @package     Sitemap
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_Installer extends Jaws_Gadget_Installer
+class Sitemap_Installer extends Jaws_Gadget_Installer
 {
     /**
      * Installs the gadget
@@ -27,7 +27,7 @@ class SimpleSite_Installer extends Jaws_Gadget_Installer
         $new_dirs[] = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR . 'sitemap';
         foreach ($new_dirs as $new_dir) {
             if (!Jaws_Utils::mkdir($new_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('SIMPLESITE_NAME'));
+                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('SITEMAP_NAME'));
             }
         }
 
@@ -47,9 +47,9 @@ class SimpleSite_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $result = $GLOBALS['db']->dropTable('simplesite');
+        $result = $GLOBALS['db']->dropTable('sitemap');
         if (Jaws_Error::IsError($result)) {
-            $gName  = _t('SIMPLESITE_NAME');
+            $gName  = _t('SITEMAP_NAME');
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
             $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
             return new Jaws_Error($errMsg, $gName);
@@ -74,7 +74,7 @@ class SimpleSite_Installer extends Jaws_Gadget_Installer
         }
 
         // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SimpleSite/PingSite',   'true');
+        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Sitemap/PingSite',   'true');
 
         // Registry keys
 

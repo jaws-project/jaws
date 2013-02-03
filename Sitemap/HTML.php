@@ -1,15 +1,15 @@
 <?php
 /**
- * SimpleSite Gadget
+ * Sitemap Gadget
  *
  * @category   Gadget
- * @package    SimpleSite
+ * @package    Sitemap
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SimpleSite_HTML extends Jaws_Gadget_HTML
+class Sitemap_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action
@@ -31,7 +31,7 @@ class SimpleSite_HTML extends Jaws_Gadget_HTML
      */
     function GetNextLevel(&$items)
     {
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('Sitemap.html');
 
         if (count($items) > 0) {
@@ -56,15 +56,15 @@ class SimpleSite_HTML extends Jaws_Gadget_HTML
      */
     function Sitemap()
     {
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         
-        $tpl = new Jaws_Template('gadgets/SimpleSite/templates/');
+        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
         $tpl->Load('Sitemap.html');
         $items = $model->GetItems();
         if (count($items) > 0) {
             $tpl->SetBlock('sitemap');
             $tpl->SetBlock('sitemap/title');
-            $tpl->SetVariable('title', _t('SIMPLESITE_SITEMAP'));
+            $tpl->SetVariable('title', _t('SITEMAP_SITEMAP'));
             $tpl->ParseBlock('sitemap/title');
             foreach ($items as $item) {
                 $tpl->SetBlock('sitemap/item');
@@ -90,7 +90,7 @@ class SimpleSite_HTML extends Jaws_Gadget_HTML
     function SitemapXML()
     {
         header('Content-Type: text/xml; charset=utf-8');
-        $sitemap = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $sitemap = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         $xml     = $sitemap->makeSitemap(false);
         return $xml;
     }
@@ -105,7 +105,7 @@ class SimpleSite_HTML extends Jaws_Gadget_HTML
     {
         // Get content via 'path'
         $request =& Jaws_Request::getInstance();
-        $model = $GLOBALS['app']->LoadGadget('SimpleSite', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         return $model->GetContent($request->get('path', 'get'));
     }
 }
