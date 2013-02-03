@@ -9,9 +9,9 @@ define('COMMENT_FILTERBY_TITLE',     'title');
 define('COMMENT_FILTERBY_MESSAGE',   'message');
 define('COMMENT_FILTERBY_STATUS',    'status');
 define('COMMENT_FILTERBY_VARIOUS',   'various');
-define('COMMENT_STATUS_APPROVED',    'approved');
-define('COMMENT_STATUS_WAITING',     'waiting');
-define('COMMENT_STATUS_SPAM',        'spam');
+define('COMMENT_STATUS_APPROVED',    1);
+define('COMMENT_STATUS_WAITING',     2);
+define('COMMENT_STATUS_SPAM',        3);
 
 /**
  * Comments Gadget
@@ -85,16 +85,18 @@ class Comments_Model extends Jaws_Gadget_Model
      * @param   int     $gadgetId  Gadget's reference id.
      *                             It can be the ID of a blog entry, the ID of a
      *                             photo in Phoo, etc. This needs to be a reference
-     *                             to find the comments releated to a specific record
+     *                             to find the comments related to a specific record
      *                             in a gadget.
      * @param   string  $name      Author's name
      * @param   string  $email     Author's email
      * @param   string  $url       Author's url
      * qparam   string  $title     Author's title message
+     * @param   string  $title
      * @param   string  $message   Author's message
      * @param   string  $ip        Author's IP
      * @param   string  $permalink Permanent link to resource
      * @param   int     $parent    Parent message
+     * @param int $status
      * @return  int     Comment id or Jaws_Error on any error
      * @access  public
      */
@@ -264,9 +266,9 @@ class Comments_Model extends Jaws_Gadget_Model
             $sql .= ' AND [parent] = {parent} ';
         }
         $sql .= ' AND [gadget] = {gadget} AND (';
-        if ($getApproved) $sql .= ' [status] = \'' . COMMENT_STATUS_APPROVED . '\' OR ';
-        if ($getWaiting)  $sql .= ' [status] = \'' . COMMENT_STATUS_WAITING . '\' OR ';
-        if ($getSpam)     $sql .= ' [status] = \'' . COMMENT_STATUS_SPAM . '\' OR ';
+        if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
+        if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
+        if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
         $sql = substr($sql, 0, -3);
         if ($getAllCurrentUser) {
             $params['visitor_name'] = $GLOBALS['app']->Session->GetCookie('visitor_name');
@@ -328,9 +330,9 @@ class Comments_Model extends Jaws_Gadget_Model
                 [createtime]
             FROM [[comments]]
             WHERE [gadget] = {gadget} AND (';
-        if ($getApproved) $sql .= ' [status] = \'' . COMMENT_STATUS_APPROVED . '\' OR ';
-        if ($getWaiting)  $sql .= ' [status] = \'' . COMMENT_STATUS_WAITING . '\' OR ';
-        if ($getSpam)     $sql .= ' [status] = \'' . COMMENT_STATUS_SPAM . '\' OR ';
+        if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
+        if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
+        if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
         $sql = substr($sql, 0, -3);
         $sql .= ') ORDER BY [createtime] DESC';
 
@@ -363,12 +365,12 @@ class Comments_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $gadget   Gadget's name
-     * @param   string  $status  Spam status (approved, waiting, spam)
+     * @param   int     $status   comment status (approved=1, waiting=2, spam=3)
      * @return  int     Number of comments
      */
-    function TotalOfComments($gadget, $status = '')
+    function TotalOfComments($gadget, $status)
     {
-        if (!in_array($status, array('', 'approved', 'waiting', 'spam'))) {
+        if (!in_array($status, array('', 1, 2, 3))) {
             if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
                 $status = COMMENT_STATUS_WAITING;
             } else {
@@ -404,7 +406,7 @@ class Comments_Model extends Jaws_Gadget_Model
      * @param   string  $gadget     Gadget's name
      * @param   string  $filterMode Which mode should be used to filter
      * @param   string  $filterData Data that will be used in the filter
-     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @return  int     Returns how many comments exists with a given filter
      */
     function HowManyFilteredComments($gadget, $filterMode, $filterData, $status)
@@ -416,7 +418,7 @@ class Comments_Model extends Jaws_Gadget_Model
             $commentsTable->where('gadget', $gadget);
         }
 
-        if (in_array($status, array('approved', 'waiting', 'spam'))) {
+        if (in_array($status, array(1, 2, 3))) {
             $commentsTable->and()->where('status', $status);
         }
 

@@ -179,6 +179,7 @@ class Comments_AdminModel extends Comments_Model
      * @param   string $gadget  Gadget's name
      * @param   array   $ids     Id's of the comments to mark as spam
      * @param   string  $status  New status (spam by default)
+     * @return  bool
      */
     function MarkAs($gadget, $ids, $status = 'spam')
     {
@@ -186,7 +187,7 @@ class Comments_AdminModel extends Comments_Model
 
         $list = implode(',', $ids);
 
-        if (!in_array($status, array('approved', 'waiting', 'spam'))) {
+        if (!in_array($status, array(1, 2, 3))) {
             $status = COMMENT_STATUS_SPAM;
         }
 
@@ -252,7 +253,7 @@ class Comments_AdminModel extends Comments_Model
      * @param   string  $gadget     Gadget's name
      * @param   string  $filterMode Which mode should be used to filter
      * @param   string  $filterData Data that will be used in the filter
-     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @param   int     $status     comment status (approved=1, waiting=2, spam=3)
      * @param   mixed   $offset     Offset of data
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
      */
@@ -268,7 +269,7 @@ class Comments_AdminModel extends Comments_Model
             $commentsTable->where('gadget', $gadget);
         }
 
-        if (in_array($status, array('approved', 'waiting', 'spam'))) {
+        if (in_array($status, array(1, 2, 3))) {
             $commentsTable->and()->where('status', $status);
         }
 

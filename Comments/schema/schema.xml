@@ -21,15 +21,21 @@
             </field>
 
             <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>80</length>
+            </field>
+
+            <field>
                 <name>gadget_reference</name>
                 <type>integer</type>
                 <default>0</default>
             </field>
 
             <field>
-                <name>gadget</name>
+                <name>user</name>
                 <type>text</type>
-                <length>80</length>
+                <length>48</length>
             </field>
 
             <field>
@@ -87,9 +93,9 @@
 
             <field>
                 <name>status</name>
-                <type>text</type>
-                <length>10</length>
-                <default>approved</default>
+                <type>integer</type>
+                <length>2</length>
+                <default>1</default>
             </field>
 
             <index>

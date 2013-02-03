@@ -83,9 +83,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
+        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
         $status->SetDefault('various');
         $status->AddEvent(ON_CHANGE, 'searchComment();');
         $tpl->SetVariable('status', $status->Get());
@@ -179,9 +179,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
+        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
         $status->SetDefault('various');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
@@ -211,7 +211,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   string  $editAction Edit action
      * @param   string  $filterby   Filter to use(postid, author, email, url, title, comment)
      * @param   string  $filter     Filter data
-     * @param   string  $status     Spam status (approved, waiting, spam)
+     * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $limit      Data limit (numeric/boolean)
      * @return  array   Filtered Comments
      */
@@ -277,7 +277,15 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
                 $newRow['title'] = $row['title'];
             }
             $newRow['created'] = $date->Format($row['createtime']);
-            $newRow['status']  = _t('GLOBAL_STATUS_'. strtoupper($row['status']));
+            if($row['status']==1) {
+                $status_name = 'APPROVED';
+            } else if($row['status']==2) {
+                $status_name = 'WAITING';
+            } else if ($row['status']==3) {
+                $status_name = 'SPAM';
+            }
+
+            $newRow['status']  = _t('GLOBAL_STATUS_'. $status_name);
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
@@ -333,9 +341,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_APPROVED'), 'approved');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_WAITING'), 'waiting');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_SPAM'), 'spam');
+        $actions->AddOption(_t('GLOBAL_MARK_AS_APPROVED'), 1);
+        $actions->AddOption(_t('GLOBAL_MARK_AS_WAITING'), 2);
+        $actions->AddOption(_t('GLOBAL_MARK_AS_SPAM'), 3);
 
         $execute =& Piwi::CreateWidget('Button', 'executeCommentAction', '',
                                        STOCK_YES);

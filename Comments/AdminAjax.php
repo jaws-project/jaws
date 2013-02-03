@@ -29,9 +29,10 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $limit   Data limit
+     * @param   string  $gadget
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
+     * @param   int  $status  comment status (approved=1, waiting=2, spam=3)
      * @return  array   Data array
      */
     function SearchComments($limit, $gadget, $filter, $search, $status)
@@ -45,9 +46,10 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * Get total posts of a comment search
      *
      * @access  public
+     * @param   string  $gadget
      * @param   string  $filter  Filter
      * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
+     * @param   string  $status  Spam status (approved=1, waiting=2, spam=3)
      * @return  int     Total of posts
      */
     function SizeOfCommentsSearch($gadget, $filter, $search, $status)
@@ -108,12 +110,14 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * Update comment information
      *
      * @access  public
+     * @param   string  $gadget
      * @param   int     $id         Comment ID
      * @param   string  $name       Name
      * @param   string  $email      Email address
      * @param   string  $url
      * @param   string  $subject    Subject of message
      * @param   string  $message    Message content
+     * @param $status
      * @return  array   Response array (notice or error)
      */
     function UpdateComment($gadget, $id, $name, $email, $url, $subject, $message, $status)
@@ -142,6 +146,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * Mark as different type a group of ids
      *
      * @access  public
+     * @param   string  $gadget
      * @param   array   $ids        Ids of comments
      * @param   string  $status     New status
      * @return  array   Response array (notice or error)
