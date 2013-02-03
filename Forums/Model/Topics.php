@@ -137,7 +137,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             FROM
                 [[forums_topics]]
             LEFT JOIN
-                [[forums_posts]] ON [[forums_topics]].[last_post_uid] = [[forums_posts]].[id]
+                [[forums_posts]] ON [[forums_topics]].[last_post_id] = [[forums_posts]].[id]
             LEFT JOIN
                 [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
             LEFT JOIN
