@@ -371,10 +371,10 @@ class Comments_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $gadget   Gadget's name
-     * @param   int     $status   comment status (approved=1, waiting=2, spam=3)
+     * @param   string  $status comment status (approved=1, waiting=2, spam=3)
      * @return  int     Number of comments
      */
-    function TotalOfComments($gadget, $status)
+    function TotalOfComments($gadget, $status = '')
     {
         if (!in_array($status, array('', 1, 2, 3))) {
             if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
