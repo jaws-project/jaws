@@ -80,9 +80,9 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
+        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
         $status->SetDefault('various');
         $status->AddEvent(ON_CHANGE, 'return searchComment();');
         $tpl->SetVariable('status', $status->Get());
