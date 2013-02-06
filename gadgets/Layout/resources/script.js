@@ -153,13 +153,13 @@ function initUI()
         onStart: function(el) {
             el.setProperties({
                 old_section  : el.getParent().id.replace('layout_', ''),
-                old_position : el.getParent().getElements('div.item[id]').indexOf(el)
+                old_position : el.getParent().getElements('div.item[id]').indexOf(el) + 1
             });
         },
 
         onComplete: function(el) {
             var new_section  = el.getParent().id.replace('layout_', ''),
-                new_position = el.getParent().getElements('div.item[id]').indexOf(el);
+                new_position = el.getParent().getElements('div.item[id]').indexOf(el) + 1;
 
             if (el.getProperty('old_section') &&
                 (new_section != el.getProperty('old_section') ||
@@ -167,11 +167,11 @@ function initUI()
             ) {
                 LayoutAjax.callAsync(
                     'MoveElement',
-                    el.id.replace('item_', ''),         /* item id */
-                    el.getProperty('old_section'),      /* old section name */
-                    el.getProperty('old_position') + 1, /* position in old section */
-                    new_section,                        /* new section name */
-                    new_position + 1                    /* position in new section */
+                    el.id.replace('item_', ''),               /* item id */
+                    el.getProperty('old_section'),            /* old section name */
+                    parseInt(el.getProperty('old_position')), /* position in old section */
+                    new_section,                              /* new section name */
+                    new_position                              /* position in new section */
                 );
             }
             el.removeProperties('old_section', 'old_position');
