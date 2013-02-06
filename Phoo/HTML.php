@@ -524,9 +524,9 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('createtime-day',       $date->Format($c['createtime'], 'd'));
                 $tpl->SetVariable('createtime-year',      $date->Format($c['createtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($c['createtime'], 'g:ia'));
-                if ($c['status'] == 'spam') {
+                if ($c['status'] == 3) {
                     $tpl->SetVariable('status_message', _t('PHOO_COMMENT_IS_SPAM'));
-                } elseif ($c['status'] == 'waiting') {
+                } elseif ($c['status'] == 2) {
                     $tpl->SetVariable('status_message', _t('PHOO_COMMENT_IS_WAITING'));
                 } else {
                     $tpl->SetVariable('status_message', '&nbsp;');
