@@ -17,6 +17,7 @@ class Blog_Actions_Comments extends Blog_HTML
      *
      * @access  public
      * @param   int     $id             post id
+     * @param   string  $fast_url
      * @param   int     $parent         parent comment id
      * @param   int     $level          deep level on thread
      * @param   int     $thread         1 to show full thread
@@ -74,9 +75,9 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('createtime-year',      $date->Format($c['createtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($c['createtime'], 'g:ia'));
 
-                if ($c['status'] == 'spam') {
+                if ($c['status'] == 3) {
                     $tpl->SetVariable('status_message', _t('BLOG_COMMENT_IS_SPAM'));
-                } elseif ($c['status'] == 'waiting') {
+                } elseif ($c['status'] == 2) {
                     $tpl->SetVariable('status_message', _t('BLOG_COMMENT_IS_WAITING'));
                 } else {
                     $tpl->SetVariable('status_message', '&nbsp;');
