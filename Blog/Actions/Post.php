@@ -69,7 +69,7 @@ class Blog_Actions_Post extends Blog_HTML
             if ($this->gadget->GetRegistry('pingback') == 'true') {
                 require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
-                $pback->showHeaders($this->gadget->GetURLFor('Pingback', null, false, 'site_url'));
+                $pback->showHeaders($this->gadget->GetURLFor('Pingback', array(), false, 'site_url'));
             }
 
             $this->SetTitle($entry['title']);
