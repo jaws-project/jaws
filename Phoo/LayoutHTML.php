@@ -35,7 +35,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
                 $t->SetVariable('width',  $imgData[0]);
                 $t->SetVariable('height', $imgData[1]);
             }
-            $t->SetVariable('title',_t('PHOO_RANDOM_IMAGE'));
+            $t->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
             $t->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
                                                                     'ViewImage',
                                                                     array(
@@ -64,7 +64,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
         $t = new Jaws_Template('gadgets/Phoo/templates/');
         $t->Load('Moblog.html');
         $t->SetBlock('moblog');
-        $t->SetVariable('title',_t('PHOO_MOBLOG'));
+        $t->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $moblog = $model->GetMoblog();
@@ -107,7 +107,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('PHOO_RECENT_COMMENTS'));
+        $tpl->SetVariable('title', _t('PHOO_ACTIONS_RECENTCOMMENTS'));
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $comments = $model->GetRecentComments();
         if (!Jaws_Error::IsError($comments)) {
