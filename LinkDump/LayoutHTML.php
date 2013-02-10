@@ -29,7 +29,7 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('LINKDUMP_LAYOUT_DISPLAY'),
+                'title' => _t('LINKDUMP_ACTIONS_DISPLAY'),
                 'value' => $pgroups
             );
         }
