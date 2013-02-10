@@ -23,7 +23,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Statistics.html');
         $tpl->SetBlock('OnlineUsers');
-        $tpl->SetVariable('title', _t('USERS_LAYOUT_ONLINE_USERS'));
+        $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINEUSERS'));
 
         $sessions = $GLOBALS['app']->Session->GetSessions();
         $sessions = array_filter($sessions, create_function('$sess','return !empty($sess["username"]);'));
@@ -59,7 +59,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Statistics.html');
         $tpl->SetBlock('OnlineStatistics');
-        $tpl->SetVariable('title', _t('USERS_LAYOUT_ONLINE_STATISTICS'));
+        $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINESTATISTICS'));
         $tpl->SetVariable('lbl_registered_users', _t('USERS_ONLINE_REGISTERED_COUNT'));
         $tpl->SetVariable('lbl_guests_users', _t('USERS_ONLINE_GUESTS_COUNT'));
 
@@ -85,7 +85,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Statistics.html');
         $tpl->SetBlock('LatestRegistered');
-        $tpl->SetVariable('title', _t('USERS_LAYOUT_LATEST_REGISTERED'));
+        $tpl->SetVariable('title', _t('USERS_ACTIONS_LATESTREGISTERED'));
 
         // latest registered users limit
         $limit = (int)$this->gadget->GetRegistry('latest_limit');

@@ -47,7 +47,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
     function Profile($user = '')
     {
         $tplFile  = 'AboutUser.html';
-        $tplTitle = _t('USERS_LAYOUT_PROFILE');
+        $tplTitle = _t('USERS_ACTIONS_PROFILE');
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (empty($user)) {
             $request =& Jaws_Request::getInstance();
