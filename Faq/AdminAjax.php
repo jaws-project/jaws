@@ -69,13 +69,20 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      * Move a category
      *
      * @access  public
-     * @param   int     $id        Category ID
-     * @param   string  $direction Direction (up/down)
+     * @param   int     $cat            Category ID
+     * @param   int     $old_position   Old position of category
+     * @param   int     $new_position   New position of category
      * @return  array   Response array (notice or error)
      */
-    function MoveCategory($id, $direction)
+    function MoveCategory($cat, $old_position, $new_position)
     {
-        $this->_Model->MoveCategory($direction, $id);
+        $result = $this->_Model->MoveCategory($cat, $old_position, $new_position);
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -92,43 +99,6 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
 
         $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML');
         return $gadget->gadget->ParseText($text, 'Faq');
-    }
-
-    /**
-     * Fix positions..
-     *
-     * @access  public
-     * @param   array   $categories     Array with information and positions of each category
-     * @return  array   Response array (notice or error)
-     */
-    function FixPositions($categories)
-    {
-        $origCategories = $this->_Model->GetCategories();
-        if (Jaws_Error::IsError($origCategories)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
-        }
-
-        $foundOne = false;
-
-        foreach ($origCategories as $category) {
-            if (isset($categories[$category['id']]) && is_array($categories[$category['id']])) {
-                if (isset($categories[$category['id']]['pos'])) {
-                    $newPosition   = $categories[$category['id']]['pos'];
-                    $origPosition  = $category['category_position'];
-
-                    if ($newPosition != $origPosition) {
-                        $foundOne = true;
-                        $this->_Model->FixCategoryPosition($category['id'], $newPosition);
-                    }
-                }
-            }
-        }
-
-        if (!$foundOne) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
-        }
-        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**

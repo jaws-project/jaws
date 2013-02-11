@@ -19,13 +19,13 @@ var FaqCallback = {
     },
 
     deletecategory: function(response) {
-        showResponse(response);
         if (response[0]['css'] == 'notice-message') {
-            deleteCategoryArea(currentCategory);
+            $('FaqCategory_'+currentCategory).destroy();
         }
+        showResponse(response);
     },
 
-    fixpositions: function(response) {
+    MoveCategory: function(response) {
         showResponse(response);
     },
 
@@ -118,51 +118,6 @@ function deleteCategory(id)
 }
 
 /**
- * Delete the DIV of a category
- */
-function deleteCategoryArea(category)
-{
-    categoriesInfo['' + category + '']['deleted'] = true;
-    var catForm          = document.forms['catForm'];
-    var categoryOptions  = catForm.elements['category'].options;
-    var categoryPosition = null;
-    var lastOption       = null;
-    var pattern          = /^(.*?).\s+(.*?)/;
-
-    for(i=0; i<categoryOptions.length; i++) {
-        var optionValue = categoryOptions[i].value;
-        if (optionValue != '*') {
-            var nameSplitted = categoryOptions[i].innerHTML.split(pattern);
-            var optionText   = nameSplitted[3];
-            if (optionValue == category) {
-                categoryOptions[i].style.display = 'none';
-                lastOption = i;
-            } else {
-                if (lastOption != null) {
-                    if (!categoriesInfo['' + optionValue + '']['deleted']) {
-                        categoryOptions[i].innerHTML = lastOption + '. ' + optionText;
-                    }
-                    categoryPosition = document.getElementById('FaqCategoryPosition_' + optionValue);
-                    categoryPosition.innerHTML = lastOption;
-                    lastOption = null;
-                } else {
-                    if (!categoriesInfo['' + optionValue + '']['deleted']) {
-                        categoryOptions[i].innerHTML = i + '. ' + optionText;
-                    }
-                    categoryPosition = document.getElementById('FaqCategoryPosition_' + optionValue);
-                    categoryPosition.innerHTML = i;
-                }
-            }
-        }
-    }
-
-
-    var categoryDiv = document.getElementById('FaqCategory_' + category);
-    categoryDiv.style.display = 'none';
-    categoryDiv.id = 'FaqDeletedCategory_' + category;
-}
-
-/**
  * Move a question
  */
 function moveQuestion(id, category, direction)
@@ -246,39 +201,6 @@ function rePopulateCatForm()
 }
 
 /**
- * Update the category
- *
- * @param  string   element  Element name (div name)
- * @param  string   getList  ordered List in GET format
- */
-function moveCategory(element, getList)
-{
-    var pattern    = /ManageQuestions\[\]=(.*?)/;
-    //convert GET list to an array
-    var ids          = getList.split(pattern);
-    var category     = null;
-    var catSpanPos   = null;
-    var realIterator = 0;
-
-    for(i=0; i<ids.length; i++) {
-        if (ids[i] != '') {
-            category = ids[i].replace('&', '');
-            if (!categoriesInfo['' + category + '']['deleted']) {
-                categoriesInfo['' + category + '']['id']      = category;
-                categoriesInfo['' + category + '']['pos']     = (realIterator + 1);
-                categoriesInfo['' + category + '']['deleted'] = categoriesInfo['' + category + '']['deleted'];
-
-                catSpanPos = document.getElementById('FaqCategoryPosition_' + category);
-                catSpanPos.innerHTML = (realIterator + 1);
-                realIterator++;
-            }
-        }
-    }
-    FaqAjax.callAsync('fixpositions', categoriesInfo);
-    rePopulateCatForm();
-}
-
-/**
  * Save the selected ID
  */
 function saveSelectedID(element)
@@ -286,7 +208,38 @@ function saveSelectedID(element)
     selectedID = element.id.replace('FaqCategory_', '');
 }
 
+/**
+ * Initializes some variables
+ */
+function initUI()
+{
+    faqSortable = new Sortables( '#ManageQuestions', {
+        clone: false,
+        revert: true,
+        opacity: 0.7,
+
+        onStart: function(el) {
+            el.setProperty('old_position', el.getParent().getElements('div.category[id]').indexOf(el) + 1);
+        },
+
+        onComplete: function(el) {
+            var new_position = el.getParent().getElements('div.category[id]').indexOf(el) + 1;
+            if (new_position != el.getProperty('old_position')) {
+                FaqAjax.callAsync(
+                    'MoveCategory',
+                    el.id.replace('FaqCategory_', ''),
+                    el.getProperty('old_position'),
+                    new_position
+                );
+            }
+            el.removeProperty('old_position');
+        }
+    });
+}
+
 var FaqAjax = new JawsAjax('Faq', FaqCallback);
 
 var selectedID      = 0;
 var currentCategory = false;
+
+faqSortable = null;

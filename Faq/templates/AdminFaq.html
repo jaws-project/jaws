@@ -1,28 +1,18 @@
 <!-- BEGIN Faq -->
 {menubar}<br />
 <div align="right">
-<form name="catForm" action="{base_script}" method="post" onsubmit="return false;">
-<input type="hidden" name="gadget" value="Faq" />
-<input type="hidden" name="action" value="ManageQuestions" />
-{category} {category_combo}
-</form>
+  <form name="catForm" action="{base_script}" method="post" onsubmit="return false;">
+    <input type="hidden" name="gadget" value="Faq" />
+    <input type="hidden" name="action" value="ManageQuestions" />
+    {category} {category_combo}
+  </form>
 </div>
 <div id="main">
-<div id="ManageQuestions">
-{ManageQuestions}
+  <div id="ManageQuestions">{ManageQuestions}</div>
 </div>
 <script type="text/javascript">
-    // <![CDATA[  
-    Sortable.create("ManageQuestions",
-        { 
-          tag:'div',                  
-          onUpdate:function(element){
-              moveCategory(element, Sortable.serialize('ManageQuestions'));
-          }         
-        })
-// ]]>
+    initUI();
 </script>
-</div>
 <!-- END Faq -->
 <!-- BEGIN ManageQuestions -->
 <script type="text/javascript">

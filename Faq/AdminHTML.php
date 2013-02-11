@@ -123,6 +123,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
      */
     function ManageQuestions()
     {
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
         $this->AjaxMe('script.js');
 
         $request  =& Jaws_Request::getInstance();
@@ -296,6 +297,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
         $answer = isset($q) ? $q['answer'] : '';
         $editor =& $GLOBALS['app']->LoadEditor('Faq', 'answer', $answer, false);
         $editor->TextArea->SetStyle('width: 100%;');
+        $editor->TextArea->SetRows(8);
         $editor->SetWidth('750px');
         $editor->setID('answer');
 
@@ -441,6 +443,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
         $desc = isset($cat) ? $cat['description'] : '';
         $editor =& $GLOBALS['app']->LoadEditor('Faq', 'description', $desc, false);
         $editor->TextArea->SetStyle('width: 100%;');
+        $editor->TextArea->SetRows(8);
         $editor->SetWidth('750px');
 
         $faqform->Add($catbox);
