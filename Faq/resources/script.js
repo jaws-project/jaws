@@ -224,7 +224,9 @@ function initUI()
 
         onComplete: function(el) {
             var new_position = el.getParent().getElements('div.category[id]').indexOf(el) + 1;
-            if (new_position != el.getProperty('old_position')) {
+            if (el.getProperty('old_position') &&
+                new_position != el.getProperty('old_position'))
+            {
                 FaqAjax.callAsync(
                     'MoveCategory',
                     el.id.replace('FaqCategory_', ''),
