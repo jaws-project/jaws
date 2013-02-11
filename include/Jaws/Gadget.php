@@ -666,7 +666,7 @@ class Jaws_Gadget
      * @param   mixed      URIPrefix  Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string     The mapped URL
      */
-    function GetURLFor($action='', $params = null, $useExt = true, $URIPrefix = false)
+    function GetURLFor($action='', $params = array(), $useExt = true, $URIPrefix = false)
     {
         return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $useExt, $URIPrefix);
     }

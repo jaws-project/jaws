@@ -187,20 +187,62 @@ class Layout_AdminModel extends Layout_Model
     function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
     {
         $params = array();
-        $params['section'] = $new_section;
-        $params['one']     = 1;
-        $params['pos']     = (int)$new_position;
+        $params['oldsec'] = $old_section;
+        $params['newsec'] = $new_section;
+        $params['one']    = 1;
+        $params['oldpos'] = (int)$old_position;
+        $params['newpos'] = (int)$new_position;
 
         //Start Transaction
         $GLOBALS['db']->dbc->beginTransaction();
 
-        $sql = '
-            UPDATE [[layout]] SET
-                [layout_position] = [layout_position] + {one}
-            WHERE
-                [section] = {section}
-              AND
-                [layout_position] >= {pos}';
+        if ($old_section == $new_section) {
+            if ($params['oldpos'] > $params['newpos']) {
+                $sql = '
+                    UPDATE [[layout]] SET
+                        [layout_position] = [layout_position] + {one}
+                    WHERE
+                        [section] = {oldsec}
+                      AND
+                        [layout_position] BETWEEN {newpos} AND {oldpos}
+                    ';
+            } else {
+                $sql = '
+                    UPDATE [[layout]] SET
+                        [layout_position] = [layout_position] - {one}
+                    WHERE
+                        [section] = {oldsec}
+                      AND
+                        [layout_position] BETWEEN {oldpos} AND {newpos}
+                    ';
+            }
+        } else {
+            $sql = '
+                UPDATE [[layout]] SET
+                    [layout_position] = [layout_position] + {one}
+                WHERE
+                    [section] = {newsec}
+                  AND
+                    [layout_position] >= {newpos}';
+
+            $result = $GLOBALS['db']->query($sql, $params);
+            if (Jaws_Error::IsError($result)) {
+                //Rollback Transaction
+                $GLOBALS['db']->dbc->rollback();
+
+                $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+                return $result;
+            }
+
+            $sql = '
+                UPDATE [[layout]] SET
+                    [layout_position] = [layout_position] - {one}
+                WHERE
+                    [section] = {oldsec}
+                  AND
+                    [layout_position] > {oldpos}
+                ';
+        }
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -214,30 +256,10 @@ class Layout_AdminModel extends Layout_Model
         $params['id'] = (int)$item;
         $sql = '
             UPDATE [[layout]] SET
-                [section] = {section},
-                [layout_position] = {pos}
+                [section] = {newsec},
+                [layout_position] = {newpos}
             WHERE
                 [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
-            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
-            return $result;
-        }
-
-        $params['section'] = $old_section;
-        $params['pos']     = (int)$old_position;
-
-        $sql = '
-            UPDATE [[layout]] SET
-                [layout_position] = [layout_position] - {one}
-            WHERE
-                [section] = {section}
-              AND
-                [layout_position] >= {pos}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {

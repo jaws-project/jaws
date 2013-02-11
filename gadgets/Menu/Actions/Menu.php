@@ -37,7 +37,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('MENU_LAYOUT_MENU'),
+                'title' => _t('MENU_ACTIONS_MENU'),
                 'value' => $pgroups
             );
         }

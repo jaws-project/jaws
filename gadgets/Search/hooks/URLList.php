@@ -19,13 +19,13 @@ class SearchURLListHook
     function Hook()
     {
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'Box'),
-                        'title'  => _t('SEARCH_LAYOUT_BOX'),
+                        'title'  => _t('SEARCH_ACTIONS_BOX'),
                         'title2' => _t('SEARCH_NAME'));
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'SimpleBox'),
-                        'title'  => _t('SEARCH_LAYOUT_SIMPLEBOX'),
+                        'title'  => _t('SEARCH_ACTIONS_SIMPLEBOX'),
                         'title2' => _t('SEARCH_NAME'));
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'AdvancedBox'),
-                        'title'  => _t('SEARCH_LAYOUT_ADVANCEDBOX'),
+                        'title'  => _t('SEARCH_ACTIONS_ADVANCEDBOX'),
                         'title2' => _t('SEARCH_NAME'));
         return $urls;
     }
