@@ -159,7 +159,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $reqpost = $request->get(array('username', 'auth_method', 'remember', 'usecrypt'), 'post');
-        if (empty($reqpost['auth_method'])) {
+        if (is_null($reqpost['auth_method'])) {
             $reqpost['auth_method'] = $request->get('auth_method', 'get');
         }
 
@@ -196,7 +196,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $fieldset->Add($passEntry);
 
         $auth_method = $this->gadget->GetRegistry('auth_method', 'Users');
-        if (!empty($reqpost['auth_method']) || $auth_method !== 'Default') {
+        if (!is_null($reqpost['auth_method']) || $auth_method !== 'Default') {
             $authmethod =& Piwi::CreateWidget('Combo', 'auth_method');
             $authmethod->SetTitle(_t('CONTROLPANEL_AUTH_METHOD'));
             foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
