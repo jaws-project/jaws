@@ -63,56 +63,58 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
      * @access   public
      * @param    int     $cat           Category
      * @param    array   $questions     Array of questions so that we can skip fetching those here
-     * @param    int     $maxCatPos     Max cat position
      * @return   string  XHTML template of datagrid
      */
-    function DataGrid($cat, $questions = null, $maxCatPos = null)
+    function DataGrid($cat, $questions = null)
     {
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
-        $foo = $questions;
-        if ($questions === null || $maxCatPos === null) {
+        if ($questions === null) {
             $questions = $model->GetQuestions($cat);
-            $maxCatPos = $model->GetMaxCategoryPosition();
-        }
-
-        if (is_array($questions) && count($questions) > 0) {
-            // Checking if position 0 is set since getQuestions will never create position 0
-            if (!isset($questions[0])) {
-                // First return the first array back
-                $questions = array_shift($questions);
-                // Now assign the questions to $questions ;-)
+            $questions = array_shift($questions);
+            if (isset($questions['questions'])) {
                 $questions = $questions['questions'];
+            } else {
+                $questions = array();
             }
-
-            $grid =& Piwi::CreateWidget('DataGrid', $questions, null);
-            $grid->SetStyle('width: 100%;');
-            $colPos =& Piwi::CreateWidget('Column', '#', 'position', false);
-            $colPos->SetStyle('text-align: center;');
-            $grid->AddColumn($colPos);
-
-            $grid->AddColumn(Piwi::CreateWidget('Column', _t('FAQ_QUESTION'), 'question', false, 'String', true,
-                                                BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;id={id}'));
-            if ($this->gadget->GetPermission('EditQuestion')) {
-                $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_EDIT'),
-                                                    BASE_SCRIPT . "?gadget=Faq&amp;action=EditQuestion&amp;".
-                                                    "id={id}&amp;category={$cat}", STOCK_EDIT));
-            }
-            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('FAQ_MOVEUP'),
-                                                "javascript: moveQuestion('{id}', '{category}', 'UP'); return false;",
-                                                STOCK_UP));
-            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('FAQ_MOVEDOWN'),
-                                                "javascript: moveQuestion('{id}', '{category}', 'DOWN'); return false;",
-                                                STOCK_DOWN));
-            if ($this->gadget->GetPermission('DeleteQuestion')) {
-                $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_DELETE'),
-                                                    "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
-                                                    "')) deleteQuestion('{id}', '{category}'); return false;",
-                                                    STOCK_DELETE));
-            }
-            return $grid->Get();
         }
 
-        return '';
+        if (Jaws_Error::IsError($questions) || empty($questions)) {
+            return '';
+        }
+
+        $grid =& Piwi::CreateWidget('DataGrid', $questions, null);
+        $grid->SetStyle('width: 100%;');
+        $colPos =& Piwi::CreateWidget('Column', '#', 'position', false);
+        $colPos->SetStyle('text-align: center;');
+        $grid->AddColumn($colPos);
+
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('FAQ_QUESTION'), 'question', false, 'String', true,
+                                            BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;id={id}'));
+        if ($this->gadget->GetPermission('EditQuestion')) {
+            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_EDIT'),
+                                                BASE_SCRIPT . "?gadget=Faq&amp;action=EditQuestion&amp;".
+                                                "id={id}&amp;category={$cat}", STOCK_EDIT));
+        }
+        $grid->AddColumn(Piwi::CreateWidget(
+            'ActionColumn',
+            _t('FAQ_MOVEUP'),
+            "javascript: moveQuestion({category}, {id}, {position}, -1); return false;",
+            STOCK_UP)
+        );
+        $grid->AddColumn(Piwi::CreateWidget(
+            'ActionColumn',
+            _t('FAQ_MOVEDOWN'),
+            "javascript: moveQuestion({category}, {id}, {position}, 1); return false;",
+            STOCK_DOWN)
+        );
+        if ($this->gadget->GetPermission('DeleteQuestion')) {
+            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_DELETE'),
+                                                "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
+                                                "')) deleteQuestion('{id}', '{category}'); return false;",
+                                                STOCK_DELETE));
+        }
+
+        return $grid->Get();
     }
 
     /**
@@ -160,7 +162,6 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('ManageQuestions');
 
         $questions = $model->GetQuestions();
-        $maxCatPos = $model->GetMaxCategoryPosition();
         $i = 0;
 
         if (is_array($questions) && count($questions) > 0) {
@@ -194,7 +195,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
                 }
 
                 if (isset($cat['questions'])) {
-                    $tpl->SetVariable('grid', $this->DataGrid($cat['id'], $cat['questions'], $maxCatPos));
+                    $tpl->SetVariable('grid', $this->DataGrid($cat['id'], $cat['questions']));
                 } else {
                     $tpl->SetVariable('grid', '');
                     $tpl->SetBlock('ManageQuestions/category/noquestions');

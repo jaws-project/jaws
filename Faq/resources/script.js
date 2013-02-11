@@ -120,9 +120,13 @@ function deleteCategory(id)
 /**
  * Move a question
  */
-function moveQuestion(id, category, direction)
+function moveQuestion(category, id, position, direction)
 {
-    FaqAjax.callAsync('movequestion', id, direction);
+    if (position == 1 && direction < 0) {
+        return;
+    }
+
+    FaqAjax.callAsync('movequestion', category, id, position, direction);
     currentCategory = category;
 }
 
@@ -131,9 +135,7 @@ function moveQuestion(id, category, direction)
  */
 function buildMainArea()
 {
-    var f = new faqadminajax();
-    var result = f.getmainarea();
-
+    var result = FaqAjax.callSync('getmainarea');
     var area = document.getElementById('ManageQuestions');
     area.innerHTML = result;
 }
@@ -145,10 +147,8 @@ function buildMainArea()
 function buildCategory(id)
 {
     if (id) {
-        var f = new faqadminajax();
-        var result = f.getcategorygrid(id);
-
-        var categoryArea = document.getElementById('FaqDataGridOfCategory_' + id);
+        var result = FaqAjax.callSync('getcategorygrid', id);
+        var categoryArea = $('FaqDataGridOfCategory_' + id);
         categoryArea.innerHTML = result;
         currentCategory = false;
     }

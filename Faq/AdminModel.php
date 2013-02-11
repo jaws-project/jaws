@@ -166,99 +166,64 @@ class Faq_AdminModel extends Faq_Model
      * Move a given question
      *
      * @access  public
-     * @param   string  $direction  Where to move it
-     * @param   int     $id         Question id
+     * @param   int     $cat        Category ID
+     * @param   int     $id         Question ID
+     * @param   int     $position   Position of question
+     * @param   string  $direction  Direction (+1/-1)
      * @return  mixed   Returns true if the question was moved without problems, if not, returns Jaws_Error
      */
-    function MoveQuestion($direction, $id)
+    function MoveQuestion($cat, $id, $position, $direction)
     {
-        $item = $this->getQuestion($id);
+        $oldpos = $position;
+        $newpos = $position + $direction;
+        if (($newpos < 1) || (($direction > 0) && ($newpos > $this->GetMaxCategoryPosition()))) {
+            $newpos = $oldpos;
+        }
+
+        $params = array();
+        $params['category'] = (int)$cat;
+        $params['question'] = (int)$id;
+        $params['oldpos']   = (int)$oldpos;
+        $params['newpos']   = (int)$newpos;
+
+        //Start Transaction
+        $GLOBALS['db']->dbc->beginTransaction();
+
         $sql = '
-            SELECT
-                [id], [faq_position]
-            FROM [[faq]]
-            WHERE [category] = {category}
-            ORDER BY [faq_position] ASC';
+            UPDATE [[faq]] SET
+                [faq_position] = {oldpos}
+            WHERE
+                [category] = {category}
+              AND
+                [faq_position] = {newpos}
+            ';
 
-        $rs = $GLOBALS['db']->queryAll($sql, array('category' => $item['category_id']));
-        if (Jaws_Error::IsError($rs)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), _t('FAQ_NAME'));
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
+
+            $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
+            return $result;
         }
 
-        $qarray = array();
-        foreach($rs as $row) {
-            $res['id'] = $row['id'];
-            $res['position'] = $row['faq_position'];
-            $qarray[$row['id']] = $res;
-        }
-        reset($qarray);
+        $sql = '
+            UPDATE [[faq]] SET
+                [faq_position] = {newpos}
+            WHERE
+                [id] = {question}';
 
-        if (!is_array($qarray) || (is_array($qarray) && count($qarray) == 0)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), _t('FAQ_NAME'));
-        }
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $GLOBALS['db']->dbc->rollback();
 
-        $found = false;
-        while (!$found) {
-            $v = current($qarray);
-            if ($v['id'] == $id) {
-                $found = true;
-                $position = $v['position'];
-                $id = $v['id'];
-            } else {
-                next($qarray);
-            }
-        }
-        $run_queries = false;
-
-        if ($direction == 'UP' && prev($qarray)) {
-            $v = current($qarray);
-            $m_position = $v['position'];
-            $m_id = $v['id'];
-            $run_queries = true;
+            $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
+            return $result;
         }
 
-        if ($direction == 'DOWN' && next($qarray)) {
-            $v = current($qarray);
-            $m_position = $v['position'];
-            $m_id = $v['id'];
-            $run_queries = true;
-        }
-
-        if ($run_queries) {
-            $params = array();
-            $params['position'] = $m_position;
-            $params['id'] = $id;
-
-            $sql = '
-                UPDATE [[faq]] SET
-                    [faq_position] = {position}
-                WHERE [id] = {id}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), _t('FAQ_NAME'));
-            }
-
-            $params = array();
-            $params['position'] = $position;
-            $params['id'] = $m_id;
-
-            $sql = '
-                UPDATE [[faq]] SET
-                    [faq_position] = {position}
-                WHERE [id] = {id}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), _t('FAQ_NAME'));
-            }
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_MOVED'), RESPONSE_NOTICE);
+        //Commit Transaction
+        $GLOBALS['db']->dbc->commit();
         return true;
     }
 
