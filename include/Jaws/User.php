@@ -173,7 +173,7 @@ class Jaws_User
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select($columns);
-        if (is_int($user)) {
+        if (is_numeric($user)) {
             $usersTable->where('id', $user);
         } else {
              $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
