@@ -21,5 +21,28 @@
     <div><label>{lbl_interests}: </label><p>{interests}</p></div>
     <!-- END public -->
   </div>
+
+    <hr/>
+
+    <!-- BEGIN activity -->
+    <div class="content">
+        <h2>{title}</h2>
+
+        <div class="content">
+            <!-- BEGIN gadget --><h4>{gadget}</h4><!-- END gadget -->
+        </div>
+        <ul>
+            <!-- BEGIN item -->
+            <li class="clearfix">
+                <div class="snippet">
+                    <div><a href="{url}" target="_blank">{title}</a></div>
+                </div>
+            </li>
+            <!-- END item -->
+        </ul>
+        <!-- BEGIN notfound -->{message}<!-- END notfound -->
+        <!-- END activity -->
+    </div>
+
 </div>
 <!-- END profile -->

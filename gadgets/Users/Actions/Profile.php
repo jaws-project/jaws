@@ -135,8 +135,93 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             $tpl->ParseBlock('profile/public');
         }
 
+        $tpl->SetBlock('profile/activity');
+        $userActivities = $this->GetUserActivity($user['id']);
+        $tpl->SetVariable('title', _t('USERS_USER_ACTIVITY'));
+        if (is_array($userActivities) && count($userActivities) > 0) {
+            foreach ($userActivities as $gadget => $activities) {
+
+                $tpl->SetBlock('profile/activity/subtitle');
+                $tpl->SetVariable('text', 'xxxxxxxx');
+                $tpl->ParseBlock('profile/activity/subtitle');
+
+                $tpl->SetBlock('profile/activity/gadget');
+                $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITY_IN_GADGET', $info->GetTitle()));
+                $tpl->ParseBlock('profile/activity/gadget');
+
+                foreach ($activities as $activity) {
+                    $tpl->SetBlock('profile/activity/item');
+                    $tpl->SetVariable('title', _t('USERS_USER_ACTIVITY_ITEM', $activity['count'], $activity['title']));
+                    $tpl->SetVariable('url', $activity['url']);
+                    $tpl->ParseBlock('profile/activity/item');
+                }
+
+            }
+        } else {
+            $tpl->SetBlock('profile/activity/notfound');
+            $tpl->SetVariable('message', _t('USERS_USER_NOT_HAVE_ACTIVITY'));
+            $tpl->ParseBlock('profile/activity/notfound');
+        }
+        $tpl->ParseBlock('profile/activity');
+
+
         $tpl->ParseBlock('profile');
         return $tpl->Get();
     }
+
+    /**
+     * Returns the user activity results
+     *
+     * @access  public
+     * @param   int     $uid    User id
+     * @return  array   User activity results
+     */
+    function GetUserActivity($uid)
+    {
+        $result = array();
+
+        $gadgetList = $this->GetSearchableGadgets();
+        $gadgets = array_keys($gadgetList);
+        foreach ($gadgets as $gadget) {
+            $gHook = $GLOBALS['app']->LoadHook($gadget, 'UserActivity');
+            if ($gHook === false) {
+                continue;
+            }
+
+            $result[$gadget] = array();
+            $gResult = $gHook->Hook($uid);
+
+            if (!Jaws_Error::IsError($gResult) || !$gResult) {
+                if (is_array($gResult) && !empty($gResult)) {
+                    $result[$gadget] = $gResult;
+                } else {
+                    unset($result[$gadget]);
+                }
+            }
+
+        }
+
+        return $result;
+    }
+
+    /**
+     * Gets searchable gadgets
+     *
+     * @access  public
+     * @return  array   List of searchable gadgets
+     */
+    function GetSearchableGadgets()
+    {
+        $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $gadgetList = $jms->GetGadgetsList(false, true, true);
+        $gadgets = array();
+        foreach ($gadgetList as $key => $gadget) {
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['realname'] . '/hooks/UserActivity.php'))
+                $gadgets[$key] = $gadget;
+        }
+        return $gadgets;
+    }
+
 
 }
