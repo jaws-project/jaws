@@ -561,6 +561,24 @@ class Jaws_ACL
     }
 
     /**
+     * Loads all the component files
+     *
+     * @access  public
+     */
+    function LoadAllFiles()
+    {
+        $gs = array_filter(explode(',', $GLOBALS['app']->Registry->Get('gadgets_enabled_items')));
+        foreach ($gs as $gadget) {
+            $this->LoadFile($gadget);
+        }
+
+        $ci = array_filter(explode(',', $GLOBALS['app']->Registry->Get('gadgets_core_items')));
+        foreach ($ci as $gadget) {
+            $this->LoadFile($gadget);
+        }
+    }
+
+    /**
      * Returns the SimpleArray in a query style:
      *
      * $array[0] = array('name'  => 'foo',

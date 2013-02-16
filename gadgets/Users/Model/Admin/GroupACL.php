@@ -20,6 +20,7 @@ class Users_Model_Admin_GroupACL extends Jaws_Gadget_Model
      */
     function GetGroupACLKeys($guid)
     {
+        $GLOBALS['app']->ACL->LoadAllFiles();
         $acls = $GLOBALS['app']->ACL->GetGroupAclPermissions($guid);
         $perms = array();
         if (is_array($acls)) {
