@@ -211,7 +211,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
 
         //Combo for gadgets
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-        $gadgets = $model->GetGadgetsList(null, true, true, true);
+        $gadgets = $model->GetGadgetsList(null, true, true, null, true);
         $comboGadgets =& Piwi::CreateWidget('Combo', 'gadgets_combo');
         $comboGadgets->SetStyle('width: 200px;');
         foreach($gadgets as $gadget) {
