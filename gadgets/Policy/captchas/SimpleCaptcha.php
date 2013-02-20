@@ -18,7 +18,7 @@ class SimpleCaptcha
     function SimpleCaptcha()
     {
         // If not installed try to install it
-        if ($GLOBALS['app']->Registry->Get(('simple_captcha', 'Policy', JAWS_COMPONENT_GADGET) != 'installed') {
+        if ($GLOBALS['app']->Registry->Get('simple_captcha', 'Policy', JAWS_COMPONENT_GADGET) != 'installed') {
             $schema = JAWS_PATH . 'gadgets/Policy/captchas/SimpleCaptcha/schema.xml';
             if (!file_exists($schema)) {
                 Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
