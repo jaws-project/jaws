@@ -74,12 +74,19 @@ if (!$GLOBALS['app']->Session->Logged())
             }
         }
 
-        $param = $request->get(array('redirect_to', 'remember', 'auth_method'), 'post');
-        $login = $GLOBALS['app']->Session->Login($user,
-                                                 $passwd, 
-                                                 isset($param['remember']),
-                                                 $param['auth_method']);
-        if (!Jaws_Error::IsError($login)) {
+        // check captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        $resCheck = $mPolicy->CheckCaptcha('login');
+        if (!Jaws_Error::IsError($resCheck)) {
+            $param = $request->get(array('redirect_to', 'remember', 'auth_method'), 'post');
+            $resCheck = $GLOBALS['app']->Session->Login(
+                $user,
+                $passwd, 
+                isset($param['remember']),
+                $param['auth_method']
+            );
+        }
+        if (!Jaws_Error::IsError($resCheck)) {
             // Can enter to Control Panel?
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
                 $redirectTo = isset($param['redirect_to'])? $param['redirect_to'] : '';
@@ -95,7 +102,7 @@ if (!$GLOBALS['app']->Session->Logged())
                 $loginMsg = _t('GLOBAL_ERROR_LOGIN_NOTCP');
             }
         } else {
-            $loginMsg = $login->GetMessage();
+            $loginMsg = $resCheck->GetMessage();
         }
     }
 
