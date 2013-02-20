@@ -78,12 +78,15 @@ class Policy_Model extends Jaws_Gadget_Model
      * @access  public
      * @param   string  $captcha
      * @param   string  $entry
+     * @param   string  $label
      * @param   string  $description
+     * @param   string  $field
+     * @param   string  $entryid
      * @return  bool    True if captcha loaded successfully
      */
-    function LoadCaptcha(&$captcha, &$entry, &$label, &$description)
+    function LoadCaptcha(&$captcha, &$entry, &$label, &$description, $field = 'default', $entryid = null)
     {
-        $status = $this->gadget->GetRegistry('captcha');
+        $status = $this->gadget->GetRegistry($field.'_captcha');
         if (($status == 'DISABLED') ||
             ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
             return false;
@@ -94,13 +97,13 @@ class Policy_Model extends Jaws_Gadget_Model
             $objCaptcha = array();
         }
 
-        $dCaptcha = $this->gadget->GetRegistry('captcha_driver');
+        $dCaptcha = $this->gadget->GetRegistry($field. '_captcha_driver');
         if (!isset($objCaptcha[$dCaptcha])) {
             require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
             $objCaptcha[$dCaptcha] = new $dCaptcha();
         }
 
-        $resCaptcha = $objCaptcha[$dCaptcha]->Get();
+        $resCaptcha = $objCaptcha[$dCaptcha]->Get($field, $entryid);
         $captcha = $resCaptcha['captcha']->Get();
         $entry   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
         $label   = $resCaptcha['label'];
@@ -113,11 +116,12 @@ class Policy_Model extends Jaws_Gadget_Model
      * Load and get captcha
      *
      * @access  public
+     * @param   string  $field
      * @return  bool    True if captcha loaded successfully
      */
-    function CheckCaptcha()
+    function CheckCaptcha($field = 'default')
     {
-        $status = $this->gadget->GetRegistry('captcha');
+        $status = $this->gadget->GetRegistry($field. '_captcha');
         if (($status == 'DISABLED') ||
             ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
             return true;
@@ -128,7 +132,7 @@ class Policy_Model extends Jaws_Gadget_Model
             $objCaptcha = array();
         }
 
-        $dCaptcha = $this->gadget->GetRegistry('captcha_driver');
+        $dCaptcha = $this->gadget->GetRegistry($field. '_captcha_driver');
         if (!isset($objCaptcha[$dCaptcha])) {
             require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
             $objCaptcha[$dCaptcha] = new $dCaptcha();

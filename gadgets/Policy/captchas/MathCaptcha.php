@@ -38,10 +38,10 @@ class MathCaptcha
      * @access  public
      * @return  array    Array indexed by captcha (the image entry) and entry (the input)
      */
-    function Get()
+    function Get($field, $entryid)
     {
         list($key, $value1, $oprt, $value2) = $this->GetKey();
-        if ($this->GetRegistry('math_accessibility') === 'true') {
+        if ($GLOBALS['app']->Registry->Get('math_accessibility', 'Policy', JAWS_COMPONENT_GADGET) === 'true') {
             switch ($oprt) {
                 case '+':
                     $title = _t('POLICY_CAPTCHA_MATH_PLUS', $value1, $value2);
@@ -63,19 +63,25 @@ class MathCaptcha
         }
 
         $prefix = $this->GetPrefix();
-        $img = $this->HexEncode($GLOBALS['app']->Map->GetURLFor('Policy',
-                                                                'Captcha',
-                                                                array('key' => $prefix . $key),
-                                                                false));
+        $img = $this->HexEncode(
+            $GLOBALS['app']->Map->GetURLFor(
+                'Policy',
+                'Captcha',
+                array('field' => $field, 'key' => $prefix . $key),
+                false
+            )
+        );
+
+        $entryid = isset($entryid)? $entryid : rand();
         $res = array();
         $res['label'] = _t('GLOBAL_CAPTCHA_QUESTION');
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle($title);
-        $res['captcha']->SetID('captcha_img_'.rand());
+        $res['captcha']->SetID('captcha_img_'. $entryid);
         $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($img);
         $res['entry'] =& Piwi::CreateWidget('Entry', $prefix . $key, '');
-        $res['entry']->SetID('captcha_'.rand());
+        $res['entry']->SetID('captcha_'. $entryid);
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
         $res['description'] = _t('GLOBAL_CAPTCHA_QUESTION_DESC');
@@ -254,14 +260,9 @@ class MathCaptcha
      *
      * @access  public
      */
-    function Image($key = null)
+    function Image($key)
     {
-        if (is_null($key)) {
-            $request =& Jaws_Request::getInstance();
-            $key = $request->Get('key', 'get');
-            $key = str_replace($this->GetPrefix(), '', $key);
-        }
-
+        $key = str_replace($this->GetPrefix(), '', $key);
         $bg = dirname(__FILE__) . '/MathCaptcha/bg.png';
         $im = imagecreatefrompng($bg);
         imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));

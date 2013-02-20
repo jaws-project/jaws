@@ -214,15 +214,22 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * @access  public
      * @param   bool    $allow_duplicate
      * @param   bool    $filter
-     * @param   string  $captcha
-     * @param   string  $captcha_driver
+     * @param   string  $default_captcha
+     * @param   string  $default_captcha_driver
      * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
+    function UpdateAntiSpamSettings($allow_duplicate, $filter, $default_captcha,
+                                    $default_captcha_driver, $obfuscator)
     {
         $this->gadget->CheckPermission('AntiSpam');
-        $this->_Model->UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator);
+        $this->_Model->UpdateAntiSpamSettings(
+            $allow_duplicate,
+            $filter,
+            $default_captcha,
+            $default_captcha_driver,
+            $obfuscator
+        );
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -235,19 +242,23 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * @param   int     $passwd_lockedout_time
      * @param   int     $passwd_max_age
      * @param   int     $passwd_min_length
+     * @param   string  $login_captcha
+     * @param   string  $login_captcha_driver
      * @param   string  $xss_parsing_level
      * @param   int     $session_idle_timeout
      * @param   int     $session_remember_timeout
      * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
-                                    $passwd_max_age, $passwd_min_length, $xss_parsing_level,
-                                    $session_idle_timeout, $session_remember_timeout)
+                                    $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
+                                    $xss_parsing_level, $session_idle_timeout, $session_remember_timeout)
     {
         $this->gadget->CheckPermission('AdvancedPolicies');
-        $this->_Model->UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
-                                    $passwd_max_age, $passwd_min_length, $xss_parsing_level,
-                                    $session_idle_timeout, $session_remember_timeout);
+        $this->_Model->UpdateAdvancedPolicies(
+            $passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
+            $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
+            $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
+        );
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

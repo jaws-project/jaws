@@ -112,12 +112,12 @@ function unselectDataGridRow()
     selectedRowColor = null;
 }
 
-function toggleCaptcha() 
+function toggleCaptcha(field) 
 {
-    if ($('captcha').value == 'DISABLED') {
-        $('captcha_driver').disabled = true;
+    if ($(field + '_captcha').value == 'DISABLED') {
+        $(field + '_captcha_driver').disabled = true;
     } else {
-        $('captcha_driver').disabled = false;
+        $(field + '_captcha_driver').disabled = false;
     }
 }
 
@@ -281,8 +281,8 @@ function saveAntiSpamSettings()
             'updateantispamsettings',
             $('allow_duplicate').value,
             $('filter').value,
-            $('captcha').value,
-            $('captcha_driver').value,
+            $('default_captcha').value,
+            $('default_captcha_driver').value,
             $('obfuscator').value
         );
     } catch(e) {
@@ -303,6 +303,8 @@ function saveAdvancedPolicies()
             $('passwd_lockedout_time').value,
             $('passwd_max_age').value,
             $('passwd_min_length').value,
+            $('login_captcha').value,
+            $('login_captcha_driver').value,
             $('xss_parsing_level').value,
             $('session_idle_timeout').value,
             $('session_remember_timeout').value

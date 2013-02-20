@@ -38,22 +38,29 @@ class HKCaptcha
      * @access  public
      * @return  array    Array indexed by captcha (the image entry) and entry (the input)
      */
-    function Get()
+    function Get($field, $entryid)
     {
-        $res = array();
         $key = $this->GetKey();
         $prefix = $this->GetPrefix();
-        $img = $this->HexEncode($GLOBALS['app']->Map->GetURLFor('Policy', 'Captcha',
-                                                                array('key' => $prefix . $key), false));
+        $img = $this->HexEncode(
+            $GLOBALS['app']->Map->GetURLFor(
+                'Policy',
+                'Captcha',
+                array('field' => $field, 'key' => $prefix . $key),
+                false
+            )
+        );
 
+        $entryid = isset($entryid)? $entryid : rand();
+        $res = array();
         $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle(_t('GLOBAL_CAPTCHA_CODE'));
-        $res['captcha']->SetID('captcha_img_'.rand());
+        $res['captcha']->SetID('captcha_img_'. $entryid);
         $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($img);
         $res['entry'] =& Piwi::CreateWidget('Entry', $prefix . $key, '');
-        $res['entry']->SetID('captcha_'.rand());
+        $res['entry']->SetID('captcha_'. $entryid);
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
         $res['description'] = _t('GLOBAL_CAPTCHA_CODE_DESC');
@@ -293,11 +300,7 @@ class HKCaptcha
      */
     function Image($key = null)
     {
-        if (is_null($key)) {
-            $request =& Jaws_Request::getInstance();
-            $key = $request->Get('key', 'get');
-            $key = str_replace($this->GetPrefix(), '', $key);
-        }
+        $key = str_replace($this->GetPrefix(), '', $key);
         $value = $this->GetValue($key);
 
         $font = JAWS_PATH. 'gadgets/Policy/captchas/HKCaptcha/comicbd.ttf';

@@ -31,7 +31,7 @@ class reCAPTCHA
         }
     }
 
-    function Get()
+    function Get($field, $entryid)
     {
         $res = array();
         $publickey = $this->GetRegistry('reCAPTCHA_public_key');

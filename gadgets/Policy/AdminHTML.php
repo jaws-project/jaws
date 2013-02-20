@@ -445,27 +445,27 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('filter', $filters->Get());
 
         //Captcha
-        $captcha =& Piwi::CreateWidget('Combo', 'captcha');
+        $captcha =& Piwi::CreateWidget('Combo', 'default_captcha');
         $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
-        $captchaValue = $this->gadget->GetRegistry('captcha');
+        $captchaValue = $this->gadget->GetRegistry('default_captcha');
         $captcha->SetDefault($captchaValue);
-        $captcha->AddEvent(ON_CHANGE, "javascript: toggleCaptcha();");
-        $tpl->SetVariable('lbl_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
-        $tpl->SetVariable('captcha', $captcha->Get());
+        $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('default');");
+        $tpl->SetVariable('lbl_default_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
+        $tpl->SetVariable('default_captcha', $captcha->Get());
 
         //Captcha driver
-        $captchaDriver =& Piwi::CreateWidget('Combo', 'captcha_driver');
+        $captchaDriver =& Piwi::CreateWidget('Combo', 'default_captcha_driver');
         $dCaptchas = $model->GetCaptchas();
         foreach ($dCaptchas as $dCaptcha) {
             $captchaDriver->AddOption($dCaptcha, $dCaptcha);
         }
-        $captchaDriver->SetDefault($this->gadget->GetRegistry('captcha_driver'));
+        $captchaDriver->SetDefault($this->gadget->GetRegistry('default_captcha_driver'));
         if ($captchaValue === 'DISABLED') {
             $captchaDriver->SetEnabled(false);
         }
-        $tpl->SetVariable('captcha_driver', $captchaDriver->Get());
+        $tpl->SetVariable('default_captcha_driver', $captchaDriver->Get());
 
         //Email Protector
         $useEmailProtector =& Piwi::CreateWidget('Combo', 'obfuscator');
@@ -559,6 +559,28 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $minLen->SetDefault($this->gadget->GetRegistry('passwd_min_length'));
         $tpl->SetVariable('lbl_passwd_min_length', _t('POLICY_PASSWD_MIN_LEN'));
         $tpl->SetVariable('passwd_min_length', $minLen->Get());
+
+        //Login captcha
+        $captcha =& Piwi::CreateWidget('Combo', 'login_captcha');
+        $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
+        $captcha->AddOption(_t('GLOBAL_ENABLED'),  'ENABLED');
+        $captchaValue = $this->gadget->GetRegistry('login_captcha');
+        $captcha->SetDefault($captchaValue);
+        $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('login');");
+        $tpl->SetVariable('lbl_login_captcha', _t('POLICY_LOGIN_CAPTCHA'));
+        $tpl->SetVariable('login_captcha', $captcha->Get());
+
+        //Login captcha driver
+        $captchaDriver =& Piwi::CreateWidget('Combo', 'login_captcha_driver');
+        $dCaptchas = $model->GetCaptchas();
+        foreach ($dCaptchas as $dCaptcha) {
+            $captchaDriver->AddOption($dCaptcha, $dCaptcha);
+        }
+        $captchaDriver->SetDefault($this->gadget->GetRegistry('login_captcha_driver'));
+        if ($captchaValue === 'DISABLED') {
+            $captchaDriver->SetEnabled(false);
+        }
+        $tpl->SetVariable('login_captcha_driver', $captchaDriver->Get());
 
         $parsingLevel =& Piwi::CreateWidget('Combo', 'xss_parsing_level');
         $parsingLevel->AddOption(_t('POLICY_XSS_PARSING_NORMAL'),   'normal');

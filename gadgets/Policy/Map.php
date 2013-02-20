@@ -8,4 +8,12 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('Captcha', 'captcha/{key}');
+$maps[] = array(
+    'Captcha',
+    'captcha/{field}/{key}',
+    '',
+    array(
+        'field' => '[[:alnum:]-_]+',
+        'key' => '[[:alnum:]]+',
+    )
+);

@@ -402,18 +402,19 @@ class Policy_AdminModel extends Policy_Model
      * @access  public
      * @param   bool    $allow_duplicate
      * @param   bool    $filter
-     * @param   string  $captcha
-     * @param   string  $captcha_driver
+     * @param   string  $default_captcha
+     * @param   string  $default_captcha_driver
      * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($allow_duplicate, $filter, $captcha, $captcha_driver, $obfuscator)
+    function UpdateAntiSpamSettings($allow_duplicate, $filter,
+                                    $default_captcha, $default_captcha_driver, $obfuscator)
     {
-        $this->gadget->SetRegistry('allow_duplicate', $allow_duplicate);
-        $this->gadget->SetRegistry('filter',          $filter);
-        $this->gadget->SetRegistry('captcha',         $captcha);
-        $this->gadget->SetRegistry('captcha_driver',  $captcha_driver);
-        $this->gadget->SetRegistry('obfuscator',      $obfuscator);
+        $this->gadget->SetRegistry('allow_duplicate',        $allow_duplicate);
+        $this->gadget->SetRegistry('filter',                 $filter);
+        $this->gadget->SetRegistry('default_captcha',        $default_captcha);
+        $this->gadget->SetRegistry('default_captcha_driver', $default_captcha_driver);
+        $this->gadget->SetRegistry('obfuscator',             $obfuscator);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -427,20 +428,24 @@ class Policy_AdminModel extends Policy_Model
      * @param   int     $passwd_lockedout_time
      * @param   int     $passwd_max_age
      * @param   int     $passwd_min_length
+     * @param   string  $login_captcha
+     * @param   string  $login_captcha_driver
      * @param   string  $xss_parsing_level
      * @param   int     $session_idle_timeout
      * @param   int     $session_remember_timeout
      * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
-                                    $passwd_max_age, $passwd_min_length, $xss_parsing_level,
-                                    $session_idle_timeout, $session_remember_timeout)
+                                    $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
+                                    $xss_parsing_level, $session_idle_timeout, $session_remember_timeout)
     {
         $this->gadget->SetRegistry('passwd_complexity',     ($passwd_complexity=='yes')? 'yes' : 'no');
         $this->gadget->SetRegistry('passwd_bad_count',      (int)$passwd_bad_count);
         $this->gadget->SetRegistry('passwd_lockedout_time', (int)$passwd_lockedout_time);
         $this->gadget->SetRegistry('passwd_max_age',        (int)$passwd_max_age);
         $this->gadget->SetRegistry('passwd_min_length',     (int)$passwd_min_length);
+        $this->gadget->SetRegistry('login_captcha',         $login_captcha);
+        $this->gadget->SetRegistry('login_captcha_driver',  $login_captcha_driver);
         $this->gadget->SetRegistry('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
         $this->gadget->SetRegistry('session_idle_timeout',     (int)$session_idle_timeout);
         $this->gadget->SetRegistry('session_remember_timeout', (int)$session_remember_timeout);
