@@ -47,7 +47,7 @@ class Jaws_Gadget_Model
         $type = preg_replace('/[^[:alnum:]_]/', '', $type);
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
 
-        if (!isset($this->gadget->models[$filename])) {
+        if (!isset($this->gadget->models[$type][$filename])) {
             switch ($type) {
                 case 'Model':
                     if (empty($filename)) {
@@ -80,11 +80,11 @@ class Jaws_Gadget_Model
                 return Jaws_Error::raiseError("Class [$type_class_name] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->models[$filename] = new $type_class_name($this->gadget);
+            $this->gadget->models[$type][$filename] = new $type_class_name($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$type_class_name]");
         }
 
-        return $this->gadget->models[$filename];
+        return $this->gadget->models[$type][$filename];
     }
 
     /**
