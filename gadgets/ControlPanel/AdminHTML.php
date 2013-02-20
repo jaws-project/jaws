@@ -154,6 +154,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/templates/',
                                       'Login.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/public.css');
         $ltpl->SetVariable('admin_script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
 
@@ -163,84 +164,78 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
             $reqpost['auth_method'] = $request->get('auth_method', 'get');
         }
 
-        $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-        $form->setID('login_form');
-        $form->shouldValidate($use_crypt, $use_crypt);
-
         $redirectTo = '';
         if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
             $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $redirectTo = '?'. $xss->filter($_SERVER['QUERY_STRING']);
         }
-
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'ControlPanel'));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'Login'));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'redirect_to', $redirectTo));
+        $ltpl->SetVariable('redirect_to',  $redirectTo);
 
         if ($use_crypt) {
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'modulus',  $JCrypt->math->bin2int($JCrypt->pub_key->getModulus())));
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'exponent', $JCrypt->math->bin2int($JCrypt->pub_key->getExponent())));
+            $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
+            $ltpl->SetBlock('layout/onsubmit');
+            $ltpl->ParseBlock('layout/onsubmit');
+            $ltpl->SetBlock('layout/encryption');
+            $ltpl->SetVariable('modulus',  $JCrypt->math->bin2int($JCrypt->pub_key->getModulus()));
+            $ltpl->SetVariable('exponent', $JCrypt->math->bin2int($JCrypt->pub_key->getExponent()));
+            $ltpl->ParseBlock('layout/encryption');
+
+            // usecrypt
+            $ltpl->SetBlock('layout/usecrypt');
+            $ltpl->SetVariable('lbl_usecrypt', _t('GLOBAL_LOGIN_SECURE'));
+            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
+                $ltpl->SetBlock('layout/usecrypt/selected');
+                $ltpl->ParseBlock('layout/usecrypt/selected');
+            }
+            $ltpl->ParseBlock('layout/usecrypt');
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('CONTROLPANEL_LOGIN_TITLE'));
-        $fieldset->SetDirection('vertical');
-        $fieldset->SetStyle('width: 100%;');
-
-        $usernameEntry =& Piwi::CreateWidget('Entry', 'username', (string) $reqpost['username']);
-        $usernameEntry->SetTitle(_t('GLOBAL_USERNAME'));
-        $fieldset->Add($usernameEntry);
-
-        $passEntry =& Piwi::CreateWidget('PasswordEntry', 'password', '');
-        $passEntry->SetTitle(_t('GLOBAL_PASSWORD'));
-        $fieldset->Add($passEntry);
+        $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
+        $ltpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $ltpl->SetVariable('username', $reqpost['username']);
+        $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
         $auth_method = $this->gadget->GetRegistry('auth_method', 'Users');
         if (!is_null($reqpost['auth_method']) || $auth_method !== 'Default') {
-            $authmethod =& Piwi::CreateWidget('Combo', 'auth_method');
-            $authmethod->SetTitle(_t('CONTROLPANEL_AUTH_METHOD'));
+            $auth_method = is_null($reqpost['auth_method'])? $auth_method : $reqpost['auth_method'];
+            $ltpl->SetBlock('layout/auth_method');
+            $ltpl->SetVariable('lbl_auth_method', _t('CONTROLPANEL_AUTH_METHOD'));
             foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
-                $authmethod->AddOption($method, $method);
+                $ltpl->SetBlock('layout/auth_method/item');
+                $ltpl->SetVariable('method', $method);
+                if ($method == $auth_method) {
+                    $ltpl->SetVariable('selected', 'selected="selected"');
+                } else {
+                    $ltpl->SetVariable('selected', '');
+                }
+                $ltpl->ParseBlock('layout/auth_method/item');
             }
-            if (!empty($reqpost['auth_method'])) {
-                $authmethod->SetDefault($reqpost['auth_method']);
-            } else {
-                $authmethod->SetDefault($auth_method);
-            }
-            $fieldset->Add($authmethod);
+            $ltpl->ParseBlock('layout/auth_method');
         }
 
-        $rememberMe =& Piwi::CreateWidget('CheckButtons', 'remember');
-        $rememberMe->setID('remember');
-        $rememberMe->setColumns(1);
-        $rememberMe->AddOption(_t('GLOBAL_REMEMBER_ME'), 'true');
+        // remember
+        $ltpl->SetBlock('layout/remember');
+        $ltpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
         if (!empty($reqpost['remember'])) {
-            $rememberMe->SetDefault('true');
+            $ltpl->SetBlock('layout/remember/selected');
+            $ltpl->ParseBlock('layout/remember/selected');
         }
-        $fieldset->Add($rememberMe);
+        $ltpl->ParseBlock('layout/remember');
 
-        if ($use_crypt) {
-            $useCrypt =& Piwi::CreateWidget('CheckButtons', 'usecrypt');
-            $useCrypt->setID('usecrypt');
-            $useCrypt->setColumns(1);
-            $useCrypt->AddOption(_t('GLOBAL_LOGIN_SECURE'), 'true');
-            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
-                $useCrypt->SetDefault('true');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description, 'login', 'login')) {
+            $ltpl->SetBlock('layout/captcha');
+            $ltpl->SetVariable('lbl_captcha', $label);
+            $ltpl->SetVariable('captcha', $captcha);
+            if (!empty($entry)) {
+                $ltpl->SetVariable('captchavalue', $entry);
             }
-            $fieldset->Add($useCrypt);
+            $ltpl->SetVariable('captcha_msg', $description);
+            $ltpl->ParseBlock('layout/captcha');
         }
 
-        $submit =& Piwi::CreateWidget('Button', 'loginButton', _t('GLOBAL_LOGIN'), STOCK_OK);
-        $submit->SetSubmit();
-
-        $fieldset->Add($submit);
-        $form->Add($fieldset);
-
-        $ltpl->SetVariable('loadObject', $usernameEntry->GetID());
-        $ltpl->SetVariable('form', $form->Get());
+        $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/public.css');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
 
         if (!empty($message)) {
             $ltpl->SetBlock('layout/message');

@@ -1,7 +1,6 @@
-<!-- BEGIN layout --><?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- BEGIN layout -->
+<!DOCTYPE html>
+<html>
  <head>
   <title>{site-name}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,22 +11,12 @@
   <script type="text/javascript">
   function focusOnLoad(focusObject)
   {
-    document.getElementById(focusObject).focus();
-    document.getElementById(focusObject).select();
-  }
-
-  function ValidateForm_login_form(form) {
-   if (!form.elements['usecrypt[]'].checked) {
-       return true;
-   }
-    setMaxDigits(128);
-    var pub_key = new RSAPublicKey(form.exponent.value, form.modulus.value, 128);
-    form.password.value = encryptedString(pub_key, form.password.value);
-    return true;
+    document.getElementById('username').focus();
+    document.getElementById('username').select();
   }
   </script>
  </head>
- <body onload="javascript: focusOnLoad('{loadObject}')">
+ <body onload="javascript:focusOnLoad()">
   <div id="header">
    <h1><a href="{admin_script}">{site-name}: {control-panel}</a></h1>
    <p>{site-slogan}</p>
@@ -35,10 +24,75 @@
   <hr />
   <div id="container" class="clearfix">
    <div id="main-section" class="clearfix">
-    <div id="login" style="width: 100%;" align="center">
-      <!-- BEGIN message --><center><div class="warning-message">{message}</div></center><!-- END message -->
-      <center>{form}</center>
-     <div class="login-footer"><a href="{base_url}">{back}</a></div>
+    <div id="login">
+      <!-- BEGIN message -->
+      <center><div class="warning-message">{message}</div></center>
+      <!-- END message -->
+      <form name="loginbox"
+            action="{base_script}"
+            <!-- BEGIN onsubmit -->onsubmit="return encryptedElement(this.password,
+                                                                     this.exponent.value,
+                                                                     this.modulus.value,
+                                                                     this.elements['usecrypt'].checked);"
+            <!-- END onsubmit -->
+            method="post">
+      <input type="hidden" name="gadget" value="ControlPanel" />
+      <input type="hidden" name="action" value="Login" />
+      <input type="hidden" name="redirect_to" value="{redirect_to}" />
+      <!-- BEGIN encryption -->
+      <input type="hidden" name="modulus" value="{modulus}" />
+      <input type="hidden" name="exponent" value="{exponent}" />
+      <!-- END encryption -->
+      <fieldset id="loginbox">
+        <legend><span>{legend_title}</span></legend>
+        <div><label for="username">{lbl_username}:</label>
+           <input name="username" id="username" type="text" style="direction: ltr;" value="{username}" />
+        </div>
+        <div><label for="password">{lbl_password}:</label>
+           <input name="password" id="password" type="password" style="direction: ltr;" value="" />
+        </div>
+        <!-- BEGIN captcha -->
+        <div class="captcha"><label for="captcha_login">{lbl_captcha}:</label>
+           {captchavalue}
+           <br />
+           <small>{captcha_msg}</small>
+           <br />
+           <span>{captcha}</span>
+        </div>
+        <!-- END captcha -->
+        <!-- BEGIN auth_method -->
+        <div><label for="auth_method">{lbl_auth_method}:</label>
+          <select name="auth_method" id="auth_method">
+          <!-- BEGIN item -->
+          <option value="{method}" {selected}>{method}</option>
+          <!-- END item -->
+          </select>
+        </div>
+        <!-- END auth_method -->
+        <!-- BEGIN remember -->
+        <div><input type="checkbox"
+                  name="remember"
+                  id="login_remember"
+                  <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+                  value="true" />
+           <label for="login_remember">{lbl_remember}</label>
+        </div>
+        <!-- END remember -->
+        <!-- BEGIN usecrypt -->
+        <div><input type="checkbox"
+                  name="usecrypt"
+                  id="login_usecrypt"
+                  <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+                  value="true" />
+           <label for="login_usecrypt">{lbl_usecrypt}</label>
+        </div>
+        <!-- END usecrypt -->
+        <div class="buttons">
+          <button type="submit" value="{login}">{login}</button>
+        </div>
+      </fieldset>
+      </form>
+      <div class="login-footer"><a href="{base_url}">{back}</a></div>
     </div>
    </div>
    <hr />

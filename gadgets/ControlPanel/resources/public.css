@@ -94,57 +94,50 @@ margin: 0 0 10px 0;
 
 /* ----- LOGIN BOX ----- */
 #login {
-border: 0;
-width: 300px;
+border:0;
+width:500px;
 padding: 10px;
 display: block;
 margin: auto;
-margin-top: 50px;
+margin:50px auto;
 text-align: center;
 }
 
 #login fieldset {
-width: 280px;
-max-width: 280px;
+width:280px;
+margin:1em auto;
 text-align: left;
 }
 
 #login fieldset label {
-display: block;
 font-size: 100%;
 font-weight: bold;
 cursor: pointer;
 text-align: left;
 }
 
-#login fieldset input {
-width: 180px;
-}
-
 #login #username {
+width:222px;
 padding-left:24px;
 background: #fff url(../images/user.png) no-repeat;
 }
 
 #login #password {
+width:222px;
 padding-left:24px;
-background: #fff url(../images/pass.png) no-repeat;
+background:#fff url(../images/pass.png) no-repeat;
 }
 
-#login #remember input, #login #usecrypt input{
-padding: 0px;
-width: 16px;
+#login .captcha input {
+width:222px;
+padding-left:24px;
+background: #fff;
 }
 
-#login #remember label, #login #usecrypt label {
-padding: 0 4px 0 4px;
-display: inline;
+#login .captcha small {
+display:block;
+color:#777;
 }
-
-#login button {
-float: right;
-}
-
 #login .login-footer {
 clear: both;
 text-align: center;
