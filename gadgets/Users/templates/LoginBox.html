@@ -24,6 +24,13 @@
     <p><label for="login_password">{lbl_password}:</label>
        <input name="password" id="login_password" type="password" style="direction: ltr;" value="" />
     </p>
+    <!-- BEGIN captcha -->
+    <div class="captcha"><label for="captcha_login">{lbl_captcha}:</label>
+       {captchavalue}
+       <small>{captcha_msg}</small>
+       <span>{captcha}</span>
+    </div>
+    <!-- END captcha -->
     <!-- BEGIN remember -->
     <p><input type="checkbox"
               name="remember"
