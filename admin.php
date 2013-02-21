@@ -95,8 +95,7 @@ if (!$GLOBALS['app']->Session->Logged())
                 } else {
                     $redirectTo = BASE_SCRIPT;
                 }
-                header('Location: '.$redirectTo);
-                exit;
+                Jaws_Header::Location($redirectTo);
             } else {
                 $GLOBALS['app']->Session->Logout();
                 $loginMsg = _t('GLOBAL_ERROR_LOGIN_NOTCP');
@@ -115,6 +114,9 @@ if (!$GLOBALS['app']->Session->Logged())
         echo $cpl->ShowLoginForm($loginMsg);
     }
 
+    // Sync session
+    $GLOBALS['app']->Session->Synchronize();
+    $GLOBALS['log']->End();
     exit;
 }
 
