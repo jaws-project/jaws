@@ -87,7 +87,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
         $filterBy->AddOption(_t('BLOG_POST_ID_IS'), 'postid');
-        $filterBy->AddOption(_t('BLOG_TITLE_CONTAINS'), 'title');
         $filterBy->AddOption(_t('BLOG_COMMENT_CONTAINS'), 'comment');
         $filterBy->AddOption(_t('BLOG_NAME_CONTAINS'), 'name');
         $filterBy->AddOption(_t('BLOG_EMAIL_CONTAINS'), 'email');
@@ -174,10 +173,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $ip->SetTitle(_t('GLOBAL_IP'));
         $ip->SetReadOnly(true);
 
-        $subject =& Piwi::CreateWidget('Entry', 'title', $comment['title']);
-        $subject->SetTitle(_t('GLOBAL_TITLE'));
-        $subject->SetStyle('width: 400px;');
-
         $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['comments']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
@@ -204,7 +199,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $fieldset->Add($email);
         $fieldset->Add($url);
         $fieldset->Add($ip);
-        $fieldset->Add($subject);
         $fieldset->Add($comment);
         $form->add($fieldset);
         $form->Add($buttonbox);
@@ -226,10 +220,9 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'name', 'title', 'url', 'email', 'comments', 'ip', 'permalink', 'status'), 'post');
+        $post = $request->get(array('id', 'name', 'url', 'email', 'comments', 'ip', 'permalink', 'status'), 'post');
 
-        $model->UpdateComment($post['id'], $post['name'], $post['title'],
-                              $post['url'], $post['email'], $post['comments'],
+        $model->UpdateComment($post['id'], $post['name'], $post['url'], $post['email'], $post['comments'],
                               $post['permalink'], $post['status']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');

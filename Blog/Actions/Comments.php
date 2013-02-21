@@ -59,7 +59,6 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('url', empty($c['url'])? 'javascript: void();' : $c['url']);
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('title', $c['title']);
                 $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
@@ -246,10 +245,6 @@ class Blog_Actions_Comments extends Blog_HTML
             $tpl->ParseBlock('commentform/captcha');
         }
 
-        if (!is_null($post['title'])) {
-            $title = $post['title'];
-        }
-
         if (!is_null($post['comments'])) {
             $comments = $post['comments'];
         }
@@ -269,7 +264,6 @@ class Blog_Actions_Comments extends Blog_HTML
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
         $tpl->SetVariable('url2_value',  '');
         $tpl->SetVariable('comment_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('title_value', $title);
         $tpl->SetVariable('comments', _t('BLOG_COMMENT'));
         $tpl->SetVariable('comments_value', $comments);
 
@@ -380,7 +374,7 @@ class Blog_Actions_Comments extends Blog_HTML
     {
         $request =& Jaws_Request::getInstance();
         $names = array(
-            'name', 'email', 'url', 'title', 'comments', 'createtime',
+            'name', 'email', 'url', 'comments', 'createtime',
             'ip_address', 'parent_id', 'parent', 'url2'
         );
         $post = $request->get($names, 'post');
@@ -424,7 +418,7 @@ class Blog_Actions_Comments extends Blog_HTML
             Jaws_Header::Location($url, true);
         }
 
-        if (trim($post['name']) == '' || trim($post['title']) == '' || trim($post['comments']) == '') {
+        if (trim($post['name']) == '' || trim($post['comments']) == '') {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), 'Blog');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Blog_Comment');
             Jaws_Header::Location($url, true);
@@ -438,7 +432,7 @@ class Blog_Actions_Comments extends Blog_HTML
             Jaws_Header::Location($url, true);
         }
 
-        $result = $model->NewComment($post['name'], $post['title'], $post['url'],
+        $result = $model->NewComment($post['name'], $post['url'],
                            $post['email'], $post['comments'], $post['parent'],
                            $post['parent_id']);
         if (Jaws_Error::IsError($result)) {

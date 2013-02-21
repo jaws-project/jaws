@@ -796,7 +796,6 @@ class Blog_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $name       Name of the author
-     * @param   string  $title      Title of the comment
      * @param   string  $url        Url of the author
      * @param   string  $email      Email of the author
      * @param   string  $comments   Text of the comment
@@ -806,7 +805,7 @@ class Blog_Model extends Jaws_Gadget_Model
      * @param   bool    $set_cookie Create a cookie
      * @return  bool    True if comment was added, and Jaws_Error if not.
      */
-    function NewComment($name, $title, $url, $email, $comments, $parent, $parentId, $ip = '', $set_cookie = true)
+    function NewComment($name, $url, $email, $comments, $parent, $parentId, $ip = '', $set_cookie = true)
     {
         if (empty($ip)) {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -845,15 +844,18 @@ class Blog_Model extends Jaws_Gadget_Model
         $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
         $res = $cModel->NewComment(
             $this->gadget->name, $parentId,
-            $name, $email, $url, $title, $comments,
+            $name, $email, $url, $comments,
             $ip, $permalink, $parent, $status
         );
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), _t('BLOG_NAME'));
         }
 
+        $email_title = ($GLOBALS['app']->UTF8->strlen($comments) >= 30)?
+                                         $GLOBALS['app']->UTF8->substr($comments, 0, 30).'...' :
+                                         $comments;
         //Send an email to blog entry author and website owner
-        $this->MailComment($parentId, $title, $email, $comments, $url);
+        $this->MailComment($parentId, $email_title, $email, $comments, $url);
         if ($res == COMMENT_STATUS_APPROVED) {
             $params = array();
             $params['id'] = $id;

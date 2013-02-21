@@ -666,7 +666,6 @@ class Blog_AdminModel extends Blog_Model
      * @access  public
      * @param   string  $id         Comment id
      * @param   string  $name       Name of the author
-     * @param   string  $title      Title of the comment
      * @param   string  $url        Url of the author
      * @param   string  $email      Email of the author
      * @param   string  $comments   Text of the comment
@@ -674,12 +673,11 @@ class Blog_AdminModel extends Blog_Model
      * @param   string  $status     Comment Status
      * @return  mixed   True on Success or Jaws_Error on Failure
      */
-    function UpdateComment($id, $name, $title, $url, $email, $comments, $permalink, $status)
+    function UpdateComment($id, $name, $url, $email, $comments, $permalink, $status)
     {
         $params = array();
         $params['id']        = $id;
         $params['name']      = $name;
-        $params['title']     = $title;
         $params['url']       = $url;
         $params['email']     = $email;
         $params['comments']  = $comments;
@@ -689,8 +687,7 @@ class Blog_AdminModel extends Blog_Model
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $res = $cModel->UpdateComment(
             $this->gadget->name, $params['id'], $params['name'],
-            $params['email'], $params['url'], $params['title'],
-            $params['comments'], $params['permalink'], $params['status']
+            $params['email'], $params['url'], $params['comments'], $params['permalink'], $params['status']
         );
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
