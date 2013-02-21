@@ -294,7 +294,6 @@ class Blog_Model extends Jaws_Gadget_Model
             foreach ($comments as $r) {
                 $summary['Comments'][] = array(
                     'id'         => $r['id'],
-                    'title'      => $r['title'],
                     'name'       => $r['name'],
                     'parent'     => $r['parent'],
                     'createtime' => $r['createtime']

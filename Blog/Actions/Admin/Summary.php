@@ -120,7 +120,6 @@ class Blog_Actions_Admin_Summary extends Blog_AdminHTML
                 $url = BASE_SCRIPT . '?gadget=Blog&action=EditComment&id='.$c['id'];
                 $extra = "<strong style=\"color: #666;\">" . $xss->filter($c['name']) . ": </strong>";
                 $tpl->SetVariable('url',   $xss->filter($url));
-                $tpl->SetVariable('title', $xss->filter($c['title']));
                 $tpl->SetVariable('extra', $extra);
                 $tpl->SetVariable('date',  $date->Format($c['createtime']));
                 $tpl->ParseBlock('summary/recent/link');
