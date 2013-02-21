@@ -64,12 +64,6 @@
             </field>
 
             <field>
-                <name>title</name>
-                <type>text</type>
-                <length>255</length>
-            </field>
-
-            <field>
                 <name>msg_txt</name>
                 <type>text</type>
             </field>

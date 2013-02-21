@@ -108,7 +108,6 @@ function stopAction()
     $('name').value    = '';
     $('email').value   = '';
     $('url').value     = '';
-    $('subject').value = '';
     $('message').value = '';
     $('status').value  = '';
     $('btn_save').style.visibility   = 'hidden';
@@ -131,7 +130,6 @@ function editComment(element, id)
     $('name').value    = comment['name'];
     $('email').value   = comment['email'];
     $('url').value     = comment['url'];
-    $('subject').value = comment['title'].defilter();
     $('message').value = comment['msg_txt'].defilter();
     $('status').value  = comment['status'];
     $('btn_save').style.visibility   = 'visible';
@@ -149,7 +147,6 @@ function updateComment()
                     $('name').value,
                     $('email').value,
                     $('url').value,
-                    $('subject').value,
                     $('message').value,
                     $('status').value);
 }

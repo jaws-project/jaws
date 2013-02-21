@@ -21,14 +21,13 @@ class Comments_AdminModel extends Comments_Model
      * @param   string  $name    Author's name
      * @param   string  $email   Author's email
      * @param   string  $url     Author's url
-     * qparam   string  $title   Author's title message
      * @param   string  $message Author's message
      * @param   string  $permalink Permanent link to resource
      * @param   string  $status  Comment status
-     * @return  bool   True if sucess or Jaws_Error on any error
+     * @return  bool   True if success or Jaws_Error on any error
      * @access  public
      */
-    function UpdateComment($gadget, $id, $name, $email, $url, $title, $message, $permalink, $status)
+    function UpdateComment($gadget, $id, $name, $email, $url, $message, $permalink, $status)
     {
         $sql = '
             UPDATE [[comments]] SET
@@ -37,7 +36,6 @@ class Comments_AdminModel extends Comments_Model
                 [url]     = {url},
                 [msg_txt] = {message},
                 [msg_key] = {message_key},
-                [title]   = {title},
                 [status]  = {status}
             WHERE
                 [id] = {id}
@@ -50,7 +48,6 @@ class Comments_AdminModel extends Comments_Model
         $params['name']        = $name;
         $params['email']       = $email;
         $params['url']         = $url;
-        $params['title']       = $title;
         $params['message']     = $message;
         $params['message_key'] = md5($message);
         $params['status']      = $status;
@@ -202,7 +199,7 @@ class Comments_AdminModel extends Comments_Model
             $sql =
                 "SELECT
                     [id], [gadget_reference], [gadget], [parent], [name], [email], [url], [ip],
-                    [title], [msg_txt], [replies], [status], [createtime]
+                    [msg_txt], [replies], [status], [createtime]
                 FROM [[comments]]
                 WHERE [id] IN (" . $list . ")";
 
@@ -262,7 +259,7 @@ class Comments_AdminModel extends Comments_Model
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
             'id', 'gadget_reference', 'gadget', 'parent', 'name','email',
-            'url', 'ip', 'title', 'msg_txt', 'replies', 'status', 'createtime'
+            'url', 'ip', 'msg_txt', 'replies', 'status', 'createtime'
         );
 
         if (!empty($gadget)) {
@@ -287,9 +284,6 @@ class Comments_AdminModel extends Comments_Model
                 case COMMENT_FILTERBY_URL:
                     $commentsTable->and()->where('url', '%'.$filterData.'%', 'like');
                     break;
-                case COMMENT_FILTERBY_TITLE:
-                    $commentsTable->and()->where('title', '%'.$filterData.'%', 'like');
-                    break;
                 case COMMENT_FILTERBY_IP:
                     $commentsTable->and()->where('ip', '%'.$filterData.'%', 'like');
                     break;
@@ -301,7 +295,6 @@ class Comments_AdminModel extends Comments_Model
                     $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('title', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
                     break;
             }

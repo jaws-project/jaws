@@ -68,9 +68,6 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
             case 'url':
                 $filterMode = COMMENT_FILTERBY_URL;
                 break;
-            case 'title':
-                $filterMode = COMMENT_FILTERBY_TITLE;
-                break;
             case 'ip':
                 $filterMode = COMMENT_FILTERBY_IP;
                 break;
@@ -115,16 +112,15 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * @param   string  $name       Name
      * @param   string  $email      Email address
      * @param   string  $url
-     * @param   string  $subject    Subject of message
      * @param   string  $message    Message content
-     * @param $status
+     * @param   $status
      * @return  array   Response array (notice or error)
      */
-    function UpdateComment($gadget, $id, $name, $email, $url, $subject, $message, $status)
+    function UpdateComment($gadget, $id, $name, $email, $url, $message, $status)
     {
         // TODO: Check Permission For Manage Comments
         // TODO: Fill permalink In New Versions, Please!!
-        $this->_Model->UpdateComment($gadget, $id, $name, $email, $url, $subject, $message, '', $status);
+        $this->_Model->UpdateComment($gadget, $id, $name, $email, $url, $message, '', $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

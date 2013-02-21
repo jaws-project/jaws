@@ -96,7 +96,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
         $filterBy->AddOption(_t('COMMENTS_SEARCH_POST_ID_IS'), 'postid');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_TITLE_CONTAINS'), 'title');
         $filterBy->AddOption(_t('COMMENTS_SEARCH_COMMENT_CONTAINS'), 'comment');
         $filterBy->AddOption(_t('COMMENTS_SEARCH_NAME_CONTAINS'), 'name');
         $filterBy->AddOption(_t('COMMENTS_SEARCH_EMAIL_CONTAINS'), 'email');
@@ -186,12 +185,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
-        //subject
-        $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $subjectEntry->setStyle('width: 270px;');
-        $tpl->SetVariable('lbl_subject', _t('COMMENTS_SUBJECT'));
-        $tpl->SetVariable('subject', $subjectEntry->Get());
-
         //message
         $messageText =& Piwi::CreateWidget('TextArea', 'message','');
         $messageText->SetStyle('width: 270px;');
@@ -209,7 +202,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @param   string  $gadget     Gadget name
      * @param   string  $editAction Edit action
-     * @param   string  $filterby   Filter to use(postid, author, email, url, title, comment)
+     * @param   string  $filterby   Filter to use(postid, author, email, url, comment)
      * @param   string  $filter     Filter data
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $limit      Data limit (numeric/boolean)
@@ -232,9 +225,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             break;
         case 'url':
             $filterMode = COMMENT_FILTERBY_URL;
-            break;
-        case 'title':
-            $filterMode = COMMENT_FILTERBY_TITLE;
             break;
         case 'ip':
             $filterMode = COMMENT_FILTERBY_IP;
@@ -265,17 +255,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
             $newRow['name']    = $row['name'];
-            if (empty($row['title'])) {
-                $row['title'] = Jaws_UTF8::substr(strip_tags($xss->defilter($row['msg_txt'])),0, 50);
-            }
 
-            $row['title'] = preg_replace("/(\r\n|\r)/", " ", $row['title']);
-            if (!empty($editAction)) {
-                $url = str_replace('{id}', $row['id'], $editAction);
-                $newRow['title'] = '<a href="'.$url.'">'.$row['title'].'</a>';
-            } else {
-                $newRow['title'] = $row['title'];
-            }
             $newRow['created'] = $date->Format($row['createtime']);
             if($row['status']==1) {
                 $status_name = 'APPROVED';
@@ -324,7 +304,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_NAME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));

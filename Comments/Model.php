@@ -5,7 +5,6 @@ define('COMMENT_FILTERBY_NAME',      'name');
 define('COMMENT_FILTERBY_EMAIL',     'email');
 define('COMMENT_FILTERBY_URL',       'url');
 define('COMMENT_FILTERBY_IP',        'ip');
-define('COMMENT_FILTERBY_TITLE',     'title');
 define('COMMENT_FILTERBY_MESSAGE',   'message');
 define('COMMENT_FILTERBY_STATUS',    'status');
 define('COMMENT_FILTERBY_VARIOUS',   'various');
@@ -30,7 +29,7 @@ class Comments_Model extends Jaws_Gadget_Model
      * Get last ID of inserted comment (by some params to prevent duplicated entries)
      *
      * @access  private
-     * @param   string  $createtime  Createtime of the last ID
+     * @param   string  $createtime  Create time of the last ID
      * @param   string  $messageKey  MD5 of the message
      * @return  int     Last ID
      */
@@ -90,17 +89,15 @@ class Comments_Model extends Jaws_Gadget_Model
      * @param   string  $name      Author's name
      * @param   string  $email     Author's email
      * @param   string  $url       Author's url
-     * qparam   string  $title     Author's title message
-     * @param   string  $title
      * @param   string  $message   Author's message
      * @param   string  $ip        Author's IP
      * @param   string  $permalink Permanent link to resource
      * @param   int     $parent    Parent message
-     * @param int $status
+     * @param   int $status
      * @return  int     Comment id or Jaws_Error on any error
      * @access  public
      */
-    function NewComment($gadget, $gadgetId, $name, $email, $url, $title,
+    function NewComment($gadget, $gadgetId, $name, $email, $url,
                         $message, $ip, $permalink, $parent = null, $status = COMMENT_STATUS_APPROVED)
     {
         if (!$parent) {
@@ -111,7 +108,7 @@ class Comments_Model extends Jaws_Gadget_Model
             $status = COMMENT_STATUS_SPAM;
         }
 
-        $message_key = md5($title.$message);
+        $message_key = md5($message);
         if ($this->gadget->GetRegistry('allow_duplicate', 'Policy') == 'no') {
             if ($this->IsMessageDuplicated($message_key)) {
                 return new Jaws_Error(_t('GLOBAL_SPAM_POSSIBLE_DUPLICATE_MESSAGE'), _t('COMMENTS_NAME'));
@@ -132,17 +129,16 @@ class Comments_Model extends Jaws_Gadget_Model
         $sql = '
             INSERT INTO [[comments]]
                ([parent], [gadget_reference], [gadget], [name], [email], [url],
-               [ip], [title], [msg_txt], [status], [msg_key], [createtime])
+               [ip], [msg_txt], [status], [msg_key], [createtime])
             VALUES
                ({parent}, {gadgetId}, {gadget}, {name}, {email}, {url},
-               {ip}, {title}, {msg_txt}, {status}, {msg_key}, {now})';
+               {ip}, {msg_txt}, {status}, {msg_key}, {now})';
 
         $params = array();
         $params['gadgetId'] = $gadgetId;
         $params['parent']   = $parent;
         $params['gadget']   = $gadget;
         $params['name']     = $name;
-        $params['title']    = $title;
         $params['email']    = $email;
         $params['url']      = $url;
         $params['msg_txt']  = $message;
@@ -202,7 +198,6 @@ class Comments_Model extends Jaws_Gadget_Model
                 [email],
                 [url],
                 [ip],
-                [title],
                 [msg_txt],
                 [status],
                 [replies],
@@ -227,12 +222,12 @@ class Comments_Model extends Jaws_Gadget_Model
      *                            photo in Phoo, etc. This needs to be a reference
      *                            to find the comments releated to a specific record
      *                            in a gadget.
-     * @param   int     $parent   Parent message, if null get all comments (threaded) of the given $gadgetId
+     * @param   int    $parent   Parent message, if null get all comments (threaded) of the given $gadgetId
      * @param   bool   $getApproved    If true get comments that are approved (optional, default true);
      * @param   bool   $getWaiting     If true get comments that are waiting for moderation (optional, default false);
      * @param   bool   $getSpam    If true get comments that are marked as spam (optional, default false);
      * @param   bool   $getAllCurrentUser If true get all the comments for the current user (based on user cookie)
-     * @return  array   Returns an array with data of a list of comments or Jaws_Error on error
+     * @return  array  Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
     function GetComments($gadget, $gadgetId, $parent, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
@@ -254,7 +249,6 @@ class Comments_Model extends Jaws_Gadget_Model
                 [email],
                 [url],
                 [ip],
-                [title],
                 [msg_txt],
                 [status],
                 [replies],
@@ -323,7 +317,6 @@ class Comments_Model extends Jaws_Gadget_Model
                 [email],
                 [url],
                 [ip],
-                [title],
                 [msg_txt],
                 [replies],
                 [status],
@@ -442,9 +435,6 @@ class Comments_Model extends Jaws_Gadget_Model
                 case COMMENT_FILTERBY_URL:
                     $commentsTable->and()->where('url', '%'.$filterData.'%', 'like');
                     break;
-                case COMMENT_FILTERBY_TITLE:
-                    $commentsTable->and()->where('title', '%'.$filterData.'%', 'like');
-                    break;
                 case COMMENT_FILTERBY_IP:
                     $commentsTable->and()->where('ip', '%'.$filterData.'%', 'like');
                     break;
@@ -456,7 +446,6 @@ class Comments_Model extends Jaws_Gadget_Model
                     $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('title', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
                     break;
             }
