@@ -563,7 +563,10 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         //Login captcha
         $captcha =& Piwi::CreateWidget('Combo', 'login_captcha');
         $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
-        $captcha->AddOption(_t('GLOBAL_ENABLED'),  'ENABLED');
+        $captcha->AddOption(_t('GLOBAL_ALWAYS'), '0');
+        $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 1), '1');
+        $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 2), '2');
+        $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 3), '3');
         $captchaValue = $this->gadget->GetRegistry('login_captcha');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('login');");

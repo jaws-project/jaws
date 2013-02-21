@@ -148,7 +148,13 @@ class Jaws_Session
                                           JAWS_ERROR_NOTICE);
         }
 
-        if ($username !== '' && $password !== '') {
+        if ($username === '' && $password === '') {
+            $result = Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_LOGIN_WRONG'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        } else {
             if (!empty($authmethod)) {
                 $authmethod = preg_replace('/[^[:alnum:]_-]/', '', $authmethod);
             } else {
@@ -169,22 +175,25 @@ class Jaws_Session
 
                     if (empty($existSessions) || $result['concurrents'] > $existSessions)
                     {
+                        // remove login trying count from session
+                        $this->DeleteAttribute('bad_login_count');
+                        // create session & cookie
                         $this->Create($result, $remember);
                         return true;
                     } else {
-                        $result = Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
-                                                         __FUNCTION__,
-                                                         JAWS_ERROR_NOTICE);
+                        $result = Jaws_Error::raiseError(
+                            _t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE
+                        );
                     }
                 }
             }
-
-            return $result;
         }
 
-        return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
-                                      __FUNCTION__,
-                                      JAWS_ERROR_NOTICE);
+        // increment login trying count in session
+        $this->SetAttribute('bad_login_count', (int)$this->GetAttribute('bad_login_count') + 1);
+        return $result;
     }
 
     /**

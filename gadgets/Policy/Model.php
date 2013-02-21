@@ -87,9 +87,19 @@ class Policy_Model extends Jaws_Gadget_Model
     function LoadCaptcha(&$captcha, &$entry, &$label, &$description, $field = 'default', $entryid = null)
     {
         $status = $this->gadget->GetRegistry($field.'_captcha');
-        if (($status == 'DISABLED') ||
-            ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
-            return false;
+        switch ($field) {
+            case 'login':
+                $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
+                if (($status == 'DISABLED') || ($bad_logins < (int)$status)) {
+                    return false;
+                }
+                break;
+
+            default:
+                if (($status == 'DISABLED') ||
+                    ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
+                    return false;
+                }
         }
 
         static $objCaptcha;
@@ -108,7 +118,6 @@ class Policy_Model extends Jaws_Gadget_Model
         $entry   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
         $label   = $resCaptcha['label'];
         $description = $resCaptcha['description'];
-
         return true;
     }
 
@@ -122,9 +131,19 @@ class Policy_Model extends Jaws_Gadget_Model
     function CheckCaptcha($field = 'default')
     {
         $status = $this->gadget->GetRegistry($field. '_captcha');
-        if (($status == 'DISABLED') ||
-            ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
-            return true;
+        switch ($field) {
+            case 'login':
+                $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
+                if (($status == 'DISABLED') || ($bad_logins < (int)$status)) {
+                    return true;
+                }
+                break;
+
+            default:
+                if (($status == 'DISABLED') ||
+                    ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
+                    return true;
+                }
         }
 
         static $objCaptcha;
