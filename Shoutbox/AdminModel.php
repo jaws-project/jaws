@@ -106,7 +106,6 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
         $params              = array();
         $params['id']        = $id;
         $params['name']      = strip_tags($name);
-        $params['title']     = strip_tags($GLOBALS['app']->UTF8->substr($comments,0, $max_strlen).'...');
         $params['url']       = strip_tags($url);
         $params['email']     = strip_tags($email);
         $params['comments']  = strip_tags($comments);
@@ -119,7 +118,6 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
             $params['name'],
             $params['email'],
             $params['url'],
-            $params['title'],
             $params['comments'],
             $params['permalink'],
             $params['status']
