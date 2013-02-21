@@ -513,7 +513,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('url', $c['url']);
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('title', $c['title']);
                 $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
@@ -624,7 +623,8 @@ class Phoo_HTML extends Jaws_Gadget_HTML
      * @param   int     $albumid    album ID
      * @param   int     $parent     id of the replied entry(comment thread starter)
      * @param   string  $title      title of the comment
-     * @param   string  $comment    body of the comment(optional, empty by default)
+     * @param   string  $comments
+     * @internal param string $comment body of the comment(optional, empty by default)
      * @return  string  XHTML template content
      */
     function DisplayCommentForm($parent_id, $albumid, $parent = 0, $title = '', $comments = '')
@@ -705,8 +705,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         // Test to see if this does any good to reduce spam
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
         $tpl->SetVariable('url2_value',  '');
-        $tpl->SetVariable('comment_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('title_value', $title);
         $tpl->SetVariable('comments', _t('PHOO_COMMENT'));
         $tpl->SetVariable('comments_value', $comments);
 
@@ -812,7 +810,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $names = array(
-            'name', 'email', 'url', 'title', 'comments', 'createtime',
+            'name', 'email', 'url', 'comments', 'createtime',
             'ip_address', 'parent_id', 'parent', 'url2', 'albumid',
         );
         $post = $request->get($names, 'post');
@@ -847,7 +845,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             Jaws_Header::Location($url, true);
         }
 
-        if (trim($post['name']) == '' || trim($post['title']) == '' || trim($post['comments']) == '') {
+        if (trim($post['name']) == '' || trim($post['comments']) == '') {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), 'Phoo');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
             Jaws_Header::Location($url, true);
@@ -861,8 +859,8 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             Jaws_Header::Location($url, true);
         }
 
-        $result = $model->NewComment($post['name'], $post['title'], $post['url'],
-                                     $post['email'], $post['comments'], $post['parent'], $post['parent_id'], $url);
+        $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
+                                     $post['parent'], $post['parent_id'], $url);
         if (Jaws_Error::isError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'Phoo');
         } else {

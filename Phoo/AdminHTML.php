@@ -1010,7 +1010,6 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
         $filterBy->AddOption(_t('PHOO_ID'), 'id');
-        $filterBy->AddOption(_t('PHOO_TITLE_CONTAINS'), 'title');
         $filterBy->AddOption(_t('PHOO_COMMENT_CONTAINS'), 'comment');
         $filterBy->AddOption(_t('PHOO_NAME_CONTAINS'), 'name');
         $filterBy->AddOption(_t('PHOO_EMAIL_CONTAINS'), 'email');
@@ -1085,10 +1084,6 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
-        $subject =& Piwi::CreateWidget('Entry', 'title', $comment['title']);
-        $subject->SetTitle(_t('GLOBAL_TITLE'));
-        $subject->SetStyle('width: 400px;');
-
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
         $comment->SetRows(5);
@@ -1118,7 +1113,6 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $fieldset->Add($email);
         $fieldset->Add($url);
         $fieldset->Add($ip);
-        $fieldset->Add($subject);
         $fieldset->Add($comment);
         $form->add($fieldset);
         $form->Add($buttonbox);
@@ -1139,13 +1133,13 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageComments');
 
         $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('id',  'name',  'title',
-                                       'url', 'email', 'comments',
+        $post    = $request->get(array('id',  'name', 'url',
+                                       'email', 'comments',
                                        'permalink', 'status'), 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $model->UpdateComment($post['id'], $post['name'], $post['title'],
-                              $post['url'], $post['email'], $post['comments'],
+        $model->UpdateComment($post['id'], $post['name'], $post['url'],
+                              $post['email'], $post['comments'],
                               $post['permalink'], $post['status']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');

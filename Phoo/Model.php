@@ -1219,7 +1219,6 @@ class Phoo_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $name         Name of the author
-     * @param   string  $title        Title of the comment
      * @param   string  $url          Url of the author
      * @param   string  $email        Email of the author
      * @param   string  $comments     Text of the comment
@@ -1230,7 +1229,7 @@ class Phoo_Model extends Jaws_Gadget_Model
      * @param   bool    $set_cookie   Create a cookie
      * @return  mixed   True if comment was added, and Jaws_Error if not.
      */
-    function NewComment($name, $title, $url, $email, $comments, $parent, $parent_entry, $permalink, $ip = '', $set_cookie = true)
+    function NewComment($name, $url, $email, $comments, $parent, $parent_entry, $permalink, $ip = '', $set_cookie = true)
     {
         $params = array();
         $params['parent_id'] = $parent_entry;
@@ -1263,15 +1262,18 @@ class Phoo_Model extends Jaws_Gadget_Model
 
         $res = $cModel->NewComment(
             $this->gadget->name, $parent_entry,
-            $name, $email, $url, $title, $comments,
+            $name, $email, $url, $comments,
             $ip, $permalink, $parent, $status
         );
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
         }
 
+        $email_title = ($GLOBALS['app']->UTF8->strlen($comments) >= 30)?
+            $GLOBALS['app']->UTF8->substr($comments, 0, 30).'...' :
+            $comments;
         //Send an email to website owner
-        $this->MailComment($permalink, $title, $email, $comments, $url);
+        $this->MailComment($permalink, $email_title, $email, $comments, $url);
         if ($res == COMMENT_STATUS_APPROVED) {
             $params = array();
             $params['id'] = $id;
