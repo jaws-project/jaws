@@ -55,11 +55,11 @@ class ComplexCaptcha
         $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle(_t('GLOBAL_CAPTCHA_CODE'));
-        $res['captcha']->SetID('captcha_img_'.rand());
+        $res['captcha']->SetID('captcha_img_'. $entryid);
         $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($img);
         $res['entry'] =& Piwi::CreateWidget('Entry', $prefix . $key, '');
-        $res['entry']->SetID('captcha_'.rand());
+        $res['entry']->SetID('captcha_'. $entryid);
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
         $res['description'] = _t('GLOBAL_CAPTCHA_CODE_DESC');
