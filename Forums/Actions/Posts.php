@@ -561,6 +561,10 @@ class Forums_Actions_Posts extends Forums_HTML
         $edit_min_limit_time = (int)$this->gadget->GetRegistry('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->GetRegistry('edit_max_limit_time');
 
+        // posts per page
+        $posts_limit = $this->gadget->GetRegistry('posts_limit');
+        $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
+
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost(
@@ -572,6 +576,7 @@ class Forums_Actions_Posts extends Forums_HTML
             );
             $event_type = 'new';
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
+            $last_post_page = floor($topic['replies']/$posts_limit) + 1;
         } else {
             $oldPost = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
             if (Jaws_Error::IsError($oldPost) || empty($oldPost)) {
@@ -608,6 +613,7 @@ class Forums_Actions_Posts extends Forums_HTML
             // no notification for topic creator
             $topic['email'] = '';
             $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
+            $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
         }
 
         if (Jaws_Error::IsError($result)) {
@@ -617,12 +623,11 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         $post['pid'] = $result;
-        $post_link = $this->gadget->GetURLFor(
-            'Posts',
-            array('fid' => $post['fid'], 'tid' => $post['tid']),
-            true,
-            'site_url'
-        );
+        $url_params = array('fid' => $post['fid'], 'tid' => $post['tid']);
+        if ($last_post_page > 1) {
+            $url_params['page'] = $last_post_page;
+        }
+        $post_link = $this->gadget->GetURLFor('Posts', $url_params, true, 'site_url');
 
         // send email notification
         if ($send_notification) {
