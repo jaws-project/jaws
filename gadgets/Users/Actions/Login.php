@@ -149,6 +149,18 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('username', $reqpost['username']);
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description, 'login', 'login')) {
+            $tpl->SetBlock('LoginBox/captcha');
+            $tpl->SetVariable('lbl_captcha', $label);
+            $tpl->SetVariable('captcha', $captcha);
+            if (!empty($entry)) {
+                $tpl->SetVariable('captchavalue', $entry);
+            }
+            $tpl->SetVariable('captcha_msg', $description);
+            $tpl->ParseBlock('LoginBox/captcha');
+        }
+
         // remember
         $tpl->SetBlock('LoginBox/remember');
         $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
@@ -314,9 +326,15 @@ class Users_Actions_Login extends Users_HTML
             }
         }
 
-        $login = $GLOBALS['app']->Session->Login($post['username'], $post['password'], $post['remember']);
-        if (Jaws_Error::isError($login)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($login->GetMessage(), 'Users.Login');
+        // check captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        $resCheck = $mPolicy->CheckCaptcha('login');
+        if (!Jaws_Error::IsError($resCheck)) {
+            // try to login
+            $resCheck = $GLOBALS['app']->Session->Login($post['username'], $post['password'], $post['remember']);
+        }
+        if (Jaws_Error::isError($resCheck)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->GetMessage(), 'Users.Login');
             unset($post['password']);
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Login.Data');
             $login_url = $GLOBALS['app']->Map->GetURLFor(
