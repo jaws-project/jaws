@@ -5,10 +5,10 @@
  * @category   GadgetHook
  * @package    Blog
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogUserActivityHook
+class BlogActivityHook
 {
     /**
      * Returns an array with the results of a user activity
