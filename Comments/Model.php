@@ -247,16 +247,6 @@ class Comments_Model extends Jaws_Gadget_Model
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_COMMENTS'), _t('COMMENTS_NAME'));
         }
 
-
-//        if ((count($result) > 0) && (is_null($parent))) {
-//            $auxdata = array();
-//            foreach ($result as $r) {
-//                $auxdata[$r['parent']][] = $r;
-//            }
-
-//            $result = $this->_CreateCommentsThread($auxdata[0], $auxdata);
-//        }
-
         return $result;
     }
 
@@ -313,17 +303,6 @@ class Comments_Model extends Jaws_Gadget_Model
         }
 
         return $rows;
-    }
-
-    function _CreateCommentsThread($data, $all) {
-        foreach ($data as $r) {
-            $res[$r['id']] = $r;
-            $res[$r['id']]['childs'] = array();
-            if (isset($all[$r['id']])) {
-                $res[$r['id']]['childs'] = $this->_CreateCommentsThread($all[$r['id']], $all);
-            }
-        }
-        return $res;
     }
 
     /**
