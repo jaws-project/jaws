@@ -11,20 +11,16 @@
 class BlogActivityHook
 {
     /**
-     * Returns an array with the results of a user activity
+     * Returns user's activity array
      *
      * @access  public
-     * @param   string  $uid   User id
+     * @param   int     $uid    User's ID
+     * @param   int     $uname  User's name
      * @return  array   An array of user activity
      */
-    function Hook($uid)
+    function Hook($uid, $uname)
     {
         $entity = array();
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = new Jaws_User();
-        $user = $userModel->GetUser($uid);
-
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'count(id) as post_count:integer'
@@ -37,9 +33,9 @@ class BlogActivityHook
 
         $entity['title'] = _t('BLOG_ENTRY');
         $entity['count'] = $postCount;
-        $entity['url'] = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewAuthorPage', array('id' => $user['username']));
-
+        $entity['url'] = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewAuthorPage', array('id' => $uname));
 
         return array($entity);
     }
+
 }
