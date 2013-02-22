@@ -31,7 +31,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $tpl->Load('Comment.html');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         if (is_null($data)) {
-            $comments = $model->GetComments($id, null);
+            $comments = $model->GetComments($id);
         } else {
             $comments = $data;
         }
@@ -59,7 +59,6 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('url', empty($c['url'])? 'javascript: void();' : $c['url']);
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
@@ -96,22 +95,6 @@ class Blog_Actions_Comments extends Blog_HTML
                 }
                 $tpl->ParseBlock('comment/reply-link');
 
-                if (count($c['childs']) > 0) {
-                    $tpl->SetBlock('comment/thread');
-                    $tpl->SetVariable(
-                        'thread',
-                        $this->ShowComments(
-                            $id,
-                            $fast_url,
-                            $c['id'],
-                            $level + 1,
-                            $thread,
-                            $reply_link,
-                            $c['childs']
-                        )
-                    );
-                    $tpl->ParseBlock('comment/thread');
-                }
                 $tpl->ParseBlock('comment');
             }
         }
@@ -140,11 +123,9 @@ class Blog_Actions_Comments extends Blog_HTML
             $tpl->SetVariable('name',  $comment['name']);
             $tpl->SetVariable('email', $comment['email']);
             $tpl->SetVariable('url',   $comment['url']);
-            $tpl->SetVariable('title', $comment['title']);
             $tpl->SetVariable('ip_address', '127.0.0.1');
             $tpl->SetVariable('status_message', '&nbsp;');
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
-            $tpl->SetVariable('replies', $comment['replies']);
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
             $commentsText = $this->gadget->ParseText($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
@@ -375,7 +356,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $request =& Jaws_Request::getInstance();
         $names = array(
             'name', 'email', 'url', 'comments', 'createtime',
-            'ip_address', 'parent_id', 'parent', 'url2'
+            'ip_address', 'parent_id', 'url2'
         );
         $post = $request->get($names, 'post');
         $id  = (int)$post['parent_id'];
@@ -432,9 +413,9 @@ class Blog_Actions_Comments extends Blog_HTML
             Jaws_Header::Location($url, true);
         }
 
-        $result = $model->NewComment($post['name'], $post['url'],
-                           $post['email'], $post['comments'], $post['parent'],
-                           $post['parent_id']);
+        $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
+                                     $post['parent_id']);
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'Blog');
         } else {

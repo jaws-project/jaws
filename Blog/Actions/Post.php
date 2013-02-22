@@ -136,10 +136,6 @@ class Blog_Actions_Post extends Blog_HTML
                             $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
                         }
                         $title  = $entry['title'];
-                        $comment = $model->GetComment($reply_to_comment);
-                        if (!Jaws_Error::IsError($comment)) {
-                            $title  = $comment['title'];
-                        }
                         $tpl->SetVariable(
                             'comment-form',
                             $commentsHTML->DisplayCommentForm(

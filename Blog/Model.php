@@ -295,7 +295,6 @@ class Blog_Model extends Jaws_Gadget_Model
                 $summary['Comments'][] = array(
                     'id'         => $r['id'],
                     'name'       => $r['name'],
-                    'parent'     => $r['parent'],
                     'createtime' => $r['createtime']
                 );
             }
@@ -580,13 +579,12 @@ class Blog_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id         ID of the comment
-     * @param   int     $parent     ID of the parent comment
      * @return  mixed   Returns a list of comments and Jaws_Error on error
      */
-    function GetComments($id, $parent)
+    function GetComments($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $id, $parent, true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, $id, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -611,9 +609,6 @@ class Blog_Model extends Jaws_Gadget_Model
             $comments[$k]['avatar_source'] = Jaws_Gravatar::GetGravatar($v['email']);
             $comments[$k]['createtime']    = $v['createtime'];
             $comments[$k]['num'] = $prenum.$num;
-            if (count($comments[$k]['childs']) > 0) {
-                $this->_AdditionalCommentsData($comments[$k]['childs'], $prenum.$num . '.');
-            }
         }
     }
 
@@ -798,20 +793,15 @@ class Blog_Model extends Jaws_Gadget_Model
      * @param   string  $url        Url of the author
      * @param   string  $email      Email of the author
      * @param   string  $comments   Text of the comment
-     * @param   int     $parent     ID of the parent comment
      * @param   int     $parentId   ID of the entry
      * @param   string  $ip         IP of the author
      * @param   bool    $set_cookie Create a cookie
      * @return  bool    True if comment was added, and Jaws_Error if not.
      */
-    function NewComment($name, $url, $email, $comments, $parent, $parentId, $ip = '', $set_cookie = true)
+    function NewComment($name, $url, $email, $comments, $parentId, $ip = '', $set_cookie = true)
     {
         if (empty($ip)) {
             $ip = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!$parent) {
-            $parent = 0;
         }
 
         $params = array();
@@ -844,7 +834,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $res = $cModel->NewComment(
             $this->gadget->name, $parentId,
             $name, $email, $url, $comments,
-            $ip, $permalink, $parent, $status
+            $ip, $permalink, $status
         );
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), _t('BLOG_NAME'));
@@ -2343,7 +2333,7 @@ class Blog_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Saves an incomming pingback as a Comment
+     * Saves an incoming pingback as a Comment
      *
      * @access  public
      * @param   int     $postID    Post ID
@@ -2376,7 +2366,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $res = $cModel->NewComment(
             $this->gadget->name, $postID, $name, $email, $sourceURI,
-            $title, $content, $ip, $permalink, 0, $status
+            $content, $ip, $permalink, $status
         );
     }
 
