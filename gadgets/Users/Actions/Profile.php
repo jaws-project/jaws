@@ -136,17 +136,18 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         }
 
         $tpl->ParseBlock('profile');
-        return $tpl->Get().$this->Activity($user['id']);
+        return $tpl->Get().$this->Activity($user['id'], $user['username']);
     }
 
     /**
-     * Returns the user activity results
+     * Builds user's activity page
      *
      * @access  public
-     * @param   int     $uid    User id
-     * @return  array   User activity results
+     * @param   int     $uid    User's ID
+     * @param   int     $uname  User's name
+     * @return  string  XHTML template content
      */
-    function Activity($uid)
+    function Activity($uid, $uname)
     {
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Profile.html');
@@ -167,7 +168,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
                 continue;
             }
 
-            $activities = $gHook->Hook($uid);
+            $activities = $gHook->Hook($uid, $uname);
             if (Jaws_Error::IsError($activities) || empty($activities)) {
                 continue;
             }
