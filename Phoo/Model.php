@@ -1054,13 +1054,12 @@ class Phoo_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id     ID of the comment
-     * @param   int     $parent ID of the parent comment
      * @return  mixed   A list of comments and Jaws_Error on error
      */
-    function GetComments($id, $parent)
+    function GetComments($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $id, $parent, true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, $id, true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1081,9 +1080,6 @@ class Phoo_Model extends Jaws_Gadget_Model
         foreach ($comments as $k => $v) {
             $comments[$k]['avatar_source'] = Jaws_Gravatar::GetGravatar($v['email']);
             $comments[$k]['createtime']    = $v['createtime'];
-            if (count($comments[$k]['childs']) > 0) {
-                $this->_AdditionalCommentsData($comments[$k]['childs']);
-            }
         }
     }
 
@@ -1222,14 +1218,13 @@ class Phoo_Model extends Jaws_Gadget_Model
      * @param   string  $url          Url of the author
      * @param   string  $email        Email of the author
      * @param   string  $comments     Text of the comment
-     * @param   int     $parent       ID of the parent comment
      * @param   int     $parent_entry ID of the entry
      * @param   string  $permalink    Permalink of the image
      * @param   string  $ip           IP of the author
      * @param   bool    $set_cookie   Create a cookie
      * @return  mixed   True if comment was added, and Jaws_Error if not.
      */
-    function NewComment($name, $url, $email, $comments, $parent, $parent_entry, $permalink, $ip = '', $set_cookie = true)
+    function NewComment($name, $url, $email, $comments, $parent_entry, $permalink, $ip = '', $set_cookie = true)
     {
         $params = array();
         $params['parent_id'] = $parent_entry;
@@ -1250,10 +1245,6 @@ class Phoo_Model extends Jaws_Gadget_Model
             $ip = $_SERVER['REMOTE_ADDR'];
         }
 
-        if (!$parent) {
-            $parent = 0;
-        }
-
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $status = $this->gadget->GetRegistry('comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Phoo', 'ManageComments')) {
@@ -1263,7 +1254,7 @@ class Phoo_Model extends Jaws_Gadget_Model
         $res = $cModel->NewComment(
             $this->gadget->name, $parent_entry,
             $name, $email, $url, $comments,
-            $ip, $permalink, $parent, $status
+            $ip, $permalink, $status
         );
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));

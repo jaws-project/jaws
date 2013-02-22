@@ -246,7 +246,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                               $allow_comments_config;
 
             if (empty($reply_to_comment)) {
-                $t->SetVariable('comments', $this->ShowComments($image['id'], $albumid, 0, 0, 1, 1));
+                $t->SetVariable('comments', $this->ShowComments($image['id'], $albumid, 1));
                 if ($allow_comments) {
                     if ($preview_mode) {
                         $t->SetVariable('preview', $this->ShowPreview());
@@ -265,9 +265,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     }
                     $title  = $image['name'];
                     $comment = $model->GetComment($reply_to_comment);
-                    if (!Jaws_Error::IsError($comment)) {
-                        $title  = $comment['title'];
-                    }
                     $t->SetVariable('comment-form', $this->DisplayCommentForm($image['id'], $albumid, $reply_to_comment, _t('GLOBAL_RE'). $title));
                 } elseif ($restricted) {
                     $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
@@ -473,20 +470,17 @@ class Phoo_HTML extends Jaws_Gadget_HTML
      * @access  public
      * @param   int     $id             image id
      * @param   int     $albumid        album id
-     * @param   int     $parent         parent comment id
-     * @param   int     $level          deep level on thread
-     * @param   int     $thread         1 to show full thread
      * @param   int     $reply_link     1 to show reply-to link
      * @param   array   $data           Array with comments data if null it's loaded from model.
      * @return  string  XHTML template content
      */
-    function ShowComments($id, $albumid, $parent, $level, $thread, $reply_link, $data = null)
+    function ShowComments($id, $albumid, $reply_link, $data = null)
     {
         $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('Comment.html');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         if (is_null($data)) {
-            $comments = $model->GetComments($id, null);
+            $comments = $model->GetComments($id);
         } else {
             $comments = $data;
         }
@@ -513,7 +507,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('url', $c['url']);
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('replies', $c['replies']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
@@ -530,7 +523,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 } else {
                     $tpl->SetVariable('status_message', '&nbsp;');
                 }
-                $tpl->SetVariable('level', $level);
                 if ($reply_link === 1) {
                     $tpl->SetBlock('comment/reply-link');
                     $tpl->SetVariablesArray($c);
@@ -543,11 +535,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('comment/reply-link');
                 }
 
-                if (count($c['childs']) > 0) {
-                    $tpl->SetBlock('comment/thread');
-                    $tpl->SetVariable('thread', $this->ShowComments($id, $albumid, $c['id'], $level + 1, $thread, $reply_link, $c['childs']));
-                    $tpl->ParseBlock('comment/thread');
-                }
                 $tpl->ParseBlock('comment');
             }
         }
@@ -577,11 +564,9 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('name',  $comment['name']);
             $tpl->SetVariable('email', $comment['email']);
             $tpl->SetVariable('url',   $comment['url']);
-            $tpl->SetVariable('title', $comment['title']);
             $tpl->SetVariable('ip_address', '127.0.0.1');
             $tpl->SetVariable('status_message', '&nbsp;');
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
-            $tpl->SetVariable('replies', $comment['replies']);
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
             $commentsText = $this->gadget->ParseText($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
@@ -793,7 +778,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('status_message', '&nbsp;');
         $tpl->SetVariable('ip_address', $post['ip_address']);
         $tpl->SetVariable('avatar_source', 'images/unknown.png');
-        $tpl->SetVariable('replies', '0');
         $tpl->SetVariable('commentname', 'comment_preview');
 
         $tpl->ParseBlock('comment');
@@ -811,7 +795,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $names = array(
             'name', 'email', 'url', 'comments', 'createtime',
-            'ip_address', 'parent_id', 'parent', 'url2', 'albumid',
+            'ip_address', 'parent_id', 'url2', 'albumid',
         );
         $post = $request->get($names, 'post');
         $post['parent_id'] = (int)$post['parent_id'];
@@ -826,7 +810,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Phoo');
+            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
             Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
         }
 
@@ -860,7 +844,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         }
 
         $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
-                                     $post['parent'], $post['parent_id'], $url);
+                                     $post['parent_id'], $url);
         if (Jaws_Error::isError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'Phoo');
         } else {
