@@ -92,18 +92,13 @@ class Comments_Model extends Jaws_Gadget_Model
      * @param   string  $message   Author's message
      * @param   string  $ip        Author's IP
      * @param   string  $permalink Permanent link to resource
-     * @param   int     $parent    Parent message
-     * @param   int $status
+     * @param   int     $status
      * @return  int     Comment id or Jaws_Error on any error
      * @access  public
      */
     function NewComment($gadget, $gadgetId, $name, $email, $url,
-                        $message, $ip, $permalink, $parent = null, $status = COMMENT_STATUS_APPROVED)
+                        $message, $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
     {
-        if (!$parent) {
-            $parent = 0;
-        }
-
         if (!in_array($status, array(COMMENT_STATUS_APPROVED, COMMENT_STATUS_WAITING, COMMENT_STATUS_SPAM))) {
             $status = COMMENT_STATUS_SPAM;
         }
@@ -128,15 +123,14 @@ class Comments_Model extends Jaws_Gadget_Model
 
         $sql = '
             INSERT INTO [[comments]]
-               ([parent], [gadget_reference], [gadget], [name], [email], [url],
+               ( [gadget_reference], [gadget], [name], [email], [url],
                [ip], [msg_txt], [status], [msg_key], [createtime])
             VALUES
-               ({parent}, {gadgetId}, {gadget}, {name}, {email}, {url},
+               ( {gadgetId}, {gadget}, {name}, {email}, {url},
                {ip}, {msg_txt}, {status}, {msg_key}, {now})';
 
         $params = array();
         $params['gadgetId'] = $gadgetId;
-        $params['parent']   = $parent;
         $params['gadget']   = $gadget;
         $params['name']     = $name;
         $params['email']    = $email;
@@ -150,23 +144,6 @@ class Comments_Model extends Jaws_Gadget_Model
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('COMMENTS_NAME'));
-        }
-
-        if ($status == COMMENT_STATUS_APPROVED) {
-            $sql = '
-                UPDATE [[comments]] SET
-                    [replies] = [replies] + 1
-                WHERE
-                    [gadget_reference] = {gadgetId}
-                AND
-                    [id] = {parent}
-                AND
-                    [gadget] = {gadget}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('COMMENTS_NAME'));
-            }
         }
 
         $lastId = $this->GetLastCommentID($params['now'], $params['msg_key']);
@@ -193,14 +170,12 @@ class Comments_Model extends Jaws_Gadget_Model
                 [id],
                 [gadget_reference],
                 [gadget],
-                [parent],
                 [name],
                 [email],
                 [url],
                 [ip],
                 [msg_txt],
                 [status],
-                [replies],
                 [createtime]
             FROM [[comments]]
             WHERE
@@ -222,7 +197,6 @@ class Comments_Model extends Jaws_Gadget_Model
      *                            photo in Phoo, etc. This needs to be a reference
      *                            to find the comments releated to a specific record
      *                            in a gadget.
-     * @param   int    $parent   Parent message, if null get all comments (threaded) of the given $gadgetId
      * @param   bool   $getApproved    If true get comments that are approved (optional, default true);
      * @param   bool   $getWaiting     If true get comments that are waiting for moderation (optional, default false);
      * @param   bool   $getSpam    If true get comments that are marked as spam (optional, default false);
@@ -230,35 +204,30 @@ class Comments_Model extends Jaws_Gadget_Model
      * @return  array  Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
-    function GetComments($gadget, $gadgetId, $parent, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
+    function GetComments($gadget, $gadgetId, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
     {
         if (!$getApproved && !$getWaiting && !$getSpam) return array();
 
         $params = array();
         $params['gadgetId'] = $gadgetId;
         $params['gadget']   = $gadget;
-        $params['parent']   = $parent;
 
         $sql = '
             SELECT
                 [id],
                 [gadget_reference],
                 [gadget],
-                [parent],
                 [name],
                 [email],
                 [url],
                 [ip],
                 [msg_txt],
                 [status],
-                [replies],
                 [createtime]
             FROM [[comments]]
             WHERE
                 [gadget_reference] = {gadgetId}';
-        if (!is_null($parent)) {
-            $sql .= ' AND [parent] = {parent} ';
-        }
+
         $sql .= ' AND [gadget] = {gadget} AND (';
         if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
         if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
@@ -279,14 +248,14 @@ class Comments_Model extends Jaws_Gadget_Model
         }
 
 
-        if ((count($result) > 0) && (is_null($parent))) {
-            $auxdata = array();
-            foreach ($result as $r) {
-                $auxdata[$r['parent']][] = $r;
-            }
+//        if ((count($result) > 0) && (is_null($parent))) {
+//            $auxdata = array();
+//            foreach ($result as $r) {
+//                $auxdata[$r['parent']][] = $r;
+//            }
 
-            $result = $this->_CreateCommentsThread($auxdata[0], $auxdata);
-        }
+//            $result = $this->_CreateCommentsThread($auxdata[0], $auxdata);
+//        }
 
         return $result;
     }
@@ -312,13 +281,11 @@ class Comments_Model extends Jaws_Gadget_Model
                 [id],
                 [gadget_reference],
                 [gadget],
-                [parent],
                 [name],
                 [email],
                 [url],
                 [ip],
                 [msg_txt],
-                [replies],
                 [status],
                 [createtime]
             FROM [[comments]]';

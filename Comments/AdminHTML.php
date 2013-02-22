@@ -74,7 +74,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $gadgetsCombo->AddOption('', '');
         // TODO: Get List Of Gadget Which Use Comments
         $gadgetsCombo->AddOption('Blog', 'Blog');
-        $gadgetsCombo->AddOption('Phoo', 'Photo Organizer');
+        $gadgetsCombo->AddOption('Phoo', 'Phoo');
         $gadgetsCombo->AddOption('Shoutbox', 'Shoutbox');
         $gadgetsCombo->SetDefault('');
         $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
@@ -255,6 +255,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
             $newRow['name']    = $row['name'];
+
+            if (!empty($editAction)) {
+                $url = str_replace('{id}', $row['id'], $editAction);
+            }
 
             $newRow['created'] = $date->Format($row['createtime']);
             if($row['status']==1) {
