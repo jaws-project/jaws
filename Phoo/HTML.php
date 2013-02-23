@@ -490,7 +490,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             foreach ($comments as $c) {
                 $tpl->SetBlock('comment');
                 $tpl->SetVariable('id', $c['id']);
-                $tpl->SetVariable('parent_id', $c['gadget_reference']);
+                $tpl->SetVariable('parent_id', $c['reference']);
                 $tpl->SetVariable('name', $c['name']);
                 $email = $c['email'];
 
@@ -528,7 +528,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $tpl->SetVariablesArray($c);
                     $tpl->SetVariable('reply-link', '<a href="'.
                                       $this->gadget->GetURLFor('Reply', array('id' => $c['id'],
-                                                                      'photoid' => $c['gadget_reference'],
+                                                                      'photoid' => $c['reference'],
                                                                       'albumid' => $albumid)).'">'.
                                       _t('PHOO_REPLY').'</a>');
 
@@ -560,7 +560,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $date = $GLOBALS['app']->loadDate();
             $tpl->SetBlock('comment');
             $tpl->SetVariable('id', $comment['id']);
-            $tpl->SetVariable('parent_id', $comment['gadget_reference']);
+            $tpl->SetVariable('parent_id', $comment['reference']);
             $tpl->SetVariable('name',  $comment['name']);
             $tpl->SetVariable('email', $comment['email']);
             $tpl->SetVariable('url',   $comment['url']);

@@ -620,11 +620,11 @@ class Phoo_AdminModel extends Phoo_Model
 
         if ($comment['status'] == COMMENT_STATUS_APPROVED) {
             $params = array();
-            $params['id'] = $comment['gadget_reference'];
+            $params['id'] = $comment['reference'];
             $howmany = $cModel->HowManyFilteredComments(
                 $this->gadget->name,
-                'gadget_reference',
-                $comment['gadget_reference'],
+                'reference',
+                $comment['reference'],
                 'approved'
             );
             if (!Jaws_Error::IsError($howmany)) {
@@ -661,11 +661,11 @@ class Phoo_AdminModel extends Phoo_Model
         foreach ($ids as $id) {
             $comment = $cModel->GetComment($id, $this->gadget->name);
             $params = array();
-            $params['id'] = $comment['gadget_reference'];
+            $params['id'] = $comment['reference'];
             $howmany = $cModel->HowManyFilteredComments(
                 $this->gadget->name,
-                'gadget_reference',
-                $comment['gadget_reference'],
+                'reference',
+                $comment['reference'],
                 'approved'
             );
             if (!Jaws_Error::IsError($howmany)) {

@@ -1270,7 +1270,7 @@ class Phoo_Model extends Jaws_Gadget_Model
             $params['id'] = $id;
             $howmany = $cModel->HowManyFilteredComments(
                 $this->gadget->name,
-                'gadget_reference',
+                'reference',
                 $id,
                 'approved'
             );

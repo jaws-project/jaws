@@ -113,9 +113,9 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($comments)) {
             foreach ($comments as $c) {
                 $tpl->SetBlock('recent_comments/item');
-                $albumid = $model->GetImageALbum($c['gadget_reference']);
+                $albumid = $model->GetImageALbum($c['reference']);
                 $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage',
-                                            array('id' => $c['gadget_reference'], 'albumid' => $albumid));
+                                            array('id' => $c['reference'], 'albumid' => $albumid));
                 $tpl->SetVariable('on', _t('GLOBAL_ON'));
                 $tpl->SetVariablesArray($c);
                 $tpl->SetVariable('url', $url . '#comment'.$c['id']);

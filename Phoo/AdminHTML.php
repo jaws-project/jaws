@@ -1063,7 +1063,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
-        $permalink = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $comment['gadget_reference'], 'albumid' => 0));
+        $permalink = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $comment['reference'], 'albumid' => 0));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveEditComment'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'permalink', $permalink));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'status', $comment['status']));
