@@ -56,7 +56,7 @@ class SysInfo_Model extends Jaws_Gadget_Model
      * @param   string  $path   Diretory path
      * @return  string  Full permissions of directory
      */
-    function GetPermission($path)
+    function GetFSPermission($path)
     {
         $path = JAWS_PATH . $path;
         $perms = @decoct(@fileperms($path) & 0777);
@@ -269,29 +269,29 @@ class SysInfo_Model extends Jaws_Gadget_Model
     {
         return array(
                     array('title' => '/',
-                          'value' => $this->gadget->GetPermission('')),
+                          'value' => $this->GetFSPermission('')),
                     array('title' => '/config',
-                          'value' => $this->gadget->GetPermission('config')),
+                          'value' => $this->GetFSPermission('config')),
                     array('title' => '/data',
-                          'value' => $this->gadget->GetPermission('data')),
+                          'value' => $this->GetFSPermission('data')),
                     array('title' => '/data/themes',
-                          'value' => $this->gadget->GetPermission('data/themes')),
+                          'value' => $this->GetFSPermission('data/themes')),
                     array('title' => '/gadgets',
-                          'value' => $this->gadget->GetPermission('gadgets')),
+                          'value' => $this->GetFSPermission('gadgets')),
                     array('title' => '/images',
-                          'value' => $this->gadget->GetPermission('images')),
+                          'value' => $this->GetFSPermission('images')),
                     array('title' => '/include',
-                          'value' => $this->gadget->GetPermission('include')),
+                          'value' => $this->GetFSPermission('include')),
                     array('title' => '/install',
-                          'value' => $this->gadget->GetPermission('install')),
+                          'value' => $this->GetFSPermission('install')),
                     array('title' => '/languages',
-                          'value' => $this->gadget->GetPermission('languages')),
+                          'value' => $this->GetFSPermission('languages')),
                     array('title' => '/libraries',
-                          'value' => $this->gadget->GetPermission('libraries')),
+                          'value' => $this->GetFSPermission('libraries')),
                     array('title' => '/plugins',
-                          'value' => $this->gadget->GetPermission('plugins')),
+                          'value' => $this->GetFSPermission('plugins')),
                     array('title' => '/upgrade',
-                          'value' => $this->gadget->GetPermission('upgrade')),
+                          'value' => $this->GetFSPermission('upgrade')),
                 );
     }
 
