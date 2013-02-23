@@ -108,7 +108,7 @@ class Comments_AdminModel extends Comments_Model
         $params['gadget']   = $gadget;
         $sql = "DELETE FROM [[comments]]
                 WHERE
-                    [gadget_reference] = {id}
+                    [reference] = {id}
                 AND
                     [gadget] = {gadget}";
         $result = $GLOBALS['db']->query($sql, $params);
@@ -145,7 +145,7 @@ class Comments_AdminModel extends Comments_Model
             // Submit spam...
             $sql =
                 "SELECT
-                    [id], [gadget_reference], [gadget], [name], [email], [url], [ip],
+                    [id], [reference], [gadget], [name], [email], [url], [ip],
                     [msg_txt], [status], [createtime]
                 FROM [[comments]]
                 WHERE [id] IN (" . $list . ")";
@@ -205,7 +205,7 @@ class Comments_AdminModel extends Comments_Model
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
-            'id', 'gadget_reference', 'gadget', 'name','email','url',
+            'id', 'reference', 'gadget', 'name','email','url',
             'ip', 'msg_txt', 'status', 'createtime'
         );
 
@@ -220,7 +220,7 @@ class Comments_AdminModel extends Comments_Model
         if (!empty($filterData)) {
             switch ($filterMode) {
                 case COMMENT_FILTERBY_REFERENCE:
-                    $commentsTable->and()->where('gadget_reference', $filterData);
+                    $commentsTable->and()->where('reference', $filterData);
                     break;
                 case COMMENT_FILTERBY_NAME:
                     $commentsTable->and()->where('name', '%'.$filterData.'%', 'like');
@@ -238,7 +238,7 @@ class Comments_AdminModel extends Comments_Model
                     $commentsTable->and()->where('msg_txt', '%'.$filterData.'%', 'like');
                     break;
                 case COMMENT_FILTERBY_VARIOUS:
-                    $commentsTable->and()->openWhere('gadget_reference', $filterData);
+                    $commentsTable->and()->openWhere('reference', $filterData);
                     $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');

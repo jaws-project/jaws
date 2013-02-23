@@ -1,6 +1,6 @@
 <?php
 /* Filter modes */
-define('COMMENT_FILTERBY_REFERENCE', 'gadget_reference');
+define('COMMENT_FILTERBY_REFERENCE', 'reference');
 define('COMMENT_FILTERBY_NAME',      'name');
 define('COMMENT_FILTERBY_EMAIL',     'email');
 define('COMMENT_FILTERBY_URL',       'url');
@@ -123,7 +123,7 @@ class Comments_Model extends Jaws_Gadget_Model
 
         $sql = '
             INSERT INTO [[comments]]
-               ( [gadget_reference], [gadget], [name], [email], [url],
+               ( [reference], [gadget], [name], [email], [url],
                [ip], [msg_txt], [status], [msg_key], [createtime])
             VALUES
                ( {gadgetId}, {gadget}, {name}, {email}, {url},
@@ -168,7 +168,7 @@ class Comments_Model extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [id],
-                [gadget_reference],
+                [reference],
                 [gadget],
                 [name],
                 [email],
@@ -215,7 +215,7 @@ class Comments_Model extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [id],
-                [gadget_reference],
+                [reference],
                 [gadget],
                 [name],
                 [email],
@@ -226,7 +226,7 @@ class Comments_Model extends Jaws_Gadget_Model
                 [createtime]
             FROM [[comments]]
             WHERE
-                [gadget_reference] = {gadgetId}';
+                [reference] = {gadgetId}';
 
         $sql .= ' AND [gadget] = {gadget} AND (';
         if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
@@ -269,7 +269,7 @@ class Comments_Model extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [id],
-                [gadget_reference],
+                [reference],
                 [gadget],
                 [name],
                 [email],
@@ -370,7 +370,7 @@ class Comments_Model extends Jaws_Gadget_Model
         if (!empty($filterData)) {
             switch ($filterMode) {
                 case COMMENT_FILTERBY_REFERENCE:
-                    $commentsTable->and()->where('gadget_reference', $filterData);
+                    $commentsTable->and()->where('reference', $filterData);
                     break;
                 case COMMENT_FILTERBY_NAME:
                     $commentsTable->and()->where('name', '%'.$filterData.'%', 'like');
@@ -388,7 +388,7 @@ class Comments_Model extends Jaws_Gadget_Model
                     $commentsTable->and()->where('msg_txt', '%'.$filterData.'%', 'like');
                     break;
                 case COMMENT_FILTERBY_VARIOUS:
-                    $commentsTable->and()->openWhere('gadget_reference', $filterData);
+                    $commentsTable->and()->openWhere('reference', $filterData);
                     $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
                     $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');

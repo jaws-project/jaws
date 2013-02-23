@@ -21,7 +21,13 @@
             </field>
 
             <field>
-                <name>gadget_reference</name>
+                <name>reference</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>action</name>
                 <type>integer</type>
                 <default>0</default>
             </field>
@@ -98,7 +104,7 @@
             <index>
                 <name><variable>table_prefix</variable>comments_gr</name>
                 <field>
-                    <name>gadget_reference</name>
+                    <name>reference</name>
                 </field>
             </index>
 
