@@ -42,7 +42,7 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetBlock('comment');
                 $tpl->SetVariable('id', $c['id']);
                 $tpl->SetVariable('num', $c['num']);
-                $tpl->SetVariable('parent_id', $c['gadget_reference']);
+                $tpl->SetVariable('parent_id', $c['reference']);
                 $tpl->SetVariable('name', $c['name']);
                 $email =$c['email'];
 
@@ -85,9 +85,9 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetBlock('comment/reply-link');
                 $tpl->SetVariablesArray($c);
                 if ($reply_link) {
-                    $c['gadget_reference'] = empty($fast_url) ? $c['gadget_reference'] : $fast_url;
+                    $c['reference'] = empty($fast_url) ? $c['reference'] : $fast_url;
                     $tpl->SetVariable('reply-link', '<a href="'.
-                                                    $this->gadget->GetURLFor('Reply', array('id' => $c['gadget_reference'],
+                                                    $this->gadget->GetURLFor('Reply', array('id' => $c['reference'],
                                                                                     'comment_id' => $c['id'], )).'">'.
                                                     _t('BLOG_REPLY').'</a>');
                 } else {
@@ -119,7 +119,7 @@ class Blog_Actions_Comments extends Blog_HTML
             $date = $GLOBALS['app']->loadDate();
             $tpl->SetBlock('comment');
             $tpl->SetVariable('id', $comment['id']);
-            $tpl->SetVariable('parent_id', $comment['gadget_reference']);
+            $tpl->SetVariable('parent_id', $comment['reference']);
             $tpl->SetVariable('name',  $comment['name']);
             $tpl->SetVariable('email', $comment['email']);
             $tpl->SetVariable('url',   $comment['url']);

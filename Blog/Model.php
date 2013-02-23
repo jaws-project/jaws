@@ -632,10 +632,10 @@ class Blog_Model extends Jaws_Gadget_Model
         $i = 0;
         foreach ($comments as $comment) {
             $newComments[$i] = $comment;
-            $blogEntry = $this->GetEntry($comment['gadget_reference']);
+            $blogEntry = $this->GetEntry($comment['reference']);
             if (!Jaws_Error::IsError($blogEntry)) {
                 $newComments[$i]['blog_title'] = $blogEntry['title'];
-                $newComments[$i]['entry_id']   = $comment['gadget_reference'];
+                $newComments[$i]['entry_id']   = $comment['reference'];
                 $newComments[$i]['comment_id'] = $comment['id'];
             }
             $i++;
@@ -850,7 +850,7 @@ class Blog_Model extends Jaws_Gadget_Model
             $params['id'] = $id;
             $howmany = $cModel->HowManyFilteredComments(
                 $this->gadget->name,
-                'gadget_reference',
+                'reference',
                 $id,
                 'approved'
             );
@@ -1456,7 +1456,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $objDate = $GLOBALS['app']->loadDate();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
         foreach ($comments as $c) {
-            $entry_id = $c['gadget_reference'];
+            $entry_id = $c['reference'];
             $entry = new AtomEntry();
             $entry->SetTitle($c['title']);
 
@@ -1562,7 +1562,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $objDate = $GLOBALS['app']->loadDate();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
         foreach ($comments as $c) {
-            $entry_id = $c['gadget_reference'];
+            $entry_id = $c['reference'];
             $entry = new AtomEntry();
             $entry->SetTitle($c['title']);
 

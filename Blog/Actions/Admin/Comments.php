@@ -132,7 +132,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
 
         // Fetch the entry
         ///FIXME we need to either create a query for this or make getEntry only fetch the title, this is a overkill atm
-        $entry = $model->getEntry($comment['gadget_reference']);
+        $entry = $model->getEntry($comment['reference']);
         if (Jaws_Error::IsError($entry)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
         }
@@ -151,7 +151,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Blog'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveEditComment'));
-        $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $comment['gadget_reference']));
+        $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $comment['reference']));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'permalink', $permalink));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'status', $comment['status']));
 
