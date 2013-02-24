@@ -102,14 +102,14 @@ function unselectDataGridRow()
  */
 function stopAction() 
 {
-    $('id').value      = 0;
-    $('gadget').value  = '';
+    $('id').value                      = 0;
+    $('gadget').value                  = '';
     $('comment_ip').set('html', '');
-    $('name').value    = '';
-    $('email').value   = '';
-    $('url').value     = '';
-    $('message').value = '';
-    $('status').value  = '';
+    $('name').value                    = '';
+    $('email').value                   = '';
+    $('url').value                     = '';
+    $('message').value                 = '';
+    $('comment_status').selectedIndex  = 0;
     $('btn_save').style.visibility   = 'hidden';
     $('btn_cancel').style.visibility = 'hidden';
     unselectDataGridRow();
@@ -124,14 +124,15 @@ function editComment(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
-    $('id').value      = comment['id'];
-    $('gadget').value  = comment['gadget'];
+    console.log(comment);
+    $('id').value               = comment['id'];
+    $('gadget').value           = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);
-    $('name').value    = comment['name'];
-    $('email').value   = comment['email'];
-    $('url').value     = comment['url'];
-    $('message').value = comment['msg_txt'].defilter();
-    $('status').value  = comment['status'];
+    $('name').value             = comment['name'];
+    $('email').value            = comment['email'];
+    $('url').value              = comment['url'];
+    $('message').value          = comment['msg_txt'].defilter();
+    $('comment_status').value   = comment['status'];
     $('btn_save').style.visibility   = 'visible';
     $('btn_cancel').style.visibility = 'visible';
 }
@@ -148,7 +149,7 @@ function updateComment()
                     $('email').value,
                     $('url').value,
                     $('message').value,
-                    $('status').value);
+                    $('comment_status').value);
 }
 
 /**

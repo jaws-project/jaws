@@ -176,7 +176,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('url', $nameEntry->Get());
 
         //Status
-        $status =& Piwi::CreateWidget('Combo', 'status');
+        $status =& Piwi::CreateWidget('Combo', 'comment_status');
         $status->AddOption('&nbsp;','various');
         $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
         $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
