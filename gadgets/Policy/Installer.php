@@ -45,7 +45,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
             'passwd_max_age' => '0',              // per day  0 = resistant
             'passwd_min_length' => '0',
             'passwd_complexity' => 'no',
-            'login_captcha' => 'ENABLED',
+            'login_captcha' => '1',
             'login_captcha_driver' => 'MathCaptcha',
             'xss_parsing_level' => 'paranoid',
             'session_idle_timeout' => '30',       // per minute
@@ -68,7 +68,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '0.3.0', '<')) {
             $this->gadget->AddRegistry('default_captcha', $this->gadget->GetRegistry('captcha'));
             $this->gadget->AddRegistry('default_captcha_driver', $this->gadget->GetRegistry('captcha_driver'));
-            $this->gadget->AddRegistry('login_captcha', 'ENABLED');
+            $this->gadget->AddRegistry('login_captcha', '1');
             $this->gadget->AddRegistry('login_captcha_driver', 'MathCaptcha');
             $this->gadget->DelRegistry('captcha');
             $this->gadget->DelRegistry('captcha_driver');
