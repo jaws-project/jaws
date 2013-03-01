@@ -155,13 +155,14 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
      * @param   int     $group      Group ID
      * @param   mixed   $status     Status of the page(s) (1/0 or Y/N)
      * @param   string  $search     Keywords(title/description) of the pages we are looking for
+     * @param   int     $orderBy    Order by
      * @param   int     $limit      Data limit
      * @return  array   Grid data
      */
-    function GetPages($group, $status, $search, $limit)
+    function GetPages($group, $status, $search, $orderBy, $limit)
     {
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
-        $pages = $model->SearchPages($group, $status, $search, $limit);
+        $pages = $model->SearchPages($group, $status, $search, $orderBy, $limit);
         if (Jaws_Error::IsError($pages)) {
             return array();
         }
@@ -252,7 +253,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $deleteAll =& Piwi::CreateWidget('Button', 'deleteAllPages',
                                          _t('GLOBAL_DELETE'),
                                          STOCK_DELETE);
-        $deleteAll->AddEvent(ON_CLICK, "javascript: massiveDelete();");
+        $deleteAll->AddEvent(ON_CLICK, "javascript:massiveDelete();");
         $toolBar->Add($deleteAll);
 
         $tpl->SetVariable('tools', $toolBar->Get());
@@ -269,7 +270,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
             $languageCombo->AddOption($langName, $langCode);
         }
         $languageCombo->SetDefault($language);
-        $languageCombo->AddEvent(ON_CHANGE, 'javascript: searchPage();');
+        $languageCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
         $tpl->SetVariable('language', _t('STATICPAGE_PAGE_LANGUAGE'));
         $tpl->SetVariable('language_field', $languageCombo->Get());
 
@@ -293,13 +294,28 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $statusCombo->AddOption(_t('STATICPAGE_PUBLISHED'), '1');
         $statusCombo->AddOption(_t('STATICPAGE_DRAFT'), '0');
         $statusCombo->SetDefault($status);
-        $statusCombo->AddEvent(ON_CHANGE, 'javascript: searchPage();');
+        $statusCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
         $tpl->SetVariable('status', _t('STATICPAGE_STATUS'));
         $tpl->SetVariable('status_field', $statusCombo->Get());
 
+        //Order by filter
+        $status = '';
+        $orderCombo =& Piwi::CreateWidget('Combo', 'orderby');
+        $orderCombo->setId('orderby');
+        $orderCombo->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', 0);
+        $orderCombo->AddOption(_t('GLOBAL_CREATETIME'). ' &darr;', 1);
+        $orderCombo->AddOption(_t('GLOBAL_TITLE'). ' &uarr;',      2);
+        $orderCombo->AddOption(_t('GLOBAL_TITLE'). ' &darr;',      3);
+        $orderCombo->AddOption(_t('GLOBAL_UPDATETIME'). ' &uarr;', 4);
+        $orderCombo->AddOption(_t('GLOBAL_UPDATETIME'). ' &darr;', 5);
+        $orderCombo->SetDefault(1);
+        $orderCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
+        $tpl->SetVariable('orderby', _t('STATICPAGE_ORDERBY'));
+        $tpl->SetVariable('orderby_field', $orderCombo->Get());
+
         // Free text search
         $searchButton =& Piwi::CreateWidget('Button', 'searchButton', _t('GLOBAL_SEARCH'), STOCK_SEARCH);
-        $searchButton->AddEvent(ON_CLICK, 'javascript: searchPage();');
+        $searchButton->AddEvent(ON_CLICK, 'javascript:searchPage();');
         $tpl->SetVariable('search', $searchButton->Get());
 
         $search = '';

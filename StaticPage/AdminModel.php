@@ -545,11 +545,23 @@ class StaticPage_AdminModel extends StaticPage_Model
      * @param   int     $group      Group ID
      * @param   mixed   $status     Status of the pages we are looking for (1/0 or Y/N)
      * @param   string  $search     The Keywords we are looking for in title/description of the pages
+     * @param   int     $orderBy    Order by
      * @param   int     $offset     Data limit
      * @return  array   List of pages
      */
-    function SearchPages($group, $status, $search, $offset = null)
+    function SearchPages($group, $status, $search, $orderBy, $offset = null)
     {
+        $orders = array(
+            '[base_id]',
+            '[base_id] DESC',
+            '[title]',
+            '[title] DESC',
+            '[updated]',
+            '[updated] DESC',
+        );
+        $orderBy = (int)$orderBy;
+        $orderBy = $orders[($orderBy > 5)? 1 : $orderBy];
+
         $params = array();
         $params['group'] = (int)$group;
 
@@ -565,8 +577,8 @@ class StaticPage_AdminModel extends StaticPage_Model
 
         $sql = '
             SELECT
-                sp.[page_id], sp.[group_id], spg.[title] as gtitle, spt.[title], sp.[fast_url],
-                sp.[base_language], spt.[published], spt.[updated]
+                spt.[base_id], sp.[page_id], sp.[group_id], spg.[title] as gtitle, spt.[title],
+                sp.[fast_url], sp.[base_language], spt.[published], spt.[updated]
             FROM [[static_pages]] sp
             LEFT JOIN [[static_pages_groups]] spg ON sp.[group_id] = spg.[id]
             LEFT JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]
@@ -603,7 +615,7 @@ class StaticPage_AdminModel extends StaticPage_Model
             }
         }
 
-        $sql.= ' ORDER BY [page_id] ASC';
+        $sql.= " ORDER BY spt.$orderBy";
         $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'boolean', 'timestamp');
         $result = $GLOBALS['db']->queryAll($sql, $params, $types);
         if (Jaws_Error::IsError($result)) {

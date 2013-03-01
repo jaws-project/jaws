@@ -118,17 +118,18 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * @param   int     $group      Group ID
      * @param   mixed   $status     Status of the pages we are looking for (1/0 or Y/N)
      * @param   string  $search     The Keywords we are looking for in title/description of the pages
+     * @param   int     $orderBy    Order by
      * @param   int     $offset     Data limit
      * @return  array   List of pages
      */
-    function SearchPages($group, $status, $search, $limit)
+    function SearchPages($group, $status, $search, $orderBy, $limit)
     {
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
         if (!is_numeric($limit)) {
             $limit = 0;
         }
 
-        return $gadget->GetPages($group, $status, $search, $limit);
+        return $gadget->GetPages($group, $status, $search, $orderBy, $limit);
     }
 
     /**

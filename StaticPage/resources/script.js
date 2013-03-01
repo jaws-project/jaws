@@ -224,6 +224,7 @@ function getPages(name, offset, reset)
         $('group').value,
         $('status').value,
         $('search').value,
+        $('orderby').value,
         offset
     );
     if (reset) {
