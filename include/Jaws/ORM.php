@@ -222,7 +222,7 @@ class Jaws_ORM
     {
         $this->_table = $table;
         $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
-        $this->_table_quoted = $this->quoteIdentifier('['.$this->_tbl_prefix. $table.']');
+        $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
         return $this;
     }
 
@@ -235,24 +235,38 @@ class Jaws_ORM
      */
     function quoteIdentifier($column)
     {
-        if (strpos($column, '.') !== false) {
-            $column = str_replace('.', $this->_identifier_quoting['end'].'.', $column);
-            $pos = strpos($column, '(');
-            if ($pos === false) {
-                $column = $this->_identifier_quoting['start']. $this->_tbl_prefix. $column;
-            } else {
-                $column = substr_replace(
-                    $column,
-                    $this->_identifier_quoting['start']. $this->_tbl_prefix,
-                    $pos + 1,
-                    0
-                );
-            }
+        if (false !== $dotted_column = strpos($column, '.')) {
+            $column = str_replace(
+                '.',
+                $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
+                $column
+            );
         }
 
-        if (strpos($column, '[') !== false) {
-            $column = str_replace('[',  $this->_identifier_quoting['start'], $column);
-            $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
+        if (false !== $open_parenthesis = strpos($column, '(')) {
+            $column = str_replace(
+                '(',
+                '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
+                $column
+            );
+
+            $column = str_replace(
+                ')',
+                $this->_identifier_quoting['end']. ')',
+                $column
+            );
+        } else {
+            $column = $this->_identifier_quoting['start'] . $column;
+            if (false !== $aliased_column = strpos($column, ' as ')) {
+                $column = substr_replace(
+                    $column,
+                    $this->_identifier_quoting['end'],
+                    $aliased_column,
+                    0
+                );
+            } else {
+                $column = $column. $this->_identifier_quoting['end'];
+            }
         }
 
         return $column;
@@ -323,6 +337,8 @@ class Jaws_ORM
             } else {
                 if ($type = trim(strrchr($column, ':'), ':')) {
                     $this->_columns[$key] = $this->quoteIdentifier(substr($column, 0, strrpos($column, ':')));
+                } else {
+                    $this->_columns[$key] = $this->quoteIdentifier($column);
                 }
             }
 
@@ -351,9 +367,9 @@ class Jaws_ORM
     function join($table, $source, $target, $join = 'inner', $opt = '=')
     {
         if (false === strpos($table, ' ')) {
-            $table = $this->quoteIdentifier('['. $this->_tbl_prefix. $table. ']');
+            $table = $this->quoteIdentifier($this->_tbl_prefix. $table);
         } else {
-            $table = $this->quoteIdentifier('['. $this->_tbl_prefix. str_replace(' ', '] ', $table));
+            $table = $this->quoteIdentifier($this->_tbl_prefix. $table);
         }
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
