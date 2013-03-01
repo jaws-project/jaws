@@ -146,13 +146,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     {
         $file = JAWS_PATH . 'gadgets/' . $gadget . '/Map.php';
         if (file_exists($file)) {
-            // Deprecated: use $GLOBALS to fetch maps of old gadgets
             $maps = array();
-            $GLOBALS['maps'] = array();
             include_once $file;
-            if(!empty($GLOBALS['maps'])) {
-                $maps = $GLOBALS['maps'];
-            }
             foreach ($maps as $order => $map) {
                 $vars_regexps = array();
                 $vars_regexps = isset($map[3])? $map[3] : $vars_regexps;
@@ -319,18 +314,12 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['regexp']    = $regexp;
         $params['extension'] = $extension;
         $params['vars_regexps'] = serialize($vars_regexps);
-        $params['order']     = $order;
-        $params['time']      = empty($time)? $GLOBALS['db']->Date() : $time;
+        $params['order']      = $order;
+        $params['createtime'] = empty($time)? $GLOBALS['db']->Date() : $time;
+        $params['updatetime'] = $params['createtime'];
 
-        $sql = '
-            INSERT INTO [[url_maps]]
-                ([gadget], [action], [map], [regexp], [extension], [vars_regexps], [order],
-                 [createtime], [updatetime])
-            VALUES
-                ({gadget}, {action}, {map}, {regexp}, {extension}, {vars_regexps}, {order},
-                 {time}, {time})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $result = $mapsTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('URLMAPPER_ERROR_MAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
         }
