@@ -180,26 +180,22 @@ class StaticPage_Model extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $gid        group ID
      * @param   int     $limit      The number of pages to return (null = all pages)
-     * @param   int     $sortColumn The coulmn which the result must be sorted by
-     * @param   int     $sortDir    Either STATICPAGES_ASC or STATICPAGES_DESC to set the sort direction
+     * @param   int     $orderBy    The coulmn which the result must be sorted by
      * @param   int     $offset     Starting offset
      * @return  array   List of pages
      */
-    function GetPages($gid = null, $limit = null, $sortColumn = 'title', $sortDir = 'ASC', $offset = false)
+    function GetPages($gid = null, $limit = null, $orderBy = 1, $offset = false)
     {
-        $fields     = array('base_id', 'title', 'updated', 'published');
-        $sortColumn = strtolower($sortColumn);
-        if (!in_array($sortColumn, $fields)) {
-            $GLOBALS['log']->Log(JAWS_LOG_WARNING, _t('STATICPAGE_ERROR_UNKNOWN_COLUMN'));
-            $sortColumn = 'title';
-        }
-
-        $sortDir = strtoupper($sortDir);
-        if ($sortDir == 'DESC') {
-            $sortDir = 'DESC';
-        } else {
-            $sortDir = 'ASC';
-        }
+        $orders = array(
+            '[base_id]',
+            '[base_id] DESC',
+            '[title]',
+            '[title] DESC',
+            '[updated]',
+            '[updated] DESC',
+        );
+        $orderBy = (int)$orderBy;
+        $orderBy = $orders[($orderBy > 5)? 1 : $orderBy];
 
         $params = array();
         $params['gid'] = $gid;
@@ -215,7 +211,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
         if (!is_null($gid)) {
             $sql .= " AND sp.[group_id] = {gid}";
         }
-        $sql .= " ORDER BY spt.[$sortColumn] $sortDir";
+        $sql .= " ORDER BY spt.$orderBy";
 
         if (!is_null($limit)) {
             if (is_numeric($offset)) {

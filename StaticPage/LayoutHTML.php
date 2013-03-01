@@ -31,6 +31,18 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
                 'title' => _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
                 'value' => $pgroups
             );
+
+            $result[] = array(
+                'title' => _t('STATICPAGE_LAYOUT_GROUP_PAGES_ORDER'),
+                'value' => array(
+                    0 => _t('GLOBAL_CREATETIME'). ' &uarr;',
+                    1 => _t('GLOBAL_CREATETIME'). ' &darr;',
+                    2 => _t('GLOBAL_TITLE'). ' &uarr;',
+                    3 => _t('GLOBAL_TITLE'). ' &darr;',
+                    4 => _t('GLOBAL_UPDATETIME'). ' &uarr;',
+                    5 => _t('GLOBAL_UPDATETIME'). ' &darr;',
+                )
+            );
         }
 
         return $result;
@@ -107,7 +119,7 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
      * @param   mixed   $gid    ID or fast_url of the group (int/string)
      * @return  string  XHTML content
      */
-    function GroupPages($gid = 0)
+    function GroupPages($gid = 0, $orderBy = 1)
     {
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model');
         $group = $model->GetGroup($gid);
@@ -122,7 +134,7 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
             $gid = $group['id'];
         }
 
-        $pages = $model->GetPages($gid);
+        $pages = $model->GetPages($gid, null, $orderBy);
         if (Jaws_Error::IsError($pages)) {
             return false;
         }

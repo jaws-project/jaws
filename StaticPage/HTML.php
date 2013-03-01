@@ -142,13 +142,13 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
     function GroupPages()
     {
         $request =& Jaws_Request::getInstance();
-        $gid = $request->get('gid', 'get');
+        $get = $request->get(array('gid', 'order'), 'get');
 
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $gid = $xss->defilter($gid, true);
+        $gid = $xss->defilter($get['gid'], true);
 
         $layoutGadget = $GLOBALS['app']->LoadGadget('StaticPage', 'LayoutHTML');
-        $result = $layoutGadget->GroupPages($gid);
+        $result = $layoutGadget->GroupPages($gid, $get['order']);
         if (!$result) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             $result = Jaws_HTTPError::Get(404);
