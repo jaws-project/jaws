@@ -113,7 +113,7 @@ class BBCode extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        $tags = 'media|size|url|img|code|list|color|left|center|justify|right|quote|';
+        $tags = 'media|video|audio|size|url|img|code|list|color|left|center|justify|right|quote|';
         $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
         while (preg_match_all('#\[('.$tags.')(.*?)\](.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
@@ -122,9 +122,10 @@ class BBCode extends Jaws_Plugin
                     $matches[2][$key],
                     $matches[3][$key]
                 );
-                $params = array_filter(array_map('trim', explode(' =', ' '.$params)));
+
+                $params = trim($params, '=');
+                $params = explode(' =', $params);
                 $first  = array_shift($params);
-                $extra  = array_shift($params);
                 switch ($tag) {
                     case 'h':
                         $first = ((int)$first == 0)? 3 : (int)$first;
@@ -196,15 +197,15 @@ class BBCode extends Jaws_Plugin
                         $replacement = "<img src=\"$innertext\" ";
                         $replacement.= is_numeric($width)? "width=\"$width\" " : '';
                         $replacement.= is_numeric($height)? "height=\"$height\" " : '';
-                        $replacement.= !empty($extra)? "alt=\"$extra\" " : '';
+                        $replacement.= !empty($params)? "alt=\"$params[0]\" " : '';
                         $replacement.= '/>';
                         break;
 
                     case 'media':
                         @list($width, $height) = preg_split('#x#i', $first);
                         $mSource = 'youtube';
-                        if (!empty($extra)) {
-                            $mSource = preg_replace('/[^[:alnum:]_-]/', '', $extra);
+                        if (!empty($params)) {
+                            $mSource = preg_replace('/[^[:alnum:]_-]/', '', $params[0]);
                         }
                         $replacement = '';
                         $mSourcePath = JAWS_PATH. "plugins/BBCode/templates/$mSource.html";
@@ -226,6 +227,30 @@ class BBCode extends Jaws_Plugin
                             $tpl->ParseBlock('media');
                             $replacement = $tpl->Get();
                         }
+                        break;
+
+                    case 'video':
+                        @list($width, $height) = preg_split('#x#i', $first);
+                        $size = is_numeric($width)? "width=\"$width\" " : '';
+                        $size.= is_numeric($height)? "height=\"$height\" " : '';
+
+                        $replacement = "<video $size controls>";
+                        $replacement.= "<source src=\"$innertext.ogg\" type=\"video/ogg\">";
+                        $replacement.= "<source src=\"$innertext.webm\" type=\"video/webm\">";
+                        $replacement.= "<source src=\"$innertext.mp4\" type=\"video/mp4\">";
+                        $replacement.= 'Your browser does not support the HTML5 video tag.';
+                        $replacement.= '</video>';
+                        break;
+
+                    case 'audio':
+                        @list($width, $height) = preg_split('#x#i', $first);
+                        $size = is_numeric($width)? "style='width:{$width}px;' " : '';
+
+                        $replacement = "<audio $size". implode(' ', $params).' controls>';
+                        $replacement.= "<source src=\"$innertext.ogg\" type=\"audio/ogg\">";
+                        $replacement.= "<source src=\"$innertext.mp3\" type=\"audio/mpeg\">";
+                        $replacement.= 'Your browser does not support the HTML5 audio tag.';
+                        $replacement.= '</audio>';
                         break;
                 }
 
