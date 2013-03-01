@@ -235,37 +235,50 @@ class Jaws_ORM
      */
     function quoteIdentifier($column)
     {
-        if (false !== $dotted_column = strpos($column, '.')) {
-            $column = str_replace(
-                '.',
-                $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
-                $column
-            );
-        }
-
-        if (false !== $open_parenthesis = strpos($column, '(')) {
-            $column = str_replace(
-                '(',
-                '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
-                $column
-            );
-
-            $column = str_replace(
-                ')',
-                $this->_identifier_quoting['end']. ')',
-                $column
-            );
+        if (strpos($column, '[') !== false) {
+            $column = str_replace('[',  $this->_identifier_quoting['start'], $column);
+            $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
         } else {
-            $column = $this->_identifier_quoting['start'] . $column;
-            if (false !== $aliased_column = strpos($column, ' as ')) {
-                $column = substr_replace(
-                    $column,
-                    $this->_identifier_quoting['end'],
-                    $aliased_column,
-                    0
+            // auto quote identifier if bracket not found
+            if (false !== $dotted_column = strpos($column, '.')) {
+                $column = str_replace(
+                    '.',
+                    $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
+                    $column
+                );
+            }
+
+            if (false !== $open_parenthesis = strpos($column, '(')) {
+                $column = str_replace(
+                    '(',
+                    '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
+                    $column
+                );
+
+                $column = str_replace(
+                    ')',
+                    $this->_identifier_quoting['end']. ')',
+                    $column
                 );
             } else {
-                $column = $column. $this->_identifier_quoting['end'];
+                $column = $this->_identifier_quoting['start'] . trim($column);
+                if (false !== $aliased_column = strpos($column, ' as ')) {
+                    $column = substr_replace(
+                        $column,
+                        $this->_identifier_quoting['end'],
+                        $aliased_column,
+                        0
+                    );
+                } elseif (false !== $spaced_column = strpos($column, ' ')) {
+                    $column = substr_replace(
+                        $column,
+                        $this->_identifier_quoting['end'],
+                        $spaced_column,
+                        0
+                    );
+                } else {
+                    $column = $column. $this->_identifier_quoting['end'];
+                }
             }
         }
 
@@ -366,11 +379,7 @@ class Jaws_ORM
      */
     function join($table, $source, $target, $join = 'inner', $opt = '=')
     {
-        if (false === strpos($table, ' ')) {
-            $table = $this->quoteIdentifier($this->_tbl_prefix. $table);
-        } else {
-            $table = $this->quoteIdentifier($this->_tbl_prefix. $table);
-        }
+        $table  = $this->quoteIdentifier($this->_tbl_prefix. $table);
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
 
