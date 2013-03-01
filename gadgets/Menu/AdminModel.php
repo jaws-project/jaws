@@ -26,7 +26,7 @@ class Menu_AdminModel extends Menu_Model
     function InsertGroup($title, $title_view, $visible)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $gc = $mgroupsTable->select('count([id]):integer')->where('title', $title)->getOne();
+        $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -114,7 +114,7 @@ class Menu_AdminModel extends Menu_Model
     function UpdateGroup($gid, $title, $title_view, $visible)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $mgroupsTable->select('count([id]):integer')->where('id', $gid, '<>')->and()->where('title', $title);
+        $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
         $gc = $mgroupsTable->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
