@@ -286,9 +286,10 @@ class Jaws_Log
             trigger_error("You need to set at least the filename for Jaws_Log::LogToFile", E_USER_ERROR);
         }
 
-        $fh = fopen($logfile, 'a+');
-        fwrite($fh, $this->SetLogStr($priority, $msg) . "\n");
-        fclose($fh);
+        if (false !== $fh = @fopen($logfile, 'a+')) {
+            fwrite($fh, $this->SetLogStr($priority, $msg) . "\n");
+            fclose($fh);
+        }
     }
 
     /**
