@@ -158,7 +158,7 @@ class Jaws_User
 
         if ($personal) {
             $columns = array_merge($columns, array('fname', 'lname', 'gender', 'dob', 'url', 'avatar',
-                '[public]:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
+                'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
                 'interests',)
             );
         }
@@ -971,7 +971,7 @@ class Jaws_User
     function UserIsInGroup($user, $group)
     {
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
-        $usrgrpTable->select('count([user_id]):integer');
+        $usrgrpTable->select('count(user_id):integer');
         $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
         $howmany = $usrgrpTable->getOne();
         if (Jaws_Error::IsError($howmany)) {
