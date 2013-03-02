@@ -584,7 +584,7 @@ class Blog_Model extends Jaws_Gadget_Model
     function GetComments($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $id, true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, $id, 'entry', true, false, false, true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
