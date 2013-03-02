@@ -69,7 +69,7 @@ class Shoutbox_Model extends Jaws_Gadget_Model
         }
 
         $res = $cModel->NewComment(
-            $this->gadget->name, 0, $name, $email,
+            $this->gadget->name, 0, '', $name, $email,
             $url, $message, $ip, $permalink, 0, $status
         );
         if (Jaws_Error::isError($res)) {
