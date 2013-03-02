@@ -86,6 +86,7 @@ class Comments_Model extends Jaws_Gadget_Model
      *                             photo in Phoo, etc. This needs to be a reference
      *                             to find the comments related to a specific record
      *                             in a gadget.
+     * @param   string  $action
      * @param   string  $name      Author's name
      * @param   string  $email     Author's email
      * @param   string  $url       Author's url
@@ -96,7 +97,7 @@ class Comments_Model extends Jaws_Gadget_Model
      * @return  int     Comment id or Jaws_Error on any error
      * @access  public
      */
-    function NewComment($gadget, $gadgetId, $name, $email, $url,
+    function NewComment($gadget, $gadgetId, $action, $name, $email, $url,
                         $message, $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
     {
         if (!in_array($status, array(COMMENT_STATUS_APPROVED, COMMENT_STATUS_WAITING, COMMENT_STATUS_SPAM))) {
@@ -123,14 +124,15 @@ class Comments_Model extends Jaws_Gadget_Model
 
         $sql = '
             INSERT INTO [[comments]]
-               ( [reference], [gadget], [name], [email], [url],
+               ( [reference], [action], [gadget], [name], [email], [url],
                [ip], [msg_txt], [status], [msg_key], [createtime])
             VALUES
-               ( {gadgetId}, {gadget}, {name}, {email}, {url},
+               ( {gadgetId}, {action}, {gadget}, {name}, {email}, {url},
                {ip}, {msg_txt}, {status}, {msg_key}, {now})';
 
         $params = array();
         $params['gadgetId'] = $gadgetId;
+        $params['action']   = $action;
         $params['gadget']   = $gadget;
         $params['name']     = $name;
         $params['email']    = $email;
@@ -169,6 +171,7 @@ class Comments_Model extends Jaws_Gadget_Model
             SELECT
                 [id],
                 [reference],
+                [action],
                 [gadget],
                 [name],
                 [email],
@@ -197,6 +200,7 @@ class Comments_Model extends Jaws_Gadget_Model
      *                            photo in Phoo, etc. This needs to be a reference
      *                            to find the comments releated to a specific record
      *                            in a gadget.
+     * @param   string $action
      * @param   bool   $getApproved    If true get comments that are approved (optional, default true);
      * @param   bool   $getWaiting     If true get comments that are waiting for moderation (optional, default false);
      * @param   bool   $getSpam    If true get comments that are marked as spam (optional, default false);
@@ -204,12 +208,13 @@ class Comments_Model extends Jaws_Gadget_Model
      * @return  array  Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
-    function GetComments($gadget, $gadgetId, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
+    function GetComments($gadget, $gadgetId, $action, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
     {
         if (!$getApproved && !$getWaiting && !$getSpam) return array();
 
         $params = array();
         $params['gadgetId'] = $gadgetId;
+        $params['action']   = $action;
         $params['gadget']   = $gadget;
 
         $sql = '
@@ -226,7 +231,8 @@ class Comments_Model extends Jaws_Gadget_Model
                 [createtime]
             FROM [[comments]]
             WHERE
-                [reference] = {gadgetId}';
+                [reference] = {gadgetId}
+                AND [action] = {action}';
 
         $sql .= ' AND [gadget] = {gadget} AND (';
         if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
@@ -270,6 +276,7 @@ class Comments_Model extends Jaws_Gadget_Model
             SELECT
                 [id],
                 [reference],
+                [action],
                 [gadget],
                 [name],
                 [email],
