@@ -833,8 +833,8 @@ class Blog_Model extends Jaws_Gadget_Model
         $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $parentId));
         $res = $cModel->NewComment(
             $this->gadget->name, $parentId,
-            $name, $email, $url, $comments,
-            $ip, $permalink, $status
+            'entry', $name, $email, $url,
+            $comments,$ip, $permalink, $status
         );
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), _t('BLOG_NAME'));
@@ -2365,7 +2365,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $status = $this->gadget->GetRegistry('comment_status');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $res = $cModel->NewComment(
-            $this->gadget->name, $postID, $name, $email, $sourceURI,
+            $this->gadget->name, $postID, 'pingback', $name, $email, $sourceURI,
             $content, $ip, $permalink, $status
         );
     }
