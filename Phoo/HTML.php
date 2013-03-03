@@ -510,6 +510,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
+                $tpl->SetVariable('reply', $this->gadget->ParseText($c['reply']));
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($c['createtime'], 'MN'));
                 $tpl->SetVariable('createtime-month',     $date->Format($c['createtime'], 'm'));
@@ -570,6 +571,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
             $commentsText = $this->gadget->ParseText($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
+            $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
             $tpl->SetVariable('createtime',           $date->Format($comment['createtime']));
             $tpl->SetVariable('createtime-monthname', $date->Format($comment['createtime'], 'MN'));
             $tpl->SetVariable('createtime-month',     $date->Format($comment['createtime'], 'm'));

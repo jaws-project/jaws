@@ -61,7 +61,13 @@ $actions['ManageComments'] = array(
 $actions['EditComment'] = array(
     'normal' => true,
 );
+$actions['ReplyComment'] = array(
+    'normal' => true,
+);
 $actions['SaveEditComment'] = array(
+    'normal' => true,
+);
+$actions['SaveReplyComment'] = array(
     'normal' => true,
 );
 $actions['DeleteComment'] = array(

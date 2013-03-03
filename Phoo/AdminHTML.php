@@ -964,6 +964,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         return $cHtml->GetDataAsArray(
             $this->gadget->name,
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
+            BASE_SCRIPT . '?gadget=Phoo&amp;action=ReplyComment&amp;id={id}',
             $filter,
             $search,
             $status,
@@ -1124,6 +1125,99 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
+     * Display phoo comment to reply
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function ReplyComment()
+    {
+        $this->gadget->CheckPermission('ManageComments');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+
+        $request =& Jaws_Request::getInstance();
+        $id      = $request->get('id', 'get');
+
+        $comment = $model->GetComment($id);
+        if (Jaws_Error::IsError($comment)) {
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
+        }
+
+        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
+        $tpl->Load('ReplyComment.html');
+        $tpl->SetBlock('reply_comment');
+        $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
+        $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
+        $permalink = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $comment['reference'], 'albumid' => 0));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveReplyComment'));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'permalink', $permalink));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'status', $comment['status']));
+
+        $name =& Piwi::CreateWidget('Entry', 'name', $comment['name']);
+        $name->SetReadOnly(true);
+        $name->SetTitle(_t('GLOBAL_NAME'));
+
+        $email =& Piwi::CreateWidget('Entry', 'email', $comment['email']);
+        $email->SetReadOnly(true);
+        $email->SetTitle(_t('GLOBAL_EMAIL'));
+        $email->SetStyle('direction: ltr;');
+
+        $url =& Piwi::CreateWidget('Entry', 'url', $comment['url']);
+        $url->SetReadOnly(true);
+        $url->SetTitle(_t('GLOBAL_URL'));
+        $url->SetStyle('direction: ltr;');
+
+        $ip =& Piwi::CreateWidget('Entry', 'ip', $comment['ip']);
+        $ip->SetTitle(_t('PHOO_IP_ADDRESS'));
+        $ip->SetStyle('direction: ltr;');
+        $ip->SetReadOnly(true);
+
+        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
+        $comment_msg->SetReadOnly(true);
+        $comment_msg->SetRows(5);
+        $comment_msg->SetColumns(60);
+        $comment_msg->SetStyle('width: 400px;');
+        $comment_msg->SetTitle(_t('PHOO_COMMENT'));
+
+        $reply =& Piwi::CreateWidget('TextArea', 'reply', $xss->defilter($comment['reply']));
+        $reply->SetRows(5);
+        $reply->SetColumns(60);
+        $reply->SetStyle('width: 400px;');
+        $reply->SetTitle(_t('PHOO_REPLY'));
+
+        $cancelButton =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');
+
+        $submitButton =& Piwi::CreateWidget('Button', 'send', _t('PHOO_UPDATE_COMMENT'), STOCK_SAVE);
+        $submitButton->SetSubmit();
+
+        $buttonbox =& Piwi::CreateWidget('HBox');
+        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->PackStart($cancelButton);
+        $buttonbox->PackStart($submitButton);
+
+        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        $fieldset = new Jaws_Widgets_FieldSet(_t('PHOO_REPLY_COMMENT'));
+
+        $fieldset->Add($name);
+        $fieldset->Add($email);
+        $fieldset->Add($url);
+        $fieldset->Add($ip);
+        $fieldset->Add($comment_msg);
+        $fieldset->Add($reply);
+        $form->add($fieldset);
+        $form->Add($buttonbox);
+
+        $tpl->SetVariable('form', $form->Get());
+
+        $tpl->ParseBlock('reply_comment');
+        return $tpl->Get();
+    }
+
+    /**
      * Applies changes to a phoo comment
      *
      * @access  public
@@ -1141,6 +1235,24 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $model->UpdateComment($post['id'], $post['name'], $post['url'],
                               $post['email'], $post['comments'],
                               $post['permalink'], $post['status']);
+
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
+    }
+
+    /**
+     * Save reply to a blog comment
+     *
+     * @access  public
+     */
+    function SaveReplyComment()
+    {
+        $this->gadget->CheckPermission('ManageComments');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('id', 'reply'), 'post');
+
+        $model->ReplyComment($post['id'], $post['reply']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
     }

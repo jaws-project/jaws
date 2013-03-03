@@ -597,6 +597,29 @@ class Phoo_AdminModel extends Phoo_Model
     }
 
     /**
+     * Reply a comment
+     *
+     * @access  public
+     * @param   string  $id         Comment id
+     * @param   string  $reply      Reply text
+     * @return  mixed   True on Success or Jaws_Error on Failure
+     */
+    function ReplyComment($id, $reply)
+    {
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->ReplyComment($this->gadget->name, $id, $reply);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_COMMENT_NOT_REPLIED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('PHOO_ERROR_COMMENT_NOT_REPLIED'), _t('PHOO_NAME'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_REPLIED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+
+
+    /**
      * Delete a comment
      * 
      * @access  public
@@ -674,7 +697,7 @@ class Phoo_AdminModel extends Phoo_Model
                 $result = $GLOBALS['db']->query($sql, $params);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('BLOG_NAME'));
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('PHOO_NAME'));
                 }
             }
         }
@@ -701,7 +724,7 @@ class Phoo_AdminModel extends Phoo_Model
             $res = $this->DeleteComment($id);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('PHOO_ERROR_COMMENT_NOT_DELETED'), _t('PHOO_NAME'));
             }
         }
 
