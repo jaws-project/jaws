@@ -51,6 +51,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
         return $cHtml->GetDataAsArray(
             $this->gadget->name,
             BASE_SCRIPT . '?gadget=Shoutbox&amp;action=EditEntry&amp;id={id}',
+            '',
             $filter,
             $search,
             $status,
