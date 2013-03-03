@@ -460,15 +460,37 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     $action_params = unserialize($layoutElement['action_params']);
                     foreach ($action['params'] as $pIndex => $param) {
                         $tpl->SetBlock('template/gadget_action/action_param');
-                        $select =& Piwi::CreateWidget('Combo', $param['title']);
-                        $select->SetID('');
-                        foreach ($param['value'] as $value => $title) {
-                            $select->AddOption($title, $value);
+                        switch (gettype($param['value'])) {
+                            case 'integer':
+                            case 'double':
+                            case 'string':
+                                $element =& Piwi::CreateWidget('Entry', $param['title'], $param['value']);
+                                $element->SetStyle('width:120px;');
+                                if ($action_selected) {
+                                    $element->SetValue($action_params[$pIndex]);
+                                }
+                                break;
+
+                            case 'boolean':
+                                $element =& Piwi::CreateWidget('CheckButtons', $param['title']);
+                                $element->AddOption($param['title'], 1);
+                                if ($action_selected && $action_params[$pIndex]) {
+                                    $element->setDefault($action_params[$pIndex]);
+                                }
+                                break;
+
+                            default:
+                                $element =& Piwi::CreateWidget('Combo', $param['title']);
+                                $element->SetID('');
+                                foreach ($param['value'] as $value => $title) {
+                                    $element->AddOption($title, $value);
+                                }
+                                if ($action_selected) {
+                                    $element->SetDefault($action_params[$pIndex]);
+                                }
                         }
-                        if ($action_selected) {
-                            $select->SetDefault($action_params[$pIndex]);
-                        }
-                        $tpl->SetVariable('param', $select->Get());
+
+                        $tpl->SetVariable('param', $element->Get());
                         $tpl->ParseBlock('template/gadget_action/action_param');
                     }
                 }

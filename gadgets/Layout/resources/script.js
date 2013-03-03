@@ -186,12 +186,12 @@ function changeTheme()
 
 function addGadget(url, title)
 {
-    showDialogBox('gadgets_dialog', title, url, 350, 610);
+    showDialogBox('gadgets_dialog', title, url, 400, 800);
 }
 
 function editElementAction(url)
 {
-    showDialogBox('actions_dialog', actionsTitle, url, 400, 400);
+    showDialogBox('actions_dialog', actionsTitle, url, 435, 555);
 }
 
 function changeDisplayWhen(url)
@@ -230,11 +230,24 @@ function selectGadget(g)
             // action params
             if (typeof(item['params']) === 'object') {
                 item['params'].each(function(param, index) {
-                    select = new Element('select', {'name': param['title']});
-                    Object.keys(param['value']).each(function(value) {
-                        select.adopt(new Element('option', {'value': value}).set('html', param['value'][value]));
-                    });
-                    li.adopt(select);
+                    switch (typeof param['value']) {
+                        case 'string':
+                        case 'number':
+                            paramElement = new Element('input', {'type':'text', 'name':param['title'], 'value': param['value']});
+                            break;
+
+                        case 'boolean':
+                            paramElement = new Element('input', {'type':'checkbox', 'name':param['title'], 'checked': param['value']});
+                            break;
+
+                        default:
+                            paramElement = new Element('select', {'name': param['title']});
+                            Object.keys(param['value']).each(function(value) {
+                                paramElement.adopt(new Element('option', {'value': value}).set('html', param['value'][value]));
+                            });
+                            break;
+                    }
+                    li.adopt(paramElement);
                 });
             }
             // action description

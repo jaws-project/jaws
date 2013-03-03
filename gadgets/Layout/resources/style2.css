@@ -1,125 +1,125 @@
 body {
-    background: #fff;
-    font-size: small;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    font-family: "Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
+background: #fff;
+font-size: small;
+padding: 0;
+margin: 0;
+text-align: left;
+font-family: "Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
 }
 
 label, p, select {
-    font-size: 10pt;
+font-size: 10pt;
 }
 
 form, table { margin: 0; padding: 0; }
 
 #controls {
-    width: 100%;
-    font-size: 10pt;
-    border-collapse: collapse;
+margin:0 4px;
+font-size: 10pt;
+border-collapse: collapse;
 }
 
 #controls tr th {
-    border-bottom: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
 }
 
 #gadget-list, #gadget-actions {
-    height: 265px;
-    overflow: auto;
+height: 318px;
+overflow: auto;
 }
 
 #gadget-list {
-    width: 200px;
+width: 240px;
 }
 
 #gadget-actions {
-    width: 380px;
+width: 540px;
 }
 
 .gadget-item {
-    border-bottom: 1px solid #ddd;
-    padding-right: 4px;
-    height: 52px;
-    font-size: 10pt;
-    font-weight: bold;
-    cursor: pointer;
+border-bottom: 1px solid #ddd;
+padding-right: 4px;
+height: 52px;
+font-size: 10pt;
+font-weight: bold;
+cursor: pointer;
 }
 
 .gadget-item img {
-    margin-right: 2px;
-    vertical-align: middle;
+margin-right: 2px;
+vertical-align: middle;
 }
 
 .gadget-selected {
-    background: #3465a4;
-    color: #fff;
+background: #3465a4;
+color: #fff;
 }
 
 #actions-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+list-style: none;
+padding: 0;
+margin: 0;
 }
 
 #actions-list li {
-    padding: 4px;
-    border-bottom: 1px solid #ddd;
+padding: 4px;
+border-bottom: 1px solid #ddd;
 }
 #actions-list li span {
-    display: block;
-    color: #666;
-    font-weight: normal;
-    font-size: 10pt;
-    padding-left: 2em;
+display: block;
+color: #666;
+font-weight: normal;
+font-size: 10pt;
+padding-left: 2em;
 }
 
 .action-msg {
-    text-align: center;
-    padding: 2em;
-    color: #999;
+text-align: center;
+padding: 2em;
+color: #999;
 }
 
 #footer {
-    border-top: 1px solid #ddd;
-    padding: 10px;
+border-top: 1px solid #ddd;
+padding: 10px;
 }
 
 #buttons {
-    float: right;
+float: right;
 }
 
 #buttons button {
-    font-size: 10pt;
+font-size: 10pt;
 }
 
 #display_in {
-    width: 100%;
+width: 100%;
 }
 
 #selected_gadgets {
-    height: 200px;
-    border: 1px solid #ddd;
-    overflow: auto;
-    padding-left: 2px;
+height: 200px;
+border: 1px solid #ddd;
+overflow: auto;
+padding-left: 2px;
 }
 
 #g-info {
-    color: #666;
-    display: block;
-    font-size: 9pt;
-    text-align: left;
+color: #666;
+display: block;
+font-size: 9pt;
+text-align: left;
 }
 
 #g-info img {
-    width: 48px;
-    height: 48px;
-    float: left;
-    padding-right: 2px;
+width: 48px;
+height: 48px;
+float: left;
+padding-right: 2px;
 }
 
 #g-info label {
-    color: #3465a4;
-    font-size: 11pt;
-    padding-top: 8px;
-    display: block;
+color: #3465a4;
+font-size: 11pt;
+padding-top: 8px;
+display: block;
 }
