@@ -699,6 +699,27 @@ class Blog_AdminModel extends Blog_Model
     }
 
     /**
+     * Reply a comment
+     *
+     * @access  public
+     * @param   string  $id         Comment id
+     * @param   string  $reply      Reply text
+     * @return  mixed   True on Success or Jaws_Error on Failure
+     */
+    function ReplyComment($id, $reply)
+    {
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $res = $cModel->ReplyComment($this->gadget->name, $id, $reply);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_REPLIED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_REPLIED'), _t('BLOG_NAME'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_REPLIED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+    /**
      * Delete a comment
      *
      * @access  public

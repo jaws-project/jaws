@@ -62,6 +62,7 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
+                $tpl->SetVariable('reply', $this->gadget->ParseText($c['reply']));
                 $tpl->SetVariable('createtime-iso',       $c['createtime']);
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($c['createtime'], 'MN'));
