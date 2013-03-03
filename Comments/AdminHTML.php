@@ -272,9 +272,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
                 $edit_url = str_replace('{id}', $row['id'], $editAction);
             }
 
-            if (!empty($replyAction)) {
-                $reply_url = str_replace('{id}', $row['id'], $replyAction);
-            }
 
             $newRow['created'] = $date->Format($row['createtime']);
             if($row['status']==1) {
@@ -290,9 +287,13 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $edit_url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
 
-            $link =& Piwi::CreateWidget('Link', _t('COMMENTS_REPLY'), $reply_url,
-                                        'gadgets/Comments/images/reply-mini.png');
-            $actions.= $link->Get().'&nbsp;';
+            if (!empty($replyAction)) {
+                $reply_url = str_replace('{id}', $row['id'], $replyAction);
+
+                $link =& Piwi::CreateWidget('Link', _t('COMMENTS_REPLY'), $reply_url,
+                    'gadgets/Comments/images/reply-mini.png');
+                $actions .= $link->Get() . '&nbsp;';
+            }
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                         "javascript: commentDelete('".$row['id']."');",
