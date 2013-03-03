@@ -130,6 +130,7 @@ class Blog_Actions_Comments extends Blog_HTML
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
             $commentsText = $this->gadget->ParseText($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
+            $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
             $tpl->SetVariable('createtime-iso',       $comment['createtime']);
             $tpl->SetVariable('createtime',           $date->Format($comment['createtime']));
             $tpl->SetVariable('createtime-monthname', $date->Format($comment['createtime'], 'MN'));
