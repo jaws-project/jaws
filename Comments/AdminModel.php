@@ -75,6 +75,31 @@ class Comments_AdminModel extends Comments_Model
     }
 
     /**
+     * Reply a comment
+     *
+     * @param   string  $gadget  Gadget's name
+     * @param   int     $id      Comment's ID
+     * @param   string  $reply
+     * @return  bool   True if success or Jaws_Error on any error
+     * @access  public
+     */
+    function ReplyComment($gadget, $id, $reply)
+    {
+        $cData['reply']    = $reply;
+        $cData['replier']  = $GLOBALS['app']->Session->GetAttribute('user');
+
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $res = $commentsTable->update($cData)->where('id', $id)->exec();
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), _t('COMMENTS_NAME'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+    /**
      * Deletes a comment
      *
      * @param   string  $gadget Gadget's name

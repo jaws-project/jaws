@@ -20,6 +20,14 @@ var CommentsCallback = {
         showResponse(response);
     },
 
+    ReplyComment: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            stopAction();
+            getDG('comments_datagrid');
+        }
+        showResponse(response);
+    },
+
     DeleteComments: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
@@ -109,9 +117,12 @@ function stopAction()
     $('email').value                   = '';
     $('url').value                     = '';
     $('message').value                 = '';
+    $('reply').value                   = '';
     $('comment_status').selectedIndex  = 0;
-    $('btn_save').style.visibility   = 'hidden';
-    $('btn_cancel').style.visibility = 'hidden';
+    $('reply_area').style.display      = 'none';
+    $('btn_save').style.display        = 'none';
+    $('btn_reply').style.display       = 'none';
+    $('btn_cancel').style.display      = 'none';
     unselectDataGridRow();
     $('name').focus();
 }
@@ -124,7 +135,6 @@ function editComment(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
-    console.log(comment);
     $('id').value               = comment['id'];
     $('gadget').value           = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);
@@ -133,23 +143,63 @@ function editComment(element, id)
     $('url').value              = comment['url'];
     $('message').value          = comment['msg_txt'].defilter();
     $('comment_status').value   = comment['status'];
-    $('btn_save').style.visibility   = 'visible';
-    $('btn_cancel').style.visibility = 'visible';
+    $('reply_area').style.display = 'none';
+    $('btn_reply').style.display  = 'none';
+    $('btn_save').style.display   = 'inline';
+    $('btn_cancel').style.display = 'inline';
+}
+
+/**
+ * Reply a Comment
+ *
+ */
+function replyComment(element, id)
+{
+    selectDataGridRow(element.parentNode.parentNode);
+    var comment = CommentsAjax.callSync('getcomment', id);
+
+    $('id').value               = comment['id'];
+    $('gadget').value           = comment['gadget'];
+    $('comment_ip').set('html', comment['ip']);
+    $('name').value             = comment['name'];
+    $('email').value            = comment['email'];
+    $('url').value              = comment['url'];
+    $('message').value          = comment['msg_txt'].defilter();
+    $('comment_status').value   = comment['status'];
+    $('reply').value            = comment['reply'];
+
+    $('name').disabled = true;
+    $('email').disabled = true;
+    $('url').disabled = true;
+    $('message').disabled = true;
+    $('comment_status').disabled = true;
+
+    $('btn_save').style.display     = 'none';
+    $('btn_reply').style.display    = 'inline';
+    $('btn_cancel').style.display   = 'inline';
+    $('reply_area').style.display   = 'table-row';
 }
 
 /**
  * Update a Comment
  */
-function updateComment()
+function updateComment(action)
 {
-    CommentsAjax.callAsync('UpdateComment',
-                    $('gadget').value,
-                    $('id').value,
-                    $('name').value,
-                    $('email').value,
-                    $('url').value,
-                    $('message').value,
-                    $('comment_status').value);
+    if(action=='update') {
+        CommentsAjax.callAsync('UpdateComment',
+                        $('gadget').value,
+                        $('id').value,
+                        $('name').value,
+                        $('email').value,
+                        $('url').value,
+                        $('message').value,
+                        $('comment_status').value);
+    } else if(action=='reply') {
+        CommentsAjax.callAsync('ReplyComment',
+                         $('gadget').value,
+                         $('id').value,
+                         $('reply').value);
+    }
 }
 
 /**

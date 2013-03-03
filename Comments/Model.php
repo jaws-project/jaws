@@ -124,10 +124,10 @@ class Comments_Model extends Jaws_Gadget_Model
 
         $sql = '
             INSERT INTO [[comments]]
-               ( [reference], [action], [gadget], [name], [email], [url],
+               ( [reference], [action], [gadget], [user], [name], [email], [url],
                [ip], [msg_txt], [status], [msg_key], [createtime])
             VALUES
-               ( {gadgetId}, {action}, {gadget}, {name}, {email}, {url},
+               ( {gadgetId}, {action}, {gadget}, {user}, {name}, {email}, {url},
                {ip}, {msg_txt}, {status}, {msg_key}, {now})';
 
         $params = array();
@@ -141,6 +141,7 @@ class Comments_Model extends Jaws_Gadget_Model
         $params['status']   = $status;
         $params['msg_key']  = $message_key;
         $params['ip']       = $ip;
+        $params['user']     = $GLOBALS['app']->Session->GetAttribute('user');
         $params['now']      = $GLOBALS['db']->Date();
 
         $result = $GLOBALS['db']->query($sql, $params);
@@ -173,6 +174,8 @@ class Comments_Model extends Jaws_Gadget_Model
                 [reference],
                 [action],
                 [gadget],
+                [reply],
+                [replier],
                 [name],
                 [email],
                 [url],
@@ -222,6 +225,8 @@ class Comments_Model extends Jaws_Gadget_Model
                 [id],
                 [reference],
                 [gadget],
+                [reply],
+                [replier],
                 [name],
                 [email],
                 [url],

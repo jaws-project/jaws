@@ -75,6 +75,18 @@
             </field>
 
             <field>
+                <name>reply</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>replier</name>
+                <type>text</type>
+                <length>48</length>
+            </field>
+
+            <field>
                 <name>createtime</name>
                 <type>timestamp</type>
             </field>

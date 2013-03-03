@@ -39,7 +39,8 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $filter, $search, $status, $limit);
+        return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')",
+                                      "javascript:replyComment(this, '{id}')", $filter, $search, $status, $limit);
     }
 
     /**
@@ -121,6 +122,23 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         // TODO: Check Permission For Manage Comments
         // TODO: Fill permalink In New Versions, Please!!
         $this->_Model->UpdateComment($gadget, $id, $name, $email, $url, $message, '', $status);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Reply a comment
+     *
+     * @access  public
+     * @param   string  $gadget
+     * @param   int     $id         Comment ID
+     * @param   string  $reply
+     * @return  array   Response array (notice or error)
+     */
+    function ReplyComment($gadget, $id, $reply)
+    {
+        // TODO: Check Permission For Manage Comments
+        // TODO: Fill permalink In New Versions, Please!!
+        $this->_Model->ReplyComment($gadget, $id, $reply);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
