@@ -237,5 +237,5 @@ class ComboOption
     {
         $this->_title = $title;
     }
+
 }
-?>

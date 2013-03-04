@@ -233,7 +233,10 @@ class CheckButtons extends Bin
             }
 
             $item .= ' />';
-            $item .= '<label for="' . $this->getID() . '">' . $option->getText() . '</label>';
+            $lblText = $option->getText();
+            if (strlen($lblText)) {
+                $item .= '<label for="' . $this->getID() . '">' . $lblText . '</label>';
+            }
 
             if (!$in_columns) {
                 $this->_XHTML .= $item;
