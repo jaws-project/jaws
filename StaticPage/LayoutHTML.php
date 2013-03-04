@@ -28,12 +28,12 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('STATICPAGE_LAYOUT_GROUP_PAGES'),
+                'title' => _t('GLOBAL_GROUP'),
                 'value' => $pgroups
             );
 
             $result[] = array(
-                'title' => _t('STATICPAGE_LAYOUT_GROUP_PAGES_ORDER'),
+                'title' => _t('GLOBAL_ORDERBY'),
                 'value' => array(
                     0 => _t('GLOBAL_CREATETIME'). ' &uarr;',
                     1 => _t('GLOBAL_CREATETIME'). ' &darr;',
