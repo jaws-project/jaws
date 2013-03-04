@@ -445,7 +445,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         if (count($actions) > 0) {
             foreach ($actions as $aIndex => $action) {
                 $tpl->SetBlock('template/gadget_action');
-                $tpl->SetVariable('index',  $aIndex);
+                $tpl->SetVariable('aindex', $aIndex);
                 $tpl->SetVariable('name',   $action['name']);
                 $tpl->SetVariable('action', $action['action']);
                 $tpl->SetVariable('desc',   $action['desc']);
@@ -460,11 +460,13 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     $action_params = unserialize($layoutElement['action_params']);
                     foreach ($action['params'] as $pIndex => $param) {
                         $tpl->SetBlock('template/gadget_action/action_param');
+                        $param_name = "action_{$aIndex}_param_{$pIndex}";
                         switch (gettype($param['value'])) {
                             case 'integer':
                             case 'double':
                             case 'string':
-                                $element =& Piwi::CreateWidget('Entry', $param['title'], $param['value']);
+                                $element =& Piwi::CreateWidget('Entry', $param_name, $param['value']);
+                                $element->SetID($param_name);
                                 $element->SetStyle('width:120px;');
                                 if ($action_selected) {
                                     $element->SetValue($action_params[$pIndex]);
@@ -472,16 +474,16 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                                 break;
 
                             case 'boolean':
-                                $element =& Piwi::CreateWidget('CheckButtons', $param['title']);
-                                $element->AddOption($param['title'], 1);
+                                $element =& Piwi::CreateWidget('CheckButtons', $param_name);
+                                $element->AddOption('', 1, $param_name);
                                 if ($action_selected && $action_params[$pIndex]) {
                                     $element->setDefault($action_params[$pIndex]);
                                 }
                                 break;
 
                             default:
-                                $element =& Piwi::CreateWidget('Combo', $param['title']);
-                                $element->SetID('');
+                                $element =& Piwi::CreateWidget('Combo', $param_name);
+                                $element->SetID($param_name);
                                 foreach ($param['value'] as $value => $title) {
                                     $element->AddOption($title, $value);
                                 }
@@ -490,7 +492,10 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                                 }
                         }
 
-                        $tpl->SetVariable('param', $element->Get());
+                        $tpl->SetVariable('aindex', $aIndex);
+                        $tpl->SetVariable('pindex', $pIndex);
+                        $tpl->SetVariable('ptitle', $param['title']);
+                        $tpl->SetVariable('param',  $element->Get());
                         $tpl->ParseBlock('template/gadget_action/action_param');
                     }
                 }

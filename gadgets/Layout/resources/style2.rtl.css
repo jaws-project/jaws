@@ -74,11 +74,15 @@ font-weight: normal;
 font-size: 10pt;
 padding-right: 2em;
 }
-
 .action-msg {
 text-align: center;
 padding: 2em;
 color: #999;
+}
+.action_param label{
+width: 80px;
+padding: 5px 2em 0;
+display: inline-block;
 }
 
 #footer {

@@ -227,31 +227,46 @@ function selectGadget(g)
                                             'checked': actionIndex == 0}));
             // action label
             li.adopt(new Element('label', {'for':'action_' + actionIndex}).set('html', item['name']));
+            // action description
+            li.adopt(new Element('span', {}).set('html', item['desc']));
             // action params
             if (typeof(item['params']) === 'object') {
-                item['params'].each(function(param, index) {
+                item['params'].each(function(param, paramIndex) {
+                    var paramID = 'action_' + actionIndex+'_param_'+paramIndex;
+                    var divElement = new Element('div', {'class':'action_param'});
+                    var lblElement = new Element('label', {'for':paramID}).set('html', param['title']+':');
+                    divElement.adopt(lblElement);
                     switch (typeof param['value']) {
                         case 'string':
                         case 'number':
-                            paramElement = new Element('input', {'type':'text', 'name':param['title'], 'value': param['value']});
+                            paramElement = new Element(
+                                'input',
+                                {'type':'text', 'name':paramID, 'id':paramID, 'value':param['value']}
+                            );
                             break;
 
                         case 'boolean':
-                            paramElement = new Element('input', {'type':'checkbox', 'name':param['title'], 'checked': param['value']});
+                            paramElement = new Element(
+                                'input', {'type':'checkbox', 'name':paramID, 'id':paramID, 'checked':param['value']}
+                            );
                             break;
 
                         default:
-                            paramElement = new Element('select', {'name': param['title']});
+                            paramElement = new Element('select', {'name':paramID, 'id':paramID});
                             Object.keys(param['value']).each(function(value) {
-                                paramElement.adopt(new Element('option', {'value': value}).set('html', param['value'][value]));
+                                paramElement.adopt(
+                                    new Element(
+                                        'option',
+                                        {'value': value}
+                                    ).set('html', param['value'][value])
+                                );
                             });
                             break;
                     }
-                    li.adopt(paramElement);
+                    divElement.adopt(paramElement);
+                    li.adopt(divElement);
                 });
             }
-            // action description
-            li.adopt(new Element('span', {}).set('html', item['desc']));
             $('actions-list').appendChild(li);
         });
     } else {

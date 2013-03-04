@@ -46,12 +46,12 @@
     <!-- END no_action -->
     <!-- BEGIN gadget_action -->
       <li id="action_{action}">
-        <input type="radio" name="action" id="action_{index}" {action_checked} value="{action}"/>
-        <label for="action_{index}">{name}</label>
-        <!-- BEGIN action_param -->
-        {param}
-        <!-- END action_param -->
+        <input type="radio" name="action" id="action_{aindex}" {action_checked} value="{action}"/>
+        <label for="action_{aindex}">{name}</label>
         <span>{desc}</span>
+        <!-- BEGIN action_param -->
+        <div class="action_param"><label for="action_{aindex}_param_{pindex}">{ptitle}</label>{param}</div>
+        <!-- END action_param -->
       </li>
     <!-- END gadget_action -->
     </ul>
