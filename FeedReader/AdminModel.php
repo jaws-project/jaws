@@ -1,17 +1,17 @@
 <?php
-require_once JAWS_PATH . 'gadgets/RssReader/Model.php';
+require_once JAWS_PATH . 'gadgets/FeedReader/Model.php';
 /**
- * RssReader Gadget
+ * FeedReader Gadget
  *
  * @category   GadgetModel
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_AdminModel extends RssReader_Model
+class FeedReader_AdminModel extends FeedReader_Model
 {
     /**
      * Inserts a new RSS site
@@ -46,10 +46,10 @@ class RssReader_AdminModel extends RssReader_Model
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('RSSREADER_ERROR_SITE_NOT_ADDED'),_t('RSSREADER_NAME'));
+            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'),_t('FEEDREADER_NAME'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('RSSREADER_SITE_ADDED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -92,11 +92,11 @@ class RssReader_AdminModel extends RssReader_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('RSSREADER_ERROR_SITE_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('RSSREADER_ERROR_SITE_NOT_UPDATED'), _t('RSSREADER_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_ERROR_SITE_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_UPDATED'), _t('FEEDREADER_NAME'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('RSSREADER_SITE_UPDATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -112,11 +112,11 @@ class RssReader_AdminModel extends RssReader_Model
         $sql = 'DELETE FROM [[rss_sites]] WHERE [id] = {id}';
         $result = $GLOBALS['db']->query($sql, array('id' => $id));
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('RSSREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('RSSREADER_ERROR_SITE_NOT_DELETED'), _t('RSSREADER_NAME'));
+            $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), _t('FEEDREADER_NAME'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('RSSREADER_SITE_DELETED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 }

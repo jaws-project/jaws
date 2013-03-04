@@ -1,16 +1,16 @@
 <?php
 /**
- * RssReader Gadget
+ * FeedReader Gadget
  *
  * @category   GadgetModel
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_Model extends Jaws_Gadget_Model
+class FeedReader_Model extends Jaws_Gadget_Model
 {
     /**
      * Gets list of possible RSS sites
@@ -77,6 +77,6 @@ class RssReader_Model extends Jaws_Gadget_Model
             return $row;
         }
 
-        return new Jaws_Error(_t('RSSREADER_ERROR_SITE_DOES_NOT_EXISTS'), _t('RSSREADER_NAME'));
+        return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_DOES_NOT_EXISTS'), _t('FEEDREADER_NAME'));
     }
 }

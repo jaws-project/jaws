@@ -1,8 +1,8 @@
 /**
- * RSSReader Javascript actions
+ * FeedReader Javascript actions
  *
  * @category   Ajax
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
@@ -11,7 +11,7 @@
 /**
  * Use async mode, create Callback
  */
-var RssReaderCallback = { 
+var FeedReaderCallback = { 
     deleterss: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
@@ -124,7 +124,7 @@ function updateRSS()
     }
 
     if($('id').value==0) {
-            RssReaderAjax.callAsync('insertrss',
+            FeedReaderAjax.callAsync('insertrss',
                                 $('title').value,
                                 $('url').value,
                                 $('cache_time').value,
@@ -133,7 +133,7 @@ function updateRSS()
                                 $('title_view').value,
                                 $('visible').value);
     } else {
-        RssReaderAjax.callAsync('updaterss',
+        FeedReaderAjax.callAsync('updaterss',
                             $('id').value,
                             $('title').value,
                             $('url').value,
@@ -154,7 +154,7 @@ function deleteRSS(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmFeedDelete);
     if (answer) {
-        RssReaderAjax.callAsync('deleterss', id);
+        FeedReaderAjax.callAsync('deleterss', id);
     }
     unselectDataGridRow();
 }
@@ -166,10 +166,10 @@ function deleteRSS(element, id)
 function editRSS(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-    RssReaderAjax.callAsync('getrss', id);
+    FeedReaderAjax.callAsync('getrss', id);
 }
 
-var RssReaderAjax = new JawsAjax('RssReader', RssReaderCallback);
+var FeedReaderAjax = new JawsAjax('FeedReader', FeedReaderCallback);
 
 //Which row selected in DataGrid
 var selectedRow = null;

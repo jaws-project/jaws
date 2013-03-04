@@ -1,16 +1,16 @@
 <?php
 /**
- * RssReader Gadget
+ * FeedReader Gadget
  *
  * @category   Gadget
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_HTML extends Jaws_Gadget_HTML
+class FeedReader_HTML extends Jaws_Gadget_HTML
 {
     /**
      * Default action to be run if no action is present
@@ -20,7 +20,7 @@ class RssReader_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('RssReader', 'LayoutHTML');
+        $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'LayoutHTML');
         return $layoutGadget->Display($this->gadget->GetRegistry('default_feed'));
     }
 
@@ -82,7 +82,7 @@ class RssReader_HTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
 
-        $layoutGadget = $GLOBALS['app']->LoadGadget('RssReader', 'LayoutHTML');
+        $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'LayoutHTML');
         return $layoutGadget->Display($id);
     }
 }

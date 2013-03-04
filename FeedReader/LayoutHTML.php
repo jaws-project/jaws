@@ -1,15 +1,15 @@
 <?php
 /**
- * RssReader Layout HTML file (for layout purposes)
+ * FeedReader Layout HTML file (for layout purposes)
  *
  * @category   GadgetLayout
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_LayoutHTML extends Jaws_Gadget_HTML
+class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params
@@ -20,7 +20,7 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
     function DisplayLayoutParams()
     {
         $result = array();
-        $rModel = $GLOBALS['app']->LoadGadget('RssReader', 'Model');
+        $rModel = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
         $sites = $rModel->GetRSSs();
         if (!Jaws_Error::isError($sites)) {
             $psites = array();
@@ -29,7 +29,7 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('RSSREADER_LAYOUT_SHOW_TITLES'),
+                'title' => _t('FEEDREADER_LAYOUT_SHOW_TITLES'),
                 'value' => $psites
             );
         }
@@ -46,18 +46,18 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display($id = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('RssReader', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
         $site = $model->GetRSS($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
             return false;
         }
 
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $tpl = new Jaws_Template('gadgets/RssReader/templates/');
-        $tpl->Load('RssReader.html');
-        $tpl->SetBlock('rssreader');
+        $tpl = new Jaws_Template('gadgets/FeedReader/templates/');
+        $tpl->Load('FeedReader.html');
+        $tpl->SetBlock('feedreader');
 
-        require_once JAWS_PATH . 'gadgets/RssReader/include/XML_Feed.php';
+        require_once JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
         $options = array();
@@ -79,8 +79,8 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
 
         $res = $parser->fetch($site['url']);
         if (PEAR::isError($res)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['._t('RSSREADER_NAME').']: ',
-                                 _t('RSSREADER_ERROR_CANT_FETCH', $xss->filter($site['url'])), '');
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['._t('FEEDREADER_NAME').']: ',
+                                 _t('FEEDREADER_ERROR_CANT_FETCH', $xss->filter($site['url'])), '');
         }
 
         if (!isset($parser->feed)) {
@@ -88,8 +88,8 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $block = ($site['view_type']==0)? 'simple' : 'marquee';
-        $tpl->SetBlock("rssreader/$block");
-        $tpl->SetVariable('title', _t('RSSREADER_ACTION_TITLE'));
+        $tpl->SetBlock("feedreader/$block");
+        $tpl->SetVariable('title', _t('FEEDREADER_ACTION_TITLE'));
 
         switch ($site['title_view']) {
             case 1:
@@ -109,18 +109,18 @@ class RssReader_LayoutHTML extends Jaws_Gadget_HTML
                                                (($site['view_type']==4)? 'right' : 'up'))));
         if (isset($parser->feed['items'])) {
             foreach($parser->feed['items'] as $index => $item) {
-                $tpl->SetBlock("rssreader/$block/item");
+                $tpl->SetBlock("feedreader/$block/item");
                 $tpl->SetVariable('title', $xss->filter($item['title']));
                 $tpl->SetVariable('href', isset($item['link'])? $xss->filter($item['link']) : '');
-                $tpl->ParseBlock("rssreader/$block/item");
+                $tpl->ParseBlock("feedreader/$block/item");
                 if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
                     break;
                 }
             }
         }
 
-        $tpl->ParseBlock("rssreader/$block");
-        $tpl->ParseBlock('rssreader');
+        $tpl->ParseBlock("feedreader/$block");
+        $tpl->ParseBlock('feedreader');
         return $tpl->Get();
     }
 }

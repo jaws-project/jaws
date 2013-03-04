@@ -1,15 +1,15 @@
 <?php
 /**
- * RSSReader AJAX API
+ * FeedReader AJAX API
  *
  * @category   Ajax
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_AdminAjax extends Jaws_Gadget_HTML
+class FeedReader_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
@@ -18,7 +18,7 @@ class RssReader_AdminAjax extends Jaws_Gadget_HTML
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function RssReader_AdminAjax($gadget)
+    function FeedReader_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
         $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
@@ -105,7 +105,7 @@ class RssReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($offset)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('RssReader', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML');
         if (!is_numeric($offset)) {
             $offset = null;
         }

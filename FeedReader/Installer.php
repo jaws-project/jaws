@@ -1,14 +1,14 @@
 <?php
 /**
- * RssReader Installer
+ * FeedReader Installer
  *
  * @category    GadgetModel
- * @package     RssReader
+ * @package     FeedReader
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_Installer extends Jaws_Gadget_Installer
+class FeedReader_Installer extends Jaws_Gadget_Installer
 {
     /**
      * Installs the gadget
@@ -24,7 +24,7 @@ class RssReader_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'rsscache' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('RSSREADER_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('FEEDREADER_NAME'));
         }
 
         $result = $this->installSchema('schema.xml');
@@ -48,7 +48,7 @@ class RssReader_Installer extends Jaws_Gadget_Installer
     {
         $result = $GLOBALS['db']->dropTable('rss_sites');
         if (Jaws_Error::IsError($result)) {
-            $gName  = _t('RSSREADER_NAME');
+            $gName  = _t('FEEDREADER_NAME');
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
             $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
             return new Jaws_Error($errMsg, $gName);
@@ -76,8 +76,8 @@ class RssReader_Installer extends Jaws_Gadget_Installer
         }
 
         // ACL keys
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/RssReader/DeleteSite');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/RssReader/UpdateProperties');
+        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/DeleteSite');
+        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/UpdateProperties');
 
         //registry keys
         $this->gadget->AddRegistry('default_feed', '0');

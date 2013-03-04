@@ -1,16 +1,16 @@
 <?php
 /**
- * RssReader Gadget Action
+ * FeedReader Gadget Action
  *
  * @category   GadgetAdmin
- * @package    RssReader
+ * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh  <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class RssReader_AdminHTML extends Jaws_Gadget_HTML
+class FeedReader_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
      * Prepares data of RSS sites for data grid
@@ -21,7 +21,7 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetRSSSites($offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('RssReader', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
 
         $rsssites = $model->GetRSSs(false, 12, $offset);
         if (Jaws_Error::IsError($rsssites)) {
@@ -62,7 +62,7 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('RssReader', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
         $total = $model->TotalOfData('rss_sites');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -85,7 +85,7 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Builds the RSSreader administration UI
+     * Builds the FeedReader administration UI
      *
      * @access  public
      * @return  string  XHTML template content for administration UI
@@ -94,9 +94,9 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/RssReader/templates/');
-        $tpl->Load('AdminRssReader.html');
-        $tpl->SetBlock('rssreader');
+        $tpl = new Jaws_Template('gadgets/FeedReader/templates/');
+        $tpl->Load('AdminFeedReader.html');
+        $tpl->SetBlock('feedreader');
 
         $tpl->SetVariable('grid', $this->DataGrid());
         $tpl->SetVariable('dir', _t('GLOBAL_LANG_DIRECTION'));
@@ -128,32 +128,32 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
         $cachecombo->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
         $cachecombo->AddOption(_t('GLOBAL_DATE_WEEKS',   1), 604800);
         $cachecombo->SetDefault(3600);
-        $tpl->SetVariable('lbl_cache_time', _t('RSSREADER_CACHE_TIME'));
+        $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
         $tpl->SetVariable('cache_time', $cachecombo->Get());
 
         $viewType =& Piwi::CreateWidget('Combo', 'view_type');
         $viewType->SetID('view_type');
         $viewType->setStyle('width: 128px;');
-        $viewType->AddOption(_t('RSSREADER_VIEW_TYPE_SIMPLE'),        0);
-        $viewType->AddOption(_t('RSSREADER_VIEW_TYPE_MARQUEE_UP'),    1);
-        $viewType->AddOption(_t('RSSREADER_VIEW_TYPE_MARQUEE_DOWN'),  2);
-        $viewType->AddOption(_t('RSSREADER_VIEW_TYPE_MARQUEE_LEFT'),  3);
-        $viewType->AddOption(_t('RSSREADER_VIEW_TYPE_MARQUEE_RIGHT'), 4);
-        $tpl->SetVariable('lbl_view_type', _t('RSSREADER_VIEW_TYPE'));
+        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_SIMPLE'),        0);
+        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_UP'),    1);
+        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_DOWN'),  2);
+        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_LEFT'),  3);
+        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_RIGHT'), 4);
+        $tpl->SetVariable('lbl_view_type', _t('FEEDREADER_VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $titleViewcombo =& Piwi::CreateWidget('Combo', 'title_view');
         $titleViewcombo->SetID('title_view');
         $titleViewcombo->setStyle('width: 128px;');
-        $titleViewcombo->AddOption(_t('RSSREADER_TITLE_VIEW_DISABLE'),  0);
-        $titleViewcombo->AddOption(_t('RSSREADER_TITLE_VIEW_INTERNAL'), 1);
-        $titleViewcombo->AddOption(_t('RSSREADER_TITLE_VIEW_EXTERNAL'), 2);
-        $tpl->SetVariable('lbl_title_view', _t('RSSREADER_TITLE_VIEW'));
+        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_DISABLE'),  0);
+        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_INTERNAL'), 1);
+        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_EXTERNAL'), 2);
+        $tpl->SetVariable('lbl_title_view', _t('FEEDREADER_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleViewcombo->Get());
 
         $countentry =& Piwi::CreateWidget('Entry', 'count_entry', '');
         $countentry->setStyle('width: 120px;');
-        $tpl->SetVariable('lbl_count_entry', _t('RSSREADER_SITE_COUNT_ENTRY'));
+        $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
         $tpl->SetVariable('count_entry', $countentry->Get());
 
         $visibleType =& Piwi::CreateWidget('Combo', 'visible');
@@ -177,10 +177,10 @@ class RssReader_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('btn_save', $btnsave->Get());
         }
 
-        $tpl->SetVariable('incompleteFeedFields', _t('RSSREADER_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmFeedDelete',    _t('RSSREADER_CONFIRM_DELETE_FEED'));
+        $tpl->SetVariable('incompleteFeedFields', _t('FEEDREADER_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmFeedDelete',    _t('FEEDREADER_CONFIRM_DELETE_FEED'));
 
-        $tpl->ParseBlock('rssreader');
+        $tpl->ParseBlock('feedreader');
 
         return $tpl->Get();
     }

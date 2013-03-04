@@ -1,9 +1,9 @@
 <?php
 /**
- * RssReader URL maps
+ * FeedReader URL maps
  *
  * @category   GadgetMaps
- * @package    RssReader
+ * @package    FeedReader
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
