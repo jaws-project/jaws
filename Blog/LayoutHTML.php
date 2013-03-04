@@ -72,6 +72,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
         $tpl->Load('RecentPosts.html');
         $tpl->SetBlock('recent_posts');
+        $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
         $tpl->SetVariable('title', $title);
         $entries = $model->GetRecentEntries($cat, (int)$limit);
         if (!Jaws_Error::IsError($entries)) {
