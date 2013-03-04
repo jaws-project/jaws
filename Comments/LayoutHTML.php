@@ -87,6 +87,7 @@ class Comments_LayoutHTML extends Jaws_Gadget_HTML
                     $tpl->SetVariable('replier', $user['nickname']);
                     $tpl->SetVariable('url', $user['url']);
                     $tpl->SetVariable('email', $user['email']);
+                    $tpl->SetVariable('lbl_reply', _t('COMMENTS_REPLY'));
                     $tpl->ParseBlock('recent_comments/reply');
                 }
 
