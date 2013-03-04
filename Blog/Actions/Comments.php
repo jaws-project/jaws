@@ -36,6 +36,9 @@ class Blog_Actions_Comments extends Blog_HTML
             $comments = $data;
         }
 
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $userModel = new Jaws_User();
+
         if (!Jaws_Error::IsError($comments)) {
             $date = $GLOBALS['app']->loadDate();
             foreach ($comments as $c) {
@@ -62,7 +65,6 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
                 $commentsText = $this->gadget->ParseText($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
-                $tpl->SetVariable('reply', $this->gadget->ParseText($c['reply']));
                 $tpl->SetVariable('createtime-iso',       $c['createtime']);
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($c['createtime'], 'MN'));
@@ -73,6 +75,18 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('createtime-day',       $date->Format($c['createtime'], 'd'));
                 $tpl->SetVariable('createtime-year',      $date->Format($c['createtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($c['createtime'], 'g:ia'));
+
+
+                if(!empty($c['reply'])) {
+                    $user = $userModel->GetUser((int)$c['replier'], true, true);
+                    $tpl->SetBlock('comment/reply');
+                    $tpl->SetVariable('reply', $c['reply']);
+                    $tpl->SetVariable('replier', $user['nickname']);
+                    $tpl->SetVariable('url', $user['url']);
+                    $tpl->SetVariable('email', $user['email']);
+                    $tpl->SetVariable('lbl_reply', _t('BLOG_REPLY'));
+                    $tpl->ParseBlock('comment/reply');
+                }
 
                 if ($c['status'] == 3) {
                     $tpl->SetVariable('status_message', _t('BLOG_COMMENT_IS_SPAM'));
