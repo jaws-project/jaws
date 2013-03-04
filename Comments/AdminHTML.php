@@ -66,6 +66,12 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Comments'));
 
+        //load other gadget translations
+        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+
         //Gadgets filter
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
         $gadgetsCombo->SetID('gadgets_filter');
@@ -73,9 +79,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
         $gadgetsCombo->AddOption('', '');
         // TODO: Get List Of Gadget Which Use Comments
-        $gadgetsCombo->AddOption('Blog', 'Blog');
-        $gadgetsCombo->AddOption('Phoo', 'Phoo');
-        $gadgetsCombo->AddOption('Shoutbox', 'Shoutbox');
+        $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
+        $gadgetsCombo->AddOption(_t('PHOO_NAME'), 'Phoo');
+        $gadgetsCombo->AddOption(_t('SHOUTBOX_NAME'), 'Shoutbox');
         $gadgetsCombo->SetDefault('');
         $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
         $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());

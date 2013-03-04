@@ -283,6 +283,8 @@ class Comments_Model extends Jaws_Gadget_Model
                 [reference],
                 [action],
                 [gadget],
+                [reply],
+                [replier],
                 [name],
                 [email],
                 [url],

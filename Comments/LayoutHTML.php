@@ -19,15 +19,24 @@ class Comments_LayoutHTML extends Jaws_Gadget_HTML
     function RecentCommentsLayoutParams()
     {
         $result = array();
-        $limit = array();
-        $limit[3] = 3;
-        $limit[5] = 5;
-        $limit[10] = 10;
-        $limit[15] = 15;
+
+        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         $result[] = array(
-            'title' => _t('COMMENTS_LAYOUT_RECENT_COMMENTS'),
-            'value' => $limit
+            'title' => _t('COMMENTS_GADGETS'),
+            'value' => array(
+                'blog' => _t('BLOG_NAME') ,
+                'phoo' => _t('PHOO_NAME') ,
+                'shoutbox' => _t('SHOUTBOX_NAME') ,
+            )
+        );
+
+        $result[] = array(
+            'title' => _t('GLOBAL_COUNT'),
+            'value' => 5
         );
 
         return $result;
@@ -37,21 +46,30 @@ class Comments_LayoutHTML extends Jaws_Gadget_HTML
      * Displays a block of pages belongs to the specified group
      *
      * @access  public
+     * @param   string  $gadget
      * @param   mixed   $limit    limit recent comments (int)
      * @return  string  XHTML content
      */
-    function RecentComments($limit = 0)
+    function RecentComments($gadget, $limit = 0)
     {
+        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $userModel = new Jaws_User();
+
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetRecentComments(null, $limit);
+        $comments = $model->GetRecentComments($gadget, $limit);
 
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
         $tpl->Load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS'));
+        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             $date = $GLOBALS['app']->loadDate();
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($comments as $entry) {
                 $tpl->SetBlock('recent_comments/entry');
                 $tpl->SetVariable('name', $xss->filter($entry['name']));
@@ -61,6 +79,17 @@ class Comments_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt']));
 
                 $tpl->ParseBlock('recent_comments/entry');
+
+                if (!empty($entry['reply'])) {
+                    $user = $userModel->GetUser((int)$entry['replier'], true, true);
+                    $tpl->SetBlock('recent_comments/reply');
+                    $tpl->SetVariable('reply', $entry['reply']);
+                    $tpl->SetVariable('replier', $user['nickname']);
+                    $tpl->SetVariable('url', $user['url']);
+                    $tpl->SetVariable('email', $user['email']);
+                    $tpl->ParseBlock('recent_comments/reply');
+                }
+
             }
         }
         $tpl->ParseBlock('recent_comments');
