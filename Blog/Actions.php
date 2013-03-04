@@ -56,7 +56,7 @@ $actions['ShowCategory'] = array(
     'file'   => 'Categories',
 );
 
-$actions['EntriesByCategory'] = array(
+$actions['CategoryEntries'] = array(
     'layout' => true,
     'parametric' => true,
 );

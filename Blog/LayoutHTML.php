@@ -13,12 +13,12 @@
 class Blog_LayoutHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Get EntriesByCategory action params
+     * Get CategoryEntries action params
      *
      * @access  private
-     * @return  array    list of EntriesByCategory action params
+     * @return  array    list of CategoryEntries action params
      */
-    function EntriesByCategoryLayoutParams()
+    function CategoryEntriesLayoutParams()
     {
         $result = array();
         $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
@@ -30,8 +30,13 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('BLOG_LAYOUT_ENTRIES_BY_CATEGORY'),
+                'title' => _t('GLOBAL_CATEGORY'),
                 'value' => $pcats
+            );
+
+            $result[] = array(
+                'title' => _t('GLOBAL_COUNT'),
+                'value' => $this->gadget->GetRegistry('last_entries_limit')
             );
         }
 
@@ -45,7 +50,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      * @param   int     Category ID
      * @return  string  XHTML Template content
      */
-    function EntriesByCategory($cat = null)
+    function CategoryEntries($cat = null, $limit = 0)
     {
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         if (is_null($cat)) {
@@ -68,7 +73,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->Load('RecentPosts.html');
         $tpl->SetBlock('recent_posts');
         $tpl->SetVariable('title', $title);
-        $entries = $model->GetRecentEntries($cat);
+        $entries = $model->GetRecentEntries($cat, (int)$limit);
         if (!Jaws_Error::IsError($entries)) {
             $date = $GLOBALS['app']->loadDate();
            foreach ($entries as $e) {
@@ -227,7 +232,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function RecentPosts()
     {
-        return $this->EntriesByCategory();
+        return $this->CategoryEntries();
     }
 
     /**

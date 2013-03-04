@@ -972,7 +972,7 @@ class Blog_Model extends Jaws_Gadget_Model
      * @param   int     $cat    Category ID
      * @return  mixed   Returns a list of recent entries and Jaws_Error on error
      */
-    function GetRecentEntries($cat = null)
+    function GetRecentEntries($cat = null, $limit = 0)
     {
         $params              = array();
         $params['published'] = true;
@@ -1007,7 +1007,9 @@ class Blog_Model extends Jaws_Gadget_Model
         $sql.= '[published] = {published} AND [[blog]].[publishtime] <= {now}
                 ORDER BY [[blog]].[publishtime] DESC';
 
-        $limit = $this->gadget->GetRegistry('last_entries_limit');
+        if (empty($limit)) {
+            $limit = $this->gadget->GetRegistry('last_entries_limit');
+        }
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_ENTRIES'), _t('BLOG_NAME'));
