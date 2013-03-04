@@ -18,16 +18,6 @@ class FeedReader_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.8.0';
-
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageRSSSite',
-    );
+    var $_Version = '0.9.0';
 
 }

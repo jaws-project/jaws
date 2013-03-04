@@ -12,26 +12,26 @@
  * Use async mode, create Callback
  */
 var FeedReaderCallback = { 
-    deleterss: function(response) {
+    deletefeed: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            $('rsssites_datagrid').deleteItem();          
+            $('feedsites_datagrid').deleteItem();          
             getDG();
         }
         showResponse(response);
     },
     
-    insertrss: function(response) {
+    insertfeed: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('rsssites_datagrid').addItem();
-            $('rsssites_datagrid').setCurrentPage(0);
+            $('feedsites_datagrid').addItem();
+            $('feedsites_datagrid').setCurrentPage(0);
             getDG();
         }
         stopAction();
         showResponse(response);
     },
 
-    updaterss: function(response) {
+    updatefeed: function(response) {
         if (response[0]['css'] == 'notice-message') {
             getDG();
         }
@@ -39,7 +39,7 @@ var FeedReaderCallback = {
         showResponse(response);
     },
 
-    getrss: function(response) {
+    getfeed: function(response) {
         updateForm(response);
     }
 }
@@ -97,23 +97,23 @@ function stopAction()
  * Update form with new values
  *
  */
-function updateForm(rssInfo)
+function updateForm(feed)
 {
-    $('id').value          = rssInfo['id'];
-    $('title').value       = rssInfo['title'].defilter();
-    $('url').value         = rssInfo['url'];
-    $('cache_time').value  = rssInfo['cache_time'];
-    $('view_type').value   = rssInfo['view_type'];
-    $('count_entry').value = rssInfo['count_entry'];
-    $('title_view').value  = rssInfo['title_view'];
-    $('visible').value     = rssInfo['visible'];
+    $('id').value          = feed['id'];
+    $('title').value       = feed['title'].defilter();
+    $('url').value         = feed['url'];
+    $('cache_time').value  = feed['cache_time'];
+    $('view_type').value   = feed['view_type'];
+    $('count_entry').value = feed['count_entry'];
+    $('title_view').value  = feed['title_view'];
+    $('visible').value     = feed['visible'];
     $('btn_cancel').style.visibility = 'visible';
 }
 
 /**
- * Add/Update a RSS
+ * Add/Update a feed
  */
-function updateRSS()
+function updateFeed()
 {
     if ($('title').value.blank() ||
         $('url').value.blank() ||
@@ -124,7 +124,7 @@ function updateRSS()
     }
 
     if($('id').value==0) {
-            FeedReaderAjax.callAsync('insertrss',
+            FeedReaderAjax.callAsync('insertfeed',
                                 $('title').value,
                                 $('url').value,
                                 $('cache_time').value,
@@ -133,7 +133,7 @@ function updateRSS()
                                 $('title_view').value,
                                 $('visible').value);
     } else {
-        FeedReaderAjax.callAsync('updaterss',
+        FeedReaderAjax.callAsync('updatefeed',
                             $('id').value,
                             $('title').value,
                             $('url').value,
@@ -146,27 +146,27 @@ function updateRSS()
 }
 
 /**
- * Delete a RSS
+ * Delete a feed
  */
-function deleteRSS(element, id)
+function deleteFeed(element, id)
 {
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmFeedDelete);
     if (answer) {
-        FeedReaderAjax.callAsync('deleterss', id);
+        FeedReaderAjax.callAsync('deletefeed', id);
     }
     unselectDataGridRow();
 }
 
 /**
- * Edit a RSS
+ * Edit a feed
  *
  */
-function editRSS(element, id)
+function editFeed(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-    FeedReaderAjax.callAsync('getrss', id);
+    FeedReaderAjax.callAsync('getfeed', id);
 }
 
 var FeedReaderAjax = new JawsAjax('FeedReader', FeedReaderCallback);

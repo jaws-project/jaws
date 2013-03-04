@@ -25,83 +25,80 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Gets information of the RSS site
+     * Gets information of the feed site
      *
      * @access  public
-     * @param   int     $id    RSS Site ID
-     * @return  mixed   RSS Site information or false on error
+     * @param   int     $id    Feed site ID
+     * @return  mixed   Feed site information or false on error
      */
-    function GetRSS($id)
+    function GetFeed($id)
     {
-        $rssInfo = $this->_Model->GetRSS($id);
-        if (Jaws_Error::IsError($rssInfo)) {
+        $feed = $this->_Model->GetFeed($id);
+        if (Jaws_Error::IsError($feed)) {
             return false; //we need to handle errors on ajax
         }
 
-        return $rssInfo;
+        return $feed;
     }
 
     /**
-     * Inserts a new RSS site
+     * Inserts a new feed site
      *
      * @access  public
-     * @param   string  $title          Name of the RSS Site
-     * @param   string  $url            URL of the RSS Site
+     * @param   string  $title          Name of the feed site
+     * @param   string  $url            URL of the feed site
      * @param   int     $cache_time     Cache time period in seconds
      * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the RSS Site
+     * @param   int     $visible        The visibility status of the feed site
      * @return  array   Response array (notice or error)
      */
-    function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->gadget->CheckPermission('ManageRSSSite');
-        $this->_Model->InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Updates the RSS Site information
+     * Updates the feed site information
      *
      * @access  public
-     * @param   string  $id             RSS Site ID
-     * @param   string  $title          Name of the RSS Site
-     * @param   string  $url            URL of the RSS Site
+     * @param   string  $id             Feed site ID
+     * @param   string  $title          Name of the feed site
+     * @param   string  $url            URL of the feed site
      * @param   int     $cache_time     Cache time period in seconds
      * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the RSS Site
+     * @param   int     $visible        The visibility status of the feed site
      * @return  array   Response array (notice or error)
      */
-    function UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->gadget->CheckPermission('ManageRSSSite');
-        $this->_Model->UpdateRSS($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        $this->_Model->UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Deletes the RSS site
+     * Deletes the feed site
      *
      * @access  public
-     * @param   int    $id  RSS Site ID
+     * @param   int    $id  Feed site ID
      * @return  array  Response array (notice or error)
      */
-    function DeleteRSS($id)
+    function DeleteFeed($id)
     {
-        $this->gadget->CheckPermission('ManageRSSSite');
-        $this->_Model->DeleteRSS($id);
+        $this->_Model->DeleteFeed($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Gets RSS sites for data grid
+     * Gets feed sites for data grid
      *
      * @access  public
      * @param   int     $offset Data offset
-     * @return  array   RSS Sites
+     * @return  array   Feed sites
      */
     function GetData($offset)
     {
@@ -109,6 +106,6 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
         if (!is_numeric($offset)) {
             $offset = null;
         }
-        return $gadget->GetRSSSites($offset);
+        return $gadget->GetFeedSites($offset);
     }
 }

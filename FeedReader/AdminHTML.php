@@ -13,44 +13,43 @@
 class FeedReader_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Prepares data of RSS sites for data grid
+     * Prepares data of feed sites for data grid
      *
      * @access  public
      * @param   int    $offset  Data offset
-     * @return  array  List of RSS sites
+     * @return  array  List of feed sites
      */
-    function GetRSSSites($offset = null)
+    function GetFeedSites($offset = null)
     {
         $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
 
-        $rsssites = $model->GetRSSs(false, 12, $offset);
-        if (Jaws_Error::IsError($rsssites)) {
+        $sites = $model->GetFeeds(false, 12, $offset);
+        if (Jaws_Error::IsError($sites)) {
             return array();
         }
 
         $newData = array();
-        foreach ($rsssites as $site) {
+        foreach ($sites as $site) {
             $siteData = array();
             $siteData['id']    = $site['id'];
             $siteData['title'] = '<span style="white-space: nowrap;"><a href="'.$site['url'].'" title="'.$site['url'];
             $siteData['title'].= '" target="_blank" style="text-decoration: none;">'.$site['title'].'</a></span>';
             $siteData['visible'] = ($site['visible']?_t('GLOBAL_YES') : _t('GLOBAL_NO'));
+
             $actions = '';
-            if ($this->gadget->GetPermission('ManageRSSSite')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript: editRSS(this, '".$site['id']."');",
-                                            STOCK_EDIT);
-                $actions.= $link->Get().'&nbsp;';
-            }
-            if ($this->gadget->GetPermission('ManageRSSSite')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: deleteRSS(this, '".$site['id']."');",
-                                            STOCK_DELETE);
-                $actions.= $link->Get().'&nbsp;';
-            }
+            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                                        "javascript: editFeed(this, '".$site['id']."');",
+                                        STOCK_EDIT);
+            $actions.= $link->Get().'&nbsp;';
+            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                                        "javascript: deleteFeed(this, '".$site['id']."');",
+                                        STOCK_DELETE);
+            $actions.= $link->Get().'&nbsp;';
+
             $siteData['actions'] = $actions;
             $newData[] = $siteData;
         }
+
         return $newData;
     }
 
@@ -63,12 +62,12 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
     function DataGrid()
     {
         $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
-        $total = $model->TotalOfData('rss_sites');
+        $total = $model->TotalOfData('feeds');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->TotalRows($total);
         $datagrid->pageBy(12);
-        $datagrid->SetID('rsssites_datagrid');
+        $datagrid->SetID('feedsites_datagrid');
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_ID'));
         $column1->SetStyle('width: 32px; white-space:nowrap;');
         $datagrid->AddColumn($column1);
@@ -165,17 +164,15 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
         $tpl->SetVariable('visible', $visibleType->Get());
 
-        if ($this->gadget->GetPermission('ManageRSSSite')) {
-            $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-            $btncancel->SetStyle('visibility: hidden;');
-            $btncancel->AddEvent(ON_CLICK, 'stopAction();');
-            $tpl->SetVariable('btn_cancel', $btncancel->Get());
+        $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btncancel->SetStyle('visibility: hidden;');
+        $btncancel->AddEvent(ON_CLICK, 'stopAction();');
+        $tpl->SetVariable('btn_cancel', $btncancel->Get());
 
-            $btnsave =& Piwi::CreateWidget('Button', 'btn_save',
-                                           _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $btnsave->AddEvent(ON_CLICK, 'updateRSS();');
-            $tpl->SetVariable('btn_save', $btnsave->Get());
-        }
+        $btnsave =& Piwi::CreateWidget('Button', 'btn_save',
+                                       _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnsave->AddEvent(ON_CLICK, 'updateFeed();');
+        $tpl->SetVariable('btn_save', $btnsave->Get());
 
         $tpl->SetVariable('incompleteFeedFields', _t('FEEDREADER_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmFeedDelete',    _t('FEEDREADER_CONFIRM_DELETE_FEED'));

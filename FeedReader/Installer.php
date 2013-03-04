@@ -22,7 +22,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
         }
 
-        $new_dir = JAWS_DATA . 'rsscache' . DIRECTORY_SEPARATOR;
+        $new_dir = JAWS_DATA . 'feedcache' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('FEEDREADER_NAME'));
         }
@@ -46,7 +46,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $result = $GLOBALS['db']->dropTable('rss_sites');
+        $result = $GLOBALS['db']->dropTable('feeds');
         if (Jaws_Error::IsError($result)) {
             $gName  = _t('FEEDREADER_NAME');
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
@@ -70,20 +70,21 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
+        $result = $this->installSchema('schema.xml', '', "0.8.0.xml");
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        // ACL keys
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/DeleteSite');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/UpdateProperties');
+        $new_feed_dir = JAWS_DATA. 'feedcache'. DIRECTORY_SEPARATOR;
+        $old_feed_dir = JAWS_DATA. 'rsscache'.  DIRECTORY_SEPARATOR;
+        if (!Jaws_Utils::mkdir($new_feed_dir)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_feed_dir), _t('FEEDREADER_NAME'));
+        }
 
-        //registry keys
-        $this->gadget->AddRegistry('default_feed', '0');
-        $this->gadget->DelRegistry('limit_entries');
-        $this->gadget->DelRegistry('order_type');
-        $this->gadget->DelRegistry('sort_type');
+        Jaws_Utils::delete($old_feed_dir);
+
+        // ACL keys
+        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/ManageRSSSite');
 
         return true;
     }

@@ -22,7 +22,7 @@ class FeedReaderURLListHook
                         'title' => _t('FEEDREADER_NAME'));
 
         $model  = $GLOBALS['app']->loadGadget('FeedReader', 'Model');
-        $feeds = $model->GetRSSs();
+        $feeds = $model->GetFeeds();
         if (!Jaws_Error::isError($feeds)) {
             $max_size = 20;
             foreach ($feeds as $feed) {

@@ -21,7 +21,7 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
     {
         $result = array();
         $rModel = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
-        $sites = $rModel->GetRSSs();
+        $sites = $rModel->GetFeeds();
         if (!Jaws_Error::isError($sites)) {
             $psites = array();
             foreach ($sites as $site) {
@@ -38,16 +38,16 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Displays titles of the RSS sites
+     * Displays titles of the feed sites
      *
      * @access  public
-     * @param   int     $id     RSS site ID
-     * @return  string  XHTML content with all titles and links of RSS sites
+     * @param   int     $id     Feed site ID
+     * @return  string  XHTML content with all titles and links of feed sites
      */
     function Display($id = 0)
     {
         $model = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
-        $site = $model->GetRSS($id);
+        $site = $model->GetFeed($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
             return false;
         }
@@ -73,8 +73,8 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         }
         $parser->setParams($options);
 
-        if (Jaws_Utils::is_writable(JAWS_DATA.'rsscache')) {
-            $parser->cache_dir = JAWS_DATA . 'rsscache';
+        if (Jaws_Utils::is_writable(JAWS_DATA.'feedcache')) {
+            $parser->cache_dir = JAWS_DATA . 'feedcache';
         }
 
         $res = $parser->fetch($site['url']);

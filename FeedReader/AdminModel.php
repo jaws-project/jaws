@@ -14,22 +14,22 @@ require_once JAWS_PATH . 'gadgets/FeedReader/Model.php';
 class FeedReader_AdminModel extends FeedReader_Model
 {
     /**
-     * Inserts a new RSS site
+     * Inserts a new feed site
      *
      * @access  public
-     * @param   string  $title          Name of the RSS Site
-     * @param   string  $url            URL of the RSS Site
+     * @param   string  $title          Name of the feed Site
+     * @param   string  $url            URL of the feed Site
      * @param   int     $cache_time     Cache time period in seconds
      * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the RSS Site
+     * @param   int     $visible        The visibility status of the feed Site
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function InsertRSS($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
         $sql = '
-            INSERT INTO [[rss_sites]]
+            INSERT INTO [[feeds]]
                 ([title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible])
             VALUES
                 ({title}, {url}, {cache_time}, {view_type}, {count_entry}, {title_view}, {visible})';
@@ -54,23 +54,23 @@ class FeedReader_AdminModel extends FeedReader_Model
     }
 
     /**
-     * Updates the RSS Site information
+     * Updates the feed Site information
      *
      * @access  public
-     * @param   string  $id             RSS Site ID
-     * @param   string  $title          Name of the RSS Site
-     * @param   string  $url            URL of the RSS Site
+     * @param   string  $id             Feed site ID
+     * @param   string  $title          Name of the feed site
+     * @param   string  $url            URL of the feed site
      * @param   int     $cache_time     Cache time period in seconds
      * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable RSS title
+     * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the RSS Site
+     * @param   int     $visible        The visibility status of the feed site
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function UpdateRSS($RSSid, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
         $sql = '
-            UPDATE [[rss_sites]] SET
+            UPDATE [[feeds]] SET
                 [title]       = {title},
                 [url]         = {url},
                 [cache_time]  = {cache_time},
@@ -81,7 +81,7 @@ class FeedReader_AdminModel extends FeedReader_Model
             WHERE [id] = {id}';
 
         $params = array();
-        $params['id']          = (int)$RSSid;
+        $params['id']          = (int)$id;
         $params['title']       = $title;
         $params['url']         = $url;
         $params['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
@@ -101,15 +101,15 @@ class FeedReader_AdminModel extends FeedReader_Model
     }
 
     /**
-     * Deletes the RSS site
+     * Deletes the feed site
      *
      * @access  public
-     * @param   int     $id  RSS Site ID
+     * @param   int     $id  Feed site ID
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function DeleteRSS($id)
+    function DeleteFeed($id)
     {
-        $sql = 'DELETE FROM [[rss_sites]] WHERE [id] = {id}';
+        $sql = 'DELETE FROM [[feeds]] WHERE [id] = {id}';
         $result = $GLOBALS['db']->query($sql, array('id' => $id));
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);

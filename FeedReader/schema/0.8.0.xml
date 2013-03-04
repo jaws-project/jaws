@@ -4,8 +4,7 @@
  <name><variable>database</variable></name>
 
  <table>
-    <name><variable>table_prefix</variable>feeds</name>
-    <was><variable>table_prefix</variable>rss_sites</was>
+    <name><variable>table_prefix</variable>rss_sites</name>
     <declaration>
 
         <field>
@@ -17,6 +16,7 @@
 
         <field>
             <name>title</name>
+            <was>name</was>
             <type>text</type>
             <length>255</length>
         </field>
@@ -43,6 +43,7 @@
 
         <field>
             <name>count_entry</name>
+            <was>count</was>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>

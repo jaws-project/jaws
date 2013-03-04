@@ -13,15 +13,15 @@
 class FeedReader_Model extends Jaws_Gadget_Model
 {
     /**
-     * Gets list of possible RSS sites
+     * Gets list of possible feed sites
      *
      * @access  public
      * @param   bool    $onlyVisible    Visible sites only
      * @param   int     $limit          Number of data to retrieve (false = returns all)
      * @param   int     $offset         Data offset
-     * @return  mixed   Array of RSS sites or Jaws_Error on failure
+     * @return  mixed   Array of feed sites or Jaws_Error on failure
      */
-    function GetRSSs($onlyVisible = false, $limit = false, $offset = null)
+    function GetFeeds($onlyVisible = false, $limit = false, $offset = null)
     {
         if (is_numeric($limit)) {
             $res = $GLOBALS['db']->setLimit($limit, $offset);
@@ -34,14 +34,14 @@ class FeedReader_Model extends Jaws_Gadget_Model
             $sql = '
                 SELECT
                     [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view]
-                FROM [[rss_sites]]
+                FROM [[feeds]]
                 WHERE [visible] = 1
                 ORDER BY [id] ASC';
         } else {
             $sql = '
                 SELECT
                     [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible]
-                FROM [[rss_sites]]
+                FROM [[feeds]]
                 ORDER BY [id] ASC';
         }
 
@@ -54,18 +54,18 @@ class FeedReader_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets information of the RSS site
+     * Gets information of the feed site
      *
      * @access  public
-     * @param   int     $id    RSS Site ID
-     * @return  mixed   Array of the RSS site data or Jaws_Error on failure
+     * @param   int     $id    Feed Site ID
+     * @return  mixed   Array of the feed site data or Jaws_Error on failure
      */
-    function GetRSS($id)
+    function GetFeed($id)
     {
         $sql = '
             SELECT
                 [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible]
-            FROM [[rss_sites]]
+            FROM [[feeds]]
             WHERE [id] = {id}';
 
         $row = $GLOBALS['db']->queryRow($sql, array('id' => $id));
