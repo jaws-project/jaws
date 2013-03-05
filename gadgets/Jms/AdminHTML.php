@@ -20,7 +20,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageGadgets')) {
-            return $this->ViewGadgets();
+            return $this->Gadgets();
         }
 
         $this->gadget->CheckPermission('ManagePlugins');
@@ -45,7 +45,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageGadgets')) {
             $menubar->AddOption('Gadgets', _t('JMS_GADGETS'),
-                                BASE_SCRIPT . '?gadget=Jms&amp;action=Admin', 'gadgets/Jms/images/gadgets.png');
+                                BASE_SCRIPT . '?gadget=Jms&amp;action=Gadgets', 'gadgets/Jms/images/gadgets.png');
         }
         if ($this->gadget->GetPermission('ManagePlugins')) {
             $menubar->AddOption('Plugins', _t('JMS_PLUGINS'),
@@ -56,12 +56,12 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Manages the gadgets settings
+     * Builds gadgets management UI
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function ViewGadgets()
+    function Gadgets()
     {
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
@@ -70,29 +70,27 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl = new Jaws_Template('gadgets/Jms/templates/');
         $tpl->Load('Admin.html');
-        $tpl->SetBlock('Jms');
+        $tpl->SetBlock('jms');
 
-        $tpl->SetVariable('confirmDisableComponent', _t('JMS_GADGETS_UNINSTALL_CONFIRM'));
-        $tpl->SetVariable('confirmPurgeComponent', _t('JMS_GADGETS_PURGE_CONFIRM'));
-        $tpl->SetVariable('confirmUninstallComponent', _t('JMS_GADGETS_UNINSTALL_CONFIRM'));
+        $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
+        $tpl->SetVariable('pluginsMode', 'false');
+
+        $tpl->SetVariable('lbl_outdated_gadgets', _t('JMS_GADGETS_OUTDATED_GADGETS'));
+        $tpl->SetVariable('lbl_notinstalled_gadgets', _t('JMS_GADGETS_NOTINSTALLED_GADGETS'));
+        $tpl->SetVariable('lbl_installed_gadgets', _t('JMS_GADGETS_INSTALLED_GADGETS'));
+        $tpl->SetVariable('outdated_desc', _t('JMS_GADGETS_OUTDATED_GADGETS_DESC'));
+        $tpl->SetVariable('notinstalled_desc', _t('JMS_GADGETS_NOTINSTALLED_GADGETS_DESC'));
+        $tpl->SetVariable('installed_desc', _t('JMS_GADGETS_INSTALLED_GADGETS_DESC'));
+
+        $tpl->SetVariable('lbl_update', _t('JMS_UPDATE'));
+        $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
+        $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));
+
+        $tpl->SetVariable('confirmDisableComponent', _t('JMS_GADGETS_CONFIRM_DISABLE'));
+        $tpl->SetVariable('confirmUninstallComponent', _t('JMS_GADGETS_CONFIRM_UNINSTALL'));
 
         $tpl->SetVariable('noAvailableData', _t('JMS_GADGETS_NOTHING'));
         $tpl->SetVariable('only_show_t', _t('JMS_ONLY_SHOW'));
-
-        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_combo');
-        $gadgetsCombo->SetSize(20);
-        $gadgetsCombo->SetStyle('width: 200px; height: 350px;');
-        $gadgetsCombo->AddEvent(ON_CHANGE, 'javascript: editGadget(this.value);');
-        foreach ($model->GetGadgetsList(false, true, true) as $gadgetName => $gadgetProperties) {
-            $gadgetsCombo->AddOption($gadgetProperties['name'], $gadgetName);
-        }
-
-        $onlyShow =& Piwi::CreateWidget('Combo', 'only_show');
-        $onlyShow->SetID('only_show');
-        $onlyShow->AddOption(_t('JMS_INSTALLED_COMPONENTS'), 'installed');
-        $onlyShow->AddOption(_t('JMS_UNINSTALLED_COMPONENTS'), 'notinstalled');
-        $onlyShow->AddOption(_t('JMS_OUTDATED_COMPONENTS'), 'outdated');
-        $onlyShow->AddEvent(ON_CHANGE, 'javascript: updateView();');
 
         $buttons =& Piwi::CreateWidget('HBox');
 
@@ -117,14 +115,9 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $buttons->Add($installGadget);
         $buttons->Add($updateGadget);
 
-        $tpl->SetVariable('combo_components', $gadgetsCombo->get());
-        $tpl->SetVariable('only_show', $onlyShow->Get());
         $tpl->SetVariable('buttons', $buttons->Get());
-        $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
-        $tpl->SetVariable('combo_name', 'gadgets_combo');
-        $tpl->SetVariable('pluginsMode', 'false');
-        $tpl->ParseBlock('Jms');
 
+        $tpl->ParseBlock('jms');
         return $tpl->Get();
     }
 
@@ -140,11 +133,15 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-
         $tpl = new Jaws_Template('gadgets/Jms/templates/');
         $tpl->Load('Admin.html');
-        $tpl->SetBlock('Jms');
+        $tpl->SetBlock('jms');
+
+        $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
+        $tpl->SetVariable('pluginsMode', 'true');
+
+        $tpl->ParseBlock('jms');
+        return $tpl->Get();
 
         $tpl->SetVariable('confirmUninstallComponent', _t('JMS_PLUGINS_UNINSTALL_CONFIRM'));
         $tpl->SetVariable('noAvailableData', _t('JMS_PLUGINS_NOTHING'));
@@ -156,6 +153,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $pluginsCombo->SetSize(20);
         $pluginsCombo->SetStyle('width: 200px; height: 350px;');
         $pluginsCombo->AddEvent(ON_CHANGE, 'javascript: editPlugin(this.value);');
+        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
         foreach ($model->GetPluginsList(true) as $pluginName => $pluginProperties) {
             $pluginsCombo->AddOption($pluginProperties['name'], $pluginName);
         }
@@ -197,9 +195,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('combo_components', $pluginsCombo->get());
         $tpl->SetVariable('only_show', $onlyShow->Get());
         $tpl->SetVariable('buttons', $buttons->Get());
-        $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
         $tpl->SetVariable('combo_name', 'plugins_combo');
-        $tpl->SetVariable('pluginsMode', 'true');
         $tpl->ParseBlock('Jms');
 
         return $tpl->Get();

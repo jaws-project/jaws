@@ -13,54 +13,48 @@
 var JmsCallback = {
     installgadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 0;
-            updateView();
-            editGadget(selectedGadget);
-        }
-        showResponse(response);
-    },
-
-    installplugin: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 0;
-            updateView();
-            editPlugin(selectedPlugin);
+            components[selectedComponent].state = 'installed';
+            buildComponentList();
         }
         showResponse(response);
     },
 
     uninstallgadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 1;
-            updateView();
-            editGadget(selectedGadget);
+            components[selectedComponent].state = 'notinstalled';
+            buildComponentList();
         }
         showResponse(response);
     },
 
-    uninstallplugin: function(response) {
+    disablegadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 1;
-            updateView();
-            editPlugin(selectedPlugin);
-        }
-        showResponse(response);
-    },
-
-    purgegadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 1;
-            updateView();
-            editGadget(selectedGadget);
+            components[selectedComponent].state = 'notinstalled';
+            buildComponentList();
         }
         showResponse(response);
     },
 
     updategadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('only_show').selectedIndex = 0;
-            updateView();
-            editGadget(selectedGadget);
+            components[selectedComponent].state = 'installed';
+            buildComponentList();
+        }
+        showResponse(response);
+    },
+
+    enableplugin: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            components[selectedComponent].state = 'installed';
+            buildComponentList();
+        }
+        showResponse(response);
+    },
+
+    disableplugin: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            components[selectedComponent].state = 'notinstalled';
+            buildComponentList();
         }
         showResponse(response);
     },
@@ -68,6 +62,111 @@ var JmsCallback = {
     updatepluginusage: function(response) {
         stopPluginUsage();
         showResponse(response);
+    }
+}
+
+/**
+ * Initiates JMS gadgets/plugins
+ */
+function init()
+{
+    components = pluginsMode?
+        JmsAjax.callSync('getplugins'):
+        JmsAjax.callSync('getgadgets');
+    buildComponentList();
+}
+
+/**
+ * Builds the gadgets/plugins listbox
+ */
+function buildComponentList()
+{
+    var sections = {};
+    sections.outdated = $('outdated_gadgets').set('html', '');
+    sections.notinstalled = $('notinstalled_gadgets').set('html', '');
+    sections.installed = $('installed_gadgets').set('html', '');
+    Object.keys(components).sort().each(function(name) {
+        sections[components[name]['state']].grab(getComponentItem(components[name]));
+    });
+    $('components').getElements('h3').show();
+    $('components').getElements('ul:empty').getPrevious('h3').hide();
+}
+
+/**
+ * Builds and returns a gadget/plugin item
+ */
+function getComponentItem(comp)
+{
+    var li = new Element('li', {id:comp.realname}),
+        span = new Element('span').set('html', comp.name),
+        img = new Element('img', {alt:comp.realname}),
+        a = new Element('a').set('html', actions[comp.state]);
+    img.src = pluginsMode?
+        'gadgets/Jms/images/plugins.png' :
+        'gadgets/' + comp.realname + '/images/logo.png';
+    a.href = 'javascript:void(0);';
+    a.addEvent('click', function(e) {
+        e.stop();
+        selectedComponent = comp.realname;
+        setupComponent();
+    });
+    li.addEvent('click', selectComponent);
+    li.adopt(img, span, a);
+    return li;
+    //console.log(li);
+}
+
+/**
+ * Highlights clicked item in the component list
+ */
+function selectComponent()
+{
+    selectedComponent = this.id;
+    //console.log(selectedComponent);
+    $$('#components li.selected').each(function(li) {
+        li.removeClass('selected');
+    });
+    this.addClass('selected');
+    componentInfo()
+    //showButtons();
+}
+
+/**
+ * Displays useful information about gadget/plugin
+ */
+function componentInfo()
+{
+    var compInfo = pluginsMode?
+        JmsAjax.callSync('getplugininfo', selectedComponent):
+        JmsAjax.callSync('getgadgetinfo', selectedComponent);
+    $('component_info').show().set('html', compInfo);
+}
+
+/**
+ * Installs, uninstalls or updates the gadget/plugin
+ */
+function setupComponent()
+{
+    switch (components[selectedComponent].state) {
+        case 'outdated':
+            JmsAjax.callAsync('updategadget', selectedComponent);
+            break;
+        case 'notinstalled':
+            if (pluginsMode) {
+                JmsAjax.callAsync('enableplugin', selectedComponent);
+            } else {
+                JmsAjax.callAsync('installgadget', selectedComponent);
+            }
+            break;
+        case 'installed':
+            if (pluginsMode) {
+                JmsAjax.callAsync('disableplugin', selectedComponent);
+            } else {
+                if (confirm(confirmUninstallComponent)) {
+                    JmsAjax.callAsync('uninstallgadget', selectedComponent);
+                }
+            }
+            break;
     }
 }
 
@@ -326,114 +425,6 @@ function savePluginUsage()
 }
 
 /**
- * Installs a component
- */
-function installComponent()
-{
-    if (pluginsMode == false) {
-        JmsAjax.callAsync('installgadget', selectedGadget);
-    } else {
-        JmsAjax.callAsync('installplugin', selectedPlugin);
-    }
-}
-
-/**
- * Uninstall component
- */
-function uninstallComponent()
-{
-    var answer = confirm(confirmUninstallComponent);
-    if (answer) {
-        if (pluginsMode == false) {
-            JmsAjax.callAsync('uninstallgadget', selectedGadget);
-        } else {
-            JmsAjax.callAsync('uninstallplugin', selectedPlugin);
-        }
-    }
-}
-
-/**
- * Uninstall component
- */
-function purgeComponent()
-{
-    if (pluginsMode == false) {
-        var answer = confirm(confirmPurgeComponent);
-        if (answer) {
-            JmsAjax.callAsync('purgegadget', selectedGadget);
-        }
-    }
-}
-
-/**
- * Updates component
- */
-function updateComponent()
-{
-    if (pluginsMode == false) {
-        JmsAjax.callAsync('updategadget', selectedGadget);
-    }
-}
-
-/**
- * Fill the gadgets combo
- */
-function getGadgets()
-{
-    resetCombo($('gadgets_combo'));
-    var gadgetsList = JmsAjax.callSync('getgadgets', $('only_show').value);
-    var found       = false;
-    for(gadget in gadgetsList) {
-        if (gadgetsList[gadget]['realname'] == undefined) {
-            continue;
-        }
-        var op   = new Option();
-        op.value = gadgetsList[gadget]['realname'];
-        op.text  = gadgetsList[gadget]['name'];
-        op.title = gadgetsList[gadget]['description'];
-        $('gadgets_combo').options[$('gadgets_combo').options.length] = op;
-        found = true;
-    }
-
-    if (found == false) {
-        var op   = new Option();
-        op.value = '-';
-        op.text  = noAvailableData;
-        $('gadgets_combo').options[$('gadgets_combo').options.length] = op;
-    }
-    paintCombo($('gadgets_combo'), oddColor, evenColor);
-}
-
-/**
- * Fill the plugins combo
- */
-function getPlugins(reset)
-{
-    resetCombo($('plugins_combo'));
-    var pluginsList = JmsAjax.callSync('getplugins', $('only_show').value);
-    var found = false;
-    for(plugin in pluginsList) {
-        if (pluginsList[plugin]['realname'] == undefined) {
-            continue;
-        }
-        var op   = new Option();
-        op.value = pluginsList[plugin]['realname'];
-        op.text  = pluginsList[plugin]['name'];
-        op.title = pluginsList[plugin]['description'];
-        $('plugins_combo').options[$('plugins_combo').options.length] = op;
-        found = true;
-    }
-
-    if (found == false) {
-        var op   = new Option();
-        op.value = '-';
-        op.text  = noAvailableData;
-        $('plugins_combo').options[$('plugins_combo').options.length] = op;
-    }
-    paintCombo($('plugins_combo'), oddColor, evenColor);
-}
-
-/**
  * Updates the gadget/plugins view
  */
 function updateView()
@@ -447,17 +438,14 @@ function updateView()
     }
 }
 
-var JmsAjax = new JawsAjax('Jms', JmsCallback);
+var JmsAjax = new JawsAjax('Jms', JmsCallback),
+    components = {};
 
+var selectedComponent = null;
 var selectedGadget = null;
 var selectedPlugin = null;
 
-var pluginsMode = false;
-
 var editingPlugins = false;
-
-var evenColor = '#fff';
-var oddColor  = '#edf3fe';
 
 var tree = null;
 var aItem = null;

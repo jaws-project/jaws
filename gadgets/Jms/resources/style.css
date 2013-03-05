@@ -1,3 +1,19 @@
+#components {width:310px; background-color:#f7f7f7; border:1px solid #d3d7cf; padding:5px;}
+#components > div {height:500px; overflow:auto; background-color:white; border:1px solid #d3d7cf; padding:0px;}
+#components h3 {margin:1px; padding:4px; background-color:#3465a4; color:white; font-size:small; font-weight:bold;}
+#components ul {margin:0; padding:0; list-style:none;}
+#components li {padding:2px;}
+#components li:hover {background-color:#f1f8ff;}
+#components li:hover a {display:inline;}
+#components li.selected {background-color:#729FCF;}
+#components li.selected span {color:white;}
+#components li.selected a {color:white;}
+#components img {width:32px; vertical-align:middle;}
+#components span {display:inline-block; width:200px; padding-left:5px;}
+#components a {display:none;}
+
+#component_info {border:1px solid #d3d7cf; margin-left:5px; padding:5px;}
+
 #buttons_area {
     float: right;
     padding: 0px;

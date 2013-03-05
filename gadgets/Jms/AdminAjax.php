@@ -30,11 +30,30 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      * @param   string   $itemsToShow  Items that should be returned (installed, not installed, outdated)
      * @return  array    Gadget's list
      */
-    function GetGadgets($itemsToShow)
+    function GetGadgets()
     {
         $this->gadget->CheckPermission('ManageGadgets');
-
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $gadgets = $this->_Model->GetGadgetsList();
+        $result = array();
+        foreach ($gadgets as $key => $gadget) {
+            $g = array();
+            if (!$gadget['updated']) {
+                $g['state'] = 'outdated';
+            } else if (!$gadget['installed']) {
+                $g['state'] = 'notinstalled';
+            } else if (!$gadget['core_gadget']) {
+                $g['state'] = 'installed';
+            } else {
+                continue;
+            }
+            $g['name'] = $gadget['name'];
+            $g['realname'] = $gadget['realname'];
+            $g['description'] = $gadget['description'];
+            $result[$key] = $g;
+        }
+        return $result;
+        
         switch($itemsToShow) {
         case 'installed':
             return $model->GetGadgetsList(false, true, true);
@@ -47,6 +66,42 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             break;
         default:
             return $model->GetGadgetsList(false, true, true);
+            break;
+        }
+    }
+
+    /**
+     * Get a list of installed / not installed plugins
+     *
+     * @access  public
+     * @param   string   $itemsToShow  Items that should be returned (installed, not installed)
+     * @return  array    Plugin's list
+     */
+    function GetPlugins()
+    {
+        $this->gadget->CheckPermission('ManagePlugins');
+        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $plugins = $this->_Model->GetPluginsList();
+        $result = array();
+        foreach ($plugins as $key => $plugin) {
+            $p = array();
+            $p['name'] = $plugin['name'];
+            $p['realname'] = $plugin['realname'];
+            $p['description'] = '';//$plugin['description'];
+            $p['state'] = $plugin['installed']? 'installed' : 'notinstalled';
+            $result[$key] = $p;
+        }
+        return $result;
+
+        switch($itemsToShow) {
+        case 'installed':
+            return $this->_Model->GetPluginsList(true);
+            break;
+        case 'notinstalled':
+            return $this->_Model->GetPluginsList(false);
+            break;
+        default:
+            return $this->_Model->GetPluginsList(true);
             break;
         }
     }
@@ -77,30 +132,6 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePlugins');
         $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
         return $html->GetPluginInfo($plugin);
-    }
-
-    /**
-     * Get a list of installed / not installed plugins
-     *
-     * @access  public
-     * @param   string   $itemsToShow  Items that should be returned (installed, not installed)
-     * @return  array    Plugin's list
-     */
-    function GetPlugins($itemsToShow)
-    {
-        $this->gadget->CheckPermission('ManagePlugins');
-
-        switch($itemsToShow) {
-        case 'installed':
-            return $this->_Model->GetPluginsList(true);
-            break;
-        case 'notinstalled':
-            return $this->_Model->GetPluginsList(false);
-            break;
-        default:
-            return $this->_Model->GetPluginsList(true);
-            break;
-        }
     }
 
     /**
@@ -163,13 +194,13 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Installs a plugin
+     * Enables the plugin
      *
      * @access  public
      * @param   string  $plugin  Plugin's name
      * @return  array   Response array (notice or error)
      */
-    function InstallPlugin($plugin)
+    function EnablePlugin($plugin)
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
@@ -185,13 +216,13 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Disables a gadget
+     * Disables the gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
      * @return  array   Response array (notice or error)
      */
-    function UninstallGadget($gadget)
+    function DisableGadget($gadget)
     {
         $this->gadget->CheckPermission('ManageGadgets');
 
@@ -213,13 +244,13 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Disables a plugin
+     * Disables the plugin
      *
      * @access  public
      * @param   string  $plugin  Plugin's name
      * @return  array   Response array (notice or error)
      */
-    function UninstallPlugin($plugin)
+    function DisablePlugin($plugin)
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
@@ -235,13 +266,13 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Purges a gadget
+     * Uninstalls the gadget
      *
      * @access  public
      * @param   string  $gadget  Gadget's name
      * @return  array   Response array (notice or error)
      */
-    function PurgeGadget($gadget)
+    function UninstallGadget($gadget)
     {
         $this->gadget->CheckPermission('ManageGadgets');
 

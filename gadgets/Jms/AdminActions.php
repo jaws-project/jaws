@@ -12,10 +12,10 @@ $actions = array();
 $actions['DefaultAction'] = array(
     'normal' => true,
 );
-$actions['Plugins'] = array(
+$actions['Gadgets'] = array(
     'normal' => true,
 );
-$actions['Admin'] = array(
+$actions['Plugins'] = array(
     'normal' => true,
 );
 $actions['UpdateGadget'] = array(
