@@ -735,26 +735,24 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddGroup($name, $title, $description, $enabled)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        if (trim($name) == '') {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_INCOMPLETE_FIELDS'),
-                                                       RESPONSE_ERROR);
+        $res = $this->_UserModel->AddGroup(
+            array(
+                'name' => $name,
+                'title' => $title,
+                'description' => $description,
+                'enabled' => (bool)$enabled
+            )
+        );
+
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $res = $this->_UserModel->AddGroup(
-                array(
-                    'name' => $name,
-                    'title' => $title,
-                    'description' => $description,
-                    'enabled' => (bool)$enabled
-                )
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('USERS_GROUPS_CREATED', $title),
+                RESPONSE_NOTICE
             );
-            if ($res === false) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_NOT_CREATED', $title),
-                                                           RESPONSE_ERROR);
-            } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_CREATED', $title),
-                                                           RESPONSE_NOTICE);
-            }
         }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -781,12 +779,13 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                 'enabled' => (bool)$enabled
             )
         );
-        if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_NOT_UPDATED', $title),
-                                                       RESPONSE_ERROR);
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_UPDATED', $title),
-                                                       RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('USERS_GROUPS_UPDATED', $title),
+                RESPONSE_NOTICE
+            );
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
