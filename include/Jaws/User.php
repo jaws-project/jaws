@@ -533,7 +533,7 @@ class Jaws_User
         $result = $usersTable->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
+                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
             }
             return $result;
         }
@@ -656,7 +656,7 @@ class Jaws_User
         $result = $usersTable->update($uData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $username));
+                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
             }
             return $result;
         }
