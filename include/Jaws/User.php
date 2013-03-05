@@ -802,12 +802,32 @@ class Jaws_User
      */
     function AddGroup($gData)
     {
+        // name
+        $gData['name'] = trim($gData['name'], '-_.@');
+        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                                          __FUNCTION__,
+                                          JAWS_ERROR_NOTICE);
+        }
+        $gData['name'] = strtolower($gData['name']);
+
+        // title
+        $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
+        if (empty($gData['title'])) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                                          __FUNCTION__,
+                                          JAWS_ERROR_NOTICE);
+        }
+
         $gData['removable'] = isset($gData['removable'])? (bool)$gData['removable'] : true;
         $gData['enabled'] = isset($gData['enabled'])? (bool)$gData['enabled'] : true;
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $result = $groupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($result)) {
-            return false;
+            if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
+                $result->SetMessage(_t('USERS_GROUPS_ALREADY_EXISTS', $gData['name']));
+            }
+            return $result;
         }
 
         // Let everyone know a group has been added
@@ -835,6 +855,23 @@ class Jaws_User
             unset($gData[$invalid]);
         }
 
+        // name
+        $gData['name'] = trim($gData['name'], '-_.@');
+        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                                          __FUNCTION__,
+                                          JAWS_ERROR_NOTICE);
+        }
+        $gData['name'] = strtolower($gData['name']);
+
+        // title
+        $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
+        if (empty($gData['title'])) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                                          __FUNCTION__,
+                                          JAWS_ERROR_NOTICE);
+        }
+
         if (isset($gData['enabled'])) {
             $gData['enabled'] = (bool)$gData['enabled'];
         }
@@ -842,7 +879,10 @@ class Jaws_User
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $result = $groupsTable->update($gData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            return false;
+            if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
+                $result->SetMessage(_t('USERS_GROUPS_ALREADY_EXISTS', $gData['name']));
+            }
+            return $result;
         }
 
         // Let everyone know a group has been updated
