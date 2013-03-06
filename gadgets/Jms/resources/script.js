@@ -15,6 +15,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -23,6 +24,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -31,6 +33,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -39,6 +42,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -47,6 +51,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -55,6 +60,7 @@ var JmsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
+            cancel();
         }
         showResponse(response);
     },
@@ -62,6 +68,7 @@ var JmsCallback = {
     updatepluginusage: function(response) {
         stopPluginUsage();
         showResponse(response);
+        //cancel();
     }
 }
 
@@ -102,7 +109,7 @@ function getComponentItem(comp)
         img = new Element('img', {alt:comp.realname}),
         a = new Element('a').set('html', actions[comp.state]);
     img.src = pluginsMode?
-        'gadgets/Jms/images/plugins.png' :
+        'gadgets/Jms/images/plugin.png' :
         'gadgets/' + comp.realname + '/images/logo.png';
     a.href = 'javascript:void(0);';
     a.addEvent('click', function(e) {
@@ -122,13 +129,21 @@ function getComponentItem(comp)
 function selectComponent()
 {
     selectedComponent = this.id;
-    //console.log(selectedComponent);
-    $$('#components li.selected').each(function(li) {
-        li.removeClass('selected');
-    });
+    $$('#components li.selected').removeClass('selected');
     this.addClass('selected');
     componentInfo()
-    //showButtons();
+    showButtons();
+}
+
+/**
+ * Deselects component in the list and hides info page
+ */
+function cancel()
+{
+    selectedComponent = null;
+    $$('#components li.selected').removeClass('selected');
+    $('actions').getElements('button').hide();
+    $('component_info').hide();
 }
 
 /**
@@ -171,26 +186,25 @@ function setupComponent()
 }
 
 /**
- * Show the buttons depending on the current tab and
- * the items to show
+ * Disables the gadget
+ */
+function disableGadget()
+{
+    if (confirm(confirmDisableComponent)) {
+        JmsAjax.callAsync('disablegadget', selectedComponent);
+    }
+}
+
+/**
+ * Shows/hides buttons depending on the current tab and selected component
  */
 function showButtons()
 {
-    if (pluginsMode == false) {
-        switch($('only_show').value) {
-        case 'notinstalled':
-            $('install_button').style.display   = 'block';
-            break;
-        case 'installed':
-            $('uninstall_button').style.display = 'block';
-            $('purge_button').style.display     = 'block';
-            break;
-        case 'outdated':
-            $('update_button').style.display    = 'block';
-            break;
-        }
-    } else {
-        switch($('only_show').value) {
+    var state = components[selectedComponent].state;
+    $('actions').getElements('button').hide();
+    $('btn_cancel').show('inline');
+    if (pluginsMode) {
+        switch(state) {
         case 'notinstalled':
             $('install_button').style.display   = 'block';
             break;
@@ -204,76 +218,18 @@ function showButtons()
             }
             break;
         }
-    }
-}
-
-/**
- * Edits a gadget showing basic info about it
- */
-function editGadget(gadget)
-{
-    if (gadget.blank()) {
-        return false;
-    }
-
-    if (gadget == '-') {
-        return false;
-    }
-
-    cleanWorkingArea(true);
-
-    var gadgetInfo = JmsAjax.callSync('getgadgetinfo', gadget);
-    if (gadgetInfo == null) {
-        return false; //Check
-    }
-    selectedGadget = gadget;
-    $('work_area').innerHTML = gadgetInfo;
-    showButtons();
-}
-
-/**
- * Shows basic plugin info
- */
-function editPlugin(plugin)
-{
-    if (plugin.blank()) {
-        return false;
-    }
-
-    editingPlugins = false;
-    cleanWorkingArea(true);
-    if (plugin == '-') {
-        return false;
-    }
-
-    var pluginInfo = JmsAjax.callSync('getplugininfo', plugin);
-    if (pluginInfo == null) {
-        return false; //Check
-    }
-
-    selectedPlugin = plugin;
-    $('work_area').innerHTML = pluginInfo;
-    showButtons();
-}
-
-/**
- * Clean the working area
- */
-function cleanWorkingArea(hideButtons)
-{
-    $('work_area').innerHTML = '';
-    if (hideButtons != undefined) {
-        if (hideButtons == true) {
-            var buttons = new Array('purge_button', 'uninstall_button',
-                                    'install_button', 'update_button',
-                                    'plugin_usage', 'plugin_saveusage',
-                                    'plugin_stopusage'
-                                    );
-            for(var i=0; i<buttons.length; i++) {
-                if ($(buttons[i]) != undefined) {
-                    $(buttons[i]).style.display = 'none';
-                }
-            }
+    } else {
+        switch(state) {
+        case 'outdated':
+            $('btn_update').show('inline');
+            break;
+        case 'notinstalled':
+            $('btn_install').show('inline');
+            break;
+        case 'installed':
+            $('btn_uninstall').show('inline');
+            $('btn_disable').show('inline');
+            break;
         }
     }
 }

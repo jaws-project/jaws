@@ -141,10 +141,12 @@ class Jms_AdminModel extends Jaws_Gadget_Model
                 $ei = str_replace(' ', '', $ei);
                 $pInstalled = in_array($plugin, $ei);
 
-                $pluginsList[$plugin] = array('realname'  => $plugin,
-                                              'name'      => $plugin,
-                                              'installed' => (bool)$pInstalled,
-                                             );
+                $pluginsList[$plugin] = array(
+                    'realname' => $plugin,
+                    'name' => $plugin,
+                    'description' => _t("PLUGINS_$plugin_DESCRIPTION"),
+                    'installed' => (bool)$pInstalled
+                );
             }
         }
 

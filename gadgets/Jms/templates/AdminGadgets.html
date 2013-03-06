@@ -1,0 +1,30 @@
+<!-- BEGIN jms -->
+{menubar}
+<table width="100%">
+  <tr>
+    <td id="components">
+      <div>
+        <h3 title="{outdated_desc}">{lbl_outdated_gadgets}</h3>
+        <ul id="outdated_gadgets"></ul>
+        <h3 title="{notinstalled_desc}">{lbl_notinstalled_gadgets}</h3>
+        <ul id="notinstalled_gadgets"></ul>
+        <h3 title="{installed_desc}">{lbl_installed_gadgets}</h3>
+        <ul id="installed_gadgets"></ul>
+      </div>
+    </td>
+    <td valign="top"><div id="component_info" style="display:none"></div></td>
+  </tr>
+</table>
+<div id="actions">{update}{install}{uninstall}{disable}{cancel}</div>
+<script type="text/javascript">
+  var pluginsMode = false,
+    confirmUninstallComponent = "{confirmUninstallComponent}",
+    confirmDisableComponent = "{confirmDisableComponent}",
+    actions = {
+      outdated: "{lbl_update}",
+      installed: "{lbl_uninstall}",
+      notinstalled: "{lbl_install}"
+    };
+  init();
+</script>
+<!-- END jms -->

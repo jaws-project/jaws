@@ -1,8 +1,8 @@
 #components {width:310px; background-color:#f7f7f7; border:1px solid #d3d7cf; padding:5px;}
 #components > div {height:500px; overflow:auto; background-color:white; border:1px solid #d3d7cf; padding:0px;}
-#components h3 {margin:1px; padding:4px; background-color:#3465a4; color:white; font-size:small; font-weight:bold;}
+#components h3 {margin:1px 1px 0 1px; padding:4px; background-color:#3465a4; color:white; font-size:small; font-weight:bold;}
 #components ul {margin:0; padding:0; list-style:none;}
-#components li {padding:2px;}
+#components li {padding:2px; margin:0 1px 1px;}
 #components li:hover {background-color:#f1f8ff;}
 #components li:hover a {display:inline;}
 #components li.selected {background-color:#729FCF;}
@@ -12,63 +12,17 @@
 #components span {display:inline-block; width:200px; padding-left:5px;}
 #components a {display:none;}
 
-#component_info {border:1px solid #d3d7cf; margin-left:5px; padding:5px;}
-
-#buttons_area {
-    float: right;
-    padding: 0px;
-    border-spacing: 0px;
-}
-
-#search_div {
-    float: left;
-}
-
 /* Information */
-#title 
-{
-  font-size: 14px;
-  color: black;
-  font-weight: bold;
-  border: 1px solid #d3d7cf;
-  padding: 10px;
-  margin-bottom: 20px;
-  margin-top: 10px;
-  text-align: justify;
-  background-color: #729fcf;
-}
+#component_info {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
+#component_info img {float:left;}
+#component_info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
+#component_info h2 {display:inline-block; font-size:12px;}
+#component_info span {font-weight:bold;}
+#component_info ul {margin:5px 0 15px; list-style-type:square;}
+.details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
+.details > div {margin-bottom:15px;}
 
-.pretty-table 
-{
-  border-collapse: collapse;
-  border: 1px solid #d3d7cf;
-  margin-bottom: 40px;
-  width: 100%;
-  text-align: left;
-}
-
-.pretty-table caption 
-{
-  color: #000;
-  font-weight: bold;
-  font-size: 150%;    
-  width: 100%;
-}
-
-.pretty-table tr th 
-{
-  color: #000;
-  font-weight: bold;
-  border-bottom: 2px solid #314e6c;
-}
-
-.pretty-table tr td 
-{
-  display: table-cell;
-  vertical-align: top;
-  color: #888a85;
-  border-bottom: 1px solid #eee;
-}
+#actions {text-align:right;}
 
 /* Tree CSS */
 .webfx-tree-container {

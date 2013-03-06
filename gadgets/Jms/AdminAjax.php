@@ -24,10 +24,9 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Get a list of installed / not installed gadgets
+     * Gets list of gadgets and categorize them
      *
      * @access  public
-     * @param   string   $itemsToShow  Items that should be returned (installed, not installed, outdated)
      * @return  array    Gadget's list
      */
     function GetGadgets()
@@ -53,28 +52,12 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             $result[$key] = $g;
         }
         return $result;
-        
-        switch($itemsToShow) {
-        case 'installed':
-            return $model->GetGadgetsList(false, true, true);
-            break;
-        case 'notinstalled':
-            return $model->GetGadgetsList(null, false);
-            break;
-        case 'outdated':
-            return $model->GetGadgetsList(null, true, false);
-            break;
-        default:
-            return $model->GetGadgetsList(false, true, true);
-            break;
-        }
     }
 
     /**
-     * Get a list of installed / not installed plugins
+     * Gets list of plugins and categorize them
      *
      * @access  public
-     * @param   string   $itemsToShow  Items that should be returned (installed, not installed)
      * @return  array    Plugin's list
      */
     function GetPlugins()
@@ -87,31 +70,19 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             $p = array();
             $p['name'] = $plugin['name'];
             $p['realname'] = $plugin['realname'];
-            $p['description'] = '';//$plugin['description'];
+            $p['description'] = $plugin['description'];
             $p['state'] = $plugin['installed']? 'installed' : 'notinstalled';
             $result[$key] = $p;
         }
         return $result;
-
-        switch($itemsToShow) {
-        case 'installed':
-            return $this->_Model->GetPluginsList(true);
-            break;
-        case 'notinstalled':
-            return $this->_Model->GetPluginsList(false);
-            break;
-        default:
-            return $this->_Model->GetPluginsList(true);
-            break;
-        }
     }
 
     /**
-     * Get basic information of a gadget
+     * Gets basic information of the gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
-     * @return  array   Gadget's info
+     * @param   string  $gadget  Gadget name
+     * @return  array   Gadget information
      */
     function GetGadgetInfo($gadget)
     {
@@ -121,10 +92,10 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Get basic information of a gadget
+     * Gets basic information of the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin's name
+     * @param   string  $plugin  Plugin name
      * @return  array   Plugin information
      */
     function GetPluginInfo($plugin)
@@ -232,7 +203,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         }
 
         $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        $return =$objGadget->DisableGadget();
+        $return = $objGadget->DisableGadget();
         if (Jaws_Error::isError($return)) {
             $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
         } else if (!$return) {
