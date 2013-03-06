@@ -79,7 +79,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('AboutUser.html');
         $tpl->SetBlock('aboutuser');
-        $tpl->SetVariable('title',  _t('USERS_ACTIONS_PROFILE'));
+        $tpl->SetVariable('title',  _t('USERS_ACTIONS_ABOUTUSER'));
         $tpl->SetVariable('avatar', $user['avatar']);
         // username
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
