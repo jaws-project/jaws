@@ -4,39 +4,29 @@
   <tr>
     <td id="components">
       <div>
-        <h3 title="{outdated_desc}">{lbl_outdated_gadgets}</h3>
-        <ul id="outdated_gadgets"></ul>
-        <h3 title="{notinstalled_desc}">{lbl_notinstalled_gadgets}</h3>
-        <ul id="notinstalled_gadgets"></ul>
-        <h3 title="{installed_desc}">{lbl_installed_gadgets}</h3>
-        <ul id="installed_gadgets"></ul>
+        <h3 style="display:none"></h3>
+        <ul id="outdated"></ul>
+        <h3 title="{notinstalled_desc}">{lbl_notinstalled}</h3>
+        <ul id="notinstalled"></ul>
+        <h3 title="{installed_desc}">{lbl_installed}</h3>
+        <ul id="installed"></ul>
       </div>
     </td>
     <td valign="top"><div id="component_info" style="display:none"></div></td>
   </tr>
 </table>
-{buttons}
+<div id="actions">{install}{uninstall}{usage}{cancel}{save}</div>
 <script type="text/javascript">
   var actions = {
-      outdated: "{lbl_update}",
       installed: "{lbl_uninstall}",
       notinstalled: "{lbl_install}"
     },
-    pluginsMode = {pluginsMode},
-    confirmUninstallComponent = "{confirmUninstallComponent}";
+    pluginsMode = true,
+    confirmUninstallPlugin = "{confirmUninstallPlugin}";
   init();
-  /*var confirmDisableComponent   = "{confirmDisableComponent}";
-  var confirmPurgeComponent     = "{confirmPurgeComponent}";
-  var noAvailableData           = "{noAvailableData}";
-  pluginsMode                   = {pluginsMode};
+  /*var noAvailableData           = "{noAvailableData}";
   var gadgetsMsg                = "{gadgetsMsg}";
   var useAlways                 = "{useAlways}";
-$('{combo_name}').selectedIndex = -1;
-if ($('{combo_name}').options.length == 0) { //No installed components, lets check uninstalled
-  $('only_show').selectedIndex = 1;
-  updateView();
-} else {
-  $('only_show').selectedIndex = 0;
 }*/
 </script>
 <!-- END jms -->

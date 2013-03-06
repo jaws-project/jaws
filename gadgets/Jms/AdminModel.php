@@ -144,7 +144,6 @@ class Jms_AdminModel extends Jaws_Gadget_Model
                 $pluginsList[$plugin] = array(
                     'realname' => $plugin,
                     'name' => $plugin,
-                    'description' => _t("PLUGINS_$plugin_DESCRIPTION"),
                     'installed' => (bool)$pInstalled
                 );
             }
@@ -161,7 +160,7 @@ class Jms_AdminModel extends Jaws_Gadget_Model
     }
 
     /**
-     * Get Information of a plugin
+     * Gets information of the plugin
      *
      * @access  public
      * @param   string  $plugin Plugin
@@ -175,9 +174,9 @@ class Jms_AdminModel extends Jaws_Gadget_Model
         }
 
         $plugin = array(
-            'version'     => $objPlugin->GetVersion(),
-            'realname'    => $plugin,
             'name'        => $plugin,
+            'realname'    => $plugin,
+            'version'     => $objPlugin->GetVersion(),
             'friendly'    => $objPlugin->IsFriendly(),
             'accesskey'   => $objPlugin->GetAccessKey(),
             'example'     => $objPlugin->GetExample(),

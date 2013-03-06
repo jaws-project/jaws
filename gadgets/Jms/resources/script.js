@@ -89,9 +89,9 @@ function init()
 function buildComponentList()
 {
     var sections = {};
-    sections.outdated = $('outdated_gadgets').set('html', '');
-    sections.notinstalled = $('notinstalled_gadgets').set('html', '');
-    sections.installed = $('installed_gadgets').set('html', '');
+    sections.outdated = $('outdated').set('html', '');
+    sections.notinstalled = $('notinstalled').set('html', '');
+    sections.installed = $('installed').set('html', '');
     Object.keys(components).sort().each(function(name) {
         sections[components[name]['state']].grab(getComponentItem(components[name]));
     });
@@ -120,7 +120,6 @@ function getComponentItem(comp)
     li.addEvent('click', selectComponent);
     li.adopt(img, span, a);
     return li;
-    //console.log(li);
 }
 
 /**
@@ -175,9 +174,11 @@ function setupComponent()
             break;
         case 'installed':
             if (pluginsMode) {
-                JmsAjax.callAsync('disableplugin', selectedComponent);
+                if (confirm(confirmUninstallPlugin)) {
+                    JmsAjax.callAsync('disableplugin', selectedComponent);
+                }
             } else {
-                if (confirm(confirmUninstallComponent)) {
+                if (confirm(confirmUninstallGadget)) {
                     JmsAjax.callAsync('uninstallgadget', selectedComponent);
                 }
             }
@@ -190,7 +191,7 @@ function setupComponent()
  */
 function disableGadget()
 {
-    if (confirm(confirmDisableComponent)) {
+    if (confirm(confirmDisableGadget)) {
         JmsAjax.callAsync('disablegadget', selectedComponent);
     }
 }
@@ -206,15 +207,16 @@ function showButtons()
     if (pluginsMode) {
         switch(state) {
         case 'notinstalled':
-            $('install_button').style.display   = 'block';
+            $('btn_install').show('inline');
             break;
         case 'installed':
-            if (editingPlugins == true) {
+            //if (editingPlugins == true) {
+            if (false) {
                 $('plugin_saveusage').style.display = 'block';
                 $('plugin_stopusage').style.display = 'block';
             } else {
-                $('uninstall_button').style.display = 'block';
-                $('plugin_usage').style.display = 'block';
+                $('btn_uninstall').show('inline');
+                $('btn_usage').show('inline');
             }
             break;
         }
@@ -267,10 +269,11 @@ function checkAllGadgets(checkbox)
 }
 
 /**
- * show the plugin usage UI
+ * displays the plugin usage UI
  */
 function pluginUsage()
 {
+    return;
     cleanWorkingArea(true);
 
     tree = new WebFXTree(gadgetsMsg);

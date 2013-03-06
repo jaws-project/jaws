@@ -48,7 +48,6 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             }
             $g['name'] = $gadget['name'];
             $g['realname'] = $gadget['realname'];
-            $g['description'] = $gadget['description'];
             $result[$key] = $g;
         }
         return $result;
@@ -70,7 +69,6 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             $p = array();
             $p['name'] = $plugin['name'];
             $p['realname'] = $plugin['realname'];
-            $p['description'] = $plugin['description'];
             $p['state'] = $plugin['installed']? 'installed' : 'notinstalled';
             $result[$key] = $p;
         }

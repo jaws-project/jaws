@@ -14,7 +14,7 @@
 
 /* Information */
 #component_info {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
-#component_info img {float:left;}
+#component_info img {float:left; width:48px;}
 #component_info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
 #component_info h2 {display:inline-block; font-size:12px;}
 #component_info span {font-weight:bold;}

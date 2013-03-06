@@ -4,12 +4,12 @@
   <tr>
     <td id="components">
       <div>
-        <h3 title="{outdated_desc}">{lbl_outdated_gadgets}</h3>
-        <ul id="outdated_gadgets"></ul>
-        <h3 title="{notinstalled_desc}">{lbl_notinstalled_gadgets}</h3>
-        <ul id="notinstalled_gadgets"></ul>
-        <h3 title="{installed_desc}">{lbl_installed_gadgets}</h3>
-        <ul id="installed_gadgets"></ul>
+        <h3 title="{outdated_desc}">{lbl_outdated}</h3>
+        <ul id="outdated"></ul>
+        <h3 title="{notinstalled_desc}">{lbl_notinstalled}</h3>
+        <ul id="notinstalled"></ul>
+        <h3 title="{installed_desc}">{lbl_installed}</h3>
+        <ul id="installed"></ul>
       </div>
     </td>
     <td valign="top"><div id="component_info" style="display:none"></div></td>
@@ -17,14 +17,14 @@
 </table>
 <div id="actions">{update}{install}{uninstall}{disable}{cancel}</div>
 <script type="text/javascript">
-  var pluginsMode = false,
-    confirmUninstallComponent = "{confirmUninstallComponent}",
-    confirmDisableComponent = "{confirmDisableComponent}",
-    actions = {
+  var actions = {
       outdated: "{lbl_update}",
       installed: "{lbl_uninstall}",
       notinstalled: "{lbl_install}"
-    };
+    },
+    pluginsMode = false,
+    confirmUninstallGadget = "{confirmUninstallGadget}",
+    confirmDisableGadget = "{confirmDisableGadget}";
   init();
 </script>
 <!-- END jms -->

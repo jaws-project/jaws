@@ -66,27 +66,23 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-
         $tpl = new Jaws_Template('gadgets/Jms/templates/');
         $tpl->Load('AdminGadgets.html');
         $tpl->SetBlock('jms');
 
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
 
-        $tpl->SetVariable('lbl_outdated_gadgets', _t('JMS_GADGETS_OUTDATED_GADGETS'));
-        $tpl->SetVariable('lbl_notinstalled_gadgets', _t('JMS_GADGETS_NOTINSTALLED_GADGETS'));
-        $tpl->SetVariable('lbl_installed_gadgets', _t('JMS_GADGETS_INSTALLED_GADGETS'));
-        $tpl->SetVariable('outdated_desc', _t('JMS_GADGETS_OUTDATED_GADGETS_DESC'));
-        $tpl->SetVariable('notinstalled_desc', _t('JMS_GADGETS_NOTINSTALLED_GADGETS_DESC'));
-        $tpl->SetVariable('installed_desc', _t('JMS_GADGETS_INSTALLED_GADGETS_DESC'));
-
+        $tpl->SetVariable('lbl_outdated', _t('JMS_GADGETS_OUTDATED'));
+        $tpl->SetVariable('outdated_desc', _t('JMS_GADGETS_OUTDATED_DESC'));
+        $tpl->SetVariable('lbl_notinstalled', _t('JMS_GADGETS_NOTINSTALLED'));
+        $tpl->SetVariable('notinstalled_desc', _t('JMS_GADGETS_NOTINSTALLED_DESC'));
+        $tpl->SetVariable('lbl_installed', _t('JMS_GADGETS_INSTALLED'));
+        $tpl->SetVariable('installed_desc', _t('JMS_GADGETS_INSTALLED_DESC'));
         $tpl->SetVariable('lbl_update', _t('JMS_UPDATE'));
         $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));
-
-        $tpl->SetVariable('confirmDisableComponent', _t('JMS_GADGETS_CONFIRM_DISABLE'));
-        $tpl->SetVariable('confirmUninstallComponent', _t('JMS_GADGETS_CONFIRM_UNINSTALL'));
+        $tpl->SetVariable('confirmDisableGadget', _t('JMS_GADGETS_CONFIRM_DISABLE'));
+        $tpl->SetVariable('confirmUninstallGadget', _t('JMS_GADGETS_CONFIRM_UNINSTALL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_update', _t('JMS_UPDATE'), STOCK_REFRESH);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
@@ -134,59 +130,47 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('jms');
 
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
-        $tpl->SetVariable('pluginsMode', 'true');
+
+        $tpl->SetVariable('lbl_installed', _t('JMS_PLUGINS_INSTALLED'));
+        $tpl->SetVariable('installed_desc', _t('JMS_PLUGINS_INSTALLED_DESC'));
+        $tpl->SetVariable('lbl_notinstalled', _t('JMS_PLUGINS_NOTINSTALLED'));
+        $tpl->SetVariable('notinstalled_desc', _t('JMS_PLUGINS_NOTINSTALLED_DESC'));
+        $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
+        $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));
+        $tpl->SetVariable('confirmUninstallPlugin', _t('JMS_PLUGINS_CONFIRM_UNINSTALL'));
+
+        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('JMS_INSTALL'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('install', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('JMS_UNINSTALL'), STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('uninstall', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_usage', _t('JMS_PLUGINS_USE_IN'), STOCK_PREFERENCES);
+        $button->AddEvent(ON_CLICK, 'javascript:pluginUsage();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('usage', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_CANCEL);
+        $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('save', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $button->AddEvent(ON_CLICK, 'javascript:cancel();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('cancel', $button->Get());
 
         $tpl->ParseBlock('jms');
         return $tpl->Get();
 
-        $tpl->SetVariable('confirmUninstallComponent', _t('JMS_PLUGINS_UNINSTALL_CONFIRM'));
         $tpl->SetVariable('noAvailableData', _t('JMS_PLUGINS_NOTHING'));
         $tpl->SetVariable('only_show_t', _t('JMS_ONLY_SHOW'));
         $tpl->SetVariable('gadgetsMsg', _t('JMS_GADGETS'));
         $tpl->SetVariable('useAlways', _t('JMS_PLUGINS_ALWAYS'));
-
-        $pluginsCombo =& Piwi::CreateWidget('Combo', 'plugins_combo');
-        $pluginsCombo->SetSize(20);
-        $pluginsCombo->SetStyle('width: 200px; height: 350px;');
-        $pluginsCombo->AddEvent(ON_CHANGE, 'javascript: editPlugin(this.value);');
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
-        foreach ($model->GetPluginsList(true) as $pluginName => $pluginProperties) {
-            $pluginsCombo->AddOption($pluginProperties['name'], $pluginName);
-        }
-
-        $onlyShow =& Piwi::CreateWidget('Combo', 'only_show');
-        $onlyShow->SetID('only_show');
-        $onlyShow->AddOption(_t('JMS_INSTALLED_COMPONENTS'), 'installed');
-        $onlyShow->AddOption(_t('JMS_UNINSTALLED_COMPONENTS'), 'notinstalled');
-        $onlyShow->AddEvent(ON_CHANGE, 'javascript: updateView();');
-
-        $buttons =& Piwi::CreateWidget('HBox');
-
-        $uninstallPlugin =& Piwi::CreateWidget('Button', 'uninstall_button', _t('JMS_UNINSTALL'), STOCK_REMOVE);
-        $uninstallPlugin->AddEvent(ON_CLICK, 'javascript: uninstallComponent();');
-        $uninstallPlugin->SetStyle('display: none');
-
-        $installPlugin =& Piwi::CreateWidget('Button', 'install_button', _t('JMS_INSTALL'), STOCK_SAVE);
-        $installPlugin->AddEvent(ON_CLICK, 'javascript: installComponent();');
-        $installPlugin->SetStyle('display: none');
-
-        $pluginUsage =& Piwi::CreateWidget('Button', 'plugin_usage', _t('JMS_PLUGINS_USE_IN'), STOCK_PREFERENCES);
-        $pluginUsage->AddEvent(ON_CLICK, 'javascript: pluginUsage();');
-        $pluginUsage->SetStyle('display: none');
-
-        $savePluginUsage =& Piwi::CreateWidget('Button', 'plugin_saveusage', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $savePluginUsage->AddEvent(ON_CLICK, 'javascript: savePluginUsage();');
-        $savePluginUsage->SetStyle('display: none');
-
-        $stopPluginUsage =& Piwi::CreateWidget('Button', 'plugin_stopusage', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $stopPluginUsage->AddEvent(ON_CLICK, 'javascript: stopPluginUsage();');
-        $stopPluginUsage->SetStyle('display: none');
-
-        $buttons->Add($uninstallPlugin);
-        $buttons->Add($installPlugin);
-        $buttons->Add($pluginUsage);
-        $buttons->Add($stopPluginUsage);
-        $buttons->Add($savePluginUsage);
 
         $tpl->SetVariable('combo_components', $pluginsCombo->get());
         $tpl->SetVariable('only_show', $onlyShow->Get());
@@ -289,7 +273,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_jaws_version', _t('JMS_JAWS_VERSION').':');
             $tpl->SetVariable('jaws_version', $info->GetRequiredJawsVersion());
 
-            $tpl->SetVariable('lbl_location', _t('JMS_GADGET_LOCATION').':');
+            $tpl->SetVariable('lbl_location', _t('JMS_GADGETS_LOCATION').':');
             $tpl->SetVariable('location', $info->GetSection());
 
             // Requires
@@ -334,13 +318,11 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
 
         $info = $model->GetPluginInfo($plugin);
 
-        $tpl->SetVariable('key', _t('JMS_KEY'));
-        $tpl->SetVariable('value', _t('JMS_VALUE'));
-
-        $tpl->SetVariable('example_t', _t('JMS_PLUGINS_USAGE'));
-        $tpl->SetVariable('accesskey_t', _t('JMS_PLUGINS_ACCESSKEY'));
-        $tpl->SetVariable('friendly_t', _t('JMS_PLUGINS_FRIENDLY'));
-        $tpl->SetVariable('version_t', _t('JMS_VERSION'));
+        $tpl->SetVariable('image', 'gadgets/Jms/images/plugin.png');
+        $tpl->SetVariable('lbl_version', _t('JMS_VERSION').':');
+        $tpl->SetVariable('lbl_example', _t('JMS_PLUGINS_USAGE').':');
+        $tpl->SetVariable('lbl_accesskey', _t('JMS_PLUGINS_ACCESSKEY').':');
+        $tpl->SetVariable('lbl_friendly', _t('JMS_PLUGINS_FRIENDLY').':');
 
         $tpl->SetVariable('plugin', $info['name']);
         $tpl->SetVariable('description', $info['description']);
@@ -353,7 +335,6 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('version', $info['version']);
 
         $tpl->ParseBlock('info');
-
         return $tpl->Get();
     }
 
