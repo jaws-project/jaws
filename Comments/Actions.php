@@ -10,9 +10,20 @@
  */
 $actions = array();
 
+$actions['Comments'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Comments',
+    'parametric' => true,
+);
+
+$actions['PostMessage'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+
 $actions['RecentComments'] = array(
     'normal' => true,
     'layout' => true,
     'parametric' => true,
 );
-

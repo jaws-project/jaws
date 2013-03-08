@@ -79,6 +79,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
         $gadgetsCombo->AddOption('', '');
         // TODO: Get List Of Gadget Which Use Comments
+        $gadgetsCombo->AddOption(_t('COMMENTS_NAME'), 'Comments');
         $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
         $gadgetsCombo->AddOption(_t('PHOO_NAME'), 'Phoo');
         $gadgetsCombo->AddOption(_t('SHOUTBOX_NAME'), 'Shoutbox');
@@ -122,7 +123,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
         //DataGrid
-        $tpl->SetVariable('grid', $this->Get(''));
+        $tpl->SetVariable('grid', $this->Get('', true));
 
         //CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
@@ -225,9 +226,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   string  $filter     Filter data
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $limit      Data limit (numeric/boolean)
+     * @param   bool    $gadgetColumn   Display gadget column?
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $editAction, $replyAction, $filterby, $filter, $status, $limit)
+    function GetDataAsArray($gadget, $editAction, $replyAction, $filterby, $filter, $status, $limit, $gadgetColumn=false)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
 
@@ -267,17 +269,29 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             return array();
         }
 
+        if ($gadgetColumn) {
+            //load other gadget translations
+            $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+            $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+            $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+            $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+        }
+
         $date = $GLOBALS['app']->loadDate();
         $data = array();
         foreach ($comments as $row) {
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
+
+            if($gadgetColumn) {
+                $newRow['gadget']  = _t(strtoupper($row['gadget']).'_NAME');
+            }
+
             $newRow['name']    = $row['name'];
 
             if (!empty($editAction)) {
                 $edit_url = str_replace('{id}', $row['id'], $editAction);
             }
-
 
             $newRow['created'] = $date->Format($row['createtime']);
             if($row['status']==1) {
@@ -316,10 +330,11 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * Builds and returns the UI
      *
      * @access  public
-     * @param   string  $gadget   Gadget name
+     * @param   string  $gadget         Gadget name
+     * @param   bool    $gadgetColumn   Display gadget column?
      * @return  string  UI XHTML
      */
-    function Get($gadget)
+    function Get($gadget, $gadgetColumn=false)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $total  = $cModel->TotalOfComments($gadget, '');
@@ -334,7 +349,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $grid->SetStyle('width: 100%;');
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_NAME')));
+        if($gadgetColumn) {
+            $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')));
+        }
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));

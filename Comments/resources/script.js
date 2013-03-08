@@ -5,6 +5,7 @@
  * @package    Comments
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
+ * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
@@ -123,6 +124,12 @@ function stopAction()
     $('btn_save').style.display        = 'none';
     $('btn_reply').style.display       = 'none';
     $('btn_cancel').style.display      = 'none';
+    $('name').disabled                 = false;
+    $('email').disabled                = false;
+    $('url').disabled                  = false;
+    $('message').disabled              = false;
+    $('comment_status').disabled       = false;
+
     unselectDataGridRow();
     $('name').focus();
 }
@@ -135,14 +142,19 @@ function editComment(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
-    $('id').value               = comment['id'];
-    $('gadget').value           = comment['gadget'];
+    $('name').disabled            = false;
+    $('email').disabled           = false;
+    $('url').disabled             = false;
+    $('message').disabled         = false;
+    $('comment_status').disabled  = false;
+    $('id').value                 = comment['id'];
+    $('gadget').value             = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);
-    $('name').value             = comment['name'];
-    $('email').value            = comment['email'];
-    $('url').value              = comment['url'];
-    $('message').value          = comment['msg_txt'].defilter();
-    $('comment_status').value   = comment['status'];
+    $('name').value               = comment['name'];
+    $('email').value              = comment['email'];
+    $('url').value                = comment['url'];
+    $('message').value            = comment['msg_txt'].defilter();
+    $('comment_status').value     = comment['status'];
     $('reply_area').style.display = 'none';
     $('btn_reply').style.display  = 'none';
     $('btn_save').style.display   = 'inline';
@@ -168,10 +180,10 @@ function replyComment(element, id)
     $('comment_status').value   = comment['status'];
     $('reply').value            = comment['reply'];
 
-    $('name').disabled = true;
-    $('email').disabled = true;
-    $('url').disabled = true;
-    $('message').disabled = true;
+    $('name').disabled           = true;
+    $('email').disabled          = true;
+    $('url').disabled            = true;
+    $('message').disabled        = true;
     $('comment_status').disabled = true;
 
     $('btn_save').style.display     = 'none';

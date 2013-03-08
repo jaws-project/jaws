@@ -30,6 +30,10 @@ class Comments_Installer extends Jaws_Gadget_Installer
             'DeleteCommentsOfGadget'
         );
 
+        // Registry keys
+        $this->gadget->AddRegistry('recent_comment_limit',   '10');
+        $this->gadget->AddRegistry('comments_per_page',      '10');
+
         return true;
     }
 

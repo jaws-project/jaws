@@ -23,7 +23,7 @@
             <field>
                 <name>action</name>
                 <type>text</type>
-                <default>64</default>
+                <length>64</length>
             </field>
 
             <field>

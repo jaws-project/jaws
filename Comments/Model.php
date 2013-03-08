@@ -264,18 +264,27 @@ class Comments_Model extends Jaws_Gadget_Model
     /**
      * Gets a list of old comments.
      *
-     * @param   string  $gadget   Gadget's name
-     * @param   int     $limit   How many comments
-     * @param   bool   $getApproved    If true get comments that are approved (optional, default true);
-     * @param   bool   $getWaiting     If true get comments that are waiting for moderation (optional, default false);
-     * @param   bool   $getSpam    If true get comments that are marked as spam (optional, default false);
+     * @param   string  $gadget         Gadget's name
+     * @param   int     $limit          How many comments
+     * @param   bool    $getApproved    If true get comments that are approved (optional, default true);
+     * @param   bool    $getWaiting     If true get comments that are waiting for moderation (optional, default false);
+     * @param   bool    $getSpam        If true get comments that are marked as spam (optional, default false);
+     * @param   int     $offset         Offset of data array
+     * @param   int     $orderBy        The column index which the result must be sorted by
      * @return  array   Returns an array with data of a list of last comments or Jaws_Error on error
      * @access  public
      */
-    function GetRecentComments($gadget, $limit, $getApproved = true, $getWaiting = false, $getSpam = false)
+    function GetRecentComments($gadget, $limit, $getApproved = true, $getWaiting = false, $getSpam = false, $offset = null, $orderBy = 0)
     {
         $params = array();
         $params['gadget'] = $gadget;
+
+        $orders = array(
+            '[createtime]',
+            '[createtime] DESC',
+        );
+        $orderBy = (int)$orderBy;
+        $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
 
         $sql = '
             SELECT
@@ -304,9 +313,9 @@ class Comments_Model extends Jaws_Gadget_Model
         if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
         if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
         $sql = substr($sql, 0, -3);
-        $sql .= ') ORDER BY [createtime] DESC';
+        $sql .= ") ORDER BY $orderBy";
 
-        $result = $GLOBALS['db']->setLimit($limit);
+        $result = $GLOBALS['db']->setLimit($limit, $offset);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_RECENT_COMMENTS'), _t('COMMENTS_NAME'));
         }

@@ -40,7 +40,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')",
-                                      "javascript:replyComment(this, '{id}')", $filter, $search, $status, $limit);
+                                      "javascript:replyComment(this, '{id}')", $filter, $search, $status, $limit, true);
     }
 
     /**
