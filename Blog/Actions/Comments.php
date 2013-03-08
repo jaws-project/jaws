@@ -76,7 +76,6 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('createtime-year',      $date->Format($c['createtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($c['createtime'], 'g:ia'));
 
-
                 if(!empty($c['reply'])) {
                     $user = $userModel->GetUser((int)$c['replier'], true, true);
                     $tpl->SetBlock('comment/reply');
@@ -156,6 +155,21 @@ class Blog_Actions_Comments extends Blog_HTML
             $tpl->SetVariable('createtime-year',      $date->Format($comment['createtime'], 'Y'));
             $tpl->SetVariable('createtime-time',      $date->Format($comment['createtime'], 'g:ia'));
             $tpl->SetVariable('level', 0);
+
+            if(!empty($comment['reply'])) {
+                require_once JAWS_PATH . 'include/Jaws/User.php';
+                $userModel = new Jaws_User();
+
+                $user = $userModel->GetUser((int)$comment['replier'], true, true);
+                $tpl->SetBlock('comment/reply');
+                $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
+                $tpl->SetVariable('replier', $user['nickname']);
+                $tpl->SetVariable('url', $user['url']);
+                $tpl->SetVariable('email', $user['email']);
+                $tpl->SetVariable('lbl_reply', _t('BLOG_REPLY'));
+                $tpl->ParseBlock('comment/reply');
+            }
+
             $tpl->ParseBlock('comment');
         }
 
