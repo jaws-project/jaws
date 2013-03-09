@@ -12,73 +12,62 @@
 #components span {display:inline-block; width:200px; padding-left:5px;}
 #components a {display:none;}
 
+#component_ui {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
+#actions {text-align:right;}
+
 /* Information */
-#component_info {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
-#component_info img {float:left; width:48px;}
-#component_info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
-#component_info h2 {display:inline-block; font-size:12px;}
-#component_info span {font-weight:bold;}
-#component_info ul {margin:5px 0 15px; list-style-type:square;}
+.component-info img {float:left; width:48px;}
+.component-info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
+.component-info h2 {display:inline-block; font-size:12px;}
+.component-info span {font-weight:bold;}
+.component-info ul {margin:5px 0 15px; list-style-type:square;}
 .details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
 .details > div {margin-bottom:15px;}
 
-#actions {text-align:right;}
-
-/* Tree CSS */
+/* WebFX Tree */
+#bigTree > div {margin:5px 0;}
 .webfx-tree-container {
-    margin: 0px;
-    padding: 0px;
-    font: icon;
-    white-space: nowrap;        
+  margin: 0px;
+  padding: 0px;
+  white-space: nowrap;        
 }
-
-
 .webfx-tree-item {
-    padding: 0px;
-    margin: 0px;
-    font: icon;
-    color: black;
-    white-space: nowrap;
+  padding: 0px;
+  margin: 0px;
+  color: black;
+  white-space: nowrap;
 }
-
 .webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
-    margin-left: 0px;
-    padding: 0px 0px 0px 0px;
+  margin-left: 0px;
+  padding: 0px 0px 0px 0px;
 }
-
 .webfx-tree-item a {
-        cursor: default;
-                     
-    color: black;
-    text-decoration: none;
+  cursor: default;
+  color: black;
+  text-decoration: none;
 }
-
 .webfx-tree-item img {
-    margin-left: 2px;
-    vertical-align: middle;
-    border: 0px;
-    width: 16px;
-    height: 16px;
+  margin-left: 2px;
+  vertical-align: middle;
+  border: 0px;
+  width: 16px;
+  height: 16px;
 }
-
-.webfx-tree-pm-icon {
+.webfx-tree-item input {
+  vertical-align: middle;
 }
-
 .webfx-tree-grid-icon {
-    margin-right: 0px;
-    visibility: hidden;
+  margin-right: 0px;
+  visibility: hidden;
 }
-
 .webfx-tree-icon {
-    display: none;
+  display: none;
 }
-
 .webfx-tree-item a.selected {
-    color: highlighttext;
-    background: highlight;
+  color: highlighttext;
+  background: highlight;
 }
-
 .webfx-tree-item a.selected-inactive {
-    color: windowtext;
-    background: buttonface;
+  color: windowtext;
+  background: buttonface;
 }

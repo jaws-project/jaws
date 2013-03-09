@@ -47,7 +47,7 @@ var JmsCallback = {
         showResponse(response);
     },
 
-    enableplugin: function(response) {
+    installplugin: function(response) {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
@@ -56,7 +56,7 @@ var JmsCallback = {
         showResponse(response);
     },
 
-    disableplugin: function(response) {
+    uninstallplugin: function(response) {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
@@ -66,9 +66,8 @@ var JmsCallback = {
     },
 
     updatepluginusage: function(response) {
-        stopPluginUsage();
+        cancel();
         showResponse(response);
-        //cancel();
     }
 }
 
@@ -140,9 +139,10 @@ function selectComponent()
 function cancel()
 {
     selectedComponent = null;
+    editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
     $('actions').getElements('button').hide();
-    $('component_info').hide();
+    $('component_ui').hide();
 }
 
 /**
@@ -153,7 +153,7 @@ function componentInfo()
     var compInfo = pluginsMode?
         JmsAjax.callSync('getplugininfo', selectedComponent):
         JmsAjax.callSync('getgadgetinfo', selectedComponent);
-    $('component_info').show().set('html', compInfo);
+    $('component_ui').show().set('html', compInfo);
 }
 
 /**
@@ -167,7 +167,7 @@ function setupComponent()
             break;
         case 'notinstalled':
             if (pluginsMode) {
-                JmsAjax.callAsync('enableplugin', selectedComponent);
+                JmsAjax.callAsync('installplugin', selectedComponent);
             } else {
                 JmsAjax.callAsync('installgadget', selectedComponent);
             }
@@ -175,7 +175,7 @@ function setupComponent()
         case 'installed':
             if (pluginsMode) {
                 if (confirm(confirmUninstallPlugin)) {
-                    JmsAjax.callAsync('disableplugin', selectedComponent);
+                    JmsAjax.callAsync('uninstallplugin', selectedComponent);
                 }
             } else {
                 if (confirm(confirmUninstallGadget)) {
@@ -210,10 +210,8 @@ function showButtons()
             $('btn_install').show('inline');
             break;
         case 'installed':
-            //if (editingPlugins == true) {
-            if (false) {
-                $('plugin_saveusage').style.display = 'block';
-                $('plugin_stopusage').style.display = 'block';
+            if (editPluginMode == true) {
+                $('btn_save').show('inline');
             } else {
                 $('btn_uninstall').show('inline');
                 $('btn_usage').show('inline');
@@ -253,11 +251,12 @@ function selectGadgetPlugin(checkbox)
  */
 function checkAllGadgets(checkbox)
 {
+    alert(checkbox);
     if (checkbox.checked == true) {
         //inputs should be located in second container (0 => first, 1 => second)
         var gadgetsCont = $$('.webfx-tree-container')[1];
         if (gadgetsCont != undefined) {
-            var inputs  = gadgetsCont.getElementsByTagName('input');
+            var inputs = gadgetsCont.getElementsByTagName('input');
             for (var i=0; i<inputs.length; i++) {
                 inputs[i].checked = false;
             }
@@ -269,21 +268,16 @@ function checkAllGadgets(checkbox)
 }
 
 /**
- * displays the plugin usage UI
+ * displays the plugin usage tree
  */
 function pluginUsage()
 {
-    return;
-    cleanWorkingArea(true);
-
-    tree = new WebFXTree(gadgetsMsg);
+    var gadgets = JmsAjax.callSync('getgadgetsofplugin', selectedComponent);
+    var useAllTime = JmsAjax.callSync('usealways', selectedComponent);
+    var tree = new WebFXTree('gadgetsMsg');
 
     tree.openIcon = 'gadgets/Jms/images/gadgets.png';
     tree.icon = 'gadgets/Jms/images/gadgets.png';
-
-    var gadgets = JmsAjax.callSync('getgadgetsofplugin', $('plugins_combo').value);
-
-    var useAllTime = JmsAjax.callSync('usealways', $('plugins_combo').value);
 
     var div = document.createElement('div');
 
@@ -303,7 +297,7 @@ function pluginUsage()
 
     var label = document.createElement('label');
     label.htmlFor = 'use_always';
-    label.appendChild(document.createTextNode(useAlways));
+    label.appendChild(document.createTextNode('useAlways'));
 
     div.appendChild(chkbox);
     div.appendChild(label);
@@ -344,67 +338,30 @@ function pluginUsage()
         aItem.add(gadgetItem);
     }
 
-    $('work_area').innerHTML = tree.toString();
-    editingPlugins = true;
+    $('component_ui').show().set('html', tree.toString());
+    editPluginMode = true;
     showButtons();
 }
 
 /**
- * Stops editing the plugin
- */
-function stopPluginUsage()
-{
-    var plugin = $('plugins_combo').value;
-    editPlugin(plugin)
-}
-
-/**
- * Saves the plugin usage properties
+ * Saves the plugin usage
  */
 function savePluginUsage()
 {
-    var plugin  = $('plugins_combo').value;
-
-    if ($('use_always').checked == true) {
-        JmsAjax.callAsync('updatepluginusage', plugin, '*');
-        return true;
+    var selection = '*';
+    if (!$('use_always').checked) {
+        selection = $('bigTree').getElements('input:checked').get('value');
+        selection = selection.erase('use_always').join(',');
     }
-
-    var inputs = $('work_area').getElementsByTagName('input');
-    var gadgets   = new Array();
-    var counter = 0;
-    for(var i=0; i<inputs.length; i++) {
-        if (inputs[i].checked) {
-            gadgets[counter] = inputs[i].value;
-            counter++;
-        }
-    }
-
-    JmsAjax.callAsync('updatepluginusage', plugin, gadgets);
+    //console.log(selection);
+    JmsAjax.callAsync('updatepluginusage', selectedComponent, selection);
 }
 
 /**
- * Updates the gadget/plugins view
+ * Variables
  */
-function updateView()
-{
-    cleanWorkingArea(true);
-    if (pluginsMode == false) {
-        getGadgets();
-    } else {
-        editingPlugins = false;
-        getPlugins();
-    }
-}
-
 var JmsAjax = new JawsAjax('Jms', JmsCallback),
-    components = {};
-
-var selectedComponent = null;
-var selectedGadget = null;
-var selectedPlugin = null;
-
-var editingPlugins = false;
-
-var tree = null;
-var aItem = null;
+    components = {},
+    selectedComponent = null,
+    editPluginMode = false,
+    aItem = null;

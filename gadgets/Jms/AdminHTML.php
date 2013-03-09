@@ -154,7 +154,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $button->SetStyle('display:none');
         $tpl->SetVariable('usage', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_CANCEL);
+        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('save', $button->Get());
