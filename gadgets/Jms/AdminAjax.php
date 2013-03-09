@@ -44,10 +44,12 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             } else if (!$gadget['core_gadget']) {
                 $g['state'] = 'installed';
             } else {
-                continue;
+                //continue;
+                $g['state'] = 'core';
             }
             $g['name'] = $gadget['name'];
             $g['realname'] = $gadget['realname'];
+            $g['core_gadget'] = true;
             $result[$key] = $g;
         }
         return $result;

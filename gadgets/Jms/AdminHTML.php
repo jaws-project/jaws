@@ -78,6 +78,8 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('notinstalled_desc', _t('JMS_GADGETS_NOTINSTALLED_DESC'));
         $tpl->SetVariable('lbl_installed', _t('JMS_GADGETS_INSTALLED'));
         $tpl->SetVariable('installed_desc', _t('JMS_GADGETS_INSTALLED_DESC'));
+        $tpl->SetVariable('lbl_core', _t('JMS_GADGETS_CORE'));
+        $tpl->SetVariable('core_desc', _t('JMS_GADGETS_CORE_DESC'));
         $tpl->SetVariable('lbl_update', _t('JMS_UPDATE'));
         $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));

@@ -11,9 +11,20 @@
  * Use async mode, create Callback
  */
 var JmsCallback = {
+    updategadget: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            components[selectedComponent].state = 
+                components[selectedComponent].core_gadget? 'core' : 'installed';
+            buildComponentList();
+            cancel();
+        }
+        showResponse(response);
+    },
+
     installgadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            components[selectedComponent].state = 'installed';
+            components[selectedComponent].state = 
+                components[selectedComponent].core_gadget? 'core' : 'installed';
             buildComponentList();
             cancel();
         }
@@ -32,15 +43,6 @@ var JmsCallback = {
     disablegadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
-            buildComponentList();
-            cancel();
-        }
-        showResponse(response);
-    },
-
-    updategadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            components[selectedComponent].state = 'installed';
             buildComponentList();
             cancel();
         }
@@ -91,6 +93,7 @@ function buildComponentList()
     sections.outdated = $('outdated').set('html', '');
     sections.notinstalled = $('notinstalled').set('html', '');
     sections.installed = $('installed').set('html', '');
+    sections.core = $('core').set('html', '');
     Object.keys(components).sort().each(function(name) {
         sections[components[name]['state']].grab(getComponentItem(components[name]));
     });
@@ -107,17 +110,20 @@ function getComponentItem(comp)
         span = new Element('span').set('html', comp.name),
         img = new Element('img', {alt:comp.realname}),
         a = new Element('a').set('html', actions[comp.state]);
+    li.adopt(img, span);
     img.src = pluginsMode?
         'gadgets/Jms/images/plugin.png' :
         'gadgets/' + comp.realname + '/images/logo.png';
-    a.href = 'javascript:void(0);';
-    a.addEvent('click', function(e) {
-        e.stop();
-        selectedComponent = comp.realname;
-        setupComponent();
-    });
+    if (comp.state !== 'core') {
+        a.href = 'javascript:void(0);';
+        a.addEvent('click', function(e) {
+            e.stop();
+            selectedComponent = comp.realname;
+            setupComponent();
+        });
+        li.grab(a);
+    }
     li.addEvent('click', selectComponent);
-    li.adopt(img, span, a);
     return li;
 }
 
