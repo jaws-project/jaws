@@ -143,9 +143,10 @@ function toggleSection()
 function selectComponent()
 {
     selectedComponent = this.id;
+    editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
     this.addClass('selected');
-    componentInfo()
+    componentInfo();
     showButtons();
 }
 
@@ -251,108 +252,44 @@ function showButtons()
 }
 
 /**
- * Check which gadget has been selected, if 'use_always' was checked
- * and user decided to also select a gadget then 'use_always' become off
- */
-function selectGadgetPlugin(checkbox)
-{
-    if (checkbox.checked == true) {
-        $('use_always').checked = false;
-        return true;
-    }
-}
-
-/**
- * Check if user has selected all gadgets to be used
- */
-function checkAllGadgets(checkbox)
-{
-    alert(checkbox);
-    if (checkbox.checked == true) {
-        //inputs should be located in second container (0 => first, 1 => second)
-        var gadgetsCont = $$('.webfx-tree-container')[1];
-        if (gadgetsCont != undefined) {
-            var inputs = gadgetsCont.getElementsByTagName('input');
-            for (var i=0; i<inputs.length; i++) {
-                inputs[i].checked = false;
-            }
-        }
-        aItem.collapseAll();
-    } else {
-        aItem.expandAll();
-    }
-}
-
-/**
- * displays the plugin usage tree
+ * Displays the plugin usage tree
  */
 function pluginUsage()
 {
-    var gadgets = JmsAjax.callSync('getgadgetsofplugin', selectedComponent);
-    var useAllTime = JmsAjax.callSync('usealways', selectedComponent);
-    var tree = new WebFXTree('gadgetsMsg');
-
+    var gadgets = JmsAjax.callSync('getpluginusage', selectedComponent),
+        tree = new WebFXTree(pluginUsageDesc),
+        div = new Element('div'),
+        label = new Element('label', {'for':'use_always'}),
+        chkbox = new Element('input', {
+            type: 'checkbox',
+            id: 'use_always',
+            value: 'use_always',
+            checked: gadgets['always'].value
+        }),
+        rootNode;
+    label.set('html', gadgets['always'].text);
     tree.openIcon = 'gadgets/Jms/images/gadgets.png';
     tree.icon = 'gadgets/Jms/images/gadgets.png';
+    div.adopt(chkbox, label);
+    rootNode = new WebFXTreeItem(div.innerHTML);
+    tree.add(rootNode);
+    // does not work because of webfxTree bug
+    // rootNode.expand();
 
-    var div = document.createElement('div');
-
-    var chkbox = document.createElement('input');
-    chkbox.setAttribute('type', 'checkbox');
-    chkbox.setAttribute('name', 'use_always');
-    chkbox.setAttribute('value', 'use_always');
-    chkbox.setAttribute('id', 'use_always');
-    if (useAllTime == true) {
-        chkbox.defaultChecked = true;
-        chkbox.setAttribute('checked', true);
-    }
-    chkbox.onclick = function() {
-        checkAllGadgets(this);
-    }
-    chkbox.setAttribute('changed', false);
-
-    var label = document.createElement('label');
-    label.htmlFor = 'use_always';
-    label.appendChild(document.createTextNode('useAlways'));
-
-    div.appendChild(chkbox);
-    div.appendChild(label);
-
-    aItem = new WebFXTreeItem(div.innerHTML);
-    tree.add(aItem);
-
-    for(gadget in gadgets) {
-        if (typeof(gadgets[gadget]) == 'function') {
-            continue;
-        }
-
-        //Create checkbox with its label and all that sexy stuff
-        var div = document.createElement('div');
-
-        var chkbox = document.createElement('input');
-        chkbox.setAttribute('type', 'checkbox');
-        chkbox.setAttribute('name', 'gadgets[]');
-        chkbox.setAttribute('value', gadgets[gadget]['gadget']);
-        if (gadgets[gadget]['value'] == true) {
-            chkbox.defaultChecked = true;
-            chkbox.setAttribute('checked', true);
-        }
-        //Little trick to know which values have changed their values
-        chkbox.onclick = function() {
-            selectGadgetPlugin(this);
-        }
-        chkbox.setAttribute('id', gadgets[gadget]['gadget']);
-
-        var label = document.createElement('label');
-        label.htmlFor = gadgets[gadget]['gadget'];
-        label.appendChild(document.createTextNode(gadgets[gadget]['gadget_t']));
-
-        div.appendChild(chkbox);
-        div.appendChild(label);
-
-        var gadgetItem = new WebFXTreeItem(div.innerHTML);
-        aItem.add(gadgetItem);
-    }
+    delete gadgets['always'];
+    Object.keys(gadgets).each(function(gadget) {
+        var div = new Element('div'),
+            label = new Element('label', {'for':gadget}),
+            chkbox = new Element('input', {
+                type: 'checkbox',
+                id: gadget,
+                value: gadget,
+                checked: gadgets[gadget].value
+            });
+        label.set('html', gadgets[gadget].text);
+        div.adopt(chkbox, label);
+        rootNode.add(new WebFXTreeItem(div.innerHTML));
+    });
 
     $('component_ui').show().set('html', tree.toString());
     editPluginMode = true;
@@ -369,7 +306,6 @@ function savePluginUsage()
         selection = $('bigTree').getElements('input:checked').get('value');
         selection = selection.erase('use_always').join(',');
     }
-    //console.log(selection);
     JmsAjax.callAsync('updatepluginusage', selectedComponent, selection);
 }
 
@@ -379,5 +315,4 @@ function savePluginUsage()
 var JmsAjax = new JawsAjax('Jms', JmsCallback),
     components = {},
     selectedComponent = null,
-    editPluginMode = false,
-    aItem = null;
+    editPluginMode = false;

@@ -24,10 +24,10 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Gets list of gadgets and categorize them
+     * Gets list of gadgets
      *
      * @access  public
-     * @return  array    Gadget's list
+     * @return  array   Gadget list
      */
     function GetGadgets()
     {
@@ -44,14 +44,16 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             } else if (!$gadget['core_gadget']) {
                 $g['state'] = 'installed';
             } else {
-                //continue;
                 $g['state'] = 'core';
             }
             $g['name'] = $gadget['name'];
             $g['realname'] = $gadget['realname'];
-            $g['core_gadget'] = true;
+            $g['core_gadget'] = $gadget['core_gadget'];
             $result[$key] = $g;
         }
+        // exclude ControlPanel to be listed as a gadget
+        unset($result['ControlPanel']);
+
         return $result;
     }
 
@@ -273,54 +275,42 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Returns a list of gadgets activated in a certain plugin
+     * Returns a list of gadgets are used in a certain plugin
      *
      * @access  public
-     * @param   string  $plugin     Plugin's name
-     * @return  array   List of gadgets
+     * @param   string  $plugin     Plugin name
+     * @return  mixed   Array of gadgets or '*'
      */
-    function GetGadgetsOfPlugin($plugin)
+    function GetPluginUsage($plugin)
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
         $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
-        $use_in_gadgets = explode(',', $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN));
-
-        $useIn = array();
+        $use_in = $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
+        $default_value = ($use_in === '*');
+        $result = array();
+        $result['always'] = array(
+            'text' => _t('JMS_PLUGINS_ALWAYS'),
+            'value' => $default_value
+        );
         if (count($gadgets) > 0) {
+            $use_in = explode(',', $use_in);
             foreach ($gadgets as $gadget) {
-                if (in_array($gadget['realname'], $use_in_gadgets)) {
-                    $useIn[] = array('gadget_t' => $gadget['name'],
-                                     'gadget'   => $gadget['realname'],
-                                     'value'    => true);
-                } else {
-                    $useIn[] = array('gadget_t' => $gadget['name'],
-                                     'gadget'   => $gadget['realname'],
-                                     'value'    => false);
-                }
+                $value = ($use_in === '*')? true : false;
+                $result[$gadget['realname']] = array(
+                    'text' => $gadget['name'],
+                    'value' => !$default_value && in_array($gadget['realname'], $use_in)
+                );
             }
         }
-        return $useIn;
-    }
-
-    /**
-     * Returns true or false if a plugin can be used always
-     *
-     * @access  public
-     * @param   string  $plugin   Plugin's name
-     * @return  bool    Can be used or no
-     */
-    function UseAlways($plugin)
-    {
-        $this->gadget->CheckPermission('ManagePlugins');
-        return ($GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN) == '*');
+        return $result;
     }
 
     /**
      * Enables the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin's name
+     * @param   string  $plugin  Plugin name
      * @return  array   Response array (notice or error)
      */
     function InstallPlugin($plugin)

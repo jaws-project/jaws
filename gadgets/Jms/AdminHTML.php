@@ -139,6 +139,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('notinstalled_desc', _t('JMS_PLUGINS_NOTINSTALLED_DESC'));
         $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));
+        $tpl->SetVariable('pluginUsageDesc', _t('JMS_PLUGINS_USAGE_DESC'));
         $tpl->SetVariable('confirmUninstallPlugin', _t('JMS_PLUGINS_CONFIRM_UNINSTALL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_install', _t('JMS_INSTALL'), STOCK_SAVE);
@@ -170,8 +171,6 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         return $tpl->Get();
 
         $tpl->SetVariable('noAvailableData', _t('JMS_PLUGINS_NOTHING'));
-        $tpl->SetVariable('only_show_t', _t('JMS_ONLY_SHOW'));
-        $tpl->SetVariable('gadgetsMsg', _t('JMS_GADGETS'));
         $tpl->SetVariable('useAlways', _t('JMS_PLUGINS_ALWAYS'));
 
         $tpl->SetVariable('combo_components', $pluginsCombo->get());
