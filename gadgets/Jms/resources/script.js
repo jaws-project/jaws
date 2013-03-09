@@ -82,6 +82,7 @@ function init()
         JmsAjax.callSync('getplugins'):
         JmsAjax.callSync('getgadgets');
     buildComponentList();
+    $('components').getElements('h3').addEvent('click', toggleSection);
 }
 
 /**
@@ -125,6 +126,15 @@ function getComponentItem(comp)
     }
     li.addEvent('click', selectComponent);
     return li;
+}
+
+/**
+ * Expands/Collapses gadget/plugin section
+ */
+function toggleSection()
+{
+    this.toggleClass('collapsed');
+    this.getNext('ul').toggle();
 }
 
 /**

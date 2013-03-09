@@ -1,6 +1,10 @@
 #components {width:310px; background-color:#f7f7f7; border:1px solid #d3d7cf; padding:5px;}
 #components > div {height:500px; overflow:auto; background-color:white; border:1px solid #d3d7cf; padding:0px;}
-#components h3 {margin:1px 1px 0 1px; padding:4px; background-color:#3465a4; color:white; font-size:small; font-weight:bold;}
+#components h3 {
+  background:#3465a4 url(../images/arrow-up.png) 98% no-repeat; color:white; cursor:default;
+  margin:1px 1px 0 1px; padding:4px; font-size:small; font-weight:bold;
+}
+#components h3.collapsed {background:#3465a4 url(../images/arrow-down.png) 98% no-repeat;}
 #components ul {margin:0; padding:0; list-style:none;}
 #components li {padding:2px; margin:0 1px 1px;}
 #components li:hover {background-color:#f1f8ff;}
@@ -9,7 +13,7 @@
 #components li.selected span {color:white;}
 #components li.selected a {color:white;}
 #components img {width:32px; vertical-align:middle;}
-#components span {display:inline-block; width:200px; padding-left:5px;}
+#components span {display:inline-block; width:200px; padding-left:5px; cursor:default;}
 #components a {display:none;}
 
 #component_ui {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
