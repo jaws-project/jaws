@@ -152,7 +152,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $button->SetStyle('display:none');
         $tpl->SetVariable('uninstall', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_usage', _t('JMS_PLUGINS_USE_IN'), STOCK_PREFERENCES);
+        $button =& Piwi::CreateWidget('Button', 'btn_usage', _t('JMS_PLUGINS_USAGE'), STOCK_PREFERENCES);
         $button->AddEvent(ON_CLICK, 'javascript:pluginUsage();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('usage', $button->Get());
@@ -168,17 +168,6 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('cancel', $button->Get());
 
         $tpl->ParseBlock('jms');
-        return $tpl->Get();
-
-        $tpl->SetVariable('noAvailableData', _t('JMS_PLUGINS_NOTHING'));
-        $tpl->SetVariable('useAlways', _t('JMS_PLUGINS_ALWAYS'));
-
-        $tpl->SetVariable('combo_components', $pluginsCombo->get());
-        $tpl->SetVariable('only_show', $onlyShow->Get());
-        $tpl->SetVariable('buttons', $buttons->Get());
-        $tpl->SetVariable('combo_name', 'plugins_combo');
-        $tpl->ParseBlock('Jms');
-
         return $tpl->Get();
     }
 
@@ -200,14 +189,14 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
         if (Jaws_Error::IsError($objGadget)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLE_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
             $installer = $objGadget->load('Installer');
             $return = $installer->InstallGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
             }
         }
 
@@ -237,10 +226,10 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_OK', $gadget), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_OK', $gadget), RESPONSE_NOTICE);
             }
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATED_NO_NEED', $gadget), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_NO_NEED', $gadget), RESPONSE_ERROR);
         }
         Jaws_Header::Location(BASE_SCRIPT);
     }
@@ -279,7 +268,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
 
             // Requires
             $tpl->SetBlock('info/requires');
-            $tpl->SetVariable('lbl_requires', _t('JMS_DEPENDENCIES').':');
+            $tpl->SetVariable('lbl_requires', _t('JMS_GADGETS_DEPENDENCIES').':');
             foreach ($info->GetRequirements() as $gadget) {
                 $tpl->SetBlock('info/requires/item');
                 $tpl->SetVariable('gadget', $gadget);
@@ -289,7 +278,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
 
             // ACL Rules
             $tpl->SetBlock('info/acls');
-            $tpl->SetVariable('lbl_acl_rules', _t('JMS_GADGETS_ACL').':');
+            $tpl->SetVariable('lbl_acl_rules', _t('JMS_GADGETS_ACL_RULES').':');
             foreach (array_keys($info->GetACLs()) as $acl) {
                 $tpl->SetBlock('info/acls/acl');
                 $tpl->SetVariable('acl', end(explode('/', $acl)));
