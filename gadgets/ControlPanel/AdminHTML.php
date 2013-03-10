@@ -92,8 +92,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                 $tpl->SetBlock('sidebar');
                 if (count($noninstalled) > 0) {
                     $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('JMS_SIDEBAR_DISABLED_GADGETS'));
-                    $tpl->SetVariable('notify_desc', _t('JMS_SIDEBAR_GADGETS_WAITING'));
+                    $tpl->SetVariable('notify-title', _t('JMS_GADGETS_NOTINSTALLED'));
+                    $tpl->SetVariable('notify_desc', _t('JMS_GADGETS_NOTINSTALLED_DESC'));
                     foreach ($noninstalled as $key => $gadget) {
                         $tpl->SetBlock('sidebar/notifications/item');
                         $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
@@ -111,8 +111,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
 
                 if (count($nonupdated) > 0) {
                     $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('JMS_SIDEBAR_NOTUPDATED_GADGETS'));
-                    $tpl->SetVariable('notify_desc', _t('JMS_SIDEBAR_NOTUPDATED_SUGESTION'));
+                    $tpl->SetVariable('notify-title', _t('JMS_GADGETS_OUTDATED'));
+                    $tpl->SetVariable('notify_desc', _t('JMS_GADGETS_OUTDATED_DESC'));
                     foreach ($nonupdated as $key => $gadget) {
                         $tpl->SetBlock('sidebar/notifications/item');
                         $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
