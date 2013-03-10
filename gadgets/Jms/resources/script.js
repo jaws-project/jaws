@@ -83,6 +83,7 @@ function init()
         JmsAjax.callSync('getgadgets');
     buildComponentList();
     $('components').getElements('h3').addEvent('click', toggleSection);
+    updateSummary();
 }
 
 /**
@@ -129,7 +130,46 @@ function getComponentItem(comp)
 }
 
 /**
- * Expands/Collapses gadget/plugin section
+ * Updates gadgets/plugins summary
+ */
+function updateSummary()
+{
+    var count = {
+        outdated: 0,
+        installed: 0,
+        notinstalled: 0,
+        core: 0,
+        total: 0
+    };
+    Object.keys(components).each(function(comp) {
+        switch (components[comp].state) {
+            case 'outdated':
+                count.outdated++;
+                break;
+            case 'notinstalled':
+                count.notinstalled++;
+                break;
+            case 'installed':
+                count.installed++;
+                break;
+            case 'core':
+                count.core++;
+                break;
+        }
+        count.total++;
+    });
+    $('sum_installed').innerHTML = count.installed;
+    $('sum_notinstalled').innerHTML = count.notinstalled;
+    $('sum_total').innerHTML = count.total;
+    if (!pluginsMode) {
+        $('sum_outdated').innerHTML = count.outdated;
+        $('sum_core').innerHTML = count.core;
+    }
+    summaryUI = $('component_ui').innerHTML;
+}
+
+/**
+ * Expands/collapses gadget/plugin section
  */
 function toggleSection()
 {
@@ -159,7 +199,8 @@ function cancel()
     editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
     $('actions').getElements('button').hide();
-    $('component_ui').hide();
+    $('component_ui').innerHTML = summaryUI;
+    updateSummary();
 }
 
 /**
@@ -170,7 +211,7 @@ function componentInfo()
     var compInfo = pluginsMode?
         JmsAjax.callSync('getplugininfo', selectedComponent):
         JmsAjax.callSync('getgadgetinfo', selectedComponent);
-    $('component_ui').show().set('html', compInfo);
+    $('component_ui').innerHTML = compInfo;
 }
 
 /**
@@ -267,7 +308,7 @@ function pluginUsage()
             checked: gadgets['always'].value
         }),
         rootNode;
-    label.set('html', gadgets['always'].text);
+    label.innerHTML = gadgets['always'].text;
     tree.openIcon = 'gadgets/Jms/images/gadgets.png';
     tree.icon = 'gadgets/Jms/images/gadgets.png';
     div.adopt(chkbox, label);
@@ -286,12 +327,12 @@ function pluginUsage()
                 value: gadget,
                 checked: gadgets[gadget].value
             });
-        label.set('html', gadgets[gadget].text);
+        label.innerHTML = gadgets[gadget].text;
         div.adopt(chkbox, label);
         rootNode.add(new WebFXTreeItem(div.innerHTML));
     });
 
-    $('component_ui').show().set('html', tree.toString());
+    $('component_ui').innerHTML = tree.toString();
     editPluginMode = true;
     showButtons();
 }
@@ -315,4 +356,5 @@ function savePluginUsage()
 var JmsAjax = new JawsAjax('Jms', JmsCallback),
     components = {},
     selectedComponent = null,
-    editPluginMode = false;
+    editPluginMode = false,
+    summaryUI;
