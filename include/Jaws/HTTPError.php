@@ -13,6 +13,10 @@ class Jaws_HTTPError
 {
     function Get($code, $title = null, $message = null)
     {
+        // Let everyone know a HTTP error has been happened
+        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
+        $GLOBALS['app']->Shouter->Shout('onHTTPError', $code, $title, $message);
+
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         switch ($code) {
             case 404:
