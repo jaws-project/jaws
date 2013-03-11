@@ -179,6 +179,9 @@ class Jaws_Session
                         $this->DeleteAttribute('bad_login_count');
                         // create session & cookie
                         $this->Create($result, $remember);
+                        // Let everyone know a user has been logged
+                        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
+                        $GLOBALS['app']->Shouter->Shout('onLoginUser');
                         return true;
                     } else {
                         $result = Jaws_Error::raiseError(
