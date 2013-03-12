@@ -61,7 +61,7 @@ class Jms_AdminModel extends Jaws_Gadget_Model
                 }
 
                 $tName = $objGadget->GetTitle();
-                $index = urlencode($tName);
+                $index = urlencode($tName). $gadget;
                 $section = strtolower($objGadget->GetSection());
                 switch ($section) {
                     case 'general':
