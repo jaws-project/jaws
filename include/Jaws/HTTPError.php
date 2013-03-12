@@ -13,10 +13,6 @@ class Jaws_HTTPError
 {
     function Get($code, $title = null, $message = null)
     {
-        // Let everyone know a HTTP error has been happened
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $GLOBALS['app']->Shouter->Shout('onHTTPError', $code, $title, $message);
-
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         switch ($code) {
             case 404:
@@ -58,6 +54,9 @@ class Jaws_HTTPError
                 $title   = empty($title)? _t("GLOBAL_HTTP_ERROR_TITLE_$code") : $title;
                 $message = empty($message)? _t("GLOBAL_HTTP_ERROR_CONTENT_$code") : $message;
         }
+
+        // Let everyone know a HTTP error has been happened
+        $GLOBALS['app']->Event->Shout('onHTTPError', $code, $title, $message);
 
         // if current theme has a error code html file, return it, if not return the messages.
         $theme = $GLOBALS['app']->GetTheme();

@@ -539,8 +539,7 @@ class Jaws_User
         }
 
         // Let everyone know a user has been added
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onAddUser', $result);
+        $res = $GLOBALS['app']->Event->Shout('onAddUser', $result);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -681,8 +680,7 @@ class Jaws_User
         }
 
         // Let everyone know a user has been updated
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onUpdateUser', $id);
+        $res = $GLOBALS['app']->Event->Shout('onUpdateUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -831,8 +829,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been added
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onAddGroup', $result);
+        $res = $GLOBALS['app']->Event->Shout('onAddGroup', $result);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -886,8 +883,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been updated
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onUpdateGroup', $id);
+        $res = $GLOBALS['app']->Event->Shout('onUpdateGroup', $id);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -927,8 +923,7 @@ class Jaws_User
         }
 
         // Let everyone know that a user has been deleted
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onDeleteUser', $id);
+        $res = $GLOBALS['app']->Event->Shout('onDeleteUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -961,8 +956,7 @@ class Jaws_User
         $GLOBALS['app']->ACL->DeleteGroupACL($id);
 
         // Let everyone know a group has been deleted
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onDeleteGroup', $id);
+        $res = $GLOBALS['app']->Event->Shout('onDeleteGroup', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }

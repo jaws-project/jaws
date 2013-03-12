@@ -161,8 +161,7 @@ class Jaws_Plugin
     function EnablePlugin($plugin = null)
     {
         // Before anything starts
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onBeforeEnablePlugin', $plugin);
+        $res = $GLOBALS['app']->Event->Shout('onBeforeEnablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -205,7 +204,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Shouter->Shout('onAfterEnablePlugin', $plugin);
+        $res = $GLOBALS['app']->Event->Shout('onAfterEnablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -243,8 +242,7 @@ class Jaws_Plugin
     function DisablePlugin($plugin = null)
     {
         // Before anything starts
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        $res = $GLOBALS['app']->Shouter->Shout('onBeforeDisablePlugin', $plugin);
+        $res = $GLOBALS['app']->Shout('onBeforeDisablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -276,7 +274,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Shouter->Shout('onAfterDisablePlugin', $plugin);
+        $res = $GLOBALS['app']->Event->Shout('onAfterDisablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }

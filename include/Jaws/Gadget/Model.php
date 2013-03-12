@@ -111,17 +111,6 @@ class Jaws_Gadget_Model
     }
 
     /**
-     * Wrapper of $GLOBALS['app']->Shouter->Shout() for models
-     *
-     * @access  protected
-     */
-    function Shout($call, $param, $time = null)
-    {
-        $GLOBALS['app']->loadClass('Shouter', 'Jaws_EventShouter');
-        return $GLOBALS['app']->Shouter->Shout($call, $param, $time);
-    }
-
-    /**
      * Return an array with the Search Results
      * This method must be implemented by each model
      *
