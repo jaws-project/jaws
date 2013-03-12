@@ -163,6 +163,7 @@ class Jaws
         $this->loadClass('Translate', 'Jaws_Translate');
         $this->loadClass('Registry', 'Jaws_Registry');
         $this->loadClass('ACL', 'Jaws_ACL');
+        $this->loadClass('Event', 'Jaws_Event');
 
         $this->loadPreferences();
         $this->Registry->Init();
