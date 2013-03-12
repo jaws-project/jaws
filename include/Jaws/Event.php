@@ -6,13 +6,14 @@
  * @category   Event
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Event
 {
     /**
-     * Creates a new listener and saves it in the DB
+     * Add a new listener and saves it in the DB
      *
      * @access  public
      * @param   string  $gadget  Gadget name that listens
@@ -20,7 +21,7 @@ class Jaws_Event
      * @param   string  $method  Gadget method that will be executed
      * @return  bool    True if listener was added, otherwise returns Jaws_Error
      */
-    function NewListener($gadget, $call, $method)
+    function AddListener($gadget, $call, $method)
     {
         $params = array();
         $params['gadget'] = $gadget;
