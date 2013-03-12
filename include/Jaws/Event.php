@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_EventListener
+class Jaws_Event
 {
     /**
      * Creates a new listener and saves it in the DB
@@ -108,6 +108,26 @@ class Jaws_EventListener
         }
 
         return true;
+    }
+
+    /**
+     * Shouts a call to the listener object that will act inmediatly.
+     *
+     * @access  public
+     * @param   string  $gadget  Gadget name
+     * @param   mixed   $param   Param that is send to the listener, can be a
+     *                           string, int, array, object, etc.
+     * @return  bool    True if shouter didn't returned a Jaws_Error, otherwise returns Jaws_Error
+     */
+    function Shout($call, $param)
+    {
+        $res = $this->Listen($call, $param);
+        if (Jaws_Error::IsError($res)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_EVENTS_LISTENER_ERROR'),
+                                     __FUNCTION__);
+        }
+
+        return $res;
     }
 
     /**
