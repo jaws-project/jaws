@@ -74,8 +74,9 @@ if (get_magic_quotes_gpc()) {
  * @category   Jaws
  * @package    Jaws_Request
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2006 Helgi Þormar Þorbjörnsson
- * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @author     Ali Fazelzadeh <afz@php.net>
+ * @copyright  2006-2013 Jaws Development Group
+ * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Request
 {
