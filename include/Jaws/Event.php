@@ -120,7 +120,7 @@ class Jaws_Event
      *                           string, int, array, object, etc.
      * @return  bool    True if shouter didn't returned a Jaws_Error, otherwise returns Jaws_Error
      */
-    function Shout($call, $param)
+    function Shout($call, $param = null)
     {
         $res = $this->Listen($call, $param);
         if (Jaws_Error::IsError($res)) {
