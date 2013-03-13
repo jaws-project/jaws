@@ -14,7 +14,19 @@ class Jaws_HTTPError
     function Get($code, $title = null, $message = null)
     {
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
+        // Let everyone know a HTTP error has been happened
+        $result = $GLOBALS['app']->Event->Shout('onHTTPError', 'UrlMapper', $code);
+        if (!Jaws_Error::IsError($result) && !empty($result)) {
+            $code = $result;
+        }
+
         switch ($code) {
+            case 403:
+                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
+                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
+                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_403') : $message;
+                break;
+
             case 404:
                 if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
                     $uri = $_SERVER['REQUEST_URI'];
@@ -32,10 +44,10 @@ class Jaws_HTTPError
                 $title = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_404') : $title;
                 break;
 
-            case 403:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_403') : $message;
+            case 410:
+                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 410 Gone");
+                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_410') : $title;
+                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_410') : $message;
                 break;
 
             case 500:
@@ -54,9 +66,6 @@ class Jaws_HTTPError
                 $title   = empty($title)? _t("GLOBAL_HTTP_ERROR_TITLE_$code") : $title;
                 $message = empty($message)? _t("GLOBAL_HTTP_ERROR_CONTENT_$code") : $message;
         }
-
-        // Let everyone know a HTTP error has been happened
-        $GLOBALS['app']->Event->Shout('onHTTPError', $code, $title, $message);
 
         // if current theme has a error code html file, return it, if not return the messages.
         $theme = $GLOBALS['app']->GetTheme();
