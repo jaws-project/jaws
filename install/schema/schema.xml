@@ -208,51 +208,6 @@
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>shouters</name>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>gadget</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>event</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>shouters_ge</name>
-                <unique>true</unique>
-                <field>
-                    <name>gadget</name>
-                </field>
-                <field>
-                    <name>event</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>shouters_e</name>
-                <field>
-                    <name>event</name>
-                </field>
-            </index>
-
-        </declaration>
-
-    </table>
-
-    <table>
         <name><variable>table_prefix</variable>listeners</name>
         <declaration>
 
@@ -272,17 +227,17 @@
             <field>
                 <name>event</name>
                 <type>text</type>
-                <length>32</length>
+                <length>64</length>
             </field>
 
             <field>
                 <name>method</name>
                 <type>text</type>
-                <length>32</length>
+                <length>64</length>
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>listeners_gem</name>
+                <name><variable>table_prefix</variable>listeners</name>
                 <unique>true</unique>
                 <field>
                     <name>gadget</name>
@@ -290,13 +245,10 @@
                 <field>
                     <name>event</name>
                 </field>
-                <field>
-                    <name>method</name>
-                </field>
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>listeners_e</name>
+                <name><variable>table_prefix</variable>listeners_event</name>
                 <field>
                     <name>event</name>
                 </field>
