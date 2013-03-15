@@ -26,35 +26,6 @@ define('COMMENT_STATUS_SPAM',        3);
 class Comments_Model extends Jaws_Gadget_Model
 {
     /**
-     * Get last ID of inserted comment (by some params to prevent duplicated entries)
-     *
-     * @access  private
-     * @param   string  $createtime  Create time of the last ID
-     * @param   string  $messageKey  MD5 of the message
-     * @return  int     Last ID
-     */
-    function GetLastCommentID($createtime, $messageKey)
-    {
-        $params                = array();
-        $params['createtime']  = $createtime;
-        $params['message_key'] = $messageKey;
-
-        $sql = '
-            SELECT [id] FROM [[comments]]
-            WHERE
-                [createtime] = {createtime}
-              AND
-                [msg_key] = {message_key}';
-
-        $id = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($id)) {
-            return false;
-        }
-
-        return $id;
-    }
-
-    /**
      * Message is unique? Is it not duplicated?
      *
      * @access  public
@@ -63,17 +34,10 @@ class Comments_Model extends Jaws_Gadget_Model
      */
     function IsMessageDuplicated($md5)
     {
-        $params = array();
-        $params['md5']    = $md5;
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $howmany = $commentsTable->select('count([id]):integer')->where('msg_key', $md5)->getOne();
 
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[comments]]
-            WHERE [msg_key] = {md5}';
-
-        $howmany = $GLOBALS['db']->queryOne($sql, $params);
         ///FIXME check for errors
-
         return ($howmany == '0') ? false : true;
     }
 
@@ -94,11 +58,11 @@ class Comments_Model extends Jaws_Gadget_Model
      * @param   string  $ip        Author's IP
      * @param   string  $permalink Permanent link to resource
      * @param   int     $status
-     * @return  int     Comment id or Jaws_Error on any error
+     * @return  int     Comment status or Jaws_Error on any error
      * @access  public
      */
-    function NewComment($gadget, $gadgetId, $action, $name, $email, $url,
-                        $message, $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
+    function NewComment($gadget, $gadgetId, $action, $name, $email, $url, $message,
+                        $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
     {
         if (!in_array($status, array(COMMENT_STATUS_APPROVED, COMMENT_STATUS_WAITING, COMMENT_STATUS_SPAM))) {
             $status = COMMENT_STATUS_SPAM;
@@ -122,34 +86,25 @@ class Comments_Model extends Jaws_Gadget_Model
             $status = COMMENT_STATUS_SPAM;
         }
 
-        $sql = '
-            INSERT INTO [[comments]]
-               ( [reference], [action], [gadget], [user], [name], [email], [url],
-               [ip], [msg_txt], [status], [msg_key], [createtime])
-            VALUES
-               ( {gadgetId}, {action}, {gadget}, {user}, {name}, {email}, {url},
-               {ip}, {msg_txt}, {status}, {msg_key}, {now})';
+        $cData = array();
+        $cData['reference']     = $gadgetId;
+        $cData['action']        = $action;
+        $cData['gadget']        = $gadget;
+        $cData['name']          = $name;
+        $cData['email']         = $email;
+        $cData['url']           = $url;
+        $cData['msg_txt']       = $message;
+        $cData['status']        = $status;
+        $cData['msg_key']       = $message_key;
+        $cData['ip']            = $ip;
+        $cData['user']          = $GLOBALS['app']->Session->GetAttribute('user');
+        $cData['createtime']    = $GLOBALS['db']->Date();
 
-        $params = array();
-        $params['gadgetId'] = $gadgetId;
-        $params['action']   = $action;
-        $params['gadget']   = $gadget;
-        $params['name']     = $name;
-        $params['email']    = $email;
-        $params['url']      = $url;
-        $params['msg_txt']  = $message;
-        $params['status']   = $status;
-        $params['msg_key']  = $message_key;
-        $params['ip']       = $ip;
-        $params['user']     = $GLOBALS['app']->Session->GetAttribute('user');
-        $params['now']      = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $result = $commentsTable->insert($cData)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('COMMENTS_NAME'));
         }
-
-        $lastId = $this->GetLastCommentID($params['now'], $params['msg_key']);
 
         return $status;
     }
@@ -164,168 +119,86 @@ class Comments_Model extends Jaws_Gadget_Model
      */
     function GetComment($id, $gadget = '')
     {
-        $params = array();
-        $params['id']     = $id;
-        $params['gadget'] = $gadget;
-
-        $sql = '
-            SELECT
-                [id],
-                [reference],
-                [action],
-                [gadget],
-                [reply],
-                [replier],
-                [name],
-                [email],
-                [url],
-                [ip],
-                [msg_txt],
-                [status],
-                [createtime]
-            FROM [[comments]]
-            WHERE
-                [id] = {id}';
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->select(
+            'id:integer', 'reference:integer', 'action', 'gadget', 'reply', 'replier',
+            'name', 'email', 'url', 'ip', 'msg_txt', 'status', 'createtime'
+        );
+        $commentsTable->where('id', $id);
 
         if (!empty($gadget)) {
-            $sql .= ' AND [gadget] = {gadget}';
+            $commentsTable->and()->where('gadget', $gadget);
         }
 
-        return $GLOBALS['db']->queryRow($sql, $params);
+        $result = $commentsTable->getRow();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error(_t('COMMENTS_COMMENT_ERROR_GETTING_COMMENT'), _t('COMMENTS_NAME'));
+        }
+        return $result;
     }
 
     /**
      * Gets a list of comments that match a thread of comments and a gadget reference ID
      *
      * @param   string  $gadget   Gadget's name
+     * @param   int     $limit    How many comments
      * @param   int     $gadgetId Gadget's reference id.
      *                            It can be the ID of a blog entry, the ID of a
      *                            photo in Phoo, etc. This needs to be a reference
      *                            to find the comments releated to a specific record
      *                            in a gadget.
-     * @param   string $action
-     * @param   bool   $getApproved    If true get comments that are approved (optional, default true);
-     * @param   bool   $getWaiting     If true get comments that are waiting for moderation (optional, default false);
-     * @param   bool   $getSpam    If true get comments that are marked as spam (optional, default false);
-     * @param   bool   $getAllCurrentUser If true get all the comments for the current user (based on user cookie)
+     * @param   string  $action
+     * @param   array   $status   Array of comment status (approved=1, waiting=2, spam=3)
+     * @param   bool    $getAllCurrentUser If true get all the comments for the current user (based on user cookie)
+     * @param   int     $offset   Offset of data array
+     * @param   int     $orderBy  The column index which the result must be sorted by
      * @return  array  Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
-    function GetComments($gadget, $gadgetId, $action, $getApproved = true, $getWaiting = false, $getSpam = false, $getAllCurrentUser = false)
+    function GetRecentComments($gadget, $limit, $gadgetId = null, $action = null , $status = array(), $getAllCurrentUser = false,
+                         $offset = null, $orderBy = 0)
     {
-        if (!$getApproved && !$getWaiting && !$getSpam) return array();
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->select(
+            'id:integer', 'reference:integer', 'user', 'action', 'gadget', 'reply', 'replier',
+            'name', 'email', 'url', 'ip', 'msg_txt', 'status:integer', 'createtime'
+        );
 
-        $params = array();
-        $params['gadgetId'] = $gadgetId;
-        $params['action']   = $action;
-        $params['gadget']   = $gadget;
+        $commentsTable->where('gadget', $gadget);
 
-        $sql = '
-            SELECT
-                [id],
-                [reference],
-                [gadget],
-                [reply],
-                [replier],
-                [name],
-                [email],
-                [url],
-                [ip],
-                [msg_txt],
-                [status],
-                [createtime]
-            FROM [[comments]]
-            WHERE
-                [reference] = {gadgetId}
-                AND [action] = {action}';
+        if(!empty($gadgetId)) {
+            $commentsTable->and()->where('reference', $gadgetId);
+        }
+        if(!empty($action)) {
+            $commentsTable->and()->where('action', $action);
+        }
+        if (count($status) > 1) {
+            $commentsTable->and()->where('status', $status, 'in');
+        }
 
-        $sql .= ' AND [gadget] = {gadget} AND (';
-        if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
-        if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
-        if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
-        $sql = substr($sql, 0, -3);
         if ($getAllCurrentUser) {
-            $params['visitor_name'] = $GLOBALS['app']->Session->GetCookie('visitor_name');
-            $params['visitor_email'] = $GLOBALS['app']->Session->GetCookie('visitor_email');
-            if ($params['visitor_name'] && $params['visitor_email']) {
-                $sql .= ' OR ( ([name] = {visitor_name}) AND ([email] = {visitor_email}) ) ';
+            $visitor_name = $GLOBALS['app']->Session->GetCookie('visitor_name');
+            $visitor_email = $GLOBALS['app']->Session->GetCookie('visitor_email');
+            if ($visitor_name && $visitor_email) {
+                $commentsTable->or()->openWhere('name', $visitor_name)->and()->closeWhere('email', $visitor_email);
             }
         }
-        $sql .= ') ORDER BY [createtime] ASC';
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $orders = array(
+            'createtime ASC',
+            'createtime DESC',
+        );
+        $orderBy = (int)$orderBy;
+        $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
+        $commentsTable->orderBy($orderBy);
+        $commentsTable->limit($limit, $offset);
+
+        $result = $commentsTable->getAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_COMMENTS'), _t('COMMENTS_NAME'));
         }
 
         return $result;
-    }
-
-    /**
-     * Gets a list of old comments.
-     *
-     * @param   string  $gadget         Gadget's name
-     * @param   int     $limit          How many comments
-     * @param   bool    $getApproved    If true get comments that are approved (optional, default true);
-     * @param   bool    $getWaiting     If true get comments that are waiting for moderation (optional, default false);
-     * @param   bool    $getSpam        If true get comments that are marked as spam (optional, default false);
-     * @param   int     $offset         Offset of data array
-     * @param   int     $orderBy        The column index which the result must be sorted by
-     * @return  array   Returns an array with data of a list of last comments or Jaws_Error on error
-     * @access  public
-     */
-    function GetRecentComments($gadget, $limit, $getApproved = true, $getWaiting = false, $getSpam = false, $offset = null, $orderBy = 0)
-    {
-        $params = array();
-        $params['gadget'] = $gadget;
-
-        $orders = array(
-            '[createtime]',
-            '[createtime] DESC',
-        );
-        $orderBy = (int)$orderBy;
-        $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
-
-        $sql = '
-            SELECT
-                [id],
-                [reference],
-                [action],
-                [gadget],
-                [reply],
-                [replier],
-                [name],
-                [email],
-                [url],
-                [ip],
-                [msg_txt],
-                [status],
-                [createtime]
-            FROM [[comments]]';
-
-        if(empty($gadget)) {
-            $sql .= ' WHERE (';
-        } else {
-            $sql .= ' WHERE [gadget] = {gadget} AND (';
-        }
-
-        if ($getApproved) $sql .= ' [status] = ' . COMMENT_STATUS_APPROVED . ' OR ';
-        if ($getWaiting)  $sql .= ' [status] = ' . COMMENT_STATUS_WAITING . ' OR ';
-        if ($getSpam)     $sql .= ' [status] = ' . COMMENT_STATUS_SPAM . ' OR ';
-        $sql = substr($sql, 0, -3);
-        $sql .= ") ORDER BY $orderBy";
-
-        $result = $GLOBALS['db']->setLimit($limit, $offset);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_RECENT_COMMENTS'), _t('COMMENTS_NAME'));
-        }
-
-        $rows = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_RECENT_COMMENTS'), _t('COMMENTS_NAME'));
-        }
-
-        return $rows;
     }
 
     /**
@@ -346,22 +219,13 @@ class Comments_Model extends Jaws_Gadget_Model
             }
         }
 
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['status'] = $status;
-
-        $sql = '
-            SELECT
-              COUNT([id]) AS total
-            FROM [[comments]]
-            WHERE
-                [gadget] = {gadget}
-            ';
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->select('count([id]):integer')->where('gadget', $gadget);
         if (!empty($status)) {
-            $sql.= 'AND [status] = {status}';
+            $commentsTable->and()->where('status', $status);
         }
+        $howMany = $commentsTable->getOne();
 
-        $howMany = $GLOBALS['db']->queryOne($sql, $params);
         return Jaws_Error::IsError($howMany) ? 0 : $howMany;
     }
 

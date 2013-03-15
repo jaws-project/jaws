@@ -29,30 +29,17 @@ class Comments_AdminModel extends Comments_Model
      */
     function UpdateComment($gadget, $id, $name, $email, $url, $message, $permalink, $status)
     {
-        $sql = '
-            UPDATE [[comments]] SET
-                [name]    = {name},
-                [email]   = {email},
-                [url]     = {url},
-                [msg_txt] = {message},
-                [msg_key] = {message_key},
-                [status]  = {status}
-            WHERE
-                [id] = {id}
-              AND
-                [gadget] = {gadget}';
+        $cData = array();
+        $cData['name']        = $name;
+        $cData['email']       = $email;
+        $cData['url']         = $url;
+        $cData['msg_txt']     = $message;
+        $cData['msg_key']     = md5($message);
+        $cData['status']      = $status;
 
-        $params = array();
-        $params['id']          = $id;
-        $params['gadget']      = $gadget;
-        $params['name']        = $name;
-        $params['email']       = $email;
-        $params['url']         = $url;
-        $params['message']     = $message;
-        $params['message_key'] = md5($message);
-        $params['status']      = $status;
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $result = $commentsTable->update($cData)->where('id', $id)->and()->where('gadget', $gadget)->exec();
 
-        $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_UPDATED'), _t('COMMENTS_NAME'));
@@ -128,16 +115,10 @@ class Comments_AdminModel extends Comments_Model
      */
     function DeleteCommentsByReference($gadget, $id)
     {
-        $params = array();
-        $params['id']       = $id;
-        $params['gadget']   = $gadget;
-        $sql = "DELETE FROM [[comments]]
-                WHERE
-                    [reference] = {id}
-                AND
-                    [gadget] = {gadget}";
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
+        $commentTable = Jaws_ORM::getInstance()->table('comments');
+        $res = $commentTable->delete()->where('reference', $id)->and()->where('gadget', $gadget)->exec();
+
+        if (Jaws_Error::IsError($res)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
         }
     }
@@ -155,27 +136,23 @@ class Comments_AdminModel extends Comments_Model
     {
         if (count($ids) == 0) return;
 
-        $list = implode(',', $ids);
-
         if (!in_array($status, array(1, 2, 3))) {
             $status = COMMENT_STATUS_SPAM;
         }
 
         // Update status...
-        $sql = "UPDATE [[comments]] SET [status] = {status} WHERE [id] IN (" . $list . ")";
-        $GLOBALS['db']->query($sql, array('status' => $status));
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->update(array('status'=>$status))->where('id', $ids, 'in')->exec();
 
         if ($status == COMMENT_STATUS_SPAM) {
             $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
             // Submit spam...
-            $sql =
-                "SELECT
-                    [id], [reference], [gadget], [name], [email], [url], [ip],
-                    [msg_txt], [status], [createtime]
-                FROM [[comments]]
-                WHERE [id] IN (" . $list . ")";
+            $commentsTable = Jaws_ORM::getInstance()->table('comments');
+            $commentsTable->select(
+                'id:integer', 'name', 'email', 'url', 'msg_txt', 'msg_txt', 'status:integer'
+            );
+            $items = $commentsTable->where('id', $ids, 'in')->getAll();
 
-            $items = $GLOBALS['db']->queryAll($sql);
             foreach ($items as $i) {
                 if ($i['status'] != COMMENT_STATUS_SPAM) {
                     // FIXME Get $permalink
@@ -198,15 +175,8 @@ class Comments_AdminModel extends Comments_Model
      */
     function DeleteCommentsOfGadget($gadget)
     {
-        $params           = array();
-        $params['gadget'] = $gadget;
-
-        $sql = '
-           DELETE FROM [[comments]]
-           WHERE [gadget] = {gadget}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
+        $res = Jaws_ORM::getInstance()->table('comments')->delete()->where('gadget', $gadget)->exec();
+        if (Jaws_Error::IsError($res)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
         }
 

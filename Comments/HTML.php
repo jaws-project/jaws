@@ -18,8 +18,8 @@ class Comments_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Comments', 'LayoutHTML');
-        return $layoutGadget->Display();
+        $commentsHtml = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+        return $commentsHtml->Comments();
     }
 
     /**

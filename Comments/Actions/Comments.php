@@ -10,7 +10,6 @@
  */
 class Comments_Actions_Comments extends Comments_HTML
 {
-
     /**
      * Get Comments action params
      *
@@ -36,7 +35,6 @@ class Comments_Actions_Comments extends Comments_HTML
 
         return $result;
     }
-
 
     /**
      * Displays a block of pages belongs to the specified group
@@ -136,7 +134,7 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetRecentComments('comments', $perPage, true, false, false,
+        $comments = $model->GetRecentComments('comments', $perPage, null, null, array(COMMENT_STATUS_APPROVED), false,
                                               ($page - 1) * $perPage, $orderBy);
         $comments_count = $model->HowManyFilteredComments('comments', '', '', 1);
 
