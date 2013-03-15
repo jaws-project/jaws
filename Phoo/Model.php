@@ -1059,7 +1059,7 @@ class Phoo_Model extends Jaws_Gadget_Model
     function GetComments($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $id, 'photo', true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, 0, $id, 'photo', array(1), true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'), _t('PHOO_NAME'));
         }
@@ -1092,12 +1092,24 @@ class Phoo_Model extends Jaws_Gadget_Model
     function GetRecentComments()
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->gadget->name, 10);
+        $comments = $cModel->GetComments($this->gadget->name, 10);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('PHOO_ERROR_RECENTCOMMENTS'), _t('PHOO_NAME'));
         }
 
-        return $comments;
+        $newComments = array();
+        $i = 0;
+        foreach ($comments as $comment) {
+            $newComments[$i] = $comment;
+            $imageEntry = $this->GetImageEntry($comment['reference']);
+            if (!Jaws_Error::IsError($imageEntry)) {
+                $newComments[$i]['image_title'] = $imageEntry['title'];
+                $newComments[$i]['entry_id']   = $comment['reference'];
+                $newComments[$i]['comment_id'] = $comment['id'];
+            }
+            $i++;
+        }
+        return $newComments;
     }
 
     /**

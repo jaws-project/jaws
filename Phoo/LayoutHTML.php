@@ -119,6 +119,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('on', _t('GLOBAL_ON'));
                 $tpl->SetVariablesArray($c);
                 $tpl->SetVariable('url', $url . '#comment'.$c['id']);
+                $tpl->SetVariable('image_title', $c['image_title']);
                 $tpl->ParseBlock('recent_comments/item');
             }
         }
