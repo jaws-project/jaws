@@ -279,18 +279,17 @@ class Menu_AdminModel extends Menu_Model
     }
 
     /**
-     * Delete all menu related with a gadget (type = %gadget%)
+     * Delete all menu related the gadget
      *
      * @access  public
-     * @param   string  $type
+     * @param   string  $gadget Gadget name
      * @return  bool    True if query was successful and Jaws_Error on error
      */
-    function RemoveMenusByType($type)
+    function DeleteGadgetMenus($gadget)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $mids = $menusTable->select('id')->where('menu_type', $type)->getAll();
+        $mids = $menusTable->select('id')->where('menu_type', $gadget)->getAll();
         if (Jaws_Error::IsError($mids)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
