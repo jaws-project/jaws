@@ -239,7 +239,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             }
 
             // remove outdated maps
-            $res = $this->RemoveGadgetMaps($gadget, $now);
+            $res = $this->DeleteGadgetMaps($gadget, $now);
             if (Jaws_Error::IsError($res)) {
                 return $res;
             }
@@ -421,7 +421,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @param   string  $time   Time condition
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function RemoveGadgetMaps($gadget, $time = '')
+    function DeleteGadgetMaps($gadget, $time = '')
     {
         $params = array();
         $params['gadget'] = $gadget;

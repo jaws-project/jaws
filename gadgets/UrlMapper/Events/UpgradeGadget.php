@@ -1,6 +1,6 @@
 <?php
 /**
- * UrlMapper UninstallGadget event
+ * UrlMapper UpgradeGadget event
  *
  * @category   Gadget
  * @package    UrlMapper
@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_Events_UninstallGadget extends Jaws_Gadget
+class UrlMapper_Events_UpgradeGadget extends Jaws_Gadget
 {
     /**
      * Event execute method
@@ -17,7 +17,7 @@ class UrlMapper_Events_UninstallGadget extends Jaws_Gadget
     function Execute($gadget)
     {
         $uModel = $GLOBALS['app']->loadGadget('UrlMapper', 'AdminModel');
-        $res = $uModel->DeleteGadgetMaps($gadget);
+        $res = $uModel->UpdateGadgetMaps($gadget);
         return $res;
     }
 
