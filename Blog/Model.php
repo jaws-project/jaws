@@ -286,7 +286,7 @@ class Blog_Model extends Jaws_Gadget_Model
             // total comments
             $summary['CommentsQty'] = $cModel->TotalOfComments($this->gadget->name);
             // recent comments
-            $comments = $cModel->GetRecentComments($this->gadget->name, 10);
+            $comments = $cModel->GetComments($this->gadget->name, 10);
             if (Jaws_Error::IsError($comments)) {
                 return $comments;
             }
@@ -584,7 +584,7 @@ class Blog_Model extends Jaws_Gadget_Model
     function GetComments($id)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $id, 'entry', true, false, false, true);
+        $comments = $cModel->GetComments($this->gadget->name, 0, $id, 'entry', array(1), true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
         }
@@ -623,7 +623,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $recentcommentsLimit = $this->gadget->GetRegistry('last_recentcomments_limit');
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetRecentComments($this->gadget->name, $recentcommentsLimit);
+        $comments = $cModel->GetComments($this->gadget->name, $recentcommentsLimit);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_COMMENTS'), _t('BLOG_NAME'));
         }
