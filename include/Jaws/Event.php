@@ -18,21 +18,19 @@ class Jaws_Event
      * @access  public
      * @param   string  $gadget Gadget name that listens
      * @param   string  $event  Event name
-     * @param   string  $method Gadget method that will be executed
      * @return  bool    True if listener was added, otherwise returns Jaws_Error
      */
-    function AddListener($gadget, $event, $method)
+    function AddListener($gadget, $event)
     {
         $params = array();
         $params['gadget'] = $gadget;
         $params['event']  = $event;
-        $params['method'] = $method;
 
         $sql = '
             INSERT INTO [[listeners]]
-                ([gadget], [event], [method])
+                ([gadget], [event])
             VALUES
-                ({gadget}, {event}, {method})';
+                ({gadget}, {event})';
 
         $res = $GLOBALS['db']->query($sql, $params);
         return $res;
@@ -44,7 +42,7 @@ class Jaws_Event
      * @access  public
      * @param   string  $event  Event name
      * @param   mixed   $params Event param(s)
-     * @param   string  $gadget If set method return listener result of this gadget
+     * @param   string  $gadget If set, returns listener result of this gadget
      * @return  mixed   True if successfully, otherwise returns Jaws_Error
      */
     function Shout($event, $params = array(), $gadget = '')
@@ -57,22 +55,20 @@ class Jaws_Event
         $result = null;
         foreach ($listeners as $listener) {
             if (Jaws_Gadget::IsGadgetInstalled($listener['gadget'])) {
-                $gModel = $GLOBALS['app']->LoadGadget($listener['gadget'], 'AdminModel');
-                if (Jaws_Error::IsError($gModel)) {
-                    return $gModel;
+                $gEvent = $GLOBALS['app']->LoadEvent($gadget, $event);
+                if ($gEvent === false) {
+                    continue;
                 }
 
-                if (method_exists($gModel, $listener['method'])) {
-                    if (is_array($params)) {
-                        $response = call_user_func_array(array($gModel, $listener['method']), $params);
-                    } else {
-                        $response = $gModel->$listener['method']($params);
-                    }
+                if (is_array($params)) {
+                    $response = call_user_func_array(array($gModel, 'Execute'), $params);
+                } else {
+                    $response = $gModel->Execute($params);
+                }
 
-                    // return listener result
-                    if ($gadget == $listener['gadget']) {
-                        $result = $response;
-                    }
+                // return listener result
+                if ($gadget == $listener['gadget']) {
+                    $result = $response;
                 }
             }
         }
@@ -81,27 +77,21 @@ class Jaws_Event
     }
 
     /**
-     * Get information (which gadget is listening, which call is waiting form
-     * and which method is going to be executed)
+     * Get listener information
      *
      * @access  public
-     * @param   int     Listener's ID
+     * @param   int     Listener ID
      * @return  array   An array with information of a listener or Jaws_Error on failure
      */
     function GetListener($id)
     {
         $sql = '
             SELECT
-                [id], [gadget], [method], [event]
+                [id], [gadget], [event]
             FROM [[listeners]]
             WHERE  [id] = {id}';
 
         $res = $GLOBALS['db']->queryAll($sql, array('id' => $id));
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED', 'GetListeners'),
-                                  __FUNCTION__);
-        }
-
         return $res;
     }
 
@@ -111,19 +101,14 @@ class Jaws_Event
      * @access  public
      * @return  array   An array of all listener gadgets or Jaws_Error on failure
      */
-    function GetListeners($call)
+    function GetListeners()
     {
         $sql = '
             SELECT
-                [id], [gadget], [method], [event]
+                [id], [gadget], [event]
             FROM [[listeners]]';
 
         $res = $GLOBALS['db']->queryRow($sql);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED', 'GetListener'),
-                                  __FUNCTION__);
-        }
-
         return $res;
     }
 
@@ -138,7 +123,7 @@ class Jaws_Event
     {
         $sql = '
             SELECT
-                [id], [gadget], [method]
+                [id], [gadget]
             FROM [[listeners]]
             WHERE [event] = {event}';
 
@@ -151,18 +136,18 @@ class Jaws_Event
      *
      * @access  public
      * @param   string  $gadget  Gadget name
-     * @param   string  $method  Gadget method name
+     * @param   string  $event   Event name
      * @return  bool    True if listener was deleted, otherwise returns Jaws_Error
      */
-    function DeleteListener($gadget, $method = '')
+    function DeleteListener($gadget, $event = '')
     {
         $params = array();
         $params['gadget'] = $gadget;
-        $params['method'] = $method;
+        $params['event']  = $event;
 
         $sql = 'DELETE FROM [[listeners]] WHERE [gadget] = {gadget}';
-        if (!empty($method)) {
-            $sql .= ' AND [method] = {method}';
+        if (!empty($event)) {
+            $sql .= ' AND [event] = {event}';
         }
 
         $res = $GLOBALS['db']->query($sql, $params);
