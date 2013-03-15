@@ -62,7 +62,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $userModel = new Jaws_User();
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetRecentComments($gadget, $limit);
+        $comments = $model->GetComments($gadget, $limit);
 
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
         $tpl->Load('RecentComments.html');

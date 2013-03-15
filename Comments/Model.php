@@ -155,7 +155,7 @@ class Comments_Model extends Jaws_Gadget_Model
      * @return  array  Returns an array with data of a list of comments or Jaws_Error on error
      * @access  public
      */
-    function GetRecentComments($gadget, $limit, $gadgetId = null, $action = null , $status = array(), $getAllCurrentUser = false,
+    function GetComments($gadget, $limit, $gadgetId = null, $action = null , $status = array(), $getAllCurrentUser = false,
                          $offset = null, $orderBy = 0)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
@@ -180,7 +180,7 @@ class Comments_Model extends Jaws_Gadget_Model
             $visitor_name = $GLOBALS['app']->Session->GetCookie('visitor_name');
             $visitor_email = $GLOBALS['app']->Session->GetCookie('visitor_email');
             if ($visitor_name && $visitor_email) {
-                $commentsTable->or()->openWhere('name', $visitor_name)->and()->closeWhere('email', $visitor_email);
+                $commentsTable->and()->openWhere('name', $visitor_name)->and()->closeWhere('email', $visitor_email);
             }
         }
 
