@@ -98,7 +98,8 @@ class Shoutbox_Model extends Jaws_Gadget_Model
     function GetEntries($limit = 10)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $entries = $cModel->GetRecentComments($this->gadget->name, $limit, true, false, false, true);
+        $entries = $cModel->GetComments($this->gadget->name, $limit, null, null, array(1), true);
+
         return $entries;
     }
 
