@@ -25,5 +25,6 @@ $actions['PostMessage'] = array(
 $actions['RecentComments'] = array(
     'normal' => true,
     'layout' => true,
+    'file'   => 'RecentComments',
     'parametric' => true,
 );
