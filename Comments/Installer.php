@@ -24,11 +24,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
         }
 
         // Install listener for removing comments related to uninstalled gadget
-        $GLOBALS['app']->Event->AddListener(
-            $this->gadget->name,
-            'End_UninstallGadget',
-            'DeleteCommentsOfGadget'
-        );
+        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
 
         // Registry keys
         $this->gadget->AddRegistry('recent_comment_limit',   '10');

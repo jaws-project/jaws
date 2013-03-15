@@ -173,7 +173,7 @@ class Comments_AdminModel extends Comments_Model
      * @param   string $gadget Gadget's name
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function DeleteCommentsOfGadget($gadget)
+    function DeleteGadgetComments($gadget)
     {
         $res = Jaws_ORM::getInstance()->table('comments')->delete()->where('gadget', $gadget)->exec();
         if (Jaws_Error::IsError($res)) {
