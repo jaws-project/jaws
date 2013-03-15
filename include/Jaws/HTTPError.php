@@ -15,7 +15,7 @@ class Jaws_HTTPError
     {
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         // Let everyone know a HTTP error has been happened
-        $result = $GLOBALS['app']->Event->Shout('onHTTPError', 'UrlMapper', $code);
+        $result = $GLOBALS['app']->Event->Shout('HTTPError', 'UrlMapper', $code);
         if (!Jaws_Error::IsError($result) && !empty($result)) {
             $code = $result;
         }

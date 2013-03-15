@@ -160,12 +160,6 @@ class Jaws_Plugin
      */
     function EnablePlugin($plugin = null)
     {
-        // Before anything starts
-        $res = $GLOBALS['app']->Event->Shout('onBeforeEnablePlugin', $plugin);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
         if (is_null($plugin)) {
             $plugin = $this->_Name;
         }
@@ -204,7 +198,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Event->Shout('onAfterEnablePlugin', $plugin);
+        $res = $GLOBALS['app']->Event->Shout('EnablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -241,12 +235,6 @@ class Jaws_Plugin
      */
     function DisablePlugin($plugin = null)
     {
-        // Before anything starts
-        $res = $GLOBALS['app']->Shout('onBeforeDisablePlugin', $plugin);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
         if (is_null($plugin)) {
             $plugin = $this->_Name;
         }
@@ -274,7 +262,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Event->Shout('onAfterDisablePlugin', $plugin);
+        $res = $GLOBALS['app']->Event->Shout('DisablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }

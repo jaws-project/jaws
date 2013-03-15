@@ -74,12 +74,6 @@ class Jaws_Gadget_Installer
             return false;
         }
 
-        // Before anything starts
-        $res = $GLOBALS['app']->Event->Shout('onBeforeDisablingGadget', $gadget);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
         // if (!$this->_commonDisableGadget()) {
             // return false;
         // }
@@ -91,7 +85,7 @@ class Jaws_Gadget_Installer
             $$this->gadget->SetRegistry('enabled', 'false');
         }
         // After anything finished
-        $res = $GLOBALS['app']->Event->Shout('onAfterDisablingGadget', $gadget);
+        $res = $GLOBALS['app']->Event->Shout('DisableGadget', $gadget);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -169,12 +163,6 @@ class Jaws_Gadget_Installer
             return $installer;
         }
 
-        // begin uninstall gadget event
-        $res = $GLOBALS['app']->Event->Shout('Begin_UninstallGadget', $this->gadget->name);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
         $result = $installer->Uninstall();
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -198,7 +186,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->Delete($this->gadget->name, '', JAWS_COMPONENT_GADGET);
 
         // end uninstall gadget event
-        $result = $GLOBALS['app']->Event->Shout('End_UninstallGadget', $this->gadget->name);
+        $result = $GLOBALS['app']->Event->Shout('UninstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -224,12 +212,6 @@ class Jaws_Gadget_Installer
         $installer = $this->loadInstaller();
         if (Jaws_Error::IsError($installer)) {
             return $installer;
-        }
-
-        // begin upgrade gadget event
-        $result = $GLOBALS['app']->Event->Shout('Begin_UpgradeGadget', $this->gadget->name);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
         }
 
         $result = $installer->Upgrade($oldVersion, $newVersion);
@@ -261,7 +243,7 @@ class Jaws_Gadget_Installer
         }
 
         // end upgrade gadget event
-        $result = $GLOBALS['app']->Event->Shout('End_UpgradeGadget', $this->gadget->name);
+        $result = $GLOBALS['app']->Event->Shout('UpgradeGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -293,12 +275,6 @@ class Jaws_Gadget_Installer
                     __FUNCTION__
                 );
             }
-        }
-
-        // begin install gadget event
-        $result = $GLOBALS['app']->Event->Shout('Begin_InstallGadget', $this->gadget->name);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
         }
 
         $result = $installer->Install();
@@ -334,7 +310,7 @@ class Jaws_Gadget_Installer
         }
 
         // end install gadget event
-        $res = $GLOBALS['app']->Event->Shout('End_InstallGadget', $this->gadget->name);
+        $res = $GLOBALS['app']->Event->Shout('InstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
