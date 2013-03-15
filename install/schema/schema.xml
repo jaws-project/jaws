@@ -230,20 +230,21 @@
                 <length>64</length>
             </field>
 
-            <field>
-                <name>method</name>
-                <type>text</type>
-                <length>64</length>
-            </field>
-
             <index>
-                <name><variable>table_prefix</variable>listeners</name>
+                <name><variable>table_prefix</variable>listeners_ge</name>
                 <unique>true</unique>
                 <field>
                     <name>gadget</name>
                 </field>
                 <field>
                     <name>event</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>listeners_gadget</name>
+                <field>
+                    <name>gadget</name>
                 </field>
             </index>
 
