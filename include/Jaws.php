@@ -1116,20 +1116,47 @@ class Jaws
         $hookName = $gadget. $hook. 'Hook';
         if (!isset($this->_Classes[$hookName])) {
             $hookFile = JAWS_PATH . 'gadgets/' . $gadget . '/hooks/' . $hook . '.php';
-            if (file_exists($hookFile)) {
-                include_once $hookFile;
-            }
-
+            @include_once($hookFile);
             if (!Jaws::classExists($hookName)) {
                 return false;
             }
 
             $obj = new $hookName();
             $this->_Classes[$hookName] = $obj;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
-                                 'Loaded hook: ' . $hook . ' of gadget '. $gadget. ', File: ' . $hookFile);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded hook: $hook of gadget $gadget, File: $hookFile");
         }
+
         return $this->_Classes[$hookName];
+    }
+
+    /**
+     * Loads a gadget event class
+     *
+     * @access  public
+     * @param   string  $gadget  Gadget we want to load
+     * @param   string  $event   Event name
+     * @return  object  Gadget event if it exists or false
+     */
+    function loadEvent($gadget, $event)
+    {
+        // filter non validate character
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+        $event  = preg_replace('/[^[:alnum:]_]/', '', $event);
+
+        $eventClass = $gadget. '_Events_'. $event;
+        if (!isset($this->_Classes[$eventClass])) {
+            $eventFile = JAWS_PATH . "gadgets/$gadget/Events/$event.php";
+            @include_once($eventFile);
+            if (!Jaws::classExists($eventClass)) {
+                return false;
+            }
+
+            $obj = new $eventClass();
+            $this->_Classes[$eventClass] = $obj;
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded event: $event of gadget $gadget, File: $eventFile");
+        }
+
+        return $this->_Classes[$eventClass];
     }
 
     /**
