@@ -1,14 +1,14 @@
 <?php
 /**
- * Menu UninstallGadget event
+ * Layout UninstallGadget event
  *
  * @category   Gadget
- * @package    Menu
+ * @package    Layout
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Menu_Events_UninstallGadget extends Jaws_Gadget
+class Layout_Events_UninstallGadget extends Jaws_Gadget
 {
     /**
      * Event execute method
@@ -16,8 +16,8 @@ class Menu_Events_UninstallGadget extends Jaws_Gadget
      */
     function Execute($gadget)
     {
-        $mModel = $GLOBALS['app']->loadGadget('Menu', 'AdminModel');
-        $res = $mModel->DeleteGadgetMenus($gadget);
+        $lModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+        $res = $lModel->DeleteGadgetElements($gadget);
         return $res;
     }
 

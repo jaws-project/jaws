@@ -1,14 +1,14 @@
 <?php
 /**
- * Menu UninstallGadget event
+ * UrlMapper UninstallGadget event
  *
  * @category   Gadget
- * @package    Menu
+ * @package    UrlMapper
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Menu_Events_UninstallGadget extends Jaws_Gadget
+class UrlMapper_Events_UninstallGadget extends Jaws_Gadget
 {
     /**
      * Event execute method
@@ -16,8 +16,8 @@ class Menu_Events_UninstallGadget extends Jaws_Gadget
      */
     function Execute($gadget)
     {
-        $mModel = $GLOBALS['app']->loadGadget('Menu', 'AdminModel');
-        $res = $mModel->DeleteGadgetMenus($gadget);
+        $uModel = $GLOBALS['app']->loadGadget('UrlMapper', 'AdminModel');
+        $res = $uModel->RemoveGadgetMaps($gadget);
         return $res;
     }
 
