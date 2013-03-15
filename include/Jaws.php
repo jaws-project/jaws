@@ -1151,7 +1151,7 @@ class Jaws
                 return false;
             }
 
-            $obj = new $eventClass();
+            $obj = new $eventClass($gadget);
             $this->_Classes[$eventClass] = $obj;
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded event: $event of gadget $gadget, File: $eventFile");
         }
