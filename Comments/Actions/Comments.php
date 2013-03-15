@@ -134,7 +134,7 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetRecentComments('comments', $perPage, null, null, array(COMMENT_STATUS_APPROVED), false,
+        $comments = $model->GetComments('comments', $perPage, null, null, array(COMMENT_STATUS_APPROVED), false,
                                               ($page - 1) * $perPage, $orderBy);
         $comments_count = $model->HowManyFilteredComments('comments', '', '', 1);
 

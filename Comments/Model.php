@@ -172,7 +172,7 @@ class Comments_Model extends Jaws_Gadget_Model
         if(!empty($action)) {
             $commentsTable->and()->where('action', $action);
         }
-        if (count($status) > 1) {
+        if (count($status) > 0) {
             $commentsTable->and()->where('status', $status, 'in');
         }
 
