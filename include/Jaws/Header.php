@@ -17,10 +17,12 @@ class Jaws_Header
     /**
      * Redirects the browser to another url via HTTP Location method
      *
-     * @param   string  $url URL to move the location
+     * @param   string $url URL to move the location
+     * @param   bool $addSiteURL
+     * @param   bool $addStatusCode
      * @access  public
      */
-    function Location($url = '', $addSiteURL = false)
+    function Location($url = '', $addSiteURL = false, $addStatusCode = true)
     {
         if (isset($GLOBALS['app']->Session)) {
             $GLOBALS['app']->Session->Synchronize();
@@ -30,7 +32,9 @@ class Jaws_Header
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
-        header('HTTP/1.1 302 Found');
+        if($addStatusCode) {
+            header('HTTP/1.1 302 Found');
+        }
         header('Location: '.$url);
         exit;
     }
