@@ -1,0 +1,41 @@
+#components {width:310px; background-color:#f7f7f7; border:1px solid #d3d7cf; padding:5px;}
+#components > div {height:500px; overflow:auto; background-color:white; border:1px solid #d3d7cf; padding:0px;}
+#components h3 {
+  background:#3465a4 url(../images/arrow-up.png) 98% no-repeat; color:white; cursor:default;
+  margin:1px 1px 0 1px; padding:4px; font-size:12px; font-weight:bold;
+}
+#components h3.collapsed {background:#3465a4 url(../images/arrow-down.png) 98% no-repeat;}
+#components ul {margin:0; padding:0; list-style:none;}
+#components li {padding:2px; margin:0 1px 1px;}
+#components li:hover {background-color:#f1f8ff;}
+#components li:hover a {display:inline;}
+#components li.selected {background-color:#729FCF;}
+#components li.selected span {color:white;}
+#components li.selected a {color:white;}
+#components img {width:32px; vertical-align:middle;}
+#components span {display:inline-block; width:200px; padding-left:5px; cursor:default;}
+#components a {display:none;}
+
+#component_ui {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
+#actions {text-align:right;}
+
+/* Information */
+.summary {padding:0 10px; line-height:2.5;}
+.summary h1 {font-size:14px; border-bottom:solid 1px grey; margin-bottom:10px;}
+.summary label {font-size:12px; color:#3465a4}
+.summary span {font-weight:bold;}
+.component-info img {float:left; width:48px;}
+.component-info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
+.component-info h2 {display:inline-block; font-size:12px;}
+.component-info span {font-weight:bold;}
+.component-info ul {margin:5px 0 15px; list-style-type:square;}
+.details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
+.details > div {margin-bottom:15px;}
+
+/* WebFX Tree */
+#bigTree > div {margin-bottom:10px;}
+.webfx-tree-item {margin:0;}
+.webfx-tree-item a {text-decoration:none; color:black; cursor:default;}
+.webfx-tree-item img {vertical-align:middle;}
+.webfx-tree-item input {vertical-align:middle;}
+.webfx-tree-icon {display:none;}

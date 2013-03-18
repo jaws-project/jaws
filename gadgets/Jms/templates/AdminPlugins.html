@@ -1,0 +1,31 @@
+<!-- BEGIN jms -->
+{menubar}
+<table width="100%">
+  <tr>
+    <td id="components">
+      <div>
+        <h3 title="{notinstalled_desc}">{lbl_notinstalled}</h3>
+        <ul id="notinstalled"></ul>
+        <h3 title="{installed_desc}">{lbl_installed}</h3>
+        <ul id="installed"></ul>
+        <h3 style="display:none"></h3>
+        <ul id="outdated"></ul>
+        <h3 style="display:none"></h3>
+        <ul id="core"></ul>
+      </div>
+    </td>
+    <td valign="top"><div id="component_ui">{summaryUI}</div></td>
+  </tr>
+</table>
+<div id="actions">{install}{uninstall}{usage}{save}{cancel}</div>
+<script type="text/javascript">
+  var actions = {
+      installed: "{lbl_uninstall}",
+      notinstalled: "{lbl_install}"
+    },
+    pluginsMode = true,
+    pluginUsageDesc = "{pluginUsageDesc}",
+    confirmUninstallPlugin = "{confirmUninstallPlugin}";
+  init();
+</script>
+<!-- END jms -->
