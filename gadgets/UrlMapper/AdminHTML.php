@@ -488,7 +488,6 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $form->Add($fieldset);
         $form->Add($buttonbox);
 
-
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
         $tpl->SetVariable('form', $form->Get());
         $tpl->ParseBlock('Properties');
