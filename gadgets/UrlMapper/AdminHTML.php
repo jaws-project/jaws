@@ -494,4 +494,5 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('Properties');
         return $tpl->Get();
     }
+
 }
