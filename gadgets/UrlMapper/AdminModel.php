@@ -619,6 +619,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['url_hash'] = md5($url);
         $params['new_url'] = $new_url;
         $params['new_code'] = $new_code;
+        $params['hits'] = 0;
         $params['now'] = $GLOBALS['db']->Date();
 
         if ($this->ErrorMapExists($params['url_hash'])) {
@@ -628,9 +629,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
 
         $sql = '
             INSERT INTO [[url_errors]]
-                ([url], [url_hash], [code], [new_url], [new_code], [createtime], [updatetime])
+                ([url], [url_hash], [code], [new_url], [new_code], [hits], [createtime], [updatetime])
             VALUES
-                ({url}, {url_hash}, {code}, {new_url}, {new_code}, {now}, {now})';
+                ({url}, {url_hash}, {code}, {new_url}, {new_code}, {hits}, {now}, {now})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -822,8 +823,12 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             }
 
             $redirectData = array();
-            $redirectData['url'] = $errorMap['new_url'];
-            $redirectData['code'] = $errorMap['code'];
+            if (isset($errorMap['new_url'])) {
+                $redirectData['url'] = $errorMap['new_url'];
+            }
+            if (isset($errorMap['new_code'])) {
+                $redirectData['code'] = $errorMap['new_code'];
+            }
             return ($redirectData);
         }
 

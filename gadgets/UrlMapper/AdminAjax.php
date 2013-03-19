@@ -271,4 +271,5 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
+
 }

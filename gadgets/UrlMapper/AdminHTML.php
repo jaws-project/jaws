@@ -388,7 +388,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $codeCombo =& Piwi::CreateWidget('Combo', 'code');
         $codeCombo->SetID('code');
         $codeCombo->SetStyle('width: 200px;');
-        $codeCombo->AddOption(_t('URLMAPPER_ERRORMAPS_CODE_404'), 404);
+        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
         $tpl->SetVariable('lbl_code', _t('URLMAPPER_ERRORMAPS_CODE'));
         $tpl->SetVariable('code', $codeCombo->Get());
 
@@ -403,9 +403,9 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $codeCombo =& Piwi::CreateWidget('Combo', 'new_code');
         $codeCombo->SetID('new_code');
         $codeCombo->SetStyle('width: 200px;');
-        $codeCombo->AddOption(_t('URLMAPPER_ERRORMAPS_CODE_301'), 301);
-        $codeCombo->AddOption(_t('URLMAPPER_ERRORMAPS_CODE_302'), 302);
-        $codeCombo->AddOption(_t('URLMAPPER_ERRORMAPS_CODE_410'), 410);
+        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_301'), 301);
+        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_302'), 302);
+        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
         $codeCombo->SetDefault(301);
         $tpl->SetVariable('lbl_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
         $tpl->SetVariable('new_code', $codeCombo->Get());
@@ -488,10 +488,10 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $form->Add($fieldset);
         $form->Add($buttonbox);
 
+
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
         $tpl->SetVariable('form', $form->Get());
         $tpl->ParseBlock('Properties');
         return $tpl->Get();
     }
-
 }

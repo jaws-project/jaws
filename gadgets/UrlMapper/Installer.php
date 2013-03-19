@@ -27,6 +27,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Event->AddListener($this->gadget->name, 'InstallGadget');
         $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UpgradeGadget');
         $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
+        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'HTTPError');
 
         // Registry keys
         $this->gadget->AddRegistry(array(

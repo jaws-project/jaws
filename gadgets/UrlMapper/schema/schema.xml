@@ -195,14 +195,12 @@
             <name>new_url</name>
             <type>text</type>
             <length>400</length>
-            <notnull>true</notnull>
         </field>
 
         <field>
             <name>new_code</name>
             <type>integer</type>
             <length>4</length>
-            <notnull>true</notnull>
         </field>
 
         <field>
