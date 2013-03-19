@@ -22,26 +22,6 @@ class Jaws_HTTPError
         }
 
         switch ($code) {
-            case 301:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL']) . " 301 Moved Permanently");
-                if (!empty($url)) {
-                    Jaws_Header::Location($url, false, false);
-                } else {
-                    $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_301') : $title;
-                    $message = empty($message) ? _t('GLOBAL_HTTP_ERROR_CONTENT_301') : $message;
-                }
-                break;
-
-            case 302:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL']) . " 302 Found");
-                if (!empty($url)) {
-                    Jaws_Header::Location($url, false, false);
-                } else {
-                    $title = empty($title) ? _t('GLOBAL_HTTP_ERROR_TITLE_302') : $title;
-                    $message = empty($message) ? _t('GLOBAL_HTTP_ERROR_CONTENT_302') : $message;
-                }
-                break;
-
             case 403:
                 header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
