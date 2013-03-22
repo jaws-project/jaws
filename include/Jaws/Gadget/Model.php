@@ -203,31 +203,21 @@ class Jaws_Gadget_Model
         }
 
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $fast_url = $xss->defilter($fast_url, true);
+        $fast_url = $GLOBALS['app']->UTF8->trim($xss->defilter($fast_url, true));
 
-        $fast_url = preg_replace(array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
-                                 array('', '-', '-'),
-                                 $GLOBALS['app']->UTF8->strtolower($fast_url));
+        $fast_url = preg_replace(
+            array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
+            array('', '-', '-'),
+            $GLOBALS['app']->UTF8->strtolower($fast_url)
+        );
+        $fast_url = $GLOBALS['app']->UTF8->substr($fast_url, 0, 90);
 
         if (!$unique_check) {
             return $fast_url;
         }
 
         $params = array();
-        $params['fast_url'] = $fast_url;
-
-        $sql = "
-             SELECT COUNT(*)
-             FROM [[$table]]
-             WHERE [$field] = {fast_url}";
-
-        $total = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::isError($total) || ($total == '0')) {
-            return $fast_url;
-        }
-
-        //Get a list of fast_url's that match the current entry
-        $params['fast_url'] = $GLOBALS['app']->UTF8->trim($fast_url).'%';
+        $params['fast_url'] = $fast_url.'%';
 
         $sql = "
              SELECT [$field]
@@ -235,23 +225,11 @@ class Jaws_Gadget_Model
              WHERE [$field] LIKE {fast_url}";
 
         $urlList = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($urlList)) {
+        if (Jaws_Error::IsError($urlList) || empty($urlList)) {
             return $fast_url;
         }
 
-        $counter = 1;
-        $numbers = array();
-        foreach($urlList as $url) {
-            //Matches the foo-\d?
-            if (preg_match("/(.+?)-([0-9]{0,})/", $url[$field], $matches)) {
-                $numbers[] = (int)$matches[2];
-            }
-        }
-        if (count($numbers) == 0) {
-            return $fast_url . '-1';
-        }
-        $lastNumber = $numbers[count($numbers)-1];
-        return $fast_url.'-'.($lastNumber+1);
+        return $fast_url. '-'. (count($urlList) + 1);
     }
 
     /**
