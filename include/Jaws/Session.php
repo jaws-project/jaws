@@ -282,7 +282,7 @@ class Jaws_Session
 
             // browser agent
             $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            $agent = $xss->filter($_SERVER['HTTP_USER_AGENT']);
+            $agent = substr($xss->filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
             if ($agent !== $session['agent']) {
                 $GLOBALS['app']->Session->Logout();
                 $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session agent has been changed');
@@ -585,7 +585,7 @@ class Jaws_Session
     {
         // agent
         $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $agent = $xss->filter($_SERVER['HTTP_USER_AGENT']);
+        $agent = substr($xss->filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
         // ip
         $ip = 0;
         if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
