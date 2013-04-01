@@ -19,7 +19,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
     function Upgrader_Authentication()
     {
         if (!isset($_SESSION['upgrade']['Authentication'])) {
-            $_SESSION['upgrade']['secure']= false;
+            $_SESSION['secure']= false;
             $_SESSION['upgrade']['Authentication'] = array('key' => md5(uniqid('ugprader')) . time() . floor(microtime()*1000));
         }
     }
@@ -50,7 +50,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
         $tpl->SetVariable('key_file_info', _t('UPGRADE_AUTH_KEY_INFO'));
         $tpl->SetVariable('next',          _t('GLOBAL_NEXT'));
         $tpl->SetVariable('key', $_SESSION['upgrade']['Authentication']['key']);
-        $tpl->SetVariable('checked',  $_SESSION['upgrade']['secure']? 'checked="checked"' : '');
+        $tpl->SetVariable('checked',  $_SESSION['secure']? 'checked="checked"' : '');
 
         $tpl->ParseBlock('Authentication');
         return $tpl->Get();
@@ -67,10 +67,10 @@ class Upgrader_Authentication extends JawsUpgraderStage
     {
         $request =& Jaws_Request::getInstance();
         $secure = $request->get('secure', 'post');
-        $_SESSION['upgrade']['secure'] = !empty($secure);
+        $_SESSION['secure'] = !empty($secure);
 
         // try to entering to secure transformation mode 
-        if ($_SESSION['upgrade']['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
+        if ($_SESSION['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $result = $JCrypt->Generate_RSA_KeyPair(128);

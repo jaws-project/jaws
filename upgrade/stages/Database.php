@@ -72,7 +72,7 @@ class Upgrader_Database extends JawsUpgraderStage
         $tpl->setVariable('db_info',   _t('UPGRADE_DB_INFO'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        if ($_SESSION['upgrade']['secure']) {
+        if ($_SESSION['secure']) {
             $tpl->SetVariable('pub_modulus',  $_SESSION['pub_mod']);
             $tpl->SetVariable('pub_exponent', $_SESSION['pub_exp']);
             $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
@@ -258,7 +258,7 @@ class Upgrader_Database extends JawsUpgraderStage
             $post = $_SESSION['upgrade']['data']['Database'] + $post;
         }
 
-        if ($_SESSION['upgrade']['secure']) {
+        if ($_SESSION['secure']) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $pvt_key = Crypt_RSA_Key::fromString($_SESSION['pvt_key'], $JCrypt->wrapper);
