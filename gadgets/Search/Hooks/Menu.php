@@ -16,7 +16,7 @@ class Search_Hooks_Menu extends Jaws_Gadget_Hook
      * @access  public
      * @return  array   List of menu items
      */
-    function Hook()
+    function Execute()
     {
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'Box'),
                         'title'  => _t('SEARCH_ACTIONS_BOX'),

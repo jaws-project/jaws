@@ -16,7 +16,7 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
      * @access  public
      * @return  array   List of URLs
      */
-    function Hook()
+    function Execute()
     {
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
                         'title' => _t('USERS_LOGIN_TITLE'));

@@ -17,7 +17,7 @@ class Launcher_Hooks_Menu extends Jaws_Gadget_Hook
      * @access  public
      * @return  array   URLs array
      */
-    function Hook()
+    function Execute()
     {
         $urls  = array();
         $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model');
