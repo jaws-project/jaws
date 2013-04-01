@@ -17,8 +17,7 @@ class Jaws_HTTPError
         // Let everyone know a HTTP error has been happened
         $result = $GLOBALS['app']->Event->Shout('HTTPError', $code, 'UrlMapper');
         if (!Jaws_Error::IsError($result) && !empty($result)) {
-            $code = $result['code'];
-            $url = isset($result['url']) ? $result['url'] : "";
+            $code = empty($result['code'])? $code : $result['code'];
         }
 
         switch ($code) {
