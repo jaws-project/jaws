@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SearchURLListHook
+class Search_Hooks_Menu extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with all possible items the Menu gadget can use
