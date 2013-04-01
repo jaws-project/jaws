@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Events_UninstallGadget extends Jaws_Gadget
+class Layout_Events_UninstallGadget extends Jaws_Gadget_Event
 {
     /**
      * Event execute method
