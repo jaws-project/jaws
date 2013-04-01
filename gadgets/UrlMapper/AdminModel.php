@@ -623,7 +623,6 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['now'] = $GLOBALS['db']->Date();
 
         if ($this->ErrorMapExists($params['url_hash'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
         }
 
@@ -635,11 +634,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
+            return $result;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 

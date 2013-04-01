@@ -225,7 +225,13 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
      */
     function AddErrorMap($url, $code, $new_url, $new_code)
     {
-        $this->_Model->AddErrorMap($url, $code, $new_url, $new_code);
+        $res = $this->_Model->AddErrorMap($url, $code, $new_url, $new_code);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
