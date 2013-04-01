@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PollURLListHook
+class Poll_Hooks_Menu extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with all available items the Menu gadget 
@@ -17,7 +17,7 @@ class PollURLListHook
      * @access  public
      * @return  array   URLs array
      */
-    function Hook()
+    function Execute()
     {
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Poll', 'LastPoll'),
                         'title' => _t('POLL_LAYOUT_DISPLAY_LAST'));

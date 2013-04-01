@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PreferencesURLListHook
+class Preferences_Hooks_Menu extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with all available items the Menu gadget can use
@@ -16,7 +16,7 @@ class PreferencesURLListHook
      * @access  public
      * @return  array   list of URLs
      */
-    function Hook()
+    function Execute()
     {
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Preferences', 'DefaultAction'),
                         'title' => _t('PREFERENCES_ACTION_TITLE'));

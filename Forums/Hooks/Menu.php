@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ForumsURLListHook
+class Forums_Hooks_Menu extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with all available items for Menu gadget 
@@ -17,7 +17,7 @@ class ForumsURLListHook
      * @access  public
      * @return  array   URLs array
      */
-    function Hook()
+    function Execute()
     {
         $urls = array();
         $urls[] = array(

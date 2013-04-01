@@ -1,14 +1,14 @@
 <?php
 /**
- * Shoutbox - URL List gadget hook
+ * Friend - URL List gadget hook
  *
  * @category   GadgetHook
- * @package    Shoutbox
+ * @package    Friend
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2013 Jaws Development Group
+ * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ShoutboxURLListHook
+class Friends_Hooks_Menu extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with all available items the Menu gadget 
@@ -17,10 +17,11 @@ class ShoutboxURLListHook
      * @access  public
      * @return  array   URLs array
      */
-    function Hook()
+    function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'DefaultAction'),
-                        'title' => _t('SHOUTBOX_NAME'));
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Friends', 'DefaultAction'),
+                        'title' => _t('FRIENDS_NAME'));
         return $urls;
     }
+
 }
