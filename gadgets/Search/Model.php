@@ -50,15 +50,19 @@ class Search_Model extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $gHook = $GLOBALS['app']->LoadHook($gadget, 'Search');
-                if ($gHook === false) {
+                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+                $objHook = $objGadget->load('Hook')->loadHook('Search');
+                if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
 
                 $searchFields = null;
                 $result[$gadget] = array();
-                if (method_exists($gHook, 'GetSearchFields')) {
-                    $searchFields = $gHook->GetSearchFields();
+                if (method_exists($objHook, 'GetSearchFields')) {
+                    $searchFields = $objHook->GetSearchFields();
                 }
 
                 if (is_array($searchFields)) {
@@ -135,8 +139,7 @@ class Search_Model extends Jaws_Gadget_Model
                     $preparedSQLs = $preparedSQLs[0];
                 }
 
-                $gResult = $gHook->Hook($preparedSQLs);
-                //FIXME: should test only IsError but most gadgets only return false...
+                $gResult = $objHook->Execute($preparedSQLs);
                 if (!Jaws_Error::IsError($gResult) || !$gResult) {
                     if (is_array($gResult) && !empty($gResult)) {
                         $result[$gadget] = $gResult;
