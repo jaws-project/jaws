@@ -1100,36 +1100,6 @@ class Jaws
     }
 
     /**
-     * Returns a gadget hook of a specific gadget
-     *
-     * @access  public
-     * @param   string  $gadget  Gadget we want to load (where the hook is)
-     * @param   string  $hook    Gadget hook (the hook name)
-     * @return  object  Gadget's hook if it exists or false
-     */
-    function loadHook($gadget, $hook)
-    {
-        // filter non validate character
-        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
-        $hook   = preg_replace('/[^[:alnum:]_]/', '', $hook);
-
-        $hookName = $gadget. $hook. 'Hook';
-        if (!isset($this->_Classes[$hookName])) {
-            $hookFile = JAWS_PATH . 'gadgets/' . $gadget . '/hooks/' . $hook . '.php';
-            @include_once($hookFile);
-            if (!Jaws::classExists($hookName)) {
-                return false;
-            }
-
-            $obj = new $hookName();
-            $this->_Classes[$hookName] = $obj;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded hook: $hook of gadget $gadget, File: $hookFile");
-        }
-
-        return $this->_Classes[$hookName];
-    }
-
-    /**
      * Checks if a class exists without triggering __autoload
      *
      * @param   string  $classname  Name of class
