@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowserSearchHook
+class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
      * Returns an array with the results of a search
@@ -17,7 +17,7 @@ class FileBrowserSearchHook
      * @param   string  $match  Match word
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Hook($match)
+    function Execute($match)
     {
         if (!$GLOBALS['app']->Session->GetPermission('FileBrowser', 'OutputAccess')) {
             return array();

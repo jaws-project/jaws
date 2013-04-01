@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogSearchHook
+class Blog_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
      * Gets the gadget's search fields
@@ -29,7 +29,7 @@ class BlogSearchHook
      * @param   string  $pSql   Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Hook($pSql = '')
+    function Execute($pSql = '')
     {
         $params = array('published' => true);
 

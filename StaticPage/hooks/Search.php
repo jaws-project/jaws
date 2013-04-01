@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPageSearchHook
+class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
      * Gets search fields of the gadget
@@ -29,7 +29,7 @@ class StaticPageSearchHook
      * @param   string  $pSql   Prepared search(WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Hook($pSql = '')
+    function Execute($pSql = '')
     {
         $params = array();
         $params['visible']   = true;

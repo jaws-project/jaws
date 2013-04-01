@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooSearchHook
+class Phoo_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
      * Gets the gadget's search fields
@@ -30,7 +30,7 @@ class PhooSearchHook
      * @param   array   $pSql Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Hook($pSql = array())
+    function Execute($pSql = array())
     {
         $orderType = $GLOBALS['app']->Registry->Get('albums_order_type', 'Phoo', JAWS_COMPONENT_GADGET);
         if (!in_array($orderType, array('createtime DESC',

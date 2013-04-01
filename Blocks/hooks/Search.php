@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlocksSearchHook
+class Blocks_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
      * Gets the gadget's search fields
@@ -29,7 +29,7 @@ class BlocksSearchHook
      * @param   string  $pSql  Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Hook($pSql = '')
+    function Execute($pSql = '')
     {
         $sql = '
             SELECT
