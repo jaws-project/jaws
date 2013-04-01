@@ -55,15 +55,19 @@ class Jaws_Event
         $result = null;
         foreach ($listeners as $listener) {
             if (Jaws_Gadget::IsGadgetInstalled($listener['gadget'])) {
-                $gEvent = $GLOBALS['app']->LoadEvent($listener['gadget'], $event);
-                if ($gEvent === false) {
+                $objGadget = $GLOBALS['app']->LoadGadget($listener['gadget'], 'Info');
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+                $objEvent = $objGadget->load('Event')->loadEvent($event);
+                if (Jaws_Error::IsError($objEvent)) {
                     continue;
                 }
 
                 if (is_array($params)) {
-                    $response = call_user_func_array(array($gEvent, 'Execute'), $params);
+                    $response = call_user_func_array(array($objEvent, 'Execute'), $params);
                 } else {
-                    $response = $gEvent->Execute($params);
+                    $response = $objEvent->Execute($params);
                 }
 
                 // return listener result
