@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_Events_InstallGadget extends Jaws_Gadget
+class UrlMapper_Events_InstallGadget extends Jaws_Gadget_Event
 {
     /**
      * Event execute method
