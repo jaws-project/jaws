@@ -214,9 +214,15 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
         $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
         $gadgets = $jms->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget) {
-            if (false !== $GLOBALS['app']->loadHook($gadget['realname'], 'URLList')) {
-                $typeCombo->AddOption($gadget['name'], $gadget['realname']);
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget['realname'], 'Info');
+            if (Jaws_Error::IsError($objGadget)) {
+                continue;
             }
+            $objHook = $objGadget->load('Hook')->loadHook('Menu');
+            if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
+            $typeCombo->AddOption($gadget['name'], $gadget['realname']);
         }
 
         $typeCombo->AddEvent(ON_CHANGE, 'changeType(this.value);');

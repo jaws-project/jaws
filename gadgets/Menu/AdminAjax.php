@@ -269,14 +269,18 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
                             'title' => _t('MENU_REFERENCES_NO_LINK'));
             return $urls;
         } else {
-            $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
             if (Jaws_Gadget::IsGadgetUpdated($request)) {
-                $hook = $GLOBALS['app']->loadHook($request, 'URLList');
-                if ($hook !== false) {
-                    return $hook->Hook();
+                $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
+                if (!Jaws_Error::IsError($objGadget)) {
+                    $objHook = $objGadget->load('Hook')->loadHook('Menu');
+                    if (!Jaws_Error::IsError($objHook)) {
+                        return $objHook->Execute();
+                    }
                 }
             }
         }
+
         return array();
     }
+
 }
