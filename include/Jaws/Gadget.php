@@ -150,16 +150,28 @@ class Jaws_Gadget
     var $components = array();
 
     /**
-     * Store model objects for later use so we aren't running
-     * around with multiple copies
+     * Store models objects for later use so we aren't running around with multiple copies
      * @var     array
      * @access  protected
      */
     var $models = array();
 
     /**
-     * Store installer objects for later use so we aren't running
-     * around with multiple copies
+     * Store hooks objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  protected
+     */
+    var $hooks = array();
+
+    /**
+     * Store events objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  protected
+     */
+    var $events = array();
+
+    /**
+     * Store installer object for later use so we aren't running around with multiple copies
      * @var     object
      * @access  protected
      */
