@@ -16,9 +16,13 @@ class UrlMapper_Events_HTTPError extends Jaws_Gadget
      */
     function Execute($code)
     {
+        $reqURL = Jaws_Utils::getRequestURL(true);
         $uModel = $GLOBALS['app']->loadGadget('UrlMapper', 'AdminModel');
-        $siteURL = Jaws_Utils::getRequestURL(true);
-        $res = $uModel->HandleHttpErrors($siteURL, $code);
+        $res = $uModel->GetHTTPError($reqURL, $code);
+        if (!Jaws_Error::IsError($res) && !empty($res) && ($res['code'] == 301 || $res['code'] == 302)) {
+            Jaws_Header::Location($res['url'], true, $res['code']);
+        }
+
         return $res;
     }
 

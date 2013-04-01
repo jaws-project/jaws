@@ -606,7 +606,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @param   string  $new_code   new code
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function AddErrorMap($url, $code, $new_url, $new_code)
+    function AddErrorMap($url, $code, $new_url = '', $new_code = 0)
     {
         if (trim($url) == '') {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), RESPONSE_ERROR);
@@ -784,56 +784,46 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     }
 
     /**
-     * Handle HTTP Errors
+     * Get HTTP error of reguested URL
      *
      * @access  public
-     * @param   string  $url
+     * @param   string  $reqURL
      * @param   int     $code
-     * @return  array
+     * @return  mixed   Error data array on success, Jaws_Error otherwise
      */
-    function HandleHttpErrors($url, $code)
+    function GetHTTPError($reqURL, $code)
     {
         $params = array();
-        $params['url_hash'] = md5($url);
+        $params['url_hash'] = md5($reqURL);
 
         $sql = '
             SELECT
-                [id], [new_url], [new_code]
+                [id], [new_url] as url, [new_code] as code
             FROM [[url_errors]]
             WHERE [url_hash] = {url_hash}';
 
         $errorMap = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($errorMap)) {
-            return array();
-        }
-
-        // find map for this url error
-        if ($errorMap != null) {
+        if (Jaws_Error::IsError($errorMap) || empty($errorMap)) {
+            if (empty($errorMap)) {
+                $this->AddErrorMap($reqURL, $code);
+            }
+        } else {
             $params = array();
-            $params['id'] = $errorMap['id'];
+            $params['id']  = $errorMap['id'];
+            $params['one'] = 1;
 
-            $sql = "
+            $sql = '
                 UPDATE [[url_errors]] SET
-                    [hits] = [hits]+1
-                WHERE [id] = {id}";
+                    [hits] = [hits] + {one}
+                WHERE [id] = {id}';
 
             $result = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($result)) {
-                return $result;
+                // do nothing
             }
-
-            $redirectData = array();
-            if (isset($errorMap['new_url'])) {
-                $redirectData['url'] = $errorMap['new_url'];
-            }
-            if (isset($errorMap['new_code'])) {
-                $redirectData['code'] = $errorMap['new_code'];
-            }
-            return ($redirectData);
         }
 
-        $this->AddErrorMap($url, $code, null, null);
-        return array();
+        return $errorMap;
     }
 
     /**

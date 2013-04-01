@@ -410,7 +410,6 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
         $tpl->SetVariable('new_code', $codeCombo->Get());
 
-
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->SetID('btn_cancel');
         $btnCancel->SetStyle('visibility: hidden;');
@@ -429,7 +428,6 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('ErrorMaps');
         return $tpl->Get();
     }
-
 
     /**
      * Builds Properties UI
@@ -488,10 +486,10 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $form->Add($fieldset);
         $form->Add($buttonbox);
 
-
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
         $tpl->SetVariable('form', $form->Get());
         $tpl->ParseBlock('Properties');
         return $tpl->Get();
     }
+
 }
