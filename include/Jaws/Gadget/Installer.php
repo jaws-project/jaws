@@ -85,7 +85,7 @@ class Jaws_Gadget_Installer
             $$this->gadget->SetRegistry('enabled', 'false');
         }
         // After anything finished
-        $res = $GLOBALS['app']->Event->Shout('DisableGadget', $gadget);
+        $res = $GLOBALS['app']->Listener->Shout('DisableGadget', $gadget);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -179,13 +179,13 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
 
         // removeing gadget listeners
-        $GLOBALS['app']->Event->DeleteListener($this->gadget->name);
+        $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
 
         // removeing gadget registry keys
         $GLOBALS['app']->Registry->Delete($this->gadget->name, '', JAWS_COMPONENT_GADGET);
 
         // end uninstall gadget event
-        $result = $GLOBALS['app']->Event->Shout('UninstallGadget', $this->gadget->name);
+        $result = $GLOBALS['app']->Listener->Shout('UninstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -242,7 +242,7 @@ class Jaws_Gadget_Installer
         }
 
         // end upgrade gadget event
-        $result = $GLOBALS['app']->Event->Shout('UpgradeGadget', $this->gadget->name);
+        $result = $GLOBALS['app']->Listener->Shout('UpgradeGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -309,7 +309,7 @@ class Jaws_Gadget_Installer
         }
 
         // end install gadget event
-        $res = $GLOBALS['app']->Event->Shout('InstallGadget', $this->gadget->name);
+        $res = $GLOBALS['app']->Listener->Shout('InstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }

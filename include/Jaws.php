@@ -163,7 +163,7 @@ class Jaws
         $this->loadClass('Translate', 'Jaws_Translate');
         $this->loadClass('Registry', 'Jaws_Registry');
         $this->loadClass('ACL', 'Jaws_ACL');
-        $this->loadClass('Event', 'Jaws_Event');
+        $this->loadClass('Listener', 'Jaws_Listener');
 
         $this->loadPreferences();
         $this->Registry->Init();
@@ -1127,36 +1127,6 @@ class Jaws
         }
 
         return $this->_Classes[$hookName];
-    }
-
-    /**
-     * Loads a gadget event class
-     *
-     * @access  public
-     * @param   string  $gadget  Gadget we want to load
-     * @param   string  $event   Event name
-     * @return  object  Gadget event if it exists or false
-     */
-    function loadEvent($gadget, $event)
-    {
-        // filter non validate character
-        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
-        $event  = preg_replace('/[^[:alnum:]_]/', '', $event);
-
-        $eventClass = $gadget. '_Events_'. $event;
-        if (!isset($this->_Classes[$eventClass])) {
-            $eventFile = JAWS_PATH . "gadgets/$gadget/Events/$event.php";
-            @include_once($eventFile);
-            if (!Jaws::classExists($eventClass)) {
-                return false;
-            }
-
-            $obj = new $eventClass($gadget);
-            $this->_Classes[$eventClass] = $obj;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded event: $event of gadget $gadget, File: $eventFile");
-        }
-
-        return $this->_Classes[$eventClass];
     }
 
     /**

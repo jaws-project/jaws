@@ -539,7 +539,7 @@ class Jaws_User
         }
 
         // Let everyone know a user has been added
-        $res = $GLOBALS['app']->Event->Shout('AddUser', $result);
+        $res = $GLOBALS['app']->Listener->Shout('AddUser', $result);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -680,7 +680,7 @@ class Jaws_User
         }
 
         // Let everyone know a user has been updated
-        $res = $GLOBALS['app']->Event->Shout('UpdateUser', $id);
+        $res = $GLOBALS['app']->Listener->Shout('UpdateUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -829,7 +829,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been added
-        $res = $GLOBALS['app']->Event->Shout('AddGroup', $result);
+        $res = $GLOBALS['app']->Listener->Shout('AddGroup', $result);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -883,7 +883,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been updated
-        $res = $GLOBALS['app']->Event->Shout('UpdateGroup', $id);
+        $res = $GLOBALS['app']->Listener->Shout('UpdateGroup', $id);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -923,7 +923,7 @@ class Jaws_User
         }
 
         // Let everyone know that a user has been deleted
-        $res = $GLOBALS['app']->Event->Shout('DeleteUser', $id);
+        $res = $GLOBALS['app']->Listener->Shout('DeleteUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -956,7 +956,7 @@ class Jaws_User
         $GLOBALS['app']->ACL->DeleteGroupACL($id);
 
         // Let everyone know a group has been deleted
-        $res = $GLOBALS['app']->Event->Shout('DeleteGroup', $id);
+        $res = $GLOBALS['app']->Listener->Shout('DeleteGroup', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }

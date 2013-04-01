@@ -3,14 +3,14 @@
  * Class that takes care of 'listening': creating the objects and
  * executing methods when an event occurs
  *
- * @category   Event
+ * @category   Listener
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Event
+class Jaws_Listener
 {
     /**
      * Add a new listener and saves it in the DB

@@ -198,7 +198,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Event->Shout('EnablePlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('EnablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -262,7 +262,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Event->Shout('DisablePlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('DisablePlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }

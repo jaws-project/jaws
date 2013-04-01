@@ -180,7 +180,7 @@ class Jaws_Session
                         // create session & cookie
                         $this->Create($result, $remember);
                         // Let everyone know a user has been logged
-                        $GLOBALS['app']->Event->Shout('LoginUser');
+                        $GLOBALS['app']->Listener->Shout('LoginUser');
                         return true;
                     } else {
                         $result = Jaws_Error::raiseError(
