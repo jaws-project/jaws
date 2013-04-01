@@ -21,7 +21,7 @@ class Installer_Authentication extends JawsInstallerStage
         if (!isset($_SESSION['install']['Authentication']) && 
            (!isset($_SESSION['install']['predefined']) || !$_SESSION['install']['predefined']))
         {
-            $_SESSION['install']['secure']= false;
+            $_SESSION['secure']= false;
             $_SESSION['install']['Authentication'] = array('key' => md5(uniqid('installer')) . time() . floor(microtime()*1000));
         }
     }
@@ -52,7 +52,7 @@ class Installer_Authentication extends JawsInstallerStage
         $tpl->SetVariable('key_file_info', _t('INSTALL_AUTH_KEY_INFO'));
         $tpl->SetVariable('next',          _t('GLOBAL_NEXT'));
         $tpl->SetVariable('key', $_SESSION['install']['Authentication']['key']);
-        $tpl->SetVariable('checked',  $_SESSION['install']['secure']? 'checked="checked"' : '');
+        $tpl->SetVariable('checked',  $_SESSION['secure']? 'checked="checked"' : '');
 
         $tpl->ParseBlock('Authentication');
         return $tpl->Get();
@@ -73,10 +73,10 @@ class Installer_Authentication extends JawsInstallerStage
  
         $request =& Jaws_Request::getInstance();
         $secure = $request->get('secure', 'post');
-        $_SESSION['install']['secure'] = !empty($secure);
+        $_SESSION['secure'] = !empty($secure);
 
         // try to entering to secure transformation mode 
-        if ($_SESSION['install']['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
+        if ($_SESSION['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $result = $JCrypt->Generate_RSA_KeyPair(128);

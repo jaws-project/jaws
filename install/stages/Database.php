@@ -65,7 +65,7 @@ class Installer_Database extends JawsInstallerStage
         $tpl->setVariable('db_notice', _t('INSTALL_DB_NOTICE'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        if ($_SESSION['install']['secure']) {
+        if ($_SESSION['secure']) {
             $tpl->SetVariable('pub_modulus',  $_SESSION['pub_mod']);
             $tpl->SetVariable('pub_exponent', $_SESSION['pub_exp']);
             $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
@@ -251,7 +251,7 @@ class Installer_Database extends JawsInstallerStage
             $post = $_SESSION['install']['data']['Database'] + $post;
         }
 
-        if ($_SESSION['install']['secure']) {
+        if ($_SESSION['secure']) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $pvt_key = Crypt_RSA_Key::fromString($_SESSION['pvt_key'], $JCrypt->wrapper);

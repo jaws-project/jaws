@@ -59,7 +59,7 @@ class Installer_CreateUser extends JawsInstallerStage
         $tpl->setVariable('lbl_email',    _t('INSTALL_USER_EMAIL'));
         $tpl->SetVariable('next',         _t('GLOBAL_NEXT'));
 
-        if ($_SESSION['install']['secure']) {
+        if ($_SESSION['secure']) {
             $tpl->SetVariable('pub_modulus',  $_SESSION['pub_mod']);
             $tpl->SetVariable('pub_exponent', $_SESSION['pub_exp']);
             $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
@@ -130,7 +130,7 @@ class Installer_CreateUser extends JawsInstallerStage
             $post = $_SESSION['install']['data']['CreateUser'] + $post;
         }
 
-        if ($_SESSION['install']['secure']) {
+        if ($_SESSION['secure']) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $pvt_key = Crypt_RSA_Key::fromString($_SESSION['pvt_key'], $JCrypt->wrapper);
