@@ -24,10 +24,10 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
         }
 
         // Install listener for Add/Upgrade/Removing gadget's maps
-        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'InstallGadget');
-        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UpgradeGadget');
-        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
-        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'HTTPError');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'InstallGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpgradeGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'HTTPError');
 
         // Registry keys
         $this->gadget->AddRegistry(array(
@@ -73,9 +73,9 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
 
             // Install listener for Add/Update/Removing gadget's maps
-            $GLOBALS['app']->Event->AddListener($this->gadget->name, 'InstallGadget');
-            $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UpgradeGadget');
-            $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'InstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpgradeGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
         }
 
         if (version_compare($old, '0.3.1', '<')) {

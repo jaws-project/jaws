@@ -29,7 +29,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         // Install listener for removing menu's item related to uninstalled gadget
-        $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
 
         // Registry keys
         $this->gadget->AddRegistry('default_group_id', '1');
@@ -139,7 +139,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
             $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
             // Install listener for removing menu's item related to uninstalled gadget
-            $GLOBALS['app']->Event->AddListener($this->gadget->name, 'UninstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
         }
 
         $result = $this->installSchema('schema.xml', '', "0.7.0.xml");
