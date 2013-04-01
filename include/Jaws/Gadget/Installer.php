@@ -179,8 +179,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
 
         // removeing gadget listeners
-        $GLOBALS['app']->loadClass('Listener', 'Jaws_EventListener');
-        $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+        $GLOBALS['app']->Event->DeleteListener($this->gadget->name);
 
         // removeing gadget registry keys
         $GLOBALS['app']->Registry->Delete($this->gadget->name, '', JAWS_COMPONENT_GADGET);
