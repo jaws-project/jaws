@@ -41,11 +41,16 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
      * Display a Block
      *
      * @access  public
-     * @param   int     Block ID
+     * @param   int     $id Block ID
      * @return  string  XHTML Template content
      */
-    function Block($id)
+    function Block($id = 0)
     {
+        if (empty($id)) {
+            $request =& Jaws_Request::getInstance();
+            $id = $request->get('id', 'get');
+        }
+
         $tpl = new Jaws_Template('gadgets/Blocks/templates/');
         $tpl->Load('Blocks.html');
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
