@@ -34,12 +34,12 @@ class Policy_Installer extends Jaws_Gadget_Installer
             'obfuscator' => 'DISABLED',
             'akismet_key' => '',
             'typepad_key' => '',
-            'crypt_enabled' => 'false',
-            'crypt_pub_key' => '',
-            'crypt_pvt_key' => '',
+            'crypt_enabled' => $_SESSION['secure']? 'true' : 'false',
+            'crypt_pub_key' => $_SESSION['pub_key'],
+            'crypt_pvt_key' => $_SESSION['pvt_key'],
             'crypt_key_len' => '128',
             'crypt_key_age' => '86400',
-            'crypt_key_start_date' => '0',
+            'crypt_key_start_date' => $_SESSION['secure']? time() : '0',
             'passwd_bad_count' => '7',
             'passwd_lockedout_time' => '60',      // per second
             'passwd_max_age' => '0',              // per day  0 = resistant
