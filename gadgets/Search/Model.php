@@ -61,11 +61,8 @@ class Search_Model extends Jaws_Gadget_Model
 
                 $searchFields = null;
                 $result[$gadget] = array();
-                if (method_exists($objHook, 'GetSearchFields')) {
-                    $searchFields = $objHook->GetSearchFields();
-                }
-
-                if (is_array($searchFields)) {
+                $searchFields = $objHook->GetOptions();
+                if (!empty($searchFields)) {
                     $params = array();
                     $i = 0;
                     $preparedSQLs = array();
