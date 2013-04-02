@@ -171,14 +171,20 @@ class Users_Actions_Login extends Users_HTML
         $tpl->ParseBlock('LoginBox/remember');
 
         if ($this->gadget->GetRegistry('anon_register') == 'true') {
-            $link =& Piwi::CreateWidget('Link', _t('USERS_REGISTER'),
-                                        $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
+            $link =& Piwi::CreateWidget(
+                'Link',
+                _t('USERS_REGISTER'),
+                $this->gadget->GetURLFor('Registration')
+            );
             $tpl->SetVariable('user-register', $link->Get());
         }
 
         if ($this->gadget->GetRegistry('password_recovery') == 'true') {
-            $link =& Piwi::CreateWidget('Link', _t('USERS_FORGOT_LOGIN'),
-                                        $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));
+            $link =& Piwi::CreateWidget(
+                'Link',
+                _t('USERS_FORGOT_LOGIN'),
+                $this->gadget->GetURLFor('ForgotLogin')
+            );
             $tpl->SetVariable('forgot-password', $link->Get());
         }
 
@@ -215,10 +221,10 @@ class Users_Actions_Login extends Users_HTML
             // nickname
             $tpl->SetVariable('nickname',  $uInfo['nickname']);
             // profile link
-            $tpl->SetVariable('profile_url',
-                              $GLOBALS['app']->Map->GetURLFor('Users',
-                                                              'Profile',
-                                                              array('user' => $uInfo['username'])));
+            $tpl->SetVariable(
+                'profile_url',
+                $this->gadget->GetURLFor('Profile', array('user' => $uInfo['username']))
+            );
             // email
             $tpl->SetVariable('email',  $uInfo['email']);
 
@@ -229,7 +235,7 @@ class Users_Actions_Login extends Users_HTML
             {
                 $tpl->SetBlock('UserLinks/account');
                 $tpl->SetVariable('user_account', _t('USERS_EDIT_ACCOUNT'));
-                $tpl->SetVariable('account_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Account'));
+                $tpl->SetVariable('account_url', $this->gadget->GetURLFor('Account'));
                 $tpl->ParseBlock('UserLinks/account');
             }
 
@@ -237,7 +243,7 @@ class Users_Actions_Login extends Users_HTML
             if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPersonal')) {
                 $tpl->SetBlock('UserLinks/personal');
                 $tpl->SetVariable('user_personal', _t('USERS_EDIT_PERSONAL'));
-                $tpl->SetVariable('personal_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Personal'));
+                $tpl->SetVariable('personal_url', $this->gadget->GetURLFor('Personal'));
                 $tpl->ParseBlock('UserLinks/personal');
             }
 
@@ -245,7 +251,7 @@ class Users_Actions_Login extends Users_HTML
             if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPreferences')) {
                 $tpl->SetBlock('UserLinks/preferences');
                 $tpl->SetVariable('user_preferences', _t('USERS_EDIT_PREFERENCES'));
-                $tpl->SetVariable('preferences_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Preferences'));
+                $tpl->SetVariable('preferences_url', $this->gadget->GetURLFor('Preferences'));
                 $tpl->ParseBlock('UserLinks/preferences');
             }
 
@@ -259,18 +265,14 @@ class Users_Actions_Login extends Users_HTML
             }
 
             $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
-            $tpl->SetVariable('logout_url', $GLOBALS['app']->Map->GetURLFor('Users', 'Logout'));
+            $tpl->SetVariable('logout_url', $this->gadget->GetURLFor('Logout'));
 
             $tpl->ParseBlock('UserLinks');
         } else {
             $request   =& Jaws_Request::getInstance();
             $referrer  = $request->get('referrer', 'get');
             $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
-            $login_url = $GLOBALS['app']->Map->GetURLFor(
-                'Users',
-                'LoginBox',
-                array('referrer'  => $referrer)
-            );
+            $login_url = $this->gadget->GetURLFor('LoginBox', array('referrer'  => $referrer));
 
             $tpl->SetBlock('LoginLinks');
             $tpl->SetVariable('title', _t('USERS_LOGINLINKS'));
@@ -286,7 +288,7 @@ class Users_Actions_Login extends Users_HTML
             if ($this->gadget->GetRegistry('anon_register') == 'true') {
                 $tpl->SetBlock('LoginLinks/registeration');
                 $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
-                $tpl->SetVariable('registeration_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
+                $tpl->SetVariable('registeration_url',  $this->gadget->GetURLFor('Registration'));
                 $tpl->ParseBlock('LoginLinks/registeration');
             }
 
@@ -294,7 +296,7 @@ class Users_Actions_Login extends Users_HTML
             if ($this->gadget->GetRegistry('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
                 $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
-                $tpl->SetVariable('forgot_url',  $GLOBALS['app']->Map->GetURLFor('Users', 'ForgotLogin'));
+                $tpl->SetVariable('forgot_url',  $this->gadget->GetURLFor('ForgotLogin'));
                 $tpl->ParseBlock('LoginLinks/forgot');
             }
 
@@ -337,12 +339,7 @@ class Users_Actions_Login extends Users_HTML
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->GetMessage(), 'Users.Login');
             unset($post['password']);
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Login.Data');
-            $login_url = $GLOBALS['app']->Map->GetURLFor(
-                'Users',
-                'LoginBox',
-                array('referrer'  => $post['referrer'])
-            );
-
+            $login_url = $this->gadget->GetURLFor('LoginBox', array('referrer'  => $post['referrer']));
             Jaws_Header::Location($login_url, true);
         }
 

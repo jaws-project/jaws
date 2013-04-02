@@ -47,10 +47,7 @@ class Users_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('.dir', _t('GLOBAL_LANG_DIRECTION') == 'rtl' ? '.' . _t('GLOBAL_LANG_DIRECTION') : '');
         if (!$GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('NoPermission/anonymous');
-            $loginLink = $GLOBALS['app']->Map->GetURLFor(
-                                    'Users',
-                                    'LoginBox',
-                                    array('referrer'  => Jaws_Utils::getRequestURL(false)));
+            $loginLink = $this->gadget->GetURLFor('LoginBox', array('referrer' => Jaws_Utils::getRequestURL(false)));
             $tpl->SetVariable('anon_description', _t('USERS_NO_PERMISSION_ANON_DESC', $loginLink));
             $tpl->ParseBlock('NoPermission/anonymous');
         }

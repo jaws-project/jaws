@@ -143,11 +143,11 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                     $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
                     $tpl->SetVariable(
                         'activation_link',
-                        $GLOBALS['app']->Map->GetURLFor(
-                            'Users',
+                        $this->gadget->GetURLFor(
                             'ActivateUser',
                             array('key' => $verifyKey),
-                            true, 'site_url'
+                            true,
+                            'site_url'
                         )
                     );
                     $tpl->ParseBlock('Notification/Activation');
@@ -201,8 +201,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 if (!Jaws_Error::IsError($verifyKey)) {
                     $tpl->SetBlock('Notification/Activation');
                     $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
-                    $tpl->SetVariable('activation_link', $GLOBALS['app']->Map->GetURLFor('Users', 'ActivateUser',
-                                                                array('key' => $verifyKey), true, 'site_url'));
+                    $tpl->SetVariable(
+                        'activation_link',
+                        $this->gadget->GetURLFor(
+                            'ActivateUser',
+                            array('key' => $verifyKey),
+                            true,
+                            'site_url'
+                        )
+                    );
                     $tpl->ParseBlock('Notification/Activation');
                 }
             }
@@ -276,8 +283,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
             $tpl->SetVariable(
                 'url',
-                $GLOBALS['app']->Map->GetURLFor(
-                    'Users',
+                $this->gadget->GetURLFor(
                     'ChangePassword',
                     array('key' => $verifyKey),
                     true,
