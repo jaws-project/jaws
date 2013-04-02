@@ -151,17 +151,18 @@ class Users_Actions_Personal extends Users_HTML
             'post'
         );
 
+        $avatar = '';
         if (empty($post['delete_avatar'])) {
-            $res = Jaws_Utils::UploadFiles($_FILES,
+            $res = Jaws_Utils::UploadFiles(
+                $_FILES,
                 Jaws_Utils::upload_tmp_dir(),
-                'gif,jpg,jpeg,png');
+                'gif,jpg,jpeg,png'
+            );
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($res->GetMessage(), 'Users.Personal.Response');
-            } else {
+            } elseif (!empty($res)) {
                 $avatar = $res['avatar'][0]['host_filename'];
             }
-        } else {
-            $avatar = "";
         }
 
         // validate url
@@ -192,7 +193,7 @@ class Users_Actions_Personal extends Users_HTML
             $post['interests']
         );
         if (!Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_USERS_PERSONALINFO_UPDATED'),
                 'Users.Personal.Response');
         } else {
             $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(),
