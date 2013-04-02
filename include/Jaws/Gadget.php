@@ -199,13 +199,13 @@ class Jaws_Gadget
     }
 
     /**
-     * Loads the gadget model file in question, makes a instance and
+     * Loads the gadget extension file in question, makes a instance and
      * stores it globally for later use so we do not have duplicates
      * of the same instance around in our code.
      *
      * @access  public
-     * @param   string  $model   Model name
-     * @return  mixed   Model class object on successful, Jaws_Error otherwise
+     * @param   string  $extension  Extension name
+     * @return  mixed   Extension class object on successful, Jaws_Error otherwise
      */
     function &load($extension)
     {
