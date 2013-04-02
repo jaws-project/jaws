@@ -58,24 +58,30 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         $user_enabled = ($this->gadget->GetRegistry('anon_activation') == 'auto')? 1 : 2;
-        $user_id = $jUser->AddUser($username,
-                                   $nickname,
-                                   $user_email,
-                                   $password,
-                                   false,
-                                   $user_enabled);
+        $user_id = $jUser->AddUser(
+            array(
+                'username' => $username,
+                'nickname' => $nickname,
+                'email'    => $user_email,
+                'password' => $password,
+                'status'   => $user_enabled,
+            )
+        );
         if (Jaws_Error::IsError($user_id)) {
             return $user_id->getMessage();
         }
 
-        $pInfo = array('fname'  => $fname,
-                       'lname'  => $lname,
-                       'gender' => $gender,
-                       'dob'    => $dob,
-                       'url'    => $url);
-
-        $result = $jUser->UpdatePersonal($user_id, $pInfo);
-        if ($result === false) {
+        $result = $jUser->UpdatePersonal(
+            $user_id,
+            array(
+                'fname'  => $fname,
+                'lname'  => $lname,
+                'gender' => $gender,
+                'dob'    => $dob,
+                'url'    => $url
+            )
+        );
+        if ($result !== true) {
             //do nothing
         }
 
@@ -332,12 +338,12 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $res = $jUser->UpdateUser(
             $user['id'],
-            $user['username'],
-            $user['nickname'],
-            $user['email'],
-            null, // password
-            null, // superadmin
-            1     // status
+            array(
+                'username' => $user['username'],
+                'nickname' => $user['nickname'],
+                'email'    => $user['email'],
+                'status'   => 1
+            )
         );
         if (Jaws_Error::IsError($res)) {
             return $res;

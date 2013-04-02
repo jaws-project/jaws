@@ -134,11 +134,13 @@ class Users_Actions_Account extends Users_HTML
             }
 
             $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Account');
-            $result = $model->UpdateAccount($GLOBALS['app']->Session->GetAttribute('user'),
-                                            $post['username'],
-                                            $post['nickname'],
-                                            $post['email'],
-                                            $post['password']);
+            $result = $model->UpdateAccount(
+                $GLOBALS['app']->Session->GetAttribute('user'),
+                $post['username'],
+                $post['nickname'],
+                $post['email'],
+                $post['password']
+            );
             if (!Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
                                                              'Users.Account.Response');

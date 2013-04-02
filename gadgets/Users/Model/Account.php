@@ -26,12 +26,15 @@ class Users_Model_Account extends Jaws_Gadget_Model
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser  = new Jaws_User;
-        
-        $result = $jUser->UpdateUser($uid,
-                                     $username,
-                                     $nickname,
-                                     $email,
-                                     $password);
+        $result = $jUser->UpdateUser(
+            $uid,
+            array(
+                'username' => $username,
+                'nickname' => $nickname,
+                'email'    => $email,
+                'password' => $password,
+            )
+        );
         return $result;
     }
 
@@ -57,10 +60,12 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         $res = $jUser->UpdateUser(
             $user['id'],
-            $user['username'],
-            $user['nickname'],
-            $user['email'],
-            $password
+            array(
+                'username' => $user['username'],
+                'nickname' => $user['nickname'],
+                'email'    => $user['email'],
+                'password' => $password,
+            )
         );
         if (Jaws_Error::IsError($res)) {
             return $res;
