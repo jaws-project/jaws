@@ -62,4 +62,15 @@ class Jaws_Gadget_Hook
         return $this->gadget->hooks[$hook];
     }
 
+    /**
+     * Get hook options
+     *
+     * @access  public
+     * @return  mixed   Returns hook options
+     */
+    function GetOptions()
+    {
+        return null;
+    }
+
 }
