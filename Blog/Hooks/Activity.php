@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlogActivityHook
+class Blog_Hooks_Activity extends Jaws_Gadget_Hook
 {
     /**
      * Returns user's activity array
@@ -18,7 +18,7 @@ class BlogActivityHook
      * @param   int     $uname  User's name
      * @return  array   An array of user activity
      */
-    function Hook($uid, $uname)
+    function Execute($uid, $uname)
     {
         $entity = array();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
