@@ -449,7 +449,7 @@ function metaWeblog_getPost($params)
     }
 
     $pid  = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-    $link = $GLOBALS['app']->Map->GetURLFor('SingleView', array('id' => $pid));
+    $link = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $pid));
 
     $data = array(
         'categories'  => new XML_RPC_Value($categories, 'array'),

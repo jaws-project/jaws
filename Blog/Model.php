@@ -1088,7 +1088,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'Atom' : 'RSS',
-                                               null,
+                                               array(),
                                                true,
                                                'site_url');
 
@@ -1439,7 +1439,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
-                                               null,
+                                               array(),
                                                true,
                                                'site_url');
 
