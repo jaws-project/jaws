@@ -223,16 +223,20 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $jmsModel = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
         $gadgets  = $jmsModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
-            if (!file_exists($gDir . $gadget. '/hooks/Activity.php')) {
+            if (!file_exists($gDir . $gadget. '/Hooks/Activity.php')) {
                 continue;
             }
 
-            $gHook = $GLOBALS['app']->LoadHook($gadget, 'Activity');
-            if ($gHook === false) {
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            if (Jaws_Error::IsError($objGadget)) {
+                continue;
+            }
+            $objHook = $objGadget->load('Hook')->load('Activity');
+            if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
 
-            $activities = $gHook->Hook($uid, $uname);
+            $activities = $objHook->Execute($uid, $uname);
             if (Jaws_Error::IsError($activities) || empty($activities)) {
                 continue;
             }
