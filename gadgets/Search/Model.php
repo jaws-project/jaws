@@ -59,7 +59,6 @@ class Search_Model extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $searchFields = null;
                 $result[$gadget] = array();
                 $searchFields = $objHook->GetOptions();
                 if (!empty($searchFields)) {
