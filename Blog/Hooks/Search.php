@@ -16,7 +16,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
      * @access  public
      * @return  array   search fields array
      */
-    function GetSearchFields() {
+    function GetOptions() {
         return array(
                     array('[title]', '[summary]', '[text]'),
                     );

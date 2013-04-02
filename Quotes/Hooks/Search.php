@@ -16,7 +16,7 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
      * @access  public
      * @return  array   List of search fields
      */
-    function GetSearchFields() {
+    function GetOptions() {
         return array(
                     array('[title]', '[quotation]'),
                     );
