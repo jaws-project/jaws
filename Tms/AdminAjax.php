@@ -20,7 +20,7 @@ class Tms_AdminAjax extends Jaws_Gadget_HTML
     function Tms_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**

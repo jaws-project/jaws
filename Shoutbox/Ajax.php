@@ -20,7 +20,7 @@ class Shoutbox_Ajax extends Jaws_Gadget_HTML
     function Shoutbox_Ajax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->loadModel('Model');
+        $this->_Model = $this->gadget->load('Model')->load('Model');
     }
 
     /**
