@@ -22,7 +22,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
     function Menu_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -272,7 +272,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
             if (Jaws_Gadget::IsGadgetUpdated($request)) {
                 $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
                 if (!Jaws_Error::IsError($objGadget)) {
-                    $objHook = $objGadget->load('Hook')->loadHook('Menu');
+                    $objHook = $objGadget->load('Hook')->load('Menu');
                     if (!Jaws_Error::IsError($objHook)) {
                         return $objHook->Execute();
                     }

@@ -29,7 +29,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function Users_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->loadModel('AdminModel');
+        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $this->_UserModel = new Jaws_User();
     }

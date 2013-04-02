@@ -85,7 +85,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        $umapModel = $this->gadget->load('Model')->loadModel('AdminModel');
+        $umapModel = $this->gadget->load('Model')->load('AdminModel');
         if (version_compare($old, '0.3.2', '<')) {
             $sql = 'DELETE FROM [[url_maps]]';
             $result = $GLOBALS['db']->query($sql);

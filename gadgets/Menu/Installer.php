@@ -93,7 +93,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
                 return $menus;
             }
 
-            $mnuModel = $this->gadget->load('Model')->loadModel('AdminModel');
+            $mnuModel = $this->gadget->load('Model')->load('AdminModel');
             foreach ($menus as $m_idx => $menu) {
                 $mnuModel->InsertMenu(0, 1, 'url', $menu['title'], $menu['url'], 0, $m_idx + 1, 1);
                 $pid = $GLOBALS['db']->lastInsertID('menus', 'id');

@@ -218,7 +218,7 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
-            $objHook = $objGadget->load('Hook')->loadHook('Menu');
+            $objHook = $objGadget->load('Hook')->load('Menu');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }

@@ -71,7 +71,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $layoutModel = $this->gadget->load('Model')->loadModel('AdminModel');
+            $layoutModel = $this->gadget->load('Model')->load('AdminModel');
             $items = $layoutModel->GetLayoutItems();
             if (Jaws_Error::IsError($items)) {
                 return $items;
