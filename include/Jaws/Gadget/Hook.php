@@ -39,7 +39,7 @@ class Jaws_Gadget_Hook
      * @param   string  $hook  Hook name
      * @return  mixed   Hook class object on successful, Jaws_Error otherwise
      */
-    function &loadHook($hook)
+    function &load($hook)
     {
         // filter non validate character
         $hook = preg_replace('/[^[:alnum:]_]/', '', $hook);

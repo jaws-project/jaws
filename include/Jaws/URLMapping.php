@@ -76,7 +76,7 @@ class Jaws_URLMapping
         }
         $this->_extension = $extension;
 
-        $this->_Model = $urlMapper->load('Model')->loadModel('Model');
+        $this->_Model = $urlMapper->load('Model')->load('Model');
         if (Jaws_Error::isError($this->_Model)) {
             Jaws_Error::Fatal($this->_Model->getMessage());
         }

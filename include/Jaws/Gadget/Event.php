@@ -39,7 +39,7 @@ class Jaws_Gadget_Event
      * @param   string  $event  Event name
      * @return  mixed   Event class object on successful, Jaws_Error otherwise
      */
-    function &loadEvent($event)
+    function &load($event)
     {
         // filter non validate character
         $event = preg_replace('/[^[:alnum:]_]/', '', $event);

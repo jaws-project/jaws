@@ -41,7 +41,7 @@ class Jaws_Gadget_Model
      * @param   string  $type   Model type
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &loadModel($type, $filename = '')
+    function &load($type, $filename = '')
     {
         // filter non validate character
         $type = preg_replace('/[^[:alnum:]_]/', '', $type);
