@@ -513,7 +513,7 @@ class Jaws_User
 
         $uData['last_update'] = time();
         $uData['registered_date'] = time();
-        $uData['superadmin'] = (bool)$uData['superadmin'];
+        $uData['superadmin'] = isset($uData['superadmin'])? (bool)$uData['superadmin'] : false;
         $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
         $uData['concurrents'] = isset($uData['concurrents'])? (int)$uData['concurrents'] : 0;
         $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
