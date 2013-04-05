@@ -57,7 +57,7 @@ class Jaws_Registry
 
             $sql = '
                 SELECT
-                    [key_value]
+                    [component_name], [key_name], [key_value]
                 FROM [[registry]]
                 WHERE
                     [component_type] = {type}
@@ -67,7 +67,9 @@ class Jaws_Registry
                     [key_name] = {name}';
 
             $row = $GLOBALS['db']->queryRow($sql, $params);
-            if (Jaws_Error::IsError($row) || empty($row)) {
+            if (Jaws_Error::IsError($row) || empty($row) ||
+                $row['component_name'] !== $component || $row['key_name'] !== $name)
+            {
                 return null;
             }
 
