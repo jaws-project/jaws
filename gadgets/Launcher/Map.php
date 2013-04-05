@@ -8,9 +8,8 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('Execute', 
-                'launcher/{script}[/{params}]', 
-                '',
-                array ('script' =>'[[:alnum:]]+',
-                       'params' => '.+')
-                );
+$maps[] = array(
+    'Execute', 
+    'launcher/{script}[/{params}]', 
+    array ('script' =>'[[:alnum:]]+', 'params' => '.+')
+);

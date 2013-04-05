@@ -9,14 +9,14 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('LoginBox',
-                'user/login/referrer/{referrer}',
-                '',
-                array('referrer' => '.*'));
+$maps[] = array(
+    'LoginBox',
+    'user/login/referrer/{referrer}',
+    array('referrer' => '.*')
+);
 $maps[] = array(
     'Profile',
     'users/{user}',
-    '',
     array('user' => '[[:alnum:]-_.@]+')
 );
 $maps[] = array('LoginBox', 'user/login');
