@@ -671,15 +671,15 @@ class Jaws_Gadget
      * Search in map and return its url if found
      *
      * @access  protected
-     * @param   string     $action    Gadget's action name
-     * @param   array      $params    Params that the URL map requires
-     * @param   array      $params    Params that the URL map requires
-     * @param   mixed      URIPrefix  Prefix to use: site_url (config/url), uri_location or false for nothing
-     * @return  string     The mapped URL
+     * @param   string  $action    Action name
+     * @param   array   $params    Parameters of action
+     * @param   bool    $abs_url   Absolute or relative URL
+     * @param   string  $gadget    Gadget name
+     * @return  string  The mapped URL
      */
-    function GetURLFor($action='', $params = array(), $URIPrefix = false)
+    function GetURLFor($action='', $params = array(), $abs_url = false, $gadget = '')
     {
-        return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $URIPrefix);
+        return $GLOBALS['app']->Map->GetURLFor(empty($gadget)? $this->name : $gadget, $action, $params, $abs_url);
     }
 
     /**

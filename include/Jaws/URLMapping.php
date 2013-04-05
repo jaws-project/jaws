@@ -297,47 +297,17 @@ class Jaws_URLMapping
     }
 
     /**
-     * Returns the prefix URI
-     *
-     * @access  public
-     * @param   string  $option   Can be:
-     *
-     *          - site_url: Will take what is in /gadgets/Settings/url
-     *          - uri_location: Will use the URI location (NO HTTP protocol defined)
-     *          - nothing: Use nothing
-     * @return  string URI prefix
-     */
-    function GetURIPrefix($option)
-    {
-        static $site_url;
-
-        switch($option) {
-        case 'site_url':
-            if (isset($site_url)) {
-                return $site_url;
-            }
-            $site_url = $GLOBALS['app']->getSiteURL('/');
-            return $site_url;
-            break;
-        case 'uri_location':
-            return $GLOBALS['app']->GetURILocation();
-            break;
-        }
-        return '';
-    }
-
-    /**
      * Does the reverse stuff for an URL map. It gets all the params i
      * as an array and converts all the stuff to an URL map
      *
      * @access  public
-     * @param   string  $gadget   Gadget's name
-     * @param   string  $action   Gadget's action name
-     * @param   array   $params   Params that the URL map requires
-     * @param   mixed   URIPrefix Prefix to use: site_url (config/url), uri_location or false for nothing
+     * @param   string  $gadget     Gadget name
+     * @param   string  $action     Action name
+     * @param   array   $params     Parameters of action
+     * @param   bool    $abs_url    Absolute or relative URL
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = array(), $URIPrefix = false)
+    function GetURLFor($gadget, $action='', $params = array(), $abs_url = false)
     {
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_map[$gadget][$action])) {
@@ -380,7 +350,7 @@ class Jaws_URLMapping
             }
 
             if (!empty($url)) {
-                return $this->GetURIPrefix($URIPrefix) . $url;
+                return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
             }
         }
 
@@ -399,7 +369,7 @@ class Jaws_URLMapping
             }
         }
 
-        return $this->GetURIPrefix($URIPrefix) . $url;
+        return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
     }
 
     /**
