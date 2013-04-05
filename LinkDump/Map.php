@@ -11,23 +11,23 @@
  */
 $maps[] = array('DefaultAction', 'links');
 $maps[] = array('DefaultAction', 'links/groups');
-$maps[] = array('Archive',
-                'links/archive/{id}',
-                '',
-                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
-                );
-$maps[] = array('Group',
-                'links/group/{id}',
-                '',
-                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
-                );
-$maps[] = array('Tag',
-                'links/tag/{tag}',
-                '',
-                array('tag' =>  '[\p{L}[:digit:]-_\.]+',)
-                );
-$maps[] = array('Link', 
-                'links/{id}',
-                '',
-                array('id' => '[\p{L}[:digit:]-_\.]+',)
-                );
+$maps[] = array(
+    'Archive',
+    'links/archive/{id}',
+    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
+    'Group',
+    'links/group/{id}',
+    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
+    'Tag',
+    'links/tag/{tag}',
+    array('tag' =>  '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
+    'Link', 
+    'links/{id}',
+    array('id' => '[\p{L}[:digit:]-_\.]+',)
+);

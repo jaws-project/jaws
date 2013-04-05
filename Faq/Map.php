@@ -10,13 +10,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array('View', 'faq');
-$maps[] = array('ViewQuestion',
-                'faq/question/{id}',
-                '',
-                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
-                );
-$maps[] = array('ViewCategory',
-                'faq/category/{id}',
-                '',
-                array('id' =>  '[\p{L}[:digit:]-_\.]+',)
-                );
+$maps[] = array(
+    'ViewQuestion',
+    'faq/question/{id}',
+    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
+    'ViewCategory',
+    'faq/category/{id}',
+    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+);

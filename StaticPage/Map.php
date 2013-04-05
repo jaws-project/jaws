@@ -15,7 +15,6 @@ $maps[] = array('PagesTree', 'page/index');
 $maps[] = array(
     'Page', 
     'page/{pid}[/{language}]',
-    '',
      array(
         'pid'      => '[\p{L}[:digit:]-_\.]+',
         'language' => '[[:lower:]-]+',
@@ -24,7 +23,6 @@ $maps[] = array(
 $maps[] = array(
     'GroupPages',
     'pages/{gid}[/order/{order}]',
-    '',
     array(
         'gid' => '[\p{L}[:digit:]-_\.]+',
         'order' => '[[:digit:]]+',
@@ -33,7 +31,6 @@ $maps[] = array(
 $maps[] = array(
     'Pages', 
     'pages/{gid}/{pid}[/{language}]',
-    '',
     array(
         'gid'      => '[\p{L}[:digit:]-_\.]+',
         'pid'      => '[\p{L}[:digit:]-_\.]+',

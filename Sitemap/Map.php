@@ -11,8 +11,8 @@
  */
 $maps[] = array('Sitemap',    'sitemap');
 $maps[] = array('SitemapXML', 'sitemap/xml');
-$maps[] = array('Display',
-                'contents/{path}',
-                '',
-                array('path' => '.+')
-                );
+$maps[] = array(
+    'Display',
+    'contents/{path}',
+    array('path' => '.+')
+);
