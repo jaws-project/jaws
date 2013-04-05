@@ -468,7 +468,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['tid']),
-            'site_url'
+            true
         );
 
         if ($send_notification) {
@@ -538,7 +538,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 $forum_link = $this->gadget->GetURLFor(
                     'Topics',
                     array('fid' => $topic['fid']),
-                    'site_url'
+                    true
                 );
                 $result = $tModel->TopicNotification(
                     $event_type,
@@ -639,7 +639,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
-            'site_url'
+            true
         );
         $result = $tModel->TopicNotification(
             $event_type,

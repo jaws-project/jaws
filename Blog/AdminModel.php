@@ -382,7 +382,7 @@ class Blog_AdminModel extends Blog_Model
         if ($this->gadget->GetRegistry('pingback') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
-            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $max), 'site_url'),
+            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $max), true),
                                    $params['content']);
         }
 
@@ -544,7 +544,7 @@ class Blog_AdminModel extends Blog_Model
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
             $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $params['id']),
-                                                                   'site_url'),
+                                                                   true),
                                    $params['content']);
         }
 

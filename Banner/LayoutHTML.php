@@ -41,11 +41,11 @@ class Banner_LayoutHTML extends Jaws_Gadget_HTML
      * Displays banners(all-time visibles and random ones)
      *
      * @access  public
-     * @param   int     $gid       group ID
-     * @param   bool    $URIPrefix
+     * @param   int     $gid        Group ID
+     * @param   bool    $abs_url    Absolute or relative URL
      * @return  string  XHTML template content
      */
-    function Display($gid = 0, $URIPrefix = false)
+    function Display($gid = 0, $abs_url = false)
     {
         $model = $GLOBALS['app']->LoadGadget('Banner', 'Model');
         $group = $model->GetGroup($gid);
@@ -98,8 +98,8 @@ class Banner_LayoutHTML extends Jaws_Gadget_HTML
             } else {
                 $tpl_template->SetVariable('link',
                                            $GLOBALS['app']->Map->GetURLFor('Banner', 'Click',
-                                                                            array('id' => $banner['id']),
-                                                                           ($URIPrefix? 'site_url': false)));
+                                                                           array('id' => $banner['id']),
+                                                                           $abs_url));
                 $tpl_template->SetVariable('target', '_blank');
             }
             $tpl_template->ParseBlock('x');

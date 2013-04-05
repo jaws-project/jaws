@@ -66,6 +66,6 @@ class Banner_HTML extends Jaws_Gadget_HTML
         $layoutGadget = $GLOBALS['app']->LoadGadget('Banner', 'LayoutHTML');
         $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
-        return $layoutGadget->Display($gid, 'site_url');
+        return $layoutGadget->Display($gid, true);
     }
 }
