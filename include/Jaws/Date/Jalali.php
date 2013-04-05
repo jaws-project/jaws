@@ -108,12 +108,12 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         $year = $year - 1600;
         $jalali_day = $this->GregorianTotalDays($year, $month, $day) - 79;
+        $jalali_wday = ($jalali_day + 3) % 7;
 
         $jalali_year = floor($jalali_day/12053)*33; // 12053 = 33*365 + 8
         $jalali_day %= 12053;
         $jalali_year = 979 + $jalali_year + floor(($jalali_day - 1) / 1461)*4; // 1461 = 4*365 + 1
         $jalali_day  = ($jalali_day - 1) % 1461 + 1;
-        $jalali_wday = ($jalali_day - 2) % 7;
 
         $jalali_year++;
         $isLeap = (int)$this->IsJalaliLeapYear($jalali_year);
