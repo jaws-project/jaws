@@ -150,7 +150,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             include_once $file;
             foreach ($maps as $order => $map) {
                 $vars_regexps = array();
-                $vars_regexps = isset($map[3])? $map[3] : $vars_regexps;
+                $vars_regexps = isset($map[2])? $map[2] : $vars_regexps;
                 if (preg_match_all('#{(\w+)}#si', $map[1], $matches)) {
                     foreach ($matches[1] as $m) {
                         if (!isset($vars_regexps[$m])) {
@@ -162,7 +162,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                 $res = $this->AddMap($gadget,
                                      $map[0],
                                      $map[1],
-                                     isset($map[2])? $map[2] : '.',
+                                     isset($map[3])? $map[3] : '.',
                                      $vars_regexps,
                                      $order + 1);
                 if (Jaws_Error::IsError($res)) {
@@ -203,7 +203,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                 }
 
                 $vars_regexps = array();
-                $vars_regexps = isset($map[3])? $map[3] : $vars_regexps;
+                $vars_regexps = isset($map[2])? $map[2] : $vars_regexps;
                 if (preg_match_all('#{(\w+)}#si', $map[1], $matches)) {
                     foreach ($matches[1] as $m) {
                         if (!isset($vars_regexps[$m])) {
@@ -216,7 +216,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                     $res = $this->AddMap($gadget,
                                          $map[0],
                                          $map[1],
-                                         isset($map[2])? $map[2] : '.',
+                                         isset($map[3])? $map[3] : '.',
                                          $vars_regexps,
                                          $order + 1,
                                          $now);
@@ -230,7 +230,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                                             $vars_regexps,
                                             $order + 1,
                                             $map[1],
-                                            isset($map[2])? $map[2] : '.',
+                                            isset($map[3])? $map[3] : '.',
                                             $now);
                     if (Jaws_Error::IsError($res)) {
                         return $res;
