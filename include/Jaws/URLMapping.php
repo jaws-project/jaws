@@ -211,7 +211,7 @@ class Jaws_URLMapping
                         }
 
                         $url = $path;
-                        $ext = empty($ext)? $this->_extension : $ext;
+                        $ext = ($ext == '.')? $this->_extension : $ext;
                         if (substr($url, - strlen($ext)) == $ext) {
                             $url = substr($url, 0, - strlen($ext));
                         }
