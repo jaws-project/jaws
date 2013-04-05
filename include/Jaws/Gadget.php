@@ -674,13 +674,12 @@ class Jaws_Gadget
      * @param   string     $action    Gadget's action name
      * @param   array      $params    Params that the URL map requires
      * @param   array      $params    Params that the URL map requires
-     * @param   bool       $useExt    Append the extension? (if there's)
      * @param   mixed      URIPrefix  Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string     The mapped URL
      */
-    function GetURLFor($action='', $params = array(), $useExt = true, $URIPrefix = false)
+    function GetURLFor($action='', $params = array(), $URIPrefix = false)
     {
-        return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $useExt, $URIPrefix);
+        return $GLOBALS['app']->Map->GetURLFor($this->name, $action, $params, $URIPrefix);
     }
 
     /**

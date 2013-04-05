@@ -336,11 +336,10 @@ class Jaws_URLMapping
      * @param   string  $gadget   Gadget's name
      * @param   string  $action   Gadget's action name
      * @param   array   $params   Params that the URL map requires
-     * @param   bool    $useExt   Append the extension? (if there's)
      * @param   mixed   URIPrefix Prefix to use: site_url (config/url), uri_location or false for nothing
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = array(), $useExt = true, $URIPrefix = false)
+    function GetURLFor($gadget, $action='', $params = array(), $URIPrefix = false)
     {
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_map[$gadget][$action])) {
@@ -376,9 +375,8 @@ class Jaws_URLMapping
                     if (!$this->_use_rewrite) {
                         $url = 'index.php/' . $url;
                     }
-                    if ($useExt) {
-                        $url .= empty($ext)? $this->_extension : $ext;
-                    }
+
+                    $url .= ($ext == '.')? $this->_extension : $ext;
                     break;
                 }
                 $url = '';

@@ -162,7 +162,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                 $res = $this->AddMap($gadget,
                                      $map[0],
                                      $map[1],
-                                     isset($map[2])? $map[2] : '',
+                                     isset($map[2])? $map[2] : '.',
                                      $vars_regexps,
                                      $order + 1);
                 if (Jaws_Error::IsError($res)) {
@@ -216,7 +216,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                     $res = $this->AddMap($gadget,
                                          $map[0],
                                          $map[1],
-                                         isset($map[2])? $map[2] : '',
+                                         isset($map[2])? $map[2] : '.',
                                          $vars_regexps,
                                          $order + 1,
                                          $now);
@@ -230,7 +230,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
                                             $vars_regexps,
                                             $order + 1,
                                             $map[1],
-                                            isset($map[2])? $map[2] : '',
+                                            isset($map[2])? $map[2] : '.',
                                             $now);
                     if (Jaws_Error::IsError($res)) {
                         return $res;
@@ -292,7 +292,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @param   string  $time           Create/Update time
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function AddMap($gadget, $action, $map, $extension = '', $vars_regexps = null, $order = 0, $time = '')
+    function AddMap($gadget, $action, $map, $extension = '.', $vars_regexps = null, $order = 0, $time = '')
     {
         //for compatible with old versions
         $extension = ($extension == 'index.php')? '' : $extension;
@@ -342,7 +342,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateMap($id, $custom_map, $custom_extension, $vars_regexps, $order,
-        $map = '', $map_extension = '', $time = '')
+        $map = '', $map_extension = '.', $time = '')
     {
         if (!empty($map_extension) && $map_extension{0} != '.') {
             $map_extension = '.'.$map_extension;
