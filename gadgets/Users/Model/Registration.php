@@ -152,7 +152,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                         $this->gadget->GetURLFor(
                             'ActivateUser',
                             array('key' => $verifyKey),
-                            true,
                             'site_url'
                         )
                     );
@@ -212,7 +211,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                         $this->gadget->GetURLFor(
                             'ActivateUser',
                             array('key' => $verifyKey),
-                            true,
                             'site_url'
                         )
                     );
@@ -292,7 +290,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $this->gadget->GetURLFor(
                     'ChangePassword',
                     array('key' => $verifyKey),
-                    true,
                     'site_url'
                 )
             );

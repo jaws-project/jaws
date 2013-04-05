@@ -46,8 +46,7 @@ class HKCaptcha
             $GLOBALS['app']->Map->GetURLFor(
                 'Policy',
                 'Captcha',
-                array('field' => $field, 'key' => $prefix . $key),
-                false
+                array('field' => $field, 'key' => $prefix . $key)
             )
         );
 
