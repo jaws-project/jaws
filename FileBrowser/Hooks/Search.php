@@ -70,8 +70,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
                     $entry['url'] = $GLOBALS['app']->Map->GetURLFor(
                                                         'FileBrowser',
                                                         'Display',
-                                                        array('path' => $entry['title']),
-                                                        false);
+                                                        array('path' => $entry['title']));
                     $icon = 'gadgets/FileBrowser/images/folder.png';
                 } else {
                     $entry['url'] = str_replace(JAWS_PATH, '', $f);

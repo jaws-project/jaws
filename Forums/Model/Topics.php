@@ -499,7 +499,6 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 'Users',
                 'Profile',
                 array('user' => $GLOBALS['app']->Session->GetAttribute('username')),
-                true,
                 'site_url'
             )
         );

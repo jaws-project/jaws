@@ -468,7 +468,6 @@ class Forums_Actions_Topics extends Forums_HTML
         $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['tid']),
-            true,
             'site_url'
         );
 
@@ -539,7 +538,6 @@ class Forums_Actions_Topics extends Forums_HTML
                 $forum_link = $this->gadget->GetURLFor(
                     'Topics',
                     array('fid' => $topic['fid']),
-                    true,
                     'site_url'
                 );
                 $result = $tModel->TopicNotification(
@@ -641,7 +639,6 @@ class Forums_Actions_Topics extends Forums_HTML
         $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
-            true,
             'site_url'
         );
         $result = $tModel->TopicNotification(

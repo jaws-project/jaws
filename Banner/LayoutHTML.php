@@ -99,7 +99,6 @@ class Banner_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl_template->SetVariable('link',
                                            $GLOBALS['app']->Map->GetURLFor('Banner', 'Click',
                                                                             array('id' => $banner['id']),
-                                                                            true,
                                                                            ($URIPrefix? 'site_url': false)));
                 $tpl_template->SetVariable('target', '_blank');
             }

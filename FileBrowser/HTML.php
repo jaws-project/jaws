@@ -88,11 +88,11 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             $parentPath = $_path;
             if (empty($_path)) {
                 $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
-                $tpl->SetVariable('root-path', $this->gadget->GetURLFor('Display', array('path' => $_path), false));
+                $tpl->SetVariable('root-path', $this->gadget->GetURLFor('Display', array('path' => $_path)));
             } else {
                 $tpl->SetBlock('filebrowser/tree');
                 $tpl->SetVariable('dir-name', $dirTitle);
-                $tpl->SetVariable('dir-path', $this->gadget->GetURLFor('Display', array('path' => $_path), false));
+                $tpl->SetVariable('dir-path', $this->gadget->GetURLFor('Display', array('path' => $_path)));
                 $tpl->ParseBlock('filebrowser/tree');
             }
 
@@ -114,7 +114,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('title', $xss->filter($item['title']));
                 if ($item['is_dir']) {
                     $relative = $xss->filter($item['relative']) . '/';
-                    $url = $this->gadget->GetURLFor('Display', array('path' => $relative), false);
+                    $url = $this->gadget->GetURLFor('Display', array('path' => $relative));
                     $tpl->SetVariable('url', $url);
                 } else {
                     if (empty($item['id'])) {
@@ -122,13 +122,11 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                     } else {
                         $fid = empty($item['fast_url']) ? $item['id'] : $xss->filter($item['fast_url']);
                         $tpl->SetVariable('url', $this->gadget->GetURLFor('Download',
-                                                                  array('id' => $fid),
-                                                                  false));
+                                                                  array('id' => $fid)));
                         $tpl->SetBlock('filebrowser/item/info');
                         $tpl->SetVariable('lbl_info', _t('FILEBROWSER_FILEINFO'));
                         $tpl->SetVariable('info_url', $this->gadget->GetURLFor('FileInfo',
-                                                                       array('id' => $fid),
-                                                                       false));
+                                                                       array('id' => $fid)));
                         $tpl->ParseBlock('filebrowser/item/info');
                     }
                 }

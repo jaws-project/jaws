@@ -113,8 +113,7 @@ class Forums_Actions_Posts extends Forums_HTML
                     'url_attachment',
                     $this->gadget->GetURLFor(
                         'Attachment',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id']),
-                        false
+                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
                     )
                 );
                 $tpl->ParseBlock('posts/post/attachment');
@@ -627,7 +626,7 @@ class Forums_Actions_Posts extends Forums_HTML
         if ($last_post_page > 1) {
             $url_params['page'] = $last_post_page;
         }
-        $post_link = $this->gadget->GetURLFor('Posts', $url_params, true, 'site_url');
+        $post_link = $this->gadget->GetURLFor('Posts', $url_params, 'site_url');
 
         // send email notification
         if ($send_notification) {
@@ -673,7 +672,6 @@ class Forums_Actions_Posts extends Forums_HTML
             $topic_link = $this->gadget->GetURLFor(
                 'Posts',
                 array('fid' => $post['fid'], 'tid' => $post['tid']),
-                true,
                 'site_url'
             );
 

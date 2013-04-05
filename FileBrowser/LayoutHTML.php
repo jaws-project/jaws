@@ -46,8 +46,7 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
                     $relative = $xss->filter($item['relative']) . '/';
                     $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
                                                            'Display',
-                                                           array('path' => $relative),
-                                                           false);
+                                                           array('path' => $relative));
                 } else {
                     if (empty($item['id'])) {
                         $url = $xss->filter($item['url']);
@@ -55,8 +54,7 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
                         $fid = empty($item['fast_url']) ? $item['id'] : $xss->filter($item['fast_url']);
                         $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
                                                                'Download',
-                                                               array('id' => $fid),
-                                                               false);
+                                                               array('id' => $fid));
                     }
                 }
                 $tpl->SetVariable('url', $url);

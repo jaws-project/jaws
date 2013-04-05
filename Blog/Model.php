@@ -767,7 +767,7 @@ class Blog_Model extends Jaws_Gadget_Model
                                     $title,
                                     $GLOBALS['app']->Map->GetURLFor('Blog',
                                                                     'SingleView',
-                                                                    array('id' => $id), true, 'site_url'));
+                                                                    array('id' => $id), 'site_url'));
         $tpl->SetVariable('url',       $entry_url->Get());
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);
@@ -1089,7 +1089,6 @@ class Blog_Model extends Jaws_Gadget_Model
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'Atom' : 'RSS',
                                                array(),
-                                               true,
                                                'site_url');
 
         $this->_Atom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
@@ -1112,7 +1111,6 @@ class Blog_Model extends Jaws_Gadget_Model
             $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                    'SingleView',
                                                    array('id' => $post_id),
-                                                   true,
                                                    'site_url');
             $entry->SetLink($url);
             $entry->SetId($url);
@@ -1144,7 +1142,7 @@ class Blog_Model extends Jaws_Gadget_Model
             $cats = $this->GetCategoriesInEntry($r['id']);
             foreach ($cats as $c) {
                 $schema = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory',
-                                                array('id' => $c['id']), true, 'site_url');
+                                                array('id' => $c['id']), 'site_url');
                 $entry->AddCategory($c['id'], $c['name'], $schema );
             }
             $this->_Atom->AddEntry($entry);
@@ -1286,7 +1284,6 @@ class Blog_Model extends Jaws_Gadget_Model
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'ShowAtomCategory' : 'ShowRSSCategory',
                                                array('id' => $cid),
-                                               true,
                                                'site_url');
 
         $categoryAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
@@ -1307,7 +1304,7 @@ class Blog_Model extends Jaws_Gadget_Model
             $post_id = empty($r['fast_url']) ? $r['id'] : $r['fast_url'];
             $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView',
                                                    array('id' => $post_id),
-                                                   true, 'site_url');
+                                                   'site_url');
             $entry->SetLink($url);
             $entry->SetId($url);
 
@@ -1440,7 +1437,6 @@ class Blog_Model extends Jaws_Gadget_Model
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
                                                array(),
-                                               true,
                                                'site_url');
 
         $commentAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
@@ -1465,7 +1461,7 @@ class Blog_Model extends Jaws_Gadget_Model
             // So we can use the UrlMapping feature.
             $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView',
                                                    array('id' => $entry_id),
-                                                   true, 'site_url');
+                                                   'site_url');
 
             $url =  $url . htmlentities('#comment' . $c['id']);
             $entry->SetLink($url);
@@ -1546,7 +1542,6 @@ class Blog_Model extends Jaws_Gadget_Model
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                $feed_type == 'atom'? 'CommentsAtom' : 'CommentsRSS',
                                                array('id' => $id),
-                                               true,
                                                'site_url');
 
         $commentAtom->SetTitle($this->gadget->GetRegistry('site_name', 'Settings'));
@@ -1572,7 +1567,6 @@ class Blog_Model extends Jaws_Gadget_Model
             $url = $GLOBALS['app']->Map->GetURLFor('Blog',
                                                    'SingleView',
                                                    array('id' => $entry_id),
-                                                   true,
                                                    'site_url');
             $url =  $url . htmlentities('#comment' . $c['id']);
             $entry->SetLink($url);

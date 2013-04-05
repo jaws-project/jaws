@@ -202,7 +202,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
-                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
+                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), 'site_url');
                 $title = $post['title'];
                 $text = $content['text_block'];
                 if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
@@ -468,7 +468,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->GetRegistry('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
-                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true, 'site_url');
+                $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), 'site_url');
                 $title = $post['title'];
                 $text = $content['text_block'];
                 if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
