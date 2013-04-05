@@ -114,7 +114,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        if (version_compare($old, '0.4.0', '<')) {
+        if (version_compare($old, '1.0.0', '<')) {
             $result = $this->installSchema('schema.xml', '', '0.3.2.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
@@ -133,13 +133,6 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
                         return $res;
                     }
                 }
-            }
-        }
-
-        if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.4.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
             }
         }
 

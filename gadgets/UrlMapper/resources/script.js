@@ -184,7 +184,6 @@ function saveMap()
     UrlMapperAjax.callAsync('updatemap',
                             selectedMap,
                             $('custom_map_route').value,
-                            $('custom_map_ext').value,
                             $('map_order').value);
 }
 
@@ -227,7 +226,6 @@ function editMap(element, mid)
     } else {
         $('custom_map_route').value  = mapInfo['custom_map'];
     }
-    $('custom_map_ext').value = mapInfo['custom_extension'];
 }
 
 /**
@@ -283,7 +281,6 @@ function enableMapEditingArea(status)
 {
     if (status) {
         $('custom_map_route').disabled  = false;
-        $('custom_map_ext').disabled    = false;
         $('btn_save').disabled   = false;
         $('btn_cancel').disabled = false;
     } else {
@@ -293,9 +290,7 @@ function enableMapEditingArea(status)
         $('map_route').value  = '';
         $('map_ext').value    = '';
         $('custom_map_route').value  = '';
-        $('custom_map_ext').value    = '';
         $('custom_map_route').disabled  = true;
-        $('custom_map_ext').disabled    = true;
         $('btn_save').disabled   = true;
         $('btn_cancel').disabled = true;
     }

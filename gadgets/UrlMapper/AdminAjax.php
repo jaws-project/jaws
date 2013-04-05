@@ -61,15 +61,14 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
      * Updates a map
      *
      * @access  public
-     * @param   int     $id         Map ID
-     * @param   string  $map        Map string
-     * @param   string  $extension  Map extension
-     * @param   int     $order      Sequence number of the map
+     * @param   int     $id     Map ID
+     * @param   string  $map    Map string
+     * @param   int     $order  Sequence number of the map
      * @return  array   Response array (notice or error)
      */
-    function UpdateMap($id, $map, $extension, $order)
+    function UpdateMap($id, $map, $order)
     {
-        $res = $this->_Model->UpdateMap($id, $map, $extension, null, $order);
+        $res = $this->_Model->UpdateMap($id, $map, null, $order);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
         } else {

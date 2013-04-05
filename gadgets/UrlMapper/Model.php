@@ -160,7 +160,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [gadget], [action], [map], [regexp], [extension],
-                [custom_map], [custom_regexp], [custom_extension], [vars_regexps]
+                [custom_map], [custom_regexp], [vars_regexps]
             FROM [[url_maps]]
             ORDER BY [gadget], [order] ASC';
 

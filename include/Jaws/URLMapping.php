@@ -133,7 +133,6 @@ class Jaws_URLMapping
                                     'regexp_vars' => array_keys(unserialize($map['vars_regexps'])),
                                     'custom_map'       => $map['custom_map'],
                                     'custom_regexp'    => $map['custom_regexp'],
-                                    'custom_extension' => $map['custom_extension'],
                 );
             }
         }
@@ -201,16 +200,15 @@ class Jaws_URLMapping
 
                             $route  = $map['custom_map'];
                             $regexp = $map['custom_regexp'];
-                            $ext    = $map['custom_extension'];
                             $custom = true;
                         } else {
                             $route  = $map['map'];
                             $regexp = $map['regexp'];
-                            $ext    = $map['extension'];
                             $custom = false;
                         }
 
                         $url = $path;
+                        $ext = $map['extension'];
                         $ext = ($ext == '.')? $this->_extension : $ext;
                         if (substr($url, - strlen($ext)) == $ext) {
                             $url = substr($url, 0, - strlen($ext));
@@ -346,10 +344,8 @@ class Jaws_URLMapping
             foreach ($this->_map[$gadget][$action] as $map) {
                 if ($this->_custom_precedence && !empty($map['custom_map'])) {
                     $url = $map['custom_map'];
-                    $ext = $map['custom_extension'];
                 } else {
                     $url = $map['map'];
-                    $ext = $map['extension'];
                 }
 
                 // all params variables must exist in regexp variables
@@ -376,7 +372,8 @@ class Jaws_URLMapping
                         $url = 'index.php/' . $url;
                     }
 
-                    $url .= ($ext == '.')? $this->_extension : $ext;
+                    $ext = $map['extension'];
+                    $url.= ($ext == '.')? $this->_extension : $ext;
                     break;
                 }
                 $url = '';

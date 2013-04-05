@@ -261,14 +261,6 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_custom_map_route', _t('URLMAPPER_MAPS_ROUTE'));
         $tpl->SetVariable('custom_map_route', $custom_route->Get());
 
-        // custom map extension
-        $custom_ext =& Piwi::CreateWidget('Entry', 'custom_map_ext', '');
-        $custom_ext->SetID('custom_map_ext');
-        $custom_ext->SetStyle('direction: ltr; width: 200px;');
-        $custom_ext->SetEnabled(false);
-        $tpl->SetVariable('lbl_custom_map_ext', _t('URLMAPPER_MAPS_EXTENSION'));
-        $tpl->SetVariable('custom_map_ext', $custom_ext->Get());
-
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->SetEnabled(false);
         $btnCancel->AddEvent(ON_CLICK, "javascript: enableMapEditingArea(false);");
