@@ -142,8 +142,7 @@ class Jaws_Gadget_Installer
             );
         }
 
-        $core_gadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        if (false !== strpos($core_gadgets, ",{$this->gadget->name},")) {
+        if ($this->gadget->_IsCore) {
             return Jaws_Error::raiseError(
                 "you can't uninstall core gadgets",
                 __FUNCTION__
@@ -174,9 +173,9 @@ class Jaws_Gadget_Installer
         }
 
         // removeing gadget from installed gadgets list
-        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
         $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
-        $GLOBALS['app']->Registry->Set('gadgets_enabled_items', $installed_gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_installed_items', $installed_gadgets);
 
         // removeing gadget from autoload gadgets list
         $autoload_gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
@@ -301,10 +300,9 @@ class Jaws_Gadget_Installer
         $gModel->InstallACLs();
 
         // adding gadget to installed gadgets list
-        $type = $this->gadget->_IsCore ? 'core_items' : 'enabled_items';
-        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_' . $type);
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
         $installed_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->Registry->Set('gadgets_' . $type, $installed_gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_installed_items', $installed_gadgets);
 
         // adding gadget to autoload gadgets list
         if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {

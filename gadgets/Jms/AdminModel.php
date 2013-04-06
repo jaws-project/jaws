@@ -35,8 +35,8 @@ class Jms_AdminModel extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The gadgets directory does not exists!', __FILE__, __LINE__);
             }
 
-            $coreitems = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-            $coreitems = array_filter(explode(',', $coreitems));
+            $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+            $installed_gadgets = array_filter(explode(',', $installed_gadgets));
 
             $gadgets = scandir($gDir);
             foreach ($gadgets as $gadget) {
@@ -65,7 +65,7 @@ class Jms_AdminModel extends Jaws_Gadget_Model
                 $section = strtolower($objGadget->GetSection());
                 switch ($section) {
                     case 'general':
-                        $order = str_pad(array_search($gadget, $coreitems), 2, '0', STR_PAD_LEFT);
+                        $order = str_pad(array_search($gadget, $installed_gadgets), 2, '0', STR_PAD_LEFT);
                         $index = '0'. $section. $order. $index;
                         break;
                     case 'gadgets':

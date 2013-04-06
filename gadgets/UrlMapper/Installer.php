@@ -54,66 +54,6 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.2.0', '<')) {
-            $result = $this->installSchema('0.2.0.xml', '', "$old.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', '', '0.2.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $result = $GLOBALS['db']->dropTable('custom_maps');
-            if (Jaws_Error::IsError($result)) {
-                //not important
-            }
-
-            // Install listener for Add/Update/Removing gadget's maps
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'InstallGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpgradeGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
-        }
-
-        if (version_compare($old, '0.3.1', '<')) {
-            $result = $this->installSchema('0.3.1.xml', '', '0.3.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $umapModel = $this->gadget->load('Model')->load('AdminModel');
-        if (version_compare($old, '0.3.2', '<')) {
-            $sql = 'DELETE FROM [[url_maps]]';
-            $result = $GLOBALS['db']->query($sql);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $result = $this->installSchema('0.3.2.xml', '', '0.3.1.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // Add all gadgets maps
-            $gadgets  = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
-            $cgadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-            $gadgets  = explode(',', $gadgets);
-            $cgadgets = explode(',', $cgadgets);
-            $final = array_merge($gadgets, $cgadgets);
-            foreach ($final as $gadget) {
-                if (!empty($gadget)) {
-                    $res = $umapModel->AddGadgetMaps($gadget);
-                    if (Jaws_Error::IsError($res)) {
-                        return $res;
-                    }
-                }
-            }
-        }
-
         if (version_compare($old, '1.0.0', '<')) {
             $result = $this->installSchema('schema.xml', '', '0.3.2.xml');
             if (Jaws_Error::IsError($result)) {
@@ -121,17 +61,13 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
 
             // Update all gadgets maps
-            $gadgets  = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
-            $cgadgets = $GLOBALS['app']->Registry->Get('gadgets_core_items');
-            $gadgets  = explode(',', $gadgets);
-            $cgadgets = explode(',', $cgadgets);
-            $final = array_merge($gadgets, $cgadgets);
-            foreach ($final as $gadget) {
-                if (!empty($gadget)) {
-                    $res = $umapModel->UpdateGadgetMaps($gadget);
-                    if (Jaws_Error::IsError($res)) {
-                        return $res;
-                    }
+            $umapModel = $this->gadget->load('Model')->load('AdminModel');
+            $gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+            $gadgets = array_filter(explode(',', $gadgets));
+            foreach ($gadgets as $gadget) {
+                $res = $umapModel->UpdateGadgetMaps($gadget);
+                if (Jaws_Error::IsError($res)) {
+                    return $res;
                 }
             }
         }

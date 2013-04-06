@@ -599,7 +599,7 @@ class Jaws_Gadget
     }
 
     /**
-     * Return true or false if the gadget is correctly installed
+     * Returns is gadget installed
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -607,9 +607,8 @@ class Jaws_Gadget
      */
     public static function IsGadgetInstalled($gadget)
     {
-        $enabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
-        $enabled_gadgets.= $GLOBALS['app']->Registry->Get('gadgets_core_items');
-        return (false !== strpos($enabled_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+        return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
 
     /**
@@ -636,6 +635,23 @@ class Jaws_Gadget
         }
 
         return $gadgets_status[$gadget];
+    }
+
+    /**
+     * Returns is gadget enabled
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  bool    True or false, depends of the gadget status
+     */
+    public static function IsGadgetEnabled($gadget)
+    {
+        if (!self::IsGadgetInstalled($gadget)) {
+            return false;
+        }
+
+        $disabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_disabled_items');
+        return (false === strpos($disabled_gadgets, ",{$gadget},"));
     }
 
     /**
