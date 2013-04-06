@@ -101,8 +101,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                         $tpl->SetVariable('title', $gadgetCompleteDesc);
                         $tpl->SetVariable('name', $gadget['name']);
                         $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT . '?gadget=Jms&amp;action=EnableGadget&amp;comp='.
-                                          $key . '&amp;location=sidebar');
+                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Jms&amp;action=InstallGadget&amp;comp='. $key);
                         $tpl->SetVariable('install', _t('JMS_INSTALL'));
                         $tpl->ParseBlock('sidebar/notifications/item');
                     }
@@ -120,8 +119,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                         $tpl->SetVariable('title', $gadgetCompleteDesc);
                         $tpl->SetVariable('name', $gadget['name']);
                         $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT . '?gadget=Jms&amp;action=UpdateGadget&amp;comp='.
-                                          $key . '&amp;location=sidebar');
+                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Jms&amp;action=UpgradeGadget&amp;comp='. $key);
                         $tpl->SetVariable('install', _t('JMS_UPDATE'));
                         $tpl->ParseBlock('sidebar/notifications/item');
                     }

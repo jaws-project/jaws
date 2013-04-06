@@ -72,50 +72,30 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Installs gadget
+     * Install requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
+     * @param   string  $gadget Gadget name
      * @return  array   Response array (notice or error)
      */
     function InstallGadget($gadget)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-        $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $html->EnableGadget($gadget, false);
+        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $htmlJms->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Updates gadget
+     * Upgrade requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
+     * @param   string  $gadget Gadget name
      * @return  array   Response array (notice or error)
      */
-    function UpdateGadget($gadget)
+    function UpgradeGadget($gadget)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-
-        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($objGadget)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_FAILURE', $gadget), RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
-        }
-
-        if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
-            $installer = $objGadget->load('Installer');
-            $return = $installer->UpdateGadget();
-            if (Jaws_Error::IsError($return)) {
-                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-            } elseif (!$return) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_FAILURE', $objGadget->GetTitle()), RESPONSE_ERROR);
-            } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
-            }
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_NO_NEED', $objGadget->GetTitle()), RESPONSE_ERROR);
-        }
+        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $htmlJms->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

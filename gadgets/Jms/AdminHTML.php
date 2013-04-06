@@ -138,17 +138,18 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Enable a passed gadget by running
-     * Jaws_Gadget_HTML::EnableGadget method, then redirects to admin area
+     * Install requested gadget
      *
      * @access  public
-     * @param   bool    $redirect   Redirect to root page
+     * @param   string  $gadget Gadget name
      * @return  void
      */
-    function EnableGadget($gadget = '', $redirect = true)
+    function InstallGadget($gadget = '')
     {
+        $redirect = false;
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
+            $redirect = true;
             $request =& Jaws_Request::getInstance();
             $gadget = $request->get('comp', 'get');
         }
@@ -172,19 +173,22 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Update a passed gadget by running
-     * Jaws_Gadget_HTML::UpgradeGadget method, then redirects to admin area
+     * Upgrade requested gadget
      *
      * @access  public
+     * @param   string  $gadget Gadget name
      * @return  void
      */
-    function UpdateGadget()
+    function UpgradeGadget($gadget = '')
     {
+        $redirect = false;
         $this->gadget->CheckPermission('ManageGadgets');
-        $request =& Jaws_Request::getInstance();
-        $get = $request->get(array('location', 'comp'), 'get');
+        if (empty($gadget)) {
+            $redirect = true;
+            $request =& Jaws_Request::getInstance();
+            $gadget = $request->get('comp', 'get');
+        }
 
-        $gadget = $get['comp'];
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             $installer = $objGadget->load('Installer');
@@ -197,7 +201,10 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_UPDATE_NO_NEED', $gadget), RESPONSE_ERROR);
         }
-        Jaws_Header::Location(BASE_SCRIPT);
+
+        if ($redirect) {
+            Jaws_Header::Location(BASE_SCRIPT);
+        }
     }
 
     /**

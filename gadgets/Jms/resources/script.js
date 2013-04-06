@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var JmsCallback = {
-    updategadget: function(response) {
+    upgradegadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 
                 components[selectedComponent].core_gadget? 'core' : 'installed';
@@ -221,7 +221,7 @@ function setupComponent()
 {
     switch (components[selectedComponent].state) {
         case 'outdated':
-            JmsAjax.callAsync('updategadget', selectedComponent);
+            JmsAjax.callAsync('upgradegadget', selectedComponent);
             break;
         case 'notinstalled':
             if (pluginsMode) {

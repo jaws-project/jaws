@@ -18,9 +18,9 @@ $actions['Gadgets'] = array(
 $actions['Plugins'] = array(
     'normal' => true,
 );
-$actions['UpdateGadget'] = array(
+$actions['InstallGadget'] = array(
     'normal' => true,
 );
-$actions['EnableGadget'] = array(
+$actions['UpgradeGadget'] = array(
     'normal' => true,
 );
