@@ -24,3 +24,6 @@ $actions['InstallGadget'] = array(
 $actions['UpgradeGadget'] = array(
     'normal' => true,
 );
+$actions['UninstallGadget'] = array(
+    'normal' => true,
+);

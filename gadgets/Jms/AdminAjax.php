@@ -100,38 +100,16 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Uninstalls the gadget
+     * Uninstall requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
+     * @param   string  $gadget Gadget name
      * @return  array   Response array (notice or error)
      */
     function UninstallGadget($gadget)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-
-        $result = $this->_commonDisableGadget($gadget, _t('JMS_PURGED'));
-        if ($result !== true) {
-            return $result;
-        }
-
-        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($objGadget)) {
-            $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
-        } else {
-            $installer = $objGadget->load('Installer');
-            $return = $installer->UninstallGadget();
-            if (Jaws_Error::IsError($return)) {
-                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-            } else {
-                $GLOBALS['app']->Session->PushLastResponse(
-                    _t('JMS_GADGETS_DISABLE_OK',
-                    $objGadget->GetTitle()),
-                    RESPONSE_NOTICE
-                );
-            }
-        }
-
+        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $htmlJms->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -161,62 +139,6 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_OK', $gadget), RESPONSE_NOTICE);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
-     * Disables gadget
-     *
-     * @access  private
-     * @param   string  $gadget     gadget name
-     * @param   string  $type
-     * @return  mixed   True if susccessful, else Jaws_Error on error
-     */
-    function _commonDisableGadget($gadget, $type)
-    {
-        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $gadget) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_MAIN_FAILURE'), RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
-        }
-
-        $sql = '
-            SELECT [key_name] FROM [[registry]]
-            WHERE [key_name] LIKE {name} AND [key_value] LIKE {search}';
-        $params = array(
-            'name' => '/gadgets/%/requires',
-            'search' => '%' . $gadget . '%'
-        );
-
-        $result = $GLOBALS['db']->queryCol($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        if (count($result) > 0) {
-            $affected = array();
-            foreach ($result as $r) {
-                // get the gadget name out of the string
-                $g = str_replace(array('/gadgets/', '/requires'), '', $r);
-                // Get the real name
-                $info = $GLOBALS['app']->loadGadget($g, 'Info');
-                if (Jaws_Error::IsError($info)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $g), RESPONSE_ERROR);
-                    return $GLOBALS['app']->Session->PopLastResponse();
-                }
-                $affected[] = $info->GetTitle();
-            }
-
-            $info = $GLOBALS['app']->loadGadget($gadget, 'Info');
-            if (Jaws_Error::IsError($info)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLED_FAILURE', $gadget), RESPONSE_ERROR);
-                return $GLOBALS['app']->Session->PopLastResponse();
-            }
-
-            $a = implode($affected, ', ');
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_REQUIRES_X_DEPENDENCY', $info->GetTitle(), $a, $type), RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
-        }
-
-        return true;
     }
 
     /**
