@@ -101,10 +101,6 @@ class Jaws_Gadget_Installer
      */
     function dependOnGadgets()
     {
-        if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
-            return false;
-        }
-
         $params = array();
         $params['name']  = 'requires';
         $params['value'] = '%,'. $this->gadget->name. ',%';
@@ -118,12 +114,8 @@ class Jaws_Gadget_Installer
               AND
                 [key_value] LIKE {value}';
 
-        $requires = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($requires)) {
-            return $requires;
-        }
-
-        return array_flip($requires);
+        $requires = $GLOBALS['db']->queryCol($sql, $params);
+        return $requires;
     }
 
     /**
@@ -138,7 +130,7 @@ class Jaws_Gadget_Installer
     {
         if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return Jaws_Error::raiseError(
-                "gadget [{$this->gadget->name}]not installed",
+                "gadget [{$this->gadget->name}] not installed",
                 __FUNCTION__
             );
         }
@@ -157,7 +149,20 @@ class Jaws_Gadget_Installer
                 __FUNCTION__
             );
         }
-        
+
+        $dependent_gadgets = $this->dependOnGadgets();
+        if (!empty($dependent_gadgets)) {
+            if (Jaws_Error::IsError($dependent_gadgets)) {
+                return $dependent_gadgets;
+            }
+
+            $dependent_gadgets = implode(', ', $dependent_gadgets);
+            return Jaws_Error::raiseError(
+                "you can't uninstall this gadget, because $dependent_gadgets gadget(s) is dependent on it",
+                __FUNCTION__
+            );
+        }
+
         $installer = $this->loadInstaller();
         if (Jaws_Error::IsError($installer)) {
             return $installer;
@@ -282,7 +287,7 @@ class Jaws_Gadget_Installer
         }
 
         // Applying the keys that every gadget gets
-        $requires = implode($this->gadget->_Requires, ',');
+        $requires = ','. implode($this->gadget->_Requires, ','). ',';
         $this->gadget->AddRegistry(
             array(
                 'enabled'  => 'true',
