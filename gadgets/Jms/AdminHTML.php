@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    JMS
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Helgi ormar <dufuz@php.net>
+ * @author     Helgi Þormar <dufuz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
