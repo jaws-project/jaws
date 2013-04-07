@@ -25,7 +25,7 @@ class Menu_Model extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'url_target:integer',
-            'rank:integer', 'visible:integer', 'image:boolean');
+            'rank:integer', 'published:boolean', 'image:boolean');
         return $menusTable->where('id', $mid)->getRow();
     }
 
@@ -34,17 +34,17 @@ class Menu_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $pid
-     * @param   int     $gid            group ID
-     * @param   bool    $onlyVisible    show only visible
+     * @param   int     $gid        Group ID
+     * @param   bool    $published  published status
      * @return  mixed   Array with all the available menus and Jaws_Error on error
      */
-    function GetLevelsMenus($pid, $gid = null, $onlyVisible = false)
+    function GetLevelsMenus($pid, $gid = null, $published = null)
     {
         // using boolean type for blob to check it empty or not
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'gid:integer', 'title', 'url', 'url_target:integer',
-            'visible:integer', 'image:boolean'
+            'published:boolean', 'image:boolean'
         );
         $menusTable->where('pid', $pid);
 
@@ -52,8 +52,8 @@ class Menu_Model extends Jaws_Gadget_Model
             $menusTable->and()->where('gid', $gid);
         }
 
-        if($onlyVisible) {
-            $menusTable->and()->where('visible', 1);
+        if (!is_null($published)) {
+            $menusTable->and()->where('published', $published);
         }
 
         return $menusTable->orderBy('rank ASC')->getAll();
@@ -93,7 +93,7 @@ class Menu_Model extends Jaws_Gadget_Model
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select(
             'id:integer', 'title', 'title_view:integer', 'view_type:integer',
-            'rank:integer', 'visible:integer'
+            'rank:integer', 'published:boolean'
         );
         $mgroupsTable->orderBy('rank DESC');
         if(empty($gid)) {

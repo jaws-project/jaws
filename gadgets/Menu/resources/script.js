@@ -98,7 +98,7 @@ function saveMenus()
             var response = MenuAjax.callSync('insertgroup',
                                              $('title').value,
                                              $('title_view').value,
-                                             $('visible').value);
+                                             $('published').value);
             if (response[0]['css'] == 'notice-message') {
                 var gid = response[0]['data'];
                 AddNewMenuGroup(gid);
@@ -110,7 +110,7 @@ function saveMenus()
                                $('gid').value,
                                $('title').value,
                                $('title_view').value,
-                               $('visible').value);
+                               $('published').value);
         }
     } else {
         if ($('title').value.blank() || ($('references').selectedIndex == -1)) {
@@ -127,7 +127,7 @@ function saveMenus()
                                     encodeURI($('url').value),
                                     $('url_target').value,
                                     $('rank').value,
-                                    $('visible').value,
+                                    $('published').value,
                                     $('imagename').value);
             if (response[0]['css'] == 'notice-message') {
                 var mid = response[0]['message'].substr(0, response[0]['message'].indexOf('%%'));
@@ -147,7 +147,7 @@ function saveMenus()
                                     encodeURI($('url').value),
                                     $('url_target').value,
                                     $('rank').value,
-                                    $('visible').value,
+                                    $('published').value,
                                     $('imagename').value);
             if (response[0]['css'] == 'notice-message') {
                 $('menu_'+$('mid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
@@ -303,7 +303,7 @@ function editGroup(gid)
     $('gid').value         = groupInfo['id'];
     $('title').value       = groupInfo['title'].defilter();
     $('title_view').value  = groupInfo['title_view'];
-    $('visible').value     = groupInfo['visible'];
+    $('published').value   = Number(groupInfo['published']);
 }
 
 /**
@@ -350,7 +350,7 @@ function editMenu(mid)
     setRanksCombo($('gid').value, $('pid').value);
     $('rank').value        = menuInfo['rank'];
 
-    $('visible').value     = menuInfo['visible'];
+    $('published').value   = Number(menuInfo['published']);
     getReferences($('type').value);
     $('references').value = menuInfo['url'];
     if ($('type').value == 'url' && $('references').selectedIndex == -1) {

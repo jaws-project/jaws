@@ -17,7 +17,7 @@ class Menu_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.7.2';
+    var $_Version = '1.0.0';
 
     /**
      * Gadget ACLs

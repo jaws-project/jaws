@@ -20,10 +20,10 @@ class Menu_AdminModel extends Menu_Model
      * @access  public
      * @param   string   $title
      * @param   string   $title_view
-     * @param   bool     $visible        is visible
+     * @param   bool     $published     Published status
      * @return  bool     True on success or False on failure
      */
-    function InsertGroup($title, $title_view, $visible)
+    function InsertGroup($title, $title_view, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->getOne();
@@ -39,7 +39,7 @@ class Menu_AdminModel extends Menu_Model
 
         $gData['title']      = $title;
         $gData['title_view'] = $title_view;
-        $gData['visible']    = $visible;
+        $gData['published']  = (bool)$published;
         $gid = $mgroupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -55,17 +55,17 @@ class Menu_AdminModel extends Menu_Model
      *
      * @access  public
      * @param    int     $pid
-     * @param    int     $gid        group ID
+     * @param    int     $gid           Group ID
      * @param    string  $type
      * @param    string  $title
      * @param    string  $url
      * @param    string  $url_target
      * @param    string  $rank
-     * @param    bool    $visible    is visible
+     * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
+    function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
@@ -74,7 +74,7 @@ class Menu_AdminModel extends Menu_Model
         $mData['url']        = $url;
         $mData['url_target'] = $url_target;
         $mData['rank']       = $rank;
-        $mData['visible']    = $visible;
+        $mData['published']  = (bool)$published;
         if (empty($image)) {
             $mData['image']  = null;
         } else {
@@ -105,13 +105,13 @@ class Menu_AdminModel extends Menu_Model
      * Update a group
      *
      * @access  public
-     * @param    int     $gid            group ID
-     * @param    string  $title
+     * @param    int     $gid           Group ID
+     * @param    string  $title         Group title
      * @param    string  $title_view
-     * @param    bool    $visible        is visible
+     * @param    bool    $published     Published status
      * @return   bool    True on success or False on failure
      */
-    function UpdateGroup($gid, $title, $title_view, $visible)
+    function UpdateGroup($gid, $title, $title_view, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
@@ -128,7 +128,7 @@ class Menu_AdminModel extends Menu_Model
 
         $gData['title']      = $title;
         $gData['title_view'] = $title_view;
-        $gData['visible']    = $visible;
+        $gData['published']  = $published;
         $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -151,11 +151,11 @@ class Menu_AdminModel extends Menu_Model
      * @param    string  $url
      * @param    string  $url_target
      * @param    string  $rank
-     * @param    bool    $visible    is visible
+     * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
     {
         $oldMenu = $this->GetMenu($mid);
         if (Jaws_Error::IsError($oldMenu)) {
@@ -170,7 +170,7 @@ class Menu_AdminModel extends Menu_Model
         $mData['url']        = $url;
         $mData['url_target'] = $url_target;
         $mData['rank']       = $rank;
-        $mData['visible']    = $visible;
+        $mData['published']  = (bool)$published;
         if ($image !== 'true') {
             if (empty($image)) {
                 $mData['image'] = null;

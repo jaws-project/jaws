@@ -56,7 +56,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->LoadGadget('Menu', 'Model');
         $group = $model->GetGroups($gid);
-        if (Jaws_Error::IsError($group) || empty($group) || $group['visible'] == 0) {
+        if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
         }
 

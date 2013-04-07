@@ -24,8 +24,8 @@
             <value>1</value>
         </field>
         <field>
-            <name>visible</name>
-            <value>1</value>
+            <name>published</name>
+            <value>true</value>
         </field>
     </insert>
     </initialization>

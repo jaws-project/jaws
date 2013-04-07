@@ -104,15 +104,15 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      * Insert group
      *
      * @access  public
-     * @param   string  $title          menu title
+     * @param   string  $title          Menu title
      * @param   string  $title_view
-     * @param   bool    $visible        is visible
+     * @param   bool    $published      Published status
      * @return  array   Response array (notice or error)
      */
-    function InsertGroup($title, $title_view, $visible)
+    function InsertGroup($title, $title_view, $published)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $this->_Model->InsertGroup($title, $title_view, $visible);
+        $this->_Model->InsertGroup($title, $title_view, (bool)$published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -122,20 +122,20 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $pid
-     * @param   int     $gid            group ID
+     * @param   int     $gid            Group ID
      * @param   string  $type
      * @param   string  $title
      * @param   string  $url
      * @param   string  $url_target
      * @param   string  $rank
-     * @param   bool    $visible        is visible
+     * @param   bool    $published      Published status
      * @param   string  $image
      * @return  array   Response array (notice or error)
      */
-    function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
+    function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
     {
         $this->gadget->CheckPermission('ManageMenus');
-        $this->_Model->InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image);
+        $this->_Model->InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, (bool)$published, $image);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -144,16 +144,16 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      * Update group
      *
      * @access  public
-     * @param   int     $gid            group ID
+     * @param   int     $gid            Group ID
      * @param   string  $title
      * @param   string  $title_view
-     * @param   bool    $visible        is visible
+     * @param   bool    $published      Published status
      * @return  array   Response array (notice or error)
      */
-    function UpdateGroup($gid, $title, $title_view, $visible)
+    function UpdateGroup($gid, $title, $title_view, $published)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $this->_Model->UpdateGroup($gid, $title, $title_view, $visible);
+        $this->_Model->UpdateGroup($gid, $title, $title_view, (bool)$published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -162,22 +162,25 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      * Update menu
      *
      * @access  public
-     * @param   int     $mid            menu ID
+     * @param   int     $mid            Menu ID
      * @param   int     $pid
-     * @param   int     $gid            group ID
+     * @param   int     $gid            Group ID
      * @param   string  $type
      * @param   string  $title
      * @param   string  $url
      * @param   string  $url_target
      * @param   string  $rank
-     * @param   bool    $visible        is visible
+     * @param   bool    $published      Published status
      * @param   string  $image
      * @return  array   Response array (notice or error)
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
     {
         $this->gadget->CheckPermission('ManageMenus');
-        $this->_Model->UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $visible, $image);
+        $this->_Model->UpdateMenu(
+            $mid, $pid, $gid, $type, $title,
+            $url, $url_target, $rank, (bool)$published, $image
+        );
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }

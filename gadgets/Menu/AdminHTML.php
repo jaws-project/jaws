@@ -161,14 +161,14 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_title_view', _t('MENU_GROUPS_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleview->Get());
 
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
-        $visibleType =& Piwi::CreateWidget('Combo', 'visible');
-        $visibleType->SetID('visible');
-        $visibleType->SetStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $visibleType->AddOption(_t('GLOBAL_NO'),  '0');
-        $visibleType->AddOption(_t('GLOBAL_YES'), '1');
-        $visibleType->SetDefault('1');
-        $tpl->SetVariable('visible', $visibleType->Get());
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->SetStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault(1);
+        $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('menus/GroupsUI');
         $tpl->ParseBlock('menus');
@@ -265,14 +265,14 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_rank', _t('MENU_RANK'));
         $tpl->SetVariable('rank', $rank->Get());
 
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
-        $visibleType =& Piwi::CreateWidget('Combo', 'visible');
-        $visibleType->SetID('visible');
-        $visibleType->SetStyle('width: 128px;');
-        $visibleType->AddOption(_t('GLOBAL_NO'),  '0');
-        $visibleType->AddOption(_t('GLOBAL_YES'), '1');
-        $visibleType->SetDefault('1');
-        $tpl->SetVariable('visible', $visibleType->Get());
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->SetStyle('width: 128px;');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault(1);
+        $tpl->SetVariable('published', $published->Get());
 
         $entry =& Piwi::CreateWidget('FileEntry', 'upload_image', '');
         $entry->SetID('upload_image');
