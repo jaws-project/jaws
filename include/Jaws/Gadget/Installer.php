@@ -119,12 +119,78 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Does a complete uninstall to the gadget, removing acl keys, registry keys,
-     * tables, data, etc..
+     * Install a gadget
      *
-     * @param   string  $gadget  Gadget's name
-     * @return  bool    True true success or false on error
      * @access  public
+     * @return  mixed    Gadget name if success or Jaws_Error on error
+     */
+    function InstallGadget()
+    {
+        if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
+            return $this->gadget;
+        }
+
+        $installer = $this->loadInstaller();
+        if (Jaws_Error::IsError($installer)) {
+            return $installer;
+        }
+
+        // all required gadgets, must be installed
+        foreach ($this->gadget->_Requires as $req) {
+            if (!Jaws_Gadget::IsGadgetInstalled($req)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    __FUNCTION__
+                );
+            }
+        }
+
+        $result = $installer->Install();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // Applying the keys that every gadget gets
+        $requires = ','. implode($this->gadget->_Requires, ','). ',';
+        $this->gadget->AddRegistry(
+            array(
+                'enabled'  => 'true',
+                'version'  => $this->gadget->_Version,
+                'requires' => $requires,
+            )
+        );
+
+        // ACL keys
+        $gModel = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
+        $gModel->InstallACLs();
+
+        // adding gadget to installed gadgets list
+        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+        $installed_gadgets.= $this->gadget->name. ',';
+        $GLOBALS['app']->Registry->Set('gadgets_installed_items', $installed_gadgets);
+
+        // adding gadget to autoload gadgets list
+        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {
+            $autoload_gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
+            $autoload_gadgets.= $this->gadget->name. ',';
+            $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
+        }
+
+        // end install gadget event
+        $res = $GLOBALS['app']->Listener->Shout('InstallGadget', $this->gadget->name);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return $this->gadget;
+    }
+
+    /**
+     * Uninstall a gadget
+     * Does a complete uninstall to the gadget, removing acl keys, registry keys, tables, data, etc..
+     *
+     * @access  public
+     * @return  mixed    True if success or Jaws_Error on error
      */
     function UninstallGadget()
     {
@@ -198,11 +264,12 @@ class Jaws_Gadget_Installer
     }
 
     /**
+     * Upgrade a gadget
      * Does an update to the gadget, if the update of the gadget is ok then the version
      * key (in registry) will be updated
      *
-     * @return  bool    True if success or false on error
      * @access  public
+     * @return  mixed    Gadget name if success or Jaws_Error on error
      */
     function UpgradeGadget()
     {
@@ -249,72 +316,6 @@ class Jaws_Gadget_Installer
         $result = $GLOBALS['app']->Listener->Shout('UpgradeGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
-        }
-
-        return $this->gadget;
-    }
-
-    /**
-     * Installs a gadget
-     *
-     * @access  public
-     */
-    function InstallGadget()
-    {
-        if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
-            return $this->gadget;
-        }
-
-        $installer = $this->loadInstaller();
-        if (Jaws_Error::IsError($installer)) {
-            return $installer;
-        }
-
-        // all required gadgets, must be installed
-        foreach ($this->gadget->_Requires as $req) {
-            if (!Jaws_Gadget::IsGadgetInstalled($req)) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
-                    __FUNCTION__
-                );
-            }
-        }
-
-        $result = $installer->Install();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Applying the keys that every gadget gets
-        $requires = ','. implode($this->gadget->_Requires, ','). ',';
-        $this->gadget->AddRegistry(
-            array(
-                'enabled'  => 'true',
-                'version'  => $this->gadget->_Version,
-                'requires' => $requires,
-            )
-        );
-
-        // ACL keys
-        $gModel = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
-        $gModel->InstallACLs();
-
-        // adding gadget to installed gadgets list
-        $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
-        $installed_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->Registry->Set('gadgets_installed_items', $installed_gadgets);
-
-        // adding gadget to autoload gadgets list
-        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {
-            $autoload_gadgets = $GLOBALS['app']->Registry->Get('gadgets_autoload_items');
-            $autoload_gadgets.= $this->gadget->name. ',';
-            $GLOBALS['app']->Registry->Set('gadgets_autoload_items', $autoload_gadgets);
-        }
-
-        // end install gadget event
-        $res = $GLOBALS['app']->Listener->Shout('InstallGadget', $this->gadget->name);
-        if (Jaws_Error::IsError($res)) {
-            return $res;
         }
 
         return $this->gadget;
@@ -385,8 +386,8 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Performs any actions required to finish installing a gadget.
-     * Gadgets should override this method only if they need to perform actions to install.
+     * Install the gadget
+     * Gadgets should override this method only if they need to perform actions to install
      *
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
@@ -409,8 +410,8 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Updates the gadget
-     * Gadgets should override this method only if they need to perform actions to update
+     * Upgrade the gadget
+     * Gadgets should override this method only if they need to perform actions to upgrade
      *
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
