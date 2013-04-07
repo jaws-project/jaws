@@ -61,39 +61,6 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Disables a gadget, just removing main entries from the registry
-     *
-     * @param   string $name Name of the gadget to disable.
-     * @access  public
-     */
-    function DisableGadget()
-    {
-        // run prechecks
-        $gadget = $this->gadget->name;
-        if (!$this->_commonPreDisableGadget()) {
-            return false;
-        }
-
-        // if (!$this->_commonDisableGadget()) {
-            // return false;
-        // }
-
-        if (
-            $this->gadget->GetRegistry('enabled') == 'true' &&
-            $this->gadget->GetRegistry('main_gadget', 'Settings') != $gadget
-        ) {
-            $$this->gadget->SetRegistry('enabled', 'false');
-        }
-        // After anything finished
-        $res = $GLOBALS['app']->Listener->Shout('DisableGadget', $gadget);
-        if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
-        }
-
-        return true;
-    }
-
-    /**
      * Gets gadgets that depend on a given gadget
      *
      * @access  public
@@ -122,7 +89,7 @@ class Jaws_Gadget_Installer
      * Install a gadget
      *
      * @access  public
-     * @return  mixed    Gadget name if success or Jaws_Error on error
+     * @return  mixed   True if success or Jaws_Error on error
      */
     function InstallGadget()
     {
@@ -182,7 +149,7 @@ class Jaws_Gadget_Installer
             return $res;
         }
 
-        return $this->gadget;
+        return true;
     }
 
     /**
@@ -269,7 +236,7 @@ class Jaws_Gadget_Installer
      * key (in registry) will be updated
      *
      * @access  public
-     * @return  mixed    Gadget name if success or Jaws_Error on error
+     * @return  mixed    True if success or Jaws_Error on error
      */
     function UpgradeGadget()
     {
@@ -318,7 +285,107 @@ class Jaws_Gadget_Installer
             return $result;
         }
 
-        return $this->gadget;
+        return true;
+    }
+
+    /**
+     * Enable a gadget
+     *
+     * @access  public
+     * @return  mixed    True if success or Jaws_Error on error
+     */
+    function EnableGadget()
+    {
+        if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
+            return Jaws_Error::raiseError(
+                "gadget [{$this->gadget->name}] not installed",
+                __FUNCTION__
+            );
+        }
+
+        // all required gadgets, must be enabled
+        foreach ($this->gadget->_Requires as $req) {
+            if (!Jaws_Gadget::IsGadgetEnabled($req)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    __FUNCTION__
+                );
+            }
+        }
+
+        // removing gadget from disabled gadgets list
+        $disabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_disabled_items');
+        $disabled_gadgets = str_replace(",{$this->gadget->name},", ',', $disabled_gadgets);
+        $GLOBALS['app']->Registry->Set('gadgets_disabled_items', $disabled_gadgets);
+
+        // end disable gadget event
+        $res = $GLOBALS['app']->Listener->Shout('EnableGadget', $this->gadget->name);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return true;
+    }
+
+    /**
+     * Disable a gadget
+     *
+     * @access  public
+     * @return  mixed    True if success or Jaws_Error on error
+     */
+    function DisableGadget()
+    {
+        if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
+            return Jaws_Error::raiseError(
+                "gadget [{$this->gadget->name}] not installed",
+                __FUNCTION__
+            );
+        }
+
+        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $this->gadget->name) {
+            return Jaws_Error::raiseError(
+                "you can't disable main gadget",
+                __FUNCTION__
+            );
+        }
+
+        if ($this->gadget->_IsCore) {
+            return Jaws_Error::raiseError(
+                "you can't disable core gadgets",
+                __FUNCTION__
+            );
+        }
+
+        // check depend on gadgets status
+        $dependent_gadgets = $this->dependOnGadgets();
+        if (Jaws_Error::IsError($dependent_gadgets)) {
+            return $dependent_gadgets;
+        }
+        foreach ($dependent_gadgets as $idx => $gadget) {
+            if (!Jaws_Gadget::IsGadgetEnabled($gadget)) {
+                $dependent_gadgets[$idx] = null;
+            }
+        }
+        $dependent_gadgets = implode(', ', array_filter($dependent_gadgets));
+        if (!empty($dependent_gadgets)) {
+            return Jaws_Error::raiseError(
+                "you can't disable this gadget, because $dependent_gadgets gadget(s) is dependent on it",
+                __FUNCTION__
+            );
+        }
+
+        // adding gadget to disabled gadgets list
+        $disabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_disabled_items');
+        $disabled_gadgets.= $this->gadget->name. ',';
+        $GLOBALS['app']->Registry->Set('gadgets_disabled_items', $disabled_gadgets);
+
+        // end disable gadget event
+        $res = $GLOBALS['app']->Listener->Shout('DisableGadget', $this->gadget->name);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return true;
     }
 
     /**
@@ -351,6 +418,7 @@ class Jaws_Gadget_Installer
 
     /**
      * @access  public
+     * @return  bool    True on success and Jaws_Error on failure
      */
     function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
     {
