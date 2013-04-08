@@ -279,6 +279,21 @@ class Menu_AdminModel extends Menu_Model
     }
 
     /**
+     * Update publish status of all menu related the gadget
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   bool    $published  Publish status
+     * @return  bool    True if query was successful and Jaws_Error on error
+     */
+    function PublishGadgetMenus($gadget, $published)
+    {
+        $menusTable = Jaws_ORM::getInstance()->table('menus');
+        $res = $menusTable->update(array('published'=>(bool)$published))->where('menu_type', $gadget)->exec();
+        return $res;
+    }
+
+    /**
      * Delete all menu related the gadget
      *
      * @access  public
