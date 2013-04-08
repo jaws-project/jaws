@@ -12,6 +12,7 @@
 #components li.selected {background-color:#729FCF;}
 #components li.selected span {color:white;}
 #components li.selected a {color:white;}
+#components li.disabled span {text-decoration:line-through;}
 #components img {width:32px; vertical-align:middle;}
 #components span {display:inline-block; width:200px; padding-left:5px; cursor:default;}
 #components a {display:none;}

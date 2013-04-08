@@ -34,6 +34,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
         $gadgets = $this->_Model->GetGadgetsList();
+        //_log_var_dump($gadgets);
         $result = array();
         foreach ($gadgets as $key => $gadget) {
             $g = array();
@@ -48,6 +49,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
             }
             $g['name'] = $gadget['name'];
             $g['realname'] = $gadget['realname'];
+            $g['disabled'] = $gadget['disabled'];
             $g['core_gadget'] = $gadget['core_gadget'];
             $result[$key] = $g;
         }

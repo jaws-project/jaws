@@ -82,6 +82,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_core', _t('JMS_GADGETS_CORE'));
         $tpl->SetVariable('core_desc', _t('JMS_GADGETS_CORE_DESC'));
         $tpl->SetVariable('lbl_update', _t('JMS_UPDATE'));
+        $tpl->SetVariable('lbl_enable', _t('JMS_ENABLE'));
         $tpl->SetVariable('lbl_install', _t('JMS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('JMS_UNINSTALL'));
         $tpl->SetVariable('confirmDisableGadget', _t('JMS_GADGETS_CONFIRM_DISABLE'));
@@ -101,6 +102,11 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('uninstall', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_enable', _t('JMS_ENABLE'), STOCK_ADD);
+        $button->AddEvent(ON_CLICK, 'javascript:enableGadget();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('enable', $button->Get());
 
         $button =& Piwi::CreateWidget('Button', 'btn_disable', _t('JMS_DISABLE'), STOCK_REMOVE);
         $button->AddEvent(ON_CLICK, 'javascript:disableGadget();');
@@ -129,6 +135,7 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('summary');
         $tpl->SetVariable('lbl_summary', _t('JMS_SUMMARY'));
         $tpl->SetVariable('lbl_outdated', _t('JMS_GADGETS_OUTDATED').':');
+        $tpl->SetVariable('lbl_disabled', _t('JMS_GADGETS_DISABLED').':');
         $tpl->SetVariable('lbl_installed', _t('JMS_GADGETS_INSTALLED').':');
         $tpl->SetVariable('lbl_notinstalled', _t('JMS_GADGETS_NOTINSTALLED').':');
         $tpl->SetVariable('lbl_core', _t('JMS_GADGETS_CORE').':');

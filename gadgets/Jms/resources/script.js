@@ -41,9 +41,20 @@ var JmsCallback = {
         showResponse(response);
     },
 
+    enablegadget: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            components[selectedComponent].state = 'installed';
+            components[selectedComponent].disabled = false;
+            buildComponentList();
+            cancel();
+        }
+        showResponse(response);
+    },
+
     disablegadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            components[selectedComponent].state = 'notinstalled';
+            components[selectedComponent].state = 'installed';
+            components[selectedComponent].disabled = true;
             buildComponentList();
             cancel();
         }
@@ -113,6 +124,9 @@ function getComponentItem(comp)
         span = new Element('span').set('html', comp.name),
         img = new Element('img', {alt:comp.realname}),
         a = new Element('a').set('html', actions[comp.state]);
+    if (comp.disabled) {
+        a.set('html', actions['disabled']);
+    }
     li.adopt(img, span);
     img.src = pluginsMode?
         'gadgets/Jms/images/plugin.png' :
@@ -126,6 +140,9 @@ function getComponentItem(comp)
         });
         li.grab(a);
     }
+    if (comp.disabled) {
+        li.addClass('disabled');
+    }
     li.addEvent('click', selectComponent);
     return li;
 }
@@ -137,6 +154,7 @@ function updateSummary()
 {
     var count = {
         outdated: 0,
+        disabled: 0,
         installed: 0,
         notinstalled: 0,
         core: 0,
@@ -152,6 +170,9 @@ function updateSummary()
                 break;
             case 'installed':
                 count.installed++;
+                if (components[comp].disabled) {
+                    count.disabled++;
+                }
                 break;
             case 'core':
                 count.core++;
@@ -163,6 +184,7 @@ function updateSummary()
     $('sum_notinstalled').innerHTML = count.notinstalled;
     $('sum_total').innerHTML = count.total;
     if (!pluginsMode) {
+        $('sum_disabled').innerHTML = count.disabled;
         $('sum_outdated').innerHTML = count.outdated;
         $('sum_core').innerHTML = count.core;
     }
@@ -220,7 +242,8 @@ function componentInfo()
  */
 function setupComponent()
 {
-    switch (components[selectedComponent].state) {
+    var comp = components[selectedComponent];
+    switch (comp.state) {
         case 'outdated':
             JmsAjax.callAsync('upgradegadget', selectedComponent);
             break;
@@ -237,12 +260,22 @@ function setupComponent()
                     JmsAjax.callAsync('uninstallplugin', selectedComponent);
                 }
             } else {
-                if (confirm(confirmUninstallGadget)) {
+                if (comp.disabled) {
+                    JmsAjax.callAsync('enablegadget', selectedComponent);
+                } else if (confirm(confirmUninstallGadget)) {
                     JmsAjax.callAsync('uninstallgadget', selectedComponent);
                 }
             }
             break;
     }
+}
+
+/**
+ * Enables the gadget
+ */
+function enableGadget()
+{
+    JmsAjax.callAsync('enablegadget', selectedComponent);
 }
 
 /**
@@ -260,11 +293,11 @@ function disableGadget()
  */
 function showButtons()
 {
-    var state = components[selectedComponent].state;
+    var comp = components[selectedComponent];
     $('actions').getElements('button').hide();
     $('btn_cancel').show('inline');
     if (pluginsMode) {
-        switch(state) {
+        switch(comp.state) {
         case 'notinstalled':
             $('btn_install').show('inline');
             break;
@@ -278,7 +311,7 @@ function showButtons()
             break;
         }
     } else {
-        switch(state) {
+        switch(comp.state) {
         case 'outdated':
             $('btn_update').show('inline');
             break;
@@ -287,7 +320,11 @@ function showButtons()
             break;
         case 'installed':
             $('btn_uninstall').show('inline');
-            $('btn_disable').show('inline');
+            if (comp.disabled) {
+                $('btn_enable').show('inline');
+            } else {
+                $('btn_disable').show('inline');
+            }
             break;
         }
     }
