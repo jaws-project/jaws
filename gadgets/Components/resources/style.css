@@ -17,7 +17,7 @@
 #components span {display:inline-block; width:200px; padding-left:5px; cursor:default;}
 #components a {display:none;}
 
-#component_ui {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
+#component_ui {height:470px; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
 #actions {text-align:right;}
 
 /* Information */
