@@ -68,7 +68,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl = new Jaws_Template('gadgets/Components/templates/');
         $tpl->Load('AdminGadgets.html');
-        $tpl->SetBlock('Components');
+        $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
         $tpl->SetVariable('summaryUI', $this->GadgetsSummary());
@@ -118,7 +118,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $button->SetStyle('display:none');
         $tpl->SetVariable('cancel', $button->Get());
 
-        $tpl->ParseBlock('Components');
+        $tpl->ParseBlock('components');
         return $tpl->Get();
     }
 
@@ -390,7 +390,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl = new Jaws_Template('gadgets/Components/templates/');
         $tpl->Load('AdminPlugins.html');
-        $tpl->SetBlock('Components');
+        $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
         $tpl->SetVariable('summaryUI', $this->PluginsSummary());
@@ -429,7 +429,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $button->SetStyle('display:none');
         $tpl->SetVariable('cancel', $button->Get());
 
-        $tpl->ParseBlock('Components');
+        $tpl->ParseBlock('components');
         return $tpl->Get();
     }
 
