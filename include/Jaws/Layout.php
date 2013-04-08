@@ -478,7 +478,7 @@ class Jaws_Layout
     function GetLayoutItems()
     {
         if (JAWS_SCRIPT == 'index') {
-            return $this->_Model->GetLayoutItems();
+            return $this->_Model->GetLayoutItems(true);
         }
         $items = array();
         $items[] = array('id'            => null,
@@ -528,7 +528,7 @@ class Jaws_Layout
         $this->_RequestedGadget = empty($goGadget)? '': $goGadget->gadget->GetGadget();
         $this->_RequestedAction = empty($goGadget)? '': $goGadget->GetAction();
         $items = $this->GetLayoutItems();
-        if (is_array($items)) {
+        if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
                 if ($this->_Section != $item['section']) {
                     if (!empty($this->_Section)) {
