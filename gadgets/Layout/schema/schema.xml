@@ -53,6 +53,12 @@
              <type>integer</type>
          </field>
 
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
      </declaration>
  </table>
 </database>

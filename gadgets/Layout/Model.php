@@ -35,28 +35,22 @@ class Layout_Model extends Jaws_Gadget_Model
      * Get the layout items
      *
      * @access  public
-     * @return  array   Returns an array with the layout items and false on error
+     * @param   bool    $published  Publish status
+     * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems()
+    function GetLayoutItems($published = null)
     {
-        $sql = '
-            SELECT
-                [id],
-                [gadget],
-                [gadget_action],
-                [action_params],
-                [action_filename],
-                [display_when],
-                [section]
-            FROM [[layout]] 
-            ORDER BY [section], [layout_position]';
+        $layoutTable = Jaws_ORM::getInstance()->table('layout');
+        $items = $layoutTable->select(
+            'id', 'gadget', 'gadget_action', 'action_params',
+            'action_filename', 'display_when', 'section'
+        );
 
-        $result = $GLOBALS['db']->queryAll($sql);
-        if (Jaws_Error::IsError($result)) {
-            return false;
+        if (!is_null($published)) {
+            $items->where('published', (bool)$published);
         }
 
-        return $result;
+        return $items->getAll();
     }
 
 }

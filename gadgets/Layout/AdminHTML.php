@@ -379,28 +379,6 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Save layout element
-     *
-     * @access  public
-     * @return  XHTML template content
-     */
-    function SaveLayoutElement()
-    {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-
-        $request =& Jaws_Request::getInstance();
-        $fields = array('gadget_field', 'action_field', 'section');
-        $post = $request->get($fields, 'post');
-
-        // Check that the gadget had an action set.
-        if (!is_null($post['action_field'])) {
-            $model->NewElement($post['section'], $post['gadget_field'], $post['action_field']);
-        }
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout&action=Admin');
-    }
-
-    /**
      * Changes action of a given gadget
      *
      * @access  public

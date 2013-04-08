@@ -31,6 +31,10 @@
             <name>layout_position</name>
             <value>1</value>
         </field>
+        <field>
+            <name>published</name>
+            <value>true</value>
+        </field>
     </insert>
     </initialization>
  </table>

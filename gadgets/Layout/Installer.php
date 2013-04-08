@@ -28,8 +28,10 @@ class Layout_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        // Install listener for removing layout items related to uninstalled gadget
+        // Add listener for remove/publish layout elements related to given gadget
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
 
         // registry keys
         $this->gadget->AddRegistry('pluggable', 'false');
@@ -46,27 +48,8 @@ class Layout_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', '', "$old.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.3.1', '<')) {
-            // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Layout/ManageThemes',  'false');
-        }
-
-        if (version_compare($old, '0.4.0', '<')) {
-            $result = $this->installSchema('0.4.0.xml', '', "0.3.0.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.5.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', "0.4.0.xml");
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.4.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -96,8 +79,10 @@ class Layout_Installer extends Jaws_Gadget_Installer
                 }
             }
 
-            // Install listener for removing layout items related to uninstalled gadget
+            // Add listener for remove/publish layout elements related to given gadget
             $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
         }
 
         return true;

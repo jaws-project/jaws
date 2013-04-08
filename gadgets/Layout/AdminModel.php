@@ -48,13 +48,15 @@ class Layout_AdminModel extends Layout_Model
         $params['displayWhen']     = '*';
         $params['section']         = $section;
         $params['pos']             = $pos;
+        $params['published']       = true;
+
         $sql = '
             INSERT INTO [[layout]]
                 ([section], [gadget], [gadget_action], [action_params], [action_filename],
-                 [display_when], [layout_position])
+                 [display_when], [layout_position], [published])
             VALUES
                 ({section}, {gadget}, {action}, {action_params}, {action_filename},
-                 {displayWhen}, {pos})';
+                 {displayWhen}, {pos}, {published})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -322,7 +324,7 @@ class Layout_AdminModel extends Layout_Model
         $sql = '
             SELECT
                [id], [gadget], [gadget_action], [action_params], [action_filename],
-               [display_when], [layout_position], [section]
+               [display_when], [layout_position], [section], [published]
             FROM [[layout]]
             WHERE [id] = {id}';
 
@@ -345,7 +347,7 @@ class Layout_AdminModel extends Layout_Model
     {
         $sql = '
             SELECT
-                [id], [gadget], [gadget_action], [display_when], [layout_position]
+                [id], [gadget], [gadget_action], [display_when], [layout_position], [published]
             FROM [[layout]]
             WHERE [section] = {section}
             ORDER BY [layout_position]';
@@ -465,6 +467,21 @@ class Layout_AdminModel extends Layout_Model
         }
 
         return $associated_by_action? $actions : array_values($actions);
+    }
+
+    /**
+     * Update publish status of all elements related the gadget
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   bool    $published  Publish status
+     * @return  bool    True if query was successful and Jaws_Error on error
+     */
+    function PublishGadgetElements($gadget, $published)
+    {
+        $layoutTable = Jaws_ORM::getInstance()->table('layout');
+        $res = $layoutTable->update(array('published'=>(bool)$published))->where('gadget', $gadget)->exec();
+        return $res;
     }
 
 }
