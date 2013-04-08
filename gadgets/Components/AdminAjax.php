@@ -1,14 +1,14 @@
 <?php
 /**
- * Jms AJAX API
+ * Components AJAX API
  *
  * @category   Ajax
- * @package    Jms
+ * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jms_AdminAjax extends Jaws_Gadget_HTML
+class Components_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
      * Constructor
@@ -17,7 +17,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jms_AdminAjax($gadget)
+    function Components_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
         $this->_Model = $this->gadget->load('Model')->load('AdminModel');
@@ -32,7 +32,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgets()
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
         $gadgets = $this->_Model->GetGadgetsList();
         //_log_var_dump($gadgets);
         $result = array();
@@ -69,7 +69,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgetInfo($gadget)
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
         return $html->GetGadgetInfo($gadget);
     }
 
@@ -82,8 +82,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      */
     function InstallGadget($gadget)
     {
-        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $htmlJms->InstallGadget($gadget);
+        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $htmlComponents->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -96,8 +96,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpgradeGadget($gadget)
     {
-        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $htmlJms->UpgradeGadget($gadget);
+        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $htmlComponents->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -110,8 +110,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      */
     function UninstallGadget($gadget)
     {
-        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $htmlJms->UninstallGadget($gadget);
+        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $htmlComponents->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -124,8 +124,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      */
     function EnableGadget($gadget)
     {
-        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $htmlJms->EnableGadget($gadget);
+        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $htmlComponents->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -138,8 +138,8 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
      */
     function DisableGadget($gadget)
     {
-        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
-        $htmlJms->DisableGadget($gadget);
+        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $htmlComponents->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -152,7 +152,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     function GetPlugins()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
         $plugins = $this->_Model->GetPluginsList();
         $result = array();
         foreach ($plugins as $key => $plugin) {
@@ -175,7 +175,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     function GetPluginInfo($plugin)
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        $html = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
         return $html->GetPluginInfo($plugin);
     }
 
@@ -195,7 +195,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         $default_value = ($use_in === '*');
         $result = array();
         $result['always'] = array(
-            'text' => _t('JMS_PLUGINS_USE_ALWAYS'),
+            'text' => _t('COMPONENTS_PLUGINS_USE_ALWAYS'),
             'value' => $default_value
         );
         if (count($gadgets) > 0) {
@@ -225,9 +225,9 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
         $return = Jaws_Plugin::EnablePlugin($plugin);
         if (Jaws_Error::IsError($return)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_INSTALL_OK', $plugin), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_OK', $plugin), RESPONSE_NOTICE);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -246,9 +246,9 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
         $return = Jaws_Plugin::DisablePlugin($plugin);
         if (Jaws_Error::isError($return)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_UNINSTALL_OK', $plugin), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_OK', $plugin), RESPONSE_NOTICE);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -266,7 +266,7 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePlugins');
 
         $GLOBALS['app']->Registry->Set('use_in', $selection, $plugin, JAWS_COMPONENT_PLUGIN);
-        $GLOBALS['app']->Session->PushLastResponse(_t('JMS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

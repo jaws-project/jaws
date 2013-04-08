@@ -1,14 +1,14 @@
 <?php
 /**
- * JMS Installer
+ * COMPONENTS Installer
  *
  * @category    GadgetModel
- * @package     JMS
+ * @package     COMPONENTS
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jms_Installer extends Jaws_Gadget_Installer
+class Components_Installer extends Jaws_Gadget_Installer
 {
     /**
      * Installs the gadget

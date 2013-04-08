@@ -1,9 +1,9 @@
 <?php
 /**
- * Jms Actions
+ * Components Actions
  *
  * @category    GadgetActions
- * @package     Jms
+ * @package     Components
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html

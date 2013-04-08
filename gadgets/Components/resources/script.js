@@ -1,8 +1,8 @@
 /**
- * Jms Javascript actions
+ * Components Javascript actions
  *
  * @category   Ajax
- * @package    Jms
+ * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Mohsen Khahani <mohsen@khahani.com>
  * @copyright  2004-2013 Jaws Development Group
@@ -11,7 +11,7 @@
 /**
  * Use async mode, create Callback
  */
-var JmsCallback = {
+var ComponentsCallback = {
     upgradegadget: function(response) {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 
@@ -86,13 +86,13 @@ var JmsCallback = {
 }
 
 /**
- * Initiates JMS gadgets/plugins
+ * Initiates Components gadgets/plugins
  */
 function init()
 {
     components = pluginsMode?
-        JmsAjax.callSync('getplugins'):
-        JmsAjax.callSync('getgadgets');
+        ComponentsAjax.callSync('getplugins'):
+        ComponentsAjax.callSync('getgadgets');
     buildComponentList();
     $('components').getElements('h3').addEvent('click', toggleSection);
     updateSummary();
@@ -129,7 +129,7 @@ function getComponentItem(comp)
     }
     li.adopt(img, span);
     img.src = pluginsMode?
-        'gadgets/Jms/images/plugin.png' :
+        'gadgets/Components/images/plugin.png' :
         'gadgets/' + comp.realname + '/images/logo.png';
     if (comp.state !== 'core') {
         a.href = 'javascript:void(0);';
@@ -232,8 +232,8 @@ function cancel()
 function componentInfo()
 {
     var compInfo = pluginsMode?
-        JmsAjax.callSync('getplugininfo', selectedComponent):
-        JmsAjax.callSync('getgadgetinfo', selectedComponent);
+        ComponentsAjax.callSync('getplugininfo', selectedComponent):
+        ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
     $('component_ui').innerHTML = compInfo;
 }
 
@@ -245,25 +245,25 @@ function setupComponent()
     var comp = components[selectedComponent];
     switch (comp.state) {
         case 'outdated':
-            JmsAjax.callAsync('upgradegadget', selectedComponent);
+            ComponentsAjax.callAsync('upgradegadget', selectedComponent);
             break;
         case 'notinstalled':
             if (pluginsMode) {
-                JmsAjax.callAsync('installplugin', selectedComponent);
+                ComponentsAjax.callAsync('installplugin', selectedComponent);
             } else {
-                JmsAjax.callAsync('installgadget', selectedComponent);
+                ComponentsAjax.callAsync('installgadget', selectedComponent);
             }
             break;
         case 'installed':
             if (pluginsMode) {
                 if (confirm(confirmUninstallPlugin)) {
-                    JmsAjax.callAsync('uninstallplugin', selectedComponent);
+                    ComponentsAjax.callAsync('uninstallplugin', selectedComponent);
                 }
             } else {
                 if (comp.disabled) {
-                    JmsAjax.callAsync('enablegadget', selectedComponent);
+                    ComponentsAjax.callAsync('enablegadget', selectedComponent);
                 } else if (confirm(confirmUninstallGadget)) {
-                    JmsAjax.callAsync('uninstallgadget', selectedComponent);
+                    ComponentsAjax.callAsync('uninstallgadget', selectedComponent);
                 }
             }
             break;
@@ -275,7 +275,7 @@ function setupComponent()
  */
 function enableGadget()
 {
-    JmsAjax.callAsync('enablegadget', selectedComponent);
+    ComponentsAjax.callAsync('enablegadget', selectedComponent);
 }
 
 /**
@@ -284,7 +284,7 @@ function enableGadget()
 function disableGadget()
 {
     if (confirm(confirmDisableGadget)) {
-        JmsAjax.callAsync('disablegadget', selectedComponent);
+        ComponentsAjax.callAsync('disablegadget', selectedComponent);
     }
 }
 
@@ -335,7 +335,7 @@ function showButtons()
  */
 function pluginUsage()
 {
-    var gadgets = JmsAjax.callSync('getpluginusage', selectedComponent),
+    var gadgets = ComponentsAjax.callSync('getpluginusage', selectedComponent),
         tree = new WebFXTree(pluginUsageDesc),
         div = new Element('div'),
         label = new Element('label', {'for':'use_always'}),
@@ -347,8 +347,8 @@ function pluginUsage()
         }),
         rootNode;
     label.innerHTML = gadgets['always'].text;
-    tree.openIcon = 'gadgets/Jms/images/gadgets.png';
-    tree.icon = 'gadgets/Jms/images/gadgets.png';
+    tree.openIcon = 'gadgets/Components/images/gadgets.png';
+    tree.icon = 'gadgets/Components/images/gadgets.png';
     div.adopt(chkbox, label);
     rootNode = new WebFXTreeItem(div.innerHTML);
     tree.add(rootNode);
@@ -385,13 +385,13 @@ function savePluginUsage()
         selection = $('bigTree').getElements('input:checked').get('value');
         selection = selection.erase('use_always').join(',');
     }
-    JmsAjax.callAsync('updatepluginusage', selectedComponent, selection);
+    ComponentsAjax.callAsync('updatepluginusage', selectedComponent, selection);
 }
 
 /**
  * Variables
  */
-var JmsAjax = new JawsAjax('Jms', JmsCallback),
+var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
     components = {},
     selectedComponent = null,
     editPluginMode = false,

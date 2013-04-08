@@ -1,16 +1,16 @@
 <?php
 /**
- * JMS (Jaws Management System) Gadget
+ * COMPONENTS (Jaws Management System) Gadget
  *
  * @category   GadgetModel
- * @package    JMS
+ * @package    COMPONENTS
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi Þormar <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jms_AdminModel extends Jaws_Gadget_Model
+class Components_AdminModel extends Jaws_Gadget_Model
 {
     /**
      * Get a list of gadgets, installed or non installed, core or not core, has layout or not,...
@@ -172,7 +172,7 @@ class Jms_AdminModel extends Jaws_Gadget_Model
     {
         $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
         if (Jaws_Error::IsError($objPlugin)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED', 'GetPluginInfo'), _t('JMS_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED', 'GetPluginInfo'), _t('COMPONENTS_NAME'));
         }
 
         $plugin = array(
