@@ -37,8 +37,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $tpl->Load('MainMenu.html');
 
         $gadgetsections = array();
-        $jms = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        $gadgets = $jms->GetGadgetsList(null, true, true);
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         unset($gadgets['ControlPanel']);
 
         foreach ($gadgets as $gadget => $gInfo) {
@@ -82,18 +82,17 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         }
 
         if ($this->gadget->GetPermission('default_admin', 'Components')) {
-            $jms = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+            $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
             //Count non-installed gadgets..
-            $noninstalled = $jms->GetGadgetsList(null, false);
+            $noninstalled = $cmpModel->GetGadgetsList(null, false);
             //Count out date gadgets..
-            $nonupdated   = $jms->GetGadgetsList(null, true, false);
-            $jms = null;
+            $nonupdated   = $cmpModel->GetGadgetsList(null, true, false);
             if ((count($noninstalled) + count($nonupdated)) > 0) {
                 $tpl->SetBlock('sidebar');
                 if (count($noninstalled) > 0) {
                     $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('JMS_GADGETS_NOTINSTALLED'));
-                    $tpl->SetVariable('notify_desc', _t('JMS_GADGETS_NOTINSTALLED_DESC'));
+                    $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
+                    $tpl->SetVariable('notify_desc', _t('COMPONENTS_GADGETS_NOTINSTALLED_DESC'));
                     foreach ($noninstalled as $key => $gadget) {
                         $tpl->SetBlock('sidebar/notifications/item');
                         $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
@@ -101,8 +100,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                         $tpl->SetVariable('title', $gadgetCompleteDesc);
                         $tpl->SetVariable('name', $gadget['name']);
                         $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Jms&amp;action=InstallGadget&amp;comp='. $key);
-                        $tpl->SetVariable('install', _t('JMS_INSTALL'));
+                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=InstallGadget&amp;comp='. $key);
+                        $tpl->SetVariable('install', _t('COMPONENTS_INSTALL'));
                         $tpl->ParseBlock('sidebar/notifications/item');
                     }
                     $tpl->ParseBlock('sidebar/notifications');
@@ -110,8 +109,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
 
                 if (count($nonupdated) > 0) {
                     $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('JMS_GADGETS_OUTDATED'));
-                    $tpl->SetVariable('notify_desc', _t('JMS_GADGETS_OUTDATED_DESC'));
+                    $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_OUTDATED'));
+                    $tpl->SetVariable('notify_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
                     foreach ($nonupdated as $key => $gadget) {
                         $tpl->SetBlock('sidebar/notifications/item');
                         $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
@@ -119,8 +118,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                         $tpl->SetVariable('title', $gadgetCompleteDesc);
                         $tpl->SetVariable('name', $gadget['name']);
                         $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Jms&amp;action=UpgradeGadget&amp;comp='. $key);
-                        $tpl->SetVariable('install', _t('JMS_UPDATE'));
+                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=UpgradeGadget&amp;comp='. $key);
+                        $tpl->SetVariable('install', _t('COMPONENTS_UPDATE'));
                         $tpl->ParseBlock('sidebar/notifications/item');
                     }
                     $tpl->ParseBlock('sidebar/notifications');

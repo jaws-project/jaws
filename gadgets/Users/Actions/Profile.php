@@ -220,8 +220,8 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
 
         $activity = false;
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $jmsModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        $gadgets  = $jmsModel->GetGadgetsList(null, true, true);
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
             if (!file_exists($gDir . $gadget. '/Hooks/Activity.php')) {
                 continue;
