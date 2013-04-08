@@ -37,7 +37,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $tpl->Load('MainMenu.html');
 
         $gadgetsections = array();
-        $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $jms = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
         $gadgets = $jms->GetGadgetsList(null, true, true);
         unset($gadgets['ControlPanel']);
 
@@ -81,8 +81,8 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
             $tpl->ParseBlock('main');
         }
 
-        if ($this->gadget->GetPermission('default_admin', 'Jms')) {
-            $jms = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        if ($this->gadget->GetPermission('default_admin', 'Components')) {
+            $jms = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
             //Count non-installed gadgets..
             $noninstalled = $jms->GetGadgetsList(null, false);
             //Count out date gadgets..

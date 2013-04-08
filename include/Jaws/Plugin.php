@@ -179,7 +179,7 @@ class Jaws_Plugin
             !$GLOBALS['app']->Registry->NewKey('enabled', 'true', $plugin, JAWS_COMPONENT_PLUGIN) ||
             !$GLOBALS['app']->Registry->NewKey('use_in', '*', $plugin, JAWS_COMPONENT_PLUGIN)
         ) {
-            return new Jaws_Error(_t('JMS_PLUGINS_ENABLED_FAILURE', $plugin),
+            return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
                                      __FUNCTION__);
         }
 
@@ -193,7 +193,7 @@ class Jaws_Plugin
         $pluginObj = new $plugin;
         $result = $pluginObj->InstallPlugin();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('JMS_PLUGINS_ENABLED_FAILURE', $plugin),
+            return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
                                      __FUNCTION__);
         }
 
@@ -257,7 +257,7 @@ class Jaws_Plugin
         $pluginObj = new $plugin;
         $result = $pluginObj->UninstallPlugin();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('JMS_PLUGINS_DISABLE_FAILURE', $plugin),
+            return new Jaws_Error(_t('COMPONENTS_PLUGINS_DISABLE_FAILURE', $plugin),
                                      __FUNCTION__);
         }
 

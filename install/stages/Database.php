@@ -345,7 +345,7 @@ class Installer_Database extends JawsInstallerStage
 
         $gadgets = array(
             'Settings', 'Layout', 'Registry', 'ControlPanel',
-            'Jms', 'UrlMapper', 'Users', 'Policy',
+            'Components', 'UrlMapper', 'Users', 'Policy',
         );
 
         require_once JAWS_PATH . 'include/Jaws/URLMapping.php';

@@ -85,7 +85,7 @@ class Installer_Settings extends JawsInstallerStage
 
         // Build the gadgets select.
         include_once JAWS_PATH . 'include/Jaws/Gadget.php';
-        $model = $GLOBALS['app']->LoadGadget('Jms', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
 
         $gdt =& Piwi::CreateWidget('Combo', 'default_gadget');
         $gdt->SetID('default_gadget');
