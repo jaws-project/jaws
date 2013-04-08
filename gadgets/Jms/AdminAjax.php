@@ -116,30 +116,30 @@ class Jms_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Disables the gadget
+     * Enable requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget's name
+     * @param   string  $gadget Gadget name
+     * @return  array   Response array (notice or error)
+     */
+    function EnableGadget($gadget)
+    {
+        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $htmlJms->EnableGadget($gadget);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Disable requested gadget
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
      * @return  array   Response array (notice or error)
      */
     function DisableGadget($gadget)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-
-        $result = $this->_commonDisableGadget($gadget, _t('JMS_UNINSTALLED'));
-        if ($result !== true) {
-            return $result;
-        }
-
-        $objGadget = $GLOBALS['app']->loadGadget($gadget, 'Info');
-        $return = $objGadget->DisableGadget();
-        if (Jaws_Error::isError($return)) {
-            $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
-        } else if (!$return) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_FAILURE', $gadget), RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_OK', $gadget), RESPONSE_NOTICE);
-        }
+        $htmlJms = $GLOBALS['app']->LoadGadget('Jms', 'AdminHTML');
+        $htmlJms->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

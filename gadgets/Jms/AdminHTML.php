@@ -250,6 +250,76 @@ class Jms_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
+     * EnableGadget requested gadget
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  void
+     */
+    function EnableGadget($gadget = '')
+    {
+        $redirect = false;
+        $this->gadget->CheckPermission('ManageGadgets');
+        if (empty($gadget)) {
+            $redirect = true;
+            $request =& Jaws_Request::getInstance();
+            $gadget = $request->get('comp', 'get');
+        }
+
+        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
+            $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $installer = $objGadget->load('Installer');
+            $return = $installer->EnableGadget();
+            if (Jaws_Error::IsError($return)) {
+                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_ENABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+            }
+        }
+
+        if ($redirect) {
+            Jaws_Header::Location(BASE_SCRIPT);
+        }
+    }
+
+    /**
+     * DisableGadget requested gadget
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  void
+     */
+    function DisableGadget($gadget = '')
+    {
+        $redirect = false;
+        $this->gadget->CheckPermission('ManageGadgets');
+        if (empty($gadget)) {
+            $redirect = true;
+            $request =& Jaws_Request::getInstance();
+            $gadget = $request->get('comp', 'get');
+        }
+
+        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
+            $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $installer = $objGadget->load('Installer');
+            $return = $installer->DisableGadget();
+            if (Jaws_Error::IsError($return)) {
+                $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(_t('JMS_GADGETS_DISABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+            }
+        }
+
+        if ($redirect) {
+            Jaws_Header::Location(BASE_SCRIPT);
+        }
+    }
+
+    /**
      * Prepares the information view of a certain gadget
      *
      * @access  public
