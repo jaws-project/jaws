@@ -34,7 +34,6 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
         $gadgets = $this->_Model->GetGadgetsList();
-        //_log_var_dump($gadgets);
         $result = array();
         foreach ($gadgets as $key => $gadget) {
             $g = array();

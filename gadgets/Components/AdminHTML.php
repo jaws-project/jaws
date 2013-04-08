@@ -145,7 +145,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Install requested gadget
+     * Installs requested gadget
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -180,7 +180,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Upgrade requested gadget
+     * Upgrades requested gadget
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -215,7 +215,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * UninstallGadget requested gadget
+     * Uninstalls requested gadget
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -250,7 +250,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * EnableGadget requested gadget
+     * Enables requested gadget
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -285,7 +285,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * DisableGadget requested gadget
+     * Disables requested gadget
      *
      * @access  public
      * @param   string  $gadget Gadget name
@@ -348,7 +348,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
             $tpl->SetVariable('jaws_version', $info->GetRequiredJawsVersion());
 
-            $tpl->SetVariable('lbl_location', _t('COMPONENTS_GADGETS_LOCATION').':');
+            $tpl->SetVariable('lbl_location', _t('COMPONENTS_GADGETS_SECTION').':');
             $tpl->SetVariable('location', $info->GetSection());
 
             // Requires
@@ -366,7 +366,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
             foreach (array_keys($info->GetACLs()) as $acl) {
                 $tpl->SetBlock('info/acls/acl');
-                $tpl->SetVariable('acl', end(explode('/', $acl)));
+                $tpl->SetVariable('acl', $info->GetACLDescription($acl));
                 $tpl->ParseBlock('info/acls/acl');
             }
             $tpl->ParseBlock('info/acls');

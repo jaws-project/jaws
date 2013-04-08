@@ -30,6 +30,7 @@
 .component-info h2 {display:inline-block; font-size:12px;}
 .component-info span {font-weight:bold;}
 .component-info ul {margin:5px 0 15px; list-style-type:square;}
+.component-info ul.acls {height:230px; overflow-y:auto;}
 .details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
 .details > div {margin-bottom:15px;}
 

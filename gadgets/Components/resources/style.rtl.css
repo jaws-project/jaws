@@ -12,6 +12,7 @@
 #components li.selected {background-color:#729FCF;}
 #components li.selected span {color:white;}
 #components li.selected a {color:white;}
+#components li.disabled span {text-decoration:line-through;}
 #components img {width:32px; vertical-align:middle;}
 #components span {display:inline-block; width:200px; padding-right:5px; cursor:default;}
 #components a {display:none;}
@@ -29,6 +30,7 @@
 .component-info h2 {display:inline-block; font-size:12px;}
 .component-info span {font-weight:bold;}
 .component-info ul {margin:5px 0 15px; list-style-type:square;}
+.component-info ul.acls {height:230px; overflow-y:auto;}
 .details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
 .details > div {margin-bottom:15px;}
 
