@@ -22,18 +22,4 @@ class Blocks_HTML extends Jaws_Gadget_HTML
         return $this->gadget->GetRegistry('site_name', 'Settings');
     }
 
-    /**
-     * view block(title and content)
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function ViewBlock()
-    {
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'get');
-
-        $layout = $GLOBALS['app']->LoadGadget('Blocks', 'LayoutHTML');
-        return $layout->Display($id);
-    }
 }
