@@ -17,7 +17,7 @@
 #components span {display:inline-block; width:200px; padding-right:5px; cursor:default;}
 #components a {display:none;}
 
-#component_ui {height:470px; overflow-y:auto; margin-left:5px; padding:20px; border:1px solid #d3d7cf; text-align:right; font-size:12px;}
+#component_ui {height:474px; margin-left:5px; padding:20px; border:1px solid #d3d7cf; text-align:right; font-size:12px;}
 #actions {text-align:right;}
 
 /* Information */
@@ -30,7 +30,7 @@
 .component-info h2 {display:inline-block; font-size:12px;}
 .component-info span {font-weight:bold;}
 .component-info ul {margin:5px 0 15px; list-style-type:square;}
-.component-info ul.acls {height:230px; overflow-y:auto;}
+.component-info ul.acls {height:240px; overflow-y:auto;}
 .details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
 .details > div {margin-bottom:15px;}
 
