@@ -94,7 +94,7 @@ class Jaws_Gadget_Installer
     function InstallGadget()
     {
         if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
-            return $this->gadget;
+            return true;
         }
 
         $installer = $this->loadInstaller();
@@ -243,7 +243,7 @@ class Jaws_Gadget_Installer
         $oldVersion = $this->gadget->GetRegistry('version', $this->gadget->name);
         $newVersion = $this->gadget->_Version;
         if (version_compare($oldVersion, $newVersion, ">=")) {
-            return $this->gadget;
+            return true;
         }
 
         $installer = $this->loadInstaller();
