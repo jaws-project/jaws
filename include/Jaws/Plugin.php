@@ -184,9 +184,9 @@ class Jaws_Plugin
         }
 
         // Put it in the enabled plugin record
-        $items = $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items');
+        $items = $GLOBALS['app']->Registry->Get('plugins_installed_items');
         if (!in_array($plugin, explode(',', $items))) {
-            $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $items.','.$plugin);
+            $GLOBALS['app']->Registry->Set('plugins_installed_items', $items.','.$plugin);
         }
 
         require_once $file;
@@ -246,10 +246,10 @@ class Jaws_Plugin
         }
 
 
-        $pull = $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items');
+        $pull = $GLOBALS['app']->Registry->Get('plugins_installed_items');
         $new  = str_replace(',' . $plugin, '', $pull);
 
-        $GLOBALS['app']->Registry->Set('plugins_admin_enabled_items', $new);
+        $GLOBALS['app']->Registry->Set('plugins_installed_items', $new);
         $GLOBALS['app']->Registry->Delete($plugin, 'enabled', JAWS_COMPONENT_PLUGIN);
         $GLOBALS['app']->Registry->Delete($plugin, 'use_in', JAWS_COMPONENT_PLUGIN);
 

@@ -334,8 +334,7 @@ class Installer_Database extends JawsInstallerStage
                 'gadgets_installed_items' => ',',
                 'gadgets_disabled_items' => ',',
                 'gadgets_autoload_items' => ',',
-                'plugins_enabled_items' => ',',
-                'plugins_admin_enabled_items' => ',',
+                'plugins_installed_items' => ',',
             )
         );
 

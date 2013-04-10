@@ -139,7 +139,7 @@ class Components_AdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $ei = explode(',', $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items'));
+                $ei = explode(',', $GLOBALS['app']->Registry->Get('plugins_installed_items'));
                 $ei = str_replace(' ', '', $ei);
                 $pInstalled = in_array($plugin, $ei);
 

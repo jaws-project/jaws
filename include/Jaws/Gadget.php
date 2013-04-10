@@ -536,11 +536,7 @@ class Jaws_Gadget
         }
 
         if (!empty($gadget)) {
-            if ($plugins_set == 'admin') {
-                $plugins = $GLOBALS['app']->Registry->Get('plugins_admin_enabled_items');
-            } else {
-                $plugins = $GLOBALS['app']->Registry->Get('plugins_enabled_items');
-            }
+            $plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
             if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
                 $plugins = array_filter(explode(',', $plugins));
                 foreach ($plugins as $plugin) {
@@ -548,7 +544,9 @@ class Jaws_Gadget
                     if (!Jaws_Error::IsError($objPlugin)) {
                         $use_in = '*';
                         if ($plugins_set == 'admin') {
-                            $use_in = $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
+                            $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
+                        } else {
+                            $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
                         }
                         if (!Jaws_Error::isError($use_in) &&
                            ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
