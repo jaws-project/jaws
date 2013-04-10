@@ -25,6 +25,7 @@ class Emoticons extends Jaws_Plugin
         $this->_Example = 'I\'m in love with Jaws Developers ;-), :-(, :-P, ;-)';
         $this->_IsFriendly = true;
         $this->_Version = '0.5.1';
+        $this->_DefaultFrontendEnabled = true;
     }
 
     /**

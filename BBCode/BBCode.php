@@ -23,6 +23,7 @@ class BBCode extends Jaws_Plugin
         $this->_Example     = _t('PLUGINS_BBCODE_SAMPLES');
         $this->_IsFriendly  = true;
         $this->_Version     = '0.1';
+        $this->_DefaultFrontendEnabled = true;
     }
 
     /**
