@@ -272,8 +272,9 @@ class Jaws_Plugin
         $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
         $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
         $GLOBALS['app']->Registry->Set('plugins_installed_items', $installed_plugins);
-        $GLOBALS['app']->Registry->Delete($plugin, 'backend_gadgets', JAWS_COMPONENT_PLUGIN);
-        $GLOBALS['app']->Registry->Delete($plugin, 'frontend_gadgets', JAWS_COMPONENT_PLUGIN);
+
+        // removeing plugin registry keys
+        $GLOBALS['app']->Registry->Delete($plugin, '', JAWS_COMPONENT_PLUGIN);
 
         require_once $file;
         $pluginObj = new $plugin;
