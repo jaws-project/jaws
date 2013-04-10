@@ -175,19 +175,16 @@ class Jaws_Plugin
                                      __FUNCTION__);
         }
 
-        if (
-            !$GLOBALS['app']->Registry->NewKey('enabled', 'true', $plugin, JAWS_COMPONENT_PLUGIN) ||
-            !$GLOBALS['app']->Registry->NewKey('use_in', '*', $plugin, JAWS_COMPONENT_PLUGIN)
-        ) {
-            return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
-                                     __FUNCTION__);
+        // adding plugin to installed plugins list
+        $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        if (false !== strpos($installed_plugins, ",$plugin,")) {
+            return true;
         }
+        $installed_plugins.= $plugin. ',';
+        $GLOBALS['app']->Registry->Set('plugins_installed_items', $installed_plugins);
 
-        // Put it in the enabled plugin record
-        $items = $GLOBALS['app']->Registry->Get('plugins_installed_items');
-        if (!in_array($plugin, explode(',', $items))) {
-            $GLOBALS['app']->Registry->Set('plugins_installed_items', $items.','.$plugin);
-        }
+        $GLOBALS['app']->Registry->NewKey('backend', '*', $plugin, JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->NewKey('frontend', '*', $plugin, JAWS_COMPONENT_PLUGIN);
 
         require_once $file;
         $pluginObj = new $plugin;
@@ -245,13 +242,12 @@ class Jaws_Plugin
                                      __FUNCTION__);
         }
 
-
-        $pull = $GLOBALS['app']->Registry->Get('plugins_installed_items');
-        $new  = str_replace(',' . $plugin, '', $pull);
-
-        $GLOBALS['app']->Registry->Set('plugins_installed_items', $new);
-        $GLOBALS['app']->Registry->Delete($plugin, 'enabled', JAWS_COMPONENT_PLUGIN);
-        $GLOBALS['app']->Registry->Delete($plugin, 'use_in', JAWS_COMPONENT_PLUGIN);
+        // removeing plugin from installed plugins list
+        $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
+        $GLOBALS['app']->Registry->Set('plugins_installed_items', $installed_plugins);
+        $GLOBALS['app']->Registry->Delete($plugin, 'backend', JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->Delete($plugin, 'frontend', JAWS_COMPONENT_PLUGIN);
 
         require_once $file;
         $pluginObj = new $plugin;
