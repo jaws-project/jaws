@@ -203,20 +203,18 @@ class Jaws_Widgets_TextArea extends Container
      */
     function extraBuild()
     {
-        $pluginKey = 'plugins_admin_enabled_items';
-        if (JAWS_SCRIPT != 'admin') {
-            $pluginKey = 'plugins_enabled_items';
+        $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        $installed_plugins = array_filter(explode(',', $installed_plugins));
+        $pluginKey = 'frontend_gadgets';
+        if (JAWS_SCRIPT == 'admin') {
+            $pluginKey = 'backend_gadgets';
         }
-        $availablePlugins = explode(',', $GLOBALS['app']->Registry->Get($pluginKey));
-        foreach ($availablePlugins as $plugin) {
-            if (empty($plugin)) {
-                continue;
-            }
 
-            $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-            if (!Jaws_Error::IsError($objPlugin)) {
-                $use_in = $GLOBALS['app']->Registry->Get('use_in', $plugin, JAWS_COMPONENT_PLUGIN);
-                if ($use_in == '*' || in_array($this->_Gadget, explode(',', $use_in))) {
+        foreach ($installed_plugins as $plugin) {
+            $gadgets = $GLOBALS['app']->Registry->Get($pluginKey, $plugin, JAWS_COMPONENT_PLUGIN);
+            if (($gadgets == '*') || (strpos($gadgets, ",{$this->_Gadget},") !== false)) {
+                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                if (!Jaws_Error::IsError($objPlugin)) {
                     $plugincontrol = $objPlugin->GetWebControl($this->_Name);
                     if (is_object($plugincontrol)) {
                         $plugincontrolValue = $plugincontrol->Get();
