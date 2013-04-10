@@ -54,6 +54,22 @@ class Jaws_Plugin
     var $_AccessKey;
 
     /**
+     * Frontend available by default
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $_DefaultFrontendEnabled = false;
+
+    /**
+     * Backend available by default
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $_DefaultBackendEnabled = true;
+
+    /**
      * Get the name of the plugin
      *
      * @access  public
@@ -183,9 +199,6 @@ class Jaws_Plugin
         $installed_plugins.= $plugin. ',';
         $GLOBALS['app']->Registry->Set('plugins_installed_items', $installed_plugins);
 
-        $GLOBALS['app']->Registry->NewKey('backend_gadgets', '*', $plugin, JAWS_COMPONENT_PLUGIN);
-        $GLOBALS['app']->Registry->NewKey('frontend_gadgets', '*', $plugin, JAWS_COMPONENT_PLUGIN);
-
         require_once $file;
         $pluginObj = new $plugin;
         $result = $pluginObj->InstallPlugin();
@@ -193,6 +206,19 @@ class Jaws_Plugin
             return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
                                      __FUNCTION__);
         }
+
+        $GLOBALS['app']->Registry->NewKey(
+            'backend_gadgets',
+            $pluginObj->_DefaultBackendEnabled? '*' : ',',
+            $plugin,
+            JAWS_COMPONENT_PLUGIN
+        );
+        $GLOBALS['app']->Registry->NewKey(
+            'frontend_gadgets',
+            $pluginObj->_DefaultFrontendEnabled? '*' : ',',
+            $plugin,
+            JAWS_COMPONENT_PLUGIN
+        );
 
         // Everything is done
         $res = $GLOBALS['app']->Listener->Shout('EnablePlugin', $plugin);
