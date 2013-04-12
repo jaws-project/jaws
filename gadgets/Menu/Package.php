@@ -16,7 +16,7 @@ $info = array(
                                  array('developer', 'dufuz', 'Helgi Thormar', 'dufuz@php.net'),
                                  array('developer', 'imcks8', 'Ivan Chavero', 'imcks8@gluch.org.mx'),
                                  array('developer', 'amir', 'Amir Mohammad Saied', 'amir@php.net'),
-                                 array('developer', 'mkh', 'Mohsen Khahani', 'mohsen@khahani.com'),
+                                 array('developer', 'mkh', 'Mohsen Khahani', 'mkhahani@gmail.com'),
                                  ),
               'deps'    => array(),
               );

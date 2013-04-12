@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Mohsen Khahani <mohsen@khahani.com>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
