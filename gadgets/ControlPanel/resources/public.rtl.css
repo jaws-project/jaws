@@ -804,13 +804,12 @@ border-spacing: 0px;
 border-collapse: collapse;
 }
 .notify-items_tbl tr:hover {
-background-color: #729FCF;
+background-color: #f1f8ff;
 }
 .notify-items_tbl td {
 margin: 0px;
 padding: 0px;
 }
-.notify-items_tbl a:hover {color: #9e3;}
 .notify-box .install {
 text-align: center;
 min-width: 40px;
