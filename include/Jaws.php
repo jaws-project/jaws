@@ -128,28 +128,14 @@ class Jaws
     var $_Plugins = array();
 
     /**
-     * Store hook object for later use so we aren't running
-     * @var array
-     * @access  protected
-     */
-    var $_Classes = array();
-
-    /**
      * Constructor
      *
      * @access  public
      */
     function Jaws()
     {
-        require_once JAWS_PATH . 'include/Jaws/Template.php';
-        require_once JAWS_PATH . 'include/Jaws/Header.php';
-        require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-        require_once JAWS_PATH . 'include/Jaws/Gadget.php';
-        require_once JAWS_PATH . 'include/Jaws/Gadget/Model.php';
-        require_once JAWS_PATH . 'include/Jaws/Gadget/HTML.php';
-        require_once JAWS_PATH . 'include/Jaws/Gadget/Installer.php';
-
-        $this->loadClass('UTF8', 'Jaws_UTF8');
+        spl_autoload_register(array($this, 'loadClass'));
+        $this->loadObject('Jaws_UTF8', 'UTF8');
     }
 
     /**
@@ -160,10 +146,10 @@ class Jaws
      */
     function create()
     {
-        $this->loadClass('Translate', 'Jaws_Translate');
-        $this->loadClass('Registry', 'Jaws_Registry');
-        $this->loadClass('ACL', 'Jaws_ACL');
-        $this->loadClass('Listener', 'Jaws_Listener');
+        $this->loadObject('Jaws_Translate', 'Translate');
+        $this->loadObject('Jaws_Registry', 'Registry');
+        $this->loadObject('Jaws_ACL', 'ACL');
+        $this->loadObject('Jaws_Listener', 'Listener');
 
         $this->loadPreferences();
         $this->Registry->Init();
@@ -172,7 +158,7 @@ class Jaws
         $this->loadDefaults();
         $this->Translate->Init($this->_Language);
 
-        $this->loadClass('Map', 'Jaws_URLMapping');
+        $this->loadObject('Jaws_URLMapping', 'Map');
         $this->Map->Load();
     }
 
@@ -336,7 +322,7 @@ class Jaws
      */
     function InstanceLayout()
     {
-        $this->loadClass('Layout', 'Jaws_Layout');
+        $this->loadObject('Jaws_Layout', 'Layout');
         $this->_UseLayout = true;
     }
 
@@ -841,8 +827,7 @@ class Jaws
     function &LoadEditor($gadget, $name, $value = '', $filter = true, $label = '')
     {
         if ($filter && !empty($value)) {
-            $xss   = $this->loadClass('XSS', 'Jaws_XSS');
-            $value = $xss->filter($value);
+            $value = Jaws_XSS::filter($value);
         }
 
         $editor = $this->_Editor;
@@ -885,45 +870,46 @@ class Jaws
     }
 
     /**
+     * Loads a class object
+     *
+     * @access  public
+     * @param   string  $classname  Class name
+     * @param   string  $property   Jaws app property name
+     * @return  mixed   Object if success otherwise Jaws_Error on failure
+     */
+    function loadObject($classname, $property = '')
+    {
+        // filter non validate character
+        $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
+
+        if (!empty($property)) {
+            if (isset($this->{$property})) {
+                $objClass = $this->{$property};
+            } else {
+                $objClass = new $classname();
+                $this->{$property} = $objClass;
+            }
+        } else {
+            $objClass = new $classname();
+        }
+
+        return $objClass;
+    }
+
+    /**
      * Loads a class from within the Jaws dir
      *
      * @access  public
-     * @param   string  $property Jaws app property name
-     * @param   string  $class    Class name
-     * @return  object  Date calender object
+     * @param   string  $classname  Class name
+     * @return  mixed   Object if success otherwise Jaws_Error on failure
      */
-    function loadClass($property, $class)
+    function loadClass($classname, $property = '')
     {
         // filter non validate character
-        $class = preg_replace('/[^[:alnum:]_]/', '', $class);
-
-        if (!isset($this->{$property})) {
-            $file = JAWS_PATH . 'include'. DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-            if (!file_exists($file)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_FILE_DOES_NOT_EXIST', $file),
-                                        'File exists check');
-                return $error;
-            }
-
-            include_once $file;
-
-            if (!$this->classExists($class)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', $class),
-                                        'Class exists check');
-                return $error;
-            }
-
-            $this->{$property} = new $class();
-            if (Jaws_Error::IsError($this->{$property})) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $class),
-                                        'Class file loading');
-                return $error;
-            }
-
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class: ' . $class . ', File: ' . $file);
-        }
-
-        return $this->{$property};
+        $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
+        $file = JAWS_PATH. 'include'. DIRECTORY_SEPARATOR. str_replace('_', DIRECTORY_SEPARATOR, $classname).'.php';
+        require_once $file;
+        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class: ' . $classname . ', File: ' . $file);
     }
 
     /**
@@ -956,12 +942,11 @@ class Jaws
             return $location;
         }
 
-        $xss = $this->loadClass('XSS', 'Jaws_XSS');
         //TODO: Need to check which SERVER var is allways sent to the server
         if (!isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
-            $location = $xss->filter($_SERVER['SCRIPT_NAME']);
+            $location = Jaws_XSS::filter($_SERVER['SCRIPT_NAME']);
         } else {
-            $location = $xss->filter($_SERVER['REQUEST_URI']);
+            $location = Jaws_XSS::filter($_SERVER['REQUEST_URI']);
         }
         $location = substr($location, 0, stripos($location, BASE_SCRIPT));
         return $location;
@@ -1164,8 +1149,7 @@ class Jaws
             $_IsRobot = false;
             $robots = explode(',', $this->Registry->Get('robots', 'Settings', JAWS_COMPONENT_GADGET));
             $robots = array_map('strtolower', $robots);
-            $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            $uagent = strtolower($GLOBALS['app']->XSS->parse($_SERVER['HTTP_USER_AGENT']));
+            $uagent = strtolower(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']));
             $ipaddr = $_SERVER['REMOTE_ADDR'];
             foreach($robots as $robot) {
                 if (!empty($robot) && (($ipaddr == $robot) || (strpos($uagent, $robot) !== false))) {
