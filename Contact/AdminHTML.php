@@ -6,7 +6,7 @@
  * @package    Contact
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @author     Mohsen Khahani <mohsen@khahani.com>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */

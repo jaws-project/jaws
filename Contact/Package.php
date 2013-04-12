@@ -12,7 +12,7 @@ $info = array(
               'license' => 'GPL',
               'authors' => array(array('lead', 'ion', 'Jonathan Hernandez', 'ion@suavizado.com'),
                                  array('lead', 'ali', 'Ali Fazelzadeh', 'afz@php.net'),
-                                 array('developer', 'mkh', 'Mohsen Khahani', 'mohsen@khahani.com')
+                                 array('developer', 'mkh', 'Mohsen Khahani', 'mkhahani@gmail.com')
                                  ),
               'deps'    => array(),
               );

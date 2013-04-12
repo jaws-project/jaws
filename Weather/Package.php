@@ -13,6 +13,6 @@ $info = array(
               'authors' => array(array('lead', 'ion', 'Jonathan Hernandez', 'ion@suavizado.com'),
                                  array('lead', 'afz', 'Ali Fazelzadeh', 'afz@php.net'),
                                  array('developer', 'pfischer', 'Pablo Fischer', 'pablo@pablo.com.mx'),
-                                 array('developer', 'mkh', 'Mohsen Khahani', 'mohsen@khahani.com'),
+                                 array('developer', 'mkh', 'Mohsen Khahani', 'mkhahani@gmail.com'),
                                  ),
               'deps'    => array(),
