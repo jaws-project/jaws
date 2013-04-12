@@ -120,14 +120,13 @@ class SmartBridge extends Jaws_Plugin
      */
     function Prepare($matches)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $matches[1] = $xss->parse($matches[1]);
+        $matches[1] = Jaws_XSS::filter($matches[1]);
         $gadget = ucfirst(strtolower($matches[1]));
         if ($gadget == 'Staticpage' || $gadget == 'Page') {
             $gadget = 'StaticPage';
         }
 
-        $link = $xss->filter($matches[2]);
+        $link = Jaws_XSS::filter($matches[2]);
         $linkText = isset($matches[3])? $matches[3] : $linkText;
         switch ($gadget) {
             case 'Blog':

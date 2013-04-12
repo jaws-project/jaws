@@ -114,9 +114,8 @@ class AlbumCover extends Jaws_Plugin
             if (empty($amazonImg)) {
                 $img = 'images/unknown.png';
             } elseif (!@copy($amazonImg, $albumDir.$img)) {
-                $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
                 //FIXME: Notify that can't copy image to cache...
-                $img = $xss->parse($amazonImg);
+                $img = Jaws_XSS::filter($amazonImg);
             } else {
                 $img = JAWS_DATA . 'AlbumCover/' . $img;
             }
