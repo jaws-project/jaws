@@ -458,7 +458,7 @@ class Jaws_Gadget_Installer
      * Gadgets should override this method only if they need to perform actions to install
      *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @return  bool    True on successfull install and Jaws_Error on failure
      */
     function Install()
     {
@@ -470,7 +470,7 @@ class Jaws_Gadget_Installer
      * Gadgets should override this method only if they need to perform actions to uninstall
      *
      * @access  public
-     * @return  mixed    True on a successful install and Jaws_Error otherwise
+     * @return  mixed    True on a successful uninstall and Jaws_Error otherwise
      */
     function Uninstall()
     {
