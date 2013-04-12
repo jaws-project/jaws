@@ -4,7 +4,7 @@
  *
  * @category   Plugin
  * @package    FileBrowser
- * @author     Mohsen Khahani <mohsen@khahani.com>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
