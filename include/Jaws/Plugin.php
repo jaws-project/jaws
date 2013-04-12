@@ -174,7 +174,7 @@ class Jaws_Plugin
      * @access  public
      * @return  bool     True if everything is OK or Jaws_Error on failure
      */
-    function EnablePlugin($plugin = null)
+    function InstallPlugin($plugin = null)
     {
         if (is_null($plugin)) {
             $plugin = $this->_Name;
@@ -201,7 +201,7 @@ class Jaws_Plugin
 
         require_once $file;
         $pluginObj = new $plugin;
-        $result = $pluginObj->InstallPlugin();
+        $result = $pluginObj->Install();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
                                      __FUNCTION__);
@@ -221,7 +221,7 @@ class Jaws_Plugin
         );
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('EnablePlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('InstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -230,33 +230,11 @@ class Jaws_Plugin
     }
 
     /**
-     * Install the plugin
-     *
-     * @access  public
-     * @return  string
-     */
-    function InstallPlugin()
-    {
-        return true;
-    }
-
-    /**
-     * Uninstalls the plugin
-     *
-     * @access  public
-     * @return  string
-     */
-    function UninstallPlugin()
-    {
-        return true;
-    }
-
-    /**
      * This function disables a plugin
      * @param   string $plugin The name of the plugin to disable
      * @access  public
      */
-    function DisablePlugin($plugin = null)
+    function UninstallPlugin($plugin = null)
     {
         if (is_null($plugin)) {
             $plugin = $this->_Name;
@@ -278,18 +256,43 @@ class Jaws_Plugin
 
         require_once $file;
         $pluginObj = new $plugin;
-        $result = $pluginObj->UninstallPlugin();
+        $result = $pluginObj->Uninstall();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('COMPONENTS_PLUGINS_DISABLE_FAILURE', $plugin),
                                      __FUNCTION__);
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('DisablePlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('UninstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
 
         return true;
     }
+
+    /**
+     * Install a plugin
+     * Plugins should override this method only if they need to perform actions to install
+     *
+     * @access  public
+     * @return  bool    True on successfull install and Jaws_Error on failure
+     */
+    function Install()
+    {
+        return true;
+    }
+
+    /**
+     * Uninstall a plugin
+     * Plugins should override this method only if they need to perform actions to uninstall
+     *
+     * @access  public
+     * @return  mixed    True on a successful uninstall and Jaws_Error otherwise
+     */
+    function Uninstall()
+    {
+        return true;
+    }
+
 }
