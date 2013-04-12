@@ -46,9 +46,7 @@ class Weather_HTML extends Jaws_Gadget_HTML
         $wLayout = $GLOBALS['app']->LoadGadget('Weather', 'LayoutHTML');
         $request =& Jaws_Request::getInstance();
         $region = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $region = $xss->defilter($region, true);
+        $region = Jaws_XSS::defilter($region, true);
 
         return $wLayout->RegionWeather($region, true);
     }

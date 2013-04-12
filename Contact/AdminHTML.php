@@ -475,9 +475,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('site-url',    $site_url);
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', $xss->defilter($contact['subject']));
+        $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', Jaws_XSS::defilter($contact['subject']));
 
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
@@ -944,11 +942,10 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom();
-        $mail->SetSubject($xss->defilter($subject));
+        $mail->SetSubject(Jaws_XSS::defilter($subject));
 
         // To, Cc, Bcc
         if (isset($target['to'])) {

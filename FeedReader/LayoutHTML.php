@@ -52,7 +52,6 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $tpl = new Jaws_Template('gadgets/FeedReader/templates/');
         $tpl->Load('FeedReader.html');
         $tpl->SetBlock('feedreader');
@@ -80,7 +79,7 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         $res = $parser->fetch($site['url']);
         if (PEAR::isError($res)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['._t('FEEDREADER_NAME').']: ',
-                                 _t('FEEDREADER_ERROR_CANT_FETCH', $xss->filter($site['url'])), '');
+                                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::filter($site['url'])), '');
         }
 
         if (!isset($parser->feed)) {
@@ -93,14 +92,14 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
 
         switch ($site['title_view']) {
             case 1:
-                $tpl->SetVariable('feed_title', $xss->filter($parser->feed['channel']['title']));
+                $tpl->SetVariable('feed_title', Jaws_XSS::filter($parser->feed['channel']['title']));
                 $tpl->SetVariable('feed_link',
-                      $xss->filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                      Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
                 break;
             case 2:
-                $tpl->SetVariable('feed_title', $xss->filter($site['title']));
+                $tpl->SetVariable('feed_title', Jaws_XSS::filter($site['title']));
                 $tpl->SetVariable('feed_link',
-                      $xss->filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                      Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
                 break;
             default:
         }
@@ -110,8 +109,8 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         if (isset($parser->feed['items'])) {
             foreach($parser->feed['items'] as $index => $item) {
                 $tpl->SetBlock("feedreader/$block/item");
-                $tpl->SetVariable('title', $xss->filter($item['title']));
-                $tpl->SetVariable('href', isset($item['link'])? $xss->filter($item['link']) : '');
+                $tpl->SetVariable('title', Jaws_XSS::filter($item['title']));
+                $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::filter($item['link']) : '');
                 $tpl->ParseBlock("feedreader/$block/item");
                 if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
                     break;

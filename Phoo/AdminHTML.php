@@ -1085,8 +1085,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['msg_txt']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
@@ -1174,15 +1173,14 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetReadOnly(true);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
+        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['msg_txt']));
         $comment_msg->SetReadOnly(true);
         $comment_msg->SetRows(5);
         $comment_msg->SetColumns(60);
         $comment_msg->SetStyle('width: 400px;');
         $comment_msg->SetTitle(_t('PHOO_COMMENT'));
 
-        $reply =& Piwi::CreateWidget('TextArea', 'reply', $xss->defilter($comment['reply']));
+        $reply =& Piwi::CreateWidget('TextArea', 'reply', Jaws_XSS::defilter($comment['reply']));
         $reply->SetRows(5);
         $reply->SetColumns(60);
         $reply->SetStyle('width: 400px;');

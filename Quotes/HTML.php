@@ -56,8 +56,7 @@ class Quotes_HTML extends Jaws_Gadget_HTML
      */
     function QuotesByGroup()
     {
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
+        header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
         return $this->ViewGroupQuotes();
     }
 

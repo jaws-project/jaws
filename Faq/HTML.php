@@ -32,9 +32,7 @@ class Faq_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $qid = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $qid = $xss->defilter($qid, true);
+        $qid = Jaws_XSS::defilter($qid, true);
 
         $tpl = new Jaws_Template('gadgets/Faq/templates/');
         $tpl->Load('Question.html');
@@ -64,9 +62,7 @@ class Faq_HTML extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $cat_id  = $request->get('id', 'get');
-
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $cat_id  = $xss->defilter($cat_id, true);
+        $cat_id  = Jaws_XSS::defilter($cat_id, true);
 
         $this->SetTitle(_t('FAQ_NAME') . ' - ' . _t('FAQ_CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);

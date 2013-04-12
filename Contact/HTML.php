@@ -225,12 +225,11 @@ class Contact_HTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);
-        $mail->SetSubject($xss->defilter($contact['subject']));
+        $mail->SetSubject(Jaws_XSS::defilter($contact['subject']));
         $mail->SetBody($template, $format);
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {

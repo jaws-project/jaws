@@ -143,8 +143,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $tpl->SetBlock('edit_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_UPDATE_COMMENT'));
 
@@ -174,7 +172,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $ip->SetTitle(_t('GLOBAL_IP'));
         $ip->SetReadOnly(true);
 
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['comments']));
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['comments']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');
@@ -240,8 +238,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $tpl->SetBlock('reply_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_REPLY_COMMENT'));
 
@@ -274,14 +270,14 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $ip->SetTitle(_t('GLOBAL_IP'));
         $ip->SetReadOnly(true);
 
-        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['comments']));
+        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['comments']));
         $comment_msg->SetReadOnly(true);
         $comment_msg->SetRows(5);
         $comment_msg->SetColumns(60);
         $comment_msg->SetStyle('width: 400px;');
         $comment_msg->SetTitle(_t('BLOG_COMMENT'));
 
-        $reply =& Piwi::CreateWidget('TextArea', 'reply', $xss->defilter($comment['reply']));
+        $reply =& Piwi::CreateWidget('TextArea', 'reply', Jaws_XSS::defilter($comment['reply']));
         $reply->SetRows(5);
         $reply->SetColumns(60);
         $reply->SetStyle('width: 400px;');

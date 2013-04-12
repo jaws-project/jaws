@@ -64,8 +64,7 @@ class Banner_HTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $gid = (int)$request->get('id', 'get');
         $layoutGadget = $GLOBALS['app']->LoadGadget('Banner', 'LayoutHTML');
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
+        header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
         return $layoutGadget->Display($gid, true);
     }
 }

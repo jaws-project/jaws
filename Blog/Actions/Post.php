@@ -50,9 +50,7 @@ class Blog_Actions_Post extends Blog_HTML
     {
         $request =& Jaws_Request::getInstance();
         $g_id = $request->get('id', 'get');
-
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $g_id = $xss->defilter($g_id, true);
+        $g_id = Jaws_XSS::defilter($g_id, true);
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         if (is_null($id)) {

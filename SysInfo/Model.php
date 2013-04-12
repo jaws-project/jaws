@@ -138,12 +138,11 @@ class SysInfo_Model extends Jaws_Gadget_Model
     function GetSysInfo()
     {
         $apache_modules = $this->GetApacheModules();
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         return array(
                     array('title' => 'Operating System',
                           'value' => php_uname()),
                     array('title' => 'Web Server',
-                          'value' => $xss->filter($_SERVER['SERVER_SOFTWARE'])),
+                          'value' => Jaws_XSS::filter($_SERVER['SERVER_SOFTWARE'])),
                     array('title' => 'Server API/Loaded modules',
                           'value' => php_sapi_name(). (empty($apache_modules)? '' : ('/'.$apache_modules))),
                     array('title' => 'PHP Version',
@@ -160,7 +159,7 @@ class SysInfo_Model extends Jaws_Gadget_Model
                     array('title' => 'Jaws Version/Codename',
                           'value' => JAWS_VERSION . '/' . JAWS_VERSION_CODENAME),
                     array('title' => 'User Agent',
-                          'value' => $xss->filter($_SERVER['HTTP_USER_AGENT'])),
+                          'value' => Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT'])),
                 );
     }
 

@@ -1274,8 +1274,7 @@ class Blog_Model extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $cid = empty($catInfo['fast_url']) ? $catInfo['id'] : $xss->filter($catInfo['fast_url']);
+        $cid = empty($catInfo['fast_url']) ? $catInfo['id'] : Jaws_XSS::filter($catInfo['fast_url']);
 
         require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $categoryAtom = new Jaws_AtomFeed();

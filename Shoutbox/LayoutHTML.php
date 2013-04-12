@@ -36,19 +36,18 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
             $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
             $url   = $GLOBALS['app']->Session->GetCookie('visitor_url');
 
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
             if (!$GLOBALS['app']->Session->Logged()) {
                 $tpl->SetBlock('shoutbox/fieldset/info-box');
-                $url_value = empty($url)? 'http://' : $xss->filter($url);
+                $url_value = empty($url)? 'http://' : Jaws_XSS::filter($url);
                 $tpl->SetVariable('url', _t('GLOBAL_URL'));
                 $tpl->SetVariable('urlvalue', $url_value);
                 $tpl->SetVariable('rand', $rand);
                 $tpl->SetVariable('name', _t('GLOBAL_NAME'));
-                $tpl->SetVariable('namevalue', isset($name) ? $xss->filter($name) : '');
+                $tpl->SetVariable('namevalue', isset($name) ? Jaws_XSS::filter($name) : '');
                 $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('emailvalue', isset($email) ? $xss->filter($email) : '');
+                $tpl->SetVariable('emailvalue', isset($email) ? Jaws_XSS::filter($email) : '');
                 $tpl->ParseBlock('shoutbox/fieldset/info-box');
             }
 
@@ -101,12 +100,11 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetBlock('messages');
 
             $date = $GLOBALS['app']->loadDate();
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($entries as $entry) {
                 $tpl->SetBlock('messages/entry');
-                $tpl->SetVariable('name', $xss->filter($entry['name']));
-                $tpl->SetVariable('email', $xss->filter($entry['email']));
-                $tpl->SetVariable('url', $xss->filter($entry['url']));
+                $tpl->SetVariable('name', Jaws_XSS::filter($entry['name']));
+                $tpl->SetVariable('email', Jaws_XSS::filter($entry['email']));
+                $tpl->SetVariable('url', Jaws_XSS::filter($entry['url']));
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
                 if ($entry['status'] == 3) {

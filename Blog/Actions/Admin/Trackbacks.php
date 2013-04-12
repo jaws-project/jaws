@@ -166,21 +166,18 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $tpl->SetBlock('view_trackback');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $date = $GLOBALS['app']->loadDate();
-
-
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_VIEW_TRACKBACK'));
 
         $text = '<strong>' . $entry['title'] . '</strong>';
         $staticText =& Piwi::CreateWidget('StaticEntry', _t('BLOG_TRACKBACKS_CURRENTLY_UPDATING_FOR', $text));
 
-        $blog_name =& Piwi::CreateWidget('Entry', 'blog_name', $xss->filter($trackback['blog_name']));
+        $blog_name =& Piwi::CreateWidget('Entry', 'blog_name', Jaws_XSS::filter($trackback['blog_name']));
         $blog_name->SetTitle(_t('BLOG_TRACKBACK_BLOGNAME'));
         $blog_name->SetStyle('width: 400px;');
 
-        $url =& Piwi::CreateWidget('Entry', 'url', $xss->filter($trackback['url']));
+        $url =& Piwi::CreateWidget('Entry', 'url', Jaws_XSS::filter($trackback['url']));
         $url->SetStyle('direction: ltr;');
         $url->SetTitle(_t('GLOBAL_URL'));
         $url->SetStyle('width: 400px;');
@@ -200,7 +197,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
-        $subject =& Piwi::CreateWidget('Entry', 'title', $xss->filter($trackback['title']));
+        $subject =& Piwi::CreateWidget('Entry', 'title', Jaws_XSS::filter($trackback['title']));
         $subject->SetTitle(_t('GLOBAL_TITLE'));
         $subject->SetStyle('width: 400px;');
 

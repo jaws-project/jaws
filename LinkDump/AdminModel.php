@@ -327,9 +327,8 @@ class LinkDump_AdminModel extends LinkDump_Model
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $feedname = empty($group['fast_url']) ?
-                    $GLOBALS['app']->UTF8->str_replace(' ', '-', $group['title']) : $xss->filter($group['fast_url']);
+                    $GLOBALS['app']->UTF8->str_replace(' ', '-', $group['title']) : Jaws_XSS::filter($group['fast_url']);
         $feedname = preg_replace('/[@?^=%&:;\/~\+# ]/i', '\1', $feedname);
 
         $html = $GLOBALS['app']->LoadGadget('LinkDump', 'HTML');

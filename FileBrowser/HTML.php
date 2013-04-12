@@ -105,22 +105,21 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $offset = ($page - 1) * $limit;
         $items = $model->ReadDir($path, $limit, $offset);
         if (!Jaws_Error::IsError($items)) {
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $date = $GLOBALS['app']->loadDate();
             foreach ($items as $item) {
                 $tpl->SetBlock('filebrowser/item');
                 $tpl->SetVariable('icon',  $item['icon']);
-                $tpl->SetVariable('name',  $xss->filter($item['filename']));
-                $tpl->SetVariable('title', $xss->filter($item['title']));
+                $tpl->SetVariable('name',  Jaws_XSS::filter($item['filename']));
+                $tpl->SetVariable('title', Jaws_XSS::filter($item['title']));
                 if ($item['is_dir']) {
-                    $relative = $xss->filter($item['relative']) . '/';
+                    $relative = Jaws_XSS::filter($item['relative']) . '/';
                     $url = $this->gadget->GetURLFor('Display', array('path' => $relative));
                     $tpl->SetVariable('url', $url);
                 } else {
                     if (empty($item['id'])) {
-                        $tpl->SetVariable('url', $xss->filter($item['url']));
+                        $tpl->SetVariable('url', Jaws_XSS::filter($item['url']));
                     } else {
-                        $fid = empty($item['fast_url']) ? $item['id'] : $xss->filter($item['fast_url']);
+                        $fid = empty($item['fast_url']) ? $item['id'] : Jaws_XSS::filter($item['fast_url']);
                         $tpl->SetVariable('url', $this->gadget->GetURLFor('Download',
                                                                   array('id' => $fid)));
                         $tpl->SetBlock('filebrowser/item/info');
@@ -236,9 +235,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
-
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $id = $xss->defilter($id, true);
+        $id = Jaws_XSS::defilter($id, true);
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
         $dbInfo = $model->DBFileInfoByIndex($id);
@@ -254,9 +251,9 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $Info = $model->GetFileProperties($dbInfo['path'], $dbInfo['filename']);
 
         $tpl->SetVariable('icon',  $Info['mini_icon']);
-        $tpl->SetVariable('name',  $xss->filter($Info['filename']));
-        $tpl->SetVariable('title', $xss->filter($dbInfo['title']));
-        $tpl->SetVariable('url',   $xss->filter($Info['url']));
+        $tpl->SetVariable('name',  Jaws_XSS::filter($Info['filename']));
+        $tpl->SetVariable('title', Jaws_XSS::filter($dbInfo['title']));
+        $tpl->SetVariable('url',   Jaws_XSS::filter($Info['url']));
         $tpl->SetVariable('date',  $date->Format($Info['date']));
         $tpl->SetVariable('size',  $Info['size']);
         $tpl->SetVariable('text',  $this->gadget->ParseText($dbInfo['description']));
@@ -306,11 +303,9 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
+        $id = Jaws_XSS::defilter($id, true);
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $id = $xss->defilter($id, true);
-
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {

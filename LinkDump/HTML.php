@@ -33,9 +33,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $gid = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $gid = $xss->defilter($gid, true);
+        $gid = Jaws_XSS::defilter($gid, true);
 
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model');
         $group = $model->GetGroup($gid);
@@ -155,15 +153,13 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $lid = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $lid = $xss->defilter($lid, true);
+        $lid = Jaws_XSS::defilter($lid, true);
 
         $link = $model->GetLink($lid);
         if (!Jaws_Error::IsError($link)) {
             $click = $model->Click($link['id']);
             if (!Jaws_Error::IsError($click)) {
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 301 Moved Permanently");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 301 Moved Permanently");
                 Jaws_Header::Location($link['url']);
             }
         }
@@ -182,9 +178,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $tag = $request->get('tag', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $tag = $xss->defilter($tag, true);
+        $tag = Jaws_XSS::defilter($tag, true);
 
         $target = $this->gadget->GetRegistry('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';

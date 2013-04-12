@@ -70,12 +70,11 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             $date = $GLOBALS['app']->loadDate();
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($comments as $entry) {
                 $tpl->SetBlock('recent_comments/entry');
-                $tpl->SetVariable('name', $xss->filter($entry['name']));
-                $tpl->SetVariable('email', $xss->filter($entry['email']));
-                $tpl->SetVariable('url', $xss->filter($entry['url']));
+                $tpl->SetVariable('name', Jaws_XSS::filter($entry['name']));
+                $tpl->SetVariable('email', Jaws_XSS::filter($entry['email']));
+                $tpl->SetVariable('url', Jaws_XSS::filter($entry['url']));
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
 

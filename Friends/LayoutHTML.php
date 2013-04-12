@@ -26,11 +26,10 @@ class Friends_LayoutHTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($friends)) {
             $tpl->SetBlock('friends');
             $tpl->SetVariable('title', _t('FRIENDS_NAME'));
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($friends as $friend) {
                 $tpl->SetBlock('friends/friend');
-                $tpl->SetVariable('name', $xss->filter($friend['friend'], true));
-                $tpl->SetVariable('url',  $xss->filter($friend['url'],    true));
+                $tpl->SetVariable('name', Jaws_XSS::filter($friend['friend'], true));
+                $tpl->SetVariable('url',  Jaws_XSS::filter($friend['url'],    true));
                 $tpl->ParseBlock('friends/friend');
             }
         }

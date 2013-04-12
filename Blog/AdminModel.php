@@ -1084,16 +1084,15 @@ class Blog_AdminModel extends Blog_Model
             return array();
         }
 
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $date = $GLOBALS['app']->loadDate();
         $data = array();
         foreach ($trackbacks as $row) {
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
-            $newRow['blog_name']    = '<a href="'.$xss->filter($row['url']).'">'.$xss->filter($row['blog_name']).'</a>';;
+            $newRow['blog_name']    = '<a href="'.Jaws_XSS::filter($row['url']).'">'.Jaws_XSS::filter($row['blog_name']).'</a>';;
 
             $url = BASE_SCRIPT . '?gadget=Blog&action=ViewTrackback&id='.$row['id'];
-            $newRow['title']   = '<a href="'.$url.'">'.$xss->filter($row['title']).'</a>';
+            $newRow['title']   = '<a href="'.$url.'">'.Jaws_XSS::filter($row['title']).'</a>';
 
             $newRow['created'] = $date->Format($row['createtime']);
             switch($row['status']) {

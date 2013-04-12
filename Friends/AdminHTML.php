@@ -48,13 +48,12 @@ class Friends_AdminHTML extends Jaws_Gadget_HTML
         }
 
         $i = 0;
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $data = array();
         foreach ($friends as $friend) {
             $url = $friend['url'];
-            $clean_url = $xss->filter($url);
+            $clean_url = Jaws_XSS::filter($url);
             if (strlen($url) > 30) {
-                $url = '<a title="'.$clean_url.'" href="'.$clean_url.'">' . $xss->filter(substr($url, 0, 30)) . '...</a>';
+                $url = '<a title="'.$clean_url.'" href="'.$clean_url.'">' . Jaws_XSS::filter(substr($url, 0, 30)) . '...</a>';
             } else {
                 $url = '<a title="'.$clean_url.'" href="'.$clean_url.'">'.$clean_url.'</a>';
             }
@@ -148,17 +147,16 @@ class Friends_AdminHTML extends Jaws_Gadget_HTML
             $action = $request->get('action', 'get');
             $action = !(is_null($action) ? $action : '');
 
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             $friendentry =& Piwi::CreateWidget('Entry', 'friend',
                                                (isset($friend['friend']) ?
-                                                $xss->filter($friend['friend']) : ''));
+                                                Jaws_XSS::filter($friend['friend']) : ''));
             $friendentry->SetTitle(_t('FRIENDS_FRIEND'));
             $friendentry->SetStyle('width: 250px;');
             $fieldset_friebd->Add($friendentry);
 
             $urlentry =& Piwi::CreateWidget('Entry', 'url',
                                             (isset($friend['url']) ?
-                                             $xss->filter($friend['url']) : 'http://'));
+                                             Jaws_XSS::filter($friend['url']) : 'http://'));
             $urlentry->SetTitle(_t('GLOBAL_URL'));
             $urlentry->SetStyle('direction: ltr; width: 250px;');
             $fieldset_friebd->Add($urlentry);

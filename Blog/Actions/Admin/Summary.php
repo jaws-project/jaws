@@ -114,12 +114,11 @@ class Blog_Actions_Admin_Summary extends Blog_AdminHTML
             $tpl->SetBlock('summary/recent');
             $tpl->SetVariable('title', _t('BLOG_RECENT_COMMENTS'));
             $date = $GLOBALS['app']->loadDate();
-            $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($summary['Comments'] as $c) {
                 $tpl->SetBlock('summary/recent/link');
                 $url = BASE_SCRIPT . '?gadget=Blog&action=EditComment&id='.$c['id'];
-                $extra = "<strong style=\"color: #666;\">" . $xss->filter($c['name']) . ": </strong>";
-                $tpl->SetVariable('url',   $xss->filter($url));
+                $extra = "<strong style=\"color: #666;\">" . Jaws_XSS::filter($c['name']) . ": </strong>";
+                $tpl->SetVariable('url',   Jaws_XSS::filter($url));
                 $tpl->SetVariable('extra', $extra);
                 $tpl->SetVariable('date',  $date->Format($c['createtime']));
                 $tpl->ParseBlock('summary/recent/link');

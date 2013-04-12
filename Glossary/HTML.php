@@ -32,9 +32,7 @@ class Glossary_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $term = $request->get('term', 'get');
-
-        $xss  = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $term = $xss->defilter($term, true);
+        $term = Jaws_XSS::defilter($term, true);
 
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model');
         $term = $model->GetTerm($term);

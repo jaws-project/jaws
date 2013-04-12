@@ -32,8 +32,7 @@ class Blog_Actions_Categories extends Blog_HTML
         }
 
         if (empty($cat)) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            $cat = $xss->defilter($post['id'], true);
+            $cat = Jaws_XSS::defilter($post['id'], true);
         }
 
         $catInfo = $model->GetCategory($cat);

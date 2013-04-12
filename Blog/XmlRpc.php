@@ -16,7 +16,7 @@ define('JAWS_SCRIPT', 'xmlrpc');
 define('BASE_SCRIPT', basename(__FILE__));
 require '../../config/JawsConfig.php';
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
-$GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
+$GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
 require_once JAWS_PATH . 'include/Jaws/User.php';
 require_once PEAR_PATH . 'XML/RPC/Server.php';
 
@@ -382,9 +382,8 @@ function metaWeblog_getCategories($params)
     }
 
     $struct = array();
-    $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
     foreach ($categories as $category) {
-        $cid = empty($category['fast_url']) ? $category['id'] : $xss->filter($category['fast_url']);
+        $cid = empty($category['fast_url']) ? $category['id'] : Jaws_XSS::filter($category['fast_url']);
         $htmlurl = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid));
         $rssurl  = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowRSSCategory', array('id' => $category['id']));
         $data = array(

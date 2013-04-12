@@ -63,9 +63,7 @@ class Blog_Actions_Feeds extends Blog_HTML
 
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $id = $xss->defilter($id, true);
+        $id = Jaws_XSS::defilter($id, true);
 
         $xml = $model->MakeCategoryRSS($id);
         if (Jaws_Error::IsError($xml)) {
@@ -88,9 +86,7 @@ class Blog_Actions_Feeds extends Blog_HTML
 
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $id = $xss->defilter($id, true);
+        $id = Jaws_XSS::defilter($id, true);
 
         $xml = $model->MakeCategoryAtom($id);
         if (Jaws_Error::IsError($xml)) {

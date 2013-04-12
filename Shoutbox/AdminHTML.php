@@ -215,8 +215,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', $xss->defilter($comment['msg_txt']));
+        $comment =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['msg_txt']));
         $comment->SetRows(5);
         $comment->SetColumns(60);
         $comment->SetStyle('width: 400px;');

@@ -32,11 +32,10 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
      */
     function Page($page_id = null, $base_action = 'Page')
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('gid', 'pid','language'), 'get');
-        $post['gid'] = $xss->defilter($post['gid'], true);
-        $post['pid'] = $xss->defilter($post['pid'], true);
+        $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
+        $post['pid'] = Jaws_XSS::defilter($post['pid'], true);
 
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model');
         if ($base_action == 'Pages') {
@@ -143,9 +142,7 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $get = $request->get(array('gid', 'order'), 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $gid = $xss->defilter($get['gid'], true);
+        $gid = Jaws_XSS::defilter($get['gid'], true);
 
         $layoutGadget = $GLOBALS['app']->LoadGadget('StaticPage', 'LayoutHTML');
         $result = $layoutGadget->GroupPages($gid, $get['order']);

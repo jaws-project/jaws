@@ -103,8 +103,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
                 $tpl->SetCurrentBlockContent($res);
                 $tpl->ParseBlock('view_date/entry');
             } else {
-                $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
             }
 
             $tpl->ParseBlock('view_date');

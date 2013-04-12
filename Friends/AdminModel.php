@@ -41,10 +41,9 @@ class Friends_AdminModel extends Friends_Model
      */
     function NewFriend($friend, $url)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params           = array();
-        $params['friend'] = $xss->filter($friend, true);
-        $params['url']    = $xss->filter($url, true);
+        $params['friend'] = Jaws_XSS::filter($friend, true);
+        $params['url']    = Jaws_XSS::filter($url, true);
 
         $sql = '
             INSERT INTO [[friend]]
@@ -73,7 +72,6 @@ class Friends_AdminModel extends Friends_Model
      */
     function UpdateFriend($id, $friend, $url)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
         $params['friend'] = $friend;
         $params['url']    = $url;

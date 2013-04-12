@@ -36,22 +36,21 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
         $items = $model->ReadDir($path);
         if (!Jaws_Error::IsError($items)) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
             foreach ($items as $item) {
                 $tpl->SetBlock('initial_folder/item');
                 $tpl->SetVariable('icon',  $item['mini_icon']);
-                $tpl->SetVariable('name',  $xss->filter($item['filename']));
-                $tpl->SetVariable('title', $xss->filter($item['title']));
+                $tpl->SetVariable('name',  Jaws_XSS::filter($item['filename']));
+                $tpl->SetVariable('title', Jaws_XSS::filter($item['title']));
                 if ($item['is_dir']) {
-                    $relative = $xss->filter($item['relative']) . '/';
+                    $relative = Jaws_XSS::filter($item['relative']) . '/';
                     $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
                                                            'Display',
                                                            array('path' => $relative));
                 } else {
                     if (empty($item['id'])) {
-                        $url = $xss->filter($item['url']);
+                        $url = Jaws_XSS::filter($item['url']);
                     } else {
-                        $fid = empty($item['fast_url']) ? $item['id'] : $xss->filter($item['fast_url']);
+                        $fid = empty($item['fast_url']) ? $item['id'] : Jaws_XSS::filter($item['fast_url']);
                         $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
                                                                'Download',
                                                                array('id' => $fid));
