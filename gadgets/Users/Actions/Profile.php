@@ -92,7 +92,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
         // auto paragraph content
-        $user['about'] = $this->gadget->ParseText($user['about']);
+        $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
@@ -170,7 +170,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
         // auto paragraph content
-        $user['about'] = $this->gadget->ParseText($user['about']);
+        $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),

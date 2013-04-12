@@ -171,7 +171,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $mail->SetFrom();
                 $mail->AddRecipient($user_email);
                 $mail->SetSubject($subject);
-                $mail->SetBody($this->gadget->ParseText($body, 'Users'));
+                $mail->SetBody($this->gadget->ParseText($body));
                 $mresult = $mail->send();
                 if (Jaws_Error::IsError($mresult)) {
                     if ($activation == 'user') {
@@ -228,7 +228,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $mail->SetFrom();
                 $mail->AddRecipient();
                 $mail->SetSubject($subject);
-                $mail->SetBody($this->gadget->ParseText($body, 'Users'));
+                $mail->SetBody($this->gadget->ParseText($body));
                 $mresult = $mail->send();
                 if (Jaws_Error::IsError($mresult) && $activation == 'admin') {
                     // do nothing
@@ -308,7 +308,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $mail->SetFrom();
             $mail->AddRecipient($user_email);
             $mail->SetSubject($subject);
-            $mail->SetBody($this->gadget->ParseText($message, 'Users'));
+            $mail->SetBody($this->gadget->ParseText($message));
             $mresult = $mail->send();
             if (Jaws_Error::IsError($mresult)) {
                 $mresult->SetMessage(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
@@ -377,7 +377,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);
         $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->ParseText($body, 'Users'));
+        $mail->SetBody($this->gadget->ParseText($body));
         $mresult = $mail->send();
         if (Jaws_Error::IsError($mresult)) {
             // do nothing
