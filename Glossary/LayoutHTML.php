@@ -27,7 +27,7 @@ class Glossary_LayoutHTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($term)) {
             $tpl->SetVariable('title', _t('GLOSSARY_RANDOM_TERM'));
             $tpl->SetVariable('term', $term['term']);
-            $tpl->SetVariable('description', $this->gadget->ParseText($term['description'], 'Glossary'));
+            $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
         }
         $tpl->ParseBlock('random');
 

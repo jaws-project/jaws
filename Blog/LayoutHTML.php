@@ -97,8 +97,8 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
                 }
 
                 $summary = empty($summary)? $text : $summary;
-                $summary = $this->gadget->ParseText($summary, 'Blog');
-                $text    = $this->gadget->ParseText($text, 'Blog');
+                $summary = $this->gadget->ParseText($summary);
+                $text    = $this->gadget->ParseText($text);
 
                 if (Jaws_UTF8::trim($text) != '') {
                     $tpl->SetBlock('recent_posts/item/read-more');

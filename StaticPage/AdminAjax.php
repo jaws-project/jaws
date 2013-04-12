@@ -93,7 +93,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
         $text = $request->get(0, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
-        return $gadget->gadget->ParseText($text, 'StaticPage');
+        return $gadget->gadget->ParseText($text);
     }
 
     /**

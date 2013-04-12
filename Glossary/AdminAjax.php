@@ -107,7 +107,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $text = $request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminHTML');
-        return $gadget->gadget->ParseText($text, 'Glossary');
+        return $gadget->gadget->ParseText($text);
     }
 
 }

@@ -63,7 +63,7 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
-                $commentsText = $this->gadget->ParseText($c['msg_txt']);
+                $commentsText = Jaws_String::AutoParagraph($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
                 $tpl->SetVariable('createtime-iso',       $c['createtime']);
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
@@ -141,9 +141,9 @@ class Blog_Actions_Comments extends Blog_HTML
             $tpl->SetVariable('status_message', '&nbsp;');
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
-            $commentsText = $this->gadget->ParseText($comment['msg_txt']);
+            $commentsText = Jaws_String::AutoParagraph($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
-            $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
+            $tpl->SetVariable('reply', Jaws_String::AutoParagraph($comment['reply']));
             $tpl->SetVariable('createtime-iso',       $comment['createtime']);
             $tpl->SetVariable('createtime',           $date->Format($comment['createtime']));
             $tpl->SetVariable('createtime-monthname', $date->Format($comment['createtime'], 'MN'));
@@ -162,7 +162,7 @@ class Blog_Actions_Comments extends Blog_HTML
 
                 $user = $userModel->GetUser((int)$comment['replier'], true, true);
                 $tpl->SetBlock('comment/reply');
-                $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
+                $tpl->SetVariable('reply', Jaws_String::AutoParagraph($comment['reply']));
                 $tpl->SetVariable('replier', $user['nickname']);
                 $tpl->SetVariable('url', $user['url']);
                 $tpl->SetVariable('email', $user['email']);
@@ -359,7 +359,7 @@ class Blog_Actions_Comments extends Blog_HTML
             $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
         }
         $tpl->SetVariable('title', $post['title']);
-        $tpl->SetVariable('comments', $this->gadget->ParseText($post['comments']));
+        $tpl->SetVariable('comments', Jaws_String::AutoParagraph($post['comments']));
         if (!isset($post['createtime'])) {
             $date = $GLOBALS['app']->loadDate();
             $post['createtime'] = $date->Format(time());

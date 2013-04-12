@@ -77,7 +77,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
                 $tpl->SetVariable('email', $xss->filter($entry['email']));
                 $tpl->SetVariable('url', $xss->filter($entry['url']));
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
-                $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt']));
+                $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
 
                 $tpl->ParseBlock('recent_comments/entry');
 

@@ -97,7 +97,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             }
 
             if ($path == $_path && !empty($dbFile)) {
-                $tpl->SetVariable('text', $this->gadget->ParseText($dbFile['description'], 'FileBrowser'));
+                $tpl->SetVariable('text', $this->gadget->ParseText($dbFile['description']));
             }
         }
 
@@ -259,7 +259,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('url',   $xss->filter($Info['url']));
         $tpl->SetVariable('date',  $date->Format($Info['date']));
         $tpl->SetVariable('size',  $Info['size']);
-        $tpl->SetVariable('text',  $this->gadget->ParseText($dbInfo['description'], 'FileBrowser'));
+        $tpl->SetVariable('text',  $this->gadget->ParseText($dbInfo['description']));
 
         $locationTree = $model->GetCurrentRootDir($dbInfo['path']);
         if (Jaws_Error::IsError($locationTree)) {

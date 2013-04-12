@@ -106,7 +106,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
         $text = $request->get(0, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML');
-        return $gadget->gadget->ParseText($text, 'Faq');
+        return $gadget->gadget->ParseText($text);
     }
 
     /**

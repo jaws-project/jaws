@@ -44,7 +44,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('CONTACT_US'));
         $comments = $this->gadget->GetRegistry('comments');
-        $tpl->SetVariable('comments', $this->gadget->ParseText($comments, 'Contact'));
+        $tpl->SetVariable('comments', $this->gadget->ParseText($comments));
         $tpl->SetVariable('send', _t('CONTACT_SEND'));
 
         $btnSend =& Piwi::CreateWidget('Button', 'send', _t('CONTACT_SEND'));

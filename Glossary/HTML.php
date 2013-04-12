@@ -50,7 +50,7 @@ class Glossary_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('term', $term['term']);
             $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
             $tpl->SetVariable('url', $this->gadget->GetURLFor('ViewTerm', array('term' => $tid)));
-            $tpl->SetVariable('description', $this->gadget->ParseText($term['description'], 'Glossary'));
+            $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
             $tpl->SetVariable('created_in', _t('GLOBAL_CREATETIME'));
             $tpl->SetVariable('updated_in', _t('GLOBAL_UPDATETIME'));
             $tpl->SetVariable('createtime', $date->Format($term['createtime']));
@@ -107,7 +107,7 @@ class Glossary_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('term', $term['term']);
                 $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
                 $tpl->SetVariable('url',  $this->gadget->GetURLFor('ViewTerm', array('term' => $tid)));
-                $tpl->SetVariable('description', $this->gadget->ParseText($term['description'], 'Glossary'));
+                $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
                 $tpl->ParseBlock('list/letter/term');
             }
         }

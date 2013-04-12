@@ -1129,8 +1129,8 @@ class Blog_Model extends Jaws_Gadget_Model
             }
 
             $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->ParseText($summary, 'Blog');
-            $text    = $this->gadget->ParseText($text, 'Blog');
+            $summary = $this->gadget->ParseText($summary);
+            $text    = $this->gadget->ParseText($text);
 
             $entry->SetSummary($summary, 'html');
             //$entry->SetContent($text, 'html');
@@ -1322,8 +1322,8 @@ class Blog_Model extends Jaws_Gadget_Model
             }
 
             $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->ParseText($summary, 'Blog');
-            $text    = $this->gadget->ParseText($text, 'Blog');
+            $summary = $this->gadget->ParseText($summary);
+            $text    = $this->gadget->ParseText($text);
 
             $entry->SetSummary($summary, 'html');
             $entry->SetContent($text, 'html');
@@ -1468,7 +1468,7 @@ class Blog_Model extends Jaws_Gadget_Model
 
             $id = $site . '/blog/' . $entry_id . '/' . $c['id'];
             $entry->SetId($id);
-            $content = $this->gadget->ParseText($c['msg_txt']);
+            $content = Jaws_String::AutoParagraph($c['msg_txt']);
             $entry->SetSummary($content, 'html');
             $entry->SetContent($content, 'html');
             $entry->SetAuthor($c['name'], $commentAtom->Link->HRef, $c['email']);
@@ -1573,7 +1573,7 @@ class Blog_Model extends Jaws_Gadget_Model
 
             $id = $site . '/blog/' . $entry_id . '/' . $c['id'];
             $entry->SetId($id);
-            $content = $this->gadget->ParseText($c['msg_txt']);
+            $content = Jaws_String::AutoParagraph($c['msg_txt']);
             $entry->SetSummary($content, 'html');
             $entry->SetContent($content, 'html');
             $entry->SetAuthor($c['name'], $commentAtom->Link->HRef, $c['email']);

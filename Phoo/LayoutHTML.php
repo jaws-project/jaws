@@ -162,7 +162,7 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
                 $t->SetVariable('filename', $album['filename']);
                 $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $album['thumb']));
                 $t->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
-                $t->SetVariable('description', $this->gadget->ParseText($album['description'], 'Phoo'));
+                $t->SetVariable('description', $this->gadget->ParseText($album['description']));
                 $t->SetVariable('createtime', $date->Format($album['createtime']));
                 $t->ParseBlock('albums/item');
             }

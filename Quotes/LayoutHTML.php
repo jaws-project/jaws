@@ -124,7 +124,7 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
             if ($group['view_mode']!= 0) {
                 $tpl->SetBlock("quotes/$block/quote/full_mode");
                 $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
-                $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation'], 'Quotes'));
+                $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation']));
                 $tpl->ParseBlock("quotes/$block/quote/full_mode");
             }
             $tpl->ParseBlock("quotes/$block/quote");

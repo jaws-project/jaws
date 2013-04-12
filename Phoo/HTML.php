@@ -78,7 +78,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             } else {
                 $t->SetVariable('title', $album['name']);
                 $this->SetTitle($album['name']);
-                $t->SetVariable('description', $this->gadget->ParseText($album['description'], 'Phoo'));
+                $t->SetVariable('description', $this->gadget->ParseText($album['description']));
             }
 
             // display images
@@ -213,7 +213,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $t->SetVariable('filename',    $image['filename']);
         $t->SetVariable('img_desc',    $image['stripped_description']);
         $t->SetVariable('albumid',     $albumid);
-        $t->SetVariable('description', $this->gadget->ParseText($image['description'], 'Phoo'));
+        $t->SetVariable('description', $this->gadget->ParseText($image['description']));
         $t->SetVariable('medium',      $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
         $t->SetVariable('image',       $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
         $t->SetVariable('width',       $imgData[0]);
@@ -403,7 +403,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $t->SetVariable('url', $url);
                     $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
+                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
                     $t->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $t->SetVariable('width',  $imgData[0]);
                     $t->SetVariable('height', $imgData[1]);
@@ -418,7 +418,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $t->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
                     $t->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
                     $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
+                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
                     $t->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $t->SetVariable('width',  $imgData[0]);
                     $t->SetVariable('height', $imgData[1]);
@@ -436,7 +436,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $t->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
                     $t->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
                     $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
+                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
                     $t->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $t->SetVariable('width',  $imgData[0]);
                     $t->SetVariable('height', $imgData[1]);
@@ -452,7 +452,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                     $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $t->SetVariable('url', $url);
                     $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description'], 'Phoo'));
+                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
                     $t->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $t->SetVariable('width',  $imgData[0]);
                     $t->SetVariable('height', $imgData[1]);
@@ -511,7 +511,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('ip_address', '127.0.0.1');
                 $tpl->SetVariable('avatar_source', $c['avatar_source']);
                 $tpl->SetVariable('commentname', 'comment'.$c['id']);
-                $commentsText = $this->gadget->ParseText($c['msg_txt']);
+                $commentsText = Jaws_String::AutoParagraph($c['msg_txt']);
                 $tpl->SetVariable('comments', $commentsText);
                 $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($c['createtime'], 'MN'));
@@ -583,7 +583,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('status_message', '&nbsp;');
             $tpl->SetVariable('avatar_source', $comment['avatar_source']);
             $tpl->SetVariable('commentname', 'comment' . $comment['id']);
-            $commentsText = $this->gadget->ParseText($comment['msg_txt']);
+            $commentsText = Jaws_String::AutoParagraph($comment['msg_txt']);
             $tpl->SetVariable('comments', $commentsText);
             $tpl->SetVariable('createtime',           $date->Format($comment['createtime']));
             $tpl->SetVariable('createtime-monthname', $date->Format($comment['createtime'], 'MN'));
@@ -599,7 +599,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
                 $user = $userModel->GetUser((int)$comment['replier'], true, true);
                 $tpl->SetBlock('comment/reply');
-                $tpl->SetVariable('reply', $this->gadget->ParseText($comment['reply']));
+                $tpl->SetVariable('reply', Jaws_String::AutoParagraph($comment['reply']));
                 $tpl->SetVariable('replier', $user['nickname']);
                 $tpl->SetVariable('url', $user['url']);
                 $tpl->SetVariable('email', $user['email']);
@@ -611,7 +611,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
 //             $tpl->SetBlock('comment');
 //             $tpl->SetVariablesArray($comment);
-//             $tpl->SetVariable('comments', $this->gadget->ParseText($comment['msg_txt']));
+//             $tpl->SetVariable('comments', Jaws_String::AutoParagraph($comment['msg_txt']));
 //             $tpl->SetVariable('level', 0);
 //             $tpl->ParseBlock('comment');
         }
@@ -798,7 +798,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
         }
         $tpl->SetVariable('title', $post['title']);
-        $tpl->SetVariable('comments', $this->gadget->ParseText($post['comments']));
+        $tpl->SetVariable('comments', Jaws_String::AutoParagraph($post['comments']));
         if (!isset($post['createtime'])) {
             $date = $GLOBALS['app']->loadDate();
             $post['createtime'] = $date->Format(time());

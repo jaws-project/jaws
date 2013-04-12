@@ -108,7 +108,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('email', $xss->filter($entry['email']));
                 $tpl->SetVariable('url', $xss->filter($entry['url']));
                 $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
-                $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt']));
+                $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
                 if ($entry['status'] == 3) {
                    $tpl->SetVariable('status_message', _t('SHOUTBOX_COMMENT_IS_SPAM'));
                 } elseif ($entry['status'] == 2) {
