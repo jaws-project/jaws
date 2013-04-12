@@ -54,9 +54,8 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function IsAgentBlocked($agent)
     {
-        $xss    = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $params = array();
-        $params['agent'] = $xss->filter($agent);
+        $params['agent'] = Jaws_XSS::filter($agent);
 
         $sql = '
             SELECT [blocked]

@@ -41,8 +41,6 @@ class Users_Actions_Account extends Users_HTML
             $account  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('Account.html');

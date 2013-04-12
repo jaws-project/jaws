@@ -116,8 +116,7 @@ class Search_Actions_Results extends Search_HTML
             }
         } else {
             $tpl->SetBlock('results/notfound');
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
+            header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
             $tpl->SetVariable('message', _t('SEARCH_NO_RESULTS', $model->implodeSearch()));
             $tpl->ParseBlock('results/notfound');
         }

@@ -163,8 +163,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
 
         $redirectTo = '';
         if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
-            $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-            $redirectTo = '?'. $xss->filter($_SERVER['QUERY_STRING']);
+            $redirectTo = '?'. Jaws_XSS::filter($_SERVER['QUERY_STRING']);
         }
         $ltpl->SetVariable('redirect_to',  $redirectTo);
 

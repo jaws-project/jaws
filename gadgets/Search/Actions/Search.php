@@ -91,9 +91,7 @@ class Search_Actions_Search extends Search_HTML
     {
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
-
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $post['all'] = $xss->defilter($post['all']);
+        $post['all'] = Jaws_XSS::defilter($post['all']);
 
         $tpl = new Jaws_Template('gadgets/Search/templates/');
         $tpl->Load('Search.html');
