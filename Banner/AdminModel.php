@@ -297,7 +297,9 @@ class Banner_AdminModel extends Banner_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
-        Jaws_Utils::Delete(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner']);
+        if (!empty($banner['banner'])) {
+            Jaws_Utils::Delete(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner']);
+        }
 
         return true;
     }
