@@ -42,7 +42,7 @@ class Installer_Settings extends JawsInstallerStage
             $GLOBALS['app'] = new Jaws();
             $GLOBALS['app']->create();
             $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
-            $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
+            $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
         }
     }
 

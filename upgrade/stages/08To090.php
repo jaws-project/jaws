@@ -57,16 +57,16 @@ class Upgrader_08To090 extends JawsUpgraderStage
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
-        $GLOBALS['app']->loadClass('Registry', 'Jaws_Registry');
-        $GLOBALS['app']->loadClass('Translate', 'Jaws_Translate');
+        $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
+        $GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
+        $GLOBALS['app']->loadObject('Jaws_Translate', 'Translate');
         $GLOBALS['app']->Registry->Init();
 
         // This is needed for most gadgets
         require_once JAWS_PATH . 'include/Jaws/Gadget.php';
         require_once JAWS_PATH . 'include/Jaws/Template.php';
         require_once JAWS_PATH . 'include/Jaws/Header.php';
-        $GLOBALS['app']->loadClass('Map', 'Jaws_URLMapping');
+        $GLOBALS['app']->loadObject('Jaws_URLMapping', 'Map');
 
         // Input datas
         $timestamp = $GLOBALS['db']->Date();

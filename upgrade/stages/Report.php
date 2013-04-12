@@ -25,7 +25,7 @@ class Upgrader_Report extends JawsUpgraderStage
 
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->loadClass('Registry', 'Jaws_Registry');
+        $GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
         $GLOBALS['app']->Registry->Init();
         $JawsInstalledVersion = $GLOBALS['app']->Registry->Get('/version');
 
