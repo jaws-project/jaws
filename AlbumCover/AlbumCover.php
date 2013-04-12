@@ -33,7 +33,7 @@ class AlbumCover extends Jaws_Plugin
      * @access  public
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function InstallPlugin()
+    function Install()
     {
         $new_dir = JAWS_DATA . 'AlbumCover' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
@@ -52,9 +52,9 @@ class AlbumCover extends Jaws_Plugin
      * @access  public
      * @return  bool    True
      */
-    function UninstallPlugin()
+    function Uninstall()
     {
-        $GLOBALS['app']->Registry->Delete('devtag', 'AlbumCover', JAWS_COMPONENT_PLUGIN);
+        Jaws_Utils::delete(JAWS_DATA . 'AlbumCover' . DIRECTORY_SEPARATOR);
         return true;
     }
 
