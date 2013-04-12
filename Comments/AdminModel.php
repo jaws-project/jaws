@@ -3,13 +3,13 @@ require_once JAWS_PATH . 'gadgets/Comments/Model.php';
 /**
  * Comments Gadget Admin
  *
- * @category   GadgetModel
- * @package    Comments
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    GadgetModel
+ * @package     Comments
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_AdminModel extends Comments_Model
 {

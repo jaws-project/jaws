@@ -2,11 +2,11 @@
 /**
  * Comments Information
  *
- * @category   GadgetModel
- * @package    Comments
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    GadgetModel
+ * @package     Comments
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2012-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Info extends Jaws_Gadget
 {

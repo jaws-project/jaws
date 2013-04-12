@@ -5,8 +5,8 @@
  * @category    GadgetActions
  * @package     Comments
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2004-2013 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @copyright   2012-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
 

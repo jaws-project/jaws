@@ -2,11 +2,11 @@
 /**
  * Comments Gadget
  *
- * @category   Gadget
- * @package    Comments
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Comments
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_HTML extends Jaws_Gadget_HTML
 {

@@ -2,11 +2,11 @@
 /**
  * Comments URL maps
  *
- * @category   GadgetMaps
- * @package    Shoutbox
+ * @category    GadgetMaps
+ * @package     Comments
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2008-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(
     'Comments',

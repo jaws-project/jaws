@@ -2,11 +2,11 @@
 /**
  * Comments Core Gadget
  *
- * @category   Gadget
- * @package    Comments
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2009 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Comments
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2012-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_AdminHTML extends Jaws_Gadget_HTML
 {

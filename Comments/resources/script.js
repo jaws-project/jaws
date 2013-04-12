@@ -1,13 +1,13 @@
 /**
  * Comments Javascript actions
  *
- * @category   Ajax
- * @package    Comments
- * @author     Ali Fazelzadeh <afz@php.net>
- * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2012-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Ajax
+ * @package     Comments
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2012-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 /**
  * Use async mode, create Callback
