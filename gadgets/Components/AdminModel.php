@@ -128,25 +128,17 @@ class Components_AdminModel extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The plugins directory does not exists!', __FILE__, __LINE__);
             }
 
+            $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
             $plugins = scandir($pDir);
             foreach ($plugins as $plugin) {
                 if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {
                     continue;
                 }
 
-                $pInfo = $GLOBALS['app']->LoadPlugin($plugin);
-                if (Jaws_Error::IsError($pInfo)) {
-                    continue;
-                }
-
-                $ei = explode(',', $GLOBALS['app']->Registry->Get('plugins_installed_items'));
-                $ei = str_replace(' ', '', $ei);
-                $pInstalled = in_array($plugin, $ei);
-
                 $pluginsList[$plugin] = array(
                     'realname' => $plugin,
                     'name' => $plugin,
-                    'installed' => (bool)$pInstalled
+                    'installed' => strpos($installed_plugins, ",$plugin,") !==false,
                 );
             }
         }

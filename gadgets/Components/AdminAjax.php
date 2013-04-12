@@ -222,7 +222,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePlugins');
 
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-        $return = Jaws_Plugin::EnablePlugin($plugin);
+        $return = Jaws_Plugin::InstallPlugin($plugin);
         if (Jaws_Error::IsError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
@@ -243,7 +243,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePlugins');
 
         require_once JAWS_PATH . 'include/Jaws/Plugin.php';
-        $return = Jaws_Plugin::DisablePlugin($plugin);
+        $return = Jaws_Plugin::UninstallPlugin($plugin);
         if (Jaws_Error::isError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
