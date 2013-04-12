@@ -522,51 +522,39 @@ class Jaws_Gadget
      * @param   string  $text           The Text to parse
      * @param   string  $gadget         The Gadget name
      * @param   string  $plugins_set    Plugins set name(admin or index)
-     * @param   bool    $auto_paragraph If parse text should move new lines to paragraphs
-     * @param   bool    $clean          htmlentities
      * @return  string  Returns the parsed text
      */
-    function ParseText($text, $gadget = null, $plugins_set = 'admin', $auto_paragraph = true, $clean = false)
+    function ParseText($text, $gadget = '', $plugins_set = 'admin')
     {
         $res = $text;
+        $gadget = empty($gadget)? $this->name : $gadget;
 
-        // Lets clean this text up!
-        if ($clean) {
-            $res = htmlentities($res, ENT_QUOTES, 'UTF-8');
-        }
-
-        if (!empty($gadget)) {
-            $plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
-            if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
-                $plugins = array_filter(explode(',', $plugins));
-                foreach ($plugins as $plugin) {
-                    $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-                    if (!Jaws_Error::IsError($objPlugin)) {
-                        $use_in = '*';
-                        if ($plugins_set == 'admin') {
-                            $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
-                        } else {
-                            $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
-                        }
-                        if (!Jaws_Error::isError($use_in) &&
-                           ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
-                        {
-                            $res = $objPlugin->ParseText($res);
-                        }
+        $plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
+            $plugins = array_filter(explode(',', $plugins));
+            foreach ($plugins as $plugin) {
+                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                if (!Jaws_Error::IsError($objPlugin)) {
+                    $use_in = '*';
+                    if ($plugins_set == 'admin') {
+                        $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
+                    } else {
+                        $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
+                    }
+                    if (!Jaws_Error::isError($use_in) &&
+                       ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
+                    {
+                        $res = $objPlugin->ParseText($res);
                     }
                 }
             }
         }
 
-        if ($auto_paragraph) {
-            //So we don't call require_once each time we invoke it
-            if (!Jaws::classExists('Jaws_String')) {
-                require JAWS_PATH . 'include/Jaws/String.php';
-            }
-            $res = Jaws_String::AutoParagraph($res);
-        } else {
-            $res = str_replace("\n\n", '<br />', $res);
+        //So we don't call require_once each time we invoke it
+        if (!Jaws::classExists('Jaws_String')) {
+            require JAWS_PATH . 'include/Jaws/String.php';
         }
+        $res = Jaws_String::AutoParagraph($res);
 
         return $res;
     }
