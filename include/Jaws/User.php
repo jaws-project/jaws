@@ -916,7 +916,7 @@ class Jaws_User
             return false;
         }
 
-        $GLOBALS['app']->loadClass('ACL', 'Jaws_ACL');
+        $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
         $GLOBALS['app']->ACL->DeleteUserACL($user['username']);
         if (isset($GLOBALS['app']->Session)) {
             $res = $GLOBALS['app']->Session->DeleteUserSessions($id);

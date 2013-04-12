@@ -786,7 +786,6 @@ class Jaws_Utils
             return false;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $fsize  = @filesize($fpath);
         $fstart = 0;
         $fstop  = $fsize - 1;
@@ -798,7 +797,7 @@ class Jaws_Utils
                 $fstop = (int) $frange[1];
             }
 
-            header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 206 Partial Content");
+            header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 206 Partial Content");
             header('Content-Range: bytes '.$fstart.'-'.$fstop.'/'.$fsize);
         }
 

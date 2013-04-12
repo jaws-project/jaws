@@ -94,7 +94,7 @@ $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 #    Jaws_Error::Fatal('Couldn\'t connect to database');
 #}
 
-$GLOBALS['app']->loadClass('Registry', 'Jaws_Registry');
+$GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
 $GLOBALS['app']->Registry->Init();
 if ($GLOBALS['app']->Registry->Get('version') != JAWS_VERSION) {
     Jaws_Header::Location('upgrade/index.php', true);

@@ -101,14 +101,10 @@ class Jaws_ACL
             return false;
         }
 
-        $xss   = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-        $value = $xss->parse($value);
-
-        $this->_Registry[$name] = $value;
-
         $params          = array();
         $params['name']  = $name;
         $params['value'] = $value;
+        $this->_Registry[$name] = $value;
 
         $sql = "
         UPDATE [[acl]] SET
@@ -169,11 +165,9 @@ class Jaws_ACL
             return false; //already exists
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         $params = array();
         $params['name']  = $name;
-        $params['value'] = $xss->parse($value);
+        $params['value'] = $value;
         $params['now']   = $GLOBALS['db']->Date();
 
         $sql = "
@@ -211,7 +205,6 @@ class Jaws_ACL
             return true;
         }
 
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         $dbDriver  = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
         foreach ($reg_keys as $idx => $reg_key) {
@@ -219,7 +212,7 @@ class Jaws_ACL
                 unset($reg_keys[$idx]);
             } else {
                 $params["name_$idx"]  = $reg_key[0];
-                $params["value_$idx"] = $xss->parse($reg_key[1]);
+                $params["value_$idx"] = $reg_key[1];
                 // Ugly hack to support all databases
                 switch ($dbDriver) {
                     case 'oci8':

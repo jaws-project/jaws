@@ -28,14 +28,12 @@ class Jaws_HTTPAuth
 
     function AssignData()
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
-
         if (!empty($_SERVER['PHP_AUTH_USER'])) {
-                $this->username = $xss->parse($_SERVER['PHP_AUTH_USER']);
+            $this->username = Jaws_XSS::filter($_SERVER['PHP_AUTH_USER']);
         }
 
         if (!empty($_SERVER['PHP_AUTH_PW'])) {
-            $this->password = $xss->parse($_SERVER['PHP_AUTH_PW']);
+            $this->password = Jaws_XSS::filter($_SERVER['PHP_AUTH_PW']);
         }
 
         //Try to get authentication information from IIS

@@ -30,7 +30,7 @@ class Jaws_Auth_Default
      */
     function Jaws_Auth_Default()
     {
-        $this->_Model = $GLOBALS['app']->loadClass('User', 'Jaws_User');
+        $this->_Model = $GLOBALS['app']->loadObject('Jaws_User');
     }
 
     /**

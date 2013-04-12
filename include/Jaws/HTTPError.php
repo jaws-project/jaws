@@ -13,7 +13,6 @@ class Jaws_HTTPError
 {
     function Get($code, $title = null, $message = null)
     {
-        $xss = $GLOBALS['app']->loadClass('XSS', 'Jaws_XSS');
         // Let everyone know a HTTP error has been happened
         $result = $GLOBALS['app']->Listener->Shout('HTTPError', $code, 'UrlMapper');
         if (!Jaws_Error::IsError($result) && !empty($result)) {
@@ -22,7 +21,7 @@ class Jaws_HTTPError
 
         switch ($code) {
             case 403:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_403') : $message;
                 break;
@@ -37,27 +36,27 @@ class Jaws_HTTPError
                 }
 
                 if (empty($message)) {
-                    $uri = $xss->filter(urldecode($uri));
+                    $uri = Jaws_XSS::filter(urldecode($uri));
                     $message = _t('GLOBAL_HTTP_ERROR_CONTENT_404', $uri);
                 }
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
                 $title = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_404') : $title;
                 break;
 
             case 410:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 410 Gone");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 410 Gone");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_410') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_410') : $message;
                 break;
 
             case 500:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 500 Internal Server Error");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 500 Internal Server Error");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_500') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_500') : $message;
                 break;
 
             case 503:
-                header($xss->filter($_SERVER['SERVER_PROTOCOL'])." 503 Service Unavailable");
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 503 Service Unavailable");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_503') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_503') : $message;
                 break;

@@ -11,8 +11,6 @@
  */
 class Jaws_XSS
 {
-    var $safeXSS = null;
-
     /**
      * Parses the text
      *
@@ -24,18 +22,26 @@ class Jaws_XSS
      */
     function parse($string, $strict = null)
     {
-        //Create safehtml object
-        if ($this->safeXSS === null) {
+        static $safe_xss;
+        static $xss_parsing_level;
+        if (!isset($safe_xss)) {
+            $xss_parsing_level = $GLOBALS['app']->Registry->Get(
+                'xss_parsing_level',
+                'Policy',
+                JAWS_COMPONENT_GADGET
+            );
+
+            //Create safehtml object
             require_once PEAR_PATH. 'HTML/Safe.php';
-            $this->safeXSS = new HTML_Safe();
+            $safe_xss = new HTML_Safe();
         }
 
         if (is_null($strict)) {
-            $strict = ($GLOBALS['app']->Registry->Get('xss_parsing_level', 'Policy', JAWS_COMPONENT_GADGET) == "paranoid")? true : false;
+            $strict = ($xss_parsing_level == "paranoid");
         }
 
-        $string = $this->safeXSS->parse($string, $strict);
-        $this->safeXSS->clear();
+        $string = $safe_xss->parse($string, $strict);
+        $safe_xss->clear();
         return $string;
     }
 
@@ -44,8 +50,7 @@ class Jaws_XSS
      */
     function filter($string, $noquotes = true)
     {
-        $string = htmlspecialchars($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES, 'UTF-8');
-        return $string;
+        return htmlspecialchars($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES, 'UTF-8');
     }
 
     /**
@@ -55,4 +60,5 @@ class Jaws_XSS
     {
         return htmlspecialchars_decode($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES);
     }
+
 }
