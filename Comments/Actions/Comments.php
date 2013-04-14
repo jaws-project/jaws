@@ -53,9 +53,17 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetBlock('new_comment');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        if ($GLOBALS['app']->Session->Logged() ||
-            $this->gadget->GetRegistry('anon_post_authority') == 'true')
-        {
+        $allow_comments_config = $this->gadget->GetRegistry('allow_comments', 'Settings');
+        switch ($allow_comments_config) {
+            case 'restricted':
+                $allow_comments_config = $GLOBALS['app']->Session->Logged();
+                break;
+
+            default:
+                $allow_comments_config = $allow_comments_config == 'true';
+        }
+
+        if ($allow_comments_config) {
             $tpl->SetBlock('new_comment/fieldset');
             $tpl->SetVariable('base_script', BASE_SCRIPT);
             $tpl->SetVariable('message', _t('COMMENTS_MESSAGE'));
@@ -108,7 +116,6 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         $tpl->SetVariable('comments_messages', $this->GetMessages($perPage, $orderBy));
-
         $tpl->ParseBlock('new_comment');
 
         return $tpl->Get();
@@ -168,6 +175,57 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $tpl->ParseBlock('comments');
         return $tpl->Get();
+    }
+
+    /**
+     * Adds a new entry to the comments, sets cookie with user data and redirects to main page
+     *
+     * @access  public
+     * @return  void
+     */
+    function PostMessage()
+    {
+        $request =& Jaws_Request::getInstance();
+        $post  = $request->get(array('message', 'name', 'email', 'url'), 'post');
+        $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+
+        if ($GLOBALS['app']->Session->Logged()) {
+            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
+            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
+            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
+        }
+
+        if (trim($post['message']) == ''|| trim($post['name']) == '') {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('COMMENTS_DONT_SEND_EMPTY_MESSAGES'), 'Comments');
+            Jaws_Header::Referrer();
+        }
+
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        $resCheck = $mPolicy->CheckCaptcha();
+        if (Jaws_Error::IsError($resCheck)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Comments');
+            Jaws_Header::Referrer();
+        }
+
+        $permalink = $GLOBALS['app']->GetSiteURL();
+        $status = $this->gadget->GetRegistry('default_comment_status');
+        if ($GLOBALS['app']->Session->GetPermission('Comments', 'ManageComments')) {
+            $status = COMMENT_STATUS_APPROVED;
+        }
+
+        $res = $model->NewComment(
+            'comments', 0, '', $post['name'], $post['email'],
+            $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'], $permalink, 0, $status
+        );
+
+
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'Comments');
+        } else {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_MESSAGE_SENT'), 'Comments');
+        }
+
+        Jaws_Header::Referrer();
     }
 
 }

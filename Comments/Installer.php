@@ -27,9 +27,9 @@ class Comments_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
 
         // Registry keys
+        $this->gadget->AddRegistry('default_comment_status', '1');
         $this->gadget->AddRegistry('recent_comment_limit',   '10');
         $this->gadget->AddRegistry('comments_per_page',      '10');
-        $this->gadget->AddRegistry('anon_post_authority',   false);
 
         return true;
     }
