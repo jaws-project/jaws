@@ -215,7 +215,7 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $res = $model->NewComment(
             'comments', 0, '', $post['name'], $post['email'],
-            $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'], $permalink, 0, $status
+            $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'], $permalink, $status
         );
 
 

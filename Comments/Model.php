@@ -64,7 +64,7 @@ class Comments_Model extends Jaws_Gadget_Model
     function NewComment($gadget, $gadgetId, $action, $name, $email, $url, $message,
                         $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
     {
-        if (!in_array($status, array(COMMENT_STATUS_APPROVED, COMMENT_STATUS_WAITING, COMMENT_STATUS_SPAM))) {
+        if (!in_array((int)$status, array(COMMENT_STATUS_APPROVED, COMMENT_STATUS_WAITING, COMMENT_STATUS_SPAM))) {
             $status = COMMENT_STATUS_SPAM;
         }
 
