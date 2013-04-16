@@ -463,7 +463,7 @@ class Jaws_Gadget
     function GetRegistry($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Get($name, $gadget, JAWS_COMPONENT_GADGET);
+        return $GLOBALS['app']->Registry->Get($name, $gadget);
     }
 
     /**
@@ -478,7 +478,7 @@ class Jaws_Gadget
     function SetRegistry($name, $value, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Set($name, $value, $gadget, JAWS_COMPONENT_GADGET);
+        return $GLOBALS['app']->Registry->Set($name, $value, $gadget);
     }
 
     /**
@@ -494,10 +494,10 @@ class Jaws_Gadget
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->name : $value;
-            return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget, JAWS_COMPONENT_GADGET);
+            return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget);
         } else {
             $gadget = empty($gadget)? $this->name : $gadget;
-            return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget, JAWS_COMPONENT_GADGET);
+            return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget);
         }
     }
 
@@ -512,7 +512,7 @@ class Jaws_Gadget
     function DelRegistry($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Delete($gadget, $name, JAWS_COMPONENT_GADGET);
+        return $GLOBALS['app']->Registry->Delete($gadget, $name);
     }
 
     /**
@@ -576,7 +576,7 @@ class Jaws_Gadget
 
         // Check if gadget is enabled
         ///FIXME check for errors
-        if ($GLOBALS['app']->Registry->Get('enabled', $gadget, JAWS_COMPONENT_GADGET) != 'true') {
+        if ($GLOBALS['app']->Registry->Get('enabled', $gadget) != 'true') {
             // Gadget is not found or disabled
             return false;
         }
