@@ -212,7 +212,7 @@ class Comments_Model extends Jaws_Gadget_Model
     function TotalOfComments($gadget, $status = '')
     {
         if (!in_array($status, array('', 1, 2, 3))) {
-            if ($GLOBALS['app']->Registry->Get('default_status', $gadget, JAWS_COMPONENT_GADGET) == COMMENT_STATUS_WAITING) {
+            if ($GLOBALS['app']->Registry->Get('default_status', $gadget) == COMMENT_STATUS_WAITING) {
                 $status = COMMENT_STATUS_WAITING;
             } else {
                 $status = COMMENT_STATUS_APPROVED;

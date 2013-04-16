@@ -100,7 +100,7 @@ function metaWeblog_getUsersBlogs($params)
 
     $struct = array();
     $siteurl = $GLOBALS['app']->GetSiteURL();
-    $sitename = $GLOBALS['app']->Registry->Get('site_name', 'Settings', JAWS_COMPONENT_GADGET);
+    $sitename = $GLOBALS['app']->Registry->Get('site_name', 'Settings');
 
     $data = array(
         'isAdmin'  => new XML_RPC_Value('1', 'boolean'),

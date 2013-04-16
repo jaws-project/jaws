@@ -252,9 +252,9 @@ class SysInfo_Model extends Jaws_Gadget_Model
                     array('title' => "WWW-Authentication",
                           'value' => $this->gadget->GetRegistry('http_auth', 'Settings')),
                     array('title' => "URL mapping",
-                          'value' => $GLOBALS['app']->Registry->Get('map_enabled', 'UrlMapper', JAWS_COMPONENT_GADGET)),
+                          'value' => $GLOBALS['app']->Registry->Get('map_enabled', 'UrlMapper')),
                     array('title' => "Use rewrite",
-                          'value' => $GLOBALS['app']->Registry->Get('map_use_rewrite', 'UrlMapper', JAWS_COMPONENT_GADGET)),
+                          'value' => $GLOBALS['app']->Registry->Get('map_use_rewrite', 'UrlMapper')),
                 );
     }
 
