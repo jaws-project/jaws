@@ -17,13 +17,7 @@
             </field>
 
             <field>
-                <name>component_type</name>
-                <type>integer</type>
-                <length>1</length>
-            </field>
-
-            <field>
-                <name>component_name</name>
+                <name>component</name>
                 <type>text</type>
                 <length>64</length>
             </field>
@@ -46,13 +40,10 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>reg_key</name>
+                <name><variable>table_prefix</variable>reg_component_key</name>
                 <unique>true</unique>
                 <field>
-                    <name>component_type</name>
-                </field>
-                <field>
-                    <name>component_name</name>
+                    <name>component</name>
                 </field>
                 <field>
                     <name>key_name</name>
@@ -62,10 +53,7 @@
             <index>
                 <name><variable>table_prefix</variable>reg_component</name>
                 <field>
-                    <name>component_type</name>
-                </field>
-                <field>
-                    <name>component_name</name>
+                    <name>component</name>
                 </field>
             </index>
 

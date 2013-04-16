@@ -42,77 +42,69 @@ class Jaws_Registry
      * Search for a key in the setted registry table
      *
      * @access  public
-     * @param   string  $name       Key name
+     * @param   string  $key_name   Key name
      * @param   string  $component  Component name
-     * @param   int     $type       Component type
      * @return  string  The value of the key
      */
-    function Get($name, $component = '', $type = JAWS_COMPONENT_OTHERS)
+    function Get($key_name, $component = '')
     {
-        if (!@array_key_exists($name, $this->_Registry[$type][$component])) {
+        if (!@array_key_exists($key_name, $this->_Registry[$component])) {
             $params = array();
-            $params['type']      = $type;
             $params['component'] = $component;
-            $params['name']      = $name;
+            $params['key_name']  = $key_name;
 
             $sql = '
                 SELECT
-                    [component_name], [key_name], [key_value]
+                    [component], [key_name], [key_value]
                 FROM [[registry]]
                 WHERE
-                    [component_type] = {type}
+                    [component] = {component}
                   AND
-                    [component_name] = {component}
-                  AND
-                    [key_name] = {name}';
+                    [key_name] = {key_name}';
 
             $row = $GLOBALS['db']->queryRow($sql, $params);
             if (Jaws_Error::IsError($row) || empty($row) ||
-                $row['component_name'] !== $component || $row['key_name'] !== $name)
+                $row['component'] !== $component || $row['key_name'] !== $key_name)
             {
                 return null;
             }
 
-            $this->_Registry[$type][$component][$name] = $row['key_value'];
+            $this->_Registry[$component][$key_name] = $row['key_value'];
         }
 
-        return $this->_Registry[$type][$component][$name];
+        return $this->_Registry[$component][$key_name];
     }
 
     /**
      * Updates the value of a key
      *
      * @access  public
-     * @param   string  $name       Key name
-     * @param   string  $value      Key value
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
      * @param   string  $component  Component name
-     * @param   int     $type       Component type
      * @return  bool    True is set otherwise False
      */
-    function Set($name, $value, $component = '', $type = JAWS_COMPONENT_OTHERS)
+    function Set($key_name, $key_value, $component = '')
     {
         $params = array();
-        $params['type']      = $type;
         $params['component'] = $component;
-        $params['name']      = $name;
-        $params['value']     = $value;
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
 
         $sql = '
             UPDATE [[registry]] SET
                 [key_value] = {value}
             WHERE
-                [component_type] = {type}
+                [component] = {component}
               AND
-                [component_name] = {component}
-              AND
-                [key_name] = {name}';
+                [key_name] = {key_name}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $this->_Registry[$type][$component][$name] = $value;
+        $this->_Registry[$component][$key_name] = $key_value;
         return true;
     }
 
@@ -120,33 +112,31 @@ class Jaws_Registry
      * Creates a new key
      *
      * @access  public
-     * @param   string  $name       Key name
-     * @param   string  $value      Key value
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
      * @param   string  $component  Component name
-     * @param   int     $type       Component type
      * @return  bool    True is set otherwise False
      */
-    function NewKey($name, $value, $component = '', $type = JAWS_COMPONENT_OTHERS)
+    function NewKey($key_name, $key_value, $component = '')
     {
         $params = array();
-        $params['type']      = $type;
         $params['component'] = $component;
-        $params['name']      = $name;
-        $params['value']     = $value;
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
         $params['now']       = $GLOBALS['db']->Date();
 
         $sql = '
             INSERT INTO [[registry]]
-                ([component_type], [component_name], [key_name], [key_value], [updatetime])
+                ([component], [key_name], [key_value], [updatetime])
             VALUES
-                ({type}, {component}, {name}, {value}, {now})';
+                ({component}, {key_name}, {key_value}, {now})';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $this->_Registry[$type][$component][$name] = $value;
+        $this->_Registry[$component][$key_name] = $key_value;
         return true;
     }
 
@@ -156,17 +146,15 @@ class Jaws_Registry
      * @access  public
      * @param   array   $keys       Pairs of keys/values
      * @param   string  $component  Component name
-     * @param   int     $type       Component type
      * @return  bool    True is set otherwise False
      */
-    function NewKeyEx($keys, $component = '', $type = JAWS_COMPONENT_OTHERS)
+    function NewKeyEx($keys, $component = '')
     {
         if (empty($keys)) {
             return true;
         }
 
         $params = array();
-        $params['type']      = $type;
         $params['component'] = $component;
         $params['now']       = $GLOBALS['db']->Date();
 
@@ -174,41 +162,41 @@ class Jaws_Registry
         $dbDriver  = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
         for ($ndx = 0; $ndx < count($keys); $ndx++) {
-            list($name, $value) = each($keys);
-            $params["name_$ndx"]  = $name;
-            $params["value_$ndx"] = $value;
+            list($key_name, $key_value) = each($keys);
+            $params["name_$ndx"]  = $key_name;
+            $params["value_$ndx"] = $key_value;
 
             // Ugly hack to support all databases
             switch ($dbDriver) {
                 case 'oci8':
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {type}, {component}, {name_$ndx}, {value_$ndx}, {now} FROM DUAL";
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {now} FROM DUAL";
                     break;
                 case 'ibase':
-                    $sqls[] = " VALUES ({type}, {component}, {name_$ndx}, {value_$ndx}, {now})";
+                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {now})";
                     break;
                 case 'pgsql':
                     if (version_compare($dbVersion, '8.2.0', '>=')) {
                         $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({type}, {component}, {name_$ndx}, {value_$ndx}, {now})";
+                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {now})";
                     } else {
-                        $sqls[] = " VALUES ({type}, {component}, {name_$ndx}, {value_$ndx}, {now})";
+                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {now})";
                     }
                     break;
                 default:
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {type}, {component}, {name_$ndx}, {value_$ndx}, {now}";
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {now}";
                     break;
             }
 
-            $this->_Registry[$type][$component][$name] = $value;
+            $this->_Registry[$component][$key_name] = $key_value;
         }
 
         if (is_array($sqls)) {
             foreach ($sqls as $sql) {
                 $qsql = '
                     INSERT INTO [[registry]]
-                        ([component_type], [component_name], [key_name], [key_value], [updatetime])
+                        ([component], [key_name], [key_value], [updatetime])
                     '. $sql;
                 $result = $GLOBALS['db']->query($qsql, $params);
                 if (Jaws_Error::IsError($result)) {
@@ -218,7 +206,7 @@ class Jaws_Registry
         } else {
             $qsql = '
                 INSERT INTO [[registry]]
-                    ([component_type], [component_name], [key_name], [key_value], [updatetime])
+                    ([component], [key_name], [key_value], [updatetime])
                 '. $sqls;
             $result = $GLOBALS['db']->query($qsql, $params);
             if (Jaws_Error::IsError($result)) {
@@ -234,27 +222,23 @@ class Jaws_Registry
      *
      * @access  public
      * @param   string  $component  Component name
-     * @param   string  $name       The key
-     * @param   string  $type       Component type
+     * @param   string  $key_name   Key name
      * @return  bool    True is set otherwise False
      */
-    function Delete($component, $name = '', $type = JAWS_COMPONENT_OTHER)
+    function Delete($component, $key_name = '')
     {
         $params = array();
-        $params['name'] = $name;
-        $params['component_name'] = $component;
-        $params['component_type'] = $type;
+        $params['component'] = $component;
+        $params['key_name']  = $key_name;
 
         $sql = '
             DELETE
                 FROM [[registry]]
             WHERE
-                [component_name] = {component_name}
-              AND
-                [component_type] = {component_type}
+                [component] = {component}
             ';
-        if (!empty($name)) {
-            $sql.= ' AND [key_name] = {name}';
+        if (!empty($key_name)) {
+            $sql.= ' AND [key_name] = {key_name}';
         }
 
         $result = $GLOBALS['db']->query($sql, $params);
