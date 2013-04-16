@@ -297,6 +297,18 @@ function enableMapEditingArea(status)
 }
 
 /**
+ * Change new code value
+ */
+function changeCode()
+{
+    if ($('new_code').value == 410) {
+        $('new_url').disabled = true;
+    } else {
+        $('new_url').disabled = false;
+    }
+}
+
+/**
  * Get error maps list
  */
 function getErrorMaps(name, offset, reset)

@@ -593,9 +593,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      *
      * @access  public
      * @param   string  $url        source url
-     * @param   string  $code       code
+     * @param   int     $code       code
      * @param   string  $new_url    destination url
-     * @param   string  $new_code   new code
+     * @param   int     $new_code   new code
      * @return  mixed   True on success, Jaws_Error otherwise
      */
     function AddErrorMap($url, $code, $new_url = '', $new_code = 0)
@@ -611,7 +611,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['url_hash'] = md5($url);
         $params['new_url'] = $new_url;
         $params['new_code'] = $new_code;
-        $params['hits'] = 0;
+        $params['hits'] = 1;
         $params['now'] = $GLOBALS['db']->Date();
 
         if ($this->ErrorMapExists($params['url_hash'])) {
