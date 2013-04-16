@@ -219,7 +219,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
 
         // removeing gadget registry keys
-        $GLOBALS['app']->Registry->Delete($this->gadget->name, '', JAWS_COMPONENT_GADGET);
+        $GLOBALS['app']->Registry->Delete($this->gadget->name, '');
 
         // end uninstall gadget event
         $result = $GLOBALS['app']->Listener->Shout('UninstallGadget', $this->gadget->name);

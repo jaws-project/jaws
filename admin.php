@@ -41,7 +41,7 @@ if (is_null($action)) {
     $action = !is_null($action) ? $action : '';
 }
 
-$httpAuthEnabled = $GLOBALS['app']->Registry->Get('http_auth', 'Settings', JAWS_COMPONENT_GADGET) == 'true';
+$httpAuthEnabled = $GLOBALS['app']->Registry->Get('http_auth', 'Settings') == 'true';
 if ($httpAuthEnabled) {
     require_once JAWS_PATH . 'include/Jaws/HTTPAuth.php';
     $httpAuth = new Jaws_HTTPAuth();
@@ -63,7 +63,7 @@ if (!$GLOBALS['app']->Session->Logged())
             $passwd  = $request->get('password', 'post');
             $crypted = $request->get('usecrypt', 'post');
 
-            if ($GLOBALS['app']->Registry->Get('enabled', 'Policy', JAWS_COMPONENT_GADGET) == 'true' && isset($crypted)) {
+            if ($GLOBALS['app']->Registry->Get('enabled', 'Policy') == 'true' && isset($crypted)) {
                 require_once JAWS_PATH . 'include/Jaws/Crypt.php';
                 $JCrypt = new Jaws_Crypt();
                 $JCrypt->Init();

@@ -171,13 +171,13 @@ class Jaws
     function loadPreferences()
     {
         $this->_Preferences = array(
-            'theme'             => $this->Registry->Get('theme', 'Settings', JAWS_COMPONENT_GADGET),
+            'theme'             => $this->Registry->Get('theme', 'Settings'),
             'language'          => $this->Registry->Get(JAWS_SCRIPT == 'index'? 'site_language': 'admin_language',
-                                                        'Settings', JAWS_COMPONENT_GADGET),
-            'editor'            => $this->Registry->Get('editor', 'Settings', JAWS_COMPONENT_GADGET),
-            'timezone'          => $this->Registry->Get('timezone', 'Settings', JAWS_COMPONENT_GADGET),
-            'calendar_type'     => $this->Registry->Get('calendar_type', 'Settings', JAWS_COMPONENT_GADGET),
-            'calendar_language' => $this->Registry->Get('calendar_language', 'Settings', JAWS_COMPONENT_GADGET),
+                                                        'Settings'),
+            'editor'            => $this->Registry->Get('editor', 'Settings'),
+            'timezone'          => $this->Registry->Get('timezone', 'Settings'),
+            'calendar_type'     => $this->Registry->Get('calendar_type', 'Settings'),
+            'calendar_language' => $this->Registry->Get('calendar_language', 'Settings'),
         );
     }
 
@@ -191,7 +191,7 @@ class Jaws
     {
         if (APP_TYPE == 'web') {
             $cookies = array();
-            $cookie_precedence = ($this->Registry->Get('cookie_precedence', 'Settings', JAWS_COMPONENT_GADGET) == 'true');
+            $cookie_precedence = ($this->Registry->Get('cookie_precedence', 'Settings') == 'true');
             if ($cookie_precedence) {
                 // load cookies preferences
                 $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
@@ -285,7 +285,7 @@ class Jaws
         $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarLanguage);
 
         require_once PEAR_PATH. 'Net/Detect.php';
-        $bFlags = explode(',', $this->Registry->Get('browsers_flag', 'Settings', JAWS_COMPONENT_GADGET));
+        $bFlags = explode(',', $this->Registry->Get('browsers_flag', 'Settings'));
         $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
     }
 
@@ -964,7 +964,7 @@ class Jaws
     {
         static $site_url;
         if (!isset($site_url)) {
-            $cfg_url = isset($GLOBALS['app']->Registry)? $GLOBALS['app']->Registry->Get('site_url', 'Settings', JAWS_COMPONENT_GADGET) : '';
+            $cfg_url = isset($GLOBALS['app']->Registry)? $GLOBALS['app']->Registry->Get('site_url', 'Settings') : '';
             if (!empty($cfg_url)) {
                 $cfg_url = parse_url($cfg_url);
                 if (isset($cfg_url['scheme']) && isset($cfg_url['host'])) {
@@ -1121,7 +1121,7 @@ class Jaws
             $this->_BrowserEncoding = (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '');
             $this->_BrowserEncoding = strtolower($this->_BrowserEncoding);
             $_GZipEnabled = true;
-            if (($this->Registry->Get('gzip_compression', 'Settings', JAWS_COMPONENT_GADGET) != 'true') ||
+            if (($this->Registry->Get('gzip_compression', 'Settings') != 'true') ||
                 !extension_loaded('zlib') ||
                 ini_get('zlib.output_compression') ||
                 (ini_get('zlib.output_compression_level') > 0) ||
@@ -1147,7 +1147,7 @@ class Jaws
         static $_IsRobot;
         if (!isset($_IsRobot)) {
             $_IsRobot = false;
-            $robots = explode(',', $this->Registry->Get('robots', 'Settings', JAWS_COMPONENT_GADGET));
+            $robots = explode(',', $this->Registry->Get('robots', 'Settings'));
             $robots = array_map('strtolower', $robots);
             $uagent = strtolower(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']));
             $ipaddr = $_SERVER['REMOTE_ADDR'];

@@ -537,9 +537,9 @@ class Jaws_Gadget
                 if (!Jaws_Error::IsError($objPlugin)) {
                     $use_in = '*';
                     if ($plugins_set == 'admin') {
-                        $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
+                        $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin);
                     } else {
-                        $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin, JAWS_COMPONENT_PLUGIN);
+                        $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin);
                     }
                     if (!Jaws_Error::isError($use_in) &&
                        ($use_in == '*' || in_array($gadget, explode(',', $use_in))))

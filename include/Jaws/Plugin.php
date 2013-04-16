@@ -210,14 +210,12 @@ class Jaws_Plugin
         $GLOBALS['app']->Registry->NewKey(
             'backend_gadgets',
             $pluginObj->_DefaultBackendEnabled? '*' : ',',
-            $plugin,
-            JAWS_COMPONENT_PLUGIN
+            $plugin
         );
         $GLOBALS['app']->Registry->NewKey(
             'frontend_gadgets',
             $pluginObj->_DefaultFrontendEnabled? '*' : ',',
-            $plugin,
-            JAWS_COMPONENT_PLUGIN
+            $plugin
         );
 
         // Everything is done
@@ -252,7 +250,7 @@ class Jaws_Plugin
         $GLOBALS['app']->Registry->Set('plugins_installed_items', $installed_plugins);
 
         // removeing plugin registry keys
-        $GLOBALS['app']->Registry->Delete($plugin, '', JAWS_COMPONENT_PLUGIN);
+        $GLOBALS['app']->Registry->Delete($plugin);
 
         require_once $file;
         $pluginObj = new $plugin;

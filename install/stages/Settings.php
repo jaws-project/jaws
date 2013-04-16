@@ -171,7 +171,7 @@ class Installer_Settings extends JawsInstallerStage
         $settings['admin_language'] = $post['site_language'];
         $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
-            $GLOBALS['app']->Registry->Set($key, $value, 'Settings', JAWS_COMPONENT_GADGET);
+            $GLOBALS['app']->Registry->Set($key, $value, 'Settings');
         }
 
         require_once JAWS_PATH . 'include/Jaws/URLMapping.php';

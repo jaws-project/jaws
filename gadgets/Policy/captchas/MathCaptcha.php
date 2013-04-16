@@ -18,7 +18,7 @@ class MathCaptcha
     function MathCaptcha()
     {
         // If not installed try to install it
-        if ($GLOBALS['app']->Registry->Get('math_captcha', 'Policy', JAWS_COMPONENT_GADGET) != 'ver2_installed') {
+        if ($GLOBALS['app']->Registry->Get('math_captcha', 'Policy') != 'ver2_installed') {
             $schema = JAWS_PATH . 'gadgets/Policy/captchas/MathCaptcha/schema.xml';
             if (!file_exists($schema)) {
                 Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
@@ -27,8 +27,8 @@ class MathCaptcha
             if (Jaws_Error::IsError($result)) {
                 Jaws_Error::Fatal("Can't install MathCaptcha schema", __FILE__, __LINE__);
             }
-            $GLOBALS['app']->Registry->NewKey('math_captcha', 'ver2_installed', 'Policy', JAWS_COMPONENT_GADGET);
-            $GLOBALS['app']->Registry->NewKey('math_accessibility', 'false', 'Policy', JAWS_COMPONENT_GADGET);
+            $GLOBALS['app']->Registry->NewKey('math_captcha', 'ver2_installed', 'Policy');
+            $GLOBALS['app']->Registry->NewKey('math_accessibility', 'false', 'Policy');
         }
     }
 
@@ -41,7 +41,7 @@ class MathCaptcha
     function Get($field, $entryid)
     {
         list($key, $value1, $oprt, $value2) = $this->GetKey();
-        if ($GLOBALS['app']->Registry->Get('math_accessibility', 'Policy', JAWS_COMPONENT_GADGET) === 'true') {
+        if ($GLOBALS['app']->Registry->Get('math_accessibility', 'Policy') === 'true') {
             switch ($oprt) {
                 case '+':
                     $title = _t('POLICY_CAPTCHA_MATH_PLUS', $value1, $value2);

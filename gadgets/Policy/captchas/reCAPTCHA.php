@@ -24,10 +24,10 @@ class reCAPTCHA
     function reCAPTCHA()
     {
         // If not installed try to install it ;-)
-        if ($GLOBALS['app']->Registry->Get('reCAPTCHA', 'Policy', JAWS_COMPONENT_GADGET) != 'installed') {
-            $GLOBALS['app']->Registry->NewKey('reCAPTCHA', 'installed', 'Policy', JAWS_COMPONENT_GADGET);
-            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_public_key', 'UNDEFINED', 'Policy', JAWS_COMPONENT_GADGET);
-            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_private_key', 'UNDEFINED', 'Policy', JAWS_COMPONENT_GADGET);
+        if ($GLOBALS['app']->Registry->Get('reCAPTCHA', 'Policy') != 'installed') {
+            $GLOBALS['app']->Registry->NewKey('reCAPTCHA', 'installed', 'Policy');
+            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_public_key', 'UNDEFINED', 'Policy');
+            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_private_key', 'UNDEFINED', 'Policy');
         }
     }
 

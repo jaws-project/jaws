@@ -111,7 +111,7 @@ class Jaws_Session
      */
     function Init()
     {
-        $this->_AuthMethod = $GLOBALS['app']->Registry->Get('auth_method', 'Users', JAWS_COMPONENT_GADGET);
+        $this->_AuthMethod = $GLOBALS['app']->Registry->Get('auth_method', 'Users');
         $this->_AuthMethod = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthMethod);
         $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthMethod . '.php';
         if (empty($this->_AuthMethod) || !file_exists($authFile)) {
@@ -237,7 +237,7 @@ class Jaws_Session
         $session = $this->GetSession((int)$sid);
         if (is_array($session)) {
             $checksum = md5($session['user'] . $session['data']);
-            $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy', JAWS_COMPONENT_GADGET);
+            $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy');
 
             $this->_SessionID  = $session['sid'];
             $this->_Attributes = unserialize($session['data']);
@@ -362,7 +362,7 @@ class Jaws_Session
         $this->SetAttribute('expiry_date', $info['expiry_date']);
         $this->SetAttribute('concurrents', $info['concurrents']);
         $this->SetAttribute('longevity',  $remember?
-                                          (int)$GLOBALS['app']->Registry->Get('session_remember_timeout', 'Policy', JAWS_COMPONENT_GADGET)*3600 : 0);
+                                          (int)$GLOBALS['app']->Registry->Get('session_remember_timeout', 'Policy')*3600 : 0);
         $this->SetAttribute('logged',     !empty($info['id']));
         //profile
         $this->SetAttribute('nickname',   $info['nickname']);
@@ -728,7 +728,7 @@ class Jaws_Session
     function DeleteExpiredSessions()
     {
         $params = array();
-        $params['expired'] = time() - ($GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy', JAWS_COMPONENT_GADGET) * 60);
+        $params['expired'] = time() - ($GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy') * 60);
         $sql = "DELETE FROM [[session]] WHERE [updatetime] < ({expired} - [longevity])";
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -750,7 +750,7 @@ class Jaws_Session
     {
         $params = array();
         $params['user'] = (string)$user;
-        $params['expired'] = time() - ($GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy', JAWS_COMPONENT_GADGET) * 60);
+        $params['expired'] = time() - ($GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy') * 60);
         $sql = '
             SELECT COUNT([user])
             FROM [[session]]
@@ -808,7 +808,7 @@ class Jaws_Session
         // remove expired session
         $this->DeleteExpiredSessions();
 
-        $idle_timeout = (int)$GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy', JAWS_COMPONENT_GADGET);
+        $idle_timeout = (int)$GLOBALS['app']->Registry->Get('session_idle_timeout', 'Policy');
         $params = array();
         $params['onlinetime'] = time() - ($idle_timeout * 60);
 

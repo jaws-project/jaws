@@ -82,12 +82,12 @@ class Jaws_FTP
      */
     function LoadFTPSettings()
     {
-        $this->_hostname  = $GLOBALS['app']->Registry->Get('ftp_host', 'Settings', JAWS_COMPONENT_GADGET);
-        $this->_port      = $GLOBALS['app']->Registry->Get('ftp_port', 'Settings', JAWS_COMPONENT_GADGET);
-        $this->_passive   = $GLOBALS['app']->Registry->Get('ftp_mode', 'Settings', JAWS_COMPONENT_GADGET) == 'passive';
-        $this->_username  = $GLOBALS['app']->Registry->Get('ftp_user', 'Settings', JAWS_COMPONENT_GADGET);
-        $this->_password  = $GLOBALS['app']->Registry->Get('ftp_pass', 'Settings', JAWS_COMPONENT_GADGET);
-        $this->_root      = $GLOBALS['app']->Registry->Get('ftp_root', 'Settings', JAWS_COMPONENT_GADGET);
+        $this->_hostname  = $GLOBALS['app']->Registry->Get('ftp_host', 'Settings');
+        $this->_port      = $GLOBALS['app']->Registry->Get('ftp_port', 'Settings');
+        $this->_passive   = $GLOBALS['app']->Registry->Get('ftp_mode', 'Settings') == 'passive';
+        $this->_username  = $GLOBALS['app']->Registry->Get('ftp_user', 'Settings');
+        $this->_password  = $GLOBALS['app']->Registry->Get('ftp_pass', 'Settings');
+        $this->_root      = $GLOBALS['app']->Registry->Get('ftp_root', 'Settings');
 
         return true;
     }

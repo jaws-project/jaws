@@ -211,7 +211,7 @@ class Jaws_Widgets_TextArea extends Container
         }
 
         foreach ($installed_plugins as $plugin) {
-            $gadgets = $GLOBALS['app']->Registry->Get($pluginKey, $plugin, JAWS_COMPONENT_PLUGIN);
+            $gadgets = $GLOBALS['app']->Registry->Get($pluginKey, $plugin);
             if (($gadgets == '*') || (strpos($gadgets, ",{$this->_Gadget},") !== false)) {
                 $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {

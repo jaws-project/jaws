@@ -43,26 +43,26 @@ class Jaws_Crypt
             return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available',
                                           __FUNCTION__);
         }
-        if ($GLOBALS['app']->Registry->Get('crypt_enabled', 'Policy', JAWS_COMPONENT_GADGET) != 'true') {
+        if ($GLOBALS['app']->Registry->Get('crypt_enabled', 'Policy') != 'true') {
             return false;
         }
 
-        $pvt_key = $GLOBALS['app']->Registry->Get('crypt_pvt_key', 'Policy', JAWS_COMPONENT_GADGET);
-        $pub_key = $GLOBALS['app']->Registry->Get('crypt_pub_key', 'Policy', JAWS_COMPONENT_GADGET);
-        $key_len = $GLOBALS['app']->Registry->Get('crypt_key_len', 'Policy', JAWS_COMPONENT_GADGET);
-        $key_age = $GLOBALS['app']->Registry->Get('crypt_key_age', 'Policy', JAWS_COMPONENT_GADGET);
-        $key_start_date = $GLOBALS['app']->Registry->Get('crypt_key_start_date', 'Policy', JAWS_COMPONENT_GADGET);
+        $pvt_key = $GLOBALS['app']->Registry->Get('crypt_pvt_key', 'Policy');
+        $pub_key = $GLOBALS['app']->Registry->Get('crypt_pub_key', 'Policy');
+        $key_len = $GLOBALS['app']->Registry->Get('crypt_key_len', 'Policy');
+        $key_age = $GLOBALS['app']->Registry->Get('crypt_key_age', 'Policy');
+        $key_start_date = $GLOBALS['app']->Registry->Get('crypt_key_start_date', 'Policy');
         if (time() > ($key_start_date + $key_age)) {
             $result = $this->Generate_RSA_KeyPair($key_len);
             if (Jaws_Error::isError($result)) {
-                $GLOBALS['app']->Registry->Set('crypt_enabled', 'false', 'Policy', JAWS_COMPONENT_GADGET);
+                $GLOBALS['app']->Registry->Set('crypt_enabled', 'false', 'Policy');
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Error in RSA key generation..");
                 return false;
             }
 
-            $GLOBALS['app']->Registry->Set('crypt_pvt_key', $this->pvt_key->toString(), 'Policy', JAWS_COMPONENT_GADGET);
-            $GLOBALS['app']->Registry->Set('crypt_pub_key', $this->pub_key->toString(), 'Policy', JAWS_COMPONENT_GADGET);
-            $GLOBALS['app']->Registry->Set('crypt_key_start_date', time(), 'Policy', JAWS_COMPONENT_GADGET);
+            $GLOBALS['app']->Registry->Set('crypt_pvt_key', $this->pvt_key->toString(), 'Policy');
+            $GLOBALS['app']->Registry->Set('crypt_pub_key', $this->pub_key->toString(), 'Policy');
+            $GLOBALS['app']->Registry->Set('crypt_key_start_date', time(), 'Policy');
         } else {
             $this->pvt_key = Crypt_RSA_Key::fromString($pvt_key, $this->wrapper);
             $this->pub_key = Crypt_RSA_Key::fromString($pub_key, $this->wrapper);

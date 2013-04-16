@@ -57,8 +57,8 @@ class Jaws_User
 
         if (!empty($result)) {
             // bad_password_count & lockedout time
-            if ($result['bad_password_count'] >= $GLOBALS['app']->Registry->Get('password_bad_count', 'Policy', JAWS_COMPONENT_GADGET) &&
-               ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->Get('password_lockedout_time', 'Policy', JAWS_COMPONENT_GADGET)))
+            if ($result['bad_password_count'] >= $GLOBALS['app']->Registry->Get('password_bad_count', 'Policy') &&
+               ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->Get('password_lockedout_time', 'Policy')))
             {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
                                               __FUNCTION__,
@@ -491,7 +491,7 @@ class Jaws_User
         $uData['email'] = strtolower($uData['email']);
 
         // password & complexity
-        $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
+        $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy');
         $min = ($min == 0)? 1 : $min;
         if ($uData['password'] == '' ||
             !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
@@ -501,7 +501,7 @@ class Jaws_User
                                           JAWS_ERROR_NOTICE);
         }
 
-        if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
+        if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy') == 'yes') {
             if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
                     $uData['password'])
             ) {
@@ -596,14 +596,14 @@ class Jaws_User
 
         // password & complexity
         if (isset($uData['password']) && $uData['password'] !== '') {
-            $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy', JAWS_COMPONENT_GADGET);
+            $min = (int)$GLOBALS['app']->Registry->Get('password_min_length', 'Policy');
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
                                               __FUNCTION__,
                                               JAWS_ERROR_NOTICE);
             }
 
-            if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy', JAWS_COMPONENT_GADGET) == 'yes') {
+            if ($GLOBALS['app']->Registry->Get('password_complexity', 'Policy') == 'yes') {
                 if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
                         $uData['password'])
                 ) {
