@@ -556,8 +556,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
             // redirect to topic posts list
             Jaws_Header::Location(
-                $this->gadget->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id'])),
-                true
+                $this->gadget->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
             );
         } else {
             $tpl = new Jaws_Template('gadgets/Forums/templates/');

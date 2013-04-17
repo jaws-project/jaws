@@ -41,11 +41,7 @@ class Banner_HTML extends Jaws_Gadget_HTML
             $click = $model->ClickBanner($banner[0]['id']);
             if (!Jaws_Error::IsError($click)) {
                 $link = $banner[0]['url'];
-                if (preg_match('/^(http|https|ftp):\/\/[a-z0-9-\.]*/i', $link)) {
-                    Jaws_Header::Location($link);
-                } else {
-                    Jaws_Header::Location($GLOBALS['app']->getSiteURL('/' . $link));
-                }
+                Jaws_Header::Location($link);
             }
         } else {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';

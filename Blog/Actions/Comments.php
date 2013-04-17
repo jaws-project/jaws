@@ -325,7 +325,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Blog');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
         }
 
         $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');
@@ -401,7 +401,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Blog');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
         }
 
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
@@ -416,7 +416,7 @@ class Blog_Actions_Comments extends Blog_HTML
             $this->gadget->GetRegistry('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         /* lets check if it's spam
@@ -426,13 +426,13 @@ class Blog_Actions_Comments extends Blog_HTML
          * to not fill this out
          */
         if (!empty($post['url2'])) {
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         if (trim($post['name']) == '' || trim($post['comments']) == '') {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), 'Blog');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Blog_Comment');
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
@@ -440,7 +440,7 @@ class Blog_Actions_Comments extends Blog_HTML
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Blog');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Blog_Comment');
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
@@ -452,7 +452,7 @@ class Blog_Actions_Comments extends Blog_HTML
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_MESSAGE_SENT'), 'Blog');
         }
 
-        Jaws_Header::Location($url, true);
+        Jaws_Header::Location($url);
     }
 
 }

@@ -767,7 +767,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
         }
 
         return $this->ViewImage($post['parent_id'], $post['albumid'], true);
@@ -841,7 +841,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'), true);
+            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
         }
 
         $url = $this->gadget->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
@@ -856,13 +856,13 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $this->gadget->GetRegistry('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         if (trim($post['name']) == '' || trim($post['comments']) == '') {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), 'Phoo');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
@@ -870,7 +870,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Phoo');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
-            Jaws_Header::Location($url, true);
+            Jaws_Header::Location($url);
         }
 
         $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
@@ -881,7 +881,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_MESSAGE_SENT'), 'Phoo');
         }
 
-        Jaws_Header::Location($url, true);
+        Jaws_Header::Location($url);
     }
 
     /**
