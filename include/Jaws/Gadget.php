@@ -706,4 +706,5 @@ class Jaws_Gadget
         $image = Jaws::CheckImage('gadgets/'.$name.'/images/logo.png');
         return $image;
     }
+
 }
