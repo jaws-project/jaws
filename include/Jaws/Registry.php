@@ -87,13 +87,13 @@ class Jaws_Registry
     function Set($key_name, $key_value, $component = '')
     {
         $params = array();
-        $params['component'] = $component;
         $params['key_name']  = $key_name;
         $params['key_value'] = $key_value;
+        $params['component'] = $component;
 
         $sql = '
             UPDATE [[registry]] SET
-                [key_value] = {value}
+                [key_value] = {key_value}
             WHERE
                 [component] = {component}
               AND
