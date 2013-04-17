@@ -22,13 +22,13 @@ class Jaws_Header
      * @param   int     $statusCode
      * @access  public
      */
-    function Location($url = '', $addSiteURL = false, $statusCode = 302)
+    function Location($url = '', $statusCode = 302)
     {
         if (isset($GLOBALS['app']->Session)) {
             $GLOBALS['app']->Session->Synchronize();
         }
 
-        if (empty($url) || $addSiteURL) {
+        if (empty($url) || !preg_match('$^(http|https|ftp)://.*$i', $url)) {
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
