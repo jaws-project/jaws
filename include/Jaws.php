@@ -929,30 +929,6 @@ class Jaws
     }
 
     /**
-     * Returns the current location (without BASE_SCRIPT)
-     *
-     * @access  public
-     * @return  string   Current location
-     */
-    function GetURILocation()
-    {
-        static $location;
-
-        if (isset($location)) {
-            return $location;
-        }
-
-        //TODO: Need to check which SERVER var is allways sent to the server
-        if (!isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
-            $location = Jaws_XSS::filter($_SERVER['SCRIPT_NAME']);
-        } else {
-            $location = Jaws_XSS::filter($_SERVER['REQUEST_URI']);
-        }
-        $location = substr($location, 0, stripos($location, BASE_SCRIPT));
-        return $location;
-    }
-
-    /**
      * Returns the URL of the site
      *
      * @access  public
