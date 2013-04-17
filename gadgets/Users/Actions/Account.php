@@ -24,8 +24,7 @@ class Users_Actions_Account extends Users_HTML
                 $this->gadget->GetURLFor(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                ),
-                true
+                )
             );
         }
 
@@ -93,8 +92,7 @@ class Users_Actions_Account extends Users_HTML
                 $this->gadget->GetURLFor(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                ),
-                true
+                )
             );
         }
 

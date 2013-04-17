@@ -340,10 +340,10 @@ class Users_Actions_Login extends Users_HTML
             unset($post['password']);
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Login.Data');
             $login_url = $this->gadget->GetURLFor('LoginBox', array('referrer'  => $post['referrer']));
-            Jaws_Header::Location($login_url, true);
+            Jaws_Header::Location($login_url);
         }
 
-        Jaws_Header::Location(hex2bin($post['referrer']), true);
+        Jaws_Header::Location(hex2bin($post['referrer']));
     }
 
     /**
