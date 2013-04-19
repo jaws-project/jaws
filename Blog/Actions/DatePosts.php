@@ -75,7 +75,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
 
             if ($tpl->VariableExists('page_navigation')) {
                 $total  = $bModel->GetDateNumberOfPages($min_date, $max_date);
-                $limit  = $this->gadget->GetRegistry('last_entries_limit');
+                $limit  = $this->gadget->registry->get('last_entries_limit');
 
                 $params = array('year'  => $year,
                                 'month' => $month,

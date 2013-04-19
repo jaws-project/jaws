@@ -33,12 +33,12 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
         }
 
         //registry keys.
-        $this->gadget->AddRegistry('black_list', 'htaccess');
-        $this->gadget->AddRegistry('root_dir', 'files');
-        $this->gadget->AddRegistry('frontend_avail', 'true');
-        $this->gadget->AddRegistry('virtual_links', 'false');
-        $this->gadget->AddRegistry('order_type', 'filename, false');
-        $this->gadget->AddRegistry('views_limit', '0');
+        $this->gadget->registry->add('black_list', 'htaccess');
+        $this->gadget->registry->add('root_dir', 'files');
+        $this->gadget->registry->add('frontend_avail', 'true');
+        $this->gadget->registry->add('virtual_links', 'false');
+        $this->gadget->registry->add('order_type', 'filename, false');
+        $this->gadget->registry->add('views_limit', '0');
 
         return true;
     }
@@ -60,12 +60,12 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('black_list');
-        $this->gadget->DelRegistry('root_dir');
-        $this->gadget->DelRegistry('frontend_avail');
-        $this->gadget->DelRegistry('virtual_links');
-        $this->gadget->DelRegistry('order_type');
-        $this->gadget->DelRegistry('views_limit');
+        $this->gadget->registry->del('black_list');
+        $this->gadget->registry->del('root_dir');
+        $this->gadget->registry->del('frontend_avail');
+        $this->gadget->registry->del('virtual_links');
+        $this->gadget->registry->del('order_type');
+        $this->gadget->registry->del('views_limit');
 
         return true;
     }
@@ -87,12 +87,12 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
             }
 
             // Registry keys.
-            $this->gadget->AddRegistry('black_list', '.htaccess');
-            $this->gadget->AddRegistry('frontend_avail', 'true');
+            $this->gadget->registry->add('black_list', '.htaccess');
+            $this->gadget->registry->add('frontend_avail', 'true');
         }
 
         if (version_compare($old, '0.7.1', '<')) {
-            $this->gadget->AddRegistry('root_dir', 'files');
+            $this->gadget->registry->add('root_dir', 'files');
         }
 
         if (version_compare($old, '0.8.0', '<')) {
@@ -116,13 +116,13 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/ShareDir');
 
             //Registry key
-            $this->gadget->AddRegistry('virtual_links', 'false');
-            $this->gadget->AddRegistry('order_type', 'filename, false');
+            $this->gadget->registry->add('virtual_links', 'false');
+            $this->gadget->registry->add('order_type', 'filename, false');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             //Registry key
-            $this->gadget->AddRegistry('views_limit', '0');
+            $this->gadget->registry->add('views_limit', '0');
         }
 
         if (version_compare($old, '0.8.2', '<')) {
@@ -133,7 +133,7 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '0.8.3', '<')) {
-            $this->gadget->SetRegistry('black_list', 'htaccess');
+            $this->gadget->registry->set('black_list', 'htaccess');
         }
 
         return true;

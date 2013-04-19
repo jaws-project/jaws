@@ -198,7 +198,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $recipientCombo->setStyle('width: 220px;');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
         $recipientCombo->AddOption('', -1);
-        $recipientCombo->AddOption($this->gadget->GetRegistry('site_author', 'Settings'), 0);
+        $recipientCombo->AddOption($this->gadget->registry->get('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -312,7 +312,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
         $recipientCombo->SetID('rid');
         $recipientCombo->setStyle('width: 318px;');
-        $recipientCombo->AddOption($this->gadget->GetRegistry('site_author', 'Settings'), 0);
+        $recipientCombo->AddOption($this->gadget->registry->get('site_author', 'Settings'), 0);
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
@@ -435,7 +435,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
             $from_email = $recipient['email'];
         }
 
-        $format = $this->gadget->GetRegistry('email_format');
+        $format = $this->gadget->registry->get('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $reply = $this->gadget->ParseText($contact['reply']);
@@ -445,8 +445,8 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
 
         $jDate = $GLOBALS['app']->loadDate();
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
-        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $site_name = $this->gadget->registry->get('site_name', 'Settings');
+        $site_language = $this->gadget->registry->get('site_language', 'Settings');
         $profile_url = $GLOBALS['app']->getSiteURL('/'). $GLOBALS['app']->Map->GetURLFor(
             'Users',
             'Profile',
@@ -664,7 +664,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
 
-        $use_antispam = $this->gadget->GetRegistry('use_antispam');
+        $use_antispam = $this->gadget->registry->get('use_antispam');
         $antispamCombo =& Piwi::CreateWidget('Combo', 'use_antispam');
         $antispamCombo->SetID('use_antispam');
         $antispamCombo->setStyle('width: 140px;');
@@ -674,7 +674,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_use_antispam', _t('CONTACT_PROPERTIES_USE_ANTISPAM'));
         $tpl->SetVariable('use_antispam', $antispamCombo->Get());
 
-        $email_format = $this->gadget->GetRegistry('email_format');
+        $email_format = $this->gadget->registry->get('email_format');
         $formatCombo =& Piwi::CreateWidget('Combo', 'email_format');
         $formatCombo->SetID('email_format');
         $formatCombo->setStyle('width: 140px;');
@@ -684,7 +684,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_email_format', _t('CONTACT_PROPERTIES_EMAIL_FORMAT'));
         $tpl->SetVariable('email_format', $formatCombo->Get());
 
-        $attachment = $this->gadget->GetRegistry('enable_attachment');
+        $attachment = $this->gadget->registry->get('enable_attachment');
         $combo =& Piwi::CreateWidget('Combo', 'enable_attachment');
         $combo->setStyle('width: 140px;');
         $combo->AddOption(_t('GLOBAL_NO'), 'false');
@@ -694,7 +694,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('enable_attachment', $combo->Get());
 
         // Comments
-        $comments = $this->gadget->GetRegistry('comments');
+        $comments = $this->gadget->registry->get('comments');
         $editor =& $GLOBALS['app']->LoadEditor('Contact', 'comments', $comments, false);
         $editor->SetId('comments');
         $editor->TextArea->SetStyle('width: 100%;');
@@ -792,8 +792,8 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_bcc', $label->Get());
 
         // From
-        $from_title = $this->gadget->GetRegistry('gate_title', 'Settings');
-        $from_email = $this->gadget->GetRegistry('gate_email', 'Settings');
+        $from_title = $this->gadget->registry->get('gate_title', 'Settings');
+        $from_email = $this->gadget->registry->get('gate_email', 'Settings');
         if (!empty($from_email)) {
             $from = !empty($from_title)? "$from_title <$from_email>" : $from_email;
         } else {
@@ -902,7 +902,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     function PrepareMessage($message)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $format = $this->gadget->GetRegistry('email_format');
+        $format = $this->gadget->registry->get('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = $this->gadget->ParseText($message);
@@ -910,7 +910,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
             $message = strip_tags($message);
         }
 
-        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $site_language = $this->gadget->registry->get('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
@@ -920,7 +920,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('message', $message);
 
-        $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
+        $site_name = $this->gadget->registry->get('site_name', 'Settings');
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
@@ -985,7 +985,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         }
 
         $message = $this->PrepareMessage($message);
-        $format = $this->gadget->GetRegistry('email_format');
+        $format = $this->gadget->registry->get('email_format');
         $mail->SetBody($message, $format);
         if (!empty($attachment)) {
             $attachment = Jaws_Utils::upload_tmp_dir() . '/' . $attachment;

@@ -59,23 +59,23 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('weather');
 
         $options = array();
-        $options['timeout'] = (int)$this->gadget->GetRegistry('connection_timeout', 'Settings');
-        if ($this->gadget->GetRegistry('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->GetRegistry('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->GetRegistry('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->GetRegistry('proxy_pass', 'Settings');
+        $options['timeout'] = (int)$this->gadget->registry->get('connection_timeout', 'Settings');
+        if ($this->gadget->registry->get('proxy_enabled', 'Settings') == 'true') {
+            if ($this->gadget->registry->get('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->gadget->registry->get('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->gadget->registry->get('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $this->gadget->GetRegistry('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->gadget->registry->get('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->gadget->registry->get('proxy_port', 'Settings');
         }
 
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
-        $metric = $this->gadget->GetRegistry('unit') == 'metric';
+        $metric = $this->gadget->registry->get('unit') == 'metric';
         $wService = new Underground_Weather(
-                                $this->gadget->GetRegistry('api_key'),
+                                $this->gadget->registry->get('api_key'),
                                 $metric,
                                 JAWS_DATA . 'weather',
-                                $this->gadget->GetRegistry('update_period'),
+                                $this->gadget->registry->get('update_period'),
                                 $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
@@ -103,7 +103,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
                 $objDate = $GLOBALS['app']->loadDate();
                 $tpl->SetBlock('weather/forecast');
                 $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
-                $dFormat = $this->gadget->GetRegistry('date_format');
+                $dFormat = $this->gadget->registry->get('date_format');
                 foreach ($rWeather['forecast'] as $dayIndex => $fWeather) {
                     $tpl->SetBlock('weather/forecast/item');
                     //86400 = 3600 * 24 
@@ -146,23 +146,23 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
         $regions = $model->GetRegions();
         if (!Jaws_Error::isError($regions)) {
             $options = array();
-            $options['timeout'] = (int)$this->gadget->GetRegistry('connection_timeout', 'Settings');
-            if ($this->gadget->GetRegistry('proxy_enabled', 'Settings') == 'true') {
-                if ($this->gadget->GetRegistry('proxy_auth', 'Settings') == 'true') {
-                    $options['proxy_user'] = $this->gadget->GetRegistry('proxy_user', 'Settings');
-                    $options['proxy_pass'] = $this->gadget->GetRegistry('proxy_pass', 'Settings');
+            $options['timeout'] = (int)$this->gadget->registry->get('connection_timeout', 'Settings');
+            if ($this->gadget->registry->get('proxy_enabled', 'Settings') == 'true') {
+                if ($this->gadget->registry->get('proxy_auth', 'Settings') == 'true') {
+                    $options['proxy_user'] = $this->gadget->registry->get('proxy_user', 'Settings');
+                    $options['proxy_pass'] = $this->gadget->registry->get('proxy_pass', 'Settings');
                 }
-                $options['proxy_host'] = $this->gadget->GetRegistry('proxy_host', 'Settings');
-                $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
+                $options['proxy_host'] = $this->gadget->registry->get('proxy_host', 'Settings');
+                $options['proxy_port'] = $this->gadget->registry->get('proxy_port', 'Settings');
             }
 
             require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
-            $metric = $this->gadget->GetRegistry('unit') == 'metric';
+            $metric = $this->gadget->registry->get('unit') == 'metric';
             $wService = new Underground_Weather(
-                                            $this->gadget->GetRegistry('api_key'),
+                                            $this->gadget->registry->get('api_key'),
                                             $metric,
                                             JAWS_DATA . 'weather',
-                                            $this->gadget->GetRegistry('update_period'),
+                                            $this->gadget->registry->get('update_period'),
                                             $options);
 
             foreach ($regions as $region) {

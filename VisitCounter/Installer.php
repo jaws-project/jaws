@@ -24,15 +24,15 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry('visit_counters',  'online,today,yesterday,total');
-        $this->gadget->AddRegistry('timeout', '600');
-        $this->gadget->AddRegistry('type', 'impressions');
-        $this->gadget->AddRegistry('period', '0');
-        $this->gadget->AddRegistry('start', date('Y-m-d H:i:s'));
-        $this->gadget->AddRegistry('mode', 'text');
-        $this->gadget->AddRegistry('custom_text', '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
-        $this->gadget->AddRegistry('unique_visits', '0');
-        $this->gadget->AddRegistry('impression_visits', '0');
+        $this->gadget->registry->add('visit_counters',  'online,today,yesterday,total');
+        $this->gadget->registry->add('timeout', '600');
+        $this->gadget->registry->add('type', 'impressions');
+        $this->gadget->registry->add('period', '0');
+        $this->gadget->registry->add('start', date('Y-m-d H:i:s'));
+        $this->gadget->registry->add('mode', 'text');
+        $this->gadget->registry->add('custom_text', '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
+        $this->gadget->registry->add('unique_visits', '0');
+        $this->gadget->registry->add('impression_visits', '0');
 
         return true;
     }
@@ -54,15 +54,15 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('visit_counters');
-        $this->gadget->DelRegistry('timeout');
-        $this->gadget->DelRegistry('type');
-        $this->gadget->DelRegistry('period');
-        $this->gadget->DelRegistry('start');
-        $this->gadget->DelRegistry('mode');
-        $this->gadget->DelRegistry('custom_text');
-        $this->gadget->DelRegistry('unique_visits');
-        $this->gadget->DelRegistry('impression_visits');
+        $this->gadget->registry->del('visit_counters');
+        $this->gadget->registry->del('timeout');
+        $this->gadget->registry->del('type');
+        $this->gadget->registry->del('period');
+        $this->gadget->registry->del('start');
+        $this->gadget->registry->del('mode');
+        $this->gadget->registry->del('custom_text');
+        $this->gadget->registry->del('unique_visits');
+        $this->gadget->registry->del('impression_visits');
 
         return true;
     }
@@ -84,26 +84,26 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '0.8.0', '<')) {
             // Registry keys.
-            $this->gadget->AddRegistry('visit_counters', 'online,today,total');
-            $this->gadget->AddRegistry('custom_text', 
-                                              $this->gadget->GetRegistry('custom'));
-            $this->gadget->DelRegistry('online');
-            $this->gadget->DelRegistry('today');
-            $this->gadget->DelRegistry('total');
-            $this->gadget->DelRegistry('custom');
+            $this->gadget->registry->add('visit_counters', 'online,today,total');
+            $this->gadget->registry->add('custom_text', 
+                                              $this->gadget->registry->get('custom'));
+            $this->gadget->registry->del('online');
+            $this->gadget->registry->del('today');
+            $this->gadget->registry->del('total');
+            $this->gadget->registry->del('custom');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
             // fix using Y-m-d G:i:s instead of Y-m-d H:i:s in version 0.6.x
-            $startDate = $this->gadget->GetRegistry('start');
+            $startDate = $this->gadget->registry->get('start');
             if (strlen($startDate) == 18) {
                 $startDate = substr_replace($startDate, '0', 11, 0);
-                $this->gadget->SetRegistry('start', $startDate);
+                $this->gadget->registry->set('start', $startDate);
             }
         }
 
         if (version_compare($old, '0.9.0', '<')) {
-            $this->gadget->SetRegistry('visit_counters', 'online,today,yesterday,total');
+            $this->gadget->registry->set('visit_counters', 'online,today,yesterday,total');
 
             $result = $this->installSchema('0.8.3.xml', '', '0.8.2.xml');
             if (Jaws_Error::IsError($result)) {
@@ -128,8 +128,8 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($impression_visits)) {
                 return false;
             }
-            $this->gadget->AddRegistry('unique_visits', $unique_visits);
-            $this->gadget->AddRegistry('impression_visits', $impression_visits);
+            $this->gadget->registry->add('unique_visits', $unique_visits);
+            $this->gadget->registry->add('impression_visits', $impression_visits);
 
             $sql = 'DELETE FROM [[ipvisitor]] WHERE [visit_date] < {date}';
             $res = $GLOBALS['db']->query($sql, $date);

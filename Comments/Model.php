@@ -69,7 +69,7 @@ class Comments_Model extends Jaws_Gadget_Model
         }
 
         $message_key = md5($message);
-        if ($this->gadget->GetRegistry('allow_duplicate', 'Policy') == 'no') {
+        if ($this->gadget->registry->get('allow_duplicate', 'Policy') == 'no') {
             if ($this->IsMessageDuplicated($message_key)) {
                 return new Jaws_Error(_t('GLOBAL_SPAM_POSSIBLE_DUPLICATE_MESSAGE'), _t('COMMENTS_NAME'));
             }

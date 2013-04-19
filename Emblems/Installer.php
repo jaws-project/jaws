@@ -50,8 +50,8 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         }
 
         // Put the config registry keys
-        $this->gadget->AddRegistry('rows', '1');
-        $this->gadget->AddRegistry('allow_url', 'true');
+        $this->gadget->registry->add('rows', '1');
+        $this->gadget->registry->add('allow_url', 'true');
 
         return true;
     }
@@ -73,8 +73,8 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         }
 
         // registry keys
-        $this->gadget->DelRegistry('rows');
-        $this->gadget->DelRegistry('allow_url');
+        $this->gadget->registry->del('rows');
+        $this->gadget->registry->del('allow_url');
 
         return true;
     }

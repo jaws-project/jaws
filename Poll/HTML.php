@@ -41,7 +41,7 @@ class Poll_HTML extends Jaws_Gadget_HTML
                 is_array($post['answers']) && count($post['answers'])>0)
             {
                 $GLOBALS['app']->Session->SetCookie('poll_'.$post['pid'], 'voted',
-                            (int) $this->gadget->GetRegistry('cookie_period')*24*60);
+                            (int) $this->gadget->registry->get('cookie_period')*24*60);
                 foreach ($post['answers'] as $aid) {
                     $model->AddAnswerVote($post['pid'], $aid);
                 }

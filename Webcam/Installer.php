@@ -24,7 +24,7 @@ class Webcam_Installer extends Jaws_Gadget_Installer
         }
 
         //Registry keys.
-        $this->gadget->AddRegistry('limit_random', '3');
+        $this->gadget->registry->add('limit_random', '3');
 
         return true;
     }
@@ -46,7 +46,7 @@ class Webcam_Installer extends Jaws_Gadget_Installer
         }
 
         // registry keys
-        $this->gadget->DelRegistry('limit_random');
+        $this->gadget->registry->del('limit_random');
 
         return true;
     }

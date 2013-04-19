@@ -19,7 +19,7 @@ class Blog_Actions_Pingback extends Blog_HTML
      */
     function Pingback()
     {
-        if ($this->gadget->GetRegistry('pingback') == 'true') {
+        if ($this->gadget->registry->get('pingback') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
             $response = $pback->listen();

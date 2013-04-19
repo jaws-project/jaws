@@ -132,7 +132,7 @@ class Friends_Model extends Jaws_Gadget_Model
             FROM [[friend]]
             ORDER BY '. $rand;
 
-        $limit = $this->gadget->GetRegistry('limit');
+        $limit = $this->gadget->registry->get('limit');
         if (Jaws_Error::IsError($limit) || !$limit) {
             $limit = 10;
         }

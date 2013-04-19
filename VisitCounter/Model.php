@@ -91,7 +91,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
      */
     function GetCookiePeriod()
     {
-        $rs = $this->gadget->GetRegistry('period');
+        $rs = $this->gadget->registry->get('period');
         if (Jaws_Error::IsError($rs)) {
             $rs = 5;
         }
@@ -107,7 +107,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     */
     function GetOnlineVisitorsTimeout()
     {
-        $rs = $this->gadget->GetRegistry('timeout');
+        $rs = $this->gadget->registry->get('timeout');
         if (!$rs || Jaws_Error::IsError($rs)) {
             $rs = 600;
         }
@@ -123,7 +123,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
      */
     function GetStartDate()
     {
-        $rs = $this->gadget->GetRegistry('start');
+        $rs = $this->gadget->registry->get('start');
         if (!$rs || Jaws_Error::IsError($rs)) {
             $rs = date('Y-m-d H:i:s');
         }
@@ -248,12 +248,12 @@ class VisitCounter_Model extends Jaws_Gadget_Model
         }
 
         if ($type === 'unique') {
-            $total = $this->gadget->GetRegistry('unique_visits');
+            $total = $this->gadget->registry->get('unique_visits');
             $sql = '
                 SELECT COUNT([ip])
                 FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_time] >= {date}) AS visitors';
         } else {
-            $total = $this->gadget->GetRegistry('impression_visits');
+            $total = $this->gadget->registry->get('impression_visits');
             $sql = '
                 SELECT SUM([visits])
                 FROM [[ipvisitor]]
@@ -276,7 +276,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
      */
     function GetVisitType()
     {
-        $type = $this->gadget->GetRegistry('type');
+        $type = $this->gadget->registry->get('type');
         if (!$type || Jaws_Error::IsError($type)) {
             return 'unique';
         }

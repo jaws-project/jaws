@@ -34,13 +34,13 @@ class Forums_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry('topics_limit', '15');
-        $this->gadget->AddRegistry('posts_limit',  '10');
-        $this->gadget->AddRegistry('recent_limit',  '5');
-        $this->gadget->AddRegistry('date_format', 'd MN Y G:i');
-        $this->gadget->AddRegistry('edit_min_limit_time', '300');
-        $this->gadget->AddRegistry('edit_max_limit_time', '900');
-        $this->gadget->AddRegistry('enable_attachment',   'true');
+        $this->gadget->registry->add('topics_limit', '15');
+        $this->gadget->registry->add('posts_limit',  '10');
+        $this->gadget->registry->add('recent_limit',  '5');
+        $this->gadget->registry->add('date_format', 'd MN Y G:i');
+        $this->gadget->registry->add('edit_min_limit_time', '300');
+        $this->gadget->registry->add('edit_max_limit_time', '900');
+        $this->gadget->registry->add('enable_attachment',   'true');
 
         return true;
     }
@@ -70,13 +70,13 @@ class Forums_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('topics_limit');
-        $this->gadget->DelRegistry('posts_limit');
-        $this->gadget->DelRegistry('recent_limit');
-        $this->gadget->DelRegistry('date_format');
-        $this->gadget->DelRegistry('edit_min_limit_time');
-        $this->gadget->DelRegistry('edit_max_limit_time');
-        $this->gadget->DelRegistry('enable_attachment');
+        $this->gadget->registry->del('topics_limit');
+        $this->gadget->registry->del('posts_limit');
+        $this->gadget->registry->del('recent_limit');
+        $this->gadget->registry->del('date_format');
+        $this->gadget->registry->del('edit_min_limit_time');
+        $this->gadget->registry->del('edit_max_limit_time');
+        $this->gadget->registry->del('enable_attachment');
 
         return true;
     }

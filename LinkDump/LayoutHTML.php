@@ -52,7 +52,7 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $target = $this->gadget->GetRegistry('links_target');
+        $target = $this->gadget->registry->get('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';
         $block  = ($group['link_type']==0)? 'list' : 'link';
 

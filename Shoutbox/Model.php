@@ -27,7 +27,7 @@ class Shoutbox_Model extends Jaws_Gadget_Model
 
         $subject  = _t('SHOUTBOX_COMMENT_MAIL_TITLE');
         $comment .= "<br /><br />";
-        $comment .= _t("SHOUTBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->GetRegistry('site_name', 'Settings'));
+        $comment .= _t("SHOUTBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->registry->get('site_name', 'Settings'));
 
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
@@ -58,12 +58,12 @@ class Shoutbox_Model extends Jaws_Gadget_Model
         }
 
         $permalink = $GLOBALS['app']->GetSiteURL();
-        $max_strlen = (int)$this->gadget->GetRegistry('max_strlen');
+        $max_strlen = (int)$this->gadget->registry->get('max_strlen');
         if ($GLOBALS['app']->UTF8->strlen($message) > $max_strlen) {
             $message = $GLOBALS['app']->UTF8->substr($message, 0, $max_strlen - 3).'...';
         }
 
-        $status = $this->gadget->GetRegistry('comment_status');
+        $status = $this->gadget->registry->get('comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Shoutbox', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }

@@ -25,7 +25,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('SHOUTBOX_NAME'));
 
         if ($GLOBALS['app']->Session->Logged() ||
-            $this->gadget->GetRegistry('anon_post_authority') == 'true')
+            $this->gadget->registry->get('anon_post_authority') == 'true')
         {
             $tpl->SetBlock('shoutbox/fieldset');
             $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -93,7 +93,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
     function GetMessages()
     {
         $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'Model');
-        $entries = $model->GetEntries($this->gadget->GetRegistry('limit'));
+        $entries = $model->GetEntries($this->gadget->registry->get('limit'));
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
             $tpl->Load('Shoutbox.html');

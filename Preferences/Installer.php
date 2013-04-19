@@ -18,16 +18,16 @@ class Preferences_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        $this->gadget->AddRegistry('display_theme',             'true');
-        $this->gadget->AddRegistry('display_editor',            'true');
-        $this->gadget->AddRegistry('display_language',          'true');
-        $this->gadget->AddRegistry('display_calendar_type',     'true');
-        $this->gadget->AddRegistry('display_calendar_language', 'true');
-        $this->gadget->AddRegistry('display_date_format',       'true');
-        $this->gadget->AddRegistry('display_timezone',          'true');
+        $this->gadget->registry->add('display_theme',             'true');
+        $this->gadget->registry->add('display_editor',            'true');
+        $this->gadget->registry->add('display_language',          'true');
+        $this->gadget->registry->add('display_calendar_type',     'true');
+        $this->gadget->registry->add('display_calendar_language', 'true');
+        $this->gadget->registry->add('display_date_format',       'true');
+        $this->gadget->registry->add('display_timezone',          'true');
 
         //enable cookie precedence
-        $this->gadget->SetRegistry('cookie_precedence', 'true', 'Settings');
+        $this->gadget->registry->set('cookie_precedence', 'true', 'Settings');
 
         return true;
     }
@@ -41,16 +41,16 @@ class Preferences_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         // registry keys
-        $this->gadget->DelRegistry('display_theme');
-        $this->gadget->DelRegistry('display_editor');
-        $this->gadget->DelRegistry('display_language');
-        $this->gadget->DelRegistry('display_calendar_type');
-        $this->gadget->DelRegistry('display_calendar_language');
-        $this->gadget->DelRegistry('display_date_format');
-        $this->gadget->DelRegistry('display_timezone');
+        $this->gadget->registry->del('display_theme');
+        $this->gadget->registry->del('display_editor');
+        $this->gadget->registry->del('display_language');
+        $this->gadget->registry->del('display_calendar_type');
+        $this->gadget->registry->del('display_calendar_language');
+        $this->gadget->registry->del('display_date_format');
+        $this->gadget->registry->del('display_timezone');
 
         //disable cookie precedence
-        $this->gadget->SetRegistry('cookie_precedence', 'false', 'Settings');
+        $this->gadget->registry->set('cookie_precedence', 'false', 'Settings');
 
         return true;
     }
@@ -70,14 +70,14 @@ class Preferences_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Preferences/ChangeSettings');
 
         // Registry keys.
-        $this->gadget->AddRegistry('display_editor',            'true');
-        $this->gadget->AddRegistry('display_calendar_type',     'true');
-        $this->gadget->AddRegistry('display_calendar_language', 'true');
-        $this->gadget->AddRegistry('display_date_format',       'true');
-        $this->gadget->AddRegistry('display_timezone',          'true');
+        $this->gadget->registry->add('display_editor',            'true');
+        $this->gadget->registry->add('display_calendar_type',     'true');
+        $this->gadget->registry->add('display_calendar_language', 'true');
+        $this->gadget->registry->add('display_date_format',       'true');
+        $this->gadget->registry->add('display_timezone',          'true');
 
         //enable cookie precedence
-        $this->gadget->SetRegistry('cookie_precedence', 'true', 'Settings');
+        $this->gadget->registry->set('cookie_precedence', 'true', 'Settings');
 
         return true;
     }

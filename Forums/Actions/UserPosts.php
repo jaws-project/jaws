@@ -36,7 +36,7 @@ class Forums_Actions_UserPosts extends Forums_HTML
         $tpl->Load('UserPosts.html');
 
         // posts per page
-        $posts_limit = $this->gadget->GetRegistry('posts_limit');
+        $posts_limit = $this->gadget->registry->get('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
 
@@ -46,7 +46,7 @@ class Forums_Actions_UserPosts extends Forums_HTML
 
         if (!Jaws_Error::IsError($posts)) {
             // date format
-            $date_format = $this->gadget->GetRegistry('date_format');
+            $date_format = $this->gadget->registry->get('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
             $max_size = 128;

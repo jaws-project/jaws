@@ -49,7 +49,7 @@ class Blog_Actions_Comments extends Blog_HTML
                 $tpl->SetVariable('name', $c['name']);
                 $email =$c['email'];
 
-                $_obfuscator = $this->gadget->GetRegistry('obfuscator', 'Policy');
+                $_obfuscator = $this->gadget->registry->get('obfuscator', 'Policy');
                 if (($_obfuscator != 'DISABLED') && (!empty($email))){
                     require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';
                     $obf = new $_obfuscator();
@@ -286,7 +286,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
 
         /*
-        if ($this->gadget->GetRegistry('mailer', 'Settings') !== 'DISABLED') {
+        if ($this->gadget->registry->get('mailer', 'Settings') !== 'DISABLED') {
             $tpl->SetBlock('commentform/mail_me');
             $tpl->SetVariable('mail_me', _t('BLOG_MAIL_COMMENT_TO_ME'));
             $tpl->ParseBlock('commentform/mail_me');
@@ -407,13 +407,13 @@ class Blog_Actions_Comments extends Blog_HTML
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
         $url = $this->gadget->GetURLFor('SingleView', array('id' => $id));
 
-        $allow_comments_config = $this->gadget->GetRegistry('allow_comments', 'Settings');
+        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Settings');
         $restricted = $allow_comments_config == 'restricted';
         $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
 
         // Check if comments are allowed.
         if ($entry['allow_comments'] !== true ||
-            $this->gadget->GetRegistry('allow_comments') != 'true' ||
+            $this->gadget->registry->get('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
             Jaws_Header::Location($url);

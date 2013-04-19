@@ -291,10 +291,10 @@ class Contact_AdminModel extends Contact_Model
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
         $rs = array();
-        $rs[] = $this->gadget->SetRegistry('use_antispam',      $use_antispam);
-        $rs[] = $this->gadget->SetRegistry('email_format',      $email_format);
-        $rs[] = $this->gadget->SetRegistry('enable_attachment', $enable_attachment);
-        $rs[] = $this->gadget->SetRegistry('comments',          $comments);
+        $rs[] = $this->gadget->registry->set('use_antispam',      $use_antispam);
+        $rs[] = $this->gadget->registry->set('email_format',      $email_format);
+        $rs[] = $this->gadget->registry->set('enable_attachment', $enable_attachment);
+        $rs[] = $this->gadget->registry->set('comments',          $comments);
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || !$r) {

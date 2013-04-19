@@ -20,7 +20,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
     {
         $result = array();
 
-        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $site_language = $this->gadget->registry->get('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
@@ -36,7 +36,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
 
         $result[] = array(
             'title' => _t('GLOBAL_COUNT'),
-            'value' => $this->gadget->GetRegistry('recent_comment_limit')
+            'value' => $this->gadget->registry->get('recent_comment_limit')
         );
 
         return $result;
@@ -53,7 +53,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
      */
     function RecentComments($gadget, $limit = 0)
     {
-        $site_language = $this->gadget->GetRegistry('site_language', 'Settings');
+        $site_language = $this->gadget->registry->get('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);

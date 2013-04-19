@@ -117,9 +117,9 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
         $tpl->SetVariable('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('default_latitude',
-                          $this->gadget->GetRegistry('latitude'));
+                          $this->gadget->registry->get('latitude'));
         $tpl->SetVariable('default_longitude',
-                          $this->gadget->GetRegistry('longitude'));
+                          $this->gadget->registry->get('longitude'));
 
         $tpl->ParseBlock('Weather');
         return $tpl->Get();
@@ -203,14 +203,14 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
                    '&sensor=false';
 
         $options = array();
-        $options['timeout'] = (int)$this->gadget->GetRegistry('connection_timeout', 'Settings');
-        if ($this->gadget->GetRegistry('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->GetRegistry('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->GetRegistry('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->GetRegistry('proxy_pass', 'Settings');
+        $options['timeout'] = (int)$this->gadget->registry->get('connection_timeout', 'Settings');
+        if ($this->gadget->registry->get('proxy_enabled', 'Settings') == 'true') {
+            if ($this->gadget->registry->get('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->gadget->registry->get('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->gadget->registry->get('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $this->gadget->GetRegistry('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->GetRegistry('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->gadget->registry->get('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->gadget->registry->get('proxy_port', 'Settings');
         }
 
         require_once 'HTTP/Request.php';
@@ -258,7 +258,7 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $unit =& Piwi::CreateWidget('Combo', 'unit');
         $unit->AddOption(_t('WEATHER_UNIT_METRIC'), 'metric');
         $unit->AddOption(_t('WEATHER_UNIT_IMPERIAL'), 'imperial');
-        $unit->SetDefault($this->gadget->GetRegistry('unit'));
+        $unit->SetDefault($this->gadget->registry->get('unit'));
         $tpl->SetVariable('lbl_unit', _t('WEATHER_UNIT'));
         $tpl->SetVariable('unit', $unit->Get());
 
@@ -270,7 +270,7 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   6),  21600);
         $period->AddOption(_t('GLOBAL_DATE_HOURS',   8),  28800);
         $period->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
-        $period->SetDefault($this->gadget->GetRegistry('update_period'));
+        $period->SetDefault($this->gadget->registry->get('update_period'));
         $tpl->SetVariable('lbl_update_period', _t('WEATHER_UPDATE_PERIOD'));
         $tpl->SetVariable('update_period', $period->Get());
 
@@ -281,13 +281,13 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
         $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
-        $dFormat->SetDefault($this->gadget->GetRegistry('date_format'));
+        $dFormat->SetDefault($this->gadget->registry->get('date_format'));
         $tpl->SetVariable('lbl_date_format', _t('WEATHER_DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
 
         $apikey =& Piwi::CreateWidget('Entry',
                                       'api_key',
-                                      $this->gadget->GetRegistry('api_key'));
+                                      $this->gadget->registry->get('api_key'));
         $apikey->setStyle('width:200px; direction: ltr;');
         $tpl->SetVariable('lbl_api_key', _t('WEATHER_API_KEY'));
         $tpl->SetVariable('lbl_api_key_desc', _t('WEATHER_API_KEY_DESC'));

@@ -29,7 +29,7 @@ class Contact_Installer extends Jaws_Gadget_Installer
         }
 
         //registry keys.
-        $this->gadget->AddRegistry(
+        $this->gadget->registry->add(
             array(
                 'use_antispam' => 'true',
                 'email_format' => 'html',
@@ -63,11 +63,11 @@ class Contact_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('use_antispam');
-        $this->gadget->DelRegistry('email_format');
-        $this->gadget->DelRegistry('enable_attachment');
-        $this->gadget->DelRegistry('comments');
-        $this->gadget->DelRegistry('default_items');
+        $this->gadget->registry->del('use_antispam');
+        $this->gadget->registry->del('email_format');
+        $this->gadget->registry->del('enable_attachment');
+        $this->gadget->registry->del('comments');
+        $this->gadget->registry->del('default_items');
 
         return true;
     }
@@ -92,16 +92,16 @@ class Contact_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/EditSentMessage',  'true');
 
             // Registry keys.
-            $send_html = $this->gadget->GetRegistry('send_html') == 'true';
-            $this->gadget->AddRegistry('use_captcha', 'true');
-            $this->gadget->AddRegistry('email_format', $send_html? 'html' : 'text');
-            $this->gadget->AddRegistry('enable_attachment', 'false');
-            $this->gadget->DelRegistry('send_html');
+            $send_html = $this->gadget->registry->get('send_html') == 'true';
+            $this->gadget->registry->add('use_captcha', 'true');
+            $this->gadget->registry->add('email_format', $send_html? 'html' : 'text');
+            $this->gadget->registry->add('enable_attachment', 'false');
+            $this->gadget->registry->del('send_html');
         }
 
         if (version_compare($old, '0.3.1', '<')) {
-            $this->gadget->AddRegistry('comments', '');
-            $this->gadget->DelRegistry('comment');
+            $this->gadget->registry->add('comments', '');
+            $this->gadget->registry->del('comment');
         }
 
         if (version_compare($old, '0.3.2', '<')) {
@@ -110,7 +110,7 @@ class Contact_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->DelRegistry('use_captcha');
+            $this->gadget->registry->del('use_captcha');
         }
 
         if (version_compare($old, '0.3.3', '<')) {
@@ -128,7 +128,7 @@ class Contact_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/AllowAttachment', 'false');
 
             // Registry keys
-            $this->gadget->AddRegistry('default_items',
+            $this->gadget->registry->add('default_items',
                                               'name,email,url,recipient,subject,attachment,message');
 
             $new_dir = JAWS_DATA . 'contact';

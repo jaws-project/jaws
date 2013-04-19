@@ -27,7 +27,7 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('VISITCOUNTER_ACTION_TITLE'));
 
         $model    = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model');
-        $viewMode = strtolower($this->gadget->GetRegistry('mode'));
+        $viewMode = strtolower($this->gadget->registry->get('mode'));
         $theme    = $GLOBALS['app']->GetTheme();
         if (is_dir($theme['path'] . 'VisitCounter/images/')) {
             $counter_image = $theme['url'] . 'VisitCounter/images/';
@@ -80,7 +80,7 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         if (in_array('custom', $visit_counters)) {
-            $custom = stripslashes($this->gadget->GetRegistry('custom_text'));
+            $custom = stripslashes($this->gadget->registry->get('custom_text'));
             if (trim($custom) == '') {
                 $res = "$total_count - $startdate";
             } else {
@@ -121,7 +121,7 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $visit_counters = $this->gadget->GetRegistry('visit_counters');
+        $visit_counters = $this->gadget->registry->get('visit_counters');
         return $this->GetVisitorsFormat(explode(',', $visit_counters));
     }
 

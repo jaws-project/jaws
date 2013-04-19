@@ -102,7 +102,7 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
             return new Jaws_Error(_t('SHOUTBOX_ERROR_COMMENT_NOT_UPDATED'), _t('SHOUTBOX_NAME'));
         }
 
-        $max_strlen = (int)$this->gadget->GetRegistry('max_strlen');
+        $max_strlen = (int)$this->gadget->registry->get('max_strlen');
         $params              = array();
         $params['id']        = $id;
         $params['name']      = strip_tags($name);
@@ -142,9 +142,9 @@ class Shoutbox_AdminModel extends Jaws_Gadget_Model
      */
     function UpdateProperties($limit, $max_strlen, $authority)
     {
-        $res = $this->gadget->SetRegistry('limit', $limit);
-        $res = $res && $this->gadget->SetRegistry('max_strlen', $max_strlen);
-        $res = $res && $this->gadget->SetRegistry('anon_post_authority', ($authority == true)? 'true' : 'false');
+        $res = $this->gadget->registry->set('limit', $limit);
+        $res = $res && $this->gadget->registry->set('max_strlen', $max_strlen);
+        $res = $res && $this->gadget->registry->set('anon_post_authority', ($authority == true)? 'true' : 'false');
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), _t('SHOUTBOX_NAME'));

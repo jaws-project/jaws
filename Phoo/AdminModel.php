@@ -174,8 +174,8 @@ class Phoo_AdminModel extends Phoo_Model
             return Jaws_Error::raiseError($objImage->getMessage(), _t('PHOO_NAME'));
         }
 
-        $thumbSize  = explode('x', $this->gadget->GetRegistry('thumbsize'));
-        $mediumSize = explode('x', $this->gadget->GetRegistry('mediumsize'));
+        $thumbSize  = explode('x', $this->gadget->registry->get('thumbsize'));
+        $mediumSize = explode('x', $this->gadget->registry->get('mediumsize'));
 
         $objImage->load($uploadfile);
         $objImage->resize($thumbSize[0], $thumbSize[1]);
@@ -202,7 +202,7 @@ class Phoo_AdminModel extends Phoo_Model
         $params['title']       = $title;
         $params['description'] = $description;
 
-        if ($this->gadget->GetRegistry('allow_comments') == 'true' &&
+        if ($this->gadget->registry->get('allow_comments') == 'true' &&
             $album['allow_comments'])
         {
             $params['allow_comments'] = true;
@@ -210,7 +210,7 @@ class Phoo_AdminModel extends Phoo_Model
             $params['allow_comments'] = false;
         }
 
-        if ($this->gadget->GetRegistry('published') == 'true' &&
+        if ($this->gadget->registry->get('published') == 'true' &&
             $album['published'] === true &&
             $GLOBALS['app']->Session->GetPermission('Phoo', 'ManageAlbums'))
         {
@@ -246,7 +246,7 @@ class Phoo_AdminModel extends Phoo_Model
         }
 
         // Lets remove the original if keep_original = false
-        if ($this->gadget->GetRegistry('keep_original') == 'false') {
+        if ($this->gadget->registry->get('keep_original') == 'false') {
             @unlink(JAWS_DATA . 'phoo/' . $params['filename']);
         }
 
@@ -507,19 +507,19 @@ class Phoo_AdminModel extends Phoo_Model
                           $comment_status, $albums_order_type, $photos_order_type)
     {
         $rs = array();
-        $rs[] = $this->gadget->SetRegistry('default_action',    $default_action);
-        $rs[] = $this->gadget->SetRegistry('published',         $published);
-        $rs[] = $this->gadget->SetRegistry('allow_comments',    $allow_comments);
-        $rs[] = $this->gadget->SetRegistry('moblog_album',      $moblog_album);
-        $rs[] = $this->gadget->SetRegistry('moblog_limit',      $moblog_limit);
-        $rs[] = $this->gadget->SetRegistry('photoblog_album',   $photoblog_album);
-        $rs[] = $this->gadget->SetRegistry('photoblog_limit',   $photoblog_limit);
-        $rs[] = $this->gadget->SetRegistry('show_exif_info',    $show_exif_info);
-        $rs[] = $this->gadget->SetRegistry('keep_original',     $keep_original);
-        $rs[] = $this->gadget->SetRegistry('thumbnail_limit',   $thumb_limit);
-        $rs[] = $this->gadget->SetRegistry('comment_status',    $comment_status);
-        $rs[] = $this->gadget->SetRegistry('albums_order_type', $albums_order_type);
-        $rs[] = $this->gadget->SetRegistry('photos_order_type', $photos_order_type);
+        $rs[] = $this->gadget->registry->set('default_action',    $default_action);
+        $rs[] = $this->gadget->registry->set('published',         $published);
+        $rs[] = $this->gadget->registry->set('allow_comments',    $allow_comments);
+        $rs[] = $this->gadget->registry->set('moblog_album',      $moblog_album);
+        $rs[] = $this->gadget->registry->set('moblog_limit',      $moblog_limit);
+        $rs[] = $this->gadget->registry->set('photoblog_album',   $photoblog_album);
+        $rs[] = $this->gadget->registry->set('photoblog_limit',   $photoblog_limit);
+        $rs[] = $this->gadget->registry->set('show_exif_info',    $show_exif_info);
+        $rs[] = $this->gadget->registry->set('keep_original',     $keep_original);
+        $rs[] = $this->gadget->registry->set('thumbnail_limit',   $thumb_limit);
+        $rs[] = $this->gadget->registry->set('comment_status',    $comment_status);
+        $rs[] = $this->gadget->registry->set('albums_order_type', $albums_order_type);
+        $rs[] = $this->gadget->registry->set('photos_order_type', $photos_order_type);
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || $r === false) {

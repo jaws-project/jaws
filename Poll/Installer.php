@@ -29,7 +29,7 @@ class Poll_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys.
-        $this->gadget->AddRegistry('cookie_period',  '150');
+        $this->gadget->registry->add('cookie_period',  '150');
 
         return true;
     }
@@ -56,7 +56,7 @@ class Poll_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('cookie_period');
+        $this->gadget->registry->del('cookie_period');
 
         return true;
     }
@@ -92,7 +92,7 @@ class Poll_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/UpdateProperties');
 
             // Registry keys.
-            $this->gadget->AddRegistry('cookie_period',  '150');
+            $this->gadget->registry->add('cookie_period',  '150');
         }
 
         $result = $this->installSchema('schema.xml', '', "0.8.0.xml");

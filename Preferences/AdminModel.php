@@ -27,7 +27,7 @@ class Preferences_AdminModel extends Preferences_Model
 
         foreach ($preferences_config as $Key => $Value) {
             if (in_array($Key, $prefKeys)) {
-                $res = $this->gadget->SetRegistry($Key, (empty($Value)? 'false' : 'true'));
+                $res = $this->gadget->registry->set($Key, (empty($Value)? 'false' : 'true'));
                 if (!$res) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PREFERENCES_ERROR_PROPERTIES_NOT_UPDATED'), _t('PREFERENCES_NAME'));
@@ -35,7 +35,7 @@ class Preferences_AdminModel extends Preferences_Model
             }
         }
 
-        $this->gadget->SetRegistry(
+        $this->gadget->registry->set(
             'cookie_precedence',
             (empty($preferences_config['cookie_precedence'])? 'false' : 'true'),
             'Settings'

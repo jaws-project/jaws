@@ -33,10 +33,10 @@ class Weather_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry('unit', 'metric');
-        $this->gadget->AddRegistry('date_format', 'DN d MN');
-        $this->gadget->AddRegistry('update_period', '3600');
-        $this->gadget->AddRegistry('api_key', '');
+        $this->gadget->registry->add('unit', 'metric');
+        $this->gadget->registry->add('date_format', 'DN d MN');
+        $this->gadget->registry->add('update_period', '3600');
+        $this->gadget->registry->add('api_key', '');
 
         return true;
     }
@@ -58,10 +58,10 @@ class Weather_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('unit');
-        $this->gadget->DelRegistry('date_format');
-        $this->gadget->DelRegistry('update_period');
-        $this->gadget->DelRegistry('api_key');
+        $this->gadget->registry->del('unit');
+        $this->gadget->registry->del('date_format');
+        $this->gadget->registry->del('update_period');
+        $this->gadget->registry->del('api_key');
 
         return true;
     }
@@ -95,19 +95,19 @@ class Weather_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
 
             // Registry keys
-            $this->gadget->AddRegistry('unit', 'metric');
-            $this->gadget->AddRegistry('date_format', 'DN d MN');
-            $this->gadget->AddRegistry('update_period', '3600');
-            $this->gadget->DelRegistry('refresh');
-            $this->gadget->DelRegistry('cities');
-            $this->gadget->DelRegistry('units');
-            $this->gadget->DelRegistry('forecast');
-            $this->gadget->DelRegistry('partner_id');
-            $this->gadget->DelRegistry('license_key');
+            $this->gadget->registry->add('unit', 'metric');
+            $this->gadget->registry->add('date_format', 'DN d MN');
+            $this->gadget->registry->add('update_period', '3600');
+            $this->gadget->registry->del('refresh');
+            $this->gadget->registry->del('cities');
+            $this->gadget->registry->del('units');
+            $this->gadget->registry->del('forecast');
+            $this->gadget->registry->del('partner_id');
+            $this->gadget->registry->del('license_key');
         }
 
         // Registry keys
-        $this->gadget->AddRegistry('api_key', '');
+        $this->gadget->registry->add('api_key', '');
 
         return true;
     }

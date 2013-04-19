@@ -34,8 +34,8 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry key
-        $this->gadget->AddRegistry('max_limit_count', '100');
-        $this->gadget->AddRegistry('links_target', 'blank');
+        $this->gadget->registry->add('max_limit_count', '100');
+        $this->gadget->registry->add('links_target', 'blank');
 
         return true;
     }
@@ -63,8 +63,8 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
         }
 
         // registry keys
-        $this->gadget->DelRegistry('max_limit_count');
-        $this->gadget->DelRegistry('links_target');
+        $this->gadget->registry->del('max_limit_count');
+        $this->gadget->registry->del('links_target');
 
         return true;
     }
@@ -99,10 +99,10 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/LinkDump/DeleteLink');
 
             // Registry keys.
-            $this->gadget->AddRegistry('max_limit_count', '100');
-            $this->gadget->AddRegistry('links_target', 'blank');
-            $this->gadget->DelRegistry('limitation');
-            $this->gadget->DelRegistry('target');
+            $this->gadget->registry->add('max_limit_count', '100');
+            $this->gadget->registry->add('links_target', 'blank');
+            $this->gadget->registry->del('limitation');
+            $this->gadget->registry->del('target');
         }
 
         return true;

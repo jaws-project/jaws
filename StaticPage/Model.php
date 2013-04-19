@@ -89,7 +89,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetDefaultPage()
     {
-        $defaultPage = $this->gadget->GetRegistry('default_page');
+        $defaultPage = $this->gadget->registry->get('default_page');
 
         $res = $this->GetPage($defaultPage);
         if (Jaws_Error::IsError($res) || !isset($res['page_id']) || $res['published'] === false) {

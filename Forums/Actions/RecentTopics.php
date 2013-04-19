@@ -58,18 +58,18 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
         }
 
         // recent posts limit
-        $recent_limit = $this->gadget->GetRegistry('recent_limit');
+        $recent_limit = $this->gadget->registry->get('recent_limit');
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topics = $tModel->GetRecentTopics($group['id'], $recent_limit);
         if (!Jaws_Error::IsError($topics)) {
             // date format
-            $date_format = $this->gadget->GetRegistry('date_format');
+            $date_format = $this->gadget->registry->get('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
             // posts per page
-            $posts_limit = $this->gadget->GetRegistry('posts_limit');
+            $posts_limit = $this->gadget->registry->get('posts_limit');
             $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
             $max_size = 128;

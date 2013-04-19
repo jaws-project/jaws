@@ -62,7 +62,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('incompleteFields',   _t('LINKDUMP_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmDeleteGroup', _t('LINKDUMP_GROUPS_DELETE_CONFIRM'));
         $tpl->SetVariable('confirmDeleteLink',  _t('LINKDUMP_LINKS_DELETE_CONFIRM'));
-        $tpl->SetVariable('max_limit_count', $this->gadget->GetRegistry('max_limit_count'));
+        $tpl->SetVariable('max_limit_count', $this->gadget->registry->get('max_limit_count'));
 
         $tpl->ParseBlock('linkdump/links_base');
         $tpl->ParseBlock('linkdump');

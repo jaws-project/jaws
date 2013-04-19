@@ -106,7 +106,7 @@ class Webcam_AdminModel extends Webcam_Model
      */
     function UpdateProperties($limit)
     {
-        $res = $this->gadget->SetRegistry('limit_random', $limit);
+        $res = $this->gadget->registry->set('limit_random', $limit);
         if ($res || !Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;

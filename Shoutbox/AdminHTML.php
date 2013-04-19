@@ -131,7 +131,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 20; ++$i) {
                 $limitcombo->AddOption($i, $i);
             }
-            $limit = $this->gadget->GetRegistry('limit');
+            $limit = $this->gadget->registry->get('limit');
             if (Jaws_Error::IsError($limit)) {
                 $limit = 10;
             }
@@ -144,7 +144,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
             for ($i = 1; $i <= 10; ++$i) {
                 $max_lencombo->AddOption($i*25, $i*25);
             }
-            $max_strlen = $this->gadget->GetRegistry('max_strlen');
+            $max_strlen = $this->gadget->registry->get('max_strlen');
             if (Jaws_Error::IsError($max_strlen)) {
                 $max_strlen = 125;
             }
@@ -156,7 +156,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
             $authority->SetTitle(_t('SHOUTBOX_ANON_POST_AUTHORITY'));
             $authority->AddOption(_t('GLOBAL_DISABLED'), 'false');
             $authority->AddOption(_t('GLOBAL_ENABLED'),  'true');
-            $anon_authority = $this->gadget->GetRegistry('anon_post_authority');
+            $anon_authority = $this->gadget->registry->get('anon_post_authority');
             $authority->SetDefault($anon_authority == 'true'? 'true' : 'false');
             $fieldset->Add($authority);
 

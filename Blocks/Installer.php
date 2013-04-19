@@ -24,7 +24,7 @@ class Blocks_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys.
-        $this->gadget->AddRegistry('pluggable',  'false');
+        $this->gadget->registry->add('pluggable',  'false');
 
         return true;
     }
@@ -46,7 +46,7 @@ class Blocks_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->DelRegistry('pluggable');
+        $this->gadget->registry->del('pluggable');
 
         return true;
     }
@@ -67,7 +67,7 @@ class Blocks_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys.
-        $this->gadget->DelRegistry('searchable');
+        $this->gadget->registry->del('searchable');
 
         return true;
     }

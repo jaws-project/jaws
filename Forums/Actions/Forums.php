@@ -33,11 +33,11 @@ class Forums_Actions_Forums extends Forums_HTML
         $tpl->SetVariable('url', $this->gadget->GetURLFor('Forums'));
 
         // date format
-        $date_format = $this->gadget->GetRegistry('date_format');
+        $date_format = $this->gadget->registry->get('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
         // posts per page
-        $posts_limit = $this->gadget->GetRegistry('posts_limit');
+        $posts_limit = $this->gadget->registry->get('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');

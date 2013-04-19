@@ -24,7 +24,7 @@ class Friends_Installer extends Jaws_Gadget_Installer
         }
 
         //registry keys.
-        $this->gadget->AddRegistry('limit', '5');
+        $this->gadget->registry->add('limit', '5');
 
         return true;
     }
@@ -46,7 +46,7 @@ class Friends_Installer extends Jaws_Gadget_Installer
         }
 
         //registry keys.
-        $this->gadget->DelRegistry('limit');
+        $this->gadget->registry->del('limit');
 
         return true;
     }
