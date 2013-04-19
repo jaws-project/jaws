@@ -189,6 +189,9 @@ class Jaws_Gadget
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
 
+        // load gadget registry interface
+        $this->registry = new Jaws_Gadget_Registry($gadget);
+
         // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
         // load ACLs
@@ -453,69 +456,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Get registry key value
-     *
-     * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $gadget (Optional) Gadget name
-     * @return  mixed   Returns key value if exists otherwise null
-     */
-    function GetRegistry($name, $gadget = '')
-    {
-        $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Get($name, $gadget);
-    }
-
-    /**
-     * Set registry key value
-     *
-     * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $value  Key value
-     * @param   string  $gadget (Optional) Gadget name
-     * @return  bool    Returns True or False
-     */
-    function SetRegistry($name, $value, $gadget = '')
-    {
-        $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Set($name, $value, $gadget);
-    }
-
-    /**
-     * Add registry key value
-     *
-     * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $value  Key value
-     * @param   string  $gadget (Optional) Gadget name
-     * @return  bool    Returns True or False
-     */
-    function AddRegistry($name, $value = '', $gadget = '')
-    {
-        if (is_array($name)) {
-            $gadget = empty($value)? $this->name : $value;
-            return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget);
-        } else {
-            $gadget = empty($gadget)? $this->name : $gadget;
-            return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget);
-        }
-    }
-
-    /**
-     * Delete registry key
-     *
-     * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $gadget (Optional) Gadget name
-     * @return  bool    Returns True or False
-     */
-    function DelRegistry($name, $gadget = '')
-    {
-        $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Delete($gadget, $name);
-    }
-
-    /**
      * Parses the input text
      *
      * @access  public
@@ -618,7 +558,7 @@ class Jaws_Gadget
             $gadgets_status[$gadget] = false;
             if (self::IsGadgetInstalled($gadget)) {
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
-                $current_version = $objGadget->GetRegistry('version');
+                $current_version = $objGadget->registry->get('version');
                 $gadgets_status[$gadget] = version_compare($objGadget->_Version, $current_version, '>')? false : true;
             }
         }

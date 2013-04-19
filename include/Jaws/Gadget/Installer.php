@@ -168,7 +168,7 @@ class Jaws_Gadget_Installer
             );
         }
 
-        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $this->gadget->name) {
+        if ($this->gadget->registry->get('main_gadget', 'Settings') == $this->gadget->name) {
             return Jaws_Error::raiseError(
                 "you can't uninstall main gadget",
                 __FUNCTION__
@@ -240,7 +240,7 @@ class Jaws_Gadget_Installer
      */
     function UpgradeGadget()
     {
-        $oldVersion = $this->gadget->GetRegistry('version', $this->gadget->name);
+        $oldVersion = $this->gadget->registry->get('version', $this->gadget->name);
         $newVersion = $this->gadget->_Version;
         if (version_compare($oldVersion, $newVersion, ">=")) {
             return true;
@@ -342,7 +342,7 @@ class Jaws_Gadget_Installer
             );
         }
 
-        if ($this->gadget->GetRegistry('main_gadget', 'Settings') == $this->gadget->name) {
+        if ($this->gadget->registry->get('main_gadget', 'Settings') == $this->gadget->name) {
             return Jaws_Error::raiseError(
                 "you can't disable main gadget",
                 __FUNCTION__
