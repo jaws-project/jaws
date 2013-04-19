@@ -31,11 +31,12 @@ class reCAPTCHA
         }
     }
 
-    function Get($field, $entryid)
+    function Get($field)
     {
         $res = array();
-        $publickey = $this->registry->get('reCAPTCHA_public_key');
+        $publickey = $GLOBALS['app']->Registry->Get('reCAPTCHA_public_key');
         $reCAPTCHA = recaptcha_get_html($publickey, $this->_error);
+        $res['key'] = null;
         $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
         $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
         $res['captcha']->setTitle(_t('GLOBAL_CAPTCHA'));
@@ -48,7 +49,7 @@ class reCAPTCHA
     {
         $request =& Jaws_Request::getInstance();
         if ($request->get('recaptcha_response_field','post')) {
-            $privatekey = $this->registry->get('reCAPTCHA_private_key');
+            $privatekey = $GLOBALS['app']->Registry->Get('reCAPTCHA_private_key');
             $resp = recaptcha_check_answer ($privatekey,
                                             $_SERVER["REMOTE_ADDR"],
                                             $request->get('recaptcha_challenge_field', 'post'),

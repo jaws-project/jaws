@@ -2,11 +2,12 @@
 /**
  * MathCaptcha
  *
- * @category   Captcha
- * @package    Policy
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2006-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Captcha
+ * @package     Policy
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2006-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class MathCaptcha
 {
@@ -19,14 +20,6 @@ class MathCaptcha
     {
         // If not installed try to install it
         if ($GLOBALS['app']->Registry->Get('math_captcha', 'Policy') != 'ver2_installed') {
-            $schema = JAWS_PATH . 'gadgets/Policy/captchas/MathCaptcha/schema.xml';
-            if (!file_exists($schema)) {
-                Jaws_Error::Fatal($schema . " doesn't exists", __FILE__, __LINE__);
-            }
-            $result = $GLOBALS['db']->installSchema($schema);
-            if (Jaws_Error::IsError($result)) {
-                Jaws_Error::Fatal("Can't install MathCaptcha schema", __FILE__, __LINE__);
-            }
             $GLOBALS['app']->Registry->NewKey('math_captcha', 'ver2_installed', 'Policy');
             $GLOBALS['app']->Registry->NewKey('math_accessibility', 'false', 'Policy');
         }
@@ -38,7 +31,7 @@ class MathCaptcha
      * @access  public
      * @return  array    Array indexed by captcha (the image entry) and entry (the input)
      */
-    function Get($field, $entryid)
+    function Get($field)
     {
         list($key, $value1, $oprt, $value2) = $this->GetKey();
         if ($GLOBALS['app']->Registry->Get('math_accessibility', 'Policy') === 'true') {
@@ -62,45 +55,26 @@ class MathCaptcha
             $title = _t('GLOBAL_CAPTCHA_QUESTION');
         }
 
-        $prefix = $this->GetPrefix();
-        $img = $this->HexEncode(
-            $GLOBALS['app']->Map->GetURLFor(
-                'Policy',
-                'Captcha',
-                array('field' => $field, 'key' => $prefix . $key)
-            )
+        $imgSrc = $GLOBALS['app']->Map->GetURLFor(
+            'Policy',
+            'Captcha',
+            array('field' => $field, 'key' => $key)
         );
 
-        $entryid = isset($entryid)? $entryid : rand();
         $res = array();
+        $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
+        $res['key']->SetID("captcha_key_$key");
         $res['label'] = _t('GLOBAL_CAPTCHA_QUESTION');
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle($title);
-        $res['captcha']->SetID('captcha_img_'. $entryid);
+        $res['captcha']->SetID("captcha_image_$key");
         $res['captcha']->SetClass('captcha');
-        $res['captcha']->SetSrc($img);
-        $res['entry'] =& Piwi::CreateWidget('Entry', $prefix . $key, '');
-        $res['entry']->SetID('captcha_'. $entryid);
+        $res['captcha']->SetSrc($imgSrc);
+        $res['entry'] =& Piwi::CreateWidget('Entry', 'captcha_value', '');
+        $res['entry']->SetID("captcha_value_$key");
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
         $res['description'] = _t('GLOBAL_CAPTCHA_QUESTION_DESC');
-        return $res;
-    }
-
-    /**
-     * Convert the string to an image so captcha can serve it
-     *
-     * @access  public
-     * @param   string  $string Text to show
-     * @return  string  String in HexCode
-     */
-    function HexEncode($string) 
-    {
-        $string = bin2hex($string);
-        $res = '';
-        for($i=0; $i<strlen($string); $i+=2) {
-            $res .= '&#' . hexdec($string{$i} . $string{$i+1}) . ';';
-        }       
         return $res;
     }
 
@@ -113,22 +87,14 @@ class MathCaptcha
     function Check()
     {
         $request =& Jaws_Request::getInstance();
-        $key   = '';
-        $value = '';
-        $prefix = $this->GetPrefix();
-        foreach ($request->data['post'] as $k => $v) {
-            if (substr($k, 0, strlen($prefix)) == $prefix) {
-                $key = substr($k, 32);
-                $value = $v; 
-                break;
-            }
-        }
+        $post = $request->get(array('captcha_key', 'captcha_value'), 'post');
+        list($key, $value) = array_values($post);
 
         $captcha_value = '$captcha_value = '. $this->GetValue($key).';';
         eval($captcha_value);
         $result = ($captcha_value !== false) && ($captcha_value === (int) $value);
 
-        $this->RemoveKey($key);
+        $this->Delete($key);
         return $result;
     }
 
@@ -138,34 +104,11 @@ class MathCaptcha
      * @access  public
      * @param   string  $key  Captcha key
      */
-    function RemoveKey($key = null)
+    function Delete($key = 0)
     {
-        $params = array();
-        // 10 minutes for cleantime
-        $params['key'] = $key;
-        $params['cleantime'] = date('Y-m-d H:i:s', time() - 600);
-        $sql = "
-            DELETE FROM [[captcha_math]]
-            WHERE [createtime] <= {cleantime}";
-        if (!is_null($key)) {
-            $sql .= ' OR [key] = {key}';
-        }
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            Jaws_Error::Fatal("Can't remove keys", __FILE__, __LINE__);
-        }
-    }
-
-    /**
-     * Returns the prefix (we use it to know where the captcha came from)
-     *
-     * @access  private
-     * @return  string    Prefix to use
-     */
-    function GetPrefix()
-    {
-        return md5(implode(Jaws_Utils::GetRemoteAddress()) . $GLOBALS['app']->getSiteURL());
+        $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
+        $tblCaptcha->delete()->where('id', $key)->or()->where('updatetime', time() - 600, '<');
+        $result = $tblCaptcha->exec();
     }
 
     /**
@@ -177,15 +120,10 @@ class MathCaptcha
      */
     function GetValue($key)
     {
-        $params = array();
-        $params['key'] = $key;
-        $sql = "
-            SELECT [value]
-            FROM [[captcha_math]]
-            WHERE [key] = {key}";
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
+        $result = $tblCaptcha->select('result')->where('id', $key)->getOne();
         if (Jaws_Error::IsError($result) || empty($result)) {
-            $result = false;
+            $result = '';
         }
 
         return $result;
@@ -199,24 +137,12 @@ class MathCaptcha
      */
     function GetKey()
     {
-        $key = uniqid(rand(0, 99999)) . time() . floor(microtime()*1000);
         $value = $this->GenerateRandomValue();
-
-        $params = array();
-        $params['key']   = $key;
-        $params['value'] = implode('', $value);
-        $params['createtime'] = $GLOBALS['db']->Date();
-
-        $sql = "
-            INSERT INTO [[captcha_math]]
-                ([key], [value], [createtime])
-            VALUES
-                ({key}, {value}, {createtime})";
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $key = '';
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, $result->getMessage());
+        $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
+        $tblCaptcha->insert(array('result' => implode('', $value), 'updatetime' => time()));
+        $key = $tblCaptcha->exec();
+        if (Jaws_Error::IsError($key)) {
+            $key = 0;
         }
 
         array_unshift($value, $key);
@@ -261,7 +187,6 @@ class MathCaptcha
      */
     function Image($key)
     {
-        $key = str_replace($this->GetPrefix(), '', $key);
         $bg = dirname(__FILE__) . '/MathCaptcha/bg.png';
         $im = imagecreatefrompng($bg);
         imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));
