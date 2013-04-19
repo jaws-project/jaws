@@ -34,7 +34,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
 
         // registry keys
-        $this->gadget->AddRegistry('pluggable', 'false');
+        $this->gadget->registry->add('pluggable', 'false');
         return true;
     }
 

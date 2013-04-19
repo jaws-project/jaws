@@ -33,7 +33,7 @@ class Search_Model extends Jaws_Gadget_Model
 
         $this->_SearchTerms = $options;
         $gadgetList = $this->GetSearchableGadgets();
-        $gSearchable = $this->gadget->GetRegistry('searchable_gadgets');
+        $gSearchable = $this->gadget->registry->get('searchable_gadgets');
         $gadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
         if (array_key_exists('gadgets',  $options) &&
             !empty($options['gadgets']) &&
@@ -262,7 +262,7 @@ class Search_Model extends Jaws_Gadget_Model
         }
 
         $options['all'] = '';
-        $min_key_len = $this->gadget->GetRegistry('min_key_len');
+        $min_key_len = $this->gadget->registry->get('min_key_len');
         foreach(array_keys($newOptions) as $option) {
             if (!empty($newOptions[$option])) {
                 $options[$option] = trim(isset($options[$option])?

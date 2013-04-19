@@ -72,7 +72,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         }
 
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $this->gadget->GetRegistry('site_name', 'Settings');
+        $site_name = $this->gadget->registry->get('site_name', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('NewPassword.txt');

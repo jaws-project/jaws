@@ -54,7 +54,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
             }
         }
 
-        if ($this->gadget->GetRegistry('show_viewsite', 'Settings') == 'true') {
+        if ($this->gadget->registry->get('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
                                                  'tname' => _t('CONTROLPANEL_GENERAL_VIEWSITE'),
                                                  'desc'  => _t('CONTROLPANEL_GENERAL_VIEWSITE'));
@@ -140,7 +140,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
      */
     function ShowLoginForm($message = '')
     {
-        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->registry->get('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -191,7 +191,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('username', $reqpost['username']);
         $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
-        $auth_method = $this->gadget->GetRegistry('auth_method', 'Users');
+        $auth_method = $this->gadget->registry->get('auth_method', 'Users');
         if (!is_null($reqpost['auth_method']) || $auth_method !== 'Default') {
             $auth_method = is_null($reqpost['auth_method'])? $auth_method : $reqpost['auth_method'];
             $ltpl->SetBlock('layout/auth_method');

@@ -827,10 +827,10 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function SaveSettings($enabled, $use_aliases, $precedence, $extension)
     {
-        $res = $this->gadget->SetRegistry('map_enabled', ($enabled === true)? 'true' : 'false');
-        $res = $res && $this->gadget->SetRegistry('map_custom_precedence', ($precedence === true)?  'true' : 'false');
-        $res = $res && $this->gadget->SetRegistry('map_extensions',  $extension);
-        $res = $res && $this->gadget->SetRegistry('map_use_aliases', ($use_aliases === true)? 'true' : 'false');
+        $res = $this->gadget->registry->set('map_enabled', ($enabled === true)? 'true' : 'false');
+        $res = $res && $this->gadget->registry->set('map_custom_precedence', ($precedence === true)?  'true' : 'false');
+        $res = $res && $this->gadget->registry->set('map_extensions',  $extension);
+        $res = $res && $this->gadget->registry->set('map_use_aliases', ($use_aliases === true)? 'true' : 'false');
 
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);

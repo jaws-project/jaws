@@ -31,7 +31,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry(array(
+        $this->gadget->registry->add(array(
             'pluggable' => 'false',
             'latest_limit' => '10',
             'password_recovery' => 'false',
@@ -143,7 +143,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
 
             // Registry key
-            $this->gadget->AddRegistry('latest_limit', '10');
+            $this->gadget->registry->add('latest_limit', '10');
 
             // ACL keys
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');

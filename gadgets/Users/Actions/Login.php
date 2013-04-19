@@ -20,7 +20,7 @@ class Users_Actions_Login extends Users_HTML
      */
     function SendRecoverKey()
     {
-        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->registry->get('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -53,7 +53,7 @@ class Users_Actions_Login extends Users_HTML
      */
     function ForgotLogin()
     {
-        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->registry->get('password_recovery') !== 'true') {
             return parent::_404();
         }
 
@@ -103,7 +103,7 @@ class Users_Actions_Login extends Users_HTML
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('LoginBox.html');
 
-        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->registry->get('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -170,7 +170,7 @@ class Users_Actions_Login extends Users_HTML
         }
         $tpl->ParseBlock('LoginBox/remember');
 
-        if ($this->gadget->GetRegistry('anon_register') == 'true') {
+        if ($this->gadget->registry->get('anon_register') == 'true') {
             $link =& Piwi::CreateWidget(
                 'Link',
                 _t('USERS_REGISTER'),
@@ -179,7 +179,7 @@ class Users_Actions_Login extends Users_HTML
             $tpl->SetVariable('user-register', $link->Get());
         }
 
-        if ($this->gadget->GetRegistry('password_recovery') == 'true') {
+        if ($this->gadget->registry->get('password_recovery') == 'true') {
             $link =& Piwi::CreateWidget(
                 'Link',
                 _t('USERS_FORGOT_LOGIN'),
@@ -259,7 +259,7 @@ class Users_Actions_Login extends Users_HTML
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
-                $admin_script = $this->gadget->GetRegistry('admin_script', 'Settings');
+                $admin_script = $this->gadget->registry->get('admin_script', 'Settings');
                 $tpl->SetVariable('cpanel_url', empty($admin_script)? 'admin.php' : $admin_script);
                 $tpl->ParseBlock('UserLinks/cpanel');
             }
@@ -285,7 +285,7 @@ class Users_Actions_Login extends Users_HTML
             $tpl->SetVariable('login_url', $login_url);
 
             // registeration
-            if ($this->gadget->GetRegistry('anon_register') == 'true') {
+            if ($this->gadget->registry->get('anon_register') == 'true') {
                 $tpl->SetBlock('LoginLinks/registeration');
                 $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
                 $tpl->SetVariable('registeration_url',  $this->gadget->GetURLFor('Registration'));
@@ -293,7 +293,7 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // forget user/password
-            if ($this->gadget->GetRegistry('password_recovery') == 'true') {
+            if ($this->gadget->registry->get('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
                 $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
                 $tpl->SetVariable('forgot_url',  $this->gadget->GetURLFor('ForgotLogin'));
@@ -318,7 +318,7 @@ class Users_Actions_Login extends Users_HTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('username', 'password', 'remember', 'usecrypt', 'referrer'), 'post');
 
-        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
+        if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();

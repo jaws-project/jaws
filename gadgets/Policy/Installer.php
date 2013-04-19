@@ -24,7 +24,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->AddRegistry(array(
+        $this->gadget->registry->add(array(
             'block_undefined_ip' => 'false',
             'block_undefined_agent' => 'false',
             'allow_duplicate' => 'no',
@@ -66,12 +66,12 @@ class Policy_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '0.3.0', '<')) {
-            $this->gadget->AddRegistry('default_captcha', $this->gadget->GetRegistry('captcha'));
-            $this->gadget->AddRegistry('default_captcha_driver', $this->gadget->GetRegistry('captcha_driver'));
-            $this->gadget->AddRegistry('login_captcha', '1');
-            $this->gadget->AddRegistry('login_captcha_driver', 'MathCaptcha');
-            $this->gadget->DelRegistry('captcha');
-            $this->gadget->DelRegistry('captcha_driver');
+            $this->gadget->registry->add('default_captcha', $this->gadget->registry->get('captcha'));
+            $this->gadget->registry->add('default_captcha_driver', $this->gadget->registry->get('captcha_driver'));
+            $this->gadget->registry->add('login_captcha', '1');
+            $this->gadget->registry->add('login_captcha_driver', 'MathCaptcha');
+            $this->gadget->registry->del('captcha');
+            $this->gadget->registry->del('captcha_driver');
         }
 
         return true;

@@ -30,7 +30,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'HTTPError');
 
         // Registry keys
-        $this->gadget->AddRegistry(array(
+        $this->gadget->registry->add(array(
             'map_enabled' => 'true',
             'map_use_file' => 'true',
             'map_use_rewrite' => 'false',

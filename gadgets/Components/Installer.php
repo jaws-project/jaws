@@ -18,7 +18,7 @@ class Components_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        $this->gadget->AddRegistry('pluggable', 'false');
+        $this->gadget->registry->add('pluggable', 'false');
         return true;
     }
 

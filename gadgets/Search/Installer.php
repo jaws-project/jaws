@@ -19,10 +19,10 @@ class Search_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         // Registry keys
-        $this->gadget->AddRegistry('searchable_gadgets', '*');
-        $this->gadget->AddRegistry('min_key_len', '3');
-        $this->gadget->AddRegistry('max_result_len', '500');
-        $this->gadget->AddRegistry('results_limit', '10');
+        $this->gadget->registry->add('searchable_gadgets', '*');
+        $this->gadget->registry->add('min_key_len', '3');
+        $this->gadget->registry->add('max_result_len', '500');
+        $this->gadget->registry->add('results_limit', '10');
 
         return true;
     }
@@ -36,10 +36,10 @@ class Search_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         // registry key
-        $this->gadget->DelRegistry('searchable_gadgets');
-        $this->gadget->DelRegistry('min_key_len');
-        $this->gadget->DelRegistry('max_result_len');
-        $this->gadget->DelRegistry('results_limit');
+        $this->gadget->registry->del('searchable_gadgets');
+        $this->gadget->registry->del('min_key_len');
+        $this->gadget->registry->del('max_result_len');
+        $this->gadget->registry->del('results_limit');
 
         return true;
     }
@@ -56,10 +56,10 @@ class Search_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.7.0', '<')) {
             // Registry keys.
-            $this->gadget->AddRegistry('min_key_len', '3');
-            $this->gadget->AddRegistry('max_result_len', '500');
+            $this->gadget->registry->add('min_key_len', '3');
+            $this->gadget->registry->add('max_result_len', '500');
         }
-        $this->gadget->AddRegistry('results_limit', '10');
+        $this->gadget->registry->add('results_limit', '10');
 
         return true;
     }

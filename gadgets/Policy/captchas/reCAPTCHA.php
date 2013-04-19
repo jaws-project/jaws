@@ -34,7 +34,7 @@ class reCAPTCHA
     function Get($field, $entryid)
     {
         $res = array();
-        $publickey = $this->GetRegistry('reCAPTCHA_public_key');
+        $publickey = $this->registry->get('reCAPTCHA_public_key');
         $reCAPTCHA = recaptcha_get_html($publickey, $this->_error);
         $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
         $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
@@ -48,7 +48,7 @@ class reCAPTCHA
     {
         $request =& Jaws_Request::getInstance();
         if ($request->get('recaptcha_response_field','post')) {
-            $privatekey = $this->GetRegistry('reCAPTCHA_private_key');
+            $privatekey = $this->registry->get('reCAPTCHA_private_key');
             $resp = recaptcha_check_answer ($privatekey,
                                             $_SERVER["REMOTE_ADDR"],
                                             $request->get('recaptcha_challenge_field', 'post'),

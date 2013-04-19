@@ -133,8 +133,8 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
     {
         $this->gadget->CheckPermission('ManageUsers');
         // DatePicker
-        $calType = strtolower($this->gadget->GetRegistry('calendar_type', 'Settings'));
-        $calLang = strtolower($this->gadget->GetRegistry('calendar_language', 'Settings'));
+        $calType = strtolower($this->gadget->registry->get('calendar_type', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->get('calendar_language', 'Settings'));
         if ($calType != 'gregorian') {
             $GLOBALS['app']->Layout->AddScriptLink("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
@@ -147,7 +147,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         // xtree
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
         // RSA encryption
-        if ($this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true') {
+        if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true') {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
         }
 
@@ -270,7 +270,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->Load('Admin/User.html');
         $tpl->SetBlock('user');
 
-        $use_crypt = $this->gadget->GetRegistry('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->registry->get('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -343,8 +343,8 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $dExpiry =& Piwi::CreateWidget('DatePicker', 'expiry_date', '');
         $dExpiry->SetId('expiry_date');
         $dExpiry->showTimePicker(true);
-        $dExpiry->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
-        $dExpiry->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
+        $dExpiry->setLanguageCode($this->gadget->registry->get('calendar_language', 'Settings'));
+        $dExpiry->setCalType($this->gadget->registry->get('calendar_type', 'Settings'));
         $dExpiry->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_expiry_date', _t('USERS_USERS_EXPIRY_DATE'));
         $tpl->SetVariable('expiry_date', $dExpiry->Get());
@@ -455,8 +455,8 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $dob =& Piwi::CreateWidget('DatePicker', 'dob', '');
         $dob->SetId('dob');
         $dob->showTimePicker(true);
-        $dob->setLanguageCode($this->gadget->GetRegistry('calendar_language', 'Settings'));
-        $dob->setCalType($this->gadget->GetRegistry('calendar_type', 'Settings'));
+        $dob->setLanguageCode($this->gadget->registry->get('calendar_language', 'Settings'));
+        $dob->setCalType($this->gadget->registry->get('calendar_type', 'Settings'));
         $dob->setDateFormat('%Y-%m-%d');
         $tpl->SetVariable('lbl_dob', _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob', $dob->Get());

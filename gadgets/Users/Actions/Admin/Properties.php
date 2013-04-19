@@ -35,27 +35,27 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
         foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
             $authmethod->AddOption($method, $method);
         }
-        $authmethod->SetDefault($this->gadget->GetRegistry('auth_method'));
+        $authmethod->SetDefault($this->gadget->registry->get('auth_method'));
         $authmethod->SetEnabled($this->gadget->CheckPermission('ManageAuthenticationMethod'));
 
         $anonRegister =& Piwi::CreateWidget('Combo', 'anon_register');
         $anonRegister->SetTitle(_t('USERS_PROPERTIES_ANON_REGISTER'));
         $anonRegister->AddOption(_t('GLOBAL_YES'), 'true');
         $anonRegister->AddOption(_t('GLOBAL_NO'), 'false');
-        $anonRegister->SetDefault($this->gadget->GetRegistry('anon_register'));
+        $anonRegister->SetDefault($this->gadget->registry->get('anon_register'));
 
         $anonEmail =& Piwi::CreateWidget('Combo', 'anon_repetitive_email');
         $anonEmail->SetTitle(_t('USERS_PROPERTIES_ANON_REPETITIVE_EMAIL'));
         $anonEmail->AddOption(_t('GLOBAL_YES'), 'true');
         $anonEmail->AddOption(_t('GLOBAL_NO'), 'false');
-        $anonEmail->SetDefault($this->gadget->GetRegistry('anon_repetitive_email'));
+        $anonEmail->SetDefault($this->gadget->registry->get('anon_repetitive_email'));
 
         $anonactivate =& Piwi::CreateWidget('Combo', 'anon_activation');
         $anonactivate->SetTitle(_t('USERS_PROPERTIES_ANON_ACTIVATION'));
         $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_AUTO'), 'auto');
         $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_BY_USER'), 'user');
         $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_BY_ADMIN'), 'admin');
-        $anonactivate->SetDefault($this->gadget->GetRegistry('anon_activation'));
+        $anonactivate->SetDefault($this->gadget->registry->get('anon_activation'));
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
@@ -70,13 +70,13 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
                 $anonGroup->AddOption($group['title'], $group['id']);
             }
         }
-        $anonGroup->SetDefault($this->gadget->GetRegistry('anon_group'));
+        $anonGroup->SetDefault($this->gadget->registry->get('anon_group'));
 
         $passRecovery =& Piwi::CreateWidget('Combo', 'password_recovery');
         $passRecovery->SetTitle(_t('USERS_PROPERTIES_PASS_RECOVERY'));
         $passRecovery->AddOption(_t('GLOBAL_YES'), 'true');
         $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
-        $passRecovery->SetDefault($this->gadget->GetRegistry('password_recovery'));
+        $passRecovery->SetDefault($this->gadget->registry->get('password_recovery'));
 
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet('');
