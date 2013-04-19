@@ -83,7 +83,7 @@ class Policy_Model extends Jaws_Gadget_Model
      * @param   string  $entryid
      * @return  bool    True if captcha loaded successfully
      */
-    function LoadCaptcha(&$captcha, &$entry, &$label, &$description, $field = 'default', $entryid = null)
+    function LoadCaptcha($field = 'default')
     {
         $status = $this->gadget->registry->get($field.'_captcha');
         switch ($field) {
@@ -112,12 +112,11 @@ class Policy_Model extends Jaws_Gadget_Model
             $objCaptcha[$dCaptcha] = new $dCaptcha();
         }
 
-        $resCaptcha = $objCaptcha[$dCaptcha]->Get($field, $entryid);
-        $captcha = $resCaptcha['captcha']->Get();
-        $entry   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
-        $label   = $resCaptcha['label'];
-        $description = $resCaptcha['description'];
-        return true;
+        $resCaptcha = $objCaptcha[$dCaptcha]->Get($field);
+        $resCaptcha['key']     = empty($resCaptcha['key'])? null : $resCaptcha['key']->Get();
+        $resCaptcha['captcha'] = $resCaptcha['captcha']->Get();
+        $resCaptcha['entry']   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
+        return $resCaptcha;
     }
 
     /**
