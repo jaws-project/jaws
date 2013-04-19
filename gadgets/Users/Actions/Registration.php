@@ -175,14 +175,15 @@ class Users_Actions_Registration extends Users_HTML
 
         $tpl->SetVariable('register', _t('USERS_REGISTER'));
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
+        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
             $tpl->SetBlock('register/captcha');
-            $tpl->SetVariable('lbl_captcha', $label);
-            $tpl->SetVariable('captcha', $captcha);
-            if (!empty($entry)) {
-                $tpl->SetVariable('captchavalue', $entry);
+            $tpl->SetVariable('lbl_captcha', $captcha['label']);
+            $tpl->SetVariable('captcha_key', $captcha['key']);
+            $tpl->SetVariable('captcha', $captcha['captcha']);
+            if (!empty($captcha['entry'])) {
+                $tpl->SetVariable('captcha_entry', $captcha['entry']);
             }
-            $tpl->SetVariable('captcha_msg', $description);
+            $tpl->SetVariable('captcha_msg', $captcha['description']);
             $tpl->ParseBlock('register/captcha');
         }
 

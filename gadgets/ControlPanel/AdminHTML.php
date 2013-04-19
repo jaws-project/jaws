@@ -219,14 +219,15 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->ParseBlock('layout/remember');
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description, 'login', 'login')) {
+        if (false !== $captcha = $mPolicy->LoadCaptcha('login')) {
             $ltpl->SetBlock('layout/captcha');
-            $ltpl->SetVariable('lbl_captcha', $label);
-            $ltpl->SetVariable('captcha', $captcha);
-            if (!empty($entry)) {
-                $ltpl->SetVariable('captchavalue', $entry);
+            $ltpl->SetVariable('lbl_captcha', $captcha['label']);
+            $ltpl->SetVariable('captcha_key',  $captcha['key']);
+            $ltpl->SetVariable('captcha', $captcha['captcha']);
+            if (!empty($captcha['entry'])) {
+                $ltpl->SetVariable('captcha_entry', $captcha['entry']);
             }
-            $ltpl->SetVariable('captcha_msg', $description);
+            $ltpl->SetVariable('captcha_msg', $captcha['description']);
             $ltpl->ParseBlock('layout/captcha');
         }
 

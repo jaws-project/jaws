@@ -68,14 +68,15 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
+        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
             $tpl->SetBlock('forgot/captcha');
-            $tpl->SetVariable('lbl_captcha', $label);
-            $tpl->SetVariable('captcha', $captcha);
-            if (!empty($entry)) {
-                $tpl->SetVariable('captchavalue', $entry);
+            $tpl->SetVariable('lbl_captcha', $captcha['label']);
+            $tpl->SetVariable('captcha_key', $captcha['key']);
+            $tpl->SetVariable('captcha', $captcha['captcha']);
+            if (!empty($captcha['entry'])) {
+                $tpl->SetVariable('captcha_entry', $captcha['entry']);
             }
-            $tpl->SetVariable('captcha_msg', $description);
+            $tpl->SetVariable('captcha_msg', $captcha['description']);
             $tpl->ParseBlock('forgot/captcha');
         }
 
@@ -150,14 +151,15 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description, 'login', 'login')) {
+        if (false !== $captcha = $mPolicy->LoadCaptcha('login')) {
             $tpl->SetBlock('LoginBox/captcha');
-            $tpl->SetVariable('lbl_captcha', $label);
-            $tpl->SetVariable('captcha', $captcha);
-            if (!empty($entry)) {
-                $tpl->SetVariable('captchavalue', $entry);
+            $tpl->SetVariable('lbl_captcha', $captcha['label']);
+            $tpl->SetVariable('captcha_key', $captcha['key']);
+            $tpl->SetVariable('captcha', $captcha['captcha']);
+            if (!empty($captcha['entry'])) {
+                $tpl->SetVariable('captcha_entry', $captcha['entry']);
             }
-            $tpl->SetVariable('captcha_msg', $description);
+            $tpl->SetVariable('captcha_msg', $captcha['description']);
             $tpl->ParseBlock('LoginBox/captcha');
         }
 
