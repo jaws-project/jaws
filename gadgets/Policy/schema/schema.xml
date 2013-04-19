@@ -3,74 +3,108 @@
 
  <name><variable>database</variable></name>
 
- <table>
-    <name><variable>table_prefix</variable>policy_ipblock</name>
-    <declaration>
+    <table>
+        <name><variable>table_prefix</variable>policy_ipblock</name>
+        <declaration>
 
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-        <field>
-            <name>from_ip</name>
-            <type>integer</type>
-            <length>5</length>
-            <notnull>true</notnull>
-        </field>
+            <field>
+                <name>from_ip</name>
+                <type>integer</type>
+                <length>5</length>
+                <notnull>true</notnull>
+            </field>
 
-        <field>
-            <name>to_ip</name>
-            <type>integer</type>
-            <length>5</length>
-            <notnull>true</notnull>
-        </field>
+            <field>
+                <name>to_ip</name>
+                <type>integer</type>
+                <length>5</length>
+                <notnull>true</notnull>
+            </field>
 
-        <field>
-            <name>blocked</name>
-            <type>boolean</type>
-            <default>true</default>
-        </field>
+            <field>
+                <name>blocked</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
 
-    </declaration>
- </table>
+        </declaration>
+    </table>
 
- <table>
-    <name><variable>table_prefix</variable>policy_agentblock</name>
-    <declaration>
+    <table>
+        <name><variable>table_prefix</variable>policy_agentblock</name>
+        <declaration>
 
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-        <field>
-            <name>agent</name>
-            <type>text</type>
-            <length>252</length>
-            <notnull>true</notnull>
-            <unique>true</unique>
-        </field>
-
-        <field>
-            <name>blocked</name>
-            <type>boolean</type>
-            <default>true</default>
-        </field>
-
-        <index>
-            <name><variable>table_prefix</variable>policy_agentblock_agent</name>
-            <unique>true</unique>
             <field>
                 <name>agent</name>
+                <type>text</type>
+                <length>252</length>
+                <notnull>true</notnull>
+                <unique>true</unique>
             </field>
-        </index>
 
-    </declaration>
- </table>
+            <field>
+                <name>blocked</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>policy_agentblock_agent</name>
+                <unique>true</unique>
+                <field>
+                    <name>agent</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>captcha</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>result</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>updatetime</name>
+                <type>integer</type>
+                <length>16</length>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>updatetime</name>
+                <field>
+                    <name>updatetime</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
 
 </database>

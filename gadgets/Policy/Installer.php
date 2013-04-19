@@ -66,6 +66,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '0.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
             $this->gadget->registry->add('default_captcha', $this->gadget->registry->get('captcha'));
             $this->gadget->registry->add('default_captcha_driver', $this->gadget->registry->get('captcha_driver'));
             $this->gadget->registry->add('login_captcha', '1');
