@@ -95,6 +95,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
         $status->SetDefault('various');
         $status->AddEvent(ON_CHANGE, 'searchComment();');
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
         // filter by
@@ -109,6 +110,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $filterBy->AddOption(_t('COMMENTS_SEARCH_URL_CONTAINS'), 'url');
         $filterBy->AddOption(_t('COMMENTS_SEARCH_IP_IS'), 'ip');
         $filterBy->SetDefault(is_null($filterByData)? '' : $filterByData);
+        $tpl->SetVariable('lbl_filter_by', _t('COMMENTS_FILTER_BY'));
         $tpl->SetVariable('filter_by', $filterBy->Get());
 
         // filter
