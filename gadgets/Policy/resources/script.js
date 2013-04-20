@@ -279,7 +279,6 @@ function saveAntiSpamSettings()
     try {
         PolicyAjax.callAsync(
             'updateantispamsettings',
-            $('allow_duplicate').value,
             $('filter').value,
             $('default_captcha').value,
             $('default_captcha_driver').value,

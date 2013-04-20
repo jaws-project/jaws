@@ -400,17 +400,15 @@ class Policy_AdminModel extends Policy_Model
      * Update  AntiSpam Settings
      *
      * @access  public
-     * @param   bool    $allow_duplicate
      * @param   bool    $filter
      * @param   string  $default_captcha
      * @param   string  $default_captcha_driver
      * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($allow_duplicate, $filter,
+    function UpdateAntiSpamSettings($filter,
                                     $default_captcha, $default_captcha_driver, $obfuscator)
     {
-        $this->gadget->registry->set('allow_duplicate',        $allow_duplicate);
         $this->gadget->registry->set('filter',                 $filter);
         $this->gadget->registry->set('default_captcha',        $default_captcha);
         $this->gadget->registry->set('default_captcha_driver', $default_captcha_driver);

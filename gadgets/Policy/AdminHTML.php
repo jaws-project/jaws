@@ -425,14 +425,6 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sidebar', $this->SideBar('AntiSpam'));
         $tpl->SetVariable('legend_title', _t('POLICY_ANTISPAM'));
 
-        //Allow duplicate
-        $allowDuplicate =& Piwi::CreateWidget('Combo', 'allow_duplicate');
-        $allowDuplicate->AddOption(_t('GLOBAL_YES'), 'yes');
-        $allowDuplicate->AddOption(_t('GLOBAL_NO'),  'no');
-        $allowDuplicate->SetDefault($this->gadget->registry->get('allow_duplicate'));
-        $tpl->SetVariable('lbl_allow_duplicate', _t('POLICY_ANTISPAM_ALLOWDUPLICATE'));
-        $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
-
         //Filter
         $filters =& Piwi::CreateWidget('Combo', 'filter');
         $filters->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');

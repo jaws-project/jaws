@@ -212,19 +212,17 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Update AntiSpam Settings
      *
      * @access  public
-     * @param   bool    $allow_duplicate
      * @param   bool    $filter
      * @param   string  $default_captcha
      * @param   string  $default_captcha_driver
      * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($allow_duplicate, $filter, $default_captcha,
+    function UpdateAntiSpamSettings($filter, $default_captcha,
                                     $default_captcha_driver, $obfuscator)
     {
         $this->gadget->CheckPermission('AntiSpam');
         $this->_Model->UpdateAntiSpamSettings(
-            $allow_duplicate,
             $filter,
             $default_captcha,
             $default_captcha_driver,

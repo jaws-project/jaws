@@ -27,7 +27,6 @@ class Policy_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->add(array(
             'block_undefined_ip' => 'false',
             'block_undefined_agent' => 'false',
-            'allow_duplicate' => 'no',
             'filter' => 'DISABLED',
             'default_captcha' => 'DISABLED',
             'default_captcha_driver' => 'MathCaptcha',
