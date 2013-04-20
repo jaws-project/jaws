@@ -245,23 +245,20 @@ class Blog_Actions_Comments extends Blog_HTML
         }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
+        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
             $tpl->SetBlock('commentform/captcha');
-            $tpl->SetVariable('lbl_captcha', $label);
-            $tpl->SetVariable('captcha', $captcha);
-            if (!empty($entry)) {
-                $tpl->SetVariable('captchavalue', $entry);
+            $tpl->SetVariable('lbl_captcha', $captcha['label']);
+            $tpl->SetVariable('captcha_key', $captcha['key']);
+            $tpl->SetVariable('captcha', $captcha['captcha']);
+            if (!empty($captcha['entry'])) {
+                $tpl->SetVariable('captcha_entry', $captcha['entry']);
             }
-            $tpl->SetVariable('captcha_msg', $description);
+            $tpl->SetVariable('captcha_msg', $captcha['description']);
             $tpl->ParseBlock('commentform/captcha');
         }
 
         if (!is_null($post['comments'])) {
             $comments = $post['comments'];
-        }
-
-        if (!is_null($post['parent'])) {
-            $parent = $post['parent'];
         }
 
         $tpl->SetVariable('title', _t('BLOG_LEAVE_COMMENT'));
