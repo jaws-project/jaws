@@ -43,6 +43,10 @@ var CommentsCallback = {
             getDG('comments_datagrid');
         }
         showResponse(response);
+    },
+
+    SaveProperties: function(response) {
+        showResponse(response);
     }
 }
 
@@ -109,7 +113,7 @@ function unselectDataGridRow()
  * Clean the form
  *
  */
-function stopAction() 
+function stopAction()
 {
     $('id').value                      = 0;
     $('gadget').value                  = '';
@@ -259,6 +263,14 @@ function commentDGAction(combo)
 function searchComment()
 {
     getCommentsDataGrid('comments_datagrid', 0, true);
+}
+
+/**
+ * save properties
+ */
+function saveProperties()
+{
+    CommentsAjax.callAsync('SaveProperties', $('allow_duplicate').value);
 }
 
 /**

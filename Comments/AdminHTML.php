@@ -31,7 +31,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function MenuBar($action)
     {
-        $actions = array('Comments');
+        $actions = array('Comments', 'Properties');
         if (!in_array($action, $actions)) {
             $action = 'Comments';
         }
@@ -43,6 +43,12 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             'Comments',
             _t('COMMENTS_NAME'),
             BASE_SCRIPT . '?gadget=Comments&amp;action=Admin');
+
+        $menubar->AddOption(
+            'Properties',
+            _t('GLOBAL_PROPERTIES'),
+            BASE_SCRIPT . '?gadget=Comments&amp;action=Properties',
+            STOCK_PREFERENCES);
 
         $menubar->Activate($action);
         return $menubar->Get();
@@ -60,7 +66,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('AdminComments.html');
+        $tpl->Load('Admin/AdminComments.html');
         $tpl->SetBlock('Comments');
 
         //Menu bar
@@ -165,7 +171,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
     function CommentUI()
     {
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('AdminComments.html');
+        $tpl->Load('Admin/AdminComments.html');
         $tpl->SetBlock('CommentUI');
 
         //IP

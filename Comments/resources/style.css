@@ -1,0 +1,33 @@
+#settings {
+    border: 1px solid #D3D7CF;
+    float: right;
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 980px;
+}
+
+.buttons {
+    clear: both;
+}
+
+div.fields {
+    clear: both;
+    margin-top: 4px;
+    text-align: left;
+}
+
+div.fields label {
+    margin: 0 .6em 0 0;
+    padding-top: 4px;
+    display: block;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+    cursor: pointer;
+    width: 17em;
+}
+
+div.fields select {
+    max-width: 320px;
+}

@@ -272,4 +272,25 @@ class Comments_AdminModel extends Comments_Model
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
+
+    /**
+     * Update properties for Comments
+     *
+     * @access  public
+     * @param   string  $allowDuplicate
+     * @return  mixed   True on success or Jaws_Error on failure
+     */
+    function SaveProperties($allowDuplicate)
+    {
+        $res = $this->gadget->registry->set('allow_duplicate', $allowDuplicate);
+
+        if (Jaws_Error::IsError($r) || $r === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'), _t('COMMENTS_NAME'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+        return true;
+    }
+
 }
