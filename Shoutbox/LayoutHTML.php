@@ -52,15 +52,16 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
-                $tpl->SetBlock('shoutbox/fieldset/captcha');
-                $tpl->SetVariable('lbl_captcha', $label);
-                $tpl->SetVariable('captcha', $captcha);
-                if (!empty($entry)) {
-                    $tpl->SetVariable('captchavalue', $entry);
+            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
+                $tpl->SetBlock('shoutbox/captcha');
+                $tpl->SetVariable('lbl_captcha', $captcha['label']);
+                $tpl->SetVariable('captcha_key', $captcha['key']);
+                $tpl->SetVariable('captcha', $captcha['captcha']);
+                if (!empty($captcha['entry'])) {
+                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
                 }
-                $tpl->SetVariable('captcha_msg', $description);
-                $tpl->ParseBlock('shoutbox/fieldset/captcha');
+                $tpl->SetVariable('captcha_msg', $captcha['description']);
+                $tpl->ParseBlock('shoutbox/captcha');
             }
 
             $tpl->ParseBlock('shoutbox/fieldset');
