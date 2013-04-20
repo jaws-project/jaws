@@ -119,7 +119,7 @@ class Jaws_Gadget_Installer
 
         // Applying the keys that every gadget gets
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
-        $this->gadget->AddRegistry(
+        $this->gadget->registry->add(
             array(
                 'enabled'  => 'true',
                 'version'  => $this->gadget->_Version,
@@ -258,10 +258,10 @@ class Jaws_Gadget_Installer
 
         if (is_string($result)) {
             // set return the new version number
-            $this->gadget->SetRegistry('version', $result);
+            $this->gadget->registry->set('version', $result);
         } else {
             // set the latest version number
-            $this->gadget->SetRegistry('version', $newVersion);
+            $this->gadget->registry->set('version', $newVersion);
         }
 
         // autoload feature
