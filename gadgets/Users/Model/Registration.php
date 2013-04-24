@@ -38,8 +38,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $random = false;
         if (trim($password) == '') {
             $random = true;
-            include_once 'Text/Password.php';
-            $password = Text_Password::create(8, 'pronounceable', 'alphanumeric');
+            $password = Jaws_Utils::RandomText(8);
         }
 
         require_once JAWS_PATH . 'include/Jaws/User.php';

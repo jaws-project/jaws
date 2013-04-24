@@ -55,9 +55,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         }
 
         // generate new password
-        include_once 'Text/Password.php';
-        $password = Text_Password::create(8, 'pronounceable', 'alphanumeric');
-
+        $password = Jaws_Utils::RandomText(8);
         $res = $jUser->UpdateUser(
             $user['id'],
             array(
