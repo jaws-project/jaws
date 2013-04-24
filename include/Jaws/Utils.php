@@ -33,17 +33,36 @@ class Jaws_Utils
     }
 
     /**
-     * Create a random text
+     * Get a random text
      *
      * @access  public
-     * @param   int     $length Random text length
-     * @return  string  The random string
+     * @param   int     $lenght     String length
+     * @param   bool    $use_lower  Include lower characters
+     * @param   bool    $use_upper  Include upper characters
+     * @param   bool    $use_number Include numbers
+     * @return  string  Random text
      */
-    function RandomText($length = 8)
+    function RandomText($lenght = 5, $use_lower = true, $use_upper = true, $use_number = false)
     {
-        include_once 'Text/Password.php';
-        $word = Text_Password::create($length, 'unpronounceable', 'alphanumeric');
-        return $word;
+        $lower_case = 'abcdefghijklmnopqrstuvwxyz';
+        $upper_case = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+        $numbers = '01234567890';
+        $possible = '';
+        if ($use_lower) {
+            $possible.= $lower_case;
+        }
+        if ($use_upper) {
+            $possible.= $upper_case;
+        }
+        if ($use_number) {
+            $possible.= $numbers;
+        }
+
+        $string = '';
+        for ($i = 1; $i <= $lenght; $i++) {
+            $string.= substr($possible, mt_rand(0, strlen($possible)-1), 1);
+        }
+        return $string;
     }
 
     /**
