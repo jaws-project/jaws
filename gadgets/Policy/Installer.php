@@ -28,8 +28,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
             'block_undefined_ip' => 'false',
             'block_undefined_agent' => 'false',
             'filter' => 'DISABLED',
-            'default_captcha' => 'DISABLED',
-            'default_captcha_driver' => 'MathCaptcha',
+            'default_captcha_status' => 'DISABLED',
+            'default_captcha_driver' => 'Math',
             'obfuscator' => 'DISABLED',
             'akismet_key' => '',
             'typepad_key' => '',
@@ -44,8 +44,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
             'passwd_max_age' => '0',              // per day  0 = resistant
             'passwd_min_length' => '0',
             'passwd_complexity' => 'no',
-            'login_captcha' => '1',
-            'login_captcha_driver' => 'MathCaptcha',
+            'login_captcha_status' => '1',
+            'login_captcha_driver' => 'Math',
             'xss_parsing_level' => 'paranoid',
             'session_idle_timeout' => '30',       // per minute
             'session_remember_timeout' => '720',  // hours = 1 month
@@ -70,10 +70,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->registry->add('default_captcha', $this->gadget->registry->get('captcha'));
+            $this->gadget->registry->add('default_captcha_status', $this->gadget->registry->get('captcha'));
             $this->gadget->registry->add('default_captcha_driver', $this->gadget->registry->get('captcha_driver'));
-            $this->gadget->registry->add('login_captcha', '1');
-            $this->gadget->registry->add('login_captcha_driver', 'MathCaptcha');
+            $this->gadget->registry->add('login_captcha_status', '1');
+            $this->gadget->registry->add('login_captcha_driver', 'Math');
             $this->gadget->registry->del('captcha');
             $this->gadget->registry->del('captcha_driver');
         }
