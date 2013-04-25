@@ -9,8 +9,20 @@
  * @copyright   2006-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Captcha_Simple extends Jaws_Captcha
+class Jaws_Captcha_Math extends Jaws_Captcha
 {
+    /**
+     * Captcha entry label
+     * @var string
+     */
+    var $_label = 'GLOBAL_CAPTCHA_QUESTION';
+
+    /**
+     * Captcha entry description
+     * @var string
+     */
+    var $_description = 'GLOBAL_CAPTCHA_QUESTION_DESC';
+
     /**
      * Generate a random mathematic equation
      *
