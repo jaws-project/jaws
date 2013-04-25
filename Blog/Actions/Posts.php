@@ -55,7 +55,7 @@ class Blog_Actions_Posts extends Blog_HTML
          */
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('ViewPage.html');
+        $tpl->Load('ViewPage.html', true);
         $tpl->SetBlock('view');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
@@ -72,10 +72,16 @@ class Blog_Actions_Posts extends Blog_HTML
                     $tpl->SetVariable('row', $row);
                 }
 
-                $res = $this->ShowEntry($entry, true, true);
                 $tpl->SetBlock('view/entryrow/column');
                 $tpl->SetVariable('col', $col);
-                $tpl->SetVariable('entry', $res);
+
+                $tpl->SetBlock('view/entryrow/column/entry');
+                // Fix me: not good to get the same block content each time
+                $tplEntry = $tpl->GetRawBlockContent();
+                $res = $this->ShowEntry($entry, true, true, $tplEntry);
+                $tpl->SetCurrentBlockContent($res);
+                $tpl->ParseBlock('view/entryrow/column/entry');
+
                 $tpl->ParseBlock('view/entryrow/column');
 
                 $index++;
