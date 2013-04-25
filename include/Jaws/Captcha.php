@@ -11,19 +11,55 @@
 class Jaws_Captcha
 {
     /**
-     * Captcha field type
+     * Captcha driver name
      * @var string
      */
-    var $_field = 'default';
+    var $_driver;
+
+    /**
+     * Captcha entry label
+     * @var string
+     */
+    var $_label = 'GLOBAL_CAPTCHA_CODE';
+
+    /**
+     * Captcha entry description
+     * @var string
+     */
+    var $_description = 'GLOBAL_CAPTCHA_CODE_DESC';
 
     /**
      * Constructor
      *
      * @access  public
+     * @param   string  $driver     Captcha driver name
+     * @return  void
      */
-    function Jaws_Captcha($field)
+    function Jaws_Captcha($driver)
     {
-        $this->_field = $field;
+        $this->_driver = $driver;
+    }
+
+    /**
+     * Get a Jaws_Captcha instance
+     *
+     * @access  public
+     * @param   string  $driver     Captcha driver name
+     * @return  object  Jaws_Captcha instance
+     */
+    function &getInstance($driver)
+    {
+        static $instances;
+        if (!isset($instances)) {
+            $instances = array();
+        }
+
+        if (!isset($instances[$driver])) {
+            $className = 'Jaws_Captcha_'. $driver;
+            $instances[$driver] = new $className($driver);
+        }
+
+        return $instances[$driver];
     }
 
     /**
@@ -45,18 +81,14 @@ class Jaws_Captcha
     function get()
     {
         $key = $this->insert();
-        $imgSrc = $GLOBALS['app']->Map->GetURLFor(
-            'Policy',
-            'Captcha',
-            array('field' => $this->_field, 'key' => $key)
-        );
+        $imgSrc = $GLOBALS['app']->Map->GetURLFor('Policy', 'Captcha', array('key' => $key));
 
         $res = array();
         $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
         $res['key']->SetID("captcha_key_$key");
-        $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
+        $res['label'] = _t($this->_label);
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
-        $res['captcha']->SetTitle(_t('GLOBAL_CAPTCHA_CODE'));
+        $res['captcha']->SetTitle(_t($this->_label));
         $res['captcha']->SetID("captcha_image_$key");
         $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($imgSrc);
@@ -64,7 +96,7 @@ class Jaws_Captcha
         $res['entry']->SetID("captcha_value_$key");
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
-        $res['description'] = _t('GLOBAL_CAPTCHA_CODE_DESC');
+        $res['description'] = _t($this->_description);
         return $res;
     }
 
@@ -83,7 +115,7 @@ class Jaws_Captcha
         $matched = false;
         $result = $this->fetch($key);
         if (!Jaws_Error::IsError($result)) {
-            $matched = (strtolower($captcha_value) === strtolower($value));
+            $matched = (strtolower($result) === strtolower($value));
         }
 
         $this->delete($key);
@@ -107,12 +139,13 @@ class Jaws_Captcha
      * Get new captcha key
      *
      * @access  protected
+     * @param   string  $value  Captcha value
      * @return  mixed   Captcha key on success or Jaws_Error on failure
      */
-    function insert()
+    function insert($value = '')
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
-        $tblCaptcha->insert(array('result' => '', 'updatetime' => time()));
+        $tblCaptcha->insert(array('result' => $value, 'updatetime' => time()));
         $key = $tblCaptcha->exec();
         return $key;
     }
