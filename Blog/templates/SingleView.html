@@ -1,10 +1,32 @@
-<!-- BEGIN single-view -->
-<div class="hfeed">
-{entry}
+<!-- BEGIN single_view -->
+<div class="gadget blog-entry blog_entry">
+  <!-- BEGIN entry -->
+  <h2>{title}</h2>
+  <div class="content">{text}</div>
+  <div class="entry-meta">
+    <span class="entry-author vcard author"><a href="{author-url}" class="fn url">{nickname}</a></span>
+    <span class="separator">|</span>
+    <span class="entry-date"><abbr class="published" title="{createtime-iso}">{createtime}</abbr></span>
+    <span class="separator">|</span>
+    <span class="entry-category"><!-- BEGIN category --><a href="{url}" rel="tag">{name}</a>{separator} <!-- END category --></span>
+    <!-- BEGIN read-more -->
+    <span class="separator">|</span>
+    <span class="entry-read-more"><a href="{url}">{read_more}</a></span>
+    <!-- END read-more -->
+    <!-- BEGIN comment-link -->
+    <span class="separator">|</span>
+    <span class="entry-comment-link"><a href="{url}">{text_comments}</a></span>
+    <!-- END comment-link -->
+    <!-- BEGIN comments-statistic -->
+    <span class="separator">|</span>
+    <span class="entry-comments-statistic"><a>{text_comments}</a></span>
+    <!-- END comments-statistic -->
+  </div>
+  <!-- END entry -->
 </div>
 {navigation}
 {trackbacks}
 {comments}
 {preview}
 {comment-form}
-<!-- END single-view -->
+<!-- END single_view -->

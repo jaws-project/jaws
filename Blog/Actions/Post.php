@@ -74,9 +74,15 @@ class Blog_Actions_Post extends Blog_HTML
             $this->AddToMetaKeywords($entry['meta_keywords']);
             $this->SetDescription($entry['meta_description']);
             $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('SingleView.html');
-            $tpl->SetBlock('single-view');
-            $tpl->SetVariable('entry', $this->ShowEntry($entry, false, false));
+            $tpl->Load('SingleView.html', true);
+            $tpl->SetBlock('single_view');
+
+            $tpl->SetBlock('single_view/entry');
+            $tplEntry = $tpl->GetRawBlockContent();
+            $res = $this->ShowEntry($entry, false, false, $tplEntry);
+            $tpl->SetCurrentBlockContent($res);
+            $tpl->ParseBlock('single_view/entry');
+
             $trbkHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Trackbacks');
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
@@ -179,7 +185,7 @@ class Blog_Actions_Post extends Blog_HTML
                 $tpl->SetVariable('navigation', $navtpl->Get());
             }
 
-            $tpl->ParseBlock('single-view');
+            $tpl->ParseBlock('single_view');
             return $tpl->Get();
         } else {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
