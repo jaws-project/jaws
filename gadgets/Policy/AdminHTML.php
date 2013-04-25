@@ -441,7 +441,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
-        $captchaValue = $this->gadget->registry->get('default_captcha');
+        $captchaValue = $this->gadget->registry->get('default_captcha_status');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('default');");
         $tpl->SetVariable('lbl_default_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
@@ -559,7 +559,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 1), '1');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 2), '2');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 3), '3');
-        $captchaValue = $this->gadget->registry->get('login_captcha');
+        $captchaValue = $this->gadget->registry->get('login_captcha_status');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('login');");
         $tpl->SetVariable('lbl_login_captcha', _t('POLICY_LOGIN_CAPTCHA'));

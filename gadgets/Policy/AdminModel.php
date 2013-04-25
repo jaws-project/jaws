@@ -410,7 +410,7 @@ class Policy_AdminModel extends Policy_Model
                                     $default_captcha, $default_captcha_driver, $obfuscator)
     {
         $this->gadget->registry->set('filter',                 $filter);
-        $this->gadget->registry->set('default_captcha',        $default_captcha);
+        $this->gadget->registry->set('default_captcha_status', $default_captcha);
         $this->gadget->registry->set('default_captcha_driver', $default_captcha_driver);
         $this->gadget->registry->set('obfuscator',             $obfuscator);
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
@@ -442,7 +442,7 @@ class Policy_AdminModel extends Policy_Model
         $this->gadget->registry->set('passwd_lockedout_time', (int)$passwd_lockedout_time);
         $this->gadget->registry->set('passwd_max_age',        (int)$passwd_max_age);
         $this->gadget->registry->set('passwd_min_length',     (int)$passwd_min_length);
-        $this->gadget->registry->set('login_captcha',         $login_captcha);
+        $this->gadget->registry->set('login_captcha_status',  $login_captcha);
         $this->gadget->registry->set('login_captcha_driver',  $login_captcha_driver);
         $this->gadget->registry->set('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
         $this->gadget->registry->set('session_idle_timeout',     (int)$session_idle_timeout);
@@ -480,7 +480,7 @@ class Policy_AdminModel extends Policy_Model
     function GetCaptchas()
     {
         $result = array();
-        $path = JAWS_PATH . 'gadgets/Policy/captchas/';
+        $path = JAWS_PATH. 'include/Jaws/Captcha/';
         $adr = scandir($path);
         foreach ($adr as $file) {
             if (substr($file, -4) == '.php') {

@@ -85,7 +85,7 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function LoadCaptcha($field = 'default')
     {
-        $status = $this->gadget->registry->get($field.'_captcha');
+        $status = $this->gadget->registry->get($field. '_captcha_status');
         switch ($field) {
             case 'login':
                 $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
@@ -101,18 +101,10 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        static $objCaptcha;
-        if (!isset($objCaptcha)) {
-            $objCaptcha = array();
-        }
+        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
 
-        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
-        if (!isset($objCaptcha[$dCaptcha])) {
-            require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
-            $objCaptcha[$dCaptcha] = new $dCaptcha();
-        }
-
-        $resCaptcha = $objCaptcha[$dCaptcha]->Get($field);
+        $resCaptcha = $objCaptcha->get();
         $resCaptcha['key']     = empty($resCaptcha['key'])? null : $resCaptcha['key']->Get();
         $resCaptcha['captcha'] = $resCaptcha['captcha']->Get();
         $resCaptcha['entry']   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
@@ -128,7 +120,7 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function CheckCaptcha($field = 'default')
     {
-        $status = $this->gadget->registry->get($field. '_captcha');
+        $status = $this->gadget->registry->get($field. '_captcha_status');
         switch ($field) {
             case 'login':
                 $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
@@ -144,18 +136,9 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        static $objCaptcha;
-        if (!isset($objCaptcha)) {
-            $objCaptcha = array();
-        }
-
-        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
-        if (!isset($objCaptcha[$dCaptcha])) {
-            require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
-            $objCaptcha[$dCaptcha] = new $dCaptcha();
-        }
-
-        if (!$objCaptcha[$dCaptcha]->Check()) {
+        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
+        if (!$objCaptcha->check()) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
                                           'Jaws_Captcha',
                                           JAWS_ERROR_NOTICE);

@@ -29,27 +29,11 @@ class Policy_HTML extends Jaws_Gadget_HTML
     function Captcha()
     {
         $request =& Jaws_Request::getInstance();
-        $get = $request->Get(array('field', 'key'), 'get');
-        $field = $get['field']. '_';
+        $key = $request->Get('key', 'get');
 
-        $status = $this->gadget->registry->get($field. 'captcha');
-        if (($status == 'DISABLED') ||
-            ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
-            return false;
-        }
-
-        static $objCaptcha;
-        if (!isset($objCaptcha)) {
-            $objCaptcha = array();
-        }
-
-        $dCaptcha = $this->gadget->registry->get($field. 'captcha_driver');
-        if (!isset($objCaptcha[$dCaptcha])) {
-            require_once JAWS_PATH . 'gadgets/Policy/captchas/' . $dCaptcha . '.php';
-            $objCaptcha[$dCaptcha] = new $dCaptcha();
-        }
-
-        $objCaptcha[$dCaptcha]->Image($get['key']);
+        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
+        $objCaptcha->image($key);
     }
 
 }
