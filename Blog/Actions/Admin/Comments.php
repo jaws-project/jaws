@@ -63,7 +63,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
 
         $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('ManageComments.html');
+        $tpl->Load('Admin/Comments.html');
         $tpl->SetBlock('manage_comments');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
@@ -139,7 +139,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         }
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('EditComment.html');
+        $tpl->Load('Admin/CommentEdit.html');
         $tpl->SetBlock('edit_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 
@@ -234,7 +234,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         }
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('ReplyComment.html');
+        $tpl->Load('Admin/CommentReply.html');
         $tpl->SetBlock('reply_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 

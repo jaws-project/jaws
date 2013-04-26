@@ -27,7 +27,7 @@ class Blog_Actions_Admin_Summary extends Blog_AdminHTML
         }
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Summary.html');
+        $tpl->Load('Admin/Summary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('menubar', $this->MenuBar('Summary'));
 

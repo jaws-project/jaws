@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('AdditionalSettings.html');
+        $tpl->Load('Admin/Settings.html');
         $tpl->SetBlock('additional');
 
         // Header

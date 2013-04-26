@@ -25,7 +25,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('ManageCategories.html');
+        $tpl->Load('Admin/Categories.html');
         $tpl->SetBlock('categories');
 
         // Menubar
