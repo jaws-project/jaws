@@ -18,8 +18,11 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      */
     function install()
     {
-        $GLOBALS['app']->Registry->NewKey('reCAPTCHA_public_key', '', 'Policy');
-        $GLOBALS['app']->Registry->NewKey('reCAPTCHA_private_key', '', 'Policy');
+        if (is_null($GLOBALS['app']->Registry->Get('reCAPTCHA_public_key', 'Policy'))) {
+            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_public_key', '', 'Policy');
+            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_private_key', '', 'Policy');
+        }
+
         return true;
     }
 
