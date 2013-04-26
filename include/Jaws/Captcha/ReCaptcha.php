@@ -32,67 +32,42 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
     function get()
     {
         $res = array();
+        $objReCaptcha = new LibReCaptcha();
         $publickey = $GLOBALS['app']->Registry->Get('reCAPTCHA_public_key', 'Policy');
-        $reCAPTCHA = recaptcha_get_html($publickey, $this->_error);
+        $reCAPTCHA = $objReCaptcha->recaptcha_get_html($publickey);
         $res['key'] = null;
-        $res['label'] = _t('GLOBAL_CAPTCHA_CODE');
-        $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
-        $res['captcha']->setTitle(_t('GLOBAL_CAPTCHA'));
-        $res['entry'] = null;
-        $res['description'] = _t('GLOBAL_CAPTCHA_CODE_DESC');
-        return $res;
-
-        $value  = $this->randomEquation();
-        $key    = $this->insert($value[1]);
-        $title  = $value[2];
-        $value  = $value[0]. '=?';
-        $imgSrc = $GLOBALS['app']->Map->GetURLFor('Policy', 'Captcha', array('key' => $key));
-
-        $res = array();
-        $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
-        $res['key']->SetID("captcha_key_$key");
         $res['label'] = _t($this->_label);
-        $res['captcha'] =& Piwi::CreateWidget('Label', $value);
-        $res['captcha']->setTitle($title);
-        $res['entry'] =& Piwi::CreateWidget('Entry', 'captcha_value', '');
-        $res['entry']->SetID("captcha_value_$key");
-        $res['entry']->SetStyle('direction: ltr;');
-        $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
-        $res['description'] =  _t($this->_description);
+        $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
+        $res['captcha']->setTitle(_t($this->_label));
+        $res['entry'] = null;
+        $res['description'] = _t($this->_description);
         return $res;
     }
 
     /**
-     * Displays the captcha image
+     * Check if a captcha key is valid
      *
      * @access  public
+     * @param   bool     Valid/Not Valid
      */
-    function image($key)
+    function check()
     {
-        $value  = Jaws_Utils::RandomText();
-        $result = $this->update($key, $value);
-        if (Jaws_Error::IsError($result)) {
-            $value = '';
+        $request =& Jaws_Request::getInstance();
+        $recaptcha = $request->get(array('recaptcha_challenge_field', 'recaptcha_response_field'), 'post');
+        if ($recaptcha['recaptcha_response_field']) {
+            $privatekey = $GLOBALS['app']->Registry->Get('reCAPTCHA_private_key', 'Policy');
+            $objReCaptcha = new LibReCaptcha();
+            $objReCaptcha->recaptcha_check_answer(
+                $privatekey,
+                $_SERVER["REMOTE_ADDR"],
+                $recaptcha['recaptcha_challenge_field'],
+                $recaptcha['recaptcha_response_field']
+            );
+
+            return $objReCaptcha->is_valid;
         }
 
-        $bg = dirname(__FILE__) . '/resources/simple.bg.png';
-        $im = imagecreatefrompng($bg);
-        imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));
-        // Write it in a random position..
-        $darkgray = imagecolorallocate($im, 0x10, 0x70, 0x70);
-        $x = 5; 
-        $y = 20;
-        $text_length = strlen($value);
-        for ($i = 0; $i < $text_length; $i++) {
-            $fnt = rand(7,10);
-            $y = rand(6, 10);
-            imagestring($im, $fnt, $x, $y, $value{$i} , $darkgray);
-            $x = $x + rand(15, 25);
-        }
-
-        header("Content-Type: image/png");
-        imagepng($im);
-        imagedestroy($im);
+        return false;
     }
 
 }
@@ -134,6 +109,9 @@ class LibReCaptcha
     const RECAPTCHA_API_SERVER        = "http://www.google.com/recaptcha/api";
     const RECAPTCHA_API_SECURE_SERVER = "https://www.google.com/recaptcha/api";
     const RECAPTCHA_VERIFY_SERVER     = "www.google.com";
+
+    var $is_valid;
+    var $error;
 
     /**
      * Encodes the given data into a query string format
@@ -196,18 +174,13 @@ class LibReCaptcha
      * @param   bool    $use_ssl Should the request be made over ssl? (optional, default is false)
      * @return  string - The HTML to be embedded in the user's form.
      */
-    function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
+    function recaptcha_get_html($pubkey, $error = null, $use_ssl = false)
     {
         if ($pubkey == null || $pubkey == '') {
             return "To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>";
         }
 
-        if ($use_ssl) {
-            $server = self::RECAPTCHA_API_SECURE_SERVER;
-        } else {
-            $server = self::RECAPTCHA_API_SERVER;
-        }
-
+        $server = $use_ssl? self::RECAPTCHA_API_SECURE_SERVER : self::RECAPTCHA_API_SERVER;
         $errorpart = "";
         if ($error) {
            $errorpart = "&amp;error=" . $error;
@@ -223,29 +196,32 @@ class LibReCaptcha
 
     /**
       * Calls an HTTP POST function to verify if the user's guess was correct
-      * @param   string $privkey
-      * @param   string $remoteip
-      * @param   string $challenge
-      * @param   string $response
+      * @param  string  $privkey
+      * @param  string  $remoteip
+      * @param  string  $challenge
+      * @param  string  $response
       * @param  array   $extra_params an array of extra variables to post to the server
-      * @return ReCaptchaResponse
+      * @return void
       */
     function recaptcha_check_answer($privkey, $remoteip, $challenge, $response, $extra_params = array())
     {
         if ($privkey == null || $privkey == '') {
-            return "To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>";
+            $this->is_valid = false;
+            $this->error = "To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>";
+            return;
         }
 
         if ($remoteip == null || $remoteip == '') {
-            return "For security reasons, you must pass the remote ip to reCAPTCHA";
+            $this->is_valid = false;
+            $this->error = 'For security reasons, you must pass the remote ip to reCAPTCHA';
+            return;
         }
 
         //discard spam submissions
         if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0) {
-            $recaptcha_response = new ReCaptchaResponse();
-            $recaptcha_response->is_valid = false;
-            $recaptcha_response->error = 'incorrect-captcha-sol';
-            return $recaptcha_response;
+            $this->is_valid = false;
+            $this->error = 'incorrect-captcha-sol';
+            return;
         }
 
         $response = $this->_recaptcha_http_post(
@@ -260,17 +236,14 @@ class LibReCaptcha
         );
 
         $answers = explode("\n", $response [1]);
-        $recaptcha_response = new ReCaptchaResponse();
-
         if (trim($answers [0]) == 'true') {
-            $recaptcha_response->is_valid = true;
-        }
-        else {
-            $recaptcha_response->is_valid = false;
-            $recaptcha_response->error = $answers [1];
+            $this->is_valid = true;
+        } else {
+            $this->is_valid = false;
+            $this->error = $answers [1];
         }
 
-        return $recaptcha_response;
+        return;
     }
 
     /**
