@@ -413,6 +413,11 @@ class Policy_AdminModel extends Policy_Model
         $this->gadget->registry->set('default_captcha_status', $default_captcha);
         $this->gadget->registry->set('default_captcha_driver', $default_captcha_driver);
         $this->gadget->registry->set('obfuscator',             $obfuscator);
+
+        // install captcha driver
+        $objCaptcha =& Jaws_Captcha::getInstance($default_captcha_driver);
+        $objCaptcha->install();
+
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -447,6 +452,11 @@ class Policy_AdminModel extends Policy_Model
         $this->gadget->registry->set('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
         $this->gadget->registry->set('session_idle_timeout',     (int)$session_idle_timeout);
         $this->gadget->registry->set('session_remember_timeout', (int)$session_remember_timeout);
+
+        // install captcha driver
+        $objCaptcha =& Jaws_Captcha::getInstance($login_captcha_driver);
+        $objCaptcha->install();
+
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
