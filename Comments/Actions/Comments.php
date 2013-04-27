@@ -10,31 +10,6 @@
  */
 class Comments_Actions_Comments extends Comments_HTML
 {
-    /**
-     * Get Comments action params
-     *
-     * @access  public
-     * @return  array list of RecentComments action params
-     */
-    function CommentsLayoutParams()
-    {
-        $result = array();
-
-        $result[] = array(
-            'title' => _t('COMMENTS_COMMENTS_PER_PAGE'),
-            'value' => $this->gadget->registry->get('comments_per_page')
-        );
-
-        $result[] = array(
-            'title' => _t('GLOBAL_ORDERBY'),
-            'value' => array(
-                1 => _t('GLOBAL_CREATETIME'). ' &uarr;',
-                0 => _t('GLOBAL_CREATETIME'). ' &darr;',
-            )
-        );
-
-        return $result;
-    }
 
     /**
      * Displays a block of pages belongs to the specified group
@@ -126,18 +101,20 @@ class Comments_Actions_Comments extends Comments_HTML
      * Get the comments messages list
      *
      * @access  public
-     * @param   int    $perPage
-     * @param   int    $orderBy
      * @return  string  XHTML template content
      */
-    function GetMessages($perPage, $orderBy)
+    function GetMessages()
     {
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('order','perpage', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
-        if($perPage==0 && $orderBy==0) {
+
+        if(!empty($rqst['perpage'])) {
             $perPage = (int)$rqst['perpage'];
             $orderBy = (int)$rqst['order'];
+        } else {
+            $perPage = $this->gadget->registry->get('comments_per_page');
+            $orderBy = 0;
         }
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
@@ -148,15 +125,65 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
         $tpl->Load('Comments.html');
         $tpl->SetBlock('comments');
+
+        $objDate = $GLOBALS['app']->loadDate();
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
-            $date = $GLOBALS['app']->loadDate();
             foreach ($comments as $entry) {
                 $tpl->SetBlock('comments/entry');
-                $tpl->SetVariable('name', Jaws_XSS::filter($entry['name']));
-                $tpl->SetVariable('email', Jaws_XSS::filter($entry['email']));
-                $tpl->SetVariable('url', Jaws_XSS::filter($entry['url']));
-                $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
+
+                $tpl->SetVariable('postedby_lbl',_t('COMMENTS_POSTEDBY'));
+
+                if($entry['user_registered_date']) {
+                    $tpl->SetBlock('comments/entry/registered_date');
+                    $tpl->SetVariable('registered_date_lbl',_t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
+                    $tpl->ParseBlock('comments/entry/registered_date');
+
+                }
+
+
+                if (!empty($entry['username'])) {
+                    // user's profile
+                    $tpl->SetVariable(
+                        'user_url',
+                        $GLOBALS['app']->Map->GetURLFor(
+                            'Users',
+                            'Profile',
+                            array('user' => $entry['username'])
+                        )
+                    );
+
+                } else {
+                    $tpl->SetVariable('user_url', Jaws_XSS::filter($entry['url']));
+                }
+
+
+                $nickname = empty($entry['nickname']) ? $entry['name'] : $entry['nickname'];
+                $email = empty($entry['user_email']) ? $entry['email'] : $entry['user_email'];
+
+                $tpl->SetVariable('nickname', Jaws_XSS::filter($nickname));
+                $tpl->SetVariable('email', Jaws_XSS::filter($email));
+                $tpl->SetVariable('username', Jaws_XSS::filter($entry['username']));
+                // user's avatar
+                $tpl->SetVariable(
+                    'avatar',
+                    $usrModel->GetAvatar(
+                        $entry['avatar'],
+                        $entry['email'],
+                        80
+                    )
+                );
+
+                $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
+                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
+
+
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
+
+
+
                 $tpl->ParseBlock('comments/entry');
             }
         }

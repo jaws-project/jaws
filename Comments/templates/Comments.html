@@ -1,47 +1,76 @@
 <!-- BEGIN comments -->
-<div class="content">
-    <ul>
-        <!-- BEGIN entry -->
-        <li><div><a href="{url}" title="{email}/{updatetime}" rel="external">{name}</a>: {message}</div></li>
-        <!-- END entry -->
-    </ul>
+<!-- BEGIN entry -->
+<div class="comments_post">
+    <div class="post_profile">
+        <ul>
+            <li><img src="{avatar}" alt="{username}" title="{nickname}"/></li>
+            <!-- BEGIN registered_date -->
+            <li>{registered_date_lbl}: <span>{registered_date}</span></li>
+            <!-- END registered_date -->
+        </ul>
+    </div>
+
+    <div class="post_body">
+        <div class="post_meta">
+            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+            &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+        </div>
+        <div class="post_content">{message}</div>
+    </div>
 </div>
+<hr style="clear: both; visibility: hidden;"/>
+<!-- END entry -->
 <!-- INCLUDE PageNavigation.html -->
+<hr style="clear: both; visibility: hidden;"/>
+<div class="actions">
+    <!-- BEGIN action -->
+    <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+    <!-- END action -->
+</div>
 <!-- END comments -->
 
 <!-- BEGIN new_comment -->
-<div class="gadget comments_comments">
-  <h2>{title}</h2>
+<div class="gadget comments guestbook">
+    <h2>{title}</h2>
 
-    <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-    <div class="content" id="comments_messages">
+    <!-- BEGIN response -->
+    <div class="simple-response-msg">{msg}</div>
+    <!-- END response -->
+    <div class="content">
         {comments_messages}
     </div>
 
     <!-- BEGIN fieldset -->
     <form action="{base_script}" method="post">
-        <input type="hidden" name="gadget" value="Comments" />
-        <input type="hidden" name="action" value="PostMessage" />
-        <div class= "fieldset">
+        <input type="hidden" name="gadget" value="Comments"/>
+        <input type="hidden" name="action" value="PostMessage"/>
+
+        <div class="fieldset">
             <!-- BEGIN info-box -->
             <p><label for="name_comments{rand}">{name}:</label>
-                <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}" />
+                <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
             </p>
+
             <p><label for="email_comments{rand}">{email}:</label>
-                <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;" />
+                <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;"/>
             </p>
+
             <p><label for="url_comments{rand}">{url}:</label>
-                <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}" style="direction: ltr;" />
+                <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}"
+                       style="direction: ltr;"/>
             </p>
             <!-- END info-box -->
             <!-- BEGIN captcha -->
-            <p>{captcha_lbl}<br /><span>{captcha}<br /><small>{captcha_msg}</small></span><br />{captcha_key}{captcha_entry}</p>
+            <p>{captcha_lbl}<br/><span>{captcha}<br/><small>{captcha_msg}</small></span><br/>{captcha_key}{captcha_entry}
+            </p>
             <!-- END captcha -->
             <p><label for="message{rand}">{message}:</label>
                 <textarea id="message{rand}" cols="17" rows="4" name="message"></textarea>
             </p>
         </div>
-        <div class="actions"><button type="submit" value="{send}">{send}</button></div>
+        <div class="actions">
+            <button type="submit" value="{send}">{send}</button>
+        </div>
     </form>
     <!-- END fieldset -->
 

@@ -12,9 +12,7 @@ $actions = array();
 
 $actions['Comments'] = array(
     'normal' => true,
-    'layout' => true,
     'file'   => 'Comments',
-    'parametric' => true,
 );
 
 $actions['PostMessage'] = array(

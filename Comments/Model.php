@@ -160,9 +160,13 @@ class Comments_Model extends Jaws_Gadget_Model
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
-            'id:integer', 'reference:integer', 'user', 'action', 'gadget', 'reply', 'replier',
-            'name', 'email', 'url', 'ip', 'msg_txt', 'status:integer', 'createtime'
+            'comments.id:integer', 'reference:integer', 'user', 'action', 'gadget', 'reply', 'replier',
+            'name', 'comments.email', 'comments.url', 'ip', 'msg_txt', 'comments.status:integer', 'createtime',
+            'users.username', 'users.nickname', 'users.email as user_email',  'avatar',
+            'users.registered_date as user_registered_date', 'users.url as user_url'
         );
+
+        $commentsTable->join('users', 'users.id', 'comments.user', 'left');
 
         $commentsTable->where('gadget', $gadget);
 
@@ -173,7 +177,7 @@ class Comments_Model extends Jaws_Gadget_Model
             $commentsTable->and()->where('action', $action);
         }
         if (count($status) > 0) {
-            $commentsTable->and()->where('status', $status, 'in');
+            $commentsTable->and()->where('comments.status', $status, 'in');
         }
 
         if ($getAllCurrentUser) {

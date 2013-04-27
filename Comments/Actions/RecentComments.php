@@ -31,6 +31,16 @@ class Comments_Actions_RecentComments extends Comments_HTML
                 'blog' => _t('BLOG_NAME') ,
                 'phoo' => _t('PHOO_NAME') ,
                 'shoutbox' => _t('SHOUTBOX_NAME') ,
+                'comments' => _t('COMMENTS_NAME') ,
+            )
+        );
+
+
+        $result[] = array(
+            'title' => _t('GLOBAL_ORDERBY'),
+            'value' => array(
+                1 => _t('GLOBAL_CREATETIME'). ' &uarr;',
+                0 => _t('GLOBAL_CREATETIME'). ' &darr;',
             )
         );
 
@@ -48,10 +58,11 @@ class Comments_Actions_RecentComments extends Comments_HTML
      *
      * @access  public
      * @param   string  $gadget
+     * @param   int     $orderBy
      * @param   mixed   $limit    limit recent comments (int)
      * @return  string  XHTML content
      */
-    function RecentComments($gadget, $limit = 0)
+    function RecentComments($gadget,  $orderBy = 0, $limit = 0)
     {
         $site_language = $this->gadget->registry->get('site_language', 'Settings');
         $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
@@ -62,7 +73,8 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $userModel = new Jaws_User();
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetComments($gadget, $limit);
+        $comments = $model->GetComments('comments', $limit, null, null, array(COMMENT_STATUS_APPROVED), false,
+            null, $orderBy);
 
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
         $tpl->Load('RecentComments.html');
