@@ -76,3 +76,14 @@ dd.forums_lastpost{width:200px;padding:0 5px;}
 .forum_post .post_update{margin-top:20px;border-top:1px dashed #ccc;font-size:smaller;}
 .forum_post .post_update span{font-style:italic;}
 .forum_post .post_actions{position:absolute;top:10px;right:10px;font-size:smaller;}
+/* comments style */
+.comments_post{position:relative;word-wrap:break-word;padding:10px 0;margin-bottom:10px;border-radius:5px;background:#eee;}
+.comments_post .post_profile{float:left;width:128px;border-right:1px solid #fff;}
+.comments_post .post_profile li:last-child span{display:block;}
+.comments_post .post_profile img{width:80px;}
+.comments_post:after{content:".";display:block;height:0;clear:both;width:100%;visibility:hidden;}
+.comments_post .post_body{float:right;width:390px;padding:0 10px;}
+.comments_post .post_content{text-align:justify;padding:10px 0;}
+.comments_post .post_update{margin-top:20px;border-top:1px dashed #ccc;font-size:smaller;}
+.comments_post .post_update span{font-style:italic;}
+.comments_post .post_actions{position:absolute;top:10px;right:10px;font-size:smaller;}
