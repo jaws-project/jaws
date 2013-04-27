@@ -17,7 +17,7 @@
             </field>
 
             <field>
-                <name>component</name>
+                <name>cmp_name</name>
                 <type>text</type>
                 <length>64</length>
             </field>
@@ -35,6 +35,12 @@
             </field>
 
             <field>
+                <name>reg_type</name>
+                <type>integer</type>
+                <length>1</length>
+            </field>
+
+            <field>
                 <name>updatetime</name>
                 <type>timestamp</type>
             </field>
@@ -43,7 +49,7 @@
                 <name><variable>table_prefix</variable>reg_component_key</name>
                 <unique>true</unique>
                 <field>
-                    <name>component</name>
+                    <name>cmp_name</name>
                 </field>
                 <field>
                     <name>key_name</name>
@@ -53,7 +59,17 @@
             <index>
                 <name><variable>table_prefix</variable>reg_component</name>
                 <field>
-                    <name>component</name>
+                    <name>cmp_name</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_component_type</name>
+                <field>
+                    <name>cmp_name</name>
+                </field>
+                <field>
+                    <name>cmp_type</name>
                 </field>
             </index>
 
