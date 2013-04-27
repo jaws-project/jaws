@@ -247,7 +247,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
         if (false !== $captcha = $mPolicy->LoadCaptcha()) {
             $tpl->SetBlock('commentform/captcha');
-            $tpl->SetVariable('lbl_captcha', $captcha['label']);
+            $tpl->SetVariable('captcha_lbl', $captcha['label']);
             $tpl->SetVariable('captcha_key', $captcha['key']);
             $tpl->SetVariable('captcha', $captcha['captcha']);
             if (!empty($captcha['entry'])) {
