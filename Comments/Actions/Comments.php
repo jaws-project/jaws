@@ -133,16 +133,14 @@ class Comments_Actions_Comments extends Comments_HTML
             foreach ($comments as $entry) {
                 $tpl->SetBlock('comments/entry');
 
-                $tpl->SetVariable('postedby_lbl',_t('COMMENTS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
 
-                if($entry['user_registered_date']) {
+                if ($entry['user_registered_date']) {
                     $tpl->SetBlock('comments/entry/registered_date');
-                    $tpl->SetVariable('registered_date_lbl',_t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
                     $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
                     $tpl->ParseBlock('comments/entry/registered_date');
-
                 }
-
 
                 if (!empty($entry['username'])) {
                     // user's profile
@@ -159,7 +157,6 @@ class Comments_Actions_Comments extends Comments_HTML
                     $tpl->SetVariable('user_url', Jaws_XSS::filter($entry['url']));
                 }
 
-
                 $nickname = empty($entry['nickname']) ? $entry['name'] : $entry['nickname'];
                 $email = empty($entry['user_email']) ? $entry['email'] : $entry['user_email'];
 
@@ -175,14 +172,9 @@ class Comments_Actions_Comments extends Comments_HTML
                         80
                     )
                 );
-
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
-
-
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
-
-
 
                 $tpl->ParseBlock('comments/entry');
             }
