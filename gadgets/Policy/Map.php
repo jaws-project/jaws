@@ -12,6 +12,7 @@ $maps[] = array(
     'Captcha',
     'captcha/{field}/{key}',
     array(
+        'field' => '[[:alnum:]-_]+',
         'key' => '[[:alnum:]]+',
     )
 );

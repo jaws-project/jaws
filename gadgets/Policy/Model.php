@@ -101,13 +101,14 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
-        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
+        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $field);
 
         $resCaptcha = $objCaptcha->get();
         $resCaptcha['key']     = empty($resCaptcha['key'])? null : $resCaptcha['key']->Get();
-        $resCaptcha['captcha'] = $resCaptcha['captcha']->Get();
+        $resCaptcha['label']   = empty($resCaptcha['label'])? null : $resCaptcha['label']->Get();
         $resCaptcha['entry']   = empty($resCaptcha['entry'])? null : $resCaptcha['entry']->Get();
+        $resCaptcha['captcha'] = $resCaptcha['captcha']->Get();
         return $resCaptcha;
     }
 
@@ -136,8 +137,8 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
-        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
+        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $field);
         if (!$objCaptcha->check()) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
                                           'Jaws_Captcha',

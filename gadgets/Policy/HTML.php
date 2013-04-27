@@ -29,11 +29,11 @@ class Policy_HTML extends Jaws_Gadget_HTML
     function Captcha()
     {
         $request =& Jaws_Request::getInstance();
-        $key = $request->Get('key', 'get');
+        $get = $request->Get(array('field', 'key'), 'get');
 
-        $dCaptcha = $this->gadget->registry->get('default_captcha_driver');
-        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha);
-        $objCaptcha->image($key);
+        $dCaptcha = $this->gadget->registry->get($get['field']. '_captcha_driver');
+        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $get['field']);
+        $objCaptcha->image($get['key']);
     }
 
 }
