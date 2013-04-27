@@ -39,10 +39,10 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
         $publickey = $GLOBALS['app']->Registry->Get('reCAPTCHA_public_key', 'Policy');
         $reCAPTCHA = $objReCaptcha->recaptcha_get_html($publickey);
         $res['key'] = null;
-        $res['label'] = _t($this->_label);
         $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
         $res['captcha']->setTitle(_t($this->_label));
         $res['entry'] = null;
+        $res['label'] =& Piwi::CreateWidget('Label', _t($this->_label).':', 'recaptcha_response_field');
         $res['description'] = _t($this->_description);
         return $res;
     }

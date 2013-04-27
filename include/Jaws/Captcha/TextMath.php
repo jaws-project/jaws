@@ -39,14 +39,14 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
         $res = array();
         $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
         $res['key']->SetID("captcha_key_$key");
-        $res['label'] = _t($this->_label);
         $res['captcha'] =& Piwi::CreateWidget('Label', $value);
         $res['captcha']->setTitle($title);
         $res['entry'] =& Piwi::CreateWidget('Entry', 'captcha_value', '');
         $res['entry']->SetID("captcha_value_$key");
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
-        $res['description'] =  _t($this->_description);
+        $res['label'] =& Piwi::CreateWidget('Label', _t($this->_label).':', $res['entry']);
+        $res['description'] = _t($this->_description);
         return $res;
     }
 

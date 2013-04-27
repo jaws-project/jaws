@@ -17,6 +17,12 @@ class Jaws_Captcha
     var $_driver;
 
     /**
+     * Captcha field
+     * @var string
+     */
+    var $_field;
+
+    /**
      * Captcha entry label
      * @var string
      */
@@ -32,22 +38,25 @@ class Jaws_Captcha
      * Constructor
      *
      * @access  public
-     * @param   string  $driver     Captcha driver name
+     * @param   string  $driver Captcha driver name
+     * @param   string  $field  Captcha field
      * @return  void
      */
-    function Jaws_Captcha($driver)
+    function Jaws_Captcha($driver, $field = 'default')
     {
         $this->_driver = $driver;
+        $this->_field  = $field;
     }
 
     /**
      * Get a Jaws_Captcha instance
      *
      * @access  public
-     * @param   string  $driver     Captcha driver name
+     * @param   string  $driver Captcha driver name
+     * @param   string  $field  Captcha field
      * @return  object  Jaws_Captcha instance
      */
-    function &getInstance($driver)
+    function &getInstance($driver, $field = 'default')
     {
         static $instances;
         if (!isset($instances)) {
@@ -56,7 +65,7 @@ class Jaws_Captcha
 
         if (!isset($instances[$driver])) {
             $className = 'Jaws_Captcha_'. $driver;
-            $instances[$driver] = new $className($driver);
+            $instances[$driver] = new $className($driver, $field);
         }
 
         return $instances[$driver];
@@ -81,12 +90,15 @@ class Jaws_Captcha
     function get()
     {
         $key = $this->insert();
-        $imgSrc = $GLOBALS['app']->Map->GetURLFor('Policy', 'Captcha', array('key' => $key));
+        $imgSrc = $GLOBALS['app']->Map->GetURLFor(
+            'Policy',
+            'Captcha',
+            array('field' => $this->_field, 'key' => $key)
+        );
 
         $res = array();
         $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
         $res['key']->SetID("captcha_key_$key");
-        $res['label'] = _t($this->_label);
         $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
         $res['captcha']->SetTitle(_t($this->_label));
         $res['captcha']->SetID("captcha_image_$key");
@@ -96,6 +108,7 @@ class Jaws_Captcha
         $res['entry']->SetID("captcha_value_$key");
         $res['entry']->SetStyle('direction: ltr;');
         $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
+        $res['label'] =& Piwi::CreateWidget('Label', _t($this->_label).':', $res['entry']);
         $res['description'] = _t($this->_description);
         return $res;
     }
