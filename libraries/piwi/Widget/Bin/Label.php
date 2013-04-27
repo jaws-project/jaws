@@ -4,6 +4,7 @@
  *
  * @version  $Id $
  * @author   Pablo Fischer <pablo@pablo.com.mx>
+ * @author   Ali Fazelzadeh <afz@php.net>
  *
  * <c> Pablo Fischer 2004
  * <c> Piwi
@@ -14,24 +15,24 @@ define('LABEL_REQ_PARAMS', 2);
 class Label extends Bin
 {
     /**
-     * Object that Label is pointing
+     * Specifies which element a label is bound to
      *
-     * @var      object $_Object
+     * @var      mixed $_bound
      * @access   private
      */
-    var $_object;
+    var $_bound;
 
     /**
      * Public constructor
      *
-     * @param    string  $label Text to use
-     * @param    object  $obj   Object to use
+     * @param    string $label Text to use
+     * @param    mixed  $bound Bound to element object or ID
      * @access   public
      */
-    function Label($label, $obj)
+    function Label($label, $bound = '')
     {
-        $this->_text   = $label;
-        $this->_object = $obj;
+        $this->_text  = $label;
+        $this->_bound = $bound;
         parent::init();
     }
 
@@ -43,9 +44,11 @@ class Label extends Bin
     function buildXHTML()
     {
         $this->_XHTML = '<label';
-        if (is_object($this->_object)) {
-            $this->_XHTML.= ' for="' . $this->_object->getID().'"';
+        if (!empty($this->_bound)) {
+            $bound = is_object($this->_bound)? $this->_bound->getID() : $this->_bound;
+            $this->_XHTML.= ' for="' . $bound.'"';
         }
+
         $this->_XHTML .= $this->buildBasicXHTML();
         $this->_XHTML .= $this->buildJSEvents();
         $this->_XHTML.= '>';
