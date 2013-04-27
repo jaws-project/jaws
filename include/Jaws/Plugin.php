@@ -210,12 +210,14 @@ class Jaws_Plugin
         $GLOBALS['app']->Registry->NewKey(
             'backend_gadgets',
             $pluginObj->_DefaultBackendEnabled? '*' : ',',
-            $plugin
+            $plugin,
+            2
         );
         $GLOBALS['app']->Registry->NewKey(
             'frontend_gadgets',
             $pluginObj->_DefaultFrontendEnabled? '*' : ',',
-            $plugin
+            $plugin,
+            2
         );
 
         // Everything is done
