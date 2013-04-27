@@ -292,14 +292,15 @@ class Forums_Actions_Topics extends Forums_HTML
         // chack captcha only in new topic action
         if (empty($topic['id'])) {
             $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if ($mPolicy->LoadCaptcha($captcha, $entry, $label, $description)) {
+            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
                 $tpl->SetBlock('topic/captcha');
-                $tpl->SetVariable('lbl_captcha', $label);
-                $tpl->SetVariable('captcha', $captcha);
-                if (!empty($entry)) {
-                    $tpl->SetVariable('value', $entry);
+                $tpl->SetVariable('captcha_lbl', $captcha['label']);
+                $tpl->SetVariable('captcha_key', $captcha['key']);
+                $tpl->SetVariable('captcha', $captcha['captcha']);
+                if (!empty($captcha['entry'])) {
+                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
                 }
-                $tpl->SetVariable('msg', $description);
+                $tpl->SetVariable('captcha_msg', $captcha['description']);
                 $tpl->ParseBlock('topic/captcha');
             }
         }
