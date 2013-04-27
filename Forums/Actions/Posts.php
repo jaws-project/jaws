@@ -134,7 +134,7 @@ class Forums_Actions_Posts extends Forums_HTML
                     )
                 );
                 $tpl->SetVariable('update_time', $objDate->Format($post['update_time'], $date_format));
-                $tpl->SetVariable('update_time_iso', $objDate->ToISO((int)$post['update_time']));
+                $tpl->SetVariable('update_time_iso', $objDate->ToISO($post['update_time']));
                 if (!empty($post['update_reason'])) {
                     $tpl->SetBlock('posts/post/update/reason');
                     $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
