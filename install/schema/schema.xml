@@ -35,7 +35,7 @@
             </field>
 
             <field>
-                <name>reg_type</name>
+                <name>cmp_type</name>
                 <type>integer</type>
                 <length>1</length>
             </field>
@@ -57,19 +57,19 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>reg_component</name>
-                <field>
-                    <name>cmp_name</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>reg_component_type</name>
                 <field>
                     <name>cmp_name</name>
                 </field>
                 <field>
                     <name>cmp_type</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_component</name>
+                <field>
+                    <name>cmp_name</name>
                 </field>
             </index>
 
