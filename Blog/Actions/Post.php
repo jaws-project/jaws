@@ -87,7 +87,7 @@ class Blog_Actions_Post extends Blog_HTML
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
-            $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Settings');
+            $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
                     $allow_comments_config = $GLOBALS['app']->Session->Logged();

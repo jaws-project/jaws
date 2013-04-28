@@ -264,7 +264,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         if ($entry['comments'] != 0 ||
             ($entry['allow_comments'] === true &&
              $this->gadget->registry->get('allow_comments') == 'true' &&
-             $this->gadget->registry->get('allow_comments', 'Settings') != 'false'))
+             $this->gadget->registry->get('allow_comments', 'Comments') != 'false'))
         {
             $tpl_block = $commentLink? 'comment-link' : 'comments-statistic';
             $tpl->SetBlock("entry/$tpl_block");

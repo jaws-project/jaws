@@ -404,7 +404,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
         $url = $this->gadget->GetURLFor('SingleView', array('id' => $id));
 
-        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Settings');
+        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
         $restricted = $allow_comments_config == 'restricted';
         $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
 
