@@ -32,6 +32,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
             'recent_comment_limit' => '10',
             'comments_per_page' => '10',
             'allow_duplicate' => 'no',
+            'allow_comments' => 'true',
         ));
 
         return true;

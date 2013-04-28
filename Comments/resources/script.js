@@ -270,7 +270,7 @@ function searchComment()
  */
 function saveProperties()
 {
-    CommentsAjax.callAsync('SaveProperties', $('allow_duplicate').value);
+    CommentsAjax.callAsync('SaveProperties', $('allow_comments').value, $('allow_duplicate').value);
 }
 
 /**

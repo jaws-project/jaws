@@ -28,7 +28,7 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetBlock('new_comment');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Settings');
+        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
         switch ($allow_comments_config) {
             case 'restricted':
                 $allow_comments_config = $GLOBALS['app']->Session->Logged();

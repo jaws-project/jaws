@@ -176,13 +176,14 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * Save Properties
      *
      * @access  public
-     * @param   string  $allowDuplicate
+     * @param   string  $allowComments  Allow comments?
+     * @param   string  $allowDuplicate Allow duplicated comments?
      * @return  array   Response array (notice or error)
      */
-    function SaveProperties($allowDuplicate)
+    function SaveProperties($allowComments, $allowDuplicate)
     {
         // TODO: Check Permission For Manage Properties
-        $this->_Model->SaveProperties($allowDuplicate);
+        $this->_Model->SaveProperties($allowComments, $allowDuplicate);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
