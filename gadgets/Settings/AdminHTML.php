@@ -315,19 +315,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('field', $gravatar->Get());
         $tpl->ParseBlock('settings/item');
 
-        // comments site wide
-        $comments =& Piwi::CreateWidget('Combo', 'allow_comments');
-        $comments->setID('allow_comments');
-        $comments->AddOption(_t('GLOBAL_YES'), 'true');
-        $comments->AddOption(_t('SETTINGS_ALLOW_COMMENTS_RESTRICTED'), 'restricted');
-        $comments->AddOption(_t('GLOBAL_NO'), 'false');
-        $comments->SetDefault($this->gadget->registry->get('allow_comments'));
-        $tpl->SetBlock('settings/item');
-        $tpl->SetVariable('field-name', 'allow_comments');
-        $tpl->SetVariable('label', _t('SETTINGS_ALLOW_COMMENTS'));
-        $tpl->SetVariable('field', $comments->Get());
-        $tpl->ParseBlock('settings/item');
-
         // show view site icon on CP
         $viewSite =& Piwi::CreateWidget('Combo', 'show_viewsite');
         $viewSite->setID('show_viewsite');

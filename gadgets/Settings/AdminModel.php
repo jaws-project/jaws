@@ -183,7 +183,6 @@ class Settings_AdminModel extends Jaws_Gadget_Model
      *                   'calendar_language',   //Date Calendar language
      *                   'use_gravatar',        //Use gravatar service?
      *                   'gravatar_rating',     //Gravatar rating
-     *                   'allow_comments',      //Allow comments?
      *                   'show_viewsite',       //show the view site on CP?
      *                   'title_separator',     //Separator used when user uses page_title
      *                   'editor',              //Editor to use
@@ -195,8 +194,8 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function SaveAdvancedSettings($settings)
     {
         $advancedKeys = array('date_format', 'calendar_type', 'calendar_language',
-                              'use_gravatar', 'gravatar_rating', 'allow_comments',
-                              'show_viewsite', 'title_separator', 'editor', 'timezone');
+                              'use_gravatar', 'gravatar_rating', 'show_viewsite',
+                              'title_separator', 'editor', 'timezone');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
