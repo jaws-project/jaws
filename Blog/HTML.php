@@ -174,7 +174,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
      * @param   bool    $summary        Show post summary
      * @return  string XHTML template content
      */
-    function ShowEntry($tpl, $tpl_base_block, $entry, $summary = true)
+    function ShowEntry(&$tpl, $tpl_base_block, $entry, $summary = true)
     {
         $tpl->SetBlock("$tpl_base_block/entry");
         $tpl->SetVariablesArray($entry);
