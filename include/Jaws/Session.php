@@ -241,6 +241,7 @@ class Jaws_Session
 
             $this->_SessionID  = $session['sid'];
             $this->_Attributes = unserialize($session['data']);
+            $this->SetAttribute('sid', $this->_SessionID, true);
 
             // check session longevity
             if ($session['updatetime'] < ($expTime - $session['longevity'])) {
@@ -351,6 +352,7 @@ class Jaws_Session
         }
 
         $this->_Attributes = array();
+        $this->SetAttribute('sid',         $this->_SessionID, true);
         $this->SetAttribute('user',        $info['id']);
         $this->SetAttribute('internal',    $info['internal']);
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
@@ -398,16 +400,16 @@ class Jaws_Session
         $this->SetAttribute('logon_hours', '');
         $this->SetAttribute('expiry_date', 0);
         $this->SetAttribute('concurrents', 0);
-        $this->SetAttribute('longevity',  0);
-        $this->SetAttribute('logged',     false);
-        $this->SetAttribute('nickname',   '');
-        $this->SetAttribute('email',      '');
-        $this->SetAttribute('url',        '');
-        $this->SetAttribute('avatar',     '');
-        $this->SetAttribute('language',   '');
-        $this->SetAttribute('theme',      '');
-        $this->SetAttribute('editor',     '');
-        $this->SetAttribute('timezone',   null);
+        $this->SetAttribute('longevity',   0);
+        $this->SetAttribute('logged',      false);
+        $this->SetAttribute('nickname',    '');
+        $this->SetAttribute('email',       '');
+        $this->SetAttribute('url',         '');
+        $this->SetAttribute('avatar',      '');
+        $this->SetAttribute('language',    '');
+        $this->SetAttribute('theme',       '');
+        $this->SetAttribute('editor',      '');
+        $this->SetAttribute('timezone',    null);
         return true;
     }
 
