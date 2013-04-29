@@ -76,17 +76,13 @@ class Blog_Actions_Post extends Blog_HTML
             $tpl = new Jaws_Template('gadgets/Blog/templates/');
             $tpl->Load('SingleView.html', true);
             $tpl->SetBlock('single_view');
-
-            $tpl->SetBlock('single_view/entry');
-            $tplEntry = $tpl->GetRawBlockContent();
-            $res = $this->ShowEntry($entry, false, false, $tplEntry);
-            $tpl->SetCurrentBlockContent($res);
-            $tpl->ParseBlock('single_view/entry');
+            $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
 
             $trbkHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Trackbacks');
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
+
             $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':

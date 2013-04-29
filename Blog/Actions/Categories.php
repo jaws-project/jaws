@@ -67,14 +67,9 @@ class Blog_Actions_Categories extends Blog_HTML
                               $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params));
             $entries = $model->GetEntriesByCategory($catInfo['id'], $page);
             if (!Jaws_Error::IsError($entries)) {
-                $res = '';
-                $tpl->SetBlock('view_category/entry');
-                $tplEntry = $tpl->GetRawBlockContent();
                 foreach ($entries as $entry) {
-                    $res .= $this->ShowEntry($entry, true, true, $tplEntry);
+                    $this->ShowEntry($tpl, 'view_category', $entry);
                 }
-                $tpl->SetCurrentBlockContent($res);
-                $tpl->ParseBlock('view_category/entry');
             }
 
             $tpl->ParseBlock('view_category');

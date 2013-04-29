@@ -94,14 +94,9 @@ class Blog_Actions_DatePosts extends Blog_HTML
             }
 
             if(!empty($entries)) {
-                $res = '';
-                $tpl->SetBlock('view_date/entry');
-                $tplEntry = $tpl->GetRawBlockContent();
                 foreach ($entries as $entry) {
-                    $res .= $this->ShowEntry($entry, true, true, $tplEntry);
+                    $this->ShowEntry($tpl, 'view_date', $entry);
                 }
-                $tpl->SetCurrentBlockContent($res);
-                $tpl->ParseBlock('view_date/entry');
             } else {
                 header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
             }

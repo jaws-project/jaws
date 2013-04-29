@@ -168,22 +168,15 @@ class Blog_HTML extends Jaws_Gadget_HTML
      * Displays a given blog entry according to given parameters
      *
      * @access  public
+     * @param   object  $tpl            Jaws_Template object
+     * @param   string  $tpl_base_block Template block name
      * @param   int     $entry          entry id
-     * @param   bool    $commentLink
-     * @param   bool    $useMore        (optional, false by default)
-     * @param   string  $tplStr         template string
+     * @param   bool    $summary        Show post summary
      * @return  string XHTML template content
      */
-    function ShowEntry($entry, $commentLink = true, $useMore = false, $tplStr = '')
+    function ShowEntry($tpl, $tpl_base_block, $entry, $summary = true)
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        if (empty($tplStr)) {
-            $tpl->Load('Entry.html');
-        } else {
-            $tpl->loadFromString($tplStr, false);
-        }
-        $tpl->SetBlock('entry');
-
+        $tpl->SetBlock("$tpl_base_block/entry");
         $tpl->SetVariablesArray($entry);
 
         $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
@@ -222,12 +215,12 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $summary = $this->gadget->ParseText($summary);
         $text    = $this->gadget->ParseText($text);
 
-        if ($useMore){
+        if ($summary){
             if (Jaws_UTF8::trim($text) != '') {
-                $tpl->SetBlock('entry/read-more');
+                $tpl->SetBlock("$tpl_base_block/entry/read-more");
                 $tpl->SetVariable('url', $perm_url);
                 $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
-                $tpl->ParseBlock('entry/read-more');
+                $tpl->ParseBlock("$tpl_base_block/entry/read-more");
             }
             $tpl->SetVariable('text', $summary);
         } else {
@@ -247,7 +240,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $pos = 1;
         $tpl->SetVariable('posted_in', _t('BLOG_POSTED_IN'));
         foreach ($entry['categories'] as $cat) {
-            $tpl->SetBlock('entry/category');
+            $tpl->SetBlock("$tpl_base_block/entry/category");
             $tpl->SetVariable('id',   $cat['id']);
             $tpl->SetVariable('name', $cat['name']);
             $cid = empty($cat['fast_url']) ? $cat['id'] : $cat['fast_url'];
@@ -258,7 +251,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('separator', ',');
             }
             $pos++;
-            $tpl->ParseBlock('entry/category');
+            $tpl->ParseBlock("$tpl_base_block/entry/category");
         }
 
         if ($entry['comments'] != 0 ||
@@ -266,19 +259,19 @@ class Blog_HTML extends Jaws_Gadget_HTML
              $this->gadget->registry->get('allow_comments') == 'true' &&
              $this->gadget->registry->get('allow_comments', 'Comments') != 'false'))
         {
-            $tpl_block = $commentLink? 'comment-link' : 'comments-statistic';
-            $tpl->SetBlock("entry/$tpl_block");
+            $tpl_block = $summary? 'comment-link' : 'comments-statistic';
+            $tpl->SetBlock("$tpl_base_block/entry/$tpl_block");
             $tpl->SetVariable('url', $perm_url);
-            if ($commentLink && empty($entry['comments'])) {
+            if ($summary && empty($entry['comments'])) {
                 $tpl->SetVariable('text_comments', _t('BLOG_NO_COMMENT'));
             } else {
                 $tpl->SetVariable('text_comments', _t('BLOG_HAS_N_COMMENTS', $entry['comments']));
             }
             $tpl->SetVariable('num_comments', $entry['comments']);
-            $tpl->ParseBlock("entry/$tpl_block");
+            $tpl->ParseBlock("$tpl_base_block/entry/$tpl_block");
         }
-        $tpl->ParseBlock('entry');
 
+        $tpl->ParseBlock("$tpl_base_block/entry");
         return $tpl->Get();
     }
 

@@ -54,17 +54,14 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
             $total  = $bModel->GetAuthorNumberOfPages($user);
             $limit  = $this->gadget->registry->get('last_entries_limit');
             $params = array('id'  => $user);
-            $tpl->SetVariable('navigation',
-                              $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewAuthorPage', $params));
+            $tpl->SetVariable(
+                'navigation',
+                $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewAuthorPage', $params)
+            );
 
-            $res = '';
-            $tpl->SetBlock('view_author/entry');
-            $tplEntry = $tpl->GetRawBlockContent();
             foreach ($entries as $entry) {
-                $res .= $this->ShowEntry($entry, true, true, $tplEntry);
+                $this->ShowEntry($tpl, 'view_author', $entry);
             }
-            $tpl->SetCurrentBlockContent($res);
-            $tpl->ParseBlock('view_author/entry');
 
             $tpl->ParseBlock('view_author');
             return $tpl->Get();

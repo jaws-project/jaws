@@ -74,14 +74,7 @@ class Blog_Actions_Posts extends Blog_HTML
 
                 $tpl->SetBlock('view/entryrow/column');
                 $tpl->SetVariable('col', $col);
-
-                $tpl->SetBlock('view/entryrow/column/entry');
-                // Fix me: not good to get the same block content each time
-                $tplEntry = $tpl->GetRawBlockContent();
-                $res = $this->ShowEntry($entry, true, true, $tplEntry);
-                $tpl->SetCurrentBlockContent($res);
-                $tpl->ParseBlock('view/entryrow/column/entry');
-
+                $res = $this->ShowEntry($tpl, 'view/entryrow/column', $entry);
                 $tpl->ParseBlock('view/entryrow/column');
 
                 $index++;
