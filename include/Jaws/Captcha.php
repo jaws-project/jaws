@@ -104,6 +104,7 @@ class Jaws_Captcha
         $res['captcha']->SetID("captcha_image_$key");
         $res['captcha']->SetClass('captcha');
         $res['captcha']->SetSrc($imgSrc);
+        $res['captcha']->AddEvent(ON_CLICK, "javascript:this.src = '$imgSrc?'+ new Date().getTime();");
         $res['entry'] =& Piwi::CreateWidget('Entry', 'captcha_value', '');
         $res['entry']->SetID("captcha_value_$key");
         $res['entry']->SetStyle('direction: ltr;');
