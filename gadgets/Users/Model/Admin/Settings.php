@@ -32,9 +32,9 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
 
         $res = true;
         if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageAuthenticationMethod')) {
-            $methods = Jaws::getAuthMethods();
+            $methods = Jaws::getAuthTypes();
             if ($methods !== false && in_array($method, $methods)) {
-                $res = $this->gadget->registry->set('auth_method', $method);
+                $res = $this->gadget->registry->set('authtype', $method);
             }
         }
         $res = $res && $this->gadget->registry->set('anon_register', $anon);

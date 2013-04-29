@@ -37,11 +37,11 @@ class Jaws_Session
     var $_AuthModel;
 
     /**
-     * Authentication method
-     * @var     string $_AuthMethod
+     * Authentication type
+     * @var     string $_AuthType
      * @access  private
      */
-    var $_AuthMethod;
+    var $_AuthType;
 
     /**
      * Attributes array
@@ -111,14 +111,15 @@ class Jaws_Session
      */
     function Init()
     {
-        $this->_AuthMethod = $GLOBALS['app']->Registry->Get('auth_method', 'Users');
-        $this->_AuthMethod = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthMethod);
-        $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthMethod . '.php';
-        if (empty($this->_AuthMethod) || !file_exists($authFile)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR,
-                                 $this->_AuthMethod . ' Error: ' . $authFile .
-                                 ' file doesn\'t exists, using DefaultAuth');
-            $this->_AuthMethod = 'Default';
+        $this->_AuthType = $GLOBALS['app']->Registry->Get('authtype', 'Users');
+        $this->_AuthType = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthType);
+        $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthType . '.php';
+        if (empty($this->_AuthType) || !file_exists($authFile)) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                $authFile. ' file doesn\'t exists, using default authentication type'
+            );
+            $this->_AuthType = 'Default';
         }
 
         // Try to restore session...
@@ -136,16 +137,18 @@ class Jaws_Session
      * @param   string  $username   Username
      * @param   string  $password   Password
      * @param   bool    $remember   Remember me
-     * @param   string  $authmethod Authentication method
+     * @param   string  $authtype   Authentication type
      * @return  mixed   An Array of user's attributes if success, otherwise Jaws_Error
      */
-    function Login($username, $password, $remember, $authmethod = '')
+    function Login($username, $password, $remember, $authtype = '')
     {
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
         if (!$this->_SessionExists) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_SESSION_NOTFOUND'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         if ($username === '' && $password === '') {
@@ -155,14 +158,14 @@ class Jaws_Session
                 JAWS_ERROR_NOTICE
             );
         } else {
-            if (!empty($authmethod)) {
-                $authmethod = preg_replace('/[^[:alnum:]_-]/', '', $authmethod);
+            if (!empty($authtype)) {
+                $authtype = preg_replace('/[^[:alnum:]_-]/', '', $authtype);
             } else {
-                $authmethod = $this->_AuthMethod;
+                $authtype = $this->_AuthType;
             }
 
-            require_once JAWS_PATH . 'include/Jaws/Auth/' . $authmethod . '.php';
-            $className = 'Jaws_Auth_' . $authmethod;
+            require_once JAWS_PATH . 'include/Jaws/Auth/' . $authtype . '.php';
+            $className = 'Jaws_Auth_' . $authtype;
             $this->_AuthModel = new $className();
             $result = $this->_AuthModel->Auth($username, $password);
             if (!Jaws_Error::isError($result)) {

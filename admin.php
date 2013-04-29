@@ -78,12 +78,12 @@ if (!$GLOBALS['app']->Session->Logged())
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
         $resCheck = $mPolicy->CheckCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
-            $param = $request->get(array('redirect_to', 'remember', 'auth_method'), 'post');
+            $param = $request->get(array('redirect_to', 'remember', 'authtype'), 'post');
             $resCheck = $GLOBALS['app']->Session->Login(
                 $user,
                 $passwd, 
                 isset($param['remember']),
-                $param['auth_method']
+                $param['authtype']
             );
         }
         if (!Jaws_Error::IsError($resCheck)) {

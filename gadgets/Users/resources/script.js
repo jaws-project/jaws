@@ -742,7 +742,7 @@ function onACLNodeClick(imgID)
  */
 function saveSettings()
 {
-    var method     = $('auth_method').value;
+    var method     = $('authtype').value;
     var anon       = $('anon_register').value;
     var repetitive = $('anon_repetitive_email').value;
     var act        = $('anon_activation').value;

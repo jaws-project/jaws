@@ -154,9 +154,9 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
 
         $request =& Jaws_Request::getInstance();
-        $reqpost = $request->get(array('username', 'auth_method', 'remember', 'usecrypt'), 'post');
-        if (is_null($reqpost['auth_method'])) {
-            $reqpost['auth_method'] = $request->get('auth_method', 'get');
+        $reqpost = $request->get(array('username', 'authtype', 'remember', 'usecrypt'), 'post');
+        if (is_null($reqpost['authtype'])) {
+            $reqpost['authtype'] = $request->get('authtype', 'get');
         }
 
         $redirectTo = '';
@@ -189,22 +189,22 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('username', $reqpost['username']);
         $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
-        $auth_method = $this->gadget->registry->get('auth_method', 'Users');
-        if (!is_null($reqpost['auth_method']) || $auth_method !== 'Default') {
-            $auth_method = is_null($reqpost['auth_method'])? $auth_method : $reqpost['auth_method'];
-            $ltpl->SetBlock('layout/auth_method');
-            $ltpl->SetVariable('lbl_auth_method', _t('CONTROLPANEL_AUTH_METHOD'));
-            foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
-                $ltpl->SetBlock('layout/auth_method/item');
+        $authtype = $this->gadget->registry->get('authtype', 'Users');
+        if (!is_null($reqpost['authtype']) || $authtype !== 'Default') {
+            $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
+            $ltpl->SetBlock('layout/authtype');
+            $ltpl->SetVariable('lbl_authtype', _t('CONTROLPANEL_AUTHTYPE'));
+            foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
+                $ltpl->SetBlock('layout/authtype/item');
                 $ltpl->SetVariable('method', $method);
-                if ($method == $auth_method) {
+                if ($method == $authtype) {
                     $ltpl->SetVariable('selected', 'selected="selected"');
                 } else {
                     $ltpl->SetVariable('selected', '');
                 }
-                $ltpl->ParseBlock('layout/auth_method/item');
+                $ltpl->ParseBlock('layout/authtype/item');
             }
-            $ltpl->ParseBlock('layout/auth_method');
+            $ltpl->ParseBlock('layout/authtype');
         }
 
         // remember

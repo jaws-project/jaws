@@ -36,7 +36,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             'latest_limit' => '10',
             'password_recovery' => 'false',
             'register_notification' => 'true',
-            'auth_method' => 'Default',
+            'authtype' => 'Default',
             'anon_register' => 'false',
             'anon_repetitive_email' => 'true',
             'anon_activation' => 'user',

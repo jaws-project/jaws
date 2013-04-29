@@ -30,13 +30,13 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Users'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveProperties'));
 
-        $authmethod =& Piwi::CreateWidget('Combo', 'auth_method');
-        $authmethod->SetTitle(_t('CONTROLPANEL_AUTH_METHOD'));
-        foreach ($GLOBALS['app']->GetAuthMethods() as $method) {
-            $authmethod->AddOption($method, $method);
+        $authtype =& Piwi::CreateWidget('Combo', 'authtype');
+        $authtype->SetTitle(_t('GLOBAL_AUTHTYPE'));
+        foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
+            $authtype->AddOption($method, $method);
         }
-        $authmethod->SetDefault($this->gadget->registry->get('auth_method'));
-        $authmethod->SetEnabled($this->gadget->CheckPermission('ManageAuthenticationMethod'));
+        $authtype->SetDefault($this->gadget->registry->get('authtype'));
+        $authtype->SetEnabled($this->gadget->CheckPermission('ManageAuthenticationMethod'));
 
         $anonRegister =& Piwi::CreateWidget('Combo', 'anon_register');
         $anonRegister->SetTitle(_t('USERS_PROPERTIES_ANON_REGISTER'));
@@ -82,7 +82,7 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
         $fieldset = new Jaws_Widgets_FieldSet('');
         $fieldset->SetTitle('vertical');
 
-        $fieldset->Add($authmethod);
+        $fieldset->Add($authtype);
         $fieldset->Add($anonRegister);
         $fieldset->Add($anonEmail);
         $fieldset->Add($anonactivate);

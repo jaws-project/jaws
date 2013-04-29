@@ -120,6 +120,7 @@ class Users_Actions_Login extends Users_HTML
             $request =& Jaws_Request::getInstance();
             $referrer  = $request->get('referrer', 'get');
             $reqpost['username'] = '';
+            $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
             $reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
@@ -149,6 +150,24 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
         $tpl->SetVariable('username', $reqpost['username']);
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+
+        $authtype = $this->gadget->registry->get('authtype');
+        if ($authtype !== 'Default') {
+            $authtype = empty($reqpost['authtype'])? $authtype : $reqpost['authtype'];
+            $tpl->SetBlock('LoginBox/authtype');
+            $tpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
+            foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
+                $tpl->SetBlock('LoginBox/authtype/item');
+                $tpl->SetVariable('method', $method);
+                if ($method == $authtype) {
+                    $tpl->SetVariable('selected', 'selected="selected"');
+                } else {
+                    $tpl->SetVariable('selected', '');
+                }
+                $tpl->ParseBlock('LoginBox/authtype/item');
+            }
+            $tpl->ParseBlock('LoginBox/authtype');
+        }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
         if (false !== $captcha = $mPolicy->LoadCaptcha('login')) {
@@ -318,7 +337,10 @@ class Users_Actions_Login extends Users_HTML
     function Login()
     {
         $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('username', 'password', 'remember', 'usecrypt', 'referrer'), 'post');
+        $post = $request->get(
+            array('username', 'password', 'authtype', 'remember', 'usecrypt', 'referrer'),
+            'post'
+        );
 
         if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
@@ -335,7 +357,11 @@ class Users_Actions_Login extends Users_HTML
         $resCheck = $mPolicy->CheckCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login
-            $resCheck = $GLOBALS['app']->Session->Login($post['username'], $post['password'], $post['remember']);
+            $resCheck = $GLOBALS['app']->Session->Login(
+                $post['username'],
+                $post['password'],
+                $post['remember'],
+                $post['authtype']);
         }
         if (Jaws_Error::isError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->GetMessage(), 'Users.Login');

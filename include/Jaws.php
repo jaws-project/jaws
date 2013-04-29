@@ -507,25 +507,25 @@ class Jaws
     }
 
     /**
-     * Get the available authentication methods
+     * Get the available authentication types
      *
      * @access  public
-     * @return  array  Array with available authentication methods
+     * @return  array  Array with available authentication types
      */
-    function GetAuthMethods()
+    function GetAuthTypes()
     {
         $path = JAWS_PATH . 'include/Jaws/Auth';
         if (is_dir($path)) {
-            $methods = array();
+            $authtypes = array();
             $dir = scandir($path);
-            foreach ($dir as $method) {
-                if (stristr($method, '.php')) {
-                    $method = str_replace('.php', '', $method);
-                    $methods[$method] = $method;
+            foreach ($dir as $authtype) {
+                if (stristr($authtype, '.php')) {
+                    $authtype = str_replace('.php', '', $authtype);
+                    $authtypes[$authtype] = $authtype;
                 }
             }
 
-            return $methods;
+            return $authtypes;
         }
 
         return false;
