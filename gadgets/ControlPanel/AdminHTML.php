@@ -70,8 +70,6 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
                 if ($gadget['name'] === 'Index') {
                     $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/ControlPanel/images/view_site.png'));
                     $tpl->SetVariable('url', $GLOBALS['app']->getSiteURL('/'));
-                    $tpl->SetBlock('main/item/target');
-                    $tpl->ParseBlock('main/item/target');
                 } else {
                     $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['name'].'/images/logo.png'));
                     $tpl->SetVariable('url', BASE_SCRIPT . '?gadget='.$gadget['name']);
