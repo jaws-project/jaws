@@ -193,7 +193,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         if (!is_null($reqpost['authtype']) || $authtype !== 'Default') {
             $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
             $ltpl->SetBlock('layout/authtype');
-            $ltpl->SetVariable('lbl_authtype', _t('CONTROLPANEL_AUTHTYPE'));
+            $ltpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
             foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
                 $ltpl->SetBlock('layout/authtype/item');
                 $ltpl->SetVariable('method', $method);
