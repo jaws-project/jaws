@@ -5,22 +5,12 @@
  * @category   Gadget
  * @package    Registry
  * @author     Jonathan Hernandez <ion@suavizado.com>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Registry_AdminHTML extends Jaws_Gadget_HTML
 {
-    /**
-     * Calls default action(MainMenu)
-     *
-     * @access  public
-     * @return  string template content
-     */
-    function DefaultAction()
-    {
-        return $this->View();
-    }
-
     /**
      * Returns the admin template of registry
      *
@@ -29,29 +19,7 @@ class Registry_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        return $this->View();
-    }
-
-    /**
-     * Returns the admin template of registry
-     *
-     * @access  public
-     * @return  string  Template content
-     */
-    function EditACL()
-    {
-        return $this->View();
-    }
-
-    /**
-     * Returns the admin template of registry
-     *
-     * @access  public
-     * @return  string  Template content
-     */
-    function EditRegistry()
-    {
-        return $this->View();
+        return $this->EditRegistry();
     }
 
     /**
@@ -85,7 +53,7 @@ class Registry_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  string content
      */
-    function View()
+    function EditRegistry()
     {
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
@@ -95,17 +63,31 @@ class Registry_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('registry');
         $tpl->SetVariable('alertregistry', _t('REGISTRY_DISCLAIMER'));
 
-        $request =& Jaws_Request::getInstance();
-        $action  = $request->get('action', 'get');
-
-        if ($action == 'EditACL') {
-            $tpl->SetVariable('uisection', 'acl');
-        } else {
-            $tpl->SetVariable('uisection', 'registry');
-        }
-        $tpl->SetVariable('menubar', $this->MenuBar($action));
-        $tpl->SetVariable('aclMsg', _t('REGISTRY_ACL'));
+        $tpl->SetVariable('menubar', $this->MenuBar('EditRegistry'));
         $tpl->SetVariable('registryMsg', _t('REGISTRY_REGISTRY'));
+
+        $tpl->ParseBlock('registry');
+        return $tpl->Get();
+    }
+
+    /**
+     * Returns the admin template of registry
+     *
+     * @access  public
+     * @return  string  Template content
+     */
+    function EditACL()
+    {
+        $this->AjaxMe('script.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
+
+        $tpl = new Jaws_Template('gadgets/Registry/templates/');
+        $tpl->Load('ACL.html');
+        $tpl->SetBlock('acl');
+        $tpl->SetVariable('alertregistry', _t('REGISTRY_DISCLAIMER'));
+
+        $tpl->SetVariable('menubar', $this->MenuBar('EditACL'));
+        $tpl->SetVariable('aclMsg', _t('REGISTRY_ACL'));
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
 
@@ -125,10 +107,10 @@ class Registry_AdminHTML extends Jaws_Gadget_HTML
         $buttons->SetStyle('float: right;');
 
         $save =& Piwi::CreateWidget('Button', 'save_key', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: saveKey(this.form);');
+        $save->AddEvent(ON_CLICK, 'javascript:saveACLKey(this.form);');
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel_key', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, 'javascript: cancelKey(this.form);');
+        $cancel->AddEvent(ON_CLICK, 'javascript:cancelACLKey(this.form);');
 
         $buttons->Add($cancel);
         $buttons->Add($save);
@@ -140,8 +122,9 @@ class Registry_AdminHTML extends Jaws_Gadget_HTML
         $form->Add($buttons);
 
         $tpl->SetVariable('form', $form->Get());
-        $tpl->ParseBlock('registry');
+        $tpl->ParseBlock('acl');
 
-        return $tpl->Get();
+        return $tpl->Get(); 
     }
+
 }

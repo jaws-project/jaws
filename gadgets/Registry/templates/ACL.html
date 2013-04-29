@@ -1,0 +1,25 @@
+<!-- BEGIN acl -->
+<div id="main" align="center">
+{menubar}
+ <div align="center" id="message" style="display: none;">&nbsp;</div>
+  <span class="warning-message">{alertregistry}</span>
+<div id="registry-workarea">
+</div>
+<script type="text/javascript">
+  var aclMsg  = "{aclMsg}";
+</script>
+<table style="width: 100%; border: 1px solid #ccc;">
+  <tr>
+    <td id="tree_area"></td>
+    <td id="edit_area" style="width: 100%;" valign="middle" align="center">
+      <div id="div_form" style="display: none;">
+      {form}
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+<script type="text/javascript">
+initACLUI();
+</script>
+<!-- END acl -->

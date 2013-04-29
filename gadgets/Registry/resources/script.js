@@ -4,6 +4,7 @@
  * @category   Ajax
  * @package    Registry
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -48,14 +49,14 @@ function convertToTree(keys, title)
                 if (treeStructure[keyName] == undefined) {
                     treeStructure[keyName] = new WebFXTreeItem(current);
                     if (itemSplit.length == 2) {
-                        treeStructure[keyName].action = "javascript: editKey('" + key + "');";
+                        treeStructure[keyName].action = "javascript:editACLKey('" + key + "');";
                         treeStructure[keyName].icon = webFXTreeConfig.fileIcon;
                     }                       
                     if (i == 1) {
                         tree.add(treeStructure[keyName]);
                     } else {
                         if (i == (itemSplit.length-1)) {
-                            treeStructure[keyName].action = "javascript: editKey('" + key + "');";
+                            treeStructure[keyName].action = "javascript:editACLKey('" + key + "');";
                             treeStructure[keyName].icon = webFXTreeConfig.fileIcon;
                         }
                         treeStructure[lastKey].add(treeStructure[keyName]);
@@ -71,18 +72,10 @@ function convertToTree(keys, title)
 /**
  * Initiate the UI
  */
-function initUI(section)
+function initACLUI()
 {
-    currentSection = section;
-    var keys  = null;
-    var title = '';
-    if (section == 'registry') {
-        keys  = RegistryAjax.callSync('getallregistry');
-        title = registryMsg;
-    } else {
-        keys  = RegistryAjax.callSync('getallacl');
-        title = aclMsg;
-    }
+    keys  = RegistryAjax.callSync('getallacl');
+    title = aclMsg;
     $('tree_area').innerHTML = convertToTree(keys, title);
 
 }
@@ -90,14 +83,9 @@ function initUI(section)
 /**
  * Edit a registry key
  */
-function editKey(keyName) 
+function editACLKey(keyName) 
 {
-    var keyValue = '';
-    if (currentSection == 'registry') {
-        keyValue = RegistryAjax.callSync('getregistrykey', keyName);
-    } else {
-        keyValue = RegistryAjax.callSync('getaclkey', keyName);
-    }
+    var keyValue = RegistryAjax.callSync('getaclkey', keyName);
     $('key_name').value = keyName;
     $('key_value').value = keyValue;
     $('div_form').style.display = 'block';
@@ -107,27 +95,20 @@ function editKey(keyName)
 /**
  * Saves a key
  */
-function saveKey(form)
+function saveACLKey(form)
 {
-    if (currentSection == 'registry') {
-        RegistryAjax.callAsync('setregistrykey', $('key_name').value, $('key_value').value);
-    } else {
-        RegistryAjax.callAsync('setaclkey', $('key_name').value, $('key_value').value);
-    }
+    RegistryAjax.callAsync('setaclkey', $('key_name').value, $('key_value').value);
 }
 
 /**
  * Stop editing the key (hides the form)
  */
-function cancelKey(form)
+function cancelACLKey(form)
 {
     $('key_name').value = '';
     $('key_name').value = '';
     $('div_form').style.display = 'none';
 }
 
-var currentSection = 'registry';
-
-var RegistryAjax = new JawsAjax('Registry', RegistryCallback);
-
 var tree = null;
+var RegistryAjax = new JawsAjax('Registry', RegistryCallback);
