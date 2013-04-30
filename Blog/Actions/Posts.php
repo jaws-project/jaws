@@ -55,7 +55,7 @@ class Blog_Actions_Posts extends Blog_HTML
          */
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('ViewPage.html', true);
+        $tpl->Load('Posts.html', true);
         $tpl->SetBlock('view');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');

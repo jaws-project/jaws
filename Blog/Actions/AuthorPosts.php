@@ -44,7 +44,7 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
         $entries = $bModel->GetEntriesAsPage(null, $page, $condition, array('user' => $user));
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('ViewAuthor.html', true);
+            $tpl->Load('AuthorPosts.html', true);
             $tpl->SetBlock('view_author');
 
             $title = $entries[key($entries)]['nickname'];

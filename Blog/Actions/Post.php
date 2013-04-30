@@ -74,7 +74,7 @@ class Blog_Actions_Post extends Blog_HTML
             $this->AddToMetaKeywords($entry['meta_keywords']);
             $this->SetDescription($entry['meta_description']);
             $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('SingleView.html', true);
+            $tpl->Load('Post.html', true);
             $tpl->SetBlock('single_view');
             $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
 
@@ -157,7 +157,7 @@ class Blog_Actions_Post extends Blog_HTML
 
             if ($tpl->VariableExists('navigation')) {
                 $navtpl = new Jaws_Template('gadgets/Blog/templates/');
-                $navtpl->Load('EntryNavigation.html');
+                $navtpl->Load('PostNavigation.html');
                 if ($prev = $model->GetNOPEntry($entry['id'], 'previous')) {
                     $navtpl->SetBlock('entry-navigation/previous');
                     $navtpl->SetVariable('url', $this->gadget->GetURLFor('SingleView',

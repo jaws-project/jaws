@@ -386,7 +386,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
         $fontSizeRange = $maxFontSize - $minFontSize;
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('TagCloud.html');
+        $tpl->Load('CategoryCloud.html');
         $tpl->SetBlock('tagcloud');
         $tpl->SetVariable('title', _t('BLOG_TAGCLOUD'));
 
@@ -531,7 +531,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
     function PostsAuthors()
     {
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('PostsAuthors.html');
+        $tpl->Load('Authors.html');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $authors = $model->GetPostsAuthors();
