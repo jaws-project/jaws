@@ -76,6 +76,29 @@ class Jaws_Registry
     }
 
     /**
+     * Fetch all registry keys of the gadget
+     *
+     * @access  public
+     * @param   string  $cmp_name   Component name
+     * @return  mixed   Array of keys if successful or Jaws_Error on failure
+     */
+    function fetchAll($cmp_name = '')
+    {
+        $params = array();
+        $params['cmp_name'] = $cmp_name;
+
+        $sql = '
+            SELECT
+                [cmp_name], [key_name], [key_value]
+            FROM [[registry]]
+            WHERE
+                [cmp_name] = {cmp_name}';
+
+        $keys = $GLOBALS['db']->queryAll($sql, $params);
+        return $keys;
+    }
+
+    /**
      * Insert a new key
      *
      * @access  public
