@@ -18,7 +18,7 @@ class Skeleton_Model extends Jaws_Gadget_Model
      */
     function GetJawsVersion()
     {
-        return $GLOBALS['app']->Registry->Get('version');
+        return $GLOBALS['app']->Registry->fetch('version');
     }
 
 }
