@@ -533,10 +533,7 @@ class Jaws_Gadget
      */
     public static function IsGadgetInstalled($gadget)
     {
-        static $installed_gadgets;
-        if (!isset($installed_gadgets)) {
-            $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
-        }
+        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
 
