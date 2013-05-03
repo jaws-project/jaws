@@ -29,7 +29,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return false;
         }
 
-        $limit = (int)$this->gadget->registry->get('topics_limit');
+        $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topics = $tModel->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
@@ -51,11 +51,11 @@ class Forums_Actions_Topics extends Forums_HTML
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
         // date format
-        $date_format = $this->gadget->registry->get('date_format');
+        $date_format = $this->gadget->registry->fetch('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
         // posts per page
-        $posts_limit = $this->gadget->registry->get('posts_limit');
+        $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
@@ -221,7 +221,7 @@ class Forums_Actions_Topics extends Forums_HTML
         // first post meta
         if (!empty($topic['id'])) {
             // date format
-            $date_format = $this->gadget->registry->get('date_format');
+            $date_format = $this->gadget->registry->fetch('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetBlock('topic/post_meta');
@@ -272,7 +272,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $tpl->SetVariable('message', $message->Get());
 
         // attachment
-        if ($this->gadget->registry->get('enable_attachment') == 'true' &&
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
         {
             $tpl->SetBlock('topic/attachment');
@@ -358,7 +358,7 @@ class Forums_Actions_Topics extends Forums_HTML
         // attachment
         $topic['attachment'] = is_null($topic['remove_attachment'])? null : false;
         if (is_null($topic['attachment']) &&
-            $this->gadget->registry->get('enable_attachment') == 'true' &&
+            $this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
@@ -382,8 +382,8 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $send_notification = true;
         // edit min/max limit time
-        $edit_min_limit_time = (int)$this->gadget->registry->get('edit_min_limit_time');
-        $edit_max_limit_time = (int)$this->gadget->registry->get('edit_max_limit_time');
+        $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
+        $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (empty($topic['tid'])) {
@@ -512,7 +512,7 @@ class Forums_Actions_Topics extends Forums_HTML
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             if (!is_null($rqst['confirm'])) {
                 // delete min limit time
-                $delete_limit_time = (int)$this->gadget->registry->get('edit_min_limit_time');
+                $delete_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
                 // check delete permissions
                 if ((!$this->gadget->GetPermission('DeleteTopic')) ||
@@ -583,7 +583,7 @@ class Forums_Actions_Topics extends Forums_HTML
             }
 
             // date format
-            $date_format = $this->gadget->registry->get('date_format');
+            $date_format = $this->gadget->registry->fetch('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
