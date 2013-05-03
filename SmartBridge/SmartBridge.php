@@ -44,7 +44,7 @@ class SmartBridge extends Jaws_Plugin
                                         'StaticPage',
                                         'Phoo');
 
-        $eg = $GLOBALS['app']->Registry->Get('gadgets_enabled_items');
+        $eg = $GLOBALS['app']->Registry->fetch('gadgets_enabled_items');
         if (Jaws_Error::isError($eg)) {
             $eg = array();
         }

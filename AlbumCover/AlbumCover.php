@@ -41,7 +41,7 @@ class AlbumCover extends Jaws_Plugin
         }
 
         // Registry key
-        $GLOBALS['app']->Registry->NewKey('devtag', 'MY DEV TAG', 'AlbumCover', 2);
+        $GLOBALS['app']->Registry->insert('devtag', 'MY DEV TAG', 'AlbumCover', 2);
 
         return true;
     }
@@ -158,7 +158,7 @@ class AlbumCover extends Jaws_Plugin
         $page=1;
         $proxy = $service->getProxy();
 
-        $devtag = $GLOBALS['app']->Registry->Get('devtag', 'AlbumCover');
+        $devtag = $GLOBALS['app']->Registry->fetch('devtag', 'AlbumCover');
 
         $params = array(
             'artist'    => htmlentities($Artist),
