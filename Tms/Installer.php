@@ -59,8 +59,8 @@ class Tms_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('pluggable');
-        $this->gadget->registry->del('share_mode');
+        $this->gadget->registry->delete('pluggable');
+        $this->gadget->registry->delete('share_mode');
 
         // ACL keys.
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Tms/UploadTheme',   'false'); 
