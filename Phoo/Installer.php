@@ -33,23 +33,23 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add('default_action',    'AlbumList');
-        $this->gadget->registry->add('thumbsize',         '133x100');
-        $this->gadget->registry->add('mediumsize',        '400x300');
-        $this->gadget->registry->add('moblog_album',      '');
-        $this->gadget->registry->add('moblog_limit',      '10');
-        $this->gadget->registry->add('photoblog_album',   '');
-        $this->gadget->registry->add('photoblog_limit',   '5');
-        $this->gadget->registry->add('allow_comments',    'true');
-        $this->gadget->registry->add('published',         'true');
-        $this->gadget->registry->add('plugabble',         'true');
-        $this->gadget->registry->add('show_exif_info',    'false');
-        $this->gadget->registry->add('keep_original',     'true');
-        $this->gadget->registry->add('thumbnail_limit',   '0');
-        $this->gadget->registry->add('use_antispam',      'true');
-        $this->gadget->registry->add('comment_status',    'approved');
-        $this->gadget->registry->add('albums_order_type', 'name');
-        $this->gadget->registry->add('photos_order_type', 'id');
+        $this->gadget->registry->insert('default_action',    'AlbumList');
+        $this->gadget->registry->insert('thumbsize',         '133x100');
+        $this->gadget->registry->insert('mediumsize',        '400x300');
+        $this->gadget->registry->insert('moblog_album',      '');
+        $this->gadget->registry->insert('moblog_limit',      '10');
+        $this->gadget->registry->insert('photoblog_album',   '');
+        $this->gadget->registry->insert('photoblog_limit',   '5');
+        $this->gadget->registry->insert('allow_comments',    'true');
+        $this->gadget->registry->insert('published',         'true');
+        $this->gadget->registry->insert('plugabble',         'true');
+        $this->gadget->registry->insert('show_exif_info',    'false');
+        $this->gadget->registry->insert('keep_original',     'true');
+        $this->gadget->registry->insert('thumbnail_limit',   '0');
+        $this->gadget->registry->insert('use_antispam',      'true');
+        $this->gadget->registry->insert('comment_status',    'approved');
+        $this->gadget->registry->insert('albums_order_type', 'name');
+        $this->gadget->registry->insert('photos_order_type', 'id');
 
         return true;
     }
@@ -76,23 +76,23 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('default_action');
-        $this->gadget->registry->del('thumbsize');
-        $this->gadget->registry->del('mediumsize');
-        $this->gadget->registry->del('moblog_album');
-        $this->gadget->registry->del('moblog_limit');
-        $this->gadget->registry->del('photoblog_album');
-        $this->gadget->registry->del('photoblog_limit');
-        $this->gadget->registry->del('allow_comments');
-        $this->gadget->registry->del('published');
-        $this->gadget->registry->del('plugabble');
-        $this->gadget->registry->del('show_exif_info');
-        $this->gadget->registry->del('keep_original');
-        $this->gadget->registry->del('thumbnail_limit');
-        $this->gadget->registry->del('use_antispam');
-        $this->gadget->registry->del('comment_status');
-        $this->gadget->registry->del('albums_order_type');
-        $this->gadget->registry->del('photos_order_type');
+        $this->gadget->registry->delete('default_action');
+        $this->gadget->registry->delete('thumbsize');
+        $this->gadget->registry->delete('mediumsize');
+        $this->gadget->registry->delete('moblog_album');
+        $this->gadget->registry->delete('moblog_limit');
+        $this->gadget->registry->delete('photoblog_album');
+        $this->gadget->registry->delete('photoblog_limit');
+        $this->gadget->registry->delete('allow_comments');
+        $this->gadget->registry->delete('published');
+        $this->gadget->registry->delete('plugabble');
+        $this->gadget->registry->delete('show_exif_info');
+        $this->gadget->registry->delete('keep_original');
+        $this->gadget->registry->delete('thumbnail_limit');
+        $this->gadget->registry->delete('use_antispam');
+        $this->gadget->registry->delete('comment_status');
+        $this->gadget->registry->delete('albums_order_type');
+        $this->gadget->registry->delete('photos_order_type');
 
         return true;
     }
@@ -113,7 +113,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->registry->add('image_quality', '75');
+            $this->gadget->registry->insert('image_quality', '75');
         }
 
         if ($old == '0.7.0') {
@@ -126,16 +126,16 @@ class Phoo_Installer extends Jaws_Gadget_Installer
                                      _t('PHOO_NAME'));
             }
 
-            $this->gadget->registry->add('comment_status', 'approved');
-            $this->gadget->registry->add('order_type','name');
+            $this->gadget->registry->insert('comment_status', 'approved');
+            $this->gadget->registry->insert('order_type','name');
         }
 
         if (version_compare($old, '0.8.1', '<')) {
-            $albums_order_type = $this->gadget->registry->get('order_type');
-            $this->gadget->registry->add('albums_order_type',
+            $albums_order_type = $this->gadget->registry->fetch('order_type');
+            $this->gadget->registry->insert('albums_order_type',
                                               Jaws_Error::IsError($albums_order_type)? 'name' : $albums_order_type);
-            $this->gadget->registry->add('photos_order_type', 'id');
-            $this->gadget->registry->del('order_type');
+            $this->gadget->registry->insert('photos_order_type', 'id');
+            $this->gadget->registry->delete('order_type');
         }
 
         if (version_compare($old, '0.8.2', '<')) {
@@ -172,8 +172,8 @@ class Phoo_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->registry->del('resize_method');
-            $this->gadget->registry->del('image_quality');
+            $this->gadget->registry->delete('resize_method');
+            $this->gadget->registry->delete('image_quality');
         }
 
         return true;

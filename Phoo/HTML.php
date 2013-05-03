@@ -228,7 +228,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
+            $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
                     $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -242,7 +242,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
             $allow_comments = $image['allow_comments'] === true &&
                               $image['album_allow_comments'] === true &&
-                              $this->gadget->registry->get('allow_comments') == 'true' &&
+                              $this->gadget->registry->fetch('allow_comments') == 'true' &&
                               $allow_comments_config;
 
             if (empty($reply_to_comment)) {
@@ -497,7 +497,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('name', $c['name']);
                 $email = $c['email'];
 
-                $_obfuscator = $this->gadget->registry->get('obfuscator', 'Policy');
+                $_obfuscator = $this->gadget->registry->fetch('obfuscator', 'Policy');
                 if (($_obfuscator != 'DISABLED') && (!empty($email))) {
                     require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';
                     $obf = new $_obfuscator();
@@ -728,7 +728,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
 
         /*
-        if ($this->gadget->registry->get('mailer', 'Settings') !== 'DISABLED') {
+        if ($this->gadget->registry->fetch('mailer', 'Settings') !== 'DISABLED') {
             $tpl->SetBlock('commentform/mail_me');
             $tpl->SetVariable('mail_me', _t('PHOO_MAIL_COMMENT_TO_ME'));
             $tpl->ParseBlock('commentform/mail_me');
@@ -847,14 +847,14 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
         $url = $this->gadget->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
 
-        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
+        $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         $restricted = $allow_comments_config == 'restricted';
         $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
 
         // Check if comments are allowed.
         if ($image['allow_comments'] !== true ||
             $image['album_allow_comments'] !== true ||
-            $this->gadget->registry->get('allow_comments') != 'true' ||
+            $this->gadget->registry->fetch('allow_comments') != 'true' ||
             !$allow_comments_config)
         {
             Jaws_Header::Location($url);

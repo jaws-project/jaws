@@ -32,7 +32,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
      */
     function Execute($pSql = array())
     {
-        $orderType = $GLOBALS['app']->Registry->Get('albums_order_type', 'Phoo');
+        $orderType = $GLOBALS['app']->Registry->fetch('albums_order_type', 'Phoo');
         if (!in_array($orderType, array('createtime DESC',
                                         'createtime',
                                         'name DESC',

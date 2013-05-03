@@ -115,7 +115,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
             $buttonbox->Add($submit);
             $buttonbox->Add($insert_pic);
             $t->SetVariable('button_bar',$buttonbox->Get());
-            if ($this->gadget->registry->get('keep_original') == 'true') {
+            if ($this->gadget->registry->fetch('keep_original') == 'true') {
                 $t->SetBlock('ImageSelect/selected/original');
                 $t->SetVariable('t_original',_t('PHOO_ORIGINAL'));
                 $t->ParseBlock('ImageSelect/selected/original');
