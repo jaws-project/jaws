@@ -34,14 +34,14 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
         if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageAuthenticationMethod')) {
             $methods = Jaws::getAuthTypes();
             if ($methods !== false && in_array($method, $methods)) {
-                $res = $this->gadget->Registry->update('authtype', $method);
+                $res = $this->gadget->registry->update('authtype', $method);
             }
         }
-        $res = $res && $this->gadget->Registry->update('anon_register', $anon);
-        $res = $res && $this->gadget->Registry->update('anon_repetitive_email', $repetitive);
-        $res = $res && $this->gadget->Registry->update('anon_activation', $act);
-        $res = $res && $this->gadget->Registry->update('anon_group', (int)$group);
-        $res = $res && $this->gadget->Registry->update('password_recovery', $recover);
+        $res = $res && $this->gadget->registry->update('anon_register', $anon);
+        $res = $res && $this->gadget->registry->update('anon_repetitive_email', $repetitive);
+        $res = $res && $this->gadget->registry->update('anon_activation', $act);
+        $res = $res && $this->gadget->registry->update('anon_group', (int)$group);
+        $res = $res && $this->gadget->registry->update('password_recovery', $recover);
         if ($res) {
             return true;
         }

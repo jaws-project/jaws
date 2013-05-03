@@ -264,7 +264,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
-        $GLOBALS['app']->registry->update('use_in', $selection, $plugin);
+        $GLOBALS['app']->Registry->update('use_in', $selection, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
