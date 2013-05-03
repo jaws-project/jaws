@@ -32,9 +32,9 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add('hide_title', 'true');
-        $this->gadget->registry->add('default_page', '1');
-        $this->gadget->registry->add('multilanguage', 'yes');
+        $this->gadget->registry->insert('hide_title', 'true');
+        $this->gadget->registry->insert('default_page', '1');
+        $this->gadget->registry->insert('multilanguage', 'yes');
 
         return true;
     }
@@ -61,9 +61,9 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('hide_title');
-        $this->gadget->registry->del('default_page');
-        $this->gadget->registry->del('multilanguage');
+        $this->gadget->registry->delete('hide_title');
+        $this->gadget->registry->delete('default_page');
+        $this->gadget->registry->delete('multilanguage');
 
         return true;
     }
@@ -94,7 +94,7 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
                 return $pages;
             }
 
-            $site_language = $this->gadget->registry->get('site_language', 'Settings');
+            $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
             foreach ($pages as $page) {
                 $result = $this->AddPage($page['title'], 0, $page['fast_url'], $page['show_title'],
                                          $page['content'], $site_language, $page['published']);
@@ -112,7 +112,7 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/Properties', 'true');
 
             // Registry keys
-            $this->gadget->registry->add('multilanguage', 'yes');
+            $this->gadget->registry->insert('multilanguage', 'yes');
 
             $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
         }

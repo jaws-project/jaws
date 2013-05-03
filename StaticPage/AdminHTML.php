@@ -93,7 +93,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         foreach($pages as $page) {
             $defaultPage->addOption($page['title'], $page['base_id']);
         }        
-        $defaultPage->setDefault($this->gadget->registry->get('default_page'));
+        $defaultPage->setDefault($this->gadget->registry->fetch('default_page'));
         $fieldset->add($defaultPage);
 
         // Use multilanguage pages?
@@ -101,7 +101,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
         $multiLanguage->addOption(_t('GLOBAL_YES'), 'yes');
         $multiLanguage->addOption(_t('GLOBAL_NO'), 'no');           
-        $multiLanguage->setDefault($this->gadget->registry->get('multilanguage'));
+        $multiLanguage->setDefault($this->gadget->registry->fetch('multilanguage'));
         $fieldset->add($multiLanguage);
 
         // Save Button
@@ -595,7 +595,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
             $vBox->Add($titleShowCombo);
         }
 
-        $language = (empty($language)) ? $this->gadget->registry->get('site_language', 'Settings') : $language;
+        $language = (empty($language)) ? $this->gadget->registry->fetch('site_language', 'Settings') : $language;
         $languageCombo =& Piwi::CreateWidget('Combo', 'language');
         //Load the Settings AdminModel to get a list of all available languages
         $languages = Jaws_Utils::GetLanguagesList();
