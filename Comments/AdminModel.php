@@ -283,8 +283,8 @@ class Comments_AdminModel extends Comments_Model
      */
     function SaveProperties($allowComments, $allowDuplicate)
     {
-        $res = $this->gadget->registry->set('allow_comments', $allowComments);
-        $res = $res && $this->gadget->registry->set('allow_duplicate', $allowDuplicate);
+        $res = $this->gadget->registry->update('allow_comments', $allowComments);
+        $res = $res && $this->gadget->registry->update('allow_duplicate', $allowDuplicate);
 
         if (Jaws_Error::IsError($res) || $res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'), RESPONSE_ERROR);

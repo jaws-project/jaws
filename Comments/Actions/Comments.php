@@ -28,7 +28,7 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetBlock('new_comment');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
+        $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
             case 'restricted':
                 $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -113,7 +113,7 @@ class Comments_Actions_Comments extends Comments_HTML
             $perPage = (int)$rqst['perpage'];
             $orderBy = (int)$rqst['order'];
         } else {
-            $perPage = $this->gadget->registry->get('comments_per_page');
+            $perPage = $this->gadget->registry->fetch('comments_per_page');
             $orderBy = 0;
         }
 
@@ -228,7 +228,7 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         $permalink = $GLOBALS['app']->GetSiteURL();
-        $status = $this->gadget->registry->get('default_comment_status');
+        $status = $this->gadget->registry->fetch('default_comment_status');
         if ($GLOBALS['app']->Session->GetPermission('Comments', 'ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
