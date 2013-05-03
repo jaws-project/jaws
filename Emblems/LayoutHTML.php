@@ -23,7 +23,7 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model');
         $rsemblem = $model->GetEmblems(true);
         if (!Jaws_Error::IsError($rsemblem)) {
-            $rows = $this->gadget->registry->get('rows');
+            $rows = $this->gadget->registry->fetch('rows');
             $cols = ceil(count($rsemblem) / $rows);
             $tpl->SetBlock('emblems');
             $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
@@ -36,7 +36,7 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
                         $tpl->SetBlock('emblems/emblemrow/emblem');
                         $e = $rsemblem[$cell];
                         $tpl->SetVariable('id', $e['id']);
-                        if ($this->gadget->registry->get('allow_url') == 'true') {
+                        if ($this->gadget->registry->fetch('allow_url') == 'true') {
                             $tpl->SetBlock('emblems/emblemrow/emblem/url');
                             $tpl->SetVariable('src', $GLOBALS['app']->getDataURL('emblems/' . $e['src']));
                             $e['url'] = str_replace('{url}', $siteURL, $e['url']);
