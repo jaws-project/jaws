@@ -20,10 +20,10 @@ class Blog_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        $default_view = $this->gadget->registry->get('default_view');
+        $default_view = $this->gadget->registry->fetch('default_view');
         switch ($default_view) {
             case 'default_category':
-                $cat = $this->gadget->registry->get('default_category');
+                $cat = $this->gadget->registry->fetch('default_category');
                 $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Posts');
                 return $postsHTML->ViewPage($cat);
                 break;
@@ -256,8 +256,8 @@ class Blog_HTML extends Jaws_Gadget_HTML
 
         if ($entry['comments'] != 0 ||
             ($entry['allow_comments'] === true &&
-             $this->gadget->registry->get('allow_comments') == 'true' &&
-             $this->gadget->registry->get('allow_comments', 'Comments') != 'false'))
+             $this->gadget->registry->fetch('allow_comments') == 'true' &&
+             $this->gadget->registry->fetch('allow_comments', 'Comments') != 'false'))
         {
             $tpl_block = $summary? 'comment-link' : 'comments-statistic';
             $tpl->SetBlock("$tpl_base_block/entry/$tpl_block");

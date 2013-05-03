@@ -64,7 +64,7 @@ class Blog_Actions_Post extends Blog_HTML
             $res = $model->ViewEntry($entry['id']);
             $entry['clicks']++;
 
-            if ($this->gadget->registry->get('pingback') == 'true') {
+            if ($this->gadget->registry->fetch('pingback') == 'true') {
                 require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
                 $pback->showHeaders($this->gadget->GetURLFor('Pingback', array(), true));
@@ -83,7 +83,7 @@ class Blog_Actions_Post extends Blog_HTML
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
 
-            $allow_comments_config = $this->gadget->registry->get('allow_comments', 'Comments');
+            $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
                     $allow_comments_config = $GLOBALS['app']->Session->Logged();
@@ -97,7 +97,7 @@ class Blog_Actions_Post extends Blog_HTML
 
             if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
                 $allow_comments = $entry['allow_comments'] === true &&
-                                  $this->gadget->registry->get('allow_comments') == 'true' &&
+                                  $this->gadget->registry->fetch('allow_comments') == 'true' &&
                                   $allow_comments_config;
                 $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
                 if (empty($reply_to_comment)) {

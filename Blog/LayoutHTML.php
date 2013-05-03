@@ -36,7 +36,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
 
             $result[] = array(
                 'title' => _t('GLOBAL_COUNT'),
-                'value' => $this->gadget->registry->get('last_entries_limit')
+                'value' => $this->gadget->registry->fetch('last_entries_limit')
             );
         }
 

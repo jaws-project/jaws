@@ -50,7 +50,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
                 $catChecks->AddOption($a['name'], $a['id']);
             }
         }
-        $catDefault = explode(',', $this->gadget->registry->get('default_category'));
+        $catDefault = explode(',', $this->gadget->registry->fetch('default_category'));
         $catChecks->SetDefault($catDefault);
         $catChecks->SetColumns(3);
 
@@ -76,7 +76,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('editor', $editor->Get());
 
         // Allow Comments
-        $allow = $this->gadget->registry->get('allow_comments') == 'true';
+        $allow = $this->gadget->registry->fetch('allow_comments') == 'true';
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
         $comments->AddOption(_t('BLOG_ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
@@ -133,8 +133,8 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->gadget->registry->get('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->gadget->registry->get('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
@@ -154,7 +154,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
-        if ($this->gadget->registry->get('trackback') == 'true') {
+        if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', '');
@@ -200,7 +200,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
                                $post['published'], $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
-            if ($this->gadget->registry->get('trackback') == 'true') {
+            if ($this->gadget->registry->fetch('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
                 $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true);
                 $title = $post['title'];
@@ -386,8 +386,8 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->gadget->registry->get('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->gadget->registry->get('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
@@ -408,7 +408,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         // Trackback
-        if ($this->gadget->registry->get('trackback') == 'true') {
+        if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', $entry['trackbacks']);
@@ -466,7 +466,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
                             $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
-            if ($this->gadget->registry->get('trackback') == 'true') {
+            if ($this->gadget->registry->fetch('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);
                 $link = $this->gadget->GetURLFor('SingleView', array('id' => $id), true);
                 $title = $post['title'];

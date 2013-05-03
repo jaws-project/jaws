@@ -100,7 +100,7 @@ function metaWeblog_getUsersBlogs($params)
 
     $struct = array();
     $siteurl = $GLOBALS['app']->GetSiteURL();
-    $sitename = $GLOBALS['app']->Registry->Get('site_name', 'Settings');
+    $sitename = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
 
     $data = array(
         'isAdmin'  => new XML_RPC_Value('1', 'boolean'),
@@ -218,12 +218,12 @@ function metaWeblog_newPost($params)
     if (!empty($data['mt_allow_comments'])) {
         $allow_c = $data['mt_allow_comments'];
     } else {
-        $allow_c = $this->registry->get('allow_comments');
+        $allow_c = $this->registry->fetch('allow_comments');
         $allow_c = $allow_c == 'true' ? 1 : 0;
     }
 
     if (empty($categories)) {
-        $categories = array($this->registry->get('default_category'));
+        $categories = array($this->registry->fetch('default_category'));
     }
     $publish  = getScalarValue($params, 4);
 
@@ -278,7 +278,7 @@ function metaWeblog_editPost($params)
     }
 
     // Allow Comments ?
-    $allow_c = $this->registry->get('allow_comments');
+    $allow_c = $this->registry->fetch('allow_comments');
     $allow_c = $allow_c == 'true' ? 1 : 0;
 
     $publish = getScalarValue($params, 4);

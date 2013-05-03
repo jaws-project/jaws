@@ -41,23 +41,23 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add('columns',                   '1');
-        $this->gadget->registry->add('default_view',              'last_entries');
-        $this->gadget->registry->add('last_entries_limit',        '20');
-        $this->gadget->registry->add('popular_limit',             '10');
-        $this->gadget->registry->add('xml_limit',                 '10');
-        $this->gadget->registry->add('default_category',          '1');
-        $this->gadget->registry->add('allow_comments',            'true');
-        $this->gadget->registry->add('comment_status',            'approved');
-        $this->gadget->registry->add('last_comments_limit',       '20');
-        $this->gadget->registry->add('last_recentcomments_limit', '20');
-        $this->gadget->registry->add('generate_xml',              'true');
-        $this->gadget->registry->add('generate_category_xml',     'true');
-        $this->gadget->registry->add('trackback',                 'true');
-        $this->gadget->registry->add('trackback_status',          'approved');
-        $this->gadget->registry->add('plugabble',                 'true');
-        $this->gadget->registry->add('use_antispam',              'true');
-        $this->gadget->registry->add('pingback',                  'true');
+        $this->gadget->registry->insert('columns',                   '1');
+        $this->gadget->registry->insert('default_view',              'last_entries');
+        $this->gadget->registry->insert('last_entries_limit',        '20');
+        $this->gadget->registry->insert('popular_limit',             '10');
+        $this->gadget->registry->insert('xml_limit',                 '10');
+        $this->gadget->registry->insert('default_category',          '1');
+        $this->gadget->registry->insert('allow_comments',            'true');
+        $this->gadget->registry->insert('comment_status',            'approved');
+        $this->gadget->registry->insert('last_comments_limit',       '20');
+        $this->gadget->registry->insert('last_recentcomments_limit', '20');
+        $this->gadget->registry->insert('generate_xml',              'true');
+        $this->gadget->registry->insert('generate_category_xml',     'true');
+        $this->gadget->registry->insert('trackback',                 'true');
+        $this->gadget->registry->insert('trackback_status',          'approved');
+        $this->gadget->registry->insert('plugabble',                 'true');
+        $this->gadget->registry->insert('use_antispam',              'true');
+        $this->gadget->registry->insert('pingback',                  'true');
 
         return true;
     }
@@ -85,23 +85,23 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('columns');
-        $this->gadget->registry->del('default_view');
-        $this->gadget->registry->del('last_entries_limit');
-        $this->gadget->registry->del('popular_limit');
-        $this->gadget->registry->del('xml_limit');
-        $this->gadget->registry->del('default_category');
-        $this->gadget->registry->del('allow_comments');
-        $this->gadget->registry->del('comment_status');
-        $this->gadget->registry->del('last_comments_limit');
-        $this->gadget->registry->del('last_recentcomments_limit');
-        $this->gadget->registry->del('generate_xml');
-        $this->gadget->registry->del('generate_category_xml');
-        $this->gadget->registry->del('trackback');
-        $this->gadget->registry->del('trackback_status');
-        $this->gadget->registry->del('plugabble');
-        $this->gadget->registry->del('use_antispam');
-        $this->gadget->registry->del('pingback');
+        $this->gadget->registry->delete('columns');
+        $this->gadget->registry->delete('default_view');
+        $this->gadget->registry->delete('last_entries_limit');
+        $this->gadget->registry->delete('popular_limit');
+        $this->gadget->registry->delete('xml_limit');
+        $this->gadget->registry->delete('default_category');
+        $this->gadget->registry->delete('allow_comments');
+        $this->gadget->registry->delete('comment_status');
+        $this->gadget->registry->delete('last_comments_limit');
+        $this->gadget->registry->delete('last_recentcomments_limit');
+        $this->gadget->registry->delete('generate_xml');
+        $this->gadget->registry->delete('generate_category_xml');
+        $this->gadget->registry->delete('trackback');
+        $this->gadget->registry->delete('trackback_status');
+        $this->gadget->registry->delete('plugabble');
+        $this->gadget->registry->delete('use_antispam');
+        $this->gadget->registry->delete('pingback');
 
         return true;
     }
