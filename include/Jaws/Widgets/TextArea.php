@@ -203,7 +203,7 @@ class Jaws_Widgets_TextArea extends Container
      */
     function extraBuild()
     {
-        $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
         $installed_plugins = array_filter(explode(',', $installed_plugins));
         $pluginKey = 'frontend_gadgets';
         if (JAWS_SCRIPT == 'admin') {
@@ -211,7 +211,7 @@ class Jaws_Widgets_TextArea extends Container
         }
 
         foreach ($installed_plugins as $plugin) {
-            $gadgets = $GLOBALS['app']->Registry->Get($pluginKey, $plugin);
+            $gadgets = $GLOBALS['app']->Registry->fetch($pluginKey, $plugin);
             if (($gadgets == '*') || (strpos($gadgets, ",{$this->_Gadget},") !== false)) {
                 $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {

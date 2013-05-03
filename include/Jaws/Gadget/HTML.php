@@ -277,7 +277,7 @@ class Jaws_Gadget_HTML
     {
         // is an empty action?
         if (empty($this->_Action) || $this->_Action == 'DefaultAction') {
-            $this->_Action = $this->gadget->registry->get('default_action');
+            $this->_Action = $this->gadget->registry->fetch('default_action');
             if (empty($this->_Action)) {
                 $this->_Action = 'DefaultAction';
             }

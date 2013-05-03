@@ -18,9 +18,9 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      */
     function install()
     {
-        if (is_null($GLOBALS['app']->Registry->Get('reCAPTCHA_public_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_public_key', '', 'Policy', 1);
-            $GLOBALS['app']->Registry->NewKey('reCAPTCHA_private_key', '', 'Policy', 1);
+        if (is_null($GLOBALS['app']->Registry->fetch('reCAPTCHA_public_key', 'Policy'))) {
+            $GLOBALS['app']->Registry->insert('reCAPTCHA_public_key', '', 'Policy', 1);
+            $GLOBALS['app']->Registry->insert('reCAPTCHA_private_key', '', 'Policy', 1);
         }
 
         return true;
@@ -36,7 +36,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
     {
         $res = array();
         $objReCaptcha = new LibReCaptcha();
-        $publickey = $GLOBALS['app']->Registry->Get('reCAPTCHA_public_key', 'Policy');
+        $publickey = $GLOBALS['app']->Registry->fetch('reCAPTCHA_public_key', 'Policy');
         $reCAPTCHA = $objReCaptcha->recaptcha_get_html($publickey);
         $res['key'] = null;
         $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
@@ -58,7 +58,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
         $request =& Jaws_Request::getInstance();
         $recaptcha = $request->get(array('recaptcha_challenge_field', 'recaptcha_response_field'), 'post');
         if ($recaptcha['recaptcha_response_field']) {
-            $privatekey = $GLOBALS['app']->Registry->Get('reCAPTCHA_private_key', 'Policy');
+            $privatekey = $GLOBALS['app']->Registry->fetch('reCAPTCHA_private_key', 'Policy');
             $objReCaptcha = new LibReCaptcha();
             $objReCaptcha->recaptcha_check_answer(
                 $privatekey,

@@ -560,7 +560,7 @@ class Jaws_ACL
      */
     function LoadAllFiles()
     {
-        $gadgets = array_filter(explode(',', $GLOBALS['app']->Registry->Get('gadgets_installed_items')));
+        $gadgets = array_filter(explode(',', $GLOBALS['app']->Registry->fetch('gadgets_installed_items')));
         foreach ($gadgets as $gadget) {
             $this->LoadFile($gadget);
         }

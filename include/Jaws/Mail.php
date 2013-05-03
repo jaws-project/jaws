@@ -113,23 +113,23 @@ class Jaws_Mail
         }
 
         // Get the Mail settings data from Registry
-        $this->mailer     = $GLOBALS['app']->Registry->Get('mailer', 'Settings');
-        $this->gate_email = $GLOBALS['app']->Registry->Get('gate_email', 'Settings');
-        $this->gate_title = $GLOBALS['app']->Registry->Get('gate_title', 'Settings');
-        $this->smtp_vrfy  = $GLOBALS['app']->Registry->Get('smtp_vrfy', 'Settings') == 'true';
+        $this->mailer     = $GLOBALS['app']->Registry->fetch('mailer', 'Settings');
+        $this->gate_email = $GLOBALS['app']->Registry->fetch('gate_email', 'Settings');
+        $this->gate_title = $GLOBALS['app']->Registry->fetch('gate_title', 'Settings');
+        $this->smtp_vrfy  = $GLOBALS['app']->Registry->fetch('smtp_vrfy', 'Settings') == 'true';
 
-        $this->site_email = $GLOBALS['app']->Registry->Get('site_email', 'Settings');
-        $this->site_name  = $GLOBALS['app']->Registry->Get('site_name', 'Settings');
+        $this->site_email = $GLOBALS['app']->Registry->fetch('site_email', 'Settings');
+        $this->site_name  = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
 
         $params = array();
-        $params['sendmail_path'] = $GLOBALS['app']->Registry->Get('sendmail_path', 'Settings');
-        $params['sendmail_args'] = $GLOBALS['app']->Registry->Get('sendmail_args', 'Settings');
-        $params['host']          = $GLOBALS['app']->Registry->Get('smtp_host', 'Settings');
-        $params['port']          = $GLOBALS['app']->Registry->Get('smtp_port', 'Settings');
-        $params['auth']          = $GLOBALS['app']->Registry->Get('smtp_auth', 'Settings')  == 'true';
-        $params['pipelining']    = $GLOBALS['app']->Registry->Get('pipelining', 'Settings') == 'true';
-        $params['username']      = $GLOBALS['app']->Registry->Get('smtp_user', 'Settings');
-        $params['password']      = $GLOBALS['app']->Registry->Get('smtp_pass', 'Settings');
+        $params['sendmail_path'] = $GLOBALS['app']->Registry->fetch('sendmail_path', 'Settings');
+        $params['sendmail_args'] = $GLOBALS['app']->Registry->fetch('sendmail_args', 'Settings');
+        $params['host']          = $GLOBALS['app']->Registry->fetch('smtp_host', 'Settings');
+        $params['port']          = $GLOBALS['app']->Registry->fetch('smtp_port', 'Settings');
+        $params['auth']          = $GLOBALS['app']->Registry->fetch('smtp_auth', 'Settings')  == 'true';
+        $params['pipelining']    = $GLOBALS['app']->Registry->fetch('pipelining', 'Settings') == 'true';
+        $params['username']      = $GLOBALS['app']->Registry->fetch('smtp_user', 'Settings');
+        $params['password']      = $GLOBALS['app']->Registry->fetch('smtp_pass', 'Settings');
 
         $this->params = $params;
         return $this->params;

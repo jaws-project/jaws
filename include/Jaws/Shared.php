@@ -596,7 +596,7 @@ class Jaws_Shared
                 }
             }
         } else {
-            $res = $GLOBALS['app']->Registry->Get('default_rule', 'Shared');
+            $res = $GLOBALS['app']->Registry->fetch('default_rule', 'Shared');
             if ($res == 'ACCEPT') {
                 return true;
             } elseif ($res == 'DROP') {

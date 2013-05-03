@@ -51,26 +51,26 @@ class Jaws_URLMapping
         }
 
         if ($enabled === null) {
-            $enabled = $urlMapper->registry->get('map_enabled') == 'true';
+            $enabled = $urlMapper->registry->fetch('map_enabled') == 'true';
         }
 
         if ($use_rewrite === null) {
-            $use_rewrite = $urlMapper->registry->get('map_use_rewrite') == 'true';
+            $use_rewrite = $urlMapper->registry->fetch('map_use_rewrite') == 'true';
         }
 
         if ($use_aliases === null) {
-            $use_aliases = $urlMapper->registry->get('map_use_aliases') == 'true';
+            $use_aliases = $urlMapper->registry->fetch('map_use_aliases') == 'true';
         }
 
         if ($extension === null) {
-            $extension = $urlMapper->registry->get('map_extensions');
+            $extension = $urlMapper->registry->fetch('map_extensions');
         }
 
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
         $this->_use_rewrite       = $use_rewrite;
         $this->_use_aliases       = $use_aliases;
-        $this->_custom_precedence = $urlMapper->registry->get('map_custom_precedence') == 'true';
-        $this->_restrict_multimap = $urlMapper->registry->get('map_restrict_multimap') == 'true';
+        $this->_custom_precedence = $urlMapper->registry->fetch('map_custom_precedence') == 'true';
+        $this->_restrict_multimap = $urlMapper->registry->fetch('map_restrict_multimap') == 'true';
         if (!empty($extension) && $extension{0} != '.') {
             $extension = '.'.$extension;
         }

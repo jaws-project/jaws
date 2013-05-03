@@ -325,7 +325,7 @@ class Jaws_Gadget
     {
         $jawsVersion = $this->_Req_JawsVersion;
         if (empty($jawsVersion)) {
-            $jawsVersion = $GLOBALS['app']->Registry->Get('version');
+            $jawsVersion = $GLOBALS['app']->Registry->fetch('version');
         }
 
         return $jawsVersion;
@@ -469,7 +469,7 @@ class Jaws_Gadget
         $res = $text;
         $gadget = empty($gadget)? $this->name : $gadget;
 
-        $plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+        $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
         if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
             $plugins = array_filter(explode(',', $plugins));
             foreach ($plugins as $plugin) {
@@ -477,9 +477,9 @@ class Jaws_Gadget
                 if (!Jaws_Error::IsError($objPlugin)) {
                     $use_in = '*';
                     if ($plugins_set == 'admin') {
-                        $use_in = $GLOBALS['app']->Registry->Get('backend_gadgets', $plugin);
+                        $use_in = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
                     } else {
-                        $use_in = $GLOBALS['app']->Registry->Get('frontend_gadgets', $plugin);
+                        $use_in = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
                     }
                     if (!Jaws_Error::isError($use_in) &&
                        ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
@@ -516,7 +516,7 @@ class Jaws_Gadget
 
         // Check if gadget is enabled
         ///FIXME check for errors
-        if ($GLOBALS['app']->Registry->Get('enabled', $gadget) != 'true') {
+        if ($GLOBALS['app']->Registry->fetch('enabled', $gadget) != 'true') {
             // Gadget is not found or disabled
             return false;
         }
@@ -535,7 +535,7 @@ class Jaws_Gadget
     {
         static $installed_gadgets;
         if (!isset($installed_gadgets)) {
-            $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+            $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         }
         return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
@@ -558,7 +558,7 @@ class Jaws_Gadget
             $gadgets_status[$gadget] = false;
             if (self::IsGadgetInstalled($gadget)) {
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
-                $current_version = $objGadget->registry->get('version');
+                $current_version = $objGadget->registry->fetch('version');
                 $gadgets_status[$gadget] = version_compare($objGadget->_Version, $current_version, '>')? false : true;
             }
         }
@@ -581,7 +581,7 @@ class Jaws_Gadget
 
         static $disabled_gadgets;
         if (!isset($disabled_gadgets)) {
-            $disabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_disabled_items');
+            $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
         }
 
         return (false === strpos($disabled_gadgets, ",{$gadget},"));

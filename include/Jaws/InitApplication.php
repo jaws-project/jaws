@@ -96,7 +96,7 @@ $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 
 $GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
 $GLOBALS['app']->Registry->Init();
-if ($GLOBALS['app']->Registry->Get('version') != JAWS_VERSION) {
+if ($GLOBALS['app']->Registry->fetch('version') != JAWS_VERSION) {
     Jaws_Header::Location('upgrade/index.php');
 }
 $GLOBALS['app']->create();
