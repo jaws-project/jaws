@@ -31,7 +31,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        if ($this->gadget->registry->get('frontend_avail') != 'true') {
+        if ($this->gadget->registry->fetch('frontend_avail') != 'true') {
             return false;
         }
 
@@ -101,7 +101,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             }
         }
 
-        $limit  = (int) $this->gadget->registry->get('views_limit');
+        $limit  = (int) $this->gadget->registry->fetch('views_limit');
         $offset = ($page - 1) * $limit;
         $items = $model->ReadDir($path, $limit, $offset);
         if (!Jaws_Error::IsError($items)) {

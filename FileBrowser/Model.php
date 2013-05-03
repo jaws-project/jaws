@@ -22,7 +22,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
     {
         static $root_dir;
         if (!isset($root_dir)) {
-            $root_dir = trim($this->gadget->registry->get('root_dir'));
+            $root_dir = trim($this->gadget->registry->fetch('root_dir'));
             $root_dir = JAWS_DATA . $root_dir;
             $root_dir = str_replace('..', '', $root_dir);
 
@@ -164,7 +164,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
     {
         static $root_dir;
         if (!isset($root_dir)) {
-            $root_dir = trim($this->gadget->registry->get('root_dir'));
+            $root_dir = trim($this->gadget->registry->fetch('root_dir'));
         }
 
         $file = array();
@@ -246,7 +246,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
     {
         static $root_dir;
         if (!isset($root_dir)) {
-            $root_dir = trim($this->gadget->registry->get('root_dir'));
+            $root_dir = trim($this->gadget->registry->fetch('root_dir'));
         }
 
         //Set the filename
@@ -414,7 +414,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
         $dirs = array_splice($files, 0, $filesStart);
 
         if (empty($order)) {
-            $order = $this->gadget->registry->get('order_type');
+            $order = $this->gadget->registry->fetch('order_type');
         }
         $order = explode(',', $order);
         $indexs = array('title', 'filename', 'date');
