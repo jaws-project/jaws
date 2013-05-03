@@ -197,7 +197,7 @@ class Jaws_Plugin
             return true;
         }
         $installed_plugins.= $plugin. ',';
-        $GLOBALS['app']->registry->update('plugins_installed_items', $installed_plugins);
+        $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
         require_once $file;
         $pluginObj = new $plugin;
@@ -249,7 +249,7 @@ class Jaws_Plugin
         // removeing plugin from installed plugins list
         $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
         $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
-        $GLOBALS['app']->registry->update('plugins_installed_items', $installed_plugins);
+        $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
         // removeing plugin registry keys
         $GLOBALS['app']->Registry->Delete($plugin);

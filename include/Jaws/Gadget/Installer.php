@@ -134,13 +134,13 @@ class Jaws_Gadget_Installer
         // adding gadget to installed gadgets list
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         $installed_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->registry->update('gadgets_installed_items', $installed_gadgets);
+        $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
         // adding gadget to autoload gadgets list
         if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {
             $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
             $autoload_gadgets.= $this->gadget->name. ',';
-            $GLOBALS['app']->registry->update('gadgets_autoload_items', $autoload_gadgets);
+            $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
         }
 
         // end install gadget event
@@ -208,12 +208,12 @@ class Jaws_Gadget_Installer
         // removeing gadget from installed gadgets list
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
-        $GLOBALS['app']->registry->update('gadgets_installed_items', $installed_gadgets);
+        $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
         // removeing gadget from autoload gadgets list
         $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
         $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
-        $GLOBALS['app']->registry->update('gadgets_autoload_items', $autoload_gadgets);
+        $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
 
         // removeing gadget listeners
         $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
@@ -258,10 +258,10 @@ class Jaws_Gadget_Installer
 
         if (is_string($result)) {
             // set return the new version number
-            $this->gadget->Registry->update('version', $result);
+            $this->gadget->registry->update('version', $result);
         } else {
             // set the latest version number
-            $this->gadget->Registry->update('version', $newVersion);
+            $this->gadget->registry->update('version', $newVersion);
         }
 
         // autoload feature
@@ -270,12 +270,12 @@ class Jaws_Gadget_Installer
         if (file_exists(JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Autoload.php')) {
             if (!in_array($this->gadget->name, $autoload_gadgets)) {
                 array_push($autoload_gadgets, $this->gadget->name);
-                $GLOBALS['app']->registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
+                $GLOBALS['app']->Registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
             }
         } else {
             if (false !== $indx = array_search($this->gadget->name, $autoload_gadgets)) {
                 unset($autoload_gadgets[$indx]);
-                $GLOBALS['app']->registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
+                $GLOBALS['app']->Registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
             }
         }
 
@@ -316,7 +316,7 @@ class Jaws_Gadget_Installer
         // removing gadget from disabled gadgets list
         $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
         $disabled_gadgets = str_replace(",{$this->gadget->name},", ',', $disabled_gadgets);
-        $GLOBALS['app']->registry->update('gadgets_disabled_items', $disabled_gadgets);
+        $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
         $res = $GLOBALS['app']->Listener->Shout('EnableGadget', $this->gadget->name);
@@ -377,7 +377,7 @@ class Jaws_Gadget_Installer
         // adding gadget to disabled gadgets list
         $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
         $disabled_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->registry->update('gadgets_disabled_items', $disabled_gadgets);
+        $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
         $res = $GLOBALS['app']->Listener->Shout('DisableGadget', $this->gadget->name);

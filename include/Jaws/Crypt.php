@@ -55,14 +55,14 @@ class Jaws_Crypt
         if (time() > ($key_start_date + $key_age)) {
             $result = $this->Generate_RSA_KeyPair($key_len);
             if (Jaws_Error::isError($result)) {
-                $GLOBALS['app']->registry->update('crypt_enabled', 'false', 'Policy');
+                $GLOBALS['app']->Registry->update('crypt_enabled', 'false', 'Policy');
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Error in RSA key generation..");
                 return false;
             }
 
-            $GLOBALS['app']->registry->update('crypt_pvt_key', $this->pvt_key->toString(), 'Policy');
-            $GLOBALS['app']->registry->update('crypt_pub_key', $this->pub_key->toString(), 'Policy');
-            $GLOBALS['app']->registry->update('crypt_key_start_date', time(), 'Policy');
+            $GLOBALS['app']->Registry->update('crypt_pvt_key', $this->pvt_key->toString(), 'Policy');
+            $GLOBALS['app']->Registry->update('crypt_pub_key', $this->pub_key->toString(), 'Policy');
+            $GLOBALS['app']->Registry->update('crypt_key_start_date', time(), 'Policy');
         } else {
             $this->pvt_key = Crypt_RSA_Key::fromString($pvt_key, $this->wrapper);
             $this->pub_key = Crypt_RSA_Key::fromString($pub_key, $this->wrapper);

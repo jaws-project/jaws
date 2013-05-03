@@ -76,7 +76,7 @@ class Jaws_Gadget_Registry
     function update($name, $value, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->registry->update($name, $value, $gadget);
+        return $GLOBALS['app']->Registry->update($name, $value, $gadget);
     }
 
     /**
