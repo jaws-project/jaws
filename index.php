@@ -33,7 +33,7 @@ $objGadget = null;
 $IsReqActionStandAlone = false;
 // Only registerd user can access not global website
 $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
-                         $GLOBALS['app']->Registry->Get('global_website', 'Settings') == 'false';
+                         $GLOBALS['app']->Registry->fetch('global_website', 'Settings') == 'false';
 $request =& Jaws_Request::getInstance();
 // Get forwarded error from webserver
 $ReqError = $request->get('http_error', 'get');
@@ -46,7 +46,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         $ReqAction = 'LoginBox';
     } elseif (empty($ReqGadget)) {
         $IsIndex = true;
-        $ReqGadget = $GLOBALS['app']->Registry->Get('main_gadget', 'Settings');
+        $ReqGadget = $GLOBALS['app']->Registry->fetch('main_gadget', 'Settings');
     }
 
     if (!empty($ReqGadget)) {
