@@ -29,11 +29,11 @@ class Quotes_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add('last_entries_limit',       '10');
-        $this->gadget->registry->add('last_entries_view_mode',   '0');
-        $this->gadget->registry->add('last_entries_view_type',   '0');
-        $this->gadget->registry->add('last_entries_show_title',  'true');
-        $this->gadget->registry->add('last_entries_view_random', 'false');
+        $this->gadget->registry->insert('last_entries_limit',       '10');
+        $this->gadget->registry->insert('last_entries_view_mode',   '0');
+        $this->gadget->registry->insert('last_entries_view_type',   '0');
+        $this->gadget->registry->insert('last_entries_show_title',  'true');
+        $this->gadget->registry->insert('last_entries_view_random', 'false');
 
         return true;
     }
@@ -59,11 +59,11 @@ class Quotes_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('last_entries_limit');
-        $this->gadget->registry->del('last_entries_view_mode');
-        $this->gadget->registry->del('last_entries_view_type');
-        $this->gadget->registry->del('last_entries_show_title');
-        $this->gadget->registry->del('last_entries_view_random');
+        $this->gadget->registry->delete('last_entries_limit');
+        $this->gadget->registry->delete('last_entries_view_mode');
+        $this->gadget->registry->delete('last_entries_view_type');
+        $this->gadget->registry->delete('last_entries_show_title');
+        $this->gadget->registry->delete('last_entries_view_random');
 
         return true;
     }
