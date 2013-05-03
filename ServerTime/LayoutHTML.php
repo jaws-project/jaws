@@ -25,7 +25,7 @@ class ServerTime_LayoutHTML extends Jaws_Gadget_HTML
 
         $objDate = $GLOBALS['app']->loadDate();
         $strDate = $objDate->Format(time(),
-                                     $this->gadget->registry->get('date_format'));
+                                     $this->gadget->registry->fetch('date_format'));
         $tpl->SetVariable('title', _t('SERVERTIME_ACTION_TITLE'));
         $tpl->SetVariable('ServerDateTime', $this->gadget->ParseText($strDate));
 

@@ -50,7 +50,7 @@ class ServerTime_AdminHTML extends Jaws_Gadget_HTML
         $dFormat->AddOption($objDate->Format($now, 'DN d MN Y'),       'DN d MN Y');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN Y g:i a'), 'DN d MN Y g:i a');
         $dFormat->AddOption($objDate->Format($now, 'j MN y'),          'j MN y');
-        $dFormat->SetDefault($this->gadget->registry->get('date_format'));
+        $dFormat->SetDefault($this->gadget->registry->fetch('date_format'));
         $fieldset->Add($dFormat);
 
         $form->Add($fieldset);

@@ -19,7 +19,7 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         // Registry keys
-        $this->gadget->registry->add('date_format',  'DN d MN Y');
+        $this->gadget->registry->insert('date_format',  'DN d MN Y');
 
         return true;
     }
@@ -33,7 +33,7 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         // Registry keys
-        $this->gadget->registry->del('date_format');
+        $this->gadget->registry->delete('date_format');
 
         return true;
     }
@@ -49,8 +49,8 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // Registry keys
-        $this->gadget->registry->del('display_format');
-        $this->gadget->registry->add('date_format',  'DN d MN Y');
+        $this->gadget->registry->delete('display_format');
+        $this->gadget->registry->insert('date_format',  'DN d MN Y');
         return true;
     }
 
