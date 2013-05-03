@@ -31,7 +31,7 @@ class Jaws_Gadget_Registry
     }
 
     /**
-     * Add registry key value
+     * Insert a registry key value
      *
      * @access  public
      * @param   string  $name   Key name
@@ -39,33 +39,33 @@ class Jaws_Gadget_Registry
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function add($name, $value = '', $gadget = '')
+    function insert($name, $value = '', $gadget = '')
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->name : $value;
-            return $GLOBALS['app']->Registry->NewKeyEx($name, $gadget, 1);
+            return $GLOBALS['app']->Registry->insertAll($name, $gadget, 1);
         } else {
             $gadget = empty($gadget)? $this->name : $gadget;
-            return $GLOBALS['app']->Registry->NewKey($name, $value, $gadget, 1);
+            return $GLOBALS['app']->Registry->insert($name, $value, $gadget, 1);
         }
     }
 
     /**
-     * Get registry key value
+     * Fetch registry key value
      *
      * @access  public
      * @param   string  $name   Key name
      * @param   string  $gadget (Optional) Gadget name
      * @return  mixed   Returns key value if exists otherwise null
      */
-    function get($name, $gadget = '')
+    function fetch($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Get($name, $gadget);
+        return $GLOBALS['app']->Registry->fetch($name, $gadget);
     }
 
     /**
-     * Set registry key value
+     * Update registry key value
      *
      * @access  public
      * @param   string  $name   Key name
@@ -73,10 +73,10 @@ class Jaws_Gadget_Registry
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function set($name, $value, $gadget = '')
+    function update($name, $value, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Set($name, $value, $gadget);
+        return $GLOBALS['app']->registry->update($name, $value, $gadget);
     }
 
     /**
@@ -87,10 +87,10 @@ class Jaws_Gadget_Registry
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function del($name, $gadget = '')
+    function delete($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->Registry->Delete($gadget, $name);
+        return $GLOBALS['app']->Registry->delete($gadget, $name);
     }
 
 }
