@@ -21,7 +21,7 @@ class FeedReader_HTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'LayoutHTML');
-        return $layoutGadget->Display($this->gadget->registry->get('default_feed'));
+        return $layoutGadget->Display($this->gadget->registry->fetch('default_feed'));
     }
 
     /**

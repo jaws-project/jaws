@@ -33,7 +33,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add('default_feed', '0');
+        $this->gadget->registry->insert('default_feed', '0');
 
         return true;
     }
@@ -55,7 +55,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
         }
 
         // registry keys
-        $this->gadget->registry->del('default_feed');
+        $this->gadget->registry->delete('default_feed');
 
         return true;
     }

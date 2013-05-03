@@ -60,15 +60,15 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
         $options = array();
-        $timeout = (int)$this->gadget->registry->get('connection_timeout', 'Settings');
+        $timeout = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
         $options['timeout'] = $timeout;
-        if ($this->gadget->registry->get('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->registry->get('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->registry->get('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->registry->get('proxy_pass', 'Settings');
+        if ($this->gadget->registry->fetch('proxy_enabled', 'Settings') == 'true') {
+            if ($this->gadget->registry->fetch('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->gadget->registry->fetch('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->gadget->registry->fetch('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $this->gadget->registry->get('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->registry->get('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->gadget->registry->fetch('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
         }
         $parser->setParams($options);
 
