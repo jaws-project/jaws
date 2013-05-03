@@ -39,14 +39,14 @@ class Jaws_Registry
     }
 
     /**
-     * Search for a key in the setted registry table
+     * Fetch the key value
      *
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $cmp_name   Component name
      * @return  string  The value of the key
      */
-    function Get($key_name, $cmp_name = '')
+    function fetch($key_name, $cmp_name = '')
     {
         if (!@array_key_exists($key_name, $this->_Registry[$cmp_name])) {
             $params = array();
@@ -76,40 +76,7 @@ class Jaws_Registry
     }
 
     /**
-     * Updates the value of a key
-     *
-     * @access  public
-     * @param   string  $key_name   Key name
-     * @param   string  $key_value  Key value
-     * @param   string  $cmp_name   Component name
-     * @return  bool    True is set otherwise False
-     */
-    function Set($key_name, $key_value, $cmp_name = '')
-    {
-        $params = array();
-        $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
-        $params['cmp_name']  = $cmp_name;
-
-        $sql = '
-            UPDATE [[registry]] SET
-                [key_value] = {key_value}
-            WHERE
-                [cmp_name] = {cmp_name}
-              AND
-                [key_name] = {key_name}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        $this->_Registry[$cmp_name][$key_name] = $key_value;
-        return true;
-    }
-
-    /**
-     * Creates a new key
+     * Insert a new key
      *
      * @access  public
      * @param   string  $key_name   Key name
@@ -118,7 +85,7 @@ class Jaws_Registry
      * @param   string  $cmp_type   Component type(0: core, 1: gadget, 2: plugin)
      * @return  bool    True is set otherwise False
      */
-    function NewKey($key_name, $key_value, $cmp_name = '', $cmp_type = 0)
+    function insert($key_name, $key_value, $cmp_name = '', $cmp_type = 0)
     {
         $params = array();
         $params['cmp_name']  = $cmp_name;
@@ -143,7 +110,7 @@ class Jaws_Registry
     }
 
     /**
-     * Creates a array of new keys
+     * Inserts array of keys
      *
      * @access  public
      * @param   array   $keys       Pairs of keys/values
@@ -151,7 +118,7 @@ class Jaws_Registry
      * @param   string  $cmp_type   Component type(0: core, 1: gadget, 2: plugin)
      * @return  bool    True is set otherwise False
      */
-    function NewKeyEx($keys, $cmp_name = '', $cmp_type = 0)
+    function insertAll($keys, $cmp_name = '', $cmp_type = 0)
     {
         if (empty($keys)) {
             return true;
@@ -222,6 +189,39 @@ class Jaws_Registry
     }
 
     /**
+     * Updates the value of a key
+     *
+     * @access  public
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
+     * @param   string  $cmp_name   Component name
+     * @return  bool    True is set otherwise False
+     */
+    function update($key_name, $key_value, $cmp_name = '')
+    {
+        $params = array();
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
+        $params['cmp_name']  = $cmp_name;
+
+        $sql = '
+            UPDATE [[registry]] SET
+                [key_value] = {key_value}
+            WHERE
+                [cmp_name] = {cmp_name}
+              AND
+                [key_name] = {key_name}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $this->_Registry[$cmp_name][$key_name] = $key_value;
+        return true;
+    }
+
+    /**
      * Deletes a key
      *
      * @access  public
@@ -229,7 +229,7 @@ class Jaws_Registry
      * @param   string  $key_name   Key name
      * @return  bool    True is set otherwise False
      */
-    function Delete($cmp_name, $key_name = '')
+    function delete($cmp_name, $key_name = '')
     {
         $params = array();
         $params['cmp_name'] = $cmp_name;
