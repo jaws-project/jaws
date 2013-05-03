@@ -328,7 +328,7 @@ class Installer_Database extends JawsInstallerStage
         $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
 
         // registry keys
-        $result = $GLOBALS['app']->Registry->NewKeyEx(
+        $result = $GLOBALS['app']->Registry->insertAll(
             array(
                 'version' => JAWS_VERSION,
                 'gadgets_installed_items' => ',',

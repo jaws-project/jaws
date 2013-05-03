@@ -75,7 +75,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
 
             _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
             $GLOBALS['app']->Registry->deleteCacheFile('core');
-            $GLOBALS['app']->Registry->Set('/version', JAWS_VERSION);
+            $GLOBALS['app']->registry->update('/version', JAWS_VERSION);
             $GLOBALS['app']->Registry->commit('core');
         }
 

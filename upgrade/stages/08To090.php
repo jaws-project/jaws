@@ -72,14 +72,14 @@ class Upgrader_08To090 extends JawsUpgraderStage
         $timestamp = $GLOBALS['db']->Date();
 
         // Registry keys
-        $plugins = $GLOBALS['app']->Registry->Get('/plugins/parse_text/enabled_items');
-        $GLOBALS['app']->Registry->Set('/plugins/parse_text/enabled_items', '');
+        $plugins = $GLOBALS['app']->Registry->fetch('/plugins/parse_text/enabled_items');
+        $GLOBALS['app']->registry->update('/plugins/parse_text/enabled_items', '');
         $GLOBALS['app']->Registry->NewKey('/plugins/parse_text/admin_enabled_items', $plugins);
         $GLOBALS['app']->Registry->NewKey('/config/global_website', 'true');
         $GLOBALS['app']->Registry->DeleteKey('/config/frontend_ajaxed');
         $GLOBALS['app']->Registry->DeleteKey('/gadgets/allowurl_items');
-        $GLOBALS['app']->Registry->Set('/version', JAWS_VERSION);
-        $GLOBALS['app']->Registry->Set('/last_update', $timestamp);
+        $GLOBALS['app']->registry->update('/version', JAWS_VERSION);
+        $GLOBALS['app']->registry->update('/last_update', $timestamp);
 
         // Commit the changes so they get saved
         $GLOBALS['app']->Registry->commit('core');
