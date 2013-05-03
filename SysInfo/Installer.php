@@ -32,7 +32,7 @@ class SysInfo_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // Registry keys
-        $this->gadget->registry->del('frontend_avail');
+        $this->gadget->registry->delete('frontend_avail');
 
         // ACL keys
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/SysInfo',  'false');
