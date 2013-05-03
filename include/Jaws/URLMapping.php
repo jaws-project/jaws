@@ -184,6 +184,11 @@ class Jaws_URLMapping
         }
 
         $params = explode('/', $path);
+        if (false !== $apptype_key = array_search('apptype', $params)) {
+            $request->set('get', 'apptype', $params[$apptype_key + 1]);
+            unset($params[$apptype_key], $params[$apptype_key+1]);
+        }
+
         $path = implode('/', array_map('rawurldecode', $params));
         $matched_but_ignored = false;
         foreach ($this->_map as $gadget => $actions) {
