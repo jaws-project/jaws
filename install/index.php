@@ -13,9 +13,9 @@
 /* Dummy way for developers to get the errors
  * Turn off when releasing.
  */
-define('JAWS_SCRIPT', 'install');
-define('BASE_SCRIPT', 'install/index.php');
-define('APP_TYPE',    'web');
+define('JAWS_SCRIPT',  'install');
+define('BASE_SCRIPT',  'install/index.php');
+define('JAWS_APPTYPE', 'Web');
 
 if (!defined('JAWS_WIKI')) {
     define('JAWS_WIKI', 'http://dev.jaws-project.com/wiki/');

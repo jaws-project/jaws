@@ -88,19 +88,14 @@ class Jaws_Session
      */
     function &factory()
     {
-        $SessionType = ucfirst(strtolower(APP_TYPE));
-        $SessionType = preg_replace('/[^[:alnum:]_-]/', '', $SessionType);
-        $sessionFile = JAWS_PATH . 'include/Jaws/Session/'. $SessionType .'.php';
-        if (!file_exists($sessionFile)) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading session $SessionType failed.");
-            return new Jaws_Error("Loading session $SessionType failed.",
-                                  __FUNCTION__);
+        $file = JAWS_PATH . 'include/Jaws/Session/'. JAWS_APPTYPE. '.php';
+        if (@include_once($file)) {
+            $className = 'Jaws_Session_'. JAWS_APPTYPE;
+            $obj = new $className();
+            return $obj;
         }
 
-        include_once $sessionFile;
-        $className = 'Jaws_Session_' . $SessionType;
-        $obj = new $className();
-        return $obj;
+        return Jaws_Error::raiseError('Loading session '. JAWS_APPTYPE. ' failed.', __FUNCTION__);
     }
 
     /**
@@ -359,7 +354,7 @@ class Jaws_Session
         $this->SetAttribute('user',        $info['id']);
         $this->SetAttribute('internal',    $info['internal']);
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
-        $this->SetAttribute('type',        APP_TYPE);
+        $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('username',    $info['username']);
         $this->SetAttribute('superadmin',  $info['superadmin']);
         $this->SetAttribute('groups',      $info['groups']);
@@ -395,7 +390,7 @@ class Jaws_Session
         $this->_Attribute = array();
         $this->SetAttribute('user',        '');
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
-        $this->SetAttribute('type',        APP_TYPE);
+        $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('internal',    false);
         $this->SetAttribute('username',    '');
         $this->SetAttribute('superadmin',  false);
@@ -658,7 +653,7 @@ class Jaws_Session
             $params = array();
             $params['data']       = $serialized;
             $params['longevity']  = $GLOBALS['app']->Session->GetAttribute('longevity');
-            $params['app_type']   = APP_TYPE;
+            $params['app_type']   = JAWS_APPTYPE;
             $params['user']       = $GLOBALS['app']->Session->GetAttribute('user');
             $params['referrer']   = md5($referrer);
             $params['checksum']   = md5($params['user'] . $serialized);

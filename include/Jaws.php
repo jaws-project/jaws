@@ -153,13 +153,20 @@ class Jaws
 
         $this->loadPreferences();
         $this->Registry->Init();
-        $this->InstanceSession();
   
-        $this->loadDefaults();
-        $this->Translate->Init($this->_Language);
-
         $this->loadObject('Jaws_URLMapping', 'Map');
         $this->Map->Load();
+
+        if (!defined('JAWS_APPTYPE')) {
+            $request =& Jaws_Request::getInstance();
+            $apptype = $request->get('apptype');
+            $apptype = empty($apptype)? 'Web' : preg_replace('/[^[:alnum:]_-]/', '', ucfirst(strtolower($apptype)));
+            define('JAWS_APPTYPE', $apptype);
+        }
+
+        $this->InstanceSession();
+        $this->loadDefaults();
+        $this->Translate->Init($this->_Language);
     }
 
     /**
@@ -189,91 +196,82 @@ class Jaws
      */
     function loadDefaults()
     {
-        if (APP_TYPE == 'web') {
-            $cookies = array();
-            $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
-            if ($cookie_precedence) {
-                // load cookies preferences
-                $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
-                if (!is_array($cookies)) {
-                    $cookies = array();
-                }
+        $cookies = array();
+        $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
+        if ($cookie_precedence) {
+            // load cookies preferences
+            $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+            if (!is_array($cookies)) {
+                $cookies = array();
             }
+        }
 
-            // load from session
-            $this->_Theme            = $this->Session->GetAttribute('theme');
-            $this->_Language         = $this->Session->GetAttribute('language');
-            $this->_Editor           = $this->Session->GetAttribute('editor');
-            $this->_Timezone         = $this->Session->GetAttribute('timezone');
-            $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
-            $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
+        // load from session
+        $this->_Theme            = $this->Session->GetAttribute('theme');
+        $this->_Language         = $this->Session->GetAttribute('language');
+        $this->_Editor           = $this->Session->GetAttribute('editor');
+        $this->_Timezone         = $this->Session->GetAttribute('timezone');
+        $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
+        $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
 
-            // theme
-            if (empty($this->_Theme)) {
-                if (array_key_exists('theme', $cookies)) {
-                    $this->_Theme = $cookies['theme'];
-                } else {
-                    $this->_Theme = $this->_Preferences['theme'];
-                }
-            }
-
-            // language
-            if (JAWS_SCRIPT == 'admin') {
-                $this->_Language = empty($this->_Language)? $this->_Preferences['language'] : $this->_Language;
+        // theme
+        if (empty($this->_Theme)) {
+            if (array_key_exists('theme', $cookies)) {
+                $this->_Theme = $cookies['theme'];
             } else {
-                if (array_key_exists('language', $cookies)) {
-                    $this->_Language = $cookies['language'];
-                } else {
-                    $this->_Language = $this->_Preferences['language'];
-                }
+                $this->_Theme = $this->_Preferences['theme'];
             }
+        }
 
-            // editor
-            if (JAWS_SCRIPT == 'admin') {
-                if (empty($this->_Editor)) {
-                    if (array_key_exists('editor', $cookies)) {
-                        $this->_Editor = $cookies['editor'];
-                    } else {
-                        $this->_Editor = $this->_Preferences['editor'];
-                    }
-                }
+        // language
+        if (JAWS_SCRIPT == 'admin') {
+            $this->_Language = empty($this->_Language)? $this->_Preferences['language'] : $this->_Language;
+        } else {
+            if (array_key_exists('language', $cookies)) {
+                $this->_Language = $cookies['language'];
             } else {
-                $this->_Editor = 'TextArea';
+                $this->_Language = $this->_Preferences['language'];
             }
+        }
 
-            // timezone
-            if (is_null($this->_Timezone)) {
-                if (array_key_exists('timezone', $cookies)) {
-                    $this->_Timezone = $cookies['timezone'];
+        // editor
+        if (JAWS_SCRIPT == 'admin') {
+            if (empty($this->_Editor)) {
+                if (array_key_exists('editor', $cookies)) {
+                    $this->_Editor = $cookies['editor'];
                 } else {
-                    $this->_Timezone = $this->_Preferences['timezone'];
-                }
-            }
-
-            // calendar type
-            if (empty($this->_CalendarType)) {
-                if (array_key_exists('calendar_type', $cookies)) {
-                    $this->_CalendarType = $cookies['calendar_type'];
-                } else {
-                    $this->_CalendarType = $this->_Preferences['calendar_type'];
-                }
-            }
-
-            // calendar language
-            if (empty($this->_CalendarLanguage)) {
-                if (array_key_exists('calendar_language', $cookies)) {
-                    $this->_CalendarLanguage = $cookies['calendar_language'];
-                } else {
-                    $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
+                    $this->_Editor = $this->_Preferences['editor'];
                 }
             }
         } else {
-            $this->_Theme            = $this->_Preferences['theme'];
-            $this->_Language         = $this->_Preferences['language'];
-            $this->_Editor           = $this->_Preferences['editor'];
-            $this->_Timezone         = $this->_Preferences['timezone'];
-            $this->_CalendarType     = $this->_Preferences['calendar_type'];
-            $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
+            $this->_Editor = 'TextArea';
+        }
+
+        // timezone
+        if (is_null($this->_Timezone)) {
+            if (array_key_exists('timezone', $cookies)) {
+                $this->_Timezone = $cookies['timezone'];
+            } else {
+                $this->_Timezone = $this->_Preferences['timezone'];
+            }
+        }
+
+        // calendar type
+        if (empty($this->_CalendarType)) {
+            if (array_key_exists('calendar_type', $cookies)) {
+                $this->_CalendarType = $cookies['calendar_type'];
+            } else {
+                $this->_CalendarType = $this->_Preferences['calendar_type'];
+            }
+        }
+
+        // calendar language
+        if (empty($this->_CalendarLanguage)) {
+            if (array_key_exists('calendar_language', $cookies)) {
+                $this->_CalendarLanguage = $cookies['calendar_language'];
+            } else {
+                $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
+            }
         }
 
         // filter non validate character

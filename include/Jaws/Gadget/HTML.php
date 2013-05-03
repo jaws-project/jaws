@@ -47,17 +47,15 @@ class Jaws_Gadget_HTML
     {
         $this->gadget = $gadget;
         $this->LoadActions();
-        if (APP_TYPE == 'web') {
-            // Add ShowGadgetInfo action
-            $this->StandaloneAction('ShowGadgetInfo','');
+        // Add ShowGadgetInfo action
+        $this->StandaloneAction('ShowGadgetInfo','');
 
-            // Add Ajax actions.
-            $this->StandaloneAction('Ajax', '');
-            $this->StandaloneAdminAction('Ajax', '');
+        // Add Ajax actions.
+        $this->StandaloneAction('Ajax', '');
+        $this->StandaloneAdminAction('Ajax', '');
 
-            // Add _404 as normal action
-            $this->NormalAction('_404');
-        }
+        // Add _404 as normal action
+        $this->NormalAction('_404');
     }
 
     /**

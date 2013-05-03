@@ -36,26 +36,24 @@ class Jaws_GadgetREST extends Jaws_Gadget
     {
         parent::Init($model);
         // Load Piwi if it's a web app
-        if (APP_TYPE == 'rest') {
-            require_once PEAR_PATH. 'XML/Serializer.php';
-            require_once PEAR_PATH. 'XML/Unserializer.php';
+        require_once PEAR_PATH. 'XML/Serializer.php';
+        require_once PEAR_PATH. 'XML/Unserializer.php';
 
-            $options = array(
-                             XML_SERIALIZER_OPTION_INDENT               => '    ',
-                             XML_SERIALIZER_OPTION_LINEBREAKS           => "\n",
-                             XML_SERIALIZER_OPTION_SCALAR_AS_ATTRIBUTES => true,
+        $options = array(
+                         XML_SERIALIZER_OPTION_INDENT               => '    ',
+                         XML_SERIALIZER_OPTION_LINEBREAKS           => "\n",
+                         XML_SERIALIZER_OPTION_SCALAR_AS_ATTRIBUTES => true,
 //                             XML_SERIALIZER_OPTION_ENCODE_FUNC          => 'strtoupper'
-                             );
+                         );
 
-            $this->_Serializer   = &new XML_Serializer($options);
-            $this->_Unserializer = &new XML_Unserializer();
-            $this->_Unserializer->setOption('parseAttributes', true);
-            $this->_Unserializer->setOption('decodeFunction', 'strtolower');
+        $this->_Serializer   = &new XML_Serializer($options);
+        $this->_Unserializer = &new XML_Unserializer();
+        $this->_Unserializer->setOption('parseAttributes', true);
+        $this->_Unserializer->setOption('decodeFunction', 'strtolower');
 
-            require_once JAWS_PATH . 'include/Jaws/Shared.php';
+        require_once JAWS_PATH . 'include/Jaws/Shared.php';
 
-            header('Content-Type: text/xml; charset=utf-8');
-        }
+        header('Content-Type: text/xml; charset=utf-8');
     }
 
     /**

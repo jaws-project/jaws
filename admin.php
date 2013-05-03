@@ -13,7 +13,6 @@
  */
 define('JAWS_SCRIPT', 'admin');
 define('BASE_SCRIPT', basename(__FILE__));
-define('APP_TYPE',    'web');
 
 // Redirect to the installer if JawsConfig can't be found.
 $root = dirname(__FILE__);
