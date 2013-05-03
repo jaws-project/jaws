@@ -19,11 +19,11 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         // Registry keys.
-        $this->gadget->registry->add('limit', '7');
-        $this->gadget->registry->add('use_antispam', 'true');
-        $this->gadget->registry->add('max_strlen', '125');
-        $this->gadget->registry->add('comment_status', 'approved');
-        $this->gadget->registry->add('anon_post_authority', 'true');
+        $this->gadget->registry->insert('limit', '7');
+        $this->gadget->registry->insert('use_antispam', 'true');
+        $this->gadget->registry->insert('max_strlen', '125');
+        $this->gadget->registry->insert('comment_status', 'approved');
+        $this->gadget->registry->insert('anon_post_authority', 'true');
 
         return true;
     }
@@ -37,11 +37,11 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         // Registry keys
-        $this->gadget->registry->del('limit');
-        $this->gadget->registry->del('use_antispam');
-        $this->gadget->registry->del('max_strlen');
-        $this->gadget->registry->del('comment_status');
-        $this->gadget->registry->del('anon_post_authority');
+        $this->gadget->registry->delete('limit');
+        $this->gadget->registry->delete('use_antispam');
+        $this->gadget->registry->delete('max_strlen');
+        $this->gadget->registry->delete('comment_status');
+        $this->gadget->registry->delete('anon_post_authority');
 
         return true;
     }
@@ -64,11 +64,11 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
         */
 
         // Registry keys.
-        $this->gadget->registry->add('max_strlen', '125');
+        $this->gadget->registry->insert('max_strlen', '125');
 
         if (version_compare($old, '0.8.1', '<')) {
-            $this->gadget->registry->add('comment_status', 'approved');
-            $this->gadget->registry->add('anon_post_authority', 'true');
+            $this->gadget->registry->insert('comment_status', 'approved');
+            $this->gadget->registry->insert('anon_post_authority', 'true');
             $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Shoutbox/ManageComments',  'false');
             $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Shoutbox/DeleteEntry');
         }
