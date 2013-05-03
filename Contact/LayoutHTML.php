@@ -33,7 +33,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
                 break;
             default:
                 $items_array = array_filter(explode(',',
-                                            $this->gadget->registry->get('default_items')));
+                                            $this->gadget->registry->fetch('default_items')));
                 break;
         }
 
@@ -43,7 +43,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('CONTACT_US'));
-        $comments = $this->gadget->registry->get('comments');
+        $comments = $this->gadget->registry->fetch('comments');
         $tpl->SetVariable('comments', $this->gadget->ParseText($comments));
         $tpl->SetVariable('send', _t('CONTACT_SEND'));
 
@@ -157,7 +157,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($recipients) || empty($recipients)) {
                 $recipients   = array();
                 $recipients[] = array('id'   => 0,
-                                      'name' => $this->gadget->registry->get('site_author', 'Settings'));
+                                      'name' => $this->gadget->registry->fetch('site_author', 'Settings'));
             }
 
             $rcpt = isset($last_message['contact_recipient'])? $last_message['contact_recipient'] : '';
@@ -182,7 +182,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
 
         //attachment
         if (in_array('attachment', $items_array) &&
-            ($this->gadget->registry->get('enable_attachment') == 'true') &&
+            ($this->gadget->registry->fetch('enable_attachment') == 'true') &&
             $GLOBALS['app']->Session->GetPermission('Contact', 'AllowAttachment'))
         {
             $tpl->SetBlock('contact/attachment');

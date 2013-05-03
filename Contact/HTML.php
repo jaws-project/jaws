@@ -99,7 +99,7 @@ class Contact_HTML extends Jaws_Gadget_HTML
             Jaws_Header::Referrer();
         }
 
-        if ($this->gadget->registry->get('use_antispam') == 'true') {
+        if ($this->gadget->registry->fetch('use_antispam') == 'true') {
             require_once JAWS_PATH . 'libraries/pear/Validate.php';
             if (Validate::email($post['contact_email'], true) === false) {
                 $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'), 'Contact');
@@ -109,7 +109,7 @@ class Contact_HTML extends Jaws_Gadget_HTML
         }
 
         $attachment = null;
-        if (($this->gadget->registry->get('enable_attachment') == 'true') &&
+        if (($this->gadget->registry->fetch('enable_attachment') == 'true') &&
             $GLOBALS['app']->Session->GetPermission('Contact', 'AllowAttachment')) 
         {
             $attach = Jaws_Utils::UploadFiles($_FILES,
@@ -184,9 +184,9 @@ class Contact_HTML extends Jaws_Gadget_HTML
         $from_name  = $contact['name'];
         $from_email = $contact['email'];
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $this->gadget->registry->get('site_name', 'Settings');
+        $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $format = $this->gadget->registry->get('email_format');
+        $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
             require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = Jaws_String::AutoParagraph($contact['msg_txt']);
