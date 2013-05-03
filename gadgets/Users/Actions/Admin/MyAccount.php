@@ -35,7 +35,7 @@ class Users_Actions_Admin_MyAccount extends Users_AdminHTML
         $tpl->SetVariable('uid', $uInfo['id']);
         $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT_INFO'));
 
-        $use_crypt = $this->gadget->registry->get('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();

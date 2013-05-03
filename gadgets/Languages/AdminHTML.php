@@ -57,7 +57,7 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
 
         // Langs
-        $use_data_lang = $this->gadget->registry->get('use_data_lang') == 'true';
+        $use_data_lang = $this->gadget->registry->fetch('use_data_lang') == 'true';
         $langs = Jaws_Utils::GetLanguagesList($use_data_lang);
         $tpl->SetBlock('Languages/lang');
         $tpl->SetVariable('selected', '');
@@ -135,7 +135,7 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
         $tpl->Load('LangStrings.html');
         $tpl->SetBlock('LangStrings');
 
-        $langFrom = $this->gadget->registry->get('base_lang');
+        $langFrom = $this->gadget->registry->fetch('base_lang');
         $data = $model->GetLangData($module, $type, $langTo, $langFrom);
         $color = 'even';
         if (count($data['strings']) > 0) {

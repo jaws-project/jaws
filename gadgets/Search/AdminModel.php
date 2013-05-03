@@ -21,7 +21,7 @@ class Search_AdminModel extends Search_Model
     function SetSearchableGadgets($gadgets)
     {
         $list = is_array($gadgets)? implode(', ', $gadgets) : '*';
-        $res = $this->gadget->registry->set('searchable_gadgets', $list);
+        $res = $this->gadget->Registry->update('searchable_gadgets', $list);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'), _t('SEARCH_NAME'));

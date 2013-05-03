@@ -34,7 +34,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
 
         // Registry keys
-        $this->gadget->registry->add('default_group_id', '1');
+        $this->gadget->registry->insert('default_group_id', '1');
 
         return true;
     }
@@ -60,7 +60,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('default_group_id');
+        $this->gadget->registry->delete('default_group_id');
 
         return true;
     }

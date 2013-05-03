@@ -152,7 +152,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddUser($uData)
     {
         $this->gadget->CheckPermission('ManageUsers');
-        if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true') {
+        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -169,7 +169,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
         } else {
-            $guid = $this->gadget->registry->get('anon_group');
+            $guid = $this->gadget->registry->fetch('anon_group');
             if (!empty($guid)) {
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }
@@ -191,7 +191,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateUser($uid, $uData)
     {
         $this->gadget->CheckPermission('ManageUsers');
-        if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true') {
+        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
@@ -521,7 +521,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             unset($uData[$invalid]);
         }
 
-        if ($this->gadget->registry->get('crypt_enabled', 'Policy') == 'true') {
+        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();

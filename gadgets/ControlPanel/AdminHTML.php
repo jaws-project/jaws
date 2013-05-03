@@ -54,7 +54,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
             }
         }
 
-        if ($this->gadget->registry->get('show_viewsite', 'Settings') == 'true') {
+        if ($this->gadget->registry->fetch('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
                                                  'tname' => _t('CONTROLPANEL_GENERAL_VIEWSITE'),
                                                  'desc'  => _t('CONTROLPANEL_GENERAL_VIEWSITE'));
@@ -138,7 +138,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
      */
     function ShowLoginForm($message = '')
     {
-        $use_crypt = $this->gadget->registry->get('crypt_enabled', 'Policy') == 'true';
+        $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -189,7 +189,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('username', $reqpost['username']);
         $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
-        $authtype = $this->gadget->registry->get('authtype', 'Users');
+        $authtype = $this->gadget->registry->fetch('authtype', 'Users');
         if (!is_null($reqpost['authtype']) || $authtype !== 'Default') {
             $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
             $ltpl->SetBlock('layout/authtype');

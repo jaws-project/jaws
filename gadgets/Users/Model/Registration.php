@@ -50,13 +50,13 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return _t('USERS_USERS_ALREADY_EXISTS', $username);
         }
 
-        if ($this->gadget->registry->get('anon_repetitive_email') == 'false') {
+        if ($this->gadget->registry->fetch('anon_repetitive_email') == 'false') {
             if ($jUser->UserEmailExists($user_email)) {
                 return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
             }
         }
 
-        $user_enabled = ($this->gadget->registry->get('anon_activation') == 'auto')? 1 : 2;
+        $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser(
             array(
                 'username' => $username,
@@ -92,10 +92,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $mail = new Jaws_Mail;
 
         $site_url     = $GLOBALS['app']->getSiteURL('/');
-        $site_name    = $this->gadget->registry->get('site_name', 'Settings');
-        $site_author  = $this->gadget->registry->get('site_author', 'Settings');
-        $activation   = $this->gadget->registry->get('anon_activation');
-        $notification = $this->gadget->registry->get('register_notification');
+        $site_name    = $this->gadget->registry->fetch('site_name', 'Settings');
+        $site_author  = $this->gadget->registry->fetch('site_author', 'Settings');
+        $activation   = $this->gadget->registry->fetch('anon_activation');
+        $notification = $this->gadget->registry->fetch('register_notification');
         $delete_user  = false;
         $message      = '';
 
@@ -274,7 +274,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             }
 
             $site_url    = $GLOBALS['app']->getSiteURL('/');
-            $site_name   = $this->gadget->registry->get('site_name', 'Settings');
+            $site_name   = $this->gadget->registry->fetch('site_name', 'Settings');
 
             $tpl = new Jaws_Template('gadgets/Users/templates/');
             $tpl->Load('RecoverPassword.txt');
@@ -346,14 +346,14 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $this->gadget->registry->get('site_name', 'Settings');
+        $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $tpl = new Jaws_Template('gadgets/Users/templates/');
         $tpl->Load('UserNotification.txt');
         $tpl->SetBlock('Notification');
         $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
-        if ($this->gadget->registry->get('anon_activation') == 'user') {
+        if ($this->gadget->registry->fetch('anon_activation') == 'user') {
             $tpl->SetBlock('Notification/IP');
             $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);

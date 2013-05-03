@@ -35,9 +35,9 @@ class Components_AdminModel extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The gadgets directory does not exists!', __FILE__, __LINE__);
             }
 
-            $installed_gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+            $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
             $installed_gadgets = array_filter(explode(',', $installed_gadgets));
-            $disabled_gadgets = $GLOBALS['app']->Registry->Get('gadgets_disabled_items');
+            $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
 
             $gadgets = scandir($gDir);
             foreach ($gadgets as $gadget) {
@@ -128,7 +128,7 @@ class Components_AdminModel extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The plugins directory does not exists!', __FILE__, __LINE__);
             }
 
-            $installed_plugins = $GLOBALS['app']->Registry->Get('plugins_installed_items');
+            $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
             $plugins = scandir($pDir);
             foreach ($plugins as $plugin) {
                 if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {

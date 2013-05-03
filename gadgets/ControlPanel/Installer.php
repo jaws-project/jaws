@@ -19,7 +19,7 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         // registry keys
-        $this->gadget->registry->add('pluggable', 'false');
+        $this->gadget->registry->insert('pluggable', 'false');
         return true;
     }
 

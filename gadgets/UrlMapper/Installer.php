@@ -30,7 +30,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'HTTPError');
 
         // Registry keys
-        $this->gadget->registry->add(array(
+        $this->gadget->registry->insert(array(
             'map_enabled' => 'true',
             'map_use_file' => 'true',
             'map_use_rewrite' => 'false',
@@ -62,7 +62,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
 
             // Update all gadgets maps
             $umapModel = $this->gadget->load('Model')->load('AdminModel');
-            $gadgets = $GLOBALS['app']->Registry->Get('gadgets_installed_items');
+            $gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
             $gadgets = array_filter(explode(',', $gadgets));
             foreach ($gadgets as $gadget) {
                 $res = $umapModel->UpdateGadgetMaps($gadget);

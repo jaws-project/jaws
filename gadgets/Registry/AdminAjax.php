@@ -47,7 +47,7 @@ class Registry_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetRegistryKey($key)
     {
-        return $GLOBALS['app']->Registry->Get($key);
+        return $GLOBALS['app']->Registry->fetch($key);
     }
 
     /**
@@ -61,9 +61,9 @@ class Registry_AdminAjax extends Jaws_Gadget_HTML
     function SetRegistryKey($key, $value)
     {
         if (preg_match("#^/(gadgets|plugins\/parse_text)/(.*?)/(.*?)#i", $key, $matches)) {
-            $GLOBALS['app']->Registry->Set($key, $value);
+            $GLOBALS['app']->registry->update($key, $value);
         } else {
-            $GLOBALS['app']->Registry->Set($key, $value);
+            $GLOBALS['app']->registry->update($key, $value);
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('REGISTRY_KEY_SAVED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();

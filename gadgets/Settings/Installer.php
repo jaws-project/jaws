@@ -31,7 +31,7 @@ class Settings_Installer extends Jaws_Gadget_Model
         $uniqueKey = md5($uniqueKey);
 
         // Registry keys
-        $this->gadget->registry->add(array(
+        $this->gadget->registry->insert(array(
             'pluggable' => 'false',
             'admin_script' => '',
             'http_auth' => 'false',

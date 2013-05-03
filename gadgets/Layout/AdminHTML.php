@@ -82,7 +82,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
 
-        $fakeLayout->_Template->SetVariable('site-title', $this->gadget->registry->get('site_name', 'Settings'));
+        $fakeLayout->_Template->SetVariable('site-title', $this->gadget->registry->fetch('site_name', 'Settings'));
 
         $fakeLayout->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css', 'default');
         $fakeLayout->AddHeadLink('gadgets/Layout/resources/style.css', 'stylesheet', 'text/css');
@@ -100,7 +100,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
             if (!is_array($gadgets)) continue;
             foreach ($gadgets as $gadget) {
                 $id = $gadget['id'];
-                if (($this->gadget->registry->get('enabled', $gadget['gadget']) == 'true') ||
+                if (($this->gadget->registry->fetch('enabled', $gadget['gadget']) == 'true') ||
                     ($gadget['gadget'] == '[REQUESTEDGADGET]'))
                 {
                     if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
@@ -220,7 +220,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         foreach ($themes as $theme => $tInfo) {
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
-        $themeCombo->SetDefault($this->gadget->registry->get('theme', 'Settings'));
+        $themeCombo->SetDefault($this->gadget->registry->fetch('theme', 'Settings'));
         $themeCombo->AddEvent(ON_CHANGE, "changeTheme();");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
@@ -299,7 +299,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
             }
         }
         
-        $this->gadget->registry->set('theme', $theme, 'Settings');
+        $this->gadget->Registry->update('theme', $theme, 'Settings');
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }

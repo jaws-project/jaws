@@ -66,10 +66,10 @@ class HttpBl
      */
     function VerifyKey()
     {
-        if (is_null($GLOBALS['app']->Registry->Get('prjhoneypot_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->NewKey('prjhoneypot_key', 'UNDEFINED', 'Policy', 1);
+        if (is_null($GLOBALS['app']->Registry->fetch('prjhoneypot_key', 'Policy'))) {
+            $GLOBALS['app']->Registry->insert('prjhoneypot_key', 'UNDEFINED', 'Policy', 1);
         } 
-        $value = $GLOBALS['app']->Registry->Get('prjhoneypot_key', 'Policy');
+        $value = $GLOBALS['app']->Registry->fetch('prjhoneypot_key', 'Policy');
         return (!empty($value) && $value !== 'UNDEFINED');
     }
     

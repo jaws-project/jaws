@@ -24,7 +24,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->add(array(
+        $this->gadget->registry->insert(array(
             'block_undefined_ip' => 'false',
             'block_undefined_agent' => 'false',
             'filter' => 'DISABLED',
@@ -70,12 +70,12 @@ class Policy_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->registry->add('default_captcha_status', $this->gadget->registry->get('captcha'));
-            $this->gadget->registry->add('default_captcha_driver', $this->gadget->registry->get('captcha_driver'));
-            $this->gadget->registry->add('login_captcha_status', '1');
-            $this->gadget->registry->add('login_captcha_driver', 'Math');
-            $this->gadget->registry->del('captcha');
-            $this->gadget->registry->del('captcha_driver');
+            $this->gadget->registry->delete('default_captcha_status', $this->gadget->registry->fetch('captcha'));
+            $this->gadget->registry->delete('default_captcha_driver', $this->gadget->registry->fetch('captcha_driver'));
+            $this->gadget->registry->delete('login_captcha_status', '1');
+            $this->gadget->registry->delete('login_captcha_driver', 'Math');
+            $this->gadget->registry->delete('captcha');
+            $this->gadget->registry->delete('captcha_driver');
         }
 
         return true;

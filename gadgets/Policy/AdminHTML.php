@@ -166,7 +166,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sidebar', $this->SideBar('IPBlocking'));
         $tpl->SetVariable('blocked_ips_datagrid', $this->IPsDatagrid());
 
-        $default = $this->gadget->registry->get('block_undefined_ip') == 'true';
+        $default = $this->gadget->registry->fetch('block_undefined_ip') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'ipblocking');
         $blockUndefined->AddOption(_t('POLICY_IP_BLOCK_UNDEFINED'),
                               'true',
@@ -296,7 +296,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('sidebar', $this->SideBar('AgentBlocking'));
         $tpl->SetVariable('blocked_agents_datagrid', $this->AgentsDatagrid());
 
-        $default = $this->gadget->registry->get('block_undefined_agent') == 'true';
+        $default = $this->gadget->registry->fetch('block_undefined_agent') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'agentblocking');
         $blockUndefined->AddOption(_t('POLICY_AGENT_BLOCK_UNDEFINED'),
                               'true',
@@ -361,7 +361,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $useEncryption->setID('enabled');
         $useEncryption->AddOption(_t('GLOBAL_NO'),  'false');
         $useEncryption->AddOption(_t('GLOBAL_YES'), 'true');
-        $useEncryption->SetDefault($this->gadget->registry->get('crypt_enabled'));
+        $useEncryption->SetDefault($this->gadget->registry->fetch('crypt_enabled'));
         $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
         $tpl->SetVariable('enabled', $useEncryption->Get());
 
@@ -372,7 +372,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $keyAge->AddOption(_t('GLOBAL_DATE_HOURS',   5),  18000);
         $keyAge->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
         $keyAge->AddOption(_t('GLOBAL_DATE_WEEKS',   1), 604800);
-        $keyAge->SetDefault($this->gadget->registry->get('crypt_key_age'));
+        $keyAge->SetDefault($this->gadget->registry->fetch('crypt_key_age'));
         $keyAge->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_age', _t('POLICY_ENCRYPTION_KEY_AGE'));
         $tpl->SetVariable('key_age', $keyAge->Get());
@@ -383,14 +383,14 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_256BIT'),  '256');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_512BIT'),  '512');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_1024BIT'), '1024');
-        $keyLen->SetDefault($this->gadget->registry->get('crypt_key_len'));
+        $keyLen->SetDefault($this->gadget->registry->fetch('crypt_key_len'));
         $keyLen->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_len', _t('POLICY_ENCRYPTION_KEY_LEN'));
         $tpl->SetVariable('key_len', $keyLen->Get());
 
         $date = $GLOBALS['app']->loadDate();
         $keyStartDate =& Piwi::CreateWidget('Entry', 'key_start_date',
-                                            $date->Format((int)$this->gadget->registry->get('crypt_key_start_date')));
+                                            $date->Format((int)$this->gadget->registry->fetch('crypt_key_start_date')));
         $keyStartDate->setID('key_start_date');
         $keyStartDate->setSize(30);
         $keyStartDate->SetEnabled(false);
@@ -432,7 +432,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         foreach ($fs as $f) {
             $filters->AddOption($f, $f);
         }
-        $filters->SetDefault($this->gadget->registry->get('filter'));
+        $filters->SetDefault($this->gadget->registry->fetch('filter'));
         $tpl->SetVariable('lbl_filter', _t('POLICY_ANTISPAM_FILTER'));
         $tpl->SetVariable('filter', $filters->Get());
 
@@ -441,7 +441,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
-        $captchaValue = $this->gadget->registry->get('default_captcha_status');
+        $captchaValue = $this->gadget->registry->fetch('default_captcha_status');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('default');");
         $tpl->SetVariable('lbl_default_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
@@ -453,7 +453,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         foreach ($dCaptchas as $dCaptcha) {
             $captchaDriver->AddOption($dCaptcha, $dCaptcha);
         }
-        $captchaDriver->SetDefault($this->gadget->registry->get('default_captcha_driver'));
+        $captchaDriver->SetDefault($this->gadget->registry->fetch('default_captcha_driver'));
         if ($captchaValue === 'DISABLED') {
             $captchaDriver->SetEnabled(false);
         }
@@ -466,7 +466,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         foreach ($os as $o) {
             $useEmailProtector->AddOption($o, $o);
         }
-        $useEmailProtector->SetDefault($this->gadget->registry->get('obfuscator'));
+        $useEmailProtector->SetDefault($this->gadget->registry->fetch('obfuscator'));
         $tpl->SetVariable('lbl_obfuscator', _t('POLICY_ANTISPAM_PROTECTEMAIL'));
         $tpl->SetVariable('obfuscator', $useEmailProtector->Get());
 
@@ -501,7 +501,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $complexity =& Piwi::CreateWidget('Combo', 'passwd_complexity');
         $complexity->AddOption(_t('GLOBAL_YES'), 'yes');
         $complexity->AddOption(_t('GLOBAL_NO'),  'no');
-        $complexity->SetDefault($this->gadget->registry->get('passwd_complexity'));
+        $complexity->SetDefault($this->gadget->registry->fetch('passwd_complexity'));
         $tpl->SetVariable('lbl_passwd_complexity', _t('POLICY_PASSWD_COMPLEXITY'));
         $tpl->SetVariable('passwd_complexity', $complexity->Get());
 
@@ -511,7 +511,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $badCount->AddOption(_t('GLOBAL_TIMES', 3), '3');
         $badCount->AddOption(_t('GLOBAL_TIMES', 5), '5');
         $badCount->AddOption(_t('GLOBAL_TIMES', 7), '7');
-        $badCount->SetDefault($this->gadget->registry->get('passwd_bad_count'));
+        $badCount->SetDefault($this->gadget->registry->fetch('passwd_bad_count'));
         $tpl->SetVariable('lbl_passwd_bad_count', _t('POLICY_PASSWD_BAD_COUNT'));
         $tpl->SetVariable('passwd_bad_count', $badCount->Get());
 
@@ -523,7 +523,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES',  5), 300);
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 10), 600);
         $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 900);
-        $lockedout->SetDefault($this->gadget->registry->get('passwd_lockedout_time'));
+        $lockedout->SetDefault($this->gadget->registry->fetch('passwd_lockedout_time'));
         $tpl->SetVariable('lbl_passwd_lockedout_time', _t('POLICY_PASSWD_LOCKEDOUT_TIME'));
         $tpl->SetVariable('passwd_lockedout_time', $lockedout->Get());
 
@@ -536,7 +536,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $maxAge->AddOption(_t('GLOBAL_DATE_WEEKS', 2),   14);
         $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 1),   30);
         $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 3),   90);
-        $maxAge->SetDefault($this->gadget->registry->get('passwd_max_age'));
+        $maxAge->SetDefault($this->gadget->registry->fetch('passwd_max_age'));
         $tpl->SetVariable('lbl_passwd_max_age', _t('POLICY_PASSWD_MAX_AGE'));
         $tpl->SetVariable('passwd_max_age', $maxAge->Get());
 
@@ -548,7 +548,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $minLen->AddOption('8',   8);
         $minLen->AddOption('10', 10);
         $minLen->AddOption('15', 15);
-        $minLen->SetDefault($this->gadget->registry->get('passwd_min_length'));
+        $minLen->SetDefault($this->gadget->registry->fetch('passwd_min_length'));
         $tpl->SetVariable('lbl_passwd_min_length', _t('POLICY_PASSWD_MIN_LEN'));
         $tpl->SetVariable('passwd_min_length', $minLen->Get());
 
@@ -559,7 +559,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 1), '1');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 2), '2');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 3), '3');
-        $captchaValue = $this->gadget->registry->get('login_captcha_status');
+        $captchaValue = $this->gadget->registry->fetch('login_captcha_status');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('login');");
         $tpl->SetVariable('lbl_login_captcha', _t('POLICY_LOGIN_CAPTCHA'));
@@ -571,7 +571,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         foreach ($dCaptchas as $dCaptcha) {
             $captchaDriver->AddOption($dCaptcha, $dCaptcha);
         }
-        $captchaDriver->SetDefault($this->gadget->registry->get('login_captcha_driver'));
+        $captchaDriver->SetDefault($this->gadget->registry->fetch('login_captcha_driver'));
         if ($captchaValue === 'DISABLED') {
             $captchaDriver->SetEnabled(false);
         }
@@ -580,7 +580,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $parsingLevel =& Piwi::CreateWidget('Combo', 'xss_parsing_level');
         $parsingLevel->AddOption(_t('POLICY_XSS_PARSING_NORMAL'),   'normal');
         $parsingLevel->AddOption(_t('POLICY_XSS_PARSING_PARANOID'), 'paranoid');
-        $parsingLevel->SetDefault($this->gadget->registry->get('xss_parsing_level'));
+        $parsingLevel->SetDefault($this->gadget->registry->fetch('xss_parsing_level'));
         $tpl->SetVariable('lbl_xss_parsing_level', _t('POLICY_XSS_PARSING_LEVEL'));
         $tpl->SetVariable('xss_parsing_level', $parsingLevel->Get());
 
@@ -591,7 +591,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 15);
         $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 30), 30);
         $idleTimeout->AddOption(_t('GLOBAL_DATE_HOURS',    1), 60);
-        $idleTimeout->SetDefault($this->gadget->registry->get('session_idle_timeout'));
+        $idleTimeout->SetDefault($this->gadget->registry->fetch('session_idle_timeout'));
         $tpl->SetVariable('lbl_session_idle_timeout', _t('POLICY_SESSION_IDLE_TIMEOUT'));
         $tpl->SetVariable('session_idle_timeout', $idleTimeout->Get());
 
@@ -604,7 +604,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  1),  720);
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  6), 4320);
         $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH', 12), 8640);
-        $rememberTimeout->SetDefault($this->gadget->registry->get('session_remember_timeout'));
+        $rememberTimeout->SetDefault($this->gadget->registry->fetch('session_remember_timeout'));
         $tpl->SetVariable('lbl_session_remember_timeout', _t('POLICY_SESSION_REMEMBER_TIMEOUT'));
         $tpl->SetVariable('session_remember_timeout', $rememberTimeout->Get());
 

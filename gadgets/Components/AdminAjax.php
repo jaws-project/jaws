@@ -190,7 +190,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePlugins');
 
         $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
-        $use_in = $GLOBALS['app']->Registry->Get('use_in', $plugin);
+        $use_in = $GLOBALS['app']->Registry->fetch('use_in', $plugin);
         $default_value = ($use_in === '*');
         $result = array();
         $result['always'] = array(
@@ -264,7 +264,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
-        $GLOBALS['app']->Registry->Set('use_in', $selection, $plugin);
+        $GLOBALS['app']->registry->update('use_in', $selection, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

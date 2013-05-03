@@ -27,9 +27,9 @@ class Languages_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_NAME'));
         }
 
-        $this->gadget->registry->add('base_lang', 'en');
-        $this->gadget->registry->add('update_default_lang', 'false');
-        $this->gadget->registry->add('pluggable', 'false');
+        $this->gadget->registry->insert('base_lang', 'en');
+        $this->gadget->registry->insert('update_default_lang', 'false');
+        $this->gadget->registry->insert('pluggable', 'false');
         return true;
     }
 
@@ -53,8 +53,8 @@ class Languages_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->del('use_data_lang');
-        $this->gadget->registry->add('update_default_lang', 'false');
+        $this->gadget->registry->delete('use_data_lang');
+        $this->gadget->registry->insert('update_default_lang', 'false');
 
         // ACL keys
         $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Languages/ModifyLanguageProperties', 'false');

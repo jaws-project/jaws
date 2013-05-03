@@ -42,7 +42,7 @@ class Policy_Model extends Jaws_Gadget_Model
             }
         }
 
-        return $this->gadget->registry->get('block_undefined_ip') == 'true';
+        return $this->gadget->registry->fetch('block_undefined_ip') == 'true';
     }
 
     /**
@@ -68,7 +68,7 @@ class Policy_Model extends Jaws_Gadget_Model
             return $blocked;
         }
 
-        return $this->gadget->registry->get('block_undefined_agent') == 'true';
+        return $this->gadget->registry->fetch('block_undefined_agent') == 'true';
     }
 
     /**
@@ -85,7 +85,7 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function LoadCaptcha($field = 'default')
     {
-        $status = $this->gadget->registry->get($field. '_captcha_status');
+        $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
             case 'login':
                 $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
@@ -101,7 +101,7 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
+        $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
         $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $field);
 
         $resCaptcha = $objCaptcha->get();
@@ -121,7 +121,7 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function CheckCaptcha($field = 'default')
     {
-        $status = $this->gadget->registry->get($field. '_captcha_status');
+        $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
             case 'login':
                 $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
@@ -137,7 +137,7 @@ class Policy_Model extends Jaws_Gadget_Model
                 }
         }
 
-        $dCaptcha = $this->gadget->registry->get($field. '_captcha_driver');
+        $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
         $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $field);
         if (!$objCaptcha->check()) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
@@ -162,7 +162,7 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function IsSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
-        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->gadget->registry->get('filter'));
+        $filter = preg_replace('/[^[:alnum:]_-]/', '', $this->gadget->registry->fetch('filter'));
         if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
