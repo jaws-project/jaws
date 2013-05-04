@@ -75,16 +75,16 @@ class Policy_Model extends Jaws_Gadget_Model
      * Load and get captcha
      *
      * @access  public
-     * @param   string  $captcha
-     * @param   string  $entry
-     * @param   string  $label
-     * @param   string  $description
      * @param   string  $field
-     * @param   string  $entryid
      * @return  bool    True if captcha loaded successfully
      */
     function LoadCaptcha($field = 'default')
     {
+        if (!extension_loaded('gd')) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'LoadCaptcha error: GD extension not loaded');
+            return false;
+        }
+
         $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
             case 'login':
