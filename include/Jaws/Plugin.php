@@ -161,14 +161,6 @@ class Jaws_Plugin
     }
 
     /**
-     * Deprecated method
-     */
-    function LoadTranslation()
-    {
-        return true;
-    }
-
-    /**
      * Enable the plugin (creates the registry keys)
      *
      * @access  public
