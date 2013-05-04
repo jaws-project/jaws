@@ -130,7 +130,7 @@ font-size: 100%
 div.buttons {
 clear: both;
 padding-top: 10px;
-float: left;
+text-align: left;
 }
 
 #top_header {
@@ -307,6 +307,13 @@ font-size: 8pt;
 direction: ltr;
 text-align: left;
 }
+div.loglevel {
+float: right;
+}
+.loglevel select {
+direction: ltr;
+}
+
 .fs_table {
 text-align: center;
 border: 1px solid #d3d7cf;

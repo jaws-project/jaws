@@ -32,7 +32,7 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->SetVariable('db_path',    addslashes($_SESSION['install']['Database']['path']));
         $tpl->SetVariable('db_name',    $_SESSION['install']['Database']['name']);
         $tpl->SetVariable('db_prefix',  $_SESSION['install']['Database']['prefix']);
-        $tpl->SetVariable('log_level',  '0');
+        $tpl->SetVariable('log_level',  $_SESSION['install']['LogLevel']);
         $tpl->ParseBlock('JawsConfig');
 
         return $tpl->Get();
@@ -56,9 +56,24 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->setVariable('lbl_solution',            _t('INSTALL_CONFIG_SOLUTION'));
         $tpl->setVariable('lbl_solution_permission', _t('INSTALL_CONFIG_SOLUTION_PERMISSION', $config_path));
         $tpl->setVariable('lbl_solution_upload',     _t('INSTALL_CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
+        $tpl->SetVariable('lbl_loglevel',            _t('INSTALL_CONFIG_LOGLEVEL'));
         $tpl->SetVariable('next',                    _t('GLOBAL_NEXT'));
 
-        $tpl->SetVariable('config', $this->BuildConfig());
+        $request =& Jaws_Request::getInstance();
+        $loglevel = $request->get('loglevel', 'post');
+        $_SESSION['install']['LogLevel'] = (int)$loglevel;
+        $tpl->SetVariable('config', $this->BuildConfig();
+
+        $log_levels_messages = $GLOBALS['log']->_Log_Priority_Str;
+        array_unshift($log_levels_messages, 'LOG_DISABLED');
+        foreach ($log_levels_messages as $level => $title) {
+            $tpl->SetBlock('WriteConfig/loglevel');
+            $tpl->setVariable('level', $level);
+            $tpl->setVariable('title', $title);
+            $tpl->SetVariable('selected', $level == $loglevel? 'selected="selected"': '');
+            $tpl->ParseBlock('WriteConfig/loglevel');
+        }
+
         $tpl->ParseBlock('WriteConfig');
         return $tpl->Get();
     }

@@ -2,14 +2,22 @@
 <p>{lbl_info}</p>
 <p>{lbl_solution}:</p>
 <ol>
- <li>{lbl_solution_permission}</li>
- <li>{lbl_solution_upload}</li>
+  <li>{lbl_solution_permission}</li>
+  <li>{lbl_solution_upload}</li>
 </ol>
 <textarea cols="60" rows="20" readonly="readonly" class="config-area">{config}</textarea>
+<form method="post">
+  <div class="buttons">
+    <div class="loglevel">
+    <label for="loglevel">{lbl_loglevel}:</label>
+    <select name="loglevel" onchange="this.form.submit();">
+      <!-- BEGIN loglevel -->
+      <option value="{level}" {selected}>{title}</option>
+      <!-- END loglevel -->
+    </select>
+    </div>
+    <input type="submit" name="WriteConfig_complete" value="{next} &gt;" />
+  </div>
+</form>
 
-<div class="buttons">
- <form method="post">
-  <input type="submit" name="WriteConfig_complete" value="{next} &gt;" />
- </form>
-</div>
 <!-- END WriteConfig -->
