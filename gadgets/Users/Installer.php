@@ -55,7 +55,7 @@ class Users_Installer extends Jaws_Gadget_Installer
                 'removable' => false
             )
         );
-        if (Jaws_Error::IsError($result)) {
+        if (Jaws_Error::IsError($result) && MDB2_ERROR_CONSTRAINT != $result->getCode()) {
             return $result;
         }
 
