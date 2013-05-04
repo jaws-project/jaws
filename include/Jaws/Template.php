@@ -285,8 +285,6 @@ class Jaws_Template
             foreach ($regs as $k => $match) {
                 $vars[$match[1]] = '';
                 switch (strtolower($match[1])) {
-                    case 'theme': // Deprecated
-                    case 'theme-url':
                     case 'theme_url':
                         if (isset($GLOBALS['app'])) {
                             $theme = $GLOBALS['app']->GetTheme();
@@ -294,28 +292,18 @@ class Jaws_Template
                         }
                         break;
 
-                    case 'base-url':
                     case 'base_url':
                         $vars[$match[1]] = Jaws_Utils::getBaseURL('/');
                         break;
 
-                    case 'data-url':
                     case 'data_url':
                         if (isset($GLOBALS['app'])) {
                             $vars[$match[1]] = $GLOBALS['app']->getDataURL();
                         }
                         break;
 
-                    case 'requested-url':
                     case 'requested_url':
                         $vars[$match[1]] = Jaws_Utils::getRequestURL();
-                        break;
-
-                    case 'index': // Deprecated
-                        if (isset($GLOBALS['app'])) {
-                            $req = $GLOBALS['app']->GetMainRequest();
-                            $vars[$match[1]] = $req['index']? 'index' : '';
-                        }
                         break;
 
                     case 'jaws_index':
@@ -336,12 +324,10 @@ class Jaws_Template
                         }
                         break;
 
-                    case 'base-script':
                     case 'base_script':
                         $vars[$match[1]] = BASE_SCRIPT;
                         break;
 
-                    case 'requested-gadget':
                     case 'requested_gadget':
                         if (isset($GLOBALS['app'])) {
                             $req = $GLOBALS['app']->GetMainRequest();
@@ -349,7 +335,6 @@ class Jaws_Template
                         }
                         break;
 
-                    case 'requested-action':
                     case 'requested_action':
                         if (isset($GLOBALS['app'])) {
                             $req = $GLOBALS['app']->GetMainRequest();
