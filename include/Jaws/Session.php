@@ -445,11 +445,6 @@ class Jaws_Session
      */
     function GetAttribute($name)
     {
-        // Deprecated: in next major version will be removed
-        if ($name == 'user_id') {
-            $name = 'user';
-        }
-
         if (array_key_exists($name, $this->_Attributes)) {
             return $this->_Attributes[$name];
         } elseif (array_key_exists($name, $this->_AttributesTrash)) {
