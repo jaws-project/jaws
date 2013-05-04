@@ -186,15 +186,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     function UpdateGadgetMaps($gadget)
     {
         $file = JAWS_PATH . 'gadgets/' . $gadget . '/Map.php';
-        if (file_exists($file)) {
-            // Deprecated: use $GLOBALS to fetch maps of old gadgets
+        if (@include($file)) {
             $maps = array();
-            $GLOBALS['maps'] = array();
-            include $file;
-            if(!empty($GLOBALS['maps'])) {
-                $maps = $GLOBALS['maps'];
-            }
-
             $now = $GLOBALS['db']->Date();
             foreach ($maps as $order => $map) {
                 $eMap = $this->GetMapByParams($gadget, $map[0], $map[1]);
