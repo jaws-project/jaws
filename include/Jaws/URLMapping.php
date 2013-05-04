@@ -23,7 +23,7 @@ class Jaws_URLMapping
     var $_map = array();
     var $_delimiter = '@';
     var $_enabled;
-    var $_use_file;
+    var $_request_uri = '';
     var $_use_rewrite;
     var $_custom_precedence;
     var $_restrict_multimap;
@@ -35,40 +35,26 @@ class Jaws_URLMapping
      * Initializes the map, just pass null to a param if you want
      * to use the default values
      *
-     * @param   bool    $enabled        When true uses maps
-     * @param   bool    $use_file       When true it uses maps files
-     * @param   bool    $use_rewrite    Set to true if you're using
-     *                                  mod_rewrite (don't show ? in url)
-     * @param   string  $use_aliases    When true it parses aliases in each 'Parse' request
-     * @param   string  $extension      Extension URL maps should append or parse
+     * @param   string  $request_uri    Request URL
      * @access  public
      */
-    function Jaws_URLMapping($enabled = null, $use_rewrite = null, $use_aliases = null, $extension = null)
+    function Jaws_URLMapping($request_uri = '')
     {
         $urlMapper = $GLOBALS['app']->LoadGadget('UrlMapper', 'Info');
         if (Jaws_Error::isError($urlMapper)) {
             Jaws_Error::Fatal($urlMapper->getMessage());
         }
 
-        if ($enabled === null) {
-            $enabled = $urlMapper->registry->fetch('map_enabled') == 'true';
+        $this->_Model = $urlMapper->load('Model')->load('Model');
+        if (Jaws_Error::isError($this->_Model)) {
+            Jaws_Error::Fatal($this->_Model->getMessage());
         }
 
-        if ($use_rewrite === null) {
-            $use_rewrite = $urlMapper->registry->fetch('map_use_rewrite') == 'true';
-        }
-
-        if ($use_aliases === null) {
-            $use_aliases = $urlMapper->registry->fetch('map_use_aliases') == 'true';
-        }
-
-        if ($extension === null) {
-            $extension = $urlMapper->registry->fetch('map_extensions');
-        }
-
+        $enabled   = $urlMapper->registry->fetch('map_enabled') == 'true';
+        $extension = $urlMapper->registry->fetch('map_extensions');
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
-        $this->_use_rewrite       = $use_rewrite;
-        $this->_use_aliases       = $use_aliases;
+        $this->_use_rewrite       = $urlMapper->registry->fetch('map_use_rewrite') == 'true';
+        $this->_use_aliases       = $urlMapper->registry->fetch('map_use_aliases') == 'true';
         $this->_custom_precedence = $urlMapper->registry->fetch('map_custom_precedence') == 'true';
         $this->_restrict_multimap = $urlMapper->registry->fetch('map_restrict_multimap') == 'true';
         if (!empty($extension) && $extension{0} != '.') {
@@ -76,11 +62,31 @@ class Jaws_URLMapping
         }
         $this->_extension = $extension;
 
-        $this->_Model = $urlMapper->load('Model')->load('Model');
-        if (Jaws_Error::isError($this->_Model)) {
-            Jaws_Error::Fatal($this->_Model->getMessage());
+        if (empty($request_uri)) {
+            $this->_request_uri = $this->getPathInfo();
+        } elseif (strpos($request_uri, 'http') !== false) {
+            //prepare it manually
+            if (false !== $strPos = stripos($request_uri, BASE_SCRIPT)) {
+                $strPos = $strPos + strlen(BASE_SCRIPT);
+                $this->_request_uri = substr($request_uri, $strPos);
+            }
+        } else {
+            $this->_request_uri = $request_uri;
         }
 
+        //Moment.. first check if we are running on aliases_mode
+        if ($this->_use_aliases && $realURI = $this->_Model->GetAliasPath($this->_request_uri)) {
+            $this->_request_uri = str_ireplace(BASE_SCRIPT, '', $realURI);
+        }
+
+        $params = explode('/', $this->_request_uri);
+        if (false !== $apptype_key = array_search('apptype', $params)) {
+            $request =& Jaws_Request::getInstance();
+            $request->set('get', 'apptype', $params[$apptype_key + 1]);
+            unset($params[$apptype_key], $params[$apptype_key+1]);
+        }
+
+        $this->_request_uri = implode('/', array_map('rawurldecode', $params));
     }
 
     /**
@@ -91,24 +97,6 @@ class Jaws_URLMapping
     function Reset()
     {
         $this->_map = array();
-    }
-
-    /**
-     * Adds a map
-     * Deprecated: in next major version will be removed
-     *
-     * @param   string  $gadget     Gadget name
-     * @param   string  $action     Action name
-     * @param   string  $map        Map (e.g. '/blog/view/{id}')
-     * @param   string  $extension  Extension of mapped utl (e.g. html, xml, ....)
-     * @param   array   $reqs       Array with the validation for each var
-     * @param   array   $extraparms Array with the extra params with its default values
-     * @param   bool    $custom Is it a custom map? (defined by user)
-     * @access  public
-     */
-    function Connect($gadget, $action, $map, $extension = '', $reqs = null, $extraparams = null)
-    {
-        $GLOBALS['maps'][] = array($action, $map, $extension, $reqs);
     }
 
     /**
@@ -144,35 +132,10 @@ class Jaws_URLMapping
      *
      * @param   string  $path   Query URI
      */
-    function Parse($path = '')
+    function Parse()
     {
         if (!$this->_enabled && !is_array($this->_map)) {
             return false;
-        }
-
-        if (empty($path)) {
-            $path = $this->getPathInfo();
-        } elseif (strpos($path, 'http') !== false) {
-            //prepare it manually
-            $strPos = stripos($path, BASE_SCRIPT);
-            if ($strPos != false) {
-                $strPos = $strPos + strlen(BASE_SCRIPT);
-                $path   = substr($path, $strPos);
-            }
-        }
-
-        //Moment.. first check if we are running on aliases_mode
-        if ($this->_use_aliases && $realPath = $this->_Model->GetAliasPath($path)) {
-            $path = str_ireplace(BASE_SCRIPT, '', $realPath);
-        }
-
-        //If no path info is given but count($_POST) > 0?
-        if (empty($path) && count($_POST) > 0) {
-            return true;
-        }
-
-        if (strpos($path, '=') !== false) {
-            return true;
         }
 
         $request =& Jaws_Request::getInstance();
@@ -183,13 +146,16 @@ class Jaws_URLMapping
             return true;
         }
 
-        $params = explode('/', $path);
-        if (false !== $apptype_key = array_search('apptype', $params)) {
-            $request->set('get', 'apptype', $params[$apptype_key + 1]);
-            unset($params[$apptype_key], $params[$apptype_key+1]);
+        //If no path info is given but count($_POST) > 0?
+        if (empty($this->_request_uri) && count($_POST) > 0) {
+            return true;
         }
 
-        $path = implode('/', array_map('rawurldecode', $params));
+        if (strpos($this->_request_uri, '=') !== false) {
+            return true;
+        }
+
+        $params = explode('/', $this->_request_uri);
         $matched_but_ignored = false;
         foreach ($this->_map as $gadget => $actions) {
             foreach ($actions as $action => $maps) {
@@ -212,7 +178,7 @@ class Jaws_URLMapping
                             $custom = false;
                         }
 
-                        $url = $path;
+                        $url = $this->_request_uri;
                         $ext = $map['extension'];
                         $ext = ($ext == '.')? $this->_extension : $ext;
                         if (substr($url, - strlen($ext)) == $ext) {

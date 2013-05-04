@@ -297,6 +297,10 @@ class Jaws
     {
         require_once JAWS_PATH . 'include/Jaws/Session.php';
         $this->Session =& Jaws_Session::factory();
+        if (Jaws_Error::isError($this->Session)) {
+            Jaws_Error::Fatal($this->Session->getMessage());
+        }
+
         $this->Session->Init();
     }
 
