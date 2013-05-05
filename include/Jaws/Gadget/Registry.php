@@ -43,10 +43,10 @@ class Jaws_Gadget_Registry
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->name : $value;
-            return $GLOBALS['app']->Registry->insertAll($name, $gadget, 1);
+            return $GLOBALS['app']->Registry->insertAll($name, $gadget);
         } else {
             $gadget = empty($gadget)? $this->name : $gadget;
-            return $GLOBALS['app']->Registry->insert($name, $value, $gadget, 1);
+            return $GLOBALS['app']->Registry->insert($name, $value, $gadget);
         }
     }
 

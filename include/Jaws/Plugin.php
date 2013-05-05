@@ -202,14 +202,12 @@ class Jaws_Plugin
         $GLOBALS['app']->Registry->insert(
             'backend_gadgets',
             $pluginObj->_DefaultBackendEnabled? '*' : ',',
-            $plugin,
-            2
+            $plugin
         );
         $GLOBALS['app']->Registry->insert(
             'frontend_gadgets',
             $pluginObj->_DefaultFrontendEnabled? '*' : ',',
-            $plugin,
-            2
+            $plugin
         );
 
         // Everything is done
