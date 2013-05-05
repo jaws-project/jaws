@@ -613,37 +613,6 @@ class Blog_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Get last comments
-     *
-     * @access  public
-     * @return  mixed   Returns a list of recent comments and Jaws_Error on error
-     */
-    function GetRecentComments()
-    {
-        $recentcommentsLimit = $this->gadget->registry->fetch('last_recentcomments_limit');
-
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, $recentcommentsLimit);
-        if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_COMMENTS'), _t('BLOG_NAME'));
-        }
-
-        $newComments = array();
-        $i = 0;
-        foreach ($comments as $comment) {
-            $newComments[$i] = $comment;
-            $blogEntry = $this->GetEntry($comment['reference']);
-            if (!Jaws_Error::IsError($blogEntry)) {
-                $newComments[$i]['blog_title'] = $blogEntry['title'];
-                $newComments[$i]['entry_id']   = $comment['reference'];
-                $newComments[$i]['comment_id'] = $comment['id'];
-            }
-            $i++;
-        }
-        return $newComments;
-    }
-
-    /**
      * Get a list of comments
      *
      * @access  public

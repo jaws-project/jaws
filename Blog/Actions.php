@@ -79,9 +79,6 @@ $actions['MonthlyHistory'] = array(
 $actions['RecentPosts'] = array(
     'layout' => true,
 );
-$actions['RecentComments'] = array(
-    'layout' => true,
-);
 $actions['Calendar'] = array(
     'layout' => true,
 );

@@ -237,40 +237,6 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Displays a list of recent blog comments ordered by date
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function RecentComments()
-    {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('RecentComments.html');
-        $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('BLOG_RECENT_COMMENTS'));
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
-        $comments = $model->GetRecentComments();
-        if (!Jaws_Error::IsError($comments)) {
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($comments as $c) {
-                $tpl->SetBlock('recent_comments/item');
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array(
-                                                                                                     'id' => $c['entry_id'],
-                                                                                                     )
-                                                                         ).'#comment'.$c['comment_id']);
-                $tpl->SetVariable('on', _t('GLOBAL_ON'));
-                $tpl->SetVariable('comment_name', $c['name']);
-                $tpl->SetVariable('blog_title', $c['blog_title']);
-                $tpl->SetVariable('createtime', $date->Format($c['createtime']));
-                $tpl->ParseBlock('recent_comments/item');
-            }
-        }
-        $tpl->ParseBlock('recent_comments');
-
-        return $tpl->Get();
-    }
-
-    /**
      * Displays a calendar of the current month/year
      *
      * @access  public
