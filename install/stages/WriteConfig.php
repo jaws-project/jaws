@@ -62,7 +62,7 @@ class Installer_WriteConfig extends JawsInstallerStage
         $request =& Jaws_Request::getInstance();
         $loglevel = $request->get('loglevel', 'post');
         $_SESSION['install']['LogLevel'] = (int)$loglevel;
-        $tpl->SetVariable('config', $this->BuildConfig();
+        $tpl->SetVariable('config', $this->BuildConfig());
 
         $log_levels_messages = $GLOBALS['log']->_Log_Priority_Str;
         array_unshift($log_levels_messages, 'LOG_DISABLED');
