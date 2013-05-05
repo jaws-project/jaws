@@ -105,7 +105,7 @@ class TypePad
     function TypePad()
     {
         if (is_null($GLOBALS['app']->Registry->fetch('typepad_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->insert('typepad_key', '', 'Policy', 1);
+            $GLOBALS['app']->Registry->insert('typepad_key', '', 'Policy');
         }
 
         $this->apiKey    = $GLOBALS['app']->Registry->fetch('typepad_key', 'Policy');

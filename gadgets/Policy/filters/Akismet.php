@@ -106,7 +106,7 @@ class Akismet
     function Akismet()
     {
         if (is_null($GLOBALS['app']->Registry->fetch('akismet_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->insert('akismet_key', '', 'Policy', 1);
+            $GLOBALS['app']->Registry->insert('akismet_key', '', 'Policy');
         }
 
         $this->apiKey    = $GLOBALS['app']->Registry->fetch('akismet_key', 'Policy');
