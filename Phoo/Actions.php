@@ -44,6 +44,3 @@ $actions['Random'] = array(
 $actions['Moblog'] = array(
     'layout' => true,
 );
-$actions['RecentComments'] = array(
-    'layout' => true,
-);

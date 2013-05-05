@@ -97,38 +97,6 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Displays a list of recent phoo comments ordered by date
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function RecentComments()
-    {
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('RecentComments.html');
-        $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('PHOO_ACTIONS_RECENTCOMMENTS'));
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $comments = $model->GetRecentComments();
-        if (!Jaws_Error::IsError($comments)) {
-            foreach ($comments as $c) {
-                $tpl->SetBlock('recent_comments/item');
-                $albumid = $model->GetImageALbum($c['reference']);
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage',
-                                            array('id' => $c['reference'], 'albumid' => $albumid));
-                $tpl->SetVariable('on', _t('GLOBAL_ON'));
-                $tpl->SetVariablesArray($c);
-                $tpl->SetVariable('url', $url . '#comment'.$c['id']);
-                $tpl->SetVariable('image_title', $c['image_title']);
-                $tpl->ParseBlock('recent_comments/item');
-            }
-        }
-        $tpl->ParseBlock('recent_comments');
-
-        return $tpl->Get();
-    }
-
-    /**
      * Displays an index of galleries.
      *
      * @access  public

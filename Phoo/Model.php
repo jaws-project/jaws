@@ -1084,35 +1084,6 @@ class Phoo_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Get last comments
-     *
-     * @access  public
-     * @return  mixed   Returns a list of recent comments and Jaws_Error on error
-     */
-    function GetRecentComments()
-    {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $cModel->GetComments($this->gadget->name, 10);
-        if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('PHOO_ERROR_RECENTCOMMENTS'), _t('PHOO_NAME'));
-        }
-
-        $newComments = array();
-        $i = 0;
-        foreach ($comments as $comment) {
-            $newComments[$i] = $comment;
-            $imageEntry = $this->GetImageEntry($comment['reference']);
-            if (!Jaws_Error::IsError($imageEntry)) {
-                $newComments[$i]['image_title'] = $imageEntry['title'];
-                $newComments[$i]['entry_id']   = $comment['reference'];
-                $newComments[$i]['comment_id'] = $comment['id'];
-            }
-            $i++;
-        }
-        return $newComments;
-    }
-
-    /**
      * Get a list of comments
      *
      * @access  public

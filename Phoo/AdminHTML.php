@@ -986,7 +986,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         }
 
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
+        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
         $tpl->Load('ManageComments.html');
         $tpl->SetBlock('manage_comments');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
