@@ -25,7 +25,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $this->AjaxMe('script.js');
 
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/PostSummary.html');
+        $tpl->Load('Admin/Entry.html');
         $tpl->SetBlock('edit_entry');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -256,7 +256,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
 
         $this->AjaxMe('script.js');
         $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/PostSummary.html');
+        $tpl->Load('Admin/Entry.html');
         $tpl->SetBlock('edit_entry');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
