@@ -41,7 +41,7 @@ class AlbumCover extends Jaws_Plugin
         }
 
         // Registry key
-        $GLOBALS['app']->Registry->insert('devtag', 'MY DEV TAG', 'AlbumCover', 2);
+        $GLOBALS['app']->Registry->insert('devtag', 'MY DEV TAG', 'AlbumCover');
 
         return true;
     }
