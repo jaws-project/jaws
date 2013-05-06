@@ -74,7 +74,7 @@ class Jaws_Gadget_Installer
 
         $sql = '
             SELECT
-                [component_name]
+                [cmp_name]
             FROM [[registry]]
             WHERE
                 [key_name] = {name}
