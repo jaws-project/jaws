@@ -89,13 +89,12 @@ class Jaws_Registry
 
         $sql = '
             SELECT
-                [component], [key_name], [key_value]
+                [key_name], [key_value]
             FROM [[registry]]
             WHERE
                 [component] = {component}';
 
-        $keys = $GLOBALS['db']->queryAll($sql, $params);
-        return $keys;
+        return $GLOBALS['db']->queryAll($sql, $params);
     }
 
     /**
