@@ -180,4 +180,15 @@ class Components_AdminModel extends Jaws_Gadget_Model
         return $plugin;
     }
 
+    /**
+     * Fetches registry data of the gadget/plugin
+     *
+     * @access  public
+     * @param   string  $comp  Gadget/Plugin name
+     * @return  array   Registry keys/values
+     */
+    function GetRegistry($comp)
+    {
+        return $GLOBALS['app']->Registry->fetchAll($comp);
+    }
 }

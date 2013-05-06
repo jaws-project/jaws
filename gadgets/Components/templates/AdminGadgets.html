@@ -14,10 +14,18 @@
         <ul id="core"></ul>
       </div>
     </td>
-    <td valign="top"><div id="component_ui">{summaryUI}</div></td>
+    <td id="component_ui">
+      <div id="summary">{summary}</div>
+      <div id="component" style="display:none">
+        <div id="component_head"></div>
+        <div id="component_info"></div>
+        <ul id="tabs"><li class="active">Info</li><li>Registry</li><li>ACL</li></ul>
+      </div>
+    </td>
   </tr>
 </table>
-<div id="actions">{update}{install}{enable}{uninstall}{disable}{cancel}</div>
+<br/>
+<div id="actions" style="display:none">{update}{install}{enable}{uninstall}{disable}{cancel}</div>
 <script type="text/javascript">
   var actions = {
       outdated: "{lbl_update}",

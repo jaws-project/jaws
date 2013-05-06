@@ -50,6 +50,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
             $g['realname'] = $gadget['realname'];
             $g['disabled'] = $gadget['disabled'];
             $g['core_gadget'] = $gadget['core_gadget'];
+            $g['description'] = $gadget['description'];
             $result[$key] = $g;
         }
         // exclude ControlPanel to be listed as a gadget
@@ -267,6 +268,20 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $GLOBALS['app']->Registry->update('use_in', $selection, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Fetches registry data of the gadget/plugin
+     *
+     * @access  public
+     * @param   string  $comp  Gadget/Plugin name
+     * @return  array   Registry keys/values
+     */
+    function GetRegistry($comp)
+    {
+        $this->gadget->CheckPermission('ManageGadgets');
+        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        return $model->GetRegistry($comp);
     }
 
 }

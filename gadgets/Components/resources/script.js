@@ -95,6 +95,7 @@ function init()
         ComponentsAjax.callSync('getgadgets');
     buildComponentList();
     $('components').getElements('h3').addEvent('click', toggleSection);
+    $('tabs').getElements('li').addEvent('click', switchTab);
     updateSummary();
 }
 
@@ -188,7 +189,7 @@ function updateSummary()
         $('sum_outdated').innerHTML = count.outdated;
         $('sum_core').innerHTML = count.core;
     }
-    summaryUI = $('component_ui').innerHTML;
+    summaryUI = $('summary').innerHTML;
 }
 
 /**
@@ -201,14 +202,45 @@ function toggleSection()
 }
 
 /**
+ * Switches between component Info/Regsitry/ACL UIs
+ */
+function switchTab()
+{
+    $('tabs').getElement('li.active').removeClass('active');
+    this.addClass('active');
+    switch (this.innerHTML) {
+        case 'Info':
+            componentInfo();
+            break;
+        case 'Registry':
+            componentRegistry();
+            break;
+        case 'ACL':
+            break;
+    }
+}
+
+/**
  * Highlights clicked item in the component list
  */
 function selectComponent()
 {
-    selectedComponent = this.id;
-    editPluginMode = false;
+    var comp = this.id,
+        img = new Element('img'),
+        h1 = new Element('h1');
+    img.src = pluginsMode? 
+        'gadgets/Components/images/plugin.png': 
+        'gadgets/' + components[comp]['realname'] + '/images/logo.png';
+    img.alt = components[comp]['name'];
+    h1.innerHTML = components[comp]['name'] + ': ' + components[comp]['description'];
+    $('component_head').innerHTML = '';
+    $('component_head').adopt(img, h1);
     $$('#components li.selected').removeClass('selected');
     this.addClass('selected');
+
+    selectedComponent = comp;
+    editPluginMode = false;
+    uiCache = {};
     componentInfo();
     showButtons();
 }
@@ -222,7 +254,8 @@ function cancel()
     editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
     $('actions').getElements('button').hide();
-    $('component_ui').innerHTML = summaryUI;
+    $('summary').show();
+    $('component').hide();
     updateSummary();
 }
 
@@ -231,10 +264,37 @@ function cancel()
  */
 function componentInfo()
 {
-    var compInfo = pluginsMode?
-        ComponentsAjax.callSync('getplugininfo', selectedComponent):
-        ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
-    $('component_ui').innerHTML = compInfo;
+    if (typeof uiCache.info === 'undefined') {
+        uiCache.info = pluginsMode?
+            ComponentsAjax.callSync('getplugininfo', selectedComponent):
+            ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
+    }
+    $('component_info').innerHTML = uiCache.info;
+    $('summary').hide();
+    $('component').show();
+}
+
+/**
+ * Displays registry keys/values of the gadget/plugin
+ */
+function componentRegistry()
+{
+    var table = new Element('table', {'class':'registry'});
+    if (typeof uiCache.registry === 'undefined') {
+        uiCache.registry = ComponentsAjax.callSync('getregistry', selectedComponent);
+    }
+    uiCache.registry.each(function(reg) {
+        var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
+            th = new Element('th').grab(label),
+            input = new Element('input', {id:reg.key_name, value:reg.key_value}),
+            td = new Element('td').grab(input),
+            tr = new Element('tr').adopt(th, td);
+        table.grab(tr);
+    });
+    $('component_info').innerHTML = '';
+    $('component_info').grab(table);
+    $('summary').hide();
+    $('component').show();
 }
 
 /**
@@ -370,7 +430,7 @@ function pluginUsage()
         rootNode.add(new WebFXTreeItem(div.innerHTML));
     });
 
-    $('component_ui').innerHTML = tree.toString();
+    $('component').innerHTML = tree.toString();
     editPluginMode = true;
     showButtons();
 }
@@ -395,4 +455,5 @@ var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
     components = {},
     selectedComponent = null,
     editPluginMode = false,
+    uiCache = {},
     summaryUI;

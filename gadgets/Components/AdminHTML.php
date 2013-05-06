@@ -71,7 +71,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
-        $tpl->SetVariable('summaryUI', $this->GadgetsSummary());
+        $tpl->SetVariable('summary', $this->GadgetsSummary());
 
         $tpl->SetVariable('lbl_outdated', _t('COMPONENTS_GADGETS_OUTDATED'));
         $tpl->SetVariable('outdated_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
@@ -393,7 +393,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
-        $tpl->SetVariable('summaryUI', $this->PluginsSummary());
+        $tpl->SetVariable('summary', $this->PluginsSummary());
 
         $tpl->SetVariable('lbl_installed', _t('COMPONENTS_PLUGINS_INSTALLED'));
         $tpl->SetVariable('installed_desc', _t('COMPONENTS_PLUGINS_INSTALLED_DESC'));

@@ -17,7 +17,7 @@
 #components span {display:inline-block; width:200px; padding-left:5px; cursor:default;}
 #components a {display:none;}
 
-#component_ui {height:474px; margin-left:5px; padding:20px; border:1px solid #d3d7cf;}
+#component_ui {position:relative; height:474px; margin-left:5px; padding:20px; border:1px solid #d3d7cf; vertical-align:top;}
 #actions {text-align:right;}
 
 /* Information */
@@ -25,14 +25,23 @@
 .summary h1 {font-size:14px; border-bottom:solid 1px grey; margin-bottom:10px;}
 .summary label {font-size:12px; color:#3465a4}
 .summary span {font-weight:bold;}
-.component-info img {float:left; width:48px;}
-.component-info h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
-.component-info h2 {display:inline-block; font-size:12px;}
+#component img {float:left; width:48px;}
+#component h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
+#component h2 {display:inline-block; font-size:12px;}
 .component-info span {font-weight:bold;}
-.component-info ul {margin:5px 0 15px; list-style-type:square;}
-.component-info ul.acls {height:240px; overflow-y:auto;}
-.details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
-.details > div {margin-bottom:15px;}
+.component-info > div {margin-bottom:15px;}
+#component_head {margin-bottom:20px; padding-bottom:15px; border-bottom:solid 1px grey;}
+#component_info {height:300px; overflow-y:auto;}
+.registry {margin-left:10px; border-collapse:collapse;}
+.registry th {text-align:right;}
+.registry caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
+.registry input {width:200px;}
+#tabs {position:absolute; bottom:-21px; left:-1px; margin:0; padding:0; list-style:none;}
+#tabs li {
+  float:left; padding:2px 15px; margin:0 1px 0 0; background-color:silver; cursor:pointer; font-weight:bold; color:grey;
+  border:1px solid silver; border-top:none; border-radius:0 0 5px 5px; -moz-border-radius:0 0 5px 5px;
+}
+#tabs li.active {background-color:white; color:black;}
 
 /* WebFX Tree */
 #bigTree > div {margin-bottom:10px;}
