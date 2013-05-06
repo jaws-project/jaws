@@ -125,7 +125,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '0.8.9', '<')) {
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Blog/ModifyPublishedEntries',  'false');
+            $this->gadget->acl->insert('ModifyPublishedEntries');
         }
 
         return true;
