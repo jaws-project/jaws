@@ -57,7 +57,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->insert('update_default_lang', 'false');
 
         // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Languages/ModifyLanguageProperties', 'false');
+        $this->gadget->acl->insert('ModifyLanguageProperties');
 
         return true;
     }
