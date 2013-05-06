@@ -297,9 +297,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('avatar',   $uInfo['avatar']);
         $this->_Template->SetVariable('site-url', $GLOBALS['app']->GetSiteURL());
 
-        if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin') &&
-            $GLOBALS['app']->Session->GetPermission('Users', 'EditAccountInformation'))
-        {
+        if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin, EditAccountInformation')) {
             $uAccoun =& Piwi::CreateWidget('Link',
                                            $uInfo['nickname'],
                                            BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount');
