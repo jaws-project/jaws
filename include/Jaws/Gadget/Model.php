@@ -160,28 +160,8 @@ class Jaws_Gadget_Model
      */
     function InstallACLs()
     {
-        $acls = array();
         $info = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Info');
-        foreach ($info->GetACLs() as $acl => $default) {
-            if (false === stripos(serialize($acls), "\"{$acl}\"")) {
-                $acls[] = array($acl, $default);
-            }
-        }
-
-        $GLOBALS['app']->ACL->NewKeyEx($acls);
-    }
-
-    /**
-     * Installs the ACLs defined in the Info
-     *
-     * @access  public
-     */
-    function UninstallACLs()
-    {
-        $info = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Info');
-        foreach($info->GetACLs() as $acl => $opts){
-            $GLOBALS['app']->ACL->DeleteKey($acl);
-        }
+        $GLOBALS['app']->ACL->insertAll($info->GetACLs(), $this->gadget->name);
     }
 
     /**
