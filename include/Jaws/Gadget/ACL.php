@@ -35,11 +35,11 @@ class Jaws_Gadget_ACL
      *
      * @access  public
      * @param   string  $name   Key name
-     * @param   string  $value  Key value
+     * @param   int     $value  Key value
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function insert($name, $value = '', $gadget = '')
+    function insert($name, $value = 0, $gadget = '')
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->name : $value;
@@ -69,7 +69,7 @@ class Jaws_Gadget_ACL
      *
      * @access  public
      * @param   string  $name   Key name
-     * @param   string  $value  Key value
+     * @param   int     $value  Key value
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
