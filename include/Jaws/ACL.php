@@ -385,8 +385,6 @@ class Jaws_ACL
      */
     function GetAclPermissions($user)
     {
-        $this->LoadKeysOf($user, 'users');
-        $result = $this->GetAsQuery();
         $perms = array();
         foreach ($result as $r) {
             if (preg_match('#/ACL/gadgets/(.*?)/(.*?)#si', $r['name'])) {
@@ -414,8 +412,6 @@ class Jaws_ACL
      */
     function GetGroupAclPermissions($id)
     {
-        $this->LoadKeysOf($id, 'groups');
-        $result = $this->GetAsQuery();
         $perms = array();
         foreach ($result as $r) {
             if (preg_match('#/ACL/gadgets/(.*?)/(.*?)#si', $r['name'])) {
@@ -499,26 +495,6 @@ class Jaws_ACL
         foreach ($gadgets as $gadget) {
             $this->LoadFile($gadget);
         }
-    }
-
-    /**
-     * Loads all ACL keys of an user
-     *
-     * @access  public
-     * @param   string   $target  Target to search (can be a username or a GID)
-     * @param   string   $where   Where to search? users or groups?
-     */
-    function LoadKeysOf($target, $where)
-    {
-        if ($target === '' || in_array($target, $this->_LoadedTargets[$where])) {
-            return;
-        }
-        $sql = "SELECT [key_name], [key_value] FROM [[acl]] WHERE [key_name] LIKE '/ACL/".$where."/".$target."/%'";
-        $result = $GLOBALS['db']->queryAll($sql, array(), null, null, true);
-        if (Jaws_Error::isError($result)) {
-            return false;
-        }
-        $this->_LoadedTargets[$where][$target] = $target;
     }
 
 }
