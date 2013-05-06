@@ -194,8 +194,6 @@ class Jaws_Gadget
 
         // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
-        // load ACLs
-        $GLOBALS['app']->ACL->LoadFile($this->name);
 
         $this->_Title       = _t(strtoupper($gadget).'_NAME');
         $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
