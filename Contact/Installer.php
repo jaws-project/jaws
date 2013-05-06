@@ -89,7 +89,7 @@ class Contact_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/EditSentMessage',  'true');
+            $this->gadget->acl->insert('EditSentMessage');
 
             // Registry keys.
             $send_html = $this->gadget->registry->fetch('send_html') == 'true';
@@ -115,7 +115,7 @@ class Contact_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '0.3.3', '<')) {
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/AccessToMailer', 'false');
+            $this->gadget->acl->insert('AccessToMailer');
         }
 
         if (version_compare($old, '0.3.4', '<')) {
@@ -125,11 +125,13 @@ class Contact_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Contact/AllowAttachment', 'false');
+            $this->gadget->acl->insert('AllowAttachment');
 
             // Registry keys
-            $this->gadget->registry->insert('default_items',
-                                              'name,email,url,recipient,subject,attachment,message');
+            $this->gadget->registry->insert(
+                'default_items',
+                'name,email,url,recipient,subject,attachment,message'
+            );
 
             $new_dir = JAWS_DATA . 'contact';
             if (!Jaws_Utils::mkdir($new_dir)) {
