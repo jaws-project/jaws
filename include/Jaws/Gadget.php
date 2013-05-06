@@ -444,17 +444,15 @@ class Jaws_Gadget
                 $default = 'false';
                 $acl     = $value;
             }
-            $result['/ACL/gadgets/'. $this->name. '/'. $acl] = $default;
+            $result[$acl] = $default;
         }
 
         // Adding common ACL keys
-        $result['/ACL/gadgets/'. $this->name. '/default'] = $this->_DefaultACL? 'true' : 'false';
-        $result['/ACL/gadgets/'. $this->name. '/default_admin'] = 'false';
-        $result['/ACL/gadgets/'. $this->name. '/default_registry'] = 'false';
-
+        $result['default'] = $this->_DefaultACL? 'true' : 'false';
+        $result['default_admin'] = 'false';
+        $result['default_registry'] = 'false';
         return $result;
     }
-
     /**
      * Parses the input text
      *
