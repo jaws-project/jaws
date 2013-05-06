@@ -102,18 +102,18 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/FileBrowser/ManageFiles',       'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/FileBrowser/UploadFiles',       'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/FileBrowser/ManageDirectories', 'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/FileBrowser/OutputAccess',      'true');
-            
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/AddFile');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/RenameFile');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/DeleteFile');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/AddDir');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/RenameDir');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/DeleteDir');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FileBrowser/ShareDir');
+            $this->gadget->acl->insert('ManageFiles');
+            $this->gadget->acl->insert('UploadFiles');
+            $this->gadget->acl->insert('ManageDirectories');
+            $this->gadget->acl->insert('OutputAccess', true);
+
+            $this->gadget->acl->delete('AddFile');
+            $this->gadget->acl->delete('RenameFile');
+            $this->gadget->acl->delete('DeleteFile');
+            $this->gadget->acl->delete('AddDir');
+            $this->gadget->acl->delete('RenameDir');
+            $this->gadget->acl->delete('DeleteDir');
+            $this->gadget->acl->delete('ShareDir');
 
             //Registry key
             $this->gadget->registry->insert('virtual_links', 'false');
