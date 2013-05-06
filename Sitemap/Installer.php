@@ -74,7 +74,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
         }
 
         // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Sitemap/PingSite',   'true');
+        $this->gadget->acl->insert('PingSite');
 
         // Registry keys
 
