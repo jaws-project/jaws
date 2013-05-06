@@ -22,14 +22,6 @@ class Jaws_ACL
     var $_LoadedTargets;
 
     /**
-     * Array that has a *registry* of files that have been called
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_LoadedFiles = array();
-
-    /**
      * Constructor
      *
      * @access  public
@@ -43,57 +35,135 @@ class Jaws_ACL
     }
 
     /**
-     * Looks for a key in the acl registry
+     * Fetch the key value
      *
-     * @access      private
-     * @param   string  $name   Key to find
-     * @return  bool     The value of the key, if not key found must return null
+     * @access  public
+     * @param   string  $key_name   Key name
+     * @param   string  $component  Component name
+     * @return  string  The value of the key
      */
-    function Get($name)
+    function fetch($key_name, $component = '')
     {
-        $params         = array();
-        $params['name'] = $name;
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['component'] = $component;
+        $params['key_name']  = $key_name;
 
-        $sql = "
+        $sql = '
             SELECT
-                [key_value]
+                [component], [key_name], [key_value]
             FROM [[acl]]
-            WHERE [key_name] = {name}
-            ORDER BY [key_name]";
+            WHERE
+                [component] = {component}
+              AND
+                [key_name]  = {key_name}
+              AND
+                [user]      = {user}
+              AND
+                [group]     = {group}';
 
-        $value = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($value)) {
+        $row = $GLOBALS['db']->queryRow($sql, $params);
+        if (Jaws_Error::IsError($row) || empty($row) ||
+            $row['component'] !== $component || $row['key_name'] !== $key_name)
+        {
             return null;
         }
 
-        if (!empty($value)) {
-            return $value;
+        return $row['key_value'];
+    }
+
+    /**
+     * Fetch all acl keys of the gadget
+     *
+     * @access  public
+     * @param   string  $component   Component name
+     * @return  mixed   Array of keys if successful or Jaws_Error on failure
+     */
+    function fetchAll($component = '')
+    {
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['component'] = $component;
+
+        $sql = '
+            SELECT
+                [component], [key_name], [key_value]
+            FROM [[acl]]
+            WHERE
+                [component] = {component}
+              AND
+                [user]      = {user}
+              AND
+                [group]     = {group}';
+
+        $keys = $GLOBALS['db']->queryAll($sql, $params);
+        return $keys;
+    }
+
+    /**
+     * Insert a new key
+     *
+     * @access  public
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
+     */
+    function insert($key_name, $key_value, $component = '')
+    {
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['component'] = $component;
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
+        $params['now']       = $GLOBALS['db']->Date();
+
+        $sql = '
+            INSERT INTO [[acl]]
+                ([component], [key_name], [key_value], [user], [group], [updatetime])
+            VALUES
+                ({component}, {key_name}, {key_value}, {user}, {group}, {now})';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
         }
 
-        return null;
+        return true;
     }
 
     /**
      * Updates the value of a key
      *
      * @access  public
-     * @param   string  $name  The key
-     * @param   string  $value The value
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
      */
-    function Set($name, $value)
+    function update($key_name, $key_value, $component = '')
     {
-        if (!$this->KeyExists($name)) {
-            return false;
-        }
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
+        $params['component'] = $component;
 
-        $params          = array();
-        $params['name']  = $name;
-        $params['value'] = $value;
-
-        $sql = "
-        UPDATE [[acl]] SET
-            [key_value] = {value}
-        WHERE [key_name] = {name}";
+        $sql = '
+            UPDATE [[acl]] SET
+                [key_value] = {key_value}
+            WHERE
+                [component] = {component}
+              AND
+                [key_name]  = {key_name}
+              AND
+                [user]      = {user}
+              AND
+                [group]     = {group}';
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -104,103 +174,73 @@ class Jaws_ACL
     }
 
     /**
-     * Creates a new key
+     * Inserts array of keys
      *
      * @access  public
-     * @param   string  $name  The key
-     * @param   string  $value The value
+     * @param   array   $keys       Pairs of keys/values
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
      */
-    function NewKey($name, $value)
+    function insertAll($keys, $component = '')
     {
-        if ($this->KeyExists($name)) {
-            return false; //already exists
-        }
-
-        $params = array();
-        $params['name']  = $name;
-        $params['value'] = $value;
-        $params['now']   = $GLOBALS['db']->Date();
-
-        $sql = "
-            INSERT INTO [[acl]]
-                ([key_name], [key_value], [updatetime])
-            VALUES
-                ({name}, {value}, {now})";
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Creates a array of new keys
-     *
-     * @access  public
-     */
-    function NewKeyEx()
-    {
-        $sqls = '';
-        $params = array();
-        $reg_keys = func_get_args();
-
-        // for support array of keys array
-        if (isset($reg_keys[0][0]) && is_array($reg_keys[0][0])) {
-            $reg_keys = $reg_keys[0];
-        }
-
-        if (empty($reg_keys) || empty($reg_keys[0])) {
+        if (empty($keys)) {
             return true;
         }
 
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['component'] = $component;
+        $params['now']       = $GLOBALS['db']->Date();
+
+        $sqls = '';
         $dbDriver  = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
-        foreach ($reg_keys as $idx => $reg_key) {
-            if ($this->KeyExists($reg_key[0])) {
-                unset($reg_keys[$idx]);
-            } else {
-                $params["name_$idx"]  = $reg_key[0];
-                $params["value_$idx"] = $reg_key[1];
-                // Ugly hack to support all databases
-                switch ($dbDriver) {
-                    case 'oci8':
-                        $sqls .= (empty($sqls)? '' : "\n UNION ALL") . "\n SELECT {name_$idx}, {value_$idx}, {now} FROM DUAL";
-                        break;
-                    case 'ibase':
-                        $sqls[] = " VALUES ({name_$idx}, {value_$idx}, {now})";
-                        break;
-                    case 'pgsql':
-                        if (version_compare($dbVersion, '8.2.0', '>=')) {
-                            $sqls .= (empty($sqls)? "\n VALUES" : ",") . "\n ({name_$idx}, {value_$idx}, {now})";
-                        } else {
-                            $sqls[] = " VALUES ({name_$idx}, {value_$idx}, {now})";
-                        }
-                        break;
-                    default:
-                        $sqls .= (empty($sqls)? '' : "\n UNION ALL") . "\n SELECT {name_$idx}, {value_$idx}, {now}";
-                        break;
-                }
+        for ($ndx = 0; $ndx < count($keys); $ndx++) {
+            list($key_name, $key_value) = each($keys);
+            $params["name_$ndx"]  = $key_name;
+            $params["value_$ndx"] = $key_value;
+
+            // Ugly hack to support all databases
+            switch ($dbDriver) {
+                case 'oci8':
+                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now} FROM DUAL";
+                    break;
+                case 'ibase':
+                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                    break;
+                case 'pgsql':
+                    if (version_compare($dbVersion, '8.2.0', '>=')) {
+                        $sqls .= (empty($sqls)? "\n VALUES" : ",").
+                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                    } else {
+                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                    }
+                    break;
+                default:
+                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now}";
+                    break;
             }
         }
 
-        if (empty($sqls)) {
-            return false;
-        }
-
-        $params['now'] = $GLOBALS['db']->Date();
-
         if (is_array($sqls)) {
             foreach ($sqls as $sql) {
-                $qsql = " INSERT INTO [[acl]]([key_name], [key_value], [updatetime])" . $sql;
+                $qsql = '
+                    INSERT INTO [[acl]]
+                        ([component], [key_name], [key_value], [user], [group], [updatetime])
+                    '. $sql;
                 $result = $GLOBALS['db']->query($qsql, $params);
                 if (Jaws_Error::IsError($result)) {
                     return $result;
                 }
             }
         } else {
-            $qsql = " INSERT INTO [[acl]]([key_name], [key_value], [updatetime])" . $sqls;
+            $qsql = '
+                INSERT INTO [[acl]]
+                    ([component], [key_name], [key_value], [user], [group], [updatetime])
+                '. $sqls;
             $result = $GLOBALS['db']->query($qsql, $params);
             if (Jaws_Error::IsError($result)) {
                 return $result;
@@ -214,14 +254,25 @@ class Jaws_ACL
      * Deletes a key
      *
      * @access  public
-     * @param   string  $name  The key
+     * @param   string  $component  Component name
+     * @param   string  $key_name   Key name
+     * @return  bool    True is set otherwise False
      */
-    function DeleteKey($name)
+    function delete($component, $key_name = '')
     {
-        $params         = array();
-        $params['name'] = $name;
+        $params = array();
+        $params['component'] = $component;
+        $params['key_name']  = $key_name;
 
-        $sql = "DELETE FROM [[acl]] WHERE [key_name] = {name}";
+        $sql = '
+            DELETE
+                FROM [[acl]]
+            WHERE
+                [component] = {component}
+            ';
+        if (!empty($key_name)) {
+            $sql.= ' AND [key_name] = {key_name}';
+        }
 
         $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
