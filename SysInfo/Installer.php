@@ -35,10 +35,10 @@ class SysInfo_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->delete('frontend_avail');
 
         // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/SysInfo',  'false');
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/PHPInfo',  'false');
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/JawsInfo', 'false');
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/SysInfo/DirInfo',  'false');
+        $this->gadget->acl->insert('SysInfo');
+        $this->gadget->acl->insert('PHPInfo');
+        $this->gadget->acl->insert('JawsInfo');
+        $this->gadget->acl->insert('DirInfo');
 
         return true;
     }
