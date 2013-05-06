@@ -121,12 +121,12 @@ class Settings_Installer extends Jaws_Gadget_Model
     {
         if (version_compare($old, '0.3.1', '<')) {
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/BasicSettings',    'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/AdvancedSettings', 'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/MetaSettings',     'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/MailSettings',     'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/FTPSettings',      'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Settings/ProxySettings',    'false');
+            $this->gadget->acl->insert('BasicSettings');
+            $this->gadget->acl->insert('AdvancedSettings');
+            $this->gadget->acl->insert('MetaSettings');
+            $this->gadget->acl->insert('MailSettings');
+            $this->gadget->acl->insert('FTPSettings');
+            $this->gadget->acl->insert('ProxySettings');
         }
 
         return true;
