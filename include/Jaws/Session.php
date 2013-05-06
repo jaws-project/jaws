@@ -515,23 +515,15 @@ class Jaws_Session
      */
     function GetPermission($gadget, $task, $together = true)
     {
-        $result = $together? true : false;
         $user = $this->GetAttribute('username');
         $groups = $this->GetAttribute('groups');
         $tasks = array_filter(array_map('trim', explode(',', $task)));
+        $perms = array();
         foreach ($tasks as $task) {
-            if ($together) {
-                $result = $result &&
-                          $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget,
-                                                                  $task, $this->IsSuperAdmin());
-            } else {
-                $result = $result ||
-                          $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget,
-                                                                  $task, $this->IsSuperAdmin());
-            }
+            $perms[] = $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget, $task, $this->IsSuperAdmin());
         }
 
-        return $result;
+        return $together? @min($perms) : @max($perms);
     }
 
     /**
@@ -546,8 +538,8 @@ class Jaws_Session
      */
     function CheckPermission($gadget, $task, $together = true, $errorMessage = '')
     {
-        if ($this->GetPermission($gadget, $task, $together)) {
-            return true;
+        if ($perm = $this->GetPermission($gadget, $task, $together)) {
+            return $perm;
         }
 
         if (empty($errorMessage)) {
