@@ -2,13 +2,13 @@
 /**
  * Manage Access control lists
  *
- * @category   ACL
- * @package    Core
- * @author     Ivan Chavero <imcsk8@gluch.org.mx>
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    ACL
+ * @package     Core
+ * @author      Ivan Chavero <imcsk8@gluch.org.mx>
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_ACL
 {
@@ -20,15 +20,6 @@ class Jaws_ACL
      * @var     array
      */
     var $_LoadedTargets;
-
-    /**
-     * Has the registry
-     *
-     * @var     array
-     * @access  private
-     * @see    GetSimpleArray()
-     */
-    var $_Registry = array();
 
     /**
      * Array that has a *registry* of files that have been called
@@ -52,22 +43,6 @@ class Jaws_ACL
     }
 
     /**
-     * Checks if the key exists
-     *
-     * @access  public
-     * @param   string  $name  The key
-     * @return  bool    true when the key was found, else false
-     */
-    function KeyExists($name)
-    {
-        if (array_key_exists($name, $this->_Registry)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Looks for a key in the acl registry
      *
      * @access      private
@@ -76,16 +51,26 @@ class Jaws_ACL
      */
     function Get($name)
     {
-        $value = $this->KeyExists($name) ? $this->_Registry[$name] : null;
-        if ($value == 'true') {
-            return true;
-        }
+        $params         = array();
+        $params['name'] = $name;
 
-        if ($value === null) {
+        $sql = "
+            SELECT
+                [key_value]
+            FROM [[acl]]
+            WHERE [key_name] = {name}
+            ORDER BY [key_name]";
+
+        $value = $GLOBALS['db']->queryOne($sql, $params);
+        if (Jaws_Error::IsError($value)) {
             return null;
         }
 
-        return false;
+        if (!empty($value)) {
+            return $value;
+        }
+
+        return null;
     }
 
     /**
@@ -104,7 +89,6 @@ class Jaws_ACL
         $params          = array();
         $params['name']  = $name;
         $params['value'] = $value;
-        $this->_Registry[$name] = $value;
 
         $sql = "
         UPDATE [[acl]] SET
@@ -117,39 +101,6 @@ class Jaws_ACL
         }
 
         return true;
-    }
-
-    /**
-     * Search for a key in the setted registry table
-     *
-     * @access  public
-     * @param   string  Key to find
-     * @return  string  The value of the key
-     */
-    function GetFromTable($name)
-    {
-        $params         = array();
-        $params['name'] = $name;
-
-        $sql = "
-            SELECT
-                [key_value]
-            FROM [[acl]]
-            WHERE [key_name] = {name}
-            ORDER BY [key_name]";
-
-        $value = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($value)) {
-            return null;
-        }
-
-        if (!empty($value)) {
-            // lets update the internal array just in case
-            $this->_Registry[$name] = $value;
-            return $value;
-        }
-
-        return null;
     }
 
     /**
@@ -181,7 +132,6 @@ class Jaws_ACL
             return false;
         }
 
-        $this->_Registry[$name] = $value;
         return true;
     }
 
@@ -257,11 +207,6 @@ class Jaws_ACL
             }
         }
 
-        foreach ($reg_keys as $idx => $reg_key) {
-            if (empty($reg_keys[$idx])) continue;
-            $this->_Registry[$reg_key[0]] = $reg_key[1];
-        }
-
         return true;
     }
 
@@ -273,10 +218,6 @@ class Jaws_ACL
      */
     function DeleteKey($name)
     {
-        if ($this->KeyExists($name)) {
-            unset($this->_Registry[$name]);
-        }
-
         $params         = array();
         $params['name'] = $name;
 
@@ -330,7 +271,6 @@ class Jaws_ACL
             return true;
         }
 
-        $this->LoadFile($gadget);
         $this->LoadKeysOf($user, 'users');
 
         // 1. Check for user permission
@@ -375,7 +315,6 @@ class Jaws_ACL
      */
     function GetGroupPermission($group, $gadget, $task)
     {
-        $this->LoadFile($gadget);
         $this->LoadKeysOf($group, 'groups');
 
         return $this->Get('/ACL/groups/'.$group.'/gadgets/'.$gadget.'/'.$task);
@@ -408,30 +347,6 @@ class Jaws_ACL
         }
         return $perms;
 
-    }
-
-    /**
-     * Get all the ACL permissions
-     *
-     * @access  public
-     * @param   string $user Username
-     * @return  array  Struct that contains all needed info about *ALL* ACL keys
-     */
-    function GetAllAclPermissions()
-    {
-        $result = $this->GetAsQuery();
-        $perms = array();
-        foreach ($result as $r) {
-            if (preg_match('#/ACL/gadgets/(.*?)/(.*?)#si', $r['name'])) {
-                $gadget = preg_replace("@\/ACL/gadgets\/(\w+)\/(\w+)@", "\$1", $r['name']);
-                $item = array();
-                $item['name'] = $r['name'];
-                $item['default'] = false;
-                $item['value']   = true;
-                $perms[$gadget][] = $item;
-            }
-        }
-        return $perms;
     }
 
     /**
@@ -541,15 +456,6 @@ class Jaws_ACL
      */
     function LoadFile($component, $type = 'gadgets')
     {
-        if (!array_key_exists($component, $this->_LoadedFiles)) {
-            $type = strtolower($type);
-            if ($res = $this->_regenerateInternalRegistry($component, $type)) {
-                $this->_LoadedFiles[$component] = $component;
-            }
-
-            return $res;
-        }
-
         return true;
     }
 
@@ -564,30 +470,6 @@ class Jaws_ACL
         foreach ($gadgets as $gadget) {
             $this->LoadFile($gadget);
         }
-    }
-
-    /**
-     * Returns the SimpleArray in a query style:
-     *
-     * $array[0] = array('name'  => 'foo',
-     *                   'value' => 'bar'),
-     * $array[1] = array('name'  => 'bar',
-     *                   'value' => 'foo');
-     *
-     * @access  public
-     * @return  array   Array in a QueryStyle
-     */
-    function GetAsQuery()
-    {
-        $data = array();
-        foreach ($this->_Registry as $key => $value) {
-            $data[] = array(
-                'name'   => $key,
-                'value'  => $value,
-            );
-        }
-
-        return $data;
     }
 
     /**
@@ -608,37 +490,6 @@ class Jaws_ACL
             return false;
         }
         $this->_LoadedTargets[$where][$target] = $target;
-        $this->_Registry = $result + $this->_Registry;
-    }
-
-    /**
-     * Regenerates/updates the internal registry array ($this->_Registry)
-     *
-     * @access  protected
-     * @param   string     $component  Component name
-     * @param   string     $type       Type of component (gadget or plugin)
-     * @return  bool       Success/Failure
-     */
-    function _regenerateInternalRegistry($component, $type = 'gadgets')
-    {
-        $type = strtolower($type);
-        if (!in_array($type, array('gadgets', 'plugins'))) {
-            return false;
-        }
-
-        $sql = "
-            SELECT [key_name], [key_value]
-            FROM [[acl]]
-            WHERE [key_name] LIKE '/ACL/$type/$component/%'
-            ORDER BY [id]";
-
-        $result = $GLOBALS['db']->queryAll($sql, array(), null, null, true);
-        if (Jaws_Error::isError($result)) {
-            return false;
-        }
-
-        $this->_Registry = $result + $this->_Registry;
-        return true;
     }
 
 }
