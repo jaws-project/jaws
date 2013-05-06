@@ -69,8 +69,8 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '0.8.1', '<')) {
             $this->gadget->registry->insert('comment_status', 'approved');
             $this->gadget->registry->insert('anon_post_authority', 'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Shoutbox/ManageComments',  'false');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Shoutbox/DeleteEntry');
+            $this->gadget->acl->insert('ManageComments');
+            $this->gadget->acl->delete('DeleteEntry');
         }
 
         return true;
