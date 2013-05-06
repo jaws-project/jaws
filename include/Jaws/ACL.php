@@ -42,7 +42,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  string  The value of the key
      */
-    function fetch($key_name, $component = '')
+    function fetch($key_name, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $tblACL->select('component', 'key_name', 'key_value');
@@ -62,7 +62,7 @@ class Jaws_ACL
      * @param   string  $component   Component name
      * @return  mixed   Array of keys if successful or Jaws_Error on failure
      */
-    function fetchAll($component = '')
+    function fetchAll($component)
     {
         $params = array();
         $params['user']      = 0;
@@ -71,7 +71,7 @@ class Jaws_ACL
 
         $sql = '
             SELECT
-                [component], [key_name], [key_value]
+                [key_name], [key_value]
             FROM [[acl]]
             WHERE
                 [component] = {component}
@@ -80,8 +80,7 @@ class Jaws_ACL
               AND
                 [group]     = {group}';
 
-        $keys = $GLOBALS['db']->queryAll($sql, $params);
-        return $keys;
+        return $GLOBALS['db']->queryAll($sql, $params);
     }
 
     /**
@@ -93,7 +92,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  mixed   Value of the key if success otherwise Null
      */
-    function fetchUser($user, $key_name, $component = '')
+    function fetchUser($user, $key_name, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $value  = $tblACL->select('key_value')
@@ -119,7 +118,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  mixed   Array of values if success otherwise Null
      */
-    function fetchGroups($groups, $key_name, $component = '')
+    function fetchGroups($groups, $key_name, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $values = $tblACL->select('key_value')
@@ -141,18 +140,18 @@ class Jaws_ACL
      *
      * @access  public
      * @param   string  $key_name   Key name
-     * @param   string  $key_value  Key value
+     * @param   int     $key_value  Key value
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $component = '')
+    function insert($key_name, $key_value, $component)
     {
         $params = array();
         $params['user']      = 0;
         $params['group']     = 0;
         $params['component'] = $component;
         $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
+        $params['key_value'] = (int)$key_value;
         $params['now']       = $GLOBALS['db']->Date();
 
         $sql = '
@@ -177,7 +176,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function insertAll($keys, $component = '')
+    function insertAll($keys, $component)
     {
         if (empty($keys)) {
             return true;
@@ -195,7 +194,7 @@ class Jaws_ACL
         for ($ndx = 0; $ndx < count($keys); $ndx++) {
             list($key_name, $key_value) = each($keys);
             $params["name_$ndx"]  = $key_name;
-            $params["value_$ndx"] = $key_value;
+            $params["value_$ndx"] = (int)$key_value;
 
             // Ugly hack to support all databases
             switch ($dbDriver) {
@@ -251,17 +250,17 @@ class Jaws_ACL
      *
      * @access  public
      * @param   string  $key_name   Key name
-     * @param   string  $key_value  Key value
+     * @param   int     $key_value  Key value
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $component = '')
+    function update($key_name, $key_value, $component)
     {
         $params = array();
         $params['user']      = 0;
         $params['group']     = 0;
         $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
+        $params['key_value'] = (int)$key_value;
         $params['component'] = $component;
 
         $sql = '
