@@ -189,9 +189,10 @@ class Jaws_Gadget
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
 
+        // load gadget ACL interface
+        $this->acl = new Jaws_Gadget_ACL($gadget);
         // load gadget registry interface
         $this->registry = new Jaws_Gadget_Registry($gadget);
-
         // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
 
