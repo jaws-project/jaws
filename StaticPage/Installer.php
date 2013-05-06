@@ -109,7 +109,7 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/Properties', 'true');
+            $this->gadget->acl->insert('Properties');
 
             // Registry keys
             $this->gadget->registry->insert('multilanguage', 'yes');
@@ -129,7 +129,7 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/ManageGroups',  'false');
+            $this->gadget->acl->insert('ManageGroups');
 
             $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
             if (!Jaws_Error::isError($layoutModel)) {
@@ -144,9 +144,9 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/PublishPages',         'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/ManagePublishedPages', 'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/StaticPage/ModifyOthersPages',    'false');
+            $this->gadget->acl->insert('PublishPages');
+            $this->gadget->acl->insert('ManagePublishedPages');
+            $this->gadget->acl->insert('ModifyOthersPages');
         }
 
         return true;
