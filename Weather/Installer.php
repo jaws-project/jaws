@@ -89,10 +89,10 @@ class Weather_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Weather/ManageRegions', 'true');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/AddCity');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/EditCity');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Weather/DeleteCity');
+            $this->gadget->acl->insert('ManageRegions');
+            $this->gadget->acl->delete('AddCity');
+            $this->gadget->acl->delete('EditCity');
+            $this->gadget->acl->delete('DeleteCity');
 
             // Registry keys
             $this->gadget->registry->insert('unit', 'metric');
