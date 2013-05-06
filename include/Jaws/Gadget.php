@@ -447,11 +447,12 @@ class Jaws_Gadget
         }
 
         // Adding common ACL keys
-        $result['default'] = $this->_DefaultACL? 'true' : 'false';
-        $result['default_admin'] = 'false';
-        $result['default_registry'] = 'false';
+        $result['default']          = $this->_DefaultACL;
+        $result['default_admin']    = false;
+        $result['default_registry'] = false;
         return $result;
     }
+
     /**
      * Parses the input text
      *
