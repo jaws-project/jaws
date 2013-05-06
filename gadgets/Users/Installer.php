@@ -88,7 +88,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/ManageAuthenticationMethod', 'false');
+            $this->gadget->acl->insert('ManageAuthenticationMethod');
         }
 
         if (version_compare($old, '0.8.9', '<')) {
@@ -146,16 +146,16 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('latest_limit', '10');
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserName',        'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserNickname',    'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserEmail',       'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPassword',    'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPersonal',    'false');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Users/EditUserPreferences', 'false');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPassword');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountInformation');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountProfile');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Users/EditAccountPreferences');
+            $this->gadget->acl->insert('EditUserName',);
+            $this->gadget->acl->insert('EditUserNickname',);
+            $this->gadget->acl->insert('EditUserEmail',);
+            $this->gadget->acl->insert('EditUserPassword',);
+            $this->gadget->acl->insert('EditUserPersonal',);
+            $this->gadget->acl->insert('EditUserPreferences',);
+            $this->gadget->acl->delete('EditAccountPassword');
+            $this->gadget->acl->delete('EditAccountInformation');
+            $this->gadget->acl->delete('EditAccountProfile');
+            $this->gadget->acl->delete('EditAccountPreferences');
         }
 
         return true;
