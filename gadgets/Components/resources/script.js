@@ -17,7 +17,7 @@ var ComponentsCallback = {
             components[selectedComponent].state = 
                 components[selectedComponent].core_gadget? 'core' : 'installed';
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -27,7 +27,7 @@ var ComponentsCallback = {
             components[selectedComponent].state = 
                 components[selectedComponent].core_gadget? 'core' : 'installed';
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -36,7 +36,7 @@ var ComponentsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -46,7 +46,7 @@ var ComponentsCallback = {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = false;
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -56,7 +56,7 @@ var ComponentsCallback = {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = true;
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -65,7 +65,7 @@ var ComponentsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
@@ -74,13 +74,13 @@ var ComponentsCallback = {
         if (response[0]['css'] == 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
-            cancel();
+            closeUI();
         }
         showResponse(response);
     },
 
     updatepluginusage: function(response) {
-        cancel();
+        closeUI();
         showResponse(response);
     }
 }
@@ -204,18 +204,19 @@ function toggleSection()
 /**
  * Switches between component Info/Regsitry/ACL UIs
  */
-function switchTab()
+function switchTab(tab)
 {
+    tab = (typeof tab === 'string')? tab : this.id;
     $('tabs').getElement('li.active').removeClass('active');
-    this.addClass('active');
-    switch (this.innerHTML) {
-        case 'Info':
+    $(tab).addClass('active');
+    switch (tab) {
+        case 'tab_info':
             componentInfo();
             break;
-        case 'Registry':
+        case 'tab_registry':
             componentRegistry();
             break;
-        case 'ACL':
+        case 'tab_acl':
             break;
     }
 }
@@ -241,19 +242,17 @@ function selectComponent()
     selectedComponent = comp;
     editPluginMode = false;
     uiCache = {};
-    componentInfo();
-    showButtons();
+    switchTab($('tabs').getElement('li.active').id);
 }
 
 /**
- * Deselects component in the list and hides info page
+ * Deselects component in the list and hides it's UI
  */
-function cancel()
+function closeUI()
 {
     selectedComponent = null;
     editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
-    $('actions').getElements('button').hide();
     $('summary').show();
     $('component').hide();
     updateSummary();
@@ -272,6 +271,7 @@ function componentInfo()
     $('component_info').innerHTML = uiCache.info;
     $('summary').hide();
     $('component').show();
+    showButtons();
 }
 
 /**
@@ -279,7 +279,8 @@ function componentInfo()
  */
 function componentRegistry()
 {
-    var table = new Element('table', {'class':'registry'});
+    var form = new Element('form', {id:'frm_registry'}),
+        table = new Element('table');
     if (typeof uiCache.registry === 'undefined') {
         uiCache.registry = ComponentsAjax.callSync('getregistry', selectedComponent);
     }
@@ -292,7 +293,7 @@ function componentRegistry()
         table.grab(tr);
     });
     $('component_info').innerHTML = '';
-    $('component_info').grab(table);
+    $('component_info').grab(form.grab(table));
     $('summary').hide();
     $('component').show();
 }
@@ -355,7 +356,6 @@ function showButtons()
 {
     var comp = components[selectedComponent];
     $('actions').getElements('button').hide();
-    $('btn_cancel').show('inline');
     if (pluginsMode) {
         switch(comp.state) {
         case 'notinstalled':

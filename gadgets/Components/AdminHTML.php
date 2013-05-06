@@ -85,38 +85,15 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_enable', _t('COMPONENTS_ENABLE'));
         $tpl->SetVariable('lbl_install', _t('COMPONENTS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
+        $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
+        $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
+        $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
         $tpl->SetVariable('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
         $tpl->SetVariable('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
 
-        $button =& Piwi::CreateWidget('Button', 'btn_update', _t('COMPONENTS_UPDATE'), STOCK_REFRESH);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('update', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('install', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('uninstall', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_enable', _t('COMPONENTS_ENABLE'), STOCK_ADD);
-        $button->AddEvent(ON_CLICK, 'javascript:enableGadget();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('enable', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_disable', _t('COMPONENTS_DISABLE'), STOCK_REMOVE);
-        $button->AddEvent(ON_CLICK, 'javascript:disableGadget();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('disable', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $button->AddEvent(ON_CLICK, 'javascript:cancel();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('cancel', $button->Get());
+        $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
+        $button->AddEvent(ON_CLICK, 'javascript:closeUI();');
+        $tpl->SetVariable('close', $button->Get());
 
         $tpl->ParseBlock('components');
         return $tpl->Get();
@@ -371,6 +348,31 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             }
             $tpl->ParseBlock('info/acls');
         }
+
+        $button =& Piwi::CreateWidget('Button', 'btn_update', _t('COMPONENTS_UPDATE'), STOCK_REFRESH);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('update', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('install', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('uninstall', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_enable', _t('COMPONENTS_ENABLE'), STOCK_ADD);
+        $button->AddEvent(ON_CLICK, 'javascript:enableGadget();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('enable', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_disable', _t('COMPONENTS_DISABLE'), STOCK_REMOVE);
+        $button->AddEvent(ON_CLICK, 'javascript:disableGadget();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('disable', $button->Get());
 
         $tpl->ParseBlock('info');
         return $tpl->Get();
