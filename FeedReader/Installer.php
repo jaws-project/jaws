@@ -84,7 +84,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
         Jaws_Utils::delete($old_feed_dir);
 
         // ACL keys
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/FeedReader/ManageRSSSite');
+        $this->gadget->acl->delete('ManageRSSSite');
 
         return true;
     }
