@@ -72,7 +72,6 @@ class Users_Model_Admin_UserACL extends Jaws_Gadget_Model
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
         if ($user = $userModel->GetUser((int)$uid)) {
             //Load user keys
-            $GLOBALS['app']->ACL->LoadKeysOf($user['username'], 'users');
             foreach($keys as $key => $value) {
                 //check user permission for this key
                 $expkey = explode('/', $key);

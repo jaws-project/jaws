@@ -70,7 +70,6 @@ class Users_Model_Admin_GroupACL extends Jaws_Gadget_Model
         $userModel = new Jaws_User();
 
         if ($group = $userModel->GetGroup((int)$guid)) {
-            $GLOBALS['app']->ACL->LoadKeysOf($guid, 'groups');
             foreach ($keys as $key => $value) {
                 if (is_null($value)) {
                     $GLOBALS['app']->ACL->DeleteKey($key);
