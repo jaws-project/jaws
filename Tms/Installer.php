@@ -63,11 +63,11 @@ class Tms_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->delete('share_mode');
 
         // ACL keys.
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Tms/UploadTheme',   'false'); 
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Tms/DownloadTheme', 'false'); 
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Tms/ManageRepositories');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Tms/ManageSharing');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Tms/ManageSettings');
+        $this->gadget->acl->insert('UploadTheme'); 
+        $this->gadget->acl->insert('DownloadTheme'); 
+        $this->gadget->acl->delete('ManageRepositories');
+        $this->gadget->acl->delete('ManageSharing');
+        $this->gadget->acl->delete('ManageSettings');
 
         // Directories
         Jaws_Utils::Delete(JAWS_DATA. 'themes/repository');
