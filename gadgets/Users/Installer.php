@@ -146,12 +146,12 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('latest_limit', '10');
 
             // ACL keys
-            $this->gadget->acl->insert('EditUserName',);
-            $this->gadget->acl->insert('EditUserNickname',);
-            $this->gadget->acl->insert('EditUserEmail',);
-            $this->gadget->acl->insert('EditUserPassword',);
-            $this->gadget->acl->insert('EditUserPersonal',);
-            $this->gadget->acl->insert('EditUserPreferences',);
+            $this->gadget->acl->insert('EditUserName');
+            $this->gadget->acl->insert('EditUserNickname');
+            $this->gadget->acl->insert('EditUserEmail');
+            $this->gadget->acl->insert('EditUserPassword');
+            $this->gadget->acl->insert('EditUserPersonal');
+            $this->gadget->acl->insert('EditUserPreferences');
             $this->gadget->acl->delete('EditAccountPassword');
             $this->gadget->acl->delete('EditAccountInformation');
             $this->gadget->acl->delete('EditAccountProfile');
