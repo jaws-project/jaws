@@ -66,8 +66,8 @@ class Preferences_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // ACL keys
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Preferences/UpdateProperties',   'true');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Preferences/ChangeSettings');
+        $this->gadget->acl->insert('UpdateProperties');
+        $this->gadget->acl->delete('ChangeSettings');
 
         // Registry keys.
         $this->gadget->registry->insert('display_editor',            'true');
