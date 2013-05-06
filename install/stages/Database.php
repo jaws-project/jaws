@@ -343,7 +343,7 @@ class Installer_Database extends JawsInstallerStage
         }
 
         $gadgets = array(
-            'Settings', 'Layout', 'Registry', 'ControlPanel',
+            'Settings', 'Layout', 'ControlPanel',
             'Components', 'UrlMapper', 'Users', 'Policy',
         );
 
