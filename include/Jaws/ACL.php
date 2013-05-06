@@ -170,44 +170,6 @@ class Jaws_ACL
     }
 
     /**
-     * Updates the value of a key
-     *
-     * @access  public
-     * @param   string  $key_name   Key name
-     * @param   string  $key_value  Key value
-     * @param   string  $component  Component name
-     * @return  bool    True is set otherwise False
-     */
-    function update($key_name, $key_value, $component = '')
-    {
-        $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
-        $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
-        $params['component'] = $component;
-
-        $sql = '
-            UPDATE [[acl]] SET
-                [key_value] = {key_value}
-            WHERE
-                [component] = {component}
-              AND
-                [key_name]  = {key_name}
-              AND
-                [user]      = {user}
-              AND
-                [group]     = {group}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Inserts array of keys
      *
      * @access  public
@@ -279,6 +241,44 @@ class Jaws_ACL
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Updates the value of a key
+     *
+     * @access  public
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
+     */
+    function update($key_name, $key_value, $component = '')
+    {
+        $params = array();
+        $params['user']      = 0;
+        $params['group']     = 0;
+        $params['key_name']  = $key_name;
+        $params['key_value'] = $key_value;
+        $params['component'] = $component;
+
+        $sql = '
+            UPDATE [[acl]] SET
+                [key_value] = {key_value}
+            WHERE
+                [component] = {component}
+              AND
+                [key_name]  = {key_name}
+              AND
+                [user]      = {user}
+              AND
+                [group]     = {group}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
         }
 
         return true;
