@@ -33,9 +33,6 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/ControlPanel/Backup', 'false');
-        $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/ControlPanel/DatabaseBackups');
-
         return true;
     }
 
