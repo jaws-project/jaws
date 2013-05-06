@@ -83,13 +83,13 @@ class Poll_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Poll/ManagePolls',  'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Poll/ManageGroups', 'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Poll/ViewReports',  'true');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/AddPoll');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/EditPoll');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/DeletePoll');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/Poll/UpdateProperties');
+            $this->gadget->acl->insert('ManagePolls');
+            $this->gadget->acl->insert('ManageGroups');
+            $this->gadget->acl->insert('ViewReports');
+            $this->gadget->acl->delete('AddPoll');
+            $this->gadget->acl->delete('EditPoll');
+            $this->gadget->acl->delete('DeletePoll');
+            $this->gadget->acl->delete('UpdateProperties');
 
             // Registry keys.
             $this->gadget->registry->insert('cookie_period',  '150');
