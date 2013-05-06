@@ -140,7 +140,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '0.8.2', '<')) {
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/Phoo/ManagePhotos',  'false');
+            $this->gadget->acl->insert('ManagePhotos');
         }
 
         if (version_compare($old, '0.8.3', '<')) {
