@@ -44,29 +44,11 @@ class Jaws_ACL
      */
     function fetch($key_name, $component = '')
     {
-        $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-
-        $sql = '
-            SELECT
-                [component], [key_name], [key_value]
-            FROM [[acl]]
-            WHERE
-                [component] = {component}
-              AND
-                [key_name]  = {key_name}
-              AND
-                [user]      = {user}
-              AND
-                [group]     = {group}';
-
-        $row = $GLOBALS['db']->queryRow($sql, $params);
-        if (Jaws_Error::IsError($row) || empty($row) ||
-            $row['component'] !== $component || $row['key_name'] !== $key_name)
-        {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $tblACL->select('component', 'key_name', 'key_value');
+        $tblACL->where('component', $component)->and()->where('key_name', $key_name)->and();
+        $row = $tblACL->where('user', 0)->and()->where('group', 0)->getRow();
+        if (Jaws_Error::IsError($row) || empty($row) || $row['component'] !== $component) {
             return null;
         }
 
@@ -100,6 +82,58 @@ class Jaws_ACL
 
         $keys = $GLOBALS['db']->queryAll($sql, $params);
         return $keys;
+    }
+
+    /**
+     * Fetch the user ACL key value
+     *
+     * @access  public
+     * @param   int     $user       User ID
+     * @param   string  $key_name   Key name
+     * @param   string  $component  Component name
+     * @return  mixed   Value of the key if success otherwise Null
+     */
+    function fetchUser($user, $key_name, $component = '')
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $value  = $tblACL->select('key_value')
+            ->where('component', $component)
+            ->and()
+            ->where('key_name', $key_name)
+            ->and()
+            ->where('user', (int)$user)
+            ->getOne();
+        if (Jaws_Error::IsError($value) || empty($value)) {
+            return null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Fetch groups the ACL key value
+     *
+     * @access  public
+     * @param   array   $groups     Array of groups IDs
+     * @param   string  $key_name   Key name
+     * @param   string  $component  Component name
+     * @return  mixed   Array of values if success otherwise Null
+     */
+    function fetchGroups($groups, $key_name, $component = '')
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $values = $tblACL->select('key_value')
+            ->where('component', $component)
+            ->and()
+            ->where('key_name', $key_name)
+            ->and()
+            ->where('group', $group, 'in')
+            ->getCol();
+        if (Jaws_Error::IsError($values) || empty($values)) {
+            return null;
+        }
+
+        return $values;
     }
 
     /**
@@ -283,16 +317,15 @@ class Jaws_ACL
     }
 
     /**
-     * Get the real/full permission of a gadget (and group if it has) for a
-     * certain task
+     * Get the real/full permission of a gadget (and group if it has) for a certain task
      *
      * @access  public
-     * @param   string   $user   Username
-     * @param   int      $groups array of group's ID or empty string
-     * @param   string   $gadget Gadget to use
-     * @param   string   $task   Task to use
-     * @param   bool     $is_super_admin
-     * @return  bool     Permission value: Granted (true) or Denied (false)
+     * @param   int     $user           User ID
+     * @param   int     $groups         Array of group's ID or empty string
+     * @param   string  $gadget         Gadget to use
+     * @param   string  $task           Task to use
+     * @param   bool    $is_super_admin
+     * @return  integer Permission value: Granted (1) or Denied (0)
      */
     function GetFullPermission($user, $groups, $gadget, $task, $is_super_admin = false)
     {
@@ -304,7 +337,7 @@ class Jaws_ACL
             }
 
             if (in_array(strtolower("$gadget:$task"), $forbidden_acls)) {
-                return false;
+                return 0;
             }
         }
 
@@ -314,61 +347,33 @@ class Jaws_ACL
                 $goduser_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_GODUSER_ACLS))));
             }
             if (in_array(strtolower("$gadget:$task"), $goduser_acls)) {
-                return false;
+                return 0;
             }
         }
 
         if ($is_super_admin === true) {
-            return true;
+            return 0xff;
         }
 
-        $this->LoadKeysOf($user, 'users');
-
         // 1. Check for user permission
-        $perm['user'] = $this->Get('/ACL/users/'.$user.'/gadgets/'.$gadget.'/'.$task);
+        $perm['user'] = $this->fetchUser($user, $task, $gadget);
         if (!is_null($perm['user'])) {
-            return (bool)$perm['user'];
+            return $perm['user'];
         }
 
         // 2. Check for groups permission
         $perm['groups'] = null;
         if (!empty($groups)) {
-            foreach ($groups as $group) {
-                $gPerm = $this->GetGroupPermission($group, $gadget, $task);
-                if (!is_null($gPerm)) {
-                    $perm['groups'] = is_null($perm['groups'])? $gPerm : ($perm['groups'] || $gPerm);
-                }
-            }
+            $perm['groups'] = @max($this->fetchGroups($groups, $task, $gadget));
         }
 
         if (!is_null($perm['groups'])) {
-            return (bool)$perm['groups'];
+            return $perm['groups'];
         }
 
         // 3. Check for default
-        // If there is no key then it must return false
-        $perm['default'] = false;
-        if (!is_null($this->Get('/ACL/gadgets/'.$gadget.'/'.$task))) {
-            $perm['default'] = $this->Get('/ACL/gadgets/'.$gadget.'/'.$task);
-        }
-
-        return (bool)$perm['default'];
-    }
-
-    /**
-     * Get a permission to a given Gadget -> Task/Method of a group
-     *
-     * @access  public
-     * @param   string  $group          Group's ID
-     * @param   string  $gadget         Gadget name
-     * @param   string  $task           Task or method name
-     * @return  bool    True if permission is granted
-     */
-    function GetGroupPermission($group, $gadget, $task)
-    {
-        $this->LoadKeysOf($group, 'groups');
-
-        return $this->Get('/ACL/groups/'.$group.'/gadgets/'.$gadget.'/'.$task);
+        $perm['default'] = $this->fetch($task, $gadget);
+        return $perm['default'];
     }
 
     /**
@@ -425,33 +430,6 @@ class Jaws_ACL
             }
         }
         return $perms;
-    }
-
-    /**
-     * Get all group ACL permissions of an user
-     *
-     * @access  public
-     * @param   string $username  Username
-     * @return  array  Struct that contains all needed info about the ACL for a given user.
-     */
-    function GetGroupAclPermissionsOfUsername($username)
-    {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = new Jaws_User();
-        $groups = $userModel->GetGroupsOfUser($username);
-        if (Jaws_Error::IsError($groups)) {
-            return false;
-        }
-
-        $aclGroups = array();
-        foreach ($groups as $group) {
-            $acls = $this->GetGroupAclPermissions($group);
-            if (!Jaws_Error::IsError($acls)) {
-                $aclGroups = $acls;
-            }
-        }
-
-        return $aclGroups;
     }
 
     /**
