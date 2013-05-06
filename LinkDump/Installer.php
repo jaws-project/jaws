@@ -91,12 +91,12 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
             }
 
             // ACL keys
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/LinkDump/ManageLinks', 'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/LinkDump/ManageGroups', 'true');
-            $GLOBALS['app']->ACL->NewKey('/ACL/gadgets/LinkDump/ManageTags',   'true');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/LinkDump/AddLink');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/LinkDump/UpdateLink');
-            $GLOBALS['app']->ACL->DeleteKey('/ACL/gadgets/LinkDump/DeleteLink');
+            $this->gadget->acl->insert('ManageLinks');
+            $this->gadget->acl->insert('ManageGroups');
+            $this->gadget->acl->insert('ManageTags');
+            $this->gadget->acl->delete('AddLink');
+            $this->gadget->acl->delete('UpdateLink');
+            $this->gadget->acl->delete('DeleteLink');
 
             // Registry keys.
             $this->gadget->registry->insert('max_limit_count', '100');
