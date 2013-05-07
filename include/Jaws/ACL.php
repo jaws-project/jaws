@@ -84,7 +84,7 @@ class Jaws_ACL
     }
 
     /**
-     * Fetch the user ACL key value
+     * Fetch the ACL key value by user
      *
      * @access  public
      * @param   int     $user       User ID
@@ -92,7 +92,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  mixed   Value of the key if success otherwise Null
      */
-    function fetchUser($user, $key_name, $component)
+    function fetchByUser($user, $key_name, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $value  = $tblACL->select('key_value')
@@ -110,7 +110,27 @@ class Jaws_ACL
     }
 
     /**
-     * Fetch groups the ACL key value
+     * Fetch all ACL keys/values releated to the user
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @return  mixed   Array of ACLs if success otherwise Null
+     */
+    function fetchAllByUser($user)
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->select('component', 'key_name', 'key_value')
+            ->where('user', (int)$user)
+            ->getAll();
+        if (Jaws_Error::IsError($result) || empty($result)) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Fetch the ACL key value by groups
      *
      * @access  public
      * @param   array   $groups     Array of groups IDs
@@ -118,7 +138,7 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  mixed   Array of values if success otherwise Null
      */
-    function fetchGroups($groups, $key_name, $component)
+    function fetchByGroups($groups, $key_name, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $values = $tblACL->select('key_value')
@@ -133,6 +153,26 @@ class Jaws_ACL
         }
 
         return $values;
+    }
+
+    /**
+     * Fetch all ACL keys/values releated to the group
+     *
+     * @access  public
+     * @param   int     $group  Group ID
+     * @return  mixed   Array of ACLs if success otherwise Null
+     */
+    function fetchAllByGroup($group)
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->select('component', 'key_name', 'key_value')
+            ->where('group', (int)$group)
+            ->getAll();
+        if (Jaws_Error::IsError($result) || empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**
@@ -284,38 +324,6 @@ class Jaws_ACL
     }
 
     /**
-     * Deletes a key
-     *
-     * @access  public
-     * @param   string  $component  Component name
-     * @param   string  $key_name   Key name
-     * @return  bool    True is set otherwise False
-     */
-    function delete($component, $key_name = '')
-    {
-        $params = array();
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-
-        $sql = '
-            DELETE
-                FROM [[acl]]
-            WHERE
-                [component] = {component}
-            ';
-        if (!empty($key_name)) {
-            $sql.= ' AND [key_name] = {key_name}';
-        }
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Get the real/full permission of a gadget (and group if it has) for a certain task
      *
      * @access  public
@@ -355,7 +363,7 @@ class Jaws_ACL
         }
 
         // 1. Check for user permission
-        $perm['user'] = $this->fetchUser($user, $task, $gadget);
+        $perm['user'] = $this->fetchByUser($user, $task, $gadget);
         if (!is_null($perm['user'])) {
             return $perm['user'];
         }
@@ -363,7 +371,7 @@ class Jaws_ACL
         // 2. Check for groups permission
         $perm['groups'] = null;
         if (!empty($groups)) {
-            $perm['groups'] = @max($this->fetchGroups($groups, $task, $gadget));
+            $perm['groups'] = @max($this->fetchByGroups($groups, $task, $gadget));
         }
 
         if (!is_null($perm['groups'])) {
@@ -428,72 +436,63 @@ class Jaws_ACL
     }
 
     /**
-     * Delete all user ACLs
+     * Deletes a key or all ACLS related to the component
      *
      * @access  public
-     * @param   string  $user  Username
+     * @param   string  $component  Component name
+     * @param   string  $key_name   Key name
+     * @return  bool    True is set otherwise False
      */
-    function DeleteUserACL($user)
+    function delete($component, $key_name = '')
     {
-        $params         = array();
-        $params['name'] = '/ACL/users/'.$user.'/%';
+        $params = array();
+        $params['component'] = $component;
+        $params['key_name']  = $key_name;
 
-        $sql = 'DELETE FROM [[acl]] WHERE [key_name] LIKE {name}';
-        $GLOBALS['db']->query($sql, $params);
-
-        return true;
-    }
-
-    /**
-     * Delete all group ACLs
-     *
-     * @access  public
-     * @param   string  $group  Group's ID
-     */
-    function DeleteGroupACL($group)
-    {
-        $params         = array();
-        $params['name'] = '/ACL/groups/'.$group.'/%';
-
-        $sql = 'DELETE FROM [[acl]] WHERE [key_name] LIKE {name}';
-        $GLOBALS['db']->query($sql, $params);
-
-        return true;
-    }
-
-    /**
-     * Get the simple array
-     *
-     * @access  public
-     * @return  array   Returns the SimpleArray
-     */
-    function GetSimpleArray()
-    {
-        return $this->_Registry;
-    }
-
-    /**
-     * Loads the keys of a component and optionally it returns the keys found in the file
-     *
-     * @access  public
-     * @param   string  $component Component's name
-     */
-    function LoadFile($component, $type = 'gadgets')
-    {
-        return true;
-    }
-
-    /**
-     * Loads all the component files
-     *
-     * @access  public
-     */
-    function LoadAllFiles()
-    {
-        $gadgets = array_filter(explode(',', $GLOBALS['app']->Registry->fetch('gadgets_installed_items')));
-        foreach ($gadgets as $gadget) {
-            $this->LoadFile($gadget);
+        $sql = '
+            DELETE
+                FROM [[acl]]
+            WHERE
+                [component] = {component}
+            ';
+        if (!empty($key_name)) {
+            $sql.= ' AND [key_name] = {key_name}';
         }
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete all ACLs related to the user
+     *
+     * @access  public
+     * @param   int     $user  User ID
+     * @return  bool    True if success otherwise False
+     */
+    function deleteByUser($user)
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->delete()->where('user', (int)$user)->exec();
+        return !Jaws_Error::IsError($result);
+    }
+
+    /**
+     * Delete all ACLs related to the group
+     *
+     * @access  public
+     * @param   int     $group  Group ID
+     * @return  bool    True if success otherwise False
+     */
+    function deleteByGroup($group)
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->delete()->where('group', (int)$group)->exec();
+        return !Jaws_Error::IsError($result);
     }
 
 }
