@@ -59,7 +59,7 @@ class Jaws_ACL
      * Fetch all acl keys of the gadget
      *
      * @access  public
-     * @param   string  $component   Component name
+     * @param   string  $component  Component name
      * @return  mixed   Array of keys if successful or Jaws_Error on failure
      */
     function fetchAll($component)
@@ -113,15 +113,19 @@ class Jaws_ACL
      * Fetch all ACL keys/values releated to the user
      *
      * @access  public
-     * @param   int     $user   User ID
+     * @param   int     $user       User ID
+     * @param   string  $component  Component name
      * @return  mixed   Array of ACLs if success otherwise Null
      */
-    function fetchAllByUser($user)
+    function fetchAllByUser($user, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->select('component', 'key_name', 'key_value')
-            ->where('user', (int)$user)
-            ->getAll();
+        $tblACL->select('component', 'key_name', 'key_value')->where('user', (int)$user);
+        if (!empty($component)) {
+            $tblACL->and()->where('component', $component);
+        }
+
+        $result = $tblACL->getAll();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return null;
         }
@@ -159,15 +163,19 @@ class Jaws_ACL
      * Fetch all ACL keys/values releated to the group
      *
      * @access  public
-     * @param   int     $group  Group ID
+     * @param   int     $group      Group ID
+     * @param   string  $component  Component name
      * @return  mixed   Array of ACLs if success otherwise Null
      */
-    function fetchAllByGroup($group)
+    function fetchAllByGroup($group, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->select('component', 'key_name', 'key_value')
-            ->where('group', (int)$group)
-            ->getAll();
+        $tblACL->select('component', 'key_name', 'key_value')->where('group', (int)$group);
+        if (!empty($component)) {
+            $tblACL->and()->where('component', $component);
+        }
+
+        $result = $tblACL->getAll();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return null;
         }
