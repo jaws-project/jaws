@@ -917,7 +917,7 @@ class Jaws_User
         }
 
         $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
-        $GLOBALS['app']->ACL->DeleteUserACL($user['username']);
+        $GLOBALS['app']->ACL->deleteByUser($id);
         if (isset($GLOBALS['app']->Session)) {
             $res = $GLOBALS['app']->Session->DeleteUserSessions($id);
         }
@@ -953,7 +953,7 @@ class Jaws_User
             return false;
         }
 
-        $GLOBALS['app']->ACL->DeleteGroupACL($id);
+        $GLOBALS['app']->ACL->deleteByGroup($id);
 
         // Let everyone know a group has been deleted
         $res = $GLOBALS['app']->Listener->Shout('DeleteGroup', $id);
