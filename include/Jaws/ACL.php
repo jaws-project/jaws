@@ -96,10 +96,8 @@ class Jaws_ACL
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $value  = $tblACL->select('key_value')
-            ->where('component', $component)
-            ->and()
-            ->where('key_name', $key_name)
-            ->and()
+            ->where('component', $component)->and()
+            ->where('key_name', $key_name)->and()
             ->where('user', (int)$user)
             ->getOne();
         if (Jaws_Error::IsError($value) || empty($value)) {
@@ -146,10 +144,8 @@ class Jaws_ACL
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $values = $tblACL->select('key_value')
-            ->where('component', $component)
-            ->and()
-            ->where('key_name', $key_name)
-            ->and()
+            ->where('component', $component)->and()
+            ->where('key_name', $key_name)->and()
             ->where('group', $group, 'in')
             ->getCol();
         if (Jaws_Error::IsError($values) || empty($values)) {
@@ -194,26 +190,16 @@ class Jaws_ACL
      */
     function insert($key_name, $key_value, $component)
     {
-        $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-        $params['key_value'] = (int)$key_value;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            INSERT INTO [[acl]]
-                ([component], [key_name], [key_value], [user], [group], [updatetime])
-            VALUES
-                ({component}, {key_name}, {key_value}, {user}, {group}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $tblACL->insert(array(
+            'component' => $component,
+            'key_name'  => $key_name,
+            'key_value' => $key_value,
+            'user'      => 0,
+            'group'     => 0,
+        ));
+        $result = $tblACL->exec();
+        return !Jaws_Error::IsError($result);
     }
 
     /**
@@ -222,19 +208,20 @@ class Jaws_ACL
      * @access  public
      * @param   array   $keys       Pairs of keys/values
      * @param   string  $component  Component name
+     * @param   int     $user       User ID
+     * @param   int     $group      Group ID
      * @return  bool    True is set otherwise False
      */
-    function insertAll($keys, $component)
+    function insertAll($keys, $component, $user = 0, $group = 0)
     {
         if (empty($keys)) {
             return true;
         }
 
         $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
+        $params['user']      = (int)$user;
+        $params['group']     = (int)$group;
         $params['component'] = $component;
-        $params['now']       = $GLOBALS['db']->Date();
 
         $sqls = '';
         $dbDriver  = $GLOBALS['db']->getDriver();
@@ -248,22 +235,22 @@ class Jaws_ACL
             switch ($dbDriver) {
                 case 'oci8':
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now} FROM DUAL";
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group} FROM DUAL";
                     break;
                 case 'ibase':
-                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
                     break;
                 case 'pgsql':
                     if (version_compare($dbVersion, '8.2.0', '>=')) {
                         $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
                     } else {
-                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now})";
+                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
                     }
                     break;
                 default:
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}, {now}";
+                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}";
                     break;
             }
         }
@@ -272,7 +259,7 @@ class Jaws_ACL
             foreach ($sqls as $sql) {
                 $qsql = '
                     INSERT INTO [[acl]]
-                        ([component], [key_name], [key_value], [user], [group], [updatetime])
+                        ([component], [key_name], [key_value], [user], [group])
                     '. $sql;
                 $result = $GLOBALS['db']->query($qsql, $params);
                 if (Jaws_Error::IsError($result)) {
@@ -282,7 +269,7 @@ class Jaws_ACL
         } else {
             $qsql = '
                 INSERT INTO [[acl]]
-                    ([component], [key_name], [key_value], [user], [group], [updatetime])
+                    ([component], [key_name], [key_value], [user], [group])
                 '. $sqls;
             $result = $GLOBALS['db']->query($qsql, $params);
             if (Jaws_Error::IsError($result)) {
@@ -304,31 +291,14 @@ class Jaws_ACL
      */
     function update($key_name, $key_value, $component)
     {
-        $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
-        $params['key_name']  = $key_name;
-        $params['key_value'] = (int)$key_value;
-        $params['component'] = $component;
-
-        $sql = '
-            UPDATE [[acl]] SET
-                [key_value] = {key_value}
-            WHERE
-                [component] = {component}
-              AND
-                [key_name]  = {key_name}
-              AND
-                [user]      = {user}
-              AND
-                [group]     = {group}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->update(array('key_value'  => $key_value))
+            ->where('component', $component)->and()
+            ->where('key_name', $key_name)->and()
+            ->where('user', 0)->and()
+            ->where('group', 0)
+            ->exec();
+        return !Jaws_Error::IsError($result);
     }
 
     /**
