@@ -38,3 +38,24 @@ function gmstrtotime($time)
 {
     return(strtotime($time. ' UTC'));
 }
+
+/**
+ * Returns the values from a single column of the input array
+ * @see http://www.php.net/array_column
+ */
+if (!function_exists('array_column')) {
+    function array_column($input, $columnKey, $indexKey = null)
+    {
+        if (!empty($input)) {
+            array_unshift($input, null);
+            $input = array_combine(array_keys($input[1]), call_user_func_array('array_map', $input));
+            if (is_null($indexKey)) {
+                return $input[$columnKey];
+            } else {
+                return array_combine($input[$indexKey], $input[$columnKey]);
+            }
+        }
+
+        return $input;
+    }
+}
