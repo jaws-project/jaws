@@ -416,7 +416,6 @@ class Jaws_Gadget
      */
     function GetACLDescription($key)
     {
-        $key = substr(strrchr($key, '/'), 1);
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
             return _t(strtoupper('GLOBAL_ACL_'. $key));
         } else {
