@@ -16,7 +16,6 @@ class Jaws_Registry
      *
      * @var     array
      * @access  private
-     * @see    GetSimpleArray()
      */
     var $_Registry = array();
 
@@ -269,17 +268,6 @@ class Jaws_Registry
         }
 
         return true;
-    }
-
-    /**
-     * Get the simple array
-     *
-     * @access  public
-     * @return  array   Returns the SimpleArray
-     */
-    function GetSimpleArray()
-    {
-        return $this->_Registry;
     }
 
 }
