@@ -51,7 +51,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
             $g['disabled'] = $gadget['disabled'];
             $g['core_gadget'] = $gadget['core_gadget'];
             $g['description'] = $gadget['description'];
-            $g['manage_registry'] = $this->gadget->GetPermission('GLOBAL_ACL_DEFAULT_REGISTRY', $gadget['realname']);
+            $g['manage_registry'] = $this->gadget->GetPermission('default_registry', '', $gadget['realname']);
             $g['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             $result[$key] = $g;
         }

@@ -45,7 +45,7 @@ class Components_AdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
-                if (!$this->gadget->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', $gadget)) {
+                if (!$this->gadget->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', '', $gadget)) {
                     continue;
                 }
 
