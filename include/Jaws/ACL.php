@@ -196,12 +196,13 @@ class Jaws_ACL
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $component)
+    function insert($key_name, $key_value, $subkey, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $tblACL->insert(array(
             'component' => $component,
             'key_name'  => $key_name,
+            'key_subkey' => $subkey,
             'key_value' => (int)$key_value,
             'user'      => 0,
             'group'     => 0,
@@ -231,43 +232,47 @@ class Jaws_ACL
         $params['group']     = (int)$group;
         $params['component'] = $component;
 
+        $ndx = 0;
         $sqls = '';
         $dbDriver  = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
-        for ($ndx = 0; $ndx < count($keys); $ndx++) {
-            list($key_name, $key_value) = each($keys);
-            $params["name_$ndx"]  = $key_name;
-            $params["value_$ndx"] = (int)$key_value;
+        foreach ($keys as $key) {
+            list($key_name, $subkey, $key_value) = $key;
+            $params["name_$ndx"]   = $key_name;
+            $params["subkey_$ndx"] = $subkey;
+            $params["value_$ndx"]  = (int)$key_value;
 
             // Ugly hack to support all databases
             switch ($dbDriver) {
                 case 'oci8':
-                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group} FROM DUAL";
+                    $sqls.= (empty($sqls)? '' : "\n UNION ALL").
+                        "\n SELECT {component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group} FROM DUAL";
                     break;
                 case 'ibase':
-                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
+                    $sqls[] = " VALUES ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
                     break;
                 case 'pgsql':
                     if (version_compare($dbVersion, '8.2.0', '>=')) {
                         $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
+                                 "\n ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
                     } else {
-                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {user}, {group})";
+                        $sqls[] = " VALUES ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
                     }
                     break;
                 default:
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {user}, {group}";
+                             "\n SELECT {component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group}";
                     break;
             }
+
+            $ndx++;
         }
 
         if (is_array($sqls)) {
             foreach ($sqls as $sql) {
                 $qsql = '
                     INSERT INTO [[acl]]
-                        ([component], [key_name], [key_value], [user], [group])
+                        ([component], [key_name], [key_subkey], [key_value], [user], [group])
                     '. $sql;
                 $result = $GLOBALS['db']->query($qsql, $params);
                 if (Jaws_Error::IsError($result)) {
@@ -277,7 +282,7 @@ class Jaws_ACL
         } else {
             $qsql = '
                 INSERT INTO [[acl]]
-                    ([component], [key_name], [key_value], [user], [group])
+                    ([component], [key_name], [key_subkey], [key_value], [user], [group])
                 '. $sqls;
             $result = $GLOBALS['db']->query($qsql, $params);
             if (Jaws_Error::IsError($result)) {
@@ -293,18 +298,19 @@ class Jaws_ACL
      *
      * @access  public
      * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
      * @param   int     $key_value  Key value
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $component)
+    function update($key_name, $subkey, $key_value, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $result = $tblACL->update(array('key_value'  => $key_value))
             ->where('component', $component)->and()
             ->where('key_name', $key_name)->and()
-            ->where('user', 0)->and()
-            ->where('group', 0)
+            ->where('key_subkey', $subkey)->and()
+            ->where('user', 0)->and()->where('group', 0)
             ->exec();
         return !Jaws_Error::IsError($result);
     }
