@@ -346,56 +346,26 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             }
 
             if (empty($result)) {
-                return Jaws_Error::raiseError(_t('URLMAPPER_NO_MAPS'),
-                                              __FUNCTION__);
+                return Jaws_Error::raiseError(_t('URLMAPPER_NO_MAPS'),  __FUNCTION__);
             }
 
             $vars_regexps = unserialize($result['vars_regexps']);
         }
 
-        $map_regexp = '';
-        if (empty($map)) {
-            $regexp    = '[regexp]';
-            $extension = '[extension]';
-        } else {
-            $regexp    = '{regexp}';
-            $extension = '{extension}';
-
-            // default map's regular expression
-            $map_regexp = $this->GetMapRegExp($map, $vars_regexps);
-
-        }
-
-        // custom map's regular expression
-        $custom_regexp = $this->GetMapRegExp($custom_map, $vars_regexps);
-
         $params = array();
-        $params['id'] = $id;
-        $params['regexp']           = $map_regexp;
-        $params['extension']        = $map_extension;
-        $params['custom_map']       = $custom_map;
-        $params['custom_regexp']    = $custom_regexp;
-        $params['vars_regexps']     = serialize($vars_regexps);
-        $params['order']            = $order;
-        $params['time']             = empty($time)? $GLOBALS['db']->Date() : $time;
-
-        $sql = "
-            UPDATE [[url_maps]] SET
-                [regexp]           = $regexp,
-                [extension]        = $extension,
-                [custom_map]       = {custom_map},
-                [custom_regexp]    = {custom_regexp},
-                [vars_regexps]     = {vars_regexps},
-                [order]            = {order},
-                [updatetime]       = {time}
-            WHERE [id] = {id}";
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (!empty($map)) {
+            $params['regexp'] = $this->GetMapRegExp($map, $vars_regexps);
+            $params['extension'] = $map_extension;
         }
 
-        return true;
+        $params['custom_map']    = $custom_map;
+        $params['custom_regexp'] = $this->GetMapRegExp($custom_map, $vars_regexps);
+        $params['vars_regexps']  = serialize($vars_regexps);
+        $params['order']         = $order;
+        $params['updatetime']    = empty($time)? $GLOBALS['db']->Date() : $time;
+
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        return $mapsTable->update($params)->where('id', (int)$id)->exec();
     }
 
     /**
