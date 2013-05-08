@@ -68,23 +68,16 @@ class Jaws_ACL
      */
     function fetchAll($component)
     {
-        $params = array();
-        $params['user']      = 0;
-        $params['group']     = 0;
-        $params['component'] = $component;
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->select('key_name', 'key_subkey', 'key_value:integer')
+            ->where('component', $component)->and()
+            ->where('user', 0)->and()->where('group', 0)
+            ->getAll();
+        if (Jaws_Error::IsError($result)) {
+            return null;
+        }
 
-        $sql = '
-            SELECT
-                [key_name], [key_value]
-            FROM [[acl]]
-            WHERE
-                [component] = {component}
-              AND
-                [user]      = {user}
-              AND
-                [group]     = {group}';
-
-        return $GLOBALS['db']->queryAll($sql, $params);
+        return $result;
     }
 
     /**
