@@ -584,30 +584,35 @@ class Jaws_Gadget
     /**
      * Get permission on a gadget/task
      *
-     * @param   string $task Task name
-     * @param   string $gadget Gadget name
+     * @param   string  $key    ACL key(s) name
+     * @param   string  $subkey ACL subkey name
+     * @param   string  $gadget Gadget name
      * @return  bool    True if granted, else False
      */
-    function GetPermission($task, $gadget = false)
+    function GetPermission($key, $subkey = '', $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $task);
+        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $key, $subkey);
     }
 
     /**
      * Check permission on a gadget/task
      *
-     * @param   string  $task           Task(s) name
+     * @param   string  $key            ACL key(s) name
+     * @param   string  $subkey         ACL subkey name
      * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $gadget         Gadget name
      * @param   string  $errorMessage   Error message to return
      * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($task, $together = true, $gadget = false, $errorMessage = '')
+    function CheckPermission($key, $subkey = '', $together = true, $gadget = false, $errorMessage = '')
     {
-        return $GLOBALS['app']->Session->CheckPermission(empty($gadget)? $this->name : $gadget,
-                                                         $task,
-                                                         $together,
-                                                         $errorMessage);
+        return $GLOBALS['app']->Session->CheckPermission(
+            empty($gadget)? $this->name : $gadget,
+            $key,
+            $subkey ,
+            $together,
+            $errorMessage
+        );
     }
 
     /**

@@ -302,17 +302,18 @@ class Jaws_ACL
     }
 
     /**
-     * Get the real/full permission of a gadget (and group if it has) for a certain task
+     * Get the real/full permission of a gadget (and group if it has) for a certain key/subkey
      *
      * @access  public
      * @param   int     $user           User ID
      * @param   int     $groups         Array of group's ID or empty string
      * @param   string  $gadget         Gadget to use
-     * @param   string  $task           Task to use
+     * @param   string  $key            ACL key name
+     * @param   string  $subkey         ACL subkey name
      * @param   bool    $is_super_admin
      * @return  integer Permission value: Granted (1) or Denied (0)
      */
-    function GetFullPermission($user, $groups, $gadget, $task, $is_super_admin = false)
+    function GetFullPermission($user, $groups, $gadget, $key, $subkey = '', $is_super_admin = false)
     {
         // is in forbidden acls?
         if (defined('JAWS_FORBIDDEN_ACLS')) {
@@ -321,7 +322,7 @@ class Jaws_ACL
                 $forbidden_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_FORBIDDEN_ACLS))));
             }
 
-            if (in_array(strtolower("$gadget:$task"), $forbidden_acls)) {
+            if (in_array(strtolower("$gadget:$key"), $forbidden_acls)) {
                 return 0;
             }
         }
@@ -331,7 +332,7 @@ class Jaws_ACL
             if (!isset($goduser_acls)) {
                 $goduser_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_GODUSER_ACLS))));
             }
-            if (in_array(strtolower("$gadget:$task"), $goduser_acls)) {
+            if (in_array(strtolower("$gadget:$key"), $goduser_acls)) {
                 return 0;
             }
         }
@@ -341,7 +342,7 @@ class Jaws_ACL
         }
 
         // 1. Check for user permission
-        $perm['user'] = $this->fetchByUser($user, $task, $gadget);
+        $perm['user'] = $this->fetchByUser($user, $key, $gadget);
         if (!is_null($perm['user'])) {
             return $perm['user'];
         }
@@ -349,7 +350,7 @@ class Jaws_ACL
         // 2. Check for groups permission
         $perm['groups'] = null;
         if (!empty($groups)) {
-            $perm['groups'] = @max($this->fetchByGroups($groups, $task, $gadget));
+            $perm['groups'] = @max($this->fetchByGroups($groups, $key, $gadget));
         }
 
         if (!is_null($perm['groups'])) {
@@ -357,7 +358,7 @@ class Jaws_ACL
         }
 
         // 3. Check for default
-        $perm['default'] = $this->fetch($task, $gadget);
+        $perm['default'] = $this->fetch($key, $gadget);
         return $perm['default'];
     }
 

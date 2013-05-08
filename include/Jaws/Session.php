@@ -509,18 +509,19 @@ class Jaws_Session
      *
      * @access  public
      * @param   string  $gadget     Gadget name
-     * @param   string  $task       Task(s) name
+     * @param   string  $key        ACL key name
+     * @param   string  $subkey     ACL subkey name
      * @param   bool    $together   And/Or tasks permission result, default true
      * @return  bool    True if granted, else False
      */
-    function GetPermission($gadget, $task, $together = true)
+    function GetPermission($gadget, $key, $subkey = '', $together = true)
     {
         $user = $this->GetAttribute('username');
         $groups = $this->GetAttribute('groups');
-        $tasks = array_filter(array_map('trim', explode(',', $task)));
+        $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
-        foreach ($tasks as $task) {
-            $perms[] = $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget, $task, $this->IsSuperAdmin());
+        foreach ($keys as $key) {
+            $perms[] = $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget, $key, $this->IsSuperAdmin());
         }
 
         return $together? @min($perms) : @max($perms);
@@ -531,20 +532,21 @@ class Jaws_Session
      *
      * @access  public
      * @param   string  $gadget         Gadget name
-     * @param   string  $task           Task(s) name
+     * @param   string  $key            ACL key(s) name
+     * @param   string  $subkey         ACL subkey name
      * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $errorMessage   Error message to return
      * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($gadget, $task, $together = true, $errorMessage = '')
+    function CheckPermission($gadget, $key, $subkey = '', $together = true, $errorMessage = '')
     {
-        if ($perm = $this->GetPermission($gadget, $task, $together)) {
+        if ($perm = $this->GetPermission($gadget, $key, $subkey, $together)) {
             return $perm;
         }
 
         if (empty($errorMessage)) {
             $errorMessage = 'User '.$this->GetAttribute('username').
-                ' don\'t have permission to execute '.$gadget.'::'.$task;
+                ' don\'t have permission to execute '.$gadget.'::'.$key. (empty($subkey)? '' : "($subkey)");
         }
 
         Jaws_Error::Fatal($errorMessage);
