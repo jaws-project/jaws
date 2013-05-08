@@ -39,7 +39,7 @@ class StaticPage_AdminModel extends StaticPage_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS', $language), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS', $language), _t('STATICPAGE_NAME'));
         }
-        $published = $GLOBALS['app']->Session->GetPermission('StaticPage', 'PublishPages')? $published : false;
+        $published = $this->gadget->GetPermission('PublishPages')? $published : false;
 
         $sql = '
             INSERT INTO [[static_pages_translation]]
@@ -107,7 +107,7 @@ class StaticPage_AdminModel extends StaticPage_Model
         }
 
         // check modify other's pages ACL
-        if (!$GLOBALS['app']->Session->GetPermission('StaticPage', 'ModifyOthersPages') &&
+        if (!$this->gadget->GetPermission('ModifyOthersPages') &&
             ($GLOBALS['app']->Session->GetAttribute('user') != $translation['user']))
         {
             // FIXME: need new language statement
@@ -117,14 +117,14 @@ class StaticPage_AdminModel extends StaticPage_Model
 
         // check modify published pages ACL
         if ($translation['published'] &&
-            !$GLOBALS['app']->Session->GetPermission('StaticPage', 'ManagePublishedPages'))
+            !$this->gadget->GetPermission('ManagePublishedPages'))
         {
             // FIXME: need new language statement
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
-        if ($GLOBALS['app']->Session->GetPermission('StaticPage', 'PublishPages')) {
+        if ($this->gadget->GetPermission('PublishPages')) {
             $sql = '
                 UPDATE [[static_pages_translation]] SET
                   [title]            = {title},
@@ -181,7 +181,7 @@ class StaticPage_AdminModel extends StaticPage_Model
         $params = array();
         $params['id'] = $id;
 
-        if (!$GLOBALS['app']->Session->GetPermission('StaticPage', 'ModifyOthersPages')) {
+        if (!$this->gadget->GetPermission('ModifyOthersPages')) {
             $translation = $this->GetPageTranslation($id);
             if (Jaws_Error::isError($translation)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), RESPONSE_ERROR);
@@ -331,7 +331,7 @@ class StaticPage_AdminModel extends StaticPage_Model
      */
     function DeletePage($id)
     {
-        if (!$GLOBALS['app']->Session->GetPermission('StaticPage', 'ModifyOthersPages')) {
+        if (!$this->gadget->GetPermission('ModifyOthersPages')) {
             $params = array();
             $params['id']   = (int)$id;
             $params['user'] = $GLOBALS['app']->Session->GetAttribute('user');
