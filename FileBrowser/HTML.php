@@ -35,7 +35,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        if (!$GLOBALS['app']->Session->GetPermission('FileBrowser', 'OutputAccess')) {
+        if (!$this->gadget->GetPermission('OutputAccess')) {
             if ($GLOBALS['app']->Session->Logged()) {
                 return _t('GLOBAL_ERROR_ACCESS_DENIED');
             } else {

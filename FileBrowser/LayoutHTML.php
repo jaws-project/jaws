@@ -20,7 +20,7 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
      */
     function InitialFolder($path = '')
     {
-        if (!$GLOBALS['app']->Session->GetPermission('FileBrowser', 'OutputAccess')) {
+        if (!$this->gadget->GetPermission('OutputAccess')) {
             return false;
         }
 

@@ -19,7 +19,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
      */
     function Execute($match)
     {
-        if (!$GLOBALS['app']->Session->GetPermission('FileBrowser', 'OutputAccess')) {
+        if (!$this->gadget->GetPermission('OutputAccess')) {
             return array();
         }
 
