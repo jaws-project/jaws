@@ -42,7 +42,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         unset($gadgets['ControlPanel']);
 
         foreach ($gadgets as $gadget => $gInfo) {
-            if ($this->gadget->GetPermission('default_admin', $gadget)) {
+            if ($this->gadget->GetPermission('default_admin', '', $gadget)) {
                 $section = $gInfo['section'];
                 if (!isset($gadgetsections[$section])) {
                     $gadgetsections[$section] = array();
@@ -79,7 +79,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
             $tpl->ParseBlock('main');
         }
 
-        if ($this->gadget->GetPermission('default_admin', 'Components')) {
+        if ($this->gadget->GetPermission('default_admin', '', 'Components')) {
             $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
             //Count non-installed gadgets..
             $noninstalled = $cmpModel->GetGadgetsList(null, false);
