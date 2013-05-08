@@ -183,7 +183,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
         //attachment
         if (in_array('attachment', $items_array) &&
             ($this->gadget->registry->fetch('enable_attachment') == 'true') &&
-            $GLOBALS['app']->Session->GetPermission('Contact', 'AllowAttachment'))
+            $this->gadget->GetPermission('AllowAttachment'))
         {
             $tpl->SetBlock('contact/attachment');
             $tpl->SetVariable('lbl_attachment',  _t('CONTACT_ATTACHMENT'));

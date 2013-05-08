@@ -110,7 +110,7 @@ class Contact_HTML extends Jaws_Gadget_HTML
 
         $attachment = null;
         if (($this->gadget->registry->fetch('enable_attachment') == 'true') &&
-            $GLOBALS['app']->Session->GetPermission('Contact', 'AllowAttachment')) 
+            $this->gadget->GetPermission('AllowAttachment')) 
         {
             $attach = Jaws_Utils::UploadFiles($_FILES,
                                               JAWS_DATA. 'contact',
