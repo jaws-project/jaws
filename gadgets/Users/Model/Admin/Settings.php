@@ -31,7 +31,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
         $recover    = $recover;
 
         $res = true;
-        if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageAuthenticationMethod')) {
+        if ($this->gadget->GetPermission('ManageAuthenticationMethod')) {
             $methods = Jaws::getAuthTypes();
             if ($methods !== false && in_array($method, $methods)) {
                 $res = $this->gadget->registry->update('authtype', $method);

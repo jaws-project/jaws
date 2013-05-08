@@ -250,10 +250,9 @@ class Users_Actions_Login extends Users_HTML
             $tpl->SetVariable('email',  $uInfo['email']);
 
             // edit account information
-            if ($GLOBALS['app']->Session->GetPermission(
-                    'Users',
-                    'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false))
-            {
+            if ($this->gadget->GetPermission(
+                    'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false)
+            ) {
                 $tpl->SetBlock('UserLinks/account');
                 $tpl->SetVariable('user_account', _t('USERS_EDIT_ACCOUNT'));
                 $tpl->SetVariable('account_url', $this->gadget->GetURLFor('Account'));
@@ -261,7 +260,7 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // edit account personal
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPersonal')) {
+            if ($this->gadget->GetPermission('EditUserPersonal')) {
                 $tpl->SetBlock('UserLinks/personal');
                 $tpl->SetVariable('user_personal', _t('USERS_EDIT_PERSONAL'));
                 $tpl->SetVariable('personal_url', $this->gadget->GetURLFor('Personal'));
@@ -269,7 +268,7 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // edit account preferences
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'EditUserPreferences')) {
+            if ($this->gadget->GetPermission('EditUserPreferences')) {
                 $tpl->SetBlock('UserLinks/preferences');
                 $tpl->SetVariable('user_preferences', _t('USERS_EDIT_PREFERENCES'));
                 $tpl->SetVariable('preferences_url', $this->gadget->GetURLFor('Preferences'));
@@ -277,7 +276,7 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // ControlPanel
-            if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
+            if ($this->gadget->GetPermission('default_admin', '', 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
                 $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');

@@ -57,16 +57,16 @@ class Users_Actions_Account extends Users_HTML
         $tpl->SetVariable('lbl_password',    _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('emptypassword',   _t('USERS_NOCHANGE_PASSWORD'));
         $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserName')) {
+        if (!$this->gadget->GetPermission('EditUserName')) {
             $tpl->SetVariable('username_disabled', 'disabled="disabled"');
         }
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserNickname')) {
+        if (!$this->gadget->GetPermission('EditUserNickname')) {
             $tpl->SetVariable('nickname_disabled', 'disabled="disabled"');
         }
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserEmail')) {
+        if (!$this->gadget->GetPermission('EditUserEmail')) {
             $tpl->SetVariable('email_disabled', 'disabled="disabled"');
         }
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'EditUserPassword')) {
+        if (!$this->gadget->GetPermission('EditUserPassword')) {
             $tpl->SetVariable('password_disabled', 'disabled="disabled"');
         }
 
@@ -106,25 +106,25 @@ class Users_Actions_Account extends Users_HTML
         if ($post['password'] === $post['chkpassword']) {
             // check edit username permission
             if (empty($post['username']) ||
-                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserName'))
+                !$this->gadget->GetPermission('EditUserName'))
             {
                 $post['username'] = $GLOBALS['app']->Session->GetAttribute('username');
             }
             // check edit nickname permission
             if (empty($post['nickname']) ||
-                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserNickname'))
+                !$this->gadget->GetPermission('EditUserNickname'))
             {
                 $post['nickname'] = $GLOBALS['app']->Session->GetAttribute('nickname');
             }
             // check edit email permission
             if (empty($post['email']) ||
-                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserEmail'))
+                !$this->gadget->GetPermission('EditUserEmail'))
             {
                 $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
             }
             // check edit password permission
             if (empty($post['password']) ||
-                !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserPassword'))
+                !$this->gadget->GetPermission('EditUserPassword'))
             {
                 $post['password'] = null;
             }

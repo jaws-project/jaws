@@ -76,7 +76,7 @@ class Users_Model_Admin_UserACL extends Jaws_Gadget_Model
                 $expkey = explode('/', $key);
                 $aclkey = end($expkey);
                 $gadget = prev($expkey);
-                if (!$GLOBALS['app']->Session->GetPermission($gadget, $aclkey)) {
+                if (!$this->gadget->GetPermission($aclkey, '', $gadget)) {
                     continue;
                 }
 
