@@ -432,23 +432,18 @@ class Jaws_Gadget
     function GetACLs()
     {
         $result = array();
-        foreach ($this->_ACLs as $key => $value) {
-            //ACL comes with a value?
-            if ($value === 'true' || $value === 'false') {
-                $default = $value;
-                $acl     = $key;
+        foreach ($this->_ACLs as $acl) {
+            if (is_array($acl)) {
+                $result[] = $acl;
             } else {
-                //False by default
-                $default = 'false';
-                $acl     = $value;
+                $result[] = array($acl, '', false);
             }
-            $result[$acl] = $default;
         }
 
         // Adding common ACL keys
-        $result['default']          = $this->_DefaultACL;
-        $result['default_admin']    = false;
-        $result['default_registry'] = false;
+        $result[] = array('default', '', $this->_DefaultACL);
+        $result[] = array('default_admin', '', false);
+        $result[] = array('default_registry', '', false);
         return $result;
     }
 
