@@ -72,55 +72,6 @@ class Users_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.7', '<')) {
-            $result = $this->installSchema('0.8.7.xml', '', '0.8.6.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $params= array();
-            $params['user_type']  = 0;
-            $params['superadmin'] = true;
-            $sql = 'UPDATE [[users]] SET [superadmin] = {superadmin} WHERE [user_type] = {user_type}';
-            $result = $GLOBALS['db']->query($sql, $params);
-            if (Jaws_Error::IsError($result)) {
-                //return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('ManageAuthenticationMethod');
-        }
-
-        if (version_compare($old, '0.8.9', '<')) {
-            $variables = array();
-            $variables['logon_hours'] = str_pad('', 42, 'F');
-            $result = $this->installSchema('0.8.9.xml', $variables, '0.8.7.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            switch ($GLOBALS['db']->getDriver()) {
-                case 'mysql':
-                case 'mysqli':
-                    $type ='unsigned';
-                    break;
-
-                default:
-                    $type ='int';
-            }
-
-            $sql = "UPDATE [[users]] SET [status] = CAST([enabled] AS {$type})";
-            $result = $GLOBALS['db']->query($sql);
-            if (Jaws_Error::IsError($result)) {
-                //return $result;
-            }
-
-            $new_dir = JAWS_DATA . 'avatar';
-            if (!Jaws_Utils::mkdir($new_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
-            }
-        }
-
         if (version_compare($old, '1.0.0', '<')) {
             $variables = array();
             $variables['logon_hours'] = str_pad('', 42, 'F');
