@@ -229,7 +229,7 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $permalink = $GLOBALS['app']->GetSiteURL();
         $status = $this->gadget->registry->fetch('default_comment_status');
-        if ($GLOBALS['app']->Session->GetPermission('Comments', 'ManageComments')) {
+        if ($this->gadget->GetPermission('ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
