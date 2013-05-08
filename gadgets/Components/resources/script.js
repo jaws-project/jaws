@@ -97,6 +97,7 @@ function init()
     $('components').getElements('h3').addEvent('click', toggleSection);
     $('tabs').getElements('li').addEvent('click', switchTab);
     updateSummary();
+    //console.log(components);
 }
 
 /**
@@ -207,6 +208,7 @@ function toggleSection()
 function switchTab(tab)
 {
     tab = (typeof tab === 'string')? tab : this.id;
+    tab = $(tab).isVisible()? tab : 'tab_info';
     $('tabs').getElement('li.active').removeClass('active');
     $(tab).addClass('active');
     switch (tab) {
@@ -242,6 +244,7 @@ function selectComponent()
     selectedComponent = comp;
     editPluginMode = false;
     uiCache = {};
+    showTabs();
     switchTab($('tabs').getElement('li.active').id);
 }
 
@@ -346,6 +349,24 @@ function disableGadget()
 {
     if (confirm(confirmDisableGadget)) {
         ComponentsAjax.callAsync('disablegadget', selectedComponent);
+    }
+}
+
+/**
+ * Shows/hides tabs upon selected component
+ */
+function showTabs()
+{
+    var comp = components[selectedComponent];
+    $('tabs').getElements('li').hide();
+    $('tab_info').show();
+    if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
+        if (comp.manage_registry) {
+            $('tab_registry').show();
+        }
+        if (comp.manage_acl) {
+            $('tab_acl').show();
+        }
     }
 }
 
