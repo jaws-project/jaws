@@ -35,18 +35,19 @@ class Jaws_Gadget_ACL
      *
      * @access  public
      * @param   string  $name   Key name
+     * @param   string  $subkey Subkey name
      * @param   int     $value  Key value
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function insert($name, $value = 0, $gadget = '')
+    function insert($name, $subkey = '', $value = 0, $gadget = '')
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->name : $value;
             return $GLOBALS['app']->ACL->insertAll($name, $gadget);
         } else {
             $gadget = empty($gadget)? $this->name : $gadget;
-            return $GLOBALS['app']->ACL->insert($name, $value, $gadget);
+            return $GLOBALS['app']->ACL->insert($name, $subkey, $value, $gadget);
         }
     }
 
@@ -55,13 +56,14 @@ class Jaws_Gadget_ACL
      *
      * @access  public
      * @param   string  $name   Key name
+     * @param   string  $subkey Subkey name
      * @param   string  $gadget (Optional) Gadget name
      * @return  mixed   Returns key value if exists otherwise null
      */
-    function fetch($name, $gadget = '')
+    function fetch($name, $subkey = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->ACL->fetch($name, $gadget);
+        return $GLOBALS['app']->ACL->fetch($name, $subkey, $gadget);
     }
 
     /**
@@ -69,14 +71,15 @@ class Jaws_Gadget_ACL
      *
      * @access  public
      * @param   string  $name   Key name
+     * @param   string  $subkey Subkey name
      * @param   int     $value  Key value
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function update($name, $value, $gadget = '')
+    function update($name, $subkey = '', $value = 0, $gadget = '')
     {
         $gadget = empty($gadget)? $this->name : $gadget;
-        return $GLOBALS['app']->ACL->update($name, $value, $gadget);
+        return $GLOBALS['app']->ACL->update($name, $subkey, $value, $gadget);
     }
 
     /**
