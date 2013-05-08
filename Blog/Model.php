@@ -173,7 +173,7 @@ class Blog_Model extends Jaws_Gadget_Model
             }
         }
 
-        if (!$GLOBALS['app']->Session->GetPermission('Blog', 'ModifyOthersEntries')) {
+        if (!$this->gadget->GetPermission('ModifyOthersEntries')) {
             if (trim($params['user_id']) != '') {
                 $sql .=(stristr($sql, 'WHERE')) ? ' AND ' : ' WHERE ';
                 $sql .= " [user_id]= {user_id}";
@@ -795,7 +795,7 @@ class Blog_Model extends Jaws_Gadget_Model
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $status = $this->gadget->registry->fetch('comment_status');
-        if ($GLOBALS['app']->Session->GetPermission('Blog', 'ManageComments')) {
+        if ($this->gadget->GetPermission('ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 

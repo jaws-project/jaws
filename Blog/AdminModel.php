@@ -318,7 +318,7 @@ class Blog_AdminModel extends Blog_Model
         $params['content']       = str_replace("\r\n", "\n", $content);
         $params['summary']       = str_replace("\r\n", "\n", $summary);
         $params['trackbacks']    = $trackbacks;
-        $params['publish']       = $GLOBALS['app']->Session->GetPermission('Blog', 'PublishEntries')? $publish : false;
+        $params['publish']       = $this->gadget->GetPermission('PublishEntries')? $publish : false;
         $params['fast_url']      = $fast_url;
         $params['meta_keywords'] = $meta_keywords;
         $params['meta_desc']     = $meta_desc;
@@ -445,19 +445,19 @@ class Blog_AdminModel extends Blog_Model
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
         }
 
-        if ($e['published'] && !$GLOBALS['app']->Session->GetPermission('Blog', 'ModifyPublishedEntries')) {
+        if ($e['published'] && !$this->gadget->GetPermission('ModifyPublishedEntries')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
         }
 
         if ($GLOBALS['app']->Session->GetAttribute('user') != $e['user_id']) {
-            if (!$GLOBALS['app']->Session->GetPermission('Blog', 'ModifyOthersEntries')) {
+            if (!$this->gadget->GetPermission('ModifyOthersEntries')) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
             }
         }
 
-        if (!$GLOBALS['app']->Session->GetPermission('Blog', 'PublishEntries')) {
+        if (!$this->gadget->GetPermission('PublishEntries')) {
             $params['published']  = $e['published'];
         }
 
@@ -568,7 +568,7 @@ class Blog_AdminModel extends Blog_Model
 
         if (
             $GLOBALS['app']->Session->GetAttribute('user') != $e['user_id'] &&
-            !$GLOBALS['app']->Session->GetPermission('Blog', 'ModifyOthersEntries')
+            !$this->gadget->GetPermission('ModifyOthersEntries')
         ) {
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
         }
