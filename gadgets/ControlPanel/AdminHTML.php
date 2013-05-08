@@ -154,16 +154,15 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
 
         $request =& Jaws_Request::getInstance();
-        $reqpost = $request->get(array('username', 'authtype', 'remember', 'usecrypt'), 'post');
+        $reqpost = $request->get(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');
         if (is_null($reqpost['authtype'])) {
             $reqpost['authtype'] = $request->get('authtype', 'get');
         }
 
-        $redirectTo = '';
-        if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
-            $redirectTo = '?'. Jaws_XSS::filter($_SERVER['QUERY_STRING']);
-        }
-        $ltpl->SetVariable('redirect_to',  $redirectTo);
+        // referrer page link
+        $redirect_to = is_null($reqpost['redirect_to'])?
+            bin2hex(Jaws_Utils::getRequestURL()) : $reqpost['redirect_to'];
+        $ltpl->SetVariable('redirect_to', $redirect_to);
 
         if ($use_crypt) {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');

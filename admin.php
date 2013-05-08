@@ -89,12 +89,7 @@ if (!$GLOBALS['app']->Session->Logged())
             // Can enter to Control Panel?
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
                 $redirectTo = isset($param['redirect_to'])? $param['redirect_to'] : '';
-                if (substr($redirectTo, 0, 1) == '?') {
-                    $redirectTo = str_replace('&amp;', '&', $redirectTo);
-                } else {
-                    $redirectTo = BASE_SCRIPT;
-                }
-                Jaws_Header::Location($redirectTo);
+                Jaws_Header::Location(hex2bin($redirectTo));
             } else {
                 $GLOBALS['app']->Session->Logout();
                 $loginMsg = _t('GLOBAL_ERROR_LOGIN_NOTCP');
