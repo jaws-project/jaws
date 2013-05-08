@@ -212,7 +212,7 @@ class Phoo_AdminModel extends Phoo_Model
 
         if ($this->gadget->registry->fetch('published') == 'true' &&
             $album['published'] === true &&
-            $GLOBALS['app']->Session->GetPermission('Phoo', 'ManageAlbums'))
+            $this->gadget->GetPermission('ManageAlbums'))
         {
             $params['published'] = true;
         } else {

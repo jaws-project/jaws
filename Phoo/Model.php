@@ -1230,7 +1230,7 @@ class Phoo_Model extends Jaws_Gadget_Model
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
         $status = $this->gadget->registry->fetch('comment_status');
-        if ($GLOBALS['app']->Session->GetPermission('Phoo', 'ManageComments')) {
+        if ($this->gadget->GetPermission('ManageComments')) {
             $status = COMMENT_STATUS_APPROVED;
         }
 
