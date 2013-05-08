@@ -20,6 +20,7 @@
                 <name>component</name>
                 <type>text</type>
                 <length>64</length>
+                <notnull>true</notnull>
             </field>
 
             <field>
@@ -54,6 +55,102 @@
                 <name><variable>table_prefix</variable>reg_cmpt</name>
                 <field>
                     <name>component</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>acl</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>component</name>
+                <type>text</type>
+                <length>64</length>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>key_name</name>
+                <type>text</type>
+                <length>64</length>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>key_subkey</name>
+                <type>text</type>
+                <length>32</length>
+                <default></default>
+            </field>
+
+            <field>
+                <name>key_value</name>
+                <type>integer</type>
+                <length>2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>max_value</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <length>4</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>group</name>
+                <type>integer</type>
+                <length>4</length>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>acl_cmpt_key_ug</name>
+                <unique>true</unique>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_name</name>
+                </field>
+                <field>
+                    <name>key_subs</name>
+                </field>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>group</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>acl_cmpt</name>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_name</name>
+                </field>
+                <field>
+                    <name>key_subs</name>
                 </field>
             </index>
 
@@ -152,85 +249,6 @@
             </index>
 
         </declaration>
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>acl</name>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>component</name>
-                <type>text</type>
-                <length>64</length>
-            </field>
-
-            <field>
-                <name>key_name</name>
-                <type>text</type>
-                <length>64</length>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>key_value</name>
-                <type>integer</type>
-                <length>2</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>max_value</name>
-                <type>integer</type>
-                <length>2</length>
-            </field>
-
-            <field>
-                <name>user</name>
-                <type>integer</type>
-                <length>4</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>group</name>
-                <type>integer</type>
-                <length>4</length>
-                <default>0</default>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>acl_cmpt_key_ug</name>
-                <unique>true</unique>
-                <field>
-                    <name>component</name>
-                </field>
-                <field>
-                    <name>key_name</name>
-                </field>
-                <field>
-                    <name>user</name>
-                </field>
-                <field>
-                    <name>group</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>acl_cmpt</name>
-                <field>
-                    <name>component</name>
-                </field>
-            </index>
-
-        </declaration>
-
     </table>
 
     <table>
