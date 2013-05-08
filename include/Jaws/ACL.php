@@ -374,58 +374,6 @@ class Jaws_ACL
     }
 
     /**
-     * Get ACL permissions for a given user(name)
-     *
-     * @access  public
-     * @param   string  $user Username
-     * @return  array   Struct that contains all needed info about the ACL of a given user.
-     */
-    function GetAclPermissions($user)
-    {
-        $perms = array();
-        foreach ($result as $r) {
-            if (preg_match('#/ACL/gadgets/(.*?)/(.*?)#si', $r['name'])) {
-                $item = array();
-                $item['name'] = str_replace('/ACL/gadgets/', '/ACL/users/'.$user.'/gadgets/', $r['name']);
-
-                $gadget = preg_replace("@\/ACL/gadgets\/(\w+)\/(\w+)@", "\$1", $r['name']);
-                $task = str_replace('/ACL/users/'.$user.'/gadgets/'.$gadget.'/', '', $item['name']);
-
-                $item['value'] = $this->Get($item['name']);
-                $item['default'] = false;
-                $perms[$gadget][] = $item;
-            }
-        }
-        return $perms;
-
-    }
-
-    /**
-     * Get ACL permissions for a given group
-     *
-     * @access  public
-     * @param   string  $id               Group's ID
-     * @return  array Struct that contains all needed info about the ACL for a given user.
-     */
-    function GetGroupAclPermissions($id)
-    {
-        $perms = array();
-        foreach ($result as $r) {
-            if (preg_match('#/ACL/gadgets/(.*?)/(.*?)#si', $r['name'])) {
-                $item = array();
-                $item['name'] = str_replace('/ACL/gadgets/', '/ACL/groups/'.$id.'/gadgets/', $r['name']);
-                $gadgetName = preg_replace("@\/ACL/gadgets\/(\w+)\/(\w+)@", "\$1", $r['name']);
-                $task = str_replace('/ACL/groups/'.$id.'/gadgets/'.$gadgetName.'/', '', $item['name']);
-
-                $item['value'] = $this->Get($item['name']);
-                $item['default'] = false;
-                $perms[$gadgetName][] = $item;
-            }
-        }
-        return $perms;
-    }
-
-    /**
      * Deletes a key or all ACLS related to the component
      *
      * @access  public
