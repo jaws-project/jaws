@@ -521,7 +521,14 @@ class Jaws_Session
         $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
         foreach ($keys as $key) {
-            $perms[] = $GLOBALS['app']->ACL->GetFullPermission($user, $groups, $gadget, $key, $this->IsSuperAdmin());
+            $perms[] = $GLOBALS['app']->ACL->GetFullPermission(
+                $user,
+                $groups,
+                $gadget,
+                $key,
+                $subkey,
+                $this->IsSuperAdmin()
+            );
         }
 
         return $together? @min($perms) : @max($perms);
