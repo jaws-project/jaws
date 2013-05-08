@@ -39,20 +39,24 @@ class Jaws_ACL
      *
      * @access  public
      * @param   string  $key_name   Key name
+     * @param   string  $key_subkey Subkey name
      * @param   string  $component  Component name
      * @return  string  The value of the key
      */
-    function fetch($key_name, $component)
+    function fetch($key_name, $subkey, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->select('component', 'key_name', 'key_value');
-        $tblACL->where('component', $component)->and()->where('key_name', $key_name)->and();
-        $row = $tblACL->where('user', 0)->and()->where('group', 0)->getRow();
-        if (Jaws_Error::IsError($row) || empty($row) || $row['component'] !== $component) {
+        $value = $tblACL->select('key_value:integer')
+            ->where('component', $component)->and()
+            ->where('key_name', $key_name)->and()
+            ->where('key_subkey', $subkey)->and()
+            ->where('user', 0)->and()->where('group', 0)
+            ->getOne();
+        if (Jaws_Error::IsError($value)) {
             return null;
         }
 
-        return $row['key_value'];
+        return $value;
     }
 
     /**
@@ -89,18 +93,20 @@ class Jaws_ACL
      * @access  public
      * @param   int     $user       User ID
      * @param   string  $key_name   Key name
+     * @param   string  $key_subkey Subkey name
      * @param   string  $component  Component name
      * @return  mixed   Value of the key if success otherwise Null
      */
-    function fetchByUser($user, $key_name, $component)
+    function fetchByUser($user, $key_name, $subkey, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $value  = $tblACL->select('key_value')
+        $value  = $tblACL->select('key_value:integer')
             ->where('component', $component)->and()
             ->where('key_name', $key_name)->and()
+            ->where('key_subkey', $subkey)->and()
             ->where('user', (int)$user)
             ->getOne();
-        if (Jaws_Error::IsError($value) || empty($value)) {
+        if (Jaws_Error::IsError($value)) {
             return null;
         }
 
@@ -118,7 +124,7 @@ class Jaws_ACL
     function fetchAllByUser($user, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->select('component', 'key_name', 'key_value')->where('user', (int)$user);
+        $tblACL->select('component', 'key_name', 'key_value:integer')->where('user', (int)$user);
         if (!empty($component)) {
             $tblACL->and()->where('component', $component);
         }
@@ -137,18 +143,20 @@ class Jaws_ACL
      * @access  public
      * @param   array   $groups     Array of groups IDs
      * @param   string  $key_name   Key name
+     * @param   string  $key_subkey Subkey name
      * @param   string  $component  Component name
      * @return  mixed   Array of values if success otherwise Null
      */
-    function fetchByGroups($groups, $key_name, $component)
+    function fetchByGroups($groups, $key_name, $subkey, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $values = $tblACL->select('key_value')
+        $values = $tblACL->select('key_value:integer')
             ->where('component', $component)->and()
             ->where('key_name', $key_name)->and()
+            ->where('key_subkey', $subkey)->and()
             ->where('group', $group, 'in')
             ->getCol();
-        if (Jaws_Error::IsError($values) || empty($values)) {
+        if (Jaws_Error::IsError($values)) {
             return null;
         }
 
@@ -166,7 +174,7 @@ class Jaws_ACL
     function fetchAllByGroup($group, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->select('component', 'key_name', 'key_value')->where('group', (int)$group);
+        $tblACL->select('component', 'key_name', 'key_value:integer')->where('group', (int)$group);
         if (!empty($component)) {
             $tblACL->and()->where('component', $component);
         }
@@ -194,7 +202,7 @@ class Jaws_ACL
         $tblACL->insert(array(
             'component' => $component,
             'key_name'  => $key_name,
-            'key_value' => $key_value,
+            'key_value' => (int)$key_value,
             'user'      => 0,
             'group'     => 0,
         ));
@@ -342,7 +350,7 @@ class Jaws_ACL
         }
 
         // 1. Check for user permission
-        $perm['user'] = $this->fetchByUser($user, $key, $gadget);
+        $perm['user'] = $this->fetchByUser($user, $key, $subkey, $gadget);
         if (!is_null($perm['user'])) {
             return $perm['user'];
         }
@@ -350,7 +358,7 @@ class Jaws_ACL
         // 2. Check for groups permission
         $perm['groups'] = null;
         if (!empty($groups)) {
-            $perm['groups'] = @max($this->fetchByGroups($groups, $key, $gadget));
+            $perm['groups'] = @max($this->fetchByGroups($groups, $key, $subkey, $gadget));
         }
 
         if (!is_null($perm['groups'])) {
@@ -358,8 +366,12 @@ class Jaws_ACL
         }
 
         // 3. Check for default
-        $perm['default'] = $this->fetch($key, $gadget);
-        return $perm['default'];
+        $perm['default'] = $this->fetch($key, $subkey, $gadget);
+        if (is_null($perm['default']) && ($subkey !== '')) {
+            $perm['default'] = $this->fetch($key, '', $gadget);
+        }
+
+        return (int)$perm['default'];
     }
 
     /**
@@ -424,26 +436,14 @@ class Jaws_ACL
      */
     function delete($component, $key_name = '')
     {
-        $params = array();
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-
-        $sql = '
-            DELETE
-                FROM [[acl]]
-            WHERE
-                [component] = {component}
-            ';
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $tblACL->delete()->where('component', $component);
         if (!empty($key_name)) {
-            $sql.= ' AND [key_name] = {key_name}';
+            $tblACL->and()->where('key_name', $key_name);
         }
 
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        $result = $tblACL->exec();
+        return !Jaws_Error::IsError($result);
     }
 
     /**
