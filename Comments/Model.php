@@ -236,6 +236,24 @@ class Comments_Model extends Jaws_Gadget_Model
     /**
      * Counts how many comments are with a given filter
      *
+     * @access  public
+     * @param   string  $gadget     Gadget's name
+     * @param   string  $action
+     * @param   string  $reference
+     * @return  int     Returns how many comments exists with a given filter
+     */
+    function HowManyComments($gadget, $action, $reference)
+    {
+        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable->select('count(id) as howmany:integer');
+        $commentsTable->where('gadget', $gadget)->and()->where('action', $action);
+        $commentsTable->and()->where('reference', $reference);
+        return $commentsTable->getOne();
+    }
+
+    /**
+     * Counts how many comments are with a given filter
+     *
      * See Filter modes for more info
      *
      * @access  public

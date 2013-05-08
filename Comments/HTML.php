@@ -32,12 +32,13 @@ class Comments_HTML extends Jaws_Gadget_HTML
      * @param   int     $page_size  Entries count per page
      * @param   int     $total      Total entries count
      * @param   string  $total_string
+     * @param   string  $gadget
      * @param   string  $action     Action name
      * @param   array   $params     Action params array
      * @return  string  XHTML template content
      */
     function GetPagesNavigation(&$tpl, $base_block, $page, $page_size, $total,
-                                $total_string, $action, $params = array())
+                                $total_string, $gadget, $action, $params = array())
     {
         $pager = $this->GetNumberedPagesNavigation($page, $page_size, $total);
         if (count($pager) > 0) {
@@ -51,7 +52,7 @@ class Comments_HTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock("$base_block/pager/item/next");
                         $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
-                        $url = $this->gadget->GetURLFor($action, $params);
+                        $url = $GLOBALS['app']->Map->GetURLFor($gadget, $action, $params);
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock("$base_block/pager/item/next");
                     } else {
@@ -63,7 +64,7 @@ class Comments_HTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock("$base_block/pager/item/previous");
                         $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
-                        $url = $this->gadget->GetURLFor($action, $params);
+                        $url = $GLOBALS['app']->Map->GetURLFor($gadget, $action, $params);
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock("$base_block/pager/item/previous");
                     } else {
@@ -76,13 +77,13 @@ class Comments_HTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock("$base_block/pager/item/page_separator");
                 } elseif ($k == 'current') {
                     $tpl->SetBlock("$base_block/pager/item/page_current");
-                    $url = $this->gadget->GetURLFor($action, $params);
+                    $url = $GLOBALS['app']->Map->GetURLFor($gadget, $action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock("$base_block/pager/item/page_current");
                 } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                     $tpl->SetBlock("$base_block/pager/item/page_number");
-                    $url = $this->gadget->GetURLFor($action, $params);
+                    $url = $GLOBALS['app']->Map->GetURLFor($gadget, $action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock("$base_block/pager/item/page_number");
