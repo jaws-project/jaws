@@ -385,7 +385,7 @@ class Policy_AdminModel extends Policy_Model
     function UpdateEncryptionSettings($enabled, $key_age, $key_len)
     {
         $this->gadget->registry->update('crypt_enabled', ($enabled? 'true' : 'false'));
-        if ($GLOBALS['app']->Session->GetPermission('Policy', 'ManageEncryptionKey')) {
+        if ($this->gadget->GetPermission('ManageEncryptionKey')) {
             $this->gadget->registry->update('crypt_key_age', (int)$key_age);
             if ($this->gadget->registry->fetch('crypt_key_len') != $key_len) {
                 $this->gadget->registry->update('crypt_key_len', (int)$key_len);
