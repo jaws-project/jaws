@@ -29,7 +29,7 @@ class FileBrowser_Info extends Jaws_Gadget
         'ManageFiles',
         'UploadFiles',
         'ManageDirectories',
-        'OutputAccess' => 'true',
+        array('OutputAccess', '', true),
     );
 
 }
