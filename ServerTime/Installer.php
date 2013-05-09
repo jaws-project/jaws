@@ -48,9 +48,6 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Registry keys
-        $this->gadget->registry->delete('display_format');
-        $this->gadget->registry->insert('date_format',  'DN d MN Y');
         return true;
     }
 
