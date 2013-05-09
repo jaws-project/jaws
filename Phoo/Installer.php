@@ -75,25 +75,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('default_action');
-        $this->gadget->registry->delete('thumbsize');
-        $this->gadget->registry->delete('mediumsize');
-        $this->gadget->registry->delete('moblog_album');
-        $this->gadget->registry->delete('moblog_limit');
-        $this->gadget->registry->delete('photoblog_album');
-        $this->gadget->registry->delete('photoblog_limit');
-        $this->gadget->registry->delete('allow_comments');
-        $this->gadget->registry->delete('published');
-        $this->gadget->registry->delete('plugabble');
-        $this->gadget->registry->delete('show_exif_info');
-        $this->gadget->registry->delete('keep_original');
-        $this->gadget->registry->delete('thumbnail_limit');
-        $this->gadget->registry->delete('use_antispam');
-        $this->gadget->registry->delete('comment_status');
-        $this->gadget->registry->delete('albums_order_type');
-        $this->gadget->registry->delete('photos_order_type');
-
         return true;
     }
 
