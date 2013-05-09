@@ -331,9 +331,9 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             // Requires
             $tpl->SetBlock('info/requires');
             $tpl->SetVariable('lbl_requires', _t('COMPONENTS_GADGETS_DEPENDENCIES').':');
-            foreach ($info->GetRequirements() as $gadget) {
+            foreach ($info->GetRequirements() as $rqGadget) {
                 $tpl->SetBlock('info/requires/item');
-                $tpl->SetVariable('gadget', $gadget);
+                $tpl->SetVariable('gadget', $rqGadget);
                 $tpl->ParseBlock('info/requires/item');
             }
             $tpl->ParseBlock('info/requires');
@@ -341,10 +341,13 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             // ACL Rules
             $tpl->SetBlock('info/acls');
             $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
-            foreach (array_keys($info->GetACLs()) as $acl) {
-                $tpl->SetBlock('info/acls/acl');
-                $tpl->SetVariable('acl', $info->GetACLDescription($acl));
-                $tpl->ParseBlock('info/acls/acl');
+            $acls = $GLOBALS['app']->ACL->fetchAll($gadget);
+            if (!empty($acls)) {
+                foreach ($acls as $acl) {
+                    $tpl->SetBlock('info/acls/acl');
+                    $tpl->SetVariable('acl', $info->GetACLDescription($acl['key_name']));
+                    $tpl->ParseBlock('info/acls/acl');
+                }
             }
             $tpl->ParseBlock('info/acls');
         }
