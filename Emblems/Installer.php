@@ -72,10 +72,6 @@ class Emblems_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // registry keys
-        $this->gadget->registry->delete('rows');
-        $this->gadget->registry->delete('allow_url');
-
         return true;
     }
 
