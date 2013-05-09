@@ -100,59 +100,28 @@ class Blog_Actions_Post extends Blog_HTML
                                   $this->gadget->registry->fetch('allow_comments') == 'true' &&
                                   $allow_comments_config;
                 $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
-                if (empty($reply_to_comment)) {
-                    $tpl->SetVariable(
-                        'comments',
-                        $commentsHTML->ShowComments(
-                            $entry['id'],
-                            $entry['fast_url'],
-                            0,
-                            0,
-                            1,
-                            (int)$allow_comments
-                        )
-                    );
-                    if ($allow_comments) {
-                        if ($preview_mode) {
-                            $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
-                        }
-                        $tpl-> SetVariable(
-                            'comment-form',
-                            $commentsHTML->DisplayCommentForm(
-                                $entry['id'],
-                                0,
-                                _t('GLOBAL_RE').$entry['title']
-                            )
-                        );
-                    } elseif ($restricted) {
-                        $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                        $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                        $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
+                $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+
+                $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'entry', $entry['id'],
+                    array('action' => 'SingleView',
+                          'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));
+
+
+
+                if ($allow_comments) {
+                    if ($preview_mode) {
+                        $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
                     }
-                } else {
-                    $tpl->SetVariable('comments', $commentsHTML->ShowSingleComment($reply_to_comment));
-                    if ($allow_comments) {
-                        if ($preview_mode) {
-                            $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
-                        }
-                        $title  = $entry['title'];
-                        $tpl->SetVariable(
-                            'comment-form',
-                            $commentsHTML->DisplayCommentForm(
-                                $entry['id'],
-                                $reply_to_comment,
-                                _t('GLOBAL_RE'). $title
-                            )
-                        );
-                    } elseif ($restricted) {
-                        $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
-                        $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                        $tpl->SetVariable(
-                            'comment-form',
-                            _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url)
-                        );
-                    }
+
+                    $redirect_to = $this->gadget->GetURLFor('SingleView', array('id' => $entry['id']));
+                    $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'entry', $entry['id'], $redirect_to));
+
+                } elseif ($restricted) {
+                    $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                    $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                    $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
+
             }
 
             if ($tpl->VariableExists('navigation')) {
