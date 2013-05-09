@@ -62,10 +62,6 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // registry keys
-        $this->gadget->registry->delete('max_limit_count');
-        $this->gadget->registry->delete('links_target');
-
         return true;
     }
 
