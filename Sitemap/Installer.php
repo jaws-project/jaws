@@ -68,15 +68,10 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
+        $result = $this->installSchema('schema.xml', '', '0.7.0.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // ACL keys
-        $this->gadget->acl->insert('PingSite');
-
-        // Registry keys
 
         return true;
     }
