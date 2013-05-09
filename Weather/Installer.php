@@ -76,36 +76,6 @@ class Weather_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.0', '<')) {
-            $result = $this->installSchema('schema.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // Remove from layout
-            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-            if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->DeleteGadgetElements('Weather');
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('ManageRegions');
-            $this->gadget->acl->delete('AddCity');
-            $this->gadget->acl->delete('EditCity');
-            $this->gadget->acl->delete('DeleteCity');
-
-            // Registry keys
-            $this->gadget->registry->insert('unit', 'metric');
-            $this->gadget->registry->insert('date_format', 'DN d MN');
-            $this->gadget->registry->insert('update_period', '3600');
-            $this->gadget->registry->delete('refresh');
-            $this->gadget->registry->delete('cities');
-            $this->gadget->registry->delete('units');
-            $this->gadget->registry->delete('forecast');
-            $this->gadget->registry->delete('partner_id');
-            $this->gadget->registry->delete('license_key');
-        }
-
         // Registry keys
         $this->gadget->registry->insert('api_key', '');
 
