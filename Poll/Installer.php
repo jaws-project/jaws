@@ -71,35 +71,6 @@ class Poll_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.0', '<')) {
-            $result = $this->installSchema('0.8.0.xml', '', "$old.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $result = $this->installSchema('insert.xml', '', '0.8.0.xml', true);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('ManagePolls');
-            $this->gadget->acl->insert('ManageGroups');
-            $this->gadget->acl->insert('ViewReports');
-            $this->gadget->acl->delete('AddPoll');
-            $this->gadget->acl->delete('EditPoll');
-            $this->gadget->acl->delete('DeletePoll');
-            $this->gadget->acl->delete('UpdateProperties');
-
-            // Registry keys.
-            $this->gadget->registry->insert('cookie_period',  '150');
-        }
-
-        $result = $this->installSchema('schema.xml', '', "0.8.0.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         return true;
     }
 
