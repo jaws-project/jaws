@@ -61,14 +61,6 @@ class Blocks_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Registry keys.
-        $this->gadget->registry->delete('searchable');
-
         return true;
     }
 
