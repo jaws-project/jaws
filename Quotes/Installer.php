@@ -58,13 +58,6 @@ class Quotes_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('last_entries_limit');
-        $this->gadget->registry->delete('last_entries_view_mode');
-        $this->gadget->registry->delete('last_entries_view_type');
-        $this->gadget->registry->delete('last_entries_show_title');
-        $this->gadget->registry->delete('last_entries_view_random');
-
         return true;
     }
 
