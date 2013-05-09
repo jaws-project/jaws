@@ -45,33 +45,6 @@ class Tms_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $tables = array('tms_themes',
-                        'tms_authors',
-                        'tms_repositories');
-        foreach ($tables as $table) {
-            $result = $GLOBALS['db']->dropTable($table);
-            if (Jaws_Error::IsError($result)) {
-                $gName  = _t('TMS_NAME');
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-                $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
-                return new Jaws_Error($errMsg, $gName);
-            }
-        }
-
-        // Registry keys
-        $this->gadget->registry->delete('pluggable');
-        $this->gadget->registry->delete('share_mode');
-
-        // ACL keys.
-        $this->gadget->acl->insert('UploadTheme'); 
-        $this->gadget->acl->insert('DownloadTheme'); 
-        $this->gadget->acl->delete('ManageRepositories');
-        $this->gadget->acl->delete('ManageSharing');
-        $this->gadget->acl->delete('ManageSettings');
-
-        // Directories
-        Jaws_Utils::Delete(JAWS_DATA. 'themes/repository');
-
         return true;
     }
 
