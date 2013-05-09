@@ -35,12 +35,6 @@ class Search_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        // registry key
-        $this->gadget->registry->delete('searchable_gadgets');
-        $this->gadget->registry->delete('min_key_len');
-        $this->gadget->registry->delete('max_result_len');
-        $this->gadget->registry->delete('results_limit');
-
         return true;
     }
 
