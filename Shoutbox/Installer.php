@@ -36,13 +36,6 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        // Registry keys
-        $this->gadget->registry->delete('limit');
-        $this->gadget->registry->delete('use_antispam');
-        $this->gadget->registry->delete('max_strlen');
-        $this->gadget->registry->delete('comment_status');
-        $this->gadget->registry->delete('anon_post_authority');
-
         return true;
     }
 
