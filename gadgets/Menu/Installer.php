@@ -59,9 +59,6 @@ class Menu_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('default_group_id');
-
         return true;
     }
 
