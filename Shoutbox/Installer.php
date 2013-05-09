@@ -56,23 +56,6 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        /*
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-        */
-
-        // Registry keys.
-        $this->gadget->registry->insert('max_strlen', '125');
-
-        if (version_compare($old, '0.8.1', '<')) {
-            $this->gadget->registry->insert('comment_status', 'approved');
-            $this->gadget->registry->insert('anon_post_authority', 'true');
-            $this->gadget->acl->insert('ManageComments');
-            $this->gadget->acl->delete('DeleteEntry');
-        }
-
         return true;
     }
 
