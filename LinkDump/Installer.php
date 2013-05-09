@@ -79,32 +79,6 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "$old.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        if (version_compare($old, '0.4.0', '<')) {
-            $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('ManageLinks');
-            $this->gadget->acl->insert('ManageGroups');
-            $this->gadget->acl->insert('ManageTags');
-            $this->gadget->acl->delete('AddLink');
-            $this->gadget->acl->delete('UpdateLink');
-            $this->gadget->acl->delete('DeleteLink');
-
-            // Registry keys.
-            $this->gadget->registry->insert('max_limit_count', '100');
-            $this->gadget->registry->insert('links_target', 'blank');
-            $this->gadget->registry->delete('limitation');
-            $this->gadget->registry->delete('target');
-        }
-
         return true;
     }
 
