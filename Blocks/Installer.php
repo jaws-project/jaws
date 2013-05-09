@@ -45,9 +45,6 @@ class Blocks_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('pluggable');
-
         return true;
     }
 
