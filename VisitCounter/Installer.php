@@ -77,31 +77,6 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // $result = $this->installSchema('schema.xml', '', "$old.xml");
-        // if (Jaws_Error::IsError($result)) {
-            // return $result;
-        // }
-
-        if (version_compare($old, '0.8.0', '<')) {
-            // Registry keys.
-            $this->gadget->registry->insert('visit_counters', 'online,today,total');
-            $this->gadget->registry->insert('custom_text', 
-                                              $this->gadget->registry->fetch('custom'));
-            $this->gadget->registry->delete('online');
-            $this->gadget->registry->delete('today');
-            $this->gadget->registry->delete('total');
-            $this->gadget->registry->delete('custom');
-        }
-
-        if (version_compare($old, '0.8.1', '<')) {
-            // fix using Y-m-d G:i:s instead of Y-m-d H:i:s in version 0.6.x
-            $startDate = $this->gadget->registry->fetch('start');
-            if (strlen($startDate) == 18) {
-                $startDate = substr_replace($startDate, '0', 11, 0);
-                $this->gadget->registry->update('start', $startDate);
-            }
-        }
-
         if (version_compare($old, '0.9.0', '<')) {
             $this->gadget->registry->update('visit_counters', 'online,today,yesterday,total');
 
