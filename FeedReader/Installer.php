@@ -70,7 +70,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "0.8.0.xml");
+        $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
