@@ -54,9 +54,6 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // registry keys
-        $this->gadget->registry->delete('default_feed');
-
         return true;
     }
 
