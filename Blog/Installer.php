@@ -116,18 +116,6 @@ class Blog_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.8', '<')) {
-            $result = $this->installSchema('schema.xml', '', "0.8.4.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.8.9', '<')) {
-            // ACL keys
-            $this->gadget->acl->insert('ModifyPublishedEntries');
-        }
-
         return true;
     }
 
