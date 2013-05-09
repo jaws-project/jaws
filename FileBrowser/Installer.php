@@ -59,14 +59,6 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('black_list');
-        $this->gadget->registry->delete('root_dir');
-        $this->gadget->registry->delete('frontend_avail');
-        $this->gadget->registry->delete('virtual_links');
-        $this->gadget->registry->delete('order_type');
-        $this->gadget->registry->delete('views_limit');
-
         return true;
     }
 
