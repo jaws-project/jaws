@@ -89,36 +89,6 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.7.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', "$old.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.8.0', '<')) {
-            $base_path = $GLOBALS['app']->getDataURL() . 'emblems/';
-            $sql = '
-                SELECT [id], [src]
-                FROM [[emblem]]';
-            $emblems = $GLOBALS['db']->queryAll($sql);
-            if (!Jaws_Error::IsError($emblems)) {
-                foreach ($emblems as $emblem) {
-                    if (!empty($emblem['src'])) {
-                        if (strpos($emblem['src'], $base_path) !== 0) {
-                            continue;
-                        }
-                        $emblem['src'] = substr($emblem['src'], strlen($base_path));
-                        $sql = '
-                            UPDATE [[emblem]] SET
-                                [src] = {src}
-                            WHERE [id] = {id}';
-                        $res = $GLOBALS['db']->query($sql, $emblem);
-                    }
-                }
-            }
-        }
-
         return true;
     }
 
