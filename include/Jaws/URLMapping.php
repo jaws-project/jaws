@@ -361,12 +361,10 @@ class Jaws_URLMapping
 
         if (!empty($uri)) {
             if (!$this->_use_rewrite) {
-                $dotPosition = stripos($uri, BASE_SCRIPT);
-                if ($dotPosition !== false) {
+                if (false !== $dotPosition = stripos($uri, BASE_SCRIPT)) {
                     $pathInfo = substr($uri, $dotPosition + strlen(BASE_SCRIPT));
                 } else {
-                    $qsnPosition = stripos($uri, '?');
-                    if ($qsnPosition !== false) {
+                    if (false !== $qsnPosition = stripos($uri, '?')) {
                         $pathInfo = substr($uri, $qsnPosition);
                     }
                 }
@@ -383,6 +381,10 @@ class Jaws_URLMapping
         $pathInfo = isset($pathInfo)? ltrim((string)$pathInfo, '/?') : '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && $pathInfo == BASE_SCRIPT) {
             $pathInfo = '';
+        }
+
+        if (false !== $qsnPosition = strripos($pathInfo, '?')) {
+            $pathInfo = substr($pathInfo, 0, $qsnPosition);
         }
 
         return $pathInfo;
