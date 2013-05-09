@@ -65,20 +65,6 @@ class Preferences_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // ACL keys
-        $this->gadget->acl->insert('UpdateProperties');
-        $this->gadget->acl->delete('ChangeSettings');
-
-        // Registry keys.
-        $this->gadget->registry->insert('display_editor',            'true');
-        $this->gadget->registry->insert('display_calendar_type',     'true');
-        $this->gadget->registry->insert('display_calendar_language', 'true');
-        $this->gadget->registry->insert('display_date_format',       'true');
-        $this->gadget->registry->insert('display_timezone',          'true');
-
-        //enable cookie precedence
-        $this->gadget->registry->update('cookie_precedence', 'true', 'Settings');
-
         return true;
     }
 
