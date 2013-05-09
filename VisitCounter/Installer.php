@@ -53,17 +53,6 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('visit_counters');
-        $this->gadget->registry->delete('timeout');
-        $this->gadget->registry->delete('type');
-        $this->gadget->registry->delete('period');
-        $this->gadget->registry->delete('start');
-        $this->gadget->registry->delete('mode');
-        $this->gadget->registry->delete('custom_text');
-        $this->gadget->registry->delete('unique_visits');
-        $this->gadget->registry->delete('impression_visits');
-
         return true;
     }
 
