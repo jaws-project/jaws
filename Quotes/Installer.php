@@ -78,11 +78,6 @@ class Quotes_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', "0.1.0.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         return true;
     }
 
