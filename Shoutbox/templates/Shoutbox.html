@@ -1,45 +1,13 @@
 <!-- BEGIN shoutbox -->
 <div class="gadget shoutbox">
-  <h2>{title}</h2>
-  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <div class="content" id="shoutbox_messages">
-    {shoutbox_messages}
-  </div>
-  <!-- BEGIN fieldset -->
-  <form action="{base_script}" method="post">
-    <input type="hidden" name="gadget" value="Shoutbox" />
-    <input type="hidden" name="action" value="Post" />
-    <div class= "fieldset">
-      <!-- BEGIN info-box -->
-      <p><label for="name_shoutbox{rand}">{name}:</label>
-         <input name="name" id="name_shoutbox{rand}" type="text" maxlength="20" value="{namevalue}" />
-      </p>
-      <p><label for="email_shoutbox{rand}">{email}:</label>
-         <input name="email" id="email_shoutbox{rand}" type="text" value="{emailvalue}" style="direction: ltr;" />
-      </p>
-      <p><label for="url_shoutbox{rand}">{url}:</label>
-         <input name="url" id="url_shoutbox{rand}" type="text" maxlength="100" value="{urlvalue}" style="direction: ltr;" />
-      </p>
-      <!-- END info-box -->
-      <!-- BEGIN captcha -->
-      <p>{captcha_lbl}<br /><span>{captcha}<br /><small>{captcha_msg}</small></span><br />{captcha_key}{captcha_entry}</p>
-      <!-- END captcha -->
-      <p><label for="message{rand}">{message}:</label>
-         <textarea id="message{rand}" cols="17" rows="4" name="message"></textarea>
-      </p>
+    <h2>{title}</h2>
+    <div class="content" id="shoutbox_messages">
+        {messages}
     </div>
-    <div class="actions"><button type="submit" value="{send}">{send}</button></div>
-  </form>
-  <!-- END fieldset -->
-  <!-- BEGIN unregistered -->
-  <div class="simple-response-msg">{msg}</div>
-  <!-- END unregistered -->
+
+    <div>
+        {message-form}
+    </div>
+
 </div>
 <!-- END shoutbox -->
-<!-- BEGIN messages -->
-<ul>
-  <!-- BEGIN entry -->
-  <li><div><a href="{url}" title="{email}/{updatetime}" rel="external">{name}</a>: {message} <em>{status_message}</em></div></li>
-  <!-- END entry -->
-</ul>
-<!-- END messages -->

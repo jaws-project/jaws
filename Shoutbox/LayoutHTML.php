@@ -19,70 +19,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
-        $tpl->Load('Shoutbox.html');
-        $tpl->SetBlock('shoutbox');
-        $tpl->SetVariable('title', _t('SHOUTBOX_NAME'));
-
-        if ($GLOBALS['app']->Session->Logged() ||
-            $this->gadget->registry->fetch('anon_post_authority') == 'true')
-        {
-            $tpl->SetBlock('shoutbox/fieldset');
-            $tpl->SetVariable('base_script', BASE_SCRIPT);
-            $tpl->SetVariable('message', _t('SHOUTBOX_MESSAGE'));
-            $tpl->SetVariable('send', _t('SHOUTBOX_SEND'));
-
-            $name  = $GLOBALS['app']->Session->GetCookie('visitor_name');
-            $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
-            $url   = $GLOBALS['app']->Session->GetCookie('visitor_url');
-
-            $rand = rand();
-            $tpl->SetVariable('rand', $rand);
-            if (!$GLOBALS['app']->Session->Logged()) {
-                $tpl->SetBlock('shoutbox/fieldset/info-box');
-                $url_value = empty($url)? 'http://' : Jaws_XSS::filter($url);
-                $tpl->SetVariable('url', _t('GLOBAL_URL'));
-                $tpl->SetVariable('urlvalue', $url_value);
-                $tpl->SetVariable('rand', $rand);
-                $tpl->SetVariable('name', _t('GLOBAL_NAME'));
-                $tpl->SetVariable('namevalue', isset($name) ? Jaws_XSS::filter($name) : '');
-                $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('emailvalue', isset($email) ? Jaws_XSS::filter($email) : '');
-                $tpl->ParseBlock('shoutbox/fieldset/info-box');
-            }
-
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-                $tpl->SetBlock('shoutbox/captcha');
-                $tpl->SetVariable('captcha_lbl', $captcha['label']);
-                $tpl->SetVariable('captcha_key', $captcha['key']);
-                $tpl->SetVariable('captcha', $captcha['captcha']);
-                if (!empty($captcha['entry'])) {
-                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
-                }
-                $tpl->SetVariable('captcha_msg', $captcha['description']);
-                $tpl->ParseBlock('shoutbox/captcha');
-            }
-
-            $tpl->ParseBlock('shoutbox/fieldset');
-        } else {
-            $tpl->SetBlock('shoutbox/unregistered');
-            $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                                        $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
-                                        $GLOBALS['app']->Map->GetURLFor('Users', 'Registration')));
-            $tpl->ParseBlock('shoutbox/unregistered');
-        }
-
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Shoutbox')) {
-            $tpl->SetBlock('shoutbox/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('shoutbox/response');
-        }
-
-        $this->AjaxMe('site_script.js');
-        $tpl->SetVariable('shoutbox_messages', $this->GetMessages());
-        $tpl->ParseBlock('shoutbox');
-        return $tpl->Get();
+        return $this->GetMessages();
     }
 
     /**
@@ -93,35 +30,19 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
      */
     function GetMessages()
     {
-        $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'Model');
-        $entries = $model->GetEntries($this->gadget->registry->fetch('limit'));
-        if (!Jaws_Error::IsError($entries) && !empty($entries)) {
-            $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
-            $tpl->Load('Shoutbox.html');
-            $tpl->SetBlock('messages');
+        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
+        $tpl->Load('Shoutbox.html');
+        $tpl->SetBlock('shoutbox');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
 
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($entries as $entry) {
-                $tpl->SetBlock('messages/entry');
-                $tpl->SetVariable('name', Jaws_XSS::filter($entry['name']));
-                $tpl->SetVariable('email', Jaws_XSS::filter($entry['email']));
-                $tpl->SetVariable('url', Jaws_XSS::filter($entry['url']));
-                $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
-                $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
-                if ($entry['status'] == 3) {
-                   $tpl->SetVariable('status_message', _t('SHOUTBOX_COMMENT_IS_SPAM'));
-                } elseif ($entry['status'] == 2) {
-                    $tpl->SetVariable('status_message', _t('SHOUTBOX_COMMENT_IS_WAITING'));
-                } else {
-                    $tpl->SetVariable('status_message', '&nbsp;');
-                }
-                $tpl->ParseBlock('messages/entry');
-            }
-            $tpl->ParseBlock('messages');
-            return $tpl->Get();
-        }
+        $tpl->SetVariable('messages', $cHTML->ShowComments('Shoutbox', '', 0,
+            array('action' => 'DefaultAction','params' => array())));
 
-        return '';
+        $redirect_to = $this->gadget->GetURLFor('DefaultAction', array());
+        $tpl->SetVariable('message-form', $cHTML->ShowCommentsForm('Shoutbox', '', 0, $redirect_to));
+
+        $tpl->ParseBlock('shoutbox');
+        return $tpl->Get();
     }
 
 }

@@ -88,19 +88,4 @@ class Shoutbox_Model extends Jaws_Gadget_Model
         return true;
     }
 
-    /**
-     * Get last entries delimited by a given limit
-     *
-     * @access  public
-     * @param   int     $limit      Entries limit
-     * @return  array   Array with last N entries
-     */
-    function GetEntries($limit = 10)
-    {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $entries = $cModel->GetComments($this->gadget->name, $limit, null, null, array(1), true);
-
-        return $entries;
-    }
-
 }
