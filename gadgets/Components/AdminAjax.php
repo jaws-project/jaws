@@ -286,4 +286,18 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         return $model->GetRegistry($comp);
     }
 
+    /**
+     * Fetches default ACL data of the gadget/plugin
+     *
+     * @access  public
+     * @param   string  $comp  Gadget/Plugin name
+     * @return  array   ACL keys/values
+     */
+    function GetACL($comp)
+    {
+        $this->gadget->CheckPermission('ManageGadgets');
+        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        return $model->GetACL($comp);
+    }
+
 }

@@ -219,6 +219,7 @@ function switchTab(tab)
             componentRegistry();
             break;
         case 'tab_acl':
+            componentACL();
             break;
     }
 }
@@ -293,6 +294,37 @@ function componentRegistry()
             input = new Element('input', {id:reg.key_name, value:reg.key_value}),
             td = new Element('td').grab(input),
             tr = new Element('tr').adopt(th, td);
+        table.grab(tr);
+    });
+    $('component_info').innerHTML = '';
+    $('component_info').grab(form.grab(table));
+    $('summary').hide();
+    $('component').show();
+}
+
+/**
+ * Displays ACL keys/values of the gadget/plugin
+ */
+function componentACL()
+{
+    
+    var form = new Element('form', {id:'frm_acl'}),
+        table = new Element('table');
+    if (typeof uiCache.acl === 'undefined') {
+        uiCache.acl = ComponentsAjax.callSync('getacl', selectedComponent);
+    }
+    console.log(uiCache.acl);
+    uiCache.acl.each(function(acl) {
+        var label = new Element('label', {html:acl.key_desc, 'for':acl.key_name}),
+            th = new Element('th').grab(label),
+            input = new Element('input', {
+                id:acl.key_name, 
+                type:'checkbox', 
+                value:acl.key_name, 
+                checked:acl.key_value
+            }),
+            td = new Element('td').grab(input),
+            tr = new Element('tr').adopt(td, th);
         table.grab(tr);
     });
     $('component_info').innerHTML = '';

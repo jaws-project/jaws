@@ -191,4 +191,21 @@ class Components_AdminModel extends Jaws_Gadget_Model
     {
         return $GLOBALS['app']->Registry->fetchAll($comp);
     }
+
+    /**
+     * Fetches ACL data of the gadget/plugin
+     *
+     * @access  public
+     * @param   string  $comp  Gadget/Plugin name
+     * @return  array   ACL keys/values
+     */
+    function GetACL($comp)
+    {
+        $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
+        $acls = $GLOBALS['app']->ACL->fetchAll($comp);
+        foreach ($acls as $k => $acl) {
+            $acls[$k]['key_desc'] = $info->GetACLDescription($acl['key_name']);
+        }
+        return $acls;
+    }
 }

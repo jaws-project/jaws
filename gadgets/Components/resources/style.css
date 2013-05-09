@@ -52,6 +52,11 @@
 #frm_registry caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
 #frm_registry input {width:200px;}
 
+#frm_acl {height:350px; overflow-y:auto; line-height:1.5;}
+#frm_acl table {margin-left:10px; border-collapse:collapse;}
+#frm_acl td {text-align:right;}
+#frm_acl caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
+
 /* WebFX Tree */
 #bigTree > div {margin-bottom:10px;}
 .webfx-tree-item {margin:0;}
