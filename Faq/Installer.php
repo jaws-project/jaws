@@ -67,27 +67,6 @@ class Faq_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.0', '<')) {
-            $result = $this->installSchema('0.8.0.xml', '', "0.7.0.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.8.1', '<')) {
-            $result = $this->installSchema('0.8.1.xml', '', "0.8.0.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $result = $this->installSchema('schema.xml', '', "0.8.1.xml");
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Registry keys.
-
         return true;
     }
 
