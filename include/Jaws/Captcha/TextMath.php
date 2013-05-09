@@ -34,7 +34,6 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
         $key    = $this->insert($value[1]);
         $title  = $value[2];
         $value  = $value[0]. '=?';
-        $imgSrc = $GLOBALS['app']->Map->GetURLFor('Policy', 'Captcha', array('key' => $key));
 
         $res = array();
         $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
