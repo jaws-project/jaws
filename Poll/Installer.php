@@ -55,9 +55,6 @@ class Poll_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('cookie_period');
-
         return true;
     }
 
