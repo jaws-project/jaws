@@ -84,25 +84,6 @@ class Blog_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('columns');
-        $this->gadget->registry->delete('default_view');
-        $this->gadget->registry->delete('last_entries_limit');
-        $this->gadget->registry->delete('popular_limit');
-        $this->gadget->registry->delete('xml_limit');
-        $this->gadget->registry->delete('default_category');
-        $this->gadget->registry->delete('allow_comments');
-        $this->gadget->registry->delete('comment_status');
-        $this->gadget->registry->delete('last_comments_limit');
-        $this->gadget->registry->delete('last_recentcomments_limit');
-        $this->gadget->registry->delete('generate_xml');
-        $this->gadget->registry->delete('generate_category_xml');
-        $this->gadget->registry->delete('trackback');
-        $this->gadget->registry->delete('trackback_status');
-        $this->gadget->registry->delete('plugabble');
-        $this->gadget->registry->delete('use_antispam');
-        $this->gadget->registry->delete('pingback');
-
         return true;
     }
 
