@@ -32,9 +32,6 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        // Registry keys
-        $this->gadget->registry->delete('date_format');
-
         return true;
     }
 
