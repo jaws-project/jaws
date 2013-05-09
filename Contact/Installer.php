@@ -62,13 +62,6 @@ class Contact_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('use_antispam');
-        $this->gadget->registry->delete('email_format');
-        $this->gadget->registry->delete('enable_attachment');
-        $this->gadget->registry->delete('comments');
-        $this->gadget->registry->delete('default_items');
-
         return true;
     }
 
