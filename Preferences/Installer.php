@@ -40,15 +40,6 @@ class Preferences_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        // registry keys
-        $this->gadget->registry->delete('display_theme');
-        $this->gadget->registry->delete('display_editor');
-        $this->gadget->registry->delete('display_language');
-        $this->gadget->registry->delete('display_calendar_type');
-        $this->gadget->registry->delete('display_calendar_language');
-        $this->gadget->registry->delete('display_date_format');
-        $this->gadget->registry->delete('display_timezone');
-
         //disable cookie precedence
         $this->gadget->registry->update('cookie_precedence', 'false', 'Settings');
 
