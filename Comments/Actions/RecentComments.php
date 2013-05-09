@@ -69,42 +69,14 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = new Jaws_User();
-
-        $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetComments('comments', $limit, null, null, array(COMMENT_STATUS_APPROVED), false,
-            null, $orderBy);
-
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
         $tpl->Load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
-        if (!Jaws_Error::IsError($comments) && $comments != null) {
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($comments as $entry) {
-                $tpl->SetBlock('recent_comments/entry');
-                $tpl->SetVariable('name', Jaws_XSS::filter($entry['name']));
-                $tpl->SetVariable('email', Jaws_XSS::filter($entry['email']));
-                $tpl->SetVariable('url', Jaws_XSS::filter($entry['url']));
-                $tpl->SetVariable('updatetime', $date->Format($entry['createtime']));
-                $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
 
-                $tpl->ParseBlock('recent_comments/entry');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+        $tpl->SetVariable('comments', $cHTML->ShowComments('Comments', '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
 
-                if (!empty($entry['reply'])) {
-                    $user = $userModel->GetUser((int)$entry['replier'], true, true);
-                    $tpl->SetBlock('recent_comments/reply');
-                    $tpl->SetVariable('reply', $entry['reply']);
-                    $tpl->SetVariable('replier', $user['nickname']);
-                    $tpl->SetVariable('url', $user['url']);
-                    $tpl->SetVariable('email', $user['email']);
-                    $tpl->SetVariable('lbl_reply', _t('COMMENTS_REPLY'));
-                    $tpl->ParseBlock('recent_comments/reply');
-                }
-
-            }
-        }
         $tpl->ParseBlock('recent_comments');
 
         return $tpl->Get();
