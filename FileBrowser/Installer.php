@@ -80,62 +80,6 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.7.0', '<')) {
-            $result = $GLOBALS['db']->dropTable('filebrowser_communities');
-            if (Jaws_Error::IsError($result)) {
-                // do nothing
-            }
-
-            // Registry keys.
-            $this->gadget->registry->insert('black_list', '.htaccess');
-            $this->gadget->registry->insert('frontend_avail', 'true');
-        }
-
-        if (version_compare($old, '0.7.1', '<')) {
-            $this->gadget->registry->insert('root_dir', 'files');
-        }
-
-        if (version_compare($old, '0.8.0', '<')) {
-            $result = $this->installSchema('0.8.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('ManageFiles');
-            $this->gadget->acl->insert('UploadFiles');
-            $this->gadget->acl->insert('ManageDirectories');
-            $this->gadget->acl->insert('OutputAccess', true);
-
-            $this->gadget->acl->delete('AddFile');
-            $this->gadget->acl->delete('RenameFile');
-            $this->gadget->acl->delete('DeleteFile');
-            $this->gadget->acl->delete('AddDir');
-            $this->gadget->acl->delete('RenameDir');
-            $this->gadget->acl->delete('DeleteDir');
-            $this->gadget->acl->delete('ShareDir');
-
-            //Registry key
-            $this->gadget->registry->insert('virtual_links', 'false');
-            $this->gadget->registry->insert('order_type', 'filename, false');
-        }
-
-        if (version_compare($old, '0.8.1', '<')) {
-            //Registry key
-            $this->gadget->registry->insert('views_limit', '0');
-        }
-
-        if (version_compare($old, '0.8.2', '<')) {
-            $result = $this->installSchema('schema.xml', '', "0.8.0.xml");
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.8.3', '<')) {
-            $this->gadget->registry->update('black_list', 'htaccess');
-        }
-
         return true;
     }
 
