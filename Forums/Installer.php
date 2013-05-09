@@ -69,15 +69,6 @@ class Forums_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('topics_limit');
-        $this->gadget->registry->delete('posts_limit');
-        $this->gadget->registry->delete('recent_limit');
-        $this->gadget->registry->delete('date_format');
-        $this->gadget->registry->delete('edit_min_limit_time');
-        $this->gadget->registry->delete('edit_max_limit_time');
-        $this->gadget->registry->delete('enable_attachment');
-
         return true;
     }
 
