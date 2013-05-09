@@ -77,50 +77,6 @@ class Banner_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.8.0', '<')) {
-            $result = $this->installSchema('0.8.0.xml', '', '0.7.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $result = $this->installSchema('update.xml', '', '0.8.0.xml', true);
-            if (Jaws_Error::IsError($result)) {
-                // maybe user have banner group with this name
-                //return $result;
-            }
-        }
-
-        if (version_compare($old, '0.8.1', '<')) {
-            $base_path = $GLOBALS['app']->getDataURL() . $this->gadget->DataDirectory;
-            $sql = '
-                SELECT [id], [banner]
-                FROM [[banners]]';
-            $banners = $GLOBALS['db']->queryAll($sql);
-            if (!Jaws_Error::IsError($banners)) {
-                foreach ($banners as $banner) {
-                    if (!empty($banner['banner'])) {
-                        if (strpos($banner['banner'], $base_path) !== 0) {
-                            continue;
-                        }
-                        $banner['banner'] = substr($banner['banner'], strlen($base_path));
-                        $sql = '
-                            UPDATE [[banners]] SET
-                                [banner] = {banner}
-                            WHERE [id] = {id}';
-                        $res = $GLOBALS['db']->query($sql, $banner);
-                    }
-                }
-            }
-        }
-
-        if (version_compare($old, '0.8.2', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
         return true;
     }
 
