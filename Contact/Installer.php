@@ -82,63 +82,6 @@ class Contact_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', '', '0.2.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('EditSentMessage');
-
-            // Registry keys.
-            $send_html = $this->gadget->registry->fetch('send_html') == 'true';
-            $this->gadget->registry->insert('use_captcha', 'true');
-            $this->gadget->registry->insert('email_format', $send_html? 'html' : 'text');
-            $this->gadget->registry->insert('enable_attachment', 'false');
-            $this->gadget->registry->delete('send_html');
-        }
-
-        if (version_compare($old, '0.3.1', '<')) {
-            $this->gadget->registry->insert('comments', '');
-            $this->gadget->registry->delete('comment');
-        }
-
-        if (version_compare($old, '0.3.2', '<')) {
-            $result = $this->installSchema('0.3.2.xml', '', '0.3.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $this->gadget->registry->delete('use_captcha');
-        }
-
-        if (version_compare($old, '0.3.3', '<')) {
-            // ACL keys
-            $this->gadget->acl->insert('AccessToMailer');
-        }
-
-        if (version_compare($old, '0.3.4', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.3.2.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // ACL keys
-            $this->gadget->acl->insert('AllowAttachment');
-
-            // Registry keys
-            $this->gadget->registry->insert(
-                'default_items',
-                'name,email,url,recipient,subject,attachment,message'
-            );
-
-            $new_dir = JAWS_DATA . 'contact';
-            if (!Jaws_Utils::mkdir($new_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('CONTACT_NAME'));
-            }
-        }
-
         return true;
     }
 
