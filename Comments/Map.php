@@ -10,7 +10,7 @@
  */
 $maps[] = array(
     'Comments',
-    'comments[/page/{page}/perpage/{perpage}/order/{order}]',
+    'comments[/page/{page}][/order/{order}]',
     array(
         'page' => '[[:digit:]]+',
         'perpage' => '[[:digit:]]+',

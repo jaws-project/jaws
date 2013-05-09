@@ -12,88 +12,29 @@ class Comments_Actions_Comments extends Comments_HTML
 {
 
     /**
-     * Displays a block of pages belongs to the specified group
+     * Displays GuestBook
      *
      * @access  public
-     * @param   int    $perPage
-     * @param   int    $orderBy
-     * @internal param string $gadget
-     * @internal param mixed $limit limit recent comments (int)
+     * @param   bool    $preview_mode  Show preview section?
      * @return  string  XHTML content
      */
-    function Comments($perPage = 0, $orderBy = 0)
+    function Comments($preview_mode = false)
     {
         $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Comments.html');
-        $tpl->SetBlock('new_comment');
+        $tpl->Load('GuestBook.html');
+        $tpl->SetBlock('guestbook');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
-        switch ($allow_comments_config) {
-            case 'restricted':
-                $allow_comments_config = $GLOBALS['app']->Session->Logged();
-                break;
+        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'guestbook', 0, array('action' => 'Comments')));
 
-            default:
-                $allow_comments_config = $allow_comments_config == 'true';
+        if ($preview_mode) {
+            $tpl->SetVariable('preview', $this->ShowPreview());
         }
 
-        if ($allow_comments_config) {
-            $tpl->SetBlock('new_comment/fieldset');
-            $tpl->SetVariable('base_script', BASE_SCRIPT);
-            $tpl->SetVariable('message', _t('COMMENTS_MESSAGE'));
-            $tpl->SetVariable('send', _t('COMMENTS_SEND'));
+        $redirect_to = $this->gadget->GetURLFor('Comments');
+        $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'guestbook', 0, $redirect_to));
 
-            $name  = $GLOBALS['app']->Session->GetCookie('visitor_name');
-            $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
-            $url   = $GLOBALS['app']->Session->GetCookie('visitor_url');
-
-            $rand = rand();
-            $tpl->SetVariable('rand', $rand);
-            if (!$GLOBALS['app']->Session->Logged()) {
-                $tpl->SetBlock('new_comment/fieldset/info-box');
-                $url_value = empty($url)? 'http://' : Jaws_XSS::filter($url);
-                $tpl->SetVariable('url', _t('GLOBAL_URL'));
-                $tpl->SetVariable('urlvalue', $url_value);
-                $tpl->SetVariable('rand', $rand);
-                $tpl->SetVariable('name', _t('GLOBAL_NAME'));
-                $tpl->SetVariable('namevalue', isset($name) ? Jaws_XSS::filter($name) : '');
-                $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('emailvalue', isset($email) ? Jaws_XSS::filter($email) : '');
-                $tpl->ParseBlock('new_comment/fieldset/info-box');
-            }
-
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-                $tpl->SetBlock('new_comment/fieldset/captcha');
-                $tpl->SetVariable('captcha_lbl', $captcha['label']);
-                $tpl->SetVariable('captcha_key', $captcha['key']);
-                $tpl->SetVariable('captcha', $captcha['captcha']);
-                if (!empty($captcha['entry'])) {
-                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
-                }
-                $tpl->SetVariable('captcha_msg', $captcha['description']);
-                $tpl->ParseBlock('new_comment/fieldset/captcha');
-            }
-
-            $tpl->ParseBlock('new_comment/fieldset');
-        } else {
-            $tpl->SetBlock('new_comment/unregistered');
-            $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Registration')));
-            $tpl->ParseBlock('new_comment/unregistered');
-        }
-
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Comments')) {
-            $tpl->SetBlock('new_comment/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('new_comment/response');
-        }
-
-        $tpl->SetVariable('comments_messages', $this->GetMessages($perPage, $orderBy));
-        $tpl->ParseBlock('new_comment');
-
+        $tpl->ParseBlock('guestbook');
         return $tpl->Get();
     }
 
@@ -115,6 +56,13 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetBlock('comment_form');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
+        // check for posting value
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('name', 'email', 'url', 'title', 'message'), 'post');
+        if(isset($post['message'])) {
+            $tpl->SetVariable('message', $post['message']);
+        }
+
 
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
@@ -133,12 +81,22 @@ class Comments_Actions_Comments extends Comments_HTML
 
         if ($allow_comments_config) {
             $tpl->SetVariable('base_script', BASE_SCRIPT);
-            $tpl->SetVariable('message', _t('COMMENTS_MESSAGE'));
+            $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
             $tpl->SetVariable('send', _t('COMMENTS_SEND'));
 
             $name  = $GLOBALS['app']->Session->GetCookie('visitor_name');
             $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
             $url   = $GLOBALS['app']->Session->GetCookie('visitor_url');
+
+            if(isset($post['name'])) {
+                $name =  $post['name'];
+            }
+            if(isset($post['email'])) {
+                $email =  $post['email'];
+            }
+            if(isset($post['url'])) {
+                $url =  $post['url'];
+            }
 
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
@@ -178,6 +136,8 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
         $tpl->SetVariable('url2_value',  '');
+
+        $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Comments')) {
             $tpl->SetBlock('comment_form/response');
@@ -306,6 +266,119 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->ParseBlock('comments');
         return $tpl->Get();
 
+    }
+
+    /**
+     * Displays a preview of the given comment
+     *
+     * @access       public
+     * @return       template content
+     */
+    function Preview()
+    {
+        return $this->Comments(true);
+    }
+
+    /**
+     * Displays a preview of the given comment
+     *
+     * @access  public
+     * @return  string XHTML template content
+     */
+    function ShowPreview()
+    {
+        $request =& Jaws_Request::getInstance();
+        $names = array(
+            'name', 'email', 'url', 'title', 'message', 'createtime',
+            'ip_address', 'reference'
+        );
+        $post = $request->get($names, 'post');
+        if(empty($post['message'])) {
+            return;
+        }
+
+        if ($GLOBALS['app']->Session->Logged()) {
+            $post['name'] = $GLOBALS['app']->Session->GetAttribute('nickname');
+            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
+            $post['url'] = $GLOBALS['app']->Session->GetAttribute('url');
+        }
+
+        $tpl = new Jaws_Template('gadgets/Comments/templates/');
+        $tpl->Load('Comments.html');
+        $tpl->SetBlock('comment-preview');
+
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $usrModel = new Jaws_User;
+        $objDate = $GLOBALS['app']->loadDate();
+
+        $tpl->SetVariable('name', $post['name']);
+        $tpl->SetVariable('email', $post['email']);
+        $tpl->SetVariable('url', $post['url']);
+        if (is_null($post['ip_address'])) {
+            $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
+        }
+        $tpl->SetVariable('message', Jaws_String::AutoParagraph($post['message']));
+        if (!isset($post['createtime'])) {
+            $date = $GLOBALS['app']->loadDate();
+            $post['createtime'] = $date->Format(time());
+        }
+
+        $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
+
+        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+        if (!empty($currentUser)) {
+            $userInfo = $usrModel->GetUser($currentUser);
+            $nickname = $userInfo['nickname'];
+            $email = $userInfo['email'];
+            $username = $userInfo['username'];
+            $avatar = "";
+            if(isset($userInfo['avatar'])) {
+                $avatar = $userInfo['avatar'];
+            }
+
+            $tpl->SetBlock('comment-preview/registered_date');
+            $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
+            $tpl->SetVariable('registered_date', $objDate->Format($userInfo['registered_date'], 'd MN Y'));
+            $tpl->ParseBlock('comment-preview/registered_date');
+
+            // user's profile
+            $tpl->SetVariable(
+                'user_url',
+                $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'Profile',
+                    array('user' => $username)
+                )
+            );
+
+        } else {
+            $nickname = $post['name'];
+            $email = $post['email'];
+            $username = '';
+            $avatar = '';
+
+            $tpl->SetVariable('user_url', $post['url']);
+        }
+
+        $tpl->SetVariable('nickname', $nickname);
+        $tpl->SetVariable('email', $email);
+        $tpl->SetVariable('username', $username);
+        // user's avatar
+        $tpl->SetVariable(
+            'avatar',
+            $usrModel->GetAvatar(
+                $avatar,
+                $email,
+                80
+            )
+        );
+
+        $tpl->SetVariable('insert_time', $post['createtime']);
+        $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['createtime']));
+        $tpl->SetVariable('ip_address', $post['ip_address']);
+
+        $tpl->ParseBlock('comment-preview');
+        return $tpl->Get();
     }
 
     /**

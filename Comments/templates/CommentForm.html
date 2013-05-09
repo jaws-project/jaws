@@ -38,11 +38,13 @@
             <p>{captcha_lbl}<br/><span>{captcha}<br/><small>{captcha_msg}</small></span><br/>{captcha_key}{captcha_entry}
             </p>
             <!-- END captcha -->
-            <p><label for="message{rand}">{message}:</label>
-                <textarea id="message{rand}" cols="20" rows="7" name="message"></textarea>
+            <p><label for="message{rand}">{lbl_message}:</label>
+                <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
             </p>
         </div>
         <div class="actions">
+            <button type="button" name="preview" id="preview" value="{preview}"
+                    onclick="this.form.action.value='Preview';this.form.gadget.value='{gadget}'; this.form.submit();">{preview}</button>
             <button type="submit" value="{send}">{send}</button>
         </div>
     </form>

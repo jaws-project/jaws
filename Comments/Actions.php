@@ -20,6 +20,11 @@ $actions['PostMessage'] = array(
     'file'   => 'Comments',
 );
 
+$actions['Preview'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+
 $actions['RecentComments'] = array(
     'normal' => true,
     'layout' => true,
