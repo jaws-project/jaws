@@ -37,12 +37,11 @@ class Blog_Actions_Comments extends Blog_HTML
     {
         $request =& Jaws_Request::getInstance();
         $names = array(
-            'name', 'email', 'url', 'title', 'comments', 'createtime',
-            'ip_address', 'parent_id', 'parent'
+            'name', 'email', 'url', 'title', 'message', 'createtime',
+            'ip_address', 'reference'
         );
         $post = $request->get($names, 'post');
-        $id   = (int)$post['parent_id'];
-        $GLOBALS['app']->Session->PushSimpleResponse($post, 'Blog_Comment');
+        $id   = (int)$post['reference'];
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $entry = $model->GetEntry($id, true);
@@ -55,49 +54,5 @@ class Blog_Actions_Comments extends Blog_HTML
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
         return $postHTML->SingleView($id, true);
     }
-
-    /**
-     * Displays a preview of the given blog comment
-     *
-     * @access  public
-     * @return  string XHTML template content
-     */
-    function ShowPreview()
-    {
-        $post = $GLOBALS['app']->Session->PopSimpleResponse('Blog_Comment', false);
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
-        }
-
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Comment.html');
-        $tpl->SetBlock('comment');
-
-        $tpl->SetVariable('name',  $post['name']);
-        $tpl->SetVariable('email', $post['email']);
-        $tpl->SetVariable('url',   $post['url']);
-        if (is_null($post['ip_address'])) {
-            $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
-        }
-        $tpl->SetVariable('title', $post['title']);
-        $tpl->SetVariable('comments', Jaws_String::AutoParagraph($post['comments']));
-        if (!isset($post['createtime'])) {
-            $date = $GLOBALS['app']->loadDate();
-            $post['createtime'] = $date->Format(time());
-        }
-        $tpl->SetVariable('createtime', $post['createtime']);
-        $tpl->SetVariable('level', 0);
-        $tpl->SetVariable('status_message', '&nbsp;');
-        $tpl->SetVariable('ip_address', $post['ip_address']);
-        $tpl->SetVariable('avatar_source', 'images/unknown.png');
-        $tpl->SetVariable('replies', '0');
-        $tpl->SetVariable('commentname', 'comment_preview');
-
-        $tpl->ParseBlock('comment');
-        return $tpl->Get();
-    }
-
 
 }

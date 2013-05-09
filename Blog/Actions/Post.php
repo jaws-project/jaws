@@ -99,7 +99,7 @@ class Blog_Actions_Post extends Blog_HTML
                 $allow_comments = $entry['allow_comments'] === true &&
                                   $this->gadget->registry->fetch('allow_comments') == 'true' &&
                                   $allow_comments_config;
-                $commentsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Comments');
+
                 $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
 
                 $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'entry', $entry['id'],
@@ -107,13 +107,13 @@ class Blog_Actions_Post extends Blog_HTML
                           'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));
 
 
-
                 if ($allow_comments) {
                     if ($preview_mode) {
-                        $tpl->SetVariable('preview', $commentsHTML->ShowPreview());
+                        $tpl->SetVariable('preview', $cHTML->ShowPreview());
                     }
 
-                    $redirect_to = $this->gadget->GetURLFor('SingleView', array('id' => $entry['id']));
+                    $redirect_to = $this->gadget->GetURLFor('SingleView', array('id' =>
+                                          empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']));
                     $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'entry', $entry['id'], $redirect_to));
 
                 } elseif ($restricted) {
@@ -121,7 +121,6 @@ class Blog_Actions_Post extends Blog_HTML
                     $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
                     $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
-
             }
 
             if ($tpl->VariableExists('navigation')) {

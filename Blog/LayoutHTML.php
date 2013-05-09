@@ -47,7 +47,8 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      * Displays the recent posts of a dynamic category
      *
      * @access  public
-     * @param   int     Category ID
+     * @param   int $cat    Category ID
+     * @param   int $limit
      * @return  string  XHTML Template content
      */
     function CategoryEntries($cat = null, $limit = 0)
