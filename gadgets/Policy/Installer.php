@@ -70,10 +70,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $this->gadget->registry->delete('default_captcha_status', $this->gadget->registry->fetch('captcha'));
-            $this->gadget->registry->delete('default_captcha_driver', $this->gadget->registry->fetch('captcha_driver'));
-            $this->gadget->registry->delete('login_captcha_status', '1');
-            $this->gadget->registry->delete('login_captcha_driver', 'Math');
+            $this->gadget->registry->insert('default_captcha_status', $this->gadget->registry->fetch('captcha'));
+            $this->gadget->registry->insert('default_captcha_driver', $this->gadget->registry->fetch('captcha_driver'));
+            $this->gadget->registry->insert('login_captcha_status', '1');
+            $this->gadget->registry->insert('login_captcha_driver', 'Math');
             $this->gadget->registry->delete('captcha');
             $this->gadget->registry->delete('captcha_driver');
         }
