@@ -57,12 +57,6 @@ class Weather_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error($errMsg, $gName);
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('unit');
-        $this->gadget->registry->delete('date_format');
-        $this->gadget->registry->delete('update_period');
-        $this->gadget->registry->delete('api_key');
-
         return true;
     }
 
