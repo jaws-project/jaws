@@ -60,11 +60,6 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Registry keys
-        $this->gadget->registry->delete('hide_title');
-        $this->gadget->registry->delete('default_page');
-        $this->gadget->registry->delete('multilanguage');
-
         return true;
     }
 
