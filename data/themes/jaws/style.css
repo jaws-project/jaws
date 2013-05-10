@@ -87,3 +87,5 @@ dd.forums_lastpost{width:200px;padding:0 5px;}
 .comments_post .post_update{margin-top:20px;border-top:1px dashed #ccc;font-size:smaller;}
 .comments_post .post_update span{font-style:italic;}
 .comments_post .post_actions{position:absolute;top:10px;right:10px;font-size:smaller;}
+.comments_post blockquote {background-color:  #E1EBF2; margin: 0; padding: 10px 20px;}
+.comments_post cite {font-style:italic;}
