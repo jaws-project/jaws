@@ -792,6 +792,35 @@ class Jaws_User
     }
 
     /**
+     * Update contacts information of a user such as country, city, address, postal_code, etc..
+     *
+     * @access  public
+     * @param   int     $id     User's ID
+     * @param   array   $cData  Contacts information data
+     * @return  bool    Returns true on success, false on failure
+     */
+    function UpdateContacts($id, $cData)
+    {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($cData),
+            array('country', 'city', 'address', 'postal_code', 'phone_number', 'mobile_number', 'fax_number')
+        );
+        foreach ($invalids as $invalid) {
+            unset($cData[$invalid]);
+        }
+
+        $cData['last_update'] = time();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($cData)->where('id', $id)->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return true;
+    }
+
+    /**
      * Adds a new group
      *
      * @access  public
