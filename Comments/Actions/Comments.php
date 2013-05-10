@@ -240,6 +240,23 @@ class Comments_Actions_Comments extends Comments_HTML
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
 
+                if (!empty($entry['reply'])) {
+                    $tpl->SetBlock('comments/entry/reply');
+                    $tpl->SetVariable('lbl_replier', _t('COMMENTS_REPLIER'));
+                    $tpl->SetVariable('replier', $entry['replier_nickname']);
+                    // user's profile
+                    $tpl->SetVariable(
+                        'replier_url',
+                        $GLOBALS['app']->Map->GetURLFor(
+                            'Users',
+                            'Profile',
+                            array('user' => $entry['replier_username'])
+                        )
+                    );
+                    $tpl->SetVariable('reply', $entry['reply']);
+                    $tpl->ParseBlock('comments/entry/reply');
+                }
+
                 $reply_url = & Piwi::CreateWidget('Link', _t('COMMENTS_REPLY_TO_COMMENT'),
                                                   'javascript:replyComment();');
                 $tpl->SetVariable('reply-link', $reply_url->Get());

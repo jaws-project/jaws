@@ -162,11 +162,13 @@ class Comments_Model extends Jaws_Gadget_Model
         $commentsTable->select(
             'comments.id:integer', 'reference:integer', 'user', 'action', 'gadget', 'reply', 'replier',
             'name', 'comments.email', 'comments.url', 'ip', 'msg_txt', 'comments.status:integer', 'createtime',
-            'users.username', 'users.nickname', 'users.email as user_email',  'avatar',
-            'users.registered_date as user_registered_date', 'users.url as user_url'
+            'users.username', 'users.nickname', 'users.email as user_email', 'users.avatar',
+            'users.registered_date as user_registered_date', 'users.url as user_url',
+            'replier.nickname as replier_nickname','replier.username as replier_username'
         );
 
         $commentsTable->join('users', 'users.id', 'comments.user', 'left');
+        $commentsTable->join('users as replier', 'replier.id', 'comments.replier', 'left');
 
         $commentsTable->where('gadget', $gadget);
 
