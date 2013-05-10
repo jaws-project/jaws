@@ -31,7 +31,7 @@ class Users_Actions_Contacts extends Users_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, false, false, true);
+        $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, false, true);
 
         // Load the template
         $tpl = new Jaws_Template('gadgets/Users/templates/');

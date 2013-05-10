@@ -142,11 +142,10 @@ class Jaws_User
      * @param   bool    $account        Account information
      * @param   bool    $personal       Personal information
      * @param   bool    $preferences    Preferences options
-     * @param   bool    $extra          Extra information
      * @param   bool    $contacts       Contacts information
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetUser($user, $account = true, $personal = false, $preferences = false, $extra = false, $contacts = false)
+    function GetUser($user, $account = true, $personal = false, $preferences = false, $contacts = false)
     {
         $columns = array('id:integer',);
         // account information
@@ -171,10 +170,6 @@ class Jaws_User
         if ($contacts) {
             $columns = array_merge($columns, array('country', 'city', 'address', 'postal_code', 'phone_number',
                 'mobile_number', 'fax_number'));
-        }
-
-        if ($extra) {
-            //
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
