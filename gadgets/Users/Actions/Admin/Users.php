@@ -585,7 +585,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         // address
         $address =& Piwi::CreateWidget('TextArea', 'address', '');
         $address->SetID('address');
-//        $address->SetStyle('width: 142px;');
         $address->SetRows(4);
         $address->SetColumns(34);
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
@@ -613,7 +612,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('mobile_number', $mobileNumber->Get());
 
         // fax_number
-        $faxNumber =& Piwi::CreateWidget('Entry', 'mobile_number', '');
+        $faxNumber =& Piwi::CreateWidget('Entry', 'fax_number', '');
         $faxNumber->SetStyle('width: 142px;');
         $faxNumber->SetID('fax_number');
         $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));

@@ -275,6 +275,14 @@ class Users_Actions_Login extends Users_HTML
                 $tpl->ParseBlock('UserLinks/preferences');
             }
 
+            // edit account contacts
+            if ($this->gadget->GetPermission('EditUserContacts')) {
+                $tpl->SetBlock('UserLinks/contacts');
+                $tpl->SetVariable('user_contacts', _t('USERS_EDIT_CONTACTS'));
+                $tpl->SetVariable('contacts_url', $this->gadget->GetURLFor('Contacts'));
+                $tpl->ParseBlock('UserLinks/contacts');
+            }
+
             // ControlPanel
             if ($this->gadget->GetPermission('default_admin', '', 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');

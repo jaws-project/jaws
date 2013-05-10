@@ -103,6 +103,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('EditUserPassword');
             $this->gadget->acl->insert('EditUserPersonal');
             $this->gadget->acl->insert('EditUserPreferences');
+            $this->gadget->acl->insert('EditUserContacts');
             $this->gadget->acl->delete('EditAccountPassword');
             $this->gadget->acl->delete('EditAccountInformation');
             $this->gadget->acl->delete('EditAccountProfile');

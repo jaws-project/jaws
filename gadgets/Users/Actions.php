@@ -102,3 +102,11 @@ $actions['UpdatePreferences'] = array(
     'standalone' => true,
     'file' => 'Preferences',
 );
+$actions['Contacts'] = array(
+    'normal' => true,
+    'file' => 'Contacts',
+);
+$actions['UpdateContacts'] = array(
+    'standalone' => true,
+    'file' => 'Contacts',
+);

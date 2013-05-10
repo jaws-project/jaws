@@ -707,7 +707,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Updates preferences options of the user
+     * Updates contacts information of the user
      *
      * @access  public
      * @param   int     $uid            User ID

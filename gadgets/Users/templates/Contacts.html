@@ -1,0 +1,22 @@
+<!-- BEGIN contacts -->
+<div class="gadget users contactsbox">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form name="contactsBox" action="{base_script}" method="post">
+  <input type="hidden" name="gadget" value="Users" />
+  <input type="hidden" name="action" value="UpdateContacts" />
+  <div class="content">
+    <fieldset>
+      <p><label for="country">{lbl_country}:</label>{country}</p>
+      <p><label for="city">{lbl_city}:</label>{city}</p>
+      <p><label for="address">{lbl_address}:</label>{address}</p>
+      <p><label for="postal_code">{lbl_postal_code}:</label>{postal_code}</p>
+      <p><label for="phone_number">{lbl_phone_number}:</label>{phone_number}</p>
+      <p><label for="mobile_number">{lbl_mobile_number}:</label>{mobile_number}</p>
+      <p><label for="fax_number">{lbl_fax_number}:</label>{fax_number}</p>
+    </fieldset>
+  </div>
+  <div class="actions"><button type="submit" value="{update}">{update}</button></div>
+  </form>
+</div>
+<!-- END contacts -->
