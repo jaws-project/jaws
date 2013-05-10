@@ -73,9 +73,10 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $tpl->Load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
+        $tpl->SetVariable('gadget', $gadget);
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
-        $tpl->SetVariable('comments', $cHTML->ShowComments('Comments', '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
+        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
 
         $tpl->ParseBlock('recent_comments');
 
