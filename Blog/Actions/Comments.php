@@ -14,20 +14,6 @@ class Blog_Actions_Comments extends Blog_HTML
 {
 
     /**
-     * Displays a given blog comments and a form for replying
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Reply()
-    {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'comment_id'), 'get');
-        $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');
-        return $postHTML->SingleView($post['id'], false, (int)$post['comment_id']);
-    }
-
-    /**
      * Displays a preview of the given blog comment
      *
      * @access  public

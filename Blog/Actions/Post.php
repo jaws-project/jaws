@@ -43,10 +43,9 @@ class Blog_Actions_Post extends Blog_HTML
      * @access  public
      * @param   int     $id                 Post id (optional, null by default)
      * @param   bool    $preview_mode       Display comments flag (optional, false by default)
-     * @param   string  $reply_to_comment   reply string
      * @return  string  XHTML template content
      */
-    function SingleView($id = null, $preview_mode = false, $reply_to_comment = '')
+    function SingleView($id = null, $preview_mode = false)
     {
         $request =& Jaws_Request::getInstance();
         $g_id = $request->get('id', 'get');

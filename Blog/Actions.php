@@ -35,10 +35,6 @@ $actions['Comment'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );
-$actions['Reply'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['Preview'] = array(
     'normal' => true,
     'file'   => 'Comments',

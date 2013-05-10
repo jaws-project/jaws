@@ -120,12 +120,6 @@ $maps[] = array(
     'blog/page/{page}'
 );
 $maps[] = array(
-    'Reply',
-    'blog/show/{id}/reply/{comment_id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',
-          'comment_id' => '[[:digit:]]+',)
-);
-$maps[] = array(
     'ShowCategory',
     'blog/category/{id}/page/{page}',
     array('id'   => '[\p{L}[:digit:]-_\.]+',
