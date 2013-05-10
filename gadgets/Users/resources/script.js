@@ -51,6 +51,13 @@ var UsersCallback = {
         showResponse(response);
     },
 
+    updatecontacts: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            stopUserAction();
+        }
+        showResponse(response);
+    },
+
     updatepersonal: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopUserAction();
@@ -307,6 +314,18 @@ function saveUser()
                                 $('editor').value,
                                 $('timezone').value);
             break;
+
+        case 'UserContacts':
+            UsersAjax.callAsync('updatecontacts',
+                                $('uid').value,
+                                $('country').value,
+                                $('city').value,
+                                $('address').value,
+                                $('postal_code').value,
+                                $('phone_number').value,
+                                $('mobile_number').value,
+                                $('fax_number').value);
+            break;
     }
 
 }
@@ -483,6 +502,30 @@ function editPreferences(rowElement, uid)
     $('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
     $('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
     $('timezone').value = uInfo['timezone'] == null? '-default-': uInfo['timezone'];
+}
+
+/**
+ * Edit user's contacts info
+ */
+function editContacts(rowElement, uid)
+{
+    $('uid').value = uid;
+    currentAction = 'UserContacts';
+    $('legend_title').innerHTML  = editContacts_title;
+    if (cachedContactsForm == null) {
+        cachedContactsForm = UsersAjax.callSync('contactsui');
+    }
+    $('user_workarea').innerHTML = cachedContactsForm;
+    selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
+
+    var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, false,true);
+    $('country').value          = uInfo['country'];
+    $('city').value             = uInfo['city'];
+    $('address').value          = uInfo['address'];
+    $('postal_code').value      = uInfo['postal_code'];
+    $('phone_number').value     = uInfo['phone_number'];
+    $('mobile_number').value    = uInfo['mobile_number'];
+    $('fax_number').value       = uInfo['fax_number'];
 }
 
 /**
@@ -801,6 +844,7 @@ var oddColor  = '#edf3fe';
 //Cached form variables
 var cachedPersonalForm    = null,
     cachedPreferencesForm = null,
+    cachedContactsForm    = null,
     cachedUserGroupsForm  = null,
     cachedGroupUsersForm  = null;
 

@@ -33,7 +33,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $column1->SetStyle('width: 120px;');
         $datagrid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column2->SetStyle('width: 120px;');
+        $column2->SetStyle('width: 140px;');
         $datagrid->AddColumn($column2);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
 
@@ -105,6 +105,14 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
                                             _t('USERS_PREFERENCES'),
                                             "javascript: editPreferences(this, '".$user['id']."');",
                                             STOCK_FONT);
+                $actions.= $link->Get().'&nbsp;';
+            }
+
+            if ($this->gadget->CheckPermission('ManageUsers')) {
+                $link =& Piwi::CreateWidget('Link',
+                                            _t('USERS_CONTACTS'),
+                                            "javascript: editContacts(this, '".$user['id']."');",
+                                            'gadgets/Users/images/mail.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -243,6 +251,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('editUserGroups_title',  _t('USERS_USERS_GROUPS'));
         $tpl->SetVariable('editPersonal_title',    _t('USERS_PERSONAL'));
         $tpl->SetVariable('editPreferences_title', _t('USERS_PREFERENCES'));
+        $tpl->SetVariable('editContacts_title',    _t('USERS_CONTACTS'));
         $tpl->SetVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
         $tpl->SetVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
         $tpl->SetVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
@@ -544,6 +553,73 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('timezone', $timezone->Get());
 
         $tpl->ParseBlock('preferences');
+        return $tpl->Get();
+    }
+
+    /**
+     * Builds a form to edit user's contacts
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function ContactsUI()
+    {
+        $tpl = new Jaws_Template('gadgets/Users/templates/');
+        $tpl->Load('Admin/Contacts.html');
+        $tpl->SetBlock('contacts');
+
+        // country
+        $country =& Piwi::CreateWidget('Entry', 'country', '');
+        $country->SetStyle('width: 142px;');
+        $country->SetID('country');
+        $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
+        $tpl->SetVariable('country', $country->Get());
+
+        // city
+        $city =& Piwi::CreateWidget('Entry', 'city', '');
+        $city->SetStyle('width: 142px;');
+        $city->SetID('city');
+        $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));
+        $tpl->SetVariable('city', $city->Get());
+
+        // address
+        $address =& Piwi::CreateWidget('TextArea', 'address', '');
+        $address->SetID('address');
+//        $address->SetStyle('width: 142px;');
+        $address->SetRows(4);
+        $address->SetColumns(34);
+        $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
+        $tpl->SetVariable('address', $address->Get());
+
+        // postal_code
+        $postalCode =& Piwi::CreateWidget('Entry', 'postal_code', '');
+        $postalCode->SetStyle('width: 142px;');
+        $postalCode->SetID('postal_code');
+        $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
+        $tpl->SetVariable('postal_code', $postalCode->Get());
+
+        // phone_number
+        $phoneNumber =& Piwi::CreateWidget('Entry', 'phone_number', '');
+        $phoneNumber->SetStyle('width: 142px;');
+        $phoneNumber->SetID('phone_number');
+        $tpl->SetVariable('lbl_phone_number', _t('USERS_CONTACTS_PHONE_NUMBER'));
+        $tpl->SetVariable('phone_number', $phoneNumber->Get());
+
+        // mobile_number
+        $mobileNumber =& Piwi::CreateWidget('Entry', 'mobile_number', '');
+        $mobileNumber->SetStyle('width: 142px;');
+        $mobileNumber->SetID('mobile_number');
+        $tpl->SetVariable('lbl_mobile_number', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile_number', $mobileNumber->Get());
+
+        // fax_number
+        $faxNumber =& Piwi::CreateWidget('Entry', 'mobile_number', '');
+        $faxNumber->SetStyle('width: 142px;');
+        $faxNumber->SetID('fax_number');
+        $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));
+        $tpl->SetVariable('fax_number', $faxNumber->Get());
+
+        $tpl->ParseBlock('contacts');
         return $tpl->Get();
     }
 

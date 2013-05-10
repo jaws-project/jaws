@@ -43,11 +43,12 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @param   bool    $personal       Include personal information
      * @param   bool    $preferences    Include user preferences information
      * @param   bool    $extra          Include user extra information
+     * @param   bool    $contacts       Include user contacts information
      * @return  array   User information
      */
-    function GetUser($uid, $account = true, $personal = false, $preferences = false, $extra = false)
+    function GetUser($uid, $account = true, $personal = false, $preferences = false, $extra = false, $contacts = false)
     {
-        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $extra);
+        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $extra, $contacts);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
@@ -597,6 +598,18 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
+     * Returns the UI of the contacts options
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function ContactsUI()
+    {
+        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        return $gadget->ContactsUI();
+    }
+
+    /**
      * Updates personal information of selected user
      *
      * @access  public
@@ -606,6 +619,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @param   string   $gender  User gender
      * @param   string   $dob     User birth date
      * @param   string   $url     User URL
+     * @param   string   $about
      * @param   string  $avatar   User avatar
      * @param   bool    $privacy  User's display name
      * @return  array   Response array (notice or error)
@@ -686,6 +700,45 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                                                        RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_ADVANCED_UPDATED'),
+                                                       RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Updates preferences options of the user
+     *
+     * @access  public
+     * @param   int     $uid            User ID
+     * @param   string  $country        User country
+     * @param   string  $city           User city
+     * @param   string  $address        User address
+     * @param   string  $postalCode     User postal code
+     * @param   string  $phoneNumber    User phone number
+     * @param   string  $mobileNumber   User mobile number
+     * @param   string  $faxNumber      User fax number
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateContacts($uid, $country, $city, $address, $postalCode, $phoneNumber, $mobileNumber, $faxNumber)
+    {
+        $res = $this->_UserModel->UpdateContacts(
+            $uid,
+            array(
+                'country' => $country,
+                'city'    => $city,
+                'address'   => $address,
+                'postal_code' => $postalCode,
+                'phone_number' => $phoneNumber,
+                'mobile_number' => $mobileNumber,
+                'fax_number' => $faxNumber
+            )
+        );
+        if ($res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_CONTACTINFO_UPDATED'),
+                                                       RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
