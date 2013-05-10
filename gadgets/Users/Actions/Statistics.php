@@ -25,22 +25,27 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl->SetBlock('OnlineUsers');
         $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINEUSERS'));
 
+        $uniqueOnline = array();
         $sessions = $GLOBALS['app']->Session->GetSessions();
-        $sessions = array_filter($sessions, create_function('$sess','return !empty($sess["username"]);'));
-        if (empty($sessions)) {
-            $tpl->SetBlock('OnlineUsers/no_online');
-            $tpl->SetVariable('no_online', _t('USERS_ONLINE_NO_ONLINE'));
-            $tpl->ParseBlock('OnlineUsers/no_online');
-        } else {
+        if (!Jaws_Error::isError($sessions)) {
             foreach($sessions as $session) {
                 if (!empty($session['username'])) {
                     $tpl->SetBlock('OnlineUsers/user');
-                    $tpl->SetVariable('username', $session['username']);
-                    $tpl->SetVariable('nickname', $session['nickname']);
-                    $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $session['username'])));
-                    $tpl->ParseBlock('OnlineUsers/user');
+                    if (!array_key_exists($session['user'], $uniqueOnline)) {
+                        $uniqueOnline[$session['user']] = true;
+                        $tpl->SetVariable('username', $session['username']);
+                        $tpl->SetVariable('nickname', $session['nickname']);
+                        $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $session['username'])));
+                        $tpl->ParseBlock('OnlineUsers/user');
+                    }
                 }
             }
+        }
+
+        if (empty($uniqueOnline)) {
+            $tpl->SetBlock('OnlineUsers/no_online');
+            $tpl->SetVariable('no_online', _t('USERS_ONLINE_NO_ONLINE'));
+            $tpl->ParseBlock('OnlineUsers/no_online');
         }
 
         $tpl->ParseBlock('OnlineUsers');
