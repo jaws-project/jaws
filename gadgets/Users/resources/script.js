@@ -518,7 +518,7 @@ function editContacts(rowElement, uid)
     $('user_workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, false,true);
+    var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, true);
     $('country').value          = uInfo['country'];
     $('city').value             = uInfo['city'];
     $('address').value          = uInfo['address'];

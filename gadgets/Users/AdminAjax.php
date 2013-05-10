@@ -46,9 +46,9 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @param   bool    $contacts       Include user contacts information
      * @return  array   User information
      */
-    function GetUser($uid, $account = true, $personal = false, $preferences = false, $extra = false, $contacts = false)
+    function GetUser($uid, $account = true, $personal = false, $preferences = false, $contacts = false)
     {
-        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $extra, $contacts);
+        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $contacts);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
