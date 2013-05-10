@@ -91,7 +91,8 @@ class Jaws_Registry
                 [key_name], [key_value]
             FROM [[registry]]
             WHERE
-                [component] = {component}';
+                [component] = {component}
+            ORDER BY [id]';
 
         return $GLOBALS['db']->queryAll($sql, $params);
     }
