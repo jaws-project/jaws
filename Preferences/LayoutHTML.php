@@ -19,8 +19,7 @@ class Preferences_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Preferences/templates/');
-        $tpl->Load('Preferences.html');
+        $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
