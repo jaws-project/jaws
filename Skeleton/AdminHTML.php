@@ -19,8 +19,7 @@ class Skeleton_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         // Admin message is auto added by Jaws_Layout, should we delete the code below ?
-//         $tpl = new Jaws_Template('gadgets/Skeleton/templates/');
-//         $tpl->Load('ControlPanel.html');
+//         $tpl = $this->gadget->loadTemplate('ControlPanel.html');
 //
 //         $tpl->SetBlock('skeleton');
 //         $tpl->SetVariable('message', _t('SKELETON_ADMIN_MESSAGE'));
