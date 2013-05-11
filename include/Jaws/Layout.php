@@ -214,8 +214,8 @@ class Jaws_Layout
             }
         }
 
-        $this->_Template = new Jaws_Template($layout_path);
-        $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file);
+        $this->_Template = new Jaws_Template();
+        $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -264,8 +264,8 @@ class Jaws_Layout
         }
 
         $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
-        $this->_Template = new Jaws_Template('gadgets/ControlPanel/templates/');
-        $this->_Template->Load('Layout.html');
+        $this->_Template = new Jaws_Template();
+        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/templates');
         $this->_Template->SetBlock('layout');
 
         $base_url = $GLOBALS['app']->GetSiteURL('/');
