@@ -21,7 +21,7 @@ class Preferences_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminPreferences.html');
+        $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
 
         $preferences =& Piwi::CreateWidget('VBox');
