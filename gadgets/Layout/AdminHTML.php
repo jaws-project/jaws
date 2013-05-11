@@ -32,9 +32,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
 
-        $t_item = new Jaws_Template('gadgets/Layout/templates/');
-        $t_item->Load('LayoutManager.html');
-
+        $t_item = $this->gadget->loadTemplate('LayoutManager.html');
         $t_item->SetBlock('working_notification');
         $t_item->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $working_box = $t_item->ParseBlock('working_notification');
@@ -194,8 +192,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
     {
         $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
 
-        $tpl = new Jaws_Template('gadgets/Layout/templates/');
-        $tpl->Load('LayoutControls.html');
+        $tpl = $this->gadget->loadTemplate('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
@@ -253,12 +250,11 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $theme = $request->get('theme', 'post');
 
-        $tpl = new Jaws_Template('', JAWS_COMPONENT_OTHERS);
         $layout_file = JAWS_THEMES. $theme . '/layout.html';
         if (!file_exists($layout_file)) {
             $layout_file = JAWS_BASE_THEMES. $theme . '/layout.html';
         }
-        $tpl->Load($layout_file, false, false);
+        $tpl = $this->gadget->loadTemplate($layout_file);
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
@@ -316,8 +312,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         // FIXME: When a gadget don't have layout actions
         // doesn't permit to add it into layout
-        $tpl = new Jaws_Template('gadgets/Layout/templates/');
-        $tpl->Load('AddGadget.html');
+        $tpl = $this->gadget->loadTemplate('AddGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -394,8 +389,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Layout/templates/');
-        $tpl->Load('EditGadget.html');
+        $tpl = $this->gadget->loadTemplate('EditGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -500,8 +494,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
 
-        $tpl = new Jaws_Template('gadgets/Layout/templates/');
-        $tpl->Load('DisplayWhen.html');
+        $tpl = $this->gadget->loadTemplate('DisplayWhen.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
