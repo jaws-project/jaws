@@ -55,7 +55,7 @@ class Tms_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Tms', 'AdminModel');
-        $tpl = $this->gadget->loadTemplate('AdminThemes.html');
+        $tpl = $this->gadget->loadTemplate('Themes.html');
         $tpl->SetBlock('Tms');
 
         $tpl->SetVariable('confirmUninstallTheme', _t('TMS_THEMES_UNINSTALL_CONFIRM'));
