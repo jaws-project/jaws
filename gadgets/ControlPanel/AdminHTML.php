@@ -33,8 +33,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/ControlPanel/templates/');
-        $tpl->Load('MainMenu.html');
+        $tpl = $this->gadget->loadTemplate('MainMenu.html');
 
         $gadgetsections = array();
         $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
