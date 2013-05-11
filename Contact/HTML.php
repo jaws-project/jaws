@@ -194,8 +194,7 @@ class Contact_HTML extends Jaws_Gadget_HTML
             $message = $contact['msg_txt'];
         }
 
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('SendToRecipient.html');
+        $tpl = $this->gadget->loadTemplate('SendToRecipient.html');
         $tpl->SetBlock($format);
         $tpl->SetVariable('lbl_name',      _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_email',     _t('GLOBAL_EMAIL'));

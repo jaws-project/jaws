@@ -184,9 +184,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageContacts');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
         $tpl->SetBlock('Contacts');
 
         //Menu bar
@@ -253,8 +251,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
      */
     function ContactUI()
     {
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
         $tpl->SetBlock('ContactUI');
 
         //IP
@@ -348,8 +345,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
      */
     function ReplyUI()
     {
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
         $tpl->SetBlock('ReplyUI');
 
         //name
@@ -455,8 +451,12 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Translate->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('SendReplyTo.html', false, true, _t_lang($site_language, 'GLOBAL_LANG_DIRECTION'));
+        $tpl = $this->gadget->loadTemplate('SendReplyTo.html', 'index', '',
+            array(
+                'loadFromTheme' => true,
+                'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',
+            )
+        );
         $tpl->SetBlock($format);
 
         $tpl->SetVariable('lbl_name',    _t_lang($site_language, 'GLOBAL_NAME'));
@@ -575,9 +575,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRecipients');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminRecipients.html');
+        $tpl = $this->gadget->loadTemplate('AdminRecipients.html');
         $tpl->SetBlock('recipients');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Recipients'));
@@ -656,9 +654,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminProperties.html');
+        $tpl = $this->gadget->loadTemplate('AdminProperties.html');
         $tpl->SetBlock('Properties');
 
         //Menu bar
@@ -722,9 +718,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AccessToMailer');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('AdminMailer.html');
+        $tpl = $this->gadget->loadTemplate('AdminMailer.html');
         $tpl->SetBlock('mailer');
 
         // Menu bar
@@ -914,10 +908,14 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('SendEmail.html', null, true, _t_lang($site_language, 'GLOBAL_LANG_DIRECTION'));
-        $tpl->SetBlock($format);
+        $tpl = $this->gadget->loadTemplate('SendEmail.html', 'index', '',
+            array(
+                'loadFromTheme' => true,
+                'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',
+            )
+        );
 
+        $tpl->SetBlock($format);
         $tpl->SetVariable('message', $message);
 
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');

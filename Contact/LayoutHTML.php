@@ -37,8 +37,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
                 break;
         }
 
-        $tpl = new Jaws_Template('gadgets/Contact/templates/');
-        $tpl->Load('Contact.html');
+        $tpl = $this->gadget->loadTemplate('Contact.html');
         $tpl->SetBlock('contact');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
