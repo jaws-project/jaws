@@ -299,7 +299,7 @@ class Jaws_ACL
     function update($key_name, $subkey, $key_value, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->update(array('key_value'  => $key_value))
+        $result = $tblACL->update(array('key_value' => (int)$key_value))
             ->where('component', $component)->and()
             ->where('key_name', $key_name)->and()
             ->where('key_subkey', $subkey)->and()
