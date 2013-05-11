@@ -19,9 +19,7 @@ class Search_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Search/templates/');
-        $tpl->Load('AdminSearch.html');
+        $tpl = $this->gadget->loadTemplate('Search.html');
         $tpl->SetBlock('admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
