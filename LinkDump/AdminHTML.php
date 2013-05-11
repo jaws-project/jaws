@@ -20,7 +20,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $tpl->SetBlock('linkdump/links_base');
@@ -74,7 +74,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetGroupsList()
     {
-        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel');
@@ -111,7 +111,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
             return '';
         }
 
-        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         foreach ($links as $link) {
@@ -136,7 +136,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/GroupsUI');
 
@@ -193,7 +193,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetLinkUI()
     {
-        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/LinksUI');
 
