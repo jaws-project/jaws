@@ -57,9 +57,8 @@ class Phoo_HTML extends Jaws_Gadget_HTML
      */
     function ViewAlbumPage()
     {
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('ViewAlbumPage.html');
-        $t->SetBlock('ViewAlbumPage');
+        $tpl = $this->gadget->loadTemplate('ViewAlbumPage.html');
+        $tpl->SetBlock('ViewAlbumPage');
 
         $request =& Jaws_Request::getInstance();
         $get     = $request->get(array('id', 'page'), 'get');
@@ -72,17 +71,17 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
             if ($id == '0') {
-                $t->SetVariable('title', _t('PHOO_UNKNOW_ALBUM'));
+                $tpl->SetVariable('title', _t('PHOO_UNKNOW_ALBUM'));
                 $this->SetTitle(_t('PHOO_UNKNOW_ALBUM'));
-                $t->SetVariable('description', '');
+                $tpl->SetVariable('description', '');
             } else {
-                $t->SetVariable('title', $album['name']);
+                $tpl->SetVariable('title', $album['name']);
                 $this->SetTitle($album['name']);
-                $t->SetVariable('description', $this->gadget->ParseText($album['description']));
+                $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
             }
 
             // display images
-            $t->SetBlock('ViewAlbumPage/photos');
+            $tpl->SetBlock('ViewAlbumPage/photos');
             if (isset($album['images']) && is_array($album['images'])) {
                 require_once JAWS_PATH . 'include/Jaws/Image.php';
                 foreach ($album['images'] as $image) {
@@ -91,84 +90,84 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         if (Jaws_Error::IsError($imgData)) {
                             continue;
                         }
-                        $t->SetBlock('ViewAlbumPage/photos/item');
+                        $tpl->SetBlock('ViewAlbumPage/photos/item');
                         $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
-                        $t->SetVariable('url',      $url);
-                        $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
-                        $t->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
-                        $t->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
-                        $t->SetVariable('name',     $image['name']);
-                        $t->SetVariable('filename', $image['filename']);
-                        $t->SetVariable('img_desc', $image['stripped_description']);
-                        $t->SetVariable('width',    $imgData[0]);
-                        $t->SetVariable('height',   $imgData[1]);
-                        $t->ParseBlock('ViewAlbumPage/photos/item');
+                        $tpl->SetVariable('url',      $url);
+                        $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
+                        $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
+                        $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+                        $tpl->SetVariable('name',     $image['name']);
+                        $tpl->SetVariable('filename', $image['filename']);
+                        $tpl->SetVariable('img_desc', $image['stripped_description']);
+                        $tpl->SetVariable('width',    $imgData[0]);
+                        $tpl->SetVariable('height',   $imgData[1]);
+                        $tpl->ParseBlock('ViewAlbumPage/photos/item');
                     }
                 }
             }
-            $t->ParseBlock('ViewAlbumPage/photos');
+            $tpl->ParseBlock('ViewAlbumPage/photos');
 
             // Pager
             $pager = $model->GetAlbumPagerNumbered($id, $page);
 
             if (count($pager) > 0) {
-                $t->SetBlock('ViewAlbumPage/pager');
-                $t->SetVariable('total', _t('PHOO_PHOTOS_COUNT', $pager['total']));
+                $tpl->SetBlock('ViewAlbumPage/pager');
+                $tpl->SetVariable('total', _t('PHOO_PHOTOS_COUNT', $pager['total']));
 
                 $pager_view = '';
                 foreach ($pager as $k => $v) {
-                    $t->SetBlock('ViewAlbumPage/pager/item');
+                    $tpl->SetBlock('ViewAlbumPage/pager/item');
                     if ($k == 'next') {
                         if ($v) {
-                            $t->SetBlock('ViewAlbumPage/pager/item/next');
-                            $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
+                            $tpl->SetBlock('ViewAlbumPage/pager/item/next');
+                            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
                             $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                            $t->SetVariable('url_next', $url);
-                            $t->ParseBlock('ViewAlbumPage/pager/item/next');
+                            $tpl->SetVariable('url_next', $url);
+                            $tpl->ParseBlock('ViewAlbumPage/pager/item/next');
                         } else {
-                            $t->SetBlock('ViewAlbumPage/pager/item/no_next');
-                            $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
-                            $t->ParseBlock('ViewAlbumPage/pager/item/no_next');
+                            $tpl->SetBlock('ViewAlbumPage/pager/item/no_next');
+                            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
+                            $tpl->ParseBlock('ViewAlbumPage/pager/item/no_next');
                         }
                     } elseif ($k == 'previous') {
                         if ($v) {
-                            $t->SetBlock('ViewAlbumPage/pager/item/previous');
-                            $t->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
+                            $tpl->SetBlock('ViewAlbumPage/pager/item/previous');
+                            $tpl->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
                             $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                            $t->SetVariable('url_previous', $url);
-                            $t->ParseBlock('ViewAlbumPage/pager/item/previous');
+                            $tpl->SetVariable('url_previous', $url);
+                            $tpl->ParseBlock('ViewAlbumPage/pager/item/previous');
                         } else {
-                            $t->SetBlock('ViewAlbumPage/pager/item/no_previous');
-                            $t->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
-                            $t->ParseBlock('ViewAlbumPage/pager/item/no_previous');
+                            $tpl->SetBlock('ViewAlbumPage/pager/item/no_previous');
+                            $tpl->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
+                            $tpl->ParseBlock('ViewAlbumPage/pager/item/no_previous');
                         }
                     } elseif ($k == 'separator1' || $k == 'separator2') {
-                        $t->SetBlock('ViewAlbumPage/pager/item/page_separator');
-                        $t->ParseBlock('ViewAlbumPage/pager/item/page_separator');
+                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_separator');
+                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_separator');
                     } elseif ($k == 'current') {
-                        $t->SetBlock('ViewAlbumPage/pager/item/page_current');
+                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_current');
                         $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                        $t->SetVariable('lbl_page', $v);
-                        $t->SetVariable('url_page', $url);
-                        $t->ParseBlock('ViewAlbumPage/pager/item/page_current');
+                        $tpl->SetVariable('lbl_page', $v);
+                        $tpl->SetVariable('url_page', $url);
+                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_current');
                     } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
-                        $t->SetBlock('ViewAlbumPage/pager/item/page_number');
+                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_number');
                         $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                        $t->SetVariable('lbl_page', $v);
-                        $t->SetVariable('url_page', $url);
-                        $t->ParseBlock('ViewAlbumPage/pager/item/page_number');
+                        $tpl->SetVariable('lbl_page', $v);
+                        $tpl->SetVariable('url_page', $url);
+                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_number');
                     }
-                    $t->ParseBlock('ViewAlbumPage/pager/item');
+                    $tpl->ParseBlock('ViewAlbumPage/pager/item');
                 }
-                $t->ParseBlock('ViewAlbumPage/pager');
+                $tpl->ParseBlock('ViewAlbumPage/pager');
             }
         } else {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
 
-        $t->ParseBlock('ViewAlbumPage');
-        return $t->Get();
+        $tpl->ParseBlock('ViewAlbumPage');
+        return $tpl->Get();
     }
 
     /**
@@ -183,8 +182,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
     function ViewImage($id = null, $albumid = null, $preview_mode = false)
     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('ViewImage.html');
+        $tpl = $this->gadget->loadTemplate('ViewImage.html');
 
         $request =& Jaws_Request::getInstance();
         $get     = $request->get(array('id', 'albumid'), 'get');
@@ -204,26 +202,26 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         }
 
         $this->SetTitle($image['name']);
-        $t->SetBlock('ViewImage');
-        $t->SetVariable('title',       $image['name']);
-        $t->SetVariable('posted_by',   _t('PHOO_POSTED_BY'));
-        $t->SetVariable('img_author',  $image['author']);
-        $t->SetVariable('name',        $image['name']);
-        $t->SetVariable('filename',    $image['filename']);
-        $t->SetVariable('img_desc',    $image['stripped_description']);
-        $t->SetVariable('albumid',     $albumid);
-        $t->SetVariable('description', $this->gadget->ParseText($image['description']));
-        $t->SetVariable('medium',      $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
-        $t->SetVariable('image',       $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
-        $t->SetVariable('width',       $imgData[0]);
-        $t->SetVariable('height',      $imgData[1]);
+        $tpl->SetBlock('ViewImage');
+        $tpl->SetVariable('title',       $image['name']);
+        $tpl->SetVariable('posted_by',   _t('PHOO_POSTED_BY'));
+        $tpl->SetVariable('img_author',  $image['author']);
+        $tpl->SetVariable('name',        $image['name']);
+        $tpl->SetVariable('filename',    $image['filename']);
+        $tpl->SetVariable('img_desc',    $image['stripped_description']);
+        $tpl->SetVariable('albumid',     $albumid);
+        $tpl->SetVariable('description', $this->gadget->ParseText($image['description']));
+        $tpl->SetVariable('medium',      $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
+        $tpl->SetVariable('image',       $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+        $tpl->SetVariable('width',       $imgData[0]);
+        $tpl->SetVariable('height',      $imgData[1]);
 
         // show if the original was kept
         $settings = $model->GetSettings();
         if ($settings['keep_original'] == 'true') {
-            $t->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+            $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
         } else {
-            $t->SetVariable('url', 'javascript: void();');
+            $tpl->SetVariable('url', 'javascript: void();');
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
@@ -247,63 +245,63 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $redirect_to = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
             $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
-            $t->SetVariable('comments', $cHTML->ShowComments('Phoo', 'photo', $image['id'],
+            $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'photo', $image['id'],
                             array('action' => 'ViewImage',
                                   'params' => array('albumid' => $albumid, 'id' => $image['id']))));
 
             if ($allow_comments) {
                 if ($preview_mode) {
-                    $t->SetVariable('preview', $this->ShowPreview());
+                    $tpl->SetVariable('preview', $this->ShowPreview());
                 }
-                $t->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'photo', $image['id'], $redirect_to));
+                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'photo', $image['id'], $redirect_to));
             } elseif ($restricted) {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
                 $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
-                $t->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
+                $tpl->SetVariable('comment-form', _t('GLOBAL_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
 
         }
 
         // Pager
-        $t->SetBlock('ViewImage/navigation');
-        $t->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
-        $t->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
+        $tpl->SetBlock('ViewImage/navigation');
+        $tpl->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
+        $tpl->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
         $url = $this->gadget->GetURLFor('ViewAlbum', array('id' => $albumid));
-        $t->SetVariable('url_thumbs', $url);
+        $tpl->SetVariable('url_thumbs', $url);
 
         if ($image['first'] != $image['id']) {
-            $t->SetBlock('ViewImage/navigation/no-first-photo');
-            $t->SetVariable('lbl_first', _t('PHOO_FIRST'));
+            $tpl->SetBlock('ViewImage/navigation/no-first-photo');
+            $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
             $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['first'], 'albumid' => $albumid));
-            $t->SetVariable('url_first', $url);
-            $t->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
+            $tpl->SetVariable('url_first', $url);
+            $tpl->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
             $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['previous'], 'albumid' => $albumid));
-            $t->SetVariable('url_prev', $url);
-            $t->ParseBlock('ViewImage/navigation/no-first-photo');
+            $tpl->SetVariable('url_prev', $url);
+            $tpl->ParseBlock('ViewImage/navigation/no-first-photo');
         } else {
-            $t->SetBlock('ViewImage/navigation/first-photo');
-            $t->SetVariable('lbl_first', _t('PHOO_FIRST'));
-            $t->SetVariable('lbl_prev',  _t('PHOO_PREVIOUS'));
-            $t->ParseBlock('ViewImage/navigation/first-photo');
+            $tpl->SetBlock('ViewImage/navigation/first-photo');
+            $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
+            $tpl->SetVariable('lbl_prev',  _t('PHOO_PREVIOUS'));
+            $tpl->ParseBlock('ViewImage/navigation/first-photo');
         }
 
         if ($image['last'] != $image['id']) {
-            $t->SetBlock('ViewImage/navigation/no-last-photo');
-            $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
+            $tpl->SetBlock('ViewImage/navigation/no-last-photo');
+            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
             $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['next'], 'albumid' => $albumid));
-            $t->SetVariable('url_next', $url);
-            $t->SetVariable('lbl_last', _t('PHOO_LAST'));
+            $tpl->SetVariable('url_next', $url);
+            $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
             $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['last'], 'albumid' => $albumid));
-            $t->SetVariable('url_last', $url);
-            $t->ParseBlock('ViewImage/navigation/no-last-photo');
+            $tpl->SetVariable('url_last', $url);
+            $tpl->ParseBlock('ViewImage/navigation/no-last-photo');
         } else {
-            $t->SetBlock('ViewImage/navigation/last-photo');
-            $t->SetVariable('lbl_next', _t('PHOO_NEXT'));
-            $t->SetVariable('lbl_last', _t('PHOO_LAST'));
-            $t->ParseBlock('ViewImage/navigation/last-photo');
+            $tpl->SetBlock('ViewImage/navigation/last-photo');
+            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
+            $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
+            $tpl->ParseBlock('ViewImage/navigation/last-photo');
         }
 
-        $t->ParseBlock('ViewImage/navigation');
+        $tpl->ParseBlock('ViewImage/navigation');
 
         // EXIF STUFF
         if ($settings['show_exif_info'] == 'true' && isset($image['exif']) && count($image['exif']) > 0) {
@@ -334,20 +332,20 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 $datatext .= _t('PHOO_FOCAL_LENGTH') . ': ' . $image['exif']['focallength'];
             }
 
-            $t->SetBlock('ViewImage/exif');
-            $t->SetVariable('exif_info', _t('PHOO_EXIF_INFO'));
-            $t->SetVariable('cameraimg', $image['exif']['cameraimg']);
+            $tpl->SetBlock('ViewImage/exif');
+            $tpl->SetVariable('exif_info', _t('PHOO_EXIF_INFO'));
+            $tpl->SetVariable('cameraimg', $image['exif']['cameraimg']);
             if (!empty($image['exif']['camera']))  {
-                $t->SetVariable('camera', $image['exif']['camera']);
+                $tpl->SetVariable('camera', $image['exif']['camera']);
             } else {
-                $t->SetVariable('camera', _t('PHOO_UNKNOWN_CAM'));
+                $tpl->SetVariable('camera', _t('PHOO_UNKNOWN_CAM'));
             }
-            $t->SetVariable('data', $datatext);
-            $t->ParseBlock('ViewImage/exif');
+            $tpl->SetVariable('data', $datatext);
+            $tpl->ParseBlock('ViewImage/exif');
         }
-        $t->ParseBlock('ViewImage');
+        $tpl->ParseBlock('ViewImage');
 
-        return $t->Get();
+        return $tpl->Get();
     }
 
     /**
@@ -374,9 +372,8 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         }
 
         $this->SetTitle(_t('PHOO_PHOTOBLOG'));
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('Photoblog.html');
-        $t->SetBlock('photoblog_portrait');
+        $tpl = $this->gadget->loadTemplate('Photoblog.html');
+        $tpl->SetBlock('photoblog_portrait');
         $first = true;
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $date = $GLOBALS['app']->loadDate();
@@ -388,31 +385,31 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         continue;
                     }
 
-                    $t->SetBlock('photoblog_portrait/item');
-                    $t->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
+                    $tpl->SetBlock('photoblog_portrait/item');
+                    $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
                     $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
-                    $t->SetVariable('url', $url);
-                    $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $t->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $t->SetVariable('width',  $imgData[0]);
-                    $t->SetVariable('height', $imgData[1]);
-                    $t->ParseBlock('photoblog_portrait/item');
+                    $tpl->SetVariable('url', $url);
+                    $tpl->SetVariable('title', $entry['name']);
+                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
+                    $tpl->SetVariable('width',  $imgData[0]);
+                    $tpl->SetVariable('height', $imgData[1]);
+                    $tpl->ParseBlock('photoblog_portrait/item');
                 } else {
                     $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['medium']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
 
-                    $t->SetBlock('photoblog_portrait/main');
-                    $t->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
-                    $t->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
-                    $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $t->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $t->SetVariable('width',  $imgData[0]);
-                    $t->SetVariable('height', $imgData[1]);
-                    $t->ParseBlock('photoblog_portrait/main');
+                    $tpl->SetBlock('photoblog_portrait/main');
+                    $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
+                    $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
+                    $tpl->SetVariable('title', $entry['name']);
+                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
+                    $tpl->SetVariable('width',  $imgData[0]);
+                    $tpl->SetVariable('height', $imgData[1]);
+                    $tpl->ParseBlock('photoblog_portrait/main');
                 }
                 $first = false;
             } else {
@@ -422,36 +419,36 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         continue;
                     }
 
-                    $t->SetBlock('photoblog_portrait/main');
-                    $t->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
-                    $t->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
-                    $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $t->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $t->SetVariable('width',  $imgData[0]);
-                    $t->SetVariable('height', $imgData[1]);
-                    $t->ParseBlock('photoblog_portrait/main');
+                    $tpl->SetBlock('photoblog_portrait/main');
+                    $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
+                    $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
+                    $tpl->SetVariable('title', $entry['name']);
+                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
+                    $tpl->SetVariable('width',  $imgData[0]);
+                    $tpl->SetVariable('height', $imgData[1]);
+                    $tpl->ParseBlock('photoblog_portrait/main');
                 } else {
                     $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['thumb']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
 
-                    $t->SetBlock('photoblog_portrait/item');
-                    $t->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
+                    $tpl->SetBlock('photoblog_portrait/item');
+                    $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
                     $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
-                    $t->SetVariable('url', $url);
-                    $t->SetVariable('title', $entry['name']);
-                    $t->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $t->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $t->SetVariable('width',  $imgData[0]);
-                    $t->SetVariable('height', $imgData[1]);
-                    $t->ParseBlock('photoblog_portrait/item');
+                    $tpl->SetVariable('url', $url);
+                    $tpl->SetVariable('title', $entry['name']);
+                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
+                    $tpl->SetVariable('width',  $imgData[0]);
+                    $tpl->SetVariable('height', $imgData[1]);
+                    $tpl->ParseBlock('photoblog_portrait/item');
                 }
             }
         }
-        $t->ParseBlock('photoblog_portrait');
-        return $t->Get();
+        $tpl->ParseBlock('photoblog_portrait');
+        return $tpl->Get();
     }
 
     /**
@@ -466,8 +463,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
      */
     function ShowComments($id, $albumid, $reply_link, $data = null)
     {
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('Comment.html');
+        $tpl = $this->gadget->loadTemplate('Comment.html');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         if (is_null($data)) {
             $comments = $model->GetComments($id);
@@ -603,8 +599,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
         }
 
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('Comment.html');
+        $tpl = $this->gadget->loadTemplate('Comment.html');
         $tpl->SetBlock('comment');
         $tpl->SetVariable('name',  $post['name']);
         $tpl->SetVariable('email', $post['email']);

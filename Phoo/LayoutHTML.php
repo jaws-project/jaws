@@ -23,34 +23,33 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Random($albumid = null)
     {
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('Random.html');
+        $tpl = $this->gadget->loadTemplate('Random.html');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $r = $model->GetRandomImage($albumid);
         if (!Jaws_Error::IsError($r)) {
-            $t->SetBlock('random_image');
+            $tpl->SetBlock('random_image');
             include_once JAWS_PATH . 'include/Jaws/Image.php';
             $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $r['thumb']);
             if (!Jaws_Error::IsError($imgData)) {
-                $t->SetVariable('width',  $imgData[0]);
-                $t->SetVariable('height', $imgData[1]);
+                $tpl->SetVariable('width',  $imgData[0]);
+                $tpl->SetVariable('height', $imgData[1]);
             }
-            $t->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
-            $t->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
+            $tpl->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
+            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
                                                                     'ViewImage',
                                                                     array(
                                                                         'id' => $r['id'],
                                                                         'albumid' => $r['phoo_album_id'])));
-            $t->SetVariable('name',     $r['name']);
-            $t->SetVariable('filename', $r['filename']);
-            $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $r['thumb']));
-            $t->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $r['medium']));
-            $t->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $r['image']));
-            $t->SetVariable('img_desc', $r['stripped_description']);
-            $t->ParseBlock('random_image');
+            $tpl->SetVariable('name',     $r['name']);
+            $tpl->SetVariable('filename', $r['filename']);
+            $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $r['thumb']));
+            $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $r['medium']));
+            $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $r['image']));
+            $tpl->SetVariable('img_desc', $r['stripped_description']);
+            $tpl->ParseBlock('random_image');
         }
 
-        return $t->Get();
+        return $tpl->Get();
     }
 
     /**
@@ -61,10 +60,9 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Moblog()
     {
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('Moblog.html');
-        $t->SetBlock('moblog');
-        $t->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
+        $tpl = $this->gadget->loadTemplate('Moblog.html');
+        $tpl->SetBlock('moblog');
+        $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $moblog = $model->GetMoblog();
@@ -77,23 +75,23 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
                     continue;
                 }
 
-                $t->SetBlock('moblog/item');
-                $t->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
+                $tpl->SetBlock('moblog/item');
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
                                                                        'ViewImage',
                                                                        array('id' => $mb['id'],
                                                                              'albumid' => $mb['phoo_album_id'])));
-                $t->SetVariable('name',     $mb['name']);
-                $t->SetVariable('img_desc', $mb['stripped_description']);
-                $t->SetVariable('filename', $mb['filename']);
-                $t->SetVariable('width',    $imgData[0]);
-                $t->SetVariable('height',   $imgData[1]);
-                $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $mb['thumb']));
-                $t->SetVariable('createtime', $objDate->Format($mb['createtime']));
-                $t->ParseBlock('moblog/item');
+                $tpl->SetVariable('name',     $mb['name']);
+                $tpl->SetVariable('img_desc', $mb['stripped_description']);
+                $tpl->SetVariable('filename', $mb['filename']);
+                $tpl->SetVariable('width',    $imgData[0]);
+                $tpl->SetVariable('height',   $imgData[1]);
+                $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $mb['thumb']));
+                $tpl->SetVariable('createtime', $objDate->Format($mb['createtime']));
+                $tpl->ParseBlock('moblog/item');
             }
         }
-        $t->ParseBlock('moblog');
-        return $t->Get();
+        $tpl->ParseBlock('moblog');
+        return $tpl->Get();
     }
 
     /**
@@ -104,10 +102,9 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
      */
     function AlbumList()
     {
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('Albums.html');
-        $t->SetBlock('albums');
-        $t->SetVariable('title', _t('PHOO_ALBUMS'));
+        $tpl = $this->gadget->loadTemplate('Albums.html');
+        $tpl->SetBlock('albums');
+        $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
@@ -118,25 +115,25 @@ class Phoo_LayoutHTML extends Jaws_Gadget_HTML
                     continue;
                 }
 
-                $t->SetBlock('albums/item');
+                $tpl->SetBlock('albums/item');
                 $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $album['thumb']);
                 if (!Jaws_Error::IsError($imgData)) {
-                    $t->SetVariable('width',    $imgData[0]);
-                    $t->SetVariable('height',   $imgData[1]);
+                    $tpl->SetVariable('width',    $imgData[0]);
+                    $tpl->SetVariable('height',   $imgData[1]);
                 }
                 $url = $GLOBALS['app']->Map->GetURLFor('Phoo','ViewAlbum', array('id' => $album['id']));
-                $t->SetVariable('url',      $url);
-                $t->SetVariable('name',     $album['name']);
-                $t->SetVariable('filename', $album['filename']);
-                $t->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $album['thumb']));
-                $t->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
-                $t->SetVariable('description', $this->gadget->ParseText($album['description']));
-                $t->SetVariable('createtime', $date->Format($album['createtime']));
-                $t->ParseBlock('albums/item');
+                $tpl->SetVariable('url',      $url);
+                $tpl->SetVariable('name',     $album['name']);
+                $tpl->SetVariable('filename', $album['filename']);
+                $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $album['thumb']));
+                $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
+                $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
+                $tpl->SetVariable('createtime', $date->Format($album['createtime']));
+                $tpl->ParseBlock('albums/item');
             }
         }
-        $t->ParseBlock('albums');
-        return $t->Get();
+        $tpl->ParseBlock('albums');
+        return $tpl->Get();
     }
 
 }

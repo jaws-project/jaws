@@ -68,10 +68,9 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      */
     function AdminPhotos()
     {
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('AdminPhotos.html');
-        $t->SetBlock('phoo');
-        $t->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
+        $tpl = $this->gadget->loadTemplate('AdminPhotos.html');
+        $tpl->SetBlock('phoo');
+        $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         $request =& Jaws_Request::getInstance();
         $album   = $request->get('album', 'get');
@@ -81,8 +80,8 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $albums = $model->GetAlbums('createtime', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $objDate = $GLOBALS['app']->loadDate();
-            $t->SetBlock('phoo/photos');
-            $t->SetVariable('base_action', BASE_SCRIPT . '?gadget=Phoo');
+            $tpl->SetBlock('phoo/photos');
+            $tpl->SetVariable('base_action', BASE_SCRIPT . '?gadget=Phoo');
 
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
@@ -114,10 +113,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
                     }
                 }
             }
-            $t->SetVariable('date', _t('GLOBAL_DATE'));
+            $tpl->SetVariable('date', _t('GLOBAL_DATE'));
             $datecombo->SetDefault(isset($post['date']) ? $post['date'] : null);
             $datecombo->AddEvent(ON_CHANGE, 'selectAllAlbums(); this.form.submit();');
-            $t->SetVariable('date_combo', $datecombo->Get());
+            $tpl->SetVariable('date_combo', $datecombo->Get());
 
             $albumcombo =& Piwi::CreateWidget('Combo', 'album[]');
             $albumcombo->SetID('albums_list');
@@ -148,15 +147,15 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
 
             $albumcombo->SetDefault($r_album);
             $albumcombo->AddEvent(ON_CHANGE, 'this.form.submit();');
-            $t->SetVariable('albums', _t('PHOO_ALBUMS'));
-            $t->SetVariable('albums_combo', $albumcombo->Get());
+            $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
+            $tpl->SetVariable('albums_combo', $albumcombo->Get());
 
             if ($this->gadget->GetPermission('ManageAlbums') === true) {
                 $newalbum =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
                 $newalbum->AddEvent(ON_CLICK, "this.form.action.value='NewAlbum'; this.form.submit();");
-                $t->SetVariable('new_album', $newalbum->Get());
+                $tpl->SetVariable('new_album', $newalbum->Get());
             } else {
-                $t->SetVariable('new_album','');
+                $tpl->SetVariable('new_album','');
             }
 
             // Ugly hack to convert $r_album to array...
@@ -190,10 +189,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
                             ) {
                             continue;
                         }
-                        $t->SetBlock('phoo/photos/albums');
-                        $t->SetVariable('title', $album['name']);
-                        $t->SetVariable('description', $this->gadget->ParseText($album['description']));
-                        $t->SetVariable('createtime', $objDate->Format($album['createtime']));
+                        $tpl->SetBlock('phoo/photos/albums');
+                        $tpl->SetVariable('title', $album['name']);
+                        $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
+                        $tpl->SetVariable('createtime', $objDate->Format($album['createtime']));
                         $upload_url = BASE_SCRIPT."?gadget=Phoo&amp;action=UploadPhotos&amp;album={$album['id']}";
                         $manageAlbumActions = "<a href=\"{$upload_url}\">"._t('PHOO_UPLOAD_PHOTOS')."</a>";
                         $manageAlbumActions.= " | <a href=\"".BASE_SCRIPT."?gadget=Phoo&amp;action=EditAlbum&amp;album={$album['id']}\">".
@@ -203,47 +202,47 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
                             "')) { window.location = '".BASE_SCRIPT.'?gadget=Phoo&amp;action=DeleteAlbum&amp'.
                             ";album={$album['id']}';  }\">"._t('PHOO_DELETE_ALBUM')."</a>";
                         if ($album['id'] != 0) {
-                            $t->SetVariable('actions', $manageAlbumActions);
+                            $tpl->SetVariable('actions', $manageAlbumActions);
                         } else {
-                            $t->SetVariable('actions', '');
+                            $tpl->SetVariable('actions', '');
                         }
 
                         if ((isset($album['images']) && is_array($album['images'])) &&(count($album['images']) > 0)) {
                             // Show photos
                             foreach ($album['images'] as $img) {
                                 $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $img['image']);
-                                $t->SetBlock('phoo/photos/albums/item');
-                                $t->SetVariable('url', BASE_SCRIPT . '?gadget=Phoo&amp;action=EditPhoto&amp;image='.
+                                $tpl->SetBlock('phoo/photos/albums/item');
+                                $tpl->SetVariable('url', BASE_SCRIPT . '?gadget=Phoo&amp;action=EditPhoto&amp;image='.
                                                 $img['id'].'&amp;album='.$albumId);
                                 if (Jaws_Error::IsError($imgData)) {
-                                    $t->SetVariable('thumb',  'images/unknown.png');
-                                    $t->SetVariable('width',  60);
-                                    $t->SetVariable('height', 60);
-                                    $t->SetBlock('phoo/photos/albums/item/notfound');
-                                    $t->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
-                                    $t->ParseBlock('phoo/photos/albums/item/notfound');
+                                    $tpl->SetVariable('thumb',  'images/unknown.png');
+                                    $tpl->SetVariable('width',  60);
+                                    $tpl->SetVariable('height', 60);
+                                    $tpl->SetBlock('phoo/photos/albums/item/notfound');
+                                    $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
+                                    $tpl->ParseBlock('phoo/photos/albums/item/notfound');
                                 } else {
-                                    $t->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
-                                    $t->SetVariable('width',  $imgData[0]);
-                                    $t->SetVariable('height', $imgData[1]);
+                                    $tpl->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                    $tpl->SetVariable('width',  $imgData[0]);
+                                    $tpl->SetVariable('height', $imgData[1]);
                                 }
-                                $t->SetVariable('name',   $img['name']);
-                                $t->SetVariable('album',  $img['albumid']);
+                                $tpl->SetVariable('name',   $img['name']);
+                                $tpl->SetVariable('album',  $img['albumid']);
                                 if ($img['published'] == false) {
-                                    $t->SetBlock('phoo/photos/albums/item/notpublished');
-                                    $t->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
-                                    $t->ParseBlock('phoo/photos/albums/item/notpublished');
+                                    $tpl->SetBlock('phoo/photos/albums/item/notpublished');
+                                    $tpl->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
+                                    $tpl->ParseBlock('phoo/photos/albums/item/notpublished');
                                 }
-                                $t->ParseBlock('phoo/photos/albums/item');
+                                $tpl->ParseBlock('phoo/photos/albums/item');
                             }
                         } else {
                             if ($album['id'] != 0) {
-                                $t->SetBlock('phoo/photos/albums/nophotos');
-                                $t->SetVariable('message', "<a href=\"{$upload_url}\">"._t('PHOO_START_UPLOADING_PHOTOS')."</a>");
-                                $t->ParseBlock('phoo/photos/albums/nophotos');
+                                $tpl->SetBlock('phoo/photos/albums/nophotos');
+                                $tpl->SetVariable('message', "<a href=\"{$upload_url}\">"._t('PHOO_START_UPLOADING_PHOTOS')."</a>");
+                                $tpl->ParseBlock('phoo/photos/albums/nophotos');
                             }
                         }
-                        $t->ParseBlock('phoo/photos/albums');
+                        $tpl->ParseBlock('phoo/photos/albums');
                     } else {
                         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
                     }
@@ -255,31 +254,31 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             // Failures
             if (is_array($failures) && count($failures) > 0) {
                 foreach ($failures as $f) {
-                    $t->SetBlock('phoo/photos/failures');
-                    $t->SetVariable('message', $f);
-                    $t->ParseBlock('phoo/photos/failures');
+                    $tpl->SetBlock('phoo/photos/failures');
+                    $tpl->SetVariable('message', $f);
+                    $tpl->ParseBlock('phoo/photos/failures');
                 }
             }
             //Delete key
             $GLOBALS['app']->Session->DeleteAttribute('failures');
 
 
-            $t->ParseBlock('phoo/photos');
+            $tpl->ParseBlock('phoo/photos');
         } else {
-            $t->SetBlock('phoo/noalbums');
-            $t->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
+            $tpl->SetBlock('phoo/noalbums');
+            $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'NewAlbum'));
             $b =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
             $b->SetSubmit(true);
             $form->Add($b);
-            $t->SetVariable('form', $form->Get());
-            $t->ParseBlock('phoo/noalbums');
+            $tpl->SetVariable('form', $form->Get());
+            $tpl->ParseBlock('phoo/noalbums');
         }
 
-        $t->ParseBlock('phoo');
-        return $t->Get();
+        $tpl->ParseBlock('phoo');
+        return $tpl->Get();
     }
 
     /**
@@ -311,31 +310,30 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $allow_comments = $image['allow_comments'];
         $published      = $image['published'];
 
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('EditPhoto.html');
-        $t->SetBlock('edit_photo');
-        $t->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
-        $t->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
+        $tpl = $this->gadget->loadTemplate('EditPhoto.html');
+        $tpl->SetBlock('edit_photo');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
+        $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         // Tabs titles
-        $t->SetVariable('editPhoto_tab',  _t('GLOBAL_EDIT', _t('PHOO_PHOTO')));
-        $t->SetVariable('albums_tab', _t('PHOO_ALBUMS'));
-        $t->SetVariable('description_tab', _t('PHOO_PHOTO_DESCRIPTION'));
+        $tpl->SetVariable('editPhoto_tab',  _t('GLOBAL_EDIT', _t('PHOO_PHOTO')));
+        $tpl->SetVariable('albums_tab', _t('PHOO_ALBUMS'));
+        $tpl->SetVariable('description_tab', _t('PHOO_PHOTO_DESCRIPTION'));
 
         $photoid =& Piwi::CreateWidget('HiddenEntry', 'image', $id);
-        $t->SetVariable('imageid', $photoid->Get());
+        $tpl->SetVariable('imageid', $photoid->Get());
         $filterby =& Piwi::CreateWidget('HiddenEntry', 'filterby', 'id');
-        $t->SetVariable('filterby', $filterby->Get());
+        $tpl->SetVariable('filterby', $filterby->Get());
         $filter =& Piwi::CreateWidget('HiddenEntry', 'filter', $id);
-        $t->SetVariable('filter', $filter->Get());
+        $tpl->SetVariable('filter', $filter->Get());
         $albumid =& Piwi::CreateWidget('HiddenEntry', 'fromalbum', $get['album']);
-        $t->SetVariable('albumid', $albumid->Get());
-        $t->SetVariable('name', _t('PHOO_PHOTO_TITLE'));
+        $tpl->SetVariable('albumid', $albumid->Get());
+        $tpl->SetVariable('name', _t('PHOO_PHOTO_TITLE'));
 
         $name =& Piwi::CreateWidget('Entry', 'title', $title);
         $name->SetStyle('width: 99%;');
         $name->setId('title');
-        $t->SetVariable('name_field', $name->Get());
+        $tpl->SetVariable('name_field', $name->Get());
 
         // Include the editor
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
@@ -348,7 +346,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $editor->TextArea->SetRows(6);
 
         $editor->setId('description');
-        $t->SetVariable('description', $editor->Get());
+        $tpl->SetVariable('description', $editor->Get());
 
         $albumchecks =& Piwi::CreateWidget('CheckButtons', 'album', 'vertical');
         $albumsbyname = $model->GetAlbums('name', 'ASC');
@@ -358,57 +356,57 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             }
         }
         $albumchecks->SetDefault($albums);
-        $t->SetVariable('albums', _t('PHOO_ALBUMS'));
-        $t->SetVariable('album', _t('PHOO_ALBUM'));
-        $t->SetVariable('album_field', $albumchecks->Get());
+        $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
+        $tpl->SetVariable('album', _t('PHOO_ALBUM'));
+        $tpl->SetVariable('album_field', $albumchecks->Get());
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
         $selected = $allow_comments === true ? true : false;
         $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
-        $t->SetVariable('allow_comments_field', $comments->Get());
+        $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
-        $t->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', _t('PHOO_STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
         $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
         $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
         $published = $published === true ? true : false;
         $statCombo->SetDefault($published);
-        $t->SetVariable('status_field', $statCombo->Get());
+        $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Photo actions
-        $t->SetVariable('image_thumb', $filename.'?'.rand());
+        $tpl->SetVariable('image_thumb', $filename.'?'.rand());
 
         // Photo actions
         $comments =& Piwi::CreateWidget('Button', 'comments', '', 'images/stock/stock-comments.png');
         $comments->AddEvent(ON_CLICK, "this.form.action.value = 'ManageComments'; this.form.submit();");
-        $t->SetVariable('comments', $comments->Get());
+        $tpl->SetVariable('comments', $comments->Get());
         $delete =& Piwi::CreateWidget('Button', 'delete', '', STOCK_DELETE);
         $delete->AddEvent(ON_CLICK, "if (confirm('"._t('PHOO_DELETE_PHOTO_CONFIRM').
                           "')) { this.form.action.value = 'DeletePhoto'; this.form.submit();}");
-        $t->SetVariable('delete', $delete->Get());
+        $tpl->SetVariable('delete', $delete->Get());
         if (function_exists('imagerotate')) {
             $rleft =& Piwi::CreateWidget('Button', 'rotate_left', '', STOCK_ROTATE_LEFT);
             $rleft->AddEvent(ON_CLICK, "this.form.action.value = 'RotateLeft'; this.form.submit();");
-            $t->SetVariable('rotate_left', $rleft->Get());
+            $tpl->SetVariable('rotate_left', $rleft->Get());
             $rright =& Piwi::CreateWidget('Button', 'rotate_right', '', STOCK_ROTATE_RIGHT);
             $rright->AddEvent(ON_CLICK, "this.form.action.value = 'RotateRight'; this.form.submit();");
-            $t->SetVariable('rotate_right', $rright->Get());
+            $tpl->SetVariable('rotate_right', $rright->Get());
         }
-        $t->SetVariable('photo_name', $title);
+        $tpl->SetVariable('photo_name', $title);
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
-        $t->SetVariable('cancel', $cancel->Get());
+        $tpl->SetVariable('cancel', $cancel->Get());
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'updatePhoto();');
         //$save->SetSubmit(true);
-        $t->SetVariable('save', $save->Get());
+        $tpl->SetVariable('save', $save->Get());
 
-        $t->ParseBlock('edit_photo');
-        return $t->Get();
+        $tpl->ParseBlock('edit_photo');
+        return $tpl->Get();
     }
 
     /**
@@ -594,10 +592,9 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $album = $request->get('album', 'get');
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('UploadPhotos.html');
-        $t->SetBlock('upload');
-        $t->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
+        $tpl = $this->gadget->loadTemplate('UploadPhotos.html');
+        $tpl->SetBlock('upload');
+        $tpl->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
 
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $phooFieldset = new Jaws_Widgets_FieldSet(_t('PHOO_UPLOAD_PHOTOS'));
@@ -645,10 +642,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $phooForm->Add($phooFieldset);
         $phooForm->Add($buttonbox);
 
-        $t->SetVariable('form', $phooForm->Get());
+        $tpl->SetVariable('form', $phooForm->Get());
 
-        $t->ParseBlock('upload');
-        return $t->Get();
+        $tpl->ParseBlock('upload');
+        return $tpl->Get();
     }
 
     /**
@@ -734,18 +731,17 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $action      = $request->get('action', 'get');
         $description = $request->get('description', 'post', false);
 
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('EditAlbum.html');
-        $t->SetBlock('edit_album');
-        $t->SetVariable('base_script', BASE_SCRIPT);
-        $t->SetVariable('menubar', $this->MenuBar(isset($action) ? $action : ''));
+        $tpl = $this->gadget->loadTemplate('EditAlbum.html');
+        $tpl->SetBlock('edit_album');
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('menubar', $this->MenuBar(isset($action) ? $action : ''));
 
-        $t->SetVariable('action', 'SaveNewAlbum');
+        $tpl->SetVariable('action', 'SaveNewAlbum');
 
         $name =& Piwi::CreateWidget('Entry', 'name');
         $name->SetStyle('width: 100%;');
-        $t->SetVariable('name', _t('PHOO_ALBUM_NAME'));
-        $t->SetVariable('name_field', $name->get());
+        $tpl->SetVariable('name', _t('PHOO_ALBUM_NAME'));
+        $tpl->SetVariable('name_field', $name->get());
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
@@ -755,7 +751,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             $selected = false;
         }
         $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
-        $t->SetVariable('allow_comments_field', $comments->get());
+        $tpl->SetVariable('allow_comments_field', $comments->get());
 
         // Status
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
@@ -768,8 +764,8 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             $published = false;
         }
         $statCombo->SetDefault($published);
-        $t->SetVariable('status', _t('PHOO_STATUS'));
-        $t->SetVariable('status_field', $statCombo->get());
+        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status_field', $statCombo->get());
 
         $desc = isset($description) ? $description : '';
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
@@ -779,17 +775,17 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $editor->SetWidth('100%');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
-        $t->SetVariable('description', $editor->get());
+        $tpl->SetVariable('description', $editor->get());
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'history.go(-1)');
-        $t->SetVariable('cancel', $cancel->Get());
+        $tpl->SetVariable('cancel', $cancel->Get());
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
         $save->SetSubmit(true);
-        $t->SetVariable('save', $save->Get());
+        $tpl->SetVariable('save', $save->Get());
 
-        $t->ParseBlock('edit_album');
-        return $t->Get();
+        $tpl->ParseBlock('edit_album');
+        return $tpl->Get();
     }
 
     /**
@@ -835,20 +831,19 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
         }
 
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('EditAlbum.html');
-        $t->SetBlock('edit_album');
-        $t->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
-        $t->SetVariable('menubar', $this->MenuBar($get['action']));
+        $tpl = $this->gadget->loadTemplate('EditAlbum.html');
+        $tpl->SetBlock('edit_album');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
+        $tpl->SetVariable('menubar', $this->MenuBar($get['action']));
 
-        $t->SetVariable('action', 'SaveEditAlbum');
+        $tpl->SetVariable('action', 'SaveEditAlbum');
         $albumid =& Piwi::CreateWidget('HiddenEntry', 'album', $album['id']);
-        $t->SetVariable('album', $albumid->Get());
+        $tpl->SetVariable('album', $albumid->Get());
 
         $name =& Piwi::CreateWidget('Entry', 'name', $album['name']);
         $name->SetStyle('width: 100%;');
-        $t->SetVariable('name', _t('PHOO_ALBUM_NAME'));
-        $t->SetVariable('name_field', $name->get());
+        $tpl->SetVariable('name', _t('PHOO_ALBUM_NAME'));
+        $tpl->SetVariable('name_field', $name->get());
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
@@ -858,10 +853,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             $selected = false;
         }
         $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
-        $t->SetVariable('allow_comments_field', $comments->get());
+        $tpl->SetVariable('allow_comments_field', $comments->get());
 
         // Status
-        $t->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', _t('PHOO_STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
         $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
@@ -872,8 +867,8 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             $published = false;
         }
         $statCombo->SetDefault($published);
-        $t->SetVariable('status', _t('PHOO_STATUS'));
-        $t->SetVariable('status_field', $statCombo->get());
+        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status_field', $statCombo->get());
 
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $album['description'], false);
         $editor->setLabel(_t('PHOO_ALBUM_DESC'));
@@ -882,18 +877,18 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $editor->SetWidth('100%');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
-        $t->SetVariable('description', $editor->get());
+        $tpl->SetVariable('description', $editor->get());
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
-        $t->SetVariable('cancel', $cancel->Get());
+        $tpl->SetVariable('cancel', $cancel->Get());
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
         $save->SetSubmit(true);
-        $t->SetVariable('save', $save->Get());
+        $tpl->SetVariable('save', $save->Get());
 
-        $t->ParseBlock('edit_album');
+        $tpl->ParseBlock('edit_album');
 
-        return $t->Get();
+        return $tpl->Get();
     }
 
     /**
@@ -986,8 +981,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         }
 
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('ManageComments.html');
+        $tpl = $this->gadget->loadTemplate('ManageComments.html');
         $tpl->SetBlock('manage_comments');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
@@ -1057,8 +1051,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('EditComment.html');
+        $tpl = $this->gadget->loadTemplate('EditComment.html');
         $tpl->SetBlock('edit_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
@@ -1142,8 +1135,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('ReplyComment.html');
+        $tpl = $this->gadget->loadTemplate('ReplyComment.html');
         $tpl->SetBlock('reply_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
@@ -1281,8 +1273,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
     function AdditionalSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('AdditionalSettings.html');
+        $tpl = $this->gadget->loadTemplate('AdditionalSettings.html');
         $tpl->SetBlock('additional');
 
         // Header
@@ -1510,8 +1501,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
     function Import()
     {
         $this->gadget->CheckPermission('Import');
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('Import.html');
+        $tpl = $this->gadget->loadTemplate('Import.html');
         $tpl->SetBlock('import');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
@@ -1577,8 +1567,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('album', 'images'), 'post');
 
-        $tpl = new Jaws_Template('gadgets/Phoo/templates/');
-        $tpl->Load('FinishImport.html');
+        $tpl = $this->gadget->loadTemplate('FinishImport.html');
         $tpl->SetBlock('finishimport');
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
         $tpl->SetVariable('importing', _t('PHOO_IMPORTING'));

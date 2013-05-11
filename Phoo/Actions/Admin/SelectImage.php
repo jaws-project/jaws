@@ -27,21 +27,20 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('SelectImage.html');
-        $t->SetBlock('ImageSelect');
+        $tpl = $this->gadget->loadTemplate('SelectImage.html');
+        $tpl->SetBlock('ImageSelect');
 
         $GLOBALS['app']->LoadPlugin('PhooInsert');
-        $t->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_SELECT'));
+        $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_SELECT'));
 
         $dir = _t('GLOBAL_LANG_DIRECTION');
-        $t->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
+        $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $extraParams = '';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'TinyMCE') {
-            $t->SetBlock('ImageSelect/script');
-            $t->ParseBlock('ImageSelect/script');
+            $tpl->SetBlock('ImageSelect/script');
+            $tpl->ParseBlock('ImageSelect/script');
         } elseif ($editor === 'CKEditor') {
             $getParams = $request->get(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor=' . $getParams['CKEditor'] .
@@ -49,7 +48,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
                            '&amp;langCode=' . $getParams['langCode'];
 
             $ckFuncIndex = $request->get('CKEditorFuncNum', 'get');
-            $t->SetVariable('ckFuncIndex', $ckFuncIndex);
+            $tpl->SetVariable('ckFuncIndex', $ckFuncIndex);
         }
 
         $image = $model->GetImageEntry($iGet['image']);
@@ -70,39 +69,39 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
         $submit =& Piwi::CreateWidget('Button', 'other_pic_button', _t('PHOO_SELECT_OTHER_IMAGE'), STOCK_LEFT);
         $submit->SetSubmit();
         if (empty($image)) {
-            $t->SetBlock('ImageSelect/not_published');
-            $t->SetVariable('not_published_label', _t('PHOO_NOT_PUBLISHED'));
+            $tpl->SetBlock('ImageSelect/not_published');
+            $tpl->SetVariable('not_published_label', _t('PHOO_NOT_PUBLISHED'));
             if (isset($r_album)){
-                $t->SetVariable('album', $r_album);
+                $tpl->SetVariable('album', $r_album);
             }
             $buttonbox->Add($submit);
-            $t->SetVariable('button_bar',$buttonbox->Get());
-            $t->ParseBlock('ImageSelect/not_published');
+            $tpl->SetVariable('button_bar',$buttonbox->Get());
+            $tpl->ParseBlock('ImageSelect/not_published');
         } else {
-            $t->SetBlock('ImageSelect/selected');
-            $t->SetVariable('extra_params', $extraParams);
+            $tpl->SetBlock('ImageSelect/selected');
+            $tpl->SetVariable('extra_params', $extraParams);
             $filename = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
             $title = (empty($image['title']))? '' : $image['title'];
             $desc = $image['description'];
             if (isset($r_album)){
-                $t->SetVariable('album',$r_album);
+                $tpl->SetVariable('album',$r_album);
             }
-            $t->SetVariable('t_title',            _t('PHOO_PHOTO_TITLE'));
-            $t->SetVariable('t_desc',             _t('GLOBAL_DESCRIPTION'));
-            $t->SetVariable('t_size',             _t('PHOO_SIZE'));
-            $t->SetVariable('t_thumb',            _t('PHOO_THUMB'));
-            $t->SetVariable('t_medium',           _t('PHOO_MEDIUM'));
-            $t->SetVariable('insert_image_title', _t('PHOO_INSERTIMAGE'));
-            $t->SetVariable('s_image',            $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
-            $t->SetVariable('s_name',             $title);
-            $t->SetVariable('s_desc',             $desc);
-            $t->SetVariable('s_picture',          $image['id']);
-            $t->SetVariable('s_album',            $r_album);
+            $tpl->SetVariable('t_title',            _t('PHOO_PHOTO_TITLE'));
+            $tpl->SetVariable('t_desc',             _t('GLOBAL_DESCRIPTION'));
+            $tpl->SetVariable('t_size',             _t('PHOO_SIZE'));
+            $tpl->SetVariable('t_thumb',            _t('PHOO_THUMB'));
+            $tpl->SetVariable('t_medium',           _t('PHOO_MEDIUM'));
+            $tpl->SetVariable('insert_image_title', _t('PHOO_INSERTIMAGE'));
+            $tpl->SetVariable('s_image',            $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
+            $tpl->SetVariable('s_name',             $title);
+            $tpl->SetVariable('s_desc',             $desc);
+            $tpl->SetVariable('s_picture',          $image['id']);
+            $tpl->SetVariable('s_album',            $r_album);
 
             if ($editor === 'TextArea') {
-                $t->SetBlock('ImageSelect/selected/linked');
-                $t->SetVariable('include_link', _t('PHOO_INCLUDE_LINK_TO_ALBUM'));
-                $t->ParseBlock('ImageSelect/selected/linked');
+                $tpl->SetBlock('ImageSelect/selected/linked');
+                $tpl->SetVariable('include_link', _t('PHOO_INCLUDE_LINK_TO_ALBUM'));
+                $tpl->ParseBlock('ImageSelect/selected/linked');
             }
 
             $insert_pic =& Piwi::CreateWidget('Button', 'insert_pic__button', _t('PHOO_INSERTIMAGE'), STOCK_SAVE);
@@ -114,17 +113,17 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
                                                          '$editor');");
             $buttonbox->Add($submit);
             $buttonbox->Add($insert_pic);
-            $t->SetVariable('button_bar',$buttonbox->Get());
+            $tpl->SetVariable('button_bar',$buttonbox->Get());
             if ($this->gadget->registry->fetch('keep_original') == 'true') {
-                $t->SetBlock('ImageSelect/selected/original');
-                $t->SetVariable('t_original',_t('PHOO_ORIGINAL'));
-                $t->ParseBlock('ImageSelect/selected/original');
+                $tpl->SetBlock('ImageSelect/selected/original');
+                $tpl->SetVariable('t_original',_t('PHOO_ORIGINAL'));
+                $tpl->ParseBlock('ImageSelect/selected/original');
             }
-            $t->ParseBlock('ImageSelect/selected');
+            $tpl->ParseBlock('ImageSelect/selected');
         }
 
-        $t->ParseBlock('ImageSelect');
-        return $t->Get();
+        $tpl->ParseBlock('ImageSelect');
+        return $tpl->Get();
     }
 
 }

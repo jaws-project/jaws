@@ -21,15 +21,14 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
     function BrowsePhoo()
     {
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $t = new Jaws_Template('gadgets/Phoo/templates/');
-        $t->Load('PhooBrowse.html');
-        $t->SetBlock('phoo_browse');
+        $tpl = $this->gadget->loadTemplate('PhooBrowse.html');
+        $tpl->SetBlock('phoo_browse');
 
         $GLOBALS['app']->LoadPlugin('PhooInsert');
-        $t->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_GALLERY'));
+        $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_GALLERY'));
 
         $dir = _t('GLOBAL_LANG_DIRECTION');
-        $t->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
+        $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $request =& Jaws_Request::getInstance();
         $album   = $request->get('album', 'get');
@@ -50,26 +49,26 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
         }
 
         if ($this->gadget->GetPermission('AddPhotos') && count($albums)>0) {
-            $t->SetBlock("phoo_browse/upload_photo");
-            $t->SetVariable('base_script', BASE_SCRIPT);
-            $t->SetVariable('extra_params', $extraParams);
-            $t->SetVariable('lbl_file_upload', _t('PHOO_UPLOAD_PHOTO'));
+            $tpl->SetBlock("phoo_browse/upload_photo");
+            $tpl->SetVariable('base_script', BASE_SCRIPT);
+            $tpl->SetVariable('extra_params', $extraParams);
+            $tpl->SetVariable('lbl_file_upload', _t('PHOO_UPLOAD_PHOTO'));
 
             $uploadfile =& Piwi::CreateWidget('FileEntry', 'photo1', '');
             $uploadfile->SetID('photo1');
-            $t->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
-            $t->SetVariable('uploadfile', $uploadfile->Get());
+            $tpl->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
+            $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript: uploadPhoto();");
-            $t->SetVariable('btn_upload_file', $btnSave->Get());
-            $t->ParseBlock("phoo_browse/upload_photo");
+            $tpl->SetVariable('btn_upload_file', $btnSave->Get());
+            $tpl->ParseBlock("phoo_browse/upload_photo");
         }
 
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $objDate = $GLOBALS['app']->loadDate();
-            $t->SetBlock ("phoo_browse/photos");
-            $t->SetVariable('extra_params', $extraParams);
+            $tpl->SetBlock ("phoo_browse/photos");
+            $tpl->SetVariable('extra_params', $extraParams);
 
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
@@ -99,10 +98,10 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
                     }
                 }
             }
-            $t->SetVariable("date",_t("GLOBAL_DATE"));
+            $tpl->SetVariable("date",_t("GLOBAL_DATE"));
             $datecombo->SetDefault(isset($post['date']) ? $post['date'] : null);
             $datecombo->AddEvent (new JSEvent (ON_CHANGE, "selectAllAlbums(); this.form.submit();"));
-            $t->SetVariable("date_combo",$datecombo->Get());
+            $tpl->SetVariable("date_combo",$datecombo->Get());
 
             $albumcombo =& Piwi::CreateWidget('Combo', 'album[]');
             $albumcombo->SetID('albums');
@@ -129,19 +128,19 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
                 $r_album = isset($album) ? $album : $firstAlbum;
             }
 
-            $t->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+            $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
             // Use for uploading image
             if (is_array($r_album)) {
-                $t->SetVariable('defaultAlbum', $r_album[0]);
+                $tpl->SetVariable('defaultAlbum', $r_album[0]);
             } else {
-                $t->SetVariable('defaultAlbum', $r_album);
+                $tpl->SetVariable('defaultAlbum', $r_album);
             }
 
 
             $albumcombo->SetDefault($r_album);
             $albumcombo->AddEvent (new JSEvent (ON_CHANGE, "document.album_form.submit();"));
-            $t->SetVariable('albums', _t('PHOO_ALBUMS'));
-            $t->SetVariable('albums_combo', $albumcombo->Get());
+            $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
+            $tpl->SetVariable('albums_combo', $albumcombo->Get());
 
             // Ugly hack to convert $r_album to array...
             if (!empty($r_album) && !is_array($r_album)) {
@@ -173,46 +172,46 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
                             continue;
                         }
 
-                        $t->SetBlock ('phoo_browse/photos/albums');
-                        $t->SetVariable ('title', $album['name']);
-                        $t->SetVariable ('description',$this->gadget->ParseText($album['description']));
-                        $t->SetVariable ('createtime', $objDate->Format($album['createtime']));
+                        $tpl->SetBlock ('phoo_browse/photos/albums');
+                        $tpl->SetVariable ('title', $album['name']);
+                        $tpl->SetVariable ('description',$this->gadget->ParseText($album['description']));
+                        $tpl->SetVariable ('createtime', $objDate->Format($album['createtime']));
 
                         if ((isset($album['images']) && is_array($album['images'])) &&(count($album['images']) > 0)) {
                             // Show photos
                             foreach ($album['images'] as $img) {
                                 $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $img['thumb']);
-                                $t->SetBlock ('phoo_browse/photos/albums/item');
-                                $t->SetVariable ('url',
+                                $tpl->SetBlock ('phoo_browse/photos/albums/item');
+                                $tpl->SetVariable ('url',
                                                  "admin.php?gadget=Phoo&amp;action=SelectImage&amp;".
                                                  "image={$img["id"]}&amp;album={$albumId}". $extraParams);
                                 if (Jaws_Error::IsError($imgData)) {
-                                    $t->SetVariable('thumb',  'images/unknown.png');
-                                    $t->SetVariable('width',  60);
-                                    $t->SetVariable('height', 60);
-                                    $t->SetBlock('phoo_browse/photos/albums/item/notfound');
-                                    $t->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
-                                    $t->ParseBlock('phoo_browse/photos/albums/item/notfound');
+                                    $tpl->SetVariable('thumb',  'images/unknown.png');
+                                    $tpl->SetVariable('width',  60);
+                                    $tpl->SetVariable('height', 60);
+                                    $tpl->SetBlock('phoo_browse/photos/albums/item/notfound');
+                                    $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
+                                    $tpl->ParseBlock('phoo_browse/photos/albums/item/notfound');
                                 } else {
-                                    $t->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
-                                    $t->SetVariable('width',  $imgData[0]);
-                                    $t->SetVariable('height', $imgData[1]);
+                                    $tpl->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                    $tpl->SetVariable('width',  $imgData[0]);
+                                    $tpl->SetVariable('height', $imgData[1]);
                                 }
-                                $t->SetVariable('name',   $img['name']);
-                                $t->SetVariable('album',  $img['albumid']);
+                                $tpl->SetVariable('name',   $img['name']);
+                                $tpl->SetVariable('album',  $img['albumid']);
                                 if ($img['published'] == false) {
-                                    $t->SetBlock('phoo_browse/photos/albums/item/notpublished');
-                                    $t->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
-                                    $t->ParseBlock('phoo_browse/photos/albums/item/notpublished');
+                                    $tpl->SetBlock('phoo_browse/photos/albums/item/notpublished');
+                                    $tpl->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
+                                    $tpl->ParseBlock('phoo_browse/photos/albums/item/notpublished');
                                 }
-                                $t->ParseBlock('phoo_browse/photos/albums/item');
+                                $tpl->ParseBlock('phoo_browse/photos/albums/item');
                             }
                         } else {
-                            $t->SetBlock('phoo_browse/photos/albums/nophotos');
-                            $t->SetVariable('message', _t('PHOO_ALBUM_EMPTY'));
-                            $t->ParseBlock('phoo_browse/photos/albums/nophotos');
+                            $tpl->SetBlock('phoo_browse/photos/albums/nophotos');
+                            $tpl->SetVariable('message', _t('PHOO_ALBUM_EMPTY'));
+                            $tpl->ParseBlock('phoo_browse/photos/albums/nophotos');
                         }
-                        $t->ParseBlock('phoo_browse/photos/albums');
+                        $tpl->ParseBlock('phoo_browse/photos/albums');
                     }
                 }
             }
@@ -221,26 +220,26 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
             $failures = $GLOBALS['app']->Session->GetAttribute('failures');
             if (is_array($failures) && count($failures) > 0) {
                 foreach ($failures as $f) {
-                    $t->SetBlock('phoo_browse/photos/failures');
-                    $t->SetVariable('message', $f);
-                    $t->ParseBlock('phoo_browse/photos/failures');
+                    $tpl->SetBlock('phoo_browse/photos/failures');
+                    $tpl->SetVariable('message', $f);
+                    $tpl->ParseBlock('phoo_browse/photos/failures');
                 }
             }
 
             // Delete key
             $GLOBALS['app']->Session->DeleteAttribute('failures');
-            $t->ParseBlock('phoo_browse/photos');
+            $tpl->ParseBlock('phoo_browse/photos');
         } else {
-            $t->SetBlock('phoo_browse/noalbums');
-            $t->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
-            $t->ParseBlock('phoo_browse/noalbums');
+            $tpl->SetBlock('phoo_browse/noalbums');
+            $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
+            $tpl->ParseBlock('phoo_browse/noalbums');
         }
 
         // clear pushed message
         $GLOBALS['app']->Session->PopLastResponse();
 
-        $t->ParseBlock('phoo_browse');
-        return $t->Get();
+        $tpl->ParseBlock('phoo_browse');
+        return $tpl->Get();
     }
 
 }
