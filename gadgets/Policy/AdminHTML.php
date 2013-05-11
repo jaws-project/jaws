@@ -158,8 +158,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Policy/templates/');
-        $tpl->Load('IPBlocking.html');
+        $tpl = $this->gadget->loadTemplate('IPBlocking.html');
         $tpl->SetBlock('ipblocking');
 
         // Sidebar
@@ -288,8 +287,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Policy/templates/');
-        $tpl->Load('AgentBlocking.html');
+        $tpl = $this->gadget->loadTemplate('AgentBlocking.html');
         $tpl->SetBlock('agentblocking');
 
         // Sidebar
@@ -349,8 +347,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('Encryption');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Policy/templates/');
-        $tpl->Load('Encryption.html');
+        $tpl = $this->gadget->loadTemplate('Encryption.html');
         $tpl->SetBlock('encryption');
 
         // Sidebar
@@ -417,8 +414,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/Policy/templates/');
-        $tpl->Load('AntiSpam.html');
+        $tpl = $this->gadget->loadTemplate('AntiSpam.html');
         $tpl->SetBlock('AntiSpam');
 
         // Sidebar
@@ -490,8 +486,7 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/Policy/templates/');
-        $tpl->Load('AdvancedPolicies.html');
+        $tpl = $this->gadget->loadTemplate('AdvancedPolicies.html');
         $tpl->SetBlock('AdvancedPolicies');
 
         // Sidebar
