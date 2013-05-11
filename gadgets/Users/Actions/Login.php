@@ -29,7 +29,7 @@ class Users_Actions_Login extends Users_HTML
         $error = '';
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha();
+        $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Users.ForgotLogin');
             Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
@@ -66,18 +66,9 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-            $tpl->SetBlock('forgot/captcha');
-            $tpl->SetVariable('captcha_lbl', $captcha['label']);
-            $tpl->SetVariable('captcha_key', $captcha['key']);
-            $tpl->SetVariable('captcha', $captcha['captcha']);
-            if (!empty($captcha['entry'])) {
-                $tpl->SetVariable('captcha_entry', $captcha['entry']);
-            }
-            $tpl->SetVariable('captcha_msg', $captcha['description']);
-            $tpl->ParseBlock('forgot/captcha');
-        }
+        //captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy->loadCaptcha($tpl, 'forgot');
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.ForgotLogin')) {
             $tpl->SetBlock('forgot/response');
@@ -167,18 +158,9 @@ class Users_Actions_Login extends Users_HTML
             $tpl->ParseBlock('LoginBox/authtype');
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if (false !== $captcha = $mPolicy->LoadCaptcha('login')) {
-            $tpl->SetBlock('LoginBox/captcha');
-            $tpl->SetVariable('captcha_lbl', $captcha['label']);
-            $tpl->SetVariable('captcha_key', $captcha['key']);
-            $tpl->SetVariable('captcha', $captcha['captcha']);
-            if (!empty($captcha['entry'])) {
-                $tpl->SetVariable('captcha_entry', $captcha['entry']);
-            }
-            $tpl->SetVariable('captcha_msg', $captcha['description']);
-            $tpl->ParseBlock('LoginBox/captcha');
-        }
+        //captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
         // remember
         $tpl->SetBlock('LoginBox/remember');
@@ -358,7 +340,7 @@ class Users_Actions_Login extends Users_HTML
 
         // check captcha
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha('login');
+        $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login
             $resCheck = $GLOBALS['app']->Session->Login(

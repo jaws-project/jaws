@@ -69,7 +69,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha();
+        $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $result = $resCheck->getMessage();
         }
@@ -172,18 +172,10 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         $tpl->SetVariable('register', _t('USERS_REGISTER'));
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-            $tpl->SetBlock('register/captcha');
-            $tpl->SetVariable('captcha_lbl', $captcha['label']);
-            $tpl->SetVariable('captcha_key', $captcha['key']);
-            $tpl->SetVariable('captcha', $captcha['captcha']);
-            if (!empty($captcha['entry'])) {
-                $tpl->SetVariable('captcha_entry', $captcha['entry']);
-            }
-            $tpl->SetVariable('captcha_msg', $captcha['description']);
-            $tpl->ParseBlock('register/captcha');
-        }
+
+        //captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy->loadCaptcha($tpl, 'register');
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Register')) {
             $tpl->SetBlock('register/response');
