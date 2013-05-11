@@ -28,8 +28,7 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('FileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('initial_folder');
         $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
 

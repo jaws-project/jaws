@@ -162,8 +162,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel');
         $request =& Jaws_Request::getInstance();
 
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('AdminFileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('AdminFileBrowser.html');
         $tpl->SetBlock('filebrowser');
         $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Admin');
 
@@ -209,8 +208,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetFileUI()
     {
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('AdminFileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('AdminFileBrowser.html');
         $tpl->SetBlock('file_ui');
 
         $upload_switch =& Piwi::CreateWidget('CheckButtons', 'upload_switch');
@@ -268,8 +266,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetDirectoryUI()
     {
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('AdminFileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('AdminFileBrowser.html');
         $tpl->SetBlock('dir_ui');
 
         $dirname =& Piwi::CreateWidget('Entry', 'dirname', '');
@@ -368,8 +365,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
         $path = $request->get('path', 'get');
         $path = empty($path)? '/' : $path;
 
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('BrowseFile.html');
+        $tpl = $this->gadget->loadTemplate('BrowseFile.html');
         $tpl->SetBlock('browse');
 
         $tpl->SetVariable('page-title', _t('FILEBROWSER_NAME'));

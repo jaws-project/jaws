@@ -65,8 +65,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('FileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
         $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
         $this->SetTitle(_t('FILEBROWSER_NAME'));
@@ -160,8 +159,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $action, $params = array())
     {
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('PageNavigation.html');
+        $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
@@ -244,8 +242,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         }
 
         $date = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/FileBrowser/templates/');
-        $tpl->Load('FileBrowser.html');
+        $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('fileinfo');
 
         $Info = $model->GetFileProperties($dbInfo['path'], $dbInfo['filename']);
