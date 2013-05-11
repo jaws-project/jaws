@@ -111,10 +111,10 @@ class Jaws_Template
         }
 
         if (!$tplExists) {
-            $tplFile = JAWS_PATH. $fpath. '/'. $nmeFile. $prefix. $extFile;
+            $tplFile = $fpath. '/'. $nmeFile. $prefix. $extFile;
             $tplExists = file_exists($tplFile);
             if (!$tplExists && !empty($prefix)) {
-                $tplFile = JAWS_PATH. $fpath. '/'. $nmeFile. $extFile;
+                $tplFile = $fpath. '/'. $nmeFile. $extFile;
                 $tplExists = file_exists($tplFile);
             }
 
