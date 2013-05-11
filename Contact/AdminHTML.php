@@ -184,7 +184,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageContacts');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('Contacts');
 
         //Menu bar
@@ -251,7 +251,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
      */
     function ContactUI()
     {
-        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('ContactUI');
 
         //IP
@@ -345,7 +345,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
      */
     function ReplyUI()
     {
-        $tpl = $this->gadget->loadTemplate('AdminContacts.html');
+        $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('ReplyUI');
 
         //name
@@ -575,7 +575,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRecipients');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminRecipients.html');
+        $tpl = $this->gadget->loadTemplate('Recipients.html');
         $tpl->SetBlock('recipients');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Recipients'));
@@ -654,7 +654,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminProperties.html');
+        $tpl = $this->gadget->loadTemplate('Properties.html');
         $tpl->SetBlock('Properties');
 
         //Menu bar
@@ -718,7 +718,7 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AccessToMailer');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminMailer.html');
+        $tpl = $this->gadget->loadTemplate('Mailer.html');
         $tpl->SetBlock('mailer');
 
         // Menu bar
