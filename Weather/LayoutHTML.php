@@ -54,8 +54,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Weather/templates/');
-        $tpl->Load('Weather.html');
+        $tpl = $this->gadget->loadTemplate('Weather.html');
         $tpl->SetBlock('weather');
 
         $options = array();
@@ -137,8 +136,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
      */
     function AllRegionsWeather()
     {
-        $tpl = new Jaws_Template('gadgets/Weather/templates/');
-        $tpl->Load('AllWeather.html');
+        $tpl = $this->gadget->loadTemplate('AllWeather.html');
         $tpl->SetBlock('weather');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
 

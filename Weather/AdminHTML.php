@@ -70,8 +70,7 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Weather/templates/');
-        $tpl->Load('AdminWeather.html');
+        $tpl = $this->gadget->loadTemplate('AdminWeather.html');
         $tpl->SetBlock('Weather');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Regions'));
@@ -249,8 +248,7 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Weather/templates/');
-        $tpl->Load('AdminProperties.html');
+        $tpl = $this->gadget->loadTemplate('AdminProperties.html');
         $tpl->SetBlock('Properties');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
