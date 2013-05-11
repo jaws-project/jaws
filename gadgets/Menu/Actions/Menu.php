@@ -63,8 +63,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
         $this->_ReqURL = Jaws_Utils::getRequestURL();
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 
-        $tpl = new Jaws_Template('gadgets/Menu/templates/');
-        $tpl->Load('Menu.html', true);
+        $tpl = $this->gadget->loadTemplate('Menu.html', '', '', array('rawStore' => true));
         $tpl->SetBlock('levels');
 
         $tpl_str = $tpl->GetRawBlockContent();
