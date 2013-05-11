@@ -98,8 +98,7 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Quotes/templates/');
-        $tpl->Load('Quotes.html');
+        $tpl = $this->gadget->loadTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         $tpl->SetVariable('gid', $group['id']);
         if ($group['show_title']) {

@@ -81,8 +81,7 @@ class Quotes_HTML extends Jaws_Gadget_HTML
         }
 
         $this->SetTitle($quote['title']);
-        $tpl = new Jaws_Template('gadgets/Quotes/templates/');
-        $tpl->Load('Quote.html');
+        $tpl = $this->gadget->loadTemplate('Quote.html');
         $tpl->SetBlock('quote');
 
         $tpl->SetVariable('title', $group['title']);
