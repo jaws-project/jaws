@@ -31,8 +31,7 @@ class Sitemap_HTML extends Jaws_Gadget_HTML
      */
     function GetNextLevel(&$items)
     {
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('Sitemap.html');
+        $tpl = $this->gadget->loadTemplate('Sitemap.html');
 
         if (count($items) > 0) {
             $tpl->SetBlock('branch');
@@ -58,8 +57,7 @@ class Sitemap_HTML extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
         
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('Sitemap.html');
+        $tpl = $this->gadget->loadTemplate('Sitemap.html');
         $items = $model->GetItems();
         if (count($items) > 0) {
             $tpl->SetBlock('sitemap');

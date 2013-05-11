@@ -31,8 +31,7 @@ class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $items = $model->GetItems($levels);
 
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('Show.html');
+        $tpl = $this->gadget->loadTemplate('Show.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
         $tpl->SetBlock('branch/menu');
@@ -131,8 +130,7 @@ class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
      */
     function TopMenu()
     {
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('TopMenu.html');
+        $tpl = $this->gadget->loadTemplate('TopMenu.html');
         $tpl->SetBlock('topmenu');
         $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
 
@@ -185,8 +183,7 @@ class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
         if ($find == '') return '';
         $branch = $this->GetBranch($model->_items, $find);
 
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('DisplayLevel.html');
+        $tpl = $this->gadget->loadTemplate('DisplayLevel.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
         $tpl->SetBlock('branch/menu');
@@ -216,8 +213,7 @@ class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $path = $request->get('path', 'get');
         $bc = $model->GetBreadcrumb($path); 
-        $tpl = new Jaws_Template('gadgets/Sitemap/templates/');
-        $tpl->Load('Breadcrumb.html');
+        $tpl = $this->gadget->loadTemplate('Breadcrumb.html');
         $tpl->SetBlock('sitemap_breadcrumb');
         $c = 1; 
         $t = count($bc);
