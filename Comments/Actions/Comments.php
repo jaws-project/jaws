@@ -111,18 +111,9 @@ class Comments_Actions_Comments extends Comments_HTML
                 $tpl->ParseBlock('comment_form/info-box');
             }
 
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-                $tpl->SetBlock('comment_form/captcha');
-                $tpl->SetVariable('captcha_lbl', $captcha['label']);
-                $tpl->SetVariable('captcha_key', $captcha['key']);
-                $tpl->SetVariable('captcha', $captcha['captcha']);
-                if (!empty($captcha['entry'])) {
-                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
-                }
-                $tpl->SetVariable('captcha_msg', $captcha['description']);
-                $tpl->ParseBlock('comment_form/captcha');
-            }
+            //captcha
+            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+            $mPolicy->loadCaptcha($tpl, 'comment_form');
 
         } else {
             $tpl->SetBlock('comment_form/unregistered');
@@ -530,8 +521,8 @@ class Comments_Actions_Comments extends Comments_HTML
             Jaws_Header::Location($redirectTo);
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha();
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Comments');
             Jaws_Header::Location($redirectTo);
