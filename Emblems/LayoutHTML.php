@@ -18,8 +18,7 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Emblems/templates/');
-        $tpl->Load('Emblems.html');
+        $tpl = $this->gadget->loadTemplate('Emblems.html');
         $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model');
         $rsemblem = $model->GetEmblems(true);
         if (!Jaws_Error::IsError($rsemblem)) {
