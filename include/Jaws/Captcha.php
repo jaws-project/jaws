@@ -17,12 +17,6 @@ class Jaws_Captcha
     var $_driver;
 
     /**
-     * Captcha field
-     * @var string
-     */
-    var $_field;
-
-    /**
      * Captcha entry label
      * @var string
      */
@@ -42,10 +36,9 @@ class Jaws_Captcha
      * @param   string  $field  Captcha field
      * @return  void
      */
-    function Jaws_Captcha($driver, $field = 'default')
+    function Jaws_Captcha($driver)
     {
         $this->_driver = $driver;
-        $this->_field  = $field;
     }
 
     /**
@@ -90,26 +83,11 @@ class Jaws_Captcha
     function get()
     {
         $key = $this->insert();
-        $imgSrc = $GLOBALS['app']->Map->GetURLFor(
-            'Policy',
-            'Captcha',
-            array('field' => $this->_field, 'key' => $key)
-        );
-
         $res = array();
-        $res['key'] =& Piwi::CreateWidget('HiddenEntry', 'captcha_key', $key);
-        $res['key']->SetID("captcha_key_$key");
-        $res['captcha'] =& Piwi::CreateWidget('Image', '', '');
-        $res['captcha']->SetTitle(_t($this->_label));
-        $res['captcha']->SetID("captcha_image_$key");
-        $res['captcha']->SetClass('captcha');
-        $res['captcha']->SetSrc($imgSrc);
-        $res['captcha']->AddEvent(ON_CLICK, "javascript:this.src = '$imgSrc?'+ new Date().getTime();");
-        $res['entry'] =& Piwi::CreateWidget('Entry', 'captcha_value', '');
-        $res['entry']->SetID("captcha_value_$key");
-        $res['entry']->SetStyle('direction: ltr;');
-        $res['entry']->SetTitle(_t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
-        $res['label'] =& Piwi::CreateWidget('Label', _t($this->_label).':', $res['entry']);
+        $res['key']   = $key;
+        $res['text']  = '';
+        $res['label'] = _t($this->_label);
+        $res['title'] = _t($this->_label);
         $res['description'] = _t($this->_description);
         return $res;
     }
@@ -123,7 +101,7 @@ class Jaws_Captcha
     function check()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('captcha_key', 'captcha_value'), 'post');
+        $post = $request->get(array('captcha_key', 'entry_value'), 'post');
         list($key, $value) = array_values($post);
 
         $matched = false;

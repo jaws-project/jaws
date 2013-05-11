@@ -38,11 +38,12 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
         $objReCaptcha = new LibReCaptcha();
         $publickey = $GLOBALS['app']->Registry->fetch('reCAPTCHA_public_key', 'Policy');
         $reCAPTCHA = $objReCaptcha->recaptcha_get_html($publickey);
-        $res['key'] = null;
-        $res['captcha'] =& Piwi::CreateWidget('StaticEntry', $reCAPTCHA);
-        $res['captcha']->setTitle(_t($this->_label));
-        $res['entry'] = null;
-        $res['label'] =& Piwi::CreateWidget('Label', _t($this->_label).':', 'recaptcha_response_field');
+
+        $res = array();
+        $res['key']   = 0;
+        $res['text']  = $reCAPTCHA;
+        $res['label'] = _t($this->_label);
+        $res['title'] = _t($this->_label);
         $res['description'] = _t($this->_description);
         return $res;
     }
