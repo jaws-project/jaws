@@ -119,8 +119,7 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         $impressionsTotal = $model->GetTotalVisitors('impressions');
         $startDate        = $model->GetStartDate();
 
-        $tpl = new Jaws_Template('gadgets/VisitCounter/templates/');
-        $tpl->Load('AdminVisitCounter.html');
+        $tpl = $this->gadget->loadTemplate('AdminVisitCounter.html');
         $tpl->SetBlock('visitcounter');
 
         $tpl->SetVariable('grid', $this->DataGrid());

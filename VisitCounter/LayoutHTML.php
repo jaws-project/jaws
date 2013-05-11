@@ -21,8 +21,7 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
      */
     function GetVisitorsFormat($visit_counters)
     {
-        $tpl = new Jaws_Template('gadgets/VisitCounter/templates/');
-        $tpl->Load('VisitCounter.html');
+        $tpl = $this->gadget->loadTemplate('VisitCounter.html');
         $tpl->SetBlock("VisiCounter");
         $tpl->SetVariable('title', _t('VISITCOUNTER_ACTION_TITLE'));
 
