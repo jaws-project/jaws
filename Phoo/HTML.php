@@ -251,7 +251,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
             if ($allow_comments) {
                 if ($preview_mode) {
-                    $tpl->SetVariable('preview', $this->ShowPreview());
+                    $tpl->SetVariable('preview', $cHTML->ShowPreview());
                 }
                 $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'photo', $image['id'], $redirect_to));
             } elseif ($restricted) {
@@ -452,111 +452,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Recursively displays comments of a given image according to several parameters
-     *
-     * @access  public
-     * @param   int     $id             image id
-     * @param   int     $albumid        album id
-     * @param   int     $reply_link     1 to show reply-to link
-     * @param   array   $data           Array with comments data if null it's loaded from model.
-     * @return  string  XHTML template content
-     */
-    function ShowComments($id, $albumid, $reply_link, $data = null)
-    {
-        $tpl = $this->gadget->loadTemplate('Comment.html');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        if (is_null($data)) {
-            $comments = $model->GetComments($id);
-        } else {
-            $comments = $data;
-        }
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = new Jaws_User();
-
-        if (!Jaws_Error::IsError($comments)) {
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($comments as $c) {
-                $tpl->SetBlock('comment');
-                $tpl->SetVariable('id', $c['id']);
-                $tpl->SetVariable('parent_id', $c['reference']);
-                $tpl->SetVariable('name', $c['name']);
-                $email = $c['email'];
-
-                $_obfuscator = $this->gadget->registry->fetch('obfuscator', 'Policy');
-                if (($_obfuscator != 'DISABLED') && (!empty($email))) {
-                    require_once JAWS_PATH . 'gadgets/Policy/obfuscators/' . $_obfuscator . '.php';
-                    $obf = new $_obfuscator();
-                    $tpl->SetVariable('email', $obf->Get($email, _t('GLOBAL_EMAIL')));
-                } elseif (empty($email)) {
-                    $tpl->SetVariable('email', '');
-                } else {
-                    $tpl->SetVariable('email', '<a href="mailto:' . $email . '">' . _t('GLOBAL_EMAIL') . '</a>');
-                }
-                $tpl->SetVariable('url', $c['url']);
-                $tpl->SetVariable('ip_address', '127.0.0.1');
-                $tpl->SetVariable('avatar_source', $c['avatar_source']);
-                $tpl->SetVariable('commentname', 'comment'.$c['id']);
-                $commentsText = Jaws_String::AutoParagraph($c['msg_txt']);
-                $tpl->SetVariable('comments', $commentsText);
-                $tpl->SetVariable('createtime',           $date->Format($c['createtime']));
-                $tpl->SetVariable('createtime-monthname', $date->Format($c['createtime'], 'MN'));
-                $tpl->SetVariable('createtime-month',     $date->Format($c['createtime'], 'm'));
-                $tpl->SetVariable('createtime-day',       $date->Format($c['createtime'], 'd'));
-                $tpl->SetVariable('createtime-year',      $date->Format($c['createtime'], 'Y'));
-                $tpl->SetVariable('createtime-time',      $date->Format($c['createtime'], 'g:ia'));
-
-                if(!empty($c['reply'])) {
-                    $user = $userModel->GetUser((int)$c['replier'], true, true);
-                    $tpl->SetBlock('comment/reply');
-                    $tpl->SetVariable('reply', $c['reply']);
-                    $tpl->SetVariable('replier', $user['nickname']);
-                    $tpl->SetVariable('url', $user['url']);
-                    $tpl->SetVariable('email', $user['email']);
-                    $tpl->SetVariable('lbl_reply', _t('PHOO_REPLY'));
-                    $tpl->ParseBlock('comment/reply');
-                }
-
-                if ($c['status'] == 3) {
-                    $tpl->SetVariable('status_message', _t('PHOO_COMMENT_IS_SPAM'));
-                } elseif ($c['status'] == 2) {
-                    $tpl->SetVariable('status_message', _t('PHOO_COMMENT_IS_WAITING'));
-                } else {
-                    $tpl->SetVariable('status_message', '&nbsp;');
-                }
-                if ($reply_link === 1) {
-                    $tpl->SetBlock('comment/reply-link');
-                    $tpl->SetVariablesArray($c);
-                    $tpl->SetVariable('reply-link', '<a href="'.
-                                      $this->gadget->GetURLFor('Reply', array('id' => $c['id'],
-                                                                      'photoid' => $c['reference'],
-                                                                      'albumid' => $albumid)).'">'.
-                                      _t('PHOO_REPLY').'</a>');
-
-                    $tpl->ParseBlock('comment/reply-link');
-                }
-
-                $tpl->ParseBlock('comment');
-            }
-        }
-
-        return $tpl->Get();
-    }
-
-    /**
-     * Displays a given phoo comments and a form for replying
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Reply()
-    {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'photoid', 'albumid'), 'get');
-        return $this->ViewImage((int)$post['photoid'], (int)$post['albumid'], false, (int)$post['id']);
-    }
-
-    /**
      * Displays a preview of the given phoo comment
      *
      * @access  public
@@ -567,7 +462,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $names = array(
             'name', 'email', 'url', 'title', 'comments', 'createtime',
-            'ip_address', 'parent_id', 'parent', 'albumid'
+            'ip_address', 'reference', 'albumid'
         );
         $post = $request->get($names, 'post');
         $post['parent_id'] = (int)$post['parent_id'];
@@ -581,117 +476,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
         }
 
-        return $this->ViewImage($post['parent_id'], $post['albumid'], true);
-    }
-
-    /**
-     * Displays a preview of the given phoo comment
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function ShowPreview()
-    {
-        $post = $GLOBALS['app']->Session->PopSimpleResponse('Phoo_Comment', false);
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
-        }
-
-        $tpl = $this->gadget->loadTemplate('Comment.html');
-        $tpl->SetBlock('comment');
-        $tpl->SetVariable('name',  $post['name']);
-        $tpl->SetVariable('email', $post['email']);
-        $tpl->SetVariable('url',   $post['url']);
-        if (is_null($post['ip_address'])) {
-            $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
-        }
-        $tpl->SetVariable('title', $post['title']);
-        $tpl->SetVariable('comments', Jaws_String::AutoParagraph($post['comments']));
-        if (!isset($post['createtime'])) {
-            $date = $GLOBALS['app']->loadDate();
-            $post['createtime'] = $date->Format(time());
-        }
-        $tpl->SetVariable('createtime', $post['createtime']);
-        $tpl->SetVariable('level', 0);
-        $tpl->SetVariable('status_message', '&nbsp;');
-        $tpl->SetVariable('ip_address', $post['ip_address']);
-        $tpl->SetVariable('avatar_source', 'images/unknown.png');
-        $tpl->SetVariable('commentname', 'comment_preview');
-
-        $tpl->ParseBlock('comment');
-        return $tpl->Get();
-    }
-
-    /**
-     * Saves the given phoo comment
-     *
-     * @access  public
-     * @return  void
-     */
-    function SaveComment()
-    {
-        $request =& Jaws_Request::getInstance();
-        $names = array(
-            'name', 'email', 'url', 'comments', 'createtime',
-            'ip_address', 'parent_id', 'url2', 'albumid',
-        );
-        $post = $request->get($names, 'post');
-        $post['parent_id'] = (int)$post['parent_id'];
-        $post['albumid']   = (int)$post['albumid'];
-
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
-        }
-
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $image = $model->GetImage($post['parent_id'], $post['albumid']);
-        if (Jaws_Error::isError($image)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
-        }
-
-        $url = $this->gadget->GetURLFor('ViewImage', array('id' => $post['parent_id'], 'albumid' => $post['albumid']));
-
-        $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
-        $restricted = $allow_comments_config == 'restricted';
-        $allow_comments_config = $restricted? $GLOBALS['app']->Session->Logged() : ($allow_comments_config == 'true');
-
-        // Check if comments are allowed.
-        if ($image['allow_comments'] !== true ||
-            $image['album_allow_comments'] !== true ||
-            $this->gadget->registry->fetch('allow_comments') != 'true' ||
-            !$allow_comments_config)
-        {
-            Jaws_Header::Location($url);
-        }
-
-        if (trim($post['name']) == '' || trim($post['comments']) == '') {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), 'Phoo');
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
-            Jaws_Header::Location($url);
-        }
-
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha();
-        if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Phoo');
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
-            Jaws_Header::Location($url);
-        }
-
-        $result = $model->NewComment($post['name'], $post['url'], $post['email'], $post['comments'],
-                                     $post['parent_id'], $url);
-        if (Jaws_Error::isError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'Phoo');
-        } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_MESSAGE_SENT'), 'Phoo');
-        }
-
-        Jaws_Header::Location($url);
+        return $this->ViewImage($post['reference'], $post['albumid'], true);
     }
 
     /**
