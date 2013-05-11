@@ -82,6 +82,22 @@ var ComponentsCallback = {
     updatepluginusage: function(response) {
         closeUI();
         showResponse(response);
+    },
+
+    updateregistry: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            regChanges = {};
+            regCache = $('component_registry').clone(true, true);
+        }
+        showResponse(response);
+    },
+
+    updateacl: function(response) {
+        if (response[0]['css'] == 'notice-message') {
+            aclChanges = {};
+            aclCache = $('component_acl').clone(true, true);
+        }
+        showResponse(response);
     }
 }
 
@@ -184,6 +200,8 @@ function updateSummary()
     });
     $('sum_installed').innerHTML = count.installed;
     $('sum_notinstalled').innerHTML = count.notinstalled;
+    
+    
     $('sum_total').innerHTML = count.total;
     if (!pluginsMode) {
         $('sum_disabled').innerHTML = count.disabled;
@@ -203,7 +221,7 @@ function toggleSection()
 }
 
 /**
- * Switches between component Info/Regsitry/ACL UIs
+ * Switches between Info/Regsitry/ACL UIs
  */
 function switchTab(tab)
 {
@@ -211,6 +229,7 @@ function switchTab(tab)
     tab = $(tab).isVisible()? tab : 'tab_info';
     $('tabs').getElement('li.active').removeClass('active');
     $(tab).addClass('active');
+    $('component_form').getChildren().hide();
     switch (tab) {
         case 'tab_info':
             componentInfo();
@@ -238,14 +257,16 @@ function selectComponent()
     img.alt = components[comp]['name'];
     h1.innerHTML = components[comp]['name'] + ': ' + components[comp]['description'];
     $('component_head').innerHTML = '';
+    $('component_form').innerHTML = '';
     $('component_head').adopt(img, h1);
     $$('#components li.selected').removeClass('selected');
     this.addClass('selected');
 
     selectedComponent = comp;
     editPluginMode = false;
-    uiCache = {};
-    showTabs();
+    regCache = null;
+    aclCache = null;
+    showHideTabs();
     switchTab($('tabs').getElement('li.active').id);
 }
 
@@ -267,70 +288,89 @@ function closeUI()
  */
 function componentInfo()
 {
-    if (typeof uiCache.info === 'undefined') {
-        uiCache.info = pluginsMode?
+    if (!$('component_info')) {
+        var div = new Element('div');
+        div.innerHTML = pluginsMode?
             ComponentsAjax.callSync('getplugininfo', selectedComponent):
             ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
+        $('component_form').grab(div.getElement('div'));
     }
-    $('component_info').innerHTML = uiCache.info;
     $('summary').hide();
     $('component').show();
-    showButtons();
+    $('component_info').show();
+    showHideButtons();
 }
 
 /**
  * Displays registry keys/values of the gadget/plugin
  */
-function componentRegistry()
+function componentRegistry(reset)
 {
-    var form = new Element('form', {id:'frm_registry'}),
-        table = new Element('table');
-    if (typeof uiCache.registry === 'undefined') {
-        uiCache.registry = ComponentsAjax.callSync('getregistry', selectedComponent);
+    if (!regCache) {
+        var table = new Element('table'),
+            res = ComponentsAjax.callSync('getregistry', selectedComponent),
+            div = new Element('div').set('html', res.tpl);
+        $('component_form').grab(div.getElement('div'));
+        res.data.each(function(reg) {
+            var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
+                th = new Element('th').grab(label),
+                input = new Element('input', {id:reg.key_name, value:reg.key_value}),
+                td = new Element('td').grab(input),
+                tr = new Element('tr').adopt(th, td);
+            input.addEvent('change', function() {
+                regChanges[this.id] = this.value;
+            });
+            table.grab(tr);
+        });
+        $('frm_registry').grab(table);
+        regCache = $('component_registry').clone(true, true);
     }
-    uiCache.registry.each(function(reg) {
-        var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
-            th = new Element('th').grab(label),
-            input = new Element('input', {id:reg.key_name, value:reg.key_value}),
-            td = new Element('td').grab(input),
-            tr = new Element('tr').adopt(th, td);
-        table.grab(tr);
-    });
-    $('component_info').innerHTML = '';
-    $('component_info').grab(form.grab(table));
+    if (reset) {
+        regCache.clone(true, true).replaces($('component_registry'));
+        regChanges = {};
+    }
     $('summary').hide();
     $('component').show();
+    $('component_registry').show();
 }
 
 /**
  * Displays ACL keys/values of the gadget/plugin
  */
-function componentACL()
+function componentACL(reset)
 {
-    
-    var form = new Element('form', {id:'frm_acl'}),
-        table = new Element('table');
-    if (typeof uiCache.acl === 'undefined') {
-        uiCache.acl = ComponentsAjax.callSync('getacl', selectedComponent);
+    if (!aclCache) {
+        var table = new Element('table'),
+            res = ComponentsAjax.callSync('getacl', selectedComponent),
+            div = new Element('div').set('html', res.tpl);
+        aclCache = div.getElement('div');
+        $('component_form').grab(div.getElement('div'));
+        res.acls.each(function(acl) {
+            var label = new Element('label', {html:acl.key_desc, 'for':acl.key_name}),
+                th = new Element('th').grab(label),
+                input = new Element('input', {
+                    id: acl.key_name, 
+                    type: 'checkbox', 
+                    value: acl.key_name, 
+                    checked: acl.key_value
+                }),
+                td = new Element('td').grab(input),
+                tr = new Element('tr').adopt(td, th);
+            input.addEvent('change', function() {
+                aclChanges[this.id] = this.checked;
+            });
+            table.grab(tr);
+        });
+        $('frm_acl').grab(table);
+        aclCache = $('component_acl').clone(true, true);
     }
-    console.log(uiCache.acl);
-    uiCache.acl.each(function(acl) {
-        var label = new Element('label', {html:acl.key_desc, 'for':acl.key_name}),
-            th = new Element('th').grab(label),
-            input = new Element('input', {
-                id:acl.key_name, 
-                type:'checkbox', 
-                value:acl.key_name, 
-                checked:acl.key_value
-            }),
-            td = new Element('td').grab(input),
-            tr = new Element('tr').adopt(td, th);
-        table.grab(tr);
-    });
-    $('component_info').innerHTML = '';
-    $('component_info').grab(form.grab(table));
+    if (reset) {
+        aclCache.clone(true, true).replaces($('component_acl'));
+        aclChanges = {};
+    }
     $('summary').hide();
     $('component').show();
+    $('component_acl').show();
 }
 
 /**
@@ -387,7 +427,7 @@ function disableGadget()
 /**
  * Shows/hides tabs upon selected component
  */
-function showTabs()
+function showHideTabs()
 {
     var comp = components[selectedComponent];
     $('tabs').getElements('li').hide();
@@ -405,10 +445,10 @@ function showTabs()
 /**
  * Shows/hides buttons depending on the current tab and selected component
  */
-function showButtons()
+function showHideButtons()
 {
     var comp = components[selectedComponent];
-    $('actions').getElements('button').hide();
+    $('component_info').getElements('button').hide();
     if (pluginsMode) {
         switch(comp.state) {
         case 'notinstalled':
@@ -485,7 +525,7 @@ function pluginUsage()
 
     $('component').innerHTML = tree.toString();
     editPluginMode = true;
-    showButtons();
+    showHideButtons();
 }
 
 /**
@@ -502,11 +542,30 @@ function savePluginUsage()
 }
 
 /**
+ * Updates gadget registry with changed values
+ */
+function saveRegistry()
+{
+    ComponentsAjax.callAsync('updateregistry', selectedComponent, regChanges);
+}
+
+/**
+ * Updates gadget ACLs with changed values
+ */
+function saveACL()
+{
+    ComponentsAjax.callAsync('updateacl', selectedComponent, aclChanges);
+}
+
+/**
  * Variables
  */
 var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
-    components = {},
     selectedComponent = null,
     editPluginMode = false,
-    uiCache = {},
+    components = {},
+    regCache = null,
+    aclCache = null,
+    regChanges = {},
+    aclChanges = {},
     summaryUI;

@@ -42,6 +42,7 @@ class Components_Info extends Jaws_Gadget
     var $_ACLs = array(
         'ManageGadgets',
         'ManagePlugins',
+        'ManageRegistry',
         'ManageACLs'
     );
 

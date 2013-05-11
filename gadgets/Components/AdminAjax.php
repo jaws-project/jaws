@@ -281,9 +281,32 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetRegistry($comp)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        return $model->GetRegistry($comp);
+        $this->gadget->CheckPermission('ManageRegistry');
+        
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $tpl = $html->GetRegistryUI();
+        $data = $GLOBALS['app']->Registry->fetchAll($comp);
+        return array('tpl' => $tpl, 'data' => $data);
+    }
+
+    /**
+     * Updates registry with new values
+     *
+     * @access  public
+     * @param   array   $data  changed keys/values
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateRegistry($comp, $data)
+    {
+        $this->gadget->CheckPermission('ManageRegistry');
+        foreach ($data as $key => $value) {
+            $res = $GLOBALS['app']->Registry->update($key, $value, $comp);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
+            }
+        }
+        $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_REGISTRY_UPDATED'), RESPONSE_NOTICE);
+        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
@@ -295,9 +318,36 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetACL($comp)
     {
-        $this->gadget->CheckPermission('ManageGadgets');
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        return $model->GetACL($comp);
+        $this->gadget->CheckPermission('ManageACLs');
+
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $tpl = $html->GetACLUI();
+        $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
+        $acls = $GLOBALS['app']->ACL->fetchAll($comp);
+        foreach ($acls as $k => $acl) {
+            $acls[$k]['key_desc'] = $info->GetACLDescription($acl['key_name']);
+        }
+        return array('tpl' => $tpl, 'acls' => $acls);
+    }
+
+    /**
+     * Updates ACLs with new values
+     *
+     * @access  public
+     * @param   array   $data  changed keys/values
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateACL($comp, $data)
+    {
+        $this->gadget->CheckPermission('ManageACLs');
+        foreach ($data as $key => $value) {
+            $res = $GLOBALS['app']->ACL->update($key, '', $value, $comp);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);
+            }
+        }
+        $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_UPDATED'), RESPONSE_NOTICE);
+        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
 }

@@ -22,7 +22,7 @@
   border:1px solid #d3d7cf; vertical-align:top; line-height:2.5;
 }
 #component_ui h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
-#actions {text-align:right;}
+.actions {text-align:right; padding-top:5px;}
 
 /* Information */
 #summary img {float:left; width:48px;}
@@ -33,6 +33,19 @@
 #component h2 {display:inline-block; font-size:12px;}
 #component_head {margin-bottom:15px; padding-bottom:40px; border-bottom:solid 1px silver; line-height:1.5;}
 #component_head img {float:left; width:48px;}
+#component_form {padding-left:10px;}
+#component_info span {font-weight:bold;}
+#component_info ul {margin:0;}
+#component_info .acls {height:190px; overflow-y:auto; margin:0; line-height:1.5; list-style:square;}
+#frm_registry {height:350px; overflow-y:auto;}
+#frm_registry table {border-collapse:collapse;}
+#frm_registry th {text-align:right;}
+#frm_registry caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
+#frm_registry input {width:200px;}
+#frm_acl {height:350px; overflow-y:auto; line-height:1.5;}
+#frm_acl table {border-collapse:collapse;}
+#frm_acl td {text-align:right;}
+#frm_acl caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
 #tabs {position:absolute; top:87px; left:25px; margin:0; padding:0; list-style:none; line-height:16px}
 #tabs li {
   float:left; padding:2px 15px; margin:0 1px 0 0; cursor:pointer; font-weight:bold; color:grey;
@@ -40,22 +53,6 @@
 }
 #tabs li.active {background-color:white; border-bottom:1px solid white; color:black;}
 #btn_close {position:absolute; top:10px; right:10px; width:20px; line-height:1; padding_:0;}
-
-.component-info {padding-left:10px;}
-.component-info span {font-weight:bold;}
-.component-info ul {margin:0;}
-.component-info .acls {height:190px; overflow-y:auto; margin:0; line-height:1.5; list-style:square;}
-
-#frm_registry {height:350px; overflow-y:auto;}
-#frm_registry table {margin-left:10px; border-collapse:collapse;}
-#frm_registry th {text-align:right;}
-#frm_registry caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
-#frm_registry input {width:200px;}
-
-#frm_acl {height:350px; overflow-y:auto; line-height:1.5;}
-#frm_acl table {margin-left:10px; border-collapse:collapse;}
-#frm_acl td {text-align:right;}
-#frm_acl caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
 
 /* WebFX Tree */
 #bigTree > div {margin-bottom:10px;}

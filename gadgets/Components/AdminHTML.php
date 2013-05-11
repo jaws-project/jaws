@@ -488,4 +488,50 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     * Builds registry UI
+     *
+     * @access  public
+     * @return  string   XHTML UI
+     */
+    function GetRegistryUI()
+    {
+        $tpl = $this->gadget->loadTemplate('Registry.html');
+        $tpl->SetBlock('registry');
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:saveRegistry();');
+        $tpl->SetVariable('save', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_RESET'), STOCK_REFRESH);
+        $button->AddEvent(ON_CLICK, 'componentRegistry(true);');
+        $tpl->SetVariable('reset', $button->Get());
+
+        $tpl->ParseBlock('registry');
+        return $tpl->Get();
+    }
+
+    /**
+     * Builds ACL UI
+     *
+     * @access  public
+     * @return  string   XHTML UI
+     */
+    function GetACLUI()
+    {
+        $tpl = $this->gadget->loadTemplate('ACL.html');
+        $tpl->SetBlock('acl');
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:saveACL();');
+        $tpl->SetVariable('save', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_RESET'), STOCK_REFRESH);
+        $button->AddEvent(ON_CLICK, 'componentACL(true);');
+        $tpl->SetVariable('reset', $button->Get());
+
+        $tpl->ParseBlock('acl');
+        return $tpl->Get();
+    }
+
 }
