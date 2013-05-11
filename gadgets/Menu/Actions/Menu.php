@@ -98,7 +98,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($menus) || empty($menus)) return '';
 
         $tpl = new Jaws_Template();
-        $tpl->LoadFromString($tpl_str, false);
+        $tpl->LoadFromString($tpl_str);
         $tpl->SetBlock('levels');
 
         $len = count($menus);
