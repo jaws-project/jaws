@@ -21,8 +21,7 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/Languages/templates/');
-        $tpl->Load('AdminLanguages.html');
+        $tpl = $this->gadget->loadTemplate('Languages.html');
         $tpl->SetBlock('Languages');
         $tpl->SetVariable('language',   _t('LANGUAGES_LANGUAGE'));
         $tpl->SetVariable('component',  _t('LANGUAGES_COMPONENT'));
@@ -131,8 +130,7 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
     function GetLangDataUI($module, $type, $langTo)
     {
         $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/Languages/templates/');
-        $tpl->Load('LangStrings.html');
+        $tpl = $this->gadget->loadTemplate('LangStrings.html');
         $tpl->SetBlock('LangStrings');
 
         $langFrom = $this->gadget->registry->fetch('base_lang');
