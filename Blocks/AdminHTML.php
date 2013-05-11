@@ -19,9 +19,7 @@ class Blocks_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Blocks/templates/');
-        $tpl->Load('AdminBlocks.html');
+        $tpl = $this->gadget->loadTemplate('AdminBlocks.html');
         $tpl->SetBlock('blocks');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);

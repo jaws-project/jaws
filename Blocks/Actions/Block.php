@@ -51,8 +51,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
             $id = $request->get('id', 'get');
         }
 
-        $tpl = new Jaws_Template('gadgets/Blocks/templates/');
-        $tpl->Load('Blocks.html');
+        $tpl = $this->gadget->loadTemplate('Blocks.html');
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
         $block = $model->GetBlock($id);
         if (!Jaws_Error::IsError($block)) {
