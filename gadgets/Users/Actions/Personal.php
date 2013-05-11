@@ -37,8 +37,7 @@ class Users_Actions_Personal extends Users_HTML
         }
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Personal.html');
+        $tpl = $this->gadget->loadTemplate('Personal.html');
         $tpl->SetBlock('personal');
         $tpl->SetVariable('title', _t('USERS_PERSONAL_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);

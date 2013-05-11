@@ -34,8 +34,7 @@ class Users_Actions_Contacts extends Users_HTML
         $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, false, true);
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Contacts.html');
+        $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('contacts');
         
         $tpl->SetVariable('title', _t('USERS_USERS_ACCOUNT_PREF'));

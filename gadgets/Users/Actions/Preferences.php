@@ -37,8 +37,7 @@ class Users_Actions_Preferences extends Users_HTML
         $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, true);
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Preferences.html');
+        $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
         
         $tpl->SetVariable('title', _t('USERS_USERS_ACCOUNT_PREF'));

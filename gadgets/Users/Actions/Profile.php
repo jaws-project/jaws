@@ -76,8 +76,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         }
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('AboutUser.html');
+        $tpl = $this->gadget->loadTemplate('AboutUser.html');
         $tpl->SetBlock('aboutuser');
         $tpl->SetVariable('title',  _t('USERS_ACTIONS_ABOUTUSER'));
         $tpl->SetVariable('avatar', $user['avatar']);
@@ -154,8 +153,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         }
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Profile.html');
+        $tpl = $this->gadget->loadTemplate('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
         $tpl->SetVariable('avatar', $user['avatar']);
@@ -213,8 +211,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
      */
     function Activity($uid, $uname)
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Profile.html');
+        $tpl = $this->gadget->loadTemplate('Profile.html');
         $tpl->SetBlock('activity');
         $tpl->SetVariable('title', _t('USERS_USER_ACTIVITY'));
 

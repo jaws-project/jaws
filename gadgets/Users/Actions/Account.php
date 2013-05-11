@@ -41,8 +41,7 @@ class Users_Actions_Account extends Users_HTML
         }
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Account.html');
+        $tpl = $this->gadget->loadTemplate('Account.html');
         $tpl->SetBlock('account');
         $tpl->SetVariable('title', _t('USERS_ACCOUNT_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);

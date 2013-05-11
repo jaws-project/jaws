@@ -160,8 +160,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         }
 
         $this->AjaxMe('script.js', $this->gadget->GetVersion());
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Users.html');
+        $tpl = $this->gadget->loadTemplate('Users.html');
         $tpl->SetBlock('Users');
 
         // Group Filter
@@ -275,8 +274,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
      */
     function UserUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/User.html');
+        $tpl = $this->gadget->loadTemplate('User.html');
         $tpl->SetBlock('user');
 
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
@@ -380,8 +378,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
      */
     function UserGroupsUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/UserGroups.html');
+        $tpl = $this->gadget->loadTemplate('UserGroups.html');
         $tpl->SetBlock('user_groups');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
@@ -408,8 +405,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
      */
     function PersonalUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Personal.html');
+        $tpl = $this->gadget->loadTemplate('Personal.html');
         $tpl->SetBlock('personal');
 
         // privacy
@@ -496,8 +492,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
      */
     function PreferencesUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Preferences.html');
+        $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
 
         // language
@@ -564,8 +559,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
      */
     function ContactsUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Contacts.html');
+        $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('contacts');
 
         // country

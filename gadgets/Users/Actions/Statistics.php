@@ -20,8 +20,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
     function OnlineUsers()
     {
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Statistics.html');
+        $tpl = $this->gadget->loadTemplate('Statistics.html');
         $tpl->SetBlock('OnlineUsers');
         $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINEUSERS'));
 
@@ -61,8 +60,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
     function OnlineStatistics()
     {
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Statistics.html');
+        $tpl = $this->gadget->loadTemplate('Statistics.html');
         $tpl->SetBlock('OnlineStatistics');
         $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINESTATISTICS'));
         $tpl->SetVariable('lbl_registered_users', _t('USERS_ONLINE_REGISTERED_COUNT'));
@@ -87,8 +85,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
     function LatestRegistered()
     {
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Statistics.html');
+        $tpl = $this->gadget->loadTemplate('Statistics.html');
         $tpl->SetBlock('LatestRegistered');
         $tpl->SetVariable('title', _t('USERS_ACTIONS_LATESTREGISTERED'));
 

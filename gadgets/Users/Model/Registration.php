@@ -100,8 +100,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $message      = '';
 
         if ($random === true || $activation != 'admin') {
-            $tpl = new Jaws_Template('gadgets/Users/templates/');
-            $tpl->Load('UserNotification.txt');
+            $tpl = $this->gadget->loadTemplate('UserNotification.txt');
             $tpl->SetBlock('Notification');
             $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $nickname));
 
@@ -187,8 +186,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         //Send an email to website owner
         $mail->ResetValues();
         if (!$delete_user && ($notification == 'true' || $activation == 'admin')) {
-            $tpl = new Jaws_Template('gadgets/Users/templates/');
-            $tpl->Load('AdminNotification.txt');
+            $tpl = $this->gadget->loadTemplate('AdminNotification.txt');
             $tpl->SetBlock('Notification');
             $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $site_author));
             $tpl->SetVariable('message', _t('USERS_REGISTER_ADMIN_MAIL_MSG'));
@@ -273,11 +271,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 return $verifyKey;
             }
 
-            $site_url    = $GLOBALS['app']->getSiteURL('/');
-            $site_name   = $this->gadget->registry->fetch('site_name', 'Settings');
+            $site_url  = $GLOBALS['app']->getSiteURL('/');
+            $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-            $tpl = new Jaws_Template('gadgets/Users/templates/');
-            $tpl->Load('RecoverPassword.txt');
+            $tpl = $this->gadget->loadTemplate('RecoverPassword.txt');
             $tpl->SetBlock('RecoverPassword');
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
             $tpl->SetVariable('username', $info['username']);
@@ -348,8 +345,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('UserNotification.txt');
+        $tpl = $this->gadget->loadTemplate('UserNotification.txt');
         $tpl->SetBlock('Notification');
         $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));

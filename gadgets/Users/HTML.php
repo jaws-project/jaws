@@ -35,8 +35,7 @@ class Users_HTML extends Jaws_Gadget_HTML
     function ShowNoPermission($user, $gadget, $action)
     {
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('NoPermission.html');
+        $tpl = $this->gadget->loadTemplate('NoPermission.html');
         $tpl->SetBlock('NoPermission');
         $tpl->SetVariable('nopermission', _t('USERS_NO_PERMISSION_TITLE'));
         $tpl->SetVariable('description', _t('USERS_NO_PERMISSION_DESC', $gadget, $action));

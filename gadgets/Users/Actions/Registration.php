@@ -20,8 +20,7 @@ class Users_Actions_Registration extends Users_HTML
     function Registered()
     {
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Registered.html');
+        $tpl = $this->gadget->loadTemplate('Registered.html');
         $tpl->SetBlock('registered');
         $tpl->SetVariable('title', _t('USERS_REGISTER_REGISTERED'));
 
@@ -131,8 +130,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         // Load the template
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Register.html');
+        $tpl = $this->gadget->loadTemplate('Register.html');
         $tpl->SetBlock('register');
         $tpl->SetVariable('title', _t('USERS_REGISTER'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);

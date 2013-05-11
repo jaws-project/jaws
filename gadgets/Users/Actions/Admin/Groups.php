@@ -115,8 +115,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
         $this->AjaxMe('script.js');
 
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Groups.html');
+        $tpl = $this->gadget->loadTemplate('Groups.html');
         $tpl->SetBlock('Groups');
 
         $tpl->SetVariable('menubar',         $this->MenuBar('Groups'));
@@ -161,8 +160,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
      */
     function GroupUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/Group.html');
+        $tpl = $this->gadget->loadTemplate('Group.html');
         $tpl->SetBlock('group');
 
         // name
@@ -206,8 +204,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
      */
     function GroupUsersUI()
     {
-        $tpl = new Jaws_Template('gadgets/Users/templates/');
-        $tpl->Load('Admin/GroupUsers.html');
+        $tpl = $this->gadget->loadTemplate('GroupUsers.html');
         $tpl->SetBlock('group_users');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $model = new Jaws_User();
