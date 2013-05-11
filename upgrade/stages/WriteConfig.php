@@ -20,8 +20,8 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
     function BuildConfig()
     {
         include_once JAWS_PATH . 'include/Jaws/Template.php';
-        $tpl = new Jaws_Template(UPGRADE_PATH . 'stages/WriteConfig/templates/');
-        $tpl->Load('JawsConfig.php', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
         $tpl->SetVariable('db_driver',  $_SESSION['upgrade']['Database']['driver']);
@@ -47,8 +47,8 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(UPGRADE_PATH . 'stages/WriteConfig/templates/');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/WriteConfig/templates');
 
         _log(JAWS_LOG_DEBUG,"Preparing configuaration file");
         $tpl->SetBlock('WriteConfig');

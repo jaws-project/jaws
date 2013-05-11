@@ -18,8 +18,8 @@ class Upgrader_08To090 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(UPGRADE_PATH  . 'stages/08To090/templates/');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/08To090/templates');
         $tpl->SetBlock('08To090');
 
         $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '0.8', '0.9.0'));

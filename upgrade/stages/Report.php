@@ -41,8 +41,8 @@ class Upgrader_Report extends JawsUpgraderStage
                                    );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
-        $tpl = new Jaws_Template(UPGRADE_PATH . 'stages/Report/templates/');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
 
         $tpl->setVariable('lbl_info',    _t('UPGRADE_REPORT_INFO', JAWS_VERSION));

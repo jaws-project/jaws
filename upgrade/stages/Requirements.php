@@ -38,8 +38,8 @@ class Upgrader_Requirements extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template('stages/Requirements/templates/');
-        $tpl->load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->load('display.html', 'stages/Requirements/templates');
         $tpl->setBlock('Requirements');
 
         $tpl->setVariable('requirements', _t('UPGRADE_REQUIREMENTS'));
