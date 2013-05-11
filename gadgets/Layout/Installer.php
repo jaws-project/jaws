@@ -23,9 +23,12 @@ class Layout_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        // Insert default layout elements
+        $layoutModel = $this->gadget->load('Model')->load('AdminModel');
+        $result = $layoutModel->GetLayoutItems();
+        if (!Jaws_Error::IsError($result) && empty($result)) {
+            $layoutModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', '', '', 1);
+            $layoutModel->NewElement('bar1', 'Users', 'LoginBox', '', 'Login', 1);
         }
 
         // Add listener for remove/publish layout elements related to given gadget
