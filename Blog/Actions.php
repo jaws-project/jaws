@@ -31,15 +31,7 @@ $actions['ViewAuthorPage'] = array(
     'normal' => true,
     'file'   => 'AuthorPosts',
 );
-$actions['Comment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['Preview'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
-$actions['SaveComment'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );
