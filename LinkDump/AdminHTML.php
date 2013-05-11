@@ -20,13 +20,10 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $tpl->SetBlock('linkdump/links_base');
-
         $tpl->SetVariable('links_tree', $this->GetGroupsList());
         $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('LINKDUMP_GROUPS_ADD'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript: addGroup();');
@@ -77,8 +74,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetGroupsList()
     {
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel');
@@ -115,8 +111,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
             return '';
         }
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
         $tpl->SetBlock('linkdump');
 
         foreach ($links as $link) {
@@ -141,8 +136,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/GroupsUI');
 
@@ -199,8 +193,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetLinkUI()
     {
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('AdminLinkDump.html');
+        $tpl = $this->gadget->loadTemplate('AdminLinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/LinksUI');
 

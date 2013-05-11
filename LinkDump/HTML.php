@@ -41,8 +41,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('Archive.html');
+        $tpl = $this->gadget->loadTemplate('Archive.html');
         $tpl->SetBlock('archive');
 
         $tpl->SetVariable('gid',   $group['id']);
@@ -116,8 +115,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
         $desc   = $this->gadget->registry->fetch('site_description', 'Settings');
         $author = $this->gadget->registry->fetch('site_author', 'Settings');
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('Rdf.html');
+        $tpl = $this->gadget->loadTemplate('Rdf.html');
         $tpl->SetBlock('RDF');
         $tpl->SetVariable('link', $url);
         $tpl->SetVariable('title', $title);
@@ -183,8 +181,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
         $target = $this->gadget->registry->fetch('links_target');
         $target = ($target == 'blank')? '_blank' : '_self';
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('Tag.html');
+        $tpl = $this->gadget->loadTemplate('Tag.html');
         $tpl->SetBlock('tag');
 
         $tpl->SetVariable('title', _t('LINKDUMP_LINKS_TAG_ARCHIVE', $tag));

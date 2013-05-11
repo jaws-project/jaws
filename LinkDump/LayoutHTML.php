@@ -56,8 +56,7 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
         $target = ($target == 'blank')? '_blank' : '_self';
         $block  = ($group['link_type']==0)? 'list' : 'link';
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('LinkDump.html');
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $tpl->SetVariable('gid',     $group['id']);
@@ -124,8 +123,7 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
         $maxFontSize = 10;
         $fontSizeRange = $maxFontSize - $minFontSize;
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('TagCloud.html');
+        $tpl = $this->gadget->loadTemplate('TagCloud.html');
         $tpl->SetBlock('tagcloud');
         $tpl->SetVariable('title', _t('LINKDUMP_LINKS_TAGCLOUD'));
 
@@ -159,8 +157,7 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/LinkDump/templates/');
-        $tpl->Load('Categories.html');
+        $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('categories');
         $tpl->SetVariable('title', _t('LINKDUMP_GROUPS'));
 
