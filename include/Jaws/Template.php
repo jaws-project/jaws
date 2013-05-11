@@ -29,7 +29,6 @@ class Jaws_TemplateBlock
 class Jaws_Template
 {
     var $Content;
-    var $_RawStore;
     var $IdentifierRegExp;
     var $AttributesRegExp;
     var $BlockRegExp;
@@ -38,8 +37,11 @@ class Jaws_Template
     var $MainBlock;
     var $CurrentBlock;
     var $Blocks = array();
-    var $_BasePath;
-    var $_BaseType;
+
+
+    var $rawStore = null;
+    var $loadFromTheme = null;
+    var $loadRTLDirection = null;
 
     /**
      * Class constructor
@@ -51,47 +53,13 @@ class Jaws_Template
      *                                                 JAWS_COMPONENT_PLUGIN)
      * @return  void
      */
-    function Jaws_Template($base_path = '', $base_type = null)
+    function Jaws_Template()
     {
         $this->IdentifierRegExp = '[\.0-9A-Za-z_-]+';
         $this->AttributesRegExp = '/(\w+)((\s*=\s*".*?")|(\s*=\s*\'.*?\')|(\s*=\s*\w+)|())/s';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
-        $this->SetPath($base_path, $base_type);
-    }
-
-    /**
-     * Set the path
-     *
-     * @access  public
-     * @param   string  $path Template path (where templates are)
-     */
-    function SetPath($base_path = '', $base_type = null)
-    {
-        if (is_null($base_type)) {
-            if (!empty($base_path)) {
-                //for compatible with old versions
-                if (strpos($base_path, 'gadgets/') !== false) {
-                    $base_type = JAWS_COMPONENT_GADGET;
-                    $base_path = str_replace(array('gadgets/', '/templates/'), '', $base_path);
-                }
-
-                if (strpos($base_path, 'plugins/') !== false) {
-                    $base_type = JAWS_COMPONENT_PLUGIN;
-                    $base_path = str_replace(array('plugins/', '/templates/'), '', $base_path);
-                }
-
-                if ($base_type == JAWS_COMPONENT_OTHERS) {
-                    $base_path .= '/';
-                }
-            } else {
-                $base_type = JAWS_COMPONENT_THEMES;
-            }
-        }
-
-        $this->_BaseType = $base_type;
-        $this->_BasePath = $base_path;
     }
 
     /**
@@ -107,95 +75,77 @@ class Jaws_Template
     /**
      * Loads a template from a file
      *
-     * @param   string $fileName The file name
      * @access  public
+     * @param   string  $fname      File name
+     * @param   string  $fpath      File path
+     * @param   string  $component  Component name(owner of template file)
+     * @param   bool    $return     Return content?
+     * @return  mixed   Template content or void(based on $return parameter)
      */
-    function Load($fileName, $raw_store = false, $InTheme = null, $direction = null, $dontLoad = false)
+    function Load($fname, $fpath = '', $component = '', $return = false)
     {
-        if (is_null($InTheme)) {
-            $InTheme = JAWS_SCRIPT == 'index';
+        $fpath   = rtrim($fpath, '/');
+        $extFile = strrchr($fname, '.');
+        $nmeFile = substr($fname, 0, -strlen($extFile));
+        $prefix  = '';
+        if ($this->loadRTLDirection ||
+           (is_null($this->loadRTLDirection) && function_exists('_t') && _t('GLOBAL_LANG_DIRECTION') == 'rtl'))
+        {
+            $prefix = '.rtl';
         }
 
-        $fileExt  = strrchr($fileName, '.');
-        $fileName = substr($fileName, 0, -strlen($fileExt));
-
-        $direction = strtolower(empty($direction) ? (function_exists('_t') ? _t('GLOBAL_LANG_DIRECTION') : 'ltr') : $direction);
-        $prefix = ($direction == 'rtl')? '.rtl' : '';
-
-        if ($this->_BaseType != JAWS_COMPONENT_OTHERS) {
+        $tplExists = false;
+        $this->loadFromTheme = is_null($this->loadFromTheme)? (JAWS_SCRIPT == 'index') : $this->loadFromTheme;
+        if ($this->loadFromTheme && (!empty($component) || empty($fpath))) {
             $theme = $GLOBALS['app']->GetTheme();
             if (!$theme['exists']) {
-                Jaws_Error::Fatal('Template doesn\'t exists. <br />A possible reason of this error is that the theme: ' .
-                                  '<strong>' . $theme['name'] . ' </strong> is missing');
+                Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
             }
 
-            switch ($this->_BaseType) {
-                case JAWS_COMPONENT_GADGET:
-                case JAWS_COMPONENT_PLUGIN:
-                    // at first trying to load the template within the theme dir
-                    if ($InTheme) {
-                        $tplFile = $theme['path'] . $this->_BasePath . '/' . $fileName . $prefix . $fileExt;
-                        $InTheme = file_exists($tplFile);
-                        if (!$InTheme && !empty($prefix)) {
-                            $tplFile = $theme['path'] . $this->_BasePath . '/' . $fileName . $fileExt;
-                            $InTheme = file_exists($tplFile);
-                        }
-                    }
-
-                    // trying to load the template within the original location
-                    if (!$InTheme) {
-                        $tplDir = ($this->_BaseType == JAWS_COMPONENT_GADGET)? 'gadgets/' : 'plugins/';
-                        $tplDir = $tplDir . $this->_BasePath . '/templates/';
-                        $tplFile = JAWS_PATH . $tplDir . $fileName . $prefix . $fileExt;
-                        if (!file_exists($tplFile) && !empty($prefix)) {
-                            $tplFile = JAWS_PATH . $tplDir . $fileName . $fileExt;
-                        }
-                    }
-
-                    break;
-
-                default: //JAWS_COMPONENT_THEMES
-                    $tplFile = $theme['path'] . $fileName . $prefix . $fileExt;
-                    if (!file_exists($tplFile) && !empty($prefix)) {
-                        $tplFile = $theme['path'] . $fileName . $fileExt;
-                    }
-            }
-        } else {
-            $tplFile = $this->_BasePath . $fileName . $prefix . $fileExt;
-            if (!file_exists($tplFile) && !empty($prefix)) {
-                $tplFile = $this->_BasePath . $fileName . $fileExt;
+            $tplFile = $theme['path']. $component. '/'. $nmeFile. $prefix. $extFile;
+            $tplExists = file_exists($tplFile);
+            if (!$tplExists && !empty($prefix)) {
+                $tplFile = $theme['path']. $component. '/'. $nmeFile. $extFile;
+                $tplExists = file_exists($tplFile);
             }
         }
 
-        if (!file_exists($tplFile)) {
-            if (isset($GLOBALS['app'])) {
-                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists');
-            } else {
-                Jaws_Error::Fatal('Template '.$tplFile.' doesn\'t exists. <br />'.
-                                  'A possible reason of this error is that the ' .
-                                  'default theme is missing');
+        if (!$tplExists) {
+            $tplFile = JAWS_PATH. $fpath. '/'. $nmeFile. $prefix. $extFile;
+            $tplExists = file_exists($tplFile);
+            if (!$tplExists && !empty($prefix)) {
+                $tplFile = JAWS_PATH. $fpath. '/'. $nmeFile. $extFile;
+                $tplExists = file_exists($tplFile);
+            }
+
+            if (!$tplExists) {
+                Jaws_Error::Fatal('Template '. $tplFile. ' doesn\'t exists');
             }
         }
 
-        if (filesize($tplFile) <= 0) {
-            Jaws_Error::Fatal('Template '.$tplFile.' is empty, I can\'t work with empty files, do you?');
+        $content = @file_get_contents($tplFile);
+        if (empty($content)) {
+            Jaws_Error::Fatal('There was a problem while reading the template file: '. $tplFile);
         }
 
-        $content = file_get_contents($tplFile);
-        if ($content === false) {
-            Jaws_Error::Fatal('There was a problem while reading the template file: ' . $tplFile);
+        if (preg_match_all("#<!-- INCLUDE (.*) -->#i", $content, $includes, PREG_SET_ORDER)) {
+            foreach ($includes as $key => $include) {
+                @list($incl_fname, $incl_fpath, $incl_component) = preg_split('#\s#', $include[1]);
+                if (empty($incl_fpath)) {
+                    $incl_fpath = $fpath;
+                    $incl_component = $component;
+                }
+
+                $replacement = $this->Load($incl_fname, $incl_fpath, $incl_component, true);
+                $content = str_replace($include[0], $replacement, $content);
+            }
         }
 
-        $InThemeStr = is_null($InTheme)? 'null' : ($InTheme? 'true' : 'false');
-        $content = preg_replace("#<!-- INCLUDE (.*) -->#ime",
-                                "\$this->Load('\\1', false, $InThemeStr, '$direction', true)",
-                                $content);
-
-        if ($dontLoad) {
+        if ($return) {
             return $content;
         }
 
-        $this->loadFromString($content, $raw_store);
+        $this->loadFromString($content);
     }
 
     /**
@@ -204,9 +154,8 @@ class Jaws_Template
      * @param   $tplString String that contains a template struct
      * @access  public
      */
-    function LoadFromString($tplString, $raw_store = false)
+    function LoadFromString($tplString)
     {
-        $this->_RawStore = $raw_store;
         $this->Content   = str_replace('\\', '\\\\', $tplString);
         $this->Content   = str_replace(array("-->\n", "-->\r\n"), '-->',  $this->Content);
         $this->Blocks    = $this->GetBlocks($this->Content);
@@ -249,7 +198,7 @@ class Jaws_Template
                     $wblock->Attributes[$attr[1]] = $attr[2];
                 }
                 $wblock->Content    = $match[3];
-                $wblock->RawContent = $this->_RawStore? $match[3] : null;
+                $wblock->RawContent = $this->rawStore? $match[3] : null;
                 $wblock->InnerBlock = $this->GetBlocks($wblock->Content);
                 foreach ($wblock->InnerBlock as $k => $iblock) {
                     $pattern = '@<!--\s+begin\s+'.$iblock->Name.'\s+([^>]*)-->(.*)<!--\s+end\s+'.$iblock->Name.'\s+-->@sim';
@@ -617,12 +566,13 @@ class Jaws_Template
      */
     function ResetValues()
     {
+        $this->rawStore = false;
+        $this->loadFromTheme = null;
+        $this->loadRTLDirection = null;
         $this->Content = '';
         $this->MainBlock = '';
-        $this->CurrentBlock = '';
         $this->Blocks = array();
-        $this->_BasePath = '';
-        $this->_BaseType = '';
+        $this->CurrentBlock = '';
     }
 
 }
