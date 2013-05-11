@@ -131,8 +131,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
         $request  =& Jaws_Request::getInstance();
         $category = $request->get('category', 'get');
 
-        $manageTpl = new Jaws_Template('gadgets/Faq/templates/');
-        $manageTpl->Load('AdminFaq.html');
+        $manageTpl = $this->gadget->loadTemplate('AdminFaq.html');
         $manageTpl->SetBlock('Faq');
         $manageTpl->SetVariable('base_script', BASE_SCRIPT);
         $manageTpl->SetVariable('menubar', $this->MenuBar(''));
@@ -157,8 +156,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
         $manageTpl->SetVariable('category_combo', $catCombo->Get());
 
         ///OK.. build the complete work area..
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('AdminFaq.html');
+        $tpl = $this->gadget->loadTemplate('AdminFaq.html');
         $tpl->SetBlock('ManageQuestions');
 
         $questions = $model->GetQuestions();
@@ -227,8 +225,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('AdminFaq.html');
+        $tpl = $this->gadget->loadTemplate('AdminFaq.html');
         $tpl->SetBlock('edit_question');
         $tpl->SetVariable('menubar', $this->MenuBar('AddNewQuestion'));
 
@@ -412,8 +409,8 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
             $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel');
             $cat = $model->GetCategory($category);
         }
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('AdminFaq.html');
+
+        $tpl = $this->gadget->loadTemplate('AdminFaq.html');
         $tpl->SetBlock('edit_category');
         $tpl->SetVariable('menubar', $this->MenuBar('AddNewCategory'));
 

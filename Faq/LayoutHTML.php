@@ -19,8 +19,7 @@ class Faq_LayoutHTML extends Jaws_Gadget_HTML
      */
     function ListCategories()
     {
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('Categories.html');
+        $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('faq_categories');
         $tpl->SetVariable('title', _t('FAQ_CATEGORIES'));
         $model = $GLOBALS['app']->LoadGadget('Faq', 'Model');

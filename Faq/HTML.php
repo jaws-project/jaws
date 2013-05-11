@@ -34,8 +34,7 @@ class Faq_HTML extends Jaws_Gadget_HTML
         $qid = $request->get('id', 'get');
         $qid = Jaws_XSS::defilter($qid, true);
 
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('Question.html');
+        $tpl = $this->gadget->loadTemplate('Question.html');
         $tpl->SetBlock('faq_question');
 
         $model = $GLOBALS['app']->LoadGadget('Faq', 'Model');
@@ -67,8 +66,7 @@ class Faq_HTML extends Jaws_Gadget_HTML
         $this->SetTitle(_t('FAQ_NAME') . ' - ' . _t('FAQ_CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);
         if (is_array($questions) && count($questions) > 0) {
-            $tpl = new Jaws_Template('gadgets/Faq/templates/');
-            $tpl->Load('Category.html');
+            $tpl = $this->gadget->loadTemplate('Category.html');
             foreach ($questions as $cat) {
                 $tpl->SetBlock('faq_category');
                 $tpl->SetVariable('title', _t('FAQ_TITLE'));
@@ -122,8 +120,7 @@ class Faq_HTML extends Jaws_Gadget_HTML
      */
     function View()
     {
-        $tpl = new Jaws_Template('gadgets/Faq/templates/');
-        $tpl->Load('ViewFaq.html');
+        $tpl = $this->gadget->loadTemplate('ViewFaq.html');
         $tpl->SetBlock('faq');
         $tpl->SetVariable('title', _t('FAQ_TITLE'));
         $this->SetTitle(_t('FAQ_TITLE'));
