@@ -19,8 +19,7 @@ class Glossary_LayoutHTML extends Jaws_Gadget_HTML
      */
     function RandomTerms()
     {
-        $tpl = new Jaws_Template('gadgets/Glossary/templates/');
-        $tpl->Load('Random.html');
+        $tpl = $this->gadget->loadTemplate('Random.html');
         $tpl->SetBlock('random');
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model');
         $term = $model->GetRandomTerm();
@@ -42,8 +41,7 @@ class Glossary_LayoutHTML extends Jaws_Gadget_HTML
      */
     function ListOfTerms()
     {
-        $tpl = new Jaws_Template('gadgets/Glossary/templates/');
-        $tpl->Load('SimpleList.html');
+        $tpl = $this->gadget->loadTemplate('SimpleList.html');
         $tpl->SetBlock('list_of_terms');
         $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model');

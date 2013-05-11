@@ -20,15 +20,11 @@ class Glossary_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Glossary/templates/');
-        $tpl->Load('AdminGlossary.html');
+        $tpl = $this->gadget->loadTemplate('AdminGlossary.html');
         $tpl->SetBlock('Glossary');
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel');
 
         // Block List
+        $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel');
         $terms = $model->GetTerms();
         $termsCombo =& Piwi::CreateWidget('Combo', 'term_id');
         $termsCombo->SetID('term_id');

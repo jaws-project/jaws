@@ -38,8 +38,8 @@ class Glossary_HTML extends Jaws_Gadget_HTML
         $term = $model->GetTerm($term);
         if (!Jaws_Error::IsError($term) && isset($term['term'])) {
             $this->SetTitle($term['term']);
-            $tpl = new Jaws_Template('gadgets/Glossary/templates/');
-            $tpl->Load('ViewTerm.html');
+
+            $tpl = $this->gadget->loadTemplate('ViewTerm.html');
             $tpl->SetBlock('definition');
             $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
 
@@ -71,8 +71,7 @@ class Glossary_HTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Glossary/templates/');
-        $tpl->Load('AlphabeticList.html');
+        $tpl = $this->gadget->loadTemplate('AlphabeticList.html');
         $tpl->SetBlock('list');
         $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
         $this->SetTitle(_t('GLOSSARY_NAME'));
