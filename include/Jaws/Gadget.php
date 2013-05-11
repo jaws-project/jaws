@@ -232,6 +232,35 @@ class Jaws_Gadget
     }
 
     /**
+     * Loads a template from a file
+     *
+     * @access  public
+     * @param   string  $fname      File name
+     * @param   string  $fpath      File path
+     * @param   string  $gadget     Gadget name(owner of template file)
+     * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
+     * @return  object  Jaws_Template object
+     */
+    function &loadTemplate($fname, $fpath = '', $gadget = '', $options = array())
+    {
+        $tpl = new Jaws_Template();
+        if (empty($fpath) || in_array($fpath, array('admin', 'index'))) {
+            $subdir = empty($fpath)? JAWS_SCRIPT : $fpath;
+            $subdir = ($subdir == 'admin')? 'Admin' : '';
+            $gadget = empty($gadget)? $this->name : $gadget;
+            $fpath  = "gadgets/$gadget/templates/$subdir";
+        }
+
+        // set options
+        foreach ($options as $option => $value) {
+            $tpl->$option = $value;
+        }
+
+        $tpl->Load($fname, $fpath, $gadget);
+        return $tpl;
+    }
+
+    /**
      * Gets the gadget name
      *
      * @access  public
