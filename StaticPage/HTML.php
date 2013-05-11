@@ -64,8 +64,7 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
             //add static page language to meta language tag
             $this->AddToMetaLanguages($page_language);
 
-            $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
-            $tpl->Load('StaticPage.html');
+            $tpl = $this->gadget->loadTemplate('StaticPage.html');
             $tpl->SetBlock('page');
 
             if (!$page['published'] &&
@@ -173,8 +172,7 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
      */
     function PagesTree()
     {
-        $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
-        $tpl->Load('StaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('pages_tree');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_TREE'));
 

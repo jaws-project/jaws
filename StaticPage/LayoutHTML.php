@@ -62,8 +62,7 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
-        $tpl->Load('StaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('index');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_LIST'));
         foreach ($pages as $page) {
@@ -95,8 +94,7 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
-        $tpl->Load('StaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('group_index');
         $tpl->SetVariable('title', _t('STATICPAGE_GROUPS_LIST'));
         foreach ($groups as $group) {
@@ -139,8 +137,7 @@ class StaticPage_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/StaticPage/templates/');
-        $tpl->Load('StaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('group_pages');
         $tpl->SetVariable('title', $group['title']);
         foreach ($pages as $page) {
