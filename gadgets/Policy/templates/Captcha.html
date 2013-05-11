@@ -1,0 +1,38 @@
+<!-- BEGIN image_captcha -->
+<p>
+  <input type="hidden" name="captcha_key" id="captcha_key_{key}" value="{key}" />
+  <label for="entry_value_{key}">{lbl_captcha}:</label>
+  <br />
+  <span>
+    <img id="captcha_image_{key}" class="captcha" title="{captcha_title}" src="{url}" />
+    <button type="button" onclick="javascript:document.getElementById('captcha_image_{key}').src = '{url}?'+ new Date().getTime();">
+      <img src="images/stock/reload.png"/>
+    </button>
+    <br />
+    <small>{description}</small>
+  </span>
+  <br />
+  <input type="text" name="entry_value" id="entry_value_{key}" title="{entry_title}" value="" />
+</p>
+<!-- END image_captcha -->
+<!-- BEGIN text_captcha -->
+<p>
+  <input type="hidden" name="captcha_key" id="captcha_key_{key}" value="{key}" />
+  <label for="entry_value_{key}">{lbl_captcha}:</label>
+  <br />
+  <span>
+    <label title="{captcha_title}" >{captcha_text}</label>
+    <br />
+    <small>{description}</small>
+  </span>
+  <br />
+  <input type="text" name="entry_value" id="entry_value_{key}" title="{entry_title}" value="" />
+</p>
+<!-- END text_captcha -->
+<!-- BEGIN block_captcha -->
+<p>
+  <label>{lbl_captcha}:</label>
+  <br />
+ {captcha_text}
+</p>
+<!-- END block_captcha -->
