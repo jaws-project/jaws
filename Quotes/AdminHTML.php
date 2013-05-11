@@ -69,7 +69,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddHeadLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css', 'stylesheet', 'text/css');
 
-        $tpl = $this->gadget->loadTemplate('AdminQuotes.html');
+        $tpl = $this->gadget->loadTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Quotes'));
@@ -202,7 +202,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('AdminQuotes.html');
+        $tpl = $this->gadget->loadTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('QuoteGroups'));
@@ -310,7 +310,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
      */
     function GroupQuotesUI()
     {
-        $tpl = $this->gadget->loadTemplate('AdminQuotes.html');
+        $tpl = $this->gadget->loadTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         $tpl->SetBlock('quotes/quotes_groups_ui_section');
 
