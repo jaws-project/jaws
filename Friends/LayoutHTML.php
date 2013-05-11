@@ -19,8 +19,7 @@ class Friends_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display()
     {
-        $tpl = new Jaws_Template('gadgets/Friends/templates/');
-        $tpl->Load('Friends.html');
+        $tpl = $this->gadget->loadTemplate('Friends.html');
         $model = $GLOBALS['app']->LoadGadget('Friends', 'Model');
         $friends = $model->GetRandomFriends();
         if (!Jaws_Error::IsError($friends)) {

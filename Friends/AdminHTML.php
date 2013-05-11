@@ -89,11 +89,8 @@ class Friends_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Friends/templates/');
-        $tpl->Load('AdminFriends.html');
+        $tpl = $this->gadget->loadTemplate('AdminFriends.html');
         $tpl->SetBlock('friends');
-
         $tpl->SetVariable('grid', $this->Datagrid());
 
         ///Config properties
