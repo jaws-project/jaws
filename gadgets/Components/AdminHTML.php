@@ -66,8 +66,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('AdminGadgets.html');
+        $tpl = $this->gadget->loadTemplate('Gadgets.html');
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
@@ -107,8 +106,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      */
     function GadgetsSummary()
     {
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('GadgetsSummary.html');
+        $tpl = $this->gadget->loadTemplate('GadgetsSummary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
         $tpl->SetVariable('lbl_outdated', _t('COMPONENTS_GADGETS_OUTDATED').':');
@@ -307,8 +305,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     {
         $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
 
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('GadgetInfo.html');
+        $tpl = $this->gadget->loadTemplate('Gadget.html');
         $tpl->SetBlock('info');
 
         if (Jaws_Error::IsError($info)) {
@@ -393,8 +390,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
 
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('AdminPlugins.html');
+        $tpl = $this->gadget->loadTemplate('Plugins.html');
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
@@ -446,8 +442,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      */
     function PluginsSummary()
     {
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('PluginsSummary.html');
+        $tpl = $this->gadget->loadTemplate('PluginsSummary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
         $tpl->SetVariable('lbl_installed', _t('COMPONENTS_PLUGINS_INSTALLED').':');
@@ -468,8 +463,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
 
-        $tpl = new Jaws_Template('gadgets/Components/templates/');
-        $tpl->Load('PluginInfo.html');
+        $tpl = $this->gadget->loadTemplate('Plugin.html');
         $tpl->SetBlock('info');
 
         $info = $model->GetPluginInfo($plugin);
