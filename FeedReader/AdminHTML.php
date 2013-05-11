@@ -92,9 +92,7 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/FeedReader/templates/');
-        $tpl->Load('AdminFeedReader.html');
+        $tpl = $this->gadget->loadTemplate('AdminFeedReader.html');
         $tpl->SetBlock('feedreader');
 
         $tpl->SetVariable('grid', $this->DataGrid());
