@@ -68,7 +68,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
     function ManageComments()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Admin.html');
+        $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox_admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
