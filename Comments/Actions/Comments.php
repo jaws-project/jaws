@@ -20,8 +20,7 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function Comments($preview_mode = false)
     {
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('GuestBook.html');
+        $tpl = $this->gadget->loadTemplate('GuestBook.html');
         $tpl->SetBlock('guestbook');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
@@ -51,8 +50,7 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function ShowCommentsForm($gadget, $action, $reference, $redirect_to)
     {
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('CommentForm.html');
+        $tpl = $this->gadget->loadTemplate('CommentForm.html');
         $tpl->SetBlock('comment_form');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
@@ -184,8 +182,7 @@ class Comments_Actions_Comments extends Comments_HTML
             ($page - 1) * $perPage, $orderBy);
         $comments_count = $model->HowManyComments(strtolower($gadget), $action, $reference);
 
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Comments.html');
+        $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('comments');
 
         $tpl->SetVariable('gadget', $gadget);
@@ -320,8 +317,7 @@ class Comments_Actions_Comments extends Comments_HTML
             $post['url'] = $GLOBALS['app']->Session->GetAttribute('url');
         }
 
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Comments.html');
+        $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('comment-preview');
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -423,8 +419,7 @@ class Comments_Actions_Comments extends Comments_HTML
                                               ($page - 1) * $perPage, $orderBy);
         $comments_count = $model->HowManyFilteredComments('comments', '', '', 1);
 
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Comments.html');
+        $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('comments');
 
         $objDate = $GLOBALS['app']->loadDate();

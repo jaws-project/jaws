@@ -20,9 +20,7 @@ class Comments_Actions_Admin_Properties extends Comments_AdminHTML
     {
         $this->gadget->CheckPermission('ManageProperties');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Admin/Properties.html');
+        $tpl = $this->gadget->loadTemplate('Properties.html');
         $tpl->SetBlock('Properties');
 
         // comments site wide

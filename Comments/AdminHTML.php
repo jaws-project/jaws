@@ -65,8 +65,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         // TODO: Check Permission For Manage Comments
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Admin/AdminComments.html');
+        $tpl = $this->gadget->loadTemplate('AdminComments.html');
         $tpl->SetBlock('Comments');
 
         //Menu bar
@@ -170,8 +169,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function CommentUI()
     {
-        $tpl = new Jaws_Template('gadgets/Comments/templates/');
-        $tpl->Load('Admin/AdminComments.html');
+        $tpl = $this->gadget->loadTemplate('AdminComments.html');
         $tpl->SetBlock('CommentUI');
 
         //IP
