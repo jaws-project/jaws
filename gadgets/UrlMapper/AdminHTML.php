@@ -202,8 +202,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
     function Maps()
     {
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/UrlMapper/templates/');
-        $tpl->Load('Maps.html');
+        $tpl = $this->gadget->loadTemplate('Maps.html');
         $tpl->SetBlock('UrlMapper');
 
         // Menubar
@@ -288,8 +287,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
     function Aliases()
     {
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/UrlMapper/templates/');
-        $tpl->Load('Aliases.html');
+        $tpl = $this->gadget->loadTemplate('Aliases.html');
         $tpl->SetBlock('Aliases');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
@@ -359,8 +357,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
     function ErrorMaps()
     {
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/UrlMapper/templates/');
-        $tpl->Load('ErrorMaps.html');
+        $tpl = $this->gadget->loadTemplate('ErrorMaps.html');
         $tpl->SetBlock('ErrorMaps');
 
         // Menubar
@@ -431,8 +428,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
     function Properties()
     {
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/UrlMapper/templates/');
-        $tpl->Load('Properties.html');
+        $tpl = $this->gadget->loadTemplate('Properties.html');
         $tpl->SetBlock('Properties');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
