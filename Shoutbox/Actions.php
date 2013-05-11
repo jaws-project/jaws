@@ -13,3 +13,6 @@ $actions = array();
 $actions['Display'] = array(
     'layout' => true,
 );
+$actions['Preview'] = array(
+    'normal' => true,
+);

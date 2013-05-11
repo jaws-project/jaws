@@ -26,19 +26,24 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
      * Get the shoutbox messages list
      *
      * @access  public
+     * @param   bool    $preview_mode       preview mode
      * @return  string  XHTML template content
      */
-    function GetMessages()
+    function GetMessages($preview_mode = false)
     {
         $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
 
-        $tpl->SetVariable('messages', $cHTML->ShowComments('Shoutbox', '', 0,
+        $tpl->SetVariable('comments', $cHTML->ShowComments('Shoutbox', '', 0,
             array('action' => 'DefaultAction','params' => array())));
 
+        if ($preview_mode) {
+            $tpl->SetVariable('preview', $cHTML->ShowPreview());
+        }
+
         $redirect_to = $this->gadget->GetURLFor('DefaultAction', array());
-        $tpl->SetVariable('message-form', $cHTML->ShowCommentsForm('Shoutbox', '', 0, $redirect_to));
+        $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Shoutbox', '', 0, $redirect_to));
 
         $tpl->ParseBlock('shoutbox');
         return $tpl->Get();

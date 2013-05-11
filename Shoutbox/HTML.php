@@ -21,6 +21,17 @@ class Shoutbox_HTML extends Jaws_Gadget_HTML
     {
         $layoutGadget = $GLOBALS['app']->LoadGadget('Shoutbox', 'LayoutHTML');
         return $layoutGadget->Display();
-    }
+}
 
+    /**
+     * Displays a preview of the given shoutbox message
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function Preview()
+    {
+        $layoutGadget = $GLOBALS['app']->LoadGadget('Shoutbox', 'LayoutHTML');
+        return $layoutGadget->GetMessages(true);
+    }
  }
