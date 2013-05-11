@@ -144,25 +144,25 @@ class LinkDump_Model extends Jaws_Gadget_Model
         );
 
         if (empty($gid)) {
-            $orderSQL = 'gid, rank, id ASC';
+            $linksTable->orderBy('gid', 'rank', 'id ASC');
         } else {
             $linksTable->where('gid', $gid);
             switch ($orderBy) {
                 case 1:
-                    $orderSQL = 'id ASC';
+                    $linksTable->orderBy('id ASC');
                     break;
                 case 2:
-                    $orderSQL = 'title ASC';
+                    $linksTable->orderBy('title ASC');
                     break;
                 case 3:
-                    $orderSQL = 'clicks DESC';
+                    $linksTable->orderBy('clicks DESC');
                     break;
                 default:
-                    $orderSQL = 'rank, id ASC';
+                    $linksTable->orderBy('rank', 'id ASC');
             }
         }
-        $linksTable->orderBy($orderSQL)->limit($limit);
-        return $linksTable->getAll();
+
+        return $linksTable->limit($limit)->getAll();
     }
 
 }
