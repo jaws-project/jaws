@@ -214,18 +214,9 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         }
         $ltpl->ParseBlock('layout/remember');
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if (false !== $captcha = $mPolicy->LoadCaptcha('login')) {
-            $ltpl->SetBlock('layout/captcha');
-            $ltpl->SetVariable('captcha_lbl', $captcha['label']);
-            $ltpl->SetVariable('captcha_key', $captcha['key']);
-            $ltpl->SetVariable('captcha', $captcha['captcha']);
-            if (!empty($captcha['entry'])) {
-                $ltpl->SetVariable('captcha_entry', $captcha['entry']);
-            }
-            $ltpl->SetVariable('captcha_msg', $captcha['description']);
-            $ltpl->ParseBlock('layout/captcha');
-        }
+        //captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));

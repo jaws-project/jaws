@@ -74,8 +74,8 @@ if (!$GLOBALS['app']->Session->Logged())
         }
 
         // check captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->CheckCaptcha('login');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             $param = $request->get(array('redirect_to', 'remember', 'authtype'), 'post');
             $resCheck = $GLOBALS['app']->Session->Login(
