@@ -25,8 +25,7 @@ class Forums_Actions_Forums extends Forums_HTML
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('Forums.html');
+        $tpl = $this->gadget->loadTemplate('Forums.html');
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));

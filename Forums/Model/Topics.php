@@ -506,8 +506,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $event_subject = _t("FORUMS_TOPICS_{$event_type}_NOTIFICATION_SUBJECT", $forum_title);
         $event_message = _t("FORUMS_TOPICS_{$event_type}_NOTIFICATION_MESSAGE", $lnkProfile->Get());
 
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('TopicNotification.html');
+        $tpl = $this->gadget->loadTemplate('TopicNotification.html');
         $tpl->SetBlock('notification');
         $tpl->SetVariable('notification', $event_message);
         $tpl->SetVariable('lbl_subject',  _t('FORUMS_TOPICS_SUBJECT'));

@@ -46,9 +46,6 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
      */
     function RecentTopics($gid = '')
     {
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('RecentTopics.html');
-
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group)) {
@@ -61,6 +58,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
         $recent_limit = $this->gadget->registry->fetch('recent_limit');
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
+        $tpl = $this->gadget->loadTemplate('RecentTopics.html');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topics = $tModel->GetRecentTopics($group['id'], $recent_limit);
         if (!Jaws_Error::IsError($topics)) {
@@ -129,6 +127,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
             }
             $tpl->ParseBlock('recenttopics');
         }
+
         return $tpl->Get();
     }
 

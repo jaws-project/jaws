@@ -20,9 +20,7 @@ class Forums_Actions_Admin_Forums extends Forums_AdminHTML
     {
         $this->gadget->CheckPermission('ManageForums');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('Admin/Forums.html');
+        $tpl = $this->gadget->loadTemplate('Forums.html');
         $tpl->SetBlock('forums');
 
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');

@@ -37,8 +37,7 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('Topics.html');
+        $tpl = $this->gadget->loadTemplate('Topics.html');
         $tpl->SetBlock('topics');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -183,8 +182,7 @@ class Forums_Actions_Topics extends Forums_HTML
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
         }
 
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('EditTopic.html');
+        $tpl = $this->gadget->loadTemplate('EditTopic.html');
         $tpl->SetBlock('topic');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -560,8 +558,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 $this->gadget->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
             );
         } else {
-            $tpl = new Jaws_Template('gadgets/Forums/templates/');
-            $tpl->Load('DeleteTopic.html');
+            $tpl = $this->gadget->loadTemplate('DeleteTopic.html');
             $tpl->SetBlock('topic');
 
             $tpl->SetVariable('fid', $topic['fid']);

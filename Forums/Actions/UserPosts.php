@@ -31,19 +31,14 @@ class Forums_Actions_UserPosts extends Forums_HTML
 
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-
-        $tpl = new Jaws_Template('gadgets/Forums/templates/');
-        $tpl->Load('UserPosts.html');
-
         // posts per page
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
-
+        $tpl = $this->gadget->loadTemplate('UserPosts.html');
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $posts = $pModel->GetUserPosts($uid, $posts_limit, ($page - 1) * $posts_limit);
         $post_counts = $pModel->GetUserPostsCount($uid);
-
         if (!Jaws_Error::IsError($posts)) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
