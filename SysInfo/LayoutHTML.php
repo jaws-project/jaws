@@ -23,8 +23,7 @@ class SysInfo_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('SysInfo.html');
+        $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title', _t('SYSINFO_SYSINFO'));
 
@@ -56,8 +55,7 @@ class SysInfo_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('SysInfo.html');
+        $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_PHPINFO'));
 
@@ -89,8 +87,7 @@ class SysInfo_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('SysInfo.html');
+        $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_JAWSINFO'));
 
@@ -122,8 +119,7 @@ class SysInfo_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('SysInfo.html');
+        $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_DIRINFO'));
 

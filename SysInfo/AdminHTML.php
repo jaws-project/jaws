@@ -85,8 +85,7 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('SysInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('AdminSysInfo.html');
+        $tpl = $this->gadget->loadTemplate('AdminSysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('SysInfo'));
 
@@ -116,8 +115,7 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('PHPInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('AdminSysInfo.html');
+        $tpl = $this->gadget->loadTemplate('AdminSysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('PHPInfo'));
 
@@ -147,8 +145,7 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('JawsInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('AdminSysInfo.html');
+        $tpl = $this->gadget->loadTemplate('AdminSysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('JawsInfo'));
 
@@ -178,8 +175,7 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DirInfo');
         $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/SysInfo/templates/');
-        $tpl->Load('AdminSysInfo.html');
+        $tpl = $this->gadget->loadTemplate('AdminSysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('DirInfo'));
 
