@@ -57,8 +57,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $entries = $bModel->GetEntriesByDate($page, $min_date, $max_date);
         if (!Jaws_Error::IsError($entries)) {
-            $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('DatePosts.html', true);
+            $tpl = $this->gadget->loadTemplate('DatePosts.html');
             $tpl->SetBlock('view_date');
 
             if (empty($month)) {

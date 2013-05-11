@@ -83,8 +83,7 @@ class Blog_Actions_Trackbacks extends Blog_HTML
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
             $trackbacks = $model->GetTrackbacks($id);
-            $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('Trackbacks.html');
+            $tpl = $this->gadget->loadTemplate('Trackbacks.html');
             $tpl->SetBlock('trackbacks');
             $tburi = $this->gadget->GetURLFor('Trackback', array('id' => $id), true);
             $tpl->SetVariable('TrackbackURI', $tburi);

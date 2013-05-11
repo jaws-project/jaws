@@ -62,8 +62,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         }
 
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Comments.html');
+        $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('manage_comments');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
@@ -138,8 +137,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/CommentEdit.html');
+        $tpl = $this->gadget->loadTemplate('CommentEdit.html');
         $tpl->SetBlock('edit_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 
@@ -233,8 +231,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/CommentReply.html');
+        $tpl = $this->gadget->loadTemplate('CommentReply.html');
         $tpl->SetBlock('reply_comment');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 

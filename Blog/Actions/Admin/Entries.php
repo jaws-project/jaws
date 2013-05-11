@@ -23,9 +23,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
     {
         $this->gadget->CheckPermission('AddEntries');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Entry.html');
+        $tpl = $this->gadget->loadTemplate('Entry.html');
         $tpl->SetBlock('edit_entry');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -255,15 +253,12 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         }
 
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Entry.html');
+        $tpl = $this->gadget->loadTemplate('Entry.html');
         $tpl->SetBlock('edit_entry');
-
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         // Header
         $action = isset($get['action']) ? $get['action'] : null;
         $tpl->SetVariable('menubar', $this->MenuBar($action));
-
         // Title
         $tpl->SetVariable('title', _t('BLOG_TITLE'));
         $tpl->SetVariable('action', 'EditEntry');
@@ -516,18 +511,13 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
         }
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/EntryDelete.html');
+        $tpl = $this->gadget->loadTemplate('EntryDelete.html');
         $tpl->SetBlock('delete_entry');
-
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar($get['action']));
-
         // Message
         $tpl->SetVariable('delete_message', _t('BLOG_DELETE_CONFIRM_ENTRY'));
-
         // Delete
         $deleteButton =& Piwi::CreateWidget('Button', 'delete',
                                             _t('GLOBAL_DELETE'), STOCK_DELETE);
@@ -573,16 +563,11 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
     function ListEntries()
     {
         $this->AjaxMe('script.js');
-
-        $common_url = BASE_SCRIPT . '?gadget=Blog';
-
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Entries.html');
+        $tpl = $this->gadget->loadTemplate('Entries.html');
         $tpl->SetBlock('list_entries');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('deleteConfirm', _t('BLOG_DELETE_MASSIVE_ENTRIES'));
-
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('ListEntries'));
 

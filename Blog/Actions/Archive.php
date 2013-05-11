@@ -20,8 +20,7 @@ class Blog_Actions_Archive extends Blog_HTML
      */
     function Archive()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Archive.html');
+        $tpl = $this->gadget->loadTemplate('Archive.html');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $archiveEntries = $model->GetEntriesAsArchive();
         $auxMonth = '';

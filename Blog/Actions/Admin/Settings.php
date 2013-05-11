@@ -23,8 +23,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('additional');
 
         // Header

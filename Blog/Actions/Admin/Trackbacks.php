@@ -39,8 +39,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $this->gadget->CheckPermission('ManageTrackbacks');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Trackbacks.html');
+        $tpl = $this->gadget->loadTemplate('Trackbacks.html');
         $tpl->SetBlock('manage_trackbacks');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
@@ -161,8 +160,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
         }
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Trackback.html');
+        $tpl = $this->gadget->loadTemplate('Trackback.html');
         $tpl->SetBlock('view_trackback');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
 

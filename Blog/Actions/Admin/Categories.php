@@ -23,9 +23,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Admin/Categories.html');
+        $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('categories');
 
         // Menubar

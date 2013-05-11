@@ -38,8 +38,7 @@ class Blog_Actions_Categories extends Blog_HTML
         $catInfo = $model->GetCategory($cat);
         if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
             $name = $catInfo['name'];
-            $tpl = new Jaws_Template('gadgets/Blog/templates/');
-            $tpl->Load('CategoryPosts.html', true);
+            $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
 
             $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog',
                                                                                  'ShowAtomCategory',

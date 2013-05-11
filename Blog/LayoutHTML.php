@@ -70,8 +70,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
             }
         }
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('RecentPosts.html');
+        $tpl = $this->gadget->loadTemplate('RecentPosts.html');
         $tpl->SetBlock('recent_posts');
         $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
         $tpl->SetVariable('title', $title);
@@ -139,8 +138,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function MonthlyHistory()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('MonthlyHistory.html');
+        $tpl = $this->gadget->loadTemplate('MonthlyHistory.html');
         $tpl->SetBlock('monthly_history');
         $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
@@ -197,8 +195,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function CategoriesList()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Categories.html');
+        $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('categories_list');
         $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
@@ -352,8 +349,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
         $maxFontSize = 10;
         $fontSizeRange = $maxFontSize - $minFontSize;
 
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('CategoryCloud.html');
+        $tpl = $this->gadget->loadTemplate('CategoryCloud.html');
         $tpl->SetBlock('tagcloud');
         $tpl->SetVariable('title', _t('BLOG_TAGCLOUD'));
 
@@ -382,12 +378,10 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function RSSLink()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('XMLLinks.html');
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
         $tpl->SetBlock('rss_link');
         $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));
         $tpl->ParseBlock('rss_link');
-
         return $tpl->Get();
     }
 
@@ -399,12 +393,10 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function AtomLink()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('XMLLinks.html');
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
         $tpl->SetBlock('atom_link');
         $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'));
         $tpl->ParseBlock('atom_link');
-
         return $tpl->Get();
     }
 
@@ -416,8 +408,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function RecentCommentsAtomLink()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('XMLLinks.html');
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
         $tpl->SetBlock('recentcomments_atom_link');
         $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsAtom'));
         $tpl->ParseBlock('recentcomments_atom_link');
@@ -432,8 +423,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function RecentCommentsRSSLink()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('XMLLinks.html');
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
         $tpl->SetBlock('recentcomments_rss_link');
         $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsRSS'));
         $tpl->ParseBlock('recentcomments_rss_link');
@@ -448,14 +438,13 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function PopularPosts()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('PopularPosts.html');
+        $tpl = $this->gadget->loadTemplate('PopularPosts.html');
+        $tpl->SetBlock('popular_posts');
+        $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $entries = $model->GetPopularPosts();
         if (!Jaws_Error::IsError($entries)) {
-            $tpl->SetBlock('popular_posts');
-            $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
             $date = $GLOBALS['app']->loadDate();
             foreach ($entries as $entry) {
                 $tpl->SetBlock('popular_posts/item');
@@ -484,8 +473,8 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->ParseBlock('popular_posts/item');
             }
         }
-        $tpl->ParseBlock('popular_posts');
 
+        $tpl->ParseBlock('popular_posts');
         return $tpl->Get();
     }
 
@@ -497,14 +486,13 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
      */
     function PostsAuthors()
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('Authors.html');
+        $tpl = $this->gadget->loadTemplate('Authors.html');
+        $tpl->SetBlock('posts_authors');
+        $tpl->SetVariable('title', _t('BLOG_POSTS_AUTHORS'));
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $authors = $model->GetPostsAuthors();
         if (!Jaws_Error::IsError($entries)) {
-            $tpl->SetBlock('posts_authors');
-            $tpl->SetVariable('title', _t('BLOG_POSTS_AUTHORS'));
             $date = $GLOBALS['app']->loadDate();
             foreach ($authors as $author) {
                 $tpl->SetBlock('posts_authors/item');
@@ -516,6 +504,7 @@ class Blog_LayoutHTML extends Jaws_Gadget_HTML
                 $tpl->ParseBlock('posts_authors/item');
             }
         }
+
         $tpl->ParseBlock('posts_authors');
         return $tpl->Get();
     }

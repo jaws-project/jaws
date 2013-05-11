@@ -62,8 +62,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $action, $params = array())
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('PageNavigation.html');
+        $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
@@ -139,8 +138,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
      */
     function GetNavigation($purl, $ptitle, $nurl, $ntitle)
     {
-        $tpl = new Jaws_Template('gadgets/Blog/templates/');
-        $tpl->Load('PageNavigation.html');
+        $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
         $tpl->SetBlock('pager/simple-navigation');
 
