@@ -20,7 +20,7 @@ class Glossary_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminGlossary.html');
+        $tpl = $this->gadget->loadTemplate('Glossary.html');
         $tpl->SetBlock('Glossary');
 
         // Block List
