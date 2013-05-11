@@ -68,7 +68,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      */
     function AdminPhotos()
     {
-        $tpl = $this->gadget->loadTemplate('AdminPhotos.html');
+        $tpl = $this->gadget->loadTemplate('Photos.html');
         $tpl->SetBlock('phoo');
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
