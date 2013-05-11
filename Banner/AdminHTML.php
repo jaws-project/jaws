@@ -135,8 +135,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageBanners');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminBanners.html');
         $tpl->SetBlock('text_banner');
         $text_banner = $tpl->GetCurrentBlockContent();
         $text_banner = addslashes($text_banner);
@@ -161,7 +160,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $flash_banner = str_replace(chr(10), "\\n", $flash_banner);
         $tpl->ParseBlock('flash_banner');
 
-        $tpl->Load('AdminBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminBanners.html');
         $tpl->SetBlock('Banners');
 
         //Menu bar
@@ -214,8 +213,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
      */
     function BannerUI()
     {
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminBanners.html');
         $tpl->SetBlock('BannerInfo');
 
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
@@ -347,8 +345,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminGroupBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminGroupBanners.html');
         $tpl->SetBlock('Groups');
 
         $addGroup =& Piwi::CreateWidget('Button', 'add_group', _t('BANNER_GROUPS_ADD'), STOCK_NEW);
@@ -461,8 +458,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
      */
     function EditGroupUI()
     {
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminGroupBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminGroupBanners.html');
         $tpl->SetBlock('GroupInfo');
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
@@ -516,8 +512,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetGroupBannersUI()
     {
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminGroupBanners.html');
+        $tpl = $this->gadget->loadTemplate('AdminGroupBanners.html');
         $tpl->SetBlock('GroupBanners');
 
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
@@ -628,8 +623,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ViewReports');
         $this->AjaxMe('script.js');
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('AdminBannerReports.html');
+        $tpl = $this->gadget->loadTemplate('AdminBannerReports.html');
         $tpl->SetBlock('Reports');
 
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');

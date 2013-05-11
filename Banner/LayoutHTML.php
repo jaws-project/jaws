@@ -58,8 +58,7 @@ class Banner_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
-        $tpl = new Jaws_Template('gadgets/Banner/templates/');
-        $tpl->Load('Banners.html');
+        $tpl = $this->gadget->loadTemplate('Banners.html');
         switch ($group['show_type']) {
             case 1:
             case 2:
