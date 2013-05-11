@@ -68,9 +68,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
     function ManageComments()
     {
         $this->AjaxMe('script.js');
-
-        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
-        $tpl->Load('Admin.html');
+        $tpl = $this->gadget->loadTemplate('Admin.html');
         $tpl->SetBlock('shoutbox_admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -191,8 +189,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Shoutbox&action=ManageComments');
         }
 
-        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
-        $tpl->Load('EditComment.html');
+        $tpl = $this->gadget->loadTemplate('EditComment.html');
         $tpl->SetBlock('edit_comment');
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));

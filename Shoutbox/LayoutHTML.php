@@ -30,8 +30,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
      */
     function GetMessages()
     {
-        $tpl = new Jaws_Template('gadgets/Shoutbox/templates/');
-        $tpl->Load('Shoutbox.html');
+        $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
 
