@@ -69,8 +69,7 @@ class Poll_HTML extends Jaws_Gadget_HTML
             return '';
         }
 
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('Results.html');
+        $tpl = $this->gadget->loadTemplate('Results.html');
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('POLL_ACTION_RESULT_TITLE'));
         $tpl->SetVariable('question', $poll['question']);

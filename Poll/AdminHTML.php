@@ -146,8 +146,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPolls.html');
+        $tpl = $this->gadget->loadTemplate('AdminPolls.html');
         $tpl->SetBlock('Polls');
 
         //Menu bar
@@ -183,8 +182,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
      */
     function PollUI()
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPolls.html');
+        $tpl = $this->gadget->loadTemplate('AdminPolls.html');
         $tpl->SetBlock('PollUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
@@ -270,8 +268,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
      */
     function PollAnswersUI()
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPolls.html');
+        $tpl = $this->gadget->loadTemplate('AdminPolls.html');
         $tpl->SetBlock('PollAnswersUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
@@ -401,8 +398,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPollGroups.html');
+        $tpl = $this->gadget->loadTemplate('AdminPollGroups.html');
         $tpl->SetBlock('PollGroups');
 
         //Menu bar
@@ -437,8 +433,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
      */
     function PollGroupUI()
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPollGroups.html');
+        $tpl = $this->gadget->loadTemplate('AdminPollGroups.html');
         $tpl->SetBlock('PollGroupUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -468,8 +463,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
      */
     function PollGroupPollsUI()
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminPollGroups.html');
+        $tpl = $this->gadget->loadTemplate('AdminPollGroups.html');
         $tpl->SetBlock('PollGroupPollsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -503,8 +497,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $this->AjaxMe('script.js');
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel');
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminReports.html');
+        $tpl = $this->gadget->loadTemplate('AdminReports.html');
         $tpl->SetBlock('Reports');
 
         //Menu bar
@@ -543,8 +536,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
      */
     function PollResultsUI($pid)
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('AdminReports.html');
+        $tpl = $this->gadget->loadTemplate('AdminReports.html');
         $tpl->SetBlock('PollResults');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
         $poll = $model->GetPoll($pid);

@@ -47,8 +47,7 @@ class Poll_Actions_Polls extends Jaws_Gadget_HTML
      */
     function Polls($gid = 0)
     {
-        $tpl = new Jaws_Template('gadgets/Poll/templates/');
-        $tpl->Load('Polls.html');
+        $tpl = $this->gadget->loadTemplate('Polls.html');
         $tpl->SetBlock('Polls');
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
