@@ -23,8 +23,7 @@ class Search_Actions_Search extends Search_HTML
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
 
-        $tpl = new Jaws_Template('gadgets/Search/templates/');
-        $tpl->Load('Search.html');
+        $tpl = $this->gadget->loadTemplate('Search.html');
         if ($gadgets_combo) {
             $block = 'Box';
         } else {
@@ -93,8 +92,7 @@ class Search_Actions_Search extends Search_HTML
         $post = $request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
         $post['all'] = Jaws_XSS::defilter($post['all']);
 
-        $tpl = new Jaws_Template('gadgets/Search/templates/');
-        $tpl->Load('Search.html');
+        $tpl = $this->gadget->loadTemplate('Search.html');
         $tpl->SetBlock('AdvancedBox');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
