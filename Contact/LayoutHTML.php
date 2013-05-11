@@ -89,18 +89,9 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
             }
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-            $tpl->SetBlock('contact/captcha');
-            $tpl->SetVariable('captcha_lbl', $captcha['label']);
-            $tpl->SetVariable('captcha_key', $captcha['key']);
-            $tpl->SetVariable('captcha', $captcha['captcha']);
-            if (!empty($captcha['entry'])) {
-                $tpl->SetVariable('captcha_entry', $captcha['entry']);
-            }
-            $tpl->SetVariable('captcha_msg', $captcha['description']);
-            $tpl->ParseBlock('contact/captcha');
-        }
+        //captcha
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy->loadCaptcha($tpl, 'contact');
 
         //company
         if (in_array('company', $items_array)) {
