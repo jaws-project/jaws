@@ -97,8 +97,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('BasicSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Basic'));
@@ -226,8 +225,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('AdvancedSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Advanced'));
@@ -387,8 +385,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('MetaSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Meta'));
@@ -491,8 +488,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('MailSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Mail'));
@@ -635,8 +631,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('FTPSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('FTP'));
@@ -740,8 +735,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ProxySettings');
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Settings/templates/');
-        $tpl->Load('Settings.html');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Proxy'));
