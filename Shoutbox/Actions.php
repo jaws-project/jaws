@@ -10,9 +10,6 @@
  */
 $actions = array();
 
-$actions['Post'] = array(
-    'normal' => true,
-);
 $actions['Display'] = array(
     'layout' => true,
 );
