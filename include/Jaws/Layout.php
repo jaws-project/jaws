@@ -215,6 +215,7 @@ class Jaws_Layout
         }
 
         $this->_Template = new Jaws_Template();
+        $this->_Template->loadFromTheme = true;
         $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
