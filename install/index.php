@@ -139,8 +139,8 @@ if (!isset($GLOBALS['message']) && $skip) {
 }
 
 include_once JAWS_PATH . 'include/Jaws/Template.php';
-$tpl = new Jaws_Template('templates');
-$tpl->Load('page.html', false, false);
+$tpl = new Jaws_Template();
+$tpl->Load('page.html', 'templates');
 $tpl->SetBlock('page');
 $tpl->SetVariable('title', $stages[$_SESSION['install']['stage']]['name']);
 $tpl->SetVariable('body',  $stageobj->display());
@@ -193,8 +193,8 @@ $direction = _t('GLOBAL_LANG_DIRECTION');
 $dir  = $direction == 'rtl' ? '.' . $direction : '';
 
 // Display the layout
-$layout = new Jaws_Template('templates');
-$layout->Load('layout.html');
+$layout = new Jaws_Template();
+$layout->Load('layout.html', 'templates');
 $layout->SetBlock('layout');
 
 // Basic setup

@@ -19,8 +19,8 @@ class Installer_Introduction extends JawsInstallerStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template('stages/Introduction/templates');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/Introduction/templates');
         $tpl->SetBlock('Introduction');
         $tpl->SetVariable('welcome',    _t('INSTALL_INTRO_WELCOME'));
         $tpl->SetVariable('title_info', _t('INSTALL_INTRO_INSTALLER'));

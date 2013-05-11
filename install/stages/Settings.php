@@ -96,8 +96,8 @@ class Installer_Settings extends JawsInstallerStage
         }
         $gdt->SetDefault($values['default_gadget']);
 
-        $tpl = new Jaws_Template('stages/Settings/templates/');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
 
         $tpl->setVariable('lbl_info',            _t('INSTALL_SETTINGS_INFO'));

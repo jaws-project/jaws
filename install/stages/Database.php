@@ -57,8 +57,8 @@ class Installer_Database extends JawsInstallerStage
             $data = $_SESSION['install']['data']['Database'];
         }
 
-        $tpl = new Jaws_Template('stages/Database/templates/');
-        $tpl->Load('display.html', false, false);
+        $tpl = new Jaws_Template();
+        $tpl->Load('display.html', 'stages/Database/templates');
         $tpl->SetBlock('Database');
 
         $tpl->setVariable('db_info',   _t('INSTALL_DB_INFO'));
