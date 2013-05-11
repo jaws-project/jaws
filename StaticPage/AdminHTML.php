@@ -67,7 +67,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('AdminStaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('Properties');
 
         $request =& Jaws_Request::getInstance();
@@ -237,7 +237,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('AdminStaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('static_page');
         
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -532,7 +532,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminStaticPage.html');
+        $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('pageform');
 
         $request =& Jaws_Request::getInstance();
@@ -703,7 +703,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('AdminGroups.html');
+        $tpl = $this->gadget->loadTemplate('Groups.html');
         $tpl->SetBlock('Groups');
 
         // Menu bar
