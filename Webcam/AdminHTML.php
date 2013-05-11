@@ -98,8 +98,7 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $tpl = new Jaws_Template('gadgets/Webcam/templates/');
-        $tpl->Load('AdminWebcam.html');
+        $tpl = $this->gadget->loadTemplate('AdminWebcam.html');
         $tpl->SetBlock('webcam');
 
         $tpl->SetVariable('grid', $this->DataGrid());
