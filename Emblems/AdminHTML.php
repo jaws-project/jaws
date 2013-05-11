@@ -144,7 +144,7 @@ class Emblems_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('AdminEmblems.html');
+        $tpl = $this->gadget->loadTemplate('Emblems.html');
         $tpl->SetBlock('emblems');
 
         if ($this->gadget->GetPermission('UpdateProperties')) {
