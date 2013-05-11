@@ -465,9 +465,8 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             'ip_address', 'reference', 'albumid'
         );
         $post = $request->get($names, 'post');
-        $post['parent_id'] = (int)$post['parent_id'];
+        $post['reference'] = (int)$post['reference'];
         $post['albumid']   = (int)$post['albumid'];
-        $GLOBALS['app']->Session->PushSimpleResponse($post, 'Phoo_Comment');
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
         $image = $model->GetImage($post['parent_id'], $post['albumid']);
