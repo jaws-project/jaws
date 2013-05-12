@@ -289,18 +289,8 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // chack captcha only in new topic action
         if (empty($topic['id'])) {
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            if (false !== $captcha = $mPolicy->LoadCaptcha()) {
-                $tpl->SetBlock('topic/captcha');
-                $tpl->SetVariable('captcha_lbl', $captcha['label']);
-                $tpl->SetVariable('captcha_key', $captcha['key']);
-                $tpl->SetVariable('captcha', $captcha['captcha']);
-                if (!empty($captcha['entry'])) {
-                    $tpl->SetVariable('captcha_entry', $captcha['entry']);
-                }
-                $tpl->SetVariable('captcha_msg', $captcha['description']);
-                $tpl->ParseBlock('topic/captcha');
-            }
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+            $htmlPolicy->loadCaptcha($tpl, 'topic');
         }
 
         // buttons
@@ -345,8 +335,8 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // chack captcha only in new topic action
         if (empty($topic['tid'])) {
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-            $resCheck = $mPolicy->CheckCaptcha();
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+            $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdateTopic');
                 Jaws_Header::Referrer();
