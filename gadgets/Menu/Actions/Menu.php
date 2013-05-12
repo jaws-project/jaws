@@ -124,25 +124,22 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
             $selected = str_replace(BASE_SCRIPT, '', urldecode($menus[$i]['url'])) == $this->_ReqURL;
             //get sub level menus
             $subLevel = $this->GetNextLevel($model, $tpl_str, $gid, $menus[$i]['id']);
-            if ($selected || !empty($subLevel) || $i == 0 || $i == $len - 1) {
-                $tpl->SetBlock('levels/menu_item/class');
-                if ($i == 0) {
-                    $tpl->SetBlock('levels/menu_item/class/first');
-                    $tpl->ParseBlock('levels/menu_item/class/first');
-                }
-                if ($i == $len - 1) {
-                    $tpl->SetBlock('levels/menu_item/class/last');
-                    $tpl->ParseBlock('levels/menu_item/class/last');
-                }
-                if ($selected) {
-                    $tpl->SetBlock('levels/menu_item/class/current');
-                    $tpl->ParseBlock('levels/menu_item/class/current');
-                }
-                if (!empty($subLevel)) {
-                    $tpl->SetBlock('levels/menu_item/class/super');
-                    $tpl->ParseBlock('levels/menu_item/class/super');
-                }
-                $tpl->ParseBlock('levels/menu_item/class');
+
+            if ($i == 0) {
+                $tpl->SetBlock('levels/menu_item/first');
+                $tpl->ParseBlock('levels/menu_item/first');
+            }
+            if ($i == $len - 1) {
+                $tpl->SetBlock('levels/menu_item/last');
+                $tpl->ParseBlock('levels/menu_item/last');
+            }
+            if ($selected) {
+                $tpl->SetBlock('levels/menu_item/current');
+                $tpl->ParseBlock('levels/menu_item/current');
+            }
+            if (!empty($subLevel)) {
+                $tpl->SetBlock('levels/menu_item/super');
+                $tpl->ParseBlock('levels/menu_item/super');
             }
 
             $tpl->SetVariable('sub_menu', $subLevel);
