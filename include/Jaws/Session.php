@@ -2,15 +2,15 @@
 /**
  * Responses warning
  */
-define('RESPONSE_WARNING', 'RESPONSE_WARNING');
+define('RESPONSE_WARNING', 'response_warning');
 /**
  * Responses error
  */
-define('RESPONSE_ERROR',   'RESPONSE_ERROR');
+define('RESPONSE_ERROR',   'response_error');
 /**
  * Responses notice
  */
-define('RESPONSE_NOTICE',  'RESPONSE_NOTICE');
+define('RESPONSE_NOTICE',  'response_notice');
 /**
  *
  */
@@ -425,12 +425,9 @@ class Jaws_Session
         if ($trashed) {
             $this->_AttributesTrash[$name] = $value;
         } else {
-            $this->_HasChanged = !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] != $value);
-            if (is_array($value) && $name == 'LastResponses') {
-                $this->_Attributes['LastResponses'][] = $value;
-            } else {
-                $this->_Attributes[$name] = $value;
-            }
+            $this->_HasChanged =
+                !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] !== $value);
+            $this->_Attributes[$name] = $value;
         }
 
         return true;
@@ -852,13 +849,22 @@ class Jaws_Session
      * Push response data
      *
      * @access  public
-     * @param   mixed   $data       Response data
+     * @param   string  $text       Response text
+     * @param   string  $type       Response type
      * @param   string  $resource   Response name
+     * @param   mixed   $data       Response data
      * @return  void
      */
-    function PushResponse($data, $resource = 'Response')
+    function PushResponse($text, $type = RESPONSE_NOTICE, $resource = 'Response', $data = null)
     {
-        $this->SetAttribute($resource, $data);
+        $this->SetAttribute(
+            $resource,
+            array(
+                'text' => $text,
+                'type' => $type,
+                'data' => $data
+            )
+        );
     }
 
     /**
