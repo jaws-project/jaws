@@ -28,8 +28,8 @@ class Users_Actions_Login extends Users_HTML
         $post  = $request->get(array('email'), 'post');
         $error = '';
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->checkCaptcha();
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Users.ForgotLogin');
             Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
@@ -339,8 +339,8 @@ class Users_Actions_Login extends Users_HTML
         }
 
         // check captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->checkCaptcha('login');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $resCheck = $htmlPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login
             $resCheck = $GLOBALS['app']->Session->Login(

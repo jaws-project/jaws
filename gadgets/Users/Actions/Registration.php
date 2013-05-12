@@ -68,8 +68,8 @@ class Users_Actions_Registration extends Users_HTML
             $post['url'] = '';
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Model');
-        $resCheck = $mPolicy->checkCaptcha();
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $result = $resCheck->getMessage();
         }
