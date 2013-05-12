@@ -33,11 +33,13 @@ class Users_Actions_Account extends Users_HTML
             'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
             false);
 
-        $account = $GLOBALS['app']->Session->PopSimpleResponse('Users.Account.Data');
-        if (empty($account)) {
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Data');
+        if (empty($response)) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
-            $account  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
+            $account = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
+        } else {
+            $account = $response['data'];
         }
 
         // Load the template
@@ -69,10 +71,11 @@ class Users_Actions_Account extends Users_HTML
             $tpl->SetVariable('password_disabled', 'disabled="disabled"');
         }
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Account.Response')) {
-            $tpl->SetBlock('account/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('account/response');
+        if ($response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response')) {
+            $tpl->SetBlock('preferences/response');
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
+            $tpl->ParseBlock('preferences/response');
         }
         $tpl->ParseBlock('account');
         return $tpl->Get();
@@ -137,20 +140,33 @@ class Users_Actions_Account extends Users_HTML
                 $post['password']
             );
             if (!Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_MYACCOUNT_UPDATED'),
-                                                             'Users.Account.Response');
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('USERS_MYACCOUNT_UPDATED'),
+                    'Users.Account.Response'
+                );
             } else {
-                $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(),
-                                                             'Users.Account.Response');
+                $GLOBALS['app']->Session->PushResponse(
+                    $result->GetMessage(),
+                    'Users.Account.Response',
+                    RESPONSE_ERROR
+                );
             }
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_USERS_PASSWORDS_DONT_MATCH'),
-                                                         'Users.Account.Response');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
+                'Users.Account.Response',
+                RESPONSE_ERROR,
+            );
         }
 
         // unset unnecessary account data
         unset($post['password'], $post['chkpassword']);
-        $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Account.Data');
+        $GLOBALS['app']->Session->PushResponse(
+            '',
+            'Users.Account.Data',
+            RESPONSE_NOTICE,
+            $post,
+        );
         Jaws_Header::Location($this->gadget->GetURLFor('Account'));
     }
 

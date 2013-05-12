@@ -98,9 +98,10 @@ class Users_Actions_Preferences extends Users_HTML
         $tpl->SetVariable('user_timezone', $timezone->Get());
         $tpl->SetVariable('timezone', _t('GLOBAL_TIMEZONE'));
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Preferences')) {
+        if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
             $tpl->SetBlock('preferences/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('preferences/response');
         }
         $tpl->ParseBlock('preferences');
@@ -129,16 +130,24 @@ class Users_Actions_Preferences extends Users_HTML
         $post = $request->get(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Preferences');
-        $result = $model->UpdatePreferences($GLOBALS['app']->Session->GetAttribute('user'),
-                                            $post['user_language'],
-                                            $post['user_theme'],
-                                            $post['user_editor'],
-                                            $post['user_timezone']);
-
+        $result = $model->UpdatePreferences(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $post['user_language'],
+            $post['user_theme'],
+            $post['user_editor'],
+            $post['user_timezone']
+        );
         if (!Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_PREFERENCES_UPDATED'), 'Users.Preferences');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('USERS_PREFERENCES_UPDATED'),
+                'Users.Preferences'
+            );
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(), 'Users.Preferences');
+            $GLOBALS['app']->Session->PushResponse(
+                $result->GetMessage(),
+                'Users.Preferences'
+                RESPONSE_ERROR,
+            );
         }
 
         Jaws_Header::Location($this->gadget->GetURLFor('Preferences'));
