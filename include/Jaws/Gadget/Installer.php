@@ -121,7 +121,6 @@ class Jaws_Gadget_Installer
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
         $this->gadget->registry->insert(
             array(
-                'enabled'  => 'true',
                 'version'  => $this->gadget->_Version,
                 'requires' => $requires,
             )
