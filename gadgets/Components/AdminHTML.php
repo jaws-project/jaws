@@ -388,7 +388,6 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
 
         $tpl = $this->gadget->loadTemplate('Plugins.html');
         $tpl->SetBlock('components');
@@ -402,33 +401,15 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('notinstalled_desc', _t('COMPONENTS_PLUGINS_NOTINSTALLED_DESC'));
         $tpl->SetVariable('lbl_install', _t('COMPONENTS_INSTALL'));
         $tpl->SetVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
-        $tpl->SetVariable('pluginUsageDesc', _t('COMPONENTS_PLUGINS_USAGE_DESC'));
+        $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
+        $tpl->SetVariable('lbl_usage', _t('COMPONENTS_PLUGINS_USAGE'));
+        $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
+        $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
         $tpl->SetVariable('confirmUninstallPlugin', _t('COMPONENTS_PLUGINS_CONFIRM_UNINSTALL'));
 
-        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('install', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('uninstall', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_usage', _t('COMPONENTS_PLUGINS_USAGE'), STOCK_PREFERENCES);
-        $button->AddEvent(ON_CLICK, 'javascript:pluginUsage();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('usage', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('save', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $button->AddEvent(ON_CLICK, 'javascript:cancel();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('cancel', $button->Get());
+        $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
+        $button->AddEvent(ON_CLICK, 'javascript:closeUI();');
+        $tpl->SetVariable('close', $button->Get());
 
         $tpl->ParseBlock('components');
         return $tpl->Get();
@@ -468,14 +449,11 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
 
         $info = $model->GetPluginInfo($plugin);
 
-        $tpl->SetVariable('image', 'gadgets/Components/images/plugin.png');
         $tpl->SetVariable('lbl_version', _t('COMPONENTS_VERSION').':');
         $tpl->SetVariable('lbl_example', _t('COMPONENTS_PLUGINS_USAGE').':');
         $tpl->SetVariable('lbl_accesskey', _t('COMPONENTS_PLUGINS_ACCESSKEY').':');
         $tpl->SetVariable('lbl_friendly', _t('COMPONENTS_PLUGINS_FRIENDLY').':');
 
-        $tpl->SetVariable('plugin', $info['name']);
-        $tpl->SetVariable('description', $info['description']);
         $tpl->SetVariable('accesskey',
                           empty($info['accesskey']) ? _t('COMPONENTS_PLUGINS_NO_ACCESSKEY') : $info['accesskey']);
         $tpl->SetVariable('friendly',
@@ -483,6 +461,26 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('example',
                           empty($info['example']) ? _t('COMPONENTS_PLUGINS_NO_EXAMPLE') : $info['example']);
         $tpl->SetVariable('version', $info['version']);
+
+        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('install', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('uninstall', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('save', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $button->AddEvent(ON_CLICK, 'javascript:cancel();');
+        $button->SetStyle('display:none');
+        $tpl->SetVariable('cancel', $button->Get());
 
         $tpl->ParseBlock('info');
         return $tpl->Get();

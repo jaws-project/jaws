@@ -135,9 +135,15 @@ class Components_AdminModel extends Jaws_Gadget_Model
                     continue;
                 }
 
+                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                if (Jaws_Error::IsError($objPlugin)) {
+                    continue;
+                }
+
                 $pluginsList[$plugin] = array(
                     'realname' => $plugin,
                     'name' => $plugin,
+                    'description' => _t('PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
                     'installed' => strpos($installed_plugins, ",$plugin,") !==false,
                 );
             }
@@ -174,7 +180,6 @@ class Components_AdminModel extends Jaws_Gadget_Model
             'friendly'    => $objPlugin->IsFriendly(),
             'accesskey'   => $objPlugin->GetAccessKey(),
             'example'     => $objPlugin->GetExample(),
-            'description' => _t('PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
         );
 
         return $plugin;

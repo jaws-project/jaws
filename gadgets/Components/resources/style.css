@@ -32,12 +32,14 @@
 
 #component {position:relative;}
 #component h2 {display:inline-block; font-size:12px;}
+#component.plugin #tab_acl {visibility:hidden;}
 #component_head {margin-bottom:15px; padding-bottom:40px; border-bottom:solid 1px silver; line-height:1.5;}
 #component_head img {float:left; width:48px;}
 #component_form {padding-left:10px;}
 #component_info span {font-weight:bold;}
 #component_info ul {margin:0;}
 #component_info .acls {height:190px; overflow-y:auto; margin:0; line-height:1.5; list-style:square;}
+#component_info .plugin {height:345px;}
 #frm_registry {height:350px; overflow-y:auto;}
 #frm_registry table {border-collapse:collapse;}
 #frm_registry th {text-align:right;}

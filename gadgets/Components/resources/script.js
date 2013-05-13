@@ -113,7 +113,6 @@ function init()
     $('components').getElements('h3').addEvent('click', toggleSection);
     $('tabs').getElements('li').addEvent('click', switchTab);
     updateSummary();
-    //console.log(components);
 }
 
 /**
@@ -240,6 +239,9 @@ function switchTab(tab)
         case 'tab_acl':
             componentACL();
             break;
+        case 'tab_usage':
+            pluginUsage();
+            break;
     }
 }
 
@@ -319,6 +321,7 @@ function componentRegistry(reset)
                 tr = new Element('tr').adopt(th, td);
             input.addEvent('change', function() {
                 regChanges[this.id] = this.value;
+                console.log(regChanges);
             });
             table.grab(tr);
         });
@@ -433,7 +436,7 @@ function showHideTabs()
     $('tabs').getElements('li').hide();
     $('tab_info').show();
     if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
-        if (comp.manage_registry) {
+        if (comp.manage_reg) {
             $('tab_registry').show();
         }
         if (comp.manage_acl) {
@@ -459,7 +462,6 @@ function showHideButtons()
                 $('btn_save').show('inline');
             } else {
                 $('btn_uninstall').show('inline');
-                $('btn_usage').show('inline');
             }
             break;
         }
