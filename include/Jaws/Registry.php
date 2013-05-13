@@ -75,15 +75,19 @@ class Jaws_Registry
      * Fetch all registry keys of the gadget
      *
      * @access  public
-     * @param   string  $component   Component name
+     * @param   string  $component  Component name
+     * @param   string  $pattern    Key pattern
      * @return  mixed   Array of keys if successful or Jaws_Error on failure
      */
-    function fetchAll($component = '')
+    function fetchAll($component = '', $pattern = '')
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $result = $tblReg->select('key_name', 'key_value')
-            ->where('component', $component)
-            ->getAll();
+        $tblReg->select('key_name', 'key_value')->where('component', $component);
+        if (!empty($pattern)) {
+            $tblReg->and()->where('key_name', $pattern, 'like');
+        }
+
+        $result = $tblReg->getAll();
         if (Jaws_Error::IsError($result)) {
             return null;
         }
