@@ -2,12 +2,12 @@
 /**
  * Users Core Gadget
  *
- * @category   Gadget
- * @package    Users
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Users
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Personal extends Users_HTML
 {
@@ -122,6 +122,7 @@ class Users_Actions_Personal extends Users_HTML
             $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('personal/response');
         }
+
         $tpl->ParseBlock('personal');
         return $tpl->Get();
     }
