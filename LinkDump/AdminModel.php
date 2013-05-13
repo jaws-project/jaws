@@ -57,7 +57,7 @@ class LinkDump_AdminModel extends LinkDump_Model
             }
         }
 
-        $this->PopulateFeed($gid);
+        $this->InvalidateFeed($gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, $lid);
         return true;
     }
@@ -125,9 +125,9 @@ class LinkDump_AdminModel extends LinkDump_Model
         }
 
         if ($oldLink['gid'] != $gid) {
-            $this->PopulateFeed($oldLink['gid']);
+            $this->InvalidateFeed($oldLink['gid']);
         }
-        $this->PopulateFeed($gid);
+        $this->InvalidateFeed($gid);
 
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATED'), RESPONSE_NOTICE);
         return true;
@@ -307,35 +307,27 @@ class LinkDump_AdminModel extends LinkDump_Model
             return $res;
         }
 
-        $this->PopulateFeed($gid);
+        $this->InvalidateFeed($gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
     /**
-     * Will Poupulate the linkdump feed
+     * Will Inactivate Feed
      *
      * @access  public
-     * @param   int     $gid    group ID
-     * @return  bool    True on Success and False on Failure
+     * @param   int|string  $gid    group ID or group fast url
+     * @return  bool        True on Success or False on Failure
      */
-    function PopulateFeed($gid)
+    function InvalidateFeed($gid)
     {
-        ///FIXME maybe it would be good to put some error checking here and return some messages if there's an error
-        $group = $this->GetGroup($gid);
-        if (Jaws_Error::IsError($group) || empty($group) || !isset($group['id'])) {
-            return false;
+        if (is_numeric($gid)) {
+            $group = $this->GetGroup($gid);
+            $gid = $group['fast_url'];
         }
 
-        $feedname = empty($group['fast_url']) ?
-                    $GLOBALS['app']->UTF8->str_replace(' ', '-', $group['title']) : Jaws_XSS::filter($group['fast_url']);
-        $feedname = preg_replace('/[@?^=%&:;\/~\+# ]/i', '\1', $feedname);
-
-        $html = $GLOBALS['app']->LoadGadget('LinkDump', 'HTML');
-        @file_put_contents(JAWS_DATA. "xml/linkdump.$feedname.rdf", $html->PopulateFeed($gid, $group['limit_count']));
-        Jaws_Utils::chmod(JAWS_DATA. "xml/linkdump.$feedname.rdf");
-
-        return true;
+        $rss_path = JAWS_DATA . 'xml/link-' . $gid . '.rss';
+        return @unlink($rss_path);
     }
 
     /**
@@ -401,7 +393,7 @@ class LinkDump_AdminModel extends LinkDump_Model
             return false;
         }
 
-        $this->PopulateFeed($gid);
+        $this->InvalidateFeed($gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

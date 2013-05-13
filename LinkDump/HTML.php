@@ -46,18 +46,17 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('gid',   $group['id']);
         $tpl->SetVariable('title', _t('LINKDUMP_LINKS_ARCHIVE'));
-        $tpl->SetVariable('name',  $group['title']);
+        $tpl->SetVariable('name', $group['title']);
 
-        $feedname = empty($group['fast_url']) ?
-                    $GLOBALS['app']->UTF8->str_replace(' ', '-', $group['title']) : $group['fast_url'];
-        $feedname = preg_replace('/[@?^=%&:;\/~\+# ]/i', '\1', $feedname);
+        $group_id = empty($group['fast_url']) ?
+            $group['id'] : $group['fast_url'];
 
         $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
-        $tpl->SetVariable('linkdump_rdf', $GLOBALS['app']->getDataURL("xml/linkdump.$feedname.rdf", false));
+        $tpl->SetVariable('linkdump_rss', $this->gadget->GetURLFor('RSS', array('id' => $group_id)));
 
         $target = $this->gadget->registry->fetch('links_target');
-        $target = ($target == 'blank')? '_blank' : '_self';
-        $block  = ($group['link_type']==0)? 'list' : 'link';
+        $target = ($target == 'blank') ? '_blank' : '_self';
+        $block = ($group['link_type'] == 0) ? 'list' : 'link';
 
         $links = $model->GetGroupLinks($group['id'], null, $group['order_type']);
         if (!Jaws_Error::IsError($links)) {
@@ -92,52 +91,6 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
     function Group()
     {
         return $this->Archive();
-    }
-
-    /**
-     * Populating RDF feed
-     *
-     * @access  public
-     * @param   int     $gid    group ID
-     * @param   int     $limit  data limit
-     * @return  mixed   XHTML template content or false on error
-     */
-    function PopulateFeed($gid, $limit = 10)
-    {
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model');
-        $links = $model->GetGroupLinks($gid, $limit);
-        if (Jaws_Error::IsError($links)) {
-            return false;
-        }
-
-        $url    = $GLOBALS['app']->GetSiteURL('/');
-        $title  = $this->gadget->registry->fetch('site_name', 'Settings');
-        $desc   = $this->gadget->registry->fetch('site_description', 'Settings');
-        $author = $this->gadget->registry->fetch('site_author', 'Settings');
-
-        $tpl = $this->gadget->loadTemplate('Rdf.html');
-        $tpl->SetBlock('RDF');
-        $tpl->SetVariable('link', $url);
-        $tpl->SetVariable('title', $title);
-        $tpl->SetVariable('desc', $desc);
-
-        foreach ($links as $link) {
-            $tpl->SetBlock('RDF/RdfSeq');
-            $tpl->SetVariable('rdf-seq-url', $link['url']);
-            $tpl->ParseBlock('RDF/RdfSeq');
-        }
-
-        foreach ($links as $link) {
-            $tpl->SetBlock('RDF/item');
-            $tpl->SetVariable('item-link',      $link['url']);
-            $tpl->SetVariable('item-title',     $link['title']);
-            $tpl->SetVariable('item-creator',   $author);
-            $tpl->SetVariable('item-date',      $link['updatetime']);
-            $tpl->ParseBlock('RDF/item');
-        }
-
-        $tpl->ParseBlock('RDF');
-        return $tpl->Get();
     }
 
     /**

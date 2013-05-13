@@ -31,3 +31,9 @@ $maps[] = array(
     'links/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
+$maps[] = array(
+    'RSS',
+    'links/{id}/rss',
+    array('id' => '[\p{L}[:digit:]-_\.]+',),
+    'xml'
+);

@@ -33,3 +33,7 @@ $actions['ShowCategories'] = array(
 $actions['ShowTagCloud'] = array(
     'layout' => true,
 );
+$actions['RSS'] = array(
+    'standalone' => true,
+    'file' => 'Feeds',
+);
