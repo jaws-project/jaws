@@ -2,12 +2,12 @@
 /**
  * Users Core Gadget
  *
- * @category   Gadget
- * @package    Users
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Users
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Registration extends Users_HTML
 {
@@ -86,30 +86,32 @@ class Users_Actions_Registration extends Users_HTML
                 }
 
                 $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
-                $result = $uModel->CreateUser($post['username'],
-                                              $post['email'],
-                                              $post['nickname'],
-                                              $post['fname'],
-                                              $post['lname'],
-                                              $post['gender'],
-                                              $dob,
-                                              $post['url'],
-                                              $post['password'],
-                                              $this->gadget->registry->fetch('anon_group'));
+                $result = $uModel->CreateUser(
+                    $post['username'],
+                    $post['email'],
+                    $post['nickname'],
+                    $post['fname'],
+                    $post['lname'],
+                    $post['gender'],
+                    $dob,
+                    $post['url'],
+                    $post['password'],
+                    $this->gadget->registry->fetch('anon_group')
+                );
                 if ($result === true) {
                     Jaws_Header::Location($this->gadget->GetURLFor('Registered'));
                 }
             }
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($result, 'Users.Register');
-
         // unset unnecessary registration data
-        unset($post['password'],
-              $post['password_check'],
-              $post['random_password']);
-        $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Register.Data');
-
+        unset($post['password'], $post['password_check'], $post['random_password']);
+        $GLOBALS['app']->Session->PushResponse(
+            $result,
+            'Users.Registration',
+            RESPONSE_ERROR,
+            $post
+        );
         Jaws_Header::Location($this->gadget->GetURLFor('Registration'));
     }
 
@@ -155,7 +157,9 @@ class Users_Actions_Registration extends Users_HTML
         $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
-        if ($post_data = $GLOBALS['app']->Session->PopSimpleResponse('Users.Register.Data')) {
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Registration');
+        if (!isset($response['data'])) {
+            $post_data = $response['data'];
             $tpl->SetVariable('username',  $post_data['username']);
             $tpl->SetVariable('email',     $post_data['email']);
             $tpl->SetVariable('url',       $post_data['url']);
@@ -177,9 +181,10 @@ class Users_Actions_Registration extends Users_HTML
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
         $mPolicy->loadCaptcha($tpl, 'register');
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Register')) {
+        if (!empty($response)) {
             $tpl->SetBlock('register/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('register/response');
         }
 

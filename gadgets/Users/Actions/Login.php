@@ -31,17 +31,29 @@ class Users_Actions_Login extends Users_HTML
         $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Users.ForgotLogin');
+            $GLOBALS['app']->Session->PushResponse(
+                $resCheck->GetMessage(),
+                'Users.ForgotLogin',
+                RESPONSE_ERROR
+            );
             Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
         }
 
-        $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
-        $result = $model->SendRecoveryKey($post['email']);
+        $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
+        $result = $uModel->SendRecoveryKey($post['email']);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(), 'Users.ForgotLogin');
+            $GLOBALS['app']->Session->PushResponse(
+                $result->GetMessage(),
+                'Users.ForgotLogin',
+                RESPONSE_ERROR
+            );
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_FORGOT_MAIL_SENT'), 'Users.ForgotLogin');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('USERS_FORGOT_MAIL_SENT'),
+                'Users.ForgotLogin'
+            );
         }
+
         Jaws_Header::Location($this->gadget->GetURLFor('ForgotLogin'));
     }
 
@@ -70,9 +82,10 @@ class Users_Actions_Login extends Users_HTML
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.ForgotLogin')) {
+        if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
             $tpl->SetBlock('forgot/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('forgot/response');
         }
         $tpl->ParseBlock('forgot');
@@ -104,8 +117,8 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $reqpost = $GLOBALS['app']->Session->PopSimpleResponse('Users.Login.Data');
-        if (empty($reqpost)) {
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Login.Response');
+        if (!isset($response['data'])) {
             $request =& Jaws_Request::getInstance();
             $referrer  = $request->get('referrer', 'get');
             $reqpost['username'] = '';
@@ -113,6 +126,8 @@ class Users_Actions_Login extends Users_HTML
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
             $reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
+        } else {
+            $reqpost = $response['data'];
         }
 
         if ($use_crypt) {
@@ -189,9 +204,10 @@ class Users_Actions_Login extends Users_HTML
             $tpl->SetVariable('forgot-password', $link->Get());
         }
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Login')) {
+        if (!empty($response)) {
             $tpl->SetBlock('LoginBox/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('LoginBox/response');
         }
 
@@ -350,9 +366,13 @@ class Users_Actions_Login extends Users_HTML
                 $post['authtype']);
         }
         if (Jaws_Error::isError($resCheck)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->GetMessage(), 'Users.Login');
             unset($post['password']);
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Login.Data');
+            $GLOBALS['app']->Session->PushResponse(
+                $resCheck->GetMessage(),
+                'Users.Login.Response',
+                RESPONSE_ERROR,
+                $post
+            );
             $login_url = $this->gadget->GetURLFor('LoginBox', array('referrer'  => $post['referrer']));
             Jaws_Header::Location($login_url);
         }
