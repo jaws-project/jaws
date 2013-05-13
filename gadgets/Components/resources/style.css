@@ -18,7 +18,7 @@
 #components a {display:none;}
 
 #component_ui {
-  position:relative; height:474px; margin-left:5px; padding:20px 20px 0 20px; 
+  height:474px; margin-left:5px; padding:20px 20px 0 20px; 
   border:1px solid #d3d7cf; vertical-align:top; line-height:2.5;
 }
 #component_ui h1 {height:38px; padding:10px 0 0 60px; font-size:14px;}
@@ -30,6 +30,7 @@
 .summary label {font-size:12px; color:#3465a4}
 .summary span {font-weight:bold;}
 
+#component {position:relative;}
 #component h2 {display:inline-block; font-size:12px;}
 #component_head {margin-bottom:15px; padding-bottom:40px; border-bottom:solid 1px silver; line-height:1.5;}
 #component_head img {float:left; width:48px;}
@@ -46,13 +47,13 @@
 #frm_acl table {border-collapse:collapse;}
 #frm_acl td {text-align:right;}
 #frm_acl caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
-#tabs {position:absolute; top:87px; left:25px; margin:0; padding:0; list-style:none; line-height:16px}
+#tabs {position:absolute; top:67px; left:5px; margin:0; padding:0; list-style:none; line-height:16px}
 #tabs li {
   float:left; padding:2px 15px; margin:0 1px 0 0; cursor:pointer; font-weight:bold; color:grey;
   background-color:#eee; border:1px solid silver; border-radius:5px 5px 0 0; -moz-border-radius:5px 5px 0 0;
 }
 #tabs li.active {background-color:white; border-bottom:1px solid white; color:black;}
-#btn_close {position:absolute; top:10px; right:10px; width:20px; line-height:1; padding_:0;}
+#btn_close {position:absolute; top:-5px; right:-5px; width:20px; line-height:1.5; padding:0;}
 
 /* WebFX Tree */
 #bigTree > div {margin-bottom:10px;}
