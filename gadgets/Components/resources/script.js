@@ -319,10 +319,7 @@ function componentRegistry(reset)
                 input = new Element('input', {id:reg.key_name, value:reg.key_value}),
                 td = new Element('td').grab(input),
                 tr = new Element('tr').adopt(th, td);
-            input.addEvent('change', function() {
-                regChanges[this.id] = this.value;
-                console.log(regChanges);
-            });
+            input.setProperty('onchange', 'onValueChange(this)');
             table.grab(tr);
         });
         $('frm_registry').grab(table);
@@ -359,9 +356,7 @@ function componentACL(reset)
                 }),
                 td = new Element('td').grab(input),
                 tr = new Element('tr').adopt(td, th);
-            input.addEvent('change', function() {
-                aclChanges[this.id] = this.checked;
-            });
+            input.setProperty('onchange', 'onValueChange(this)');
             table.grab(tr);
         });
         $('frm_acl').grab(table);
@@ -541,6 +536,14 @@ function savePluginUsage()
         selection = selection.erase('use_always').join(',');
     }
     ComponentsAjax.callAsync('updatepluginusage', selectedComponent, selection);
+}
+
+/**
+ * Stores changes value
+ */
+function onValueChange(el)
+{
+    regChanges[el.id] = el.value;
 }
 
 /**
