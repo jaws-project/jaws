@@ -280,7 +280,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
-        $this->_Template->SetVariable('site-copyright', $this->attributes['copyright']);
+        $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
         $this->_Template->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
         $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $this->_Template->SetVariable('navigate-away-message', _t('CONTROLPANEL_UNSAVED_CHANGES'));
