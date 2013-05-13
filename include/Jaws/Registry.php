@@ -48,27 +48,16 @@ class Jaws_Registry
     function fetch($key_name, $component = '')
     {
         if (!@array_key_exists($key_name, $this->_Registry[$component])) {
-            $params = array();
-            $params['component'] = $component;
-            $params['key_name']  = $key_name;
-
-            $sql = '
-                SELECT
-                    [component], [key_name], [key_value]
-                FROM [[registry]]
-                WHERE
-                    [component] = {component}
-                  AND
-                    [key_name] = {key_name}';
-
-            $row = $GLOBALS['db']->queryRow($sql, $params);
-            if (Jaws_Error::IsError($row) || empty($row) ||
-                $row['component'] !== $component || $row['key_name'] !== $key_name)
-            {
+            $tblReg = Jaws_ORM::getInstance()->table('registry');
+            $value  = $tblReg->select('key_value')
+                ->where('component', $component)->and()
+                ->where('key_name', $key_name)
+                ->getOne();
+            if (Jaws_Error::IsError($value)) {
                 return null;
             }
 
-            $this->_Registry[$component][$key_name] = $row['key_value'];
+            $this->_Registry[$component][$key_name] = $value;
         }
 
         return $this->_Registry[$component][$key_name];
@@ -83,18 +72,15 @@ class Jaws_Registry
      */
     function fetchAll($component = '')
     {
-        $params = array();
-        $params['component'] = $component;
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $result = $tblReg->select('key_name', 'key_value')
+            ->where('component', $component)
+            ->getAll();
+        if (Jaws_Error::IsError($result)) {
+            return null;
+        }
 
-        $sql = '
-            SELECT
-                [key_name], [key_value]
-            FROM [[registry]]
-            WHERE
-                [component] = {component}
-            ORDER BY [id]';
-
-        return $GLOBALS['db']->queryAll($sql, $params);
+        return $result;
     }
 
     /**
