@@ -29,11 +29,13 @@ class Users_Actions_Personal extends Users_HTML
         }
 
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
-        $personal = $GLOBALS['app']->Session->PopSimpleResponse('Users.Personal.Data');
-        if (empty($personal)) {
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Personal.Response');
+        if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
             $personal  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
+        } else {
+            $personal = $response['data'];
         }
 
         // Load the template
@@ -114,9 +116,10 @@ class Users_Actions_Personal extends Users_HTML
         $tpl->SetVariable('lbl_interests', _t('USERS_USERS_INTERESTS'));
         $tpl->SetVariable('interests',     $personal['interests']);
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Users.Personal.Response')) {
+        if (!empty($response)) {
             $tpl->SetBlock('personal/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('personal/response');
         }
         $tpl->ParseBlock('personal');
@@ -148,6 +151,20 @@ class Users_Actions_Personal extends Users_HTML
             'post'
         );
 
+        $post['dob'] = null;
+        if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
+            $date = $GLOBALS['app']->loadDate();
+            $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
+            $post['dob'] = date('Y-m-d H:i:s', $dob['timestamp']);
+        }
+        // unset unnecessary personal data
+        unset($post['dob_day'], $post['dob_month'], $post['dob_year']);
+
+        // validate url
+        if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {
+            $post['url'] = '';
+        }
+
         $avatar = '';
         if (empty($post['delete_avatar'])) {
             $res = Jaws_Utils::UploadFiles(
@@ -156,22 +173,17 @@ class Users_Actions_Personal extends Users_HTML
                 'gif,jpg,jpeg,png'
             );
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($res->GetMessage(), 'Users.Personal.Response');
+                $GLOBALS['app']->Session->PushResponse(
+                    $res->GetMessage(),
+                    'Users.Personal.Response',
+                    RESPONSE_ERROR,
+                    $post
+                );
+
+                Jaws_Header::Location($this->gadget->GetURLFor('Personal'));
             } elseif (!empty($res)) {
                 $avatar = $res['avatar'][0]['host_filename'];
             }
-        }
-
-        // validate url
-        if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {
-            $post['url'] = '';
-        }
-
-        $post['dob'] = null;
-        if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
-            $date = $GLOBALS['app']->loadDate();
-            $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
-            $post['dob'] = date('Y-m-d H:i:s', $dob['timestamp']);
         }
 
         $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Personal');
@@ -189,19 +201,18 @@ class Users_Actions_Personal extends Users_HTML
             $post['occupations'],
             $post['interests']
         );
-        if (!Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('USERS_USERS_PERSONALINFO_UPDATED'),
-                'Users.Personal.Response');
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $result->GetMessage(),
+                'Users.Personal.Response',
+                RESPONSE_ERROR,
+                $post
+            );
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->GetMessage(),
-                'Users.Personal.Response');
-
-            // unset unnecessary personal data
-            unset($post['dob_day'],
-            $post['dob_month'],
-            $post['dob_year']);
-
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Users.Personal.Data');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('USERS_USERS_PERSONALINFO_UPDATED'),
+                'Users.Personal.Response'
+            );
         }
 
         Jaws_Header::Location($this->gadget->GetURLFor('Personal'));
