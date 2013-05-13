@@ -50,13 +50,17 @@ class Jaws_URLMapping
             Jaws_Error::Fatal($this->_Model->getMessage());
         }
 
-        $enabled   = $urlMapper->registry->fetch('map_enabled') == 'true';
-        $extension = $urlMapper->registry->fetch('map_extensions');
+        // fetch all registry keys
+        $regKeys = $urlMapper->registry->fetchAll();
+        $regKeys = array_column($regKeys, 'key_value', 'key_name');
+
+        $enabled   = $regKeys['map_enabled'] == 'true';
+        $extension = $regKeys['map_extensions'];
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
-        $this->_use_rewrite       = $urlMapper->registry->fetch('map_use_rewrite') == 'true';
-        $this->_use_aliases       = $urlMapper->registry->fetch('map_use_aliases') == 'true';
-        $this->_custom_precedence = $urlMapper->registry->fetch('map_custom_precedence') == 'true';
-        $this->_restrict_multimap = $urlMapper->registry->fetch('map_restrict_multimap') == 'true';
+        $this->_use_rewrite       = $regKeys['map_use_rewrite'] == 'true';
+        $this->_use_aliases       = $regKeys['map_use_aliases'] == 'true';
+        $this->_custom_precedence = $regKeys['map_custom_precedence'] == 'true';
+        $this->_restrict_multimap = $regKeys['map_restrict_multimap'] == 'true';
         if (!empty($extension) && $extension{0} != '.') {
             $extension = '.'.$extension;
         }
