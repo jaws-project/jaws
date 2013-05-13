@@ -65,6 +65,19 @@ class Jaws_Gadget_Registry
     }
 
     /**
+     * Fetch all registry keys/values of given gadget
+     *
+     * @access  public
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  mixed   Returns keys/values if success otherwise null
+     */
+    function fetchAll($gadget = '')
+    {
+        $gadget = empty($gadget)? $this->name : $gadget;
+        return $GLOBALS['app']->Registry->fetchAll($gadget);
+    }
+
+    /**
      * Update registry key value
      *
      * @access  public
