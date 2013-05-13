@@ -43,15 +43,20 @@ class Jaws_Crypt
             return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available',
                                           __FUNCTION__);
         }
-        if ($GLOBALS['app']->Registry->fetch('crypt_enabled', 'Policy') != 'true') {
+
+        // fetch all registry keys related to crypt
+        $cryptPolicies = $GLOBALS['app']->Registry->fetchAll('Policy', 'crypt_%');
+        $cryptPolicies = array_column($cryptPolicies, 'key_value', 'key_name');
+
+        if ($cryptPolicies['crypt_enabled'] != 'true') {
             return false;
         }
 
-        $pvt_key = $GLOBALS['app']->Registry->fetch('crypt_pvt_key', 'Policy');
-        $pub_key = $GLOBALS['app']->Registry->fetch('crypt_pub_key', 'Policy');
-        $key_len = $GLOBALS['app']->Registry->fetch('crypt_key_len', 'Policy');
-        $key_age = $GLOBALS['app']->Registry->fetch('crypt_key_age', 'Policy');
-        $key_start_date = $GLOBALS['app']->Registry->fetch('crypt_key_start_date', 'Policy');
+        $pvt_key = $cryptPolicies['crypt_pvt_key'];
+        $pub_key = $cryptPolicies['crypt_pub_key'];
+        $key_len = $cryptPolicies['crypt_key_len'];
+        $key_age = $cryptPolicies['crypt_key_age'];
+        $key_start_date = $cryptPolicies['crypt_key_start_date'];
         if (time() > ($key_start_date + $key_age)) {
             $result = $this->Generate_RSA_KeyPair($key_len);
             if (Jaws_Error::isError($result)) {
@@ -71,6 +76,9 @@ class Jaws_Crypt
         return true;
     }
 
+    /**
+     * @access  private
+     */
     function Generate_RSA_KeyPair($key_len = 128)
     {
         if (empty($this->wrapper)) {
@@ -94,6 +102,9 @@ class Jaws_Crypt
         unset($key_pair);
     }
 
+    /**
+     * @access  private
+     */
     function CreateSignature($doc, $pvt_key = null, $hash_func = null)
     {
         if (is_null($pvt_key)) {
@@ -107,6 +118,9 @@ class Jaws_Crypt
         return $sign;
     }
 
+    /**
+     * @access  private
+     */
     function ValidateSignature($doc, $sign, $pub_key = null)
     {
         if (is_null($pub_key)) {
@@ -122,6 +136,9 @@ class Jaws_Crypt
         return $result;
     }
 
+    /**
+     * @access  public
+     */
     function encrypt($plain_text, $pub_key = null)
     {
         if (is_null($pub_key)) {
@@ -138,6 +155,9 @@ class Jaws_Crypt
         return $this->math->bin2int($result);
     }
 
+    /**
+     * @access  public
+     */
     function decrypt($enc_text, $pvt_key = null)
     {
         if (is_null($pvt_key)) {
