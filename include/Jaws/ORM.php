@@ -702,8 +702,8 @@ class Jaws_ORM
             // Fetch all the rows of the result set into a two dimensional array
             case 'all':
                 if (!empty($this->_limit)) {
-                    $result = $this->jawsdb->setLimit($this->_limit, $this->_offset);
-                    if (Jaws_Error::IsError($result)) {
+                    $result = $this->jawsdb->dbc->setLimit($this->_limit, $this->_offset);
+                    if (PEAR::IsError($result)) {
                         break;
                     }
                 }
