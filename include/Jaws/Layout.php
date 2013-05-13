@@ -117,14 +117,6 @@ class Jaws_Layout
     var $_Description = null;
 
     /**
-     * Page keywords
-     *
-     * @access  private
-     * @var     array
-     */
-    var $_Keywords = array();
-
-    /**
      * Page languages
      *
      * @access  private
@@ -133,15 +125,29 @@ class Jaws_Layout
     var $_Languages = array();
 
     /**
+     * Site attributes
+     *
+     * @access  private
+     * @var     array
+     */
+    private $attributes = array();
+
+    /**
      * Initializes the Layout
      *
      * @access  public
      */
     function Jaws_Layout()
     {
-        //load default site keywords
-        $keywords = $GLOBALS['app']->Registry->fetch('site_keywords', 'Settings');
-        $this->_Keywords = array_map(array('Jaws_UTF8','trim'), array_filter(explode(',', $keywords)));
+        // fetch all registry keys related to site attributes
+        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', 'site_%');
+        $this->attributes = array_column($this->attributes, 'key_value', 'key_name');
+
+        //parse default site keywords
+        $this->attributes['site_keywords'] = array_map(
+            array('Jaws_UTF8', 'trim'),
+            array_filter(explode(',', $this->attributes['site_keywords']))
+        );
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
@@ -184,7 +190,7 @@ class Jaws_Layout
      */
     function Load($layout_path = '', $layout_file = '')
     {
-        if ($GLOBALS['app']->Registry->fetch('site_status', 'Settings') == 'disabled' &&
+        if ($this->attributes['site_status'] == 'disabled' &&
            (JAWS_SCRIPT != 'admin' || $GLOBALS['app']->Session->Logged()) &&
            !$GLOBALS['app']->Session->IsSuperAdmin()
         ) {
@@ -193,7 +199,7 @@ class Jaws_Layout
             exit;
         }
 
-        $favicon = $GLOBALS['app']->Registry->fetch('site_favicon', 'Settings');
+        $favicon = $this->attributes['site_favicon'];
         if (!empty($favicon)) {
             switch (pathinfo(basename($favicon), PATHINFO_EXTENSION) ) {
                 case 'svg':
@@ -224,19 +230,19 @@ class Jaws_Layout
         $brow = $GLOBALS['app']->GetBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
         $base_url = $GLOBALS['app']->GetSiteURL('/');
-        $site_url = $GLOBALS['app']->Registry->fetch('site_url', 'Settings');
+        $site_url = $this->attributes['site_url'];
 
         $this->_Template->SetVariable('BASE_URL', $base_url);
         $this->_Template->SetVariable('.dir', $dir);
         $this->_Template->SetVariable('.browser', $brow);
         $this->_Template->SetVariable('site-url', empty($site_url)? $base_url : $site_url);
-        $this->_Template->SetVariable('site-name',        $GLOBALS['app']->Registry->fetch('site_name', 'Settings'));
-        $this->_Template->SetVariable('site-slogan',      $GLOBALS['app']->Registry->fetch('site_slogan', 'Settings'));
-        $this->_Template->SetVariable('site-comment',     $GLOBALS['app']->Registry->fetch('site_comment', 'Settings'));
-        $this->_Template->SetVariable('site-author',      $GLOBALS['app']->Registry->fetch('site_author', 'Settings'));
-        $this->_Template->SetVariable('site-license',     $GLOBALS['app']->Registry->fetch('site_license', 'Settings'));
-        $this->_Template->SetVariable('site-copyright',   $GLOBALS['app']->Registry->fetch('copyright', 'Settings'));
-        $cMetas = unserialize($GLOBALS['app']->Registry->fetch('custom_meta', 'Settings'));
+        $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
+        $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
+        $this->_Template->SetVariable('site-comment',   $this->attributes['site_comment']);
+        $this->_Template->SetVariable('site-author',    $this->attributes['site_author']);
+        $this->_Template->SetVariable('site-license',   $this->attributes['site_license']);
+        $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
+        $cMetas = unserialize($this->attributes['site_custom_meta']);
         if (!empty($cMetas)) {
             foreach ($cMetas as $cMeta) {
                 $this->AddHeadMeta($cMeta[0], $cMeta[1]);
@@ -259,7 +265,7 @@ class Jaws_Layout
         $this->AddHeadLink('gadgets/ControlPanel/resources/public.css', 'stylesheet', 'text/css');
         $this->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css');
 
-        $favicon = $GLOBALS['app']->Registry->fetch('site_favicon', 'Settings');
+        $favicon = $this->attributes['site_favicon'];
         if (!empty($favicon)) {
             $this->AddHeadLink($favicon, 'icon', 'image/png');
         }
@@ -272,9 +278,9 @@ class Jaws_Layout
         $base_url = $GLOBALS['app']->GetSiteURL('/');
         $this->_Template->SetVariable('BASE_URL', $base_url);
         $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
-        $this->_Template->SetVariable('site-name',        $GLOBALS['app']->Registry->fetch('site_name', 'Settings'));
-        $this->_Template->SetVariable('site-slogan',      $GLOBALS['app']->Registry->fetch('site_slogan', 'Settings'));
-        $this->_Template->SetVariable('site-copyright',   $GLOBALS['app']->Registry->fetch('copyright', 'Settings'));
+        $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
+        $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
+        $this->_Template->SetVariable('site-copyright', $this->attributes['copyright']);
         $this->_Template->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
         $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $this->_Template->SetVariable('navigate-away-message', _t('CONTROLPANEL_UNSAVED_CHANGES'));
@@ -341,7 +347,7 @@ class Jaws_Layout
             $this->_Template->ParseBlock('layout/cptitle');
         }
 
-        if ($GLOBALS['app']->Registry->fetch('site_status', 'Settings') == 'disabled') {
+        if ($this->attributes['site_status'] == 'disabled') {
             $this->_Template->SetBlock('layout/warning');
             $this->_Template->SetVariable('warning', _t('CONTROLPANEL_OFFLINE_WARNING'));
             $this->_Template->ParseBlock('layout/warning');
@@ -378,16 +384,16 @@ class Jaws_Layout
     function PutTitle()
     {
         if (!empty($this->_Title)) {
-            $pageTitle = array($this->_Title, $GLOBALS['app']->Registry->fetch('site_name', 'Settings'));
+            $pageTitle = array($this->_Title, $this->attributes['site_name']);
         } else {
-            $slogan = $GLOBALS['app']->Registry->fetch('site_slogan', 'Settings');
+            $slogan = $this->attributes['site_slogan'];
             $pageTitle   = array();
-            $pageTitle[] = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
+            $pageTitle[] = $this->attributes['site_name'];
             if (!empty($slogan)) {
                 $pageTitle[] = $slogan;
             }
         }
-        $pageTitle = implode(' ' . $GLOBALS['app']->Registry->fetch('title_separator', 'Settings').' ', $pageTitle);
+        $pageTitle = implode(' ' . $this->attributes['site_title_separator'].' ', $pageTitle);
         $this->_Template->ResetVariable('site-title', $pageTitle, 'layout');
     }
 
@@ -410,7 +416,7 @@ class Jaws_Layout
     function PutDescription()
     {
         if (empty($this->_Description)) {
-            $this->_Description = $GLOBALS['app']->Registry->fetch('site_description', 'Settings');
+            $this->_Description = $this->attributes['site_description'];
         }
         $this->_Template->ResetVariable('site-description', $this->_Description, 'layout');
     }
@@ -425,7 +431,7 @@ class Jaws_Layout
     {
         if (!empty($keywords)) {
             $keywords = array_map(array('Jaws_UTF8','trim'), explode(',', $keywords));
-            $this->_Keywords = array_merge($this->_Keywords, $keywords);
+            $this->attributes['site_keywords'] = array_merge($this->attributes['site_keywords'], $keywords);
         }
     }
 
@@ -436,9 +442,11 @@ class Jaws_Layout
      */
     function PutMetaKeywords()
     {
-        $this->_Template->ResetVariable('site-keywords',
-                                        strip_tags(implode(', ', $this->_Keywords)),
-                                        'layout');
+        $this->_Template->ResetVariable(
+            'site-keywords',
+            strip_tags(implode(', ', $this->attributes['site_keywords'])),
+            'layout'
+        );
     }
 
     /**
