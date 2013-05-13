@@ -121,7 +121,7 @@ $GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
 if (isset($gadget) && !empty($gadget)) {
     $ReqGadget = ucfirst($gadget);
     // Convert first letter to ucase to backwards compability
-    if (Jaws_Gadget::IsValid($ReqGadget)) {
+    if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         $ReqAction = !empty($action) ? $action : 'Admin';
     } else {
         Jaws_Error::Fatal('Invalid requested gadget');

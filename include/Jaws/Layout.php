@@ -586,7 +586,7 @@ class Jaws_Layout
     function PutGadget($gadget, $action, $params = null, $filename = '')
     {
         $output = '';
-        $enabled = $GLOBALS['app']->Registry->fetch('enabled', $gadget);
+        $enabled = Jaws_Gadget::IsGadgetEnabled($gadget);
         if (Jaws_Error::isError($enabled) || $enabled != 'true') {
             $GLOBALS['log']->Log(JAWS_LOG_NOTICE, "Gadget $gadget is not enabled");
             return $output;
