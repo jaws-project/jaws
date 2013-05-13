@@ -23,9 +23,6 @@ class Blocks_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        // Registry keys.
-        $this->gadget->registry->insert('pluggable',  'false');
-
         return true;
     }
 
