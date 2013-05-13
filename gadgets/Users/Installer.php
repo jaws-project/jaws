@@ -32,7 +32,6 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         // Registry keys
         $this->gadget->registry->insert(array(
-            'pluggable' => 'false',
             'latest_limit' => '10',
             'password_recovery' => 'false',
             'register_notification' => 'true',

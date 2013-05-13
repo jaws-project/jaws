@@ -29,7 +29,6 @@ class Languages_Installer extends Jaws_Gadget_Installer
 
         $this->gadget->registry->insert('base_lang', 'en');
         $this->gadget->registry->insert('update_default_lang', 'false');
-        $this->gadget->registry->insert('pluggable', 'false');
         return true;
     }
 

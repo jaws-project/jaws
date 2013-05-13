@@ -32,7 +32,6 @@ class Settings_Installer extends Jaws_Gadget_Model
 
         // Registry keys
         $this->gadget->registry->insert(array(
-            'pluggable' => 'false',
             'admin_script' => '',
             'http_auth' => 'false',
             'realm' => 'Jaws Control Panel',
