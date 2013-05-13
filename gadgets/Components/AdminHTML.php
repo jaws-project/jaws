@@ -472,16 +472,6 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $button->SetStyle('display:none');
         $tpl->SetVariable('uninstall', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('save', $button->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $button->AddEvent(ON_CLICK, 'javascript:cancel();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('cancel', $button->Get());
-
         $tpl->ParseBlock('info');
         return $tpl->Get();
     }
@@ -529,6 +519,34 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('reset', $button->Get());
 
         $tpl->ParseBlock('acl');
+        return $tpl->Get();
+    }
+
+    /**
+     * Builds plugin usage UI
+     *
+     * @access  public
+     * @return  string   XHTML UI
+     */
+    function GetPluginUsageUI()
+    {
+        $tpl = $this->gadget->loadTemplate('PluginUsage.html');
+        $tpl->SetBlock('usage');
+
+        $tpl->SetVariable('decription', _t('COMPONENTS_PLUGINS_USAGE_DESC'));
+        $tpl->SetVariable('lbl_gadget', _t('COMPONENTS_PLUGINS_USAGE_GADGET'));
+        $tpl->SetVariable('lbl_backend', _t('COMPONENTS_PLUGINS_USAGE_BACKEND'));
+        $tpl->SetVariable('lbl_frontend', _t('COMPONENTS_PLUGINS_USAGE_FRONTEND'));
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
+        $tpl->SetVariable('save', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_RESET'), STOCK_REFRESH);
+        $button->AddEvent(ON_CLICK, 'pluginUsage(true);');
+        $tpl->SetVariable('reset', $button->Get());
+
+        $tpl->ParseBlock('usage');
         return $tpl->Get();
     }
 

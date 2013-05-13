@@ -180,38 +180,6 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Returns a list of gadgets are used in a certain plugin
-     *
-     * @access  public
-     * @param   string  $plugin     Plugin name
-     * @return  mixed   Array of gadgets or '*'
-     */
-    function GetPluginUsage($plugin)
-    {
-        $this->gadget->CheckPermission('ManagePlugins');
-
-        $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
-        $use_in = $GLOBALS['app']->Registry->fetch('use_in', $plugin);
-        $default_value = ($use_in === '*');
-        $result = array();
-        $result['always'] = array(
-            'text' => _t('COMPONENTS_PLUGINS_USE_ALWAYS'),
-            'value' => $default_value
-        );
-        if (count($gadgets) > 0) {
-            $use_in = explode(',', $use_in);
-            foreach ($gadgets as $gadget) {
-                $value = ($use_in === '*')? true : false;
-                $result[$gadget['realname']] = array(
-                    'text' => $gadget['name'],
-                    'value' => !$default_value && in_array($gadget['realname'], $use_in)
-                );
-            }
-        }
-        return $result;
-    }
-
-    /**
      * Enables the plugin
      *
      * @access  public
@@ -254,6 +222,32 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
+     * Returns gadgets which are used in a certain plugin
+     *
+     * @access  public
+     * @param   string  $plugin  Plugin name
+     * @return  array   Array of backend, frontend and all gadgets
+     */
+    function GetPluginUsage($plugin)
+    {
+        $this->gadget->CheckPermission('ManagePlugins');
+
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $ui = $html->GetPluginUsageUI();
+
+        $usage = array();
+        $usage['gadgets'] = array();
+        $usage['backend'] = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
+        $usage['frontend'] = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
+        $gadgets = $this->_Model->GetGadgetsList();
+        foreach ($gadgets as $gadget) {
+            $usage['gadgets'][] = array('name' => $gadget['name'], 'realname' => $gadget['realname']);
+        }
+
+        return array('ui' => $ui, 'usage' => $usage);
+    }
+
+    /**
      * Updates plugin usage
      *
      * @access  public
@@ -261,11 +255,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * @param   mixed   $selection Comma seperated string of gadgets or '*'
      * @return  array   Response array (notice or error)
      */
-    function UpdatePluginUsage($plugin, $selection)
+    function UpdatePluginUsage($plugin, $backend, $frontend)
     {
         $this->gadget->CheckPermission('ManagePlugins');
 
-        $GLOBALS['app']->Registry->update('use_in', $selection, $plugin);
+        $this->gadget->registry->update('backend_gadgets', $backend, $plugin);
+        $this->gadget->registry->update('frontend_gadgets', $frontend, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

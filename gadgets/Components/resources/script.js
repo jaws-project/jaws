@@ -80,7 +80,9 @@ var ComponentsCallback = {
     },
 
     updatepluginusage: function(response) {
-        closeUI();
+        if (response[0]['css'] == 'notice-message') {
+            usageCache = $('plugin_usage').clone(true, true);
+        }
         showResponse(response);
     },
 
@@ -207,7 +209,6 @@ function updateSummary()
         $('sum_outdated').innerHTML = count.outdated;
         $('sum_core').innerHTML = count.core;
     }
-    summaryUI = $('summary').innerHTML;
 }
 
 /**
@@ -265,9 +266,9 @@ function selectComponent()
     this.addClass('selected');
 
     selectedComponent = comp;
-    editPluginMode = false;
     regCache = null;
     aclCache = null;
+    usageCache = null;
     showHideTabs();
     switchTab($('tabs').getElement('li.active').id);
 }
@@ -278,7 +279,6 @@ function selectComponent()
 function closeUI()
 {
     selectedComponent = null;
-    editPluginMode = false;
     $$('#components li.selected').removeClass('selected');
     $('summary').show();
     $('component').hide();
@@ -437,6 +437,9 @@ function showHideTabs()
         if (comp.manage_acl) {
             $('tab_acl').show();
         }
+        if (pluginsMode) {
+            $('tab_usage').show();
+        }
     }
 }
 
@@ -453,11 +456,7 @@ function showHideButtons()
             $('btn_install').show('inline');
             break;
         case 'installed':
-            if (editPluginMode == true) {
-                $('btn_save').show('inline');
-            } else {
-                $('btn_uninstall').show('inline');
-            }
+            $('btn_uninstall').show('inline');
             break;
         }
     } else {
@@ -483,46 +482,38 @@ function showHideButtons()
 /**
  * Displays the plugin usage tree
  */
-function pluginUsage()
+function pluginUsage(reset)
 {
-    var gadgets = ComponentsAjax.callSync('getpluginusage', selectedComponent),
-        tree = new WebFXTree(pluginUsageDesc),
-        div = new Element('div'),
-        label = new Element('label', {'for':'use_always'}),
-        chkbox = new Element('input', {
-            type: 'checkbox',
-            id: 'use_always',
-            value: 'use_always',
-            checked: gadgets['always'].value
-        }),
-        rootNode;
-    label.innerHTML = gadgets['always'].text;
-    tree.openIcon = 'gadgets/Components/images/gadgets.png';
-    tree.icon = 'gadgets/Components/images/gadgets.png';
-    div.adopt(chkbox, label);
-    rootNode = new WebFXTreeItem(div.innerHTML);
-    tree.add(rootNode);
-    // does not work because of webfxTree bug
-    // rootNode.expand();
-
-    delete gadgets['always'];
-    Object.keys(gadgets).each(function(gadget) {
-        var div = new Element('div'),
-            label = new Element('label', {'for':gadget}),
-            chkbox = new Element('input', {
-                type: 'checkbox',
-                id: gadget,
-                value: gadget,
-                checked: gadgets[gadget].value
-            });
-        label.innerHTML = gadgets[gadget].text;
-        div.adopt(chkbox, label);
-        rootNode.add(new WebFXTreeItem(div.innerHTML));
-    });
-
-    $('component').innerHTML = tree.toString();
-    editPluginMode = true;
-    showHideButtons();
+    if (!usageCache) {
+        var tbody = new Element('tbody'),
+            res = ComponentsAjax.callSync('getpluginusage', selectedComponent),
+            div = new Element('div').set('html', res.ui);
+        $('component_form').grab(div.getElement('div'));
+        res.usage.gadgets.each(function(gadget) {
+            var label = new Element('label', {html:gadget.name}),
+                th = new Element('th').grab(label),
+                b_input = new Element('input', {type:'checkbox', name:'backend', value:gadget.realname}),
+                b_td = new Element('td').grab(b_input),
+                f_input = new Element('input', {type:'checkbox', name:'frontend', value:gadget.realname}),
+                f_td = new Element('td').grab(f_input),
+                tr = new Element('tr').adopt(th, b_td, f_td);
+            if (res.usage.backend === '*' || res.usage.backend.indexOf(gadget.realname) !== -1) {
+                b_input.checked = true;
+            }
+            if (res.usage.frontend === '*' || res.usage.frontend.indexOf(gadget.realname) !== -1) {
+                f_input.checked = true;
+            }
+            tbody.grab(tr);
+        });
+        $('plugin_usage').getElement('table').grab(tbody);
+        usageCache = $('plugin_usage').clone(true, true);
+    }
+    if (reset) {
+        usageCache.clone(true, true).replaces($('plugin_usage'));
+    }
+    $('summary').hide();
+    $('component').show();
+    $('plugin_usage').show();
 }
 
 /**
@@ -530,12 +521,12 @@ function pluginUsage()
  */
 function savePluginUsage()
 {
-    var selection = '*';
-    if (!$('use_always').checked) {
-        selection = $('bigTree').getElements('input:checked').get('value');
-        selection = selection.erase('use_always').join(',');
-    }
-    ComponentsAjax.callAsync('updatepluginusage', selectedComponent, selection);
+    var backend = $('plugin_usage').getElements('input:checked[name=backend]').get('value'),
+        frontend = $('plugin_usage').getElements('input:checked[name=frontend]').get('value'),
+        total = $('plugin_usage').getElements('input[name=frontend]').length;
+    backend = (backend.length === total)? '*' : backend.join(',');
+    frontend = (frontend.length === total)? '*' : frontend.join(',');
+    ComponentsAjax.callAsync('updatepluginusage', selectedComponent, backend, frontend);
 }
 
 /**
@@ -567,10 +558,9 @@ function saveACL()
  */
 var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
     selectedComponent = null,
-    editPluginMode = false,
     components = {},
-    regCache = null,
-    aclCache = null,
     regChanges = {},
     aclChanges = {},
-    summaryUI;
+    regCache = null,
+    aclCache = null,
+    usageCache = null;
