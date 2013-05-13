@@ -239,7 +239,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $usage['gadgets'] = array();
         $usage['backend'] = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
         $usage['frontend'] = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-        $gadgets = $this->_Model->GetGadgetsList();
+        $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
         foreach ($gadgets as $gadget) {
             $usage['gadgets'][] = array('name' => $gadget['name'], 'realname' => $gadget['realname']);
         }
