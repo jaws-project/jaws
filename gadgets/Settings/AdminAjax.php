@@ -66,7 +66,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMetaSettings($settings, $customMeta)
     {
         $this->gadget->CheckPermission('MetaSettings');
-        $settings['custom_meta'] = serialize($customMeta);
+        $settings['site_custom_meta'] = serialize($customMeta);
         $this->_Model->SaveMetaSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

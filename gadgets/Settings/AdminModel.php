@@ -184,7 +184,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
      *                   'use_gravatar',        //Use gravatar service?
      *                   'gravatar_rating',     //Gravatar rating
      *                   'show_viewsite',       //show the view site on CP?
-     *                   'title_separator',     //Separator used when user uses page_title
+     *                   'site_title_separator',//Separator used when user uses page_title
      *                   'editor',              //Editor to use
      *                   'timezone',            //Timezone
      *                  );
@@ -195,7 +195,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     {
         $advancedKeys = array('date_format', 'calendar_type', 'calendar_language',
                               'use_gravatar', 'gravatar_rating', 'show_viewsite',
-                              'title_separator', 'editor', 'timezone');
+                              'site_title_separator', 'editor', 'timezone');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
@@ -222,7 +222,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
      *                   'site_keywords',
      *                   'site_author',    //Use gravatar service?
      *                   'site_license', //Gravatar rating
-     *                   'copyright',
+     *                   'site_copyright',
      *                  );
      *
      * @return  mixed   True or Jaws_Error
@@ -230,7 +230,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function SaveMetaSettings($settings)
     {
         $advancedKeys = array('site_description', 'site_keywords', 'site_author',
-                              'site_license', 'copyright', 'custom_meta');
+                              'site_license', 'site_copyright', 'site_custom_meta');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {

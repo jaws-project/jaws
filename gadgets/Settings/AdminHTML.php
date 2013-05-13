@@ -326,15 +326,15 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('settings/item');
 
         // default title
-        $defaultTitle =& Piwi::CreateWidget('Combo', 'title_separator');
-        $defaultTitle->setID('title_separator');
+        $defaultTitle =& Piwi::CreateWidget('Combo', 'site_title_separator');
+        $defaultTitle->setID('site_title_separator');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_SLASH'), '/');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_PIPE'), '|');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DASH'), '-');
         $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DOUBLECOLON'), '::');
-        $defaultTitle->SetDefault($this->gadget->registry->fetch('title_separator'));
+        $defaultTitle->SetDefault($this->gadget->registry->fetch('site_title_separator'));
         $tpl->SetBlock('settings/item');
-        $tpl->SetVariable('field-name', 'title_separator');
+        $tpl->SetVariable('field-name', 'site_title_separator');
         $tpl->SetVariable('label', _t('SETTINGS_TITLE_SEPARATOR'));
         $tpl->SetVariable('field', $defaultTitle->Get());
         $tpl->ParseBlock('settings/item');
@@ -447,16 +447,16 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
 
         // Copyright
         $tpl->SetBlock('settings/item');
-        $copyright =& Piwi::CreateWidget('Entry', 'copyright', $this->gadget->registry->fetch('copyright'));
-        $copyright->setID('copyright');
+        $copyright =& Piwi::CreateWidget('Entry', 'site_copyright', $this->gadget->registry->fetch('site_copyright'));
+        $copyright->setID('site_copyright');
         $copyright->setStyle('width: 24em;');
-        $tpl->SetVariable('field-name', 'copyright');
+        $tpl->SetVariable('field-name', 'site_copyright');
         $tpl->SetVariable('label', _t('SETTINGS_COPYRIGHT'));
         $tpl->SetVariable('field', $copyright->Get());
         $tpl->ParseBlock('settings/item');
 
         // Custom META
-        $Metas = @unserialize($this->gadget->registry->fetch('custom_meta'));
+        $Metas = @unserialize($this->gadget->registry->fetch('site_custom_meta'));
         if (!empty($Metas)) {
             foreach ($Metas as $meta) {
                 $tpl->SetBlock('settings/custom');
