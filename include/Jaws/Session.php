@@ -427,7 +427,11 @@ class Jaws_Session
         } else {
             $this->_HasChanged =
                 !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] !== $value);
-            $this->_Attributes[$name] = $value;
+            if (is_array($value) && $name == 'LastResponses') {
+                $this->_Attributes['LastResponses'][] = $value;
+            } else {
+                $this->_Attributes[$name] = $value;
+            }
         }
 
         return true;
