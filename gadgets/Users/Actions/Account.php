@@ -34,7 +34,7 @@ class Users_Actions_Account extends Users_HTML
             false);
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Data');
-        if (empty($response)) {
+        if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
             $account = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
@@ -72,10 +72,10 @@ class Users_Actions_Account extends Users_HTML
         }
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response')) {
-            $tpl->SetBlock('preferences/response');
+            $tpl->SetBlock('account/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('preferences/response');
+            $tpl->ParseBlock('account/response');
         }
         $tpl->ParseBlock('account');
         return $tpl->Get();
@@ -155,7 +155,7 @@ class Users_Actions_Account extends Users_HTML
             $GLOBALS['app']->Session->PushResponse(
                 _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
                 'Users.Account.Response',
-                RESPONSE_ERROR,
+                RESPONSE_ERROR
             );
         }
 
@@ -165,7 +165,7 @@ class Users_Actions_Account extends Users_HTML
             '',
             'Users.Account.Data',
             RESPONSE_NOTICE,
-            $post,
+            $post
         );
         Jaws_Header::Location($this->gadget->GetURLFor('Account'));
     }
