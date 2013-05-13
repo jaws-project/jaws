@@ -521,31 +521,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Validate if a gadget is valid
-     *
-     * @access  public
-     * @param   string  $gadget Gadget's Name
-     * @return  bool    Returns true if the gadget is valid, otherwise will finish the execution
-     */
-    function IsValid($gadget)
-    {
-        // Check for valid gadget identificator
-        if (preg_match('[^A-Za-z0-9_-]', $gadget)) {
-            //Invalid gadget name
-            return false;
-        }
-
-        // Check if gadget is enabled
-        ///FIXME check for errors
-        if ($GLOBALS['app']->Registry->fetch('enabled', $gadget) != 'true') {
-            // Gadget is not found or disabled
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Returns is gadget installed
      *
      * @access  public
@@ -593,7 +568,8 @@ class Jaws_Gadget
      */
     public static function IsGadgetEnabled($gadget)
     {
-        if (!self::IsGadgetInstalled($gadget)) {
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+        if (!self::IsGadgetUpdated($gadget)) {
             return false;
         }
 
