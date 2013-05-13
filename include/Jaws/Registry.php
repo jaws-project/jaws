@@ -34,7 +34,15 @@ class Jaws_Registry
      */
     function Init()
     {
-        //
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $result = $tblReg->select('component', 'key_value')
+            ->where('key_name', 'version')
+            ->getAll();
+        if (!Jaws_Error::IsError($result)) {
+            foreach ($result as $regrec) {
+                $this->_Registry[$regrec['component']]['version'] = $regrec['key_value'];
+            }
+        }
     }
 
     /**
