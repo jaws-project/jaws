@@ -98,9 +98,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
             if (!is_array($gadgets)) continue;
             foreach ($gadgets as $gadget) {
                 $id = $gadget['id'];
-                if (($this->gadget->registry->fetch('enabled', $gadget['gadget']) == 'true') ||
-                    ($gadget['gadget'] == '[REQUESTEDGADGET]'))
-                {
+                if (Jaws_Gadget::IsGadgetEnabled($gadget['gadget']) || ($gadget['gadget'] == '[REQUESTEDGADGET]')) {
                     if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
                         $section_empty = false;
                         $t_item->SetBlock('item');
