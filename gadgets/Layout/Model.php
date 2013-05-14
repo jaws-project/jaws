@@ -50,6 +50,7 @@ class Layout_Model extends Jaws_Gadget_Model
             $items->where('published', (bool)$published);
         }
 
+        $layoutTable->orderBy('layout_position ASC');
         return $items->getAll();
     }
 
