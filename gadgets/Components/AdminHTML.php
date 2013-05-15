@@ -538,6 +538,16 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_backend', _t('COMPONENTS_PLUGINS_USAGE_BACKEND'));
         $tpl->SetVariable('lbl_frontend', _t('COMPONENTS_PLUGINS_USAGE_FRONTEND'));
 
+        $check =& Piwi::CreateWidget('CheckButtons', 'all');
+        $check->AddOption('', 'backend');
+        $check->AddEvent(ON_CLICK, 'usageCheckAll(this)');
+        $tpl->SetVariable('all_backend', $check->Get());
+
+        $check =& Piwi::CreateWidget('CheckButtons', 'all');
+        $check->AddOption('', 'frontend');
+        $check->AddEvent(ON_CLICK, 'usageCheckAll(this)');
+        $tpl->SetVariable('all_frontend', $check->Get());
+
         $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:savePluginUsage();');
         $tpl->SetVariable('save', $button->Get());

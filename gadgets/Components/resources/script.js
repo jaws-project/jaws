@@ -506,6 +506,8 @@ function pluginUsage(reset)
             tbody.grab(tr);
         });
         $('plugin_usage').getElement('table').grab(tbody);
+        $('all_backend').checked = (res.usage.backend === '*')? true : false;
+        $('all_frontend').checked = (res.usage.frontend === '*')? true : false;
         usageCache = $('plugin_usage').clone(true, true);
     }
     if (reset) {
@@ -514,6 +516,21 @@ function pluginUsage(reset)
     $('summary').hide();
     $('component').show();
     $('plugin_usage').show();
+}
+
+/**
+ * Checks/unchecks all gadgets
+ */
+function usageCheckAll(el)
+{
+    switch (el.id) {
+        case 'all_backend':
+            $('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
+            break;
+        case 'all_frontend':
+            $('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
+            break;
+    }
 }
 
 /**
