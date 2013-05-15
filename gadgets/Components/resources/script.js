@@ -12,28 +12,28 @@
  * Use async mode, create Callback
  */
 var ComponentsCallback = {
-    upgradegadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            components[selectedComponent].state = 
-                components[selectedComponent].core_gadget? 'core' : 'installed';
+    upgradegadget: function (response) {
+        if (response[0].css === 'notice-message') {
+            components[selectedComponent].state =
+                components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
             closeUI();
         }
         showResponse(response);
     },
 
-    installgadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            components[selectedComponent].state = 
-                components[selectedComponent].core_gadget? 'core' : 'installed';
+    installgadget: function (response) {
+        if (response[0].css === 'notice-message') {
+            components[selectedComponent].state =
+                components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
             closeUI();
         }
         showResponse(response);
     },
 
-    uninstallgadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    uninstallgadget: function (response) {
+        if (response[0].css === 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -41,8 +41,8 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    enablegadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    enablegadget: function (response) {
+        if (response[0].css === 'notice-message') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = false;
             buildComponentList();
@@ -51,8 +51,8 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    disablegadget: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    disablegadget: function (response) {
+        if (response[0].css === 'notice-message') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = true;
             buildComponentList();
@@ -61,8 +61,8 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    installplugin: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    installplugin: function (response) {
+        if (response[0].css === 'notice-message') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
             closeUI();
@@ -70,8 +70,8 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    uninstallplugin: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    uninstallplugin: function (response) {
+        if (response[0].css === 'notice-message') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -79,29 +79,29 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    updatepluginusage: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    updatepluginusage: function (response) {
+        if (response[0].css === 'notice-message') {
             usageCache = $('plugin_usage').clone(true, true);
         }
         showResponse(response);
     },
 
-    updateregistry: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    updateregistry: function (response) {
+        if (response[0].css === 'notice-message') {
             regChanges = {};
             regCache = $('component_registry').clone(true, true);
         }
         showResponse(response);
     },
 
-    updateacl: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+    updateacl: function (response) {
+        if (response[0].css === 'notice-message') {
             aclChanges = {};
             aclCache = $('component_acl').clone(true, true);
         }
         showResponse(response);
     }
-}
+};
 
 /**
  * Initiates Components gadgets/plugins
@@ -128,7 +128,7 @@ function buildComponentList()
     sections.installed = $('installed').set('html', '');
     sections.core = $('core').set('html', '');
     Object.keys(components).sort().each(function(name) {
-        sections[components[name]['state']].grab(getComponentItem(components[name]));
+        sections[components[name].state].grab(getComponentItem(components[name]));
     });
     $('components').getElements('h3').show();
     $('components').getElements('ul:empty').getPrevious('h3').hide();
@@ -144,14 +144,14 @@ function getComponentItem(comp)
         img = new Element('img', {alt:comp.realname}),
         a = new Element('a').set('html', actions[comp.state]);
     if (comp.disabled) {
-        a.set('html', actions['disabled']);
+        a.set('html', actions.disabled);
     }
     li.adopt(img, span);
     img.src = pluginsMode?
         'gadgets/Components/images/plugin.png' :
         'gadgets/' + comp.realname + '/images/logo.png';
     if (comp.state !== 'core') {
-        a.href = 'javascript:void(0);';
+        a.set('href', 'javascript:void(0);');
         a.addEvent('click', function(e) {
             e.stop();
             selectedComponent = comp.realname;
@@ -225,8 +225,8 @@ function toggleSection()
  */
 function switchTab(tab)
 {
-    tab = (typeof tab === 'string')? tab : this.id;
-    tab = $(tab).isVisible()? tab : 'tab_info';
+    tab = (typeof tab === 'string') ? tab : this.id;
+    tab = $(tab).isVisible() ? tab : 'tab_info';
     $('tabs').getElement('li.active').removeClass('active');
     $(tab).addClass('active');
     $('component_form').getChildren().hide();
@@ -254,11 +254,11 @@ function selectComponent()
     var comp = this.id,
         img = new Element('img'),
         h1 = new Element('h1');
-    img.src = pluginsMode? 
+    img.src = pluginsMode ? 
         'gadgets/Components/images/plugin.png': 
-        'gadgets/' + components[comp]['realname'] + '/images/logo.png';
-    img.alt = components[comp]['name'];
-    h1.innerHTML = components[comp]['name'] + ': ' + components[comp]['description'];
+        'gadgets/' + components[comp].realname + '/images/logo.png';
+    img.alt = components[comp].name;
+    h1.innerHTML = components[comp].name + ': ' + components[comp].description;
     $('component_head').innerHTML = '';
     $('component_form').innerHTML = '';
     $('component_head').adopt(img, h1);
@@ -292,7 +292,7 @@ function componentInfo()
 {
     if (!$('component_info')) {
         var div = new Element('div');
-        div.innerHTML = pluginsMode?
+        div.innerHTML = pluginsMode ?
             ComponentsAjax.callSync('getplugininfo', selectedComponent):
             ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
         $('component_form').grab(div.getElement('div'));
@@ -506,8 +506,8 @@ function pluginUsage(reset)
             tbody.grab(tr);
         });
         $('plugin_usage').getElement('table').grab(tbody);
-        $('all_backend').checked = (res.usage.backend === '*')? true : false;
-        $('all_frontend').checked = (res.usage.frontend === '*')? true : false;
+        $('all_backend').checked = (res.usage.backend === '*') ? true : false;
+        $('all_frontend').checked = (res.usage.frontend === '*') ? true : false;
         usageCache = $('plugin_usage').clone(true, true);
     }
     if (reset) {
@@ -541,8 +541,8 @@ function savePluginUsage()
     var backend = $('plugin_usage').getElements('input:checked[name=backend]').get('value'),
         frontend = $('plugin_usage').getElements('input:checked[name=frontend]').get('value'),
         total = $('plugin_usage').getElements('input[name=frontend]').length;
-    backend = (backend.length === total)? '*' : backend.join(',');
-    frontend = (frontend.length === total)? '*' : frontend.join(',');
+    backend = (backend.length === total) ? '*' : backend.join(',');
+    frontend = (frontend.length === total) ? '*' : frontend.join(',');
     ComponentsAjax.callAsync('updatepluginusage', selectedComponent, backend, frontend);
 }
 
