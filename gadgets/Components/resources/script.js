@@ -547,11 +547,18 @@ function savePluginUsage()
 }
 
 /**
- * Stores changes value
+ * Stores changed Registry/ACL value
  */
 function onValueChange(el)
 {
-    regChanges[el.id] = el.value;
+    switch ($('tabs').getElement('li.active').get('id')) {
+        case 'tab_registry':
+            regChanges[el.id] = el.value;
+            break;
+        case 'tab_acl':
+            aclChanges[el.id] = el.checked;
+            break;
+    }
 }
 
 /**
