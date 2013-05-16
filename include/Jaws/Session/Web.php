@@ -18,17 +18,6 @@ define('JAWS_SESSION_NAME', 'JAWSSESSID');
 class Jaws_Session_Web extends Jaws_Session
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function Jaws_Session_Web()
-    {
-        parent::Init();
-    }
-
-    /**
      * Initializes the Session
      *
      * @access  public
@@ -36,6 +25,7 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function init()
     {
+        parent::Init();
         $session = $this->GetCookie(JAWS_SESSION_NAME);
         if (empty($session) || !$this->Load($session)) {
             $this->_SessionExists = false;
