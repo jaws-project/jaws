@@ -50,7 +50,6 @@ class Settings_Installer extends Jaws_Gadget_Model
             'browsers_flag' => 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text',
             'controlpanel_name' => 'ControlPanel',
             'show_viewsite' => 'true',
-            'site_url' => '',
             'cookie_precedence' => 'false',
             'robots' => implode(',', $robots),
             'connection_timeout' => '5',           // per second

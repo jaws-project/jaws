@@ -230,12 +230,11 @@ class Jaws_Layout
         $brow = $GLOBALS['app']->GetBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
         $base_url = $GLOBALS['app']->GetSiteURL('/');
-        $site_url = $this->attributes['site_url'];
 
         $this->_Template->SetVariable('BASE_URL', $base_url);
         $this->_Template->SetVariable('.dir', $dir);
         $this->_Template->SetVariable('.browser', $brow);
-        $this->_Template->SetVariable('site-url', empty($site_url)? $base_url : $site_url);
+        $this->_Template->SetVariable('site-url', $base_url);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
         $this->_Template->SetVariable('site-comment',   $this->attributes['site_comment']);

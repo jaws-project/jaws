@@ -828,39 +828,28 @@ class Jaws
     {
         static $site_url;
         if (!isset($site_url)) {
-            $cfg_url = isset($GLOBALS['app']->Registry)? $GLOBALS['app']->Registry->fetch('site_url', 'Settings') : '';
-            if (!empty($cfg_url)) {
-                $cfg_url = parse_url($cfg_url);
-                if (isset($cfg_url['scheme']) && isset($cfg_url['host'])) {
-                    $cfg_url['path'] = isset($cfg_url['path'])? $cfg_url['path'] : '';
-                    $site_url = $cfg_url;
-                }
-            }
+            $site_url = array();
+            $site_url['scheme'] = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')? 'https' : 'http';
+            //$site_url['host'] = $_SERVER['SERVER_NAME'];
+            $site_url['host'] = reset(explode(':', $_SERVER['HTTP_HOST']));
+            $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
 
-            if (!isset($site_url)) {
-                $site_url = array();
-                $site_url['scheme'] = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')? 'https' : 'http';
-                //$site_url['host'] = $_SERVER['SERVER_NAME'];
-                $site_url['host'] = reset(explode(':', $_SERVER['HTTP_HOST']));
-                $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
-
-                $path = strip_tags($_SERVER['PHP_SELF']);
+            $path = strip_tags($_SERVER['PHP_SELF']);
+            if (false === stripos($path, BASE_SCRIPT)) {
+                $path = strip_tags($_SERVER['SCRIPT_NAME']);
                 if (false === stripos($path, BASE_SCRIPT)) {
-                    $path = strip_tags($_SERVER['SCRIPT_NAME']);
-                    if (false === stripos($path, BASE_SCRIPT)) {
-                        $pInfo = isset($_SERVER['PATH_INFO'])? $_SERVER['PATH_INFO'] : '';
-                        $pInfo = (empty($pInfo) && isset($_SERVER['ORIG_PATH_INFO']))? $_SERVER['ORIG_PATH_INFO'] : '';
-                        $pInfo = (empty($pInfo) && isset($_ENV['PATH_INFO']))? $_ENV['PATH_INFO'] : '';
-                        $pInfo = (empty($pInfo) && isset($_ENV['ORIG_PATH_INFO']))? $_ENV['ORIG_PATH_INFO'] : '';
-                        $pInfo = strip_tags($pInfo);
-                        if (!empty($pInfo)) {
-                            $path = substr($path, 0, strpos($path, $pInfo)+1);
-                        }
+                    $pInfo = isset($_SERVER['PATH_INFO'])? $_SERVER['PATH_INFO'] : '';
+                    $pInfo = (empty($pInfo) && isset($_SERVER['ORIG_PATH_INFO']))? $_SERVER['ORIG_PATH_INFO'] : '';
+                    $pInfo = (empty($pInfo) && isset($_ENV['PATH_INFO']))? $_ENV['PATH_INFO'] : '';
+                    $pInfo = (empty($pInfo) && isset($_ENV['ORIG_PATH_INFO']))? $_ENV['ORIG_PATH_INFO'] : '';
+                    $pInfo = strip_tags($pInfo);
+                    if (!empty($pInfo)) {
+                        $path = substr($path, 0, strpos($path, $pInfo)+1);
                     }
                 }
-                $site_url['path'] = substr($path, 0, stripos($path, BASE_SCRIPT)-1);
             }
 
+            $site_url['path'] = substr($path, 0, stripos($path, BASE_SCRIPT)-1);
             $site_url['path'] = explode('/', $site_url['path']);
             $site_url['path'] = implode('/', array_map('rawurlencode', $site_url['path']));
         }
