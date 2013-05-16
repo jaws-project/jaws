@@ -85,5 +85,6 @@ if ($GLOBALS['app']->Registry->fetch('version') != JAWS_VERSION) {
 
 $GLOBALS['app']->Map->Init();
 $GLOBALS['app']->Session->Init();
-
+$GLOBALS['app']->loadPreferences();
+// load Piwi initialize
 require_once JAWS_PATH . 'include/Jaws/InitPiwi.php';
