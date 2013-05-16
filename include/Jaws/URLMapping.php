@@ -31,14 +31,11 @@ class Jaws_URLMapping
     var $_extension;
 
     /**
-     * Constructor
-     * Initializes the map, just pass null to a param if you want
-     * to use the default values
+     * Initializes the Jaws URL Mapping
      *
-     * @param   string  $request_uri    Request URL
      * @access  public
      */
-    function Jaws_URLMapping($request_uri = '')
+    function Init($request_uri = '')
     {
         $urlMapper = $GLOBALS['app']->LoadGadget('UrlMapper', 'Info');
         if (Jaws_Error::isError($urlMapper)) {
@@ -89,27 +86,9 @@ class Jaws_URLMapping
             $request->set('get', 'apptype', $params[$apptype_key + 1]);
             unset($params[$apptype_key], $params[$apptype_key+1]);
         }
-
         $this->_request_uri = implode('/', array_map('rawurldecode', $params));
-    }
 
-    /**
-     * Resets the map
-     *
-     * @access  public
-     */
-    function Reset()
-    {
-        $this->_map = array();
-    }
-
-    /**
-     * Loads the maps
-     *
-     * @access  public
-     */
-    function Load()
-    {
+        // load maps
         if ($this->_enabled) {
             $maps = $this->_Model->GetMaps();
             if (Jaws_Error::IsError($maps)) {
