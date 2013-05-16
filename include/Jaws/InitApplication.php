@@ -84,11 +84,6 @@ $request->addFilter('ambiguous', array('Jaws_Request', 'strip_ambiguous'));
 // Connect to the database
 require JAWS_PATH . 'include/Jaws/DB.php';
 
-// for fix bug in Jaws 0.7.x
-if (isset($db['charset']) && $db['charset'] == 'UTF-8') {
-    $db['charset'] = '';
-}
-
 $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 #if (Jaws_Error::IsError($GLOBALS['db'])) {
 #    Jaws_Error::Fatal('Couldn\'t connect to database');
