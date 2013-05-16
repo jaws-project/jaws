@@ -147,10 +147,11 @@ class Jaws
     /**
      * Load the default application preferences(language, theme, ...)
      *
-     * @return  void
      * @access  public
+     * @param   array   $preferences    default preferences
+     * @return  void
      */
-    function loadPreferences()
+    function loadPreferences($preferences = array())
     {
         $this->_Preferences = array(
             'theme'             => $this->Registry->fetch('theme', 'Settings'),
@@ -161,6 +162,7 @@ class Jaws
             'calendar_type'     => $this->Registry->fetch('calendar_type', 'Settings'),
             'calendar_language' => $this->Registry->fetch('calendar_language', 'Settings'),
         );
+        $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         $cookies = array();
         $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
@@ -368,76 +370,6 @@ class Jaws
         return $this->_BrowserFlag;
     }
 
-    /**
-     * Overwrites the default values the Application use
-     *
-     * It overwrites the default values with the input values
-     * (which should come in an array)
-     *
-     *  - Theme:            Array key should be named theme
-     *  - Language:         Array key should be named language
-     *  - CalendarType:     Array key should be named calendartype
-     *  - CalendarLanguage: Array key should be named calendarlanguage
-     *  - Editor:           Array key should be named editor
-     *
-     * In the case of Language and CalendarLanguage, if the new values are
-     * different from the default ones (or the values that were already loaded)
-     * we load the translation stuff again
-     *
-     * @access  public
-     * @param   array   $defaults  New default values
-     */
-    function OverwriteDefaults($defaults) 
-    {
-        if (!is_array($defaults)) {
-            return;
-        }
-
-        $loadLanguageAgain = false;
-        foreach($defaults as $key => $value) {
-            $key = strtolower($key);
-            if (empty($value)) {
-                continue;
-            }
-
-            switch($key) {
-                case 'theme':
-                    $this->_Theme = $value;
-                    break;
-
-                case 'language':
-                    if ($this->_Language != $value) {
-                        $loadLanguageAgain = true;
-                        $this->_Language = $value;
-                    }
-                    break;
-
-                case 'calendartype':
-                    $this->_CalendarType = $value;
-                    break;
-
-                case 'calendarlanguage':
-                    if ($this->_CalendarLanguage != $value) {
-                        $loadLanguageAgain = true;
-                        $this->_CalendarLanguage = $value;
-                    }
-                    break;
-
-                case 'editor':
-                    $this->_Editor = $value;
-                    break;
-
-                case 'timezone':
-                    $this->_Timezone = $value;
-                    break;
-            }
-        }
-
-        if ($loadLanguageAgain) {
-            $this->Translate->Init($this->_Language);
-        }
-    }
-    
     /**
      * Get the default language
      *
