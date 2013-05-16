@@ -70,13 +70,11 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
             // Create application
             include_once JAWS_PATH . 'include/Jaws.php';
             $GLOBALS['app'] = new Jaws();
-            $GLOBALS['app']->create();
-            $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['upgrade']['language']));
+            $GLOBALS['app']->Registry->Init();
+            $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']));
 
             _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
-            $GLOBALS['app']->Registry->deleteCacheFile('core');
-            $GLOBALS['app']->Registry->update('/version', JAWS_VERSION);
-            $GLOBALS['app']->Registry->commit('core');
+            $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
         }
 
         return $tpl->Get();
