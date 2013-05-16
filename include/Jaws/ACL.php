@@ -13,28 +13,6 @@
 class Jaws_ACL
 {
     /**
-     * Loaded users/groups so we don't query the DB each
-     * time we need a value of them
-     *
-     * @access  private
-     * @var     array
-     */
-    var $_LoadedTargets;
-
-    /**
-     * Constructor
-     *
-     * @access  public
-     */
-    function Jaws_ACL()
-    {
-        $this->_LoadedTargets = array(
-            'users'  => array(),
-            'groups' => array()
-        );
-    }
-
-    /**
      * Fetch the key value
      *
      * @access  public
