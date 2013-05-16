@@ -155,9 +155,8 @@ class Installer_CreateUser extends JawsInstallerStage
 
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->create();
-        $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
-        $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
+        $GLOBALS['app']->Registry->Init();
+        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();

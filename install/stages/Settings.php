@@ -40,9 +40,8 @@ class Installer_Settings extends JawsInstallerStage
             // Create application
             include_once JAWS_PATH . 'include/Jaws.php';
             $GLOBALS['app'] = new Jaws();
-            $GLOBALS['app']->create();
-            $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
-            $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
+            $GLOBALS['app']->Registry->Init();
+            $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
         }
     }
 

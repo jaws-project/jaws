@@ -324,8 +324,8 @@ class Installer_Database extends JawsInstallerStage
         // Create application
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->create();
-        $GLOBALS['app']->OverwriteDefaults(array('language' => $_SESSION['install']['language']));
+        $GLOBALS['app']->Registry->Init();
+        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
 
         // registry keys
         $result = $GLOBALS['app']->Registry->insertAll(
@@ -346,9 +346,6 @@ class Installer_Database extends JawsInstallerStage
             'Settings', 'Layout', 'ControlPanel',
             'Components', 'UrlMapper', 'Users', 'Policy',
         );
-
-        require_once JAWS_PATH . 'include/Jaws/URLMapping.php';
-        $GLOBALS['app']->Map = new Jaws_URLMapping();
 
         foreach ($gadgets as $gadget) {
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
