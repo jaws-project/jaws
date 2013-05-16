@@ -136,37 +136,12 @@ class Jaws
     {
         spl_autoload_register(array($this, 'loadClass'));
         $this->loadObject('Jaws_UTF8', 'UTF8');
-    }
-
-    /**
-     * Does everything needed to get the application to a usable state.
-     *
-     * @return  void
-     * @access  public
-     */
-    function create()
-    {
         $this->loadObject('Jaws_Translate', 'Translate');
         $this->loadObject('Jaws_Registry', 'Registry');
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
-
-        $this->loadPreferences();
-        $this->Registry->Init();
-  
         $this->loadObject('Jaws_URLMapping', 'Map');
-        $this->Map->Load();
-
-        if (!defined('JAWS_APPTYPE')) {
-            $request =& Jaws_Request::getInstance();
-            $apptype = $request->get('apptype');
-            $apptype = empty($apptype)? 'Web' : preg_replace('/[^[:alnum:]_-]/', '', ucfirst(strtolower($apptype)));
-            define('JAWS_APPTYPE', $apptype);
-        }
-
-        $this->InstanceSession();
-        $this->loadDefaults();
-        $this->Translate->Init($this->_Language);
+        $this->Session =& Jaws_Session::factory();
     }
 
     /**
@@ -186,16 +161,7 @@ class Jaws
             'calendar_type'     => $this->Registry->fetch('calendar_type', 'Settings'),
             'calendar_language' => $this->Registry->fetch('calendar_language', 'Settings'),
         );
-    }
 
-    /**
-     * Set the language and theme, first based on session data, then on application defaults.
-     *
-     * @return  void
-     * @access  public
-     */
-    function loadDefaults()
-    {
         $cookies = array();
         $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
         if ($cookie_precedence) {
@@ -285,23 +251,9 @@ class Jaws
         require_once PEAR_PATH. 'Net/Detect.php';
         $bFlags = explode(',', $this->Registry->fetch('browsers_flag', 'Settings'));
         $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
-    }
 
-    /**
-     * Setup the applications session.
-     *
-     * @return  void
-     * @access  public
-     */
-    function InstanceSession()
-    {
-        require_once JAWS_PATH . 'include/Jaws/Session.php';
-        $this->Session =& Jaws_Session::factory();
-        if (Jaws_Error::isError($this->Session)) {
-            Jaws_Error::Fatal($this->Session->getMessage());
-        }
-
-        $this->Session->Init();
+        // load the language translates
+        $this->Translate->Init($this->_Language);
     }
 
     /**
