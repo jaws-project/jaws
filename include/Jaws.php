@@ -165,22 +165,24 @@ class Jaws
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         $cookies = array();
-        $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
-        if ($cookie_precedence) {
-            // load cookies preferences
-            $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
-            if (!is_array($cookies)) {
-                $cookies = array();
+        if (isset($this->Session)) {
+            $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
+            if ($cookie_precedence) {
+                // load cookies preferences
+                $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+                if (!is_array($cookies)) {
+                    $cookies = array();
+                }
             }
-        }
 
-        // load from session
-        $this->_Theme            = $this->Session->GetAttribute('theme');
-        $this->_Language         = $this->Session->GetAttribute('language');
-        $this->_Editor           = $this->Session->GetAttribute('editor');
-        $this->_Timezone         = $this->Session->GetAttribute('timezone');
-        $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
-        $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
+            // load from session
+            $this->_Theme            = $this->Session->GetAttribute('theme');
+            $this->_Language         = $this->Session->GetAttribute('language');
+            $this->_Editor           = $this->Session->GetAttribute('editor');
+            $this->_Timezone         = $this->Session->GetAttribute('timezone');
+            $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
+            $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
+        }
 
         // theme
         if (empty($this->_Theme)) {
