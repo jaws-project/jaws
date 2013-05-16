@@ -141,25 +141,22 @@ class Jaws_Request
     }
 
     /**
-     * Creates the Jaws_Request instance if it doesn't exist
-     * else it returns the already created one.
+     * Creates the Jaws_Request instance if it doesn't exist else it returns the already created one
      *
-     * @return  object returns the instance
      * @access  public
+     * @return  object returns the instance
      */
     function &getInstance()
     {
-        static $instances;
-        if (!isset($instances)) {
-            $instances = array();
+        static $objRequest;
+        if (!isset($objRequest)) {
+            $objRequest = new Jaws_Request();
+            // Add request filters
+            $objRequest->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
+            $objRequest->addFilter('ambiguous', array('Jaws_Request', 'strip_ambiguous'));
         }
 
-        $signature = serialize(array('request'));
-        if (!isset($instances[$signature])) {
-            $instances[$signature] = new Jaws_Request();
-        }
-
-        return $instances[$signature];
+        return $objRequest;
     }
 
     /**
