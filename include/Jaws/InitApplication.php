@@ -72,28 +72,18 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 // Create application
 require_once JAWS_PATH . 'include/Jaws.php';
 $GLOBALS['app'] = new Jaws();
-
-// Lets handle our requests
-require JAWS_PATH . 'include/Jaws/Request.php';
-$request =& Jaws_Request::getInstance();
-
-// Add request filters
-$request->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
-$request->addFilter('ambiguous', array('Jaws_Request', 'strip_ambiguous'));
-
-// Connect to the database
-require JAWS_PATH . 'include/Jaws/DB.php';
-
+// get an instance of Jaws_DB
 $GLOBALS['db'] =& Jaws_DB::getInstance($db);
-#if (Jaws_Error::IsError($GLOBALS['db'])) {
-#    Jaws_Error::Fatal('Couldn\'t connect to database');
-#}
+if (Jaws_Error::IsError($GLOBALS['db'])) {
+    Jaws_Error::Fatal($GLOBALS['db']->getMessage());
+}
 
-$GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
 $GLOBALS['app']->Registry->Init();
 if ($GLOBALS['app']->Registry->fetch('version') != JAWS_VERSION) {
     Jaws_Header::Location('upgrade/index.php');
 }
-$GLOBALS['app']->create();
+
+$GLOBALS['app']->Map->Init();
+$GLOBALS['app']->Session->Init();
 
 require_once JAWS_PATH . 'include/Jaws/InitPiwi.php';
