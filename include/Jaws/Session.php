@@ -88,6 +88,13 @@ class Jaws_Session
      */
     function &factory()
     {
+        if (!defined('JAWS_APPTYPE')) {
+            $request =& Jaws_Request::getInstance();
+            $apptype = $request->get('apptype');
+            $apptype = empty($apptype)? 'Web' : preg_replace('/[^[:alnum:]_-]/', '', ucfirst(strtolower($apptype)));
+            define('JAWS_APPTYPE', $apptype);
+        }
+
         $file = JAWS_PATH . 'include/Jaws/Session/'. JAWS_APPTYPE. '.php';
         if (@include_once($file)) {
             $className = 'Jaws_Session_'. JAWS_APPTYPE;
@@ -95,7 +102,7 @@ class Jaws_Session
             return $obj;
         }
 
-        return Jaws_Error::raiseError('Loading session '. JAWS_APPTYPE. ' failed.', __FUNCTION__);
+        Jaws_Error::Fatal('Loading session '. JAWS_APPTYPE. ' failed.');
     }
 
     /**
