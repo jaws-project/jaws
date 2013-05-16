@@ -173,9 +173,11 @@ class Jaws_DB
 
         $this->dbc =& MDB2::singleton($this->_dsn, $options);
         if (PEAR::IsError($this->dbc)) {
-            Jaws_Error::Fatal("Couldn\'t connect to the database<br />" .
-                              $this->dbc->getMessage() . "<br />" .
-                              $this->dbc->getUserinfo());
+            return Jaws_Error::raiseError(
+                "Couldn't connect to the database<br />".
+                $this->dbc->getMessage(). '<br />'. $this->dbc->getUserinfo(),
+                __FUNCTION__
+            );
         }
     }
 
