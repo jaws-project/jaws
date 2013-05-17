@@ -1,3 +1,5 @@
+table {border-collapse:collapse;}
+.actions {text-align:left; padding-top:5px; line-height:normal;}
 #components {width:310px; background-color:#f7f7f7; border:1px solid #d3d7cf; padding:5px;}
 #components > div {height:500px; overflow:auto; background-color:white; border:1px solid #d3d7cf; padding:0px;}
 #components h3 {
@@ -17,30 +19,55 @@
 #components span {display:inline-block; width:200px; padding-right:5px; cursor:default;}
 #components a {display:none;}
 
-#component_ui {height:474px; margin-left:5px; padding:20px; border:1px solid #d3d7cf; text-align:right; font-size:12px;}
-#actions {text-align:right;}
+#component_ui {height:474px; margin-left:5px; padding:20px; border:1px solid #d3d7cf; text-align:right; font-size:12px; vertical-align:top;}
+#component_ui h1 {height:38px; padding:10px 60px 0 0; font-size:13px;}
 
-/* Information */
-.summary {padding:0 10px; line-height:2.5;}
-.summary h1 {font-size:14px; border-bottom:solid 1px grey; margin-bottom:10px;}
+#summary img {float:right; width:48px;}
+.summary {border-top:solid 1px silver; margin-top:20px; padding:20px 10px 0 0; line-height:2.5;}
 .summary label {font-size:12px; color:#3465a4}
 .summary span {font-weight:bold;}
-.component-info img {float:left; width:48px;}
-.component-info h1 {height:38px; padding:10px 0 0 60px; font-size:13px;}
-.component-info h2 {display:inline-block; font-size:12px;}
-.component-info span {font-weight:bold;}
-.component-info ul {margin:5px 0 15px; list-style-type:square;}
-.component-info ul.acls {height:240px; overflow-y:auto;}
-.details {clear:both; margin-top:20px; padding-top:15px; border-top:solid 1px grey;}
-.details > div {margin-bottom:15px;}
 
-/* WebFX Tree */
-#bigTree > div {margin-bottom:10px;}
-.webfx-tree-item {margin:0;}
-.webfx-tree-item a {text-decoration:none; color:black; cursor:default;}
-.webfx-tree-item img {vertical-align:middle;}
-.webfx-tree-item input {vertical-align:middle;}
-.webfx-tree-icon {display:none;}
-.webfx-tree-grid-icon {visibility:hidden;}
+#component {position:relative;}
+#component h2 {display:inline-block; font-size:12px;}
+#component.plugin #tab_acl {display:none;}
+#component_head {margin-bottom:15px; padding-bottom:40px; border-bottom:solid 1px silver; line-height:1.5;}
+#component_head img {float:right; width:48px; height:48px;}
+#component_form {padding-right:10px;}
 
-.actions {text-align:left;}
+/* Tabs */
+#tabs {position:absolute; top:67px; right:5px; margin:0; padding:0; list-style:none; line-height:16px}
+#tabs li {
+  float:right; padding:2px 15px; margin:0 1px 0 0; cursor:pointer; font-weight:bold; color:grey;
+  background-color:#eee; border:1px solid silver; border-radius:5px 5px 0 0; -moz-border-radius:5px 5px 0 0;
+}
+#tabs li.active {background-color:white; border-bottom:1px solid white; color:black;}
+#btn_close {position:absolute; top:-5px; left:-5px; width:20px; line-height:1.5; padding:0;}
+
+/* Info */
+#component_info {line-height:2.5;}
+#component_info span {font-weight:bold;}
+#component_info ul {margin:0;}
+#component_info .acls {height:185px; overflow-y:auto; margin:0; line-height:1.5; list-style:square;}
+#component_info .plugin {height:345px;}
+
+/* Registry */
+#frm_registry {height:345px; overflow-y:auto;}
+#frm_registry table {border-collapse:collapse;}
+#frm_registry th {text-align:left;}
+#frm_registry label {padding:0 6px;}
+#frm_registry input {width:200px;}
+
+/* ACL */
+#frm_acl {height:345px; overflow-y:auto; line-height:1.5;}
+#frm_acl table {border-collapse:collapse;}
+#frm_acl th {text-align:right;}
+#frm_acl label {padding:0;}
+
+/* Plugin Usage */
+#plugin_usage {line-height:1.5;}
+#plugin_usage thead th {border-bottom:1px solid silver; text-align:center; padding:2px 10px;}
+#plugin_usage thead td {border-bottom:1px solid silver; text-align:center; padding:2px 10px; border-right:1px solid silver; font-weight:bold;}
+#plugin_usage tbody th {text-align:right;}
+#plugin_usage tbody td {border-right:1px solid silver; text-align:center;}
+#plugin_usage tbody tr:hover {background-color:#f8f8f8;}
+#plugin_usage .wrapper {height:305px; overflow-y:auto; margin:10px;}

@@ -61,7 +61,6 @@ table {border-collapse:collapse;}
 #frm_acl {height:345px; overflow-y:auto; line-height:1.5;}
 #frm_acl table {border-collapse:collapse;}
 #frm_acl td {text-align:right;}
-#frm_acl caption {text-align:left; font-size:14px; font-weight:bold; color:#3465a4; margin-bottom:10px;}
 
 /* Plugin Usage */
 #plugin_usage {line-height:1.5;}
