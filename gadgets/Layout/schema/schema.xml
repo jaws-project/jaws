@@ -29,7 +29,7 @@
          <field>
              <name>gadget_action</name>
              <type>text</type>
-             <length>120</length>
+             <length>32</length>
          </field>
 
          <field>
@@ -40,7 +40,7 @@
          <field>
              <name>action_filename</name>
              <type>text</type>
-             <length>64</length>
+             <length>32</length>
          </field>
 
          <field>

@@ -19,14 +19,14 @@
             <field>
                 <name>component</name>
                 <type>text</type>
-                <length>64</length>
+                <length>32</length>
                 <notnull>true</notnull>
             </field>
 
             <field>
                 <name>key_name</name>
                 <type>text</type>
-                <length>64</length>
+                <length>32</length>
                 <notnull>true</notnull>
             </field>
 
@@ -76,14 +76,14 @@
             <field>
                 <name>component</name>
                 <type>text</type>
-                <length>64</length>
+                <length>32</length>
                 <notnull>true</notnull>
             </field>
 
             <field>
                 <name>key_name</name>
                 <type>text</type>
-                <length>64</length>
+                <length>32</length>
                 <notnull>true</notnull>
             </field>
 
@@ -172,7 +172,7 @@
             <field>
                 <name>domain</name>
                 <type>text</type>
-                <length>48</length>
+                <length>32</length>
             </field>
 
             <field>
@@ -271,7 +271,7 @@
             <field>
                 <name>event</name>
                 <type>text</type>
-                <length>64</length>
+                <length>32</length>
             </field>
 
             <index>
