@@ -178,6 +178,11 @@ class Installer_Settings extends JawsInstallerStage
         $schema_variables['linkdump_title2'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE2');
         $schema_variables['linkdump_title3'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE3');
 
+        $schema_variables['menu_title1'] = _t('INSTALL_SAMPLE_MENU_TITLE1');
+        $schema_variables['menu_title2'] = _t('INSTALL_SAMPLE_MENU_TITLE2');
+        $schema_variables['menu_title3'] = _t('INSTALL_SAMPLE_MENU_TITLE3');
+        $schema_variables['menu_title4'] = _t('INSTALL_SAMPLE_MENU_TITLE4');
+
 
         // Install gadgets
         foreach ($gadgets as $gadget) {

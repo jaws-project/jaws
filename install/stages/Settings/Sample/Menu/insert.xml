@@ -33,7 +33,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Home</value>
+                    <value><variable>menu_title1</variable></value>
                 </field>
 
                 <field>
@@ -87,7 +87,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Blog Archive</value>
+                    <value><variable>menu_title2</variable></value>
                 </field>
 
                 <field>
@@ -141,7 +141,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Photo Gallery</value>
+                    <value><variable>menu_title3</variable></value>
                 </field>
 
                 <field>
@@ -195,7 +195,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Contact us</value>
+                    <value><variable>menu_title4</variable></value>
                 </field>
 
                 <field>
