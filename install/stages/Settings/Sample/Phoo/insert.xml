@@ -12,11 +12,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>1</value>
-                </field>
-
-                <field>
                     <name>name</name>
                     <value>Tango Icon</value>
                 </field>
@@ -69,11 +64,6 @@
         <initialization>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>1</value>
-                </field>
 
                 <field>
                     <name>user_id</name>
@@ -140,11 +130,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>2</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
@@ -207,11 +192,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>3</value>
-                </field>
 
                 <field>
                     <name>user_id</name>
@@ -278,11 +258,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>4</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
@@ -345,11 +320,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>5</value>
-                </field>
 
                 <field>
                     <name>user_id</name>
@@ -416,11 +386,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>6</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
@@ -483,11 +448,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>7</value>
-                </field>
 
                 <field>
                     <name>user_id</name>
@@ -554,11 +514,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>8</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
@@ -623,11 +578,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>9</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
@@ -690,11 +640,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>10</value>
-                </field>
 
                 <field>
                     <name>user_id</name>

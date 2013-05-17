@@ -12,11 +12,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>1</value>
-                </field>
-
-                <field>
                     <name>pid</name>
                     <value>0</value>
                 </field>
@@ -64,11 +59,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>2</value>
-                </field>
 
                 <field>
                     <name>pid</name>
@@ -120,11 +110,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>3</value>
-                </field>
-
-                <field>
                     <name>pid</name>
                     <value>0</value>
                 </field>
@@ -172,11 +157,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>4</value>
-                </field>
 
                 <field>
                     <name>pid</name>

@@ -12,11 +12,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>3</value>
-                </field>
-
-                <field>
                     <name>section</name>
                     <value>header</value>
                 </field>
@@ -59,11 +54,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>4</value>
-                </field>
 
                 <field>
                     <name>section</name>
@@ -110,11 +100,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>5</value>
-                </field>
-
-                <field>
                     <name>section</name>
                     <value>bar2</value>
                 </field>
@@ -157,11 +142,6 @@
             </insert>
 
             <insert>
-
-                <field>
-                    <name>id</name>
-                    <value>6</value>
-                </field>
 
                 <field>
                     <name>section</name>

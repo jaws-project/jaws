@@ -10,11 +10,6 @@
             <insert>
 
                 <field>
-                    <name>id</name>
-                    <value>1</value>
-                </field>
-
-                <field>
                     <name>user_id</name>
                     <value>1</value>
                 </field>
