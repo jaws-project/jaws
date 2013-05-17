@@ -18,14 +18,11 @@ class Installer_Finished extends JawsInstallerStage
      */
     function Display()
     {
-        require_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
-
         $tpl = new Jaws_Template();
         $tpl->Load('display.html', 'stages/Finished/templates');
         $tpl->SetBlock('Finished');
 
-        $base_url = $GLOBALS['app']->getSiteURL();
+        $base_url = Jaws_Utils::getBaseURL('', true);
         $tpl->setVariable('lbl_info',    _t('INSTALL_FINISH_INFO'));
         $tpl->setVariable('lbl_choices', _t('INSTALL_FINISH_CHOICES', "$base_url/", "$base_url/admin.php"));
         $tpl->setVariable('lbl_thanks',  _t('INSTALL_FINISH_THANKS'));
