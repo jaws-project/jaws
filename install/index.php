@@ -162,12 +162,6 @@ foreach ($stages as $key => $stage) {
     }
 }
 
-// Check if we are on the last stage, Key + 1 because an array starts with 0 :-)
-if (($_SESSION['install']['stage'] + 1) == $stages_count) {
-    // Kill of the session cookie (path cookie in FF)
-    unset($_SESSION['install']);
-}
-
 if (isset($GLOBALS['message'])) {
     switch ($GLOBALS['message']->getLevel()) {
         case JAWS_ERROR_INFO:
@@ -216,3 +210,10 @@ $layout->ParseBlock('layout/main');
 $layout->ParseBlock('layout');
 
 echo $layout->Get();
+
+// Check if we are on the last stage, Key + 1 because an array starts with 0 :-)
+if (($_SESSION['install']['stage'] + 1) == $stages_count) {
+    // Kill of the session cookie (path cookie in FF)
+    unset($_SESSION['install']);
+}
+exit;

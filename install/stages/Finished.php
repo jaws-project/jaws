@@ -20,8 +20,6 @@ class Installer_Finished extends JawsInstallerStage
     {
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->Registry->Init();
-        $GLOBALS['app']->loadPreferences();
 
         $tpl = new Jaws_Template();
         $tpl->Load('display.html', 'stages/Finished/templates');
