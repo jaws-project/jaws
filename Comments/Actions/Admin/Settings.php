@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_Admin_Properties extends Comments_AdminHTML
+class Comments_Actions_Admin_Settings extends Comments_AdminHTML
 {
     /**
      * Builds admin properties UI
@@ -16,12 +16,12 @@ class Comments_Actions_Admin_Properties extends Comments_AdminHTML
      * @access  public
      * @return  string  XHTML form
      */
-    function Properties()
+    function Settings()
     {
         $this->gadget->CheckPermission('ManageProperties');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Properties.html');
-        $tpl->SetBlock('Properties');
+        $tpl = $this->gadget->loadTemplate('Settings.html');
+        $tpl->SetBlock('Settings');
 
         // comments site wide
         $comments =& Piwi::CreateWidget('Combo', 'allow_comments');
@@ -42,12 +42,12 @@ class Comments_Actions_Admin_Properties extends Comments_AdminHTML
         $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
 
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: saveProperties();');
+        $save->AddEvent(ON_CLICK, 'javascript:SaveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
 
-        $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Settings'));
 
-        $tpl->ParseBlock('Properties');
+        $tpl->ParseBlock('Settings');
 
         return $tpl->Get();
     }

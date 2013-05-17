@@ -45,7 +45,7 @@ var CommentsCallback = {
         showResponse(response);
     },
 
-    SaveProperties: function(response) {
+    SaveSettings: function(response) {
         showResponse(response);
     }
 }
@@ -268,9 +268,9 @@ function searchComment()
 /**
  * save properties
  */
-function saveProperties()
+function SaveSettings()
 {
-    CommentsAjax.callAsync('SaveProperties', $('allow_comments').value, $('allow_duplicate').value);
+    CommentsAjax.callAsync('SaveSettings', $('allow_comments').value, $('allow_duplicate').value);
 }
 
 /**

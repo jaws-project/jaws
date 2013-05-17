@@ -31,7 +31,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function MenuBar($action)
     {
-        $actions = array('Comments', 'Properties');
+        $actions = array('Comments', 'Settings');
         if (!in_array($action, $actions)) {
             $action = 'Comments';
         }
@@ -45,9 +45,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             BASE_SCRIPT . '?gadget=Comments&amp;action=Admin');
 
         $menubar->AddOption(
-            'Properties',
-            _t('GLOBAL_PROPERTIES'),
-            BASE_SCRIPT . '?gadget=Comments&amp;action=Properties',
+            'Settings',
+            _t('GLOBAL_SETTINGS'),
+            BASE_SCRIPT . '?gadget=Comments&amp;action=Settings',
             STOCK_PREFERENCES);
 
         $menubar->Activate($action);
@@ -228,49 +228,16 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   string  $gadget     Gadget name
      * @param   string  $editAction Edit action
      * @param   string  $replyAction
-     * @param   string  $filterby   Filter to use(postid, author, email, url, comment)
-     * @param   string  $filter     Filter data
+     * @param   string  $term       Search term
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $limit      Data limit (numeric/boolean)
      * @param   bool    $gadgetColumn   Display gadget column?
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $editAction, $replyAction, $filterby, $filter, $status, $limit, $gadgetColumn=false)
+    function GetDataAsArray($gadget, $editAction, $replyAction, $term, $status, $limit, $gadgetColumn=false)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-
-        $filterMode = '';
-        switch($filterby) {
-        case 'postid':
-            $filterMode = COMMENT_FILTERBY_REFERENCE;
-            break;
-        case 'name':
-            $filterMode = COMMENT_FILTERBY_NAME;
-            break;
-        case 'email':
-            $filterMode = COMMENT_FILTERBY_EMAIL;
-            break;
-        case 'url':
-            $filterMode = COMMENT_FILTERBY_URL;
-            break;
-        case 'ip':
-            $filterMode = COMMENT_FILTERBY_IP;
-            break;
-        case 'comment':
-            $filterMode = COMMENT_FILTERBY_MESSAGE;
-            break;
-        case 'various':
-            $filterMode = COMMENT_FILTERBY_VARIOUS;
-            break;
-        case 'status':
-            $filterMode = COMMENT_FILTERBY_STATUS;
-            break;
-        default:
-            $filterMode = null;
-            break;
-        }
-
-        $comments = $cModel->GetFilteredComments($gadget, $filterMode, $filter, $status, $limit);
+        $comments = $cModel->GetFilteredComments($gadget, '', $term, $status, $limit);
         if (Jaws_Error::IsError($comments)) {
             return array();
         }

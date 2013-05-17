@@ -189,14 +189,14 @@ class Comments_AdminModel extends Comments_Model
      * See Filter modes for more info
      *
      * @access  public
-     * @param   string  $gadget     Gadget's name
-     * @param   string  $filterMode Which mode should be used to filter
-     * @param   string  $filterData Data that will be used in the filter
-     * @param   int     $status     comment status (approved=1, waiting=2, spam=3)
-     * @param   mixed   $offset     Offset of data
+     * @param   string  $gadget Gadget name
+     * @param   string  $action Which mode should be used to filter
+     * @param   string  $term   Data that will be used in the filter
+     * @param   int     $status Comment status (approved=1, waiting=2, spam=3)
+     * @param   mixed   $offset Offset of data
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
      */
-    function GetFilteredComments($gadget, $filterMode, $filterData, $status, $offset)
+    function GetFilteredComments($gadget, $action, $term, $status, $offset)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
@@ -212,34 +212,12 @@ class Comments_AdminModel extends Comments_Model
             $commentsTable->and()->where('status', $status);
         }
 
-        if (!empty($filterData)) {
-            switch ($filterMode) {
-                case COMMENT_FILTERBY_REFERENCE:
-                    $commentsTable->and()->where('reference', $filterData);
-                    break;
-                case COMMENT_FILTERBY_NAME:
-                    $commentsTable->and()->where('name', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_EMAIL:
-                    $commentsTable->and()->where('email', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_URL:
-                    $commentsTable->and()->where('url', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_IP:
-                    $commentsTable->and()->where('ip', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_MESSAGE:
-                    $commentsTable->and()->where('msg_txt', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_VARIOUS:
-                    $commentsTable->and()->openWhere('reference', $filterData);
-                    $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
-                    break;
-            }
+        if (!empty($term)) {
+            $commentsTable->and()->openWhere('reference', $term);
+            $commentsTable->or()->where('name', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('email', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('url', '%'.$term.'%', 'like');
+            $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
         }
 
         $commentsTable->limit(10, $offset);
@@ -270,28 +248,6 @@ class Comments_AdminModel extends Comments_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_DELETED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Update properties for Comments
-     *
-     * @access  public
-     * @param   string  $allowComments  Allow comments?
-     * @param   string  $allowDuplicate Allow duplicated comments?
-     * @return  mixed   True on success or Jaws_Error on failure
-     */
-    function SaveProperties($allowComments, $allowDuplicate)
-    {
-        $res = $this->gadget->registry->update('allow_comments', $allowComments);
-        $res = $res && $this->gadget->registry->update('allow_duplicate', $allowDuplicate);
-
-        if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'), _t('COMMENTS_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 

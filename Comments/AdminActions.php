@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Properties'] = array(
+$actions['Settings'] = array(
     'normal' => true,
-    'file' => 'Properties',
+    'file' => 'Settings',
 );

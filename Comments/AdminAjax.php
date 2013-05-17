@@ -40,7 +40,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')",
-                                      "javascript:replyComment(this, '{id}')", $filter, $search, $status, $limit, true);
+                                      "javascript:replyComment(this, '{id}')", $search, $status, $limit, true);
     }
 
     /**
@@ -173,17 +173,24 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Save Properties
+     * Update Settings
      *
      * @access  public
      * @param   string  $allowComments  Allow comments?
      * @param   string  $allowDuplicate Allow duplicated comments?
      * @return  array   Response array (notice or error)
      */
-    function SaveProperties($allowComments, $allowDuplicate)
+    function SaveSettings($allowComments, $allowDuplicate)
     {
-        // TODO: Check Permission For Manage Properties
-        $this->_Model->SaveProperties($allowComments, $allowDuplicate);
+        // TODO: check permission before updating settings
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Settings');
+        $res = $cModel->SaveSettings($allowComments, $allowDuplicate);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
