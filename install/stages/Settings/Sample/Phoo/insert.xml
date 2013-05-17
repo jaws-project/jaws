@@ -132,7 +132,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -201,7 +201,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -270,7 +270,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -339,7 +339,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -408,7 +408,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -477,7 +477,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -546,7 +546,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -615,7 +615,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -684,7 +684,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
@@ -753,7 +753,7 @@
 
                 <field>
                     <name>updatetime</name>
-                    <value></value>
+                    <value><variable>timestamp</variable></value>
                 </field>
 
             </insert>
