@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+
+    <table>
+
+        <name><variable>table_prefix</variable>phoo_album</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>name</name>
+                    <value>Tango Icon</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+    <table>
+
+        <name><variable>table_prefix</variable>phoo_image</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/accessories_text_editor.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>accessories_text_editor</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/audio_x_generic.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>audio_x_generic</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/dialog_information.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>dialog_information</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/face_smile_big.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>face_smile_big</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>5</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/face_wink.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>face_wink</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>6</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/start_here.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>start_here</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>7</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/text_x_generic.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>text_x_generic</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>8</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/utilities_terminal.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>utilities_terminal</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>9</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/video_x_generic.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>video_x_generic</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>10</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>filename</name>
+                    <value><variable>folder-path</variable>/weather_clear.png</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>weather_clear</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value></value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+    <table>
+
+        <name><variable>table_prefix</variable>phoo_image_album</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>5</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>6</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>7</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>8</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>9</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>phoo_image_id</name>
+                    <value>10</value>
+                </field>
+
+                <field>
+                    <name>phoo_album_id</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+
+</database>

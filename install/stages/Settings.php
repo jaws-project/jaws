@@ -6,6 +6,7 @@
  * @package     InstallStage
  * @author      Jon Wood <jon@substance-it.co.uk>
  * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
@@ -147,9 +148,86 @@ class Installer_Settings extends JawsInstallerStage
 
         if (!empty($post['site_sample'])) {
             // install sample gadgets/data
+            $this->InstallSampleSite();
             
         }
 
         return true;
+    }
+
+    /**
+     * Install some gadgets with default data
+     *
+     * @access  public
+     * @return  bool|Jaws_Error  Either true on success, or a Jaws_Error
+     *                          containing the reason for failure.
+     */
+    function InstallSampleSite() {
+        $gadgets = array('Phoo', 'Blog', 'Menu', 'Contact', 'LinkDump', 'Emblems');
+        $error = array();
+
+        $schema_variables = array();
+        $schema_variables['timestamp'] = $GLOBALS['db']->Date();
+        $schema_variables['folder-path'] = gmdate('Y_m_d');
+        $schema_variables['siteurl'] = Jaws_Utils::getBaseURL('/', false);
+
+
+        // Install gadgets
+        foreach ($gadgets as $gadget) {
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            if (Jaws_Error::IsError($objGadget)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_FAILURE', $gadget), RESPONSE_ERROR);
+            } else {
+                $installer = $objGadget->load('Installer');
+                $res = $installer->InstallGadget();
+                if (Jaws_Error::IsError($res)) {
+                    $error[] = $res->getMessage();
+                }
+            }
+        }
+
+        // Insert DB schema
+        foreach ($gadgets as $gadget) {
+            $insert_file = JAWS_PATH . 'install/stages/Settings/Sample/' . $gadget . '/insert.xml';
+            $base_file = JAWS_PATH . 'gadgets/' . $gadget . '/schema/schema.xml';
+
+            if (!file_exists($insert_file) || !file_exists($base_file)) {
+                continue;
+            }
+
+            $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
+            if (Jaws_Error::IsError($res)) {
+                $error[] = $res->getMessage();
+            }
+        }
+
+        // Insert Layout Items
+        $insert_file = JAWS_PATH . 'install/stages/Settings/Sample/Layout/insert.xml';
+        $base_file = JAWS_PATH . 'gadgets/Layout/schema/schema.xml';
+        $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
+        if (Jaws_Error::IsError($res)) {
+            $error[] = $res->getMessage();
+        }
+
+        // Copy gadget's files
+        foreach ($gadgets as $gadget) {
+            $source_path = "";
+            $destination_path = "";
+
+            if ($gadget == 'Phoo') {
+                $source_path = JAWS_PATH . 'install/stages/Settings/Sample/' . $gadget . '/data/';
+                $destination_path = JAWS_DATA . 'phoo/' . $schema_variables['folder-path'] . '/';
+            }
+
+            if (!empty($source_path) && !empty($destination_path)) {
+                $res = Jaws_Utils::copy($source_path, $destination_path);
+
+                if (Jaws_Error::IsError($res)) {
+                    $error[] = $res->getMessage();
+                }
+            }
+        }
+
+        return $error;
     }
 }

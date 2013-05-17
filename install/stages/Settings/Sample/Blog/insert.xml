@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+
+    <table>
+        <name><variable>table_prefix</variable>blog</name>
+
+        <initialization>
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>user_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Welcome</value>
+                </field>
+
+                <field>
+                    <name>summary</name>
+                    <value>Hi to All.&#10;Welcome to Jaws CMS</value>
+                </field>
+
+                <field>
+                    <name>text</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>comments</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>clicks</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>allow_comments</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>trackbacks</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value>welcome</value>
+                </field>
+
+                <field>
+                    <name>meta_keywords</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>meta_description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>publishtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+            </insert>
+        </initialization>
+    </table>
+
+
+</database>

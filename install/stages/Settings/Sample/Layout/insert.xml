@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+
+    <table>
+
+        <name><variable>table_prefix</variable>layout</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>section</name>
+                    <value>bar2</value>
+                </field>
+
+                <field>
+                    <name>gadget</name>
+                    <value>Menu</value>
+                </field>
+
+                <field>
+                    <name>gadget_action</name>
+                    <value>Menu</value>
+                </field>
+
+                <field>
+                    <name>action_params</name>
+                    <value>a:1:{i:0;s:1:&quot;1&quot;;}</value>
+                </field>
+
+                <field>
+                    <name>action_filename</name>
+                    <value>Menu</value>
+                </field>
+
+                <field>
+                    <name>display_when</name>
+                    <value>*</value>
+                </field>
+
+                <field>
+                    <name>layout_position</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>section</name>
+                    <value>bar1</value>
+                </field>
+
+                <field>
+                    <name>gadget</name>
+                    <value>Emblems</value>
+                </field>
+
+                <field>
+                    <name>gadget_action</name>
+                    <value>Display</value>
+                </field>
+
+                <field>
+                    <name>action_params</name>
+                    <value>a:1:{i:0;s:0:&quot;&quot;;}</value>
+                </field>
+
+                <field>
+                    <name>action_filename</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>display_when</name>
+                    <value>*</value>
+                </field>
+
+                <field>
+                    <name>layout_position</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>5</value>
+                </field>
+
+                <field>
+                    <name>section</name>
+                    <value>bar2</value>
+                </field>
+
+                <field>
+                    <name>gadget</name>
+                    <value>LinkDump</value>
+                </field>
+
+                <field>
+                    <name>gadget_action</name>
+                    <value>Display</value>
+                </field>
+
+                <field>
+                    <name>action_params</name>
+                    <value>a:1:{i:0;s:1:&quot;1&quot;;}</value>
+                </field>
+
+                <field>
+                    <name>action_filename</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>display_when</name>
+                    <value>*</value>
+                </field>
+
+                <field>
+                    <name>layout_position</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>6</value>
+                </field>
+
+                <field>
+                    <name>section</name>
+                    <value>bar1</value>
+                </field>
+
+                <field>
+                    <name>gadget</name>
+                    <value>Phoo</value>
+                </field>
+
+                <field>
+                    <name>gadget_action</name>
+                    <value>Random</value>
+                </field>
+
+                <field>
+                    <name>action_params</name>
+                    <value>a:1:{i:0;s:0:&quot;&quot;;}</value>
+                </field>
+
+                <field>
+                    <name>action_filename</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>display_when</name>
+                    <value>*</value>
+                </field>
+
+                <field>
+                    <name>layout_position</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+</database>

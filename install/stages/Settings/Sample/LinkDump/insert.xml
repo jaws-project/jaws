@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+
+    <table>
+
+        <name><variable>table_prefix</variable>linkdump_links</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Jaws Support Forum</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>http://forum.jaws-project.com</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value>jaws-support-forum</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>clicks</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Jaws Persian Support</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>http://www.jaws-project.ir</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value>jaws-persian-support</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>clicks</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Jaws Github</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>https://github.com/jaws-project</value>
+                </field>
+
+                <field>
+                    <name>fast_url</name>
+                    <value>jaws-github</value>
+                </field>
+
+                <field>
+                    <name>description</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>clicks</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>createtime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+                <field>
+                    <name>updatetime</name>
+                    <value><variable>timestamp</variable></value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+</database>

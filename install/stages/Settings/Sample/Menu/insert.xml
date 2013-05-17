@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+
+    <table>
+
+        <name><variable>table_prefix</variable>menus</name>
+
+        <initialization>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>pid</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>menu_type</name>
+                    <value>url</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Home</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value><variable>siteurl</variable></value>
+                </field>
+
+                <field>
+                    <name>url_target</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>image</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>pid</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>menu_type</name>
+                    <value>Blog</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Blog Archive</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>index.php/blog/archive.html</value>
+                </field>
+
+                <field>
+                    <name>url_target</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>2</value>
+                </field>
+
+                <field>
+                    <name>image</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>pid</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>menu_type</name>
+                    <value>Phoo</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Photo Gallery</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>index.php/photos.html</value>
+                </field>
+
+                <field>
+                    <name>url_target</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>3</value>
+                </field>
+
+                <field>
+                    <name>image</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+            <insert>
+
+                <field>
+                    <name>id</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>pid</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>gid</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>menu_type</name>
+                    <value>Contact</value>
+                </field>
+
+                <field>
+                    <name>title</name>
+                    <value>Contact us</value>
+                </field>
+
+                <field>
+                    <name>url</name>
+                    <value>index.php/contact/simple.html</value>
+                </field>
+
+                <field>
+                    <name>url_target</name>
+                    <value>0</value>
+                </field>
+
+                <field>
+                    <name>rank</name>
+                    <value>4</value>
+                </field>
+
+                <field>
+                    <name>image</name>
+                    <value></value>
+                </field>
+
+                <field>
+                    <name>published</name>
+                    <value>1</value>
+                </field>
+
+            </insert>
+
+        </initialization>
+
+    </table>
+
+
+</database>
