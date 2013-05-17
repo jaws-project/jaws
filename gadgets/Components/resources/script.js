@@ -82,6 +82,10 @@ var ComponentsCallback = {
     updatepluginusage: function (response) {
         if (response[0].css === 'notice-message') {
             usageCache = $('plugin_usage').clone(true, true);
+            if (regCache) {
+                regCache = null;
+                $('component_registry').remove();
+            }
         }
         showResponse(response);
     },
@@ -90,6 +94,10 @@ var ComponentsCallback = {
         if (response[0].css === 'notice-message') {
             regChanges = {};
             regCache = $('component_registry').clone(true, true);
+            if (usageCache) {
+                usageCache = null;
+                $('plugin_usage').remove();
+            }
         }
         showResponse(response);
     },
