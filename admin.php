@@ -62,7 +62,7 @@ if (!$GLOBALS['app']->Session->Logged())
             $passwd  = $request->get('password', 'post');
             $crypted = $request->get('usecrypt', 'post');
 
-            if ($GLOBALS['app']->Registry->fetch('enabled', 'Policy') == 'true' && isset($crypted)) {
+            if (isset($crypted)) {
                 require_once JAWS_PATH . 'include/Jaws/Crypt.php';
                 $JCrypt = new Jaws_Crypt();
                 $JCrypt->Init();
