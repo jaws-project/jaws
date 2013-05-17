@@ -21,11 +21,25 @@
   </tr>
   <tr>
    <td><label for="site_language">{lbl_site_language}:</label></td>
-   <td>{site_language}</td>
+   <td>
+    <select name="site_language" id="site_language">
+      <!-- BEGIN lang -->
+      <option value="{code}" {selected}>{title}</option>
+      <!-- END lang -->
+    </select>
+   </td>
   </tr>
   <tr>
    <td></td>
    <td class="form_comment">{site_language_info}</td>
+  </tr>
+  <tr>
+   <td><label for="site_sample">{lbl_site_sample}:</label></td>
+   <td><input type="checkbox" name="site_sample" id="site_sample" value="true"/>{site_sample_info}</td>
+  </tr>
+  <tr>
+   <td></td>
+   <td><img src="images/sample.png"/></td>
   </tr>
  </table>
 

@@ -27,9 +27,10 @@ class Installer_Settings extends JawsInstallerStage
     function Installer_Settings()
     {
         $this->_Fields = array(
-            'site_name'        => 'Jaws ' . JAWS_VERSION,
-            'site_slogan'      => JAWS_VERSION_CODENAME,
-            'site_language'    => $_SESSION['install']['language']
+            'site_name'     => 'Jaws ' . JAWS_VERSION,
+            'site_slogan'   => JAWS_VERSION_CODENAME,
+            'site_language' => $_SESSION['install']['language'],
+            'site_sample'   => false,
         );
 
         if (!isset($GLOBALS['app'])) {
@@ -67,36 +68,36 @@ class Installer_Settings extends JawsInstallerStage
             $data = $_SESSION['install']['data']['Settings'];
         }
 
-        define('PIWI_URL', 'libraries/piwi/');
-        define('PIWI_CREATE_PIWIXML', 'no');
-        define('PIWI_LOAD', 'SMART');
-        require_once JAWS_PATH . 'libraries/piwi/Piwi.php';
-
-        // Build the languages select.
-        $lang =& Piwi::CreateWidget('Combo', 'site_language');
-        $lang->SetID('site_language');
-        $languages = Jaws_Utils::GetLanguagesList();
-        foreach ($languages as $k => $v) {
-            $lang->AddOption($v, $k);
-        }
-        $lang->SetDefault($values['site_language']);
-
         $tpl = new Jaws_Template();
         $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
 
-        $tpl->setVariable('lbl_info',            _t('INSTALL_SETTINGS_INFO'));
-        $tpl->setVariable('lbl_site_name',       _t('INSTALL_SETTINGS_SITE_NAME'));
-        $tpl->setVariable('site_name_info',      _t('INSTALL_SETTINGS_SITE_NAME_INFO'));
-        $tpl->setVariable('lbl_site_slogan',     _t('INSTALL_SETTINGS_SLOGAN'));
-        $tpl->setVariable('site_slogan_info',    _t('INSTALL_SETTINGS_SLOGAN_INFO'));
-        $tpl->setVariable('lbl_site_language',   _t('INSTALL_SETTINGS_SITE_LANGUAGE'));
-        $tpl->setVariable('site_language_info',  _t('INSTALL_SETTINGS_SITE_LANGUAGE_INFO'));
-        $tpl->SetVariable('next',                _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',           _t('INSTALL_SETTINGS_INFO'));
+        $tpl->setVariable('lbl_site_name',      _t('INSTALL_SETTINGS_SITE_NAME'));
+        $tpl->setVariable('site_name_info',     _t('INSTALL_SETTINGS_SITE_NAME_INFO'));
+        $tpl->setVariable('lbl_site_slogan',    _t('INSTALL_SETTINGS_SLOGAN'));
+        $tpl->setVariable('site_slogan_info',   _t('INSTALL_SETTINGS_SLOGAN_INFO'));
+        $tpl->setVariable('lbl_site_language',  _t('INSTALL_SETTINGS_SITE_LANGUAGE'));
+        $tpl->setVariable('site_language_info', _t('INSTALL_SETTINGS_SITE_LANGUAGE_INFO'));
+        $tpl->setVariable('lbl_site_sample',    _t('INSTALL_SETTINGS_SITE_SAMPLE'));
+        $tpl->setVariable('site_sample_info',   _t('INSTALL_SETTINGS_SITE_SAMPLE_INFO'));
+        $tpl->SetVariable('next',               _t('GLOBAL_NEXT'));
 
-        $tpl->SetVariable('site_name',      $values['site_name']);
-        $tpl->SetVariable('site_slogan',    $values['site_slogan']);
-        $tpl->SetVariable('site_language',  $lang->Get());
+        $tpl->SetVariable('site_name',     $values['site_name']);
+        $tpl->SetVariable('site_slogan',   $values['site_slogan']);
+        // fill languages combo box
+        $languages = Jaws_Utils::GetLanguagesList();
+        foreach ($languages as $k => $v) {
+            $tpl->SetBlock('Settings/lang');
+            $tpl->setVariable('code', $k);
+            $tpl->setVariable('title', $v);
+            if ($values['site_language'] == $k) {
+                $tpl->setVariable('selected', 'selected="selected"');
+            } else {
+                $tpl->setVariable('selected', '');
+            }
+            $tpl->ParseBlock('Settings/lang');
+        }
 
         $tpl->ParseBlock('Settings');
         return $tpl->Get();
@@ -111,18 +112,7 @@ class Installer_Settings extends JawsInstallerStage
      */
     function Validate()
     {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('site_name'), 'post');
-
-        if (isset($_SESSION['install']['data']['Settings'])) {
-            $post = $_SESSION['install']['data']['Settings'] + $post;
-        }
-
-        if (!empty($post['site_name'])) {
-            return true;
-        }
-        _log(JAWS_LOG_DEBUG,"Site name wasn't found");
-        return new Jaws_Error(_t('INSTALL_USER_RESPONSE_SITE_NAME_EMPTY'), 0, JAWS_ERROR_WARNING);
+        return true;
     }
 
     /**
@@ -153,6 +143,11 @@ class Installer_Settings extends JawsInstallerStage
         $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
             $GLOBALS['app']->Registry->update($key, $value, 'Settings');
+        }
+
+        if (!empty($post['site_sample'])) {
+            // install sample gadgets/data
+            
         }
 
         return true;
