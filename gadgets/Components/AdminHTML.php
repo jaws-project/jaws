@@ -322,8 +322,8 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
             $tpl->SetVariable('jaws_version', $info->GetRequiredJawsVersion());
 
-            $tpl->SetVariable('lbl_location', _t('COMPONENTS_GADGETS_SECTION').':');
-            $tpl->SetVariable('location', $info->GetSection());
+            $tpl->SetVariable('lbl_section', _t('COMPONENTS_GADGETS_SECTION').':');
+            $tpl->SetVariable('section', $info->GetSection());
 
             // Requires
             $tpl->SetBlock('info/requires');
