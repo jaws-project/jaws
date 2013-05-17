@@ -27,7 +27,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Gets list of gadgets
      *
      * @access  public
-     * @return  array   Gadget list
+     * @return  array   Gadgets list
      */
     function GetGadgets()
     {
@@ -76,72 +76,72 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Install requested gadget
+     * Installs requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
     function InstallGadget($gadget)
     {
-        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $htmlComponents->InstallGadget($gadget);
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $html->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Upgrade requested gadget
+     * Upgrades requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
     function UpgradeGadget($gadget)
     {
-        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $htmlComponents->UpgradeGadget($gadget);
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $html->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Uninstall requested gadget
+     * Uninstalls requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
     function UninstallGadget($gadget)
     {
-        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $htmlComponents->UninstallGadget($gadget);
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $html->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Enable requested gadget
+     * Enables requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
     function EnableGadget($gadget)
     {
-        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $htmlComponents->EnableGadget($gadget);
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $html->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
     /**
-     * Disable requested gadget
+     * Disables requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
     function DisableGadget($gadget)
     {
-        $htmlComponents = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $htmlComponents->DisableGadget($gadget);
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
+        $html->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -149,7 +149,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Gets list of plugins and categorize them
      *
      * @access  public
-     * @return  array    Plugin's list
+     * @return  array   List of plugins
      */
     function GetPlugins()
     {
@@ -204,7 +204,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Disables the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin's name
+     * @param   string  $plugin  Plugin name
      * @return  array   Response array (notice or error)
      */
     function UninstallPlugin($plugin)
@@ -251,8 +251,9 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Updates plugin usage
      *
      * @access  public
-     * @param   string  $plugin    Plugin name
-     * @param   mixed   $selection Comma seperated string of gadgets or '*'
+     * @param   string  $plugin     Plugin name
+     * @param   string  $backend    Comma separated list of gadgets
+     * @param   string  $frontend   Comma separated list of gadgets
      * @return  array   Response array (notice or error)
      */
     function UpdatePluginUsage($plugin, $backend, $frontend)
@@ -269,7 +270,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Fetches registry data of the gadget/plugin
      *
      * @access  public
-     * @param   string  $comp  Gadget/Plugin name
+     * @param   string  $comp   Gadget/Plugin name
      * @return  array   Registry keys/values
      */
     function GetRegistry($comp)
@@ -277,16 +278,17 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageRegistry');
         
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $tpl = $html->GetRegistryUI();
+        $ui = $html->GetRegistryUI();
         $data = $GLOBALS['app']->Registry->fetchAll($comp);
-        return array('tpl' => $tpl, 'data' => $data);
+        return array('ui' => $ui, 'data' => $data);
     }
 
     /**
      * Updates registry with new values
      *
      * @access  public
-     * @param   array   $data  changed keys/values
+     * @param   string  $comp   Gadget/Plugin name
+     * @param   array   $data   changed keys/values
      * @return  array   Response array (notice or error)
      */
     function UpdateRegistry($comp, $data)
@@ -314,19 +316,20 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageACLs');
 
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML');
-        $tpl = $html->GetACLUI();
+        $ui = $html->GetACLUI();
         $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
         foreach ($acls as $k => $acl) {
             $acls[$k]['key_desc'] = $info->GetACLDescription($acl['key_name']);
         }
-        return array('tpl' => $tpl, 'acls' => $acls);
+        return array('ui' => $ui, 'acls' => $acls);
     }
 
     /**
      * Updates ACLs with new values
      *
      * @access  public
+     * @param   string  $comp  Gadget/Plugin name
      * @param   array   $data  changed keys/values
      * @return  array   Response array (notice or error)
      */
@@ -342,5 +345,4 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
-
 }

@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var ComponentsCallback = {
-    upgradegadget: function (response) {
+    installgadget: function (response) {
         if (response[0].css === 'notice-message') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -22,7 +22,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    installgadget: function (response) {
+    upgradegadget: function (response) {
         if (response[0].css === 'notice-message') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -112,7 +112,7 @@ var ComponentsCallback = {
 };
 
 /**
- * Initiates Components gadgets/plugins
+ * Initiates gadgets/plugins
  */
 function init()
 {
@@ -126,7 +126,7 @@ function init()
 }
 
 /**
- * Builds the gadgets/plugins listbox
+ * Builds gadgets/plugins listbox
  */
 function buildComponentList()
 {
@@ -136,16 +136,16 @@ function buildComponentList()
     sections.installed = $('installed').set('html', '');
     sections.core = $('core').set('html', '');
     Object.keys(components).sort().each(function(name) {
-        sections[components[name].state].grab(getComponentItem(components[name]));
+        sections[components[name].state].grab(getComponentElement(components[name]));
     });
     $('components').getElements('h3').show();
     $('components').getElements('ul:empty').getPrevious('h3').hide();
 }
 
 /**
- * Builds and returns a gadget/plugin item
+ * Builds and returns a gadget/plugin element
  */
-function getComponentItem(comp)
+function getComponentElement(comp)
 {
     var li = new Element('li', {id:comp.realname}),
         span = new Element('span').set('html', comp.name),
@@ -209,8 +209,7 @@ function updateSummary()
     });
     $('sum_installed').innerHTML = count.installed;
     $('sum_notinstalled').innerHTML = count.notinstalled;
-    
-    
+
     $('sum_total').innerHTML = count.total;
     if (!pluginsMode) {
         $('sum_disabled').innerHTML = count.disabled;
@@ -226,6 +225,63 @@ function toggleSection()
 {
     this.toggleClass('collapsed');
     this.getNext('ul').toggle();
+}
+
+/**
+ * Shows/hides tabs upon selected component
+ */
+function showHideTabs()
+{
+    var comp = components[selectedComponent];
+    $('tabs').getElements('li').hide();
+    $('tab_info').show();
+    if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
+        if (comp.manage_reg) {
+            $('tab_registry').show();
+        }
+        if (comp.manage_acl) {
+            $('tab_acl').show();
+        }
+        if (pluginsMode) {
+            $('tab_usage').show();
+        }
+    }
+}
+
+/**
+ * Shows/hides buttons depending on the current tab and selected component
+ */
+function showHideButtons()
+{
+    var comp = components[selectedComponent];
+    $('component_info').getElements('button').hide();
+    if (pluginsMode) {
+        switch(comp.state) {
+        case 'notinstalled':
+            $('btn_install').show('inline');
+            break;
+        case 'installed':
+            $('btn_uninstall').show('inline');
+            break;
+        }
+    } else {
+        switch(comp.state) {
+        case 'outdated':
+            $('btn_update').show('inline');
+            break;
+        case 'notinstalled':
+            $('btn_install').show('inline');
+            break;
+        case 'installed':
+            $('btn_uninstall').show('inline');
+            if (comp.disabled) {
+                $('btn_enable').show('inline');
+            } else {
+                $('btn_disable').show('inline');
+            }
+            break;
+        }
+    }
 }
 
 /**
@@ -255,7 +311,7 @@ function switchTab(tab)
 }
 
 /**
- * Highlights clicked item in the component list
+ * Highlights clicked item in the components list
  */
 function selectComponent()
 {
@@ -282,7 +338,7 @@ function selectComponent()
 }
 
 /**
- * Deselects component in the list and hides it's UI
+ * Closes component UI and clears selection in the list
  */
 function closeUI()
 {
@@ -319,7 +375,7 @@ function componentRegistry(reset)
     if (!regCache) {
         var table = new Element('table'),
             res = ComponentsAjax.callSync('getregistry', selectedComponent),
-            div = new Element('div').set('html', res.tpl);
+            div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         res.data.each(function(reg) {
             var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
@@ -350,7 +406,7 @@ function componentACL(reset)
     if (!aclCache) {
         var table = new Element('table'),
             res = ComponentsAjax.callSync('getacl', selectedComponent),
-            div = new Element('div').set('html', res.tpl);
+            div = new Element('div').set('html', res.ui);
         aclCache = div.getElement('div');
         $('component_form').grab(div.getElement('div'));
         res.acls.each(function(acl) {
@@ -431,60 +487,34 @@ function disableGadget()
 }
 
 /**
- * Shows/hides tabs upon selected component
+ * Stores changed Registry/ACL value
  */
-function showHideTabs()
+function onValueChange(el)
 {
-    var comp = components[selectedComponent];
-    $('tabs').getElements('li').hide();
-    $('tab_info').show();
-    if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
-        if (comp.manage_reg) {
-            $('tab_registry').show();
-        }
-        if (comp.manage_acl) {
-            $('tab_acl').show();
-        }
-        if (pluginsMode) {
-            $('tab_usage').show();
-        }
+    switch ($('tabs').getElement('li.active').get('id')) {
+        case 'tab_registry':
+            regChanges[el.id] = el.value;
+            break;
+        case 'tab_acl':
+            aclChanges[el.id] = el.checked;
+            break;
     }
 }
 
 /**
- * Shows/hides buttons depending on the current tab and selected component
+ * Updates gadget registry with changed values
  */
-function showHideButtons()
+function saveRegistry()
 {
-    var comp = components[selectedComponent];
-    $('component_info').getElements('button').hide();
-    if (pluginsMode) {
-        switch(comp.state) {
-        case 'notinstalled':
-            $('btn_install').show('inline');
-            break;
-        case 'installed':
-            $('btn_uninstall').show('inline');
-            break;
-        }
-    } else {
-        switch(comp.state) {
-        case 'outdated':
-            $('btn_update').show('inline');
-            break;
-        case 'notinstalled':
-            $('btn_install').show('inline');
-            break;
-        case 'installed':
-            $('btn_uninstall').show('inline');
-            if (comp.disabled) {
-                $('btn_enable').show('inline');
-            } else {
-                $('btn_disable').show('inline');
-            }
-            break;
-        }
-    }
+    ComponentsAjax.callAsync('updateregistry', selectedComponent, regChanges);
+}
+
+/**
+ * Updates gadget ACLs with changed values
+ */
+function saveACL()
+{
+    ComponentsAjax.callAsync('updateacl', selectedComponent, aclChanges);
 }
 
 /**
@@ -527,21 +557,6 @@ function pluginUsage(reset)
 }
 
 /**
- * Checks/unchecks all gadgets
- */
-function usageCheckAll(el)
-{
-    switch (el.id) {
-        case 'all_backend':
-            $('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
-            break;
-        case 'all_frontend':
-            $('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
-            break;
-    }
-}
-
-/**
  * Saves the plugin usage
  */
 function savePluginUsage()
@@ -555,34 +570,18 @@ function savePluginUsage()
 }
 
 /**
- * Stores changed Registry/ACL value
+ * Checks/unchecks all gadgets
  */
-function onValueChange(el)
+function usageCheckAll(el)
 {
-    switch ($('tabs').getElement('li.active').get('id')) {
-        case 'tab_registry':
-            regChanges[el.id] = el.value;
+    switch (el.id) {
+        case 'all_backend':
+            $('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
             break;
-        case 'tab_acl':
-            aclChanges[el.id] = el.checked;
+        case 'all_frontend':
+            $('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
             break;
     }
-}
-
-/**
- * Updates gadget registry with changed values
- */
-function saveRegistry()
-{
-    ComponentsAjax.callAsync('updateregistry', selectedComponent, regChanges);
-}
-
-/**
- * Updates gadget ACLs with changed values
- */
-function saveACL()
-{
-    ComponentsAjax.callAsync('updateacl', selectedComponent, aclChanges);
 }
 
 /**

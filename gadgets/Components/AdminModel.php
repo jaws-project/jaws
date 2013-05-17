@@ -1,9 +1,9 @@
 <?php
 /**
- * COMPONENTS (Jaws Management System) Gadget
+ * Components (Jaws Management System) Gadget
  *
  * @category   GadgetModel
- * @package    COMPONENTS
+ * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi Þormar <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
@@ -13,15 +13,15 @@
 class Components_AdminModel extends Jaws_Gadget_Model
 {
     /**
-     * Get a list of gadgets, installed or non installed, core or not core, has layout or not,...
+     * Fetches list of gadgets, installed/not installed, core/none core, has layout/has not, ...
      *
      * @access  public
-     * @param   bool    $core_gadget accept true/false/null value
-     * @param   bool    $installed   accept true/false/null value
-     * @param   bool    $updated     accept true/false/null value
-     * @param   bool    $has_layout  accept true/false/null value
-     * @param   bool    $has_html    accept true/false/null value
-     * @return  array   A list of gadgets
+     * @param   bool    $core_gadget accepts true/false/null
+     * @param   bool    $installed   accepts true/false/null
+     * @param   bool    $updated     accepts true/false/null
+     * @param   bool    $has_layout  accepts true/false/null
+     * @param   bool    $has_html    accepts true/false/null
+     * @return  array   List of gadgets
      */
     function GetGadgetsList($core_gadget = null, $installed = null, $updated = null,
                             $has_layout = null, $has_html = null)
@@ -111,11 +111,11 @@ class Components_AdminModel extends Jaws_Gadget_Model
     }
 
     /**
-     * Get a list of plugins, installed or non installed
+     * Fetches list of plugins, installed or not installed
      *
      * @access  public
-     * @param   bool    $installed   accept true/false/null value
-     * @return  array   A list of plugins
+     * @param   bool    $installed  accepts true/false/null
+     * @return  array   List of plugins
      */
     function GetPluginsList($installed = null)
     {
@@ -160,11 +160,11 @@ class Components_AdminModel extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets information of the plugin
+     * Fetches plugin information
      *
      * @access  public
-     * @param   string  $plugin Plugin
-     * @return  mixed   Plugin information or Jaws_Error on error
+     * @param   string  $plugin  Plugin name
+     * @return  mixed   Array of plugin information or Jaws_Error on error
      */
     function GetPluginInfo($plugin)
     {

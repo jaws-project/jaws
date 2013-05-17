@@ -1,9 +1,9 @@
 <?php
 /**
- * COMPONENTS (Jaws Management System) Gadget
+ * Components (Jaws Management System) Gadget
  *
  * @category   GadgetInfo
- * @package    COMPONENTS
+ * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi þormar <dufuz@php.net>
  * @copyright  2004-2013 Jaws Development Group
@@ -45,5 +45,4 @@ class Components_Info extends Jaws_Gadget
         'ManageRegistry',
         'ManageACLs'
     );
-
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * COMPONENTS (Jaws Management System) Gadget Admin
+ * Components (Jaws Management System) Gadget Admin
  *
  * @category   GadgetAdmin
- * @package    COMPONENTS
+ * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi Þormar <dufuz@php.net>
  * @copyright  2004-2013 Jaws Development Group
@@ -12,10 +12,10 @@
 class Components_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Main method
+     * Default admin action
      *
      * @access  public
-     * @return  string  XHTML content of main
+     * @return  string  XHTML UI
      */
     function Admin()
     {
@@ -28,11 +28,11 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Prepares the menubar
+     * Builds the menubar
      *
      * @access  public
      * @param   string  $action  Selected action
-     * @return  string  XHTML template content of menubar
+     * @return  string  XHTML UI
      */
     function Menubar($action)
     {
@@ -59,7 +59,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds gadgets management UI
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  string  XHTML UI
      */
     function Gadgets()
     {
@@ -102,7 +102,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds gadgets summary UI
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  string  XHTML UI
      */
     function GadgetsSummary()
     {
@@ -123,7 +123,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Installs requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  void
      */
     function InstallGadget($gadget = '')
@@ -158,7 +158,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Upgrades requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  void
      */
     function UpgradeGadget($gadget = '')
@@ -193,7 +193,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Uninstalls requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  void
      */
     function UninstallGadget($gadget = '')
@@ -228,7 +228,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Enables requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  void
      */
     function EnableGadget($gadget = '')
@@ -263,7 +263,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Disables requested gadget
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget  Gadget name
      * @return  void
      */
     function DisableGadget($gadget = '')
@@ -295,7 +295,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Prepares the information view of a certain gadget
+     * Builds UI for the gadget information
      *
      * @access  public
      * @param   string   $gadget  Gadget's name
@@ -379,10 +379,10 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Prepares the HTML for managing plugins
+     * Builds plugins management UI
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  string  XHTML UI
      */
     function Plugins()
     {
@@ -419,7 +419,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds plugins summary UI
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  string  XHTML UI
      */
     function PluginsSummary()
     {
@@ -434,11 +434,11 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     }
 
     /**
-     * Prepares the information view of a certain plugin
+     * Builds UI for the plugin information
      *
      * @access  public
      * @param   string   $plugin  Plugin's name
-     * @return  string   XHTML template of the view
+     * @return  string   XHTML UI
      */
     function GetPluginInfo($plugin)
     {
@@ -480,7 +480,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds registry UI
      *
      * @access  public
-     * @return  string   XHTML UI
+     * @return  string  XHTML UI
      */
     function GetRegistryUI()
     {
@@ -503,7 +503,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds ACL UI
      *
      * @access  public
-     * @return  string   XHTML UI
+     * @return  string  XHTML UI
      */
     function GetACLUI()
     {
@@ -526,7 +526,7 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
      * Builds plugin usage UI
      *
      * @access  public
-     * @return  string   XHTML UI
+     * @return  string  XHTML UI
      */
     function GetPluginUsageUI()
     {
@@ -559,5 +559,4 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('usage');
         return $tpl->Get();
     }
-
 }
