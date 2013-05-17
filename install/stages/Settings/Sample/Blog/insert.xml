@@ -21,12 +21,12 @@
 
                 <field>
                     <name>title</name>
-                    <value>Welcome</value>
+                    <value><variable>blog_content1_title</variable></value>
                 </field>
 
                 <field>
                     <name>summary</name>
-                    <value>Hi to All.&#10;Welcome to Jaws CMS</value>
+                    <value><variable>blog_content1_summary</variable></value>
                 </field>
 
                 <field>

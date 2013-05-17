@@ -171,6 +171,13 @@ class Installer_Settings extends JawsInstallerStage
         $schema_variables['folder-path'] = gmdate('Y_m_d');
         $schema_variables['siteurl'] = Jaws_Utils::getBaseURL('/', false);
 
+        $schema_variables['blog_content1_title'] = _t('INSTALL_SAMPLE_BLOG_CONTENT1_TITLE');
+        $schema_variables['blog_content1_summary'] = _t('INSTALL_SAMPLE_BLOG_CONTENT1_SUMMARY');
+
+        $schema_variables['linkdump_title1'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE1');
+        $schema_variables['linkdump_title2'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE2');
+        $schema_variables['linkdump_title3'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE3');
+
 
         // Install gadgets
         foreach ($gadgets as $gadget) {

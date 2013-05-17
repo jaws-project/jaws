@@ -18,7 +18,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Jaws Support Forum</value>
+                    <value><variable>linkdump_title1</variable></value>
                 </field>
 
                 <field>
@@ -72,7 +72,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Jaws Persian Support</value>
+                    <value><variable>linkdump_title2</variable></value>
                 </field>
 
                 <field>
@@ -126,7 +126,7 @@
 
                 <field>
                     <name>title</name>
-                    <value>Jaws Github</value>
+                    <value><variable>linkdump_title3</variable></value>
                 </field>
 
                 <field>
