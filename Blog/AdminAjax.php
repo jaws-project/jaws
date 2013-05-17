@@ -179,16 +179,15 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $limit   Data limit
-     * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved, waiting, spam)
      * @return  array   Data array
      */
-    function SearchComments($limit, $filter, $search, $status)
+    function SearchComments($limit, $search, $status)
     {
         $this->gadget->CheckPermission('ManageComments');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Comments');
-        return $gadget->CommentsData($limit, $filter, $search, $status);
+        return $gadget->CommentsData($limit, $search, $status);
     }
 
     /**

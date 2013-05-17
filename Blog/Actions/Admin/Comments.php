@@ -29,19 +29,17 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
      *
      * @access  public
      * @param   int     $limit      Limit of comments
-     * @param   string  $filter     Filter
      * @param   string  $search     Search word
      * @param   string  $status     Spam status (approved, waiting, spam)
      * @return  array   Filtered Comments
      */
-    function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
+    function CommentsData($limit = 0, $search = '', $status = '')
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
             $this->gadget->name,
             BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}',
             BASE_SCRIPT . '?gadget=Blog&amp;action=ReplyComment&amp;id={id}',
-            $filter,
             $search,
             $status,
             $limit

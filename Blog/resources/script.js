@@ -19,9 +19,7 @@ var BlogCallback = {
             $('comments_datagrid').deleteItem();
             var limit = $('comments_datagrid').getCurrentPage();
             var formData = getDataOfLCForm();
-            updateCommentsDatagrid(limit, formData['filter'],
-                                   formData['search'], formData['status'],
-                                   true);
+            updateCommentsDatagrid(limit, formData['search'], formData['status'], true);
         }
     },
 
@@ -36,9 +34,7 @@ var BlogCallback = {
             PiwiGrid.multiSelect($('comments_datagrid'));
             var limit = $('comments_datagrid').getCurrentPage();
             var formData = getDataOfLCForm();
-            updateCommentsDatagrid(limit, formData['filter'],
-                                   formData['search'], formData['status'],
-                                   true);
+            updateCommentsDatagrid(limit, formData['search'], formData['status'], true);
         } else {
             PiwiGrid.multiSelect($('comments_datagrid'));
         }
@@ -103,7 +99,6 @@ var BlogCallback = {
             resetLCForm();
             var formData = getDataOfLCForm();
             updateCommentsDatagrid(0,
-                                   formData['filter'],
                                    formData['search'],
                                    formData['status'],
                                    true);
@@ -294,7 +289,7 @@ function searchPost()
 function searchComment()
 {
     var formData = getDataOfLCForm();
-    updateCommentsDatagrid(0, formData['filter'], formData['search'], formData['status'], true);
+    updateCommentsDatagrid(0, formData['search'], formData['status'], true);
     return false;
 }
 
@@ -343,9 +338,7 @@ function getData(limit)
             limit = $('comments_datagrid').getCurrentPage();
         }
         var formData = getDataOfLCForm();
-        updateCommentsDatagrid(limit, formData['filter'],
-                               formData['search'], formData['status'],
-                               false);
+        updateCommentsDatagrid(limit, formData['search'], formData['status'], false);
         break;
     case 'ManageTrackbacks':
         if (limit == undefined) {
@@ -458,9 +451,9 @@ function lastValues()
 /**
  * Update comments datagrid
  */
-function updateCommentsDatagrid(limit, filter, search, status, resetCounter)
+function updateCommentsDatagrid(limit, search, status, resetCounter)
 {
-    result = BlogAjax.callSync('searchcomments', limit, filter, search, status);
+    result = BlogAjax.callSync('searchcomments', limit, search, status);
     resetGrid('comments_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('sizeofcommentssearch', filter, search, status);
