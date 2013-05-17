@@ -211,7 +211,7 @@ class Installer_Settings extends JawsInstallerStage
 
             $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
             if (Jaws_Error::IsError($res)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem while insert gadget $gadget schema : ");
+                _log(JAWS_LOG_DEBUG,"There was a problem while insert $gadget gadget schema : ");
                 _log(JAWS_LOG_DEBUG,$res->GetMessage());
             } else {
                 _log(JAWS_LOG_DEBUG,"$gadget gadget schema file inserted.");
@@ -223,7 +223,10 @@ class Installer_Settings extends JawsInstallerStage
         $base_file = JAWS_PATH . 'gadgets/Layout/schema/schema.xml';
         $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
         if (Jaws_Error::IsError($res)) {
-            $error[] = $res->getMessage();
+            _log(JAWS_LOG_DEBUG,"There was a problem while insert layout gadget schema : ");
+            _log(JAWS_LOG_DEBUG,$res->GetMessage());
+        } else {
+            _log(JAWS_LOG_DEBUG,"Layout gadget schema file inserted.");
         }
 
         // Copy gadget's files
