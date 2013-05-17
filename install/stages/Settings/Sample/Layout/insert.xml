@@ -18,7 +18,7 @@
 
                 <field>
                     <name>section</name>
-                    <value>bar2</value>
+                    <value>header</value>
                 </field>
 
                 <field>
@@ -146,7 +146,7 @@
 
                 <field>
                     <name>layout_position</name>
-                    <value>2</value>
+                    <value>1</value>
                 </field>
 
                 <field>
