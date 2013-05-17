@@ -29,8 +29,7 @@ class Installer_Settings extends JawsInstallerStage
         $this->_Fields = array(
             'site_name'        => 'Jaws ' . JAWS_VERSION,
             'site_slogan'      => JAWS_VERSION_CODENAME,
-            'site_language'    => $_SESSION['install']['language'],
-            'default_gadget'   => ''
+            'site_language'    => $_SESSION['install']['language']
         );
 
         if (!isset($GLOBALS['app'])) {
@@ -82,19 +81,6 @@ class Installer_Settings extends JawsInstallerStage
         }
         $lang->SetDefault($values['site_language']);
 
-        // Build the gadgets select.
-        include_once JAWS_PATH . 'include/Jaws/Gadget.php';
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-
-        $gdt =& Piwi::CreateWidget('Combo', 'default_gadget');
-        $gdt->SetID('default_gadget');
-        $gdt->AddOption(_t('GLOBAL_NOGADGET'), '');
-        $gadgets = $model->GetGadgetsList(null, null, null, null, true);
-        foreach ($gadgets as $gadget => $tg) {
-            $gdt->AddOption($tg['realname'], $gadget);
-        }
-        $gdt->SetDefault($values['default_gadget']);
-
         $tpl = new Jaws_Template();
         $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
@@ -104,8 +90,6 @@ class Installer_Settings extends JawsInstallerStage
         $tpl->setVariable('site_name_info',      _t('INSTALL_SETTINGS_SITE_NAME_INFO'));
         $tpl->setVariable('lbl_site_slogan',     _t('INSTALL_SETTINGS_SLOGAN'));
         $tpl->setVariable('site_slogan_info',    _t('INSTALL_SETTINGS_SLOGAN_INFO'));
-        $tpl->setVariable('lbl_default_gadget',  _t('INSTALL_SETTINGS_DEFAULT_GADGET'));
-        $tpl->setVariable('default_gadget_info', _t('INSTALL_SETTINGS_DEFAULT_GADGET_INFO'));
         $tpl->setVariable('lbl_site_language',   _t('INSTALL_SETTINGS_SITE_LANGUAGE'));
         $tpl->setVariable('site_language_info',  _t('INSTALL_SETTINGS_SITE_LANGUAGE_INFO'));
         $tpl->SetVariable('next',                _t('GLOBAL_NEXT'));
@@ -113,7 +97,6 @@ class Installer_Settings extends JawsInstallerStage
         $tpl->SetVariable('site_name',      $values['site_name']);
         $tpl->SetVariable('site_slogan',    $values['site_slogan']);
         $tpl->SetVariable('site_language',  $lang->Get());
-        $tpl->SetVariable('default_gadget', $gdt->Get());
 
         $tpl->ParseBlock('Settings');
         return $tpl->Get();
@@ -164,27 +147,12 @@ class Installer_Settings extends JawsInstallerStage
         $settings['site_name']      = $post['site_name'];
         $settings['site_slogan']    = $post['site_slogan'];
         $settings['site_author']    = $_SESSION['install']['CreateUser']['nickname'];
-        $settings['main_gadget']    = $post['default_gadget'];
         $settings['copyright']      = date('Y'). ', '. $post['site_name'];
         $settings['site_language']  = $post['site_language'];
         $settings['admin_language'] = $post['site_language'];
         $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
             $GLOBALS['app']->Registry->update($key, $value, 'Settings');
-        }
-
-        require_once JAWS_PATH . 'include/Jaws/URLMapping.php';
-        $GLOBALS['app']->Map = new Jaws_URLMapping();
-
-        if (!empty($post['default_gadget'])) {
-            $result = Jaws_Gadget::EnableGadget($post['default_gadget']);
-            _log(JAWS_LOG_DEBUG,"Enabling ".$post['default_gadget']." gadget");
-            if (Jaws_Error::IsError($result)) {
-                _log(JAWS_LOG_DEBUG,$result->getMessage());
-                return $result;
-            }
-            _log(JAWS_LOG_DEBUG,$post['default_gadget']." has been enabled");
-
         }
 
         return true;
