@@ -164,7 +164,6 @@ class Installer_Settings extends JawsInstallerStage
      */
     function InstallSampleSite() {
         $gadgets = array('Phoo', 'Blog', 'Menu', 'Contact', 'LinkDump', 'Emblems');
-        $error = array();
 
         $schema_variables = array();
         $schema_variables['timestamp'] = $GLOBALS['db']->Date();
@@ -193,7 +192,10 @@ class Installer_Settings extends JawsInstallerStage
                 $installer = $objGadget->load('Installer');
                 $res = $installer->InstallGadget();
                 if (Jaws_Error::IsError($res)) {
-                    $error[] = $res->getMessage();
+                    _log(JAWS_LOG_DEBUG,"There was a problem while installing gadget $gadget: ");
+                    _log(JAWS_LOG_DEBUG,$res->GetMessage());
+                } else {
+                    _log(JAWS_LOG_DEBUG,"$gadget gadget installed.");
                 }
             }
         }
@@ -209,7 +211,10 @@ class Installer_Settings extends JawsInstallerStage
 
             $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
             if (Jaws_Error::IsError($res)) {
-                $error[] = $res->getMessage();
+                _log(JAWS_LOG_DEBUG,"There was a problem while insert gadget $gadget schema : ");
+                _log(JAWS_LOG_DEBUG,$res->GetMessage());
+            } else {
+                _log(JAWS_LOG_DEBUG,"$gadget gadget schema file inserted.");
             }
         }
 
@@ -235,11 +240,13 @@ class Installer_Settings extends JawsInstallerStage
                 $res = Jaws_Utils::copy($source_path, $destination_path);
 
                 if (Jaws_Error::IsError($res)) {
-                    $error[] = $res->getMessage();
+                    _log(JAWS_LOG_DEBUG,"There was a problem while copying gadget $gadget files : ");
+                    _log(JAWS_LOG_DEBUG,$res->GetMessage());
+                } else {
+                    _log(JAWS_LOG_DEBUG,"$gadget gadget files was copied.");
                 }
             }
         }
 
-        return $error;
     }
 }
