@@ -21,7 +21,6 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function Comments_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -66,10 +65,12 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetComment($id)
     {
-        $comment = $this->_Model->GetComment($id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $comment = $cModel->GetComment($id);
         if (Jaws_Error::IsError($comment)) {
             return false; //we need to handle errors on ajax
         }
+
         return $comment;
     }
 
@@ -90,7 +91,14 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         // TODO: Check Permission For Manage Comments
         // TODO: Fill permalink In New Versions, Please!!
-        $this->_Model->UpdateComment($gadget, $id, $name, $email, $url, $message, '', $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, '', $status);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -107,7 +115,14 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         // TODO: Check Permission For Manage Comments
         // TODO: Fill permalink In New Versions, Please!!
-        $this->_Model->ReplyComment($gadget, $id, $reply);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $res = $cModel->replyComment($gadget, $id, $reply);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -121,7 +136,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function DeleteComments($ids)
     {
         // TODO: check permission before delete comments
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Delete');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
         $res = $cModel->MassiveCommentDelete($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -144,7 +159,14 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function MarkAs($gadget, $ids, $status)
     {
         // TODO: Check Permission For Manage Comments
-        $this->_Model->MarkAs($gadget, $ids, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
+        $res = $cModel->MarkAs($gadget, $ids, $status);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_MARKED'), RESPONSE_NOTICE);
+        }
+
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
