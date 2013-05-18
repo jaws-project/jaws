@@ -1,13 +1,4 @@
 <?php
-/* Filter modes */
-define('COMMENT_FILTERBY_REFERENCE', 'reference');
-define('COMMENT_FILTERBY_NAME',      'name');
-define('COMMENT_FILTERBY_EMAIL',     'email');
-define('COMMENT_FILTERBY_URL',       'url');
-define('COMMENT_FILTERBY_IP',        'ip');
-define('COMMENT_FILTERBY_MESSAGE',   'message');
-define('COMMENT_FILTERBY_STATUS',    'status');
-define('COMMENT_FILTERBY_VARIOUS',   'various');
 define('COMMENT_STATUS_APPROVED',    1);
 define('COMMENT_STATUS_WAITING',     2);
 define('COMMENT_STATUS_SPAM',        3);

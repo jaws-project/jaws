@@ -103,22 +103,8 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
-        // filter by
-        $request =& Jaws_Request::getInstance();
-        $filterByData = $request->get('filterby', 'get');
-        $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
-        $filterBy->AddOption('&nbsp;','various');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_POST_ID_IS'), 'postid');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_COMMENT_CONTAINS'), 'comment');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_NAME_CONTAINS'), 'name');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_EMAIL_CONTAINS'), 'email');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_URL_CONTAINS'), 'url');
-        $filterBy->AddOption(_t('COMMENTS_SEARCH_IP_IS'), 'ip');
-        $filterBy->SetDefault(is_null($filterByData)? '' : $filterByData);
-        $tpl->SetVariable('lbl_filter_by', _t('COMMENTS_FILTER_BY'));
-        $tpl->SetVariable('filter_by', $filterBy->Get());
-
         // filter
+        $request =& Jaws_Request::getInstance();
         $filterData = $request->get('filter', 'get');
         $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
         $filterEntry->setSize(20);
