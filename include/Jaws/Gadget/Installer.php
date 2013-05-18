@@ -91,7 +91,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed   True if success or Jaws_Error on error
      */
-    function InstallGadget()
+    function InstallGadget($insert = '', $variables = array())
     {
         if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return true;
@@ -112,7 +112,7 @@ class Jaws_Gadget_Installer
             }
         }
 
-        $result = $installer->Install();
+        $result = $installer->Install($insert, $variables);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
