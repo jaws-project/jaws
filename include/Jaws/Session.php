@@ -908,7 +908,7 @@ class Jaws_Session
      */
     function PushSimpleResponse($data, $resource = 'SimpleResponse')
     {
-        $this->PushResponse($data, $resource);
+        $this->SetAttribute($resource, $data);
     }
 
     /**
