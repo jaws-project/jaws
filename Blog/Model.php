@@ -282,7 +282,7 @@ class Blog_Model extends Jaws_Gadget_Model
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+            $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
             // total comments
             $summary['CommentsQty'] = $cModel->TotalOfComments($this->gadget->name);
             // recent comments
@@ -583,7 +583,7 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetComments($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $comments = $cModel->GetComments($this->gadget->name, 0, $id, 'entry', array(1), true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
@@ -624,7 +624,7 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetCommentsFiltered($filterby, $filter, $status, $limit)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $filterMode = '';
         switch($filterby) {
         case 'postid':
@@ -684,7 +684,7 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetComment($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));
@@ -2238,9 +2238,9 @@ class Blog_Model extends Jaws_Gadget_Model
         $ip    = $_SERVER['REMOTE_ADDR'];
 
         $status = $this->gadget->registry->fetch('comment_status');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $res = $cModel->NewComment(
-            $this->gadget->name, $postID, 'pingback', $name, $email, $sourceURI,
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $res = $cModel->insertComment(
+            $this->gadget->name, $postID, 'Pingback', $name, $email, $sourceURI,
             $content, $ip, $permalink, $status
         );
     }

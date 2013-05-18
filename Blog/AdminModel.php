@@ -684,7 +684,7 @@ class Blog_AdminModel extends Blog_Model
         $params['permalink'] = $permalink;
         $params['status']    = $status;
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->UpdateComment(
             $this->gadget->name, $params['id'], $params['name'],
             $params['email'], $params['url'], $params['comments'], $params['permalink'], $params['status']
@@ -708,7 +708,7 @@ class Blog_AdminModel extends Blog_Model
      */
     function ReplyComment($id, $reply)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->ReplyComment($this->gadget->name, $id, $reply);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_REPLIED'), RESPONSE_ERROR);
@@ -734,7 +734,7 @@ class Blog_AdminModel extends Blog_Model
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
         $res = $cModel->DeleteComment($this->gadget->name, $id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
@@ -773,7 +773,7 @@ class Blog_AdminModel extends Blog_Model
      */
     function DeleteCommentsIn($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
         return $cModel->DeleteCommentsByReference($this->gadget->name, $id);
     }
 
@@ -791,7 +791,7 @@ class Blog_AdminModel extends Blog_Model
             return true;
         }
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
         $cModel->MarkAs($this->gadget->name, $ids, $status);
         foreach ($ids as $id) {
             $comment = $cModel->GetComment($id, $this->gadget->name);

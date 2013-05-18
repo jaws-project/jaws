@@ -218,7 +218,7 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
      */
     function SizeOfCommentsSearch($filter, $search, $status)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $filterMode = null;
         switch($filter) {
             case 'postid':

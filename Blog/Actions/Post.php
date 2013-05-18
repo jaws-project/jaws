@@ -99,8 +99,7 @@ class Blog_Actions_Post extends Blog_HTML
                                   $allow_comments_config;
 
                 $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
-
-                $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'entry', $entry['id'],
+                $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'Post', $entry['id'],
                     array('action' => 'SingleView',
                           'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));
 
