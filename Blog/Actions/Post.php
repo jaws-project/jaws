@@ -111,7 +111,7 @@ class Blog_Actions_Post extends Blog_HTML
 
                     $redirect_to = $this->gadget->GetURLFor('SingleView', array('id' =>
                                           empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']));
-                    $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'entry', $entry['id'], $redirect_to));
+                    $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'Post', $entry['id'], $redirect_to));
 
                 } elseif ($restricted) {
                     $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
