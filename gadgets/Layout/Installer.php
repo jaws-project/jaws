@@ -13,10 +13,12 @@ class Layout_Installer extends Jaws_Gadget_Installer
     /**
      * Installs the gadget
      *
-     * @access       public
-     * @return       true on successful installation, Jaws_Error otherwise
+     * @access  public
+     * @param   string  $input_schema       Schema file path
+     * @param   array   $input_variables    Schema variables
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Install()
+    function Install($input_schema = '', $input_variables = array())
     {
         $result = $this->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
@@ -29,6 +31,13 @@ class Layout_Installer extends Jaws_Gadget_Installer
         if (!Jaws_Error::IsError($result) && empty($result)) {
             $layoutModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', '', '', 1);
             $layoutModel->NewElement('bar1', 'Users', 'LoginBox', '', 'Login', 1);
+        }
+
+        if (!empty($input_schema)) {
+            $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // Add listener for remove/publish layout elements related to given gadget
