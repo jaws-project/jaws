@@ -11,12 +11,14 @@
 class Blog_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Install Blog gadget in Jaws
+     * Install the gadget
      *
      * @access  public
-     * @return  mixed   True on successful installation, Jaws_Error otherwise
+     * @param   string  $input_schema       Schema file path
+     * @param   array   $input_variables    Schema variables
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Install()
+    function Install($input_schema = '', $input_variables = array())
     {
         if (!Jaws_Utils::is_writable(JAWS_DATA)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
@@ -38,6 +40,13 @@ class Blog_Installer extends Jaws_Gadget_Installer
         $result = $this->installSchema('insert.xml', $variables, 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
+        }
+
+        if (!empty($input_schema)) {
+            $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // Registry keys
