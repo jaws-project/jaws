@@ -87,43 +87,6 @@ class Comments_AdminModel extends Comments_Model
     }
 
     /**
-     * Deletes a comment
-     *
-     * @param   string  $gadget Gadget's name
-     * @param   int     $id     Comment's ID
-     * @return  bool    True if success or Jaws_Error on any error
-     * @access  public
-     */
-    function DeleteComment($gadget, $id)
-    {
-        $commentTable = Jaws_ORM::getInstance()->table('comments');
-        $res = $commentTable->delete()->where('id', $id)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
-        }
-
-        return true;
-    }
-
-    /**
-     * Deletes all comment from a given gadget reference
-     *
-     * @param   string  $gadget Gadget's name
-     * @param   int     $id     Gadget id reference
-     * @return  bool   True if success or Jaws_Error on any error
-     * @access  public
-     */
-    function DeleteCommentsByReference($gadget, $id)
-    {
-        $commentTable = Jaws_ORM::getInstance()->table('comments');
-        $res = $commentTable->delete()->where('reference', $id)->and()->where('gadget', $gadget)->exec();
-
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
-        }
-    }
-
-    /**
      * Mark as a different status several comments
      *
      * @access  public
@@ -163,23 +126,6 @@ class Comments_AdminModel extends Comments_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_MARKED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Deletes all comments of a certain gadget
-     *
-     * @access  public
-     * @param   string $gadget Gadget's name
-     * @return  mixed   True on success and Jaws_Error on failure
-     */
-    function DeleteGadgetComments($gadget)
-    {
-        $res = Jaws_ORM::getInstance()->table('comments')->delete()->where('gadget', $gadget)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_NOT_DELETED'), _t('COMMENTS_NAME'));
-        }
-
         return true;
     }
 
@@ -224,31 +170,6 @@ class Comments_AdminModel extends Comments_Model
         $commentsTable->orderBy('createtime desc');
         $rows = $commentsTable->getAll();
         return $rows;
-    }
-
-    /**
-     * Does a massive comment delete
-     *
-     * @access  public
-     * @param   array   $ids  Ids of comments
-     * @return  mixed   True on Success or Jaws_Error on Failure
-     */
-    function MassiveCommentDelete($ids)
-    {
-        if (!is_array($ids)) {
-            $ids = func_get_args();
-        }
-
-        foreach ($ids as $id) {
-            $res = $this->DeleteComment(null, $id);
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('GLOBAL_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
-            }
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_DELETED'), RESPONSE_NOTICE);
-        return true;
     }
 
 }
