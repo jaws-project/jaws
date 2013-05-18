@@ -11,12 +11,14 @@
 class LinkDump_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Installs the gadget
+     * Install the gadget
      *
      * @access  public
-     * @return  mixed   True on a successfull Install and Jaws_Error on errors
+     * @param   string  $input_schema       Schema file path
+     * @param   array   $input_variables    Schema variables
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Install()
+    function Install($input_schema = '', $input_variables = array())
     {
         $new_dir = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
@@ -31,6 +33,13 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
         $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
+        }
+
+        if (!empty($input_schema)) {
+            $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // Registry key
