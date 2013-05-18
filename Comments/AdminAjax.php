@@ -30,12 +30,11 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * @access  public
      * @param   int     $limit   Data limit
      * @param   string  $gadget
-     * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   int  $status  comment status (approved=1, waiting=2, spam=3)
      * @return  array   Data array
      */
-    function SearchComments($limit, $gadget, $filter, $search, $status)
+    function SearchComments($limit, $gadget, $search, $status)
     {
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
@@ -48,44 +47,13 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   string  $gadget
-     * @param   string  $filter  Filter
      * @param   string  $search  Search word
      * @param   string  $status  Spam status (approved=1, waiting=2, spam=3)
      * @return  int     Total of posts
      */
-    function SizeOfCommentsSearch($gadget, $filter, $search, $status)
+    function SizeOfCommentsSearch($gadget, $search, $status)
     {
-        $filterMode = null;
-        switch($filter) {
-            case 'postid':
-                $filterMode = COMMENT_FILTERBY_REFERENCE;
-                break;
-            case 'name':
-                $filterMode = COMMENT_FILTERBY_NAME;
-                break;
-            case 'email':
-                $filterMode = COMMENT_FILTERBY_EMAIL;
-                break;
-            case 'url':
-                $filterMode = COMMENT_FILTERBY_URL;
-                break;
-            case 'ip':
-                $filterMode = COMMENT_FILTERBY_IP;
-                break;
-            case 'comment':
-                $filterMode = COMMENT_FILTERBY_MESSAGE;
-                break;
-            case 'various':
-                $filterMode = COMMENT_FILTERBY_VARIOUS;
-                break;
-            case 'status':
-                $filterMode = COMMENT_FILTERBY_STATUS;
-                break;
-            default:
-                $filterMode = null;
-                break;
-        }
-        return $this->_Model->HowManyFilteredComments($gadget, $filterMode, $search, $status);
+        return $this->_Model->HowManyFilteredComments($gadget, $search, $status);
     }
 
     /**

@@ -59,7 +59,6 @@ function getCommentsDataGrid(name, offset, reset)
         'SearchComments',
         offset,
         $('gadgets_filter').value,
-        $('filterby').value,
         $('filter').value,
         $('status').value
     );
@@ -69,7 +68,6 @@ function getCommentsDataGrid(name, offset, reset)
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch',
             $('gadgets_filter').value,
-            $('filterby').value,
             $('filter').value,
             $('status').value
         );

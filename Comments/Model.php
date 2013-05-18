@@ -260,12 +260,11 @@ class Comments_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $gadget     Gadget's name
-     * @param   string  $filterMode Which mode should be used to filter
      * @param   string  $filterData Data that will be used in the filter
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @return  int     Returns how many comments exists with a given filter
      */
-    function HowManyFilteredComments($gadget, $filterMode, $filterData, $status)
+    function HowManyFilteredComments($gadget, $filterData, $status)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select('count(id) as howmany:integer');
@@ -279,33 +278,11 @@ class Comments_Model extends Jaws_Gadget_Model
         }
 
         if (!empty($filterData)) {
-            switch ($filterMode) {
-                case COMMENT_FILTERBY_REFERENCE:
-                    $commentsTable->and()->where('reference', $filterData);
-                    break;
-                case COMMENT_FILTERBY_NAME:
-                    $commentsTable->and()->where('name', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_EMAIL:
-                    $commentsTable->and()->where('email', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_URL:
-                    $commentsTable->and()->where('url', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_IP:
-                    $commentsTable->and()->where('ip', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_MESSAGE:
-                    $commentsTable->and()->where('msg_txt', '%'.$filterData.'%', 'like');
-                    break;
-                case COMMENT_FILTERBY_VARIOUS:
-                    $commentsTable->and()->openWhere('reference', $filterData);
-                    $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
-                    $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
-                    break;
-            }
+            $commentsTable->and()->openWhere('reference', $filterData);
+            $commentsTable->or()->where('name', '%'.$filterData.'%', 'like');
+            $commentsTable->or()->where('email', '%'.$filterData.'%', 'like');
+            $commentsTable->or()->where('url', '%'.$filterData.'%', 'like');
+            $commentsTable->or()->closeWhere('msg_txt', '%'.$filterData.'%', 'like');
         }
 
         $howmany = $commentsTable->getOne();
