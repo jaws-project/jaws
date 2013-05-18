@@ -163,93 +163,86 @@ class Installer_Settings extends JawsInstallerStage
      *                          containing the reason for failure.
      */
     function InstallSampleSite() {
-        $gadgets = array('Phoo', 'Blog', 'Menu', 'Contact', 'LinkDump', 'Emblems');
+        $gadgets = array('Blog', 'Phoo', 'LinkDump', 'Contact', 'Menu', 'Emblems');
 
-        $schema_variables = array();
-        $schema_variables['timestamp'] = $GLOBALS['db']->Date();
-        $schema_variables['folder-path'] = gmdate('Y_m_d');
-        $schema_variables['siteurl'] = Jaws_Utils::getBaseURL('/', false);
-
-        $schema_variables['blog_content1_title'] = _t('INSTALL_SAMPLE_BLOG_CONTENT1_TITLE');
-        $schema_variables['blog_content1_summary'] = _t('INSTALL_SAMPLE_BLOG_CONTENT1_SUMMARY');
-
-        $schema_variables['linkdump_title1'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE1');
-        $schema_variables['linkdump_title2'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE2');
-        $schema_variables['linkdump_title3'] = _t('INSTALL_SAMPLE_LINKDUMP_TITLE3');
-
-        $schema_variables['menu_title1'] = _t('INSTALL_SAMPLE_MENU_TITLE1');
-        $schema_variables['menu_title2'] = _t('INSTALL_SAMPLE_MENU_TITLE2');
-        $schema_variables['menu_title3'] = _t('INSTALL_SAMPLE_MENU_TITLE3');
-        $schema_variables['menu_title4'] = _t('INSTALL_SAMPLE_MENU_TITLE4');
-
+        $variables = array();
+        $variables['Blog'] = array (
+            'timestamp' => $GLOBALS['db']->Date(),
+            'blog_content1_title' => _t('INSTALL_SAMPLE_BLOG_CONTENT1_TITLE'),
+            'blog_content1_summary' => _t('INSTALL_SAMPLE_BLOG_CONTENT1_SUMMARY'),
+        );
+        $variables['Phoo'] = array (
+            'timestamp' => $GLOBALS['db']->Date(),
+            'folder-path' => gmdate('Y_m_d'),
+            'siteurl' => Jaws_Utils::getBaseURL('/', false),
+        );
+        $variables['LinkDump'] = array (
+            'timestamp' => $GLOBALS['db']->Date(),
+            'linkdump_title1' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE1'),
+            'linkdump_title2' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE2'),
+            'linkdump_title3' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE3'),
+        );
+        $variables['Contact'] = array ();
+        $variables['Menu'] = array (
+            'timestamp' => $GLOBALS['db']->Date(),
+            'menu_title1' => _t('INSTALL_SAMPLE_MENU_TITLE1'),
+            'menu_title2' => _t('INSTALL_SAMPLE_MENU_TITLE2'),
+            'menu_title3' => _t('INSTALL_SAMPLE_MENU_TITLE3'),
+            'menu_title4' => _t('INSTALL_SAMPLE_MENU_TITLE4'),
+        );
+        $variables['Emblems'] = array ();
 
         // Install gadgets
         foreach ($gadgets as $gadget) {
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             if (Jaws_Error::IsError($objGadget)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_FAILURE', $gadget), RESPONSE_ERROR);
+                _log(JAWS_LOG_DEBUG, "There was a problem while loading sample gadget: $gadget");
+                _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
             } else {
                 $installer = $objGadget->load('Installer');
-                $res = $installer->InstallGadget();
+                $input_schema = JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
+                if (!file_exists($input_schema)) {
+                    $input_schema = '';
+                }
+                $res = $installer->InstallGadget($input_schema, $variables[$gadget]);
                 if (Jaws_Error::IsError($res)) {
-                    _log(JAWS_LOG_DEBUG,"There was a problem while installing gadget $gadget: ");
-                    _log(JAWS_LOG_DEBUG,$res->GetMessage());
+                    _log(JAWS_LOG_DEBUG, "There was a problem while installing sample gadget $gadget");
+                    _log(JAWS_LOG_DEBUG, $res->getMessage());
                 } else {
-                    _log(JAWS_LOG_DEBUG,"$gadget gadget installed.");
+                    _log(JAWS_LOG_DEBUG, "Sample gadget $gadget installed successfully.");
                 }
             }
         }
 
-        // Insert DB schema
-        foreach ($gadgets as $gadget) {
-            $insert_file = JAWS_PATH . 'install/stages/Settings/Sample/' . $gadget . '/insert.xml';
-            $base_file = JAWS_PATH . 'gadgets/' . $gadget . '/schema/schema.xml';
-
-            if (!file_exists($insert_file) || !file_exists($base_file)) {
-                continue;
-            }
-
-            $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
-            if (Jaws_Error::IsError($res)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem while insert $gadget gadget schema : ");
-                _log(JAWS_LOG_DEBUG,$res->GetMessage());
-            } else {
-                _log(JAWS_LOG_DEBUG,"$gadget gadget schema file inserted.");
-            }
-        }
-
-        // Insert Layout Items
-        $insert_file = JAWS_PATH . 'install/stages/Settings/Sample/Layout/insert.xml';
-        $base_file = JAWS_PATH . 'gadgets/Layout/schema/schema.xml';
-        $res = $GLOBALS['db']->installSchema($insert_file, $schema_variables, $base_file, true, false, false);
-        if (Jaws_Error::IsError($res)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem while insert layout gadget schema : ");
-            _log(JAWS_LOG_DEBUG,$res->GetMessage());
+        // Inserts layout sample itemes
+        $objGadget = $GLOBALS['app']->LoadGadget('Layout', 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
+            _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
+            _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
         } else {
-            _log(JAWS_LOG_DEBUG,"Layout gadget schema file inserted.");
-        }
+            $base_schema  = JAWS_PATH. "gadgets/$gadget/schema/schema.xml";
+            $input_schema = JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
 
-        // Copy gadget's files
-        foreach ($gadgets as $gadget) {
-            $source_path = "";
-            $destination_path = "";
-
-            if ($gadget == 'Phoo') {
-                $source_path = JAWS_PATH . 'install/stages/Settings/Sample/' . $gadget . '/data/';
-                $destination_path = JAWS_DATA . 'phoo/' . $schema_variables['folder-path'] . '/';
-            }
-
-            if (!empty($source_path) && !empty($destination_path)) {
-                $res = Jaws_Utils::copy($source_path, $destination_path);
-
-                if (Jaws_Error::IsError($res)) {
-                    _log(JAWS_LOG_DEBUG,"There was a problem while copying gadget $gadget files : ");
-                    _log(JAWS_LOG_DEBUG,$res->GetMessage());
-                } else {
-                    _log(JAWS_LOG_DEBUG,"$gadget gadget files was copied.");
-                }
+            $installer = $objGadget->load('Installer');
+            $res = $installer->installSchema($input_schema, '', $base_schema, true);
+            if (Jaws_Error::IsError($res)) {
+                _log(JAWS_LOG_DEBUG, "There was a problem while inserting sample itemes into gadget $gadget");
+                _log(JAWS_LOG_DEBUG, $res->getMessage());
+            } else {
+                _log(JAWS_LOG_DEBUG,"Sample itemes inserted into gadget $gadget.");
             }
         }
 
+        // Copy Photo Organizer sample data
+        $source = JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
+        $destination = JAWS_DATA. 'phoo/'. $variables['Phoo']['folder-path']. '/';
+        if (Jaws_Utils::copy($source, $destination)) {
+            _log(JAWS_LOG_DEBUG, "Sample data of gadget Phoo copied successfully.");
+        } else {
+            _log(JAWS_LOG_DEBUG, "There was a problem while copying sample data of gadget Phoo");
+        }
+
+        return true;
     }
+
 }
