@@ -136,7 +136,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function DeleteComments($ids)
     {
         // TODO: check permission before delete comments
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'DeleteComments');
         $res = $cModel->MassiveCommentDelete($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -159,7 +159,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function MarkAs($gadget, $ids, $status)
     {
         // TODO: Check Permission For Manage Comments
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->MarkAs($gadget, $ids, $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
