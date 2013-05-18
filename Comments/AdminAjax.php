@@ -53,7 +53,8 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function SizeOfCommentsSearch($gadget, $search, $status)
     {
-        return $this->_Model->HowManyFilteredComments($gadget, $search, $status);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        return $cModel->GetCommentsCount($gadget, '', '', $search, $status);
     }
 
     /**

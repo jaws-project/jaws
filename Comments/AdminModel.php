@@ -129,47 +129,6 @@ class Comments_AdminModel extends Comments_Model
         return true;
     }
 
-    /**
-     * Gets a list of comments that match a certain filter.
-     *
-     * See Filter modes for more info
-     *
-     * @access  public
-     * @param   string  $gadget Gadget name
-     * @param   string  $action Which mode should be used to filter
-     * @param   string  $term   Data that will be used in the filter
-     * @param   int     $status Comment status (approved=1, waiting=2, spam=3)
-     * @param   mixed   $offset Offset of data
-     * @return  array   Returns an array with of filtered comments or Jaws_Error on error
-     */
-    function GetFilteredComments($gadget, $action, $term, $status, $offset)
-    {
-        $commentsTable = Jaws_ORM::getInstance()->table('comments');
-        $commentsTable->select(
-            'id', 'reference', 'gadget', 'name','email','url',
-            'ip', 'msg_txt', 'status', 'createtime'
-        );
 
-        if (!empty($gadget)) {
-            $commentsTable->where('gadget', $gadget);
-        }
-
-        if (in_array($status, array(1, 2, 3))) {
-            $commentsTable->and()->where('status', $status);
-        }
-
-        if (!empty($term)) {
-            $commentsTable->and()->openWhere('reference', $term);
-            $commentsTable->or()->where('name', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('email', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('url', '%'.$term.'%', 'like');
-            $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
-        }
-
-        $commentsTable->limit(10, $offset);
-        $commentsTable->orderBy('createtime desc');
-        $rows = $commentsTable->getAll();
-        return $rows;
-    }
 
 }

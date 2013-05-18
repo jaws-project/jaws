@@ -94,11 +94,11 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption('&nbsp;','various');
+        $status->AddOption('&nbsp;',0);
         $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
         $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
         $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
-        $status->SetDefault('various');
+        $status->SetDefault(0);
         $status->AddEvent(ON_CHANGE, 'searchComment();');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
@@ -216,14 +216,14 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   string  $replyAction
      * @param   string  $term       Search term
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
-     * @param   mixed   $limit      Data limit (numeric/boolean)
+     * @param   mixed   $offset     Data offset (numeric/boolean)
      * @param   bool    $gadgetColumn   Display gadget column?
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $editAction, $replyAction, $term, $status, $limit, $gadgetColumn=false)
+    function GetDataAsArray($gadget, $editAction, $replyAction, $term, $status, $offset, $gadgetColumn=false)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
-        $comments = $cModel->GetFilteredComments($gadget, '', $term, $status, $limit);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset);
         if (Jaws_Error::IsError($comments)) {
             return array();
         }
@@ -293,10 +293,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   bool    $gadgetColumn   Display gadget column?
      * @return  string  UI XHTML
      */
-    function Get($gadget, $gadgetColumn=false)
+    function Get($gadget, $gadgetColumn = false)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $total  = $cModel->TotalOfComments($gadget, '');
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $total  = $cModel->GetCommentsCount($gadget);
 
         $gridBox =& Piwi::CreateWidget('VBox');
         $gridBox->SetID('comments_box');
