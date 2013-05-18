@@ -466,24 +466,33 @@ class Jaws
             }
 
             $obj = null;
-            if (Jaws::classExists($type_class_name)) {
-                // temporary
-                if ($type == 'Info') {
-                    $obj = new $type_class_name($gadget);
-                } else {
-                    if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
-                        $info_class_name = $gadget . '_Info';
-                        $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
-                        @include_once $ifile;
-                        $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
-                    }
-                    $obj = new $type_class_name($this->_Gadgets[$gadget]['Info']['base']);
+            if (!Jaws::classExists($type_class_name)) {
+                switch ($type) {
+                    case 'AdminModel':
+                        $type_class_name = 'Jaws_Gadget_Model';
+                        break;
+
+                    default:
+                        $type_class_name = "Jaws_Gadget_$type";
                 }
-                if (Jaws_Error::IsError($obj)) {
-                    $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $type_class_name),
-                                            'Gadget file loading');
-                    return $error;
+            }
+
+            // temporary
+            if ($type == 'Info') {
+                $obj = new $type_class_name($gadget);
+            } else {
+                if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
+                    $info_class_name = $gadget . '_Info';
+                    $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
+                    @include_once $ifile;
+                    $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
                 }
+                $obj = new $type_class_name($this->_Gadgets[$gadget]['Info']['base']);
+            }
+            if (Jaws_Error::IsError($obj)) {
+                $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $type_class_name),
+                                        'Gadget file loading');
+                return $error;
             }
 
             $this->_Gadgets[$gadget][$type]['base']  = $obj;
