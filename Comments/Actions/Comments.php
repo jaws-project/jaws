@@ -20,18 +20,17 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function Comments($preview_mode = false)
     {
-        $tpl = $this->gadget->loadTemplate('GuestBook.html');
+        $tpl = $this->gadget->loadTemplate('Guestbook.html');
         $tpl->SetBlock('guestbook');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'guestbook', 0, array('action' => 'Comments')));
-
+        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Comments')));
         if ($preview_mode) {
             $tpl->SetVariable('preview', $this->ShowPreview());
         }
 
         $redirect_to = $this->gadget->GetURLFor('Comments');
-        $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'guestbook', 0, $redirect_to));
+        $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'Guestbook', 0, $redirect_to));
 
         $tpl->ParseBlock('guestbook');
         return $tpl->Get();
@@ -170,11 +169,12 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $comments = $cModel->GetComments(
-            strtolower($gadget),
-            $perPage, $reference,
+            $gadget,
             $action,
-            array(Comments_Info::COMMENT_STATUS_APPROVED),
-            false,
+            $reference,
+            '',
+            Comments_Info::COMMENT_STATUS_APPROVED,
+            $perPage,
             ($page - 1) * $perPage,
             $orderBy
         );
