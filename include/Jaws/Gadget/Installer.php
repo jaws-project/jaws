@@ -422,40 +422,43 @@ class Jaws_Gadget_Installer
      */
     function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
     {
-        if (preg_match('@\\|/@', $main_schema)) {
-            $main_file = $main_schema;
-        } else {
-            $main_file = JAWS_PATH . 'gadgets/'. $this->gadget->name . '/schema/' . $main_schema;
+        $main_file = $main_schema;
+        if (!preg_match('@\\\\|/@', $main_schema)) {
+            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/schema/$main_schema";
         }
         if (!file_exists($main_file)) {
-            return new Jaws_Error (_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
-                                   $this->gadget->name,
-                                   JAWS_ERROR_ERROR,
-                                   1);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
+                __FUNCTION__,
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         $base_file = false;
         if (!empty($base_schema)) {
-            if (preg_match('@\\|/@', $base_schema)) {
                 $base_file = $base_schema;
-            } else {
-                $base_file = JAWS_PATH . 'gadgets/'. $this->gadget->name . '/schema/' . $base_schema;
+            if (!preg_match('@\\\\|/@', $base_schema)) {
+                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/schema/$base_schema";
             }
             if (!file_exists($base_file)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
-                                      $this->gadget->name,
-                                      JAWS_ERROR_ERROR,
-                                      1);
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
         }
 
         $result = $GLOBALS['db']->installSchema($main_file, $variables, $base_file, $data, $create, $debug);
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_QUERY_FILE',
-                                     $main_schema . (empty($base_schema)? '': "/$base_schema")),
-                                  $this->gadget->GetAttribute('Name'),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_FAILED_QUERY_FILE',$main_schema . (empty($base_schema)? '': "/$base_schema")),
+                __FUNCTION__,
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return true;
