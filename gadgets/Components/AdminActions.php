@@ -14,16 +14,21 @@ $actions['DefaultAction'] = array(
 );
 $actions['Gadgets'] = array(
     'normal' => true,
+    'file' => 'Gadgets',
 );
 $actions['Plugins'] = array(
     'normal' => true,
+    'file' => 'Plugins',
 );
 $actions['InstallGadget'] = array(
     'normal' => true,
+    'file' => 'GadgetInstaller',
 );
 $actions['UpgradeGadget'] = array(
     'normal' => true,
+    'file' => 'GadgetInstaller',
 );
 $actions['UninstallGadget'] = array(
     'normal' => true,
+    'file' => 'GadgetInstaller',
 );
