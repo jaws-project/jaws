@@ -469,7 +469,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $post['albumid']   = (int)$post['albumid'];
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $image = $model->GetImage($post['parent_id'], $post['albumid']);
+        $image = $model->GetImage($post['reference'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
             Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
