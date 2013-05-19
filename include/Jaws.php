@@ -652,7 +652,7 @@ class Jaws
      *
      * @access  public
      * @param   string  $gadget Gadget's name
-     * @param   string  $type   Action's type(LayoutAction, NormalAction, AdminAction, ... or empty for all type)
+     * @param   string  $type   Action's type(NormalAction, AdminAction, ... or empty for all type)
      * @param   string  $script Action belongs to index or admin
      * @return  array   Gadget actions
      */

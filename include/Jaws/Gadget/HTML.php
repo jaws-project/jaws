@@ -20,14 +20,6 @@ class Jaws_Gadget_HTML
     var $gadget = null;
 
     /**
-     * Are we running Ajax?
-     *
-     * @access  private
-     * @var     bool
-     */
-    var $_usingAjax = false;
-
-    /**
      * A list of actions that the gadget has
      *
      * @var     array
@@ -53,9 +45,6 @@ class Jaws_Gadget_HTML
         // Add Ajax actions.
         $this->StandaloneAction('Ajax', '');
         $this->StandaloneAdminAction('Ajax', '');
-
-        // Add _404 as normal action
-        $this->NormalAction('_404');
     }
 
     /**
@@ -115,24 +104,6 @@ class Jaws_Gadget_HTML
     }
 
     /**
-     * Overloads Jaws_Gadget::IsValid. Difference: Checks that the gadget (HTML) file exists
-     *
-     * @access  public
-     * @param   string  $gadget Gadget's Name
-     * @return  bool    Returns true if the gadget is valid, otherwise will finish the execution
-     */
-    function IsValid($gadget)
-    {
-        // Check if file exists
-        // Hack until we decide if $gadget.php will be a proxy file
-        if (!file_exists(JAWS_PATH . 'gadgets/'.$gadget.'/HTML.php')) {
-            Jaws_Error::Fatal('Gadget file doesn\'t exists');
-        }
-
-        parent::IsValid($gadget);
-    }
-
-    /**
      * Ajax the gadget adding the basic script links to build the interface
      *
      * @access  protected
@@ -142,7 +113,6 @@ class Jaws_Gadget_HTML
      */
     function AjaxMe($file = '', $version = '')
     {
-        $this->_usingAjax = true;
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
@@ -164,17 +134,6 @@ class Jaws_Gadget_HTML
             'DATAGRID_DATA_ONLOADED'     => 'hideWorkingNotification;',
         );
         Piwi::addExtraConf($config);
-    }
-
-    /**
-     * Return the 404 message (page not found)
-     *
-     * @access  protected
-     */
-    function _404()
-    {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        return Jaws_HTTPError::Get(404);
     }
 
     /**
@@ -231,17 +190,6 @@ class Jaws_Gadget_HTML
         if (isset($GLOBALS['app']->Layout)) {
             $GLOBALS['app']->Layout->AddToMetaLanguages($language);
         }
-    }
-
-    /**
-     * Returns the state of usingAjax
-     *
-     * @access  public
-     * @return  bool
-     */
-    function usingAjax()
-    {
-        return $this->_usingAjax;
     }
 
     /**
@@ -420,19 +368,6 @@ class Jaws_Gadget_HTML
         }
 
         return false;
-    }
-
-    /**
-     * Adds a layout action
-     *
-     * @access  protected
-     * @param   string  $action Action
-     * @param   string  $name Action's name
-     * @param   string  $description Action's description
-     */
-    function LayoutAction($action, $name, $description = null)
-    {
-        $this->AddAction($action, 'index', 'layout', $name, $description);
     }
 
     /**
