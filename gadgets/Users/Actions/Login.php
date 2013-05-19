@@ -21,7 +21,7 @@ class Users_Actions_Login extends Users_HTML
     function SendRecoverKey()
     {
         if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         $request =& Jaws_Request::getInstance();
@@ -66,7 +66,7 @@ class Users_Actions_Login extends Users_HTML
     function ForgotLogin()
     {
         if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         // Load the template

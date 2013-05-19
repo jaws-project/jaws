@@ -49,7 +49,7 @@ class Users_Actions_Registration extends Users_HTML
     function DoRegister()
     {
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         $result  = '';
@@ -128,7 +128,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         // Load the template
@@ -205,7 +205,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         $request =& Jaws_Request::getInstance();

@@ -181,7 +181,7 @@ class Users_Actions_Account extends Users_HTML
     function ChangePassword()
     {
         if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
-            return parent::_404();
+            return Jaws_HTTPError::Get(404);
         }
 
         $request =& Jaws_Request::getInstance();
