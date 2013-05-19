@@ -49,6 +49,11 @@ class Blog_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        // Install listener for delete/insert/update comment
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DeleteComment');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'InsertComment');
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpdateComment');
+
         // Registry keys
         $this->gadget->registry->insert('columns',                   '1');
         $this->gadget->registry->insert('default_view',              'last_entries');

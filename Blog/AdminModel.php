@@ -741,28 +741,22 @@ class Blog_AdminModel extends Blog_Model
             return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        if ($comment['status'] == COMMENT_STATUS_APPROVED) {
-            $params = array();
-            $params['id'] = $comment['reference'];
-            $howmany = $cModel->HowManyFilteredComments(
-                $this->gadget->name,
-                'reference',
-                $comment['reference'],
-                'approved'
-            );
-            if (!Jaws_Error::IsError($howmany)) {
-                $params['comments'] = $howmany;
-                $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_DELETED'), _t('BLOG_NAME'));
-                }
-            }
-        }
-
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
+    }
+
+    /**
+     * Update a post comments count
+     *
+     * @access  public
+     * @param   int     $id              Post id.
+     * @param   int     $commentCount    How Many comment
+     * @return  mixed   True on Success or Jaws_Error on failure
+     */
+    function UpdatePostCommentsCount($id, $commentCount)
+    {
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        return $blogTable->update(array('comments'=>$commentCount))->where('id', $id)->exec();
     }
 
     /**
@@ -793,26 +787,6 @@ class Blog_AdminModel extends Blog_Model
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
         $cModel->MarkAs($this->gadget->name, $ids, $status);
-        foreach ($ids as $id) {
-            $comment = $cModel->GetComment($id, $this->gadget->name);
-            $params = array();
-            $params['id'] = $comment['reference'];
-            $howmany = $cModel->HowManyFilteredComments(
-                $this->gadget->name,
-                'reference',
-                $comment['reference'],
-                'approved'
-            );
-            if (!Jaws_Error::IsError($howmany)) {
-                $params['comments'] = $howmany;
-                $sql = 'UPDATE [[blog]] SET [comments] = {comments} WHERE [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), _t('BLOG_NAME'));
-                }
-            }
-        }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
