@@ -159,29 +159,4 @@ class Components_AdminModel extends Jaws_Gadget_Model
         return $resList;
     }
 
-    /**
-     * Fetches plugin information
-     *
-     * @access  public
-     * @param   string  $plugin  Plugin name
-     * @return  mixed   Array of plugin information or Jaws_Error on error
-     */
-    function GetPluginInfo($plugin)
-    {
-        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-        if (Jaws_Error::IsError($objPlugin)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED', 'GetPluginInfo'), _t('COMPONENTS_NAME'));
-        }
-
-        $plugin = array(
-            'name'        => $plugin,
-            'realname'    => $plugin,
-            'version'     => $objPlugin->GetVersion(),
-            'friendly'    => $objPlugin->IsFriendly(),
-            'accesskey'   => $objPlugin->GetAccessKey(),
-            'example'     => $objPlugin->GetExample(),
-        );
-
-        return $plugin;
-    }
 }
