@@ -310,7 +310,7 @@ class Search_Model extends Jaws_Gadget_Model
      */
     function GetSearchableGadgets()
     {
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {

@@ -340,7 +340,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('section', $section);
 
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
 
         //Hold.. if we dont have a selected gadget?.. like no gadgets?
@@ -534,7 +534,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         // for index...
         $gadget_field =& Piwi::CreateWidget('CheckButtons', 'checkbox_index', 'vertical');
         $gadget_field->AddOption(_t('LAYOUT_INDEX'), 'index', null, in_array('index', $selectedGadgets));
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
         foreach ($gadget_list as $g) {
             $gadget_field->AddOption($g['name'], $g['realname'], null, in_array($g['realname'], $selectedGadgets));

@@ -207,7 +207,7 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
         $typeCombo->setStyle('width: 256px;');
         $typeCombo->AddOption(_t('GLOBAL_URL'), 'url');
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget) {
             if (!file_exists($gDir . $gadget['realname']. '/Hooks/Menu.php')) {
