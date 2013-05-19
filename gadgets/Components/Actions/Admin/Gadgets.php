@@ -84,50 +84,49 @@ class Components_Actions_Admin_Gadgets extends Components_AdminHTML
      */
     function GadgetInfo($gadget)
     {
+        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        if (Jaws_Error::IsError($objGadget)) {
+            return $objGadget->getMessage();
+        }
+
         $tpl = $this->gadget->loadTemplate('Gadget.html');
         $tpl->SetBlock('info');
 
-        $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
-        if (Jaws_Error::IsError($info)) {
-            $tpl->SetVariable('gadget', $gadget);
-            $tpl->SetVariable('description', _t('COMPONENTS_GADGETS_NOT_EXISTS'));
-        } else {
-            $tpl->SetVariable('gadget', $info->GetTitle());
-            $tpl->SetVariable('description', $info->GetDescription());
-            $tpl->SetVariable('image', "gadgets/$gadget/images/logo.png");
+        $tpl->SetVariable('gadget', $objGadget->GetTitle());
+        $tpl->SetVariable('description', $objGadget->GetDescription());
+        $tpl->SetVariable('image', "gadgets/$gadget/images/logo.png");
 
-            $tpl->SetVariable('lbl_version', _t('GLOBAL_VERSION').':');
-            $tpl->SetVariable('version', $info->GetVersion());
+        $tpl->SetVariable('lbl_version', _t('GLOBAL_VERSION').':');
+        $tpl->SetVariable('version', $objGadget->GetVersion());
 
-            $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
-            $tpl->SetVariable('jaws_version', $info->GetRequiredJawsVersion());
+        $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
+        $tpl->SetVariable('jaws_version', $objGadget->GetRequiredJawsVersion());
 
-            $tpl->SetVariable('lbl_section', _t('COMPONENTS_GADGETS_SECTION').':');
-            $tpl->SetVariable('section', $info->GetSection());
+        $tpl->SetVariable('lbl_section', _t('COMPONENTS_GADGETS_SECTION').':');
+        $tpl->SetVariable('section', $objGadget->GetSection());
 
-            // Requires
-            $tpl->SetBlock('info/requires');
-            $tpl->SetVariable('lbl_requires', _t('COMPONENTS_GADGETS_DEPENDENCIES').':');
-            foreach ($info->GetRequirements() as $rqGadget) {
-                $tpl->SetBlock('info/requires/item');
-                $tpl->SetVariable('gadget', $rqGadget);
-                $tpl->ParseBlock('info/requires/item');
-            }
-            $tpl->ParseBlock('info/requires');
-
-            // ACL Rules
-            $tpl->SetBlock('info/acls');
-            $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
-            $acls = $GLOBALS['app']->ACL->fetchAll($gadget);
-            if (!empty($acls)) {
-                foreach ($acls as $acl) {
-                    $tpl->SetBlock('info/acls/acl');
-                    $tpl->SetVariable('acl', $info->GetACLDescription($acl['key_name']));
-                    $tpl->ParseBlock('info/acls/acl');
-                }
-            }
-            $tpl->ParseBlock('info/acls');
+        // Requires
+        $tpl->SetBlock('info/requires');
+        $tpl->SetVariable('lbl_requires', _t('COMPONENTS_GADGETS_DEPENDENCIES').':');
+        foreach ($objGadget->GetRequirements() as $rqGadget) {
+            $tpl->SetBlock('info/requires/item');
+            $tpl->SetVariable('gadget', $rqGadget);
+            $tpl->ParseBlock('info/requires/item');
         }
+        $tpl->ParseBlock('info/requires');
+
+        // ACL Rules
+        $tpl->SetBlock('info/acls');
+        $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
+        $acls = $GLOBALS['app']->ACL->fetchAll($gadget);
+        if (!empty($acls)) {
+            foreach ($acls as $acl) {
+                $tpl->SetBlock('info/acls/acl');
+                $tpl->SetVariable('acl', $objGadget->GetACLDescription($acl['key_name']));
+                $tpl->ParseBlock('info/acls/acl');
+            }
+        }
+        $tpl->ParseBlock('info/acls');
 
         $button =& Piwi::CreateWidget('Button', 'btn_update', _t('COMPONENTS_UPDATE'), STOCK_REFRESH);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
