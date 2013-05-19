@@ -162,7 +162,8 @@ class Installer_Settings extends JawsInstallerStage
      * @return  bool|Jaws_Error  Either true on success, or a Jaws_Error
      *                          containing the reason for failure.
      */
-    function InstallSampleSite() {
+    function InstallSampleSite()
+    {
         $gadgets = array('Blog', 'Phoo', 'LinkDump', 'Contact', 'Menu', 'Emblems');
 
         $variables = array();
