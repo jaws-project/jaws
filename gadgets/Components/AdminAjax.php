@@ -20,7 +20,6 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function Components_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -32,8 +31,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgets()
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        $gadgets = $this->_Model->GetGadgetsList();
+        $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgets = $model->GetGadgetsList();
         $result = array();
         foreach ($gadgets as $key => $gadget) {
             $g = array();
@@ -154,8 +153,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetPlugins()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        $plugins = $this->_Model->GetPluginsList();
+        $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Plugins');
+        $plugins = $model->GetPluginsList();
         foreach ($plugins as $key => $plugin) {
             $plugins[$key]['state'] = $plugin['installed']? 'installed' : 'notinstalled';
             $plugins[$key]['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $plugin['realname']);
@@ -238,7 +237,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $usage['gadgets'] = array();
         $usage['backend'] = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
         $usage['frontend'] = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-        $gadgets = $this->_Model->GetGadgetsList(null, true, true, true);
+        $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgets = $model->GetGadgetsList(null, true, true, true);
         foreach ($gadgets as $gadget) {
             $usage['gadgets'][] = array('name' => $gadget['name'], 'realname' => $gadget['realname']);
         }

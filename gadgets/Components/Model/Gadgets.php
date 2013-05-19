@@ -1,6 +1,6 @@
 <?php
 /**
- * Components (Jaws Management System) Gadget
+ * Components Gadget
  *
  * @category   GadgetModel
  * @package    Components
@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Components_AdminModel extends Jaws_Gadget_Model
+class Components_Model_Gadgets extends Jaws_Gadget_Model
 {
     /**
      * Fetches list of gadgets, installed/not installed, core/none core, has layout/has not, ...
@@ -24,7 +24,7 @@ class Components_AdminModel extends Jaws_Gadget_Model
      * @return  array   List of gadgets
      */
     function GetGadgetsList($core_gadget = null, $installed = null, $updated = null,
-                            $has_layout = null, $has_html = null)
+        $has_layout = null, $has_html = null)
     {
         //TODO: implementing cache for this method
         static $gadgetsList;
@@ -104,55 +104,6 @@ class Components_AdminModel extends Jaws_Gadget_Model
                 (is_null($has_html) || $gadget['has_html'] == $has_html))
             {
                 $resList[$gadget['realname']] = $gadget;
-            }
-        }
-
-        return $resList;
-    }
-
-    /**
-     * Fetches list of plugins, installed or not installed
-     *
-     * @access  public
-     * @param   bool    $installed  accepts true/false/null
-     * @return  array   List of plugins
-     */
-    function GetPluginsList($installed = null)
-    {
-        //TODO: implementing cache for this method
-        static $pluginsList;
-        if (!isset($pluginsList)) {
-            $pluginsList = array();
-            $pDir = JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
-            if (!is_dir($pDir)) {
-                Jaws_Error::Fatal('The plugins directory does not exists!', __FILE__, __LINE__);
-            }
-
-            $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
-            $plugins = scandir($pDir);
-            foreach ($plugins as $plugin) {
-                if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {
-                    continue;
-                }
-
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-                if (Jaws_Error::IsError($objPlugin)) {
-                    continue;
-                }
-
-                $pluginsList[$plugin] = array(
-                    'realname' => $plugin,
-                    'name' => $plugin,
-                    'description' => _t('PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
-                    'installed' => strpos($installed_plugins, ",$plugin,") !==false,
-                );
-            }
-        }
-
-        $resList = array();
-        foreach ($pluginsList as $name => $plugin) {
-            if (is_null($installed) || $plugin['installed'] == $installed) {
-                $resList[$name] = $plugin;
             }
         }
 
