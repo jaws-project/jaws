@@ -75,36 +75,44 @@ class Components_Actions_Admin_Plugins extends Components_AdminHTML
      */
     function PluginInfo($plugin)
     {
-        $tpl = $this->gadget->loadTemplate('Plugin.html');
-        $tpl->SetBlock('info');
+        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        if (!Jaws_Error::IsError($objPlugin)) {
+            $tpl = $this->gadget->loadTemplate('Plugin.html');
+            $tpl->SetBlock('info');
 
-        $tpl->SetVariable('lbl_version', _t('COMPONENTS_VERSION').':');
-        $tpl->SetVariable('lbl_example', _t('COMPONENTS_PLUGINS_USAGE').':');
-        $tpl->SetVariable('lbl_accesskey', _t('COMPONENTS_PLUGINS_ACCESSKEY').':');
-        $tpl->SetVariable('lbl_friendly', _t('COMPONENTS_PLUGINS_FRIENDLY').':');
+            $tpl->SetVariable('lbl_version',   _t('COMPONENTS_VERSION').':');
+            $tpl->SetVariable('lbl_example',   _t('COMPONENTS_PLUGINS_USAGE').':');
+            $tpl->SetVariable('lbl_accesskey', _t('COMPONENTS_PLUGINS_ACCESSKEY').':');
+            $tpl->SetVariable('lbl_friendly',  _t('COMPONENTS_PLUGINS_FRIENDLY').':');
+            $tpl->SetVariable(
+                'accesskey',
+                $objPlugin->GetAccessKey()? $objPlugin->GetAccessKey() : _t('COMPONENTS_PLUGINS_NO_ACCESSKEY')
+            );
+            $tpl->SetVariable(
+                'friendly',
+                $objPlugin->IsFriendly()? _t('COMPONENTS_PLUGINS_FRIENDLY') : _t('COMPONENTS_PLUGINS_NOT_FRIENDLY')
+            );
+            $tpl->SetVariable(
+                'example',
+                $objPlugin->GetExample()? $objPlugin->GetExample() : _t('COMPONENTS_PLUGINS_NO_EXAMPLE')
+            );
+            $tpl->SetVariable('version', $objPlugin->GetVersion());
 
-        $model = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
-        $info = $model->GetPluginInfo($plugin);
-        $tpl->SetVariable('accesskey',
-                          empty($info['accesskey']) ? _t('COMPONENTS_PLUGINS_NO_ACCESSKEY') : $info['accesskey']);
-        $tpl->SetVariable('friendly',
-                          ($info['friendly']) ? _t('COMPONENTS_PLUGINS_FRIENDLY') : _t('COMPONENTS_PLUGINS_NOT_FRIENDLY'));
-        $tpl->SetVariable('example',
-                          empty($info['example']) ? _t('COMPONENTS_PLUGINS_NO_EXAMPLE') : $info['example']);
-        $tpl->SetVariable('version', $info['version']);
+            $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
+            $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+            $button->SetStyle('display:none');
+            $tpl->SetVariable('install', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('install', $button->Get());
+            $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
+            $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
+            $button->SetStyle('display:none');
+            $tpl->SetVariable('uninstall', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
-        $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
-        $button->SetStyle('display:none');
-        $tpl->SetVariable('uninstall', $button->Get());
+            $tpl->ParseBlock('info');
+            return $tpl->Get();
+        }
 
-        $tpl->ParseBlock('info');
-        return $tpl->Get();
+        return $objPlugin->getMessage();
     }
 
     /**
