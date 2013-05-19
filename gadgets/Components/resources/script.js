@@ -354,13 +354,11 @@ function closeUI()
  */
 function componentInfo()
 {
-    if (!$('component_info')) {
-        var div = new Element('div');
-        div.innerHTML = pluginsMode ?
-            ComponentsAjax.callSync('getplugininfo', selectedComponent):
-            ComponentsAjax.callSync('getgadgetinfo', selectedComponent);
-        $('component_form').grab(div.getElement('div'));
-    }
+    $('component_form').set('html', pluginsMode ?
+        ComponentsAjax.callSync('getplugininfo', selectedComponent):
+        ComponentsAjax.callSync('getgadgetinfo', selectedComponent)
+    );
+
     $('summary').hide();
     $('component').show();
     $('component_info').show();
