@@ -217,12 +217,13 @@ class SysInfo_Model extends Jaws_Gadget_Model
      */
     function GetJawsInfo()
     {
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'AdminModel');
+        $cmpGModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $cmpPModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Plugins');
         $theme          = $GLOBALS['app']->GetTheme();
-        $coreGadgets    = $cmpModel->GetGadgetsList(true, true, true);
-        $gadgets        = $cmpModel->GetGadgetsList(false, true, true);
-        $outdateGadgets = $cmpModel->GetGadgetsList(null, true, false);
-        $plugins        = $cmpModel->GetPluginsList(true);
+        $coreGadgets    = $cmpGModel->GetGadgetsList(true, true, true);
+        $gadgets        = $cmpGModel->GetGadgetsList(false, true, true);
+        $outdateGadgets = $cmpGModel->GetGadgetsList(null, true, false);
+        $plugins        = $cmpPModel->GetPluginsList(true);
 
         return array(
                     array('title' => "Core gadgets",
