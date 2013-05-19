@@ -186,6 +186,7 @@ class Installer_Settings extends JawsInstallerStage
         $variables['Contact'] = array ();
         $variables['Menu'] = array (
             'timestamp' => $GLOBALS['db']->Date(),
+            'siteurl'   => Jaws_Utils::getBaseURL('/', false),
             'menu_title1' => _t('INSTALL_SAMPLE_MENU_TITLE1'),
             'menu_title2' => _t('INSTALL_SAMPLE_MENU_TITLE2'),
             'menu_title3' => _t('INSTALL_SAMPLE_MENU_TITLE3'),
@@ -221,7 +222,7 @@ class Installer_Settings extends JawsInstallerStage
             _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
             _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
         } else {
-            $base_schema  = JAWS_PATH. "gadgets/$gadget/schema/schema.xml";
+            $base_schema  = JAWS_PATH. "gadgets/Layout/schema/schema.xml";
             $input_schema = JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
 
             $installer = $objGadget->load('Installer');
@@ -233,6 +234,9 @@ class Installer_Settings extends JawsInstallerStage
                 _log(JAWS_LOG_DEBUG,"Sample itemes inserted into gadget $gadget.");
             }
         }
+
+        // set Blog as main gadget
+        $GLOBALS['app']->Registry->update('main_gadget', 'Blog', 'Settings');
 
         // Copy Photo Organizer sample data
         $source = JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
