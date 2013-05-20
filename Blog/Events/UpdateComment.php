@@ -14,8 +14,12 @@ class Blog_Events_UpdateComment extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($action, $reference)
+    function Execute($gadget, $action, $reference)
     {
+        if ($gadget != 'blog') {
+            return;
+        }
+
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $howManyComment = $cModel->GetCommentsCount('Blog', $action, $reference, '',
             Comments_Info::COMMENT_STATUS_APPROVED);
