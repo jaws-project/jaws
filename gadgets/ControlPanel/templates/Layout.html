@@ -1,14 +1,14 @@
-<!-- BEGIN layout -->
 <!DOCTYPE html>
-<html>
+<!-- BEGIN layout -->
+<html lang="{site_languages}">
 <head>
-  <base href="{BASE_URL}" />
+  <base href="{base_url}" />
   <title>{site-name}: {control-panel}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- BEGIN head -->{ELEMENT}<!-- END head -->
   <script type="text/javascript" src="gadgets/ControlPanel/resources/script.js"></script>
 </head>
-<body onload="hideWorkingNotification();">
+<body id="requested_gadget_{requested_gadget}" onload="hideWorkingNotification();">
  <!-- Working Notification -->
   <div id="working_notification"></div>
   <script type="text/javascript">
