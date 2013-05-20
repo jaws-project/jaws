@@ -20,14 +20,15 @@ class Comments_Model_DeleteComments extends Jaws_Gadget_Model
     function Delete($id)
     {
         $cTable = Jaws_ORM::getInstance()->table('comments');
-        $cTable->select('id:integer', 'reference:integer', 'action');
+        $cTable->select('gadget', 'reference:integer', 'action');
         $commentInfo = $cTable->where('id', $id)->getRow();
 
         $commentTable = Jaws_ORM::getInstance()->table('comments');
         $res = $commentTable->delete()->where('id', $id)->exec();
-        
+
         if (!Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Listener->Shout('DeleteComment', array($commentInfo['action'], $commentInfo['reference']));
+            $GLOBALS['app']->Listener->Shout('UpdateComment', array($commentInfo['gadget'], $commentInfo['action'],
+                $commentInfo['reference']));
         }
 
         return $res;
@@ -59,7 +60,7 @@ class Comments_Model_DeleteComments extends Jaws_Gadget_Model
      * @param   array   $ids  Ids of comments
      * @return  mixed   True on Success or Jaws_Error on Failure
      */
-    function MassiveCommentDelete($ids)
+    function DeleteMassiveComment($ids)
     {
         if (!is_array($ids)) {
             $ids = func_get_args();
