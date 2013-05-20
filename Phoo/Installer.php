@@ -41,6 +41,9 @@ class Phoo_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        // Install listener for update comment
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpdateComment');
+
         // Registry keys
         $this->gadget->registry->insert('default_action',    'AlbumList');
         $this->gadget->registry->insert('thumbsize',         '133x100');

@@ -641,26 +641,6 @@ class Phoo_AdminModel extends Phoo_Model
             return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
         }
 
-        if ($comment['status'] == COMMENT_STATUS_APPROVED) {
-            $params = array();
-            $params['id'] = $comment['reference'];
-            $howmany = $cModel->HowManyFilteredComments(
-                $this->gadget->name,
-                'reference',
-                $comment['reference'],
-                'approved'
-            );
-            if (!Jaws_Error::IsError($howmany)) {
-                $params['comments'] = $howmany;
-                $sql = 'UPDATE [[phoo_image]] SET [comments] = {comments} WHERE [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_DELETE_COMMENT'), _t('PHOO_NAME'));
-                }
-            }
-        }
-
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
@@ -681,26 +661,6 @@ class Phoo_AdminModel extends Phoo_Model
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel');
         $cModel->MarkAs($this->gadget->name, $ids, $status);
-        foreach ($ids as $id) {
-            $comment = $cModel->GetComment($id, $this->gadget->name);
-            $params = array();
-            $params['id'] = $comment['reference'];
-            $howmany = $cModel->HowManyFilteredComments(
-                $this->gadget->name,
-                'reference',
-                $comment['reference'],
-                'approved'
-            );
-            if (!Jaws_Error::IsError($howmany)) {
-                $params['comments'] = $howmany;
-                $sql = 'UPDATE [[phoo_image]] SET [comments] = {comments} WHERE [id] = {id}';
-                $result = $GLOBALS['db']->query($sql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_COMMENT'), _t('PHOO_NAME'));
-                }
-            }
-        }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_COMMENT_MARKED'), RESPONSE_NOTICE);
         return true;
@@ -784,6 +744,20 @@ class Phoo_AdminModel extends Phoo_Model
             }
         }
         return $cleanFiles;
+    }
+
+    /**
+     * Update an image comments count
+     *
+     * @access  public
+     * @param   int     $id              Image id.
+     * @param   int     $commentCount    How Many comment?
+     * @return  mixed   True on Success or Jaws_Error on failure
+     */
+    function UpdateImageCommentsCount($id, $commentCount)
+    {
+        $phooTable = Jaws_ORM::getInstance()->table('phoo_image');
+        return $phooTable->update(array('comments'=>$commentCount))->where('id', $id)->exec();
     }
 
 }
