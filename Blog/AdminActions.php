@@ -74,15 +74,7 @@ $actions['EditComment'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );
-$actions['ReplyComment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['SaveEditComment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
-$actions['SaveReplyComment'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );

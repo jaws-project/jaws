@@ -39,7 +39,6 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         return $cHtml->GetDataAsArray(
             $this->gadget->name,
             BASE_SCRIPT . '?gadget=Blog&amp;action=EditComment&amp;id={id}',
-            BASE_SCRIPT . '?gadget=Blog&amp;action=ReplyComment&amp;id={id}',
             $search,
             $status,
             $limit
@@ -71,7 +70,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption('&nbsp;','various');
+        $status->AddOption('&nbsp;','');
         $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
         $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
         $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
@@ -168,11 +167,17 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $ip->SetTitle(_t('GLOBAL_IP'));
         $ip->SetReadOnly(true);
 
-        $comment =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['comments']));
-        $comment->SetRows(5);
-        $comment->SetColumns(60);
-        $comment->SetStyle('width: 400px;');
-        $comment->SetTitle(_t('BLOG_COMMENT'));
+        $commentText =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['comments']));
+        $commentText->SetRows(5);
+        $commentText->SetColumns(60);
+        $commentText->SetStyle('width: 400px;');
+        $commentText->SetTitle(_t('BLOG_COMMENT'));
+
+        $reply =& Piwi::CreateWidget('TextArea', 'reply', Jaws_XSS::defilter($comment['reply']));
+        $reply->SetRows(5);
+        $reply->SetColumns(60);
+        $reply->SetStyle('width: 400px;');
+        $reply->SetTitle(_t('BLOG_REPLY'));
 
         $cancelButton =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');
@@ -194,7 +199,8 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $fieldset->Add($email);
         $fieldset->Add($url);
         $fieldset->Add($ip);
-        $fieldset->Add($comment);
+        $fieldset->Add($commentText);
+        $fieldset->Add($reply);
         $form->add($fieldset);
         $form->Add($buttonbox);
 
@@ -204,108 +210,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         return $tpl->Get();
     }
 
-    /**
-     * Displays blog comment to reply
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function ReplyComment()
-    {
-        $this->gadget->CheckPermission('ManageComments');
-        $request =& Jaws_Request::getInstance();
-
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
-        // Fetch the comment
-        $comment = $model->GetComment($request->get('id', 'get'));
-        if (Jaws_Error::IsError($comment)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
-        }
-
-        // Fetch the entry
-        ///FIXME we need to either create a query for this or make getEntry only fetch the title, this is a overkill atm
-        $entry = $model->getEntry($comment['reference']);
-        if (Jaws_Error::IsError($entry)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
-        }
-
-        $tpl = $this->gadget->loadTemplate('CommentReply.html');
-        $tpl->SetBlock('reply_comment');
-        $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
-
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_REPLY_COMMENT'));
-
-        $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'id', $comment['id']));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Blog'));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveReplyComment'));
-        $permalink = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $comment['reference']));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'permalink', $permalink));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'status', $comment['status']));
-
-        $text = '<strong>' . $entry['title'] . '</strong>';
-        $staticText =& Piwi::CreateWidget('StaticEntry', _t('BLOG_COMMENT_CURRENTLY_REPLYING_FOR', $text));
-
-        $name =& Piwi::CreateWidget('Entry', 'name', $comment['name']);
-        $name->SetReadOnly(true);
-        $name->SetTitle(_t('GLOBAL_NAME'));
-
-        $email =& Piwi::CreateWidget('Entry', 'email', $comment['email']);
-        $email->SetReadOnly(true);
-        $email->SetStyle('direction: ltr;');
-        $email->SetTitle(_t('GLOBAL_EMAIL'));
-
-        $url =& Piwi::CreateWidget('Entry', 'url', $comment['url']);
-        $url->SetReadOnly(true);
-        $url->SetStyle('direction: ltr;');
-        $url->SetTitle(_t('GLOBAL_URL'));
-
-        $ip =& Piwi::CreateWidget('Entry', 'ip', $comment['ip']);
-        $ip->SetTitle(_t('GLOBAL_IP'));
-        $ip->SetReadOnly(true);
-
-        $comment_msg =& Piwi::CreateWidget('TextArea', 'comments', Jaws_XSS::defilter($comment['comments']));
-        $comment_msg->SetReadOnly(true);
-        $comment_msg->SetRows(5);
-        $comment_msg->SetColumns(60);
-        $comment_msg->SetStyle('width: 400px;');
-        $comment_msg->SetTitle(_t('BLOG_COMMENT'));
-
-        $reply =& Piwi::CreateWidget('TextArea', 'reply', Jaws_XSS::defilter($comment['reply']));
-        $reply->SetRows(5);
-        $reply->SetColumns(60);
-        $reply->SetStyle('width: 400px;');
-        $reply->SetTitle(_t('BLOG_REPLY'));
-
-        $cancelButton =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');
-
-        $submitButton =& Piwi::CreateWidget('Button', 'send', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $submitButton->SetSubmit();
-
-        $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
-        $buttonbox->PackStart($cancelButton);
-        $buttonbox->PackStart($submitButton);
-
-        $fieldset->Add($staticText);
-        $fieldset->Add($name);
-        $fieldset->Add($email);
-        $fieldset->Add($url);
-        $fieldset->Add($ip);
-        $fieldset->Add($comment_msg);
-        $fieldset->Add($reply);
-        $form->add($fieldset);
-        $form->Add($buttonbox);
-
-        $tpl->SetVariable('form', $form->Get());
-        $tpl->ParseBlock('reply_comment');
-
-        return $tpl->Get();
-    }
-
-    /**
+     /**
      * Applies changes to a blog comment
      *
      * @access  public
@@ -316,28 +221,10 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
 
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'name', 'url', 'email', 'comments', 'ip', 'permalink', 'status'), 'post');
+        $post = $request->get(array('id', 'name', 'url', 'email', 'comments', 'reply', 'ip', 'permalink', 'status'), 'post');
 
         $model->UpdateComment($post['id'], $post['name'], $post['url'], $post['email'], $post['comments'],
-                              $post['permalink'], $post['status']);
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
-    }
-
-    /**
-     * Save reply to a blog comment
-     *
-     * @access  public
-     */
-    function SaveReplyComment()
-    {
-        $this->gadget->CheckPermission('ManageComments');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
-
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'reply'), 'post');
-
-        $model->ReplyComment($post['id'], $post['reply']);
+                              $post['reply'], $post['permalink'], $post['status']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageComments');
     }

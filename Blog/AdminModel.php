@@ -669,11 +669,12 @@ class Blog_AdminModel extends Blog_Model
      * @param   string  $url        Url of the author
      * @param   string  $email      Email of the author
      * @param   string  $comments   Text of the comment
+     * @param   string  $reply      Text of the comment's reply
      * @param   string  $permalink  Permanent link to post
      * @param   string  $status     Comment Status
      * @return  mixed   True on Success or Jaws_Error on Failure
      */
-    function UpdateComment($id, $name, $url, $email, $comments, $permalink, $status)
+    function UpdateComment($id, $name, $url, $email, $comments, $reply, $permalink, $status)
     {
         $params = array();
         $params['id']        = $id;
@@ -681,13 +682,14 @@ class Blog_AdminModel extends Blog_Model
         $params['url']       = $url;
         $params['email']     = $email;
         $params['comments']  = $comments;
+        $params['reply']     = $reply;
         $params['permalink'] = $permalink;
         $params['status']    = $status;
 
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->UpdateComment(
-            $this->gadget->name, $params['id'], $params['name'],
-            $params['email'], $params['url'], $params['comments'], $params['permalink'], $params['status']
+            $this->gadget->name, $params['id'], $params['name'], $params['email'], $params['url'],
+            $params['comments'], $params['reply'], $params['permalink'], $params['status']
         );
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_UPDATED'), RESPONSE_ERROR);
@@ -695,27 +697,6 @@ class Blog_AdminModel extends Blog_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_UPDATED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Reply a comment
-     *
-     * @access  public
-     * @param   string  $id         Comment id
-     * @param   string  $reply      Reply text
-     * @return  mixed   True on Success or Jaws_Error on Failure
-     */
-    function ReplyComment($id, $reply)
-    {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
-        $res = $cModel->ReplyComment($this->gadget->name, $id, $reply);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_COMMENT_NOT_REPLIED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_COMMENT_NOT_REPLIED'), _t('BLOG_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_COMMENT_REPLIED'), RESPONSE_NOTICE);
         return true;
     }
 
