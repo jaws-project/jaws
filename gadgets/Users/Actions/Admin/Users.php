@@ -564,14 +564,12 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // country
         $country =& Piwi::CreateWidget('Entry', 'country', '');
-        $country->SetStyle('width: 142px;');
         $country->SetID('country');
         $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
         $tpl->SetVariable('country', $country->Get());
 
         // city
         $city =& Piwi::CreateWidget('Entry', 'city', '');
-        $city->SetStyle('width: 142px;');
         $city->SetID('city');
         $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));
         $tpl->SetVariable('city', $city->Get());
@@ -586,28 +584,24 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // postal_code
         $postalCode =& Piwi::CreateWidget('Entry', 'postal_code', '');
-        $postalCode->SetStyle('width: 142px;');
         $postalCode->SetID('postal_code');
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
         $tpl->SetVariable('postal_code', $postalCode->Get());
 
         // phone_number
         $phoneNumber =& Piwi::CreateWidget('Entry', 'phone_number', '');
-        $phoneNumber->SetStyle('width: 142px;');
         $phoneNumber->SetID('phone_number');
         $tpl->SetVariable('lbl_phone_number', _t('USERS_CONTACTS_PHONE_NUMBER'));
         $tpl->SetVariable('phone_number', $phoneNumber->Get());
 
         // mobile_number
         $mobileNumber =& Piwi::CreateWidget('Entry', 'mobile_number', '');
-        $mobileNumber->SetStyle('width: 142px;');
         $mobileNumber->SetID('mobile_number');
         $tpl->SetVariable('lbl_mobile_number', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile_number', $mobileNumber->Get());
 
         // fax_number
         $faxNumber =& Piwi::CreateWidget('Entry', 'fax_number', '');
-        $faxNumber->SetStyle('width: 142px;');
         $faxNumber->SetID('fax_number');
         $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariable('fax_number', $faxNumber->Get());
