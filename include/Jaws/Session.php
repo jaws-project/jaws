@@ -74,13 +74,6 @@ class Jaws_Session
     var $_SessionID;
 
     /**
-     * Is session exists in browser or application
-     * @var     bool    $_SessionExists
-     * @access  private
-     */
-    var $_SessionExists = true;
-
-    /**
      * An interface for available drivers
      *
      * @access  public
@@ -145,14 +138,6 @@ class Jaws_Session
     function Login($username, $password, $remember, $authtype = '')
     {
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
-        if (!$this->_SessionExists) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-
         if ($username === '' && $password === '') {
             $result = Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),

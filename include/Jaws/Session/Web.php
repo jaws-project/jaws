@@ -28,7 +28,6 @@ class Jaws_Session_Web extends Jaws_Session
         parent::Init();
         $session = $this->GetCookie(JAWS_SESSION_NAME);
         if (empty($session) || !$this->Load($session)) {
-            $this->_SessionExists = false;
             $this->Create();
         }
     }
