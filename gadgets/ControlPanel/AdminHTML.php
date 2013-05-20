@@ -158,8 +158,9 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         }
 
         // referrer page link
-        $redirect_to = is_null($reqpost['redirect_to'])?
-            bin2hex(Jaws_Utils::getRequestURL()) : $reqpost['redirect_to'];
+        $reqURL = Jaws_Utils::getRequestURL();
+        $reqURL.= ($reqURL == BASE_SCRIPT)? '?checksess' : '&checksess';
+        $redirect_to = is_null($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
         $ltpl->SetVariable('redirect_to', $redirect_to);
 
         if ($use_crypt) {
@@ -220,6 +221,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
+        $message = is_null($request->get('checksess'))? $message : _t('GLOBAL_ERROR_SESSION_NOTFOUND');
         if (!empty($message)) {
             $ltpl->SetBlock('layout/message');
             $ltpl->SetVariable('message', $message);
