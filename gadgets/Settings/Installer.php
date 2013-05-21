@@ -48,7 +48,6 @@ class Settings_Installer extends Jaws_Gadget_Model
             'editor_tinymce_toolbar' => '',
             'editor_ckeditor_toolbar' => '',
             'browsers_flag' => 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text',
-            'controlpanel_name' => 'ControlPanel',
             'show_viewsite' => 'true',
             'cookie_precedence' => 'false',
             'robots' => implode(',', $robots),
