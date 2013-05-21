@@ -201,7 +201,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
-        $tpl->SetVariable('title-cp', _t('CONTROLPANEL_NAME'));
+        $tpl->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('title-name', _t('LAYOUT_NAME'));
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');

@@ -32,7 +32,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_HTML
         $ltpl =& $GLOBALS['app']->Layout->_Template;
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/style.css');
         $ltpl->SetVariable('admin_script', BASE_SCRIPT);
-        $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
+        $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 
         $request =& Jaws_Request::getInstance();
         $reqpost = $request->get(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');

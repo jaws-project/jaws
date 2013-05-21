@@ -278,7 +278,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
         $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
-        $this->_Template->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
+        $this->_Template->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
         $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $this->_Template->SetVariable('navigate-away-message', _t('CONTROLPANEL_UNSAVED_CHANGES'));
         $this->_Template->SetVariable('encoding', 'utf-8');
@@ -324,7 +324,7 @@ class Jaws_Layout
             $gname = _t(strtoupper($gadget) . '_NAME');
             $this->_Template->SetBlock('layout/cptitle');
             $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
-            $this->_Template->SetVariable('title-cp', _t('CONTROLPANEL_NAME'));
+            $this->_Template->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
             $this->_Template->SetVariable('title-name', $gname);
             $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/images/logo.png');
             $this->_Template->SetVariable('title-gadget', $gadget);
@@ -346,7 +346,7 @@ class Jaws_Layout
 
         if ($this->attributes['site_status'] == 'disabled') {
             $this->_Template->SetBlock('layout/warning');
-            $this->_Template->SetVariable('warning', _t('CONTROLPANEL_OFFLINE_WARNING'));
+            $this->_Template->SetVariable('warning', _t('GLOBAL_WARNING_OFFLINE'));
             $this->_Template->ParseBlock('layout/warning');
         }
 
