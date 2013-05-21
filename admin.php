@@ -104,8 +104,8 @@ if (!$GLOBALS['app']->Session->Logged())
     } else {
         // Init layout
         $GLOBALS['app']->InstanceLayout();
-        $cpl = $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
-        echo $cpl->ShowLoginForm($loginMsg);
+        $cpl = $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML', 'Login');
+        echo $cpl->LoginBox($loginMsg);
     }
 
     // Sync session
