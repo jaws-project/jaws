@@ -268,7 +268,6 @@ class Jaws_Layout
             $this->AddHeadLink($favicon, 'icon', 'image/png');
         }
 
-        $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
         $this->_Template = new Jaws_Template();
         $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/templates');
         $this->_Template->SetBlock('layout');
