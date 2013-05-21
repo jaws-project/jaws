@@ -81,33 +81,6 @@ function isValidEmail(email) {
 }
 
 /**
- * Select DataGrid row
- *
- */
-function selectDataGridRow(rowElement)
-{
-    if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
-    }
-    selectedRowColor = rowElement.style.backgroundColor;
-    rowElement.style.backgroundColor = '#ffffcc';
-    selectedRow = rowElement;
-}
-
-/**
- * Unselect DataGrid row
- *
- */
-function unselectDataGridRow()
-{
-    if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
-    }
-    selectedRow = null;
-    selectedRowColor = null;
-}
-
-/**
  * Clean the form
  *
  */
@@ -132,7 +105,7 @@ function stopAction()
     $('message').disabled              = false;
     $('comment_status').disabled       = false;
 
-    unselectDataGridRow();
+    unselectGridRow('comments_datagrid');
     $('name').focus();
 }
 
@@ -140,9 +113,9 @@ function stopAction()
  * Edit a Comment
  *
  */
-function editComment(element, id)
+function editComment(rowElement, id)
 {
-    selectDataGridRow(element.parentNode.parentNode);
+    selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
     $('name').disabled            = false;
     $('email').disabled           = false;
@@ -167,9 +140,9 @@ function editComment(element, id)
  * Reply a Comment
  *
  */
-function replyComment(element, id)
+function replyComment(rowElement, id)
 {
-    selectDataGridRow(element.parentNode.parentNode);
+    selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
 
     $('id').value               = comment['id'];
@@ -226,7 +199,7 @@ function commentDelete(id)
     if (confirm(confirmCommentDelete)) {
         CommentsAjax.callAsync('DeleteComments', id);
     }
-    unselectDataGridRow();
+    unselectGridRow('comments_datagrid');
 }
 
 
@@ -269,20 +242,6 @@ function searchComment()
 function SaveSettings()
 {
     CommentsAjax.callAsync('SaveSettings', $('allow_comments').value, $('allow_duplicate').value);
-}
-
-/**
- * Select DataGrid row
- *
- */
-function selectDataGridRow(rowElement)
-{
-    if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
-    }
-    selectedRowColor = rowElement.style.backgroundColor;
-    rowElement.style.backgroundColor = '#ffffcc';
-    selectedRow = rowElement;
 }
 
 var CommentsAjax = new JawsAjax('Comments', CommentsCallback),
