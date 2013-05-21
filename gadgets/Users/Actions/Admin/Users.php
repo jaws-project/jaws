@@ -538,7 +538,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $timezone =& Piwi::CreateWidget('Combo', 'timezone');
         $timezone->SetID('timezone');
         $timezone->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel');
         $timezones = $settingsModel->GetTimeZonesList();
         foreach($timezones as $k => $v) {
             $timezone->AddOption($v, $k);
