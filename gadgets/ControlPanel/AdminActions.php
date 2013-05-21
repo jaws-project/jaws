@@ -11,10 +11,17 @@
 $actions = array();
 $actions['DefaultAction'] = array(
     'normal' => true,
+    'file' => 'ControlPanel',
+);
+$actions['LoginBox'] = array(
+    'standalone' => true,
+    'file' => 'Login',
 );
 $actions['Logout'] = array(
-    'normal' => true,
+    'standalone' => true,
+    'file' => 'Login',
 );
 $actions['Backup'] = array(
     'standalone' => true,
+    'file' => 'Backup',
 );
