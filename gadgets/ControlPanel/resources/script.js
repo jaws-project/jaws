@@ -1,31 +1,16 @@
 /**
- * OnBeforeUnload
+ * ControlPanel Javascript actions
+ *
+ * @category    Ajax
+ * @package     ControlPanel
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-var navigate_away_message = '';
-var unsavedChanges = false;
-window.onbeforeunload = askNavigateAway;
-function askNavigateAway() {
-    if (unsavedChanges) {
-        return navigate_away_message;
-    } else {
-        return;
-    }
+/**
+ * Use async mode, create Callback
+ */
+var ControlPanelCallback = {
 }
 
-/**
- * Check if page is loaded
- */
-function cpload()
-{
-    if (document.getElementById) { // DOM3 = IE5, NS6
-        document.getElementById('hidepage').style.visibility = 'hidden';
-    }
-    else {
-        if (document.layers) { // Netscape 4
-            document.hidepage.visibility = 'hidden';
-        }
-        else { // IE 4
-            document.all.hidepage.style.visibility = 'hidden';
-        }
-    }
-}
+var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);
