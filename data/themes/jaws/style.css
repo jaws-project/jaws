@@ -1,10 +1,9 @@
-*{margin:0;padding:0;border:0 none;white-space:normal;text-decoration:none;}
-html{height:100%;vertical-align:baseline;color:#666;font-size:11px;line-height:1.5em;}
-body{height:100%;margin:0;padding:0;background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAABoCAIAAAC/jA1MAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAAEBJREFUGJVjMIqcwsTAwDCKEZjh1pNTTCdv/Wb4//8/051nL5kYGRmhmAFCMyD4THA+A6o6qBomDH2Y6jDVwPkAG1cNCSp8pbMAAAAASUVORK5CYII=) repeat-x;
-font-family:verdana,arial,helvetica,sans-serif;}
-h1{padding:5px 0;font-size:2em;font-family:arial,helvetica,sans-serif;}
-h2{font-size:1.2em;padding:2px 0px;color:#325994;}
-h3{font-size:1em;line-height:1.4em;}
+*{margin:0;padding:0;border:0 none;white-space:normal;text-decoration:none;font-family:tahoma,verdana,arial,helvetica,sans-serif;font-size:1em;line-height:1.25em;letter-spacing:0;}
+html{height:100%;vertical-align:baseline;color:#666;}
+body{height:100%;margin:0;padding:0;background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAABoCAIAAAC/jA1MAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAAEBJREFUGJVjMIqcwsTAwDCKEZjh1pNTTCdv/Wb4//8/051nL5kYGRmhmAFCMyD4THA+A6o6qBomDH2Y6jDVwPkAG1cNCSp8pbMAAAAASUVORK5CYII=) repeat-x;font-size:70%;}
+h1{font-size:160%;}
+h2{font-size:120%;padding:2px 0px;color:#325994;}
+h3{font-size:110%;line-height:1.4em;}
 h4{font-weight:normal;}
 ul{list-style-type:none;}
 ul li{padding:0 5px;}
@@ -19,10 +18,10 @@ button, .button{padding:2px;border:1px solid #ccc;color:#325994;background:#eee;
 .wrapper{width:980px;margin:0 auto;}
 #container{min-height:100%;}
 #header{color:#fff;height:68px;}
-#title{float:left;width:540px;margin-top:15px;}
+#header #title{float:left;width:540px;margin-top:20px;}
 #header a{color:#fff;}
 #header h2{display:none;}
-#header span{font-size:small;}
+#header span{font-size:110%;}
 #headbar{float:right;width:425px;height:58px;margin-top:8px;}
 #content{width:980px;padding-top:20px;padding-bottom:30px;}
 #mainbar{float:left;width:540px;}
