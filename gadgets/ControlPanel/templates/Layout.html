@@ -6,19 +6,13 @@
   <title>{site-name}: {control-panel}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- BEGIN head -->{ELEMENT}<!-- END head -->
-  <script type="text/javascript" src="gadgets/ControlPanel/resources/script.js"></script>
 </head>
 <body id="requested_gadget_{requested_gadget}" onload="hideWorkingNotification();">
- <!-- Working Notification -->
   <div id="working_notification"></div>
   <script type="text/javascript">
-   default_loading_message = "{loading-message}";
-   var loading_message = default_loading_message;
-   var navigate_away_message = "{navigate-away-message}";
-  </script>
- <!-- /Working Notification -->
-  <script type="text/javascript">
-  showWorkingNotification();
+    default_loading_message = "{loading-message}";
+    var navigate_away_message = "{navigate-away-message}";
+    showWorkingNotification();
   </script>
   <div id="header">
    <div id="site-info">

@@ -718,11 +718,10 @@ function hideResponseBoxCallback(name)
 function showWorkingNotification(msg)
 {
     if (!msg) {
-        msg = loading_message;
+        msg = default_loading_message;
     }
     $('working_notification').innerHTML = msg;
     $('working_notification').style.visibility = 'visible';
-    loading_message = default_loading_message;
 }
 
 /**
