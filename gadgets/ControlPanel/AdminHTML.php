@@ -146,7 +146,7 @@ class ControlPanel_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/templates/',
                                       'Login.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/public.css');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/style.css');
         $ltpl->SetVariable('admin_script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('CONTROLPANEL_NAME'));
 
