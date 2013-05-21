@@ -261,8 +261,7 @@ class Jaws_Layout
     {
         $this->AddScriptLink('libraries/mootools/core.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
-        $this->AddHeadLink('gadgets/ControlPanel/resources/public.css', 'stylesheet', 'text/css');
-        $this->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css');
+        $this->AddHeadLink('gadgets/ControlPanel/resources/style.css', 'stylesheet', 'text/css');
 
         $favicon = $this->attributes['site_favicon'];
         if (!empty($favicon)) {
@@ -609,12 +608,7 @@ class Jaws_Layout
         }
 
         if (JAWS_SCRIPT == 'admin') {
-            $this->AddHeadLink('gadgets/'.$gadget.'/resources/style.css',
-                               'stylesheet',
-                               'text/css',
-                               '',
-                               null,
-                               true);
+            $this->AddHeadLink('gadgets/'.$gadget.'/resources/style.css', 'stylesheet', 'text/css');
             $goGadget = $GLOBALS['app']->loadGadget($gadget, 'AdminHTML');
             if (!Jaws_Error::isError($goGadget)) {
                 $goGadget->SetAction($action);
@@ -772,7 +766,7 @@ class Jaws_Layout
      * Add a HeadLink
      *
      * @access  public
-     * @param   string  $href  The HREF
+     * @param   string  $link  The HREF
      * @param   string  $rel   The REL that will be associated
      * @param   string  $type  Type of HeadLink
      * @param   bool    $checkInTheme Check if resource exists in the current theme directory
@@ -780,16 +774,21 @@ class Jaws_Layout
      * @param   string  $media Media type, screen, print or such
      * @return  array   array include head link information
      */
-    function AddHeadLink($href, $rel = 'stylesheet', $type = 'text/css', $title = '',
+    function AddHeadLink($link, $rel = 'stylesheet', $type = 'text/css', $title = '',
                          $direction = null, $checkInTheme = false, $media = '')
     {
-        $fileName = basename($href);
+        $hashedLink = md5($link);
+        if (isset($this->_HeadLink[$hashedLink])) {
+            return $this->_HeadLink[$hashedLink];
+        }
+
+        $fileName = basename($link);
         $fileExt  = strrchr($fileName, '.');
         $fileName = substr($fileName, 0, -strlen($fileExt));
-        if (substr($href, 0, 1) == '/') {
-            $path = substr($href , 1, - strlen($fileName.$fileExt));
+        if (substr($link, 0, 1) == '/') {
+            $path = substr($link , 1, - strlen($fileName.$fileExt));
         } else {
-            $path = substr($href , 0, - strlen($fileName.$fileExt));
+            $path = substr($link , 0, - strlen($fileName.$fileExt));
         }
 
         $brow = $GLOBALS['app']->GetBrowserFlag();
@@ -830,7 +829,7 @@ class Jaws_Layout
             'title' => $title,
             'media' => $media,
         );
-        $this->_HeadLink[] = $hLinks[0];
+        $this->_HeadLink[$hashedLink] = $hLinks[0];
 
         $brow_href = substr_replace($href, $brow, strrpos($href, '.'), 0);
         if (!empty($brow) && @file_exists($brow_href)) {
