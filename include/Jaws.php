@@ -468,6 +468,10 @@ class Jaws
             $obj = null;
             if (!Jaws::classExists($type_class_name)) {
                 switch ($type) {
+                    case 'AdminHTML':
+                        $type_class_name = 'Jaws_Gadget_HTML';
+                        break;
+
                     case 'AdminModel':
                         $type_class_name = 'Jaws_Gadget_Model';
                         break;
