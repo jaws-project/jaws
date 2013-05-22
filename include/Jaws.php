@@ -440,9 +440,10 @@ class Jaws
         $type_class_name = $gadget. '_'. $type;
         if (@!array_key_exists($type, $this->_Gadgets[$gadget])) {
             if (!is_dir(JAWS_PATH . 'gadgets/' . $gadget)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
-                                        'Gadget directory check');
-                return $error;
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                    __FUNCTION__
+                );
             }
 
             // is gadget available?
@@ -453,10 +454,11 @@ class Jaws
                 }
 
                 if (!in_array($gadget, $available_gadgets)) {
-                    $error = new Jaws_Error(_t('GLOBAL_ERROR_GADGET_NOT_AVAILABLE', $gadget),
-                                            'Gadget availability check',
-                                            JAWS_ERROR_INFO);
-                    return $error;
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_GADGET_NOT_AVAILABLE', $gadget),
+                        __FUNCTION__,
+                        JAWS_ERROR_INFO
+                    );
                 }
             }
 
@@ -468,6 +470,13 @@ class Jaws
             $obj = null;
             if (!Jaws::classExists($type_class_name)) {
                 switch ($type) {
+                    case 'Info':
+                        return Jaws_Error::raiseError(
+                            _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                            __FUNCTION__
+                        );
+                        break;
+
                     case 'AdminHTML':
                         $type_class_name = 'Jaws_Gadget_HTML';
                         break;
