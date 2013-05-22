@@ -363,18 +363,14 @@ class Jaws_Request
      * One idea would be to have set('get', 'foo/bar/foobar', 'sm00ke') and resolve the path
      * another would be to allow arrays like crazy but still
      *
-     * @param   string  $type
      * @param   string  $key
      * @param   mixed   $value
+     * @param   string  $type
      * @return  bool
      */
-    function set($type, $key, $value)
+    function set($key, $value, $type = '')
     {
-        $type = $this->isTypeValid($type);
-        if (!$type) {
-            return false;
-        }
-
+        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
         $this->data[$type][$key] = $value;
         return true;
     }
