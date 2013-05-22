@@ -18,7 +18,7 @@ var JawsAjax = new Class({
      *
      * @param   string  gadget      Gadget Name
      * @param   object  callback    Callback functions
-     *
+     * @param   string  baseScript  Base URL
      * @return  void
      */
     initialize: function (gadget, callback, baseScript) {
@@ -30,20 +30,38 @@ var JawsAjax = new Class({
                 basePath = href.substr(0, href.indexOf(path) + path.length);
             baseScript = basePath.replace($$('base')[0].href, '');
         }
+
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
+    },
+
+    /**
+     * Supports backward ajax mechanism
+     *
+     * @param   string  baseScript  Base URL
+     * @return  void
+     */
+    backwardSupport: function (baseScript) {
+        if (baseScript === undefined) {
+            var href = document.location.href,
+                path = document.location.pathname,
+                basePath = href.substr(0, href.indexOf(path) + path.length);
+            baseScript = basePath.replace($$('base')[0].href, '');
+        }
+
+        this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
     },
 
     /**
      * Performs asynchronous Ajax request
      *
-     * @param   string  func    Name of the function to be executed
+     * @param   string  action  Name of the new JawsAjax( to be executed
      * @param   object  params  Parameters passed to the function (optional)
      * @return  void
      */
-    callAsync: function (func, params) {
+    callAsync: function (action, params) {
         var options = {};
-        options.url = this.baseURL + func;
-        options.func = func;
+        options.url = this.baseURL + action;
+        options.action = action;
         options.async = true;
         arguments = Array.prototype.slice.call(arguments, 1);
         options.data = toJSON(arguments);
@@ -58,15 +76,15 @@ var JawsAjax = new Class({
     /**
      * Performs synchronous Ajax request
      *
-     * @param   string  func    Name of the function to be executed
+     * @param   string  action  Name of the action to be executed
      * @param   object  params  Parameters passed to the function (optional)
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
-    callSync: function (func, params) {
+    callSync: function (action, params) {
         var options = {};
         options.async = false;
-        options.url = this.baseURL + func;
-        options.func = func;
+        options.url = this.baseURL + action;
+        options.action = action;
         arguments = Array.prototype.slice.call(arguments, 1);
         options.data = toJSON(arguments);
         options.urlEncoded = false;
@@ -82,7 +100,7 @@ var JawsAjax = new Class({
 
     onSuccess: function (reqOptions, responseText) {
         responseText = eval('(' + responseText + ')');
-        var reqMethod = this.callback[reqOptions.func];
+        var reqMethod = this.callback[reqOptions.action];
         if (reqMethod) {
             reqMethod(responseText);
         }
