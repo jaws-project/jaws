@@ -152,7 +152,7 @@ var JawsStorage = new Class({
      * @param   string  key     Key name
      * @return  void
      */
-    delete: function (key, section) {
+    'delete': function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
             this.storage.removeItem(key);
