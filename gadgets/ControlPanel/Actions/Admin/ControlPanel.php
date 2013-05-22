@@ -74,7 +74,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
                 $tpl->SetBlock('sidebar');
                 if (count($noninstalled) > 0) {
                     $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
+                    $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
                     foreach ($noninstalled as $key => $gadget) {
                         $tpl->SetBlock('sidebar/notifications/item');
                         $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];

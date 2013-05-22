@@ -1,33 +1,29 @@
 <!-- BEGIN sidebar -->
 <div id="sidebar">
- <!-- BEGIN notifications -->
- <div class="notify-box">
-  <h1>{notify-title}</h1>
-  <div class="notify-items">
-    <table class="notify-items_tbl">
-      <!-- BEGIN item -->
-      <tr>
-        <td class="item"><img title="{title}" alt="{name}" src="{icon}" />{name}</td>
-        <td class="install"><a title="{title}" href="{url}">{install}</a></td>
-      </tr>
-     <!-- END item -->
-    </table>
+  <!-- BEGIN notifications -->
+  <div class="notify_box notify_components">
+    <h2>{title}</h2>
+    <div class="notify_content">
+      <ul>
+        <!-- BEGIN item -->
+        <li>
+          <div><img title="{title}" alt="{name}" src="{icon}" /><label>{name}</label><a class="install" title="{title}" href="{url}">{install}</a></div>
+        </li>
+        <!-- END item -->
+      </ul>
+    </div>
   </div>
- </div>
- <!-- END notifications -->
+  <!-- END notifications -->
  </div>
 <!-- END sidebar -->
 <div id="body">
- <!-- BEGIN message --><div class="{class}">{message}</div><!-- END message -->
- <!-- BEGIN main -->
+  <!-- BEGIN message --><div class="{class}">{message}</div><!-- END message -->
+  <!-- BEGIN main -->
   <div class="main-menu">
-  <h1 class="main-menu-header">{title}</h1>
-   <!-- BEGIN item -->
-   <a class="main-item" href= "{url}" title="{desc}" >
-    <img class="main-item-icon" src="{icon}" title="{desc}" alt="{name}" />
-    {name}
-   </a>
-   <!-- END item -->
+    <h2 class="main-menu-header">{title}</h2>
+    <!-- BEGIN item -->
+    <a class="main-item" href= "{url}" title="{desc}" ><img class="main-item-icon" src="{icon}" title="{desc}" alt="{name}" />{name}</a>
+    <!-- END item -->
   </div>
- <!-- END main -->
+  <!-- END main -->
 </div>
