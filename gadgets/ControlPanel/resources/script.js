@@ -13,4 +13,21 @@
 var ControlPanelCallback = {
 }
 
+/**
+ * collapse/uncollapse notify boxes
+ */
+function toggleCollapse()
+{
+    this.toggleClass('collapsed');
+    this.getNext('div').toggle();
+}
+
+/**
+ * Initiates script
+ */
+function init()
+{
+    $('sidebar').getElements('h2').addEvent('click', toggleCollapse);
+}
+
 var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);

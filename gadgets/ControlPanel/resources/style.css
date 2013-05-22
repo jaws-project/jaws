@@ -757,7 +757,10 @@ padding:4px;
 font-size:small;
 font-weight:bold;
 border-radius:3px;
-background-color:#3465a4;
+background:#3465a4 url(../images/collapse.png) 98% no-repeat;
+}
+.notify_box h2.collapsed {
+background:#3465a4 url(../images/uncollapse.png) 98% no-repeat;
 }
 .notify_content {
 padding:0 2px;
