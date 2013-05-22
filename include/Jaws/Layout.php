@@ -738,9 +738,12 @@ class Jaws_Layout
         } else {
             $content = $this->_Template->Get();
             if ($GLOBALS['app']->GZipEnabled()) {
-                $content = gzencode($content, COMPRESS_LEVEL, FORCE_GZIP);
-                header('Content-Length: '.strlen($content));
-                header('Content-Encoding: '.(strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')!== false? 'x-gzip' : 'gzip'));
+                $request =& Jaws_Request::getInstance();
+                if (false == strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')) {
+                    $request->set('restype', 'gzip');
+                } else {
+                    $request->set('restype', 'x-gzip');
+                }
             }
             return $content;
         }

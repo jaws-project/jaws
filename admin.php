@@ -168,7 +168,26 @@ if ($IsReqActionStandAlone) {
 }
 
 // Send content to client
-echo $ReqResult;
+$resType = $request->get('restype');
+switch ($resType) {
+    case 'json':
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        echo Jaws_UTF8::json_encode($ReqResult);
+        break;
+
+    case 'gzip':
+    case 'x-gzip':
+        $ReqResult = gzencode($ReqResult, COMPRESS_LEVEL, FORCE_GZIP);
+        header('Content-Length: '.strlen($ReqResult));
+        header('Content-Encoding: '. $resType);
+        echo $ReqResult;
+        break;
+
+    default:
+        echo $ReqResult;
+}
 
 // Sync session
 $GLOBALS['app']->Session->Synchronize();
