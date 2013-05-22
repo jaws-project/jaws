@@ -244,11 +244,11 @@ table { text-align:left; }
 img { border:0; }
 
 /* ----- MAIN MENU ----- */
-#body {
+#mainbar {
 width:725px;
 display:inline-block;
 }
-#body h2 {font-size:large;}
+#mainbar h2 {font-size:large;}
 
 .main-menu {
 display:block;
