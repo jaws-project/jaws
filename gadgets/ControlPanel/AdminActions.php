@@ -25,3 +25,7 @@ $actions['Backup'] = array(
     'standalone' => true,
     'file' => 'Backup',
 );
+$actions['JawsVersion'] = array(
+    'standalone' => true,
+    'file' => 'JawsVersion',
+);

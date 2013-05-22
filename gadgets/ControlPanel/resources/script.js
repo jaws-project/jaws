@@ -11,6 +11,9 @@
  * Use async mode, create Callback
  */
 var ControlPanelCallback = {
+    JawsVersion: function(response) {
+        $('jaws_version').set('html', response);
+    }
 }
 
 /**
@@ -37,7 +40,10 @@ function init()
             el.getChildren('h2').fireEvent('click');
         }
     });
+
+    ControlPanelAjax.callAsync('JawsVersion');
 }
 
 var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);
 var ControlPanelStorage = new JawsStorage('ControlPanel');
+ControlPanelAjax.backwardSupport();
