@@ -95,6 +95,75 @@ var JawsAjax = new Class({
 });
 
 /**
+ * Jaws HTML5 wrapper of local storage
+ */
+var JawsStorage = new Class({
+    /**
+     * Initiates the storage
+     *
+     * @param   string  gadget      Gadget Name
+     *
+     * @return  void
+     */
+    initialize: function (gadget) {
+        this.gadget = gadget;
+        this.html5Support = 'localStorage' in window;
+        if (this.html5Support) {
+            this.storage = localStorage;
+        } else {
+            this.storage = window.Cookie;
+        }
+    },
+
+    /**
+     * Updates a storage key value
+     *
+     * @param   string  key     Key name
+     * @param   mixed   value   Key value
+     * @return  void
+     */
+    update: function (key, value, section) {
+        key = (section? section : this.gadget) + '_' + key;
+        if (this.html5Support) {
+            this.storage.setItem(key, JSON.encode(value));
+        } else {
+            this.storage.write(key, JSON.encode(value));
+        }
+    },
+
+    /**
+     * fetchs value of a storage key
+     *
+     * @param   string  key     Key name
+     * @return  mixed   Stored value of key
+     */
+    fetch: function (key, section) {
+        key = (section? section : this.gadget) + '_' + key;
+        if (this.html5Support) {
+            return JSON.decode(this.storage.getItem(key));
+        } else {
+            return JSON.decode(this.storage.read(key));
+        }
+    },
+
+    /**
+     * deletes a storage key
+     *
+     * @param   string  key     Key name
+     * @return  void
+     */
+    delete: function (key, section) {
+        key = (section? section : this.gadget) + '_' + key;
+        if (this.html5Support) {
+            this.storage.removeItem(key);
+        } else {
+            this.storage.dispose(key);
+        }
+    },
+
+});
+
+/**
  * Repaints a combo
  */
 function paintCombo(combo, oddColor, evenColor)
