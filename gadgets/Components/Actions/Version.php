@@ -1,0 +1,47 @@
+<?php
+/**
+ * Components Gadget
+ *
+ * @category    Gadget
+ * @package     Components
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ */
+class Components_Actions_Version extends Jaws_Gadget_HTML
+{
+    /**
+     * Returns the Jaws/component version
+     *
+     * @access  public
+     * @return  string  Version as plain text 
+     */
+    function Version()
+    {
+        if ($this->gadget->registry->fetch('versions_remote_access') != 'true') {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $request =& Jaws_Request::getInstance();
+        $get = $request->get(array('type', 'component'));
+        $version = '0';
+        switch ((int)$get['type']) {
+            case 0:
+                $version = JAWS_VERSION;
+                break;
+
+            case 1:
+                $objGadget = $GLOBALS['app']->LoadGadget($get['component'], 'Info');
+                $version = Jaws_Error::isError($objGadget)? Jaws_HTTPError::Get(404) : $objGadget->_Version;
+                break;
+
+            case 2:
+                $objPlugin = $GLOBALS['app']->LoadPlugin($get['componente']);
+                $version = Jaws_Error::isError($objPlugin)? Jaws_HTTPError::Get(404) : $objPlugin->GetVersion();
+                break;
+        }
+
+        return $version;
+    }
+
+}
