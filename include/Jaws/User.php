@@ -60,41 +60,51 @@ class Jaws_User
             if ($result['bad_password_count'] >= $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy') &&
                ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy')))
             {
-                return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
-                                              __FUNCTION__,
-                                              JAWS_ERROR_NOTICE);
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
             }
 
             // password
             if ($result['password'] === Jaws_User::GetHashedPassword($password, $result['password'])) {
                 // only superadmin
                 if ($onlyAdmin && !$result['superadmin']) {
-                    return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_ONLY_ADMIN'),
-                                                  __FUNCTION__,
-                                                  JAWS_ERROR_NOTICE);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_LOGIN_ONLY_ADMIN'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
 
                 // status
                 if ($result['status'] !== 1) {
-                    return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
-                                                  __FUNCTION__,
-                                                  JAWS_ERROR_NOTICE);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
 
                 // expiry date
                 if (!empty($result['expiry_date']) && $result['expiry_date'] <= time()) {
-                    return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_EXPIRED'),
-                                                  __FUNCTION__,
-                                                  JAWS_ERROR_NOTICE);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
 
                 // logon hours
                 $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
                 $lhByte = hexdec($result['logon_hours']{$wdhour[0]*6 + intval($wdhour[1]/4)});
                 if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
-                    return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
-                                                  __FUNCTION__,
-                                                  JAWS_ERROR_NOTICE);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
 
                 return array('id' => $result['id'],
@@ -112,9 +122,11 @@ class Jaws_User
             }
         }
 
-        return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
-                                      __FUNCTION__,
-                                      JAWS_ERROR_NOTICE);
+        return Jaws_Error::raiseError(
+            _t('GLOBAL_ERROR_LOGIN_WRONG'),
+            __FUNCTION__,
+            JAWS_ERROR_NOTICE
+        );
     }
 
     /**
@@ -241,7 +253,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(id)');
         $usersTable->where('email', Jaws_UTF8::strtolower($email));
-        $usersTable->where('id', $exclude, '<>');
+        $usersTable->and()->where('id', $exclude, '<>');
         $howmany = $usersTable->getOne();
         return !empty($howmany);
     }
@@ -468,26 +480,32 @@ class Jaws_User
         // username
         $uData['username'] = trim($uData['username'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_USERNAME'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_USERNAME'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $uData['username'] = strtolower($uData['username']);
 
         // nickname
         $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
         if (empty($uData['nickname'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // email
         $uData['email'] = trim($uData['email']);
         if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $uData['email'] = strtolower($uData['email']);
 
@@ -497,18 +515,22 @@ class Jaws_User
         if ($uData['password'] == '' ||
             !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
         ) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         if ($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy') == 'yes') {
             if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
                     $uData['password'])
             ) {
-                return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
-                                              __FUNCTION__,
-                                              JAWS_ERROR_NOTICE);
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
             }
         }
 
@@ -572,26 +594,32 @@ class Jaws_User
         // username
         $uData['username'] = trim($uData['username'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_USERNAME'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_USERNAME'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $uData['username'] = strtolower($uData['username']);
 
         // nickname
         $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
         if (empty($uData['nickname'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // email
         $uData['email'] = trim($uData['email']);
         if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $uData['email'] = strtolower($uData['email']);
 
@@ -599,18 +627,22 @@ class Jaws_User
         if (isset($uData['password']) && $uData['password'] !== '') {
             $min = (int)$GLOBALS['app']->Registry->fetch('password_min_length', 'Policy');
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
-                return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
-                                              __FUNCTION__,
-                                              JAWS_ERROR_NOTICE);
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
             }
 
             if ($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy') == 'yes') {
                 if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
                         $uData['password'])
                 ) {
-                    return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
-                                                  __FUNCTION__,
-                                                  JAWS_ERROR_NOTICE);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
             }
 
@@ -833,18 +865,22 @@ class Jaws_User
         // name
         $gData['name'] = trim($gData['name'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_GROUPNAME'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $gData['name'] = strtolower($gData['name']);
 
         // title
         $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
         if (empty($gData['title'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         $gData['removable'] = isset($gData['removable'])? (bool)$gData['removable'] : true;
@@ -885,18 +921,22 @@ class Jaws_User
         // name
         $gData['name'] = trim($gData['name'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_GROUPNAME'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
         $gData['name'] = strtolower($gData['name']);
 
         // title
         $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
         if (empty($gData['title'])) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                                          __FUNCTION__,
-                                          JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         if (isset($gData['enabled'])) {
