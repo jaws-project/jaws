@@ -216,10 +216,11 @@ class Jaws_Gadget
         $model_class_name = "Jaws_Gadget_$extension";
         if (!isset($this->components[$extension])) {
             $file = JAWS_PATH. "include/Jaws/Gadget/$extension.php";
-            if (!@include_once($file)) {
+            if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
+            include_once($file);
             if (!Jaws::classExists($model_class_name)) {
                 return Jaws_Error::raiseError("Class [$model_class_name] not exists!", __FUNCTION__);
             }

@@ -72,10 +72,11 @@ class Jaws_Gadget_Model
                     return Jaws_Error::raiseError("Gadget [$type] type not exists!", __FUNCTION__);
             }
 
-            if (!@include_once($file)) {
+            if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
+            include_once($file);
             if (!Jaws::classExists($type_class_name)) {
                 return Jaws_Error::raiseError("Class [$type_class_name] not exists!", __FUNCTION__);
             }

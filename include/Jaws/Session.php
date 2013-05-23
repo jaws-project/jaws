@@ -89,7 +89,8 @@ class Jaws_Session
         }
 
         $file = JAWS_PATH . 'include/Jaws/Session/'. JAWS_APPTYPE. '.php';
-        if (@include_once($file)) {
+        if (file_exists($file)) {
+            include_once($file);
             $className = 'Jaws_Session_'. JAWS_APPTYPE;
             $obj = new $className();
             return $obj;

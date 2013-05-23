@@ -47,10 +47,11 @@ class Jaws_Gadget_Hook
         if (!isset($this->gadget->hooks[$hook])) {
             $hook_class_name = $this->gadget->name. '_Hooks_'. $hook;
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Hooks/$hook.php";
-            if (!@include_once($file)) {
+            if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
+            include_once($file);
             if (!Jaws::classExists($hook_class_name)) {
                 return Jaws_Error::raiseError("Class [$hook_class_name] not exists!", __FUNCTION__);
             }

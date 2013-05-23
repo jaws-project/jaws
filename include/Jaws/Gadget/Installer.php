@@ -45,10 +45,11 @@ class Jaws_Gadget_Installer
             $installer_class_name = $this->gadget->name. '_Installer';
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Installer.php';
 
-            if (!@include_once($file)) {
+            if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
+            include_once($file);
             if (!Jaws::classExists($installer_class_name)) {
                 return Jaws_Error::raiseError("Class [$installer_class_name] not exists!", __FUNCTION__);
             }
