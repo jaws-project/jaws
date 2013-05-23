@@ -91,83 +91,86 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     '<![endif]-->');
 
         foreach ($fakeLayout->_Template->Blocks['layout']->InnerBlock as $name => $data) {
-            if ($name == 'head') continue;
+            if ($name == 'head') {
+                continue;
+            }
+
             $fakeLayout->_Template->SetBlock('layout/'.$name);
             $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
             $gadgets = $model->GetGadgetsInSection($name);
-            if (!is_array($gadgets)) continue;
+            if (!is_array($gadgets)) {
+                continue;
+            }
+
             foreach ($gadgets as $gadget) {
-                $id = $gadget['id'];
-                if (Jaws_Gadget::IsGadgetEnabled($gadget['gadget']) || ($gadget['gadget'] == '[REQUESTEDGADGET]')) {
-                    if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
-                        $section_empty = false;
-                        $t_item->SetBlock('item');
-                        $t_item->SetVariable('section_id', $name);
-                        $t_item->SetVariable('item_id', $id);
-                        $t_item->SetVariable('pos', $gadget['layout_position']);
-                        $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
-                        $t_item->SetVariable('action', '&nbsp;');
-                        $t_item->SetVariable('icon', 'gadgets/Layout/images/requested-gadget.png');
-                        $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
-                        $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
-                        $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
-                        $t_item->SetVariable('void_link', 'return;');
-                        $t_item->SetVariable('section_name', $name);
-                        $t_item->SetVariable('delete', 'void(0);');
-                        $t_item->SetVariable('delete-img', 'gadgets/Layout/images/no-delete.gif');
-                        $t_item->SetVariable('item_status', 'none');
-                        $t_item->ParseBlock('item');
+                if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
+                    $section_empty = false;
+                    $t_item->SetBlock('item');
+                    $t_item->SetVariable('section_id', $name);
+                    $t_item->SetVariable('item_id', $gadget['id']);
+                    $t_item->SetVariable('pos', $gadget['layout_position']);
+                    $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
+                    $t_item->SetVariable('action', '&nbsp;');
+                    $t_item->SetVariable('icon', 'gadgets/Layout/images/requested-gadget.png');
+                    $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
+                    $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
+                    $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
+                    $t_item->SetVariable('void_link', 'return;');
+                    $t_item->SetVariable('section_name', $name);
+                    $t_item->SetVariable('delete', 'void(0);');
+                    $t_item->SetVariable('delete-img', 'gadgets/Layout/images/no-delete.gif');
+                    $t_item->SetVariable('item_status', 'none');
+                    $t_item->ParseBlock('item');
+                } else {
+                    $section_empty = false;
+                    $controls = '';
+                    $t_item->SetBlock('item');
+                    $t_item->SetVariable('section_id', $name);
+//Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
+                    $objGadget = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
+                    $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
+                    if (empty($actions)) {
+                        $t_item->SetVariable('gadget', $gadget['gadget']);
+                        $t_item->SetVariable('action', $gadget['gadget_action']);
                     } else {
-                        $section_empty = false;
-                        $controls = '';
-                        $t_item->SetBlock('item');
-                        $t_item->SetVariable('section_id', $name);
-
-                        $objGadget = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
-                        $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
-                        if (empty($actions)) {
-                            $t_item->SetVariable('gadget', $gadget['gadget']);
-                            $t_item->SetVariable('action', _t('LAYOUT_ACTIONS'));
+                        $t_item->SetVariable('gadget', _t(''));
+                        if (isset($actions[$gadget['gadget_action']]['name'])) {
+                            $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
                         } else {
-                            $t_item->SetVariable('gadget', $objGadget->GetTitle());
-                            if (isset($actions[$gadget['gadget_action']]['name'])) {
-                                $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
-                            } else {
-                                $t_item->SetVariable('action', $gadget['gadget_action']);
-                            }
+                            $t_item->SetVariable('action', $gadget['gadget_action']);
                         }
-                        $t_item->SetVariable('pos', $gadget['layout_position']);
-                        $t_item->SetVariable('item_id', $id);
-                        $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
-                        $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
-                        $t_item->SetVariable(
-                            'delete',
-                            "deleteElement('{$gadget['id']}');"
-                        );
-                        $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
-                        if (isset($actions[$gadget['gadget_action']]) &&
-                            Jaws_Gadget::IsGadgetUpdated($gadget['gadget'])
-                        ) {
-                            $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
-                            $t_item->SetVariable('item_status', 'none');
-                        } else {
-                            $t_item->SetVariable('description', $gadget['gadget_action']);
-                            $t_item->SetVariable('item_status', 'line-through');
-                        }
-                        unset($actions);
-
-                        $t_item->SetVariable('controls', $controls);
-                        $t_item->SetVariable('void_link', '');
-                        $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
-                        if ($gadget['display_when'] == '*') {
-                            $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
-                        } elseif (empty($gadget['display_when'])) {
-                                $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
-                        } else {
-                            $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
-                        }
-                        $t_item->ParseBlock('item');
                     }
+                    $t_item->SetVariable('pos', $gadget['layout_position']);
+                    $t_item->SetVariable('item_id', $gadget['id']);
+                    $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
+                    $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
+                    $t_item->SetVariable(
+                        'delete',
+                        "deleteElement('{$gadget['id']}');"
+                    );
+                    $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
+                    if (isset($actions[$gadget['gadget_action']]) &&
+                        Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
+                    ) {
+                        $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
+                        $t_item->SetVariable('item_status', 'none');
+                    } else {
+                        $t_item->SetVariable('description', $gadget['gadget_action']);
+                        $t_item->SetVariable('item_status', 'line-through');
+                    }
+                    unset($actions);
+
+                    $t_item->SetVariable('controls', $controls);
+                    $t_item->SetVariable('void_link', '');
+                    $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
+                    if ($gadget['display_when'] == '*') {
+                        $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
+                    } elseif (empty($gadget['display_when'])) {
+                            $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
+                    } else {
+                        $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
+                    }
+                    $t_item->ParseBlock('item');
                 }
             }
 
