@@ -394,8 +394,9 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $codeCombo->SetStyle('width: 200px;');
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_301'), 301);
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_302'), 302);
+        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
-        $codeCombo->SetDefault(301);
+        $codeCombo->SetDefault(404);
         $codeCombo->AddEvent(ON_CHANGE, "javascript: changeCode();");
         $tpl->SetVariable('lbl_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
         $tpl->SetVariable('new_code', $codeCombo->Get());

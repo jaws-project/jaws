@@ -338,13 +338,8 @@ function deleteErrorMap(element, emid)
 /**
  * Add/Edit an error map
  */
-function saveErrorMap() {
-
-    if ($('url').value.blank()) {
-        alert(incompleteFieldsMsg);
-        return false;
-    }
-
+function saveErrorMap()
+{
     if (selectedErrorMap != null && selectedErrorMap > 0) {
         UrlMapperAjax.callAsync('updateerrormap',
             selectedErrorMap,

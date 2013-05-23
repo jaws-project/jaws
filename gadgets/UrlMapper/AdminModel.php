@@ -561,13 +561,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @param   int     $new_code   new code
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function AddErrorMap($url, $code, $new_url = '', $new_code = 0)
+    function AddErrorMap($url, $code, $new_url = '', $new_code = 404)
     {
-        if (trim($url) == '') {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
-        }
-
         $params = array();
         $params['url'] = $url;
         $params['code'] = $code;
@@ -576,10 +571,6 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['new_code'] = $new_code;
         $params['hits'] = 1;
         $params['now'] = $GLOBALS['db']->Date();
-
-        if ($this->ErrorMapExists($params['url_hash'])) {
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
-        }
 
         $sql = '
             INSERT INTO [[url_errors]]
@@ -608,12 +599,6 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function UpdateErrorMap($id, $url, $code, $new_url, $new_code)
     {
-
-        if (trim($url) == '') {
-            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
-        }
-
         $params = array();
         $params['id'] = $id;
         $params['url'] = $url;
