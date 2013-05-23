@@ -169,10 +169,10 @@ class Blog_HTML extends Jaws_Gadget_HTML
      * @param   object  $tpl            Jaws_Template object
      * @param   string  $tpl_base_block Template block name
      * @param   int     $entry          entry id
-     * @param   bool    $summary        Show post summary
+     * @param   bool    $show_summary   Show post summary
      * @return  string XHTML template content
      */
-    function ShowEntry(&$tpl, $tpl_base_block, $entry, $summary = true)
+    function ShowEntry(&$tpl, $tpl_base_block, $entry, $show_summary = true)
     {
         $tpl->SetBlock("$tpl_base_block/entry");
         $tpl->SetVariablesArray($entry);
@@ -213,7 +213,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $summary = $this->gadget->ParseText($summary);
         $text    = $this->gadget->ParseText($text);
 
-        if ($summary){
+        if ($show_summary){
             if (Jaws_UTF8::trim($text) != '') {
                 $tpl->SetBlock("$tpl_base_block/entry/read-more");
                 $tpl->SetVariable('url', $perm_url);
@@ -257,10 +257,10 @@ class Blog_HTML extends Jaws_Gadget_HTML
              $this->gadget->registry->fetch('allow_comments') == 'true' &&
              $this->gadget->registry->fetch('allow_comments', 'Comments') != 'false'))
         {
-            $tpl_block = $summary? 'comment-link' : 'comments-statistic';
+            $tpl_block = $show_summary? 'comment-link' : 'comments-statistic';
             $tpl->SetBlock("$tpl_base_block/entry/$tpl_block");
             $tpl->SetVariable('url', $perm_url);
-            if ($summary && empty($entry['comments'])) {
+            if ($show_summary && empty($entry['comments'])) {
                 $tpl->SetVariable('text_comments', _t('BLOG_NO_COMMENT'));
             } else {
                 $tpl->SetVariable('text_comments', _t('BLOG_HAS_N_COMMENTS', $entry['comments']));
