@@ -126,35 +126,31 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     $controls = '';
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
-//Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
-                    $objGadget = $GLOBALS['app']->LoadGadget($gadget['gadget'], 'Info');
-                    $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
-                    if (empty($actions)) {
-                        $t_item->SetVariable('gadget', $gadget['gadget']);
-                        $t_item->SetVariable('action', $gadget['gadget_action']);
-                    } else {
-                        $t_item->SetVariable('gadget', _t(''));
-                        if (isset($actions[$gadget['gadget_action']]['name'])) {
-                            $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
-                        } else {
-                            $t_item->SetVariable('action', $gadget['gadget_action']);
-                        }
-                    }
                     $t_item->SetVariable('pos', $gadget['layout_position']);
                     $t_item->SetVariable('item_id', $gadget['id']);
                     $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
-                    $t_item->SetVariable('icon', 'gadgets/'.$gadget['gadget'].'/images/logo.png');
+                    $t_item->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['gadget'].'/images/logo.png'));
                     $t_item->SetVariable(
                         'delete',
                         "deleteElement('{$gadget['id']}');"
                     );
                     $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
+
+                    $actions = $model->GetGadgetLayoutActions($gadget['gadget'], true);
                     if (isset($actions[$gadget['gadget_action']]) &&
                         Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
                     ) {
+                        $t_item->SetVariable('gadget', _t(strtoupper($gadget['gadget']).'_NAME'));
+                        if (isset($actions[$gadget['gadget_action']]['name'])) {
+                            $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
+                        } else {
+                            $t_item->SetVariable('action', $gadget['gadget_action']);
+                        }
                         $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
                         $t_item->SetVariable('item_status', 'none');
                     } else {
+                        $t_item->SetVariable('gadget', $gadget['gadget']);
+                        $t_item->SetVariable('action', $gadget['gadget_action']);
                         $t_item->SetVariable('description', $gadget['gadget_action']);
                         $t_item->SetVariable('item_status', 'line-through');
                     }
