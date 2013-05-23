@@ -70,43 +70,39 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
             $noninstalled = $cmpModel->GetGadgetsList(null, false);
             //Count out date gadgets..
             $nonupdated   = $cmpModel->GetGadgetsList(null, true, false);
-            if ((count($noninstalled) + count($nonupdated)) > 0) {
-                $tpl->SetBlock('sidebar');
-                if (count($noninstalled) > 0) {
-                    $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
-                    foreach ($noninstalled as $key => $gadget) {
-                        $tpl->SetBlock('sidebar/notifications/item');
-                        $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
-                        $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
-                        $tpl->SetVariable('title', $gadgetCompleteDesc);
-                        $tpl->SetVariable('name', $gadget['name']);
-                        $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=InstallGadget&amp;comp='. $key);
-                        $tpl->SetVariable('install', _t('COMPONENTS_INSTALL'));
-                        $tpl->ParseBlock('sidebar/notifications/item');
-                    }
-                    $tpl->ParseBlock('sidebar/notifications');
+            if (count($noninstalled) > 0) {
+                $tpl->SetBlock('notifybox');
+                $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
+                foreach ($noninstalled as $key => $gadget) {
+                    $tpl->SetBlock('notifybox/item');
+                    $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
+                    $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
+                    $tpl->SetVariable('title', $gadgetCompleteDesc);
+                    $tpl->SetVariable('name', $gadget['name']);
+                    $tpl->SetVariable('icon', $icon);
+                    $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=InstallGadget&amp;comp='. $key);
+                    $tpl->SetVariable('install', _t('COMPONENTS_INSTALL'));
+                    $tpl->ParseBlock('notifybox/item');
                 }
+                $tpl->ParseBlock('notifybox');
+            }
 
-                if (count($nonupdated) > 0) {
-                    $tpl->SetBlock('sidebar/notifications');
-                    $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_OUTDATED'));
-                    $tpl->SetVariable('notify_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
-                    foreach ($nonupdated as $key => $gadget) {
-                        $tpl->SetBlock('sidebar/notifications/item');
-                        $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
-                        $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
-                        $tpl->SetVariable('title', $gadgetCompleteDesc);
-                        $tpl->SetVariable('name', $gadget['name']);
-                        $tpl->SetVariable('icon', $icon);
-                        $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=UpgradeGadget&amp;comp='. $key);
-                        $tpl->SetVariable('install', _t('COMPONENTS_UPDATE'));
-                        $tpl->ParseBlock('sidebar/notifications/item');
-                    }
-                    $tpl->ParseBlock('sidebar/notifications');
+            if (count($nonupdated) > 0) {
+                $tpl->SetBlock('notifybox');
+                $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_OUTDATED'));
+                $tpl->SetVariable('notify_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
+                foreach ($nonupdated as $key => $gadget) {
+                    $tpl->SetBlock('notifybox/item');
+                    $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
+                    $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
+                    $tpl->SetVariable('title', $gadgetCompleteDesc);
+                    $tpl->SetVariable('name', $gadget['name']);
+                    $tpl->SetVariable('icon', $icon);
+                    $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=UpgradeGadget&amp;comp='. $key);
+                    $tpl->SetVariable('install', _t('COMPONENTS_UPDATE'));
+                    $tpl->ParseBlock('notifybox/item');
                 }
-                $tpl->ParseBlock('sidebar');
+                $tpl->ParseBlock('notifybox');
             }
         }
 
