@@ -497,7 +497,7 @@ class Jaws
                 if (!isset($this->_Gadgets[$gadget]['Info']['base'])) {
                     $info_class_name = $gadget . '_Info';
                     $ifile = JAWS_PATH . 'gadgets/' . $gadget . '/Info.php';
-                    @include_once $ifile;
+                    include_once $ifile;
                     $this->_Gadgets[$gadget]['Info']['base'] = new $info_class_name($gadget);
                 }
                 $obj = new $type_class_name($this->_Gadgets[$gadget]['Info']['base']);
@@ -693,7 +693,8 @@ class Jaws
                 $properties = array_merge($base_properties, $properties);'
             );
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
-            if (@include_once($file)) {
+            if (file_exists($file)) {
+                include_once($file);
                 array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['index'] = $actions;
             } else {
@@ -701,7 +702,8 @@ class Jaws
             }
 
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
-            if (@include_once($file)) {
+            if (file_exists($file)) {
+                include_once($file);
                 array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['admin'] = $actions;
             } else {
