@@ -957,9 +957,8 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
     {
         $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHtml->GetDataAsArray(
-            $this->gadget->name,
+            'phoo',
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
-            BASE_SCRIPT . '?gadget=Phoo&amp;action=ReplyComment&amp;id={id}',
             $filter,
             $search,
             $status,
@@ -980,57 +979,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
-        $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('ManageComments.html');
-        $tpl->SetBlock('manage_comments');
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
+        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
 
-        $tpl->SetVariable('comments_where', _t('PHOO_COMMENTS_WHERE'));
-        $tpl->SetVariable('status_label', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('deleteConfirm', _t('PHOO_DELETE_MASSIVE_COMMENTS'));
-
-        //Status
-        $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
-        $status->SetDefault('various');
-        $status->AddEvent(ON_CHANGE, 'return searchComment();');
-        $tpl->SetVariable('status', $status->Get());
-
-        // filter by
-        $filterByData = '';
-        $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
-        $filterBy->AddOption('&nbsp;','various');
-        $filterBy->AddOption(_t('PHOO_ID'), 'id');
-        $filterBy->AddOption(_t('PHOO_COMMENT_CONTAINS'), 'comment');
-        $filterBy->AddOption(_t('PHOO_NAME_CONTAINS'), 'name');
-        $filterBy->AddOption(_t('PHOO_EMAIL_CONTAINS'), 'email');
-        $filterBy->AddOption(_t('PHOO_URL_CONTAINS'), 'url');
-        $filterBy->AddOption(_t('PHOO_IP_CONTAINS'), 'ip');
-        $filterBy->SetDefault($filterByData);
-        $tpl->SetVariable('filter_by', $filterBy->Get());
-
-        // filter
-        $filterData = '';
-        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', $filterData);
-        $filterEntry->setSize(20);
-        $tpl->SetVariable('filter', $filterEntry->Get());
-        $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
-                                            _t('PHOO_FILTER'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'javascript: searchComment();');
-
-        $tpl->SetVariable('filter_button', $filterButton->Get());
-
-        // Display the data
-        $tpl->SetVariable('comments', $this->CommentsDatagrid($filterByData, $filterData));
-
-        $tpl->ParseBlock('manage_comments');
-
-        return $tpl->Get();
-    }
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHTML->Comments('phoo');    }
 
     /**
      * Displays phoo comment to be edited
