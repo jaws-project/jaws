@@ -119,10 +119,13 @@ function editComment(rowElement, id)
     $('email').value              = comment['email'];
     $('url').value                = comment['url'];
     $('message').value            = comment['msg_txt'].defilter();
-    $('reply').value              = comment['reply'].defilter();
     $('comment_status').value     = comment['status'];
     $('btn_save').style.display   = 'inline';
     $('btn_cancel').style.display = 'inline';
+
+    if(comment['reply']!=null) {
+        $('reply').value          = comment['reply'].defilter();
+    }
 }
 
 /**
