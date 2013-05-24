@@ -379,13 +379,18 @@ class Jaws_ACL
      * Delete all ACLs related to the user
      *
      * @access  public
-     * @param   int     $user  User ID
+     * @param   int     $user       User ID
+     * @param   string  $component  Component name
      * @return  bool    True if success otherwise False
      */
-    function deleteByUser($user)
+    function deleteByUser($user, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->delete()->where('user', (int)$user)->exec();
+        $tblACL->delete()->where('user', (int)$user);
+        if (!empty($component)) {
+            $tblACL->and()->where('component', $component);
+        }
+        $result = $tblACL->exec();
         return !Jaws_Error::IsError($result);
     }
 
@@ -393,13 +398,18 @@ class Jaws_ACL
      * Delete all ACLs related to the group
      *
      * @access  public
-     * @param   int     $group  Group ID
+     * @param   int     $group      Group ID
+     * @param   string  $component  Component name
      * @return  bool    True if success otherwise False
      */
-    function deleteByGroup($group)
+    function deleteByGroup($group, $component = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->delete()->where('group', (int)$group)->exec();
+        $tblACL->delete()->where('group', (int)$group);
+        if (!empty($component)) {
+            $tblACL->and()->where('component', $component);
+        }
+        $result = $tblACL->exec();
         return !Jaws_Error::IsError($result);
     }
 
