@@ -70,18 +70,6 @@ $actions['ManageComments'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );
-$actions['EditComment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
-$actions['SaveEditComment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
-$actions['DeleteComment'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['ManageTrackbacks'] = array(
     'normal' => true,
     'file'   => 'Trackbacks',
