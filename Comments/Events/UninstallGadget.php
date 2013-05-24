@@ -16,7 +16,7 @@ class Comments_Events_UninstallGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $mModel = $GLOBALS['app']->loadGadget('Comments', 'AdminModel', 'DeleteComments');
+        $mModel = $GLOBALS['app']->loadGadget('Comments', 'Model', 'DeleteComments');
         $res = $mModel->DeleteGadgetComments($gadget);
         return $res;
     }
