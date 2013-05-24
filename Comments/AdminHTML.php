@@ -58,9 +58,10 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * Show comments list
      *
      * @access  public
+     * @param   string  $gadget     Gadget name
      * @return  string XHTML template content
      */
-    function Comments()
+    function Comments($gadget='')
     {
         // TODO: Check Permission For Manage Comments
         $this->AjaxMe('script.js');
@@ -77,20 +78,28 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
-        //Gadgets filter
-        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
-        $gadgetsCombo->SetID('gadgets_filter');
-        $gadgetsCombo->setStyle('width: 100px;');
-        $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
-        $gadgetsCombo->AddOption('', '');
-        // TODO: Get List Of Gadget Which Use Comments
-        $gadgetsCombo->AddOption(_t('COMMENTS_NAME'), 'Comments');
-        $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
-        $gadgetsCombo->AddOption(_t('PHOO_NAME'), 'Phoo');
-        $gadgetsCombo->AddOption(_t('SHOUTBOX_NAME'), 'Shoutbox');
-        $gadgetsCombo->SetDefault('');
-        $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
-        $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
+        if (empty($gadget)) {
+            $tpl->SetBlock('Comments/gadgets_filter');
+            //Gadgets filter
+            $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
+            $gadgetsCombo->SetID('gadgets_filter');
+            $gadgetsCombo->setStyle('width: 100px;');
+            $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
+            $gadgetsCombo->AddOption('', '');
+            // TODO: Get List Of Gadget Which Use Comments
+            $gadgetsCombo->AddOption(_t('COMMENTS_NAME'), 'Comments');
+            $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
+            $gadgetsCombo->AddOption(_t('PHOO_NAME'), 'Phoo');
+            $gadgetsCombo->AddOption(_t('SHOUTBOX_NAME'), 'Shoutbox');
+            $gadgetsCombo->SetDefault('');
+            $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
+            $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
+            $tpl->ParseBlock('Comments/gadgets_filter');
+        } else {
+            $gadgets_filter =& Piwi::CreateWidget('HiddenEntry', 'gadgets_filter', $gadget);
+            $gadgets_filter->SetID('gadgets_filter');
+            $tpl->SetVariable('gadgets_filter', $gadgets_filter->Get());
+        }
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
@@ -122,7 +131,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('comment_ui', $this->CommentUI());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
+        $btnCancel->AddEvent(ON_CLICK, 'stopCommentAction();');
         $btnCancel->SetStyle('display: none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 

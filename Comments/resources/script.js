@@ -15,7 +15,7 @@
 var CommentsCallback = {
     UpdateComment: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            stopAction();
+            stopCommentAction();
             getDG('comments_datagrid');
         }
         showResponse(response);
@@ -23,7 +23,7 @@ var CommentsCallback = {
 
     DeleteComments: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            stopAction();
+            stopCommentAction();
             getDG('comments_datagrid');
         }
         showResponse(response);
@@ -31,7 +31,7 @@ var CommentsCallback = {
 
     MarkAs: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            stopAction();
+            stopCommentAction();
             getDG('comments_datagrid');
         }
         showResponse(response);
@@ -55,7 +55,7 @@ function getCommentsDataGrid(name, offset, reset)
         $('status').value
     );
     if (reset) {
-        stopAction();
+        stopCommentAction();
         $(name).setCurrentPage(0);
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch',
@@ -76,7 +76,7 @@ function isValidEmail(email) {
  * Clean the form
  *
  */
-function stopAction()
+function stopCommentAction()
 {
     $('id').value                      = 0;
     $('gadget').value                  = '';
@@ -146,7 +146,7 @@ function updateComment() {
  */
 function commentDelete(id)
 {
-    stopAction();
+    stopCommentAction();
     if (confirm(confirmCommentDelete)) {
         CommentsAjax.callAsync('DeleteComments', id);
     }
