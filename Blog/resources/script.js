@@ -13,34 +13,6 @@
  */
 var BlogCallback = {
 
-    deletecomment: function(response) {
-        showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
-            $('comments_datagrid').deleteItem();
-            var limit = $('comments_datagrid').getCurrentPage();
-            var formData = getDataOfLCForm();
-            updateCommentsDatagrid(limit, formData['search'], formData['status'], true);
-        }
-    },
-
-    deletecomments: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            var rows = $('comments_datagrid').getSelectedRows();
-            if (rows.length > 0) {
-                for(var i=0; i<rows.length; i++) {
-                    $('comments_datagrid').deleteItem();
-                }
-            }
-            PiwiGrid.multiSelect($('comments_datagrid'));
-            var limit = $('comments_datagrid').getCurrentPage();
-            var formData = getDataOfLCForm();
-            updateCommentsDatagrid(limit, formData['search'], formData['status'], true);
-        } else {
-            PiwiGrid.multiSelect($('comments_datagrid'));
-        }
-        showResponse(response);
-    },
-
     deleteentries: function(response) {
         if (response[0]['css'] == 'notice-message') {
             var rows = $('posts_datagrid').getSelectedRows();
@@ -89,21 +61,6 @@ var BlogCallback = {
                                    true);
         } else {
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
-        }
-        showResponse(response);
-    },
-
-    markas: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            PiwiGrid.multiSelect($('comments_datagrid'));
-            resetLCForm();
-            var formData = getDataOfLCForm();
-            updateCommentsDatagrid(0,
-                                   formData['search'],
-                                   formData['status'],
-                                   true);
-        } else {
-            PiwiGrid.multiSelect($('comments_datagrid'));
         }
         showResponse(response);
     },
@@ -264,14 +221,6 @@ function parseText(form)
 }
 
 /**
- * Delete a comment
- */
-function deleteComment(id)
-{
-    BlogAjax.callAsync('deletecomment', id);
-}
-
-/**
  * search for a post
  */
 function searchPost()
@@ -280,16 +229,6 @@ function searchPost()
     updatePostsDatagrid(formData['period'], formData['category'],
                         formData['status'], formData['search'], 0, true);
 
-    return false;
-}
-
-/**
- * search for a comment
- */
-function searchComment()
-{
-    var formData = getDataOfLCForm();
-    updateCommentsDatagrid(0, formData['search'], formData['status'], true);
     return false;
 }
 
@@ -448,20 +387,6 @@ function lastValues()
     }
 }
 
-/**
- * Update comments datagrid
- */
-function updateCommentsDatagrid(limit, search, status, resetCounter)
-{
-    result = BlogAjax.callSync('searchcomments', limit, search, status);
-    resetGrid('comments_datagrid', result);
-    if (resetCounter) {
-        var size = BlogAjax.callSync('sizeofcommentssearch', filter, search, status);
-        $('comments_datagrid').rowsSize    = size;
-        $('comments_datagrid').setCurrentPage(0);
-        $('comments_datagrid').updatePageCounter();
-    }
-}
 
 /**
  * Update trackbacks datagrid
@@ -478,16 +403,6 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
     }
 }
 
-/**
- * Delete comment
- */
-function commentDelete(row_id)
-{
-    var confirmation = confirm(deleteConfirm);
-    if (confirmation) {
-        BlogAjax.callAsync('deletecomments', row_id);
-    }
-}
 
 /**
  * Delete trackback
@@ -497,31 +412,6 @@ function trackbackDelete(row_id)
     var confirmation = confirm(deleteConfirm);
     if (confirmation) {
         BlogAjax.callAsync('deletetrackbacks', row_id);
-    }
-}
-
-/**
- * Executes an action on comments
- */
-function commentDGAction(combo)
-{
-    var rows = $('comments_datagrid').getSelectedRows();
-    var selectedRows = false;
-    if (rows.length > 0) {
-        selectedRows = true;
-    }
-
-     if (combo.value == 'delete') {
-        if (selectedRows) {
-            var confirmation = confirm(deleteConfirm);
-            if (confirmation) {
-                BlogAjax.callAsync('deletecomments', rows);
-            }
-        }
-    } else if (combo.value != '') {
-        if (selectedRows) {
-            BlogAjax.callAsync('markas', rows, combo.value);
-        }
     }
 }
 

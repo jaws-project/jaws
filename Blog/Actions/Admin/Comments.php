@@ -58,55 +58,11 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
         }
 
+        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Comments.html');
-        $tpl->SetBlock('manage_comments');
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('menubar', $this->MenuBar('ManageComments'));
 
-        $tpl->SetVariable('comments_where', _t('BLOG_COMMENTS_WHERE'));
-        $tpl->SetVariable('status_label', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('deleteConfirm', _t('BLOG_DELETE_MASSIVE_COMMENTS'));
-
-        //Status
-        $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption('&nbsp;','');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
-        $status->SetDefault('various');
-        $status->AddEvent(ON_CHANGE, 'return searchComment();');
-        $tpl->SetVariable('status', $status->Get());
-
-        // filter by
-        $request =& Jaws_Request::getInstance();
-        $filterByData = $request->get('filterby', 'get');
-        $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
-        $filterBy->AddOption('&nbsp;','various');
-        $filterBy->AddOption(_t('BLOG_POST_ID_IS'), 'postid');
-        $filterBy->AddOption(_t('BLOG_COMMENT_CONTAINS'), 'comment');
-        $filterBy->AddOption(_t('BLOG_NAME_CONTAINS'), 'name');
-        $filterBy->AddOption(_t('BLOG_EMAIL_CONTAINS'), 'email');
-        $filterBy->AddOption(_t('BLOG_URL_CONTAINS'), 'url');
-        $filterBy->AddOption(_t('BLOG_IP_IS'), 'ip');
-        $filterBy->SetDefault(is_null($filterByData)? '' : $filterByData);
-        $tpl->SetVariable('filter_by', $filterBy->Get());
-
-        // filter
-        $filterData = $request->get('filter', 'get');
-        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
-        $filterEntry->setSize(20);
-        $tpl->SetVariable('filter', $filterEntry->Get());
-        $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
-                                            _t('BLOG_FILTER'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'javascript: searchComment();');
-
-        $tpl->SetVariable('filter_button', $filterButton->Get());
-
-        // Display the data
-        $tpl->SetVariable('comments', $this->CommentsDatagrid($filterByData, $filterData));
-        $tpl->ParseBlock('manage_comments');
-        return $tpl->Get();
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        return $cHTML->Comments('blog');
     }
 
     /**
