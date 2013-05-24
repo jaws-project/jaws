@@ -622,10 +622,10 @@ class Jaws_Layout
             }
             if (!Jaws_Error::isError($goGadget)) {
                 if (method_exists($goGadget, $action)) {
-                    if (is_array($params)) {
-                        $output = call_user_func_array(array($goGadget, $action), $params);
+                    if (is_null($params)) {
+                        $output = $goGadget->$action();
                     } else {
-                        $output = $goGadget->$action($params);
+                        $output = call_user_func_array(array($goGadget, $action), $params);
                     }
                 } else {
                     $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");

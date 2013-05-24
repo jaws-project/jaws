@@ -279,7 +279,7 @@ function selectGadget(g)
 function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
-    params = params.split(',');
+    params = (params == null)? null : params.split(',');
     LayoutAjax.callAsync('addgadget', gadget, action, params);
 }
 
@@ -305,7 +305,7 @@ function getSelectedAction()
 function saveElementAction(lid, gadget, action, params, title, desc)
 {
     hideDialogBox('actions_dialog');
-    params = params.split(',');
+    params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
     LayoutAjax.callAsync('editelementaction', lid, gadget, action, params);

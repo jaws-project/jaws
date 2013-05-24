@@ -15,19 +15,24 @@
         return;
     }
 
-    var params = new Array();
-    var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
-    paramElemets.each(function(elParam, index) {
-        if (elParam.type == 'checkbox') {
-            params[index] = Number(elParam.checked);
-        } else {
-            params[index] = elParam.value;
-        }
-    });
-
     title = $('action_'+action.value).getElementsByTagName('label')[0].innerHTML;
     desc = $('action_'+action.value).getElementsByTagName('span')[0].innerHTML;
-    parent.parent.saveElementAction(lid, gadget, action.value, params.join(), title, desc);
+
+    var params = null;
+    var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
+    if (paramElemets.length > 0) {
+        params = new Array();
+        paramElemets.each(function(elParam, index) {
+            if (elParam.type == 'checkbox') {
+                params[index] = Number(elParam.checked);
+            } else {
+                params[index] = elParam.value;
+            }
+        });
+        params = params.join();
+    }
+
+    parent.parent.saveElementAction(lid, gadget, action.value, params, title, desc);
   }
 </script>
 </head>
