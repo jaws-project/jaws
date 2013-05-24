@@ -58,21 +58,6 @@ $actions['RotateRight'] = array(
 $actions['ManageComments'] = array(
     'normal' => true,
 );
-$actions['EditComment'] = array(
-    'normal' => true,
-);
-$actions['ReplyComment'] = array(
-    'normal' => true,
-);
-$actions['SaveEditComment'] = array(
-    'normal' => true,
-);
-$actions['SaveReplyComment'] = array(
-    'normal' => true,
-);
-$actions['DeleteComment'] = array(
-    'normal' => true,
-);
 $actions['AdditionalSettings'] = array(
     'normal' => true,
 );
