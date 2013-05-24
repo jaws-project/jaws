@@ -104,7 +104,7 @@ class Jaws_ACL
             }
 
             $result = $tblACL->getAll();
-            if (Jaws_Error::IsError($result) || empty($result)) {
+            if (!Jaws_Error::IsError($result) && !empty($result)) {
                 return $result;
             }
         }
@@ -132,7 +132,7 @@ class Jaws_ACL
                 ->where('key_subkey', $subkey)->and()
                 ->where('group', $group, 'in')
                 ->getCol();
-            if (Jaws_Error::IsError($values)) {
+            if (!Jaws_Error::IsError($values)) {
                 return $values;
             }
         }
@@ -158,7 +158,7 @@ class Jaws_ACL
             }
 
             $result = $tblACL->getAll();
-            if (Jaws_Error::IsError($result) || empty($result)) {
+            if (!Jaws_Error::IsError($result) && !empty($result)) {
                 return $result;
             }
         }
