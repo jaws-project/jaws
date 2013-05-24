@@ -2,3 +2,12 @@ table.tableform  .button {
     text-align: left;
     margin-top: 5px;
 }
+
+#settings {
+    border: 1px solid #D3D7CF;
+    font-weight: bold;
+    padding: 8px 10px;
+    text-align: right;
+    width: 100%;
+    clear: both;
+}
