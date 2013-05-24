@@ -31,19 +31,6 @@ padding: 0px;
 text-align: right;
 }
 
-#bigTree {
-padding: 0px;
-width: 280px;
-height: 408px;
-overflow: scroll;
-overflow-x: hidden;
-overflow-y: scroll;
-}
-
-#bigTree label {
-display: inline;
-}
-
 #user_groups_checkbox, #group_users_checkbox {
 padding: 0px;
 width: 280px;
@@ -51,59 +38,6 @@ height: 408px;
 overflow: scroll;
 overflow-x: hidden;
 overflow-y: scroll;
-}
-
-.webfx-tree-container {
-margin: 0px;
-padding: 0px;
-font: icon;
-white-space: nowrap;
-}
-
-.webfx-tree-item {
-padding: 0px;
-margin: 0px;
-font: icon;
-color: black;
-white-space: nowrap;
-font-size: 12px;
-}
-
-.webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
-margin-left: 2px;
-padding: 1px 2px 1px 2px;
-color: black;
-text-decoration: none;
-}
-
-.webfx-tree-item img {
-margin-left: 2px;
-vertical-align: middle;
-border: 0px;
-width: 16px;
-height: 16px;
-}
-
-.webfx-tree-item label {
-margin-left: 3px;
-}
-
-.webfx-tree-grid-icon {
-margin-right: -10px;
-visibility: hidden;
-}
-
-.webfx-tree-icon {
-display: none;
-}
-
-.webfx-tree-item a.selected {
-outline: none;
-}
-
-.webfx-tree-item a.selected-inactive {
-color: windowtext;
-background: buttonface;
 }
 
 #user_groups_title,
@@ -232,3 +166,10 @@ filter:alpha(opacity=0);
 #onlineusers_datagrid td .lastactive {
 font-weight:normal;
 }
+
+#acl {padding:0;}
+#acl img {vertical-align:middle;}
+#acl label {display:inline; vertical-align:middle;}
+#acl select {width:160px;}
+#acl_form {height:350px; overflow:auto;}
+#acl_form label {font-weight:normal;}

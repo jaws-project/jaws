@@ -31,9 +31,6 @@ var UsersCallback = {
     },
 
     updateuseracl: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            stopUserAction();
-        }
         showResponse(response);
     },
 
@@ -272,7 +269,13 @@ function saveUser()
             break;
 
         case 'UserACL':
-            UsersAjax.callAsync('updateuseracl', $('uid').value, changedACLs);
+            if ($('components').value === '') {
+                return;
+            }
+            var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
+                return [img.id, '', img.alt];
+            });
+            UsersAjax.callAsync('updateuseracl', $('uid').value, $('components').value, acls);
             break;
 
         case 'UserGroups':
@@ -415,7 +418,7 @@ function editUser(rowElement, uid)
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
     $('superadmin').value  = Number(uInfo['superadmin']);
-    $('concurrents').value      = uInfo['concurrents'];
+    $('concurrents').value = uInfo['concurrents'];
     $('expiry_date').value = uInfo['expiry_date'];
     $('status').value      = uInfo['status'];
 }
@@ -425,13 +428,66 @@ function editUser(rowElement, uid)
  */
 function editUserACL(rowElement, uid)
 {
+    selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
+    if (!cachedACLForm) {
+        cachedACLForm = UsersAjax.callSync('getaclui');
+    }
+    $('user_workarea').innerHTML = cachedACLForm;
+    $('legend_title').innerHTML  = editUserACL_title;
     $('uid').value = uid;
     currentAction = 'UserACL';
-    $('legend_title').innerHTML  = editUserACL_title;
-    var aclKeys = UsersAjax.callSync('getuseraclkeys', uid);
-    $('user_workarea').innerHTML = convertToTree(aclKeys);
-    selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
-    changedACLs = [];
+    chkImages = $('acl').getElements('img').get('src');
+    chkImages[-1] = chkImages[2];
+    delete chkImages[2];
+}
+
+/**
+ * Loads ACL data of the selected gadget/plugin
+ */
+function getACL()
+{
+    function getUserValue(key) {
+        var res = -1;
+        acls.user.each(function (acl) {
+            if (acl.key_name === key) {
+                res = acl.key_value;
+                //throw $break;
+            }
+        });
+        return res;
+    }
+
+    if ($('components').value === '') {
+        $('acl_form').set('html', '');
+        return;
+    }
+
+    var form = $('acl_form').set('html', ''),
+        acls = UsersAjax.callSync(
+            'getuseraclkeys',
+            $('uid').value,
+            $('components').value
+        );
+    acls.all.each(function (acl) {
+        var check = new Element('img', {id: acl.key_name}),
+            label = new Element('label', {'for': acl.key_name}),
+            div = new Element('div').adopt(check, label),
+            value = getUserValue(acl.key_name);
+        label.set('html', acl.key_name);
+        check.set('alt', value);
+        check.set('src', chkImages[value]);
+        label.addEvent('click', function () {
+            var check = this.getPrevious('img'),
+                value = parseInt(check.alt);
+            check.alt = (value == -1)? 1 : value - 1;
+            check.src = chkImages[check.alt];
+        });
+        check.addEvent('click', function () {
+            this.alt = (this.alt == -1)? 1 : parseInt(this.alt) - 1;
+            this.src = chkImages[this.alt];
+        });
+        form.grab(div);
+    });
 }
 
 /**
@@ -605,7 +661,6 @@ function editGroupACL(rowElement, gid)
     var aclKeys = UsersAjax.callSync('getgroupaclkeys', gid);
     $('group_workarea').innerHTML = convertToTree(aclKeys);
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    changedACLs = [];
 }
 
 /**
@@ -697,90 +752,6 @@ function stopGroupAction()
 }
 
 /**
- * Converts an ACL struct (array) to an xtree obj returning its XHTML content
- */
-function convertToTree(keys)
-{
-    var imageCheck = 'gadgets/Users/images/checkbox.png',
-        imageAllow = 'gadgets/Users/images/check-allow.png',
-        imageDeny  = 'gadgets/Users/images/check-deny.png',
-        legend     = 
-            '(<img src="' + imageAllow + '" />' + permissionAllow +
-            ' <img src="' + imageDeny  + '" />' + permissionDeny  +
-            ' <img src="' + imageCheck + '" />' + permissionNone  + ')';
-
-    tree = new WebFXTree('<strong>' + permissionsMsg + '</strong> ' + legend);
-    for (gadget in keys) {
-        if (typeof(keys[gadget]) == 'function') {
-            continue;
-        }
-        var gadgetItem = new WebFXTreeItem(keys[gadget]['name']);
-
-        for (aclKey in keys[gadget]) {
-            if (keys[gadget][aclKey]['desc'] == undefined) {
-                continue;
-            }
-
-            switch (keys[gadget][aclKey]['value']) {
-                case null:
-                    value = 0;
-                    image = imageCheck;
-                    break;
-                case true:
-                    value = 1;
-                    image = imageAllow;
-                    break;
-                case false:
-                    value = -1;
-                    image = imageDeny;
-                    break;
-            }
-
-            // Creates 3 state checkbox with its label and all that nice stuff
-            var div   = new Element('div'),
-                img   = new Element('img'),
-                label = new Element('label').set('html', keys[gadget][aclKey]['desc']);
-            img.setProperty('id', keys[gadget][aclKey]['name']);
-            img.setProperty('alt', value);
-            img.setProperty('src', image);
-            div.adopt(img);
-            div.adopt(label);
-
-            var aclItem = new WebFXTreeItem(div.innerHTML, "javascript:onACLNodeClick('" + keys[gadget][aclKey]['name'] + "')");
-            gadgetItem.add(aclItem);
-        }
-        tree.add(gadgetItem);
-    }
-    return tree.toString();
-}
-
-/**
- * Changes the status of ACL checkbox
- */
-function onACLNodeClick(imgID)
-{
-    var img   = $(imgID),
-        value = img.getProperty('alt');
-    switch (value) {
-        case '0':
-            img.alt = 1;
-            img.src = 'gadgets/Users/images/check-allow.png';
-            changedACLs[imgID] = true;
-            break;
-        case '1':
-            img.alt = -1;
-            img.src = 'gadgets/Users/images/check-deny.png';
-            changedACLs[imgID] = false;
-            break;
-        case '-1':
-            img.alt = 0;
-            img.src = 'gadgets/Users/images/checkbox.png';
-            changedACLs[imgID] = null;
-            break;
-    }
-}
-
-/**
  * Save settings
  */
 function saveSettings()
@@ -842,22 +813,13 @@ var evenColor = '#fff';
 var oddColor  = '#edf3fe';
 
 //Cached form variables
-var cachedPersonalForm    = null,
+var cachedPersonalForm = null,
     cachedPreferencesForm = null,
-    cachedContactsForm    = null,
-    cachedUserGroupsForm  = null,
-    cachedGroupUsersForm  = null;
-
-//Cache for saving the group|user-form template
-var cacheForm = null;
-//Cache for group-user management
-var cacheUserGroupForm = null;
+    cachedContactsForm = null,
+    cachedUserGroupsForm = null,
+    cachedGroupUsersForm = null,
+    cachedACLForm = null;
 
 //Which action are we runing?
 var currentAction = null;
-//We already loaded the xtree lib?
-var xtreeLoaded = false;
-//xtree obj
-var xtree = null;
-
-var changedACLs = [];
+var chkImages = {};

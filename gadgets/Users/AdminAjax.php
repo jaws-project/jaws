@@ -342,20 +342,24 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $uid    User ID
+     * @param   string  $comp   Gadget/plugin name
      * @param   array   $keys   ACL Keys
      * @return  array   Response array (notice or error)
      */
-    function UpdateUserACL($uid, $keys)
+    function UpdateUserACL($uid, $comp, $acls)
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UserACL');
-        $res = $uModel->UpdateUserACL($uid, $keys);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(),
-                                                       RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_ACL_UPDATED'),
+        $res = $GLOBALS['app']->ACL->deleteByUser($uid, $comp);
+        if ($res) {
+            $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, $uid);
+        }
+
+        if ($res) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_ACL_UPDATED'),
                                                        RESPONSE_NOTICE);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_ACL_NOT_UPDATED'),
+                                                       RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -468,22 +472,32 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Returns an array with the ACL keys of the user
+     * Returns ACL UI
+     *
+     * @access  public
+     * @return  string  XHTML UI
+     */
+    function GetACLUI()
+    {
+        $this->gadget->CheckPermission('default');
+        $html = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'ACL');
+        return $html->ACLUI();
+    }
+
+    /**
+     * Returns ACL keys of the component and user
      *
      * @access  public
      * @param   int     $uid    User ID
-     * @return  mixed   Array of ACL keys or false on failure
+     * @param   string  $comp   Gadget/plugin name
+     * @return  array   Array of default ACL keys and the user's
      */
-    function GetUserACLKeys($uid)
+    function GetUserACLKeys($uid, $comp)
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        $profile = $this->_UserModel->GetUser((int)$uid);
-        if (isset($profile['username'])) {
-            $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UserACL');
-            $acl = $uModel->GetUserACLKeys($profile['username']);
-            return $acl;
-        }
-        return false;
+        $acls = $GLOBALS['app']->ACL->fetchAll($comp);
+        $user_acls = $GLOBALS['app']->ACL->fetchAllByUser($uid, $comp);
+        return array('all' => $acls, 'user' => $user_acls);
     }
 
     /**
