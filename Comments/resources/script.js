@@ -21,14 +21,6 @@ var CommentsCallback = {
         showResponse(response);
     },
 
-    ReplyComment: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            stopAction();
-            getDG('comments_datagrid');
-        }
-        showResponse(response);
-    },
-
     DeleteComments: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
@@ -95,9 +87,7 @@ function stopAction()
     $('message').value                 = '';
     $('reply').value                   = '';
     $('comment_status').selectedIndex  = 0;
-    $('reply_area').style.display      = 'none';
     $('btn_save').style.display        = 'none';
-    $('btn_reply').style.display       = 'none';
     $('btn_cancel').style.display      = 'none';
     $('name').disabled                 = false;
     $('email').disabled                = false;
@@ -129,64 +119,25 @@ function editComment(rowElement, id)
     $('email').value              = comment['email'];
     $('url').value                = comment['url'];
     $('message').value            = comment['msg_txt'].defilter();
+    $('reply').value              = comment['reply'].defilter();
     $('comment_status').value     = comment['status'];
-    $('reply_area').style.display = 'none';
-    $('btn_reply').style.display  = 'none';
     $('btn_save').style.display   = 'inline';
     $('btn_cancel').style.display = 'inline';
 }
 
 /**
- * Reply a Comment
- *
- */
-function replyComment(rowElement, id)
-{
-    selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
-    var comment = CommentsAjax.callSync('getcomment', id);
-
-    $('id').value               = comment['id'];
-    $('gadget').value           = comment['gadget'];
-    $('comment_ip').set('html', comment['ip']);
-    $('name').value             = comment['name'];
-    $('email').value            = comment['email'];
-    $('url').value              = comment['url'];
-    $('message').value          = comment['msg_txt'].defilter();
-    $('comment_status').value   = comment['status'];
-    $('reply').value            = comment['reply'];
-
-    $('name').disabled           = true;
-    $('email').disabled          = true;
-    $('url').disabled            = true;
-    $('message').disabled        = true;
-    $('comment_status').disabled = true;
-
-    $('btn_save').style.display     = 'none';
-    $('btn_reply').style.display    = 'inline';
-    $('btn_cancel').style.display   = 'inline';
-    $('reply_area').style.display   = 'table-row';
-}
-
-/**
  * Update a Comment
  */
-function updateComment(action)
-{
-    if(action=='update') {
-        CommentsAjax.callAsync('UpdateComment',
-                        $('gadget').value,
-                        $('id').value,
-                        $('name').value,
-                        $('email').value,
-                        $('url').value,
-                        $('message').value,
-                        $('comment_status').value);
-    } else if(action=='reply') {
-        CommentsAjax.callAsync('ReplyComment',
-                         $('gadget').value,
-                         $('id').value,
-                         $('reply').value);
-    }
+function updateComment() {
+    CommentsAjax.callAsync('UpdateComment',
+        $('gadget').value,
+        $('id').value,
+        $('name').value,
+        $('email').value,
+        $('url').value,
+        $('message').value,
+        $('reply').value,
+        $('comment_status').value);
 }
 
 /**

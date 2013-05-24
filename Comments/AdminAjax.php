@@ -37,8 +37,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         // TODO: Check Permission For Manage Comments
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')",
-                                      "javascript:replyComment(this, '{id}')", $search, $status, $limit, true);
+        return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $search, $status, $limit, true);
     }
 
     /**
@@ -84,39 +83,16 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      * @param   string  $email      Email address
      * @param   string  $url
      * @param   string  $message    Message content
+     * @param   string  $reply
      * @param   $status
      * @return  array   Response array (notice or error)
      */
-    function UpdateComment($gadget, $id, $name, $email, $url, $message, $status)
+    function UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, $status)
     {
         // TODO: Check Permission For Manage Comments
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
-        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, '', $status);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
-        }
-
-        return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
-     * Reply a comment
-     *
-     * @access  public
-     * @param   string  $gadget
-     * @param   int     $id         Comment ID
-     * @param   string  $reply
-     * @return  array   Response array (notice or error)
-     */
-    function ReplyComment($gadget, $id, $reply)
-    {
-        // TODO: Check Permission For Manage Comments
-        // TODO: Fill permalink In New Versions, Please!!
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
-        $res = $cModel->replyComment($gadget, $id, $reply);
+        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

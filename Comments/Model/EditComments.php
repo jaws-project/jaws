@@ -100,18 +100,19 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
     /**
      * Updates a comment
      *
-     * @param   string  $gadget  Gadget's name
-     * @param   int     $id      Comment's ID
-     * @param   string  $name    Author's name
-     * @param   string  $email   Author's email
-     * @param   string  $url     Author's url
-     * @param   string  $message Author's message
-     * @param   string  $permalink Permanent link to resource
-     * @param   string  $status  Comment status
-     * @return  bool   True if success or Jaws_Error on any error
+     * @param   string  $gadget     Gadget's name
+     * @param   int     $id         Comment's ID
+     * @param   string  $name       Author's name
+     * @param   string  $email      Author's email
+     * @param   string  $url        Author's url
+     * @param   string  $message    Author's message
+     * @param   string  $reply      Comment's reply
+     * @param   string  $permalink  Permanent link to resource
+     * @param   string  $status     Comment status
+     * @return  bool    True if success or Jaws_Error on any error
      * @access  public
      */
-    function updateComment($gadget, $id, $name, $email, $url, $message, $permalink, $status)
+    function updateComment($gadget, $id, $name, $email, $url, $message, $reply, $permalink, $status)
     {
         $cData = array();
         $cData['name']    = $name;
@@ -119,6 +120,8 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']     = $url;
         $cData['msg_txt'] = $message;
         $cData['msg_key'] = md5($message);
+        $cData['reply']   = $reply;
+        $cData['replier'] = $GLOBALS['app']->Session->GetAttribute('user');
         $cData['status']  = $status;
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
@@ -149,24 +152,6 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         }
 
         return true;
-    }
-
-    /**
-     * Reply a comment
-     *
-     * @param   string  $gadget  Gadget's name
-     * @param   int     $id      Comment's ID
-     * @param   string  $reply
-     * @return  bool   True if success or Jaws_Error on any error
-     * @access  public
-     */
-    function replyComment($gadget, $id, $reply)
-    {
-        $cData['reply']   = $reply;
-        $cData['replier'] = $GLOBALS['app']->Session->GetAttribute('user');
-
-        $commentsTable = Jaws_ORM::getInstance()->table('comments');
-        return $commentsTable->update($cData)->where('id', $id)->exec();
     }
 
     /**

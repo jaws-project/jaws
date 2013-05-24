@@ -129,14 +129,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         // TODO: Check Permission For Manage Comments
         //$btnSave->SetEnabled($this->gadget->GetPermission('ManageComments'));
-        $btnSave->AddEvent(ON_CLICK, "updateComment('update');");
+        $btnSave->AddEvent(ON_CLICK, "updateComment();");
         $btnSave->SetStyle('display: none;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
-
-        $btnReply =& Piwi::CreateWidget('Button', 'btn_reply', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnReply->AddEvent(ON_CLICK, "updateComment('reply');");
-        $btnReply->SetStyle('display: none;');
-        $tpl->SetVariable('btn_reply', $btnReply->Get());
 
         $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmCommentDelete',    _t('COMMENTS_CONFIRM_DELETE'));
@@ -213,14 +208,13 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @param   string  $gadget     Gadget name
      * @param   string  $editAction Edit action
-     * @param   string  $replyAction
      * @param   string  $term       Search term
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $offset     Data offset (numeric/boolean)
      * @param   bool    $gadgetColumn   Display gadget column?
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $editAction, $replyAction, $term, $status, $offset, $gadgetColumn=false)
+    function GetDataAsArray($gadget, $editAction, $term, $status, $offset, $gadgetColumn=false)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
         $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset);
@@ -265,14 +259,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $edit_url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
-
-            if (!empty($replyAction)) {
-                $reply_url = str_replace('{id}', $row['id'], $replyAction);
-
-                $link =& Piwi::CreateWidget('Link', _t('COMMENTS_REPLY'), $reply_url,
-                    'gadgets/Comments/images/reply-mini.png');
-                $actions .= $link->Get() . '&nbsp;';
-            }
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
                                         "javascript: commentDelete('".$row['id']."');",
