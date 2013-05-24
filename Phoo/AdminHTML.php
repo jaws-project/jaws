@@ -982,7 +982,8 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHTML->Comments('phoo');    }
+        return $cHTML->Comments('phoo', $this->MenuBar('ManageComments'));
+    }
 
     /**
      * Displays phoo settings administration panel
