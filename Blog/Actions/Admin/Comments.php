@@ -29,7 +29,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
-        return $cHTML->Comments('blog');
+        return $cHTML->Comments('blog', $this->MenuBar('ManageComments'));
     }
 
 }
