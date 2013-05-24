@@ -11,7 +11,7 @@ letter-spacing:0;
 html{
 color:#666;
 height:100%;
-line-height:1.5em;
+line-height:150%;
 vertical-align:baseline;
 }
 body{
@@ -26,7 +26,8 @@ font-size:150%;
 }
 h2{
 color:#325994;
-font-size:120%;
+font-size:110%;
+line-height:140%;
 }
 h3{
 font-size:100%;
@@ -64,16 +65,16 @@ input:focus,textarea:focus,select:focus{
 border:1px solid #5279b4;
 }
 label+input,label+textarea,label+select,.jaws_textarea_editor textarea{
-display:block;
-margin-bottom:10px;
 width:96%;
+display:block;
 }
 button, .button{
-padding:2px;
-border:1px solid #ccc;
+padding:4px;
 color:#325994;
 background:#eee;
+line-height:100%;
 border-radius:5px;
+border:1px solid #ccc;
 }
 .clearfix:after{
 display:block;
@@ -143,7 +144,13 @@ position:relative;
 padding-top:5px;
 }
 .gadget{
-padding-bottom:20px;
+margin-bottom:12px;
+}
+.gadget h2{
+margin-bottom:8px;
+}
+.gadget_section{
+padding-bottom:4px;
 }
 .actions{
 text-align:right;
@@ -156,24 +163,17 @@ display:none;
 .actions div{
 text-align:left;
 }
-.entry-meta{
-padding:5px;
-margin-top:5px;
+.blog_post_meta{
+padding:2px 4px;
+margin-top:4px;
 background:#eee;
 border-bottom:1px solid #ccc;
-}
-#mainbar .gadget h2{
-margin-bottom:8px;
-}
-#mainbar .gadget .content p{
-text-align:justify;
 }
 .sidebar .gadget h2{
 text-indent:8px;
 border-radius:5px;
 background:#eee;
 border:1px solid #ccc;
-margin-bottom:5px;
 }
 .sidebar .gadget li{
 height:22px;
