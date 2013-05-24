@@ -104,7 +104,7 @@ class Jaws_ACL
             }
 
             $result = $tblACL->getAll();
-            if (!Jaws_Error::IsError($result) && !empty($result)) {
+            if (!Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
@@ -158,7 +158,7 @@ class Jaws_ACL
             }
 
             $result = $tblACL->getAll();
-            if (!Jaws_Error::IsError($result) && !empty($result)) {
+            if (!Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
