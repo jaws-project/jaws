@@ -41,10 +41,13 @@ list-style-type:none;
 ul li{
 padding:0 5px;
 }
+fieldset{
+margin-bottom:1em;
+}
 legend{
-padding:2px 4px 2px 0;
-margin-bottom:5px;
 width:96%;
+margin-bottom:5px;
+padding:2px 4px 2px 0;
 border-bottom:1px solid #ccc;
 }
 legend span{
@@ -234,6 +237,21 @@ position:relative;
 }
 #headbar .menu li img{
 vertical-align:middle;
+}
+/* users style */
+.users #user_gender{
+width:148px;
+}
+.users #user_dob label{
+display:block;
+}
+.users #user_dob input{
+width:40px;
+display:inline-block;
+}
+.users #user_dob span{
+display:inline;
+padding-left:5px;
 }
 /* forums style */
 #requested_gadget_forums #mainbar{
