@@ -2,21 +2,18 @@
 <div class="gadget poll_result">
   <h2>{title}</h2>
   <div class="content">
-    <table>
-    <tr><th colspan="4">{question}</th></tr>
-    <!-- BEGIN answer -->
-    <tr><td class="answer">{answer}</td>
-        <td class="txt_percent">{txt_percent}</td>
-        <td class="img_percent"><img width="{percent}%" src="gadgets/Poll/images/vote.png" alt="{txt_percent}" /></td>
-        <td class="votes">{votes}</td>
-    </tr>
-    <!-- END answer -->
-    <tr class="resume">
-        <td colspan="2"></td>
-        <td>{lbl_total_votes}:</td>
-        <td>{total_votes}</td>
-    </tr>
-    </table>
+    <h3>{question}</h3>
+    <ul>
+      <!-- BEGIN answer -->
+      <li class="poll_answer_result poll_answer_{aid}">
+        <label>{answer}</label>
+        <div style="width: {percent}%;">{txt_percent}({votes})</div>
+      </li>
+      <!-- END answer -->
+      <li class="poll_total_votes">
+        <label>{lbl_total_votes}: {total_votes}</label>
+      </li>
+    </ul>
   </div>
 </div>
 <!-- END results -->

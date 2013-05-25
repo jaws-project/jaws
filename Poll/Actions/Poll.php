@@ -62,33 +62,34 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
         }
 
         $tpl = $this->gadget->loadTemplate('Poll.html');
-        $tpl->SetBlock('Poll');
+        $tpl->SetBlock('poll');
         $tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Poll')) {
-            $tpl->SetBlock('Poll/response');
+            $tpl->SetBlock('poll/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('Poll/response');
+            $tpl->ParseBlock('poll/response');
         }
 
-        $tpl->SetVariable('pid', $poll['id']);
         $tpl->SetVariable('question', $poll['question']);
         $votable = ($poll['poll_type'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
         if ($votable || $poll['result_view']) {
             //print the answers or results
             $answers = $model->GetPollAnswers($poll['id']);
             if (!Jaws_Error::IsError($answers)) {
-                $block = $votable? 'answer' : 'result';
+                $block = $votable? 'voting' : 'result';
+                $tpl->SetBlock("poll/{$block}");
+                $tpl->SetVariable('pid', $poll['id']);
                 $total_votes = array_sum(array_map(create_function('$row','return $row["votes"];'), $answers));
                 foreach ($answers as $answer) {
-                    $tpl->SetBlock("Poll/{$block}");
+                    $tpl->SetBlock("poll/{$block}/answer");
                     $tpl->SetVariable('aid', $answer['id']);
                     $tpl->SetVariable('answer', $answer['answer']);
                     if ($poll['select_type'] == 1) {
-                        $rb = '<input type="checkbox" name="answers[]" id="poll-answer-input-'.
+                        $rb = '<input type="checkbox" name="answers[]" id="poll_answer_input_'.
                               $answer['id'].'" value="' .$answer['id']. '"/>';
                     } else {
-                        $rb = '<input type="radio" name="answers[]" id="poll-answer-input-'.
+                        $rb = '<input type="radio" name="answers[]" id="poll_answer_input-'.
                               $answer['id'].'" value="' .$answer['id']. '"/>';
                     }
 
@@ -96,36 +97,38 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
                     $tpl->SetVariable('votes', $answer['votes']);
                     $percent = ($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100);
                     $tpl->SetVariable('percent', $percent);
-                    $tpl->SetVariable('txt-percent', _t('POLL_REPORTS_PERCENT', $percent));
-                    $tpl->ParseBlock("Poll/{$block}");
+                    $tpl->SetVariable('txt_percent', _t('POLL_REPORTS_PERCENT', $percent));
+                    $tpl->ParseBlock("poll/{$block}/answer");
                 }
+
+                $tpl->SetVariable('total_votes', $total_votes);
+                $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
+
+                if ($votable) {
+                    $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', _t('POLL_VOTE'));
+                    $btnVote->SetSubmit();
+                    $tpl->SetVariable('btn_vote', $btnVote->Get());
+                }
+
+                if ($poll['result_view']) {
+                    $link = $this->gadget->GetURLFor('ViewResult', array('id' => $poll['id']));
+                    $viewRes =& Piwi::CreateWidget('Link', _t('POLL_REPORTS_RESULTS'), $link);
+                    $tpl->SetVariable('result_link', $viewRes->Get());
+                }
+
+                $tpl->ParseBlock("poll/{$block}");
             }
         }
 
-        if ($votable) {
-            $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', _t('POLL_VOTE'));
-            $btnVote->SetSubmit();
-            $tpl->SetVariable('btn-vote', $btnVote->Get());
-        } else {
-            $tpl->SetVariable('already-message', _t('POLL_ALREADY_VOTED'));
+        if (!$votable) {
+            $tpl->SetVariable('already_message', _t('POLL_ALREADY_VOTED'));
         }
 
-        $link = $GLOBALS['app']->Map->GetURLFor('Poll', 'ViewResult', array('id' => $poll['id']));
-        if ($poll['result_view']) {
-            if (!$votable) {
-                $tpl->SetBlock("Poll/total-votes");
-                $tpl->SetVariable('total-votes', $total_votes);
-                $tpl->SetVariable('lbl-total-votes', _t('POLL_REPORTS_TOTAL_VOTES'));
-                $tpl->ParseBlock("Poll/total-votes");
-            }
-
-            $viewRes =& Piwi::CreateWidget('Link', _t('POLL_REPORTS_RESULTS'), $link);
-            $tpl->SetVariable('result-link', $viewRes->Get());
-        } else {
-            $tpl->SetVariable('disabled-message', _t('POLL_RESULT_DISABLED'));
+        if (!$poll['result_view']) {
+            $tpl->SetVariable('disabled_message', _t('POLL_RESULT_DISABLED'));
         }
 
-        $tpl->ParseBlock('Poll');
+        $tpl->ParseBlock('poll');
         return $tpl->Get();
     }
 
