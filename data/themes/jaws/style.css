@@ -144,7 +144,8 @@ background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAcCAIAA
 position:relative;
 }
 #footer .wrapper{
-padding-top:5px;
+padding-top:8px;
+line-height:1.2em;
 }
 .gadget{
 margin-bottom:12px;
@@ -177,10 +178,6 @@ text-indent:8px;
 border-radius:5px;
 background:#eee;
 border:1px solid #ccc;
-}
-.sidebar .gadget li{
-height:22px;
-border-bottom:1px solid #eee;
 }
 /* top header menu */
 #headbar .gadget{
@@ -411,9 +408,20 @@ font-size:80%;
 }
 .comments_post blockquote{
 background-color:#E1EBF2;
- margin:0;
- padding:10px 20px;
+margin:0;
+padding:10px 20px;
 }
 .comments_post cite{
 font-style:italic;
+}
+/* Poll */
+.poll_answer_result div{
+color:#ccc;
+height:24px;
+min-width:1%;
+text-align:left;
+overflow:visible;
+font-weight:bold;
+background:#325994;
+white-space:nowrap;
 }
