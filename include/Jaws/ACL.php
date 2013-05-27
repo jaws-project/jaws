@@ -150,7 +150,7 @@ class Jaws_ACL
      */
     function fetchAllByGroup($group, $component = '')
     {
-        if (!empty($groups)) {
+        if (!empty($group)) {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
             $tblACL->select('component', 'key_name', 'key_value:integer')->where('group', (int)$group);
             if (!empty($component)) {
