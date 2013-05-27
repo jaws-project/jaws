@@ -289,6 +289,10 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddEntries');
 
+        $request =& Jaws_Request::getInstance();
+        $summary = $request->get(3, 'post', false);
+        $text    = $request->get(4, 'post', false);
+
         if ($id == 'NEW') {
             $res = $this->_Model->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
                                            $categories,
