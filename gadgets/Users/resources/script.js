@@ -5,6 +5,7 @@
  * @package    Users
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -209,7 +210,7 @@ function getOnlineUsers(name, offset, reset)
  */
 function saveUser()
 {
-    switch(currentAction) {
+    switch (currentAction) {
         case 'UserAccount':
             if ($('pass1').value != $('pass2').value) {
                 alert(wrongPassword);
@@ -275,14 +276,14 @@ function saveUser()
             var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
                 return [img.id, '', img.alt];
             });
-            UsersAjax.callAsync('updateuseracl', $('uid').value, $('components').value, acls);
+            UsersAjax.callAsync('updateuseracl', selectedId, $('components').value, acls);
             break;
 
         case 'UserGroups':
-            var inputs  = $('user_workarea').getElementsByTagName('input');
+            var inputs  = $('workarea').getElementsByTagName('input');
             var keys    = new Array();
             var counter = 0;
-            for (var i=0; i<inputs.length; i++) {
+            for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].name.indexOf('user_groups') == -1) {
                     continue;
                 }
@@ -398,7 +399,7 @@ function deleteGroup(rowElement, gid)
  */
 function saveGroupACL()
 {
-    UsersAjax.callAsync('savegroupacl', selectedGroup, changedACLs);
+    UsersAjax.callAsync('savegroupacl', selectedId, changedACLs);
 }
 
 /**
@@ -409,7 +410,7 @@ function editUser(rowElement, uid)
     $('uid').value = uid;
     currentAction = 'UserAccount';
     $('legend_title').innerHTML  = editUser_title;
-    $('user_workarea').innerHTML = cachedUserForm;
+    $('workarea').innerHTML = cachedUserForm;
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
@@ -424,18 +425,18 @@ function editUser(rowElement, uid)
 }
 
 /**
- * edit user-ACL keys
+ * edit user/group ACL rules
  */
-function editUserACL(rowElement, uid)
+function editACL(rowElement, id, action)
 {
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
     if (!cachedACLForm) {
         cachedACLForm = UsersAjax.callSync('getaclui');
     }
-    $('user_workarea').innerHTML = cachedACLForm;
-    $('legend_title').innerHTML  = editUserACL_title;
-    $('uid').value = uid;
-    currentAction = 'UserACL';
+    $('workarea').innerHTML = cachedACLForm;
+    $('legend_title').innerHTML  = editACL_title;
+    selectedId = id;
+    currentAction = action;
     chkImages = $('acl').getElements('img').get('src');
     chkImages[-1] = chkImages[2];
     delete chkImages[2];
@@ -446,12 +447,13 @@ function editUserACL(rowElement, uid)
  */
 function getACL()
 {
-    function getUserValue(key) {
+    function getValue(key) {
         var res = -1;
-        acls.user.each(function (acl) {
+        acls.custom_acls.each(function (acl) {
             if (acl.key_name === key) {
                 res = acl.key_value;
-                //throw $break;
+                // throw $break;
+                // there is no way to break each() in MooTools
             }
         });
         return res;
@@ -464,15 +466,16 @@ function getACL()
 
     var form = $('acl_form').set('html', ''),
         acls = UsersAjax.callSync(
-            'getuseraclkeys',
-            $('uid').value,
-            $('components').value
+            'getaclkeys',
+            selectedId,
+            $('components').value,
+            currentAction
         );
-    acls.all.each(function (acl) {
+    acls.default_acls.each(function (acl) {
         var check = new Element('img', {id: acl.key_name}),
             label = new Element('label', {'for': acl.key_name}),
             div = new Element('div').adopt(check, label),
-            value = getUserValue(acl.key_name);
+            value = getValue(acl.key_name);
         label.set('html', acl.key_name);
         check.set('alt', value);
         check.set('src', chkImages[value]);
@@ -501,7 +504,7 @@ function editUserGroups(rowElement, uid)
     if (cachedUserGroupsForm == null) {
         cachedUserGroupsForm = UsersAjax.callSync('usergroupsui');
     }
-    $('user_workarea').innerHTML = cachedUserGroupsForm;
+    $('workarea').innerHTML = cachedUserGroupsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uGroups = UsersAjax.callSync('getusergroups', uid);
@@ -523,7 +526,7 @@ function editPersonal(rowElement, uid)
     if (cachedPersonalForm == null) {
         cachedPersonalForm = UsersAjax.callSync('personalui');
     }
-    $('user_workarea').innerHTML = cachedPersonalForm;
+    $('workarea').innerHTML = cachedPersonalForm;
     initDatePicker('dob');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
@@ -550,7 +553,7 @@ function editPreferences(rowElement, uid)
     if (cachedPreferencesForm == null) {
         cachedPreferencesForm = UsersAjax.callSync('preferencesui');
     }
-    $('user_workarea').innerHTML = cachedPreferencesForm;
+    $('workarea').innerHTML = cachedPreferencesForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
@@ -571,7 +574,7 @@ function editContacts(rowElement, uid)
     if (cachedContactsForm == null) {
         cachedContactsForm = UsersAjax.callSync('contactsui');
     }
-    $('user_workarea').innerHTML = cachedContactsForm;
+    $('workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, true);
@@ -590,7 +593,7 @@ function editContacts(rowElement, uid)
 function upload() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('user_workarea').adopt(iframe);
+    $('workarea').adopt(iframe);
     $('frm_avatar').submit();
 }
 
@@ -628,7 +631,7 @@ function stopUserAction()
     currentAction = 'UserAccount';
     unselectGridRow('users_datagrid');
     $('legend_title').innerHTML  = addUser_title;
-    $('user_workarea').innerHTML = cachedUserForm;
+    $('workarea').innerHTML = cachedUserForm;
     initDatePicker('expiry_date');
 }
 
@@ -637,10 +640,10 @@ function stopUserAction()
  */
 function editGroup(rowElement, gid)
 {
-    $('gid').value = gid;
+    selectedId = gid;
     currentAction = 'Group';
     $('legend_title').innerHTML   = editGroup_title;
-    $('group_workarea').innerHTML = cachedGroupForm;
+    $('workarea').innerHTML = cachedGroupForm;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
     var gInfo = UsersAjax.callSync('getgroup', gid);
@@ -651,30 +654,17 @@ function editGroup(rowElement, gid)
 }
 
 /**
- * edit group-ACL keys
- */
-function editGroupACL(rowElement, gid)
-{
-    $('gid').value = gid;
-    currentAction = 'GroupACL';
-    $('legend_title').innerHTML  = editGroupACL_title;
-    var aclKeys = UsersAjax.callSync('getgroupaclkeys', gid);
-    $('group_workarea').innerHTML = convertToTree(aclKeys);
-    selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-}
-
-/**
  * Edit the members of group
  */
 function editGroupUsers(rowElement, gid)
 {
-    $('gid').value = gid;
+    selectedId = gid;
     currentAction = 'GroupUsers';
     $('legend_title').innerHTML  = editGroupUsers_title;
     if (cachedGroupUsersForm == null) {
         cachedGroupUsersForm = UsersAjax.callSync('groupusersui');
     }
-    $('group_workarea').innerHTML = cachedGroupUsersForm;
+    $('workarea').innerHTML = cachedGroupUsersForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var gUsers = UsersAjax.callSync('getgroupusers', gid);
@@ -697,7 +687,7 @@ function saveGroup()
                 return false;
             }
 
-            if ($('gid').value == 0) {
+            if (selectedId == 0) {
                 UsersAjax.callAsync('addgroup', 
                                     $('name').value,
                                     $('title').value,
@@ -705,7 +695,7 @@ function saveGroup()
                                     $('enabled').value);
             } else {
                 UsersAjax.callAsync('updategroup',
-                                    $('gid').value,
+                                    selectedId,
                                     $('name').value,
                                     $('title').value,
                                     $('description').value,
@@ -715,11 +705,17 @@ function saveGroup()
             break;
 
         case 'GroupACL':
-            UsersAjax.callAsync('updategroupacl', $('gid').value, changedACLs);
+            if ($('components').value === '') {
+                return;
+            }
+            var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
+                return [img.id, '', img.alt];
+            });
+            UsersAjax.callAsync('updategroupacl', selectedId, $('components').value, acls);
             break;
 
         case 'GroupUsers':
-            var inputs  = $('group_workarea').getElementsByTagName('input');
+            var inputs  = $('workarea').getElementsByTagName('input');
             var keys    = new Array();
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
@@ -733,7 +729,7 @@ function saveGroup()
                 }
             }
 
-            UsersAjax.callAsync('adduserstogroup', $('gid').value, keys);
+            UsersAjax.callAsync('adduserstogroup', selectedId, keys);
             break;
     }
 
@@ -744,11 +740,11 @@ function saveGroup()
  */
 function stopGroupAction()
 {
-    $('gid').value = 0;
+    selectedId = 0;
     currentAction = 'Group';
     unselectGridRow('groups_datagrid');
     $('legend_title').innerHTML   = addGroup_title;
-    $('group_workarea').innerHTML = cachedGroupForm;
+    $('workarea').innerHTML = cachedGroupForm;
 }
 
 /**
@@ -804,13 +800,13 @@ var UsersAjax = new JawsAjax('Users', UsersCallback);
 // timeout id
 var fTimeout = null;
     
-//current group
-var selectedGroup = null;
-//show all users
-var showAll = false;
-//Combo colors
-var evenColor = '#fff';
-var oddColor  = '#edf3fe';
+var currentAction = null;
+
+// selected user/group ID
+var selectedId = null;
+
+// checkbox, allow & deny icons
+var chkImages = [];
 
 //Cached form variables
 var cachedPersonalForm = null,
@@ -819,7 +815,3 @@ var cachedPersonalForm = null,
     cachedUserGroupsForm = null,
     cachedGroupUsersForm = null,
     cachedACLForm = null;
-
-//Which action are we runing?
-var currentAction = null;
-var chkImages = {};

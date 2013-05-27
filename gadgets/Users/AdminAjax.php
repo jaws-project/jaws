@@ -343,7 +343,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * @access  public
      * @param   int     $uid    User ID
      * @param   string  $comp   Gadget/plugin name
-     * @param   array   $keys   ACL Keys
+     * @param   array   $acls   ACL keys
      * @return  array   Response array (notice or error)
      */
     function UpdateUserACL($uid, $comp, $acls)
@@ -366,24 +366,28 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Updates ACL keys of the group
+     * Updates modified group ACL keys
      *
      * @access  public
-     * @param   int     $guid   Group ID
-     * @param   array   $keys   ACL Keys
+     * @param   int     $gid    Group ID
+     * @param   string  $comp   Gadget/plugin name
+     * @param   array   $acls   ACL keys
      * @return  array   Response array (notice or error)
      */
-    function UpdateGroupACL($guid, $keys)
+    function UpdateGroupACL($gid, $comp, $acls)
     {
-        $this->gadget->CheckPermission('ManageGroupACLs');
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'GroupACL');
-        $res = $uModel->UpdateGroupACL($guid, $keys);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(),
-                                                       RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_ACL_UPDATED'),
+        $this->gadget->CheckPermission('ManageUserACLs');
+        $res = $GLOBALS['app']->ACL->deleteByGroup($gid, $comp);
+        if ($res) {
+            $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, 0, $gid);
+        }
+
+        if ($res) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUP_ACL_UPDATED'),
                                                        RESPONSE_NOTICE);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUP_ACL_NOT_UPDATED'),
+                                                       RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -485,38 +489,22 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Returns ACL keys of the component and user
+     * Returns ACL keys of the component and user/group
      *
      * @access  public
-     * @param   int     $uid    User ID
-     * @param   string  $comp   Gadget/plugin name
-     * @return  array   Array of default ACL keys and the user's
+     * @param   int     $id      User/Group ID
+     * @param   string  $comp    Gadget/Plugin name
+     * @param   string  $action  UserACL or GroupACL
+     * @return  array   Array of default ACLs and the user/group ACLs
      */
-    function GetUserACLKeys($uid, $comp)
+    function GetACLKeys($id, $comp, $action)
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        $acls = $GLOBALS['app']->ACL->fetchAll($comp);
-        $user_acls = $GLOBALS['app']->ACL->fetchAllByUser($uid, $comp);
-        return array('all' => $acls, 'user' => $user_acls);
-    }
-
-    /**
-     * Returns an array with the ACL keys of the group
-     *
-     * @access  public
-     * @param   int     $guid   Group ID
-     * @return  mixed   Array of ACL keys or false on failure
-     */
-    function GetGroupACLKeys($guid)
-    {
-        $this->gadget->CheckPermission('ManageGroupACLs');
-        $profile = $this->_UserModel->GetGroup((int)$guid);
-        if (isset($profile['name'])) {
-            $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'GroupACL');
-            $acl = $uModel->GetGroupACLKeys($guid);
-            return $acl;
-        }
-        return false;
+        $default_acls = $GLOBALS['app']->ACL->fetchAll($comp);
+        $acls = ($action === 'UserACL')? 
+            $GLOBALS['app']->ACL->fetchAllByUser($id, $comp):
+            $GLOBALS['app']->ACL->fetchAllByGroup($id, $comp);
+        return array('default_acls' => $default_acls, 'custom_acls' => $acls);
     }
 
     /**

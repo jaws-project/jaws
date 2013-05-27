@@ -78,8 +78,8 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
             if ($this->gadget->CheckPermission('ManageUserACLs')) {
                 $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_ACLRULES'),
-                                            "javascript: editUserACL(this, '".$user['id']."');",
+                                            _t('USERS_ACLS'),
+                                            "javascript: editACL(this, '".$user['id']."', 'UserACL');",
                                             'gadgets/Users/images/acls.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -228,7 +228,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         $tpl->SetVariable('menubar',        $this->MenuBar('Users'));
         $tpl->SetVariable('users_datagrid', $this->UsersDataGrid());
-        $tpl->SetVariable('user_workarea',  $this->UserUI());
+        $tpl->SetVariable('workarea',  $this->UserUI());
 
         $save =& Piwi::CreateWidget('Button',
                                     'save',
@@ -244,13 +244,13 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $cancel->AddEvent(ON_CLICK, "javascript: stopUserAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
 
-        $tpl->SetVariable('addUser_title',         _t('USERS_USERS_ADD'));
-        $tpl->SetVariable('editUser_title',        _t('USERS_USERS_EDIT'));
-        $tpl->SetVariable('editUserACL_title',     _t('USERS_ACLRULES'));
-        $tpl->SetVariable('editUserGroups_title',  _t('USERS_USERS_GROUPS'));
-        $tpl->SetVariable('editPersonal_title',    _t('USERS_PERSONAL'));
+        $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
+        $tpl->SetVariable('editUser_title', _t('USERS_USERS_EDIT'));
+        $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
+        $tpl->SetVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
+        $tpl->SetVariable('editPersonal_title', _t('USERS_PERSONAL'));
         $tpl->SetVariable('editPreferences_title', _t('USERS_PREFERENCES'));
-        $tpl->SetVariable('editContacts_title',    _t('USERS_CONTACTS'));
+        $tpl->SetVariable('editContacts_title', _t('USERS_CONTACTS'));
         $tpl->SetVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
         $tpl->SetVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
         $tpl->SetVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
@@ -259,8 +259,8 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmResetACL', _t('USERS_RESET_ACL_CONFIRM'));
         $tpl->SetVariable('permissionAllow', _t('USERS_USERS_PERMISSION_ALLOW'));
-        $tpl->SetVariable('permissionDeny',  _t('USERS_USERS_PERMISSION_DENY'));
-        $tpl->SetVariable('permissionNone',  _t('USERS_USERS_PERMISSION_NONE'));
+        $tpl->SetVariable('permissionDeny', _t('USERS_USERS_PERMISSION_DENY'));
+        $tpl->SetVariable('permissionNone', _t('USERS_USERS_PERMISSION_NONE'));
         $tpl->ParseBlock('Users');
 
         return $tpl->Get();

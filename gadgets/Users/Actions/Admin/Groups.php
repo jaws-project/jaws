@@ -74,8 +74,8 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
 
             if ($this->gadget->CheckPermission('ManageGroupACLs')) {
                 $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_ACLRULES'),
-                                            "javascript: editGroupACL(this, '".$group['id']."');",
+                                            _t('USERS_ACLS'),
+                                            "javascript: editACL(this, '".$group['id']."', 'GroupACL');",
                                             'gadgets/Users/images/acls.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -120,7 +120,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
 
         $tpl->SetVariable('menubar',         $this->MenuBar('Groups'));
         $tpl->SetVariable('groups_datagrid', $this->GroupsDataGrid());
-        $tpl->SetVariable('group_workarea',  $this->GroupUI());
+        $tpl->SetVariable('workarea',  $this->GroupUI());
 
         $save =& Piwi::CreateWidget('Button',
                                     'save',
@@ -136,17 +136,16 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
         $cancel->AddEvent(ON_CLICK, "javascript: stopGroupAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
 
-        $tpl->SetVariable('addGroup_title',        _t('USERS_GROUPS_ADD'));
-        $tpl->SetVariable('editGroup_title',       _t('USERS_GROUPS_EDIT'));
-        $tpl->SetVariable('editGroupACL_title',    _t('USERS_ACLRULES'));
-        $tpl->SetVariable('editGroupUsers_title',  _t('USERS_GROUPS_MEMBERS'));
+        $tpl->SetVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
+        $tpl->SetVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
+        $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
+        $tpl->SetVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
         $tpl->SetVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('permissionsMsg',     _t('USERS_USERS_PERMISSIONS'));
+        $tpl->SetVariable('permissionsMsg', _t('USERS_USERS_PERMISSIONS'));
         $tpl->SetVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
-        $tpl->SetVariable('confirmResetACL',    _t('USERS_RESET_ACL_CONFIRM'));
-        $tpl->SetVariable('permissionAllow',    _t('USERS_USERS_PERMISSION_ALLOW'));
-        $tpl->SetVariable('permissionDeny',     _t('USERS_USERS_PERMISSION_DENY'));
-        $tpl->SetVariable('permissionNone',     _t('USERS_USERS_PERMISSION_NONE'));
+        $tpl->SetVariable('permissionAllow', _t('USERS_USERS_PERMISSION_ALLOW'));
+        $tpl->SetVariable('permissionDeny', _t('USERS_USERS_PERMISSION_DENY'));
+        $tpl->SetVariable('permissionNone', _t('USERS_USERS_PERMISSION_NONE'));
         $tpl->ParseBlock('Groups');
 
         return $tpl->Get();
