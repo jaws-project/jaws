@@ -154,7 +154,7 @@ margin-bottom:12px;
 margin-bottom:8px;
 }
 .gadget_section{
-padding-bottom:4px;
+padding-bottom:10px;
 }
 .actions{
 text-align:right;
@@ -424,4 +424,8 @@ overflow:visible;
 font-weight:bold;
 background:#325994;
 white-space:nowrap;
+}
+/* Search */
+.search_result_meta img{
+float:left;
 }
