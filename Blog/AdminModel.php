@@ -942,13 +942,13 @@ class Blog_AdminModel extends Blog_Model
             $newRow['created'] = $date->Format($row['createtime']);
             switch($row['status']) {
             case 'approved':
-                $newRow['status'] = _t('GLOBAL_STATUS_APPROVED');
+                $newRow['status'] = _t('COMMENTS_STATUS_APPROVED');
                 break;
             case 'waiting':
-                $newRow['status'] = _t('GLOBAL_STATUS_WAITING');
+                $newRow['status'] = _t('COMMENTS_STATUS_WAITING');
                 break;
             case 'spam':
-                $newRow['status'] = _t('GLOBAL_STATUS_SPAM');
+                $newRow['status'] = _t('COMMENTS_STATUS_SPAM');
                 break;
             }
 

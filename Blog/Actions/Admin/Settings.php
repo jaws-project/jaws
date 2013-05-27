@@ -134,8 +134,8 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $commStatusCombo =& Piwi::CreateWidget('Combo', 'comment_status');
         $commStatusCombo->setContainerClass('oneline');
         $commStatusCombo->SetTitle(_t('BLOG_DEFAULT_STATUS', _t('BLOG_COMMENTS')));
-        $commStatusCombo->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $commStatusCombo->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
+        $commStatusCombo->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
+        $commStatusCombo->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
         $commStatusCombo->SetDefault($settings['comment_status']);
 
         // Trackback
@@ -150,8 +150,8 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $tbStatusCombo =& Piwi::CreateWidget('Combo', 'trackback_status');
         $tbStatusCombo->setContainerClass('oneline');
         $tbStatusCombo->SetTitle(_t('BLOG_DEFAULT_STATUS', _t('BLOG_TRACKBACK')));
-        $tbStatusCombo->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $tbStatusCombo->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
+        $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
+        $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
         $tbStatusCombo->SetDefault($settings['trackback_status']);
 
         // Pingback

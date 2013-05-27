@@ -52,9 +52,9 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $statusData = '';
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 'approved');
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 'waiting');
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 'spam');
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
+        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), 'spam');
         $status->SetDefault($statusData);
         $status->AddEvent(ON_CHANGE, 'return searchTrackback();');
         $tpl->SetVariable('status', $status->Get());
@@ -114,9 +114,9 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_APPROVED'), 'approved');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_WAITING'), 'waiting');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_SPAM'), 'spam');
+        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 'approved');
+        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 'waiting');
+        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), 'spam');
 
         $execute =& Piwi::CreateWidget('Button', 'executeTrackbackAction', '',
                                        STOCK_YES);

@@ -104,9 +104,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;',0);
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
+        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), 3);
         $status->SetDefault(0);
         $status->AddEvent(ON_CHANGE, 'searchComment();');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
@@ -186,9 +186,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //Status
         $status =& Piwi::CreateWidget('Combo', 'comment_status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('GLOBAL_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('GLOBAL_STATUS_WAITING'), 2);
-        $status->AddOption(_t('GLOBAL_STATUS_SPAM'), 3);
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
+        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), 3);
         $status->SetDefault('various');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
@@ -323,9 +323,9 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('GLOBAL_MARK_AS_APPROVED'), 1);
-        $actions->AddOption(_t('GLOBAL_MARK_AS_WAITING'), 2);
-        $actions->AddOption(_t('GLOBAL_MARK_AS_SPAM'), 3);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 1);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 2);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), 3);
 
         $execute =& Piwi::CreateWidget('Button', 'executeCommentAction', '',
                                        STOCK_YES);

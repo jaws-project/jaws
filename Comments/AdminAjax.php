@@ -96,7 +96,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_UPDATED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -117,7 +117,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_DELETED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_DELETED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -140,7 +140,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_COMMENT_MARKED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_MARKED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();

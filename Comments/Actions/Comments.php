@@ -549,7 +549,7 @@ class Comments_Actions_Comments extends Comments_HTML
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'Comments');
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('GLOBAL_MESSAGE_SENT'), 'Comments');
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
         Jaws_Header::Location($redirectTo);
