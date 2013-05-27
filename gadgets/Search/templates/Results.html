@@ -1,26 +1,25 @@
 <!-- BEGIN results -->
-<div class="gadget search search_results">
+<div class="gadget search search_result">
   <h2>{title}</h2>
-  <div class="content">
+  <div class="gadget_section search_result_summary">
     <!-- BEGIN subtitle -->{text}<!-- END subtitle -->
-    <!-- BEGIN gadget --><h4>{gadget_result}</h4><!-- END gadget -->
+    <!-- BEGIN gadget --><h3>{gadget_result}</h3><!-- END gadget -->
   </div>
-  <ul>
-  <!-- BEGIN item -->
-    <li class="clearfix">
-      <div class="clearfix">
-      <div class="snippet">
-        <div><a href="{url}" target="{target}">{title}</a><small>{date}</small></div>
-        <p>{snippet}</p>
+  <div class="content">
+    <ul>
+    <!-- BEGIN item -->
+    <li class="gadget_section">
+      <div class="search_result_meta">
+        <img src="{image}" width="48" alt="{title}"/>
+        <h3><a href="{url}" target="{target}">{title}</a></h3>
+        <span>{date}</span>
       </div>
-      <div class="gadget_logo">
-        <a href="{url}" target="{target}"><img src="{image}" width="48" alt="{title}"/></a>
-      </div>
-      </div>
+      <p>{snippet}</p>
     </li>
-  <!-- END item -->
-  </ul>
+    <!-- END item -->
+    </ul>
   <!-- BEGIN notfound -->{message}<!-- END notfound -->
+  </div>
   {navigation}
 </div>
 <!-- END results -->
