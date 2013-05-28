@@ -18,7 +18,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        // TODO: Check Permission For Manage Comments
+        $this->gadget->CheckPermission('ManageComments');
         return $this->Comments();
     }
 
@@ -38,17 +38,21 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-        // TODO: Check Permission For Manage Comments
-        $menubar->AddOption(
-            'Comments',
-            _t('COMMENTS_NAME'),
-            BASE_SCRIPT . '?gadget=Comments&amp;action=Admin');
 
-        $menubar->AddOption(
-            'Settings',
-            _t('GLOBAL_SETTINGS'),
-            BASE_SCRIPT . '?gadget=Comments&amp;action=Settings',
-            STOCK_PREFERENCES);
+        if ($this->gadget->GetPermission('ManageComments')) {
+            $menubar->AddOption(
+                'Comments',
+                _t('COMMENTS_NAME'),
+                BASE_SCRIPT . '?gadget=Comments&amp;action=Admin');
+        }
+
+        if ($this->gadget->GetPermission('Settings')) {
+            $menubar->AddOption(
+                'Settings',
+                _t('GLOBAL_SETTINGS'),
+                BASE_SCRIPT . '?gadget=Comments&amp;action=Settings',
+                STOCK_PREFERENCES);
+        }
 
         $menubar->Activate($action);
         return $menubar->Get();
@@ -63,7 +67,6 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function Comments($gadget='')
     {
-        // TODO: Check Permission For Manage Comments
         $this->AjaxMe('script.js');
 
         $tpl = $this->gadget->loadTemplate('Comments.html');
@@ -130,17 +133,17 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         //CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'stopCommentAction();');
-        $btnCancel->SetStyle('display: none;');
-        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
+        if ($this->gadget->GetPermission('ManageComments')) {
+            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+            $btnCancel->AddEvent(ON_CLICK, 'stopCommentAction();');
+            $btnCancel->SetStyle('display: none;');
+            $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        // TODO: Check Permission For Manage Comments
-        //$btnSave->SetEnabled($this->gadget->GetPermission('ManageComments'));
-        $btnSave->AddEvent(ON_CLICK, "updateComment();");
-        $btnSave->SetStyle('display: none;');
-        $tpl->SetVariable('btn_save', $btnSave->Get());
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave->AddEvent(ON_CLICK, "updateComment();");
+            $btnSave->SetStyle('display: none;');
+            $tpl->SetVariable('btn_save', $btnSave->Get());
+        }
 
         $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmCommentDelete',    _t('COMMENTS_CONFIRM_DELETE'));
@@ -200,10 +203,14 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
         $tpl->SetVariable('message', $messageText->Get());
 
+
         //reply
         $replyText =& Piwi::CreateWidget('TextArea', 'reply','');
         $replyText->SetStyle('width: 270px;');
         $replyText->SetRows(8);
+        if(!$this->gadget->GetPermission('ReplyComments')) {
+            $replyText->SetEnabled(false);
+        }
         $tpl->SetVariable('lbl_reply', _t('COMMENTS_REPLY'));
         $tpl->SetVariable('reply', $replyText->Get());
 

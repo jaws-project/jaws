@@ -120,9 +120,11 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']     = $url;
         $cData['msg_txt'] = $message;
         $cData['msg_key'] = md5($message);
-        $cData['reply']   = $reply;
         $cData['replier'] = $GLOBALS['app']->Session->GetAttribute('user');
         $cData['status']  = $status;
+        if($this->gadget->GetPermission('ReplyComments')) {
+            $cData['reply']   = $reply;
+        }
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $result = $commentsTable->update($cData)->where('id', $id)->and()->where('gadget', $gadget)->exec();

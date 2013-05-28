@@ -18,7 +18,7 @@ class Comments_Actions_Admin_Settings extends Comments_AdminHTML
      */
     function Settings()
     {
-        $this->gadget->CheckPermission('ManageProperties');
+        $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->loadTemplate('Settings.html');
         $tpl->SetBlock('Settings');

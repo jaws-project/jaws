@@ -41,6 +41,8 @@ class Comments_Info extends Jaws_Gadget
      */
     var $_ACLs = array(
         'ManageComments',
+        'ReplyComments',
+        'Settings',
     );
 
 }

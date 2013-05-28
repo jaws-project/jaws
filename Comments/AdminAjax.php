@@ -35,7 +35,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function SearchComments($limit, $gadget, $search, $status)
     {
-        // TODO: Check Permission For Manage Comments
+        $this->gadget->CheckPermission('ManageComments');
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $search, $status, $limit, true);
     }
@@ -89,7 +89,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, $status)
     {
-        // TODO: Check Permission For Manage Comments
+        $this->gadget->CheckPermission('ManageComments');
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
@@ -111,7 +111,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteComments($ids)
     {
-        // TODO: check permission before delete comments
+        $this->gadget->CheckPermission('ManageComments');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'DeleteComments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
@@ -134,7 +134,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function MarkAs($gadget, $ids, $status)
     {
-        // TODO: Check Permission For Manage Comments
+        $this->gadget->CheckPermission('ManageComments');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $cModel->MarkAs($gadget, $ids, $status);
         if (Jaws_Error::IsError($res)) {
@@ -156,7 +156,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
      */
     function SaveSettings($allowComments, $allowDuplicate)
     {
-        // TODO: check permission before updating settings
+        $this->gadget->CheckPermission('Settings');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Settings');
         $res = $cModel->SaveSettings($allowComments, $allowDuplicate);
         if (Jaws_Error::IsError($res)) {
