@@ -1,58 +1,58 @@
-div .titles {
+div .titles{
 font-weight:bold;
 text-align:left;
 }
-#lang {
+#lang{
 margin-bottom:4px;
 }
-#lang_box {
+#lang_box{
 width:220px;
 float:left;
 }
-#add_lang {
+#add_lang{
 margin-top:8px;
 text-align:left;
 }
-#add_lang input {
+#add_lang input{
 width:210px;
 margin-bottom:2px;
 }
-#set_box {
+#set_box{
 width:752px;
 float:right;
 }
-#lang, #component {
+#lang, #component{
 width:220px;
 }
-#buttons {
+#buttons{
 border-top:1px solid #ddd;
 text-align:center;
 margin:1em;
 padding:1em;
 }
-#head_strings {
+#head_strings{
 border:1px solid #ddd;
 width:752px;
 }
-#head_strings th {
+#head_strings th{
 color:#fff;
 padding:4px;
 text-align:left;
 background-color:#3465a4;
 }
-#head_strings #th_from {
+#head_strings #th_from{
 width:342px;
 }
-#meta_lang {
+#meta_lang{
 text-align:left;
 padding:2px;
 width:725px;
 border-bottom:1px solid #ddd;
 }
-#meta_lang input {
+#meta_lang input{
 width:720px;
 }
-#lang_strings {
+#lang_strings{
 border:1px solid #ddd;
 font-weight:normal;
 float:right;
@@ -61,32 +61,32 @@ width:750px;
 overflow:auto;
 margin-bottom:4px;
 }
-#tbl_strings {
+#tbl_strings{
 width:730px;
 }
-#tbl_strings td {
+#tbl_strings td{
 padding:0px;
 padding-bottom:1px;
 }
-#tbl_strings .td_from {
+#tbl_strings .td_from{
 padding-left:4px;
 width:360px;
 vertical-align:top;
 border-bottom:1px solid #ddd;
 }
-#tbl_strings .td_to {
+#tbl_strings .td_to{
 }
-#tbl_strings textarea {
+#tbl_strings textarea{
 padding:0px;
 width:375px;
 }
-.even td {
+.even td{
 background-color:#edf3fe;
 }
-.odd td {
+.odd td{
 background-color:#fff;
 }
-.filter {
+.filter{
 float:left;
 padding:3px 0px;
 }
