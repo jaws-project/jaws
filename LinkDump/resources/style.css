@@ -1,130 +1,131 @@
-.links-titlebar {
-    text-align: left;
-    background: #d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
-    padding-left: 5px;
-    padding-right: 10px;
-    margin-bottom: 5px;
-    border: 1px solid #d3d7cf;
-    height: 2.4em;
+.links-titlebar{
+text-align:left;
+background:#d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
+padding-left:5px;
+padding-right:10px;
+margin-bottom:5px;
+border:1px solid #d3d7cf;
+height:2.4em;
 }
-
-.links-titlebar span {
-    float: left;
-    padding: .4em;
-    white-space: nowrap;
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 6px;
-    padding-right: 6px;
-    border-left: 1px solid #ddd;
+.links-titlebar span{
+float:left;
+padding:.4em;
+white-space:nowrap;
+display:table-cell;
+vertical-align:middle;
+padding-left:6px;
+padding-right:6px;
+border-left:1px solid #ddd;
 }
-
-.links-titlebar span img {
-    width: 16px;
-    vertical-align: -3px;
-    margin-right: 2px;
+.links-titlebar span img{
+width:16px;
+vertical-align:-3px;
+margin-right:2px;
 }
-
-#links_area {
-    float: left;
-    width: 300px;
+#links_area{
+float:left;
+width:300px;
 }
-
-#links_tree {
-    margin: 0px;
-    padding: 0px;
-    width: 298px;
-    height: 390px;
-    border: 1px solid #d3d7cf;
-    background-color: #f7f7f7;
-    overflow: auto;
+#links_tree{
+margin:0px;
+padding:0px;
+width:298px;
+height:390px;
+border:1px solid #d3d7cf;
+background-color:#f7f7f7;
+overflow:auto;
 }
-
-#links_tree img {
-    width: 16px;
-    vertical-align: -4px;
-    margin-right: 0.1em;
+#links_tree img{
+width:16px;
+vertical-align:-4px;
+margin-right:0.1em;
 }
-
-#links_tree a {
-    cursor: pointer;
-    text-decoration: none;
+#links_tree a{
+cursor:pointer;
+text-decoration:none;
 }
-
-#links_tree a:hover {
-    text-decoration: underline;
+#links_tree a:hover{
+text-decoration:underline;
 }
-
-.links_group {
-    margin:  0px;
-    padding: 2px;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
-    background-color: #f7f7f7;
-    border-bottom: 1px dotted #d3d7cf;
+.links_group{
+margin:0px;
+padding:2px;
+padding-bottom:4px;
+margin-bottom:4px;
+background-color:#f7f7f7;
+border-bottom:1px dotted #d3d7cf;
 }
-
-.group {
-    clear: both;
-    font-size: 11px;
-    font-weight: bold;
-    text-align: right;
-    padding-bottom: 16px;
-    background-color: #e7e7e7;
+.group{
+clear:both;
+font-size:11px;
+font-weight:bold;
+text-align:right;
+padding-bottom:16px;
+background-color:#e7e7e7;
 }
-
-.group .title {
-    float: left;
+.group .title{
+float:left;
 }
-
-.group .actions {
-    float: right;
+.group .actions{
+float:right;
 }
-
-.links {
-    padding: 0px;
-    font-size: 11px;
-    text-align: left;
-    margin: 1px 0px 1px 16px;
+.links{
+padding:0px;
+font-size:11px;
+text-align:left;
+margin:1px 0px 1px 16px;
 }
-
-.links div {
-    margin: 1px 0px 1px 0px;
+.links div{
+margin:1px 0px 1px 0px;
 }
-
-.links img {
-    padding-right: 2px;
+.links img{
+padding-right:2px;
 }
-
-#edit_area {
-    float: left;
-    width: 668px;
-    margin-left: 10px;
-    margin-bottom: 4px;
+#edit_area{
+float:left;
+width:668px;
+margin-left:10px;
+margin-bottom:4px;
 }
-
-#edit_area  span {
-    width: 412px;
-    overflow: hidden;
+#edit_area span{
+width:412px;
+overflow:hidden;
 }
-
-#links_edit {
-    height: 360px;
-    border: 1px solid #d3d7cf;
+#links_edit{
+height:360px;
+border:1px solid #d3d7cf;
 }
-
-#tbl_group, #tbl_link {
-    padding:4px;
-    text-align: left;
+#tbl_group, #tbl_link{
+padding:4px;
+text-align:left;
 }
-
-#tbl_group td, #tbl_link td {
-    padding: 8px 0px 0px 10px;
+#tbl_group td, #tbl_link td{
+padding:8px 0px 0px 10px;
 }
-
-table#spin_btn {border: none; padding: 0px; margin: 0px; border-spacing: 0px;}
-table#spin_btn td {padding: 0px; margin: 0px;}
-table#spin_btn button {padding: 0px; margin: 0px; border-width: 1px; height: 24px; width: 28px;}
-table#spin_btn button img {border: 0px; height: 16px; width: 16px; padding:3px; margin: 0px;}
-
-#links_type, #order_type {width: 105px;}
+table#spin_btn{
+border:none;
+padding:0px;
+margin:0px;
+border-spacing:0px;
+}
+table#spin_btn td{
+padding:0px;
+margin:0px;
+}
+table#spin_btn button{
+padding:0px;
+margin:0px;
+border-width:1px;
+height:24px;
+width:28px;
+}
+table#spin_btn button img{
+border:0px;
+height:16px;
+width:16px;
+padding:3px;
+margin:0px;
+}
+#links_type, #order_type{
+width:105px;
+}

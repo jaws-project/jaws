@@ -1,18 +1,15 @@
-fieldset {
-    margin-bottom: 0px;
+fieldset{
+margin-bottom:0px;
 }
-
-.buttons {
-    text-align: left;
+.buttons{
+text-align:left;
 }
-
-#FeedProperties {
-    width: 224px;
-    padding: 4px;
-    text-align: right;
-    font-weight: bold;
+#FeedProperties{
+width:224px;
+padding:4px;
+text-align:right;
+font-weight:bold;
 }
-
-#FeedProperties td {
-    padding: 4px 4px 0 0;
+#FeedProperties td{
+padding:4px 4px 0 0;
 }

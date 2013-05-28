@@ -1,86 +1,74 @@
-.buttons {
-    text-align: left;
-    vertical-align: top;
-    padding: 4px 0px;
+.buttons{
+text-align:left;
+vertical-align:top;
+padding:4px 0px;
 }
-
-.floatbtns {
-    float: right;
+.floatbtns{
+float:right;
 }
-
-#working_area {
-    width: 710px;
-    border: 1px solid #c7c7c7;
-    padding: 5px;
-    float: right;
+#working_area{
+width:710px;
+border:1px solid #c7c7c7;
+padding:5px;
+float:right;
 }
-
-#preview {
-    height: 413px;
-    min-height: 413px;
-    width: 100%;
-    display: none;
+#preview{
+height:413px;
+min-height:413px;
+width:100%;
+display:none;
 }
-
-#preview_title {
-    font-weight: bold;
-    font-size: 130%;
-    color: #3465a4;
-    border-bottom: 1px dotted #c7c7c7;
-    margin-bottom: 6px;
-    text-align: right;
+#preview_title{
+font-weight:bold;
+font-size:130%;
+color:#3465a4;
+border-bottom:1px dotted #c7c7c7;
+margin-bottom:6px;
+text-align:right;
 }
-
-#preview_contents {
-    border: 1px solid #c7c7c7;
-    height: 350px;
-    max-height: 350px;
-    text-align: right;
-    overflow: auto;
+#preview_contents{
+border:1px solid #c7c7c7;
+height:350px;
+max-height:350px;
+text-align:right;
+overflow:auto;
 }
-
-#edit table {
-    text-align: right;  
+#edit table{
+text-align:right;
 }
-
-#edit table td label {
-    display: block;
+#edit table td label{
+display:block;
 }
-
-ul#tabs {
-    margin: 0;
-    margin-top: 8px;
-    padding: 0;
-    text-align: right;
+ul#tabs{
+margin:0;
+margin-top:8px;
+padding:0;
+text-align:right;
 }
-
-ul#tabs li  {
-    display: inline;
-    list-style: none;
+ul#tabs li{
+display:inline;
+list-style:none;
 }
-
-ul#tabs span {
-    background: #eee;
-    border: 1px solid #c7c7c7;
-    border-bottom: none;
-    text-decoration: none;
-    padding: 4px 4px 0px 4px;
-    color: #888a85;
-    font-weight: bold;
+ul#tabs span{
+background:#eee;
+border:1px solid #c7c7c7;
+border-bottom:none;
+text-decoration:none;
+padding:4px 4px 0px 4px;
+color:#888a85;
+font-weight:bold;
 }
-
-ul#tabs span:hover {
-    cursor: pointer;
-    background-color: #cee14b;
-    color: #9db029;
+ul#tabs span:hover{
+cursor:pointer;
+background-color:#cee14b;
+color:#9db029;
 }
-
-ul#tabs span.current {
-    background: #fff;
-    color: #3465a4;
-    border-top: 3px solid #c7c7c7;
-    border-left: 1px solid #c7c7c7;
-    border-right: 1px solid #c7c7c7;
-    border-bottom: none;
-    padding: 4px 4px 1px 4px;
+ul#tabs span.current{
+background:#fff;
+color:#3465a4;
+border-top:3px solid #c7c7c7;
+border-left:1px solid #c7c7c7;
+border-right:1px solid #c7c7c7;
+border-bottom:none;
+padding:4px 4px 1px 4px;
 }

@@ -1,38 +1,31 @@
-#QuotesBox {
-    padding: 0px;
-    width: 100%;
+#QuotesBox{
+padding:0px;
+width:100%;
 }
-
-#QuotesBox td {
-    font-size: 10pt;
-    text-align: right;
+#QuotesBox td{
+font-size:10pt;
+text-align:right;
 }
-
-#QuotesOptions {
-    width: 100%;
-    padding-right: 4px;
-    font-weight: bold;
+#QuotesOptions{
+width:100%;
+padding-right:4px;
+font-weight:bold;
 }
-
-#QuotesOptions td {
-    padding: 1px;
+#QuotesOptions td{
+padding:1px;
 }
-
-#QuoteGroupsBox {
-    width: 100%;
-    padding: 0px;
+#QuoteGroupsBox{
+width:100%;
+padding:0px;
 }
-
-#QuoteGroupsBox td {
-    font-size: 10pt;
-    text-align: right;
+#QuoteGroupsBox td{
+font-size:10pt;
+text-align:right;
 }
-
-#group_banners_title {
-    text-align: right;
+#group_banners_title{
+text-align:right;
 }
-
-#group_quotes {
-    width: 100%;
-    text-align: right;
+#group_quotes{
+width:100%;
+text-align:right;
 }
