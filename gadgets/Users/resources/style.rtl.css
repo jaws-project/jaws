@@ -1,4 +1,4 @@
-#workarea, #workarea {
+#workarea {
 direction: rtl;
 height: 408px;
 text-align: right;
@@ -278,3 +278,10 @@ direction:ltr;
 font-weight:normal;
 text-align: left;
 }
+
+#acl {padding:0;}
+#acl img {vertical-align:middle;}
+#acl label {display:inline; vertical-align:middle;}
+#acl select {width:160px;}
+#acl_form {height:350px; overflow:auto;}
+#acl_form label {font-weight:normal;}
