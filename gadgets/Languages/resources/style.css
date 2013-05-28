@@ -1,113 +1,92 @@
 div .titles {
-    font-weight: bold;
-    text-align: left;
+font-weight:bold;
+text-align:left;
 }
-
 #lang {
-    margin-bottom: 4px;
+margin-bottom:4px;
 }
-
 #lang_box {
-    width: 220px;
-    float: left;
+width:220px;
+float:left;
 }
-
 #add_lang {
-    margin-top: 8px;
-    text-align: left;
+margin-top:8px;
+text-align:left;
 }
-
 #add_lang input {
-    width: 210px;
-    margin-bottom: 2px;
+width:210px;
+margin-bottom:2px;
 }
-
 #set_box {
-    width: 752px;
-    float: right;
+width:752px;
+float:right;
 }
-
 #lang, #component {
-    width: 220px;
+width:220px;
 }
-
 #buttons {
-    border-top: 1px solid #ddd;
-    text-align: center;
-    margin: 1em;
-    padding: 1em;
+border-top:1px solid #ddd;
+text-align:center;
+margin:1em;
+padding:1em;
 }
-
 #head_strings {
-    border: 1px solid #ddd;
-    width: 752px;
+border:1px solid #ddd;
+width:752px;
 }
-
 #head_strings th {
-    color: #fff;
-    padding: 4px;
-    text-align: left;
-    background-color: #3465a4;
+color:#fff;
+padding:4px;
+text-align:left;
+background-color:#3465a4;
 }
-
 #head_strings #th_from {
-    width: 258px;
+width:342px;
 }
-
 #meta_lang {
-    text-align: left;
-    padding: 2px;
-    width: 725px;
-    border-bottom: 1px solid #ddd;
+text-align:left;
+padding:2px;
+width:725px;
+border-bottom:1px solid #ddd;
 }
-
 #meta_lang input {
-    width: 720px;
+width:720px;
 }
-
 #lang_strings {
-    border: 1px solid #ddd;
-    font-weight: normal;
-    float: right;
-    height: 392px;
-    width: 750px;
-    overflow: auto;
-    margin-bottom: 4px;
+border:1px solid #ddd;
+font-weight:normal;
+float:right;
+height:392px;
+width:750px;
+overflow:auto;
+margin-bottom:4px;
 }
-
 #tbl_strings {
-    width: 730px;
+width:730px;
 }
-
 #tbl_strings td {
-    padding: 0px;
-    padding-bottom: 1px;
+padding:0px;
+padding-bottom:1px;
 }
-
 #tbl_strings .td_from {
-    padding-left: 4px;
-    width: 360px;
-    vertical-align: top;
-    border-bottom: 1px solid #ddd;
+padding-left:4px;
+width:360px;
+vertical-align:top;
+border-bottom:1px solid #ddd;
 }
-
 #tbl_strings .td_to {
 }
-
 #tbl_strings textarea {
-    padding: 0px;
-    width: 375px;
+padding:0px;
+width:375px;
 }
-
 .even td {
-    background-color: #edf3fe;
+background-color:#edf3fe;
 }
-
 .odd td {
-    background-color: #fff;
+background-color:#fff;
 }
-
 .filter {
-    float: left;
-    padding: 3px 0px;
+float:left;
+padding:3px 0px;
 }
