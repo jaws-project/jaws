@@ -84,6 +84,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
                 foreach ($answers as $answer) {
                     $tpl->SetBlock("poll/{$block}/answer");
                     $tpl->SetVariable('aid', $answer['id']);
+                    $tpl->SetVariable('rank', $answer['rank']+1);
                     $tpl->SetVariable('answer', $answer['answer']);
                     if ($poll['select_type'] == 1) {
                         $rb = '<input type="checkbox" name="answers[]" id="poll_answer_input_'.

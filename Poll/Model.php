@@ -48,7 +48,7 @@ class Poll_Model extends Jaws_Gadget_Model
     function GetPollAnswers($pid)
     {
         $sql = "
-            SELECT [id], [answer], [votes]
+            SELECT [id], [answer], [rank], [votes]
             FROM [[poll_answers]]
             WHERE [pid] = {pid}
             ORDER BY [rank] ASC";
