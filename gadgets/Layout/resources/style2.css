@@ -1,128 +1,112 @@
-body {
-background: #fff;
-font-size: small;
-padding: 0;
-margin: 0;
-text-align: left;
-font-family: "Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
+body{
+background:#fff;
+font-size:small;
+padding:0;
+margin:0;
+text-align:left;
+font-family:"Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
 }
-
-label, p, select {
-font-size: 10pt;
+label, p, select{
+font-size:10pt;
 }
-
-form, table { margin: 0; padding: 0; }
-
-#controls {
+form, table{
+margin:0;
+padding:0;
+}
+#controls{
 margin:0 4px;
-font-size: 10pt;
-border-collapse: collapse;
+font-size:10pt;
+border-collapse:collapse;
 }
-
-#controls tr th {
-border-bottom: 1px solid #ddd;
+#controls tr th{
+border-bottom:1px solid #ddd;
 }
-
-#gadget-list, #gadget-actions {
-height: 318px;
-overflow: auto;
+#gadget-list, #gadget-actions{
+height:318px;
+overflow:auto;
 }
-
-#gadget-list {
-width: 240px;
+#gadget-list{
+width:240px;
 }
-
-#gadget-actions {
-width: 540px;
+#gadget-actions{
+width:540px;
 }
-.gadget-item {
-border-bottom: 1px solid #ddd;
-padding-right: 4px;
-height: 52px;
-font-size: 10pt;
-font-weight: bold;
-cursor: pointer;
+.gadget-item{
+border-bottom:1px solid #ddd;
+padding-right:4px;
+height:52px;
+font-size:10pt;
+font-weight:bold;
+cursor:pointer;
 }
-
-.gadget-item img {
-margin-right: 2px;
-vertical-align: middle;
+.gadget-item img{
+margin-right:2px;
+vertical-align:middle;
 }
-
-.gadget-selected {
-background: #3465a4;
-color: #fff;
+.gadget-selected{
+background:#3465a4;
+color:#fff;
 }
-
-#actions-list {
-list-style: none;
-padding: 0;
-margin: 0;
+#actions-list{
+list-style:none;
+padding:0;
+margin:0;
 }
-
-#actions-list li {
-padding: 4px;
-border-bottom: 1px solid #ddd;
+#actions-list li{
+padding:4px;
+border-bottom:1px solid #ddd;
 }
-#actions-list li span {
-display: block;
-color: #666;
-font-weight: normal;
-font-size: 10pt;
-padding-left: 2em;
+#actions-list li span{
+display:block;
+color:#666;
+font-weight:normal;
+font-size:10pt;
+padding-left:2em;
 }
-.action-msg {
-text-align: center;
-padding: 2em;
-color: #999;
+.action-msg{
+text-align:center;
+padding:2em;
+color:#999;
 }
 .action_param label{
-width: 80px;
-padding: 5px 2em 0;
-display: inline-block;
+width:80px;
+padding:5px 2em 0;
+display:inline-block;
 }
-
-#footer {
-border-top: 1px solid #ddd;
-padding: 10px;
+#footer{
+border-top:1px solid #ddd;
+padding:10px;
 }
-
-#buttons {
-float: right;
+#buttons{
+float:right;
 }
-
-#buttons button {
-font-size: 10pt;
+#buttons button{
+font-size:10pt;
 }
-
-#display_in {
-width: 100%;
+#display_in{
+width:100%;
 }
-
-#selected_gadgets {
-height: 200px;
-border: 1px solid #ddd;
-overflow: auto;
-padding-left: 2px;
+#selected_gadgets{
+height:200px;
+border:1px solid #ddd;
+overflow:auto;
+padding-left:2px;
 }
-
-#g-info {
-color: #666;
-display: block;
-font-size: 9pt;
-text-align: left;
+#g-info{
+color:#666;
+display:block;
+font-size:9pt;
+text-align:left;
 }
-
-#g-info img {
-width: 48px;
-height: 48px;
-float: left;
-padding-right: 2px;
+#g-info img{
+width:48px;
+height:48px;
+float:left;
+padding-right:2px;
 }
-
-#g-info label {
-color: #3465a4;
-font-size: 11pt;
-padding-top: 8px;
-display: block;
+#g-info label{
+color:#3465a4;
+font-size:11pt;
+padding-top:8px;
+display:block;
 }

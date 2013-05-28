@@ -1,60 +1,49 @@
-#policy_table {
-    width: 100%;
-    padding: 1px;
+#policy_table{
+width:100%;
+padding:1px;
 }
-
-#policy_table td {
-    vertical-align: top;
+#policy_table td{
+vertical-align:top;
 }
-
-#policy_sidebar {
-    width: 200px;
-    vertical-align: top;
-    padding-left: 6px;
+#policy_sidebar{
+width:200px;
+vertical-align:top;
+padding-left:6px;
 }
-
-#jaws-sidebar-policy {
-    height: 256px;
-    width: 100%;
+#jaws-sidebar-policy{
+height:256px;
+width:100%;
 }
-
-#jaws-sidebar-policy  img {
-    width: 16px;
+#jaws-sidebar-policy img{
+width:16px;
 }
-
-#blocked_ips_datagrid, #blocked_agents_datagrid {
-    margin: 0;
-    width: 100%;
+#blocked_ips_datagrid, #blocked_agents_datagrid{
+margin:0;
+width:100%;
 }
-
-#policy_options {
-    margin: 2px;
-    padding: 4px 0;
-    text-align: right;
-    border: 1px solid #d3d7cf;
+#policy_options{
+margin:2px;
+padding:4px 0;
+text-align:right;
+border:1px solid #d3d7cf;
 }
-
-#entry_area {
-    width: 200px;
-    text-align: right;
+#entry_area{
+width:200px;
+text-align:right;
 }
-
-#entry_area table, #entry_area label {
-    padding: 0px;
-    direction: rtl;
-    text-align: right;
+#entry_area table, #entry_area label{
+padding:0px;
+direction:rtl;
+text-align:right;
 }
-
-#options_entry table {
-    text-align: right;
-    padding: 4px;
+#options_entry table{
+text-align:right;
+padding:4px;
 }
-
-.field_label {
-    width: 200px;
-    word-spacing: nowrap;
+.field_label{
+width:200px;
+word-spacing:nowrap;
 }
-
-.buttons {
-    text-align: left;
+.buttons{
+text-align:left;
 }

@@ -1,20 +1,20 @@
-body {
-color: #222;
-background-color: #fff;
+body{
+color:#222;
+background-color:#fff;
 }
-body, td, pre {
-padding: 0;
-font-size: 14px;
-line-height: 1.5em;
-font-family: tahoma, arial, helvetica, sans-serif;
+body, td, pre{
+padding:0;
+font-size:14px;
+line-height:1.5em;
+font-family:tahoma, arial, helvetica, sans-serif;
 }
-p {
-margin: 0px;
-padding: 0px;
+p{
+margin:0px;
+padding:0px;
 }
-ol,ul,dl {
-*margin-right: 0px;
-padding: 0 40px;
+ol,ul,dl{
+*margin-right:0px;
+padding:0 40px;
 }
 .cke_panel_list p,
 .cke_panel_list h1,
@@ -24,6 +24,6 @@ padding: 0 40px;
 .cke_panel_list h5,
 .cke_panel_list h6,
 .cke_panel_list pre,
-.cke_panel_list span {
-line-height: 1em;
+.cke_panel_list span{
+line-height:1em;
 }

@@ -1,27 +1,24 @@
-* {padding: 0px; margin: 0px;}
-
-#layout-controls {
-left: 0;
-position: absolute;
+*{
+padding:0px;
+margin:0px;
 }
-
-.layout-section {
-height: 5em;
+#layout-controls{
+left:0;
+position:absolute;
 }
-
-.layout-section .item {
-background: none;
-background-color: rgb(234,234,234);
+.layout-section{
+height:5em;
 }
-
-.layout-section .item_icon {
-position: relative;
+.layout-section .item{
+background:none;
+background-color:rgb(234,234,234);
 }
-
-.layout-section .item-delete {
-position: relative;
+.layout-section .item_icon{
+position:relative;
 }
-
-img {
-filter: expression(this.onpropertychange ? '!important' : fixpngTransparency(this));
+.layout-section .item-delete{
+position:relative;
+}
+img{
+filter:expression(this.onpropertychange ? '!important' :fixpngTransparency(this));
 }

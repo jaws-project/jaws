@@ -1,14 +1,14 @@
 /* tinyMCE Editor CSS */
-body {
-background-color: #fff;
+body{
+background-color:#fff;
 }
-body, td, pre {
-padding: 0;
-font-size: 14px;
-line-height: 1.5em;
-font-family: arial, helvetica, sans-serif;
+body, td, pre{
+padding:0;
+font-size:14px;
+line-height:1.5em;
+font-family:arial, helvetica, sans-serif;
 }
-p {
-margin: 0px;
-padding: 0px;
+p{
+margin:0px;
+padding:0px;
 }
