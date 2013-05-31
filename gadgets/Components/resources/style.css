@@ -93,9 +93,13 @@ margin-top:20px;
 padding:20px 0 0 10px;
 line-height:2.5;
 }
+.summary>div{
+padding:2px;
+}
 .summary label{
 font-size:12px;
-color:#3465a4}
+color:#3465a4;
+}
 .summary span{
 font-weight:bold;
 }
@@ -161,6 +165,9 @@ padding:0;
 #component_info{
 line-height:2.5;
 }
+#component_info .gadget>div{
+padding:2px;
+}
 #component_info span{
 font-weight:bold;
 }
@@ -168,14 +175,19 @@ font-weight:bold;
 margin:0;
 }
 #component_info .acls{
+margin:0 8px;
 height:185px;
 overflow-y:auto;
-margin:0;
-line-height:1.5;
 list-style:square;
+}
+#component_info .acls li{
+line-height:1.5em;
 }
 #component_info .plugin{
 height:345px;
+}
+#component_info .plugin>div{
+padding:2px;
 }
 /* Registry */
 #frm_registry{
@@ -187,6 +199,9 @@ border-collapse:collapse;
 }
 #frm_registry th{
 text-align:right;
+}
+#frm_registry td{
+padding:2px;
 }
 #frm_registry caption{
 text-align:left;
@@ -208,6 +223,7 @@ line-height:1.5;
 border-collapse:collapse;
 }
 #frm_acl td{
+padding:2px;
 text-align:right;
 }
 /* Plugin Usage */
