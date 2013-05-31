@@ -29,8 +29,8 @@ class Layout_Installer extends Jaws_Gadget_Installer
         $layoutModel = $this->gadget->load('Model')->load('AdminModel');
         $result = $layoutModel->GetLayoutItems();
         if (!Jaws_Error::IsError($result) && empty($result)) {
-            $layoutModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', '', '', 1);
-            $layoutModel->NewElement('bar1', 'Users', 'LoginBox', '', 'Login', 1);
+            $layoutModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1);
+            $layoutModel->NewElement('bar1', 'Users', 'LoginBox', null, 'Login', 1);
         }
 
         if (!empty($input_schema)) {
