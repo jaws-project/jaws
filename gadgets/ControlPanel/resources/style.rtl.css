@@ -41,7 +41,7 @@ padding-top:20px;
 color:#fff;
 font-weight:bold;
 }
-#header h1 a, #header h1 a:hover{
+#header h1 a,#header h1 a:hover{
 color:#fff;
 text-decoration:none;
 }
@@ -75,7 +75,7 @@ margin-top:10px;
 color:#888a85;
 padding-top:10px;
 }
-#footer a, #footer a:hover{
+#footer a,#footer a:hover{
 text-decoration:none;
 }
 #footer p{
@@ -116,11 +116,11 @@ background:#fff url(../images/user.png) no-repeat;
 padding-left:24px;
 background:#fff url(../images/pass.png) no-repeat;
 }
-#login #remember input, #login #usecrypt input{
+#login #remember input,#login #usecrypt input{
 padding:0px;
 width:16px;
 }
-#login #remember label, #login #usecrypt label{
+#login #remember label,#login #usecrypt label{
 padding:0 4px 0 4px;
 display:inline;
 }
@@ -243,7 +243,7 @@ color:#3465a4;
 a:hover{
 color:#9db029;
 }
-h1, h2, h3, h4{
+h1,h2,h3,h4{
 margin:0;
 padding:0;
 color:#3465a4;
@@ -413,11 +413,41 @@ font-weight:bold;
 background:transparent url(../images/side-selected-right.png) top right no-repeat;
 }
 /* ----- FORM ELEMENTS ----- */
-input, button, textarea, select{
-background-color:#fff;
-color:#000;
+input,textarea,select{
+color:#333;
 padding:2px;
-font-size:small;
+border:1px solid #ccc;
+border-top:1px solid #999;
+border-bottom:1px solid #ddd;
+background:#fff url(../images/field-bg.png) repeat-x top;
+}
+input:focus,textarea:focus,select:focus{
+border:1px solid #5279b4;
+}
+input[disabled],select[disabled],textarea[disabled]{
+color:#999;
+background-color:#eee;
+}
+button,.button{
+padding:4px;
+margin:0 2px;
+color:#888a85;
+min-height:20px;
+line-height:100%;
+font-weight:bold;
+border-radius:3px;
+border:1px solid #babdb6;
+border-top:1px solid #d3d7cf;
+border-left:1px solid #d3d7cf;
+background:#fcfcfc url(../images/button.png) repeat-x top left;
+}
+button:hover {
+color:#333;
+background:#fafafa url(../images/button-hover.png) repeat-x top left;
+}
+button:active,input[type="button"]:active,input[type="submit"]:active{
+color:#555;
+background:#e4e6e1 url(../images/button-hover.png) repeat-x top left;
 }
 optgroup{
 color:#fff;
@@ -428,57 +458,11 @@ optgroup option{
 color:#000;
 background-color:#fff;
 }
-button, input[type="button"], input[type="submit"] {
-background:#fcfcfc url(../images/button.png) repeat-x top left;
-color:#888a85;
-border:1px solid #babdb6;
-border-top:1px solid #d3d7cf;
-border-left:1px solid #d3d7cf;
-font-weight:bold;
-margin-left:2px;
-margin-right:2px;
-cursor:pointer;
-font-size:small;
-min-height:20px;
-}
-select{
-cursor:pointer;
-}
-button:hover, input[type="button"]:hover, input[type="submit"]:hover {
-background:#fafafa url(../images/button-hover.png) repeat-x top left;
-color:#333;
-}
-button:active, input[type="button"]:active, input[type="submit"]:active{
-background:#e4e6e1 url(../images/button-hover.png) repeat-x top left;
-color:#555;
-}
 .widetable{
 width:100%;
 }
 table.tableform .button{
 text-align:center;
-}
-input[type="text"], input[type="password"], input[type="file"], textarea, select{
-color:#333;
-background:#fff url(../images/field-bg.png) repeat-x top;
-border-top:1px solid #999;
-border-left:1px solid #ccc;
-border-right:1px solid #ccc;
-border-bottom:1px solid #ddd;
-padding:3px;
-margin:0px;
-}
-input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
-color:#000;
-background-color:#fff;
-border:1px solid #3465a4;
-}
-input[disabled], select[disabled]{
-color:#999;
-background-color:#eee;
-}
-textarea{
-width:inherit;
 }
 fieldset{
 position:relative;
@@ -515,7 +499,7 @@ fieldset label{
 display:block;
 font-size:100%;
 }
-div.oneline label, div.oneline_no_width label{
+div.oneline label,div.oneline_no_width label{
 margin:0;
 margin-left:.6em;
 display:block;
@@ -619,17 +603,17 @@ font-size:100%;
 */
 margin-top:10px;
 }
-label.mandat, span.mandat{
+label.mandat,span.mandat{
 color:#930;
 font-weight:bold;
 }
-label.mandat:after, span.mandat:after{
+label.mandat:after,span.mandat:after{
 content:"*";
 }
 .removed{
 display:none !important;
 }
-input[type="checkbox"] + label, input[type="checkbox"] + label + br, fieldset div strong + br {
+input[type="checkbox"] + label,input[type="checkbox"] + label + br,fieldset div strong + br {
 display:inline;
 }
 .form_comment{
@@ -682,18 +666,18 @@ text-align:right;
 margin-top:15px;
 padding:15px;
 font-size:small;
-font-family:"Courier New", Courier;
+font-family:"Courier New",Courier;
 background:#000;
 border:solid 1px #d3d7cf;
 line-height:110%;
 color:white;
 width:90%;
 }
-.code, .xml, .script{
+.code,.xml,.script{
 margin:16px;
 padding:16px;
 font-size:small;
-font-family:"Courier New", Courier;
+font-family:"Courier New",Courier;
 background:#fff;
 border:solid 1px #d3d7cf;
 line-height:100%;
@@ -817,7 +801,7 @@ height:auto;
 border:1px solid transparent;
 }
 /* ----- NOTIFICATIONS ----- */
-.error-message, .warning-message, .notice-message, .working-message{
+.error-message,.warning-message,.notice-message,.working-message{
 border-radius:4px;
 font-weight:bold;
 display:inline-block;
@@ -862,7 +846,7 @@ position:absolute;
 top:0;
 right:0px;
 }
-/*TODO:Options for menubar, these classes are disabled, to enable just uncomment the line in the Widget*/
+/*TODO:Options for menubar,these classes are disabled,to enable just uncomment the line in the Widget*/
 .menubar-option-nonactive{
 border:1px solid #d3d7cf;
 padding:4px;
@@ -944,7 +928,7 @@ border:1px dashed #CCCCCC;
  cursor:pointer;
 }
 /*------------------ No Permission ------------------ */
-.nopermission, .fatalerror{
+.nopermission,.fatalerror{
  background:#f4f4f4;
  border:1px solid #b2b2b2;
  margin:5em auto;
