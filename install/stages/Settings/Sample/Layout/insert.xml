@@ -72,7 +72,7 @@
 
                 <field>
                     <name>action_params</name>
-                    <value>a:1:{i:0;s:0:&quot;&quot;;}</value>
+                    <value>N;</value>
                 </field>
 
                 <field>
@@ -160,7 +160,7 @@
 
                 <field>
                     <name>action_params</name>
-                    <value>a:1:{i:0;s:0:&quot;&quot;;}</value>
+                    <value>N;</value>
                 </field>
 
                 <field>
