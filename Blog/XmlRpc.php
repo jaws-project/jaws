@@ -36,7 +36,7 @@ function GetBlogPermission($user, $task, $superadmin)
         return false;
     }
 
-    return $GLOBALS['app']->ACL->GetFullPermission($user, $groups, 'Blog', $task, $superadmin);
+    return $GLOBALS['app']->ACL->GetFullPermission($user, array_keys($groups), 'Blog', $task, $superadmin);
 }
 
 /**
