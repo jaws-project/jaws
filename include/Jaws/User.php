@@ -456,7 +456,7 @@ class Jaws_User
     function GetGroupsOfUser($user)
     {
         $ugroupsTable = Jaws_ORM::getInstance()->table('users_groups');
-        $ugroupsTable->select('groups.id:integer');
+        $ugroupsTable->select('groups.id:integer', 'groups.name');
         $ugroupsTable->join('users',  'users.id',  'users_groups.user_id');
         $ugroupsTable->join('groups', 'groups.id', 'users_groups.group_id');
         if (is_int($user)) {
@@ -465,7 +465,12 @@ class Jaws_User
             $ugroupsTable->where('users.username', $user);
         }
 
-        return $ugroupsTable->getCol();
+        $result = $ugroupsTable->getAll();
+        if (!Jaws_Error::IsError($result)) {
+            $result = array_column($result, 'name', 'id');
+        }
+
+        return $result;
     }
 
     /**
