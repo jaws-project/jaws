@@ -130,7 +130,7 @@ class Jaws_ACL
                 ->where('component', $component)->and()
                 ->where('key_name', $key_name)->and()
                 ->where('key_subkey', $subkey)->and()
-                ->where('group', $group, 'in')
+                ->where('group', $groups, 'in')
                 ->getCol();
             if (!Jaws_Error::IsError($values)) {
                 return $values;
