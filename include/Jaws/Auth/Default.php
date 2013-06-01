@@ -60,7 +60,7 @@ class Jaws_Auth_Default
         if (Jaws_Error::IsError($info) || !isset($info['id'])) {
             return false;
         } else {
-            $groups = $this->_Model->GetGroupsOfUser($info['username']);
+            $groups = $this->_Model->GetGroupsOfUser($info['id']);
             if (Jaws_Error::IsError($groups)) {
                 return false;
             }
