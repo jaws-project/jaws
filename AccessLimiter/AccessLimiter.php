@@ -64,7 +64,7 @@ class AccessLimiter extends Jaws_Plugin
                 $user = $GLOBALS['app']->Session->GetAttribute('username');
                 if (!isset($user_groups)) {
                     $user_groups = $GLOBALS['app']->Session->GetAttribute('groups');
-                    $user_groups = array_map(create_function('$row','return $row["name"];'), $user_groups);
+                    $user_groups = array_values($user_groups);
                 }
 
                 if (!empty($users) || !empty($groups)) {
