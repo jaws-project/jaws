@@ -517,7 +517,7 @@ class Jaws_Session
         foreach ($keys as $key) {
             $perms[] = $GLOBALS['app']->ACL->GetFullPermission(
                 $user,
-                $groups,
+                array_keys($groups),
                 $gadget,
                 $key,
                 $subkey,
