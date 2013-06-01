@@ -52,7 +52,11 @@ if (!function_exists('array_column')) {
             if (is_null($indexKey)) {
                 return $input[$columnKey];
             } else {
-                return array_combine($input[$indexKey], $input[$columnKey]);
+                if (is_array($input[$indexKey])) {
+                    return array_combine($input[$indexKey], $input[$columnKey]);
+                } else {
+                    return array($input[$indexKey] => $input[$columnKey]);
+                }
             }
         }
 
