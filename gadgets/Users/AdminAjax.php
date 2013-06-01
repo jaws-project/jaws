@@ -406,6 +406,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGroups');
         $oldGroups = $this->_UserModel->GetGroupsOfUser((int)$uid);
         if (!Jaws_Error::IsError($oldGroups)) {
+            $oldGroups = array_keys($oldGroups);
             foreach ($groups as $group) {
                 if (false === $gIndex = array_search($group, $oldGroups)) {
                     $this->_UserModel->AddUserToGroup($uid, $group);
@@ -572,7 +573,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             return array();
         }
 
-        return $groups;
+        return array_keys($groups);
     }
 
     /**
