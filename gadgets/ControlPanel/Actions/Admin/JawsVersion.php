@@ -32,11 +32,14 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_HTML
 
         $jaws_version = '-';
         require_once PEAR_PATH. 'HTTP/Request.php';
-        $httpRequest = new HTTP_Request('http://localhost/jaws/?gadget=Components&action=Version&type=0', $options);
+        $httpRequest = new HTTP_Request('http://jaws-project.com/version/0', $options);
         $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
+        $httpRequest->addHeader('Referer', $GLOBALS['app']->GetSiteURL());
         $resRequest  = $httpRequest->sendRequest();
         if (!PEAR::isError($resRequest) && $httpRequest->getResponseCode() == 200) {
-            $jaws_version = trim($httpRequest->getResponseBody());
+            if (preg_match('/^\d+(\.\d+)+.*/i', $httpRequest->getResponseBody())) {
+                $jaws_version = $httpRequest->getResponseBody();
+            }
         }
 
         return $jaws_version;
