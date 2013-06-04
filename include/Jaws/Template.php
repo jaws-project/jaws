@@ -32,12 +32,14 @@ class Jaws_Template
     var $IdentifierRegExp;
     var $AttributesRegExp;
     var $BlockRegExp;
+    var $NewBlockRegExp;
     var $VarsRegExp;
     var $IsBlockRegexp;
     var $MainBlock;
     var $CurrentBlock;
     var $Blocks = array();
-
+    var $tplString = '';
+    var $globalVariables = array();
 
     var $rawStore = null;
     var $loadFromTheme = null;
@@ -55,11 +57,30 @@ class Jaws_Template
      */
     function Jaws_Template()
     {
-        $this->IdentifierRegExp = '[\.0-9A-Za-z_-]+';
+        $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->AttributesRegExp = '/(\w+)((\s*=\s*".*?")|(\s*=\s*\'.*?\')|(\s*=\s*\w+)|())/s';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
+        $this->NewBlockRegExp = '@<!--\s+begin\s+([\.[:digit:][:lower:]_-]+)\s+-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
+
+        if (isset($GLOBALS['app'])) {
+            $theme = $GLOBALS['app']->GetTheme();
+            $request = $GLOBALS['app']->GetMainRequest();
+            $brow = $GLOBALS['app']->GetBrowserFlag();
+
+            $this->globalVariables['theme_url']  = $theme['url'];
+            $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
+            $this->globalVariables['jaws_index'] = $request['index']? 'jaws_index' : '';
+            $this->globalVariables['.browser']   = empty($brow)? '' : '.'.$brow;
+            $this->globalVariables['requested_gadget'] = strtolower($request['gadget']);
+            $this->globalVariables['requested_action'] = $request['action'];
+        }
+
+        $this->globalVariables['.dir'] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+        $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
+        $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
+        $this->globalVariables['base_script']   = BASE_SCRIPT;
     }
 
     /**
@@ -154,10 +175,10 @@ class Jaws_Template
      * @param   $tplString String that contains a template struct
      * @access  public
      */
-    function LoadFromString($tplString)
+    function loadFromString($tplString)
     {
-        $this->Content   = str_replace('\\', '\\\\', $tplString);
-        $this->Content   = str_replace(array("-->\n", "-->\r\n"), '-->',  $this->Content);
+        $this->tplString = preg_replace('@\r?\n\s*<!--@sim', '<!--', $tplString);
+        $this->Content   = $this->tplString;
         $this->Blocks    = $this->GetBlocks($this->Content);
         $this->MainBlock = $this->GetMainBlock();
     }
@@ -212,6 +233,53 @@ class Jaws_Template
     }
 
     /**
+     * Fetch parsed template
+     *
+     * @param   $vars       Variables
+     * @param   $content    Template string
+     * @param   $root       Root block of template?
+     * @access  public
+     */
+    function fetch($vars = array(), $content = '', $root = true)
+    {
+        if (empty($content)) {
+            $vars = $vars + $this->globalVariables;
+            $content = $this->tplString;
+        }
+
+        if (preg_match_all($this->NewBlockRegExp, $content, $regs, PREG_SET_ORDER)) {
+            foreach ($regs as $match) {
+                $blockName = $match[1];
+
+                if (!isset($vars[$blockName])) {
+                    // remove block
+                    $match[2] = '';
+                } elseif (is_array($vars[$blockName])) {
+                    // parse block
+                    $match[2] = $this->fetch($vars[$blockName], $match[2], false);
+                } else {
+                    // replace block with given variable
+                    $match[2] = (string)$vars[$blockName];
+                }
+                $content = str_replace($match[0], $match[2], $content);
+            }
+        }
+
+        if ($root) {
+            // Merge global variables and input variables together
+            $vars = $vars + $this->globalVariables;
+        }
+        // set variables
+        foreach($vars as $key => $value) {
+            if (!is_array($value)) {
+                $content = str_replace('{'.$key.'}', $value, $content);
+            }
+        }
+
+        return $content;
+    }
+
+    /**
      * Return the attributes array of a current block
      *
      * @access  public
@@ -237,57 +305,53 @@ class Jaws_Template
                     case 'theme_url':
                         if (isset($GLOBALS['app'])) {
                             $theme = $GLOBALS['app']->GetTheme();
-                            $vars[$match[1]] = $theme['url'];
+                            $vars[$match[1]] = $this->globalVariables['theme_url'];
                         }
                         break;
 
                     case 'base_url':
-                        $vars[$match[1]] = Jaws_Utils::getBaseURL('/');
+                        $vars[$match[1]] = $this->globalVariables['base_url'];
                         break;
 
                     case 'data_url':
                         if (isset($GLOBALS['app'])) {
-                            $vars[$match[1]] = $GLOBALS['app']->getDataURL();
+                            $vars[$match[1]] = $this->globalVariables['data_url'];
                         }
                         break;
 
                     case 'requested_url':
-                        $vars[$match[1]] = Jaws_Utils::getRequestURL();
+                        $vars[$match[1]] = $this->globalVariables['requested_url'];
                         break;
 
                     case 'jaws_index':
                         if (isset($GLOBALS['app'])) {
-                            $req = $GLOBALS['app']->GetMainRequest();
-                            $vars[$match[1]] = $req['index']? 'jaws_index' : '';
+                            $vars[$match[1]] = $this->globalVariables['jaws_index'];
                         }
                         break;
 
                     case '.dir':
-                        $vars[$match[1]] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+                        $vars[$match[1]] = $this->globalVariables['.dir'];
                         break;
 
                     case '.browser':
                         if (isset($GLOBALS['app'])) {
-                            $brow = $GLOBALS['app']->GetBrowserFlag();
-                            $vars[$match[1]] = empty($brow)? '' : '.'.$brow;
+                            $vars[$match[1]] = $this->globalVariables['.browser'];
                         }
                         break;
 
                     case 'base_script':
-                        $vars[$match[1]] = BASE_SCRIPT;
+                        $vars[$match[1]] = $this->globalVariables['base_script'];
                         break;
 
                     case 'requested_gadget':
                         if (isset($GLOBALS['app'])) {
-                            $req = $GLOBALS['app']->GetMainRequest();
-                            $vars[$match[1]] = strtolower($req['gadget']);
+                            $vars[$match[1]] = $this->globalVariables['requested_gadget'];
                         }
                         break;
 
                     case 'requested_action':
                         if (isset($GLOBALS['app'])) {
-                            $req = $GLOBALS['app']->GetMainRequest();
-                            $vars[$match[1]] = $req['action'];
+                            $vars[$match[1]] = $this->globalVariables['requested_action'];
                         }
                         break;
 
