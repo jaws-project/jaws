@@ -43,43 +43,33 @@ class Users_Actions_Account extends Users_HTML
             $account = $response['data'];
         }
 
-        // Load the template
-        $tpl = $this->gadget->loadTemplate('Account.html');
-        $tpl->SetBlock('account');
-        $tpl->SetVariable('title', _t('USERS_ACCOUNT_INFO'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $account['title']  = _t('USERS_ACCOUNT_INFO');
+        $account['update'] = _t('USERS_USERS_ACCOUNT_UPDATE');
+        $account['lbl_username']    = _t('USERS_USERS_USERNAME');
+        $account['lbl_nickname']    = _t('USERS_USERS_NICKNAME');
+        $account['lbl_email']       = _t('GLOBAL_EMAIL');
+        $account['lbl_password']    = _t('USERS_USERS_PASSWORD');
+        $account['emptypassword']   = _t('USERS_NOCHANGE_PASSWORD');
+        $account['lbl_chkpassword'] = _t('USERS_USERS_PASSWORD_VERIFY');
 
-        $tpl->SetVariable('lbl_username',    _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('username',        $account['username']);
-        $tpl->SetVariable('lbl_nickname',    _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('nickname',        $account['nickname']);
-        $tpl->SetVariable('lbl_email',       _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email',           $account['email']);
-        $tpl->SetVariable('lbl_password',    _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('emptypassword',   _t('USERS_NOCHANGE_PASSWORD'));
-        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
         if (!$this->gadget->GetPermission('EditUserName')) {
-            $tpl->SetVariable('username_disabled', 'disabled="disabled"');
+            $account['username_disabled'] = 'disabled="disabled"';
         }
         if (!$this->gadget->GetPermission('EditUserNickname')) {
-            $tpl->SetVariable('nickname_disabled', 'disabled="disabled"');
+            $account['nickname_disabled'] = 'disabled="disabled"';
         }
         if (!$this->gadget->GetPermission('EditUserEmail')) {
-            $tpl->SetVariable('email_disabled', 'disabled="disabled"');
+            $account['email_disabled'] = 'disabled="disabled"';
         }
         if (!$this->gadget->GetPermission('EditUserPassword')) {
-            $tpl->SetVariable('password_disabled', 'disabled="disabled"');
+            $account['password_disabled'] = 'disabled="disabled"';
         }
 
-        if ($response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response')) {
-            $tpl->SetBlock('account/response');
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('account/response');
-        }
-        $tpl->ParseBlock('account');
-        return $tpl->Get();
+        $account['response'] = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
+
+        // Load the template
+        $tpl = $this->gadget->loadTemplate('Account.html');
+        return $tpl->fetch($account);
     }
 
     /**
