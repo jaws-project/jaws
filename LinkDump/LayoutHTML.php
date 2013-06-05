@@ -52,47 +52,35 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
             return false;
         }
 
+        $data = array();
+        $data['gid']   = $group['id'];
+        $data['title'] = _t('LINKDUMP_NAME');
+        $data['name']  = $group['title'];
+        $data['lbl_clicks'] = _t('LINKDUMP_LINKS_CLICKS');
+        $data['lst_simple'] = $group['link_type'] == 0;
         $target = $this->gadget->registry->fetch('links_target');
-        $target = ($target == 'blank')? '_blank' : '_self';
-        $block  = ($group['link_type']==0)? 'list' : 'link';
-
-        $tpl = $this->gadget->loadTemplate('LinkDump.html');
-        $tpl->SetBlock('linkdump');
-
-        $tpl->SetVariable('gid',     $group['id']);
-        $tpl->SetVariable('title',   _t('LINKDUMP_NAME'));
-        $tpl->SetVariable('name',    $group['title']);
-
-        $feedname = empty($group['fast_url']) ?
+        $data['target'] = ($target == 'blank')? '_blank' : '_self';
+        $feedname = empty($group['fast_url'])?
                     $GLOBALS['app']->UTF8->str_replace(' ', '-', $group['title']) : $group['fast_url'];
         $feedname = preg_replace('/[@?^=%&:;\/~\+# ]/i', '\1', $feedname);
-
-        $tpl->SetVariable('linkdump_rdf', $GLOBALS['app']->getDataURL("xml/linkdump.$feedname.rdf", false));
-        $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
+        $data['linkdump_rdf']  = $GLOBALS['app']->getDataURL("xml/linkdump.$feedname.rdf", false);
+        $data['feed'] = _t('LINKDUMP_LINKS_FEED');
         $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-        $tpl->SetVariable('archive_url', $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Archive', array('id' => $gid)));
-
-        $links = $model->GetGroupLinks($group['id'], $group['limit_count'], $group['order_type']);
-        if (!Jaws_Error::IsError($links)) {
-            foreach ($links as $link) {
-                $tpl->SetBlock("linkdump/$block");
-                $tpl->SetVariable('target', $target);
-                $tpl->SetVariable('title',  $link['title']);
-                $tpl->SetVariable('description', $link['description']);
+        $data['archive_url'] = $this->gadget->GetURLFor('Archive', array('id' => $gid));
+        $data['links'] = $model->GetGroupLinks($group['id'], $group['limit_count'], $group['order_type']);
+        if (!Jaws_Error::IsError($data['links'])) {
+            foreach ($data['links'] as $indx => $link) {
                 if ($group['link_type'] == 2) {
-                    $tpl->SetVariable('clicks',  $link['clicks']);
-                    $tpl->SetVariable('lbl_clicks', _t('LINKDUMP_LINKS_CLICKS'));
                     $lid = empty($link['fast_url'])? $link['id'] : $link['fast_url'];
-                    $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $lid)));
+                    $data['links'][$indx]['url'] = $this->gadget->GetURLFor('Link', array('id' => $lid));
                 } else {
-                    $tpl->SetVariable('url', $link['url']);
+                    $data['links'][$indx]['url'] = $link['url'];
                 }
-                $tpl->ParseBlock("linkdump/$block");
             }
         }
 
-        $tpl->ParseBlock('linkdump');
-        return $tpl->Get();
+        $tpl = $this->gadget->loadTemplate('LinkDump.html');
+        return $tpl->fetch($data);
     }
 
     /**
