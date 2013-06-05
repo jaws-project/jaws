@@ -15,7 +15,6 @@
 class Jaws_TemplateBlock
 {
     var $Name = '';
-    var $Attributes = array();
     var $Content = '';
     var $RawContent = '';
     var $Parsed = '';
@@ -30,7 +29,6 @@ class Jaws_Template
 {
     var $Content;
     var $IdentifierRegExp;
-    var $AttributesRegExp;
     var $BlockRegExp;
     var $NewBlockRegExp;
     var $VarsRegExp;
@@ -58,11 +56,14 @@ class Jaws_Template
     function Jaws_Template()
     {
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
-        $this->AttributesRegExp = '/(\w+)((\s*=\s*".*?")|(\s*=\s*\'.*?\')|(\s*=\s*\w+)|())/s';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
-        $this->NewBlockRegExp = '@<!--\s+begin\s+([\.[:digit:][:lower:]_-]+)\s+-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
+        $namexp = '[[:digit:][:lower:]_]+';
+        $this->NewBlockRegExp = '@<!--\s+begin\s+('.$namexp.')\s+'.
+            '(?:if\(('.$namexp.')\)\s+|)'.
+            '(?:loop\(('.$namexp.')\)\s+|)'.
+            '-->(.*)<!--\s+end\s+\1\s+-->@sim';
 
         if (isset($GLOBALS['app'])) {
             $theme = $GLOBALS['app']->GetTheme();
@@ -211,13 +212,6 @@ class Jaws_Template
             foreach ($regs as $key => $match) {
                 $wblock = new Jaws_TemplateBlock();
                 $wblock->Name = $match[1];
-                $attrs = array();
-                preg_match_all($this->AttributesRegExp, $match[2], $attrs, PREG_SET_ORDER);
-                foreach ($attrs as $attr) {
-                    $attr[2] = ltrim($attr[2], " \n\r\t=");
-                    $attr[2] = trim($attr[2], ($attr[2][0] == '"')? '"' : "'");
-                    $wblock->Attributes[$attr[1]] = $attr[2];
-                }
                 $wblock->Content    = $match[3];
                 $wblock->RawContent = $this->rawStore? $match[3] : null;
                 $wblock->InnerBlock = $this->GetBlocks($wblock->Content);
@@ -249,19 +243,30 @@ class Jaws_Template
 
         if (preg_match_all($this->NewBlockRegExp, $content, $regs, PREG_SET_ORDER)) {
             foreach ($regs as $match) {
+                $exchange = '';
                 $blockName = $match[1];
-
-                if (!isset($vars[$blockName])) {
-                    // remove block
-                    $match[2] = '';
-                } elseif (is_array($vars[$blockName])) {
-                    // parse block
-                    $match[2] = $this->fetch($vars[$blockName], $match[2], false);
-                } else {
-                    // replace block with given variable
-                    $match[2] = (string)$vars[$blockName];
+                if ((!empty($match[2]) && empty($vars[$match[2]]))) {
+                    // condition for parsing block
+                    $exchange = '';
+                } elseif ((!empty($match[3]) && !empty($vars[$match[3]]))) {
+                    // passed array for loop block must be an array
+                    if (!isset($vars[$blockName]) || !is_array($vars[$blockName])) {
+                        $vars[$blockName] = array();
+                    }
+                    // parse loop block
+                    foreach ($vars[$match[3]] as $loopVars) {
+                        $exchange.= $this->fetch($loopVars + $vars[$blockName], $match[4], false);
+                    }
+                } elseif (isset($vars[$blockName])) {
+                    if (is_array($vars[$blockName])) {
+                        // parse simple block
+                        $exchange = $this->fetch($vars[$blockName], $match[4], false);
+                    } else {
+                        // replace block with given variable
+                        $exchange = (string)$vars[$blockName];
+                    }
                 }
-                $content = str_replace($match[0], $match[2], $content);
+                $content = str_replace($match[0], $exchange, $content);
             }
         }
 
@@ -277,16 +282,6 @@ class Jaws_Template
         }
 
         return $content;
-    }
-
-    /**
-     * Return the attributes array of a current block
-     *
-     * @access  public
-     */
-    function GetCurrentBlockAttributes()
-    {
-        return $this->CurrentBlock->Attributes;
     }
 
     /**
