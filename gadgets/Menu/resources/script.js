@@ -358,7 +358,7 @@ function editMenu(mid)
     }
 
     $('imagename').value  = 'true';
-    if (menuInfo['image'] === null) {
+    if (!menuInfo['image']) {
         $('image').src = 'gadgets/Menu/images/no-image.png?' + (new Date()).getTime();
     } else {
         $('image').src = base_script + '?gadget=Menu&action=LoadImage&id=' + menuInfo['id'] + '&' + (new Date()).getTime();;

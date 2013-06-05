@@ -75,8 +75,10 @@ class Menu_Model extends Jaws_Gadget_Model
         }
 
         $result = '';
-        while (!feof($blob)) {
-            $result.= fread($blob, 8192);
+        if (is_resource($blob)) {
+            while (!feof($blob)) {
+                $result.= fread($blob, 8192);
+            }
         }
         return $result;
     }
