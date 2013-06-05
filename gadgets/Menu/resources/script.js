@@ -157,7 +157,7 @@ function saveMenus()
                     var new_parentNode = $('menu_'+$('pid').value);
                 }
                 if ($('menu_'+$('mid').value).parentNode != new_parentNode) {
-                    if ($('rank').value > (new_parentNode.childNodes.length - 1)) {
+                    if ($('rank').value > (new_parentNode.getChildren('.menu_levels').length)) {
                         new_parentNode.appendChild($('menu_'+$('mid').value));
                     } else {
                         new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value]);
@@ -184,8 +184,7 @@ function setRanksCombo(gid, pid, selected) {
     } else {
         var new_parentNode = $('menu_'+pid);
     }
-    var rank = new_parentNode.childNodes.length;
-    rank = rank - 1;
+    var rank = new_parentNode.getChildren('.menu_levels').length;
 
     if (($('mid').value < 1) || ($('menu_'+$('mid').value).parentNode != new_parentNode)) {
         rank = rank + 1;
