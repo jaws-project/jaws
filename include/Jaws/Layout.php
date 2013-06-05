@@ -162,17 +162,6 @@ class Jaws_Layout
     }
 
     /**
-     * Is current section wide?
-     *
-     * @access  public
-     * @return  bool
-     */
-    function IsSectionWide()
-    {
-        return !isset($this->_SectionAttributes['narrow']);
-    }
-
-    /**
      * Loads layout template
      *
      * @access  public
