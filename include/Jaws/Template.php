@@ -61,7 +61,7 @@ class Jaws_Template
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
         $namexp = '[[:digit:][:lower:]_]+';
         $this->NewBlockRegExp = '@<!--\s+begin\s+('.$namexp.')\s+'.
-            '(?:if\(('.$namexp.')\)\s+|)'.
+            '(?:if\((!)?('.$namexp.')\)\s+|)'.
             '(?:loop\(('.$namexp.')\)\s+|)'.
             '-->(.*)<!--\s+end\s+\1\s+-->@sim';
 
@@ -245,22 +245,27 @@ class Jaws_Template
             foreach ($regs as $match) {
                 $exchange = '';
                 $blockName = $match[1];
-                if ((!empty($match[2]) && empty($vars[$match[2]]))) {
+
+                if (!empty($match[3]) &&
+                   ((bool)$match[2]? (bool)$vars[$match[3]] : !(bool)$vars[$match[3]]))
+                {
                     // condition for parsing block
                     $exchange = '';
-                } elseif ((!empty($match[3]) && !empty($vars[$match[3]]))) {
+                } elseif ((!empty($match[4]) && !empty($vars[$match[4]]))) {
                     // passed array for loop block must be an array
                     if (!isset($vars[$blockName]) || !is_array($vars[$blockName])) {
                         $vars[$blockName] = array();
                     }
                     // parse loop block
-                    foreach ($vars[$match[3]] as $loopVars) {
-                        $exchange.= $this->fetch($loopVars + $vars[$blockName], $match[4], false);
+                    if (!Jaws_Error::IsError($vars[$match[4]])) {
+                        foreach ($vars[$match[4]] as $loopVars) {
+                            $exchange.= $this->fetch($loopVars + $vars[$blockName], $match[5], false);
+                        }
                     }
                 } elseif (isset($vars[$blockName])) {
                     if (is_array($vars[$blockName])) {
                         // parse simple block
-                        $exchange = $this->fetch($vars[$blockName], $match[4], false);
+                        $exchange = $this->fetch($vars[$blockName], $match[5], false);
                     } else {
                         // replace block with given variable
                         $exchange = (string)$vars[$blockName];
