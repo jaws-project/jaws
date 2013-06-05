@@ -85,14 +85,6 @@ class Jaws_Layout
     var $_Section = '';
 
     /**
-     * Current section
-     *
-     * @access  private
-     * @var string
-     */
-    var $_SectionAttributes = array();
-
-    /**
      * Returns the current URI location (without BASE_SCRIPT's value)
      *
      * @access  private
@@ -545,7 +537,6 @@ class Jaws_Layout
                     }
                     $this->_Section = $item['section'];
                     $this->_Template->SetBlock('layout/' . $this->_Section);
-                    $this->_SectionAttributes = $this->_Template->GetCurrentBlockAttributes();
                     $currentContent = $this->_Template->GetCurrentBlockContent();
                     $this->_Template->SetCurrentBlockContent('{ELEMENT}');
                     $contentString  = '';
