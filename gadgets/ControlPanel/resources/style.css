@@ -432,6 +432,9 @@ border-top:1px solid #d3d7cf;
 border-left:1px solid #d3d7cf;
 background:#fcfcfc url(../images/button.png) repeat-x top left;
 }
+button img,.button img{
+vertical-align:-2px;
+}
 button:hover {
 color:#333;
 background:#fafafa url(../images/button-hover.png) repeat-x top left;
