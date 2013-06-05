@@ -722,6 +722,7 @@ background:#3465a4 url(../images/uncollapse.png) 2% no-repeat;
 padding:0 2px;
 overflow:auto;
 direction:rtl;
+font-size:85%;
 max-height:210px;
 border-radius:3px;
 background:#eef3f4;
@@ -731,7 +732,7 @@ border:1px solid #d3d7cf;
 padding:2px;
 }
 .notify_components ul li:hover{
-background:#f1f8ff;
+background:#e4e8e0;
 }
 .notify_components img{
 width:32px;
@@ -746,6 +747,7 @@ font-weight:normal;
 float:left;
 padding:2px 0;
 min-width:40px;
+margin-top:8px;
 text-align:left;
 }
 /* ----- DIALOG BOX -----*/
