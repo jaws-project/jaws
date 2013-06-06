@@ -89,7 +89,6 @@ border:0;
 width:500px;
 padding:10px;
 display:block;
-margin:auto;
 margin:50px auto;
 text-align:center;
 }
@@ -99,20 +98,15 @@ margin:1em auto;
 text-align:left;
 }
 #login fieldset label{
+cursor:pointer;
 font-size:100%;
 font-weight:bold;
-cursor:pointer;
 text-align:left;
 }
-#login #username{
+#login #username,#login #password{
 width:222px;
 padding-left:24px;
 background:#fff url(../images/user.png) no-repeat;
-}
-#login #password{
-width:222px;
-padding-left:24px;
-background:#fff url(../images/pass.png) no-repeat;
 }
 #login .captcha input{
 width:222px;

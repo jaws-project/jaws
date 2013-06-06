@@ -86,53 +86,45 @@ margin:0 0 10px 0;
 /* ----- LOGIN BOX ----- */
 #login{
 border:0;
-width:300px;
+width:500px;
 padding:10px;
 display:block;
-margin:auto;
-margin-top:50px;
+margin:50px auto;
 text-align:center;
 }
 #login fieldset{
 width:280px;
-max-width:280px;
+margin:1em auto;
 text-align:right;
 }
 #login fieldset label{
-display:block;
+cursor:pointer;
 font-size:100%;
 font-weight:bold;
-cursor:pointer;
 text-align:right;
 }
-#login fieldset input{
-direction:ltr;
-width:180px;
-}
-#login #username{
+#login #username,#login #password{
+width:222px;
 padding-left:24px;
 background:#fff url(../images/user.png) no-repeat;
 }
-#login #password{
+#login .captcha input{
+width:222px;
 padding-left:24px;
-background:#fff url(../images/pass.png) no-repeat;
+background:#fff;
 }
-#login #remember input,#login #usecrypt input{
-padding:0px;
-width:16px;
-}
-#login #remember label,#login #usecrypt label{
-padding:0 4px 0 4px;
-display:inline;
-}
-#login button{
-float:left;
+#login .captcha small{
+color:#777;
+display:block;
 }
 #login .login-footer{
 clear:both;
 text-align:center;
 font-size:80%;
 color:#babdb6;
+}
+#login button{
+float:left;
 }
 #site-info{
 float:right;
