@@ -27,16 +27,8 @@ class Jaws_HTTPError
                 break;
 
             case 404:
-                if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-                    $uri = $_SERVER['REQUEST_URI'];
-                } elseif (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
-                    $uri = $_SERVER['PHP_SELF'] . '?' .$_SERVER['QUERY_STRING'];
-                } else {
-                    $uri = '';
-                }
-
+                $uri = Jaws_XSS::filter(Jaws_Utils::getRequestURL(false));
                 if (empty($message)) {
-                    $uri = Jaws_XSS::filter(urldecode($uri));
                     $message = _t('GLOBAL_HTTP_ERROR_CONTENT_404', $uri);
                 }
                 header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
