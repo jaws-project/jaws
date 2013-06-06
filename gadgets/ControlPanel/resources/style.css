@@ -108,6 +108,9 @@ width:222px;
 padding-left:24px;
 background:#fff url(../images/user.png) no-repeat;
 }
+#login #password{
+background:#fff url(../images/pass.png) no-repeat;
+}
 #login .captcha input{
 width:222px;
 padding-left:24px;
