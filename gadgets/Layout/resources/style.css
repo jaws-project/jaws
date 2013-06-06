@@ -201,7 +201,6 @@ margin:0px;
 padding:0 2px;
 }
 #layout-controls button{
-background:#fcfcfc url(../../ControlPanel/images/button.png) repeat-x top left;
 color:#888a85;
 border:1px solid #babdb6;
 border-top:1px solid #d3d7cf;
@@ -218,7 +217,6 @@ line-height:normal;
 white-space:nowrap;
 }
 #layout-controls input[type="button"], #layout-controls input[type="submit"] {
-background:#fcfcfc url(../../ControlPanel/images/button.png) repeat-x top left;
 color:#888a85;
 border:1px solid #babdb6;
 border-top:1px solid #d3d7cf;
@@ -240,11 +238,9 @@ cursor:pointer;
 font-weight:normal;
 }
 #layout-controls button:hover, #layout-controls input[type="button"]:hover, #layout-controls input[type="submit"]:hover {
-background:#fafafa url(../../ControlPanel/images/button-hover.png) repeat-x top left;
 color:#333;
 }
 #layout-controls button:active, input[type="button"]:active, #layout-controls input[type="submit"]:active{
-background:#e4e6e1 url(../../ControlPanel/images/button-hover.png) repeat-x top left;
 color:#555;
 }
 #layout-controls img{

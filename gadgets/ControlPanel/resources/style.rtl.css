@@ -246,13 +246,13 @@ color:#3465a4;
 }
 h1{
 font-size:large;
- }
+}
 h2{
 font-size:medium;
- }
+}
 h3{
 font-size:small;
- }
+}
 h4{
 font-size:x-small;
 }
@@ -318,7 +318,7 @@ float:right;
 padding:0;
 width:100%;
 margin:0 0 1em 0;
-background:#fff url(../images/menubar-bg.png) repeat-x bottom;
+border-bottom:1px solid silver;
 }
 .jaws-menubar ul{
 margin:0;
@@ -328,18 +328,23 @@ list-style:none;
 }
 .jaws-menubar li{
 float:right;
-margin:0 2px 0 0;
+margin:0 2px -1px 0;
 padding:0 0 0 8px;
-background:transparent url(../images/tab-left.png) top left no-repeat;
+background-color:white;
+box-shadow:inset 0 -15px 20px #e8e8e8;
+border:1px solid silver;
+border-radius:5px 5px 0 0;
 }
 .jaws-menubar li:first-child{
 margin-right:1em;
+}
+.jaws-menubar li:hover{
+box-shadow:inset 0 -15px 20px #eee;
 }
 .jaws-menubar a{
 display:block;
 padding:4px 8px 4px 0px;
 border-bottom:none;
-background:transparent url(../images/tab-right.png) top right no-repeat;
 color:#666;
 text-decoration:none;
 vertical-align:bottom;
@@ -351,13 +356,11 @@ color:#222;
 border:0;
 vertical-align:bottom;
 }
-li.jaws-menubar-selected {
-background:transparent url(../images/selected-left.png) top left no-repeat;
+li.jaws-menubar-selected{
+box-shadow:none;
+border-bottom:1px solid white;
 }
 li.jaws-menubar-selected a{
-background:#fff;
-padding-bottom:5px;
-background:transparent url(../images/selected-right.png) top right no-repeat;
 color:#000;
 font-weight:bold;
 }
@@ -367,7 +370,7 @@ width:100%;
 float:right;
 margin:0;
 padding:0;
-background:#fff url(../images/sidebar-bg.png) left repeat-y;
+border-left:1px solid silver;
 }
 .jaws-sidebar ul{
 margin:0px;
@@ -376,12 +379,16 @@ width:100%;
 list-style:none;
 }
 .jaws-sidebar li{
-padding:0;
-margin:0px;
-margin-left:2px;
 display:block;
+margin:3px 0 0 -1px;
+padding:0;
+box-shadow:inset 0 0 30px #e8e8e8;
+border:1px solid silver;
+border-radius:5px 0 0 5px;
 text-align:right;
-background:transparent url(../images/side-left.png) top left no-repeat;
+}
+.jaws-sidebar li:hover{
+box-shadow:inset 0 0 30px #eee;
 }
 .jaws-sidebar a{
 color:#666;
@@ -390,7 +397,6 @@ border-bottom:none;
 text-decoration:none;
 vertical-align:bottom;
 padding:9px 5px 10px;
-background:transparent url(../images/side-right.png) top right no-repeat;
 }
 .jaws-sidebar a:hover{
 color:#222;
@@ -399,23 +405,36 @@ color:#222;
 border:0;
 vertical-align:bottom;
 }
-li.jaws-sidebar-selected {
-background:transparent url(../images/side-selected-left.png) top left no-repeat;
+li.jaws-sidebar-selected{
+background-color:white;
+box-shadow:none;
+border-right:none;
 }
 li.jaws-sidebar-selected a{
 color:#000;
-background:#fff;
 font-weight:bold;
-background:transparent url(../images/side-selected-right.png) top right no-repeat;
 }
 /* ----- FORM ELEMENTS ----- */
+input,select,textarea,button{
+box-sizing:border-box;
+}
 input,textarea,select{
 color:#333;
-padding:2px;
+padding:3px 2px;
 border:1px solid #ccc;
 border-top:1px solid #999;
 border-bottom:1px solid #ddd;
-background:#fff url(../images/field-bg.png) repeat-x top;
+border-radius:2px;
+}
+select{
+padding:2px;
+}
+input[type=checkbox]{
+vertical-align:middle;
+}
+input + label{
+vertical-align:middle;
+margin-left:2px;
 }
 input:focus,textarea:focus,select:focus{
 border:1px solid #5279b4;
@@ -425,28 +444,27 @@ color:#999;
 background-color:#eee;
 }
 button,.button{
-padding:4px;
+padding:3px 5px;
 margin:0 2px;
 color:#888a85;
 min-height:20px;
-line-height:100%;
 font-weight:bold;
-border-radius:3px;
 border:1px solid #babdb6;
 border-top:1px solid #d3d7cf;
 border-left:1px solid #d3d7cf;
-background:#fcfcfc url(../images/button.png) repeat-x top left;
+border-radius:2px;
+background:none;
+box-shadow:inset 0 -15px 20px #e8e8e8;
 }
-button img,.button img{
-vertical-align:-2px;
-}
-button:hover {
+button:hover,.button:hover{
 color:#333;
-background:#fafafa url(../images/button-hover.png) repeat-x top left;
+box-shadow:inset 0 -15px 20px #eee;
+}
+button > img,.button > img{
+float:left;
 }
 button:active,input[type="button"]:active,input[type="submit"]:active{
 color:#555;
-background:#e4e6e1 url(../images/button-hover.png) repeat-x top left;
 }
 optgroup{
 color:#fff;
@@ -482,7 +500,7 @@ display:block;
 font-weight:bold;
 padding:.2em .5em;
 border:1px solid #d3d7cf;
-background:#fff url(../images/fieldset-legend.png) repeat-x top left;
+box-shadow:inset 0 15px 20px #eee;
 }
 label{
 font-weight:bold;
@@ -557,7 +575,13 @@ div.buttons{
 display:block;
 text-align:left;
 }
-fieldset div{
+div.buttons button:last-child {
+margin-left:0;
+}
+div.actions button:last-child {
+margin-left:0;
+}
+fieldset > div{
 clear:left;
 padding:0 1em;
 padding-top:5px;
@@ -899,42 +923,42 @@ border:1px dashed #CCCCCC;
 }
 /* ----- DATAGRID ----- */
 .jawsDatagridPager{
- text-align:left;
- border:0px;
- width:100%;
+text-align:left;
+border:0px;
+width:100%;
 }
 .jawsDatagrid{
- border-radius:4px;
- padding:2px;
- background:#edf3fe;
- border:1px dashed #ccc;
- border-spacing:0px;
- margin-top:1em;
- margin-bottom:1em;
+padding:2px;
+background:#edf3fe;
+border:1px solid silver;
+border-radius:2px;
+border-spacing:0px;
+margin-top:1em;
+margin-bottom:1em;
 }
 .jawsDatagrid tbody{
- border:0px;
+border:0px;
 }
 .jawsDatagrid td{
- text-align:right;
- padding:3px 5px;
- border-bottom:1px solid #fff;
+text-align:right;
+padding:3px 5px;
+border-bottom:1px solid #fff;
 }
 .jawsDatagrid thead td{
- text-align:right;
- border-bottom:1px solid #3465a4;
- background-color:#3465a4;
- color:#fff;
- font-weight:bold;
- cursor:pointer;
+text-align:right;
+border-bottom:1px solid #3465a4;
+background-color:#3465a4;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
 }
 /*------------------ No Permission ------------------ */
 .nopermission,.fatalerror{
- background:#f4f4f4;
- border:1px solid #b2b2b2;
- margin:5em auto;
- padding:1.9em;
- width:45em;
+background:#f4f4f4;
+border:1px solid #b2b2b2;
+margin:5em auto;
+padding:1.9em;
+width:45em;
 }
 /*--------------- Piwi Toolbar Style ----------------*/
 .piwi_editor_toolbar .piwi_division{
