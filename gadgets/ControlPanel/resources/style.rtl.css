@@ -360,6 +360,10 @@ li.jaws-menubar-selected{
 box-shadow:none;
 border-bottom:1px solid white;
 }
+li.jaws-menubar-selected:hover{
+box-shadow:none;
+border-bottom:1px solid white;
+}
 li.jaws-menubar-selected a{
 color:#000;
 font-weight:bold;
@@ -406,6 +410,11 @@ border:0;
 vertical-align:bottom;
 }
 li.jaws-sidebar-selected{
+background-color:white;
+box-shadow:none;
+border-right:none;
+}
+li.jaws-sidebar-selected:hover{
 background-color:white;
 box-shadow:none;
 border-right:none;
