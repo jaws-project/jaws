@@ -1006,3 +1006,27 @@ z-index:-1;
 * html .ddmx td{
 position:relative;
 } /* ie 5.0 fix */
+
+/* Experimental/Offer */
+input, select, textarea, button {box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box;}
+input, select, textarea {background:none; border-radius:2px; padding:3px}
+select {padding:2px;}
+button, .button {background:none; box-shadow:inset 0 -15px 20px #eee; border-radius:2px; padding:3px 5px;}
+.buttons button:last-child {margin-right:0;}
+
+input[type=checkbox] {vertical-align:middle;}
+input + label {vertical-align:middle; margin-left:2px;}
+
+.jaws-sidebar {background:none; border-right:1px solid silver;}
+.jaws-sidebar li {background:none; box-shadow:inset 0 0 30px #ddd; border:1px solid silver; border-radius:5px 0 0 5px; margin:3px -1px 0;}
+.jaws-sidebar li:hover {box-shadow:inset 0 0 30px #eee;}
+.jaws-sidebar li a {background:none;}
+.jaws-sidebar li.jaws-sidebar-selected {box-shadow:none; background-color:white; border-right:none;}
+#jaws-sidebar-settings {border:none !important; border-right:1px solid silver !important;}
+
+.jawsDatagrid {border:1px solid silver; border-radius:2px;}
+.jawsDatagrid td {border-bottom:none;}
+
+/* annoying styles:
+"fieldset div" => "fieldset > div"
+*/
