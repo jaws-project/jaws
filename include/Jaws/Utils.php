@@ -151,7 +151,6 @@ class Jaws_Utils
             }
 
             $rel_base = Jaws_Utils::getBaseURL('', true);
-            $uri = htmlspecialchars(urldecode($uri), ENT_NOQUOTES, 'UTF-8');
             $uri = substr($uri, strlen($rel_base));
         }
 
