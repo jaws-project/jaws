@@ -39,6 +39,11 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
             return false; //we need to handle errors on ajax
         }
 
+        if (isset($IPRange['id'])) {
+            $IPRange['from_ip'] = long2ip($IPRange['from_ip']);
+            $IPRange['to_ip']   = long2ip($IPRange['to_ip']);
+        }
+
         return $IPRange;
     }
 

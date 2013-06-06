@@ -22,26 +22,9 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetIPRange($id)
     {
-        $sql = '
-            SELECT [id], [from_ip], [to_ip], [blocked]
-            FROM [[policy_ipblock]]
-            WHERE [id] = {id}';
-
-        $params = array();
-        $params['id'] = $id;
-
-        $types = array('integer', 'integer', 'integer', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        if (isset($res['id'])) {
-            $res['from_ip'] = long2ip($res['from_ip']);
-            $res['to_ip']   = long2ip($res['to_ip']);
-        }
-
-        return $res;
+        $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        return $objORM->where('id', (int)$id)->getRow();
     }
 
     /**
@@ -105,26 +88,10 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetBlockedIPs($limit = 0, $offset = null)
     {
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $sql = '
-            SELECT
-                [id], [from_ip], [to_ip], [blocked]
-            FROM [[policy_ipblock]]
-            ORDER BY [id] DESC';
-
-        $types = array('integer', 'integer', 'integer', 'boolean');
-        $rs = $GLOBALS['db']->queryAll($sql, null, $types);
-        if (Jaws_Error::IsError($rs)) {
-            return new Jaws_Error($rs->getMessage(), 'SQL');
-        }
-        
-        return $rs;
+        $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        $objORM->orderBy('id DESC');
+        return $objORM->getAll();
     }
 
     /**
