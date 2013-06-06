@@ -354,10 +354,12 @@ function closeUI()
  */
 function componentInfo()
 {
-    $('component_form').set('html', pluginsMode ?
-        ComponentsAjax.callSync('getplugininfo', selectedComponent):
-        ComponentsAjax.callSync('getgadgetinfo', selectedComponent)
-    );
+    if (!$('component_info')) {
+        $('component_form').set('html', pluginsMode ?
+            ComponentsAjax.callSync('getplugininfo', selectedComponent):
+            ComponentsAjax.callSync('getgadgetinfo', selectedComponent)
+        );
+    }
 
     $('summary').hide();
     $('component').show();
