@@ -334,14 +334,7 @@ class Jaws_URLMapping
      */
     function getPathInfo()
     {
-        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-            $uri = $_SERVER['REQUEST_URI'];
-        } elseif (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
-            $uri = $_SERVER['PHP_SELF'] . '?' .$_SERVER['QUERY_STRING'];
-        } else {
-            $uri = '';
-        }
-
+        $uri = Jaws_Utils::getRequestURL();
         if (!empty($uri)) {
             if (!$this->_use_rewrite) {
                 if (false !== $dotPosition = stripos($uri, BASE_SCRIPT)) {
