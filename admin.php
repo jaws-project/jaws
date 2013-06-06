@@ -114,6 +114,11 @@ if (!$GLOBALS['app']->Session->Logged())
     exit;
 }
 
+// remove checksess(check session) parameter from requested url
+if (!is_null($request->get('checksess', 'get'))) {
+    Jaws_Header::Location(substr(Jaws_Utils::getRequestURL(false), 0, -10));
+}
+
 // Can use Control Panel?
 $GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
 
