@@ -71,3 +71,9 @@ padding:10px;
 direction:ltr;
 background-color:#eee;
 }
+div.oneline label{
+width:20em;
+float:right;
+display:block;
+text-align:left;
+}
