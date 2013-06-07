@@ -26,14 +26,12 @@
    <div id="main-section" class="clearfix">
     <div id="login">
       <!-- BEGIN message -->
-      <center><div class="warning-message">{message}</div></center>
+      <div class="warning-message">{message}</div>
       <!-- END message -->
       <form name="loginbox"
             action="{base_script}"
-            <!-- BEGIN onsubmit -->onsubmit="return encryptedElement(this.password,
-                                                                     this.exponent.value,
-                                                                     this.modulus.value,
-                                                                     this.elements['usecrypt'].checked);"
+            <!-- BEGIN onsubmit -->
+            onsubmit="return encryptedElement(this.password, this.exponent.value, this.modulus.value, this.elements['usecrypt'].checked);"
             <!-- END onsubmit -->
             method="post">
       <input type="hidden" name="gadget" value="ControlPanel" />
@@ -65,7 +63,9 @@
         <div><input type="checkbox"
                   name="remember"
                   id="login_remember"
-                  <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+                  <!-- BEGIN selected -->
+                  checked="checked"
+                  <!-- END selected -->
                   value="true" />
            <label for="login_remember">{lbl_remember}</label>
         </div>
@@ -74,7 +74,9 @@
         <div><input type="checkbox"
                   name="usecrypt"
                   id="login_usecrypt"
-                  <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+                  <!-- BEGIN selected -->
+                  checked="checked"
+                  <!-- END selected -->
                   value="true" />
            <label for="login_usecrypt">{lbl_usecrypt}</label>
         </div>
