@@ -436,9 +436,6 @@ border-top:1px solid #999;
 border-bottom:1px solid #ddd;
 border-radius:2px;
 }
-select{
-padding:2px;
-}
 input[type=checkbox]{
 border:none;
 vertical-align:middle;
