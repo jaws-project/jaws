@@ -190,41 +190,6 @@ height:0;
 clear:both;
 visibility:hidden;
 }
-/* ----- COLOR DEFINITION ----- */
-.light-color{
-color:#729fcf;
-}
-.medium-color {
-color:#3465a4;
-}
-.dark-color{
-color:#3465a4;
-}
-.light-background {
-background-color:#729fcf;
-color:#3465a4;
-}
-.medium-background {
-background-color:#3465a4;
-color:#fff;
-}
-.dark-background{
-background-color:#3465a4;
-color:#fff;
-}
-.accent-color {
-color:#cee14b;
-}
-.accent-background {
-background-color:#cee14b;
-color:#9db029;
-}
-.strong-color{
-background:#3465a4;
-color:#fff;
-padding:4px;
-font-weight:bold;
-}
 /* ----- MAIN SECTION ----- */
 #main-section{
 width:100%;
@@ -527,58 +492,6 @@ display:none;
 }
 fieldset label{
 display:block;
-}
-div.oneline label,div.oneline_no_width label{
-margin:0;
-margin-left:.6em;
-display:block;
-text-align:left;
-float:right;
-font-size:100%;
-font-weight:bold;
-cursor:pointer;
-}
-div.oneline label{
-width:15em;
-}
-div.oneline_no_width label{
-text-align:left;
-}
-div.oneline{
-text-align:right;
-}
-div.w2em label{
-width:2em;
-}
-div.w3em label{
-width:3em;
-}
-div.w4em label{
-width:4em;
-}
-div.w5em label{
-width:5em;
-}
-div.w6em label{
-width:6em;
-}
-div.w7em label{
-width:7em;
-}
-div.w8em label{
-width:8em;
-}
-div.checkbox label{
-margin:0;
-display:block;
-width:13em;
-text-align:right;
-}
-div.radiobox label{
-display:inline;
-}
-div.radiobox input{
-vertical-align:middle;
 }
 div hr{
 border-color:black;
@@ -985,65 +898,3 @@ background-color:#edf3fe;
 .piwi_option_even{
 background-color:#fff;
 }
-/*------------------ Piwi Menu Bar ------------------*/
-.ddmx{
-width:90%;
-margin-left:auto;
-margin-right:auto;
-text-align:center;
-}
-.ddmx .item1,
-.ddmx .item1:hover,
-.ddmx .item1-active,
-.ddmx .item1-active:hover{
-padding:3px 10px 3px 10px;
-background-color:#3465a4;
-color:#fff;
-font-weight:bold;
-text-decoration:none;
-display:block;
-white-space:nowrap;
-position:relative;
-}
-.ddmx .item2,
-.ddmx .item2:hover,
-.ddmx .item2-active,
-.ddmx .item2-active:hover{
-padding:3px 8px 4px 8px;
-font-weight:bold;
-text-decoration:none;
-display:block;
-white-space:nowrap;
-position:relative;
-z-index:500;
-}
-.ddmx .item2{
-background-color:#729fcf;
-color:#fff;
-}
-.ddmx .item2:hover,
-.ddmx .item2-active,
-.ddmx .item2-active:hover{
-background-color:#cee14b;
-color:#3465a4;
-}
-.ddmx .arrow,
-.ddmx .arrow:hover{
-padding:3px 16px 4px 8px;
-}
-.ddmx .item2 img,
-.ddmx .item2-active img{
-position:absolute;
-top:4px;
-right:1px;
-border:0;
-}
-.ddmx .section{
-border:1px solid #3465a4;
-position:absolute;
-visibility:hidden;
-z-index:-1;
-}
-* html .ddmx td{
-position:relative;
-} /* ie 5.0 fix */
