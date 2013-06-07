@@ -371,9 +371,8 @@ class Jaws_Image_Imagick extends Jaws_Image
         }
 
         header('Content-type: ' . image_type_to_mime_type($this->get_image_extension_to_type($type)));
-        echo $result;
         $this->free();
-        return true;
+        return $result;
     }
 
     /**

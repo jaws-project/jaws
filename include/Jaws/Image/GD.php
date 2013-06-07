@@ -457,7 +457,7 @@ class Jaws_Image_GD extends Jaws_Image
         }
 
         $this->free();
-        return true;
+        return $result;
     }
 
     /**

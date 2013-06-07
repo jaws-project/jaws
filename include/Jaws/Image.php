@@ -602,8 +602,7 @@ class Jaws_Image
                 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires). ' GMT');
             }
 
-            echo $this->_iData;
-            return true;
+            return $this->_iData;
         }
 
         return Jaws_Error::raiseError('display() method not supported by driver.',
@@ -629,8 +628,7 @@ class Jaws_Image
                 $image = exif_thumbnail($source, $width, $height, $type);
                 if ($image !== false) {
                     header('Content-type: ' .image_type_to_mime_type($type));
-                    print $image;
-                    exit;
+                    return $image;
                 }
             }
         }
@@ -638,8 +636,7 @@ class Jaws_Image
         $unknown = $GLOBALS['app']->CheckImage($unknown);
         $ext = strtolower(substr($unknown, strrpos($unknown,'.')+1));
         header('Content-type: image/'.$ext);
-        readfile($unknown);
-        exit;
+        return file_get_contents($unknown);
     }
 
     /**
