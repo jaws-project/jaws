@@ -1,48 +1,49 @@
+td {
+vertical-align:top;
+}
 #jaws-sidebar-settings{
 width:220px;
-float:left;
-border:1px solid #d3d7cf;
+}
+#settings_sidebar {
+border-right:1px solid silver;
 }
 #settings{
-width:752px;
-float:right;
-padding-top:10px;
-padding-bottom:10px;
-margin-bottom:4px;
-border:1px solid #d3d7cf;
+width:100%;
+padding:10px 0;
+border:1px solid silver;
+border-left:none;
 }
 .buttons{
-clear:both;
+margin-top:5px;
 }
-div.fields{
-clear:both;
+.fields{
 margin-top:4px;
-text-align:left;
 }
-div.fields label{
-margin:0;
-margin-right:.6em;
-padding-top:4px;
-display:block;
-text-align:right;
-float:left;
-font-weight:bold;
-cursor:pointer;
-width:17em;
+.fields input,.fields textarea{
+width:320px;
 }
-div.fields select{
+.fields select{
+width:250px;
 max-width:320px;
 }
-.meta-name{
-width:6em;
+.fields label{
+display:block;
+width:17em;
+float:left;
+margin-right:.6em;
+text-align:right;
+line-height:1.8;
+}
+input.meta-name{
+width:100px;
 }
 input.meta-value{
-width:17em;
+width:215px;
 margin-left:0.4em;
 }
 .add-button{
 margin-top:5px;
 }
-.add-button input, .add-button button{
+.add-button input,.add-button button{
 margin-left:17.6em;
 }

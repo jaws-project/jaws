@@ -108,6 +108,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // site status
         $site_status =& Piwi::CreateWidget('Combo', 'site_status');
         $site_status->setID('site_status');
+        $site_status->SetStyle('width:100px;');
         $tpl->SetBlock('settings/item');
         $site_status->AddOption(_t('GLOBAL_DISABLED'), 'disabled');
         $site_status->AddOption(_t('GLOBAL_ENABLED'), 'enabled');
@@ -122,7 +123,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $sitename =& Piwi::CreateWidget('Entry',
                                         'site_name',
                                         Jaws_XSS::defilter($this->gadget->registry->fetch('site_name')));
-        $sitename->setSize(40);
         $sitename->setID('site_name');
         $tpl->SetVariable('field-name', 'site_name');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_NAME'));
@@ -134,7 +134,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $sitedesc =& Piwi::CreateWidget('Entry',
                                         'site_slogan',
                                         Jaws_XSS::defilter($this->gadget->registry->fetch('site_slogan')));
-        $sitedesc->setSize(40);
         $sitedesc->setID('site_slogan');
         $tpl->SetVariable('field-name', 'site_slogan');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_SLOGAN'));
@@ -190,7 +189,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $siteemail =& Piwi::CreateWidget('Entry',
                                         'site_email',
                                         $this->gadget->registry->fetch('site_email'));
-        $siteemail->setSize(40);
         $siteemail->setID('site_email');
         $tpl->SetVariable('field-name', 'site_email');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_EMAIL'));
@@ -203,7 +201,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
                                            'site_comment',
                                            Jaws_XSS::defilter($this->gadget->registry->fetch('site_comment')));
         $sitecomment->SetRows(4);
-        $sitecomment->SetStyle('width: 252px;');
         $sitecomment->setID('site_comment');
         $tpl->SetVariable('field-name', 'site_comment');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_COMMENT'));
@@ -237,7 +234,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // Date Format
         $date_format =& Piwi::CreateWidget('Combo', 'date_format');
         $date_format->setID('date_format');
-        $date_format->SetStyle('width: 250px;');
         $dtfmts = $model->GetDateFormatList();
         foreach ($dtfmts as $k => $v) {
             $date_format->AddOption($v, $k);
@@ -276,7 +272,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         foreach ($languages as $k => $v) {
             $lang->AddOption($v, $k);
         }
-        $lang->SetStyle('width: 250px;');
         $lang->SetDefault($this->gadget->registry->fetch('calendar_language'));
         $tpl->SetVariable('field-name', 'calendar_language');
         $tpl->SetVariable('label', _t('SETTINGS_CALENDAR_LANGUAGE'));
@@ -287,6 +282,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $use_gravatar = $this->gadget->registry->fetch('use_gravatar');
         $gravatar =& Piwi::CreateWidget('Combo', 'use_gravatar');
         $gravatar->setID('use_gravatar');
+        $gravatar->setStyle('width:80px');
         $gravatar->AddOption(_t('GLOBAL_YES'), 'yes');
         $gravatar->AddOption(_t('GLOBAL_NO'), 'no');
         $gravatar->SetDefault($use_gravatar);
@@ -304,7 +300,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $gravatar->AddOption(_t('SETTINGS_GRAVATAR_PG'), 'PG');
         $gravatar->AddOption(_t('SETTINGS_GRAVATAR_R'), 'R');
         $gravatar->AddOption(_t('SETTINGS_GRAVATAR_X'), 'X');
-        $gravatar->SetStyle('width: 250px;');
         $gravatar->SetDefault($this->gadget->registry->fetch('gravatar_rating'));
         $gravatar->SetEnabled($use_gravatar == 'yes');
         $tpl->SetBlock('settings/item');
@@ -316,6 +311,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // show view site icon on CP
         $viewSite =& Piwi::CreateWidget('Combo', 'show_viewsite');
         $viewSite->setID('show_viewsite');
+        $viewSite->setStyle('width:80px');
         $viewSite->AddOption(_t('GLOBAL_YES'), 'true');
         $viewSite->AddOption(_t('GLOBAL_NO'), 'false');
         $viewSite->SetDefault($this->gadget->registry->fetch('show_viewsite'));
@@ -346,7 +342,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         foreach ($editors as $k => $v) {
             $editorCombo->AddOption($v, $k);
         }
-        $editorCombo->SetStyle('width: 250px;');
         $editorCombo->SetDefault($this->gadget->registry->fetch('editor'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'editor');
@@ -361,7 +356,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         foreach($timezones as $k => $v) {
             $timezone->AddOption($v, $k);
         }
-        $timezone->SetStyle('direction: ltr; width: 250px;');
+        $timezone->SetStyle('direction:ltr;');
         $timezone->SetDefault($this->gadget->registry->fetch('timezone'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'timezone');
@@ -407,7 +402,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
                                         'site_description',
                                         Jaws_XSS::defilter($this->gadget->registry->fetch('site_description')));
         $sitedesc->SetRows(5);
-        $sitedesc->setStyle('width: 24em;');
         $sitedesc->setID('site_description');
         $tpl->SetVariable('field-name', 'site_description');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_DESCRIPTION'));
@@ -419,7 +413,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $sitekeys =& Piwi::CreateWidget('Entry', 'site_keywords',
                                         $this->gadget->registry->fetch('site_keywords'));
         $sitekeys->setID('site_keywords');
-        $sitekeys->setStyle('direction: ltr; width: 24em;');
+        $sitekeys->setStyle('direction:ltr;');
         $tpl->SetVariable('field-name', 'site_keywords');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_KEYWORDS'));
         $tpl->SetVariable('field', $sitekeys->Get());
@@ -429,7 +423,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $author =& Piwi::CreateWidget('Entry', 'site_author', $this->gadget->registry->fetch('site_author'));
         $author->setID('site_author');
-        $author->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'site_author');
         $tpl->SetVariable('label',_t('SETTINGS_SITE_AUTHOR'));
         $tpl->SetVariable('field',$author->Get());
@@ -439,7 +432,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $license =& Piwi::CreateWidget('Entry', 'site_license', $this->gadget->registry->fetch('site_license'));
         $license->setID('site_license');
-        $license->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'site_license');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_LICENSE'));
         $tpl->SetVariable('field', $license->Get());
@@ -449,7 +441,6 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $copyright =& Piwi::CreateWidget('Entry', 'site_copyright', $this->gadget->registry->fetch('site_copyright'));
         $copyright->setID('site_copyright');
-        $copyright->setStyle('width: 24em;');
         $tpl->SetVariable('field-name', 'site_copyright');
         $tpl->SetVariable('label', _t('SETTINGS_COPYRIGHT'));
         $tpl->SetVariable('field', $copyright->Get());
@@ -499,6 +490,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // Mailer
         $mailer =& Piwi::CreateWidget('Combo', 'mailer');
         $mailer->setID('mailer');
+        $mailer->SetStyle('width:100px;');
         $mailer->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
         $mailer->AddOption('PHP mail()', 'phpmail');
         $mailer->AddOption('sendmail',   'sendmail');
@@ -516,8 +508,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $siteEmail =& Piwi::CreateWidget('Entry', 'gate_email', $this->gadget->registry->fetch('gate_email'));
         $siteEmail->setID('gate_email');
-        $siteEmail->setSize(24);
-        $siteEmail->setStyle('direction: ltr');
+        $siteEmail->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'gate_email');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_GATE_EMAIL'));
         $tpl->SetVariable('field', $siteEmail->Get());
@@ -528,7 +519,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $emailName =& Piwi::CreateWidget('Entry', 'gate_title', $this->gadget->registry->fetch('gate_title'));
         $emailName->setID('gate_title');
-        $emailName->setSize(24);
+        $emailName->setStyle('width:200px');
         $tpl->SetVariable('field-name', 'gate_title');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_GATE_TITLE'));
         $tpl->SetVariable('field', $emailName->Get());
@@ -537,6 +528,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // SMTP Verification
         $smtpVrfy =& Piwi::CreateWidget('Combo', 'smtp_vrfy');
         $smtpVrfy->setID('smtp_vrfy');
+        $smtpVrfy->SetStyle('width:80px;');
         $smtpVrfy->AddOption(_t('GLOBAL_NO'),  'false');
         $smtpVrfy->AddOption(_t('GLOBAL_YES'), 'true');
         $smtpVrfy->SetDefault($this->gadget->registry->fetch('smtp_vrfy'));
@@ -551,8 +543,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $sendmailPath =& Piwi::CreateWidget('Entry', 'sendmail_path', $this->gadget->registry->fetch('sendmail_path'));
         $sendmailPath->setID('sendmail_path');
-        $sendmailPath->setSize(24);
-        $sendmailPath->setStyle('direction: ltr');
+        $sendmailPath->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'sendmail_path');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SENDMAIL_PATH'));
         $tpl->SetVariable('field', $sendmailPath->Get());
@@ -563,8 +554,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $smtpHost =& Piwi::CreateWidget('Entry', 'smtp_host', $this->gadget->registry->fetch('smtp_host'));
         $smtpHost->setID('smtp_host');
-        $smtpHost->setSize(24);
-        $smtpHost->setStyle('direction: ltr');
+        $smtpHost->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'smtp_host');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_HOST'));
         $tpl->SetVariable('field', $smtpHost->Get());
@@ -575,8 +565,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $smtpPort =& Piwi::CreateWidget('Entry', 'smtp_port', $this->gadget->registry->fetch('smtp_port'));
         $smtpPort->setID('smtp_port');
-        $smtpPort->setSize(10);
-        $smtpPort->setStyle('direction: ltr');
+        $smtpPort->setStyle('direction:ltr; width:80px');
         $tpl->SetVariable('field-name', 'smtp_port');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_PORT'));
         $tpl->SetVariable('field', $smtpPort->Get());
@@ -585,6 +574,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // SMTP Auth
         $smtpAuth =& Piwi::CreateWidget('Combo', 'smtp_auth');
         $smtpAuth->setID('smtp_auth');
+        $smtpAuth->SetStyle('width:80px;');
         $smtpAuth->AddOption(_t('GLOBAL_NO'),  'false');
         $smtpAuth->AddOption(_t('GLOBAL_YES'), 'true');
         $smtpAuth->SetDefault($this->gadget->registry->fetch('smtp_auth'));
@@ -598,8 +588,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $smtpUser =& Piwi::CreateWidget('Entry', 'smtp_user', $this->gadget->registry->fetch('smtp_user'));
         $smtpUser->setID('smtp_user');
-        $smtpUser->setSize(24);
-        $smtpUser->setStyle('direction: ltr');
+        $smtpUser->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'smtp_user');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_USER'));
         $tpl->SetVariable('field', $smtpUser->Get());
@@ -609,8 +598,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $smtpPass =& Piwi::CreateWidget('PasswordEntry', 'smtp_pass', '');
         $smtpPass->setID('smtp_pass');
-        $smtpPass->setSize(24);
-        $smtpPass->setStyle('direction: ltr');
+        $smtpPass->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'smtp_pass');
         $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_PASS'));
         $tpl->SetVariable('field', $smtpPass->Get());
@@ -642,6 +630,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // Use Enabled?
         $useFTP =& Piwi::CreateWidget('Combo', 'ftp_enabled');
         $useFTP->setID('ftp_enabled');
+        $useFTP->SetStyle('width:100px;');
         $useFTP->AddOption(_t('GLOBAL_NO'),  'false');
         $useFTP->AddOption(_t('GLOBAL_YES'), 'true');
         $useFTP->SetDefault($this->gadget->registry->fetch('ftp_enabled'));
@@ -656,8 +645,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $ftpHost =& Piwi::CreateWidget('Entry', 'ftp_host', $this->gadget->registry->fetch('ftp_host'));
         $ftpHost->setID('ftp_host');
-        $ftpHost->setSize(24);
-        $ftpHost->setStyle('direction: ltr');
+        $ftpHost->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'ftp_host');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_HOST'));
         $tpl->SetVariable('field', $ftpHost->Get());
@@ -668,8 +656,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $ftpPort =& Piwi::CreateWidget('Entry', 'ftp_port', $this->gadget->registry->fetch('ftp_port'));
         $ftpPort->setID('ftp_port');
-        $ftpPort->setSize(10);
-        $ftpPort->setStyle('direction: ltr');
+        $ftpPort->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'ftp_port');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_PORT'));
         $tpl->SetVariable('field', $ftpPort->Get());
@@ -678,6 +665,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // FTP mode (active/passive)
         $ftpMode =& Piwi::CreateWidget('Combo', 'ftp_mode');
         $ftpMode->setID('ftp_mode');
+        $ftpMode->SetStyle('width:100px;');
         $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_ACTIVE'),  'active');
         $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_PASSIVE'), 'passive');
         $ftpMode->SetDefault($this->gadget->registry->fetch('ftp_mode'));
@@ -691,8 +679,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $ftpUser =& Piwi::CreateWidget('Entry', 'ftp_user', $this->gadget->registry->fetch('ftp_user'));
         $ftpUser->setID('ftp_user');
-        $ftpUser->setSize(24);
-        $ftpUser->setStyle('direction: ltr');
+        $ftpUser->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'ftp_user');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_USER'));
         $tpl->SetVariable('field', $ftpUser->Get());
@@ -702,8 +689,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $ftpPass =& Piwi::CreateWidget('PasswordEntry', 'ftp_pass', '');
         $ftpPass->setID('ftp_pass');
-        $ftpPass->setSize(24);
-        $ftpPass->setStyle('direction: ltr');
+        $ftpPass->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'ftp_pass');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_PASS'));
         $tpl->SetVariable('field', $ftpPass->Get());
@@ -713,8 +699,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $ftpRoot =& Piwi::CreateWidget('Entry', 'ftp_root', $this->gadget->registry->fetch('ftp_root'));
         $ftpRoot->setID('ftp_root');
-        $ftpRoot->setSize(24);
-        $ftpRoot->setStyle('direction: ltr');
+        $ftpRoot->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'ftp_root');
         $tpl->SetVariable('label', _t('SETTINGS_FTP_ROOT'));
         $tpl->SetVariable('field', $ftpRoot->Get());
@@ -746,6 +731,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // Use Enabled?
         $useProxy =& Piwi::CreateWidget('Combo', 'proxy_enabled');
         $useProxy->setID('proxy_enabled');
+        $useProxy->SetStyle('width:80px;');
         $useProxy->AddOption(_t('GLOBAL_NO'),  'false');
         $useProxy->AddOption(_t('GLOBAL_YES'), 'true');
         $useProxy->SetDefault($this->gadget->registry->fetch('proxy_enabled'));
@@ -760,8 +746,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $proxyHost =& Piwi::CreateWidget('Entry', 'proxy_host', $this->gadget->registry->fetch('proxy_host'));
         $proxyHost->setID('proxy_host');
-        $proxyHost->setSize(24);
-        $proxyHost->setStyle('direction: ltr');
+        $proxyHost->setStyle('direction:ltr; width:200px;');
         $tpl->SetVariable('field-name', 'proxy_host');
         $tpl->SetVariable('label', _t('SETTINGS_PROXY_HOST'));
         $tpl->SetVariable('field', $proxyHost->Get());
@@ -772,8 +757,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $proxyPort =& Piwi::CreateWidget('Entry', 'proxy_port', $this->gadget->registry->fetch('proxy_port'));
         $proxyPort->setID('proxy_port');
-        $proxyPort->setSize(10);
-        $proxyPort->setStyle('direction: ltr');
+        $proxyPort->setStyle('direction:ltr; width:80px');
         $tpl->SetVariable('field-name', 'proxy_port');
         $tpl->SetVariable('label', _t('SETTINGS_PROXY_PORT'));
         $tpl->SetVariable('field', $proxyPort->Get());
@@ -782,6 +766,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         // Proxy Auth
         $proxyAuth =& Piwi::CreateWidget('Combo', 'proxy_auth');
         $proxyAuth->setID('proxy_auth');
+        $proxyAuth->SetStyle('width:80px');
         $proxyAuth->AddOption(_t('GLOBAL_NO'),  'false');
         $proxyAuth->AddOption(_t('GLOBAL_YES'), 'true');
         $proxyAuth->SetDefault($this->gadget->registry->fetch('proxy_auth'));
@@ -795,8 +780,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $proxyUser =& Piwi::CreateWidget('Entry', 'proxy_user', $this->gadget->registry->fetch('proxy_user'));
         $proxyUser->setID('proxy_user');
-        $proxyUser->setSize(24);
-        $proxyUser->setStyle('direction: ltr');
+        $proxyUser->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'proxy_user');
         $tpl->SetVariable('label', _t('SETTINGS_PROXY_USER'));
         $tpl->SetVariable('field', $proxyUser->Get());
@@ -806,8 +790,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $proxyPass =& Piwi::CreateWidget('PasswordEntry', 'proxy_pass', '');
         $proxyPass->setID('proxy_pass');
-        $proxyPass->setSize(24);
-        $proxyPass->setStyle('direction: ltr');
+        $proxyPass->setStyle('direction:ltr; width:200px');
         $tpl->SetVariable('field-name', 'proxy_pass');
         $tpl->SetVariable('label', _t('SETTINGS_PROXY_PASS'));
         $tpl->SetVariable('field', $proxyPass->Get());

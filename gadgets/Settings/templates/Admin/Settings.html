@@ -1,21 +1,23 @@
 <!-- BEGIN settings -->
-<div id="main">
-  {sidebar}
-  <div id="settings">
-    <form id="settingsForm" name="settingsForm" method="post" action="{base_script}" onsubmit="return false;">
-      <!-- BEGIN item -->
-      <div class="fields"><label for="{field-name}">{label}</label>{field}</div>
-      <!-- END item -->
-    </form>
-    <div id="customMeta">
-      <!-- BEGIN custom -->
-      <div class="fields"><label>{label}</label>{name}{value}</div>
-      <!-- END custom -->
+<table cellspacing="0"><tr>
+  <td id="settings_sidebar">{sidebar}</td>
+  <td id="settings">
+    <div>
+      <form id="settingsForm" name="settingsForm" method="post" action="{base_script}" onsubmit="return false;">
+        <!-- BEGIN item -->
+        <div class="fields"><label for="{field-name}">{label}</label>{field}</div>
+        <!-- END item -->
+      </form>
+      <div id="customMeta">
+        <!-- BEGIN custom -->
+        <div class="fields"><label>{label}</label>{name}{value}</div>
+        <!-- END custom -->
+      </div>
+      <div class="add-button">{addButton}</div>
     </div>
-    <div class="add-button">{addButton}</div>
-  </div>
-  <div class="buttons">{saveButton}</div>
-</div>
+  </td>
+</tr></table>
+<div class="buttons">{saveButton}</div>
 <script type="text/javascript">
   var custom_meta = "{custom_meta}";
   if ($('mailer')) {

@@ -1,40 +1,58 @@
+td {
+vertical-align:top;
+}
 #jaws-sidebar-settings{
 width:220px;
-float:right;
-border:1px solid #d3d7cf;
+}
+#settings_sidebar {
+border-left:1px solid silver;
 }
 #settings{
-width:752px;
-float:left;
-padding-top:10px;
-padding-bottom:10px;
-margin-bottom:4px;
-border:1px solid #d3d7cf;
+width:100%;
+padding:10px 0;
+border:1px solid silver;
+border-right:none;
 }
 .buttons{
-clear:both;
+margin-top:5px;
 }
-div.fields{
-clear:both;
+.fields{
 margin-top:4px;
 text-align:right;
 }
-div.fields label{
-margin:0;
-margin-left:.6em;
-padding-top:4px;
-display:block;
-text-align:left;
-float:right;
-font-weight:bold;
-cursor:pointer;
-width:17em;
+.fields input,.fields textarea{
+width:320px;
 }
-div.fields select{
+.fields select{
+width:250px;
 max-width:320px;
 }
+.fields label{
+display:block;
+width:17em;
+float:right;
+margin-left:.6em;
+text-align:left;
+line-height:1.8;
+}
+input.meta-name{
+width:100px;
+direction:ltr;
+}
+input.meta-value{
+width:215px;
+margin-right:0.4em;
+direction:ltr;
+}
+.add-button{
+margin-top:5px;
+text-align:right;
+}
+.add-button input,.add-button button{
+margin-right:17.6em;
+}
+/*
 .meta-name{
-width:6em;
 direction:ltr;
 }
 input.meta-value{
@@ -50,3 +68,4 @@ direction:ltr;
 .add-button input, .add-button button{
 margin-right:17.6em;
 }
+*/
