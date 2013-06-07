@@ -575,25 +575,32 @@ text-align:right;
 }
 /* ----- CONTROL PANEL ----- */
 #control-panel-title{
-font-size:14px;
-color:#3465a4;
 height:48px;
-min-height:48px;
-display:block;
-font-weight:bold;
-text-align:right;
 }
-#control-panel-title img{
+#cp-title-bar{
+float:right;
+font-size:14px;
+font-weight:bold;
+}
+#cp-title-bar img{
 width:48px;
 height:48px;
 }
-#control-panel-title a{
+#cp-title-bar a{
 color:#3465a4;
 text-decoration:none;
 }
-#control-panel-title a:hover{
+#cp-title-bar a:hover{
 text-decoration:underline;
 color:#3465a4;
+}
+#cp-nav-bar{
+float:left;
+padding:10px 5px 0;
+}
+#cp-nav-bar img{
+width:22px;
+height:22px;
 }
 .control-panel-message{
 background-color:#cee14b;

@@ -309,10 +309,17 @@ class Jaws_Layout
             $this->_Template->SetVariable('title-name', $gname);
             $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/images/logo.png');
             $this->_Template->SetVariable('title-gadget', $gadget);
+            
+            // view site icon
+            $this->_Template->SetVariable('site_url', $GLOBALS['app']->getSiteURL());
+            $this->_Template->SetVariable('view_site', _t('GLOBAL_VIEW_SITE'));
+            $this->_Template->SetVariable('site_icon', 'gadgets/ControlPanel/images/view_site.png');
+
+            // help icon
             if (!empty($docurl) && !is_null($docurl)) {
                 $this->_Template->SetBlock('layout/cptitle/documentation');
-                $this->_Template->SetVariable('src', 'images/stock/help-browser.png');
-                $this->_Template->SetVariable('alt', _t('GLOBAL_READ_DOCUMENTATION'));
+                $this->_Template->SetVariable('src', 'gadgets/ControlPanel/images/help.png');
+                $this->_Template->SetVariable('alt', _t('GLOBAL_HELP'));
                 $this->_Template->SetVariable('url', $docurl);
                 $this->_Template->ParseBlock('layout/cptitle/documentation');
             }
