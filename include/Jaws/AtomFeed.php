@@ -701,7 +701,7 @@ class Jaws_AtomFeed
      */
     function Show()
     {
-        echo $this->GetXML();
+        return $this->GetXML();
     }
 
     /**
