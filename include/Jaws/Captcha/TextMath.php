@@ -63,6 +63,11 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
                 break;
 
             case 1:
+                // first & second numbers must different
+                while ($fnum == $snum) {
+                    $snum = mt_rand(1, 9);
+                }
+
                 // exchange value of variables
                 if ($fnum < $snum) {
                     list($fnum, $snum) = array($snum, $fnum);
