@@ -281,3 +281,9 @@ margin-bottom:10px;
 border:1px solid #888;
 border-radius:5px;
 }
+div.oneline label{
+width:20em;
+float:left;
+display:block;
+text-align:right;
+}
