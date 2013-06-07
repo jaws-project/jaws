@@ -45,6 +45,8 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 // this variables currently temporary util we complete multible instance installing
 define('JAWS_BASE_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
 define('JAWS_DATA', JAWS_BASE_DATA);
+define('JAWS_THEMES', JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR);
+define('JAWS_BASE_THEMES', JAWS_THEMES);
 define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
 define('INSTALL_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
