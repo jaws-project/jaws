@@ -85,43 +85,50 @@ margin:0 0 10px 0;
 }
 /* ----- LOGIN BOX ----- */
 #login{
-border:0;
-width:500px;
-padding:10px;
-display:block;
-margin:50px auto;
-text-align:center;
+padding-top:60px;
 }
 #login fieldset{
-width:280px;
+width:250px;
 margin:1em auto;
-text-align:left;
 }
-#login fieldset label{
-cursor:pointer;
-font-size:100%;
-font-weight:bold;
-text-align:left;
+#login fieldset > div{
+margin-bottom:5px;
 }
-#login #username,#login #password{
-width:222px;
+#login fieldset > div.buttons{
+margin-bottom:0;
+}
+#login #username{
+width:100%;
 padding-left:24px;
 background:#fff url(../images/user.png) no-repeat;
 }
 #login #password{
+width:100%;
+padding-left:24px;
 background:#fff url(../images/pass.png) no-repeat;
 }
 #login .captcha input{
-width:222px;
-padding-left:24px;
+width:160px;
 background:#fff;
 }
 #login .captcha small{
 display:block;
 color:#777;
 }
+#login .captcha-value img{
+vertical-align:middle;
+}
+#login .captcha-value button{
+vertical-align:middle;
+}
+#login .text-captcha strong{
+display:block;
+width:160px;
+padding:3px;
+font-size:14px;
+letter-spacing:5px;
+}
 #login .login-footer{
-clear:both;
 text-align:center;
 font-size:80%;
 color:#babdb6;
@@ -418,6 +425,8 @@ font-weight:bold;
 /* ----- FORM ELEMENTS ----- */
 input,select,textarea,button{
 box-sizing:border-box;
+-moz-box-sizing:border-box;
+-ms-box-sizing:border-box;
 }
 input,textarea,select{
 color:#333;
@@ -431,7 +440,11 @@ select{
 padding:2px;
 }
 input[type=checkbox]{
+border:none;
 vertical-align:middle;
+}
+input[type=checkbox]:focus{
+border:none;
 }
 input + label{
 vertical-align:middle;
@@ -487,17 +500,14 @@ color:#999;
 background-color:#eee;
 }
 fieldset{
-position:relative;
 border:1px solid #d3d7cf;
-padding:0px;
-padding-bottom:1em;
+padding:12px;
 margin-bottom:1em;
-font-size:small;
 text-align:left;
 }
 legend{
 padding:0px;
-margin:0px 2px;
+margin:0px;
 }
 legend span{
 top:-20px;
@@ -512,14 +522,13 @@ font-weight:bold;
 cursor:pointer;
 }
 fieldset td{
-padding:1px;
+padding:2px 0;
 }
 fieldset br{
-display :none;
+display:none;
 }
 fieldset label{
 display:block;
-font-size:100%;
 }
 div.oneline label,div.oneline_no_width label{
 margin:0;
@@ -577,16 +586,11 @@ div.buttons{
 display:block;
 text-align:right;
 }
-div.buttons button:last-child {
+.buttons button:last-child {
 margin-right:0;
 }
-div.actions button:last-child {
+.actions button:last-child {
 margin-right:0;
-}
-fieldset > div{
-clear:left;
-padding:0 1em;
-padding-top:5px;
 }
 fieldset div strong{
 font-size:100%;
