@@ -337,7 +337,7 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
             if (!Jaws_Error::IsError($result)) {
                 $result = $objImage->display();
                 if (!Jaws_Error::IsError($result)) {
-                    return true;
+                    return $result;
                 }
             }
         }

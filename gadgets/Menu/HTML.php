@@ -44,7 +44,7 @@ class Menu_HTML extends Jaws_Gadget_HTML
                 $objImage->setData($image, true);
                 $res = $objImage->display('', null, 315360000);// cached for 10 years!
                 if (!Jaws_Error::IsError($res)) {
-                    return true;
+                    return $res;
                 }
             }
         }
