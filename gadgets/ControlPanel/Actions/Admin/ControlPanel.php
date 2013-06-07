@@ -39,8 +39,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
 
         if ($this->gadget->registry->fetch('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
-                                                 'tname' => _t('CONTROLPANEL_GENERAL_VIEWSITE'),
-                                                 'desc'  => _t('CONTROLPANEL_GENERAL_VIEWSITE'));
+                                                 'tname' => _t('GLOBAL_VIEW_SITE'),
+                                                 'desc'  => _t('GLOBAL_VIEW_SITE'));
         }
 
         // Load the template
