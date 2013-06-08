@@ -122,7 +122,7 @@ class Components_Actions_Admin_Gadgets extends Components_AdminHTML
         if (!empty($acls)) {
             foreach ($acls as $acl) {
                 $tpl->SetBlock('info/acls/acl');
-                $tpl->SetVariable('acl', $objGadget->acl->description($acl['key_name']));
+                $tpl->SetVariable('acl', $objGadget->acl->description($acl['key_name'], $acl['key_subkey']));
                 $tpl->ParseBlock('info/acls/acl');
             }
         }
