@@ -21,17 +21,6 @@ class Shoutbox_Info extends Jaws_Gadget
     var $_Version = '0.8.1';
 
     /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageComments',
-        'UpdateProperties',
-    );
-
-    /**
      * Required gadgets
      *
      * @var     array
