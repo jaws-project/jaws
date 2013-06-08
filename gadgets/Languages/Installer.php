@@ -11,6 +11,16 @@
 class Languages_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'ModifyLanguageProperties',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public

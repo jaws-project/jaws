@@ -32,14 +32,4 @@ class Languages_Info extends Jaws_Gadget
      */
     var $_has_layout = false;
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ModifyLanguageProperties',
-    );
-
 }
