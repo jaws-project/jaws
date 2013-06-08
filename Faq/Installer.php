@@ -11,6 +11,19 @@
 class Faq_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddQuestion',
+        'EditQuestion',
+        'DeleteQuestion',
+        'ManageCategories',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
