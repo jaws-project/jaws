@@ -316,7 +316,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
         foreach ($acls as $k => $acl) {
-            $acls[$k]['key_desc'] = $info->GetACLDescription($acl['key_name']);
+            $acls[$k]['key_desc'] = $info->acl->description($acl['key_name']);
         }
         return array('ui' => $ui, 'acls' => $acls);
     }
