@@ -11,23 +11,23 @@
 class Jaws_Gadget_ACL
 {
     /**
-     * Name of the gadget
+     * Jaws_Gadget object
      *
-     * @var     string
-     * @access  private
+     * @var     object
+     * @access  protected
      */
-    var $name = '';
+    var $gadget = null;
 
     /**
      * constructor
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   object  $gadget Jaws_Gadget object
      * @return  void
      */
     function Jaws_Gadget_ACL($gadget)
     {
-        $this->name = $gadget;
+        $this->gadget = $gadget;
     }
 
     /**
@@ -43,10 +43,10 @@ class Jaws_Gadget_ACL
     function insert($name, $subkey = '', $value = 0, $gadget = '')
     {
         if (is_array($name)) {
-            $gadget = empty($value)? $this->name : $value;
+            $gadget = empty($value)? $this->gadget->name : $value;
             return $GLOBALS['app']->ACL->insertAll($name, $gadget);
         } else {
-            $gadget = empty($gadget)? $this->name : $gadget;
+            $gadget = empty($gadget)? $this->gadget->name : $gadget;
             return $GLOBALS['app']->ACL->insert($name, $subkey, $value, $gadget);
         }
     }
@@ -62,7 +62,7 @@ class Jaws_Gadget_ACL
      */
     function fetch($name, $subkey = '', $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->ACL->fetch($name, $subkey, $gadget);
     }
 
@@ -78,7 +78,7 @@ class Jaws_Gadget_ACL
      */
     function update($name, $subkey = '', $value = 0, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->ACL->update($name, $subkey, $value, $gadget);
     }
 
@@ -92,7 +92,7 @@ class Jaws_Gadget_ACL
      */
     function delete($name, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->ACL->delete($gadget, $name);
     }
 
@@ -108,7 +108,7 @@ class Jaws_Gadget_ACL
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
             return _t(strtoupper('GLOBAL_ACL_'. $key));
         } else {
-            return _t(strtoupper($this->name. '_ACL_'. $key));
+            return _t(strtoupper($this->gadget->name. '_ACL_'. $key));
         }
     }
 

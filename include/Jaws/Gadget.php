@@ -174,9 +174,9 @@ class Jaws_Gadget
         $this->name = $gadget;
 
         // load gadget ACL interface
-        $this->acl = new Jaws_Gadget_ACL($gadget);
+        $this->acl = new Jaws_Gadget_ACL($this);
         // load gadget registry interface
-        $this->registry = new Jaws_Gadget_Registry($gadget);
+        $this->registry = new Jaws_Gadget_Registry($this);
         // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
 

@@ -11,23 +11,23 @@
 class Jaws_Gadget_Registry
 {
     /**
-     * Name of the gadget
+     * Jaws_Gadget object
      *
-     * @var     string
-     * @access  private
+     * @var     object
+     * @access  protected
      */
-    var $name = '';
+    var $gadget = null;
 
     /**
      * constructor
      *
      * @access  public
-     * @param   object $gadget Jaws_Gadget object
+     * @param   object  $gadget Jaws_Gadget object
      * @return  void
      */
     function Jaws_Gadget_Registry($gadget)
     {
-        $this->name = $gadget;
+        $this->gadget = $gadget;
     }
 
     /**
@@ -42,10 +42,10 @@ class Jaws_Gadget_Registry
     function insert($name, $value = '', $gadget = '')
     {
         if (is_array($name)) {
-            $gadget = empty($value)? $this->name : $value;
+            $gadget = empty($value)? $this->gadget->name : $value;
             return $GLOBALS['app']->Registry->insertAll($name, $gadget);
         } else {
-            $gadget = empty($gadget)? $this->name : $gadget;
+            $gadget = empty($gadget)? $this->gadget->name : $gadget;
             return $GLOBALS['app']->Registry->insert($name, $value, $gadget);
         }
     }
@@ -60,7 +60,7 @@ class Jaws_Gadget_Registry
      */
     function fetch($name, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->fetch($name, $gadget);
     }
 
@@ -73,7 +73,7 @@ class Jaws_Gadget_Registry
      */
     function fetchAll($gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->fetchAll($gadget);
     }
 
@@ -88,7 +88,7 @@ class Jaws_Gadget_Registry
      */
     function update($name, $value, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->update($name, $value, $gadget);
     }
 
@@ -102,7 +102,7 @@ class Jaws_Gadget_Registry
      */
     function delete($name, $gadget = '')
     {
-        $gadget = empty($gadget)? $this->name : $gadget;
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->delete($gadget, $name);
     }
 
