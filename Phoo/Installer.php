@@ -11,6 +11,23 @@
 class Phoo_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddPhotos',
+        'DeletePhotos',
+        'ManagePhotos',
+        'ModifyOthersPhotos',
+        'ManageComments',
+        'ManageAlbums',
+        'Settings',
+        'Import',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
