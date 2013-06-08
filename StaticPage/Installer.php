@@ -11,6 +11,23 @@
 class StaticPage_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddPage',
+        'EditPage',
+        'DeletePage',
+        'PublishPages',
+        'ManagePublishedPages',
+        'ModifyOthersPages',
+        'ManageGroups',
+        'Properties'
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
