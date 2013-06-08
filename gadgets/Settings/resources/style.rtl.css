@@ -10,7 +10,6 @@ border:1px solid silver;
 }
 .buttons{
 clear:both;
-padding-top:5px;
 }
 .fields{
 margin-top:4px;
@@ -45,7 +44,7 @@ margin-top:5px;
 text-align:right;
 }
 .add-button input,.add-button button{
-margin-right:17.6em;
+margin-right:212px;
 }
 
 /* Basic */
