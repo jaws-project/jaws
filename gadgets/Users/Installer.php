@@ -11,6 +11,29 @@
 class Users_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'ManageUsers',
+        'ManageGroups',
+        'ManageOnlineUsers',
+        'ManageProperties',
+        'ManageUserACLs',
+        'ManageGroupACLs',
+        'EditUserName',
+        'EditUserNickname',
+        'EditUserEmail',
+        'EditUserPassword',
+        'EditUserPersonal',
+        'EditUserContact',
+        'EditUserPreferences',
+        'ManageAuthenticationMethod',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public

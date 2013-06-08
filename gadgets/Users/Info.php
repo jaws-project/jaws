@@ -26,27 +26,4 @@ class Users_Info extends Jaws_Gadget
      */
     var $_IsCore = true;
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageUsers',
-        'ManageGroups',
-        'ManageOnlineUsers',
-        'ManageProperties',
-        'ManageUserACLs',
-        'ManageGroupACLs',
-        'EditUserName',
-        'EditUserNickname',
-        'EditUserEmail',
-        'EditUserPassword',
-        'EditUserPersonal',
-        'EditUserContact',
-        'EditUserPreferences',
-        'ManageAuthenticationMethod',
-    );
-
 }
