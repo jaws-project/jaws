@@ -11,6 +11,24 @@
 class Blog_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddEntries',
+        'ModifyOthersEntries',
+        'DeleteEntries',
+        'PublishEntries',
+        'ModifyPublishedEntries',
+        'ManageComments',
+        'ManageTrackbacks',
+        'ManageCategories',
+        'Settings',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
