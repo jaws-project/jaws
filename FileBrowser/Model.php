@@ -194,7 +194,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
         } else {
             //Is icon does not exists..
             if (!is_file(JAWS_PATH . 'gadgets/FileBrowser/images/'.$iconName)) {
-                $icon =  'gadgets/FileBrowser/images/mimetypes/text-x-generic.png';
+                $icon =  'gadgets/FileBrowser/images/mimetypes/text-generic.png';
             } else {
                 $icon =  'gadgets/FileBrowser/images/'.$iconName;
             }
@@ -448,74 +448,35 @@ class FileBrowser_Model extends Jaws_Gadget_Model
         $ext = strtolower($ext);
 
         $exts = array();
-        $exts['audio-x-generic'] = array(
-            'mp3', 'wav', 'aac', 'flac',
-            'ogg', 'wma', 'cda', 'voc', 'midi',
-            'ac3', 'bonk', 'mod'
+        $exts['font-generic'] = array('ttf', 'otf', 'fon', 'pfa', 'afm', 'pfb');
+        $exts['audio-generic'] = array(
+            'mp3', 'wav', 'aac', 'flac', 'ogg', 'wma', 'cda', 'voc', 'midi', 'ac3', 'bonk', 'mod'
         );
-
-        $exts['image-x-generic'] = array(
-            'gif', 'png', 'jpg', 'jpeg', 'raw',
-            'bmp', 'tiff', 'swf', 'svg'
+        $exts['image-generic'] = array('gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg');
+        $exts['package-generic'] = array(
+            'tar', 'tar.gz', 'tgz', 'zip', 'gzip', 'rar', 'rpm', 'deb', 'iso', 'bz2', 'bak', 'gz'
         );
-
-        $exts['package-x-generic'] = array(
-            'tar', 'tar.gz', 'zip', 'gzip', 'rar',
-            'rpm', 'deb', 'iso', 'bz2', 'bak', 'gz'
-        );
-
-        $exts['video-x-generic'] = array(
-            'mpg', 'mpeg', 'avi', 'wma', 'rm',
-            'asf', 'flv', 'mov'
-        );
-
-        $exts['text-x-generic'] = array(
-            'txt', 'pdf', ''
-        );
-
-        $exts['text-html'] = array(
-            'html', 'htm'
-        );
-
-        $exts['text-x-script'] = array(
-            'sh', 'pl', 'php', 'asp', 'jsp',
-            'py', 'c', 'css'
-        );
-
-        $exts['application-x-executable'] = array(
-            'exe'
-        );
-
-        $exts['x-office-document-template'] = array(
-            'stw', 'ott',
-        );
-
-        $exts['x-office-document'] = array(
-            'doc', 'sxw', 'odt', 'rtf', 'sdw'
-        );
-
-        $exts['x-office-presentation-template'] = array(
-            'pot', 'otp', 'sti'
-        );
-
-        $exts['x-office-presentation'] = array(
-            'ppt', 'odp', 'sxi'
-        );
-
-        $exts['x-office-spreadsheet-template'] = array(
-            'xlt', 'ots', 'stc'
-        );
-
-        $exts['x-office-spreadsheet'] = array(
-            'xls', 'ods', 'sxc', 'sdc'
-        );
-
-        $exts['x-office-drawing-template'] = array(
-        );
-
-        $exts['x-office-drawing'] = array(
-            'sxd', 'sda', 'sdd', 'odg'
-        );
+        $exts['video-generic'] = array('mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov');
+        $exts['help-contents'] = array('hlp', 'chm', 'manual', 'man');
+        $exts['text-generic'] = array('txt', '');
+        $exts['text-html'] = array('html', 'htm', 'mht');
+        $exts['text-java'] = array('jsp', 'java', 'jar');
+        $exts['text-python'] = array('py');
+        $exts['text-script'] = array('sh', 'pl', 'asp', 'c', 'css', 'htaccess');
+        $exts['office-document-template'] = array('stw', 'ott');
+        $exts['office-document'] = array('doc', 'docx', 'sxw', 'odt', 'rtf', 'sdw');
+        $exts['office-presentation-template'] = array('pot', 'otp', 'sti');
+        $exts['office-presentation'] = array('ppt', 'odp', 'sxi');
+        $exts['office-spreadsheet-template'] = array('xlt', 'ots', 'stc');
+        $exts['office-spreadsheet'] = array('xls', 'ods', 'sxc', 'sdc');
+        $exts['office-drawing-template'] = array();
+        $exts['office-drawing'] = array('sxd', 'sda', 'sdd', 'odg');
+        $exts['application-executable'] = array('exe');
+        $exts['application-php'] = array('php', 'phps');
+        $exts['application-rss+xml'] = array('xml', 'rss', 'atom', 'rdf');
+        $exts['application-pdf'] = array('pdf');
+        $exts['application-flash'] = array('swf');
+        $exts['application-ruby'] = array('rb');
 
         $found = false;
         foreach ($exts as $key => $data) {
@@ -523,7 +484,6 @@ class FileBrowser_Model extends Jaws_Gadget_Model
                 return 'mimetypes/' . $key . '.png';
             }
         }
-
 
         return false;
     }
