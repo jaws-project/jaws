@@ -33,16 +33,4 @@ class Comments_Info extends Jaws_Gadget
      */
     var $_IsCore = true;
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageComments',
-        'ReplyComments',
-        'Settings',
-    );
-
 }
