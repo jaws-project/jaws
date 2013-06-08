@@ -501,10 +501,19 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function GetACLKeys($id, $comp, $action)
     {
         $this->gadget->CheckPermission('ManageUserACLs');
+        // fetch default ACLs
         $default_acls = $GLOBALS['app']->ACL->fetchAll($comp);
-        $acls = ($action === 'UserACL')? 
+        // set ACL keys description
+        $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
+        foreach ($default_acls as $k => $acl) {
+            $default_acls[$k]['key_desc'] = $info->acl->description($acl['key_name'], $acl['key_subkey']);
+        }
+
+        // fetch user/group ACLs
+        $acls = ($action === 'UserACL')?
             $GLOBALS['app']->ACL->fetchAllByUser($id, $comp):
             $GLOBALS['app']->ACL->fetchAllByGroup($id, $comp);
+
         return array('default_acls' => $default_acls, 'custom_acls' => $acls);
     }
 

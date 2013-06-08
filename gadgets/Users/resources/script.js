@@ -483,7 +483,7 @@ function getACL()
             label = new Element('label', {'for': key_unique}),
             div = new Element('div').adopt(check, label),
             value = getValue(acl.key_name, acl.key_subkey);
-        label.set('html', acl.key_name);
+        label.set('html', acl.key_desc);
         check.set('alt', value);
         check.set('src', chkImages[value]);
         label.addEvent('click', function () {
