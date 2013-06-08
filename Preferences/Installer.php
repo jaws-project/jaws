@@ -11,6 +11,16 @@
 class Preferences_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'UpdateProperties',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
