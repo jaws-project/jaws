@@ -1,49 +1,49 @@
-#policy_table{
-width:100%;
-padding:1px;
+#policy table{
+text-align:right;
 }
-#policy_table td{
-vertical-align:top;
+#policy > table{
+width:100%;
 }
 #policy_sidebar{
 width:200px;
 vertical-align:top;
-padding-left:6px;
+padding-left:8px;
 }
-#jaws-sidebar-policy{
-height:256px;
-width:100%;
-}
-#jaws-sidebar-policy img{
-width:16px;
-}
-#blocked_ips_datagrid, #blocked_agents_datagrid{
-margin:0;
-width:100%;
+#policy_form{
+width:200px;
+padding-right:8px;
 }
 #policy_options{
-margin:2px;
-padding:4px 0;
-text-align:right;
-border:1px solid #d3d7cf;
+padding:4px;
+margin-bottom:6px;
+border:1px solid silver;
 }
-#entry_area{
-width:200px;
-text-align:right;
-}
-#entry_area table, #entry_area label{
-padding:0px;
-direction:rtl;
-text-align:right;
+#datagrid,#options_entry{
+vertical-align:top;
 }
 #options_entry table{
-text-align:right;
-padding:4px;
+margin-right:50px;
 }
-.field_label{
-width:200px;
-word-spacing:nowrap;
-}
-.buttons{
+#options_entry label{
+white-space:nowrap;
+margin-left:10px;
 text-align:left;
+}
+#policy_encryption select{
+width:100px;
+}
+#policy_spam select{
+width:170px;
+}
+#policy_advanced select{
+width:110px;
+}
+select#default_captcha_driver{
+width:100px;
+}
+select#login_captcha{
+width:220px;
+}
+select#login_captcha_driver{
+width:100px;
 }

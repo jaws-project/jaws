@@ -1,41 +1,41 @@
 <!-- BEGIN AdvancedPolicies -->
-<div id="main">
-  <table id="policy_table" border="0" cellpadding="2" cellspacing="0">
+<div id="policy">
+  <table id="policy_advanced">
     <tr>
       <td id="policy_sidebar">{sidebar}</td>
       <td id="options_entry">
-          <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
-              <table width="100%" border="0" cellpadding="0" cellspacing="2">
-                <tr><td class="field_label"><label for="passwd_complexity">{lbl_passwd_complexity}:</label></td>
-                    <td>{passwd_complexity}</td>
-                </tr>
-                <tr><td class="field_label"><label for="passwd_bad_count">{lbl_passwd_bad_count}:</label></td>
-                    <td>{passwd_bad_count}</td>
-                </tr>
-                <tr><td class="field_label"><label for="passwd_lockedout_time">{lbl_passwd_lockedout_time}:</label></td>
-                    <td>{passwd_lockedout_time}</td>
-                </tr>
-                <tr><td class="field_label"><label for="passwd_max_age">{lbl_passwd_max_age}:</label></td>
-                    <td>{passwd_max_age}</td>
-                </tr>
-                <tr><td class="field_label"><label for="passwd_min_length">{lbl_passwd_min_length}:</label></td>
-                    <td>{passwd_min_length}</td>
-                </tr>
-                <tr><td class="field_label"><label for="login_captcha">{lbl_login_captcha}:</label></td>
-                    <td>{login_captcha} {login_captcha_driver}</td>
-                </tr>
-                <tr><td class="field_label"><label for="xss_parsing_level">{lbl_xss_parsing_level}:</label></td>
-                    <td>{xss_parsing_level}</td>
-                </tr>
-                <tr><td class="field_label"><label for="session_idle_timeout">{lbl_session_idle_timeout}:</label></td>
-                    <td>{session_idle_timeout}</td>
-                </tr>
-                <tr><td class="field_label"><label for="session_remember_timeout">{lbl_session_remember_timeout}:</label></td>
-                    <td>{session_remember_timeout}</td>
-                </tr>
-              </table>
-          </fieldset>
-          <div class="buttons">{btn_save}</div>
+        <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
+          <table>
+            <tr><td><label for="passwd_complexity">{lbl_passwd_complexity}</label></td>
+                <td>{passwd_complexity}</td>
+            </tr>
+            <tr><td><label for="passwd_bad_count">{lbl_passwd_bad_count}</label></td>
+                <td>{passwd_bad_count}</td>
+            </tr>
+            <tr><td><label for="passwd_lockedout_time">{lbl_passwd_lockedout_time}</label></td>
+                <td>{passwd_lockedout_time}</td>
+            </tr>
+            <tr><td><label for="passwd_max_age">{lbl_passwd_max_age}</label></td>
+                <td>{passwd_max_age}</td>
+            </tr>
+            <tr><td><label for="passwd_min_length">{lbl_passwd_min_length}</label></td>
+                <td>{passwd_min_length}</td>
+            </tr>
+            <tr><td><label for="login_captcha">{lbl_login_captcha}</label></td>
+                <td>{login_captcha} {login_captcha_driver}</td>
+            </tr>
+            <tr><td><label for="xss_parsing_level">{lbl_xss_parsing_level}</label></td>
+                <td>{xss_parsing_level}</td>
+            </tr>
+            <tr><td><label for="session_idle_timeout">{lbl_session_idle_timeout}</label></td>
+                <td>{session_idle_timeout}</td>
+            </tr>
+            <tr><td><label for="session_remember_timeout">{lbl_session_remember_timeout}</label></td>
+                <td>{session_remember_timeout}</td>
+            </tr>
+          </table>
+        </fieldset>
+        <div class="buttons">{btn_save}</div>
       </td>
     </tr>
   </table>

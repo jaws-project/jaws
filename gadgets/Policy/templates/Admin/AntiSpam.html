@@ -1,20 +1,20 @@
 <!-- BEGIN AntiSpam -->
-<div id="main">
-  <table id="policy_table" border="0" cellpadding="2" cellspacing="0">
+<div id="policy">
+  <table id="policy_spam">
     <tr>
       <td id="policy_sidebar">{sidebar}</td>
       <td id="options_entry">
-          <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
-              <table width="100%" border="0" cellpadding="0" cellspacing="2">
-                <tr><td class="field_label"><label for="filter">{lbl_filter}:</label></td><td>{filter}</td></tr>
-                <tr>
-                  <td class="field_label"><label for="default_captcha">{lbl_default_captcha}:</label></td>
-                  <td>{default_captcha} {default_captcha_driver}</td>
-                </tr>
-                <tr><td class="field_label"><label for="obfuscator">{lbl_obfuscator}:</td><td></label>{obfuscator}</td></tr>
-              </table>
-          </fieldset>
-          <div class="buttons">{btn_save}</div>
+        <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
+          <table>
+            <tr><td><label for="filter">{lbl_filter}</label></td><td>{filter}</td></tr>
+            <tr>
+              <td><label for="default_captcha">{lbl_default_captcha}</label></td>
+              <td>{default_captcha} {default_captcha_driver}</td>
+            </tr>
+            <tr><td><label for="obfuscator">{lbl_obfuscator}</td><td></label>{obfuscator}</td></tr>
+          </table>
+        </fieldset>
+        <div class="buttons">{btn_save}</div>
       </td>
     </tr>
   </table>
