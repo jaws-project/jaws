@@ -333,7 +333,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageACLs');
         foreach ($data as $key => $value) {
-            list($key, $subkey) = explode(',', $key);
+            list($key, $subkey) = explode(':', $key);
             $res = $GLOBALS['app']->ACL->update($key, $subkey, $value, $comp);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);

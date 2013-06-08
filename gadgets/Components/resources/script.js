@@ -413,7 +413,7 @@ function componentACL(reset)
             var label = new Element('label', {html:acl.key_desc, 'for':acl.key_name}),
                 th = new Element('th').grab(label),
                 input = new Element('input', {
-                    'name': acl.key_name + ',' + acl.key_subkey,
+                    'name': acl.key_name + ':' + acl.key_subkey,
                     'type': 'checkbox',
                     'value': acl.key_value,
                     'checked': acl.key_value
