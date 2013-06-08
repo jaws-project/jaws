@@ -11,6 +11,21 @@
 class Settings_Installer extends Jaws_Gadget_Model
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'BasicSettings',
+        'AdvancedSettings',
+        'MetaSettings',
+        'MailSettings',
+        'FTPSettings',
+        'ProxySettings',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
