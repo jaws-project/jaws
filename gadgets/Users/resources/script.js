@@ -274,7 +274,8 @@ function saveUser()
                 return;
             }
             var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
-                return [img.id, '', img.alt];
+                var keys = img.id.split(':');
+                return [keys[0], keys[1], img.alt];
             });
             UsersAjax.callAsync('updateuseracl', selectedId, $('components').value, acls);
             break;
@@ -447,15 +448,20 @@ function editACL(rowElement, id, action)
  */
 function getACL()
 {
-    function getValue(key) {
+    function getValue(key, subkey) {
         var res = -1;
-        acls.custom_acls.each(function (acl) {
-            if (acl.key_name === key) {
-                res = acl.key_value;
-                // throw $break;
-                // there is no way to break each() in MooTools
-            }
-        });
+        try {
+            acls.custom_acls.each(function (acl) {
+                if (acl.key_name === key && acl.key_subkey == subkey) {
+                    res = acl.key_value;
+                    //there is no way to break each() in MooTools
+                    throw 'break';
+                }
+            });
+        } catch (e) {
+            if(e != 'break') throw e;
+        }
+
         return res;
     }
 
@@ -472,10 +478,11 @@ function getACL()
             currentAction
         );
     acls.default_acls.each(function (acl) {
-        var check = new Element('img', {id: acl.key_name}),
-            label = new Element('label', {'for': acl.key_name}),
+        var key_unique = acl.key_name + ':' + acl.key_subkey;
+        var check = new Element('img', {id: key_unique}),
+            label = new Element('label', {'for': key_unique}),
             div = new Element('div').adopt(check, label),
-            value = getValue(acl.key_name);
+            value = getValue(acl.key_name, acl.key_subkey);
         label.set('html', acl.key_name);
         check.set('alt', value);
         check.set('src', chkImages[value]);
@@ -709,7 +716,8 @@ function saveGroup()
                 return;
             }
             var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
-                return [img.id, '', img.alt];
+                var keys = img.id.split(':');
+                return [keys[0], keys[1], img.alt];
             });
             UsersAjax.callAsync('updategroupacl', selectedId, $('components').value, acls);
             break;
