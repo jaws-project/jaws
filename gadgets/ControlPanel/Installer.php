@@ -11,6 +11,16 @@
 class ControlPanel_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'Backup',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
