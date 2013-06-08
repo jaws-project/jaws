@@ -19,17 +19,4 @@ class Friends_Info extends Jaws_Gadget
      */
     var $_Version = '0.6.1';
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'AddFriend',
-        'EditFriend',
-        'DeleteFriend',
-        'UpdateProperties',
-    );
-
 }

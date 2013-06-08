@@ -11,6 +11,19 @@
 class Friends_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddFriend',
+        'EditFriend',
+        'DeleteFriend',
+        'UpdateProperties',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
