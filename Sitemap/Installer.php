@@ -11,6 +11,16 @@
 class Sitemap_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'PingSite',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
