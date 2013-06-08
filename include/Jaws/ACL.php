@@ -98,7 +98,7 @@ class Jaws_ACL
     {
         if (!empty($user)) {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_value:integer')->where('user', (int)$user);
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')->where('user', (int)$user);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
@@ -152,7 +152,7 @@ class Jaws_ACL
     {
         if (!empty($group)) {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_value:integer')->where('group', (int)$group);
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')->where('group', (int)$group);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
