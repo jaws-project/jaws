@@ -18,38 +18,4 @@ class Forums_Info extends Jaws_Gadget
      */
     var $_Version = '0.1.0';
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'AddForum',
-        'EditForum',
-        'LockForum',
-        'DeleteForum',
-        'AddTopic',
-        'EditTopic',
-        'MoveTopic',
-        'EditOthersTopic',
-        'EditLockedTopic',
-        'EditOutdatedTopic',
-        'LockTopic',
-        'DeleteTopic',
-        'DeleteOthersTopic',
-        'DeleteOutdatedTopic',
-        'AddPost',
-        'AddPostAttachment',
-        'AddPostToLockedTopic',
-        'EditPost',
-        'EditOthersPost',
-        'EditPostInLockedTopic',
-        'EditOutdatedPost',
-        'DeletePost',
-        'DeleteOthersPost',
-        'DeleteOutdatedPost',
-        'DeletePostInLockedTopic',
-    );
-
 }

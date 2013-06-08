@@ -11,6 +11,40 @@
 class Forums_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddForum',
+        'EditForum',
+        'LockForum',
+        'DeleteForum',
+        'AddTopic',
+        'EditTopic',
+        'MoveTopic',
+        'EditOthersTopic',
+        'EditLockedTopic',
+        'EditOutdatedTopic',
+        'LockTopic',
+        'DeleteTopic',
+        'DeleteOthersTopic',
+        'DeleteOutdatedTopic',
+        'AddPost',
+        'AddPostAttachment',
+        'AddPostToLockedTopic',
+        'EditPost',
+        'EditOthersPost',
+        'EditPostInLockedTopic',
+        'EditOutdatedPost',
+        'DeletePost',
+        'DeleteOthersPost',
+        'DeleteOutdatedPost',
+        'DeletePostInLockedTopic',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
