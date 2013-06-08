@@ -168,7 +168,7 @@ class Jaws_Gadget_Installer
         );
 
         // ACL keys
-        $this->gadget->acl->insert($this->GetACLs(), $this->gadget->name);
+        $this->gadget->acl->insert($installer->GetACLs(), $this->gadget->name);
 
         // adding gadget to installed gadgets list
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
