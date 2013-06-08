@@ -22,19 +22,6 @@ class Banner_Info extends Jaws_Gadget
     var $_Version = '0.8.2';
 
     /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageBanners',
-        'ManageGroups',
-        'BannersGrouping',
-        'ViewReports'
-    );
-
-    /**
      * Banners data directory
      *
      * @var     string
