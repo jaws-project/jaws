@@ -155,17 +155,6 @@ class Jaws_Gadget_Model
     }
 
     /**
-     * Installs the ACLs defined in the Info
-     *
-     * @access  public
-     */
-    function InstallACLs()
-    {
-        $info = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Info');
-        $GLOBALS['app']->ACL->insertAll($info->GetACLs(), $this->gadget->name);
-    }
-
-    /**
      * Checks if fast_url already exists in a table, if it doesn't then it returns
      * the original fast_url (the param value). However, if it already exists then 
      * it starts looking for a 'valid' fast_url using the 'foobar-[1...n]' schema.
