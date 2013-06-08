@@ -19,17 +19,4 @@ class LinkDump_Info extends Jaws_Gadget
      */
     var $_Version = '0.4.4';
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageLinks',
-        'ManageGroups',
-        'ManageTags',
-        'UpdateProperties',
-    );
-
 }

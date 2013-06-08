@@ -11,6 +11,19 @@
 class LinkDump_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'ManageLinks',
+        'ManageGroups',
+        'ManageTags',
+        'UpdateProperties',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
