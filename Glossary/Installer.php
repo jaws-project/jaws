@@ -11,6 +11,19 @@
 class Glossary_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddTerm',
+        'EditTerm',
+        'DeleteTerm',
+        'UpdateProperties',
+    );
+
+    /**
      * Install the gadget
      *
      * @access  public
