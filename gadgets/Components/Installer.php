@@ -11,6 +11,19 @@
 class Components_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'ManageGadgets',
+        'ManagePlugins',
+        'ManageRegistry',
+        'ManageACLs'
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
