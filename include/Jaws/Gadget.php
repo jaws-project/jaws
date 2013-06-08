@@ -422,21 +422,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Gets the short description of a given ACL key
-     *
-     * @access  public
-     * @param   string $key  ACL Key
-     * @return  string The ACL description
-     */
-    function GetACLDescription($key)
-    {
-        if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
-            return _t(strtoupper('GLOBAL_ACL_'. $key));
-        } else {
-            return _t(strtoupper($this->name. '_ACL_'. $key));
-        }
-    }
-
      * Parses the input text
      *
      * @access  public

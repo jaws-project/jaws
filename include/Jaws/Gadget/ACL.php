@@ -96,4 +96,20 @@ class Jaws_Gadget_ACL
         return $GLOBALS['app']->ACL->delete($gadget, $name);
     }
 
+    /**
+     * Gets the short description of a given ACL key
+     *
+     * @access  public
+     * @param   string $key  ACL Key
+     * @return  string The ACL description
+     */
+    function description($key)
+    {
+        if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
+            return _t(strtoupper('GLOBAL_ACL_'. $key));
+        } else {
+            return _t(strtoupper($this->name. '_ACL_'. $key));
+        }
+    }
+
 }
