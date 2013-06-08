@@ -20,15 +20,4 @@ class Weather_Info extends Jaws_Gadget
      */
     var $_Version = '0.9.0';
 
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageRegions',
-        'UpdateProperties',
-    );
-
 }
