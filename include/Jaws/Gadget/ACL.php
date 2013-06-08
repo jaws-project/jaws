@@ -100,15 +100,27 @@ class Jaws_Gadget_ACL
      * Gets the short description of a given ACL key
      *
      * @access  public
-     * @param   string $key  ACL Key
+     * @param   string $key     ACL key name
+     * @param   int    $subkey  ACL sub-key
      * @return  string The ACL description
      */
-    function description($key)
+    function description($key, $subkey = 0)
     {
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
             return _t(strtoupper('GLOBAL_ACL_'. $key));
-        } else {
+        } elseif (empty($subkey)) {
             return _t(strtoupper($this->gadget->name. '_ACL_'. $key));
+        } else {
+            $acl_key_name = strtoupper($this->gadget->name. '_ACL_'. $key. '_'. $subkey);
+            if (!defined($acl_key_name)) {
+                // load ACL hook for get dynamic ACL names
+                $objHook = $this->gadget->load('Hook')->load('ACL');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $objHook->Execute();
+                }
+            }
+
+            return _t($acl_key_name);
         }
     }
 
