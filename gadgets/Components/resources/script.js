@@ -380,7 +380,7 @@ function componentRegistry(reset)
         res.data.each(function(reg) {
             var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
                 th = new Element('th').grab(label),
-                input = new Element('input', {id:reg.key_name, value:reg.key_value}),
+                input = new Element('input', {'name':reg.key_name, 'value':reg.key_value}),
                 td = new Element('td').grab(input),
                 tr = new Element('tr').adopt(th, td);
             input.setProperty('onchange', 'onValueChange(this)');
@@ -413,10 +413,10 @@ function componentACL(reset)
             var label = new Element('label', {html:acl.key_desc, 'for':acl.key_name}),
                 th = new Element('th').grab(label),
                 input = new Element('input', {
-                    id: acl.key_name, 
-                    type: 'checkbox', 
-                    value: acl.key_name, 
-                    checked: acl.key_value
+                    'name': acl.key_name + ',' + acl.key_subkey,
+                    'type': 'checkbox',
+                    'value': acl.key_value,
+                    'checked': acl.key_value
                 }),
                 td = new Element('td').grab(input),
                 tr = new Element('tr').adopt(td, th);
@@ -493,10 +493,10 @@ function onValueChange(el)
 {
     switch ($('tabs').getElement('li.active').get('id')) {
         case 'tab_registry':
-            regChanges[el.id] = el.value;
+            regChanges[el.name] = el.value;
             break;
         case 'tab_acl':
-            aclChanges[el.id] = el.checked;
+            aclChanges[el.name] = el.checked;
             break;
     }
 }
