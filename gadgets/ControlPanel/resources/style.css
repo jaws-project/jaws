@@ -340,47 +340,33 @@ float:left;
 margin:0;
 padding:0;
 }
-.jaws-sidebar ul{
-margin:0px;
-padding:0;
-width:100%;
-list-style:none;
-}
 .jaws-sidebar li{
-display:block;
-margin:3px -1px 0;
-padding:0;
-box-shadow:inset 0 0 30px #e8e8e8;
+margin-bottom:3px;
 border:1px solid silver;
 border-radius:5px 0 0 5px;
+box-shadow:inset 0 0 30px #e8e8e8;
+list-style:none;
 }
 .jaws-sidebar li:hover{
 box-shadow:inset 0 0 30px #eee;
 }
 .jaws-sidebar a{
-color:#666;
 display:block;
-border-bottom:none;
-text-decoration:none;
-vertical-align:bottom;
-padding:9px 5px 10px;
+padding:10px;
+color:#666;
 }
 .jaws-sidebar a:hover{
 color:#222;
 }
 .jaws-sidebar img{
-border:0;
-vertical-align:bottom;
+float:left;
+margin-right:6px;
 }
 li.jaws-sidebar-selected{
-background-color:white;
 box-shadow:none;
-border-right:none;
 }
 li.jaws-sidebar-selected:hover{
-background-color:white;
 box-shadow:none;
-border-right:none;
 }
 li.jaws-sidebar-selected a{
 color:#000;
