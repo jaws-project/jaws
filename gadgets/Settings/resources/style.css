@@ -1,20 +1,16 @@
-td {
-vertical-align:top;
-}
-#jaws-sidebar-settings{
+#settings_sidebar {
+float:left;
 width:220px;
 }
-#settings_sidebar {
-border-right:1px solid silver;
-}
-#settings{
-width:100%;
+#settings_ui {
+float:right;
+width:750px;
 padding:10px 0;
 border:1px solid silver;
-border-left:none;
 }
 .buttons{
-margin-top:5px;
+clear:both;
+padding-top:5px;
 }
 .fields{
 margin-top:4px;
@@ -46,4 +42,40 @@ margin-top:5px;
 }
 .add-button input,.add-button button{
 margin-left:17.6em;
+}
+
+/* Basic */
+#site_status{
+width:100px;
+}
+/* Advanced */
+#use_gravatar,#show_viewsite{
+width:80px;
+}
+/* Mail */
+#smtp_vrfy,#smtp_port,#smtp_auth{
+width:80px;
+}
+#mailer{
+width:100px;
+}
+#gate_email,#gate_title,#sendmail_path,#smtp_host,#smtp_user,#smtp_pass{
+width:200px;
+}
+/* FTP */
+#ftp_enabled,#ftp_port{
+width:80px;
+}
+#ftp_mode{
+width:100px;
+}
+#ftp_host,#ftp_user,#ftp_pass,#ftp_root{
+width:200px;
+}
+/* Proxy */
+#proxy_enabled,#proxy_port,#proxy_auth{
+width:80px;
+}
+#proxy_host,#proxy_user,#proxy_pass{
+width:200px;
 }
