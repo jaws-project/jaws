@@ -100,22 +100,6 @@ class Jaws_Gadget
     var $_Requires = array();
 
     /**
-     * Default ACL value of frontend gadget access
-     *
-     * @var     bool
-     * @access  private
-     */
-    var $_DefaultACL = true;
-
-    /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array();
-
-    /**
      * Attributes of the gadget
      *
      * @var     array
@@ -453,31 +437,6 @@ class Jaws_Gadget
         }
     }
 
-    /**
-     * Get all ACLs for the gadet
-     *
-     * @access  public
-     * @return  array   ACLs of the gadget
-     */
-    function GetACLs()
-    {
-        $result = array();
-        foreach ($this->_ACLs as $acl) {
-            if (is_array($acl)) {
-                $result[] = $acl;
-            } else {
-                $result[] = array($acl, '', false);
-            }
-        }
-
-        // Adding common ACL keys
-        $result[] = array('default', '', $this->_DefaultACL);
-        $result[] = array('default_admin', '', false);
-        $result[] = array('default_registry', '', false);
-        return $result;
-    }
-
-    /**
      * Parses the input text
      *
      * @access  public

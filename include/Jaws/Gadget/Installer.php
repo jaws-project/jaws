@@ -11,6 +11,22 @@
 class Jaws_Gadget_Installer
 {
     /**
+     * Default ACL value of frontend gadget access
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $_DefaultACL = true;
+
+    /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array();
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -59,6 +75,30 @@ class Jaws_Gadget_Installer
         }
 
         return $this->gadget->installer;
+    }
+
+    /**
+     * Get all ACLs for the gadet
+     *
+     * @access  public
+     * @return  array   ACLs of the gadget
+     */
+    function GetACLs()
+    {
+        $result = array();
+        foreach ($this->_ACLs as $acl) {
+            if (is_array($acl)) {
+                $result[] = $acl;
+            } else {
+                $result[] = array($acl, '', false);
+            }
+        }
+
+        // Adding common ACL keys
+        $result[] = array('default', '', $this->_DefaultACL);
+        $result[] = array('default_admin', '', false);
+        $result[] = array('default_registry', '', false);
+        return $result;
     }
 
     /**
@@ -128,8 +168,7 @@ class Jaws_Gadget_Installer
         );
 
         // ACL keys
-        $gModel = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminModel');
-        $gModel->InstallACLs();
+        $this->gadget->acl->insert($this->GetACLs(), $this->gadget->name);
 
         // adding gadget to installed gadgets list
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
