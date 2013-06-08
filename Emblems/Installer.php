@@ -11,6 +11,19 @@
 class Emblems_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLs = array(
+        'AddEmblem',
+        'EditEmblem',
+        'DeleteEmblem',
+        'UpdateProperties',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
