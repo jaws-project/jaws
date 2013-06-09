@@ -171,11 +171,12 @@ class Jaws_ACL
      *
      * @access  public
      * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
      * @param   int     $key_value  Key value
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $subkey, $component)
+    function insert($key_name, $subkey, $key_value, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $tblACL->insert(array(
