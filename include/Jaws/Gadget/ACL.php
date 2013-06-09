@@ -111,8 +111,10 @@ class Jaws_Gadget_ACL
         } elseif (empty($subkey)) {
             return _t(strtoupper($this->gadget->name. '_ACL_'. $key));
         } else {
+            static $alreadyLoaded;
             $acl_key_name = strtoupper($this->gadget->name. '_ACL_'. $key. '_'. $subkey);
-            if (!defined($acl_key_name)) {
+            if (!isset($alreadyLoaded)) {
+                $alreadyLoaded = true;
                 // load ACL hook for get dynamic ACL names
                 $objHook = $this->gadget->load('Hook')->load('ACL');
                 if (!Jaws_Error::IsError($objHook)) {
