@@ -316,7 +316,7 @@ class FileBrowser_Model extends Jaws_Gadget_Model
      * @param   string  $order  
      * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
-    function ReadDir($path, $limit = 0, $offset = 0, $order = '')
+    function ReadDir($path = '', $limit = 0, $offset = 0, $order = '')
     {
         if (!empty($path) && $path != '/') {
             if (substr($path, -1) != '/') {
@@ -342,10 +342,18 @@ class FileBrowser_Model extends Jaws_Gadget_Model
         foreach ($adr as $file) {
             //we should return only 'visible' files, not hidden files
             if ($file{0} != '.') {
-                $file_counter ++;
+                $file_counter++;
                 $filepath = $this->GetFileBrowserRootDir() . $path . $file;
                 if (is_dir($filepath)) {
                     $files[$file_counter] = $this->GetDirProperties($path, $file);
+                    // check directory access permission
+                    if (empty($path) && !empty($files[$file_counter]['id']) &&
+                        !$this->gadget->GetPermission('OutputAccess', $files[$file_counter]['id']))
+                    {
+                        unset($files[$file_counter]);
+                        $file_counter--;
+                        continue;
+                    }
                 } else {
                     $files[$file_counter] = $this->GetFileProperties($path, $file);
                 }

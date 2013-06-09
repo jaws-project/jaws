@@ -42,11 +42,11 @@ class FileBrowser_AdminModel extends FileBrowser_Model
 
         $params = array();
         $params['path']        = $path;
-        $params['file']        = $file;
-        $params['oldname']     = empty($oldname)? $params['file'] : $oldname;
+        $params['filename']    = $file;
+        $params['oldname']     = empty($oldname)? $params['filename'] : $oldname;
         $params['title']       = $title;
         $params['description'] = $description;
-        $params['now']         = $GLOBALS['db']->Date();
+        $params['updatetime']  = $GLOBALS['db']->Date();
 
         $dbFile = $this->DBFileInfo($path, $params['oldname']);
         if (Jaws_Error::IsError($dbFile)) {
@@ -62,11 +62,11 @@ class FileBrowser_AdminModel extends FileBrowser_Model
             $sql = '
                 UPDATE [[filebrowser]] SET
                     [path]         = {path},
-                    [filename]     = {file},
+                    [filename]     = {filename},
                     [title]        = {title},
                     [description]  = {description},
                     [fast_url]     = {fast_url},
-                    [updatetime]   = {now}
+                    [updatetime]   = {updatetime}
                 WHERE
                     [path]     = {path}
                   AND
@@ -83,17 +83,17 @@ class FileBrowser_AdminModel extends FileBrowser_Model
             //Insert
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser');
             $params['fast_url'] = $fast_url;
+            unset($params['oldname']);
 
-            $sql = '
-                INSERT INTO [[filebrowser]]
-                    ([path], [filename], [title], [description], [fast_url], [createtime], [updatetime])
-                VALUES
-                    ({path}, {file}, {title}, {description}, {fast_url}, {now}, {now})';
-
-            $res = $GLOBALS['db']->query($sql, $params);
+            $fileTable = Jaws_ORM::getInstance()->table('filebrowser');
+            $res = $fileTable->insert($params)->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
+            }
+
+            if (empty($path) && is_dir($this->GetFileBrowserRootDir(). '/'. $file)) {
+                $this->gadget->acl->insert('OutputAccess', $res, true);
             }
 
             $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_FILE_ADDED', $file), RESPONSE_NOTICE);
@@ -125,18 +125,20 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         $params['path'] = $path;
         $params['file'] = $file;
 
-        $sql = '
-            DELETE FROM [[filebrowser]]
-            WHERE [path] = {path} AND [filename] = {file}';
-
-        $res = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
+        $dbRow = $this->DBFileInfo($path, $file);
+        if (!Jaws_Error::isError($dbRow) && !empty($dbRow)) {
+            $params['id'] = $dbRow['id'];
+            $sql = 'DELETE FROM [[filebrowser]] WHERE [id] = {id}';
+            $res = $GLOBALS['db']->query($sql, $params);
+            if (!Jaws_Error::IsError($res)) {
+                $this->gadget->acl->delete('OutputAccess', $params['id']);
+                $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
+                return true;
+            }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
-        return true;
+        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+        return false;
     }
 
     /**
@@ -157,7 +159,6 @@ class FileBrowser_AdminModel extends FileBrowser_Model
             $path = '';
         }
         $path = str_replace('..', '', $path);
-
         $dir = $this->GetFileBrowserRootDir() . $path . '/' . $dir_name;
 
         require_once PEAR_PATH. 'File/Util.php';

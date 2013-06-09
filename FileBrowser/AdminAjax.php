@@ -96,6 +96,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageFiles');
         $res = true;
+        $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
+        $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
         if ($oldname != $file) {
             $res = $this->_Model->Rename($path, $oldname, $file);
         }
@@ -123,6 +125,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageDirectories');
         $res = true;
+        $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
+        $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
         if (empty($oldname)) {
             $res = $this->_Model->MakeDir($path, $dir);
         } elseif ($oldname != $dir) {
@@ -147,6 +151,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function DeleteFile($path, $file)
     {
         $this->gadget->CheckPermission('ManageFiles');
+        $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
         if ($this->_Model->Delete($path, $file)) {
             $this->_Model->DeleteDBFileInfo($path, $file);
         }
@@ -165,6 +170,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function DeleteDir($path, $dir)
     {
         $this->gadget->CheckPermission('ManageDirectories');
+        $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
         if ($this->_Model->Delete($path, $dir)) {
             $this->_Model->DeleteDBFileInfo($path, $dir);
         }

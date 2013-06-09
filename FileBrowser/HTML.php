@@ -82,6 +82,10 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                 $dirTitle = $dir;
             } else {
                 $dirTitle = $dbFile['title'];
+                // check directory access permission
+                if (empty($parentPath) && !$this->gadget->GetPermission('OutputAccess', $dbFile['id'])) {
+                    return Jaws_HTTPError::Get(404);
+                }
             }
 
             $parentPath = $_path;

@@ -333,6 +333,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
+                $post['oldname'] = preg_replace('/[^[:alnum:]_\.-]*/', '', $post['oldname']);
                 if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
                     $model->Delete($post['path'], $post['oldname']);
                 }
