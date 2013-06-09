@@ -247,11 +247,11 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $theme = $request->get('theme', 'post');
 
-        $layout_file = JAWS_THEMES. $theme . '/layout.html';
-        if (!file_exists($layout_file)) {
-            $layout_file = JAWS_BASE_THEMES. $theme . '/layout.html';
+        $layout_path = JAWS_THEMES. $theme;
+        if (!file_exists($layout_path. '/layout.html')) {
+            $layout_path = JAWS_BASE_THEMES. $theme;
         }
-        $tpl = $this->gadget->loadTemplate($layout_file);
+        $tpl = $this->gadget->loadTemplate('layout.html', $layout_path);
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
