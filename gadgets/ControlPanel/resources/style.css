@@ -452,8 +452,7 @@ padding:12px;
 text-align:left;
 }
 legend{
-padding:0px;
-margin:0px;
+margin-left:-4px;
 }
 legend span{
 top:-20px;
@@ -559,7 +558,7 @@ height:48px;
 }
 #cp-title-bar{
 float:left;
-font-size:14px;
+font-size:104%;
 font-weight:bold;
 }
 #cp-title-bar img{

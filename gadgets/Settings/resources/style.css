@@ -2,11 +2,11 @@
 float:left;
 width:220px;
 }
-#settings_ui {
+#settings fieldset {
 float:right;
-width:750px;
-padding:10px 0;
-border:1px solid silver;
+width:725px;
+min-height:228px;
+margin-top:-11px;
 }
 .buttons{
 clear:both;

@@ -1,7 +1,8 @@
 <!-- BEGIN settings -->
 <div id="settings">
   <div id="settings_sidebar">{sidebar}</div>
-  <div id="settings_ui">
+  <fieldset>
+    <legend><span>{legend}</span></legend>
     <form id="settingsForm" name="settingsForm" method="post" action="{base_script}" onsubmit="return false;">
       <!-- BEGIN item -->
       <div class="fields"><label for="{field-name}">{label}</label>{field}</div>
@@ -13,7 +14,7 @@
       <!-- END custom -->
     </div>
     <div class="add-button">{addButton}</div>
-  </div>
+  </fieldset>
   <div class="buttons">{saveButton}</div>
 </div>
 <script type="text/javascript">

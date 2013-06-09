@@ -101,6 +101,8 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Basic'));
+        $tpl->SetVariable('legend', _t('SETTINGS_BASIC_SETTINGS'));
+
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitBasicForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
@@ -225,6 +227,8 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Advanced'));
+        $tpl->SetVariable('legend', _t('SETTINGS_ADVANCED_SETTINGS'));
+
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitAdvancedForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
@@ -382,6 +386,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Meta'));
         $tpl->SetVariable('custom_meta', _t('SETTINGS_META_CUSTOM'));
+        $tpl->SetVariable('legend', _t('SETTINGS_META_SETTINGS'));
 
         // Add Button
         $addButton =& Piwi::CreateWidget('Button', 'add', _t('SETTINGS_META_ADD_CUSTOM'), STOCK_ADD);
@@ -480,6 +485,8 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Mail'));
+        $tpl->SetVariable('legend', _t('SETTINGS_MAIL_SETTINGS'));
+
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitMailSettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
@@ -613,6 +620,8 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('FTP'));
+        $tpl->SetVariable('legend', _t('SETTINGS_FTP_SETTINGS'));
+
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitFTPSettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
@@ -710,6 +719,8 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Proxy'));
+        $tpl->SetVariable('legend', _t('SETTINGS_PROXY_SETTINGS'));
+
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitProxySettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());

@@ -1,12 +1,12 @@
-#settings_sidebar {
+#settings_sidebar{
 float:right;
 width:220px;
 }
-#settings_ui {
+#settings fieldset{
 float:left;
-width:750px;
-padding:10px 0;
-border:1px solid silver;
+width:725px;
+min-height:228px;
+margin-top:-11px;
 }
 .buttons{
 clear:both;

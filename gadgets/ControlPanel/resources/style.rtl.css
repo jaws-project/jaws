@@ -5,7 +5,7 @@ border:0 none;
 white-space:normal;
 text-decoration:none;
 font-family:tahoma,verdana,arial,helvetica,sans-serif;
-font-size:1em;
+font-size:.99em;
 line-height:1.25em;
 letter-spacing:0;
 }
@@ -453,8 +453,7 @@ padding:12px;
 text-align:right;
 }
 legend{
-padding:0;
-margin:0;
+margin-right:-4px;
 }
 legend span{
 top:-20px;
@@ -465,7 +464,7 @@ border:1px solid #d3d7cf;
 box-shadow:inset 0 15px 20px #eee;
 }
 label{
-font-size:11px;
+font-size:92%;
 font-weight:bold;
 cursor:pointer;
 }
@@ -562,7 +561,7 @@ height:48px;
 }
 #cp-title-bar{
 float:right;
-font-size:14px;
+font-size:110%;
 font-weight:bold;
 }
 #cp-title-bar img{
