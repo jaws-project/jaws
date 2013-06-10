@@ -62,10 +62,11 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * Show comments list
      *
      * @access  public
-     * @param   string  $gadget     Gadget name
+     * @param   string $gadget     Gadget name
+     * @param   string $url        Gadget manage comments URL
      * @return  string XHTML template content
      */
-    function Comments($gadget='')
+    function Comments($gadget='', $url)
     {
         $this->AjaxMe('script.js');
 
@@ -73,7 +74,11 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('Comments');
 
         //Menu bar
-        $tpl->SetVariable('menubar', $this->MenuBar('Comments'));
+        if(!empty($url)) {
+        $tpl->SetVariable('menubar', $url);
+        } else {
+            $tpl->SetVariable('menubar', $this->MenuBar('Comments'));
+        }
 
         //load other gadget translations
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
