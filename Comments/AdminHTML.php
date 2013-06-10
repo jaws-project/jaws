@@ -66,7 +66,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      * @param   string $url        Gadget manage comments URL
      * @return  string XHTML template content
      */
-    function Comments($gadget='', $url)
+    function Comments($gadget='', $url='')
     {
         $this->AjaxMe('script.js');
 
