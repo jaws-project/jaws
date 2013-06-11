@@ -5,7 +5,7 @@ border:0 none;
 white-space:normal;
 text-decoration:none;
 font-family:tahoma,verdana,arial,helvetica,sans-serif;
-font-size:.99em;
+font-size:1em;
 line-height:1.25em;
 letter-spacing:0;
 }
@@ -143,7 +143,7 @@ color:#000;
 padding:0px;
 float:left;
 width:254px;
-font-size:small;
+font-size:85%;
 }
 /* ----- LOGIN INFO ----- */
 #login-info{
@@ -238,9 +238,7 @@ border:0;
 #mainbar{
 width:725px;
 display:inline-block;
-}
-#mainbar h2{
-font-size:large;
+font-size:85%;
 }
 .main-menu{
 display:block;
@@ -259,7 +257,6 @@ margin:1px;
 padding:4px;
 color:#000;
 float:right;
-font-size:x-small;
 display:block;
 border:1px solid #fff;
 text-align:center;
@@ -414,6 +411,7 @@ padding:3px 5px;
 margin:0 2px;
 color:#888a85;
 min-height:20px;
+font-size:92%;
 font-weight:bold;
 border:1px solid #babdb6;
 border-top:1px solid #d3d7cf;
@@ -464,7 +462,6 @@ border:1px solid #d3d7cf;
 box-shadow:inset 0 15px 20px #eee;
 }
 label{
-font-size:92%;
 font-weight:bold;
 cursor:pointer;
 }
@@ -476,6 +473,7 @@ display:none;
 }
 fieldset label{
 display:block;
+font-size:92%;
 }
 div hr{
 border-color:black;
@@ -562,6 +560,7 @@ font-size:104%;
 font-weight:bold;
 color:#3465a4;
 text-decoration:none;
+text-align:right;
 }
 #control-panel-title a:hover{
 text-decoration:underline;
@@ -640,7 +639,6 @@ background:#3465a4 url(../images/uncollapse.png) 2% no-repeat;
 padding:0 2px;
 overflow:auto;
 direction:rtl;
-font-size:85%;
 max-height:210px;
 border-radius:3px;
 background:#eef3f4;
