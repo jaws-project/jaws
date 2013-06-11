@@ -627,25 +627,22 @@ padding:4px;
 cursor:pointer;
 font-size:small;
 font-weight:bold;
-border-radius:3px;
+border-radius:2px 2px 0 0;
 background:#3465a4 url(../images/collapse.png) 98% no-repeat;
 }
 .notify_box h2.collapsed{
 background:#3465a4 url(../images/uncollapse.png) 98% no-repeat;
 }
 .notify_content{
-padding:0 2px;
+padding:2px;
 overflow:auto;
 max-height:210px;
-border-radius:3px;
+border-radius:2px;
 background:#eef3f4;
 border:1px solid #d3d7cf;
 }
 .notify_components ul li{
 padding:2px;
-}
-.notify_components ul li:hover{
-background:#e4e8e0;
 }
 .notify_components img{
 width:32px;
@@ -655,6 +652,9 @@ vertical-align:middle;
 }
 .notify_components label{
 font-weight:normal;
+}
+.notify_components .notify_content{
+border-radius:0 0 2px 2px;
 }
 .notify_components .install{
 float:right;
