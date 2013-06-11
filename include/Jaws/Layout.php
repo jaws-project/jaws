@@ -281,6 +281,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('email',    $uInfo['email']);
         $this->_Template->SetVariable('avatar',   $uInfo['avatar']);
         $this->_Template->SetVariable('site-url', $GLOBALS['app']->GetSiteURL());
+        $this->_Template->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
 
         if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin, EditAccountInformation')) {
             $uAccoun =& Piwi::CreateWidget('Link',
@@ -310,11 +311,6 @@ class Jaws_Layout
             $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/images/logo.png');
             $this->_Template->SetVariable('title-gadget', $gadget);
             
-            // view site icon
-            $this->_Template->SetVariable('site_url', $GLOBALS['app']->getSiteURL());
-            $this->_Template->SetVariable('view_site', _t('GLOBAL_VIEW_SITE'));
-            $this->_Template->SetVariable('site_icon', 'gadgets/ControlPanel/images/view_site.png');
-
             // help icon
             if (!empty($docurl) && !is_null($docurl)) {
                 $this->_Template->SetBlock('layout/cptitle/documentation');
