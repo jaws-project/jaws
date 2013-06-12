@@ -1,43 +1,30 @@
-#sysinfo_table td{
+#sysinfo td{
 vertical-align:top;
 }
-#sysinfo-sidebar{
+#sysinfo fieldset{
+margin-top:-11px;
+}
+#jaws-sidebar-sysinfo{
 width:220px;
 padding-left:6px;
 }
-#jaws-sidebar-sysinfo{
-height:256px;
-width:100%;
-}
-#info_section table td{
-padding:1px 2px 1px 2px;
-border:1px solid #ddd;
-font-size:8pt;
-}
 #info_section table{
-direction:ltr;
-}
-#info_section table td{
-padding:1px 2px 1px 2px;
-border:1px solid #ddd;
-font-size:8pt;
-}
-#info_section table th{
-direction:rtl;
-height:1.8em;
-color:#3465a4;
-font-size:9pt;
+font-size:smaller;
 text-align:right;
-padding-left:5px;
-padding-right:10px;
-margin-bottom:5px;
-border:1px solid #d3d7cf;
-background:#d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
 }
-.item_title{
-color:#cc6534;
+#info_section tr:nth-child(even){
+background-color:#f5f5f5;
+}
+#info_section th{
+border:1px solid #ddd;
 width:180px;
+padding:2px;
+color:#c94100;
+font-weight:normal;
+white-space:nowrap;
 }
-.item_value{
+#info_section td{
+border:1px solid #ddd;
+padding:2px;
 color:#3465cc;
 }

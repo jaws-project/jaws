@@ -1,19 +1,17 @@
 <!-- BEGIN SysInfo -->
-<div id="main" style="width: 100%;">
-<table width="100%" id="sysinfo_table" border="0" cellpadding="2" cellspacing="0">
-<tr><td id="sysinfo-sidebar">{sidebar}</td>
-    <td id="info_section">
-    <!-- BEGIN InfoSection -->
-    <table width="100%" border="0" cellpadding="0" cellspacing="1">
-    <tr><th colspan="2">{section_title}</th></tr>
-    <!-- BEGIN InfoItem -->
-    <tr><td class="item_title">{item_title}</td><td class="item_value">{item_value}</td></tr>
-    <!-- END InfoItem -->
-    </table>
-    <div style="clear: both; height: 5px;"></div>
-    <!-- END InfoSection -->
-    </td>
-</tr>
-</table>
-</div>
+<table width="100%" id="sysinfo"><tr>
+  <td>{sidebar}</td>
+  <td width="100%">
+    <fieldset id="info_section">
+      <!-- BEGIN InfoSection -->
+      <legend><span>{section_title}</span></legend>
+      <table width="100%">
+        <!-- BEGIN InfoItem -->
+        <tr><th>{item_title}</th><td>{item_value}</td></tr>
+        <!-- END InfoItem -->
+      </table>
+      <!-- END InfoSection -->
+    </fieldset>
+  </td>
+</tr></table>
 <!-- END SysInfo -->
