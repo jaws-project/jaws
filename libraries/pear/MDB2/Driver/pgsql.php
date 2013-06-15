@@ -465,6 +465,16 @@ class MDB2_Driver_pgsql extends MDB2_Driver_Common
                   'Unable to retrieve server version', __FUNCTION__);
             }
             $version = explode ('.', $version);
+
+            // PostgreSQL 9.0 introduced "hex" as the new default format for encoding binary data,
+            // and pg_unescape_bytea only works with the old "escape" format, so we must set bytea_output to "escape"
+            if ($version['0'] >= 9) {
+                if (!@pg_query($connection, 'SET bytea_output = "escape";')) {
+                    return $this->raiseError(null, null, null,
+                        'Unable to set bytea_output to escape', __FUNCTION__);
+                }
+            }
+
             if (    $version['0'] > 8
                 || ($version['0'] == 8 && $version['1'] >= 2)
             ) {
