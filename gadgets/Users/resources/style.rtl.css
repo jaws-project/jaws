@@ -266,3 +266,6 @@ overflow:auto;
 #acl_form label{
 font-weight:normal;
 }
+#main table{
+margin:0 auto;
+}

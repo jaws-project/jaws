@@ -4,10 +4,6 @@ text-align:left;
 vertical-align:top;
 padding:5px 0 5px 5px;
 }
-fieldset{
-padding:0px;
-margin-right:0px;
-}
 fieldset td{
 padding:2px 4px;
 }
@@ -23,10 +19,6 @@ width:120px;
 fieldset input[type="checkbox"]{
 width:14px;
 vertical-align:middle;
-}
-.buttons{
-padding:0px;
-text-align:right;
 }
 #user_groups_checkbox, #group_users_checkbox{
 padding:0px;
@@ -170,4 +162,7 @@ overflow:auto;
 }
 #acl_form label{
 font-weight:normal;
+}
+#main table{
+margin:0 auto;
 }
