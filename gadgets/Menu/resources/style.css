@@ -69,10 +69,10 @@ background-color:#f7f7f7;
 .menu_tree_items .title{
 float:left;
 }
-.menu_tree_items .actions{
+.menu_actions{
 float:right;
 }
-.menu_levels .menu_tree_items .actions{
+.menu_levels .menu_tree_items .menu_actions{
 visibility:hidden;
 }
 div.menu_levels{
