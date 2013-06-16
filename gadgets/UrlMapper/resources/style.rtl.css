@@ -1,3 +1,8 @@
+.workarea{
+width:230px;
+padding-right:8px;
+vertical-align:top;
+}
 table td label{
 float:right;
 }
@@ -11,12 +16,12 @@ margin-bottom:10px;
 .jawsDatagrid{
 padding:0px;
 }
-#map_area input, #map_area select{
-margin:0 8px;
-}
 #map_area label{
-margin:5px 8px 2px 0;
+margin:5px 0 2px;
 }
 #alias, #custom_url{
 direction:ltr;
+}
+#main table{
+margin:0 auto;
 }

@@ -452,9 +452,12 @@ table.tableform .button{
 text-align:center;
 }
 fieldset{
-padding:4px;
+padding:12px;
 text-align:right;
 border:1px solid #d3d7cf;
+}
+legend{
+margin-left:-8px;
 }
 legend span{
 top:-20px;

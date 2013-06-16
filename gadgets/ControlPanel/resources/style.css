@@ -453,9 +453,12 @@ color:#999;
 background-color:#eee;
 }
 fieldset{
-padding:4px;
+padding:12px;
 text-align:left;
 border:1px solid #d3d7cf;
+}
+legend{
+margin-left:-8px;
 }
 legend span{
 top:-20px;
