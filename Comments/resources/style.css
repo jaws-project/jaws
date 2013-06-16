@@ -1,3 +1,8 @@
+.workarea{
+width:370px;
+padding-left:8px;
+vertical-align:top;
+}
 #settings{
 border:1px solid #D3D7CF;
 float:right;
