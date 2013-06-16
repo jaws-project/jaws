@@ -551,7 +551,6 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         $vBox =& Piwi::CreateWidget('VBox');
         $vBox->SetId('page_options');
-        $vBox->setSpacing(2);
         $vBox->SetStyle('display:inline;');
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', $title);
@@ -609,7 +608,6 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         $advBox =& Piwi::CreateWidget('VBox');
         $advBox->SetId('advanced_options');
-        $advBox->setSpacing(2);
         $advBox->SetStyle('display:none;');
 
         // Fast URL
