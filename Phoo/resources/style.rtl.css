@@ -209,8 +209,8 @@ text-align:right;
 #photo-edit{
 width:170px;
 }
-.tableform{
-width:420px;
+#main > table,#main .tableform{
+margin:0 auto;
 }
 /* Phoo Browse */
 #phoo_browse{
@@ -297,4 +297,9 @@ width:20em;
 float:right;
 display:block;
 text-align:left;
+}
+.workarea{
+width:370px;
+padding-right:8px;
+vertical-align:top;
 }
