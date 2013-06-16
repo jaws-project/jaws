@@ -64,11 +64,12 @@ background-color:#ddd;
 .forums_group .title{
 float:right;
 }
-.forums_group .actions{
+.forum_actions{
 float:left;
 }
 .forums_group_item{
 padding:0px;
+text-align:rigth;
 margin:1px 10px 1px 0px;
 }
 .forums_group_item a{
