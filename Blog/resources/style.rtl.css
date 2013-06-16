@@ -77,3 +77,6 @@ float:right;
 display:block;
 text-align:left;
 }
+#main > table,#main .tableform{
+margin:0 auto;
+}
