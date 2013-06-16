@@ -1,3 +1,8 @@
+.workarea{
+width:290px;
+padding-left:8px;
+vertical-align:top;
+}
 #workarea{
 height:408px;
 text-align:left;
