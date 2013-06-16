@@ -169,7 +169,7 @@ class ComboImage extends Combo
         $this->addEvent(new JSEvent(ON_CHANGE, "this.style.backgroundImage = this[this.selectedIndex].style.backgroundImage"));
         parent::buildXHTML();
 /*
-        $changeStyleScript = "<script language=\"javascript\" type=\"text/javascript\">\n";
+        $changeStyleScript = "<script type=\"text/javascript\">\n";
         $changeStyleScript .= "Combo_{$this->_id} = document.getElementById('{$this->_id}');\n";
         $changeStyleScript .= "Combo_{$this->_id}.style.backgroundImage = Combo_{$this->_id}[Combo_{$this->_id}.selectedIndex].style.backgroundImage;\n";
         $changeStyleScript .= "</script>\n";

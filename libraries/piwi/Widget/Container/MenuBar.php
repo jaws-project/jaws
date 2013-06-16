@@ -282,7 +282,7 @@ class MenuBar extends Container
         $this->addFile(PIWI_URL . 'piwidata/js/mygosumenu/ie5.js');
         $this->addFile(PIWI_URL . 'piwidata/js/mygosumenu/1.1/DropDownMenuX.js');
 
-        $this->_XHTML = "<table cellspacing=\"0\" cellpadding=\"0\" id=\"".$this->_id."\" class=\"".$this->_class."\">\n";
+        $this->_XHTML = "<table id=\"".$this->_id."\" class=\"".$this->_class."\">\n";
         $this->_XHTML.=  "<tr>\n";
         $spacing = '    ';
         foreach ($this->_items as $o) {

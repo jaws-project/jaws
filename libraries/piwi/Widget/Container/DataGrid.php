@@ -809,7 +809,7 @@ class DataGrid extends Container
             $this->_XHTML .= "   </tbody>\n";
         } else {
             $this->_XHTML .= "   <tbody id=\"body_".$this->_id."\">\n";
-            $this->_XHTML .= "   <tr><td colspan=\"". (count($this->_columns)+1)."\" style=\"display: none;\"></td></tr>\n";
+            $this->_XHTML .= "   <tr><td colspan=\"". (count($this->_columns)+ (int)$this->_multipleSelection)."\" style=\"display: none;\"></td></tr>\n";
             $this->_XHTML .= "   </tbody>\n";
         }
         

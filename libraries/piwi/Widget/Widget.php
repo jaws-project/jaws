@@ -495,7 +495,7 @@ class Widget
                     $files.= "    document.write('<link rel=\"stylesheet\" type=\"text/css\" href=\"".$file."\">');\n";
                     $files.= "</script>\n";                  
                 } else {
-                    $files.= "<script type=\"text/javascript\" language=\"JavaScript\" src=\"".$file."\">";
+                    $files.= "<script type=\"text/javascript\" src=\"".$file."\">";
                     $files.= "</script>\n";
                 }
             }

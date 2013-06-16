@@ -127,7 +127,7 @@ class FieldSet extends Container
         }
 
         if ($this->_direction == 'vertical') {
-            $this->_XHTML .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+            $this->_XHTML .= "<table>\n";
         }
 
         foreach ($this->_items as $item) {
