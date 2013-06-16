@@ -198,6 +198,7 @@ text-align:left;
 #main{
 clear:both;
 display:block;
+text-align:center;
 }
 /* ------ COMMON ----- */
 a{
@@ -227,7 +228,9 @@ hr{
 display:none;
 }
 table{
+border:none;
 text-align:left;
+border-spacing:0;
 }
 img{
 border:0;
@@ -447,12 +450,9 @@ color:#999;
 background-color:#eee;
 }
 fieldset{
-border:1px solid #d3d7cf;
-padding:12px;
+padding:4px;
 text-align:left;
-}
-legend{
-margin-left:-4px;
+border:1px solid #d3d7cf;
 }
 legend span{
 top:-20px;
@@ -479,7 +479,6 @@ div hr{
 border-color:black;
 }
 .buttons,.actions{
-display:block;
 padding-top:8px;
 text-align:right;
 }
