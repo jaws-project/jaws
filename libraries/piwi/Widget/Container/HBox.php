@@ -22,7 +22,6 @@ class HBox extends Box
      */
     function HBox($spacing = 0, $border = 0)
     {
-        $this->setSpacing($spacing);
         $this->setBorder($border);
         $this->setName('hbox' . rand(1, 100));
         parent::init();

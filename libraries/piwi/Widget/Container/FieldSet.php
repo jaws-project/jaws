@@ -179,7 +179,7 @@ class FieldSet extends Container
                 if ($this->_direction == 'vertical') {
                     switch ($item['control']->getClassName()) {
                         case 'button':
-                            $this->_XHTML .= "  <td colspan=\"2\" class=\"button\">\n";
+                            $this->_XHTML .= "  <td colspan=\"2\" class=\"buttons\">\n";
                             $this->_XHTML .= $field;
                             $this->_XHTML .= "  </td>";
                             break;

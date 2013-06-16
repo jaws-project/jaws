@@ -22,7 +22,6 @@ class VBox extends Box
      */
     function VBox($spacing = 0, $border = 0)
     {
-        $this->setSpacing($spacing);
         $this->setBorder($border);
         $this->setName('vbox' . rand(1, 100));
         parent::init();

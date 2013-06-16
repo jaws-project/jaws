@@ -82,7 +82,6 @@ $vbox->PackStart ($comboimage);
 $vbox->PackEnd ($entry);
 $vbox->PackStart ($check);
 $hbox = new HBox ();
-$hbox->SetSpacing (3);
 $hbox->PackStart ($button);
 $hbox->PackStart ($radio);
 $hbox->PackEnd ($vbox);
@@ -94,7 +93,6 @@ $toolbar->Add ($entry);
 $toolbar->Add ($comboimage);
 $toolbar->Add ($spin);
 $toolbar->SetStyle ("background-color: #331");
-$toolbar->SetSpacing (0);
 
 $editor = new VBox ();
 $editor->PackStart ($toolbar);

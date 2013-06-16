@@ -105,7 +105,6 @@ $toolbar->Add ($button);
 $toolbar->Add ($entry);
 $toolbar->Add ($comboimage);
 $toolbar->SetStyle ("background-color: #331");
-$toolbar->SetSpacing (0);
 
 echo $toolbar->GetPiwiXML ();
 
@@ -116,7 +115,6 @@ $vbox->PackStart ($comboimage);
 $vbox->PackEnd ($entry);
 $vbox->PackStart ($check);
 $hbox = new HBox ();
-$hbox->SetSpacing (3);
 $hbox->PackStart ($button);
 $hbox->PackStart ($radio);
 $hbox->PackEnd ($vbox);

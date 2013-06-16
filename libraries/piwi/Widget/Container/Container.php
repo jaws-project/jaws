@@ -47,15 +47,6 @@ class Container extends Widget
     var $_direction;
 
     /**
-     * Set the spacing
-     *
-     * @var    $_spacing
-     * @access private
-     * @see    getSpacing(), setSpacing()
-     */
-    var $_spacing;
-
-    /**
      * Flag to determinate if widget should get the child items with their titles
      *
      * @var    boolean  $_useTitles
@@ -160,28 +151,6 @@ class Container extends Widget
     }
 
     /**
-     * Set the spacing
-     *
-     * @param  int   $spacing The Spacing
-     * @access public
-     */
-    function setSpacing($spacing)
-    {
-        $this->_spacing = $spacing;
-    }
-
-    /**
-     * Get the spacing
-     *
-     * @access public
-     * @return int    Spacing of the box
-     */
-    function getSpacing()
-    {
-        return $this->_spacing;
-    }
-
-    /**
      * Get the direction
      *
      * @access public
@@ -215,10 +184,6 @@ class Container extends Widget
         if (is_numeric($this->_border)) {
             $this->_PiwiXML->addAttribute('border', $this->_border);
         }
-
-        if (is_numeric($this->_spacing)) {
-            $this->_PiwiXML->AddAttribute('spacing', $this->_spacing);
-        }
     }
 
     /**
@@ -234,12 +199,7 @@ class Container extends Widget
             $xhtml .= " border=\"".$this->_border."px\"";
         }
 
-        if (is_numeric($this->_spacing)) {
-            $xhtml .= " cellspacing=\"".$this->_spacing."\"";
-        }
-
         $xhtml .= parent::buildBasicXHTML();
-
         return $xhtml;
     }
 

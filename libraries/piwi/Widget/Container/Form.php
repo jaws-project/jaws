@@ -381,7 +381,7 @@ class Form extends Container
 
                 switch ($item['control']->getClassName()) {
                     case 'button':
-                        $this->_XHTML .= "  <div class=\"button\">\n";
+                        $this->_XHTML .= "  <div class=\"buttons\">\n";
                         $this->_XHTML .= $item['control']->get(false);
                         $this->_XHTML .= "  </div>";
                         break;
