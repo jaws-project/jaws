@@ -235,6 +235,9 @@ border-spacing:0;
 img{
 border:0;
 }
+.full_width{
+width:100%
+}
 /* ----- MAIN MENU ----- */
 #mainbar{
 width:725px;
