@@ -77,3 +77,8 @@ text-align:right;
 #main > table,#main .tableform{
 margin:0 auto;
 }
+.workarea{
+width:370px;
+padding-left:8px;
+vertical-align:top;
+}
