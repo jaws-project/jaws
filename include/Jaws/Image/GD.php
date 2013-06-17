@@ -441,8 +441,10 @@ class Jaws_Image_GD extends Jaws_Image
             imagesavealpha($this->_hImage, true);
         }
 
-        header('Content-type: ' . image_type_to_mime_type($this->get_image_extension_to_type($type)));
         $funcName = 'image' . $type;
+        header('Content-type: ' . image_type_to_mime_type($this->get_image_extension_to_type($type)));
+
+        ob_start();
         switch ($type) {
             case 'jpeg':
                 $result = $funcName($this->_hImage, null, $quality);
@@ -451,13 +453,16 @@ class Jaws_Image_GD extends Jaws_Image
                 $result = $funcName($this->_hImage);
         }
 
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        $this->free();
         if (!$result) {
             return Jaws_Error::raiseError('Couldn\'t display image',
                                           __FUNCTION__);
         }
 
-        $this->free();
-        return $result;
+        return $content;
     }
 
     /**
