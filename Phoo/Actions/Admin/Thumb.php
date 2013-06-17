@@ -25,7 +25,21 @@ class Phoo_Actions_Admin_Thumb extends Phoo_AdminHTML
         $image   = $request->get('image', 'get');
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';
-        Jaws_Image::get_exif_thumbnail(JAWS_DATA . 'phoo/import/' . $image, 'gadgets/Phoo/images/logo.png');
+        $objImage = Jaws_Image::factory();
+        if (!Jaws_Error::IsError($objImage)) {
+            $result = $objImage->load(JAWS_DATA . 'phoo/import/' . $image);
+            if (!Jaws_Error::IsError($result)) {
+                $thumbSize = explode('x', $this->gadget->registry->fetch('thumbsize'));
+                $objImage->resize($thumbSize[0], $thumbSize[1]);
+                $result = $objImage->display();
+                if (!Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+        }
+
+        header('Content-type: image/png');
+        return file_get_contents('gadgets/Phoo/images/logo.png');
     }
 
 }
