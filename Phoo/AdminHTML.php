@@ -150,7 +150,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
             $tpl->SetVariable('albums_combo', $albumcombo->Get());
 
-            if ($this->gadget->GetPermission('ManageAlbums') === true) {
+            if ($this->gadget->GetPermission('ManageAlbums')) {
                 $newalbum =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
                 $newalbum->AddEvent(ON_CLICK, "this.form.action.value='NewAlbum'; this.form.submit();");
                 $tpl->SetVariable('new_album', $newalbum->Get());
@@ -363,7 +363,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
         $selected = $allow_comments === true ? true : false;
-        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
+        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', 'allow_comments', $selected);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
