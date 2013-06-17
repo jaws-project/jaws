@@ -429,7 +429,7 @@ function newEmail()
     $('attachment').show();
     $('btn_upload').show();
     $('attach_loading').hide();
-    $('attach_actions').hide();
+    $('btn_attach').hide();
     toggleDisableForm(false);
 }
 
@@ -481,7 +481,7 @@ function onUpload(response) {
         $('filename').value = response.filename;
         $('file_link').set('html', response.filename);
         $('file_size').set('html', response.filesize);
-        $('attach_actions').show();
+        $('btn_attach').show();
         $('attachment').hide();
     }
     $('attach_loading').hide();
@@ -494,7 +494,7 @@ function onUpload(response) {
 function removeAttachment() {
     $('filename').value = '';
     $('frm_file').reset();
-    $('attach_actions').hide();
+    $('btn_attach').hide();
     $('file_link').set('html', '');
     $('file_size').set('html', '');
     $('btn_upload').show();

@@ -79,10 +79,10 @@ padding:5px 0;
 #frm_file a, #frm_file small, #frm_file img{
 vertical-align:middle;
 }
-#frm_file .actions{
+#frm_file .attach_actions{
 position:relative;
 }
-#frm_file .actions button{
+#frm_file .attach_actions button{
 height:24px;
 margin:0;
 }
@@ -102,7 +102,7 @@ font-size:30px;
 opacity:0;
 filter:alpha(opacity=0);
 }
-#attach_actions{
+#btn_attach{
 display:inline-block;
 }
 #file_size{
