@@ -1,7 +1,7 @@
 <!-- BEGIN Groups -->
 {menubar}
 <div id="main">
-<table id="PageGroups" width="100%" border="0" cellpadding="0" cellspacing="0">
+<table id="PageGroups">
   <tr>
     <td id="groups_datagrid">
     {grid}
@@ -9,15 +9,15 @@
     <td id="group_ui">
       <fieldset>
       <legend><span id="legend_title">{legend_title}</span></legend>
-        <table border="0">
-          <tr><td><label for="title">{lbl_title}</label></td><td>{title}</td></tr>
-          <tr><td><label for="fast_url">{lbl_fast_url}</label></td><td>{fast_url}</td></tr>
-          <tr><td><label for="meta_keys">{lbl_meta_keys}</label></td><td>{meta_keys}</td></tr>
-          <tr><td><label for="meta_desc">{lbl_meta_desc}</label></td><td>{meta_desc}</td></tr>
-          <tr><td><label for="visible">{lbl_visible}</label></td><td>{visible}</td></tr>
+        <table width="100%">
+          <tr><th><label for="title">{lbl_title}</label></td><th>{title}</td></tr>
+          <tr><th><label for="fast_url">{lbl_fast_url}</label></th><td>{fast_url}</td></tr>
+          <tr><th><label for="meta_keys">{lbl_meta_keys}</label></th><td>{meta_keys}</td></tr>
+          <tr><th><label for="meta_desc">{lbl_meta_desc}</label></th><td>{meta_desc}</td></tr>
+          <tr><th><label for="visible">{lbl_visible}</label></th><td>{visible}</td></tr>
         </table>
       </fieldset>
-      <div class="buttons">{btn_cancel} {btn_save}</div>
+      <div class="buttons">{btn_cancel}{btn_save}</div>
     </td>
   </tr>
 </table>

@@ -78,6 +78,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         //Build the form
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
+        $form->SetId('frm_settings');
 
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
@@ -108,6 +109,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $save->AddEvent(ON_CLICK, 'javascript: updateSettings(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
+        $buttonbox->SetClass('actions');
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($save);
 
@@ -555,7 +557,6 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', $title);
         $titleentry->SetTitle(_t('GLOBAL_TITLE'));
-        $titleentry->SetStyle('width:300px');
         $vBox->Add($titleentry);
 
         // Group
@@ -641,8 +642,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         // Editor
         $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
         $editor->TextArea->SetRows(12);
-        $editor->TextArea->SetStyle('width: 100%;');
-        $editor->SetWidth('96%');
+        $editor->TextArea->SetStyle('width:100%;');
         $pageform->Add($editor);
 
         if ($mode == 'base') {
@@ -673,6 +673,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $preview->AddEvent(ON_CLICK, 'javascript: parseText(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
+        $buttonbox->SetClass('actions');
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($preview);
         $buttonbox->PackStart($cancel);
@@ -711,22 +712,19 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('grid', $this->GroupsDataGrid());
 
         $entry =& Piwi::CreateWidget('Entry', 'title', '');
-        $entry->SetStyle('width: 200px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE').':');
         $tpl->SetVariable('title', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
-        $entry->SetStyle('width:200px; direction:ltr;');
+        $entry->SetStyle('direction:ltr;');
         $tpl->SetVariable('lbl_fast_url', _t('STATICPAGE_FASTURL').':');
         $tpl->SetVariable('fast_url', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_keys', '');
-        $entry->SetStyle('width:200px;');
         $tpl->SetVariable('lbl_meta_keys', _t('GLOBAL_META_KEYWORDS').':');
         $tpl->SetVariable('meta_keys', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_desc', '');
-        $entry->SetStyle('width:200px;');
         $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION').':');
         $tpl->SetVariable('meta_desc', $entry->Get());
 

@@ -2,6 +2,7 @@
 float:right;
 text-align:right;
 vertical-align:top;
+padding-bottom:5px;
 }
 #editor{
 margin-top:10px;
@@ -18,30 +19,46 @@ display:block;
 vertical-align:top;
 }
 #group_ui{
-width:370px;
+width:400px;
 vertical-align:top;
+padding-right:8px;
 }
-#group_ui table{
-padding:10px;
+#group_ui th{
+text-align:right;
+}
+#group_ui input{
+width:250px;
 }
 #PageGroups{
 width:100%;
 padding:0px;
 }
 #PageGroups td{
-font-size:10pt;
 text-align:right;
 }
 #btn_advanced{
 float:left;
-margin-top:-24px;
+margin-top:-32px;
+}
+#page_options td, #advanced_options td{
+padding:2px;
 }
 #page_options td:first-child, #advanced_options td:first-child{
 width:160px;
 }
-#advanced_options input{
-width:300px;
+#page_options input, #advanced_options input{
+width:400px;
+}
+#page_options select, #advanced_options select{
+min-width:100px;
 }
 .tableform{
 width:100%;
+}
+#frm_settings div{
+padding:2px;
+}
+#frm_settings label{
+display:inline-block;
+width:175px;
 }
