@@ -50,10 +50,10 @@ function ImportImages()
 
 function updatePhoto()
 {
-    var id             = document.forms['EditPhoto'].elements['image'].value;
-    var title          = document.forms['EditPhoto'].elements['title'].value;
-    var allow_comments = document.forms['EditPhoto'].elements['allow_comments[]'].checked;
-    var published      = document.forms['EditPhoto'].elements['published'].value;
+    var id             = $('image').value;
+    var title          = $('title').value;
+    var allow_comments = $('allow_comments').checked;
+    var published      = $('published').value;
     var description    = getEditorValue('description');
 
     var albumsNode  = $('album-checkboxes').getElementsByTagName('input');
