@@ -896,6 +896,9 @@ function toJSON(v) {
                     return a.join('');
                 }
                 return 'null';
+            },
+            'undefined': function (x) {
+                return 'null';
             }
         };
 
