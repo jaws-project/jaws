@@ -34,8 +34,7 @@ class SyntaxHighlight extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $controlbox =& Piwi::CreateWidget('HBox');
-
+        $buttonbox =& Piwi::CreateWidget('Division');
         $langsmap = array('PHP', 'ActionScript', 'ADA', 'Apache',
                           'ASM', 'ASP', 'Bash', 'AppleScript',
                           'Caddcl', 'CadLisp', 'C', 'C#',
@@ -55,8 +54,6 @@ class SyntaxHighlight extends Jaws_Plugin
             $combo->AddOption(ucfirst($language), ucfirst($language));
         }
 
-        $controlbox->PackStart($combo);
-
         $button_terminal =& Piwi::CreateWidget('Button', 'addcode', '',
                                 $GLOBALS['app']->getSiteURL('/images/stock/stock-terminal.png', true));
         $button_terminal->SetTitle(_t('PLUGINS_SYNTAXHIGHLIGHT_ADD_TERMINAL').' ALT+T');
@@ -64,9 +61,9 @@ class SyntaxHighlight extends Jaws_Plugin
                                    _t('PLUGINS_SYNTAXHIGHLIGHT_YOUR_TERMINAL')."');");
         $button_terminal->SetAccessKey('T');
 
-        $controlbox->PackStart($button_terminal);
-
-        return $controlbox;
+        $buttonbox->PackStart($combo);
+        $buttonbox->PackStart($button_terminal);
+        return $buttonbox;
     }
 
     /**
