@@ -38,8 +38,6 @@ class GlossaGlossy extends Jaws_Plugin
         $path = JAWS_PATH . 'gadgets/Glossary/Model.php';
         if (file_exists($path) && Jaws_Gadget::IsGadgetInstalled('Glossary')) {
             require_once $path;
-
-            $controlbox =& Piwi::CreateWidget('HBox');
             $glossarybutton =& Piwi::CreateWidget('Button', 'glossarybutton', '',
                                 $GLOBALS['app']->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
             $glossarybutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[term]','[/term]','".
@@ -47,9 +45,7 @@ class GlossaGlossy extends Jaws_Plugin
             $glossarybutton->SetTitle(_t('PLUGINS_GLOSSAGLOSSY_ADD').' ALT+G');
             $glossarybutton->SetAccessKey('G');
 
-            $controlbox->PackStart($glossarybutton);
-
-            return $controlbox;
+            return $glossarybutton;
         }
 
         return '';
