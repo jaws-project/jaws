@@ -451,6 +451,12 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('lbl_gender', _t('USERS_USERS_GENDER'));
         $tpl->SetVariable('gender', $gender->Get());
 
+        // social security number
+        $ssn =& Piwi::CreateWidget('Entry', 'ssn');
+        $ssn->SetID('ssn');
+        $tpl->SetVariable('lbl_ssn', _t('USERS_USERS_SSN'));
+        $tpl->SetVariable('ssn', $ssn->Get());
+
         // dob
         $dob =& Piwi::CreateWidget('DatePicker', 'dob', '');
         $dob->SetId('dob');
@@ -470,7 +476,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         // about
         $about =& Piwi::CreateWidget('TextArea', 'about');
         $about->SetID('about');
-        $about->SetRows(7);
+        $about->SetRows(4);
         $about->SetColumns(34);
         $tpl->SetVariable('lbl_about', _t('USERS_USERS_ABOUT'));
         $tpl->SetVariable('about', $about->Get());

@@ -101,7 +101,7 @@ width:250px;
 #ifrm_upload{
 display:none;
 }
-#fname , #lname{
+#fname , #lname, #ssn{
 width:130px;
 }
 #privacy, #gender{

@@ -21,14 +21,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * @param   string  $fname      First name
      * @param   string  $lname      Last name
      * @param   string  $gender     User gender
+     * @param   string  $ssn        Social Security number
      * @param   string  $dob        Birth date
      * @param   string  $url        User's URL
      * @param   string  $password   Password
      * @param   string  $group      Default user group
      * @return  mixed   True on success or message string
      */
-    function CreateUser($username, $user_email, $nickname, $fname, $lname, $gender, $dob, $url,
-                        $password, $group = null)
+    function CreateUser($username, $user_email, $nickname, $fname, $lname, $gender, $ssn,
+                        $dob, $url, $password, $group = null)
     {
         if (empty($username) || empty($nickname) || empty($user_email))
         {
@@ -76,6 +77,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 'fname'  => $fname,
                 'lname'  => $lname,
                 'gender' => $gender,
+                'ssn'    => $ssn,
                 'dob'    => $dob,
                 'url'    => $url
             )

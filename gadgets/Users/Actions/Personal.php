@@ -77,6 +77,8 @@ class Users_Actions_Personal extends Users_HTML
         $tpl->SetVariable('gender_1',   _t('USERS_USERS_GENDER_1'));
         $tpl->SetVariable('gender_2',   _t('USERS_USERS_GENDER_2'));
         $tpl->SetVariable('selected_gender_'.(int)$personal['gender'], 'selected="selected"');
+        $tpl->SetVariable('lbl_ssn',    _t('USERS_USERS_SSN'));
+        $tpl->SetVariable('ssn',        $personal['ssn']);
 
         if (empty($personal['dob'])) {
             $dob = array('', '', '');
@@ -147,8 +149,8 @@ class Users_Actions_Personal extends Users_HTML
         $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
-            array('fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature', 'about',
-                'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
+            array('fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature',
+                  'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'
         );
 
@@ -193,6 +195,7 @@ class Users_Actions_Personal extends Users_HTML
             $post['fname'],
             $post['lname'],
             $post['gender'],
+            $post['ssn'],
             $post['dob'],
             $post['url'],
             $avatar,

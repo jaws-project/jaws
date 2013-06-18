@@ -304,6 +304,7 @@ function saveUser()
                                 $('fname').value,
                                 $('lname').value,
                                 $('gender').value,
+                                $('ssn').value,
                                 $('dob').value,
                                 $('url').value,
                                 $('about').value,
@@ -541,6 +542,7 @@ function editPersonal(rowElement, uid)
     $('fname').value   = uInfo['fname'];
     $('lname').value   = uInfo['lname'];
     $('gender').value  = Number(uInfo['gender']);
+    $('ssn').value     = uInfo['ssn'];
     $('dob').value     = uInfo['dob'];
     $('url').value     = uInfo['url'];
     $('about').value   = uInfo['about'];

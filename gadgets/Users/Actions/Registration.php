@@ -57,7 +57,7 @@ class Users_Actions_Registration extends Users_HTML
         $post = $request->get(
             array(
                 'username', 'email', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'dob_year', 'dob_month', 'dob_day',
+                'fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day',
                 'url'
             ),
             'post'
@@ -93,6 +93,7 @@ class Users_Actions_Registration extends Users_HTML
                     $post['fname'],
                     $post['lname'],
                     $post['gender'],
+                    $post['ssn'],
                     $dob,
                     $post['url'],
                     $post['password'],
@@ -151,6 +152,7 @@ class Users_Actions_Registration extends Users_HTML
         $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
         $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
+        $tpl->SetVariable('lbl_ssn',           _t('USERS_USERS_SSN'));
         $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
         $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
         $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
@@ -166,6 +168,7 @@ class Users_Actions_Registration extends Users_HTML
             $tpl->SetVariable('nickname',  $post_data['nickname']);
             $tpl->SetVariable('fname',     $post_data['fname']);
             $tpl->SetVariable('lname',     $post_data['lname']);
+            $tpl->SetVariable('ssn',       $post_data['ssn']);
             $tpl->SetVariable('dob_year',  $post_data['dob_year']);
             $tpl->SetVariable('dob_month', $post_data['dob_month']);
             $tpl->SetVariable('dob_day',   $post_data['dob_day']);

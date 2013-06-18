@@ -96,6 +96,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
             'lbl_gender'      => _t('USERS_USERS_GENDER'),
+            'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
             'lbl_url'         => _t('GLOBAL_URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
@@ -103,6 +104,13 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
+
+        if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
+            $GLOBALS['app']->Session->GetAttribute('user') != $user['id'])
+        {
+            $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
+        }
+
         $tpl->SetVariablesArray($user);
 
         $tpl->ParseBlock('aboutuser');
@@ -173,6 +181,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
             'lbl_gender'      => _t('USERS_USERS_GENDER'),
+            'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
             'lbl_url'         => _t('GLOBAL_URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
@@ -180,6 +189,12 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
+ 
+        if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
+            $GLOBALS['app']->Session->GetAttribute('user') != $user['id'])
+        {
+            $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
+        }
 
         // set about item data
         $tpl->SetVariablesArray($user);

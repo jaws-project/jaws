@@ -625,18 +625,19 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      * Updates personal information of selected user
      *
      * @access  public
-     * @param   int      $uid     User ID
-     * @param   string   $fname   First name
-     * @param   string   $lname   Last name
-     * @param   string   $gender  User gender
-     * @param   string   $dob     User birth date
-     * @param   string   $url     User URL
-     * @param   string   $about
-     * @param   string  $avatar   User avatar
-     * @param   bool    $privacy  User's display name
+     * @param   int     $uid        User ID
+     * @param   string  $fname      First name
+     * @param   string  $lname      Last name
+     * @param   string  $gender     User gender
+     * @param   string  $ssn        Social Security number
+     * @param   string  $dob        User birth date
+     * @param   string  $url        User URL
+     * @param   string  $about
+     * @param   string  $avatar     User avatar
+     * @param   bool    $privacy    User's display name
      * @return  array   Response array (notice or error)
      */
-    function UpdatePersonal($uid, $fname, $lname, $gender, $dob, $url, $about, $avatar, $privacy)
+    function UpdatePersonal($uid, $fname, $lname, $gender, $ssn, $dob, $url, $about, $avatar, $privacy)
     {
         $dob = empty($dob)? null : $dob;
         if (!empty($dob)) {
@@ -651,6 +652,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
                 'fname'   => $fname,
                 'lname'   => $lname,
                 'gender'  => $gender,
+                'ssn'     => $ssn,
                 'dob'     => $dob,
                 'url'     => $url,
                 'about'   => $about,
