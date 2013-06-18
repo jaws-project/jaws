@@ -231,7 +231,7 @@ display:none;
 }
 table{
 border:none;
-text-align:left;
+text-align:right;
 border-spacing:0;
 }
 img{
@@ -394,11 +394,11 @@ border-top:1px solid #999;
 border-bottom:1px solid #ddd;
 border-radius:2px;
 }
-input[type=checkbox]{
+input[type=checkbox],input[type=radio]{
 border:none;
 vertical-align:middle;
 }
-input[type=checkbox]:focus{
+input[type=checkbox]:focus,input[type=radio]:focus{
 border:none;
 }
 input + label{
@@ -413,7 +413,7 @@ color:#999;
 background-color:#eee;
 }
 button,.button{
-padding:3px 5px;
+padding:3px;
 margin:0 2px;
 color:#888a85;
 min-height:20px;
@@ -487,6 +487,9 @@ border-color:black;
 .buttons,.actions{
 padding-top:8px;
 text-align:left;
+}
+.buttons button,.actions button{
+padding:3px 5px;
 }
 .buttons button:last-child {
 margin-left:0;
