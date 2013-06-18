@@ -863,11 +863,10 @@ padding:1.9em;
 width:45em;
 }
 /*--------------- Piwi Toolbar Style ----------------*/
-.piwi_editor_toolbar{
+.piwi_editor_toolbar *{
 vertical-align:top;
 }
 .piwi_editor_toolbar .piwi_division{
-vertical-align:top;
 padding:0 0 2px 4px;
 display:inline-block;
 }
