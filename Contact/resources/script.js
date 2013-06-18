@@ -141,10 +141,10 @@ function stopAction()
         $('rid').selectedIndex = -1;
         $('subject').value = '';
         $('message').value = '';
-        $('btn_save_send').style.visibility   = 'hidden';
+        $('btn_save_send').hide();
         $('tr_attachment').hide();
-        $('btn_save').style.visibility   = 'hidden';
-        $('btn_cancel').style.visibility = 'hidden';
+        $('btn_save').hide();
+        $('btn_cancel').hide();
         unselectDataGridRow();
         $('name').focus();
         break;
@@ -156,9 +156,9 @@ function stopAction()
         $('message').value = '';
         $('reply').value   = '';
         $('reply').readOnly = true;
-        $('btn_save_send').style.visibility   = 'hidden';
-        $('btn_save').style.visibility   = 'hidden';
-        $('btn_cancel').style.visibility = 'hidden';
+        $('btn_save_send').hide();
+        $('btn_save').hide();
+        $('btn_cancel').hide();
         unselectDataGridRow();
     }
 }
@@ -191,9 +191,9 @@ function editContact(element, id)
     $('rid').value     = contact['recipient'];
     $('subject').value = contact['subject'].defilter();
     $('message').value = contact['msg_txt'].defilter();
-    $('btn_save_send').style.visibility   = 'hidden';
-    $('btn_save').style.visibility   = 'visible';
-    $('btn_cancel').style.visibility = 'visible';
+    $('btn_save_send').hide();
+    $('btn_save').show('inline');
+    $('btn_cancel').show('inline');
 
     if (contact['attachment']) {
         $('attachment').href = dataURL + contact['attachment'];
@@ -230,9 +230,9 @@ function editReply(element, id)
     $('subject').value = replyData['subject'].defilter();
     $('message').value = replyData['msg_txt'].defilter();
     $('reply').value   = replyData['reply'].defilter();
-    $('btn_save').style.visibility   = 'visible';
-    $('btn_cancel').style.visibility = 'visible';
-    $('btn_save_send').style.visibility = 'visible';
+    $('btn_save').show('inline');
+    $('btn_cancel').show('inline');
+    $('btn_save_send').show('inline');
     $('reply').readOnly = Boolean(replyData['readonly']);
     $('reply').focus();
 }
@@ -458,7 +458,7 @@ function toggleDisableForm(disabled)
 function uploadFile() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('send_email').adopt(iframe);
+    $('mailer').adopt(iframe);
     $('attachment').hide();
     $('btn_upload').hide();
     $('attach_loading').show();

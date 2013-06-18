@@ -1,25 +1,25 @@
 <!-- BEGIN recipients -->
 {menubar}
-<div id="main" align="left">
-<table width="100%" cellpadding="0" cellspacing="0">
+<div id="main">
+<table width="100%">
   <tr>
     <td valign="top" align="left">
       <div id="datagrid">{grid}</div>
     </td>
-    <td style="width: 300px; vertical-align: top; padding-left: 8px;">
+    <td id="recipient_ui">
     <fieldset>
     <legend><span id="legend_title">{legend_title}</span></legend>
         <div id="recipient">
-        <input type="hidden" name="id" id="id" value="0" />
-        <table border="0" cellpadding="0" cellspacing="2">
-          <tr><td><label for="name">{lbl_name}:</label><br />{name}</td></tr>
-          <tr><td><label for="email">{lbl_email}:</label><br />{email}</td></tr>
-          <tr><td><label for="tel">{lbl_tel}:</label><br />{tel}</td></tr>
-          <tr><td><label for="fax">{lbl_fax}:</label><br />{fax}</td></tr>
-          <tr><td><label for="mobile">{lbl_mobile}:</label><br />{mobile}</td></tr>
-          <tr><td><label for="inform_type">{lbl_inform_type}:</label><br />{inform_type}</td></tr>
-          <tr><td><label for="visible">{lbl_visible}:</label><br />{visible}</td></tr>
-        </table>
+          <input type="hidden" name="id" id="id" value="0" />
+          <table>
+            <tr><td><label for="name">{lbl_name}:</label></td><td>{name}</td></tr>
+            <tr><td><label for="email">{lbl_email}:</label></td><td dir="ltr">{email}</td></tr>
+            <tr><td><label for="tel">{lbl_tel}:</label></td><td dir="ltr">{tel}</td></tr>
+            <tr><td><label for="fax">{lbl_fax}:</label></td><td dir="ltr">{fax}</td></tr>
+            <tr><td><label for="mobile">{lbl_mobile}:</label></td><td dir="ltr">{mobile}</td></tr>
+            <tr><td><label for="inform_type">{lbl_inform_type}:</label></td><td>{inform_type}</td></tr>
+            <tr><td><label for="visible">{lbl_visible}:</label></td><td>{visible}</td></tr>
+          </table>
         </div>
     </fieldset>
     </td>

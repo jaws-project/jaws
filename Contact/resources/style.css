@@ -1,77 +1,93 @@
-.title_label{
-text-align:right;
-white-space:nowrap;
+#contacts_datagrid{
+margin-top:5px;
 }
-#c_datagrid{
-width:400px;
-}
-#c_datagrid label{
+#contacts_datagrid label{
 font-weight:normal;
 cursor:default;
 }
-#contact_box, #reply_box{
-text-align:left;
+#contact_ui{
+width:1%;
+vertical-align:top;
+padding-left:8px;
 }
-#recipient_datagrid{
-width:100%;
-margin-top:0.1em;
+#c_work_area label{
+width:80px;
 }
-#recipient table{
-height:100%;
-font-weight:bold;
-text-align:left;
+#c_work_area input{
+width:160px;
+}
+input#url,input#address,input#subject,#rid,#message,#reply{
+width:300px;
+}
+#recipient_ui{
+width:1%;
+padding-left:8px;
+vertical-align:top;
+}
+#recipient label{
+width:90px;
+}
+#recipient input{
+width:200px;
+}
+#recipient select{
+width:80px;
 }
 #settings{
-padding:8px 10px 8px 10px;
-font-weight:bold;
-border:1px solid #d3d7cf;
-text-align:left;
 width:100%;
+padding:12px;
+border:1px solid silver;
 }
-#send_email{
+#settings td{
+padding:2px;
+}
+#use_antispam,#email_format,#enable_attachment{
+width:90px;
+}
+#comments{
+width:100%;
+height:100px;
+}
+#mailer{
 display:inline-block;
 padding:0 20px;
 }
-#send_email table{
-margin:2px 0;
+#mailer > table td{
+padding:2px 0;
 }
-#send_email tbody{
+#mailer tbody{
 display:block;
 }
-#send_email th{
-width:85px;
-text-align:left;
+#mailer th{
+width:70px;
 }
-#send_email select{
-width:200px;
+select#groups, select#users{
+min-width:200px;
 }
-#send_email input[type=radio]{
+#mailer input[type=radio]{
 margin:5px 0;
 }
-#send_email input[type=text]{
-width:435px;
-margin:2px 0;
+#mailer input[type=text]{
+width:400px;
 }
-#send_email textarea{
+#mailer textarea#message{
+width:100%;
 height:200px;
 }
-#send_email span{
+#mailer span{
 color:#0000FF;
 }
-#send_email label{
+#mailer label{
 margin-top:10px;
 }
-#send_email .options{
+#mailer .options{
 margin-bottom:10px;
 }
-#send_email .options label{
+#mailer .options label{
 margin:0 5px;
 }
 #ifrm_upload{
 display:none;
-}
-#frm_file{
-padding:5px 0;
 }
 #frm_file a, #frm_file small, #frm_file img{
 vertical-align:middle;
@@ -109,10 +125,7 @@ color:#555;
 #btn_upload{
 border:none;
 background:none;
+box-shadow:none;
+padding:0;
 color:#3465A4;
-}
-.buttons{
-text-align:right;
-}
-#c_work_area{width:340px;
 }
