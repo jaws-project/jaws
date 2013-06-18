@@ -40,8 +40,6 @@ class GlossaGlossy extends Jaws_Plugin
             require_once $path;
 
             $controlbox =& Piwi::CreateWidget('HBox');
-            $controlbox->SetSpacing(0);
-
             $glossarybutton =& Piwi::CreateWidget('Button', 'glossarybutton', '',
                                 $GLOBALS['app']->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
             $glossarybutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[term]','[/term]','".
