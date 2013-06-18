@@ -381,6 +381,8 @@ font-weight:bold;
 /* ----- FORM ELEMENTS ----- */
 input,select,textarea,button{
 box-sizing:border-box;
+-moz-box-sizing:border-box;
+-ms-box-sizing:border-box;
 }
 input,textarea,select{
 color:#333;
