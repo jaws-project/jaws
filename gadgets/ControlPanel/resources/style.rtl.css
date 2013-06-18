@@ -674,6 +674,10 @@ min-width:40px;
 margin-top:8px;
 text-align:left;
 }
+#jaws_version{
+direction:ltr;
+display:inline-block;
+}
 /* ----- DIALOG BOX -----*/
 .dialog_box{
 position:absolute;

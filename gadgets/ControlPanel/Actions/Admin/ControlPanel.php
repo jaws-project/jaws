@@ -106,6 +106,10 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
             }
         }
 
+        $tpl->SetBlock('versionbox');
+        $tpl->SetVariable('lbl_latest_jaws_version', _t('CONTROLPANEL_LATEST_JAWS_VERSION'));
+        $tpl->ParseBlock('versionbox');
+
         return $tpl->Get();
     }
 
