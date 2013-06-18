@@ -165,7 +165,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // Group Filter
         $filterGroup =& Piwi::CreateWidget('Combo', 'filter_group');
-        $filterGroup->SetStyle('width: 150px;');
         $filterGroup->AddOption(_t('USERS_GROUPS_ALL_GROUPS'), -1, false);
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
@@ -182,7 +181,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // Type Filter
         $filterType =& Piwi::CreateWidget('Combo', 'filter_type');
-        $filterType->SetStyle('width: 150px;');
         $filterType->AddOption(_t('GLOBAL_ALL'), -1, false);
         $filterType->AddOption(_t('USERS_USERS_TYPE_SUPERADMIN'), 1);
         $filterType->AddOption(_t('USERS_USERS_TYPE_NORMAL'),     0);
@@ -193,7 +191,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // Status Filter
         $filterStatus =& Piwi::CreateWidget('Combo', 'filter_status');
-        $filterStatus->SetStyle('width: 135px;');
         $filterStatus->AddOption(_t('GLOBAL_ALL'), -1, false);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_0'), 0);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_1'), 1);
@@ -205,7 +202,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // Term
         $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
-        $filterTerm->SetStyle('width: 142px;');
         $filterTerm->SetID('filter_term');
         $filterTerm->AddEvent(ON_CHANGE, "javascript: searchUser();");
         $filterTerm->AddEvent(ON_KPRESS, "javascript: OnTermKeypress(this, event);");
@@ -214,7 +210,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
         // Order types
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->SetStyle('width: 135px;');
         $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &darr;', '[id]');
         $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &uarr;', '[id] DESC');
         $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &darr;', '[username]');

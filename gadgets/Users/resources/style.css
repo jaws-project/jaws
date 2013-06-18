@@ -75,6 +75,11 @@ height:90px;
 text-align:left;
 padding-bottom:4px;
 }
+#users_filter input,#users_filter select{
+width:200px;
+white-space:nowrap;
+margin:0 10px 4px 0;
+}
 #users_filter table td{
 padding:2px;
 }
