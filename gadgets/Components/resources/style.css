@@ -94,7 +94,7 @@ padding:20px 0 0 10px;
 line-height:2.5;
 }
 .summary>div{
-padding:2px;
+padding:4px 0;
 }
 .summary label{
 font-size:12px;
@@ -166,7 +166,7 @@ padding:0;
 line-height:2.5;
 }
 #component_info .gadget>div{
-padding:2px;
+padding:4px 0;
 }
 #component_info span{
 font-weight:bold;
@@ -176,7 +176,7 @@ margin:0;
 }
 #component_info .acls{
 margin:0 8px;
-height:185px;
+height:225px;
 overflow-y:auto;
 list-style:square;
 }
