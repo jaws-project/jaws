@@ -21,7 +21,7 @@ class Users_Actions_Admin_ACL extends Users_AdminHTML
         $tpl = $this->gadget->loadTemplate('ACL.html');
         $tpl->SetBlock('acl');
 
-        $tpl->SetVariable('lbl_permissions', _t('USERS_ACLS_PERMISSIONS').':');
+        $tpl->SetVariable('lbl_permissions', _t('USERS_ACLS').':');
         $tpl->SetVariable('lbl_components', _t('USERS_ACLS_COMPONENTS').':');
         $tpl->SetVariable('lbl_allow', _t('USERS_ACLS_ALLOW'));
         $tpl->SetVariable('lbl_deny', _t('USERS_ACLS_DENY'));
