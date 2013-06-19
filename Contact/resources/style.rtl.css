@@ -70,7 +70,8 @@ margin:5px 0;
 #mailer input[type=text]{
 width:400px;
 }
-#mailer textarea{
+#mailer textarea#message{
+width:100%;
 height:200px;
 }
 #mailer span{
