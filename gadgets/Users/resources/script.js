@@ -260,6 +260,7 @@ function saveUser()
                      'nickname': $('nickname').value,
                      'email'   : $('email').value,
                      'status'  : $('status').value,
+                     'prev_status': $('prev_status').value,
                      'superadmin' : $('superadmin').value,
                      'concurrents': $('concurrents').value,
                      'expiry_date': $('expiry_date').value
@@ -424,6 +425,7 @@ function editUser(rowElement, uid)
     $('concurrents').value = uInfo['concurrents'];
     $('expiry_date').value = uInfo['expiry_date'];
     $('status').value      = uInfo['status'];
+    $('prev_status').value = uInfo['status'];
 }
 
 /**

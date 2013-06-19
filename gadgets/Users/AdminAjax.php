@@ -215,6 +215,11 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
+            // send activate notification
+            if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
+                $uRegistration = $GLOBALS['app']->LoadGadget('Users', 'HTML', 'Registration');
+                $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
+            }
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('USERS_USERS_UPDATED', $uData['username']),
                 RESPONSE_NOTICE

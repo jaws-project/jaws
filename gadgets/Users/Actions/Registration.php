@@ -214,21 +214,81 @@ class Users_Actions_Registration extends Users_HTML
         $request =& Jaws_Request::getInstance();
         $key = $request->get('key', 'get');
 
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
-        $result = $uModel->ActivateUser($key);
-        if (Jaws_Error::IsError($result)) {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
-        }
-
-        if ($result) {
-            if ($this->gadget->registry->fetch('anon_activation') == 'user') {
-                return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->GetURLFor('LoginBox'));
-            } else {
-                return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
-            }
-        } else {
+        $jUser = new Jaws_User;
+        $user = $jUser->GetUserByEmailVerifyKey($key);
+        if (Jaws_Error::IsError($user) || empty($user)) {
             return _t('USERS_ACTIVATION_KEY_NOT_VALID');
         }
+
+        $result = $jUser->UpdateUser(
+            $user['id'],
+            array(
+                'username' => $user['username'],
+                'nickname' => $user['nickname'],
+                'email'    => $user['email'],
+                'status'   => 1
+            )
+        );
+
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        $anon_activation = $this->gadget->registry->fetch('anon_activation');
+        $result = $this->ActivateNotification($user, $anon_activation);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        if ($anon_activation == 'user') {
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->GetURLFor('LoginBox'));
+        } else {
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
+        }
+    }
+
+    /**
+     * Mails activate notification to the user
+     *
+     * @access  public
+     * @param   array   $user               User's attributes array
+     * @param   string  $anon_activation    Anonymous activation type
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function ActivateNotification($user, $anon_activation)
+    {
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
+
+        $tpl = $this->gadget->loadTemplate('UserNotification.txt', 'index');
+        $tpl->SetBlock('Notification');
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
+        $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
+        if ($anon_activation == 'user') {
+            $tpl->SetBlock('Notification/IP');
+            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+            $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+            $tpl->ParseBlock('Notification/IP');
+        }
+
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username', $user['username']);
+
+        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url', $site_url);
+        $tpl->ParseBlock('Notification');
+
+        $body = $tpl->Get();
+        $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
+
+        require_once JAWS_PATH . 'include/Jaws/Mail.php';
+        $mail = new Jaws_Mail;
+        $mail->SetFrom();
+        $mail->AddRecipient($user['email']);
+        $mail->SetSubject($subject);
+        $mail->SetBody($this->gadget->ParseText($body));
+        return $mail->send();
     }
 
 }
