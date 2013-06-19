@@ -276,7 +276,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
                 $status_name = 'SPAM';
             }
 
-            $newRow['status']  = _t('GLOBAL_STATUS_'. $status_name);
+            $newRow['status']  = _t('COMMENTS_STATUS_'. $status_name);
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $edit_url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
