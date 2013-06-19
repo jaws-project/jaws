@@ -125,12 +125,11 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $column1 = Piwi::CreateWidget('Column', _t('POLL_POLLS_QUESTION'), null, false);
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_VISIBLE'), null, false);
-        $column2->SetStyle('width: 56px; white-space:nowrap;');
+        $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column3->SetStyle('width: 60px; white-space:nowrap;');
+        $column3->SetStyle('width:60px; white-space:nowrap;');
         $grid->AddColumn($column3);
-        $grid->SetStyle('margin-top: 0px; width: 100%;');
 
         return $grid->Get();
     }
@@ -186,13 +185,11 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('PollUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
-        $question->setStyle('width: 256px;');
         $tpl->SetVariable('lbl_question', _t('POLL_POLLS_QUESTION'));
         $tpl->SetVariable('question', $question->Get());
 
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
-        $groupCombo->setStyle('width: 262px;');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel');
         $groups = $model->GetPollGroups();
         foreach($groups as $group) {
@@ -203,7 +200,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
 
         $selectType =& Piwi::CreateWidget('Combo', 'select_type');
         $selectType->SetID('select_type');
-        $selectType->setStyle('width: 100px;');
         $selectType->AddOption(_t('POLL_POLLS_SELECT_SINGLE'), 0);
         $selectType->AddOption(_t('POLL_POLLS_SELECT_MULTI'),  1);
         $tpl->SetVariable('lbl_select_type', _t('POLL_POLLS_SELECT_TYPE'));
@@ -211,7 +207,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
 
         $pollMode =& Piwi::CreateWidget('Combo', 'poll_type');
         $pollMode->SetID('poll_type');
-        $pollMode->setStyle('width: 100px;');
         $pollMode->AddOption(_t('POLL_POLLS_TYPE_COOKIE'), 0);
         $pollMode->AddOption(_t('POLL_POLLS_TYPE_FREE'),   1);
         $tpl->SetVariable('lbl_poll_type', _t('POLL_POLLS_TYPE'));
@@ -219,7 +214,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
 
         $resultView =& Piwi::CreateWidget('Combo', 'result_view');
         $resultView->SetID('result_view');
-        $resultView->setStyle('width: 100px;');
         $resultView->AddOption(_t('GLOBAL_NO'),  0);
         $resultView->AddOption(_t('GLOBAL_YES'), 1);
         $resultView->SetDefault(1);
@@ -248,7 +242,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
 
         $visible =& Piwi::CreateWidget('Combo', 'visible');
         $visible->SetID('visible');
-        $visible->setStyle('width: 100px;');
         $visible->AddOption(_t('GLOBAL_NO'),  0);
         $visible->AddOption(_t('GLOBAL_YES'), 1);
         $visible->SetDefault(1);
@@ -272,20 +265,17 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('PollAnswersUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
-        $question->setStyle('width: 256px;');
         $question->SetEnabled(false);
         $tpl->SetVariable('lbl_question', _t('POLL_POLLS_QUESTION'));
         $tpl->SetVariable('question', $question->Get());
 
         $answer =& Piwi::CreateWidget('Entry', 'answer', '');
-        $answer->setStyle('width: 224px;');
         $answer->AddEvent(ON_KPRESS, 'javascript: keypressOnAnswer(event);');
         $tpl->SetVariable('lbl_answer', _t('POLL_POLLS_ANSWER'));
         $tpl->SetVariable('answer', $answer->Get());
 
         $answersCombo =& Piwi::CreateWidget('Combo', 'answers_combo');
         $answersCombo->SetSize(12);
-        $answersCombo->SetStyle('width: 230px;');
         $answersCombo->AddEvent(ON_CHANGE, 'javascript: editAnswer();');
         $tpl->SetVariable('answers_combo', $answersCombo->Get());
 
@@ -377,12 +367,11 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_VISIBLE'), null, false);
-        $column2->SetStyle('width: 56px; white-space:nowrap;');
+        $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column3->SetStyle('width: 60px; white-space:nowrap;');
+        $column3->SetStyle('width:60px; white-space:nowrap;');
         $grid->AddColumn($column3);
-        $grid->SetStyle('margin-top: 0px; width: 100%;');
 
         return $grid->Get();
     }
@@ -401,7 +390,7 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('PollGroups.html');
         $tpl->SetBlock('PollGroups');
 
-        //Menu bar
+        // Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('PollGroups'));
         $tpl->SetVariable('grid', $this->PollGroupsDatagrid());
         $tpl->SetVariable('pollgroup_ui', $this->PollGroupUI());
@@ -437,13 +426,11 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('PollGroupUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $title->SetStyle('width: 256px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $visible =& Piwi::CreateWidget('Combo', 'visible');
         $visible->SetID('visible');
-        $visible->SetStyle('width: 100px;');
         $visible->AddOption(_t('GLOBAL_NO'),  0);
         $visible->AddOption(_t('GLOBAL_YES'), 1);
         $visible->SetDefault(1);
@@ -467,7 +454,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('PollGroupPollsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $title->SetStyle('width: 200px;');
         $title->SetEnabled(false);
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $title->Get());
@@ -506,7 +492,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_pollgroups', _t('POLL_GROUPS'));
         $groupsCombo =& Piwi::CreateWidget('Combo', 'pollgroups');
         $groupsCombo->SetID('pollgroups');
-        $groupsCombo->SetStyle('width: 300px;');
         $groupsCombo->AddEvent(ON_CHANGE, "javascript: getGroupPolls(this.value);");
         $groups = $model->GetPollGroups();
         $groupsCombo->AddOption('', 0);
@@ -518,7 +503,6 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_grouppolls', _t('POLL_POLLS'));
         $pollsCombo =& Piwi::CreateWidget('Combo', 'grouppolls');
         $pollsCombo->SetID('grouppolls');
-        $pollsCombo->SetStyle('height: 254px; width: 300px;');
         $pollsCombo->SetSize(15);
         $pollsCombo->AddEvent(ON_CHANGE, 'javascript: showResult(this.value);');
         $tpl->SetVariable('grouppolls_combo', $pollsCombo->Get());

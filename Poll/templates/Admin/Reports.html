@@ -1,36 +1,37 @@
 <!-- BEGIN Reports -->
 {menubar}
-<div id="main" style="width: 100%;">
-  <div id="polls_box">
-    <div class="titles">{lbl_pollgroups}:</div>
-    <div>{pollgroups_combo}</div><br />
-    <div class="titles">{lbl_grouppolls}:</div>
-    <div>{grouppolls_combo}</div>
+<table width="100%"><tr>
+  <td id="polls_box">
+    <div><label for="pollgroups">{lbl_pollgroups}:</label>{pollgroups_combo}</div>
+    <div><label for="grouppolls">{lbl_grouppolls}:</label>{grouppolls_combo}</div>
     <script type="text/javascript">
-        $('pollgroups').selectedIndex = 0;
+      $('pollgroups').selectedIndex = 0;
     </script>
-  </div>
-  <div id="result_box">
-    <div class="titlebar"><span style="font-weight: bold;"></span></div>
-    <div id="result_area"></div>
-  </div>
-</div>
+  </td>
+  <td id="result_box">
+    <fieldset>
+      <legend><span id="legend_title">&nbsp;</span></legend>
+      <div id="result_area"></div>
+    </fieldset>
+  </td>
+</tr></table>
 <!-- END Reports -->
 <!-- BEGIN PollResults -->
-<table id="poll_results" border="0" cellpadding="2" cellspacing="1">
-<!-- BEGIN answer -->
-<tr><td width="2px">&nbsp;</td>
-    <td width="224x">{answer}</td>
-    <td width="28px">{percent}</td>
+<table id="poll_results">
+  <!-- BEGIN answer -->
+  <tr>
+    <td>{answer}</td>
+    <td width="1%">{percent}</td>
     <td width="150px" >
-        <img style="background-color:#3377cc;" height="15px" width="{image_width}px" src="gadgets/Poll/images/vote.png" alt="{percent}" />
+      <img src="gadgets/Poll/images/vote.png" width="{image_width}px" alt="{percent}" />
     </td>
-    <td>{votes}</td>
-</tr>
-<!-- END answer -->
-<tr><td colspan="3" style="empty-cells:hide;"></td>
-    <td class="poll_resume">{lbl_total_votes}:</td>
-    <td class="poll_resume">{total_votes}</td>
-</tr>
+    <td width="1%">{votes}</td>
+  </tr>
+  <!-- END answer -->
+  <tr class="poll_resume">
+    <td></td>
+    <td colspan="2">{lbl_total_votes}:</td>
+    <td>{total_votes}</td>
+  </tr>
 </table>
 <!-- END PollResults -->

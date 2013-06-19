@@ -491,7 +491,7 @@ function getGroupPolls(gid)
     var box = $('grouppolls');
     box.length = 0;
     $('result_area').innerHTML = '';
-    $('result_box').getElementsByTagName('span')[0].innerHTML = '';
+    $('legend_title').innerHTML = '';
     if (gid == 0) return;
     var polls = PollAjax.callSync('getgrouppolls', gid);
     for(var i = 0; i < polls.length; i++) {
@@ -509,7 +509,7 @@ function getGroupPolls(gid)
 function showResult(pid)
 {
     var box = $('grouppolls');
-    $('result_box').getElementsByTagName('span')[0].innerHTML = box.options[box.selectedIndex].text;
+    $('legend_title').innerHTML = box.options[box.selectedIndex].text;
     $('result_area').innerHTML = PollAjax.callSync('pollresultsui', pid);
 }
 

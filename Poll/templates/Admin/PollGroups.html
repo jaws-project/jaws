@@ -1,46 +1,36 @@
 <!-- BEGIN PollGroups -->
 {menubar}
-<div id="main">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td id="pg_datagrid" rowspan="2" valign="top" style="padding-right:4px;">
-    {grid}
-    </td>
-    <td style="vertical-align: top;">
-        <input type="hidden" name="gid" id="gid" value="0" />
-        <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-            <div id="pg_work_area">{pollgroup_ui}</div>
-        </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td class="buttons">{btn_cancel} {btn_save}</td>
-  </tr>
-</table>
-
+<table width="100%"><tr>
+  <td id="pg_datagrid">{grid}</td>
+  <td width="1%" valign="top">
+    <input type="hidden" name="gid" id="gid" value="0" />
+    <fieldset>
+      <legend><span id="legend_title">{legend_title}</span></legend>
+      <div id="pg_work_area">{pollgroup_ui}</div>
+    </fieldset>
+    <div class="buttons">{btn_cancel}{btn_save}</div>
+  </td>
+</tr></table>
 <script type="text/javascript">
+  var currentAction = 'PollGroups',
+      incompleteGroupsFields = "{incompleteGroupsFields}",
+      confirmPollGroupDelete = "{confirmPollGroupDelete}",
+      addPollGroup_title = "{addPollGroup_title}",
+      editPollGroup_title = "{editPollGroup_title}",
+      editPollGroupPolls_title = "{editPollGroupPolls_title}";
   initDataGrid('pollgroups_datagrid', PollAjax);
-  var incompleteGroupsFields   = "{incompleteGroupsFields}";
-  var confirmPollGroupDelete   = "{confirmPollGroupDelete}";
-  var addPollGroup_title       = "{addPollGroup_title}";
-  var editPollGroup_title      = "{editPollGroup_title}";
-  var editPollGroupPolls_title = "{editPollGroupPolls_title}";
-  currentAction = 'PollGroups';
   stopAction();
 </script>
-
-</div>
 <!-- END PollGroups -->
 <!-- BEGIN PollGroupUI -->
-<table id="groups_box" border="0" cellpadding="2" cellspacing="2">
+<table id="groups_box">
   <tr><td><label for="title">{lbl_title}:</label><br />{title}</td></tr>
   <tr><td><label for="visible">{lbl_visible}:</label><br />{visible}</td></tr>
 </table>
 <!-- END PollGroupUI -->
 <!-- BEGIN PollGroupPollsUI -->
 <div id="PollGroupPolls">
-<label for="title">{lbl_title}:</label><br />{title}<br />
-{pg_polls_combo}
+  <label for="title">{lbl_title}:</label><br />{title}<br />
+  {pg_polls_combo}
 </div>
 <!-- END PollGroupPollsUI -->
