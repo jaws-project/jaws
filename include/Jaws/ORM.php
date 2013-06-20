@@ -300,7 +300,12 @@ class Jaws_ORM
         } else {
             if (is_array($value)) {
                 // $value is array(value, type)
-                $vstr = $this->jawsdb->dbc->quote($value[0], isset($value[1])? $value[1] : null);
+                $value[1] = isset($value[1])? $value[1] : null;
+                if ($value[1] == 'expr') {
+                    $vstr = $this->quoteIdentifier($value[0]);
+                } else {
+                    $vstr = $this->jawsdb->dbc->quote($value[0], $value[1]);
+                }
             } else {
                 // Add "N" character before text field value,
                 // when using FreeTDS as MSSQL driver, to supporting unicode text
