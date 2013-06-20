@@ -14,7 +14,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2010 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: PEAR.php 307683 2011-01-23 21:56:12Z dufuz $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -78,7 +78,7 @@ $GLOBALS['_PEAR_error_handler_stack']    = array();
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.2
+ * @version    Release: @package_version@
  * @link       http://pear.php.net/package/PEAR
  * @see        PEAR_Error
  * @since      Class available since PHP 4.0.2
@@ -249,6 +249,9 @@ class PEAR
      */
     function isError($data, $code = null)
     {
+        if (!is_object($data)) {
+             return false;
+        }
         if (!is_a($data, 'PEAR_Error')) {
             return false;
         }
@@ -400,7 +403,7 @@ class PEAR
     }
 
     /**
-     * This method deletes all occurences of the specified element from
+     * This method deletes all occurrences of the specified element from
      * the expected error codes stack.
      *
      * @param  mixed $error_code error code that should be deleted
@@ -484,6 +487,12 @@ class PEAR
             $error_class = $message->getType();
             $message->error_message_prefix = '';
             $message     = $message->getMessage();
+
+            // Make sure right data gets passed.
+            $r = new ReflectionClass($error_class);
+            $c = $r->getConstructor();
+            $p = array_shift($c->getParameters());
+            $skipmsg = ($p->getName() != 'message');
         }
 
         if (
@@ -788,7 +797,7 @@ function _PEAR_call_destructors()
  * @author     Gregory Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: 1.9.2
+ * @version    Release: @package_version@
  * @link       http://pear.php.net/manual/en/core.pear.pear-error.php
  * @see        PEAR::raiseError(), PEAR::throwError()
  * @since      Class available since PHP 4.0.2
