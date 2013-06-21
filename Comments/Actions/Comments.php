@@ -178,7 +178,7 @@ class Comments_Actions_Comments extends Comments_HTML
             ($page - 1) * $perPage,
             $orderBy
         );
-        $comments_count = $cModel->GetCommentsCount(strtolower($gadget), $action, $reference);
+        $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference);
 
         $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('comments');
@@ -541,7 +541,7 @@ class Comments_Actions_Comments extends Comments_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $model->insertComment(
-            strtolower($post['requested_gadget']), $post['reference'], $post['requested_action'], $post['name'],
+            $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
             $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'], $permalink, $status
         );
 

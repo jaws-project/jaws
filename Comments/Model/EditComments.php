@@ -84,7 +84,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['status']        = (int)$status;
         $cData['msg_key']       = $message_key;
         $cData['ip']            = $ip;
-        $cData['user']          = $GLOBALS['app']->Session->GetAttribute('user');
+        $cData['user']          = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $cData['createtime']    = $GLOBALS['db']->Date();
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
@@ -120,7 +120,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']     = $url;
         $cData['msg_txt'] = $message;
         $cData['msg_key'] = md5($message);
-        $cData['replier'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $cData['replier'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $cData['status']  = $status;
         if($this->gadget->GetPermission('ReplyComments')) {
             $cData['reply']   = $reply;

@@ -34,8 +34,7 @@
 
             <field>
                 <name>user</name>
-                <type>text</type>
-                <length>48</length>
+                <type>integer</type>
             </field>
 
             <field>
@@ -81,8 +80,7 @@
 
             <field>
                 <name>replier</name>
-                <type>text</type>
-                <length>48</length>
+                <type>integer</type>
             </field>
 
             <field>
