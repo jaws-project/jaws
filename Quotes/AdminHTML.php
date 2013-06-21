@@ -80,7 +80,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         //Group Filter
         $combo =& Piwi::CreateWidget('Combo', 'group_filter');
-        $combo->setStyle('width:250px;');
         $combo->AddEvent(ON_CHANGE, 'javascript: fillQuotesCombo();');
         $combo->AddOption('', -1);
         foreach($groups as $group) {
@@ -91,8 +90,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         //Fill the quotes combo..
         $comboQuotes =& Piwi::CreateWidget('Combo', 'quotes_combo');
-        $comboQuotes->SetSize(20);
-        $comboQuotes->SetStyle('width: 250px; height: 358px;');
+        $comboQuotes->SetSize(24);
         $comboQuotes->AddEvent(ON_CHANGE, 'javascript: editQuote(this.value);');
 
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'AdminModel');
@@ -105,15 +103,11 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // title
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $title->SetID('title');
-        $title->setStyle('width: 256px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         // quotes groups
         $groupscombo =& Piwi::CreateWidget('Combo', 'gid');
-        $groupscombo->SetID('gid');
-        $groupscombo->setStyle('width: 262px;');
         if (!Jaws_Error::IsError($groups) && !empty($groups)) {
             foreach($groups as $group) {
                 $groupscombo->AddOption($group['title'], $group['id']);
@@ -124,7 +118,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // start time
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
-        $startTime->SetId('start_time');
         $startTime->showTimePicker(true);
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $startTime->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
@@ -134,7 +127,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // stop time
         $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
-        $stopTime->SetId('stop_time');
         $stopTime->showTimePicker(true);
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->SetIncludeCSS(false);
@@ -146,8 +138,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // show_title
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->SetID('show_title');
-        $showTitle->setStyle('width: 182px;');
         $showTitle->AddOption(_t('GLOBAL_NO'),  'false');
         $showTitle->AddOption(_t('GLOBAL_YES'), 'true');
         $showTitle->SetDefault('true');
@@ -156,8 +146,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // published
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->SetID('published');
-        $published->setStyle('width: 182px;');
         $published->AddOption(_t('GLOBAL_NO'),  'false');
         $published->AddOption(_t('GLOBAL_YES'), 'true');
         $published->SetDefault('true');
@@ -166,9 +154,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         // quotation editor
         $quotation =& $GLOBALS['app']->LoadEditor('Blocks', 'quotation', '', '');
-        $quotation->SetID('quotation');
-        $quotation->TextArea->SetStyle('width: 100%;');
-        $quotation->SetWidth('522px;');
         $tpl->SetVariable('lbl_quotation', _t('QUOTES_QUOTE_QUOTATION'));
         $tpl->SetVariable('quotation', $quotation->Get());
 
@@ -178,7 +163,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         $btnDel =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_QUOTE')), STOCK_DELETE);
         $btnDel->AddEvent(ON_CLICK, "javascript: deleteQuote();");
-        $btnDel->SetStyle('display: none;');
+        $btnDel->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $btnDel->Get());
 
         $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
@@ -210,8 +195,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
-        $comboGroups->SetSize(20);
-        $comboGroups->SetStyle('width: 250px; height: 358px;');
+        $comboGroups->SetSize(14);
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'AdminModel');
         $groups = $model->GetGroups(-1);
@@ -222,20 +206,15 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $titleEntry->SetStyle('width: 256px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $viewMode =& Piwi::CreateWidget('Combo', 'view_mode');
-        $viewMode->SetID('view_mode');
-        $viewMode->setStyle('width: 128px;');
         $viewMode->AddOption(_t('QUOTES_GROUPS_VIEW_MODE_COMPACT'), 0);
         $viewMode->AddOption(_t('QUOTES_GROUPS_VIEW_MODE_FULL'),    1);
         $tpl->SetVariable('lbl_view_mode', _t('QUOTES_GROUPS_VIEW_MODE'));
         $tpl->SetVariable('view_mode', $viewMode->Get());
 
         $viewType =& Piwi::CreateWidget('Combo', 'view_type');
-        $viewType->SetID('view_type');
-        $viewType->setStyle('width: 128px;');
         $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_SIMPLE'),        0);
         $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_UP'),    1);
         $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_DOWN'),  2);
@@ -245,8 +224,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->SetID('show_title');
-        $showTitle->setStyle('width: 128px;');
         $showTitle->AddOption(_t('GLOBAL_NO'),  'false');
         $showTitle->AddOption(_t('GLOBAL_YES'), 'true');
         $showTitle->SetDefault('true');
@@ -254,13 +231,10 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('show_title', $showTitle->Get());
 
         $limitcount =& Piwi::CreateWidget('Entry', 'limit_count', '0');
-        $limitcount->setStyle('width: 120px;');
         $tpl->SetVariable('lbl_limit_count', _t('QUOTES_GROUPS_COUNT_ENTRY'));
         $tpl->SetVariable('limit_count', $limitcount->Get());
 
         $randomly =& Piwi::CreateWidget('Combo', 'random');
-        $randomly->SetID('random');
-        $randomly->setStyle('width: 128px;');
         $randomly->AddOption(_t('GLOBAL_NO'),  'false');
         $randomly->AddOption(_t('GLOBAL_YES'), 'true');
         $randomly->SetDefault('true');
@@ -268,8 +242,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('random', $randomly->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->SetID('published');
-        $published->setStyle('width: 128px;');
         $published->AddOption(_t('GLOBAL_NO'),  'false');
         $published->AddOption(_t('GLOBAL_YES'), 'true');
         $published->SetDefault('true');
@@ -282,7 +254,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         $GroupQuotes =& Piwi::CreateWidget('Button', 'add_quotes', _t('QUOTES_ADD_QUOTES'), STOCK_EDIT);
         $GroupQuotes->AddEvent(ON_CLICK, "javascript: editGroupQuotes();");
-        $GroupQuotes->SetStyle('display: none;');
+        $GroupQuotes->SetStyle('display:none;');
         $tpl->SetVariable('add_quotes', $GroupQuotes->Get());
 
         $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
@@ -291,7 +263,7 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
 
         $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_GROUP')), STOCK_DELETE);
         $deleteGroup->AddEvent(ON_CLICK, "javascript: deleteGroup();");
-        $deleteGroup->SetStyle('display: none;');
+        $deleteGroup->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $deleteGroup->Get());
 
         $tpl->SetVariable('incompleteGroupFields', _t('QUOTES_INCOMPLETE_FIELDS'));
@@ -317,7 +289,6 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Quotes', 'AdminModel');
 
         $quotesCombo =& Piwi::CreateWidget('CheckButtons', 'group_quotes');
-        $quotesCombo->SetID('group_quotes');
         $quotesCombo->SetColumns(1);
         $quotes = $model->GetQuotes(-1, -1);
         foreach ($quotes as $quote) {

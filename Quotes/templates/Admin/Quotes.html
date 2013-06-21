@@ -1,70 +1,59 @@
 <!-- BEGIN quotes -->
 {menubar}
 <!-- BEGIN quotes_section -->
-<script type="text/javascript">
-  var incompleteQuoteFields = "{incompleteQuoteFields}";
-  var confirmQuoteDelete    = "{confirmQuoteDelete}";
-</script>
-<table id="QuotesBox" border="0" cellpadding="0" cellspacing="2">
-  <tr>
-    <td width="250px" style="vertical-align: top;">
+<table id="quotes"><tr>
+    <td id="td_quotes">
       <div><label for="group_filter">{lbl_group_filter}</label>{group_filter}</div>
-      <br/>
-      <label for="quotes_combo">{lbl_quotes}:</label>
-      <br/>
-      {combo_quotes}
+      <div><label for="quotes_combo">{lbl_quotes}:</label>{combo_quotes}</div>
     </td>
-    <td style="vertical-align: top; min-height: 360px; border: 1px solid #ccc;">
-     <input type="hidden" name="id" id="id" value="0" />
-     <table id="QuotesOptions" border="0" cellpadding="0" cellspacing="0">
-      <tr><td><label for="title">{lbl_title}:</label></td><td width="80%">{title}</td></tr>
-      <tr><td><label for="gid">{lbl_group}:</label></td><td>{group}</td></tr>
-      <tr><td><label for="start_time">{lbl_start_time}:</label></td><td>{start_time}</td></tr>
-      <tr><td><label for="stop_time">{lbl_stop_time}:</label></td><td>{stop_time}</td></tr>
-      <tr><td><label for="show_title">{lbl_show_title}:</label></td><td>{show_title}</td></tr>
-      <tr><td><label for="published">{lbl_published}:</label></td><td>{published}</td></tr>
-      <tr><td colspan="2"><label for="quotation">{lbl_quotation}:</label><br />{quotation}</td></tr>
-     </table>
+    <td id="td_form">
+      <input type="hidden" name="id" id="id" value="0" />
+      <table width="100%">
+        <tr><th><label for="title">{lbl_title}:</label></th><td>{title}</td></tr>
+        <tr><th><label for="gid">{lbl_group}:</label></th><td>{group}</td></tr>
+        <tr><th><label for="start_time">{lbl_start_time}:</label></th><td>{start_time}</td></tr>
+        <tr><th><label for="stop_time">{lbl_stop_time}:</label></th><td>{stop_time}</td></tr>
+        <tr><th><label for="show_title">{lbl_show_title}:</label></th><td>{show_title}</td></tr>
+        <tr><th><label for="published">{lbl_published}:</label></th><td>{published}</td></tr>
+        <tr><td colspan="2"><label for="quotation">{lbl_quotation}:</label><br />{quotation}</td></tr>
+      </table>
     </td>
-  </tr>
-</table>
-<div class="buttons" style="padding-top:4px;">{btn_cancel} {btn_del} {btn_save}</div>
+</tr></table>
+<div class="buttons">{btn_cancel}{btn_del}{btn_save}</div>
 <script type="text/javascript">
-    currentAction = 'Quotes';
-    $('group_filter').selectedIndex = 0;
-    stopAction();
+  var currentAction = 'Quotes',
+      incompleteQuoteFields = "{incompleteQuoteFields}",
+      confirmQuoteDelete = "{confirmQuoteDelete}";
+  $('group_filter').selectedIndex = 0;
+  stopAction();
 </script>
 <!-- END quotes_section -->
 <!-- BEGIN groups_section -->
-<script type="text/javascript">
-  var incompleteGroupFields = "{incompleteGroupFields}";
-  var confirmGroupDelete    = "{confirmGroupDelete}";
-</script>
-<table id="QuoteGroupsBox" border="0" cellpadding="0" cellspacing="2">
+<table id="quotes_groups">
   <tr>
-    <td width="200px" style="vertical-align: top;">
-      {combo_groups}
-    </td>
-    <td style="vertical-align: top; min-height: 360px; border: 1px solid #ccc;">
-     <input type="hidden" name="gid" id="gid" value="0" />
-     <div id="work_area">
-     <table width="100%;" border="0" cellpadding="2" cellspacing="2" style="font-weight: bold;">
-      <tr><td width="100px"><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
-      <tr><td><label for="view_mode">{lbl_view_mode}:</label></td><td>{view_mode}</td></tr>
-      <tr><td><label for="view_type">{lbl_view_type}:</label></td><td>{view_type}</td></tr>
-      <tr><td><label for="view_type">{lbl_show_title}:</label></td><td>{show_title}</td></tr>
-      <tr><td><label for="limit_count">{lbl_limit_count}:</label></td><td>{limit_count}</td></tr>
-      <tr><td><label for="random">{lbl_random}:</label></td><td>{random}</td></tr>
-      <tr><td><label for="published">{lbl_published}:</label></td><td>{published}</td></tr>
-     </table>
-     </div>
+    <td id="td_groups">{combo_groups}</td>
+    <td id="td_form">
+      <input type="hidden" name="gid" id="gid" value="0" />
+      <div id="work_area">
+        <table width="100%;">
+          <tr><th><label for="title">{lbl_title}:</label></th><td>{title}</td></tr>
+          <tr><th><label for="view_mode">{lbl_view_mode}:</label></th><td>{view_mode}</td></tr>
+          <tr><th><label for="view_type">{lbl_view_type}:</label></th><td>{view_type}</td></tr>
+          <tr><th><label for="limit_count">{lbl_limit_count}:</label></th><td>{limit_count}</td></tr>
+          <tr><th><label for="show_title">{lbl_show_title}:</label></th><td>{show_title}</td></tr>
+          <tr><th><label for="random">{lbl_random}:</label></th><td>{random}</td></tr>
+          <tr><th><label for="published">{lbl_published}:</label></th><td>{published}</td></tr>
+        </table>
+      </div>
     </td>
   </tr>
 </table>
-<div class="buttons" style="padding-top:4px;">{btn_cancel} {btn_del} {add_quotes} {btn_save}</div>
+<div class="buttons">{btn_cancel}{btn_del}{add_quotes}{btn_save}</div>
 <script type="text/javascript">
-    currentAction = 'Groups';
-    stopAction();
+  var currentAction = 'Groups',
+      incompleteGroupFields = "{incompleteGroupFields}",
+      confirmGroupDelete = "{confirmGroupDelete}";
+  stopAction();
 </script>
 <!-- END groups_section -->
 <!-- BEGIN quotes_groups_ui_section -->

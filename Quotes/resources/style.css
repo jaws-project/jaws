@@ -1,31 +1,51 @@
-#QuotesBox{
-padding:0px;
+#quotes,#quotes_groups{
 width:100%;
 }
-#QuotesBox td{
-font-size:10pt;
-text-align:left;
+#td_quotes,#td_groups{
+vertical-align:top;
+padding-right:8px;
 }
-#QuotesOptions{
+#td_quotes div:first-child{
+margin-bottom:5px;
+}
+#td_quotes label{
+display:block;
+}
+#td_quotes select,#groups_combo{
+width:300px;
+}
+#td_form{
 width:100%;
-padding-left:4px;
-font-weight:bold;
+vertical-align:top;
+border:1px solid silver;
+padding:12px;
 }
-#QuotesOptions td{
-padding:1px;
+#td_form th{
+text-align:left;
 }
-#QuoteGroupsBox{
+#td_form th+td{
+padding:2px;
+width:87%;
+}
+#title{
 width:100%;
-padding:0px;
 }
-#QuoteGroupsBox td{
-font-size:10pt;
-text-align:left;
+#gid{
+min-width:171px;
 }
-#group_banners_title{
-text-align:left;
+#start_time,#stop_time{
+width:145px;
 }
-#group_quotes{
+#show_title,#published{
+width:60px;
+}
+#quotation{
 width:100%;
-text-align:left;
+height:200px;
+}
+#view_mode,#view_type{
+width:120px;
+}
+#limit_count,#show_title,#random,#published{
+width:60px;
 }
