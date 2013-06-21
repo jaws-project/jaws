@@ -16,7 +16,7 @@ class Phoo_Events_UpdateComment extends Jaws_Gadget_Event
      */
     function Execute($gadget, $action, $reference)
     {
-        if ($gadget != 'phoo') {
+        if ($gadget != 'Phoo') {
             return;
         }
 
