@@ -207,9 +207,7 @@ function editAgent(element, id)
     var agent = PolicyAjax.callSync('getagent', id);
 
     $('id').value    = agent['id'];
-    console.log(agent['agent']);
     $('agent').value = agent['agent'].defilter();
-    console.log($('agent').value);
     $('blocked').selectedIndex = agent['blocked']? 1 : 0;
 }
 
