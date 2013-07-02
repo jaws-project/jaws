@@ -9,6 +9,7 @@ width:220px;
 padding-left:6px;
 }
 #info_section table{
+border-spacing:2px;
 font-size:smaller;
 text-align:right;
 }
