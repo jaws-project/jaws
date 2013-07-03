@@ -1,39 +1,24 @@
 <!-- BEGIN visitcounter -->
-<table style="width: 100%;">
- <tr>
-  <td valign="top">
-  {menubar}
-  </td>
- </tr>
+{menubar}
+<table id="main">
+  <tr>
+    <td>
+      <fieldset id="statistics">
+        <legend><span>{visitor_stats}</span></legend>
+        <table>
+          <!-- BEGIN item -->
+          <tr><th>{label}</th><td>{value}</td></tr>
+          <!-- END item -->
+        </table>
+      </fieldset>
+    </td>
+    <td rowspan="2" valign="top" width="100%">
+      {grid}
+    </td>
+  </tr>
+  <tr><td id="configuration">{config_form}</td></tr>
 </table>
-<div id="main" align="center">
-<table>
- <tr>
-   <td valign="top" align="center">
-    <table id="statistics" cellspacing="0">
-    <tr>
-     <td id="statistics_title" colspan="2" class="dark-background">{visitor_stats}</td>
-    </tr>
-    <!-- BEGIN item -->
-    <tr>
-     <td id="statistics_label"><label>{label}</label></td>
-     <td id="statistics_value">{value}</td>
-    </tr>
-    <!-- END item -->
-    </table>
-   </td>
-   <td valign="top" width="100%" rowspan="2">
-    <div id="datagrid" style="text-align: center;">
-    {grid}
-    </div>
-    <script type="text/javascript">initDataGrid('visitcounter_datagrid', VisitCounterAjax);</script>
-   </td>
- </tr>
- <tr>
-   <td valign="top" align="center"><div align="left"><br /><div>
-   {config_form}
-   </div></td>
- </tr>
-</table>
-</div>
+<script type="text/javascript">
+  initDataGrid('visitcounter_datagrid', VisitCounterAjax);
+</script>
 <!-- END visitcounter -->

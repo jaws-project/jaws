@@ -91,7 +91,6 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         $datagrid->TotalRows($total);
         $datagrid->pageBy(15);
         $datagrid->SetID('visitcounter_datagrid');
-        $datagrid->SetStyle('width: 100%; margin-top: 0.1em;');
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_IP')));
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_DATE')));
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_VISITS')));
@@ -132,7 +131,6 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
             include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
             $fieldset_config = new Jaws_Widgets_FieldSet(_t('VISITCOUNTER_PROPERTIES'));
             $fieldset_config->SetDirection('vertical');
-            $fieldset_config->SetStyle('white-space: nowrap; width: 228px;');
 
             $visit_counters = explode(',', $this->gadget->registry->fetch('visit_counters'));
             $check_counters =& Piwi::CreateWidget('CheckButtons', 'c_kind', 'vertical');
@@ -182,13 +180,11 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
             $customText =& Piwi::CreateWidget('Entry', 'custom_text');
             $customText->SetTitle(_t('VISITCOUNTER_CUSTOM_TEXT'));
             $customText->SetValue($custom_reg);
-            $customText->SetStyle('width: 200px;');
             $fieldset_config->Add($customText);
 
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                                                  _t('VISITCOUNTER_UPDATE_PROPS'), STOCK_SAVE);
-            $submit_config->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
             $submit_config->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
             $config_form->Add($submit_config);
 

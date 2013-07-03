@@ -1,16 +1,22 @@
+fieldset{
+width:260px;
+}
 #statistics{
+margin:-11px 0 10px 8px;
+}
+#statistics tr:nth-child(even){
+background-color:#f5f5f5;
+}
+#statistics th{
+white-space:nowrap;
+padding-left:5px;
+}
+#configuration fieldset > div{
+margin-bottom:5px;
+}
+#configuration select{
+width:120px;
+}
+#custom_text{
 width:100%;
-border:1px solid #d3d7cf;
-padding:4px;
-}
-#statistics_title{
-text-align:right;
-}
-#statistics_label{
-text-align:right;
-white-space:nowrap;
-}
-#statistics_value{
-text-align:left;
-white-space:nowrap;
 }
