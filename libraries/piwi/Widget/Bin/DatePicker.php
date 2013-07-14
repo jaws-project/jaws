@@ -550,6 +550,8 @@ class DatePicker extends Bin
     function _buildXHTML()
     {
         $this->_entry->setReadOnly($this->_readOnly);
+        $this->_entry->setEnabled($this->_isEnabled);
+        $this->_button->setEnabled($this->_isEnabled);
         $this->_XHTML = "<table";
         $this->_XHTML .= $this->buildBasicXHTML();
         $this->_XHTML .= $this->buildJSEvents();
