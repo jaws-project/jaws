@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_08To090 extends JawsUpgraderStage
+class Upgrader_08To0901 extends JawsUpgraderStage
 {
     /**
      * Builds the upgader page.
@@ -19,14 +19,14 @@ class Upgrader_08To090 extends JawsUpgraderStage
     function Display()
     {
         $tpl = new Jaws_Template();
-        $tpl->Load('display.html', 'stages/08To090/templates');
-        $tpl->SetBlock('08To090');
+        $tpl->Load('display.html', 'stages/08To0901/templates');
+        $tpl->SetBlock('08To0901');
 
         $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '0.8', '0.9.0'));
         $tpl->setVariable('lbl_notes', _t('UPGRADE_VER_NOTES'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        $tpl->ParseBlock('08To090');
+        $tpl->ParseBlock('08To0901');
         return $tpl->Get();
     }
 
@@ -49,19 +49,19 @@ class Upgrader_08To090 extends JawsUpgraderStage
 
         // upgrade core database schema
         $old_schema = JAWS_PATH . 'upgrade/schema/0.8.18.xml';
-        $new_schema = JAWS_PATH . 'upgrade/schema/schema-middle.xml';
+        $new_schema = JAWS_PATH . 'upgrade/schema/0.9.0.1.xml';
         if (!file_exists($old_schema)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.8.18.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         if (!file_exists($new_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', 'schema-middle.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.1.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");
         $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
         if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_WARNING, $result->getMessage());
+            _log(JAWS_LOG_ERROR, $result->getMessage());
             if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
                 return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
             }
@@ -71,7 +71,7 @@ class Upgrader_08To090 extends JawsUpgraderStage
         $sql = 'SELECT [old_key_name], [key_value] FROM [[registry]]';
         $keys = $GLOBALS['db']->queryAll($sql, array(), null, MDB2_FETCHMODE_DEFAULT, true);
         if (Jaws_Error::isError($keys)) {
-            _log(JAWS_LOG_WARNING, $keys->getMessage());
+            _log(JAWS_LOG_ERROR, $keys->getMessage());
             return new Jaws_Error($keys->getMessage(), 0, JAWS_ERROR_ERROR);
         }
 
@@ -92,8 +92,14 @@ class Upgrader_08To090 extends JawsUpgraderStage
             switch ($key[0]) {
                 case 'config':
                 case 'network':
-                    $component = 'Settings';
-                    $new_key_name = $key[1];
+                    if ($key[1] == 'cookie') {
+                        $component = 'Settings';
+                        $new_key_name = 'cookie_'. $key[2];
+                    } else {
+                        $component = 'Settings';
+                        $new_key_name = $key[1];
+                    }
+
                     break;
 
                 case 'policy':
@@ -103,7 +109,7 @@ class Upgrader_08To090 extends JawsUpgraderStage
 
                 case 'map':
                     $component = 'UrlMapper';
-                    $new_key_name = $key[1];
+                    $new_key_name = 'map_'. $key[1];
                     break;
 
                 case 'crypt':
@@ -139,10 +145,14 @@ class Upgrader_08To090 extends JawsUpgraderStage
                 case 'plugins':
                     switch ($key[1]) {
                         case 'parse_text':
-                            $component = '';
-                            $new_key_name = 'plugins_installed_items';
-                            $value.= ',';
-                            break;
+                            if ($key[2] == 'enabled_items') {
+                                $component = '';
+                                $new_key_name = 'plugins_installed_items';
+                                $value.= ',';
+                                break;
+                            }
+                            $key[1] = $key[2];
+                            $key[2] = $key[3];
 
                         default:
                             $component = $key[1];
@@ -160,13 +170,47 @@ class Upgrader_08To090 extends JawsUpgraderStage
             $params['new_key_value'] = $value;
             $res = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($res)) {
-                _log(JAWS_LOG_WARNING, $res->getMessage());
+                _log(JAWS_LOG_ERROR, $res->getMessage());
                 return new Jaws_Error($res->getMessage(), 0, JAWS_ERROR_ERROR);
             }
-
         }
 
-        // convert acl key name to new format
+        // delete outdated registry keys
+        $sql = '
+            DELETE
+            FROM [[registry]]
+            WHERE
+                [old_key_name] = {key1}
+              OR
+               [old_key_name] = {key2}';
+        $params = array();
+        $params['key1'] = '/last_update';
+        $params['key2'] = '/gadgets/allowurl_items';
+        $res = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($res)) {
+            _log(JAWS_LOG_ERROR, $res->getMessage());
+            return $res;
+        }
+
+        // upgrade core database schema - next step
+        $old_schema = JAWS_PATH . 'upgrade/schema/0.9.0.1.xml';
+        $new_schema = JAWS_PATH . 'upgrade/schema/0.9.0.2.xml';
+        if (!file_exists($old_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.1.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        if (!file_exists($new_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.2.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
+        if (Jaws_Error::isError($result)) {
+            _log(JAWS_LOG_ERROR, $result->getMessage());
+            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
 
         return true;
     }

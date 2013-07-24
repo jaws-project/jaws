@@ -29,6 +29,8 @@ class Upgrader_Report extends JawsUpgraderStage
         $JawsInstalledVersion = $GLOBALS['app']->Registry->fetch('version');
 
         $supportedversions = array(
+            array('version' => '0.9.0',  'stage' => '7'),
+            array('version' => '0.9.0',  'stage' => '6'),
             array('version' => '0.9.0',  'stage' => '5'),
             array('version' => '0.8.18', 'stage' => null),
         );
