@@ -25,23 +25,16 @@ class Upgrader_Report extends JawsUpgraderStage
 
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $GLOBALS['app']->loadObject('Jaws_Registry', 'Registry');
         $GLOBALS['app']->Registry->Init();
         $JawsInstalledVersion = $GLOBALS['app']->Registry->fetch('version');
 
         $supportedversions = array(
-                                   array(
-                                         'version'   => '0.9.0',
-                                         'stage'     => '5',
-                                         ),
-                                   array(
-                                         'version'   => '0.8.18',
-                                         'stage'     => null,
-                                         ),
-                                   );
+            array('version' => '0.9.0',  'stage' => '5'),
+            array('version' => '0.8.18', 'stage' => null),
+        );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
 
