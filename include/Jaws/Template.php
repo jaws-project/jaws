@@ -53,8 +53,9 @@ class Jaws_Template
      *                                                 JAWS_COMPONENT_PLUGIN)
      * @return  void
      */
-    function Jaws_Template()
+    function Jaws_Template($loadFromTheme = null)
     {
+        $this->loadFromTheme = $loadFromTheme;
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
@@ -65,12 +66,21 @@ class Jaws_Template
             '(?:loop\(('.$namexp.')\)\s+|)'.
             '-->(.*)<!--\s+end\s+\1\s+-->@sim';
 
+        $this->globalVariables['theme_url']  = '';
+        $this->globalVariables['.dir'] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+        $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
+        $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
+        $this->globalVariables['base_script']   = BASE_SCRIPT;
+
         if (isset($GLOBALS['app'])) {
-            $theme = $GLOBALS['app']->GetTheme();
+            if (false !== $loadFromTheme) {
+                $theme = $GLOBALS['app']->GetTheme();
+                $this->globalVariables['theme_url']  = $theme['url'];
+            }
+
             $request = $GLOBALS['app']->GetMainRequest();
             $brow = $GLOBALS['app']->GetBrowserFlag();
 
-            $this->globalVariables['theme_url']  = $theme['url'];
             $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
             $this->globalVariables['jaws_index'] = $request['index']? 'jaws_index' : '';
             $this->globalVariables['.browser']   = empty($brow)? '' : '.'.$brow;
@@ -78,10 +88,6 @@ class Jaws_Template
             $this->globalVariables['requested_action'] = $request['action'];
         }
 
-        $this->globalVariables['.dir'] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
-        $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
-        $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
-        $this->globalVariables['base_script']   = BASE_SCRIPT;
     }
 
     /**
