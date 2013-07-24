@@ -47,118 +47,70 @@ class Upgrader_08To0902 extends JawsUpgraderStage
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
-        // upgrade core database schema
-        $old_schema = JAWS_PATH . 'upgrade/schema/0.8.18.xml';
-        $new_schema = JAWS_PATH . 'upgrade/schema/schema-middle.xml';
-        if (!file_exists($old_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.8.18.xml'),0 , JAWS_ERROR_ERROR);
-        }
-
-        if (!file_exists($new_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', 'schema-middle.xml'),0 , JAWS_ERROR_ERROR);
-        }
-
-        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
-        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
-        if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_WARNING, $result->getMessage());
-            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
-                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
-            }
-        }
-
-        // convert registry key name to new format
-        $sql = 'SELECT [old_key_name], [key_value] FROM [[registry]]';
+        // convert acl key name to new format
+        $sql = 'SELECT [old_key_name], [old_key_value] FROM [[acl]]';
         $keys = $GLOBALS['db']->queryAll($sql, array(), null, MDB2_FETCHMODE_DEFAULT, true);
         if (Jaws_Error::isError($keys)) {
             _log(JAWS_LOG_WARNING, $keys->getMessage());
             return new Jaws_Error($keys->getMessage(), 0, JAWS_ERROR_ERROR);
         }
 
-        $keys['/gadgets/enabled_items'] = $keys['/gadgets/core_items']. $keys['/gadgets/enabled_items']. ',';
-        unset($keys['/gadgets/allowurl_items']);
-        
-        $sql = '
-            UPDATE [[registry]] SET
+        $aclSQL = '
+            UPDATE [[acl]] SET
                 [component] = {component},
                 [key_name2] = {new_key_name},
-                [key_value] = {new_key_value}
+                [key_subkey] = {key_subkey},
+                [key_value2] = {new_key_value},
+                [user] = {user},
+                [group] = {group}
             WHERE [old_key_name] = {old_key_name}';
+
+        $usrSQL = 'SELECT [id] FROM [[users]] WHERE [username] = {username}';
+
         $params = array();
+        $usersArray = array();
         foreach ($keys as $key => $value) {
+            $value = ($value == 'true');
             $params['old_key_name'] = $key;
-            $key = trim($key, '/');
+            $key = substr($key, 5);
             $key = explode('/', $key);
             switch ($key[0]) {
-                case 'config':
-                case 'network':
-                    $component = 'Settings';
-                    $new_key_name = $key[1];
-                    break;
-
-                case 'policy':
-                    $component = 'Policy';
-                    $new_key_name = $key[1];
-                    break;
-
-                case 'map':
-                    $component = 'UrlMapper';
-                    $new_key_name = $key[1];
-                    break;
-
-                case 'crypt':
-                    $component = 'Policy';
-                    $new_key_name = 'crypt_'. $key[1];
-                    break;
-
-                case 'gadgets':
-                    switch ($key[1]) {
-                        case 'enabled_items':
-                            $component = '';
-                            $new_key_name = 'gadgets_installed_items';
-                            break;
-
-                        case 'core_items':
-                            $component = '';
-                            $new_key_name = 'gadgets_disabled_items';
-                            $value = ',';
-                            break;
-
-                        case 'autoload_items':
-                            $component = '';
-                            $new_key_name = 'gadgets_autoload_items';
-                            $value.= ',';
-                            break;
-
-                        default:
-                            $component = $key[1];
-                            $new_key_name = $key[2];
+                case 'users':
+                    $group = 0;
+                    $component = $key[3];
+                    $new_key_name = $key[4];
+                    if (!isset($usersArray[$key[1]])) {
+                        $usersArray[$key[1]] = $GLOBALS['db']->queryOne($usrSQL, array('username' => $key[1]));
                     }
+
+                    if (Jaws_Error::IsError($usersArray[$key[1]]) || empty($usersArray[$key[1]])) {
+                        continue;
+                    }
+                    $user = (int)$usersArray[$key[1]];
+
                     break;
 
-                case 'plugins':
-                    switch ($key[1]) {
-                        case 'parse_text':
-                            $component = '';
-                            $new_key_name = 'plugins_installed_items';
-                            $value.= ',';
-                            break;
-
-                        default:
-                            $component = $key[1];
-                            $new_key_name = $key[2];
-                    }
+                case 'groups':
+                    $user = 0;
+                    $group = (int)$key[1];
+                    $component = $key[3];
+                    $new_key_name = $key[4];
                     break;
 
                 default:
-                    $component = '';
-                    $new_key_name = $key[0];
+                    $user = 0;
+                    $group = 0;
+                    $component = $key[1];
+                    $new_key_name = $key[2];
             }
 
             $params['component']     = $component;
             $params['new_key_name']  = $new_key_name;
-            $params['new_key_value'] = $value;
-            $res = $GLOBALS['db']->query($sql, $params);
+            $params['key_subkey']    = '';
+            $params['new_key_value'] = (int)$value;
+            $params['user']  = $user;
+            $params['group'] = $group;
+            $res = $GLOBALS['db']->query($aclSQL, $params);
             if (Jaws_Error::IsError($res)) {
                 _log(JAWS_LOG_WARNING, $res->getMessage());
                 return new Jaws_Error($res->getMessage(), 0, JAWS_ERROR_ERROR);
@@ -166,7 +118,25 @@ class Upgrader_08To0902 extends JawsUpgraderStage
 
         }
 
-        // convert acl key name to new format
+        // upgrade core database schema - next step
+        $old_schema = JAWS_PATH . 'upgrade/schema/0.9.0.2.xml';
+        $new_schema = JAWS_PATH . 'upgrade/schema/schema.xml';
+        if (!file_exists($old_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.2.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        if (!file_exists($new_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', 'schema.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
+        if (Jaws_Error::isError($result)) {
+            _log(JAWS_LOG_ERROR, $result->getMessage());
+            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
 
         return true;
     }
