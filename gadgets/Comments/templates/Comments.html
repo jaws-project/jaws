@@ -1,0 +1,67 @@
+<!-- BEGIN comments -->
+<div class="comments {gadget}">
+    <!-- BEGIN entry -->
+    <div class="comments_post">
+
+        <div class="post_profile" id="user_profile">
+            <ul>
+                <li><span id="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+                <!-- BEGIN registered_date -->
+                <li><span id="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
+                <!-- END registered_date -->
+            </ul>
+        </div>
+
+        <div class="post_body">
+            <div class="post_meta" id="comment_meta">
+                {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+                &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+            </div>
+            <div class="post_content">{message}</div>
+            <!-- BEGIN reply -->
+            <div class="reply_content" id="reply_content">
+                <blockquote> <cite>{lbl_replier} <a href='{replier_url}'>{replier}</a> : </cite><div>{reply}</div></blockquote>
+            </div>
+            <!-- END reply -->
+        </div>
+
+        <div class="post_actions" id="comment_reply">[ {reply-link} ]</div>
+    </div>
+
+    <hr style="clear: both; visibility: hidden;"/>
+    <!-- END entry -->
+    <!-- INCLUDE PageNavigation.html -->
+    <hr style="clear: both; visibility: hidden;"/>
+    <div class="actions">
+        <!-- BEGIN action -->
+        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+        <!-- END action -->
+    </div>
+
+</div>
+<!-- END comments -->
+
+<!-- BEGIN comment-preview -->
+<div class="comments_post preview">
+
+    <div class="post_profile" id="user_profile">
+        <ul>
+            <li><span id="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+            <!-- BEGIN registered_date -->
+            <li><span id="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
+            <!-- END registered_date -->
+        </ul>
+    </div>
+
+    <div class="post_body">
+        <div class="post_meta" id="comment_meta">
+            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+            &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+        </div>
+        <div class="post_content">{message}</div>
+    </div>
+
+</div>
+
+<hr style="clear: both; visibility: hidden;"/>
+<!-- END comment-preview -->
