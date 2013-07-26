@@ -15,45 +15,39 @@
             </field>
 
             <field>
-                <name>gadget</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>action</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>reference</name>
-                <was>gadget_reference</was>
+                <name>parent</name>
                 <type>integer</type>
                 <default>0</default>
             </field>
 
             <field>
-                <name>user</name>
+                <name>gadget_reference</name>
                 <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>80</length>
             </field>
 
             <field>
                 <name>name</name>
                 <type>text</type>
-                <length>128</length>
+                <length>255</length>
             </field>
 
             <field>
                 <name>email</name>
                 <type>text</type>
-                <length>128</length>
+                <length>255</length>
             </field>
 
             <field>
                 <name>url</name>
                 <type>text</type>
-                <length>128</length>
+                <length>120</length>
             </field>
 
             <field>
@@ -61,6 +55,12 @@
                 <type>text</type>
                 <length>20</length>
                 <default>127.0.0.1</default>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>255</length>
             </field>
 
             <field>
@@ -75,51 +75,49 @@
             </field>
 
             <field>
-                <name>reply</name>
-                <type>text</type>
-            </field>
-
-            <field>
-                <name>replier</name>
-                <type>integer</type>
-            </field>
-
-            <field>
                 <name>createtime</name>
                 <type>timestamp</type>
             </field>
 
             <field>
-                <name>status</name>
-                <was>new_status</was>
+                <name>replies</name>
                 <type>integer</type>
-                <length>2</length>
-                <default>1</default>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>status</name>
+                <type>text</type>
+                <length>10</length>
+                <default>approved</default>
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gas</name>
+                <name><variable>table_prefix</variable>comments</name>
+                <primary>true</primary>
                 <field>
-                    <name>gadget</name>
-                </field>
-                <field>
-                    <name>action</name>
-                </field>
-                <field>
-                    <name>status</name>
+                    <name>id</name>
                 </field>
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gar</name>
+                <name><variable>table_prefix</variable>comments_g</name>
                 <field>
                     <name>gadget</name>
                 </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_gr</name>
                 <field>
-                    <name>action</name>
+                    <name>gadget_reference</name>
                 </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_p</name>
                 <field>
-                    <name>reference</name>
+                    <name>parent</name>
                 </field>
             </index>
 

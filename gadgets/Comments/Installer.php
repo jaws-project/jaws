@@ -26,6 +26,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
      * Install the gadget
      *
      * @access  public
+     * @param   bool    $upgrade_from_08x   Upgrade from 0.8.x
      * @return  mixed   True on success or Jaws_Error on failure
      */
     function Install($upgrade_from_08x = false)
@@ -43,7 +44,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
         ));
 
         if ($upgrade_from_08x) {
-            return $this->Upgrade('0.8.0', '0.9.0');
+            return $this->Upgrade('0.8.0', '1.0.0');
         } else {
             $result = $this->installSchema('schema.xml');
             if (Jaws_Error::IsError($result)) {

@@ -90,8 +90,15 @@
             </field>
 
             <field>
-                <name>status</name>
-                <was>new_status</was>
+                <name>old_status</name>
+                <was>status</was>
+                <type>text</type>
+                <length>10</length>
+                <default>approved</default>
+            </field>
+
+            <field>
+                <name>new_status</name>
                 <type>integer</type>
                 <length>2</length>
                 <default>1</default>
