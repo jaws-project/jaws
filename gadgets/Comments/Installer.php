@@ -28,13 +28,8 @@ class Comments_Installer extends Jaws_Gadget_Installer
      * @access  public
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Install()
+    function Install($upgrade_from_08x = false)
     {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         // Install listener for removing comments related to uninstalled gadget
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
 
@@ -46,6 +41,15 @@ class Comments_Installer extends Jaws_Gadget_Installer
             'allow_duplicate' => 'no',
             'allow_comments' => 'true',
         ));
+
+        if ($upgrade_from_08x) {
+            return $this->Upgrade('0.8.0', '0.9.0');
+        } else {
+            $result = $this->installSchema('schema.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
 
         return true;
     }

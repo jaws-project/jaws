@@ -23,12 +23,12 @@ class Comments_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '1.0.0';
+    var $_Version = '0.9.0';
 
     /**
      * Is this gadget core gadget?
      *
-     * @var    boolean
+     * @var     boolean
      * @access  private
      */
     var $_IsCore = true;
