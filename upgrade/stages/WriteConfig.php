@@ -20,7 +20,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
     function BuildConfig()
     {
         include_once JAWS_PATH . 'include/Jaws/Template.php';
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
@@ -47,7 +47,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
 
         _log(JAWS_LOG_DEBUG,"Preparing configuaration file");

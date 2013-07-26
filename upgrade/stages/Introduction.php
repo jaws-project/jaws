@@ -18,7 +18,7 @@ class Upgrader_Introduction extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/Introduction/templates');
         $tpl->SetBlock('Introduction');
         $tpl->SetVariable('welcome',    _t('UPGRADE_INTRO_WELCOME'));

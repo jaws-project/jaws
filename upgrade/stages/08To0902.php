@@ -18,7 +18,7 @@ class Upgrader_08To0902 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/08To0902/templates');
         $tpl->SetBlock('08To0902');
 
@@ -45,6 +45,26 @@ class Upgrader_08To0902 extends JawsUpgraderStage
         if (Jaws_Error::IsError($GLOBALS['db'])) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+        }
+
+        // upgrade core database schema
+        $old_schema = JAWS_PATH . 'upgrade/schema/0.9.0.1.xml';
+        $new_schema = JAWS_PATH . 'upgrade/schema/0.9.0.2.xml';
+        if (!file_exists($old_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.1.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        if (!file_exists($new_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.9.0.2.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
+        if (Jaws_Error::isError($result)) {
+            _log(JAWS_LOG_ERROR, $result->getMessage());
+            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
         }
 
         // convert acl key name to new format

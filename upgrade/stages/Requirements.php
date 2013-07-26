@@ -38,7 +38,7 @@ class Upgrader_Requirements extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->load('display.html', 'stages/Requirements/templates');
         $tpl->setBlock('Requirements');
 

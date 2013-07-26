@@ -20,7 +20,7 @@ class Upgrader_Finished extends JawsUpgraderStage
     {
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/Finished/templates');
         $tpl->SetBlock('Finished');
 

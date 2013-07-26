@@ -18,7 +18,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/08To0903/templates');
         $tpl->SetBlock('08To0903');
 
@@ -56,14 +56,11 @@ class Upgrader_08To0903 extends JawsUpgraderStage
         $timestamp = $GLOBALS['db']->Date();
 
         // Registry keys
-        // adding gadget to installed gadgets list
-        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
-        $installed_gadgets.= 'Comments,';
-        $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
         $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
 
         // Trying to add missed acl keys
         _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
+        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         $igadgets = array_filter(array_map('trim', explode(',', $installed_gadgets)));
         foreach ($igadgets as $ig) {
             $GLOBALS['app']->ACL->insert('default', '', 1, $ig);
@@ -71,7 +68,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
         }
 
         // Upgrading core gadgets
-        $gadgets = array('Settings', 'UrlMapper', 'Layout', 'Users');
+        $gadgets = array('Settings', 'UrlMapper', 'Users', 'Policy', 'Layout');
         foreach ($gadgets as $gadget) {
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             if (Jaws_Error::IsError($objGadget)) {
@@ -84,10 +81,15 @@ class Upgrader_08To0903 extends JawsUpgraderStage
                 _log(JAWS_LOG_DEBUG,"There was a problem loading installer of core gadget: $gadget");
                 return $installer;
             }
-            
-            $result = $installer->UpgradeGadget();
+
+            if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
+                $result = $installer->UpgradeGadget();
+            } else {
+                $result = $installer->InstallGadget();
+            }
+
             if (Jaws_Error::IsError($result)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem upgrading core gadget: $gadget");
+                _log(JAWS_LOG_DEBUG,"There was a problem installing/upgrading core gadget: $gadget");
                 return $result;
             }
         }
