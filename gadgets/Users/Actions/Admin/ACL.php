@@ -29,7 +29,7 @@ class Users_Actions_Admin_ACL extends Users_AdminHTML
 
         // Components
         $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
-        $gadgets = $model->GetGadgetsList(null, true, true, true);
+        $gadgets = $model->GetGadgetsList(null, true, true);
         $combo =& Piwi::CreateWidget('Combo', 'components');
         $combo->AddOption('', '');
         foreach ($gadgets as $gadget) {
