@@ -131,14 +131,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.3.1', '<')) {
-            // ACL keys
-            $this->gadget->acl->insert('BasicSettings');
-            $this->gadget->acl->insert('AdvancedSettings');
-            $this->gadget->acl->insert('MetaSettings');
-            $this->gadget->acl->insert('MailSettings');
-            $this->gadget->acl->insert('FTPSettings');
-            $this->gadget->acl->insert('ProxySettings');
+        if (version_compare($old, '0.4.0', '<')) {
+            $this->gadget->registry->insert('global_website', 'true');
+            $this->gadget->registry->delete('layoutmode');
+            $this->gadget->registry->delete('site_url');
         }
 
         return true;
