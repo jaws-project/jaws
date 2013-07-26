@@ -38,11 +38,19 @@ class Jaws_Registry
         $result = $tblReg->select('component', 'key_name', 'key_value')
             ->where('key_name', 'version')->or()->where('component', '')
             ->getAll();
-        if (!Jaws_Error::IsError($result)) {
-            foreach ($result as $regrec) {
-                $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+        if (Jaws_Error::IsError($result)) {
+            if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
+                return '';
             }
+
+            Jaws_Error::Fatal($result->getMessage());
         }
+
+        foreach ($result as $regrec) {
+            $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+        }
+
+        return $this->_Registry['']['version'];
     }
 
     /**

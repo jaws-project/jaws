@@ -78,8 +78,8 @@ if (Jaws_Error::IsError($GLOBALS['db'])) {
     Jaws_Error::Fatal($GLOBALS['db']->getMessage());
 }
 
-$GLOBALS['app']->Registry->Init();
-if ($GLOBALS['app']->Registry->fetch('version') != JAWS_VERSION) {
+$db_jaws_version = $GLOBALS['app']->Registry->Init();
+if ($db_jaws_version != JAWS_VERSION) {
     Jaws_Header::Location('upgrade/index.php');
 }
 
