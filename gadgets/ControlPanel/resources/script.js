@@ -12,7 +12,10 @@
  */
 var ControlPanelCallback = {
     JawsVersion: function(response) {
-        $('jaws_version').set('html', response);
+        $('latest_jaws_version').set('html', response);
+        if (!response.blank() && $('current_jaws_version').value != response) {
+            $(document.body).getElement('div.notify_version').setStyle('display', 'block');
+        }
     }
 }
 

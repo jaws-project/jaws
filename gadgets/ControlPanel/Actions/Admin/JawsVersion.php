@@ -30,7 +30,7 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_HTML
             $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
         }
 
-        $jaws_version = '-';
+        $jaws_version = '';
         require_once PEAR_PATH. 'HTTP/Request.php';
         $httpRequest = new HTTP_Request('http://jaws-project.com/version/0', $options);
         $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
