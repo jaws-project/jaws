@@ -652,6 +652,9 @@ border:1px solid #d3d7cf;
 .notify_components ul li{
 padding:2px;
 }
+.notify_components ul li:hover{
+background:#f5f7ff;
+}
 .notify_components img{
 width:32px;
 height:32px;
