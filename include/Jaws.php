@@ -947,11 +947,13 @@ class Jaws
     {
         $data    = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
         $gadgets = array_filter(explode(',', $data));
-        foreach($gadgets as $gadgetName) {
-            $gadget = $this->loadGadget($gadgetName, 'Autoload');
-            if (!Jaws_Error::isError($gadget)) {
-                if (method_exists($gadget, 'Execute')) {
-                    $gadget->Execute();
+        foreach($gadgets as $gadget) {
+            if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
+                $objGadget = $this->loadGadget($gadget, 'Autoload');
+                if (!Jaws_Error::isError($objGadget)) {
+                    if (method_exists($objGadget, 'Execute')) {
+                        $objGadget->Execute();
+                    }
                 }
             }
         }
