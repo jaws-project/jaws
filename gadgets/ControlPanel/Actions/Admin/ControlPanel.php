@@ -66,10 +66,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
         }
 
         if ($this->gadget->GetPermission('default_admin', '', 'Components')) {
-            //Count non-installed gadgets..
+            //Count non-installed gadgets
             $noninstalled = $cmpModel->GetGadgetsList(null, false);
-            //Count out date gadgets..
-            $nonupdated   = $cmpModel->GetGadgetsList(null, true, false);
             if (count($noninstalled) > 0) {
                 $tpl->SetBlock('notifybox');
                 $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
@@ -87,10 +85,11 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
                 $tpl->ParseBlock('notifybox');
             }
 
+            //Count out date gadgets
+            $nonupdated = $cmpModel->GetGadgetsList(null, true, false);
             if (count($nonupdated) > 0) {
                 $tpl->SetBlock('notifybox');
-                $tpl->SetVariable('notify-title', _t('COMPONENTS_GADGETS_OUTDATED'));
-                $tpl->SetVariable('notify_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
+                $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_OUTDATED'));
                 foreach ($nonupdated as $key => $gadget) {
                     $tpl->SetBlock('notifybox/item');
                     $gadgetCompleteDesc = $gadget['name'] . ' - ' . $gadget['description'];
