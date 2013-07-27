@@ -185,9 +185,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function UpdateGadgetMaps($gadget)
     {
-        $file = JAWS_PATH . 'gadgets/' . $gadget . '/Map.php';
+        $file = JAWS_PATH. "gadgets/$gadget/Map.php";
+        $maps = array();
         if (@include($file)) {
-            $maps = array();
             $now = $GLOBALS['db']->Date();
             foreach ($maps as $order => $map) {
                 $eMap = $this->GetMapByParams($gadget, $map[0], $map[1]);

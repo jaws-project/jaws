@@ -81,9 +81,11 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
                     return $res;
                 }
             }
+
+            $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+            $mapsTable->delete()->where('vars_regexps', null, 'is null')->exec();
         }
 
-        Jaws_Utils::Delete(JAWS_DATA . 'cache/maps.php');
         return true;
     }
 
