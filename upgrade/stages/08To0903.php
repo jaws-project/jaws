@@ -98,6 +98,30 @@ class Upgrader_08To0903 extends JawsUpgraderStage
             }
         }
 
+
+        // Upgrading layout actions for renamed gadgets
+        _log(JAWS_LOG_DEBUG, 'Upgrading layout actions for renamed gadgets');
+        $renamed_gadgets = array(
+            'Chatbox'=>'Shoutbox',
+            'RssReader'=>'FeedReader',
+            'SimpleSite'=>'Sitemap'
+        );
+
+        $sql = '
+            UPDATE [[layout]] SET
+                [gadget] = {new_name}
+            WHERE [gadget] = {old_name}';
+        $params = array();
+        foreach ($renamed_gadgets as $old_name => $new_name) {
+            $params['old_name'] = $old_name;
+            $params['new_name'] = $new_name;
+            $res = $GLOBALS['db']->query($sql, $params);
+            if (Jaws_Error::IsError($res)) {
+                _log(JAWS_LOG_ERROR, $res->getMessage());
+                return new Jaws_Error($res->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
+
         return true;
     }
 
