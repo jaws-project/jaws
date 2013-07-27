@@ -81,7 +81,7 @@ class Upgrader_08To0901 extends JawsUpgraderStage
         $sql = '
             UPDATE [[registry]] SET
                 [component] = {component},
-                [key_name2] = {new_key_name},
+                [new_key_name] = {new_key_name},
                 [key_value] = {new_key_value}
             WHERE [old_key_name] = {old_key_name}';
         $params = array();
@@ -133,7 +133,11 @@ class Upgrader_08To0901 extends JawsUpgraderStage
                         case 'enabled_items':
                             $component = '';
                             $new_key_name = 'gadgets_installed_items';
-                            $value = str_replace(',Jms', ',Components', $value);
+                            $value = str_replace(
+                                array(',Jms', ',Chatbox', ',RssReader', ',SimpleSite', ',Registry'),
+                                array(',Components', ',Shoutbox', ',FeedReader', ',Sitemap', ''),
+                                $value
+                            );
                             break;
 
                         case 'core_items':
@@ -150,6 +154,21 @@ class Upgrader_08To0901 extends JawsUpgraderStage
 
                         case 'Jms':
                             $component = 'Components';
+                            $new_key_name = $key[2];
+                            break;
+
+                        case 'Chatbox':
+                            $component = 'Shoutbox';
+                            $new_key_name = $key[2];
+                            break;
+
+                        case 'RssReader':
+                            $component = 'FeedReader';
+                            $new_key_name = $key[2];
+                            break;
+
+                        case 'SimpleSite':
+                            $component = 'Sitemap';
                             $new_key_name = $key[2];
                             break;
 
@@ -205,14 +224,17 @@ class Upgrader_08To0901 extends JawsUpgraderStage
               OR
                 [old_key_name] = {key4}
               OR
-                [key_name2] = {key5}';
+                [new_key_name] = {key5}
+              OR
+                [component] = {key6}';
         $params = array();
         $params['key1'] = '/last_update';
         $params['key2'] = '/gadgets/allowurl_items';
         $params['key3'] = '/config/frontend_ajaxed';
         $params['key4'] = '/config/controlpanel_name';
         $params['key5'] = 'pluggable';
-        
+        $params['key6'] = 'Registry';
+
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {
             _log(JAWS_LOG_ERROR, $res->getMessage());

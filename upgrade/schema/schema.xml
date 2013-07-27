@@ -24,7 +24,7 @@
 
             <field>
                 <name>key_name</name>
-                <was>key_name2</was>
+                <was>new_key_name</was>
                 <type>text</type>
                 <length>32</length>
                 <notnull>true</notnull>
@@ -82,7 +82,7 @@
 
             <field>
                 <name>key_name</name>
-                <was>key_name2</was>
+                <was>new_key_name</was>
                 <type>text</type>
                 <length>32</length>
                 <notnull>true</notnull>

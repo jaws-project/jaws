@@ -78,7 +78,7 @@ class Upgrader_08To0902 extends JawsUpgraderStage
         $aclSQL = '
             UPDATE [[acl]] SET
                 [component] = {component},
-                [key_name2] = {new_key_name},
+                [new_key_name] = {new_key_name},
                 [key_subkey] = {key_subkey},
                 [key_value2] = {new_key_value},
                 [user] = {user},

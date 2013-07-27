@@ -30,7 +30,7 @@
             </field>
 
             <field>
-                <name>key_name2</name>
+                <name>new_key_name</name>
                 <type>text</type>
                 <length>32</length>
             </field>
@@ -83,7 +83,7 @@
             </field>
 
             <field>
-                <name>key_name2</name>
+                <name>new_key_name</name>
                 <type>text</type>
                 <length>32</length>
             </field>
