@@ -76,6 +76,59 @@ class Comments_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '0.9.0', '<')) {
+            $result = $this->installSchema('0.9.0.xml', '', '0.8.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $sql = 'SELECT [id], [gadget], [old_status] FROM [[comments]]';
+            $comments = $GLOBALS['db']->queryAll($sql);
+            if (Jaws_Error::IsError($comments)) {
+                return $comments;
+            }
+
+            $gadgetof = array();
+            $gadgetof['Blog'] = 'Blog';
+            $gadgetof['Phoo'] = 'Phoo';
+            $gadgetof['Chatbox'] = 'Shoutbox';
+
+            $actionof = array();
+            $actionof['Blog'] = 'Post';
+            $actionof['Phoo'] = 'Image';
+            $actionof['Chatbox'] = '';
+
+            $statusof = array();
+            $statusof['approved'] = 1;
+            $statusof['waiting'] = 2;
+            $statusof['spam'] = 3;
+
+            $sql = '
+                UPDATE [[comments]] SET
+                    [gadget] = {gadget},
+                    [action] = {action},
+                    [new_status] = {status}
+                WHERE [id] = {id}';
+
+            $params = array();
+            foreach ($comments as $comment) {
+                $params['id'] = $comment['id'];
+                $params['gadget'] = $gadgetof[$comment['gadget']];
+                $params['action'] = $actionof[$comment['gadget']];
+                $params['status'] = $statusof[$comment['old_status']];
+
+                $result = $GLOBALS['db']->query($sql, $params);
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+
+            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 
