@@ -16,6 +16,6 @@ class Search_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.7.1';
+    var $_Version = '0.9.0';
 
 }

@@ -48,12 +48,15 @@ class Search_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.7.0', '<')) {
-            // Registry keys.
-            $this->gadget->registry->insert('min_key_len', '3');
-            $this->gadget->registry->insert('max_result_len', '500');
+        if (version_compare($old, '0.9.0', '<')) {
+            // Update layout actions
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Search', 'Box', 'Box', 'Search');
+                $layoutModel->EditGadgetLayoutAction('Search', 'SimpleBox', 'SimpleBox', 'Search');
+                $layoutModel->EditGadgetLayoutAction('Search', 'AdvancedBox', 'AdvancedBox', 'Search');
+            }
         }
-        $this->gadget->registry->insert('results_limit', '10');
 
         return true;
     }
