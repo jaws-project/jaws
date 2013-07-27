@@ -17,6 +17,6 @@ class Blocks_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.3.0';
+    var $_Version = '1.0.0';
 
 }
