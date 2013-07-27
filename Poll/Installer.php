@@ -80,6 +80,15 @@ class Poll_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('Poll', 'Display', 'Poll', 'Poll');
+            $layoutModel->EditGadgetLayoutAction('Poll', 'LastPoll', 'Poll', 'Poll');
+            $layoutModel->EditGadgetLayoutAction('Poll', 'ListOfPolls', 'Polls', 'Polls');
+            $layoutModel->EditGadgetLayoutAction('Poll', 'ListOfPolls', 'Polls', 'Polls');
+        }
+
         return true;
     }
 
