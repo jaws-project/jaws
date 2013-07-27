@@ -69,8 +69,8 @@ class Jaws_Calendar
         if (empty($year)) {
             $year = $this->Today['year'];
         }
-        $tpl = new Jaws_Template($this->_TemplateDir);
-        $tpl->Load('Calendar.html');
+        $tpl = new Jaws_Template();
+        $tpl->Load('Calendar.html', $this->_TemplateDir, 'Blog');
         $tpl->SetBlock('calendar');
         $tpl->setVariable('title', _t('BLOG_LAYOUT_CALENDAR'));
 
