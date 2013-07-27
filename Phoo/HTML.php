@@ -245,7 +245,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             $redirect_to = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
             $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
-            $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'photo', $image['id'],
+            $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
                             array('action' => 'ViewImage',
                                   'params' => array('albumid' => $albumid, 'id' => $image['id']))));
 
@@ -253,7 +253,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                 if ($preview_mode) {
                     $tpl->SetVariable('preview', $cHTML->ShowPreview());
                 }
-                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'photo', $image['id'], $redirect_to));
+                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'Image', $image['id'], $redirect_to));
             } elseif ($restricted) {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
                 $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
