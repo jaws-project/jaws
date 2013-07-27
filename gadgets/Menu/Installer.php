@@ -98,6 +98,12 @@ class Menu_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
+            // Update layout actions
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Menu', 'Display', 'Menu', 'Menu');
+            }
+
             // Remove old event listener
             $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
             // Add listener for remove/publish menu items related to given gadget
