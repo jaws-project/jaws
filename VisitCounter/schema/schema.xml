@@ -8,6 +8,13 @@
     <declaration>
 
         <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
             <name>ip</name>
             <type>text</type>
             <length>24</length>
@@ -30,7 +37,7 @@
 
         <index>
             <name><variable>table_prefix</variable>ipvisitor</name>
-            <primary>true</primary>
+            <unique>true</unique>
             <field>
                 <name>ip</name>
             </field>
