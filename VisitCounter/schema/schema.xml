@@ -17,15 +17,14 @@
         <field>
             <name>visit_time</name>
             <type>integer</type>
-            <length>16</length>
+            <length>8</length>
             <notnull>true</notnull>
         </field>
 
         <field>
             <name>visits</name>
             <type>integer</type>
-            <length>9</length>
-            <notnull>true</notnull>
+            <length>8</length>
             <default>0</default>
         </field>
 
