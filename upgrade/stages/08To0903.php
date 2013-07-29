@@ -107,6 +107,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
             'SimpleSite'=>'Sitemap'
         );
 
+        // update layout table for renamed gadgets
         $sql = '
             UPDATE [[layout]] SET
                 [gadget] = {new_name}
@@ -119,6 +120,32 @@ class Upgrader_08To0903 extends JawsUpgraderStage
             if (Jaws_Error::IsError($res)) {
                 _log(JAWS_LOG_ERROR, $res->getMessage());
                 return new Jaws_Error($res->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
+
+        // update layout "RecentComments" action for Blog/Phoo gadgets
+        $sql = '
+            UPDATE [[layout]] SET
+                [gadget] = {new_name},
+                [action_filename] = {filename},
+                [action_params] = {params}
+            WHERE
+                [gadget] = {old_name}
+              AND
+                [gadget_action] = {action}';
+
+        $params = array();
+        $params['new_name'] = 'Comments';
+        $params['action']   = 'RecentComments';
+        $params['filename'] = 'RecentComments';
+        $gadgets = array('Blog', 'Phoo');
+        foreach ($gadgets as $gadget) {
+            $params['old_name'] = $gadget;
+            $params['params']   = serialize(array($gadget, 0, 10));
+            $res = $GLOBALS['db']->query($sql, $params);
+            if (Jaws_Error::IsError($res)) {
+                _log(JAWS_LOG_ERROR, $res->getMessage());
+                // do nothing
             }
         }
 
