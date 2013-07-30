@@ -33,6 +33,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
     {
         $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
+        $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
 
         $tpl->SetVariable('comments', $cHTML->ShowComments('Shoutbox', '', 0,
