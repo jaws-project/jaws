@@ -141,11 +141,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
         $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
         $tpl->SetVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
         $tpl->SetVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('permissionsMsg', _t('USERS_USERS_PERMISSIONS'));
         $tpl->SetVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
-        $tpl->SetVariable('permissionAllow', _t('USERS_USERS_PERMISSION_ALLOW'));
-        $tpl->SetVariable('permissionDeny', _t('USERS_USERS_PERMISSION_DENY'));
-        $tpl->SetVariable('permissionNone', _t('USERS_USERS_PERMISSION_NONE'));
         $tpl->ParseBlock('Groups');
 
         return $tpl->Get();

@@ -249,13 +249,9 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
         $tpl->SetVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
         $tpl->SetVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('permissionsMsg', _t('USERS_USERS_PERMISSIONS'));
         $tpl->SetVariable('selectUser', _t('USERS_USERS_SELECT_A_USER'));
         $tpl->SetVariable('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmResetACL', _t('USERS_RESET_ACL_CONFIRM'));
-        $tpl->SetVariable('permissionAllow', _t('USERS_USERS_PERMISSION_ALLOW'));
-        $tpl->SetVariable('permissionDeny', _t('USERS_USERS_PERMISSION_DENY'));
-        $tpl->SetVariable('permissionNone', _t('USERS_USERS_PERMISSION_NONE'));
         $tpl->ParseBlock('Users');
 
         return $tpl->Get();
