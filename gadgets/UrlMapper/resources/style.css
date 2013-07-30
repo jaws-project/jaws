@@ -19,3 +19,6 @@ margin:5px 0 2px;
 #main table{
 margin:0 auto;
 }
+#main table td{
+    vertical-align: top;
+}

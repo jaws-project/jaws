@@ -25,3 +25,6 @@ direction:ltr;
 #main table{
 margin:0 auto;
 }
+#main table td{
+    vertical-align: top;
+}
