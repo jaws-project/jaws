@@ -45,19 +45,19 @@ $stages[] = array(
 
 // Upgrade from 0.8 to 0.9.0 - First step
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - First step'),
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - Step1'),
     'file'  => '08To0901',
 );
 
 // Upgrade from 0.8 to 0.9.0 - Second step
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - Second step'),
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - Step2'),
     'file'  => '08To0902',
 );
 
-// Upgrade from 0.8 to 0.9.0 - Second step
+// Upgrade from 0.8 to 0.9.0 - Third step
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - Third step'),
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0 - Step3'),
     'file'  => '08To0903',
 );
 

@@ -333,7 +333,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $actions =& Piwi::CreateWidget('Combo', 'comments_actions');
         $actions->SetID('comments_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('', '');
+        $actions->AddOption('&nbsp;', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
         $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 1);
         $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 2);
