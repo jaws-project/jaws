@@ -53,6 +53,7 @@ text-align:right;
 }
 .category_title{
 text-align:left;
+vertical-align: top;
 }
 .editor-preview{
 margin-bottom:20px;
@@ -74,6 +75,9 @@ float:left;
 display:block;
 text-align:right;
 }
+#main{
+margin:0 auto;
+}
 #main > table,#main .tableform{
 margin:0 auto;
 }
@@ -81,4 +85,7 @@ margin:0 auto;
 width:370px;
 padding-left:8px;
 vertical-align:top;
+}
+#catinfoform{
+vertical-align: top;
 }

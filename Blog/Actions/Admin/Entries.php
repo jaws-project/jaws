@@ -664,7 +664,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $actions =& Piwi::CreateWidget('Combo', 'entries_actions');
         $actions->SetID('entries_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('', '');
+        $actions->AddOption('&nbsp;', '');
         $actions->AddOption(_t('GLOBAL_DELETE'),  'delete');
         $actions->AddOption(_t('BLOG_DRAFT'),     '0');
         $actions->AddOption(_t('BLOG_PUBLISHED'), '1');

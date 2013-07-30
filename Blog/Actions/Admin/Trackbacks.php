@@ -112,7 +112,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $actions =& Piwi::CreateWidget('Combo', 'trackbacks_actions');
         $actions->SetID('trackbacks_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('', '');
+        $actions->AddOption('&nbsp;', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
         $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 'approved');
         $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 'waiting');
