@@ -7,24 +7,25 @@
   <input type="hidden" name="action" value="UpdatePersonal" />
   <div class="content">
     <fieldset>
+      <p>{avatar}</p>
       <p>
-          {avatar}
-      </p>
-
-        <p><label for="personal_fname">{lbl_fname}:</label>
+        <label for="personal_fname">{lbl_fname}:</label>
         <input name="fname" id="personal_fname" value="{fname}" type="text" />
       </p>
-      <p><label for="personal_lname">{lbl_lname}:</label>
+      <p>
+        <label for="personal_lname">{lbl_lname}:</label>
         <input name="lname" id="personal_lname" value="{lname}" type="text" />
       </p>
-      <p><label for="user_gender">{lbl_gender}:</label>
+      <p>
+        <label for="user_gender">{lbl_gender}:</label>
         <select name="gender" id="user_gender">
           <option value="0" {selected_gender_0}>{gender_0}</option>
           <option value="1" {selected_gender_1}>{gender_1}</option>
           <option value="2" {selected_gender_2}>{gender_2}</option>
         </select>
       </p>
-      <p><label for="personal_ssn">{lbl_ssn}:</label>
+      <p>
+        <label for="personal_ssn">{lbl_ssn}:</label>
         <input name="ssn" id="personal_ssn" value="{ssn}" type="text" />
       </p>
       <p id="user_dob">
@@ -34,36 +35,38 @@
         <input name="dob_day"   id="user_dob_day"   value="{dob_day}"   type="text" />
         <span><small>{dob_sample}</small></span>
       </p>
-      <p><label for="personal_url">{lbl_url}:</label>
+      <p>
+        <label for="personal_url">{lbl_url}:</label>
         <input name="url" id="personal_url" value="{url}" type="text" style="direction: ltr;" />
       </p>
-        <p>
-            <label for="personal_fname">{lbl_uploadavatar}:</label>
-            {uploadavatar}
-        </p>
-
-        <p>{delete_avatar}</p>
-
-        <p><label for="personal_signature">{lbl_signature}:</label>
-            <textarea name="signature" id="personal_signature" cols="45" rows="4">{signature}</textarea>
-        </p>
-
-        <p><label for="personal_about">{lbl_about}:</label>
-            <textarea name="about" id="personal_about" cols="45" rows="4">{about}</textarea>
-        </p>
-
-        <p><label for="personal_about">{lbl_experiences}:</label>
-            <textarea name="experiences" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
-        </p>
-
-        <p><label for="personal_about">{lbl_occupations}:</label>
-            <textarea name="occupations" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
-        </p>
-
-        <p><label for="personal_interests">{lbl_interests}:</label>
-            <textarea name="interests" id="personal_interests" cols="45" rows="4">{interests}</textarea>
-        </p>
-
+      <p>
+        <label for="personal_avatar">{lbl_upload_avatar}:</label>
+        <input type="file" name="avatar" id="personal_avatar">
+      </p>
+      <p>
+        <input type="checkbox" name="delete_avatar" id="delete_avatar" value="0">
+        <label for="delete_avatar">{lbl_delete_avatar}</label>
+      </p>
+      <p>
+        <label for="personal_signature">{lbl_signature}:</label>
+        <textarea name="signature" id="personal_signature" cols="45" rows="4">{signature}</textarea>
+      </p>
+      <p>
+        <label for="personal_about">{lbl_about}:</label>
+        <textarea name="about" id="personal_about" cols="45" rows="4">{about}</textarea>
+      </p>
+      <p>
+        <label for="personal_experiences">{lbl_experiences}:</label>
+        <textarea name="experiences" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
+      </p>
+      <p>
+        <label for="personal_occupations">{lbl_occupations}:</label>
+        <textarea name="occupations" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
+      </p>
+      <p>
+        <label for="personal_interests">{lbl_interests}:</label>
+        <textarea name="interests" id="personal_interests" cols="45" rows="4">{interests}</textarea>
+      </p>
     </fieldset>
   </div>
   <div class="actions"><button type="submit" value="{update}">{update}</button></div>

@@ -57,17 +57,6 @@ class Users_Actions_Personal extends Users_HTML
         $avatar->SetStyle('max-width: 128px;max-height: 128px;');
         $tpl->SetVariable('avatar', $avatar->Get());
 
-        $avatar =& Piwi::CreateWidget('FileEntry', 'avatar', '');
-        $avatar->SetID('avatar');
-        $tpl->SetVariable('lbl_uploadavatar',  _t('USERS_USERS_UPLOAD_AVATAR'));
-        $tpl->SetVariable('uploadavatar', $avatar->Get());
-
-
-        $delete_avatar =& Piwi::CreateWidget('CheckButtons', 'delete_avatar');
-        $delete_avatar->AddOption(_t('USERS_USERS_DELETE_AVATAR'), '0', 'delete_avatar', false);
-        $tpl->SetVariable('delete_avatar', $delete_avatar->Get());
-
-
         $tpl->SetVariable('lbl_fname',  _t('USERS_USERS_FIRSTNAME'));
         $tpl->SetVariable('fname',      $personal['fname']);
         $tpl->SetVariable('lbl_lname',  _t('USERS_USERS_LASTNAME'));
@@ -97,6 +86,10 @@ class Users_Actions_Personal extends Users_HTML
         // website
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url',     empty($personal['url'])? 'http://' : $personal['url']);
+
+        // upload/delete avatar
+        $tpl->SetVariable('lbl_upload_avatar', _t('USERS_USERS_AVATAR_UPLOAD'));
+        $tpl->SetVariable('lbl_delete_avatar', _t('USERS_USERS_AVATAR_DELETE'));
 
         // signature
         $tpl->SetVariable('lbl_signature', _t('USERS_USERS_SIGNATURE'));
