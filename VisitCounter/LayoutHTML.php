@@ -23,7 +23,7 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
     {
         $tpl = $this->gadget->loadTemplate('VisitCounter.html');
         $tpl->SetBlock("VisiCounter");
-        $tpl->SetVariable('title', _t('VISITCOUNTER_ACTION_TITLE'));
+        $tpl->SetVariable('title', _t('VISITCOUNTER_VISITORS'));
 
         $model    = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
