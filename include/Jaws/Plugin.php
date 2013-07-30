@@ -172,15 +172,12 @@ class Jaws_Plugin
             $plugin = $this->_Name;
         }
 
-        if (strtolower($plugin) === 'core') {
-            return new Jaws_Error(_t('_JMS_PLUGINS_PLUGIN_CANT_HAVE_NAME_CORE', $plugin),
-                                     __FUNCTION__);
-        }
-
         $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
         if (!file_exists($file)) {
-            return new Jaws_Error(_t('_JMS_PLUGINS_PLUGIN_DOESNT_EXISTS', $plugin),
-                                     __FUNCTION__);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                __FUNCTION__
+            );
         }
 
         // adding plugin to installed plugins list
@@ -195,8 +192,7 @@ class Jaws_Plugin
         $pluginObj = new $plugin;
         $result = $pluginObj->Install();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('COMPONENTS_PLUGINS_ENABLED_FAILURE', $plugin),
-                                     __FUNCTION__);
+            return $result;
         }
 
         $GLOBALS['app']->Registry->insert(
@@ -232,8 +228,10 @@ class Jaws_Plugin
 
         $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
         if (!file_exists($file)) {
-            return new Jaws_Error(_t('_GLOBAL_PLUGINS_PLUGIN_DOES_NOT_EXISTS', $plugin),
-                                     __FUNCTION__);
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                __FUNCTION__
+            );
         }
 
         // removeing plugin from installed plugins list
@@ -248,8 +246,7 @@ class Jaws_Plugin
         $pluginObj = new $plugin;
         $result = $pluginObj->Uninstall();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('COMPONENTS_PLUGINS_DISABLE_FAILURE', $plugin),
-                                     __FUNCTION__);
+            return $result;
         }
 
         // Everything is done
