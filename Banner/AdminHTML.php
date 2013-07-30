@@ -170,7 +170,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $bGroup =& Piwi::CreateWidget('Combo', 'bgroup_filter');
         $bGroup->setStyle('min-width:150px;');
         $bGroup->AddEvent(ON_CHANGE, "getBannersDataGrid('banners_datagrid', 0, true)");
-        $bGroup->AddOption('', -1);
+        $bGroup->AddOption('&nbsp;', -1);
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
@@ -664,7 +664,7 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $bGroup =& Piwi::CreateWidget('Combo', 'bgroup_filter');
         $bGroup->setStyle('min-width:200px;');
         $bGroup->AddEvent(ON_CHANGE, "getBannersDataGrid('reports_datagrid', 0, true)");
-        $bGroup->AddOption('', -1);
+        $bGroup->AddOption('&nbsp;', -1);
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {

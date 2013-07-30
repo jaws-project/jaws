@@ -1,3 +1,16 @@
+.main{
+width: 100%
+}
+#b_datagrid{
+vertical-align: top;
+}
+.top-align{
+vertical-align: top;
+}
+#side_button{
+vertical-align: top;
+width: 20px;
+}
 .buttons{
 text-align:right;
 }
