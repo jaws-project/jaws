@@ -155,7 +155,7 @@ class Combo extends Bin
                 if (is_array ($this->_options)) {
                     foreach ($this->_options as $option) {
                         $value = $option->getValue();
-                        if ($option->getText() == $key) {
+                        if ($option->getText() === $key) {
                             $this->_options[$value]->select();
                         } else {
                             $this->_options[$value]->select(false);
