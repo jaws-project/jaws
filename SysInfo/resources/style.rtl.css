@@ -1,4 +1,6 @@
-#sysinfo td{
+#sysinfo{
+width: 100%;
+}#sysinfo td{
 vertical-align:top;
 }
 #sysinfo fieldset{
