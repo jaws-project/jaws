@@ -4,6 +4,9 @@ text-align:left;
 #themes_info th{
 color:#3465a4;
 }
+#themes_info td{
+vertical-align: top;
+}
 #buttons_area{
 float:right;
 padding:5px 0;
