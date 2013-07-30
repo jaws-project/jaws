@@ -32,3 +32,7 @@ width:17em;
 div.fields select{
 max-width:320px;
 }
+#comment_box{
+border-spacing:2px;
+border-collapse:collapse;
+}

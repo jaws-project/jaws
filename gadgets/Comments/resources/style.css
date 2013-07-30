@@ -32,3 +32,10 @@ width:17em;
 div.fields select{
 max-width:320px;
 }
+#main table td{
+vertical-align: top;
+}
+#comment_box{
+border-spacing:2px;
+border-collapse:collapse;
+}
