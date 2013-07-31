@@ -672,9 +672,10 @@ class Jaws_ORM
      *
      * @access  public
      * @param   string  $result_type  Result type (all/row/col/one)
+     * @param   int     $error_level  Sets this error level if errors occurred
      * @return  mixed   Fetched data or Jaws_Error on failure
      */
-    function get($select_type = 'raw')
+    function get($select_type = 'raw', $error_level = JAWS_ERROR_ERROR)
     {
         if (!$this->_passed_types) {
             $this->_types = array();
@@ -721,11 +722,11 @@ class Jaws_ORM
 
         $this->reset();
         if (PEAR::IsError($result)) {
-            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
+            $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
             return Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
-                JAWS_ERROR_ERROR,
+                $error_level,
                 -1
             );
         }
@@ -868,7 +869,10 @@ class Jaws_ORM
             case 'getRow':
             case 'getCol':
             case 'getOne':
-                return $this->get(strtolower(substr($method, 3)));
+                return $this->get(
+                    strtolower(substr($method, 3)),
+                    empty($params)? JAWS_ERROR_ERROR : $params[0]
+                );
 
             case 'now':
             case 'expr':
