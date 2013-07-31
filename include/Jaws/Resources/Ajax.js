@@ -70,7 +70,7 @@ var JawsAjax = new Class({
         options.onRequest = this.onRequest.bind(this);
         options.onSuccess = this.onSuccess.bind(this, options);
         options.onFailure = this.onFailure.bind(this, options);
-        var req = new Request(options).send();
+        new Request(options).send();
     },
 
     /**
@@ -81,7 +81,8 @@ var JawsAjax = new Class({
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
     callSync: function (action, params) {
-        var options = {};
+        var options = {},
+            req;
         options.async = false;
         options.url = this.baseURL + action;
         options.action = action;
@@ -90,26 +91,25 @@ var JawsAjax = new Class({
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
-        var req = new Request(options).send();
+        req = new Request(options).send();
         return eval('(' + req.response.text + ')');
     },
 
     onRequest: function () {
-        // start loading..
+        // TODO: start loading..
     },
 
     onSuccess: function (reqOptions, responseText) {
-        responseText = eval('(' + responseText + ')');
         var reqMethod = this.callback[reqOptions.action];
+        responseText = eval('(' + responseText + ')');
         if (reqMethod) {
             reqMethod(responseText);
         }
     },
 
     onFailure: function () {
-        // alert failure message
+        // TODO: alert failure message
     }
-
 });
 
 /**
@@ -119,8 +119,7 @@ var JawsStorage = new Class({
     /**
      * Initiates the storage
      *
-     * @param   string  gadget      Gadget Name
-     *
+     * @param   string  gadget  Gadget Name
      * @return  void
      */
     initialize: function (gadget) {
@@ -134,7 +133,7 @@ var JawsStorage = new Class({
     },
 
     /**
-     * Updates a storage key value
+     * Updates the storage key value
      *
      * @param   string  key     Key name
      * @param   mixed   value   Key value
@@ -150,7 +149,7 @@ var JawsStorage = new Class({
     },
 
     /**
-     * fetchs value of a storage key
+     * fetchs value of the storage key
      *
      * @param   string  key     Key name
      * @return  mixed   Stored value of key
@@ -177,8 +176,7 @@ var JawsStorage = new Class({
         } else {
             this.storage.dispose(key);
         }
-    },
-
+    }
 });
 
 /**
@@ -186,14 +184,14 @@ var JawsStorage = new Class({
  */
 function paintCombo(combo, oddColor, evenColor)
 {
-    if (evenColor == undefined) {
+    if (evenColor === undefined) {
         evenColor = '#fff';
     }
 
-    var color  = evenColor;
+    var color = evenColor;
     for(var i=0; i<combo.length; i++) {
-        combo.options[i].style.backgroundColor = color;;
-        if (i % 2 == 0) {
+        combo.options[i].style.backgroundColor = color;
+        if (i % 2 === 0) {
             color = oddColor;
         } else {
             color = evenColor;
@@ -206,17 +204,18 @@ function paintCombo(combo, oddColor, evenColor)
  */
 function changeEditorValue(name, value)
 {
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true,
+        usingCKE = typeof CKEDITOR == 'undefined' ? false : true,
+        editor;
     if (usingMCE) {
-        var editor = tinyMCE.get(name);
+        editor = tinyMCE.get(name);
         if (editor) {
             editor.setContent(value);
          } else {
             $(name).value = value;
          }
     } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
+        editor = CKEDITOR.instances[name];
         if (editor.status == 'unloaded') {
             $(name).value = value;
         } else {
@@ -232,13 +231,14 @@ function changeEditorValue(name, value)
  */
 function getEditorValue(name)
 {
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true,
+        usingCKE = typeof CKEDITOR == 'undefined' ? false : true,
+        editor;
     if (usingMCE) {
-        var editor = tinyMCE.get(name);
+        editor = tinyMCE.get(name);
         return editor.getContent();
     } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
+        editor = CKEDITOR.instances[name];
         if (editor.status != 'unloaded') {
             return editor.getData();
         }
@@ -258,7 +258,7 @@ Element.implement({
     isVisible: function(){
         var w = this.offsetWidth,
             h = this.offsetHeight;
-        return (w == 0 && h == 0) ? false : (w > 0 && h > 0) ? true : this.style.display != 'none';
+        return (w === 0 && h === 0) ? false : (w > 0 && h > 0) ? true : this.style.display != 'none';
     },
 
     toggle: function(){
@@ -292,7 +292,7 @@ Element.implement({
  */
 String.prototype.blank = function() {
     return /^\s*$/.test(this);
-}
+};
 
 /**
  * Javascript htmlspecialchars_decode
@@ -348,7 +348,7 @@ String.prototype.defilter = function(quote_style) {
     // Put this in last place to avoid escape being double-decoded
     str = str.replace(/&amp;/g, '&');
     return str;
-}
+};
 
 /**
  * Reset a (piwi)datagrid:
@@ -360,19 +360,19 @@ function resetGrid(name, data, rowsSize)
 {
     $(name).reset();
     $(name).fillWithArray(data);
-    if (rowsSize != undefined) {
+    if (rowsSize !== undefined) {
         $(name).rowsSize = rowsSize;
     }
     $(name).updatePageCounter();
     $(name).repaint();
 }
 
-//Which row selected in DataGrid
-var selectedRows = new Array();
-var selectedRowsColor = new Array();
+// Which row is selected in DataGrid
+var selectedRows = [],
+    selectedRowsColor = [];
 
 /**
- * Select a (piwi)datagrid row
+ * Selects a (piwi)datagrid row
  */
 function selectGridRow(name, rowElement)
 {
@@ -471,35 +471,35 @@ var JawsDataGrid = {
         var result      = ajaxObject.callSync('getdata', currentPage, $(this.name).id);
         resetGrid($(this.name), result);
     }
-}
+};
 
 /**
  * Prepares the datagrid with basic data
  */
 function initDataGrid(name, objectName, dataFunc)
 {
-    if ($(name) == undefined || objectName == undefined) {
+    if ($(name) === undefined || objectName === undefined) {
         return true;
     }
 
     $(name).objectName = objectName;
-    if (dataFunc == undefined) {
+    if (dataFunc === undefined) {
         JawsDataGrid.name = name;
         $(name + '_pagerFirstAnchor').onclick = function() {
             JawsDataGrid.getFirstValues();
-        }
+        };
 
         $(name + '_pagerPreviousAnchor').onclick = function() {
             JawsDataGrid.getPreviousValues();
-        }
+        };
 
         $(name + '_pagerNextAnchor').onclick = function() {
                 JawsDataGrid.getNextValues();
-        }
+        };
 
         $(name + '_pagerLastAnchor').onclick = function() {
                 JawsDataGrid.getLastValues();
-        }
+        };
 
         getDG();
     } else {
@@ -509,25 +509,25 @@ function initDataGrid(name, objectName, dataFunc)
             var offset = $(name).getFirstPagerValues();
             getDG(name, offset);
             $(name).firstPage();
-        }
+        };
 
         $(name + '_pagerPreviousAnchor').onclick = function() {
             var offset = $(name).getPreviousPagerValues();
             getDG(name, offset);
             $(name).previousPage();
-        }
+        };
 
         $(name + '_pagerNextAnchor').onclick = function() {
             var offset = $(name).getNextPagerValues();
             getDG(name, offset);
             $(name).nextPage();
-        }
+        };
 
         $(name + '_pagerLastAnchor').onclick = function() {
             var offset = $(name).getLastPagerValues();
             getDG(name, offset);
             $(name).lastPage();
-        }
+        };
 
         getDG(name);
     }
@@ -538,16 +538,16 @@ function initDataGrid(name, objectName, dataFunc)
  */
 function getDG(name, offset, reset)
 {
-    if (name == undefined) {
+    if (name === undefined) {
         JawsDataGrid.getData();
     } else {
         dataFunc = eval($(name).dataFunc);
 
-        if (offset == undefined) {
-            var offset = $(name).getCurrentPage();
+        if (offset === undefined) {
+            offset = $(name).getCurrentPage();
         }
 
-        reset = (reset == true) || ($(name).rowsSize == 0);
+        reset = (reset === true) || ($(name).rowsSize == 0);
         dataFunc(name, offset, reset);
         if (reset) {
             $(name).setCurrentPage(0);
@@ -563,40 +563,7 @@ function changeButtonText(button, message)
 {
     var buttonInner = button.innerHTML.substr(0, button.innerHTML.indexOf("&nbsp;"));
     button.innerHTML = buttonInner + "&nbsp;" + message;
-    button.value     = message;
-}
-
-/**
- * Similar to PHP-trim fuction
- */
-function jawsTrim(str)
-{
-    return str.replace(/^\s*|\s*$/g, '');
-}
-
-function initJawsObservers()
-{
-    var forms = document.getElementsByTagName('form');
-    for(var i=0; i<forms.length; i++) {
-        new Form.Observer(forms[i], 1, jawsFormCallback);
-    }
-}
-
-
-function jawsFormCallback(form, elements)
-{
-    elements = elements.split('&');
-    for(var i=0; i<elements.length; i++) {
-        var elementName = elements[i].split('=')[0];
-        var element     = form.elements[elementName];
-        switch(element.type) {
-        case 'text':
-            element.value = element.value.unescapeHTML();
-            break;
-        }
-        //var element = $(element
-        //alert($elements.type);
-    }
+    button.value = message;
 }
 
 /**
@@ -608,7 +575,7 @@ function createImageLink(imgSrc, link, text, space)
 {
     var linkElement = document.createElement('a');
     linkElement.href = link;
-    if (space == true) {
+    if (space === true) {
         linkElement.style.paddingRight = '3px';
     }
 
@@ -620,16 +587,6 @@ function createImageLink(imgSrc, link, text, space)
     linkElement.appendChild(image);
 
     return linkElement;
-}
-
-/**
- * Resets a combo
- */
-function resetCombo(combo)
-{
-    while(combo.options.length != 0) {
-        combo.options[0] = null;
-    }
 }
 
 /**
@@ -655,7 +612,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
-    if ($(name) == undefined) {
+    if ($(name) === undefined) {
         var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
         var iframe  = new IFrame({
             src : url,
@@ -759,12 +716,12 @@ function Jaws_Ajax_ServerError(error)
  */
 function showResponse(message, goTop)
 {
+    var messages = [];
     if (typeof(goTop) == 'undefined' || goTop) {
         $(document.body).scrollTo(0, 0);
     }
 
-    messages = new Array();
-    if (message[0] == undefined) {
+    if (message[0] === undefined) {
         messages[0] = message;
     } else {
         messages = message;
@@ -772,7 +729,7 @@ function showResponse(message, goTop)
 
     $('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
-        var messageDiv  = new Element('div', {'id':'msgbox_'+i, 'class':messages[i]['css']}).appendText(messages[i]['message']);
+        var messageDiv  = new Element('div', {'id':'msgbox_'+i, 'class':messages[i].css}).appendText(messages[i].message);
         $('msgbox-wrapper').appendChild(messageDiv);
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
@@ -855,7 +812,7 @@ function toJSON(v) {
             object: function (x) {
                 if (x) {
                     var a = [], b, f, i, l, v;
-                    if (x instanceof Array && x[0] != undefined) {
+                    if (x instanceof Array && x[0] !== undefined) {
                         a[0] = '[';
                         l = x.length;
                         for (i = 0; i < l; i += 1) {
