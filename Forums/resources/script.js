@@ -91,7 +91,7 @@ function AddNewForumItem(gid, fid, order)
  */
 function saveForums()
 {
-    if ((jawsTrim($('title').value) == '')) {
+    if ($('title').value.trim() == '') {
         alert(incompleteFields);
         return false;
     }
