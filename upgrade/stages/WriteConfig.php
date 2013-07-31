@@ -72,9 +72,6 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
             $GLOBALS['app'] = new Jaws();
             $GLOBALS['app']->Registry->Init();
             $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']));
-
-            _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
-            $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
         }
 
         return $tpl->Get();
