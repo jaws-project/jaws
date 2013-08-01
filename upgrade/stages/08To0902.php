@@ -75,6 +75,7 @@ class Upgrader_08To0902 extends JawsUpgraderStage
             return new Jaws_Error($keys->getMessage(), 0, JAWS_ERROR_ERROR);
         }
 
+        unset($keys['/last_update']);
         $aclSQL = '
             UPDATE [[acl]] SET
                 [component] = {component},
@@ -84,7 +85,6 @@ class Upgrader_08To0902 extends JawsUpgraderStage
                 [user] = {user},
                 [group] = {group}
             WHERE [old_key_name] = {old_key_name}';
-
         $usrSQL = 'SELECT [id] FROM [[users]] WHERE [username] = {username}';
 
         $params = array();
@@ -136,6 +136,21 @@ class Upgrader_08To0902 extends JawsUpgraderStage
                 return new Jaws_Error($res->getMessage(), 0, JAWS_ERROR_ERROR);
             }
 
+        }
+
+        // delete outdated registry keys
+        $sql = '
+            DELETE
+            FROM [[acl]]
+            WHERE
+                [old_key_name] = {key1}';
+        $params = array();
+        $params['key1'] = '/last_update';
+
+        $res = $GLOBALS['db']->query($sql, $params);
+        if (Jaws_Error::IsError($res)) {
+            _log(JAWS_LOG_ERROR, $res->getMessage());
+            return $res;
         }
 
         // upgrade core database schema - next step

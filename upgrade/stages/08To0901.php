@@ -226,14 +226,17 @@ class Upgrader_08To0901 extends JawsUpgraderStage
               OR
                 [new_key_name] = {key5}
               OR
-                [component] = {key6}';
+                [new_key_name] = {key6}
+              OR
+                [component] = {key7}';
         $params = array();
         $params['key1'] = '/last_update';
         $params['key2'] = '/gadgets/allowurl_items';
         $params['key3'] = '/config/frontend_ajaxed';
         $params['key4'] = '/config/controlpanel_name';
         $params['key5'] = 'pluggable';
-        $params['key6'] = 'Registry';
+        $params['key6'] = 'enabled';
+        $params['key7'] = 'Registry';
 
         $res = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($res)) {

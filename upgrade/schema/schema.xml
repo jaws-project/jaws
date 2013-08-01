@@ -77,7 +77,6 @@
                 <name>component</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
