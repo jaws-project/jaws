@@ -19,7 +19,6 @@
                 <name>component</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
@@ -27,7 +26,6 @@
                 <was>new_key_name</was>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
@@ -84,7 +82,6 @@
                 <was>key_name</was>
                 <type>text</type>
                 <length>128</length>
-                <notnull>true</notnull>
             </field>
 
             <field>

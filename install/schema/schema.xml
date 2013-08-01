@@ -20,14 +20,12 @@
                 <name>component</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
                 <name>key_name</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
@@ -77,14 +75,12 @@
                 <name>component</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
                 <name>key_name</name>
                 <type>text</type>
                 <length>32</length>
-                <notnull>true</notnull>
             </field>
 
             <field>
