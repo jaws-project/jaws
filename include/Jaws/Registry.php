@@ -54,7 +54,7 @@ class Jaws_Registry
             $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
         }
 
-        return $this->_Registry['']['version'];
+        return isset($this->_Registry['']['version'])? $this->_Registry['']['version'] : null;
     }
 
     /**
