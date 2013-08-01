@@ -48,13 +48,13 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
                                 $tpl->SetVariable('rel', 'license');
                                 break;
                             case 'V':
-                                $tpl->SetVariable('rel', 'validation');
+                                $tpl->SetVariable('rel', 'external');
                                 break;
                             case 'S':
                                 $tpl->SetVariable('rel', 'external');
                                 break;
                             case 'P':
-                                $tpl->SetVariable('rel', 'powered');
+                                $tpl->SetVariable('rel', 'external');
                                 break;
                             }
                             $tpl->SetVariable('title', $model->TranslateType($e['emblem_type']) . $e['title']);
