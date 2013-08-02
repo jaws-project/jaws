@@ -92,7 +92,11 @@ class Jaws_PingBack
     {
         header('X-Pingback: '.$uriListener);
         if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->AddHeadLink($uriListener, 'pingback', '', '', false, '');
+            $GLOBALS['app']->Layout->AddHeadLink(
+                $uriListener,
+                'pingback',
+                ''
+            );
         }
     }
 
