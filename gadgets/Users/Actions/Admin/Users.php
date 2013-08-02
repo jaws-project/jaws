@@ -149,9 +149,11 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
         $GLOBALS['app']->Layout->AddScriptLink("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->AddHeadLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css',
-                                             'stylesheet',
-                                             'text/css');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            'libraries/piwi/piwidata/js/jscalendar/calendar-blue.css',
+            'stylesheet',
+            'text/css'
+        );
         // xtree
         $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
         // RSA encryption

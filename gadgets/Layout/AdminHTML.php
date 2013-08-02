@@ -82,13 +82,17 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         $fakeLayout->_Template->SetVariable('site-title', $this->gadget->registry->fetch('site_name', 'Settings'));
 
-        $fakeLayout->AddHeadLink(PIWI_URL . 'piwidata/css/default.css', 'stylesheet', 'text/css', 'default');
-        $fakeLayout->AddHeadLink('gadgets/Layout/resources/style.css', 'stylesheet', 'text/css');
-
-        $fakeLayout->addHeadOther(
-                    '<!--[if lt IE 7]>'."\n".
-                    '<script src="gadgets/ControlPanel/resources/ie-bug-fix.js" type="text/javascript"></script>'."\n".
-                    '<![endif]-->');
+        $fakeLayout->AddHeadLink(
+            PIWI_URL. 'piwidata/css/default.css',
+            'stylesheet',
+            'text/css',
+            'default'
+        );
+        $fakeLayout->AddHeadLink(
+            'gadgets/Layout/resources/style.css',
+            'stylesheet',
+            'text/css'
+        );
 
         foreach ($fakeLayout->_Template->Blocks['layout']->InnerBlock as $name => $data) {
             if ($name == 'head') {
