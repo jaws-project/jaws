@@ -67,7 +67,11 @@ class Quotes_AdminHTML extends Jaws_Gadget_HTML
         $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/lang/calendar-en.js');
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddHeadLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css', 'stylesheet', 'text/css');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            'libraries/piwi/piwidata/js/jscalendar/calendar-blue.css',
+            'stylesheet',
+            'text/css'
+        );
 
         $tpl = $this->gadget->loadTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
