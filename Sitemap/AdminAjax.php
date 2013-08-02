@@ -98,7 +98,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
         }
         $result = array();
         foreach ($posts as $post) {
-            $result[$post['id']] = '[' . $post['createtime'] . '] ' . $post['title'];
+            $result[$post['id']] = '[' . $post['publishtime'] . '] ' . $post['title'];
         }
         return $result;
     }
