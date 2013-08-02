@@ -242,7 +242,11 @@ class Jaws_Layout
     {
         $this->AddScriptLink('libraries/mootools/core.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
-        $this->AddHeadLink('gadgets/ControlPanel/resources/style.css', 'stylesheet', 'text/css');
+        $this->AddHeadLink(
+            'gadgets/ControlPanel/resources/style.css',
+            'stylesheet',
+            'text/css'
+        );
 
         $favicon = $this->attributes['site_favicon'];
         if (!empty($favicon)) {
@@ -591,7 +595,11 @@ class Jaws_Layout
         }
 
         if (JAWS_SCRIPT == 'admin') {
-            $this->AddHeadLink('gadgets/'.$gadget.'/resources/style.css', 'stylesheet', 'text/css');
+            $this->AddHeadLink(
+                'gadgets/'.$gadget.'/resources/style.css',
+                'stylesheet',
+                'text/css'
+            );
             $goGadget = $GLOBALS['app']->loadGadget($gadget, 'AdminHTML');
             if (!Jaws_Error::isError($goGadget)) {
                 $goGadget->SetAction($action);
@@ -755,81 +763,41 @@ class Jaws_Layout
      * @param   string  $link  The HREF
      * @param   string  $rel   The REL that will be associated
      * @param   string  $type  Type of HeadLink
-     * @param   bool    $checkInTheme Check if resource exists in the current theme directory
      * @param   string  $title Title of the HeadLink
      * @param   string  $media Media type, screen, print or such
      * @return  array   array include head link information
      */
-    function AddHeadLink($link, $rel = 'stylesheet', $type = 'text/css', $title = '',
-                         $direction = null, $checkInTheme = false, $media = '')
+    function AddHeadLink($link, $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '')
     {
         $hashedLink = md5($link);
-        if (isset($this->_HeadLink[$hashedLink])) {
-            return $this->_HeadLink[$hashedLink];
-        }
+        if (!isset($this->_HeadLink[$hashedLink])) {
+            if ($rel == 'stylesheet') {
+                $fileName = basename($link);
+                $fileExt  = strrchr($fileName, '.');
+                $fileName = substr($fileName, 0, -strlen($fileExt));
+                if (substr($link, 0, 1) == '/') {
+                    $path = substr($link , 1, - strlen($fileName.$fileExt));
+                } else {
+                    $path = substr($link , 0, - strlen($fileName.$fileExt));
+                }
 
-        $fileName = basename($link);
-        $fileExt  = strrchr($fileName, '.');
-        $fileName = substr($fileName, 0, -strlen($fileExt));
-        if (substr($link, 0, 1) == '/') {
-            $path = substr($link , 1, - strlen($fileName.$fileExt));
-        } else {
-            $path = substr($link , 0, - strlen($fileName.$fileExt));
-        }
-
-        $brow = $GLOBALS['app']->GetBrowserFlag();
-        $brow = empty($brow)? '' : '.'.$brow;
-
-        $prefix = '.' . strtolower(empty($direction) ? _t('GLOBAL_LANG_DIRECTION') : $direction);
-        if ($prefix !== '.rtl') {
-            $prefix = '';
-        }
-
-        // First we try to load the css files from the theme dir.
-        if ($checkInTheme) {
-            $theme = $GLOBALS['app']->GetTheme();
-            $gadget = str_replace(array('gadgets/', 'resources/'), '', $path);
-            $href = $theme['path'] . $gadget . $fileName . $prefix . $fileExt;
-            if (!empty($prefix) && !file_exists($href)) {
-                $href = JAWS_PATH . 'gadgets/' . $gadget . 'resources/' . $fileName . $prefix . $fileExt;
-                if (!file_exists($href)) {
-                    $href = $theme['path'] . $gadget . $fileName . $fileExt;
+                $prefix = (_t('GLOBAL_LANG_DIRECTION') == 'rtl')? '.rtl' : '';
+                $link = $path. $fileName. $prefix. $fileExt;
+                if (!empty($prefix) && !@file_exists($link)) {
+                    $link = $path . $fileName . $fileExt;
                 }
             }
 
-            if (!file_exists($href)) {
-                $href = JAWS_PATH . 'gadgets/' . $gadget . 'resources/' . $fileName . $fileExt;
-            }
-            $href = str_replace(JAWS_PATH, '', $href);
-        } else {
-            $href = $path . $fileName . $prefix . $fileExt;
-            if (!empty($prefix) && !@file_exists($href)) {
-                $href = $path . $fileName . $fileExt;
-            }
-        }
-
-        $hLinks[] = array(
-            'href'  => $href,
-            'rel'   => $rel,
-            'type'  => $type,
-            'title' => $title,
-            'media' => $media,
-        );
-        $this->_HeadLink[$hashedLink] = $hLinks[0];
-
-        $brow_href = substr_replace($href, $brow, strrpos($href, '.'), 0);
-        if (!empty($brow) && @file_exists($brow_href)) {
-            $hLinks[] = array(
-                'href'  => $brow_href,
+            $this->_HeadLink[$hashedLink] = array(
+                'href'  => $link,
                 'rel'   => $rel,
                 'type'  => $type,
                 'title' => $title,
                 'media' => $media,
             );
-            $this->_HeadLink[] = $hLinks[1];
         }
 
-        return $hLinks;
+        return $this->_HeadLink[$hashedLink];
     }
 
     /**
