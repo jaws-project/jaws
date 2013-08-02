@@ -112,7 +112,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     function GetLauncherReferences()
     {
         $launcher = $GLOBALS['app']->loadGadget('Launcher', 'Model');
-        $items = $launcher->GetLaunchers();
+        $items = $launcher->GetScripts();
         $result = array();
         if (Jaws_Error::IsError($items)) {
             return array();
