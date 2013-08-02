@@ -38,7 +38,7 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
                         if ($this->gadget->registry->fetch('allow_url') == 'true') {
                             $tpl->SetBlock('emblems/emblemrow/emblem/url');
                             $tpl->SetVariable('src', $GLOBALS['app']->getDataURL('emblems/' . $e['src']));
-                            $e['url'] = str_replace('{url}', $siteURL, $e['url']);
+                            $e['url'] = str_replace('{url}', rawurlencode($siteURL), $e['url']);
                             $tpl->SetVariable('url', $e['url']);
                             switch($e['emblem_type']) {
                             case 'B':
