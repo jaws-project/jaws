@@ -3,17 +3,17 @@
     <!-- BEGIN entry -->
     <div class="comments_post">
 
-        <div class="post_profile" id="user_profile">
+        <div class="post_profile">
             <ul>
-                <li><span id="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+                <li><span class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
                 <!-- BEGIN registered_date -->
-                <li><span id="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
+                <li><span class="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
                 <!-- END registered_date -->
             </ul>
         </div>
 
         <div class="post_body">
-            <div class="post_meta" id="comment_meta">
+            <div class="post_meta">
                 {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
                 &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
             </div>
@@ -25,7 +25,7 @@
             <!-- END reply -->
         </div>
 
-        <div class="post_actions" id="comment_reply">[ {reply-link} ]</div>
+        <div class="post_actions">[ {reply-link} ]</div>
     </div>
 
     <hr style="clear: both; visibility: hidden;"/>
@@ -44,9 +44,9 @@
 <!-- BEGIN comment-preview -->
 <div class="comments_post preview">
 
-    <div class="post_profile" id="user_profile">
+    <div class="post_profile">
         <ul>
-            <li><span id="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+            <li><span class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
             <!-- BEGIN registered_date -->
             <li><span id="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
             <!-- END registered_date -->
@@ -54,7 +54,7 @@
     </div>
 
     <div class="post_body">
-        <div class="post_meta" id="comment_meta">
+        <div class="post_meta">
             {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
             &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
         </div>
