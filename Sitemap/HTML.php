@@ -68,7 +68,7 @@ class Sitemap_HTML extends Jaws_Gadget_HTML
                 $tpl->SetBlock('sitemap/item');
                 $tpl->SetVariable('title', $item['title']);
                 $tpl->SetVariable('url', $item['reference']);
-                $tpl->SetVariable('childs', $this->GetNextLevel($item['childs']);
+                $tpl->SetVariable('childs', $this->GetNextLevel($item['childs']));
                 $tpl->ParseBlock('sitemap/item');
             }
             $tpl->ParseBlock('sitemap');
