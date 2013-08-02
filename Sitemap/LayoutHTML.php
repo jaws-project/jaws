@@ -183,7 +183,7 @@ class Sitemap_LayoutHTML extends Jaws_Gadget_HTML
         if ($find == '') return '';
         $branch = $this->GetBranch($model->_items, $find);
 
-        $tpl = $this->gadget->loadTemplate('DisplayLevel.html');
+        $tpl = $this->gadget->loadTemplate('Show.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
         $tpl->SetBlock('branch/menu');
