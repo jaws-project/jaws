@@ -82,8 +82,7 @@ var JawsAjax = new Class({
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
     callSync: function (action, params) {
-        var options = {},
-            req;
+        var options = {};
         options.async = false;
         options.url = this.baseURL + action;
         options.action = action;
@@ -92,7 +91,7 @@ var JawsAjax = new Class({
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
-        req = new Request(options).send();
+        var req = new Request(options).send();
         return eval('(' + req.response.text + ')');
     },
 
@@ -101,8 +100,8 @@ var JawsAjax = new Class({
     },
 
     onSuccess: function (reqOptions, responseText) {
-        var reqMethod = this.callback[reqOptions.action];
         responseText = eval('(' + responseText + ')');
+        var reqMethod = this.callback[reqOptions.action];
         if (reqMethod) {
             reqMethod(responseText);
         }
@@ -111,6 +110,7 @@ var JawsAjax = new Class({
     onFailure: function () {
         // TODO: alert failure message
     }
+
 });
 
 /**
@@ -178,6 +178,7 @@ var JawsStorage = new Class({
             this.storage.dispose(key);
         }
     }
+
 });
 
 /**
@@ -185,14 +186,14 @@ var JawsStorage = new Class({
  */
 function paintCombo(combo, oddColor, evenColor)
 {
-    if (evenColor === undefined) {
+    if (evenColor == undefined) {
         evenColor = '#fff';
     }
 
     var color = evenColor;
     for(var i=0; i<combo.length; i++) {
-        combo.options[i].style.backgroundColor = color;
-        if (i % 2 === 0) {
+        combo.options[i].style.backgroundColor = color;;
+        if (i % 2 == 0) {
             color = oddColor;
         } else {
             color = evenColor;
@@ -205,18 +206,17 @@ function paintCombo(combo, oddColor, evenColor)
  */
 function changeEditorValue(name, value)
 {
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true,
-        usingCKE = typeof CKEDITOR == 'undefined' ? false : true,
-        editor;
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
     if (usingMCE) {
-        editor = tinyMCE.get(name);
+        var editor = tinyMCE.get(name);
         if (editor) {
             editor.setContent(value);
          } else {
             $(name).value = value;
          }
     } else if (usingCKE) {
-        editor = CKEDITOR.instances[name];
+        var editor = CKEDITOR.instances[name];
         if (editor.status == 'unloaded') {
             $(name).value = value;
         } else {
@@ -232,14 +232,13 @@ function changeEditorValue(name, value)
  */
 function getEditorValue(name)
 {
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true,
-        usingCKE = typeof CKEDITOR == 'undefined' ? false : true,
-        editor;
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
     if (usingMCE) {
-        editor = tinyMCE.get(name);
+        var editor = tinyMCE.get(name);
         return editor.getContent();
     } else if (usingCKE) {
-        editor = CKEDITOR.instances[name];
+        var editor = CKEDITOR.instances[name];
         if (editor.status != 'unloaded') {
             return editor.getData();
         }
@@ -259,7 +258,7 @@ Element.implement({
     isVisible: function(){
         var w = this.offsetWidth,
             h = this.offsetHeight;
-        return (w === 0 && h === 0) ? false : (w > 0 && h > 0) ? true : this.style.display != 'none';
+        return (w == 0 && h == 0) ? false : (w > 0 && h > 0) ? true : this.style.display != 'none';
     },
 
     toggle: function(){
@@ -361,16 +360,16 @@ function resetGrid(name, data, rowsSize)
 {
     $(name).reset();
     $(name).fillWithArray(data);
-    if (rowsSize !== undefined) {
+    if (rowsSize != undefined) {
         $(name).rowsSize = rowsSize;
     }
     $(name).updatePageCounter();
     $(name).repaint();
 }
 
-// Which row is selected in DataGrid
-var selectedRows = [],
-    selectedRowsColor = [];
+//Which row selected in DataGrid
+var selectedRows = [];
+var selectedRowsColor = [];
 
 /**
  * Selects a (piwi)datagrid row
@@ -479,12 +478,12 @@ var JawsDataGrid = {
  */
 function initDataGrid(name, objectName, dataFunc)
 {
-    if ($(name) === undefined || objectName === undefined) {
+    if ($(name) == undefined || objectName == undefined) {
         return true;
     }
 
     $(name).objectName = objectName;
-    if (dataFunc === undefined) {
+    if (dataFunc == undefined) {
         JawsDataGrid.name = name;
         $(name + '_pagerFirstAnchor').onclick = function() {
             JawsDataGrid.getFirstValues();
@@ -539,16 +538,16 @@ function initDataGrid(name, objectName, dataFunc)
  */
 function getDG(name, offset, reset)
 {
-    if (name === undefined) {
+    if (name == undefined) {
         JawsDataGrid.getData();
     } else {
         dataFunc = eval($(name).dataFunc);
 
-        if (offset === undefined) {
-            offset = $(name).getCurrentPage();
+        if (offset == undefined) {
+            var offset = $(name).getCurrentPage();
         }
 
-        reset = (reset === true) || ($(name).rowsSize == 0);
+        reset = (reset == true) || ($(name).rowsSize == 0);
         dataFunc(name, offset, reset);
         if (reset) {
             $(name).setCurrentPage(0);
@@ -576,7 +575,7 @@ function createImageLink(imgSrc, link, text, space)
 {
     var linkElement = document.createElement('a');
     linkElement.href = link;
-    if (space === true) {
+    if (space == true) {
         linkElement.style.paddingRight = '3px';
     }
 
@@ -613,7 +612,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
-    if ($(name) === undefined) {
+    if ($(name) == undefined) {
         var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
         var iframe  = new IFrame({
             src : url,
@@ -717,12 +716,12 @@ function Jaws_Ajax_ServerError(error)
  */
 function showResponse(message, goTop)
 {
-    var messages = [];
     if (typeof(goTop) == 'undefined' || goTop) {
         $(document.body).scrollTo(0, 0);
     }
 
-    if (message[0] === undefined) {
+    var messages = [];
+    if (message[0] == undefined) {
         messages[0] = message;
     } else {
         messages = message;
@@ -730,7 +729,10 @@ function showResponse(message, goTop)
 
     $('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
-        var messageDiv  = new Element('div', {'id':'msgbox_'+i, 'class':messages[i].css}).appendText(messages[i].message);
+        var messageDiv  = new Element(
+            'div',
+            {'id':'msgbox_'+i, 'class':messages[i]['css']}
+        ).appendText(messages[i]['message']);
         $('msgbox-wrapper').appendChild(messageDiv);
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
@@ -813,7 +815,7 @@ function toJSON(v) {
             object: function (x) {
                 if (x) {
                     var a = [], b, f, i, l, v;
-                    if (x instanceof Array && x[0] !== undefined) {
+                    if (x instanceof Array && x[0] != undefined) {
                         a[0] = '[';
                         l = x.length;
                         for (i = 0; i < l; i += 1) {
