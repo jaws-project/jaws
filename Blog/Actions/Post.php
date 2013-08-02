@@ -20,14 +20,17 @@ class Blog_Actions_Post extends Blog_HTML
      */
     function LastPost()
     {
-        $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'),
-                                             'alternate',
-                                             'application/atom+xml',
-                                             'Atom - All');
-        $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'),
-                                             'alternate',
-                                             'application/rss+xml',
-                                             'RSS 2.0 - All');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $this->gadget->GetURLFor('Atom'),
+            'alternate',
+            'application/atom+xml',
+            'Atom - All');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $this->gadget->GetURLFor('RSS'),
+            'alternate',
+            'application/rss+xml',
+            'RSS 2.0 - All'
+        );
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
         $id = $model->GetLatestPublishedEntryID();
         if (!Jaws_Error::IsError($id) && !empty($id)) {

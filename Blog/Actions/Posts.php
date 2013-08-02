@@ -30,29 +30,33 @@ class Blog_Actions_Posts extends Blog_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
 
-        $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'),
-                                             'alternate',
-                                             'application/atom+xml',
-                                             'Atom - All');
-        $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'),
-                                             'alternate',
-                                             'application/rss+xml',
-                                             'RSS 2.0 - All');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'),
+            'alternate',
+            'application/atom+xml',
+            'Atom - All'
+        );
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'),
+            'alternate',
+            'application/rss+xml',
+            'RSS 2.0 - All'
+        );
         /**
          * This will be supported in next Blog version - Bookmarks for each categorie
-         *
-         * $categories = $model->GetCategories();
-         * if (!Jaws_Error::IsError($categories)) {
-         * //$GLOBALS['app']->Layout->AddHeadLink($base_url.'blog.atom', 'alternate', 'application/atom+xml', 'Atom - All');
-         * foreach ($categories as $cat) {
-         *                $name = $cat['name'];
-         * }
-         *
-         * foreach ($categories as $cat) {
-         *   $name = $cat['name'];
-         * }
-         *}
-         */
+        $categories = $model->GetCategories();
+        if (!Jaws_Error::IsError($categories)) {
+        $GLOBALS['app']->Layout->AddHeadLink(
+                $base_url.'blog.atom',
+                'alternate',
+                'application/atom+xml',
+                'Atom - All'
+            );
+            foreach ($categories as $cat) {
+                $name = $cat['name'];
+            }
+        }
+        */
 
         $tpl = $this->gadget->loadTemplate('Posts.html');
         $tpl->SetBlock('view');

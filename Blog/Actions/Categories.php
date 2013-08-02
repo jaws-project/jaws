@@ -40,18 +40,18 @@ class Blog_Actions_Categories extends Blog_HTML
             $name = $catInfo['name'];
             $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
 
-            $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog',
-                                                                                 'ShowAtomCategory',
-                                                                                 array('id' => $cat)),
-                                                 'alternate',
-                                                 'application/atom+xml',
-                                                 'Atom - '.$name);
-            $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog',
-                                                                                 'ShowRSSCategory',
-                                                                                 array('id' => $cat)),
-                                                 'alternate',
-                                                 'application/rss+xml',
-                                                 'RSS 2.0 - '.$name);
+            $GLOBALS['app']->Layout->AddHeadLink(
+                $this->gadget->GetURLFor('ShowAtomCategory', array('id' => $cat)),
+                'alternate',
+                'application/atom+xml',
+                'Atom - '. $name
+            );
+            $GLOBALS['app']->Layout->AddHeadLink(
+                $this->gadget->GetURLFor('ShowRSSCategory', array('id' => $cat)),
+                'alternate',
+                'application/rss+xml',
+                'RSS 2.0 - '. $name
+            );
 
             $this->SetTitle($name);
             $this->AddToMetaKeywords($catInfo['meta_keywords']);

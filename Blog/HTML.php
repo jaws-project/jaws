@@ -222,14 +222,18 @@ class Blog_HTML extends Jaws_Gadget_HTML
             }
             $tpl->SetVariable('text', $summary);
         } else {
-            $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'),
-                                                 'alternate',
-                                                 'application/atom+xml',
-                                                 'Atom - All');
-            $GLOBALS['app']->Layout->AddHeadLink($GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'),
-                                                 'alternate',
-                                                 'application/rss+xml',
-                                                 'RSS 2.0 - All');
+            $GLOBALS['app']->Layout->AddHeadLink(
+                $this->gadget->GetURLFor('Atom'),
+                'alternate',
+                'application/atom+xml',
+                'Atom - All'
+            );
+            $GLOBALS['app']->Layout->AddHeadLink(
+                $this->gadget->GetURLFor('RSS'),
+                'alternate',
+                'application/rss+xml',
+                'RSS 2.0 - All'
+            );
             $tpl->SetVariable('text', empty($text)? $summary : $text);
         }
 
