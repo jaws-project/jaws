@@ -68,8 +68,11 @@ class Jaws_Widgets_DatePicker extends DatePicker
      **/
     function buildXHTML()
     {
-        $GLOBALS['app']->Layout->addHeadLink('libraries/piwi/data/css/' . $this->_theme . '.css',
-                                             'stylesheet', 'text/css');
+        $GLOBALS['app']->Layout->AddHeadLink(
+            'libraries/piwi/data/css/'. $this->_theme. '.css',
+            'stylesheet',
+            'text/css'
+        );
         parent::buildXHTML();
     }
 
