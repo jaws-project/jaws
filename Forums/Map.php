@@ -19,7 +19,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Topics',
-    'forums/{fid}/topics[/page/{page}]',
+    'forums/{fid}/topics[/status/{status}][/page/{page}]',
     array(
         'fid'  => '[[:alnum:]-_]+',
         'page' => '[[:digit:]]+',
@@ -49,6 +49,14 @@ $maps[] = array(
 $maps[] = array(
     'LockTopic',
     'forums/{fid}/topics/{tid}/lock',
+    array(
+        'fid' => '[[:alnum:]-_]+',
+        'tid' => '[[:alnum:]-_]+',
+    )
+);
+$maps[] = array(
+    'PublishTopic',
+    'forums/{fid}/topics/{tid}/publish',
     array(
         'fid' => '[[:alnum:]-_]+',
         'tid' => '[[:alnum:]-_]+',

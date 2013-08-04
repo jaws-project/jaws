@@ -287,6 +287,20 @@ class Forums_Actions_Posts extends Forums_HTML
             $tpl->ParseBlock('posts/action');
         }
 
+        // check permission to publish/draft topic
+        if ($this->gadget->GetPermission('PublishTopic')){
+            $tpl->SetBlock('posts/action');
+            $tpl->SetVariable(
+                'action_lbl',
+                $topic['published']? _t('FORUMS_TOPICS_DRAFT') : _t('FORUMS_TOPICS_PUBLISH')
+            );
+            $tpl->SetVariable(
+                'action_url',
+                $this->gadget->GetURLFor('PublishTopic', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
+            );
+            $tpl->ParseBlock('posts/action');
+        }
+
         $tpl->ParseBlock('posts');
         return $tpl->Get();
     }

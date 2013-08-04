@@ -5,7 +5,8 @@
  * @category    GadgetModel
  * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
-  * @author     Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
@@ -68,14 +69,28 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $fid        Forum ID
+     * @param   int     $published  Is Published ?
+     * @param   int     $uid        User id
      * @param   int     $limit      Count of topics to be returned
      * @param   int     $offset     Offset of data array
      * @return  mixed   Array of topics or Jaws_Error on failure
      */
-    function GetTopics($fid, $limit = 0, $offset = null)
+    function GetTopics($fid, $published = null, $uid = null, $limit = 0, $offset = null)
     {
         $params = array();
         $params['fid'] = $fid;
+
+        $published_str = '';
+        if ($published !== null) {
+            $params['published'] = $published;
+            $params['uid'] = $uid;
+
+            if (empty($uid)) {
+                $published_str = ' AND [published] = {published}';
+            } else {
+                $published_str = ' AND ([published] = {published} OR [first_post_uid] = {uid})';
+            }
+        }
 
         $sql = '
             SELECT
@@ -92,7 +107,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             LEFT JOIN 
                 [[users]] as luser ON [[forums_topics]].[last_post_uid] = luser.[id]
             WHERE
-                [fid] = {fid}
+                [fid] = {fid}' . $published_str . '
             ORDER BY
                 [last_post_time] DESC';
 
@@ -444,6 +459,30 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $sql = '
             UPDATE [[forums_topics]] SET
                 [locked]   = {locked}
+            WHERE
+                [id] = {tid}';
+
+        $result = $GLOBALS['db']->query($sql, $params);
+        return $result;
+    }
+
+    /**
+     * Publish/Draft topic
+     *
+     * @access  public
+     * @param   int     $tid        Topic ID
+     * @param   bool    $published  True: Published, False: Draft
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function PublishTopic($tid, $published)
+    {
+        $params = array();
+        $params['tid']    = (int)$tid;
+        $params['published'] = $published;
+
+        $sql = '
+            UPDATE [[forums_topics]] SET
+                [published]   = {published}
             WHERE
                 [id] = {tid}';
 

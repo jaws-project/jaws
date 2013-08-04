@@ -47,6 +47,10 @@ $actions['LockTopic'] = array(
     'standalone' => true,
     'file'   => 'Topics',
 );
+$actions['PublishTopic'] = array(
+    'normal' => true,
+    'file'   => 'Topics',
+);
 $actions['Posts'] = array(
     'normal' => true,
     'file'   => 'Posts',

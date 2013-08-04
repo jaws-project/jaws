@@ -6,6 +6,7 @@
  * @package     Forums
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
@@ -20,7 +21,7 @@ class Forums_Actions_Topics extends Forums_HTML
     function Topics()
     {
         $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'page'), 'get');
+        $rqst = $request->get(array('fid', 'page', 'status'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
@@ -31,7 +32,22 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
-        $topics = $tModel->GetTopics($forum['id'], $limit, ($page - 1) * $limit);
+
+        $published = true;
+        $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        if ($this->gadget->GetPermission('PublishTopic')) {
+            $published = null;
+            $uid = null;
+        }
+
+        if (!empty($rqst['status'])) {
+            if ($rqst['status'] == 'published') {
+                $published = true;
+            } else {
+                $published = false;
+            }
+        }
+        $topics = $tModel->GetTopics($forum['id'], $published, $uid, $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
             return false;
         }
@@ -269,6 +285,15 @@ class Forums_Actions_Topics extends Forums_HTML
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
 
+        // status (published or draft)
+        if ($this->gadget->GetPermission('PublishTopic')) {
+            $tpl->SetBlock('topic/status');
+            $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+            $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
+            $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+            $tpl->ParseBlock('topic/status');
+        }
+
         // attachment
         if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
@@ -287,7 +312,7 @@ class Forums_Actions_Topics extends Forums_HTML
             $tpl->ParseBlock('topic/update_reason');
         }
 
-        // chack captcha only in new topic action
+        // check captcha only in new topic action
         if (empty($topic['id'])) {
             $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
             $htmlPolicy->loadCaptcha($tpl, 'topic');
@@ -318,7 +343,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $topic = $request->get(
             array(
                 'fid', 'tid', 'target', 'subject', 'message', 'remove_attachment',
-                'update_reason', 'published'
+                'update_reason', 'status'
             ),
             'post'
         );
@@ -378,6 +403,14 @@ class Forums_Actions_Topics extends Forums_HTML
             $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
             $result = $fModel->GetForum($topic['fid']);
             if (!Jaws_Error::IsError($result) && !empty($result)) {
+
+                // check topic publish permission
+                $status = $topic['status'];
+                $published = false;
+                if ($this->gadget->GetPermission('PublishTopic') && $status == 'published') {
+                    $published = true;
+                }
+
                 $topic['forum_title'] = $result['title'];
                 $result = $tModel->InsertTopic(
                     $GLOBALS['app']->Session->GetAttribute('user'),
@@ -385,7 +418,7 @@ class Forums_Actions_Topics extends Forums_HTML
                     $topic['subject'],
                     $topic['message'],
                     $topic['attachment'],
-                    $topic['published']
+                    $published
                 );
             }
             $event_type = 'new';
@@ -617,6 +650,54 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $result = $tModel->LockTopic($topic['id'], !$topic['locked']);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        $event_type = $topic['locked']? 'unlock' : 'lock';
+        $topic_link = $this->gadget->GetURLFor(
+            'Posts',
+            array('fid' => $topic['fid'], 'tid' => $topic['id']),
+            true
+        );
+        $result = $tModel->TopicNotification(
+            $event_type,
+            $topic['forum_title'],
+            $topic_link,
+            $topic['subject'],
+            $this->gadget->ParseText($topic['message'], 'Forums', 'index')
+        );
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        // redirect to referrer page
+        Jaws_Header::Referrer();
+    }
+
+    /**
+     * Publish/Draft a topic
+     *
+     * @access  public
+     */
+    function PublishTopic()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $request =& Jaws_Request::getInstance();
+        $rqst = $request->get(array('fid', 'tid'), 'get');
+
+        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
+        if (Jaws_Error::IsError($topic)) {
+            // redirect to referrer page
+            Jaws_Header::Referrer();
+        }
+
+        $result = $tModel->PublishTopic($topic['id'], !$topic['published']);
         if (Jaws_Error::IsError($result)) {
             // do nothing
         }

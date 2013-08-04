@@ -46,6 +46,15 @@
         <label for="message">{lbl_message}:</label>
         {message}
       </div>
+        <!-- BEGIN status -->
+        <div>
+            <label for="status">{lbl_status}:</label>
+            <select id="status" name="status">
+                <option value="published" selected>{lbl_published}</option>
+                <option value="draft">{lbl_draft}</option>
+            </select>
+        </div>
+        <!-- END status -->
       <!-- BEGIN attachment -->
       <div>
         <input id="remove_attachment" name="remove_attachment" type="checkbox" />
