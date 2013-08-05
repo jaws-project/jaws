@@ -33,20 +33,23 @@ class Forums_Actions_Topics extends Forums_HTML
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
 
-        $published = true;
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        if ($this->gadget->GetPermission('PublishTopic')) {
-            $published = null;
-            $uid = null;
-        }
-
-        if (!empty($rqst['status'])) {
-            if ($rqst['status'] == 'published') {
-                $published = true;
-            } else {
-                $published = false;
+        $published = null;
+        if (empty($uid)) {
+            $published = true;
+        } else {
+            if ($this->gadget->GetPermission('EditOthersTopic')) {
+                $uid = null;
+            }
+            if (!empty($rqst['status'])) {
+                if ($rqst['status'] == 'published') {
+                    $published = true;
+                } else {
+                    $published = false;
+                }
             }
         }
+
         $topics = $tModel->GetTopics($forum['id'], $published, $uid, $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
             return false;
@@ -71,10 +74,12 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // posts per page
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
-        $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
+        $posts_limit = empty($posts_limit) ? 10 : (int)$posts_limit;
         foreach ($topics as $topic) {
             $tpl->SetBlock('topics/topic');
             $tpl->SetVariable('status', (int)$topic['locked']);
+            $published_status = ((int)$topic['published'] === 1) ? 'published' : 'draft';
+            $tpl->SetVariable('published_status', $published_status);
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable(
                 'url',
@@ -358,7 +363,7 @@ class Forums_Actions_Topics extends Forums_HTML
             Jaws_Header::Referrer();
         }
 
-        // chack captcha only in new topic action
+        // check captcha only in new topic action
         if (empty($topic['tid'])) {
             $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
             $resCheck = $htmlPolicy->checkCaptcha();
@@ -687,6 +692,8 @@ class Forums_Actions_Topics extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $this->gadget->CheckPermission('PublishTopic');
+
         $request =& Jaws_Request::getInstance();
         $rqst = $request->get(array('fid', 'tid'), 'get');
 
@@ -697,12 +704,19 @@ class Forums_Actions_Topics extends Forums_HTML
             Jaws_Header::Referrer();
         }
 
+        // check user permissions
+        $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        if(!$this->gadget->GetPermission('EditOthersTopic') && ($uid!=$topic['first_post_uid'])) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+        
         $result = $tModel->PublishTopic($topic['id'], !$topic['published']);
         if (Jaws_Error::IsError($result)) {
             // do nothing
         }
 
-        $event_type = $topic['locked']? 'unlock' : 'lock';
+        $event_type = $topic['published']? 'published' : 'draft';
         $topic_link = $this->gadget->GetURLFor(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),

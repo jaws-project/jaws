@@ -81,14 +81,22 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $params['fid'] = $fid;
 
         $published_str = '';
-        if ($published !== null) {
-            $params['published'] = $published;
+        if (empty($uid)) {
+            if ($published !== null) {
+                $params['published'] = $published;
+                $published_str = ' AND [published] = {published}';
+            }
+        } else {
             $params['uid'] = $uid;
+            $params['published'] = $published;
 
-            if (empty($uid)) {
+            if ($published === null) {
+                $params['published'] = true;
+                $published_str = ' AND ([published] = {published} OR [first_post_uid] = {uid})';
+            } else if ($published === true){
                 $published_str = ' AND [published] = {published}';
             } else {
-                $published_str = ' AND ([published] = {published} OR [first_post_uid] = {uid})';
+                $published_str = ' AND [published] = {published} AND [first_post_uid] = {uid}';
             }
         }
 
