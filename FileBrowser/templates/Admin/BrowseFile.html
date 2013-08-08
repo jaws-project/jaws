@@ -5,9 +5,8 @@
 <head>
   <title>{page-title}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/resources/public{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/resources/style{.dir}.css" />
   <link rel="stylesheet" type="text/css" href="gadgets/FileBrowser/resources/style{.dir}.css" />
-  <!-- BEGIN script --><script type="text/javascript" src="libraries/tinymce/tiny_mce_popup.js"></script><!-- END script -->
 </head>
 <body>
   <div id="file_browser">
@@ -59,15 +58,8 @@
 function selectFile(url, title, editor) {
     switch (editor) {
         case 'TinyMCE':
-            var win = tinyMCEPopup.getWindowArg('window'),
-                field;
-            if (field = win.document.getElementById('href')) {
-                field.value = url;
-                win.document.getElementById('title').value = title;
-            } else {
-                field = win.document.getElementById('src').value = url;
-            }
-            tinyMCEPopup.close();
+            top.tinymce.activeEditor.windowManager.getParams().oninsert(url, title);
+            top.tinyMCE.activeEditor.windowManager.close();
             break;
         case 'CKEditor':
             var ckFuncIndex = '{ckFuncIndex}';
