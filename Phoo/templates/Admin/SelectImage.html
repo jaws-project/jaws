@@ -5,9 +5,8 @@
 <head>
   <title>{page-title}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/resources/public{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/resources/style{.dir}.css" />
   <link rel="stylesheet" type="text/css" href="gadgets/Phoo/resources/style{.dir}.css" />
-  <!-- BEGIN script --><script type="text/javascript" src="libraries/tinymce/tiny_mce_popup.js"></script><!-- END script -->
 </head>
 <body>
   <div id="image_select_container">
@@ -85,13 +84,8 @@
         var src = getImagePath(filename, size);
         switch (editor) {
             case 'TinyMCE':
-                var win = tinyMCEPopup.getWindowArg("window");
-                win.document.getElementById('src').value = src;
-                win.document.getElementById('alt').value = desc;
-                win.document.getElementById('title').value = title;
-                if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
-                if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(src);
-                tinyMCEPopup.close();
+                top.tinymce.activeEditor.windowManager.getParams().oninsert(src, title);
+                top.tinyMCE.activeEditor.windowManager.close();
                 break;
             case 'CKEditor':
                 var ckFuncIndex = '{ckFuncIndex}';
