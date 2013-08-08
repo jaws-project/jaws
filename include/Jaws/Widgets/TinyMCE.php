@@ -68,7 +68,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * @access  private
      * @var     string
      */
-    var $_Theme = 'advanced';
+    var $_Theme = 'modern';
 
     /**
      * Width of the editor, examples: 100%, 600
@@ -176,15 +176,6 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Container->SetWidth($this->_Width);
         $this->_XHTML .= $this->_Container->Get();
 
-        if (!$alreadyLoaded) {
-            $this->_XHTML.= '<script language="javascript" type="text/javascript" src="'.
-                        $GLOBALS['app']->getSiteURL('/libraries/tinymce/tiny_mce.js', true).'"></script>'."\n";
-            $this->_XHTML.= '<script language="javascript" type="text/javascript" src="'.
-                        $GLOBALS['app']->getSiteURL('/libraries/tinymce/jawsMCEWrapper.js', true).'"></script>'."\n";
-        }
-
-        $this->_XHTML.= "<script type=\"text/javascript\">\n";
-
         $ibrowser = '';
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
             $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
@@ -195,72 +186,38 @@ class Jaws_Widgets_TinyMCE extends Container
             $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
-        $this->_XHTML.= "function jaws_filebrowser_callback(field_name, url, type, win) {\n";
-        $this->_XHTML.= "var browser = (type === 'image')? '$ibrowser' : '$fbrowser';\n";
-        $this->_XHTML.= "if (browser != '') {\n";
-        $this->_XHTML.= "tinyMCE.activeEditor.windowManager.open({\n";
-        $this->_XHTML.= "   file : browser,\n";
-        $this->_XHTML.= "   title : 'My File Browser',\n";
-        $this->_XHTML.= "   width : 640,\n";
-        $this->_XHTML.= "   height : 480,\n";
-        $this->_XHTML.= "   resizable : 'yes',\n";
-        $this->_XHTML.= "   scrollbars : 'yes',\n";
-        $this->_XHTML.= "   inline : 'yes',\n";
-        $this->_XHTML.= "   close_previous : 'no'\n";
-        $this->_XHTML.= "}, {\n";
-        $this->_XHTML.= "   window : win,\n";
-        $this->_XHTML.= "   input : field_name\n";
-        $this->_XHTML.= "});\n";
-        $this->_XHTML.= "}\n";
-        $this->_XHTML.= "return false;\n";
-        $this->_XHTML.= "}\n";
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.js');
+        $tpl = new Jaws_Template();
+        $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
+        $tpl->SetBlock('tinymce');
 
-        $this->_XHTML.= "tinyMCE.init({\n";
-        $this->_XHTML.= "mode : '{$this->_Mode}',\n";
-        $this->_XHTML.= "language :'{$lang}',\n";
-        $this->_XHTML.= "theme : '{$this->_Theme}',\n";
-        $this->_XHTML.= "plugins : '{$plugins}',\n";
-        
+        $tpl->SetVariable('ibrowser', $ibrowser);
+        $tpl->SetVariable('fbrowser', $fbrowser);
+        $tpl->SetVariable('mode',     $this->_Mode);
+        $tpl->SetVariable('lang',     $lang);
+        $tpl->SetVariable('theme',    $this->_Theme);
+        $tpl->SetVariable('plugins',  $plugins);
+
+        //
         foreach ($toolbars as $key => $toolbar) {
+            $tpl->SetBlock('tinymce/toolbar');
             $index = $key + 1;
-            $this->_XHTML.= "theme_{$this->_Theme}_buttons{$index} : '$toolbar',\n";
+            $tpl->SetVariable('theme',   $this->_Theme);
+            $tpl->SetVariable('key',     $index);
+            $tpl->SetVariable('toolbar', $toolbar);
+            $tpl->ParseBlock('tinymce/toolbar');
         }
         $index = $index + 1;
-        $this->_XHTML.= "theme_{$this->_Theme}_buttons{$index} : '',\n";
-        $this->_XHTML.= "template_external_list_url : '".
-                        $GLOBALS['app']->getSiteURL('/libraries/tinymce/templates.js', true).
-                        "',\n";
-        $this->_XHTML.= "theme_{$this->_Theme}_toolbar_location : 'top',\n";
-        $this->_XHTML.= "theme_{$this->_Theme}_toolbar_align : 'center',\n";
-        $this->_XHTML.= "theme_{$this->_Theme}_path_location : 'bottom',\n";
-        $this->_XHTML.= "theme_{$this->_Theme}_resizing : true,\n";
-        $this->_XHTML.= "theme_{$this->_Theme}_resize_horizontal : false,\n";
-        $this->_XHTML.= "browsers : '" . implode($this->_Browsers, ',') . "',\n";
-        $this->_XHTML.= "directionality : '"._t('GLOBAL_LANG_DIRECTION')."',\n";
-        $this->_XHTML.= "tab_focus : ':prev,:next',\n";
-        $this->_XHTML.= "dialog_type : 'window',\n";
-        $this->_XHTML.= "entity_encoding : 'raw',\n";
-        $this->_XHTML.= "relative_urls : true,\n";
-        $this->_XHTML.= "remove_script_host : false,\n";
-        $this->_XHTML.= "force_p_newlines : true,\n";
-        $this->_XHTML.= "force_br_newlines : false,\n";
-        $this->_XHTML.= "convert_newlines_to_brs : false,\n";
-        $this->_XHTML.= "remove_linebreaks : true,\n";
-        $this->_XHTML.= "nowrap : false,\n";
-        $this->_XHTML.= "apply_source_formatting : true,\n";
-        //$this->_XHTML.= "save_callback : 'jaws_save_callback',\n";
-        //$this->_XHTML.= "cleanup_callback : 'myCustomCleanup',\n";
-        $this->_XHTML.= "file_browser_callback : 'jaws_filebrowser_callback',\n";
-        if ('rtl' == _t('GLOBAL_LANG_DIRECTION')) {
-            $this->_XHTML.= "content_css : \"gadgets/ControlPanel/resources/tinymce.rtl.css\",\n";
-        } else {
-            $this->_XHTML.= "content_css : \"gadgets/ControlPanel/resources/tinymce.css\",\n";
-        }
-        $this->_XHTML.= "extended_valid_elements : '" . $this->_ExtendedValidElements . "',\n";
-        $this->_XHTML.= "invalid_elements : '" . $this->_InvalidElements . "',\n";
-        $this->_XHTML.= "editor_selector : '{$this->_Class}'\n";
-        $this->_XHTML.= "});\n";
-        $this->_XHTML.= "</script>\n";
+        $tpl->SetVariable('key', $index);
+
+        $tpl->SetVariable('browsers', implode($this->_Browsers, ','));
+        $tpl->SetVariable('dir',      _t('GLOBAL_LANG_DIRECTION'));
+        $tpl->SetVariable('valid_elements',   $this->_ExtendedValidElements);
+        $tpl->SetVariable('invalid_elements', $this->_InvalidElements);
+        $tpl->SetVariable('class', $this->_Class);
+
+        $tpl->ParseBlock('tinymce');
+        $this->_XHTML.= $tpl->Get();
     }
 
     /**

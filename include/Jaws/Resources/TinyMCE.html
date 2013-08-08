@@ -1,0 +1,63 @@
+<!-- BEGIN tinymce -->
+<script type="text/javascript">
+    function jaws_filebrowser_callback(field_name, url, type, win)
+    {
+        var browser = (type === 'image')? '{ibrowser}' : '{fbrowser}';
+        if (browser != '') {
+            tinyMCE.activeEditor.windowManager.open({
+                    file: browser,
+                    title: 'My File Browser',
+                    width: 640,
+                    height: 480,
+                    resizable: 'yes',
+                    scrollbars: 'yes',
+                    inline: 'yes',
+                    close_previous: 'no'
+                }, {
+                    oninsert: function(source, description) {
+                        var elements = win.document.getElements('input.mce-textbox');
+                        elements[0].value = source;
+                        elements[1].value = description;
+                    }
+                }
+            );
+        }
+        return false;
+    }
+
+    tinyMCE.init({
+        mode:     '{mode}',
+        language: '{lang}',
+        theme:    '{theme}',
+        plugins:  '{plugins}',
+        <!-- BEGIN toolbar -->
+        theme_{theme}_buttons{key}: '{toolbar}',
+        <!-- END toolbar -->
+        theme_{theme}_buttons{key}: '',
+        template_external_list_url: 'libraries/tinymce/templates.js',
+        theme_{theme}_toolbar_location: 'top',
+        theme_{theme}_toolbar_align:    'center',
+        theme_{theme}_path_location:    'bottom',
+        theme_{theme}_resizing: true,
+        theme_{theme}_resize_horizontal: false,
+        browsers:           '{browsers}',
+        directionality:     '{dir}',
+        tab_focus:          ':prev,:next',
+        dialog_type:        'window',
+        entity_encoding:    'raw',
+        relative_urls:      true,
+        remove_script_host: false,
+        force_p_newlines:   true,
+        force_br_newlines:  false,
+        remove_linebreaks:  true,
+        nowrap:             false,
+        convert_newlines_to_brs: false,
+        apply_source_formatting: true,
+        file_browser_callback: jaws_filebrowser_callback,
+        content_css: 'gadgets/ControlPanel/resources/tinymce{.dir}.css',
+        extended_valid_elements: '{valid_elements}',
+        invalid_elements: '{invalid_elements}',
+        editor_selector:  '{class}'
+    });
+</script>
+<!-- END tinymce -->
