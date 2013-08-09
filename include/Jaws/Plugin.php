@@ -1,6 +1,6 @@
 <?php
 /**
- * Class parent of all plugins, features that each gadget can have
+ * Class parent of all plugins, features that each plugin can have
  * to print nice text/images
  *
  * @category   Plugins
@@ -12,11 +12,16 @@
 class Jaws_Plugin
 {
     /**
-     * @access  private
+     * @access  public
      * @var     string
-     * @see     function  GetName
      */
-    var $_Name;
+    var $name;
+
+    /**
+     * @access  public
+     * @var     string
+     */
+    var $title;
 
     /**
      * @access  public
@@ -25,18 +30,16 @@ class Jaws_Plugin
     var $description;
 
     /**
-     * @access  private
+     * @access  public
      * @var     string
-     * @see     function  GetExample
      */
-    var $_Example;
+    var $example;
 
     /**
-     * @access  private
+     * @access  public
      * @var     bool
-     * @see     function  IsFriendly
      */
-    var $_IsFriendly;
+    var $friendly;
 
     /**
      * @access  public
@@ -68,36 +71,19 @@ class Jaws_Plugin
     var $_DefaultBackendEnabled = true;
 
     /**
-     * Get the name of the plugin
+     * Constructor
      *
-     * @access  public
-     * @return  string Value of $_Name
+     * @access  protected
+     * @param   string $plugin Plugin name(same as the filesystem name)
+     * @return  void
      */
-    function GetName()
+    function Jaws_Plugin($plugin)
     {
-        return $this->_Name;
-    }
-
-    /**
-     * Get the example of the plugin
-     *
-     * @access  public
-     * @return  string value of $_Example
-     */
-    function GetExample()
-    {
-        return $this->_Example;
-    }
-
-    /**
-     * Get the friendly state of the plugin, friendly or non-friendly
-     *
-     * @access  public
-     * @return  bool    value of $_IsFriendly
-     */
-    function IsFriendly()
-    {
-        return $this->_IsFriendly;
+        $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
+        $this->name        = $plugin;
+        $this->title       = $plugin;
+        $this->example     = _t('PLUGINS_'. _t(strtoupper($plugin).'_EXAMPLE'));
+        $this->description = _t('PLUGINS_'. _t(strtoupper($plugin).'_DESCRIPTION'));
     }
 
     /**
@@ -145,7 +131,7 @@ class Jaws_Plugin
     function InstallPlugin($plugin = null)
     {
         if (is_null($plugin)) {
-            $plugin = $this->_Name;
+            $plugin = $this->name;
         }
 
         $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
@@ -199,7 +185,7 @@ class Jaws_Plugin
     function UninstallPlugin($plugin = null)
     {
         if (is_null($plugin)) {
-            $plugin = $this->_Name;
+            $plugin = $this->name;
         }
 
         $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';

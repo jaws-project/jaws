@@ -617,7 +617,7 @@ class Jaws
             // load plugin's language file
             $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
 
-            $obj = new $plugin();
+            $obj = new $plugin($plugin);
             if (Jaws_Error::IsError($obj)) {
                 $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $plugin),
                                         'Plugin file loading');
