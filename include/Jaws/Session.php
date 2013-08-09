@@ -510,7 +510,7 @@ class Jaws_Session
      */
     function GetPermission($gadget, $key, $subkey = '', $together = true)
     {
-        $user = $this->GetAttribute('username');
+        $user = $this->GetAttribute('user');
         $groups = $this->GetAttribute('groups');
         $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
