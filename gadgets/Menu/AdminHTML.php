@@ -210,11 +210,11 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
         $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget) {
-            if (!file_exists($gDir . $gadget['realname']. '/Hooks/Menu.php')) {
+            if (!file_exists($gDir . $gadget['name']. '/Hooks/Menu.php')) {
                 continue;
             }
 
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget['realname'], 'Info');
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget['name'], 'Info');
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
@@ -222,7 +222,7 @@ class Menu_AdminHTML extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
-            $typeCombo->AddOption($gadget['name'], $gadget['realname']);
+            $typeCombo->AddOption($gadget['title'], $gadget['name']);
         }
 
         $typeCombo->AddEvent(ON_CHANGE, 'changeType(this.value);');
