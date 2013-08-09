@@ -10,20 +10,8 @@
  */
 class FindFriend_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function FindFriend()
-    {
-        $this->_Name = 'FindFriend';
-        $this->_Description = _t('PLUGINS_FINDFRIEND_DESCRIPTION');
-        $this->_Example = '[friend]pablo[/friend]</b></small>';
-        $this->_IsFriendly = true;
-        $this->version = '0.3';
-    }
+    var $friendly = true;
+    var $version = '0.3';
 
     /**
      * Overrides, Gets the WebControl of this plugin
