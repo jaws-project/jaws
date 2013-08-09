@@ -87,7 +87,7 @@ class Search_Actions_Results extends Search_HTML
                 $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
                                                       count($result),
                                                       $model->implodeSearch(),
-                                                      $info->GetTitle()));
+                                                      $info->title));
                 $tpl->ParseBlock('results/gadget');
                 foreach ($result as $item) {
                     $item_counter++;

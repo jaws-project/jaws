@@ -52,7 +52,7 @@ class Search_Actions_Search extends Search_HTML
                 if (Jaws_Error::IsError($info)) {
                     continue;
                 }
-                $gchk->AddOption($info->GetTitle(), $gadget);
+                $gchk->AddOption($info->title, $gadget);
             }
             $default = !is_null($post['gadgets']) ? $post['gadgets'] : '';
             $gchk->SetDefault($default);
@@ -129,7 +129,7 @@ class Search_Actions_Search extends Search_HTML
             if (Jaws_Error::IsError($info)) {
                 continue;
             }
-            $gchk->AddOption($info->GetTitle(), $gadget);
+            $gchk->AddOption($info->title, $gadget);
         }
         $default = !is_null($post['gadgets']) ? $post['gadgets'] : '';
         $gchk->SetDefault($default);
