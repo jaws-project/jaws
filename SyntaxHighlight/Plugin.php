@@ -10,20 +10,8 @@
  */
 class SyntaxHighlight_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @access  private
-     */
-    function SyntaxHighlight()
-    {
-        $this->_Name = 'SyntaxHighlight';
-        $this->_Description = _t('PLUGINS_SYNTAXHIGHLIGHT_DESCRIPTION');
-        $this->_Example = '[code="C#"]<br />using System;<br />public class Foo { }<br />[/code]';
-        $this->_IsFriendly = true;
-        $this->version = '0.3';
-    }
+    var $friendly = true;
+    var $version = '0.3';
 
     /**
      * Overrides, Gets the WebControl of this plugin
