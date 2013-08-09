@@ -134,12 +134,9 @@ class Jaws_Plugin
             $plugin = $this->name;
         }
 
-        $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
-        if (!file_exists($file)) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
-                __FUNCTION__
-            );
+        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        if (Jaws_Error::IsError($result)) {
+            return $objPlugin;
         }
 
         // adding plugin to installed plugins list
@@ -150,21 +147,20 @@ class Jaws_Plugin
         $installed_plugins.= $plugin. ',';
         $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
-        require_once $file;
-        $pluginObj = new $plugin;
-        $result = $pluginObj->Install();
+        // load plugin install method
+        $result = $objPlugin->Install();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
         $GLOBALS['app']->Registry->insert(
             'backend_gadgets',
-            $pluginObj->_DefaultBackendEnabled? '*' : ',',
+            $objPlugin->_DefaultBackendEnabled? '*' : ',',
             $plugin
         );
         $GLOBALS['app']->Registry->insert(
             'frontend_gadgets',
-            $pluginObj->_DefaultFrontendEnabled? '*' : ',',
+            $objPlugin->_DefaultFrontendEnabled? '*' : ',',
             $plugin
         );
 
@@ -188,14 +184,11 @@ class Jaws_Plugin
             $plugin = $this->name;
         }
 
-        $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
-        if (!file_exists($file)) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
-                __FUNCTION__
-            );
+        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        if (Jaws_Error::IsError($result)) {
+            return $objPlugin;
         }
-
+        
         // removeing plugin from installed plugins list
         $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
         $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
@@ -204,9 +197,8 @@ class Jaws_Plugin
         // removeing plugin registry keys
         $GLOBALS['app']->Registry->Delete($plugin);
 
-        require_once $file;
-        $pluginObj = new $plugin;
-        $result = $pluginObj->Uninstall();
+        // load plugin uninstall method
+        $result = $objPlugin->Uninstall();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
