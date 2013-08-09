@@ -10,23 +10,8 @@
  */
 class FastLinks_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function FastLinks()
-    {
-        $this->_Name = 'FastLinks';
-        $this->_Description = _t('PLUGINS_FASTLINKS_DESCRIPTION');
-        $this->_Example = '[email="user@jaws.com.mx"]MyFriend[/email]<br />' . "\n".
-            '[email]user@jaws.com.mx[/email]<br />' . "\n".
-            '[url]http://www.jaws-project.com[/url]<br />' . "\n".
-            '[url="http://www.jaws-project.com"]Jaws Site[/url]' . "\n";
-        $this->_IsFriendly = true;
-        $this->version = '0.3';
-    }
+    var $friendly = true;
+    var $version = '0.3';
 
     /**
      * Overrides, Gets the WebControl of this plugin
