@@ -406,8 +406,8 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         $gInfo = $GLOBALS['app']->LoadGadget($layoutElement['gadget'], 'Info');
         $tpl->SetVariable('gadget', $layoutElement['gadget']);
-        $tpl->SetVariable('gadget_name', $gInfo->GetTitle());
-        $tpl->SetVariable('gadget_description', $gInfo->GetDescription());
+        $tpl->SetVariable('gadget_name', $gInfo->title);
+        $tpl->SetVariable('gadget_description', $gInfo->description);
 
         $btnSave =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "getAction('{$id}', '{$layoutElement['gadget']}');");
