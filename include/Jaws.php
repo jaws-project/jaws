@@ -602,14 +602,15 @@ class Jaws
                 }
             }
 
-            $file = JAWS_PATH . 'plugins/' . $plugin . '/' . $plugin . '.php';
+            $file = JAWS_PATH. 'plugins/'. $plugin. '/plugin.php';
             if (file_exists($file)) {
                 include_once $file;
             }
 
-            if (!Jaws::classExists($plugin)) {
+            $plugin_class = $plugin. '_Plugin';
+            if (!Jaws::classExists($plugin_class)) {
                 // return a error
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', $plugin),
+                $error = new Jaws_Error(_t('GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', $plugin_class),
                                         'Plugin class check');
                 return $error;
             }
@@ -617,14 +618,14 @@ class Jaws
             // load plugin's language file
             $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
 
-            $obj = new $plugin($plugin);
-            if (Jaws_Error::IsError($obj)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $plugin),
+            $objPlugin = new $plugin_class($plugin);
+            if (Jaws_Error::IsError($objPlugin)) {
+                $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $plugin_class),
                                         'Plugin file loading');
                 return $error;
             }
 
-            $this->_Plugins[$plugin] = $obj;
+            $this->_Plugins[$plugin] = $objPlugin;
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded plugin: ' . $plugin);
         }
 
