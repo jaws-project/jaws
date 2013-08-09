@@ -214,7 +214,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $comboGadgets =& Piwi::CreateWidget('Combo', 'gadgets_combo');
         $comboGadgets->SetStyle('width: 200px;');
         foreach($gadgets as $gadget) {
-            $comboGadgets->AddOption($gadget['name'], $gadget['realname']);
+            $comboGadgets->AddOption($gadget['title'], $gadget['name']);
         }
         $comboGadgets->AddEvent(ON_CHANGE, 'javascript: rebuildActionCombo();');
         $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
