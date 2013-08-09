@@ -10,21 +10,8 @@
  */
 class GlossaGlossy_Plugin extends Jaws_Plugin
 {
-
-    /**
-     * Main Constructor
-     *
-     * @access	public
-     * @return  void
-     */
-    function GlossaGlossy()
-    {
-        $this->_Name = 'GlossaGlossy';
-        $this->_Description = _t('PLUGINS_GLOSSAGLOSSY_DESCRIPTION');
-        $this->_Example = '[term]jaws[/term]';
-        $this->_IsFriendly = true;
-        $this->version = '0.3';
-    }
+    var $friendly = true;
+    var $version = '0.3';
 
     /**
      * Overrides, Gets the WebControl of this plugin
