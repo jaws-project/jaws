@@ -177,7 +177,7 @@ class Settings_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('settings/item');
         $gdt->AddOption(_t('GLOBAL_NOGADGET'),'');
         foreach ($installedgadgets as $g => $tg) {
-            $gdt->AddOption($tg['name'], $g);
+            $gdt->AddOption($tg['title'], $g);
         }
         $gdt->SetDefault($this->gadget->registry->fetch('main_gadget'));
         $tpl->SetVariable('field-name', 'main_gadget');
