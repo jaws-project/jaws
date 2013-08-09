@@ -487,12 +487,18 @@ class Jaws_Gadget
      *
      * @param   string  $key    ACL key(s) name
      * @param   string  $subkey ACL subkey name
+     * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $gadget Gadget name
      * @return  bool    True if granted, else False
      */
-    function GetPermission($key, $subkey = '', $gadget = false)
+    function GetPermission($key, $subkey = '', $together = true, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(empty($gadget)? $this->name : $gadget, $key, $subkey);
+        return $GLOBALS['app']->Session->GetPermission(
+            empty($gadget)? $this->name : $gadget,
+            $key,
+            $subkey,
+            $together
+        );
     }
 
     /**
