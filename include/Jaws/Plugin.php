@@ -19,11 +19,10 @@ class Jaws_Plugin
     var $_Name;
 
     /**
-     * @access  private
+     * @access  public
      * @var     string
-     * @see     function  GetDescription
      */
-    var $_Description;
+    var $description;
 
     /**
      * @access  private
@@ -40,11 +39,10 @@ class Jaws_Plugin
     var $_IsFriendly;
 
     /**
-     * @access  private
+     * @access  public
      * @var     string
-     * @see     function  GetVersion
      */
-    var $_Version;
+    var $version;
 
     /**
      * @access  private
@@ -81,17 +79,6 @@ class Jaws_Plugin
     }
 
     /**
-     * Get the description of the plugin
-     *
-     * @access  public
-     * @return  string Value of $_Description
-     */
-    function GetDescription()
-    {
-        return $this->_Description;
-    }
-
-    /**
      * Get the example of the plugin
      *
      * @access  public
@@ -111,17 +98,6 @@ class Jaws_Plugin
     function IsFriendly()
     {
         return $this->_IsFriendly;
-    }
-
-    /**
-     * Get the version of the plugin
-     *
-     * @access  public
-     * @return  string value of $_Version
-     */
-    function GetVersion()
-    {
-        return $this->_Version;
     }
 
     /**
