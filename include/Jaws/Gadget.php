@@ -15,25 +15,25 @@ class Jaws_Gadget
      * Language translate name of the gadget
      *
      * @var     string
-     * @access  private
+     * @access  public
      */
-    var $_Title = '';
+    var $title = '';
 
     /**
      * Language translate description of the gadget
      *
      * @var     string
-     * @access  private
+     * @access  public
      */
-    var $_Description = '';
+    var $description = '';
 
     /**
      * Gadget version
      *
      * @var     string
-     * @access  private
+     * @access  public
      */
-    var $_Version = '';
+    var $version = '';
 
     /**
      * Required Jaws version required
@@ -180,8 +180,8 @@ class Jaws_Gadget
         // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
 
-        $this->_Title       = _t(strtoupper($gadget).'_NAME');
-        $this->_Description = _t(strtoupper($gadget).'_DESCRIPTION');
+        $this->title       = _t(strtoupper($gadget).'_NAME');
+        $this->description = _t(strtoupper($gadget).'_DESCRIPTION');
     }
 
     /**
@@ -301,17 +301,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Gets the gadget translated name
-     *
-     * @access  protected
-     * @return  string   Gadget translated name
-     */
-    function GetTitle()
-    {
-        return $this->_Title;
-    }
-
-    /**
      * Gets the gadget's section
      *
      * @access  public
@@ -374,28 +363,6 @@ class Jaws_Gadget
                            array($this->_Wiki_URL, $lang, $this->name, strtolower($this->name),
                                  'Gadget', 'gadget', 'Gadgets', 'gadgets'),
                            $this->_Wiki_Format);
-    }
-
-    /**
-     * Gets the gadget description
-     *
-     * @access  public
-     * @return  string   Gadget description
-     */
-    function GetDescription()
-    {
-        return $this->_Description;
-    }
-
-    /**
-     * Gets the gadget version
-     *
-     * @access  public
-     * @return  string Gadget's version
-     */
-    function GetVersion()
-    {
-        return $this->_Version;
     }
 
     /**
@@ -497,7 +464,7 @@ class Jaws_Gadget
             if (self::IsGadgetInstalled($gadget)) {
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
                 $current_version = $objGadget->registry->fetch('version');
-                $gadgets_status[$gadget] = version_compare($objGadget->_Version, $current_version, '>')? false : true;
+                $gadgets_status[$gadget] = version_compare($objGadget->version, $current_version, '>')? false : true;
             }
         }
 

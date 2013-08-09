@@ -162,7 +162,7 @@ class Jaws_Gadget_Installer
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
         $this->gadget->registry->insert(
             array(
-                'version'  => $this->gadget->_Version,
+                'version'  => $this->gadget->version,
                 'requires' => $requires,
             )
         );
@@ -281,7 +281,7 @@ class Jaws_Gadget_Installer
     function UpgradeGadget()
     {
         $oldVersion = $this->gadget->registry->fetch('version', $this->gadget->name);
-        $newVersion = $this->gadget->_Version;
+        $newVersion = $this->gadget->version;
         if (version_compare($oldVersion, $newVersion, ">=")) {
             return true;
         }
