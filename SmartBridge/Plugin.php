@@ -10,13 +10,16 @@
  */
 class SmartBridge_Plugin extends Jaws_Plugin
 {
+    var $friendly = true;
+    var $version  = '0.2';
+
     /**
      * Approved gadgest for links
      *
      * @var     array
      * @access  private
      */
-    var $_ApprovedGadgets = array();
+    var $_ApprovedGadgets = array('Blog', 'StaticPage', 'Phoo');
 
     /**
      * Jaws gadgets that are enabled
@@ -32,18 +35,9 @@ class SmartBridge_Plugin extends Jaws_Plugin
      * @access  public
      * @return  void
      */
-    function SmartBridge()
+    function SmartBridge_Plugin($plugin)
     {
-        $this->_Name = 'SmartBridge';
-        $this->_Description = _t('PLUGINS_SMARTBRIDGE_DESCRIPTION');
-        $this->_Example = '[a:Blog:Remember_Me]Remember me[/a]';
-        $this->_IsFriendly = true;
-        $this->version = '0.2';
-
-        $this->_ApprovedGadgets = array('Blog',
-                                        'StaticPage',
-                                        'Phoo');
-
+        parent::Jaws_Plugin($plugin);
         $eg = $GLOBALS['app']->Registry->fetch('gadgets_enabled_items');
         if (Jaws_Error::isError($eg)) {
             $eg = array();
