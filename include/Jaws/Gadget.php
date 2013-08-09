@@ -246,17 +246,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Gets the gadget name
-     *
-     * @access  public
-     * @return  string   Gadget name
-     */
-    function GetGadget()
-    {
-        return $this->name;
-    }
-
-    /**
      * Sets an attribute
      *
      * @access  protected
