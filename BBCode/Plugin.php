@@ -10,21 +10,9 @@
  */
 class BBCode_Plugin extends Jaws_Plugin
 {
-    /**
-     * Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function BBCode()
-    {
-        $this->_Name = 'BBCode';
-        $this->_Description = _t('PLUGINS_BBCODE_DESCRIPTION');
-        $this->_Example     = _t('PLUGINS_BBCODE_SAMPLES');
-        $this->_IsFriendly  = true;
-        $this->version     = '0.1';
-        $this->_DefaultFrontendEnabled = true;
-    }
+    var $friendly = true;
+    var $version  = '0.1';
+    var $_DefaultFrontendEnabled = true;
 
     /**
      * Overrides, Gets the WebControl of this plugin
