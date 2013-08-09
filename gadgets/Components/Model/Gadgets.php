@@ -61,8 +61,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                     $gUpdated = true;
                 }
 
-                $tName = $objGadget->title;
-                $index = urlencode($tName). $gadget;
+                $index = urlencode($objGadget->title). $gadget;
                 $section = strtolower($objGadget->GetSection());
                 switch ($section) {
                     case 'general':
@@ -79,8 +78,8 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
 
                 $gadgetsList[$index] = array(
                         'section'     => $section,
-                        'realname'    => $gadget,
-                        'name'        => $tName,
+                        'name'        => $gadget,
+                        'title'       => $objGadget->title,
                         'core_gadget' => $objGadget->_IsCore,
                         'description' => $objGadget->description,
                         'version'     => $objGadget->version,
@@ -103,7 +102,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                 (is_null($has_layout) || $gadget['has_layout'] == $has_layout) &&
                 (is_null($has_html) || $gadget['has_html'] == $has_html))
             {
-                $resList[$gadget['realname']] = $gadget;
+                $resList[$gadget['name']] = $gadget;
             }
         }
 

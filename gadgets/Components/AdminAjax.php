@@ -45,12 +45,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
             } else {
                 $g['state'] = 'core';
             }
-            $g['name'] = $gadget['name'];
-            $g['realname'] = $gadget['realname'];
+            $g['name']  = $gadget['name'];
+            $g['title'] = $gadget['title'];
             $g['disabled'] = $gadget['disabled'];
             $g['core_gadget'] = $gadget['core_gadget'];
             $g['description'] = $gadget['description'];
-            $g['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $gadget['realname']);
+            $g['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $gadget['name']);
             $g['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             $result[$key] = $g;
         }
@@ -157,7 +157,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $plugins = $model->GetPluginsList();
         foreach ($plugins as $key => $plugin) {
             $plugins[$key]['state'] = $plugin['installed']? 'installed' : 'notinstalled';
-            $plugins[$key]['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $plugin['realname']);
+            $plugins[$key]['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $plugin['name']);
             $plugins[$key]['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             unset($plugins[$key]['installed']);
         }
@@ -240,7 +240,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true, true);
         foreach ($gadgets as $gadget) {
-            $usage['gadgets'][] = array('name' => $gadget['name'], 'realname' => $gadget['realname']);
+            $usage['gadgets'][] = array('name' => $gadget['name'], 'title' => $gadget['title']);
         }
 
         return array('ui' => $ui, 'usage' => $usage);

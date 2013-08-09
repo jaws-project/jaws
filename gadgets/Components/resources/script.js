@@ -147,9 +147,9 @@ function buildComponentList()
  */
 function getComponentElement(comp)
 {
-    var li = new Element('li', {id:comp.realname}),
-        span = new Element('span').set('html', comp.name),
-        img = new Element('img', {alt:comp.realname}),
+    var li = new Element('li', {id:comp.name}),
+        span = new Element('span').set('html', comp.title),
+        img = new Element('img', {alt:comp.name}),
         a = new Element('a').set('html', actions[comp.state]);
     if (comp.disabled) {
         a.set('html', actions.disabled);
@@ -157,12 +157,12 @@ function getComponentElement(comp)
     li.adopt(img, span);
     img.src = pluginsMode?
         'gadgets/Components/images/plugin.png' :
-        'gadgets/' + comp.realname + '/images/logo.png';
+        'gadgets/' + comp.name + '/images/logo.png';
     if (comp.state !== 'core') {
         a.set('href', 'javascript:void(0);');
         a.addEvent('click', function(e) {
             e.stop();
-            selectedComponent = comp.realname;
+            selectedComponent = comp.name;
             setupComponent();
         });
         li.grab(a);
@@ -320,9 +320,9 @@ function selectComponent()
         h1 = new Element('h1');
     img.src = pluginsMode ? 
         'gadgets/Components/images/plugin.png': 
-        'gadgets/' + components[comp].realname + '/images/logo.png';
-    img.alt = components[comp].name;
-    h1.innerHTML = components[comp].name + ': ' + components[comp].description;
+        'gadgets/' + components[comp].name + '/images/logo.png';
+    img.alt = components[comp].title;
+    h1.innerHTML = components[comp].title + ': ' + components[comp].description;
     $('component_head').innerHTML = '';
     $('component_form').innerHTML = '';
     $('component_head').adopt(img, h1);
@@ -529,17 +529,17 @@ function pluginUsage(reset)
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         res.usage.gadgets.each(function(gadget) {
-            var label = new Element('label', {html:gadget.name}),
+            var label = new Element('label', {html:gadget.title}),
                 th = new Element('th').grab(label),
-                b_input = new Element('input', {type:'checkbox', name:'backend', value:gadget.realname}),
+                b_input = new Element('input', {type:'checkbox', name:'backend', value:gadget.name}),
                 b_td = new Element('td').grab(b_input),
-                f_input = new Element('input', {type:'checkbox', name:'frontend', value:gadget.realname}),
+                f_input = new Element('input', {type:'checkbox', name:'frontend', value:gadget.name}),
                 f_td = new Element('td').grab(f_input),
                 tr = new Element('tr').adopt(th, b_td, f_td);
-            if (res.usage.backend === '*' || res.usage.backend.indexOf(gadget.realname) !== -1) {
+            if (res.usage.backend === '*' || res.usage.backend.indexOf(gadget.name) !== -1) {
                 b_input.checked = true;
             }
-            if (res.usage.frontend === '*' || res.usage.frontend.indexOf(gadget.realname) !== -1) {
+            if (res.usage.frontend === '*' || res.usage.frontend.indexOf(gadget.name) !== -1) {
                 f_input.checked = true;
             }
             tbody.grab(tr);
