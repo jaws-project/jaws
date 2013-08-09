@@ -10,20 +10,8 @@
  */
 class ActionImport_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function ActionImport()
-    {
-        $this->_Name = 'ActionImport';
-        $this->_Description = _t('PLUGINS_ACTIONIMPORT_DESCRIPTION');
-        $this->_Example = '[import gadget="Blocks" action="Display" params="1"]';
-        $this->_IsFriendly = false;
-        $this->version = '0.1';
-    }
+    var $friendly = false;
+    var $version = '0.1';
 
     /**
      * Overrides, Parses the text
