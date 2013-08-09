@@ -17,6 +17,6 @@ class FileBrowser_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.8.3';
+    var $version = '0.8.3';
 
 }

@@ -17,6 +17,6 @@ class ServerTime_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.8.1';
+    var $version = '0.8.1';
 
 }

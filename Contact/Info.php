@@ -17,6 +17,6 @@ class Contact_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.3.4';
+    var $version = '0.3.4';
 
 }
