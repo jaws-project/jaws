@@ -93,11 +93,11 @@ class Components_Actions_Admin_Plugins extends Components_AdminHTML
         );
         $tpl->SetVariable(
             'friendly',
-            $objPlugin->IsFriendly()? _t('COMPONENTS_PLUGINS_FRIENDLY') : _t('COMPONENTS_PLUGINS_NOT_FRIENDLY')
+            $objPlugin->friendly? _t('COMPONENTS_PLUGINS_FRIENDLY') : _t('COMPONENTS_PLUGINS_NOT_FRIENDLY')
         );
         $tpl->SetVariable(
             'example',
-            $objPlugin->GetExample()? $objPlugin->GetExample() : _t('COMPONENTS_PLUGINS_NO_EXAMPLE')
+            $objPlugin->example? $objPlugin->example : _t('COMPONENTS_PLUGINS_NO_EXAMPLE')
         );
         $tpl->SetVariable('version', $objPlugin->version);
 
