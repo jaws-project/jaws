@@ -11,21 +11,9 @@
  */
 class AlbumCover_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function AlbumCover()
-    {
-        $this->_Name = 'AlbumCover';
-        $this->_Description = _t('PLUGINS_ALBUMCOVER_DESCRIPTION');
-        $this->_Example = "[AlbumCover Artist='The Beatles' Album='Abbey Road']";
-        $this->_IsFriendly = true;
-        $this->version = '0.4';
-        $this->_AccessKey = 'A';
-    }
+    var $friendly = true;
+    var $version = '0.4';
+    var $_AccessKey = 'A';
 
     /**
      * Installs the plugin
