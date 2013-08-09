@@ -33,7 +33,7 @@ class Users_Actions_Admin_ACL extends Users_AdminHTML
         $combo =& Piwi::CreateWidget('Combo', 'components');
         $combo->AddOption('', '');
         foreach ($gadgets as $gadget) {
-            $combo->AddOption($gadget['name'], $gadget['realname']);
+            $combo->AddOption($gadget['title'], $gadget['name']);
         }
         $combo->AddEvent(ON_CHANGE, 'getACL();');
         $tpl->SetVariable('components', $combo->Get());
