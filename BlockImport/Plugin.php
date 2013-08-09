@@ -10,20 +10,8 @@
  */
 class BlockImport_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function BlockImport()
-    {
-        $this->_Name = 'BlockImport';
-        $this->_Description = _t('PLUGINS_BLOCKIMPORT_DESCRIPTION');
-        $this->_Example = "[Block=#1]";
-        $this->_IsFriendly = false;
-        $this->version = '0.1';
-    }
+    var $friendly = false;
+    var $version = '0.1';
 
     /**
      * Overrides, Parses the text

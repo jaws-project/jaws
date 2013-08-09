@@ -10,23 +10,10 @@
  */
 class Emoticons_Plugin extends Jaws_Plugin
 {
+    var $friendly = true;
+    var $version = '0.5.1';
     var $_ImagePath = 'plugins/Emoticons/images';
-
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function Emoticons()
-    {
-        $this->_Name = 'Emoticons';
-        $this->_Description = _t('PLUGINS_EMOTICONS_DESCRIPTION');
-        $this->_Example = 'I\'m in love with Jaws Developers ;-), :-(, :-P, ;-)';
-        $this->_IsFriendly = true;
-        $this->version = '0.5.1';
-        $this->_DefaultFrontendEnabled = true;
-    }
+    var $_DefaultFrontendEnabled = true;
 
     /**
      * Overrides, Gets the WebControl of this plugin
