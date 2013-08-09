@@ -314,7 +314,7 @@ class Search_Model extends Jaws_Gadget_Model
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['realname'] . '/hooks/Search.php'))
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Search.php'))
                 $gadgets[$key] = $gadget;
         }
         return $gadgets;

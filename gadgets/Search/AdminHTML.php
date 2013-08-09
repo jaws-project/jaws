@@ -34,10 +34,10 @@ class Search_AdminHTML extends Jaws_Gadget_HTML
             $gchk =& Piwi::CreateWidget('CheckButtons', 'gadgets', 'vertical');
             foreach ($gadgetList as $tgadget) {
                 if ($tgadget['name'] != 'Search') {
-                    if (in_array($tgadget['realname'], $searchableGadgets)) {
-                        $gchk->AddOption($tgadget['name'], $tgadget['realname'], null, true);
+                    if (in_array($tgadget['name'], $searchableGadgets)) {
+                        $gchk->AddOption($tgadget['title'], $tgadget['name'], null, true);
                     } else {
-                        $gchk->AddOption($tgadget['name'], $tgadget['realname'], null, false);
+                        $gchk->AddOption($tgadget['title'], $tgadget['name'], null, false);
                     }
                 }
             }
