@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser extends Jaws_Plugin 
+class FileBrowser_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor

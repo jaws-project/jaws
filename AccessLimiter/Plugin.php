@@ -8,7 +8,7 @@
  * @copyright  2009-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class AccessLimiter extends Jaws_Plugin
+class AccessLimiter_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor

@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SyntaxHighlight extends Jaws_Plugin
+class SyntaxHighlight_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor

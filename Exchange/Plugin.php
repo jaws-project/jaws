@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Exchange extends Jaws_Plugin
+class Exchange_Plugin extends Jaws_Plugin
 {
     /**
      * List of excluded tags

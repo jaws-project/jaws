@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emoticons extends Jaws_Plugin
+class Emoticons_Plugin extends Jaws_Plugin
 {
     var $_ImagePath = 'plugins/Emoticons/images';
 

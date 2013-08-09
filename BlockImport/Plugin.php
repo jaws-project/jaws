@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlockImport extends Jaws_Plugin
+class BlockImport_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor

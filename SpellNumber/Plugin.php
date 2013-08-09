@@ -8,7 +8,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SpellNumber extends Jaws_Plugin
+class SpellNumber_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor

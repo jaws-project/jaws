@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BBCode extends Jaws_Plugin
+class BBCode_Plugin extends Jaws_Plugin
 {
     /**
      * Constructor

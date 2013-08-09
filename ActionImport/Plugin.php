@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ActionImport extends Jaws_Plugin
+class ActionImport_Plugin extends Jaws_Plugin
 {
     /**
      * Main Constructor
