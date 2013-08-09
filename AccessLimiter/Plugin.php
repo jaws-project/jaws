@@ -10,23 +10,8 @@
  */
 class AccessLimiter_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function AccessLimiter()
-    {
-        $this->_Name = 'AccessLimiter';
-        $this->_Description = _t('PLUGINS_ACCESSLIMITER_DESCRIPTION');
-        $this->_Example  = '[limited]your content[/limited]<br />'.
-                           '[limited users="afz,ion"]your content[/limited]<br />'.
-                           '[limited groups="admins"]your content[/limited]<br />'.
-                           '[limited users="afz" groups="admins"]your content[/limited]';
-        $this->_IsFriendly = false;
-        $this->version = '0.1';
-    }
+    var $friendly = false;
+    var $version = '0.1';
 
     /**
      * Overrides, Parses the text
