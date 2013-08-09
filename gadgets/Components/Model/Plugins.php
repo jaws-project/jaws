@@ -45,7 +45,7 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
                 $pluginsList[$plugin] = array(
                     'realname' => $plugin,
                     'name' => $plugin,
-                    'description' => _t('PLUGINS_' . strtoupper($plugin) . '_DESCRIPTION'),
+                    'description' => $plugin->description,
                     'installed' => strpos($installed_plugins, ",$plugin,") !==false,
                 );
             }

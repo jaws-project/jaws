@@ -37,7 +37,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -107,7 +107,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -142,7 +142,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -177,7 +177,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->GetTitle()), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 

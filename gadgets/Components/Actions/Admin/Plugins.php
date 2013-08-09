@@ -99,7 +99,7 @@ class Components_Actions_Admin_Plugins extends Components_AdminHTML
             'example',
             $objPlugin->GetExample()? $objPlugin->GetExample() : _t('COMPONENTS_PLUGINS_NO_EXAMPLE')
         );
-        $tpl->SetVariable('version', $objPlugin->GetVersion());
+        $tpl->SetVariable('version', $objPlugin->version);
 
         $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');

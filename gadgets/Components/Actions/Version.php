@@ -32,12 +32,12 @@ class Components_Actions_Version extends Jaws_Gadget_HTML
 
             case 1:
                 $objGadget = $GLOBALS['app']->LoadGadget($get['component'], 'Info');
-                $version = Jaws_Error::isError($objGadget)? Jaws_HTTPError::Get(404) : $objGadget->_Version;
+                $version = Jaws_Error::isError($objGadget)? Jaws_HTTPError::Get(404) : $objGadget->version;
                 break;
 
             case 2:
                 $objPlugin = $GLOBALS['app']->LoadPlugin($get['componente']);
-                $version = Jaws_Error::isError($objPlugin)? Jaws_HTTPError::Get(404) : $objPlugin->GetVersion();
+                $version = Jaws_Error::isError($objPlugin)? Jaws_HTTPError::Get(404) : $objPlugin->version;
                 break;
         }
 

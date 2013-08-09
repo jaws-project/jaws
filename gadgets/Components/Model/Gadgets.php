@@ -61,7 +61,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                     $gUpdated = true;
                 }
 
-                $tName = $objGadget->GetTitle();
+                $tName = $objGadget->title;
                 $index = urlencode($tName). $gadget;
                 $section = strtolower($objGadget->GetSection());
                 switch ($section) {
@@ -82,8 +82,8 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                         'realname'    => $gadget,
                         'name'        => $tName,
                         'core_gadget' => $objGadget->_IsCore,
-                        'description' => $objGadget->GetDescription(),
-                        'version'     => $objGadget->GetVersion(),
+                        'description' => $objGadget->description,
+                        'version'     => $objGadget->version,
                         'installed'   => (bool)$gInstalled,
                         'updated'     => (bool)$gUpdated,
                         'disabled'    => strpos($disabled_gadgets, ",$gadget,") !==false,

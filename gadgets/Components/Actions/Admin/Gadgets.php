@@ -92,12 +92,12 @@ class Components_Actions_Admin_Gadgets extends Components_AdminHTML
         $tpl = $this->gadget->loadTemplate('Gadget.html');
         $tpl->SetBlock('info');
 
-        $tpl->SetVariable('gadget', $objGadget->GetTitle());
-        $tpl->SetVariable('description', $objGadget->GetDescription());
+        $tpl->SetVariable('gadget', $objGadget->title);
+        $tpl->SetVariable('description', $objGadget->description);
         $tpl->SetVariable('image', "gadgets/$gadget/images/logo.png");
 
         $tpl->SetVariable('lbl_version', _t('GLOBAL_VERSION').':');
-        $tpl->SetVariable('version', $objGadget->GetVersion());
+        $tpl->SetVariable('version', $objGadget->version);
 
         $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
         $tpl->SetVariable('jaws_version', $objGadget->GetRequiredJawsVersion());
