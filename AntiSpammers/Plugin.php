@@ -10,19 +10,8 @@
  */
 class AntiSpammers_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function AntiSpammers()
-    {
-        $this->_Name = 'AntiSpammers';
-        $this->_Description = _t('PLUGINS_ANTISPAMMERS_DESCRIPTION');
-        $this->_IsFriendly = false; //no bbcode
-        $this->version = '0.3';
-    }
+    var $friendly = false; //no bbcode
+    var $version = '0.3';
 
     /**
      * Checks the string to see if parsing is required
