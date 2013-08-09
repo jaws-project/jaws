@@ -105,7 +105,7 @@ class Jaws_Widgets_CKEditor extends Container
      * @access  private
      * @var     string = {kama,office2003,v2}
      */
-    var $_Skin = 'moono';
+    var $_Skin = 'newmoono';
 
     /**
      * CKEditor base toolbar{Basic, Full, Array of items}
