@@ -64,7 +64,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
             $grpData['name']  = $group['name'];
 
             $actions = '';
-            if ($this->gadget->CheckPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('GLOBAL_EDIT'),
                                             "javascript: editGroup(this, '".$group['id']."');",
@@ -72,7 +72,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageGroupACLs')) {
+            if ($this->gadget->GetPermission('ManageGroupACLs')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLS'),
                                             "javascript: editACL(this, '".$group['id']."', 'GroupACL');",
@@ -80,7 +80,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_GROUPS_MEMBERS'),
                                             "javascript: editGroupUsers(this, '".$group['id']."');",
@@ -88,7 +88,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_GROUPS_DELETE'),
                                             "javascript: deleteGroup(this, '".$group['id']."');",

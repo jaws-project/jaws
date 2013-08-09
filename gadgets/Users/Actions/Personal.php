@@ -28,7 +28,7 @@ class Users_Actions_Personal extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
+        $this->gadget->CheckPermission('EditUserPersonal');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Personal.Response');
         if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -139,7 +139,7 @@ class Users_Actions_Personal extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPersonal');
+        $this->gadget->CheckPermission('EditUserPersonal');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
             array('fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature',

@@ -27,8 +27,7 @@ class Users_Actions_Contacts extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserContacts');
-
+        $this->gadget->CheckPermission('EditUserContacts');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
         if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -83,7 +82,7 @@ class Users_Actions_Contacts extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserContacts');
+        $this->gadget->CheckPermission('EditUserContacts');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(
             array(

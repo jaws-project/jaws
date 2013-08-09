@@ -28,7 +28,7 @@ class Users_Actions_Preferences extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPreferences');
+        $this->gadget->CheckPermission('EditUserPreferences');
         //Here we load the Settings/Layout models (which is part of core) to extract some data
         $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel');
 
@@ -125,7 +125,7 @@ class Users_Actions_Preferences extends Users_HTML
             );
         }
 
-        $GLOBALS['app']->Session->CheckPermission('Users', 'EditUserPreferences');
+        $this->gadget->CheckPermission('EditUserPreferences');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
 
