@@ -343,7 +343,7 @@ class Jaws_ACL
 
         // 2. Check for groups permission
         $perm['groups'] = $this->fetchByGroups($groups, $key, $subkey, $gadget);
-        if (!is_null($perm['groups'])) {
+        if (!empty($perm['groups'])) {
             return @max($perm['groups']);
         }
 
