@@ -354,7 +354,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         
         reset($gadget_list);
         $first = current($gadget_list);
-        $tpl->SetVariable('first', $first['realname']);
+        $tpl->SetVariable('first', $first['name']);
 
         $tpl->SetBlock('template/working_notification');
         $tpl->SetVariable('loading-message', _t('GLOBAL_LOADING'));
@@ -362,9 +362,9 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         foreach ($gadget_list as $gadget) {
             $tpl->SetBlock('template/gadget');
-            $tpl->SetVariable('id',     $gadget['realname']);
-            $tpl->SetVariable('icon',   'gadgets/'.$gadget['realname'].'/images/logo.png');
-            $tpl->SetVariable('gadget', $gadget['name']);
+            $tpl->SetVariable('id',     $gadget['name']);
+            $tpl->SetVariable('icon',   'gadgets/'.$gadget['name'].'/images/logo.png');
+            $tpl->SetVariable('gadget', $gadget['title']);
             $tpl->SetVariable('desc',   $gadget['description']);
             $tpl->ParseBlock('template/gadget');
         }
@@ -540,7 +540,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
         foreach ($gadget_list as $g) {
-            $gadget_field->AddOption($g['name'], $g['realname'], null, in_array($g['realname'], $selectedGadgets));
+            $gadget_field->AddOption($g['title'], $g['name'], null, in_array($g['name'], $selectedGadgets));
         }
         $tpl->SetVariable('selected_gadgets', $gadget_field->Get());
 
