@@ -254,7 +254,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
             }
 
             $tpl->SetBlock('activity/gadget');
-            $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITY_IN_GADGET', $gInfo['name']));
+            $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITY_IN_GADGET', $gInfo['title']));
             foreach ($activities as $activity) {
                 $tpl->SetBlock('activity/gadget/item');
                 $tpl->SetVariable('count', $activity['count']);
