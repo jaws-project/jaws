@@ -10,19 +10,8 @@
  */
 class GoogleHighlight_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function GoogleHighlight()
-    {
-        $this->_Name = 'GoogleHighlight';
-        $this->_Description = _t('PLUGINS_GOOGLEHIGHLIGHT_DESCRIPTION');
-        $this->_IsFriendly = false;
-        $this->version = '0.1';
-    }
+    var $friendly = false;
+    var $version = '0.1';
 
     /**
      * Overrides, Parses the text
