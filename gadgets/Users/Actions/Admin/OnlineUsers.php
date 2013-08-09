@@ -89,7 +89,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminHTML
                 STOCK_DELETE);
             $actions = $link->Get() . '&nbsp;';
 
-            if ($this->gadget->GetPermission('ManageIPs', '', 'Policy')) {
+            if ($this->gadget->GetPermission('ManageIPs', '', false, 'Policy')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
                     _t('USERS_ONLINE_BLOCKING_IP'),
@@ -98,7 +98,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminHTML
                 $actions .= $link->Get() . '&nbsp;';
             }
 
-            if ($this->gadget->GetPermission('ManageAgents', '', 'Policy')) {
+            if ($this->gadget->GetPermission('ManageAgents', '', false, 'Policy')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
                     _t('USERS_ONLINE_BLOCKING_AGENT'),

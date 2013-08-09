@@ -279,7 +279,7 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // ControlPanel
-            if ($this->gadget->GetPermission('default_admin', '', 'ControlPanel')) {
+            if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
                 $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
