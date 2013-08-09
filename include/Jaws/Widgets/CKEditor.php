@@ -134,7 +134,7 @@ class Jaws_Widgets_CKEditor extends Container
         array('name' => 'links',
               'items' => array('Link', 'Unlink', 'Anchor')),
         array('name' => 'insert',
-              'items' => array('Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar',
+              'items' => array('Image', 'Flash', 'Table', 'HorizontalRule', 'SpecialChar',
                                'PageBreak')),
         array('name' => 'colors',
               'items' => array('TextColor', 'BGColor')),
