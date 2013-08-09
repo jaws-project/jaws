@@ -118,21 +118,22 @@ class Jaws_Session_Web extends Jaws_Session
      *
      * @access  public
      * @param   string  $gadget         Gadget name
-     * @param   string  $task           Task(s) name
+     * @param   string  $key            ACL key(s) name
+     * @param   string  $subkey         ACL subkey name
      * @param   bool    $together       And/Or tasks permission result, default true
      * @param   string  $errorMessage   Error message to return
      * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($gadget, $task, $together = true, $errorMessage = '')
+    function CheckPermission($gadget, $key, $subkey = '', $together = true, $errorMessage = '')
     {
-        if ($this->GetPermission($gadget, $task, $together)) {
+        if ($this->GetPermission($gadget, $key, $subkey, $together)) {
             return true;
         }
 
         $GLOBALS['app']->InstanceLayout();
         $GLOBALS['app']->Layout->LoadControlPanelHead();
         $user = $GLOBALS['app']->LoadGadget('Users', 'HTML');
-        echo $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $task);
+        echo $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key);
         exit;
     }
 
