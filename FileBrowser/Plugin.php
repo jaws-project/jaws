@@ -10,20 +10,8 @@
  */
 class FileBrowser_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access   public
-     * @return  void
-     */
-    function FileBrowser()
-    {
-        $this->_Name = "FileBrowser";
-        $this->_Description = _t("PLUGINS_FILEBROWSER_DESCRIPTION");
-        $this->_Example = '';
-        $this->_IsFriendly = true;
-        $this->version = "0.1.0";
-    }
+    var $friendly = true;
+    var $version = "0.1.0";
 
     /**
      * Overrides, Gets the WebControl of this plugin
