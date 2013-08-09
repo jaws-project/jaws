@@ -28,7 +28,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'EditUserEmail',
         'EditUserPassword',
         'EditUserPersonal',
-        'EditUserContact',
+        'EditUserContacts',
         'EditUserPreferences',
         'ManageAuthenticationMethod',
     );
