@@ -10,20 +10,8 @@
  */
 class SpellNumber_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @access  private
-     */
-    function SpellNumber()
-    {
-        $this->_Name = 'SpellNumber';
-        $this->_Description = _t('PLUGINS_SPELLNUMBER_DESCRIPTION');
-        $this->_Example = '[number]1386[/number]';
-        $this->_IsFriendly = true;
-        $this->version = '0.1';
-    }
+    var $friendly = true;
+    var $version = '0.1';
 
     /**
      * Overrides, Gets the WebControl of this plugin
