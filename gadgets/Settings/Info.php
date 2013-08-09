@@ -17,7 +17,7 @@ class Settings_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.4.0';
+    var $version = '0.4.0';
 
     /**
      * Is this gadget core gadget?

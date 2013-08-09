@@ -16,7 +16,7 @@ class Languages_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $_Version = '0.2.1';
+    var $version = '0.2.1';
 
     /**
      * Is this gadget core gadget?
