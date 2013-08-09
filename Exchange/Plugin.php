@@ -10,6 +10,9 @@
  */
 class Exchange_Plugin extends Jaws_Plugin
 {
+    var $friendly = false;
+    var $version = '0.1.0';
+
     /**
      * List of excluded tags
      *
@@ -31,21 +34,6 @@ class Exchange_Plugin extends Jaws_Plugin
                                      'pattern'     => '/([0-9])/e',
                                      'replacement' => "pack('C*', 0xD9, 0xA0 + '\$1')"),
                               );
-
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function Exchange()
-    {
-        $this->_Name = 'Exchange';
-        $this->_Description = _t('PLUGINS_EXCHANGE_DESCRIPTION');
-        $this->_Example = 'replace 1357 with ۱۳۵۷ in persian(farsi) language';
-        $this->_IsFriendly = false;
-        $this->version = '0.1.0';
-    }
 
     /**
      * Performs the conversion
