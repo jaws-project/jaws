@@ -23,7 +23,7 @@ class AlbumCover extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_ALBUMCOVER_DESCRIPTION');
         $this->_Example = "[AlbumCover Artist='The Beatles' Album='Abbey Road']";
         $this->_IsFriendly = true;
-        $this->_Version = '0.4';
+        $this->version = '0.4';
         $this->_AccessKey = 'A';
     }
 

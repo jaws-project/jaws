@@ -23,7 +23,7 @@ class NiceFormat extends Jaws_Plugin
         $this->_Example = '** '._t('PLUGINS_NICEFORMAT_TEXT_BOLD').' ** <br /> __ '.
             _t('PLUGINS_NICEFORMAT_TEXT_ITALIC').' __<br /> etc...';
         $this->_IsFriendly = true;
-        $this->_Version = '0.4';
+        $this->version = '0.4';
     }
 
     /**

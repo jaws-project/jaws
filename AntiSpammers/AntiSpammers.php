@@ -21,7 +21,7 @@ class AntiSpammers extends Jaws_Plugin
         $this->_Name = 'AntiSpammers';
         $this->_Description = _t('PLUGINS_ANTISPAMMERS_DESCRIPTION');
         $this->_IsFriendly = false; //no bbcode
-        $this->_Version = '0.3';
+        $this->version = '0.3';
     }
 
     /**

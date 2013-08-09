@@ -22,7 +22,7 @@ class FileBrowser extends Jaws_Plugin
         $this->_Description = _t("PLUGINS_FILEBROWSER_DESCRIPTION");
         $this->_Example = '';
         $this->_IsFriendly = true;
-        $this->_Version = "0.1.0";
+        $this->version = "0.1.0";
     }
 
     /**

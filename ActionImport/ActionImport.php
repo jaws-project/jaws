@@ -22,7 +22,7 @@ class ActionImport extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_ACTIONIMPORT_DESCRIPTION');
         $this->_Example = '[import gadget="Blocks" action="Display" params="1"]';
         $this->_IsFriendly = false;
-        $this->_Version = '0.1';
+        $this->version = '0.1';
     }
 
     /**

@@ -22,7 +22,7 @@ class FindFriend extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_FINDFRIEND_DESCRIPTION');
         $this->_Example = '[friend]pablo[/friend]</b></small>';
         $this->_IsFriendly = true;
-        $this->_Version = '0.3';
+        $this->version = '0.3';
     }
 
     /**

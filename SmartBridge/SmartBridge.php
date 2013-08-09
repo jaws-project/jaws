@@ -38,7 +38,7 @@ class SmartBridge extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_SMARTBRIDGE_DESCRIPTION');
         $this->_Example = '[a:Blog:Remember_Me]Remember me[/a]';
         $this->_IsFriendly = true;
-        $this->_Version = '0.2';
+        $this->version = '0.2';
 
         $this->_ApprovedGadgets = array('Blog',
                                         'StaticPage',

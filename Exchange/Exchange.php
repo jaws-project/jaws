@@ -44,7 +44,7 @@ class Exchange extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_EXCHANGE_DESCRIPTION');
         $this->_Example = 'replace 1357 with ۱۳۵۷ in persian(farsi) language';
         $this->_IsFriendly = false;
-        $this->_Version = '0.1.0';
+        $this->version = '0.1.0';
     }
 
     /**

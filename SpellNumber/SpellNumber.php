@@ -22,7 +22,7 @@ class SpellNumber extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_SPELLNUMBER_DESCRIPTION');
         $this->_Example = '[number]1386[/number]';
         $this->_IsFriendly = true;
-        $this->_Version = '0.1';
+        $this->version = '0.1';
     }
 
     /**

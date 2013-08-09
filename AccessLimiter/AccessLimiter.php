@@ -25,7 +25,7 @@ class AccessLimiter extends Jaws_Plugin
                            '[limited groups="admins"]your content[/limited]<br />'.
                            '[limited users="afz" groups="admins"]your content[/limited]';
         $this->_IsFriendly = false;
-        $this->_Version = '0.1';
+        $this->version = '0.1';
     }
 
     /**

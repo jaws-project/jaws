@@ -22,7 +22,7 @@ class BlockImport extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_BLOCKIMPORT_DESCRIPTION');
         $this->_Example = "[Block=#1]";
         $this->_IsFriendly = false;
-        $this->_Version = '0.1';
+        $this->version = '0.1';
     }
 
     /**

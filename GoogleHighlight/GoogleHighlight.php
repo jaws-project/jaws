@@ -21,7 +21,7 @@ class GoogleHighlight extends Jaws_Plugin
         $this->_Name = 'GoogleHighlight';
         $this->_Description = _t('PLUGINS_GOOGLEHIGHLIGHT_DESCRIPTION');
         $this->_IsFriendly = false;
-        $this->_Version = '0.1';
+        $this->version = '0.1';
     }
 
     /**

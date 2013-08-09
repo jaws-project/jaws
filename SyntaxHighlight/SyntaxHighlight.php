@@ -22,7 +22,7 @@ class SyntaxHighlight extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_SYNTAXHIGHLIGHT_DESCRIPTION');
         $this->_Example = '[code="C#"]<br />using System;<br />public class Foo { }<br />[/code]';
         $this->_IsFriendly = true;
-        $this->_Version = '0.3';
+        $this->version = '0.3';
     }
 
     /**

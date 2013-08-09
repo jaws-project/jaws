@@ -24,7 +24,7 @@ class PhooInsert extends Jaws_Plugin
         $this->_Description = _t("PLUGINS_PHOOINSERT_DESCRIPTION");
         $this->_Example = '[phoo album="1" picture="1" title="everybody" class="image" size="Medium" linked="Yes"]';
         $this->_IsFriendly = true;
-        $this->_Version = "0.6.3";
+        $this->version = "0.6.3";
     }
 
     /**

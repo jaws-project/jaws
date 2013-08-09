@@ -25,7 +25,7 @@ class FastLinks extends Jaws_Plugin
             '[url]http://www.jaws-project.com[/url]<br />' . "\n".
             '[url="http://www.jaws-project.com"]Jaws Site[/url]' . "\n";
         $this->_IsFriendly = true;
-        $this->_Version = '0.3';
+        $this->version = '0.3';
     }
 
     /**

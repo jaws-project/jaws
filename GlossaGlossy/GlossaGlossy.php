@@ -23,7 +23,7 @@ class GlossaGlossy extends Jaws_Plugin
         $this->_Description = _t('PLUGINS_GLOSSAGLOSSY_DESCRIPTION');
         $this->_Example = '[term]jaws[/term]';
         $this->_IsFriendly = true;
-        $this->_Version = '0.3';
+        $this->version = '0.3';
     }
 
     /**
