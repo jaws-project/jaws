@@ -161,7 +161,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
         }
 
-        $this->AjaxMe('script.js', $this->gadget->GetVersion());
+        $this->AjaxMe('script.js');
         $tpl = $this->gadget->loadTemplate('Users.html');
         $tpl->SetBlock('Users');
 
