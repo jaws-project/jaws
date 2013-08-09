@@ -422,7 +422,12 @@ class Jaws_Utils
                 $file['tmp_name'] = $listFiles['tmp_name'][$i];
                 $file['size']     = $listFiles['size'][$i];
                 if (isset($listFiles['error'])) {
-                    $file['error']    = $listFiles['error'][$i];
+                    $file['error'] = $listFiles['error'][$i];
+                }
+
+                if (isset($file['error']) && !empty($file['error'])) {
+                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
+                                          __FUNCTION__);
                 }
 
                 if (empty($file['tmp_name'])) {
@@ -430,11 +435,6 @@ class Jaws_Utils
                 }
 
                 $user_filename = isset($file['name']) ? $file['name'] : '';
-                if (isset($file['error']) && !empty($file['error'])) {
-                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
-                                          __FUNCTION__);
-                }
-
                 $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/", "", $user_filename));
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
