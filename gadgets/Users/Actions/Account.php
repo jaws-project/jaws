@@ -28,7 +28,7 @@ class Users_Actions_Account extends Users_HTML
             );
         }
 
-       $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
+       $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
         $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Data');
         if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -84,7 +84,7 @@ class Users_Actions_Account extends Users_HTML
             );
         }
 
-        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
+        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('username', 'nickname', 'email', 'password', 'chkpassword'), 'post');
         if ($post['password'] === $post['chkpassword']) {
