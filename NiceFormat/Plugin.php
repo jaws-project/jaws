@@ -10,21 +10,8 @@
  */
 class NiceFormat_Plugin extends Jaws_Plugin
 {
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function NiceFormat()
-    {
-        $this->_Name = 'NiceFormat';
-        $this->_Description = _t('PLUGINS_NICEFORMAT_DESCRIPTION');
-        $this->_Example = '** '._t('PLUGINS_NICEFORMAT_TEXT_BOLD').' ** <br /> __ '.
-            _t('PLUGINS_NICEFORMAT_TEXT_ITALIC').' __<br /> etc...';
-        $this->_IsFriendly = true;
-        $this->version = '0.4';
-    }
+    var $friendly = true;
+    var $version = '0.4';
 
     /**
      * Overrides, Gets the WebControl of this plugin
