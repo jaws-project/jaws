@@ -53,7 +53,7 @@ class Jaws_Template
      *                                                 JAWS_COMPONENT_PLUGIN)
      * @return  void
      */
-    function Jaws_Template($loadFromTheme = null)
+    function Jaws_Template($loadFromTheme = null, $loadGlobalVariables = true)
     {
         $this->loadFromTheme = $loadFromTheme;
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
@@ -72,15 +72,12 @@ class Jaws_Template
         $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
         $this->globalVariables['base_script']   = BASE_SCRIPT;
 
-        if (isset($GLOBALS['app'])) {
-            if (false !== $loadFromTheme) {
-                $theme = $GLOBALS['app']->GetTheme();
-                $this->globalVariables['theme_url']  = $theme['url'];
-            }
-
+        if ($loadGlobalVariables) {
+            $theme   = $GLOBALS['app']->GetTheme();
+            $brow    = $GLOBALS['app']->GetBrowserFlag();
             $request = $GLOBALS['app']->GetMainRequest();
-            $brow = $GLOBALS['app']->GetBrowserFlag();
 
+            $this->globalVariables['theme_url']  = $theme['url'];
             $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
             $this->globalVariables['jaws_index'] = $request['index']? 'jaws_index' : '';
             $this->globalVariables['.browser']   = empty($brow)? '' : '.'.$brow;
