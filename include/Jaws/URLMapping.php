@@ -350,6 +350,8 @@ class Jaws_URLMapping
                 $base_uri = $GLOBALS['app']->GetSiteURL('', true);
                 if ($base_uri == substr($uri, 0, strlen($base_uri))) {
                     $pathInfo = substr($uri, strlen($base_uri));
+                } else {
+                    $pathInfo = $uri;
                 }
             }
         }
