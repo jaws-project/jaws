@@ -18,7 +18,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/08To0903/templates');
         $tpl->SetBlock('08To0903');
 
@@ -51,12 +51,6 @@ class Upgrader_08To0903 extends JawsUpgraderStage
         include_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
         $GLOBALS['app']->Registry->Init();
-
-        // Input datas
-        $timestamp = $GLOBALS['db']->Date();
-
-        // Registry keys
-        $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
 
         // Trying to add missed acl keys
         _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
