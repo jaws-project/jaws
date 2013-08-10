@@ -331,3 +331,29 @@ border: 1px solid #d3d7cf;
 .fs_table .title {
 text-align: left;
 }
+
+#cleanup_area {
+max-height:380px;
+overflow:scroll;
+overflow-x:hidden;
+overflow-y:scroll;
+}
+.cleanup_table {
+width:100%;
+text-align:left;
+}
+.cleanup_table td {
+padding:0px;
+font-size:small;
+border:1px solid #d3d7cf;
+}
+.cleanup_table .cleanup_item_0 {
+width:16px;
+height:16px;
+background-image: url("../../images/stock/file.png");
+}
+.cleanup_table .cleanup_item_1 {
+width:16px;
+height:16px;
+background-image: url("../../images/stock/folder.png");
+}
