@@ -1,7 +1,7 @@
 <!-- BEGIN comment_form -->
 <div class="gadget comments guestbook">
     <h2>{title}</h2>
-    <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+    <!-- BEGIN response --><div class="{type}"><a id="{bookmark}"></a>{text}</div><!-- END response -->
     <form action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="Comments"/>
         <input type="hidden" name="action" value="PostMessage"/>

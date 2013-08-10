@@ -64,7 +64,7 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
-        $tpl->SetVariable('redirect_to', $redirect_to);
+        $tpl->SetVariable('redirect_to', $redirect_to. '#'. $gadget. '_'. $action);
 
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
@@ -123,18 +123,19 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
-        $tpl->SetVariable('url2_value',  '');
+        $tpl->SetVariable('url2_value', '');
+        $tpl->SetVariable('preview', _t('GLOBAL_PREVIEW'));
 
-        $tpl->SetVariable('preview',    _t('GLOBAL_PREVIEW'));
-
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Comments')) {
+        $response = $GLOBALS['app']->Session->PopResponse('Comments');
+        if (!empty($response)) {
             $tpl->SetBlock('comment_form/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('bookmark', $gadget. '_'. $action);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('comment_form/response');
         }
 
         $tpl->ParseBlock('comment_form');
-
         return $tpl->Get();
     }
 
@@ -511,7 +512,12 @@ class Comments_Actions_Comments extends Comments_HTML
         }
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('COMMENTS_DONT_SEND_EMPTY_MESSAGES'), 'Comments');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('COMMENTS_DONT_SEND_EMPTY_MESSAGES'),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
             Jaws_Header::Location($redirectTo);
         }
 
@@ -522,14 +528,24 @@ class Comments_Actions_Comments extends Comments_HTML
         * to not fill this out
         */
         if (!empty($post['url2'])) {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('COMMENTS_FAILED_SPAM_CHECK_MESSAGES'), 'Comments');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('COMMENTS_FAILED_SPAM_CHECK_MESSAGES'),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
             Jaws_Header::Location($redirectTo);
         }
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Comments');
+            $GLOBALS['app']->Session->PushResponse(
+                $resCheck->getMessage(),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
             Jaws_Header::Location($redirectTo);
         }
 
@@ -547,9 +563,14 @@ class Comments_Actions_Comments extends Comments_HTML
 
 
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'Comments');
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
+            $GLOBALS['app']->Session->PushResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
         Jaws_Header::Location($redirectTo);
