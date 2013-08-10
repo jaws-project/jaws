@@ -5,7 +5,7 @@
  * @category   JawsType
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     David Coallier <davidc@jaws.com.mx>
+ * @author     David Coallier <david@echolibre.com>
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
