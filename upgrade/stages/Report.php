@@ -26,6 +26,7 @@ class Upgrader_Report extends JawsUpgraderStage
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
         $JawsInstalledVersion = $GLOBALS['app']->Registry->Init();
+        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
             array('version' => '0.9.0',  'stage' => '7'),
@@ -35,7 +36,7 @@ class Upgrader_Report extends JawsUpgraderStage
         );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
 
@@ -82,21 +83,10 @@ class Upgrader_Report extends JawsUpgraderStage
             $tpl->ParseBlock('Report/versions');
         }
         $_SESSION['upgrade']['versions_to_upgrade'] = $versions_to_upgrade;
-
-        $tpl->ParseBlock('Report');
         arsort($_SESSION['upgrade']['versions']);
         krsort($_SESSION['upgrade']['stagedVersions']);
-        /**
-         * Are we maitaining the last version? the current JAWS_VERSION?
-         */
-        _log(JAWS_LOG_DEBUG,"Checking if current version (".JAWS_VERSION.") really requires an upgrade");
-        $lastSupportedVersion = $supportedversions[0]['version'];
-        if ($lastSupportedVersion != JAWS_VERSION) {
-            if (version_compare($lastSupportedVersion, JAWS_VERSION) === -1) {
-                _log(JAWS_LOG_DEBUG,"Current version (".JAWS_VERSION.") does not require an upgrade");
-                $_SESSION['upgrade']['upgradeLast'] = true;
-            }
-        }
+
+        $tpl->ParseBlock('Report');
         return $tpl->Get();
     }
 
