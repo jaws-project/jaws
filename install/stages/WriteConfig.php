@@ -19,7 +19,7 @@ class Installer_WriteConfig extends JawsInstallerStage
     function BuildConfig()
     {
         include_once JAWS_PATH . 'include/Jaws/Template.php';
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
@@ -47,7 +47,7 @@ class Installer_WriteConfig extends JawsInstallerStage
     function Display()
     {
         _log(JAWS_LOG_DEBUG,"Preparing configuaration file");
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
         $tpl->SetBlock('WriteConfig');
 

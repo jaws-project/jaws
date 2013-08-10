@@ -43,7 +43,7 @@ class Installer_CreateUser extends JawsInstallerStage
             }
         }
 
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/CreateUser/templates');
         $tpl->SetBlock('CreateUser');
 
@@ -156,7 +156,7 @@ class Installer_CreateUser extends JawsInstallerStage
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
         $GLOBALS['app']->Registry->Init();
-        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
+        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();

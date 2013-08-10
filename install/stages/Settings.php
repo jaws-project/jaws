@@ -42,7 +42,7 @@ class Installer_Settings extends JawsInstallerStage
             include_once JAWS_PATH . 'include/Jaws.php';
             $GLOBALS['app'] = new Jaws();
             $GLOBALS['app']->Registry->Init();
-            $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
+            $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
         }
     }
 
@@ -69,7 +69,7 @@ class Installer_Settings extends JawsInstallerStage
             $data = $_SESSION['install']['data']['Settings'];
         }
 
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
 

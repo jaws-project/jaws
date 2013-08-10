@@ -57,7 +57,7 @@ class Installer_Database extends JawsInstallerStage
             $data = $_SESSION['install']['data']['Database'];
         }
 
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Database/templates');
         $tpl->SetBlock('Database');
 
@@ -325,7 +325,7 @@ class Installer_Database extends JawsInstallerStage
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
         $GLOBALS['app']->Registry->Init();
-        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']));
+        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
 
         // registry keys
         $result = $GLOBALS['app']->Registry->insertAll(
