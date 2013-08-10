@@ -151,21 +151,22 @@ class Jaws
      * @param   array   $preferences    default preferences
      * @return  void
      */
-    function loadPreferences($preferences = array())
+    function loadPreferences($preferences = array(), $loadFromDatabase = true)
     {
-        $this->_Preferences = array(
-            'theme'             => $this->Registry->fetch('theme', 'Settings'),
-            'language'          => $this->Registry->fetch(JAWS_SCRIPT == 'index'? 'site_language': 'admin_language',
-                                                        'Settings'),
-            'editor'            => $this->Registry->fetch('editor', 'Settings'),
-            'timezone'          => $this->Registry->fetch('timezone', 'Settings'),
-            'calendar_type'     => $this->Registry->fetch('calendar_type', 'Settings'),
-            'calendar_language' => $this->Registry->fetch('calendar_language', 'Settings'),
-        );
-        $this->_Preferences = array_merge($this->_Preferences, $preferences);
-
         $cookies = array();
-        if (isset($this->Session)) {
+        if ($loadFromDatabase) {
+            $this->_Preferences = array(
+                'theme'             => $this->Registry->fetch('theme', 'Settings'),
+                'language'          => $this->Registry->fetch(
+                    JAWS_SCRIPT == 'index'? 'site_language': 'admin_language',
+                    'Settings'
+                ),
+                'editor'            => $this->Registry->fetch('editor', 'Settings'),
+                'timezone'          => $this->Registry->fetch('timezone', 'Settings'),
+                'calendar_type'     => $this->Registry->fetch('calendar_type', 'Settings'),
+                'calendar_language' => $this->Registry->fetch('calendar_language', 'Settings'),
+            );
+
             $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
             if ($cookie_precedence) {
                 // load cookies preferences
@@ -183,6 +184,9 @@ class Jaws
             $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
             $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
         }
+
+        // merge default with passed preferences
+        $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         // theme
         if (empty($this->_Theme)) {
@@ -251,10 +255,6 @@ class Jaws
         $this->_Timezone         = $this->_Preferences['timezone'];
         $this->_CalendarType     = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarType);
         $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarLanguage);
-
-        require_once PEAR_PATH. 'Net/Detect.php';
-        $bFlags = explode(',', $this->Registry->fetch('browsers_flag', 'Settings'));
-        $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
 
         // load the language translates
         $this->Translate->Init($this->_Language);
@@ -369,6 +369,12 @@ class Jaws
      */
     function GetBrowserFlag()
     {
+        if (empty($this->_BrowserFlag)) {
+            require_once PEAR_PATH. 'Net/Detect.php';
+            $bFlags = explode(',', $this->Registry->fetch('browsers_flag', 'Settings'));
+            $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
+        }
+
         return $this->_BrowserFlag;
     }
 
