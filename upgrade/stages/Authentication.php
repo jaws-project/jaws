@@ -40,7 +40,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
         }
         _log(JAWS_LOG_DEBUG,"Generating new installation key");
 
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Authentication/templates');
         $tpl->SetBlock('Authentication');
 
