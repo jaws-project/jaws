@@ -201,30 +201,12 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
                    $gMapParams['latitude']. ','. $gMapParams['longitude'].
                    '&sensor=false';
 
-        $options = array();
-        $options['timeout'] = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
-        if ($this->gadget->registry->fetch('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->registry->fetch('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->registry->fetch('proxy_pass', 'Settings');
-            }
-            $options['proxy_host'] = $this->gadget->registry->fetch('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
-        }
-
-        require_once 'HTTP/Request.php';
-        $httpRequest = new HTTP_Request($gMapURL, $options);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-        $resRequest  = $httpRequest->sendRequest();
-        if (!PEAR::isError($resRequest) && $httpRequest->getResponseCode() == 200) {
-            $data = $httpRequest->getResponseBody();
-        } else {
-            $data = @file_get_contents($gMapURL);
-        }
-
         header("Content-Type: image/png");
         header("Pragma: public");
-        if ($data === false) {
+
+        $httpRequest = new Jaws_HTTPRequest();
+        $result = $httpRequest->get($gMapURL, $data);
+        if (Jaws_Error::IsError($result) || $result != 200) {
             $data = @file_get_contents('gadgets/Weather/images/gmap.png');
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
