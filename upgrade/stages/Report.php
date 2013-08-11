@@ -25,7 +25,9 @@ class Upgrader_Report extends JawsUpgraderStage
 
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = new Jaws();
-        $JawsInstalledVersion = $GLOBALS['app']->Registry->Init();
+        if (!isset($_SESSION['upgrade']['InstalledVersion'])) {
+            $_SESSION['upgrade']['InstalledVersion'] = $GLOBALS['app']->Registry->Init();
+        }
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
@@ -58,7 +60,7 @@ class Upgrader_Report extends JawsUpgraderStage
                         'script' =>  (isset($supported['script'])? $supported['script'] : '')
             );
 
-            if (version_compare($supported['version'], $JawsInstalledVersion, '<=')) {
+            if (version_compare($supported['version'], $_SESSION['upgrade']['InstalledVersion'], '<=')) {
                 if ($supported['version'] == JAWS_VERSION) {
                     $tpl->SetVariable('status', _t('UPGRADE_REPORT_NO_NEED_CURRENT'));
                     _log(JAWS_LOG_DEBUG,$supported['version']." does not requires upgrade(is current)");
@@ -99,6 +101,10 @@ class Upgrader_Report extends JawsUpgraderStage
      */
     function Run()
     {
+        if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.8.18' , '<=')) {
+            return Jaws_Error::raiseError(_t('UPGRADE_REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
+        }
+
         if (is_dir(JAWS_DATA. "languages")) {
             // transform customized translated files
             $rootfiles = array('Global.php', 'Date.php', 'Install.php', 'Upgrade.php');
