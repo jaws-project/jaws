@@ -532,7 +532,7 @@ class Jaws_Gadget
      * @param   string  $gadget    Gadget name
      * @return  string  The mapped URL
      */
-    function GetURLFor($action='', $params = array(), $abs_url = false, $gadget = '')
+    function urlMap($action='', $params = array(), $abs_url = false, $gadget = '')
     {
         return $GLOBALS['app']->Map->GetURLFor(empty($gadget)? $this->name : $gadget, $action, $params, $abs_url);
     }
