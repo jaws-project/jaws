@@ -62,7 +62,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
         }
 
         // Upgrading core gadgets
-        $gadgets = array('UrlMapper', 'Settings', 'Layout', 'Users', 'Policy', 'Comments');
+        $gadgets = array('UrlMapper', 'Settings', 'ControlPanel', 'Layout', 'Users', 'Policy', 'Comments');
         foreach ($gadgets as $gadget) {
             $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             if (Jaws_Error::IsError($objGadget)) {
