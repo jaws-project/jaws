@@ -426,8 +426,10 @@ class Jaws_Utils
                 }
 
                 if (isset($file['error']) && !empty($file['error'])) {
-                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
-                                          __FUNCTION__);
+                    return ($file['error'] == 4)? false : Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
+                        __FUNCTION__
+                    );
                 }
 
                 if (empty($file['tmp_name'])) {
