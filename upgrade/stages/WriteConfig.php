@@ -125,6 +125,12 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
         $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
 
+        //remove cache directory
+        $path = JAWS_DATA. 'cache';
+        if (!Jaws_Utils::delete($path)) {
+            _log(JAWS_LOG_DEBUG,"Can't delete $path");
+        }
+
         _log(JAWS_LOG_DEBUG,"Configuration file has been created/updated");
         return true;
     }
