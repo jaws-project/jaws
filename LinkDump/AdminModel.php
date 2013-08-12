@@ -48,7 +48,7 @@ class LinkDump_AdminModel extends LinkDump_Model
         }
 
         $this->MoveLink($lid, $gid, $gid, $rank, null);
-        $tags = array_filter(array_map(array('Jaws_UTF8', 'trim'), explode(',', $tags)));
+        $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         foreach ($tags as $tag) {
             $res = $this->AddTagToLink($lid, $tag);
             if (Jaws_Error::IsError($res)) {
@@ -105,7 +105,7 @@ class LinkDump_AdminModel extends LinkDump_Model
 
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
-        $tags = array_filter(array_map(array('Jaws_UTF8', 'trim'), explode(',', $tags)));
+        $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         $to_be_added_tags = array_diff($tags, $oldLink['tags']);
         foreach ($to_be_added_tags as $newtag) {
             $res = $this->AddTagToLink($id, $newtag);
