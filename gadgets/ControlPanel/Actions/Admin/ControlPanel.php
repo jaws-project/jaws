@@ -105,10 +105,15 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
             }
         }
 
-        $tpl->SetBlock('versionbox');
-        $tpl->SetVariable('current_jaws_version', JAWS_VERSION);
-        $tpl->SetVariable('lbl_latest_jaws_version', _t('CONTROLPANEL_LATEST_JAWS_VERSION'));
-        $tpl->ParseBlock('versionbox');
+        $last_checking = unserialize($this->gadget->registry->fetch('update_last_checking'));
+        $do_checking = (time() - $last_checking['time']) > 86400;
+        if ($do_checking || ($last_checking['version'] != JAWS_VERSION)) {
+            $tpl->SetBlock('versionbox');
+            $tpl->SetVariable('do_checking', (int)$do_checking);
+            $tpl->SetVariable('latest_jaws_version', $last_checking['version']);
+            $tpl->SetVariable('lbl_latest_jaws_version', _t('CONTROLPANEL_LATEST_JAWS_VERSION'));
+            $tpl->ParseBlock('versionbox');
+        }
 
         return $tpl->Get();
     }

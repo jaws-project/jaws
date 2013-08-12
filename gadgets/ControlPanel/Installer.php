@@ -28,6 +28,12 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
+        // Registry keys
+        $this->gadget->registry->insert(
+            'update_last_checking',
+            serialize(array('version' => '', 'time' => 0))
+        );
+
         return true;
     }
 
@@ -41,6 +47,12 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Registry keys
+        $this->gadget->registry->insert(
+            'update_last_checking',
+            serialize(array('version' => '', 'time' => 0))
+        );
+
         return true;
     }
 

@@ -13,7 +13,7 @@
 var ControlPanelCallback = {
     JawsVersion: function(response) {
         $('latest_jaws_version').set('html', response);
-        if (!response.blank() && $('current_jaws_version').value != response) {
+        if (!response.blank()) {
             $(document.body).getElement('div.notify_version').setStyle('display', 'block');
         }
     }
@@ -44,7 +44,9 @@ function init()
         }
     });
 
-    ControlPanelAjax.callAsync('JawsVersion');
+    if ($('do_checking') && $('do_checking').value == 1) {
+        ControlPanelAjax.callAsync('JawsVersion');
+    }
 }
 
 var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);

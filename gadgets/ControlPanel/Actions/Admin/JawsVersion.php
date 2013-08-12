@@ -18,27 +18,16 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_HTML
      */
     function JawsVersion()
     {
-        $options = array();
-        $timeout = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
-        $options['timeout'] = $timeout;
-        if ($this->gadget->registry->fetch('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->registry->fetch('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->registry->fetch('proxy_pass', 'Settings');
-            }
-            $options['proxy_host'] = $this->gadget->registry->fetch('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
-        }
-
         $jaws_version = '';
-        require_once PEAR_PATH. 'HTTP/Request.php';
-        $httpRequest = new HTTP_Request('http://jaws-project.com/version/0', $options);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-        $httpRequest->addHeader('Referer', $GLOBALS['app']->GetSiteURL());
-        $resRequest  = $httpRequest->sendRequest();
-        if (!PEAR::isError($resRequest) && $httpRequest->getResponseCode() == 200) {
-            if (preg_match('/^\d+(\.\d+)+.*/i', $httpRequest->getResponseBody())) {
-                $jaws_version = $httpRequest->getResponseBody();
+        $httpRequest = new Jaws_HTTPRequest();
+        $result = $httpRequest->get('http://jaws-project.com/version/0', $data);
+        if (!Jaws_Error::IsError($result) && $result == 200) {
+            if (preg_match('/^\d+(\.\d+)+.*/i', $data)) {
+                $jaws_version = $data;
+                $this->gadget->registry->update(
+                    'update_last_checking',
+                    serialize(array('version' => $jaws_version, 'time' => time()))
+                );
             }
         }
 

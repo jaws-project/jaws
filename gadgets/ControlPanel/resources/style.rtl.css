@@ -681,9 +681,6 @@ text-align:left;
 direction:ltr;
 display:inline-block;
 }
-div.notify_version{
-display:none;
-}
 /* ----- DIALOG BOX -----*/
 .dialog_box{
 position:absolute;
