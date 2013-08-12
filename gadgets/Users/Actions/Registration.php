@@ -32,7 +32,7 @@ class Users_Actions_Registration extends Users_HTML
                 $message = _t('USERS_ACTIVATE_ACTIVATION_BY_USER_MSG');
                 break;
             default:
-                $message = _t('USERS_REGISTER_REGISTERED_MSG', $this->gadget->GetURLFor('LoginBox'));
+                $message = _t('USERS_REGISTER_REGISTERED_MSG', $this->gadget->urlMap('LoginBox'));
         }
 
         $tpl->SetVariable('registered_msg', $message);
@@ -100,7 +100,7 @@ class Users_Actions_Registration extends Users_HTML
                     $this->gadget->registry->fetch('anon_group')
                 );
                 if ($result === true) {
-                    Jaws_Header::Location($this->gadget->GetURLFor('Registered'));
+                    Jaws_Header::Location($this->gadget->urlMap('Registered'));
                 }
             }
         }
@@ -113,7 +113,7 @@ class Users_Actions_Registration extends Users_HTML
             RESPONSE_ERROR,
             $post
         );
-        Jaws_Header::Location($this->gadget->GetURLFor('Registration'));
+        Jaws_Header::Location($this->gadget->urlMap('Registration'));
     }
 
     /**
@@ -241,7 +241,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         if ($anon_activation == 'user') {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->GetURLFor('LoginBox'));
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->urlMap('LoginBox'));
         } else {
             return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
         }

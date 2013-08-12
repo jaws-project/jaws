@@ -29,7 +29,7 @@ class Comments_Actions_Comments extends Comments_HTML
             $tpl->SetVariable('preview', $this->ShowPreview());
         }
 
-        $redirect_to = $this->gadget->GetURLFor('Comments');
+        $redirect_to = $this->gadget->urlMap('Comments');
         $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'Guestbook', 0, $redirect_to));
 
         $tpl->ParseBlock('guestbook');

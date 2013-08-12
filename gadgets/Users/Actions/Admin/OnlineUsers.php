@@ -67,7 +67,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminHTML
                 $uProfile =& Piwi::CreateWidget(
                     'Link',
                     $session['username'],
-                    $this->gadget->GetURLFor('Profile',  array('user' => $session['username']))
+                    $this->gadget->urlMap('Profile',  array('user' => $session['username']))
                 );
                 $usrData['username'] = $uProfile->Get();
             }

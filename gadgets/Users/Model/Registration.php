@@ -149,7 +149,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                     $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
                     $tpl->SetVariable(
                         'activation_link',
-                        $this->gadget->GetURLFor(
+                        $this->gadget->urlMap(
                             'ActivateUser',
                             array('key' => $verifyKey),
                             true
@@ -207,7 +207,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                     $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
                     $tpl->SetVariable(
                         'activation_link',
-                        $this->gadget->GetURLFor(
+                        $this->gadget->urlMap(
                             'ActivateUser',
                             array('key' => $verifyKey),
                             true
@@ -285,7 +285,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
             $tpl->SetVariable(
                 'url',
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'ChangePassword',
                     array('key' => $verifyKey),
                     true

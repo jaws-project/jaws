@@ -34,7 +34,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
                         $uniqueOnline[$session['user']] = true;
                         $tpl->SetVariable('username', $session['username']);
                         $tpl->SetVariable('nickname', $session['nickname']);
-                        $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $session['username'])));
+                        $tpl->SetVariable('url_user', $this->gadget->urlMap('Profile',  array('user' => $session['username'])));
                         $tpl->ParseBlock('OnlineUsers/user');
                     }
                 }
@@ -100,7 +100,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
             $tpl->SetBlock('LatestRegistered/user');
             $tpl->SetVariable('username', $user['username']);
             $tpl->SetVariable('nickname', $user['nickname']);
-            $tpl->SetVariable('url_user', $this->gadget->GetURLFor('Profile',  array('user' => $user['username'])));
+            $tpl->SetVariable('url_user', $this->gadget->urlMap('Profile',  array('user' => $user['username'])));
             $tpl->ParseBlock('LatestRegistered/user');
         }
 

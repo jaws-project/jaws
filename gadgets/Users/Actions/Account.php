@@ -21,7 +21,7 @@ class Users_Actions_Account extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -77,7 +77,7 @@ class Users_Actions_Account extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -149,7 +149,7 @@ class Users_Actions_Account extends Users_HTML
             RESPONSE_NOTICE,
             $post
         );
-        Jaws_Header::Location($this->gadget->GetURLFor('Account'));
+        Jaws_Header::Location($this->gadget->urlMap('Account'));
     }
 
     /**

@@ -46,7 +46,7 @@ class Users_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('.dir', _t('GLOBAL_LANG_DIRECTION') == 'rtl' ? '.rtl' : '');
         if ($GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('NoPermission/known');
-            $logoutLink = $this->gadget->GetURLFor('Logout');
+            $logoutLink = $this->gadget->urlMap('Logout');
             $referLink  = empty($_SERVER['HTTP_REFERER'])?
                 $GLOBALS['app']->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
             $tpl->SetVariable(
@@ -55,7 +55,7 @@ class Users_HTML extends Jaws_Gadget_HTML
             $tpl->ParseBlock('NoPermission/known');
         } else {
             $tpl->SetBlock('NoPermission/anon');
-            $loginLink = $this->gadget->GetURLFor(
+            $loginLink = $this->gadget->urlMap(
                 'LoginBox',
                 array('referrer' => Jaws_Utils::getRequestURL(false))
             );

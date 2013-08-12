@@ -20,7 +20,7 @@ class Users_Actions_Contacts extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -75,7 +75,7 @@ class Users_Actions_Contacts extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -117,7 +117,7 @@ class Users_Actions_Contacts extends Users_HTML
             );
         }
 
-        Jaws_Header::Location($this->gadget->GetURLFor('Contacts'));
+        Jaws_Header::Location($this->gadget->urlMap('Contacts'));
     }
 
 }

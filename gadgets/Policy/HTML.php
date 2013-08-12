@@ -71,7 +71,7 @@ class Policy_HTML extends Jaws_Gadget_HTML
                 $tpl->SetVariable('captcha_title', $resCaptcha['title']);
                 $tpl->SetVariable(
                     'url',
-                    $this->gadget->GetURLFor('Captcha', array('field' => $field, 'key' => $resCaptcha['key']))
+                    $this->gadget->urlMap('Captcha', array('field' => $field, 'key' => $resCaptcha['key']))
                 );
                 $tpl->SetVariable('description', $resCaptcha['description']);
                 $tpl->SetVariable('entry_title', _t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));

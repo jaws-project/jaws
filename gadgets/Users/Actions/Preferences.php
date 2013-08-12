@@ -21,7 +21,7 @@ class Users_Actions_Preferences extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -118,7 +118,7 @@ class Users_Actions_Preferences extends Users_HTML
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
-                $this->gadget->GetURLFor(
+                $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
@@ -150,7 +150,7 @@ class Users_Actions_Preferences extends Users_HTML
             );
         }
 
-        Jaws_Header::Location($this->gadget->GetURLFor('Preferences'));
+        Jaws_Header::Location($this->gadget->urlMap('Preferences'));
     }
 
 }
