@@ -134,7 +134,7 @@ float: left;
 }
 
 #top_header {
-width: 840px;
+width: 850px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -218,7 +218,7 @@ border: 1px solid #3465a4;
 background-color: #c1dcf8;
 padding: 10px 30px 10px 0px;
 margin: 0 0 0 20px;
-width: 200px;
+width: 210px;
 line-height:1.4em;
 }
 
@@ -236,7 +236,7 @@ text-decoration: line-through;
 
 .content {
 padding-left: 48px;
-margin-right: 260px;
+margin-right: 270px;
 }
 
 .msg_info, .msg_warning, .msg_error {
