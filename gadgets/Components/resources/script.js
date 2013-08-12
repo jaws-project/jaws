@@ -120,8 +120,13 @@ function init()
         ComponentsAjax.callSync('getplugins'):
         ComponentsAjax.callSync('getgadgets');
     buildComponentList();
-    $('components').getElements('h3').addEvent('click', toggleSection);
     $('tabs').getElements('li').addEvent('click', switchTab);
+    $('components').getElements('h3').each(function(el, i) {
+        el.addEvent('click', toggleCollapse);
+        if (ComponentsStorage[Number(pluginsMode)].fetch(i)) {
+            el.fireEvent('click');
+        }
+    });
     updateSummary();
 }
 
@@ -221,9 +226,13 @@ function updateSummary()
 /**
  * Expands/collapses gadget/plugin section
  */
-function toggleSection()
+function toggleCollapse()
 {
     this.toggleClass('collapsed');
+    ComponentsStorage[Number(pluginsMode)].update(
+        $('components').getElements('h3').indexOf(this),
+        this.getProperty('class')
+    );
     this.getNext('ul').toggle();
 }
 
@@ -588,6 +597,7 @@ function usageCheckAll(el)
 /**
  * Variables
  */
+var ComponentsStorage = [new JawsStorage('Gadgets'), new JawsStorage('Plugins')];
 var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
     selectedComponent = null,
     components = {},
