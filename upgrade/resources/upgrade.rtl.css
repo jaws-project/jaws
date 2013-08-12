@@ -134,7 +134,7 @@ float: left;
 }
 
 #top_header {
-width: 790px;
+width: 840px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -213,11 +213,13 @@ ul li, ol li {margin: 0px;}
 
 ol.stagelist {
 float: right;
+border-radius: 3px;
 border: 1px solid #3465a4;
 background-color: #c1dcf8;
 padding: 10px 30px 10px 0px;
 margin: 0 0 0 20px;
-width: 150px;
+width: 200px;
+line-height:1.4em;
 }
 
 ol.stagelist li {
@@ -234,7 +236,7 @@ text-decoration: line-through;
 
 .content {
 padding-left: 48px;
-margin-right: 210px;
+margin-right: 260px;
 }
 
 .msg_info, .msg_warning, .msg_error {
