@@ -21,12 +21,12 @@ class Blog_Actions_Post extends Blog_HTML
     function LastPost()
     {
         $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->GetURLFor('Atom'),
+            $this->gadget->urlMap('Atom'),
             'alternate',
             'application/atom+xml',
             'Atom - All');
         $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->GetURLFor('RSS'),
+            $this->gadget->urlMap('RSS'),
             'alternate',
             'application/rss+xml',
             'RSS 2.0 - All'
@@ -69,7 +69,7 @@ class Blog_Actions_Post extends Blog_HTML
             if ($this->gadget->registry->fetch('pingback') == 'true') {
                 require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
-                $pback->showHeaders($this->gadget->GetURLFor('Pingback', array(), true));
+                $pback->showHeaders($this->gadget->urlMap('Pingback', array(), true));
             }
 
             $this->SetTitle($entry['title']);
@@ -112,7 +112,7 @@ class Blog_Actions_Post extends Blog_HTML
                         $tpl->SetVariable('preview', $cHTML->ShowPreview());
                     }
 
-                    $redirect_to = $this->gadget->GetURLFor('SingleView', array('id' =>
+                    $redirect_to = $this->gadget->urlMap('SingleView', array('id' =>
                                           empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']));
                     $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'Post', $entry['id'], $redirect_to));
 
@@ -127,7 +127,7 @@ class Blog_Actions_Post extends Blog_HTML
                 $navtpl = $this->gadget->loadTemplate('PostNavigation.html');
                 if ($prev = $model->GetNOPEntry($entry['id'], 'previous')) {
                     $navtpl->SetBlock('entry-navigation/previous');
-                    $navtpl->SetVariable('url', $this->gadget->GetURLFor('SingleView',
+                    $navtpl->SetVariable('url', $this->gadget->urlMap('SingleView',
                                                                        array('id' => empty($prev['fast_url']) ?
                                                                              $prev['id'] : $prev['fast_url'])));
                     $navtpl->SetVariable('title', $prev['title']);
@@ -137,7 +137,7 @@ class Blog_Actions_Post extends Blog_HTML
 
                 if ($next = $model->GetNOPEntry($entry['id'], 'next')) {
                     $navtpl->SetBlock('entry-navigation/next');
-                    $navtpl->SetVariable('url', $this->gadget->GetURLFor('SingleView',
+                    $navtpl->SetVariable('url', $this->gadget->urlMap('SingleView',
                                                                    array('id' => empty($next['fast_url']) ?
                                                                          $next['id'] : $next['fast_url'])));
                     $navtpl->SetVariable('title', $next['title']);

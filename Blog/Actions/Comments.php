@@ -33,7 +33,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Blog');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
+            Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
         }
 
         $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');

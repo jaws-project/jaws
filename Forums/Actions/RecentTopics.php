@@ -84,7 +84,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
                 $tpl->SetVariable('lbl_topic', $topic['subject']);
                 $tpl->SetVariable(
                     'url_topic',
-                    $this->gadget->GetURLFor(
+                    $this->gadget->urlMap(
                         'Posts',
                         array('fid' => $topic['fid'], 'tid'=> $topic['id'])
                     )
@@ -121,7 +121,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('lastpost_url', $this->gadget->urlMap('Posts', $url_params));
 
                 $tpl->ParseBlock('recenttopics/topic');
             }

@@ -101,11 +101,11 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
                                 $param = array('gid' => !empty($group['fast_url'])? $group['fast_url'] : $group['id'],
                                                'pid' => !empty($page['fast_url'])? $page['fast_url'] : $page['page_id'],
                                                'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->gadget->GetURLFor('Pages', $param));
+                                $tpl->SetVariable('url', $this->gadget->urlMap('Pages', $param));
                             } else {
                                 $param = array('pid' => !empty($page['fast_url']) ? $page['fast_url'] : $page['page_id'],
                                                'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->gadget->GetURLFor('Page', $param));
+                                $tpl->SetVariable('url', $this->gadget->urlMap('Page', $param));
                             }
                             $tpl->ParseBlock('page/translations/language');
                         }

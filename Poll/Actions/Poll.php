@@ -112,7 +112,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
                 }
 
                 if ($poll['result_view']) {
-                    $link = $this->gadget->GetURLFor('ViewResult', array('id' => $poll['id']));
+                    $link = $this->gadget->urlMap('ViewResult', array('id' => $poll['id']));
                     $viewRes =& Piwi::CreateWidget('Link', _t('POLL_REPORTS_RESULTS'), $link);
                     $tpl->SetVariable('result_link', $viewRes->Get());
                 }

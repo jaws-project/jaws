@@ -41,13 +41,13 @@ class Blog_Actions_Categories extends Blog_HTML
             $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
 
             $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->GetURLFor('ShowAtomCategory', array('id' => $cat)),
+                $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
                 'alternate',
                 'application/atom+xml',
                 'Atom - '. $name
             );
             $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->GetURLFor('ShowRSSCategory', array('id' => $cat)),
+                $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
                 'alternate',
                 'application/rss+xml',
                 'RSS 2.0 - '. $name

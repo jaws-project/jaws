@@ -29,7 +29,7 @@ class Forums_Actions_Forums extends Forums_HTML
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('url', $this->gadget->GetURLFor('Forums'));
+        $tpl->SetVariable('url', $this->gadget->urlMap('Forums'));
 
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
@@ -55,7 +55,7 @@ class Forums_Actions_Forums extends Forums_HTML
                 $tpl->SetBlock('forums/group/forum');
                 $tpl->SetVariable('status', (int)$forum['locked']);
                 $tpl->SetVariable('title', $forum['title']);
-                $tpl->SetVariable('url', $this->gadget->GetURLFor('Topics', array('fid' => $forum['id'])));
+                $tpl->SetVariable('url', $this->gadget->urlMap('Topics', array('fid' => $forum['id'])));
                 $tpl->SetVariable('description', $forum['description']);
                 $tpl->SetVariable('topics', (int)$forum['topics']);
                 $tpl->SetVariable('posts',  (int)$forum['posts']);
@@ -82,7 +82,7 @@ class Forums_Actions_Forums extends Forums_HTML
                     if ($last_post_page > 1) {
                         $url_params['page'] = $last_post_page;
                     }
-                    $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
+                    $tpl->SetVariable('lastpost_url', $this->gadget->urlMap('Posts', $url_params));
                     $tpl->ParseBlock('forums/group/forum/lastpost');
                 }
 

@@ -91,7 +91,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                             continue;
                         }
                         $tpl->SetBlock('ViewAlbumPage/photos/item');
-                        $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
+                        $url = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
                         $tpl->SetVariable('url',      $url);
                         $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
                         $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
@@ -121,7 +121,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         if ($v) {
                             $tpl->SetBlock('ViewAlbumPage/pager/item/next');
                             $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-                            $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                            $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                             $tpl->SetVariable('url_next', $url);
                             $tpl->ParseBlock('ViewAlbumPage/pager/item/next');
                         } else {
@@ -133,7 +133,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         if ($v) {
                             $tpl->SetBlock('ViewAlbumPage/pager/item/previous');
                             $tpl->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
-                            $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                            $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                             $tpl->SetVariable('url_previous', $url);
                             $tpl->ParseBlock('ViewAlbumPage/pager/item/previous');
                         } else {
@@ -146,13 +146,13 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                         $tpl->ParseBlock('ViewAlbumPage/pager/item/page_separator');
                     } elseif ($k == 'current') {
                         $tpl->SetBlock('ViewAlbumPage/pager/item/page_current');
-                        $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                        $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                         $tpl->SetVariable('lbl_page', $v);
                         $tpl->SetVariable('url_page', $url);
                         $tpl->ParseBlock('ViewAlbumPage/pager/item/page_current');
                     } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                         $tpl->SetBlock('ViewAlbumPage/pager/item/page_number');
-                        $url = $this->gadget->GetURLFor('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
+                        $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
                         $tpl->SetVariable('lbl_page', $v);
                         $tpl->SetVariable('url_page', $url);
                         $tpl->ParseBlock('ViewAlbumPage/pager/item/page_number');
@@ -242,7 +242,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
                               $this->gadget->registry->fetch('allow_comments') == 'true' &&
                               $allow_comments_config;
 
-            $redirect_to = $this->gadget->GetURLFor('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
+            $redirect_to = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
             $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
@@ -266,16 +266,16 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('ViewImage/navigation');
         $tpl->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
         $tpl->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
-        $url = $this->gadget->GetURLFor('ViewAlbum', array('id' => $albumid));
+        $url = $this->gadget->urlMap('ViewAlbum', array('id' => $albumid));
         $tpl->SetVariable('url_thumbs', $url);
 
         if ($image['first'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-first-photo');
             $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
-            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['first'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('ViewImage', array('id' => $image['first'], 'albumid' => $albumid));
             $tpl->SetVariable('url_first', $url);
             $tpl->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
-            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['previous'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('ViewImage', array('id' => $image['previous'], 'albumid' => $albumid));
             $tpl->SetVariable('url_prev', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-first-photo');
         } else {
@@ -288,10 +288,10 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         if ($image['last'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-last-photo');
             $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['next'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('ViewImage', array('id' => $image['next'], 'albumid' => $albumid));
             $tpl->SetVariable('url_next', $url);
             $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
-            $url = $this->gadget->GetURLFor('ViewImage', array('id' => $image['last'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('ViewImage', array('id' => $image['last'], 'albumid' => $albumid));
             $tpl->SetVariable('url_last', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-last-photo');
         } else {
@@ -387,7 +387,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
                     $tpl->SetBlock('photoblog_portrait/item');
                     $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
+                    $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $tpl->SetVariable('url', $url);
                     $tpl->SetVariable('title', $entry['name']);
                     $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
@@ -436,7 +436,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 
                     $tpl->SetBlock('photoblog_portrait/item');
                     $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->gadget->GetURLFor('PhotoblogPortrait', array('photoid' => $entry['id']));
+                    $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $tpl->SetVariable('url', $url);
                     $tpl->SetVariable('title', $entry['name']);
                     $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
@@ -472,7 +472,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $image = $model->GetImage($post['reference'], $post['albumid']);
         if (Jaws_Error::isError($image)) {
             $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->gadget->GetURLFor('DefaultAction'));
+            Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
         }
 
         return $this->ViewImage($post['reference'], $post['albumid'], true);

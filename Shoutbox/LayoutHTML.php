@@ -43,7 +43,7 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('preview', $cHTML->ShowPreview());
         }
 
-        $redirect_to = $this->gadget->GetURLFor('DefaultAction', array());
+        $redirect_to = $this->gadget->urlMap('DefaultAction', array());
         $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Shoutbox', '', 0, $redirect_to));
 
         $tpl->ParseBlock('shoutbox');

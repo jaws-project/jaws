@@ -65,7 +65,7 @@ class Poll_Actions_Polls extends Jaws_Gadget_HTML
         if (!Jaws_Error::isError($polls)) {
             foreach ($polls as $poll) {
                 $tpl->SetBlock('Polls/poll');
-                $tpl->SetVariable('url', $this->gadget->GetURLFor('Poll', array('id' => $poll['id'])));
+                $tpl->SetVariable('url', $this->gadget->urlMap('Poll', array('id' => $poll['id'])));
                 $tpl->SetVariable('question', $poll['question']);
                 $tpl->ParseBlock('Polls/poll');
             }

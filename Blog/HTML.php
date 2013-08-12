@@ -79,7 +79,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/next');
                         $tpl->SetVariable('lbl_next', _t('BLOG_PAGENAVIGATION_NEXTPAGE'));
-                        $url = $this->gadget->GetURLFor($action, $params);
+                        $url = $this->gadget->urlMap($action, $params);
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/next');
                     } else {
@@ -91,7 +91,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/previous');
                         $tpl->SetVariable('lbl_previous', _t('BLOG_PAGENAVIGATION_PREVIOUSPAGE'));
-                        $url = $this->gadget->GetURLFor($action, $params);
+                        $url = $this->gadget->urlMap($action, $params);
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/previous');
                     } else {
@@ -104,13 +104,13 @@ class Blog_HTML extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_separator');
                 } elseif ($k == 'current') {
                     $tpl->SetBlock('pager/numbered-navigation/item/page_current');
-                    $url = $this->gadget->GetURLFor($action, $params);
+                    $url = $this->gadget->urlMap($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_current');
                 } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
                     $tpl->SetBlock('pager/numbered-navigation/item/page_number');
-                    $url = $this->gadget->GetURLFor($action, $params);
+                    $url = $this->gadget->urlMap($action, $params);
                     $tpl->SetVariable('lbl_page', $v);
                     $tpl->SetVariable('url_page', $url);
                     $tpl->ParseBlock('pager/numbered-navigation/item/page_number');
@@ -178,7 +178,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariablesArray($entry);
 
         $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
-        $tpl->SetVariable('author-url',   $this->gadget->GetURLFor('ViewAuthorPage', array('id' => $entry['username'])));
+        $tpl->SetVariable('author-url',   $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username'])));
         $date = $GLOBALS['app']->loadDate();
         $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
         $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
@@ -193,7 +193,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
 
         $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-        $perm_url = $this->gadget->GetURLFor('SingleView', array('id' => $id));
+        $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
 
         $summary = $entry['summary'];
         $text    = $entry['text'];
@@ -223,13 +223,13 @@ class Blog_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('text', $summary);
         } else {
             $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->GetURLFor('Atom'),
+                $this->gadget->urlMap('Atom'),
                 'alternate',
                 'application/atom+xml',
                 'Atom - All'
             );
             $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->GetURLFor('RSS'),
+                $this->gadget->urlMap('RSS'),
                 'alternate',
                 'application/rss+xml',
                 'RSS 2.0 - All'
@@ -246,7 +246,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('id',   $cat['id']);
             $tpl->SetVariable('name', $cat['name']);
             $cid = empty($cat['fast_url']) ? $cat['id'] : $cat['fast_url'];
-            $tpl->SetVariable('url',  $this->gadget->GetURLFor('ShowCategory', array('id' => $cid)));
+            $tpl->SetVariable('url',  $this->gadget->urlMap('ShowCategory', array('id' => $cid)));
             if ($pos == count($entry['categories'])) {
                 $tpl->SetVariable('separator', '');
             } else {

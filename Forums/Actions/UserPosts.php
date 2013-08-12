@@ -58,7 +58,7 @@ class Forums_Actions_UserPosts extends Forums_HTML
                 $tpl->SetVariable('lbl_topic', $post['subject']);
                 $tpl->SetVariable(
                     'url_topic',
-                    $this->gadget->GetURLFor(
+                    $this->gadget->urlMap(
                         'Posts',
                         array('fid' => $post['fid'], 'tid'=> $post['tid'])
                     )
@@ -82,7 +82,7 @@ class Forums_Actions_UserPosts extends Forums_HTML
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('url_post', $this->gadget->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('url_post', $this->gadget->urlMap('Posts', $url_params));
 
                 $tpl->ParseBlock('userposts/post');
             }

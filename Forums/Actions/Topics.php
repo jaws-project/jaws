@@ -60,9 +60,9 @@ class Forums_Actions_Topics extends Forums_HTML
         $tpl->SetBlock('topics');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
+        $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
         $tpl->SetVariable('title', $forum['title']);
-        $tpl->SetVariable('url', $this->gadget->GetURLFor('Topics', array('fid' => $forum['id'])));
+        $tpl->SetVariable('url', $this->gadget->urlMap('Topics', array('fid' => $forum['id'])));
         $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
         $tpl->SetVariable('lbl_replies', _t('FORUMS_REPLIES'));
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
@@ -83,7 +83,7 @@ class Forums_Actions_Topics extends Forums_HTML
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable(
                 'url',
-                $this->gadget->GetURLFor('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']))
+                $this->gadget->urlMap('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']))
             );
             $tpl->SetVariable('replies', $topic['replies']);
             $tpl->SetVariable('views', $topic['views']);
@@ -116,7 +116,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 if ($last_post_page > 1) {
                     $url_params['page'] = $last_post_page;
                 }
-                $tpl->SetVariable('lastpost_url', $this->gadget->GetURLFor('Posts', $url_params));
+                $tpl->SetVariable('lastpost_url', $this->gadget->urlMap('Posts', $url_params));
                 $tpl->ParseBlock('topics/topic/lastpost');
             }
 
@@ -138,7 +138,7 @@ class Forums_Actions_Topics extends Forums_HTML
         if ($GLOBALS['app']->Session->Logged() && $this->gadget->GetPermission('AddTopic')) {
             $tpl->SetBlock('topics/action');
             $tpl->SetVariable('action_lbl', _t('FORUMS_TOPICS_NEW'));
-            $tpl->SetVariable('action_url', $this->gadget->GetURLFor('NewTopic', array('fid' => $forum['id'])));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('NewTopic', array('fid' => $forum['id'])));
             $tpl->ParseBlock('topics/action');
         }
 
@@ -207,11 +207,11 @@ class Forums_Actions_Topics extends Forums_HTML
         $tpl->SetBlock('topic');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
+        $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
         $tpl->SetVariable('forum_title', $topic['forum_title']);
         $tpl->SetVariable(
             'forum_url',
-            $this->gadget->GetURLFor('Topics', array('fid' => $topic['fid']))
+            $this->gadget->urlMap('Topics', array('fid' => $topic['fid']))
         );
         $tpl->SetVariable('title', $title);
         $tpl->SetVariable('fid', $rqst['fid']);
@@ -491,7 +491,7 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $topic['tid'] = $result;
-        $topic_link = $this->gadget->GetURLFor(
+        $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['tid']),
             true
@@ -561,7 +561,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 }
 
                 $event_type = 'delete';
-                $forum_link = $this->gadget->GetURLFor(
+                $forum_link = $this->gadget->urlMap(
                     'Topics',
                     array('fid' => $topic['fid']),
                     true
@@ -583,7 +583,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
             // redirect to topic posts list
             Jaws_Header::Location(
-                $this->gadget->GetURLFor('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
+                $this->gadget->urlMap('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
             );
         } else {
             $tpl = $this->gadget->loadTemplate('DeleteTopic.html');
@@ -592,11 +592,11 @@ class Forums_Actions_Topics extends Forums_HTML
             $tpl->SetVariable('fid', $topic['fid']);
             $tpl->SetVariable('tid', $topic['id']);
             $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-            $tpl->SetVariable('findex_url', $this->gadget->GetURLFor('Forums'));
+            $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
             $tpl->SetVariable('forum_title', $topic['forum_title']);
             $tpl->SetVariable(
                 'forum_url',
-                $this->gadget->GetURLFor('Topics', array('fid'=> $topic['fid']))
+                $this->gadget->urlMap('Topics', array('fid'=> $topic['fid']))
             );
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
 
@@ -660,7 +660,7 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $event_type = $topic['locked']? 'unlock' : 'lock';
-        $topic_link = $this->gadget->GetURLFor(
+        $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
             true
@@ -717,7 +717,7 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $event_type = $topic['published']? 'published' : 'draft';
-        $topic_link = $this->gadget->GetURLFor(
+        $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
             true

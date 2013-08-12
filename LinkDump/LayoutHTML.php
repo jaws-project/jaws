@@ -66,13 +66,13 @@ class LinkDump_LayoutHTML extends Jaws_Gadget_HTML
         $data['linkdump_rdf']  = $GLOBALS['app']->getDataURL("xml/linkdump.$feedname.rdf", false);
         $data['feed'] = _t('LINKDUMP_LINKS_FEED');
         $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-        $data['archive_url'] = $this->gadget->GetURLFor('Archive', array('id' => $gid));
+        $data['archive_url'] = $this->gadget->urlMap('Archive', array('id' => $gid));
         $data['links'] = $model->GetGroupLinks($group['id'], $group['limit_count'], $group['order_type']);
         if (!Jaws_Error::IsError($data['links'])) {
             foreach ($data['links'] as $indx => $link) {
                 if ($group['link_type'] == 2) {
                     $lid = empty($link['fast_url'])? $link['id'] : $link['fast_url'];
-                    $data['links'][$indx]['url'] = $this->gadget->GetURLFor('Link', array('id' => $lid));
+                    $data['links'][$indx]['url'] = $this->gadget->urlMap('Link', array('id' => $lid));
                 } else {
                     $data['links'][$indx]['url'] = $link['url'];
                 }

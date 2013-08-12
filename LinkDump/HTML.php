@@ -52,7 +52,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
             $group['id'] : $group['fast_url'];
 
         $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
-        $tpl->SetVariable('linkdump_rss', $this->gadget->GetURLFor('RSS', array('id' => $group_id)));
+        $tpl->SetVariable('linkdump_rss', $this->gadget->urlMap('RSS', array('id' => $group_id)));
 
         $target = $this->gadget->registry->fetch('links_target');
         $target = ($target == 'blank') ? '_blank' : '_self';

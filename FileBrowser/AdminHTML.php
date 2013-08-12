@@ -94,7 +94,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
                     $furl = Jaws_XSS::filter($file['url']);
                 } else {
                     $fid = empty($file['fast_url'])? $file['id'] : Jaws_XSS::filter($file['fast_url']);
-                    $furl = $this->gadget->GetURLFor('Download', array('id' => $fid));
+                    $furl = $this->gadget->urlMap('Download', array('id' => $fid));
                 }
 
                 $link =& Piwi::CreateWidget('Link', $file['filename'], $furl);
@@ -476,7 +476,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
                         $furl = Jaws_XSS::filter($file['url']);
                     } else {
                         $fid = empty($file['fast_url'])? $file['id'] : Jaws_XSS::filter($file['fast_url']);
-                        $furl = $this->gadget->GetURLFor('Download', array('id' => $fid));
+                        $furl = $this->gadget->urlMap('Download', array('id' => $fid));
                     }
                     $link =& Piwi::CreateWidget('Link',
                                                 $file['filename'],
