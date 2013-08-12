@@ -137,7 +137,7 @@ class Jaws_Layout
 
         //parse default site keywords
         $this->attributes['site_keywords'] = array_map(
-            array('Jaws_UTF8', 'trim'),
+            array($GLOBALS['app']->UTF8, 'trim'),
             array_filter(explode(',', $this->attributes['site_keywords']))
         );
 
