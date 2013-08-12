@@ -134,7 +134,7 @@ text-align: right;
 }
 
 #top_header {
-width: 790px;
+width: 840px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -216,12 +216,13 @@ visibility: hidden;
 ol.stagelist {
 float: left;
 border: 1px solid #9db029;
--moz-border-radius: 3px;
+border-radius: 3px;
 background-color: #e6f0a5;
 padding: 10px;
 margin-left: 20px;
 margin-top: 0px;
-width: 150px;
+width: 200px;
+line-height:1.4em
 }
 
 ol.stagelist li {
@@ -238,7 +239,7 @@ text-decoration: line-through;
 }
 
 .content {
-padding-left: 210px;
+padding-left: 260px;
 margin-right: 48px;
 }
 
