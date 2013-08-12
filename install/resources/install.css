@@ -134,7 +134,7 @@ text-align: right;
 }
 
 #top_header {
-width: 840px;
+width: 850px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -221,7 +221,7 @@ background-color: #e6f0a5;
 padding: 10px;
 margin-left: 20px;
 margin-top: 0px;
-width: 200px;
+width: 210px;
 line-height:1.4em
 }
 
@@ -239,7 +239,7 @@ text-decoration: line-through;
 }
 
 .content {
-padding-left: 260px;
+padding-left: 270px;
 margin-right: 48px;
 }
 
