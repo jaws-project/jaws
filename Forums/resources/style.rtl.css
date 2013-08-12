@@ -77,13 +77,13 @@ cursor:pointer;
 }
 #work_area{
 float:right;
-width:625px;
+width:671px;
 text-align:right;
 margin-right:3px;
 margin-bottom:4px;
 }
 #work_area span{
-width:671px;
+width:400px;
 overflow:hidden;
 }
 #forums_edit{
