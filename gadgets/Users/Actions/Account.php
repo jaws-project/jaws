@@ -60,6 +60,17 @@ class Users_Actions_Account extends Users_HTML
             $account['password_disabled'] = 'disabled="disabled"';
         }
 
+        if (empty($account['avatar'])) {
+            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/avatar.png');
+        } else {
+            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $account['avatar'];
+            $user_current_avatar .= !empty($account['last_update']) ? "?" . $account['last_update'] . "" : '';
+        }
+        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
+        $avatar->SetID('avatar');
+        $avatar->SetStyle('max-width: 128px;max-height: 128px;');
+        $account['avatar'] = $avatar->Get();
+
         $account['response'] = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
 
         // Load the template
