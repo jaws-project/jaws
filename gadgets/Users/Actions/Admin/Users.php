@@ -154,8 +154,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
             'stylesheet',
             'text/css'
         );
-        // xtree
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
         // RSA encryption
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');

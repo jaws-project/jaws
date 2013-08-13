@@ -114,7 +114,6 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/xtree/xtree.js');
         $tpl = $this->gadget->loadTemplate('Groups.html');
         $tpl->SetBlock('Groups');
 
