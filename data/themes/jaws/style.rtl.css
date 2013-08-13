@@ -276,6 +276,9 @@ float:right;
 float:left;
 }
 /* users style */
+.users #personal_fname,.users #personal_lname,.users #username,.users #nickname,.users #email{
+width:380px;
+}
 .users #user_gender{
 width:148px;
 }
@@ -289,6 +292,9 @@ display:inline-block;
 .users #user_dob span{
 display:inline;
 padding-right:5px;
+}
+.users div.user_avatar{
+float:left;
 }
 /* forums style */
 #requested_gadget_forums #mainbar{
