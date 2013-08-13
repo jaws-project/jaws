@@ -22,21 +22,17 @@ class Weather_Model extends Jaws_Gadget_Model
      */
     function GetRegion($id)
     {
-        $sql = '
-            SELECT
-                [id], [title], [fast_url], [latitude], [longitude], [published]
-            FROM [[weather]]';
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
+                              'published:boolean');
 
         if (is_numeric($id)) {
-            $sql .= '
-                WHERE [id] = {id}';
+            $weatherTable->where('id', $id);
         } else {
-            $sql .= '
-                WHERE [fast_url] = {id}';
+            $weatherTable->where('fast_url', $id);
         }
+        $row = $weatherTable->getRow();
 
-        $types = array('integer', 'text',  'text', 'float', 'float', 'boolean');
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id), $types);
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -55,29 +51,15 @@ class Weather_Model extends Jaws_Gadget_Model
      */
     function GetRegions($published = null, $limit = false, $offset = null)
     {
-        if (is_numeric($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
+            'published:boolean');
+
+        if (!is_null($published)) {
+            $weatherTable->where('published', $published);
         }
 
-        
-        if (is_null($published)) {
-            $sql = '
-                SELECT [id], [title], [fast_url], [latitude], [longitude], [published]
-                FROM [[weather]]
-                ORDER BY [id] ASC';
-        } else {
-            $sql = '
-                SELECT [id], [title], [fast_url], [latitude], [longitude], [published]
-                FROM [[weather]]
-                WHERE [published] = {published}
-                ORDER BY [id] ASC';
-        }
-
-        $types = array('integer', 'text', 'text', 'float', 'float', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, array('published' => $published), $types);
+        $result = $weatherTable->limit($limit, $offset)->orderBy('id ASC')->getAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

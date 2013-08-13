@@ -30,20 +30,14 @@ class Weather_AdminModel extends Weather_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'weather');
 
-        $params = array();
-        $params['title']     = $title;
-        $params['fast_url']  = $fast_url;
-        $params['latitude']  = (float) $latitude;
-        $params['longitude'] = (float) $longitude;
-        $params['published'] = $published;
+        $data['title']     = $title;
+        $data['fast_url']  = $fast_url;
+        $data['latitude']  = (float) $latitude;
+        $data['longitude'] = (float) $longitude;
+        $data['published'] = $published;
 
-        $sql = '
-            INSERT INTO [[weather]]
-                ([title], [fast_url], [latitude], [longitude], [published])
-            VALUES
-                ({title}, {fast_url}, {latitude}, {longitude}, {published})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $result = $weatherTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_ADDED'), _t('WEATHER_NAME'));
@@ -70,24 +64,15 @@ class Weather_AdminModel extends Weather_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'weather', false);
 
-        $params = array();
-        $params['id']        = (int)$id;
-        $params['title']     = $title;
-        $params['fast_url']  = $fast_url;
-        $params['latitude']  = (float) $latitude;
-        $params['longitude'] = (float) $longitude;
-        $params['published'] = $published;
+        $data['id']        = (int)$id;
+        $data['title']     = $title;
+        $data['fast_url']  = $fast_url;
+        $data['latitude']  = (float) $latitude;
+        $data['longitude'] = (float) $longitude;
+        $data['published'] = $published;
 
-        $sql = '
-            UPDATE [[weather]] SET
-                [title]      = {title},
-                [fast_url]   = {fast_url},
-                [latitude]   = {latitude},
-                [longitude]  = {longitude},
-                [published]  = {published}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $result = $weatherTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), _t('WEATHER_NAME'));
@@ -106,8 +91,8 @@ class Weather_AdminModel extends Weather_Model
      */
     function DeleteRegion($id)
     {
-        $sql = 'DELETE FROM [[weather]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $result = $weatherTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_DELETED'), _t('WEATHER_NAME'));
