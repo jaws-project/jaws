@@ -634,10 +634,9 @@ class Jaws_Session
                     return $this->_SessionID;
                 }
             }
-        } else {
+        } elseif (!empty($GLOBALS['app']->Session->_Attributes)) {
             //A new session, we insert it to the DB
             $updatetime = time();
-            $GLOBALS['app']->Session->SetAttribute('groups', array());
             $serialized = serialize($GLOBALS['app']->Session->_Attributes);
 
             $params = array();
