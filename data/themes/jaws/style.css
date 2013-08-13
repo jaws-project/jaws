@@ -45,7 +45,7 @@ fieldset{
 margin-bottom:1em;
 }
 legend{
-width:96%;
+width:100%;
 margin-bottom:5px;
 padding:2px 4px 2px 0;
 border-bottom:1px solid #ccc;
@@ -63,21 +63,27 @@ input,textarea,select{
 color:#666;
 padding:2px;
 border:1px solid #ccc;
+box-sizing:border-box;
+-ms-box-sizing:border-box;
+-moz-box-sizing:border-box;
 }
 input:focus,textarea:focus,select:focus{
 border:1px solid #5279b4;
 }
 label+input,label+textarea,label+select,.jaws_textarea_editor textarea{
-width:96%;
+width:100%;
 display:block;
 }
-button, .button{
+button,.button{
 padding:4px;
 color:#325994;
 background:#eee;
 line-height:100%;
-border-radius:5px;
+border-radius:3px;
 border:1px solid #ccc;
+box-sizing:border-box;
+-ms-box-sizing:border-box;
+-moz-box-sizing:border-box;
 }
 .clearfix:after{
 display:block;
@@ -145,7 +151,7 @@ position:relative;
 }
 #footer .wrapper{
 padding-top:8px;
-line-height:1.2em;
+line-height:120%;
 }
 .gadget{
 margin-bottom:12px;
@@ -159,7 +165,6 @@ padding-bottom:10px;
 .actions{
 text-align:right;
 padding-top:2px;
-padding-right:3%;
 }
 .spam_check{
 display:none;
@@ -175,7 +180,7 @@ border-bottom:1px solid #ccc;
 }
 .sidebar .gadget h2{
 text-indent:8px;
-border-radius:5px;
+border-radius:3px;
 background:#eee;
 border:1px solid #ccc;
 }
@@ -235,6 +240,40 @@ position:relative;
 #headbar .menu li img{
 vertical-align:middle;
 }
+/* pager style */
+.pager{
+padding:4px;
+margin:3px auto;
+line-height:180%;
+text-align:center;
+}
+.pager span{
+padding:0px 4px;
+border-radius:3px;
+display:inline-block;
+border:1px solid #ccc;
+}
+.pager span.page_inactive{
+color:#ccc;
+}
+.pager span.pager_current{
+font-weight:bold;
+}
+.pager div.pager_total{
+margin:4px auto 0px;
+}
+/* navigator */
+.navigator{
+clear:both;
+display:block;
+min-height:2em;
+}
+.navigator .navigator_prev{
+float:left;
+}
+.navigator .navigator_next{
+float:right;
+}
 /* users style */
 .users #user_gender{
 width:148px;
@@ -277,7 +316,7 @@ font-weight:normal;
 padding:4px;
 color:#325994;
 border:1px solid #ccc;
-border-radius:5px 5px 0 0;
+border-radius:3px 3px 0 0;
 background:#eee;
 }
 .forums_header dd{
@@ -310,7 +349,7 @@ position:relative;
 word-wrap:break-word;
 padding:10px 0;
 margin-bottom:10px;
-border-radius:5px;
+border-radius:3px;
 background:#eee;
 }
 .forum_post .post_profile{
@@ -361,7 +400,7 @@ position:relative;
 word-wrap:break-word;
 padding:10px 0;
 margin-bottom:10px;
-border-radius:5px;
+border-radius:3px;
 background:#eee;
 }
 .comments_post .post_profile{
@@ -428,4 +467,8 @@ white-space:nowrap;
 /* Search */
 .search_result_meta img{
 float:left;
+}
+/* Photo Organizer */
+.phoo_image .content{
+text-align:center;
 }
