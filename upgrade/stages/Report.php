@@ -101,7 +101,7 @@ class Upgrader_Report extends JawsUpgraderStage
      */
     function Run()
     {
-        if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.8.18' , '<=')) {
+        if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.8.18' , '<')) {
             return Jaws_Error::raiseError(_t('UPGRADE_REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
         }
 
