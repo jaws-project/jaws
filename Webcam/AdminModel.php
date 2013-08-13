@@ -23,17 +23,13 @@ class Webcam_AdminModel extends Webcam_Model
      */
     function NewWebcam($title, $url, $refresh)
     {
-        $params            = array();
-        $params['title']   = $title;
-        $params['url']     = $url;
-        $params['refresh'] = $refresh;
-        $sql = '
-            INSERT INTO [[webcam]]
-               ([title], [url], [refresh])
-            VALUES
-               ({title}, {url}, {refresh})';
+        $data['title']   = $title;
+        $data['url']     = $url;
+        $data['refresh'] = $refresh;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $result = $webcamTable->insert($data)->exec();
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_ADDED'), _t('WEBCAM_NAME'));
@@ -55,19 +51,12 @@ class Webcam_AdminModel extends Webcam_Model
      */
     function UpdateWebcam($id, $title, $url, $refresh)
     {
-        $params            = array();
-        $params['id']      = $id;
-        $params['title']   = $title;
-        $params['url']     = $url;
-        $params['refresh'] = $refresh;
-        $sql = '
-            UPDATE [[webcam]] SET
-                [title]   = {title},
-                [url]     = {url},
-                [refresh] = {refresh}
-            WHERE [id] = {id}';
+        $data['title']   = $title;
+        $data['url']     = $url;
+        $data['refresh'] = $refresh;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $result = $webcamTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'), _t('WEBCAM_NAME'));
@@ -86,8 +75,9 @@ class Webcam_AdminModel extends Webcam_Model
      */
     function DeleteWebcam($id)
     {
-        $sql = 'DELETE FROM [[webcam]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $result = $webcamTable->delete()->where('id', $id)->exec();
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'), _t('WEBCAM_NAME'));

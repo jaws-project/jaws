@@ -20,13 +20,10 @@ class Webcam_Model extends Jaws_Gadget_Model
      */
     function GetWebCam($id)
     {
-        $sql = '
-            SELECT
-                [id], [title], [url], [refresh]
-            FROM [[webcam]]
-            WHERE [id] = {id}';
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $webcamTable->select('id:integer', 'title', 'url', 'refresh:integer');
+        $row = $webcamTable->where('id', $id)->getRow();
 
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id));
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -46,21 +43,10 @@ class Webcam_Model extends Jaws_Gadget_Model
      */
     function GetRandomWebCam()
     {
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $rand = $GLOBALS['db']->dbc->function->random();
-        $sql = '
-            SELECT
-                [id], [title], [url], [refresh]
-            FROM [[webcam]]
-            ORDER BY ' . $rand;
-
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $webcamTable->select('id:integer', 'title', 'url', 'refresh:integer');
         $limit = $this->gadget->registry->fetch('limit_random');
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        $row = $GLOBALS['db']->queryRow($sql);
+        $row = $webcamTable->limit($limit)->orderBy($webcamTable->random())->getRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -81,20 +67,10 @@ class Webcam_Model extends Jaws_Gadget_Model
      */
     function GetWebCams($limit = false)
     {
-        if (is_numeric($limit)) {
-            $rs = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($rs)) {
-                return new Jaws_Error($rs->getMessage(), 'SQL');
-            }
-        }
+        $webcamTable = Jaws_ORM::getInstance()->table('webcam');
+        $webcamTable->select('id:integer', 'title', 'url', 'refresh:integer')->orderBy('title');
+        $result = $webcamTable->limit($limit)->getAll();
 
-        $sql = '
-            SELECT
-                [id], [title], [url], [refresh]
-            FROM [[webcam]]
-            ORDER BY [title]';
-
-        $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
