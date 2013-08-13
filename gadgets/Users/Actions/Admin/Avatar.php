@@ -54,7 +54,7 @@ class Users_Actions_Admin_Avatar extends Users_AdminHTML
                 if (!Jaws_Error::IsError($result)) {
                     $result = $objImage->display();
                     if (!Jaws_Error::IsError($result)) {
-                        return true;
+                        return $result;
                     }
                 }
             }
