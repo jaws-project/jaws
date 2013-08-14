@@ -23,25 +23,15 @@ class Blocks_AdminModel extends Blocks_Model
      */
     function NewBlock($title, $contents, $display_title, $user)
     {
-        $params = array();
-        $params['user']  = $user;
-        $params['title'] = $title;
-        $params['contents'] = $contents;
+        $data = array();
+        $data['title'] = $title;
+        $data['contents'] = $contents;
+        $data['display_title'] = $display_title ? true : false;
+        $data['created_by'] = $data['modified_by'] = $user;
+        $data['createtime'] = $data['updatetime'] = $GLOBALS['db']->Date();
 
-        $params['now']      = $GLOBALS['db']->Date();
-        $params['display_title'] = $display_title ? true : false;
-
-        $sql = '
-            INSERT INTO [[blocks]]
-                ([title], [contents], [display_title],
-                [created_by], [createtime],
-                [modified_by], [updatetime])
-            VALUES
-                ({title}, {contents}, {display_title},
-                {user}, {now},
-                {user}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
+        $result = $blocksTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $result->SetMessage(_t('BLOCKS_ERROR_NOT_ADDED'));
             return $result;
@@ -63,24 +53,15 @@ class Blocks_AdminModel extends Blocks_Model
      */
     function UpdateBlock($id, $title, $contents, $display_title, $user)
     {
-        $params = array();
-        $params['id']    = (int)$id;
-        $params['user']  = $user;
-        $params['title'] = $title;
-        $params['contents'] = $contents;
-        $params['now']      = $GLOBALS['db']->Date();
-        $params['display_title'] = ($display_title ? true : false);
+        $data = array();
+        $data['title'] = $title;
+        $data['contents'] = $contents;
+        $data['display_title'] = ($display_title ? true : false);
+        $data['modified_by'] = $user;
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
-        $sql = '
-            UPDATE [[blocks]] SET
-                [title] = {title},
-                [contents] = {contents},
-                [display_title] = {display_title},
-                [modified_by] = {user},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
+        $result = $blocksTable->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'), _t('BLOCKS_NAME'));
@@ -99,21 +80,24 @@ class Blocks_AdminModel extends Blocks_Model
      */
     function DeleteBlock($id)
     {
-        $b = $this->GetBlock($id);
-        $params = array();
-        $params['id'] = $id;
-        $sql = "DELETE FROM [[blocks]] WHERE [id] = {id}";
-        $result = $GLOBALS['db']->query($sql, $params);
+        $block = $this->GetBlock($id);
+        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
+        $result = $blocksTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'), _t('BLOCKS_NAME'));
         }
-        // Remove from layout
-        $params['action'] = "Display({$id})";
-        $sql = "DELETE FROM [[layout]] WHERE [gadget] = 'Blocks' AND [gadget_action] = {action}";
-        $result = $GLOBALS['db']->query($sql, $params);
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_DELETED', $b['title']), RESPONSE_NOTICE);
+        // TODO: we must use SHOUT here
+        /*
+        // Remove from layout
+        $layoutTable = Jaws_ORM::getInstance()->table('layout');
+        $result = $layoutTable->delete()
+            ->where('gadget', 'Blocks')->and()
+            ->where('gadget_action', "Display({$id})")->exec();
+        */
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_DELETED', $block['title']), RESPONSE_NOTICE);
         return true;
     }
 }

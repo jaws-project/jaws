@@ -31,6 +31,7 @@ class Blocks_Hooks_Search extends Jaws_Gadget_Hook
      */
     function Execute($pSql = '')
     {
+        // TODO: must be converted to Jaws_ORM
         $sql = '
             SELECT
                 [id], [title], [contents], [updatetime]

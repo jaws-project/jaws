@@ -19,28 +19,12 @@ class Blocks_Model extends Jaws_Gadget_Model
      */
     function GetBlock($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-        $sql = '
-            SELECT
-                [id], [title], [contents], [display_title],
-                [created_by], [createtime],
-                [modified_by], [updatetime]
-            FROM [[blocks]]
-            WHERE [id] = {id}';
-
-        $types = array('integer', 'text', 'text', 'boolean',
-                       'integer', 'timestamp', 'integer', 'timestamp');
-        $row = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
-        }
-
-        if (isset($row['id'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('BLOCKS_ERROR_BLOCK_DOES_NOT_EXISTS', $id));
+        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
+        $blocksTable->select(
+            'id:integer', 'title', 'contents', 'display_title:boolean', 'created_by:integer',
+            'modified_by:integer', 'createtime:timestamp', 'updatetime:timestamp'
+        );
+        return $blocksTable->where('id', $id)->getRow();
     }
 
 
@@ -54,29 +38,15 @@ class Blocks_Model extends Jaws_Gadget_Model
     function GetBlocks($simple = false)
     {
         if ($simple) {
-            $fields = '
-                [id], [title]';
-            $types = array('integer', 'text');
+            $columns = array('id:integer', 'title');
         } else {
-            $fields = '
-                [id], [title], [contents], [display_title],
-                [created_by], [createtime],
-                [modified_by], [updatetime]';
-            $types = array('integer', 'text', 'text', 'boolean',
-                           'integer', 'timestamp', 'integer', 'timestamp');
+            $columns = array(
+                'id:integer', 'title', 'contents', 'display_title:integer',
+                'created_by:integer', 'modified_by:integer',
+                'createtime:timestamp', 'updatetime:timestamp');
         }
-
-        $sql = "
-            SELECT
-                $fields
-            FROM [[blocks]]
-            ORDER BY [title]";
-
-        $result = $GLOBALS['db']->queryAll($sql, null, $types);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
+        $blocksTable->select($columns)->orderBy('title ASC');
+        return $blocksTable->getAll();
     }
 }

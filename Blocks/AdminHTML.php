@@ -25,19 +25,18 @@ class Blocks_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         // Block List
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel');
-        $blocks = $model->GetBlocks(false);
         $blocksCombo =& Piwi::CreateWidget('Combo', 'block_id');
         $blocksCombo->SetID('block_id');
         $blocksCombo->SetSize(16);
         $blocksCombo->AddEvent(ON_CHANGE, 'edit(this.value, \'' . _t('GLOBAL_EDIT') . '\');');
-        $selected = 0;
-        foreach ($blocks as $b) {
-            $blocksCombo->AddOption($b['title'], $b['id']);
+        $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel');
+        $blocks = $model->GetBlocks(false);
+        if (!Jaws_Error::isError($blocks)) {
+            foreach ($blocks as $b) {
+                $blocksCombo->AddOption($b['title'], $b['id']);
+            }
+            $blocksCombo->SetDefault(0);
         }
-
-        unset($blocks);
-        $blocksCombo->SetDefault($selected);
         $tpl->SetVariable('block_list', $blocksCombo->Get());
 
         // New Button
