@@ -36,4 +36,27 @@ class Components_Installer extends Jaws_Gadget_Installer
 
         return true;
     }
+
+    /**
+     * Upgrades the gadget
+     *
+     * @access  public
+     * @param   string  $old    Current version (in registry)
+     * @param   string  $new    New version (in the $gadgetInfo file)
+     * @return  mixed   True on success, Jaws_Error otherwise
+     */
+    function Upgrade($old, $new)
+    {
+        if (version_compare($old, '0.3.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('versions_remote_access', 'false');
+
+            // ACL keys
+            $this->gadget->acl->insert('ManageRegistry');
+            $this->gadget->acl->insert('ManageACLs');
+        }
+
+        return true;
+    }
+
 }
