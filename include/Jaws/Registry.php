@@ -118,25 +118,19 @@ class Jaws_Registry
      */
     function insert($key_name, $key_value, $component = '')
     {
-        $params = array();
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            INSERT INTO [[registry]]
-                ([component], [key_name], [key_value], [updatetime])
-            VALUES
-                ({component}, {key_name}, {key_value}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $tblReg->insert(array(
+            'component'  => $component,
+            'key_name'   => $key_name,
+            'key_value'  => $key_value,
+            'updatetime' => $GLOBALS['db']->Date(),
+        ));
+        $result = $tblReg->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $this->_Registry[$component][$key_name] = $key_value;
         }
 
-        $this->_Registry[$component][$key_name] = $key_value;
-        return true;
+        return !Jaws_Error::IsError($result);
     }
 
     /**
@@ -227,20 +221,10 @@ class Jaws_Registry
      */
     function update($key_name, $key_value, $component = '')
     {
-        $params = array();
-        $params['key_name']  = $key_name;
-        $params['key_value'] = $key_value;
-        $params['component'] = $component;
-
-        $sql = '
-            UPDATE [[registry]] SET
-                [key_value] = {key_value}
-            WHERE
-                [component] = {component}
-              AND
-                [key_name] = {key_name}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $tblReg->update(array('key_value' => $key_value));
+        $tblReg->where('component', $component)->and()->where('key_name', $key_name);
+        $result = $tblReg->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -259,26 +243,21 @@ class Jaws_Registry
      */
     function delete($component, $key_name = '')
     {
-        $params = array();
-        $params['component'] = $component;
-        $params['key_name']  = $key_name;
-
-        $sql = '
-            DELETE
-                FROM [[registry]]
-            WHERE
-                [component] = {component}
-            ';
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $tblReg->delete()->where('component', $component);
         if (!empty($key_name)) {
-            $sql.= ' AND [key_name] = {key_name}';
+            $tblReg->and()->where('key_name', $key_name);
+        }
+        $result = $tblReg->exec();
+        if (!Jaws_Error::IsError($result)) {
+            if (empty($key_name)) {
+                unset($this->_Registry[$component]);
+            } else {
+                unset($this->_Registry[$component][$key_name]);
+            }
         }
 
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
+        return !Jaws_Error::IsError($result);
     }
 
 }
