@@ -227,7 +227,9 @@ border-collapse:collapse;
 text-align:right;
 }
 #frm_acl td{
+width:28px;
 padding:2px;
+text-align:left;
 }
 #frm_acl label{
 padding:0;

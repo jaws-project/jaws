@@ -224,6 +224,7 @@ line-height:1.5;
 border-collapse:collapse;
 }
 #frm_acl td{
+width:28px;
 padding:2px;
 text-align:right;
 }
