@@ -26,7 +26,7 @@ class Blog_Hooks_Activity extends Jaws_Gadget_Hook
             'count(id) as post_count:integer'
         );
 
-        $postCount = $blogTable->where('user_id', $uid)->and()->where('published', true)->getOne();
+        $postCount = $blogTable->where('user_id', $uid)->and()->where('published', true)->fetchOne();
         if ($postCount == 0) {
             return array();
         }

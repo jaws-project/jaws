@@ -25,7 +25,7 @@ class Contact_Model extends Jaws_Gadget_Model
             'id:integer', 'ip', 'name', 'email', 'company', 'url', 'tel', 'fax', 'mobile', 'address',
             'recipient:integer', 'subject', 'msg_txt', 'attachment', 'createtime', 'updatetime'
         );
-        return $cntctTable->where('id', $id)->getRow();
+        return $cntctTable->where('id', $id)->fetchRow();
     }
 
     /**
@@ -39,7 +39,7 @@ class Contact_Model extends Jaws_Gadget_Model
     {
         $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
         $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type:integer', 'visible:integer');
-        return $rcpTable->where('id', $id)->getRow();
+        return $rcpTable->where('id', $id)->fetchRow();
     }
 
     /**
@@ -60,7 +60,7 @@ class Contact_Model extends Jaws_Gadget_Model
         }
         $rcpTable->orderBy('id');
         $rcpTable->limit($limit, $offset);
-        return $rcpTable->getAll();
+        return $rcpTable->fetchAll();
     }
 
     /**

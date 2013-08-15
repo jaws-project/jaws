@@ -145,7 +145,7 @@ class Banner_AdminModel extends Banner_Model
             $bannersTable->where('gid', $gid);
         }
 
-        return $bannersTable->getOne();
+        return $bannersTable->fetchOne();
     }
 
     /**

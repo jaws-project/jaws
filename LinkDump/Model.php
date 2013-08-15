@@ -27,7 +27,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
         );
 
         $objORM->where(is_numeric($id)? 'id' : 'fast_url', $id);
-        $link = $objORM->getRow();
+        $link = $objORM->fetchRow();
         if (Jaws_Error::IsError($link) || !array_key_exists('id', $link)) {
             return new Jaws_Error(Jaws_Error::IsError($link)? $link->getMessage() : _t('LINKDUMP_LINKS_NOT_EXISTS'),
                                   'LINKDUMP_NAME');
@@ -35,7 +35,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
 
         $objORM->select('tag')->table('linkdump_links_tags');
         $objORM->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
-        $tags = $objORM->where('link_id', $link['id'])->getCol();
+        $tags = $objORM->where('link_id', $link['id'])->fetchColumn();
         if (Jaws_Error::IsError($tags)) {
             return $tags;
         }
@@ -54,7 +54,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
     function GetTagLinks($tag)
     {
         $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
-        $res = $ltagsTable->select('id:integer')->where('tag', $tag)->getRow();
+        $res = $ltagsTable->select('id:integer')->where('tag', $tag)->fetchRow();
         if (!Jaws_Error::IsError($res) && !empty($res)) {
             $tag_id = $res['id'];
 
@@ -64,7 +64,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
                 'createtime', 'updatetime', 'clicks:integer'
             );
             $linksTable->join('linkdump_links_tags', 'linkdump_links_tags.link_id', 'linkdump_links.id');
-            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id ASC')->getAll();
+            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id ASC')->fetchAll();
         }
 
         return $res;
@@ -94,7 +94,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
         $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
         $ltagsTable->select('tag_id:integer', 'tag', 'count(tag_id) as howmany:integer');
         $ltagsTable->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
-        return $ltagsTable->groupBy('tag_id', 'tag')->orderBy('tag')->getAll();
+        return $ltagsTable->groupBy('tag_id', 'tag')->orderBy('tag')->fetchAll();
     }
 
     /**
@@ -110,7 +110,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
         $lgroupsTable->select(
             'id:integer', 'title', 'fast_url', 'limit_count:integer', 'link_type:integer', 'order_type:integer');
         $lgroupsTable->where(is_numeric($gid)? 'id' : 'fast_url', $gid);
-        return $lgroupsTable->getRow();
+        return $lgroupsTable->fetchRow();
     }
 
     /**
@@ -123,7 +123,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
     {
         $lgroupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $lgroupsTable->select('id:integer', 'title', 'fast_url', 'limit_count:integer', 'link_type:integer');
-        return $lgroupsTable->orderBy('id ASC')->getAll();
+        return $lgroupsTable->orderBy('id ASC')->fetchAll();
     }
 
     /**
@@ -162,7 +162,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
             }
         }
 
-        return $linksTable->limit($limit)->getAll();
+        return $linksTable->limit($limit)->fetchAll();
     }
 
 }

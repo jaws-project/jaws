@@ -42,7 +42,7 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $table->select('id', 'answer', 'rank', 'votes');
-        $result = $table->where('pid', $pid)->orderBy('rank ASC')->getAll();
+        $result = $table->where('pid', $pid)->orderBy('rank ASC')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -63,7 +63,7 @@ class Poll_Model extends Jaws_Gadget_Model
         $table->select(
             'id', 'gid', 'question', 'select_type', 'poll_type',
             'result_view', 'start_time', 'stop_time', 'visible');
-        $result = $table->where('id', $pid)->getRow();
+        $result = $table->where('id', $pid)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -87,7 +87,7 @@ class Poll_Model extends Jaws_Gadget_Model
         $table->where('start_time', $now, '>=')->closeWhere()->and();
         $table->openWhere()->where('stop_time', '', 'is null')->or();
         $table->where('stop_time', $now, '<=')->closeWhere();
-        $max = $table->getOne();
+        $max = $table->fetchOne();
         if (Jaws_Error::IsError($max)) {
             return new Jaws_Error($max->getMessage(), 'SQL');
         }
@@ -125,7 +125,7 @@ class Poll_Model extends Jaws_Gadget_Model
             $table->limit($limit, $offset);
         }
 
-        $result = $table->orderBy('id ASC')->getAll();
+        $result = $table->orderBy('id ASC')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -144,7 +144,7 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $table->select('id', 'title', 'visible')->where('id', $gid);
-        $result = $table->getRow();
+        $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -171,7 +171,7 @@ class Poll_Model extends Jaws_Gadget_Model
 
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $table->select('id', 'title', 'visible')->orderBy('id ASC');
-        $result = $table->getAll();
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

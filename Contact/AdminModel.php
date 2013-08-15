@@ -26,7 +26,7 @@ class Contact_AdminModel extends Contact_Model
             'id:integer', 'name', 'email', 'recipient:integer', 'subject', 
             'msg_txt', 'reply', 'reply_sent:integer', 'createtime'
         );
-        return $cntctTable->where('id', $id)->getRow();
+        return $cntctTable->where('id', $id)->fetchRow();
     }
 
     /**
@@ -52,7 +52,7 @@ class Contact_AdminModel extends Contact_Model
         if (is_numeric($limit)) {
             $cntctTable->limit($limit, $offset);
         }
-        return $cntctTable->getAll();
+        return $cntctTable->fetchAll();
     }
 
     /**
@@ -69,7 +69,7 @@ class Contact_AdminModel extends Contact_Model
         if ($recipient != -1) {
             $cntctTable->where('recipient', (int)$recipient);
         }
-        return $cntctTable->getOne();
+        return $cntctTable->fetchOne();
     }
 
     /**

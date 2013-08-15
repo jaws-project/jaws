@@ -30,7 +30,7 @@ class Banner_Model extends Jaws_Gadget_Model
             'stop_time', 'rank:integer', 'random:integer', 'published:boolean'
         );
 
-        return $bannersTable->where('id', $bid)->getRow();
+        return $bannersTable->where('id', $bid)->fetchRow();
     }
 
     /**
@@ -67,7 +67,7 @@ class Banner_Model extends Jaws_Gadget_Model
             $bannersTable->orderBy('id ASC');
         }
 
-        return $bannersTable->limit($limit, $offset)->getAll();
+        return $bannersTable->limit($limit, $offset)->fetchAll();
     }
 
     /**
@@ -84,7 +84,7 @@ class Banner_Model extends Jaws_Gadget_Model
             'id:integer', 'title', 'limit_count:integer', 'show_title:boolean', 'show_type:integer', 'published:boolean'
         );
 
-        return $bgroupsTable->where('id', $gid)->getRow();
+        return $bgroupsTable->where('id', $gid)->fetchRow();
     }
 
     /**
@@ -119,7 +119,7 @@ class Banner_Model extends Jaws_Gadget_Model
             $bgroupsTable->orderBy('id ASC');
         }
 
-        return $bgroupsTable->getAll();
+        return $bgroupsTable->fetchAll();
     }
 
     /**
@@ -152,7 +152,7 @@ class Banner_Model extends Jaws_Gadget_Model
             $bannersTable->orderBy('id ASC');
         }
 
-        $res = $bannersTable->getAll();
+        $res = $bannersTable->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return false;
         }

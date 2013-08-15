@@ -268,7 +268,7 @@ class Poll_AdminModel extends Poll_Model
     function InsertPollGroup($title, $visible)
     {
         $table = Jaws_ORM::getInstance()->table('poll_groups');
-        $count = $table->select('COUNT([id])')->where('title', $title)->getOne();
+        $count = $table->select('COUNT([id])')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($count)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -307,7 +307,7 @@ class Poll_AdminModel extends Poll_Model
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $count = $table->select('COUNT([id])')
             ->where('id', $gid, '!=')->and()
-            ->where('title', $title)->getOne();
+            ->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;

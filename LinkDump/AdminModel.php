@@ -224,7 +224,7 @@ class LinkDump_AdminModel extends LinkDump_Model
         );
 
         $objORM = Jaws_ORM::getInstance()->table('linkdump_tags');
-        $tid = $objORM->select('id')->where('tag', $tag)->getOne();
+        $tid = $objORM->select('id')->where('tag', $tag)->fetchOne();
         if (Jaws_Error::IsError($tid)) {
             return $tid;
         }
@@ -264,7 +264,7 @@ class LinkDump_AdminModel extends LinkDump_Model
             $GLOBALS['app']->UTF8->strtolower($tag)
         );
         $objORM = Jaws_ORM::getInstance();
-        $tid = $objORM->select('id')->table('linkdump_tags')->where('tag', $tag)->getOne();
+        $tid = $objORM->select('id')->table('linkdump_tags')->where('tag', $tag)->fetchOne();
         if (Jaws_Error::IsError($tid)) {
             return $tid;
         }

@@ -33,7 +33,7 @@ class FeedReader_Model extends Jaws_Gadget_Model
             $objORM->where('visible', 1);
         }
         $objORM->orderBy('id ASC');
-        return $objORM->getAll();
+        return $objORM->fetchAll();
     }
 
     /**
@@ -50,6 +50,6 @@ class FeedReader_Model extends Jaws_Gadget_Model
             'id:integer', 'title', 'url', 'cache_time', 'view_type:integer',
             'count_entry:integer', 'title_view:integer', 'visible:integer'
         );
-        return $objORM->where('id', (int)$id)->getRow();
+        return $objORM->where('id', (int)$id)->fetchRow();
     }
 }

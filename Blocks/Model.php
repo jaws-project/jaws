@@ -24,7 +24,7 @@ class Blocks_Model extends Jaws_Gadget_Model
             'id:integer', 'title', 'contents', 'display_title:boolean', 'created_by:integer',
             'modified_by:integer', 'createtime:timestamp', 'updatetime:timestamp'
         );
-        return $blocksTable->where('id', $id)->getRow();
+        return $blocksTable->where('id', $id)->fetchRow();
     }
 
 
@@ -47,6 +47,6 @@ class Blocks_Model extends Jaws_Gadget_Model
         }
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $blocksTable->select($columns)->orderBy('title ASC');
-        return $blocksTable->getAll();
+        return $blocksTable->fetchAll();
     }
 }
