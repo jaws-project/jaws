@@ -29,7 +29,7 @@ class Jaws_ACL
             ->where('key_name', $key_name)->and()
             ->where('key_subkey', $subkey)->and()
             ->where('user', 0)->and()->where('group', 0)
-            ->getOne();
+            ->fetchOne();
         if (Jaws_Error::IsError($value)) {
             return null;
         }
@@ -50,7 +50,7 @@ class Jaws_ACL
         $result = $tblACL->select('key_name', 'key_subkey', 'key_value:integer')
             ->where('component', $component)->and()
             ->where('user', 0)->and()->where('group', 0)
-            ->getAll();
+            ->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return null;
         }
@@ -77,7 +77,7 @@ class Jaws_ACL
                 ->where('key_name', $key_name)->and()
                 ->where('key_subkey', $subkey)->and()
                 ->where('user', (int)$user)
-                ->getOne();
+                ->fetchOne();
             if (!Jaws_Error::IsError($value)) {
                 return $value;
             }
@@ -103,7 +103,7 @@ class Jaws_ACL
                 $tblACL->and()->where('component', $component);
             }
 
-            $result = $tblACL->getAll();
+            $result = $tblACL->fetchAll();
             if (!Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -131,7 +131,7 @@ class Jaws_ACL
                 ->where('key_name', $key_name)->and()
                 ->where('key_subkey', $subkey)->and()
                 ->where('group', $groups, 'in')
-                ->getCol();
+                ->fetchColumn();
             if (!Jaws_Error::IsError($values)) {
                 return $values;
             }
@@ -157,7 +157,7 @@ class Jaws_ACL
                 $tblACL->and()->where('component', $component);
             }
 
-            $result = $tblACL->getAll();
+            $result = $tblACL->fetchAll();
             if (!Jaws_Error::IsError($result)) {
                 return $result;
             }

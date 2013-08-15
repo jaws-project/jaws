@@ -124,7 +124,7 @@ class Jaws_Captcha
     function fetch($key)
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
-        return $tblCaptcha->select('result')->where('id', $key)->getOne();
+        return $tblCaptcha->select('result')->where('id', $key)->fetchOne();
     }
 
     /**

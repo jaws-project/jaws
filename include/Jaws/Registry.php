@@ -37,11 +37,11 @@ class Jaws_Registry
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $result = $tblReg->select('component', 'key_name', 'key_value')
             ->where('key_name', 'version')->or()->where('component', '')
-            ->getAll('', JAWS_ERROR_NOTICE);
+            ->fetchAll('', JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
             if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
                 // get 0.8.x jaws version
-                $result = $tblReg->select('key_value')->where('key_name', '/version')->getOne();
+                $result = $tblReg->select('key_value')->where('key_name', '/version')->fetchOne();
                 if (!Jaws_Error::IsError($result)) {
                     return $result;
                 }
@@ -72,7 +72,7 @@ class Jaws_Registry
             $value  = $tblReg->select('key_value')
                 ->where('component', $component)->and()
                 ->where('key_name', $key_name)
-                ->getOne();
+                ->fetchOne();
             if (Jaws_Error::IsError($value)) {
                 return null;
             }
@@ -99,7 +99,7 @@ class Jaws_Registry
             $tblReg->and()->where('key_name', $pattern, 'like');
         }
 
-        $result = $tblReg->getAll();
+        $result = $tblReg->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return null;
         }

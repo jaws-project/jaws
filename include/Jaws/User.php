@@ -50,7 +50,7 @@ class Jaws_User
             'id:integer', 'password', 'superadmin:boolean', 'bad_password_count',
             'concurrents:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
         );
-        $result = $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user))->getRow();
+        $result = $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user))->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -192,7 +192,7 @@ class Jaws_User
              $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
         }
 
-        return $usersTable->getRow();
+        return $usersTable->fetchRow();
     }
 
     /**
@@ -207,7 +207,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'superadmin:boolean', 'status:integer');
         $usersTable->where('lower(email)', $email);
-        return $usersTable->getAll();
+        return $usersTable->fetchAll();
     }
 
     /**
@@ -222,7 +222,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
         $usersTable->where('email_verify_key', trim($key));
-        return $usersTable->getRow();
+        return $usersTable->fetchRow();
     }
 
     /**
@@ -237,7 +237,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
         $usersTable->where('password_verify_key', trim($key));
-        return $usersTable->getRow();
+        return $usersTable->fetchRow();
     }
 
     /**
@@ -254,7 +254,7 @@ class Jaws_User
         $usersTable->select('count(id)');
         $usersTable->where('email', Jaws_UTF8::strtolower($email));
         $usersTable->and()->where('id', $exclude, '<>');
-        $howmany = $usersTable->getOne();
+        $howmany = $usersTable->fetchOne();
         return !empty($howmany);
     }
 
@@ -297,7 +297,7 @@ class Jaws_User
             $groupsTable->where('lower(name)', Jaws_UTF8::strtolower($group));
         }
 
-        return $groupsTable->getRow();
+        return $groupsTable->fetchRow();
     }
 
     /**
@@ -352,7 +352,7 @@ class Jaws_User
 
         $usersTable->orderBy('users.'.$orderBy);
         $usersTable->limit($limit, $offset);
-        return $usersTable->getAll();
+        return $usersTable->fetchAll();
     }
 
     /**
@@ -389,7 +389,7 @@ class Jaws_User
             $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
         }
 
-        $result = $usersTable->getOne();
+        $result = $usersTable->fetchOne();
         if (Jaws_Error::IsError($result)) {
             return 0;
         }
@@ -421,7 +421,7 @@ class Jaws_User
             $groupsTable->where('enabled', (bool)$enabled);
         }
         $groupsTable->limit($limit, $offset)->orderBy($orderBy);
-        return $groupsTable->getAll();
+        return $groupsTable->fetchAll();
     }
 
     /**
@@ -438,7 +438,7 @@ class Jaws_User
         if (!is_null($enabled)) {
             $groupsTable->where('enabled', (bool)$enabled);
         }
-        $result = $groupsTable->getOne();
+        $result = $groupsTable->fetchOne();
         if (Jaws_Error::IsError($result)) {
             return 0;
         }
@@ -465,7 +465,7 @@ class Jaws_User
             $ugroupsTable->where('users.username', $user);
         }
 
-        $result = $ugroupsTable->getAll();
+        $result = $ugroupsTable->fetchAll();
         if (!Jaws_Error::IsError($result)) {
             $result = array_column($result, 'name', 'id');
         }
@@ -1082,7 +1082,7 @@ class Jaws_User
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
         $usrgrpTable->select('count(user_id):integer');
         $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
-        $howmany = $usrgrpTable->getOne();
+        $howmany = $usrgrpTable->fetchOne();
         if (Jaws_Error::IsError($howmany)) {
             return false;
         }
