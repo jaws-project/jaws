@@ -159,7 +159,7 @@ class Upgrader_Database extends JawsUpgraderStage
                 'mssql'  => array('ext' => 'mssql',     'title' => 'MSSQL Server'),
                 'sqlsrv' => array('ext' => 'sqlsrv',    'title' => 'MSSQL Server(Microsoft Driver)'),
                 'ibase'  => array('ext' => 'interbase', 'title' => 'Interbase/Firebird'),
-                'sqlite' => array('ext' => 'sqlite',    'title' => 'SQLite 2'),
+                //'sqlite' => array('ext' => 'sqlite',    'title' => 'SQLite 2'),
                 /* These databases either haven't been tested or are kown not to work.
                 'fbsql'  => 'Frontbase',
                 */
