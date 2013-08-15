@@ -178,30 +178,4 @@ class Poll_Model extends Jaws_Gadget_Model
 
         return $result;
     }    
-
-    /**
-     * Get the list of visible polls
-     *
-     * @access  public
-     * @return  mixed   An array with the visible polls and returns Jaws_Error on error
-     */
-    function GetEnabledPolls()
-    {
-        $params = array();
-        $params['visible'] = 1;
-        $sql = "
-            SELECT
-                [id], [question], [visible], [create_time]
-            FROM [[poll]]
-            WHERE [visible] = {visible}
-            ORDER BY [create_time] DESC";
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
-    }
-
 }
