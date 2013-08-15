@@ -26,7 +26,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             'name', 'email', 'url', 'ip', 'msg_txt', 'status', 'createtime'
         );
 
-        return $commentsTable->where('id', $id)->getRow();
+        return $commentsTable->where('id', $id)->fetchRow();
     }
 
     /**
@@ -93,7 +93,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
         $commentsTable->orderBy($orderBy);
 
-        return $commentsTable->getAll();
+        return $commentsTable->fetchAll();
     }
 
     /**
@@ -138,7 +138,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
         }
 
-        return $commentsTable->getOne();
+        return $commentsTable->fetchOne();
     }
 
 }

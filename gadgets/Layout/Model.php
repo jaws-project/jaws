@@ -51,7 +51,7 @@ class Layout_Model extends Jaws_Gadget_Model
         }
 
         $layoutTable->orderBy('layout_position ASC');
-        return $items->getAll();
+        return $items->fetchAll();
     }
 
 }

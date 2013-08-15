@@ -26,7 +26,7 @@ class Menu_AdminModel extends Menu_Model
     function InsertGroup($title, $title_view, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
-        $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->getOne();
+        $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -115,7 +115,7 @@ class Menu_AdminModel extends Menu_Model
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
-        $gc = $mgroupsTable->getOne();
+        $gc = $mgroupsTable->fetchOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -255,7 +255,7 @@ class Menu_AdminModel extends Menu_Model
 
         if(isset($menu['id'])) {
             $menusTable = Jaws_ORM::getInstance()->table('menus');
-            $pids = $menusTable->select('id')->where('pid', $mid)->getAll();
+            $pids = $menusTable->select('id')->where('pid', $mid)->fetchAll();
             if (Jaws_Error::IsError($pids)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -303,7 +303,7 @@ class Menu_AdminModel extends Menu_Model
     function DeleteGadgetMenus($gadget)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $mids = $menusTable->select('id')->where('menu_type', $gadget)->getAll();
+        $mids = $menusTable->select('id')->where('menu_type', $gadget)->fetchAll();
         if (Jaws_Error::IsError($mids)) {
             return false;
         }

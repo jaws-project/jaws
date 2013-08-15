@@ -22,7 +22,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
     function IsMessageDuplicated($md5)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
-        $howmany = $commentsTable->select('count([id]):integer')->where('msg_key', $md5)->getOne();
+        $howmany = $commentsTable->select('count([id]):integer')->where('msg_key', $md5)->fetchOne();
 
         ///FIXME check for errors
         return ($howmany == '0') ? false : true;
@@ -148,7 +148,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         if (!Jaws_Error::IsError($res)) {
             $commentsTable = Jaws_ORM::getInstance()->table('comments');
             $commentsTable->select('gadget', 'reference:integer', 'action');
-            $comment = $commentsTable->where('id', $id)->getRow();
+            $comment = $commentsTable->where('id', $id)->fetchRow();
             $GLOBALS['app']->Listener->Shout('UpdateComment', array($comment['gadget'], $comment['action'],
                 $comment['reference']));
         }
@@ -182,7 +182,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select('gadget', 'reference:integer', 'action');
-        $comments = $commentsTable->where('id', $ids, 'in')->getAll();
+        $comments = $commentsTable->where('id', $ids, 'in')->fetchAll();
         if (Jaws_Error::IsError($comments)) {
             return $comments;
         }
@@ -196,7 +196,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             // Submit spam...
             $commentsTable = Jaws_ORM::getInstance()->table('comments');
             $commentsTable->select('id:integer', 'name', 'email', 'url', 'msg_txt', 'msg_txt', 'status:integer');
-            $items = $commentsTable->where('id', $ids, 'in')->getAll();
+            $items = $commentsTable->where('id', $ids, 'in')->fetchAll();
             if (Jaws_Error::IsError($items)) {
                 return $items;
             }

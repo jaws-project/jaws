@@ -24,7 +24,7 @@ class Policy_AdminModel extends Policy_Model
     {
         $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
         $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
-        return $objORM->where('id', (int)$id)->getRow();
+        return $objORM->where('id', (int)$id)->fetchRow();
     }
 
     /**
@@ -91,7 +91,7 @@ class Policy_AdminModel extends Policy_Model
         $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
         $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
         $objORM->orderBy('id DESC');
-        return $objORM->getAll();
+        return $objORM->fetchAll();
     }
 
     /**
