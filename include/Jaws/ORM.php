@@ -875,8 +875,9 @@ class Jaws_ORM
             case 'fetchColumn':
             case 'fetchOne':
             case 'fetchRaw':
-                $error_level = array_shift($params);
-                return $this->fetch(strtolower(substr($method, 5)), $params, $error_level);
+                $argument = array_shift($params);
+                $error_level = empty($params)? JAWS_ERROR_ERROR : $params[0];
+                return $this->fetch(strtolower(substr($method, 5)), $argument, $error_level);
 
             case 'get':
                 return $this->fetch('raw');
