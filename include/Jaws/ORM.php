@@ -873,6 +873,7 @@ class Jaws_ORM
             case 'getRow':
             case 'getCol':
             case 'getOne':
+            case 'getRaw':
                 return $this->get(
                     strtolower(substr($method, 3)),
                     empty($params)? JAWS_ERROR_ERROR : $params[0]
