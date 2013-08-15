@@ -28,34 +28,27 @@ class Poll_AdminModel extends Poll_Model
      */
     function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $sql = '
-            INSERT INTO [[poll]]
-                ([question], [gid], [start_time], [stop_time],
-                 [select_type], [poll_type], [result_view], [visible])
-            VALUES
-                ({question}, {gid}, {start_time}, {stop_time},
-                 {select_type}, {poll_type}, {result_view}, {visible})';
-
         $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['question']   = $question;
-        $params['gid']        = $gid;
-        $params['start_time'] = null;
-        $params['stop_time']  = null;
+        $pollData = array();
+        $pollData['question'] = $question;
+        $pollData['gid'] = $gid;
+        $pollData['start_time'] = null;
+        $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
-        $params['select_type'] = $select_type;
-        $params['poll_type']   = $poll_type;
-        $params['result_view'] = $result_view;
-        $params['visible']     = $visible;
+        $pollData['select_type'] = $select_type;
+        $pollData['poll_type'] = $poll_type;
+        $pollData['result_view'] = $result_view;
+        $pollData['visible'] = $visible;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('poll');
+        $result = $table->insert($pollData)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'), _t('POLL_NAME'));
@@ -82,39 +75,27 @@ class Poll_AdminModel extends Poll_Model
      */
     function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $sql = '
-            UPDATE [[poll]] SET
-                [question]    = {question},
-                [gid]         = {gid},
-                [start_time]  = {start_time},
-                [stop_time]   = {stop_time},
-                [select_type] = {select_type},
-                [poll_type]   = {poll_type},
-                [result_view] = {result_view},
-                [visible]     = {visible}
-            WHERE [id] = {pid}';
-
         $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['pid']        = (int)$pid;
-        $params['question']   = $question;
-        $params['gid']        = $gid;
-        $params['start_time'] = null;
-        $params['stop_time']  = null;
+        $pollData = array();
+        $pollData['question'] = $question;
+        $pollData['gid'] = $gid;
+        $pollData['start_time'] = null;
+        $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
-        $params['select_type'] = $select_type;
-        $params['poll_type']   = $poll_type;
-        $params['result_view'] = $result_view;
-        $params['visible']     = $visible;
+        $pollData['select_type'] = $select_type;
+        $pollData['poll_type'] = $poll_type;
+        $pollData['result_view'] = $result_view;
+        $pollData['visible'] = $visible;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('poll');
+        $result = $table->update($pollData)->where('id', (int)$pid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_UPDATED'), _t('POLL_NAME'));
@@ -133,15 +114,15 @@ class Poll_AdminModel extends Poll_Model
      */
     function DeletePoll($pid)
     {
-        $sql = 'DELETE FROM [[poll]] WHERE [id] = {pid}';
-        $res = $GLOBALS['db']->query($sql, array('pid' => $pid));
+        $table = Jaws_ORM::getInstance()->table('poll');
+        $res = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'), _t('POLL_NAME'));
         }
 
-        $sql = 'DELETE FROM [[poll_answers]] WHERE [pid] = {pid}';
-        $res = $GLOBALS['db']->query($sql, array('pid' => $pid));
+        $table = Jaws_ORM::getInstance()->table('poll_answers');
+        $res = $table->delete()->where('pid', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'), _t('POLL_NAME'));
@@ -219,18 +200,13 @@ class Poll_AdminModel extends Poll_Model
      */
     function InsertAnswer($pid, $answer, $rank)
     {
-        $sql = '
-            INSERT INTO [[poll_answers]]
-                ([pid], [answer], [rank])
-            VALUES
-                ({pid}, {answer}, {rank})';
+        $data = array();
+        $data['pid'] = $pid;
+        $data['answer'] = $answer;
+        $data['rank'] = (int)$rank;
 
-        $params = array();
-        $params['pid']    = $pid;
-        $params['answer'] = $answer;
-        $params['rank']   = (int)$rank;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('poll_answers');
+        $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_ADDED'), _t('POLL_NAME'));
         }
@@ -249,18 +225,12 @@ class Poll_AdminModel extends Poll_Model
      */
     function UpdateAnswer($aid, $answer, $rank)
     {
-        $sql = '
-            UPDATE [[poll_answers]] SET
-                [answer] = {answer},
-                [rank]   = {rank}
-            WHERE [id] = {aid}';
+        $data = array();
+        $data['answer'] = $answer;
+        $data['rank'] = (int)$rank;
 
-        $params = array();
-        $params['aid']    = (int)$aid;
-        $params['answer'] = $answer;
-        $params['rank']   = (int)$rank;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('poll_answers');
+        $result = $table->update($data)->where('id', $aid)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), _t('POLL_NAME'));
         }
@@ -277,8 +247,8 @@ class Poll_AdminModel extends Poll_Model
      */
     function DeleteAnswer($aid)
     {
-        $sql = 'DELETE FROM [[poll_answers]] WHERE [id] = {aid}';
-        $result = $GLOBALS['db']->query($sql, array('aid' => $aid));
+        $table = Jaws_ORM::getInstance()->table('poll_answers');
+        $result = $table->delete()->where('id', $aid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_DELETED'), _t('POLL_NAME'));
@@ -297,29 +267,24 @@ class Poll_AdminModel extends Poll_Model
     */
     function InsertPollGroup($title, $visible)
     {
-        $sql = 'SELECT COUNT([id]) FROM [[poll_groups]] WHERE [title] = {title}';
-        $gc = $GLOBALS['db']->queryOne($sql, array('title' => $title));
-        if (Jaws_Error::IsError($gc)) {
+        $table = Jaws_ORM::getInstance()->table('poll_groups');
+        $count = $table->select('COUNT([id])')->where('title', $title)->getOne();
+        if (Jaws_Error::IsError($count)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        if ($gc > 0) {
+        if ($count > 0) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
             return false;
         }
 
-        $sql = '
-            INSERT INTO [[poll_groups]]
-                ([title], [visible])
-            VALUES
-                ({title}, {visible})';
-
-        $params = array();
-        $params['title']   = $title;
-        $params['visible'] = $visible;
-        $res = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
+        $data = array();
+        $data['title']   = $title;
+        $data['visible'] = $visible;
+        $table->reset();
+        $result = $table->insert($data)->exec();
+        if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'), _t('POLL_NAME'));
         }
@@ -339,8 +304,10 @@ class Poll_AdminModel extends Poll_Model
     */
     function UpdatePollGroup($gid, $title, $visible)
     {
-        $sql = 'SELECT COUNT([id]) FROM [[poll_groups]] WHERE [id] != {gid} AND [title] = {title}';
-        $gc = $GLOBALS['db']->queryOne($sql, array('gid' => $gid, 'title' => $title));
+        $table = Jaws_ORM::getInstance()->table('poll_groups');
+        $count = $table->select('COUNT([id])')
+            ->where('id', $gid, '!=')->and()
+            ->where('title', $title)->getOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -351,18 +318,12 @@ class Poll_AdminModel extends Poll_Model
             return false;
         }
 
-        $sql = '
-            UPDATE [[poll_groups]] SET
-                [title]   = {title},
-                [visible] = {visible}
-            WHERE [id] = {gid}';
-
-        $params = array();
-        $params['gid']     = $gid;
-        $params['title']   = $title;
-        $params['visible'] = $visible;
-        $res = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
+        $data = array();
+        $data['title'] = $title;
+        $data['visible'] = $visible;
+        $table->reset();
+        $result = $table->update($data)->where('id', $gid)->exec();
+        if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'), _t('POLL_NAME'));
         }
@@ -397,8 +358,9 @@ class Poll_AdminModel extends Poll_Model
         }
 
         $this->UpdateGroupsOfPolls(-1, $gid, 0);
-        $sql = 'DELETE FROM [[poll_groups]] WHERE [id] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+
+        $table = Jaws_ORM::getInstance()->table('poll_groups');
+        $result = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'), _t('POLL_NAME'));
@@ -435,7 +397,7 @@ class Poll_AdminModel extends Poll_Model
     }
 
     /**
-     * Adds an poll to a group
+     * Adds a poll to a group
      *
      * @access  public
      * @param   int     $pid        Poll's ID
@@ -445,33 +407,16 @@ class Poll_AdminModel extends Poll_Model
      */
     function UpdateGroupsOfPolls($pid, $gid, $new_gid)
     {
+        $table = Jaws_ORM::getInstance()->table('poll');
+        $table->update(array('gid' => $new_gid));
         if (($pid != -1) && ($gid != -1)) {
-            $sql = '
-                UPDATE [[poll]] SET
-                [gid] = {new_gid}
-                WHERE [[poll]].[id] = {pid} AND [[poll]].[gid] = {gid}';
+            $table->where('id', $pid)->and()->where('gid', $gid);
         } elseif ($gid != -1) {
-            $sql = '
-                UPDATE [[poll]] SET
-                [gid] = {new_gid}
-                WHERE [[poll]].[gid] = {gid}';
+            $table->where('gid', $gid);
         } elseif ($pid != -1) {
-            $sql = '
-                UPDATE [[poll]] SET
-                [gid] = {new_gid}
-                WHERE [id] = {pid}';
-        } else {
-            $sql = '
-                UPDATE [[poll]] SET
-                [gid] = {new_gid}';
+            $table->where('id', $pid);
         }
-
-        $params = array();
-        $params['pid']     = $pid;
-        $params['gid']     = $gid;
-        $params['new_gid'] = $new_gid;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
