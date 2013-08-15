@@ -14,7 +14,21 @@ require JAWS_PATH . 'include/Jaws/ORM.php';
  */
 class Jaws_DB
 {
-    var $dbc = null;
+    /**
+     * The MDB2 object
+     *
+     * @var     object
+     * @access  private
+     */
+    var $dbc;
+
+    /**
+     * The MDB2_Schmae object
+     *
+     * @var     objejct
+     * @access  private
+     */
+    var $schema;
 
     /**
      * The DB prefix for tables
@@ -617,7 +631,13 @@ class Jaws_DB
     {
         $this->dbc->loadModule('Manager');
         $result = $this->dbc->manager->dropTable($this->getPrefix() . $table);
-        return $result;
+        if (PEAR::IsError($result)) {
+            if ($result->getCode() !== MDB2_ERROR_NOSUCHTABLE) {
+                return Jaws_Error::raiseError($result->getMessage(), $result->getCode(), JAWS_ERROR_ERROR, 1);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -732,6 +752,7 @@ class Jaws_DB
 
         if (PEAR::isError($result)) {
             $this->schema->disconnect();
+            unset($this->schema);
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
