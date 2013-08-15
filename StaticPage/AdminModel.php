@@ -41,25 +41,18 @@ class StaticPage_AdminModel extends StaticPage_Model
         }
         $published = $this->gadget->GetPermission('PublishPages')? $published : false;
 
-        $sql = '
-            INSERT INTO [[static_pages_translation]]
-                ([base_id], [title], [content], [language], [user], [meta_keywords], [meta_description], [published], [updated])
-            VALUES
-                ({base}, {title}, {content}, {language}, {user}, {meta_keys}, {meta_desc}, {published}, {now})';
-
-        //We already have a translation of this page?
-        $params              = array();
-        $params['base']      = $page_id;
-        $params['title']     = $title;
-        $params['content']   = str_replace("\r\n", "\n", $content);
-        $params['language']  = $language;
-        $params['meta_keys'] = $meta_keys;
-        $params['meta_desc'] = $meta_desc;
+        $params['base_id'] = $page_id;
+        $params['title'] = $title;
+        $params['content'] = str_replace("\r\n", "\n", $content);
+        $params['language'] = $language;
+        $params['user'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $params['meta_keywords'] = $meta_keys;
+        $params['meta_description'] = $meta_desc;
         $params['published'] = (bool)$published;
-        $params['user']      = $GLOBALS['app']->Session->GetAttribute('user');
-        $params['now']       = $GLOBALS['db']->Date();
+        $params['updated'] = $GLOBALS['db']->Date();
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $result = $sptTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), _t('STATICPAGE_NAME'));
@@ -124,42 +117,21 @@ class StaticPage_AdminModel extends StaticPage_Model
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
+        // Lets update it
+        $params['title']            = $title;
+        $params['content']          = str_replace("\r\n", "\n", $content);
+        $params['language']         = $language;
+        $params['meta_keywords']    = $meta_keys;
+        $params['meta_description'] = $meta_desc;
+        $params['updated']          = $GLOBALS['db']->Date();
         if ($this->gadget->GetPermission('PublishPages')) {
-            $sql = '
-                UPDATE [[static_pages_translation]] SET
-                  [title]            = {title},
-                  [content]          = {content},
-                  [language]         = {language},
-                  [meta_keywords]    = {meta_keys},
-                  [meta_description] = {meta_desc},
-                  [published]        = {published},
-                  [updated]          = {now}
-                WHERE [translation_id] = {id}';
+            $params['published'] = (bool)$published;
         } else {
-            $sql = '
-                UPDATE [[static_pages_translation]] SET
-                  [title]            = {title},
-                  [content]          = {content},
-                  [language]         = {language},
-                  [meta_keywords]    = {meta_keys},
-                  [meta_description] = {meta_desc},
-                  [published]        = {published},
-                  [updated]          = {now}
-                WHERE [translation_id] = {id}';
+            $params['published'] = false;
         }
 
-        // Lets update it
-        $params              = array();
-        $params['id']        = $id;
-        $params['title']     = $title;
-        $params['content']   = str_replace("\r\n", "\n", $content);
-        $params['language']  = $language;
-        $params['meta_keys'] = $meta_keys;
-        $params['meta_desc'] = $meta_desc;
-        $params['published'] = (bool)$published;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $result = $sptTable->update($params)->where('translation_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
@@ -194,11 +166,8 @@ class StaticPage_AdminModel extends StaticPage_Model
             }
         }
 
-        $sql = '
-            DELETE FROM [[static_pages_translation]]
-            WHERE [translation_id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $result = $sptTable->delete()->where('translation_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), _t('STATICPAGE_NAME'));
@@ -231,20 +200,13 @@ class StaticPage_AdminModel extends StaticPage_Model
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages', $auto === false);
 
-        $sql = "
-            INSERT INTO [[static_pages]]
-                ([group_id], [base_language], [fast_url], [show_title], [updated])
-            VALUES
-                ({group}, {language}, {fast_url}, {show_title}, {now})";
-
-        $params = array();
-        $params['group']      = (int)$group;
-        $params['language']   = $language;
-        $params['fast_url']   = $fast_url;
-        $params['show_title'] = (bool)$show_title;
-        $params['now']        = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $params['group_id']         = (int)$group;
+        $params['base_language']    = $language;
+        $params['fast_url']         = $fast_url;
+        $params['show_title']       = (bool)$show_title;
+        $params['updated']          = $GLOBALS['db']->Date();
+        $spTable = Jaws_ORM::getInstance()->table('static_pages');
+        $result = $spTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), _t('STATICPAGE_NAME'));
@@ -290,24 +252,14 @@ class StaticPage_AdminModel extends StaticPage_Model
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'), _t('STATICPAGE_NAME'));
         }
 
-        $sql = '
-            UPDATE [[static_pages]] SET
-                [group_id]      = {group},
-                [base_language] = {language},
-                [fast_url]      = {fast_url},
-                [show_title]    = {show_title},
-                [updated]       = {now}
-            WHERE [page_id] = {id}';
-
-        $params               = array();
-        $params['id']         = (int)$id;
-        $params['group']      = (int)$group;
-        $params['language']   = $language;
+        $params['group_id']      = (int)$group;
+        $params['base_language']   = $language;
         $params['fast_url']   = $fast_url;
         $params['show_title'] = (bool)$show_title;
-        $params['now']        = $GLOBALS['db']->Date();
+        $params['updated']        = $GLOBALS['db']->Date();
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $spTable = Jaws_ORM::getInstance()->table('static_pages');
+        $result = $spTable->update($params)->where('page_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
@@ -332,16 +284,10 @@ class StaticPage_AdminModel extends StaticPage_Model
     function DeletePage($id)
     {
         if (!$this->gadget->GetPermission('ModifyOthersPages')) {
-            $params = array();
-            $params['id']   = (int)$id;
-            $params['user'] = $GLOBALS['app']->Session->GetAttribute('user');
-
-            $sql = '
-                SELECT COUNT([base_id])
-                FROM [[static_pages_translation]]
-                WHERE [base_id] = {id} AND [user] <> {user}';
-
-            $result = $GLOBALS['db']->queryOne($sql, $params);
+            $user = $GLOBALS['app']->Session->GetAttribute('user');
+            $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+            $sptTable->select('count(base_id)')->where('base_id', $id)->and()->where('user', $user, '<>');
+            $result = $sptTable->getOne();
             if (Jaws_Error::IsError($result) || ($result > 0)) {
                 // FIXME: need new language statement
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), RESPONSE_ERROR);
@@ -349,15 +295,16 @@ class StaticPage_AdminModel extends StaticPage_Model
             }
         }
 
-        $sql = 'DELETE FROM [[static_pages_translation]] WHERE [base_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $result = $sptTable->delete()->where('base_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
 
-        $sql = 'DELETE FROM [[static_pages]] WHERE [page_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $spTable = Jaws_ORM::getInstance()->table('static_pages');
+        $result = $spTable->delete()->where('page_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), _t('STATICPAGE_NAME'));
@@ -408,20 +355,14 @@ class StaticPage_AdminModel extends StaticPage_Model
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages_groups', true);
 
-        $params = array();
-        $params['title']     = $title;
-        $params['fast_url']  = $fast_url;
-        $params['meta_keys'] = $meta_keys;
-        $params['meta_desc'] = $meta_desc;
-        $params['visible']   = (bool)$visible;
+        $params['title']            = $title;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keys;
+        $params['meta_description'] = $meta_desc;
+        $params['visible']          = (bool)$visible;
 
-        $sql = '
-          INSERT INTO [[static_pages_groups]]
-              ([title], [fast_url], [meta_keywords], [meta_description], [visible])
-          VALUES
-              ({title}, {fast_url}, {meta_keys}, {meta_desc}, {visible})';
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $res = $spgTable->insert($params)->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -446,24 +387,14 @@ class StaticPage_AdminModel extends StaticPage_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages_groups', false);
 
-        $params = array();
-        $params['gid']       = (int)$gid;
-        $params['title']     = $title;
-        $params['fast_url']  = $fast_url;
-        $params['meta_keys'] = $meta_keys;
-        $params['meta_desc'] = $meta_desc;
-        $params['visible']   = (bool)$visible;
+        $params['title']            = $title;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keys;
+        $params['meta_description'] = $meta_desc;
+        $params['visible']          = (bool)$visible;
 
-        $sql = '
-            UPDATE [[static_pages_groups]] SET
-                [title]            = {title},
-                [fast_url]         = {fast_url},
-                [meta_keywords]    = {meta_keys},
-                [meta_description] = {meta_desc},
-                [visible]          = {visible}
-            WHERE [id] = {gid}';
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $res = $spgTable->update($params)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -479,11 +410,8 @@ class StaticPage_AdminModel extends StaticPage_Model
      */
     function GetGroupsCount()
     {
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[static_pages_groups]]';
-
-        $count = $GLOBALS['db']->queryOne($sql);
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $count = $spgTable->select('count(id)')->getOne();
         if (Jaws_Error::IsError($count)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -504,8 +432,8 @@ class StaticPage_AdminModel extends StaticPage_Model
             return new Jaws_Error(_t('STATICPAGE_ERROR_GROUP_NOT_DELETABLE'), _t('STATICPAGE_NAME'));
         }
 
-        $sql = 'DELETE FROM [[static_pages_groups]] WHERE [id] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $res = $spgTable->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -552,12 +480,12 @@ class StaticPage_AdminModel extends StaticPage_Model
     function SearchPages($group, $status, $search, $orderBy, $offset = null)
     {
         $orders = array(
-            '[base_id]',
-            '[base_id] DESC',
-            '[title]',
-            '[title] DESC',
-            '[updated]',
-            '[updated] DESC',
+            'base_id',
+            'base_id DESC',
+            'title',
+            'title DESC',
+            'updated',
+            'updated DESC',
         );
         $orderBy = (int)$orderBy;
         $orderBy = $orders[($orderBy > 5)? 1 : $orderBy];
@@ -575,49 +503,45 @@ class StaticPage_AdminModel extends StaticPage_Model
             $params['status'] = $status;
         }
 
-        $sql = '
-            SELECT
-                spt.[base_id], sp.[page_id], sp.[group_id], spg.[title] as gtitle, spt.[title],
-                sp.[fast_url], sp.[base_language], spt.[published], spt.[updated]
-            FROM [[static_pages]] sp
-            LEFT JOIN [[static_pages_groups]] spg ON sp.[group_id] = spg.[id]
-            LEFT JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]
-            WHERE sp.[base_language] = spt.[language]';
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages as sp');
+        $spgTable->select(
+            'spt.base_id:integer', 'sp.page_id:integer', 'sp.group_id:integer', 'spg.title as gtitle', 'spt.title',
+            'sp.fast_url', 'sp.base_language', 'spt.published:boolean', 'spt.updated'
+        );
+        $spgTable->join('static_pages_groups as spg',  'sp.group_id',  'spg.id', 'left');
+        $spgTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id', 'left');
+        $spgTable->where('sp.base_language', array('spt.language', 'expr'));
 
         if (trim($search) != '') {
             $searchdata = explode(' ', $search);
+
             /**
              * This query needs more work, not use $v straight, should be
              * like rest of the param stuff.
              */
-            $i = 0;
             foreach ($searchdata as $v) {
                 $v = trim($v);
-                $sql .= " AND (spt.[title] LIKE {textLike_".$i."} OR spt.[content] LIKE {textLike_".$i."})";
-                $params['textLike_'.$i] = '%'.$v.'%';
-                $i++;
+                $likeStr = '%'.$v.'%';
+
+                $spgTable->and()->where(
+                    $spgTable->where('spt.title', $likeStr, 'like')->or()->where('spt.content', $likeStr, 'like')
+                );
             }
         }
 
         if (trim($status) != '') {
-            $sql .= ' AND spt.[published] = {status}';
+            $spgTable->and()->where('spt.published', $status);
         }
 
         if (!empty($group)) {
-            $sql .= ' AND sp.[group_id] = {group}';
+            $spgTable->and()->where('sp.group_id', (int)$group);
         }
 
         if (is_numeric($offset)) {
             $limit = 10;
-            $result = $GLOBALS['db']->setLimit(10, $offset);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
-            }
+            $spgTable->limit($limit, $offset);
         }
-
-        $sql.= " ORDER BY spt.$orderBy";
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'boolean', 'timestamp');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = $spgTable->orderBy('spt.' . $orderBy)->getAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
         }

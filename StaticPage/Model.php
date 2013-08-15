@@ -22,33 +22,27 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetPage($id, $language = '')
     {
-        $params = array();
-        $params['id']       = $id;
-        $params['language'] = $language;
+        $spTable = Jaws_ORM::getInstance()->table('static_pages as sp');
+        $spTable->select(
+            'sp.page_id:integer', 'sp.group_id:integer', 'spt.translation_id:integer', 'spt.language', 'spt.title',
+            'sp.fast_url', 'spt.published:boolean', 'sp.show_title', 'spt.content', 'spt.user:integer',
+            'spt.meta_keywords', 'spt.meta_description', 'spt.updated'
+        );
+        $spTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id');
 
-        $sql = '
-            SELECT
-                sp.[page_id], sp.[group_id], spt.[translation_id], spt.[language], spt.[title],
-                sp.[fast_url], spt.[published], sp.[show_title], spt.[content], spt.[user],
-                spt.[meta_keywords], spt.[meta_description], spt.[updated]
-            FROM [[static_pages]] sp
-            INNER JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]';
         if (empty($language)) {
-            $sql .= ' WHERE spt.[language] = sp.[base_language]';
+            $spTable->where('spt.language', array('sp.base_language', 'expr'));
         } else {
-            $sql .= " WHERE spt.[language] = {language}";
+            $spTable->where('spt.language', $language);
         }
 
         if (is_numeric($id)) {
-            $sql .= ' AND sp.[page_id] = {id}';
+            $spTable->and()->where('sp.page_id', $id);
         } else {
-            $sql .= ' AND sp.[fast_url] = {id}';
+            $spTable->and()->where('sp.fast_url', $id);
         }
 
-        $types = array('integer', 'integer', 'integer', 'text', 'text', 'text', 'boolean',
-                       'boolean', 'text', 'integer', 'text', 'text', 'timestamp');
-        $row = $GLOBALS['db']->queryRow($sql, $params, $types);
-        return $row;
+        return  $spTable->getRow();
     }
 
     /**
@@ -60,16 +54,13 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetPageTranslation($id)
     {
-        $sql = '
-            SELECT
-                [translation_id], [base_id], [title], [content], [language], 
-                [meta_keywords], [meta_description], [user], [published], [updated]
-            FROM [[static_pages_translation]]
-            WHERE [translation_id] = {id}';
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $sptTable->select(
+            'translation_id:integer', 'base_id:integer', 'title', 'content', 'language',
+            'meta_keywords', 'meta_description', 'user:integer', 'published:boolean', 'updated'
+        )->where('translation_id', $id);
 
-        $types = array('integer', 'integer', 'text', 'text', 'text', 
-                       'text', 'text', 'integer', 'boolean', 'timestamp');
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id), $types);
+        $row = $sptTable->getRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
         }
@@ -93,11 +84,9 @@ class StaticPage_Model extends Jaws_Gadget_Model
 
         $res = $this->GetPage($defaultPage);
         if (Jaws_Error::IsError($res) || !isset($res['page_id']) || $res['published'] === false) {
-            $params              = array();
-            $params['published'] = true;
-            $sql = 'SELECT MAX([page_id]) FROM [[static_pages]] WHERE [published] = {published}';
 
-            $max = $GLOBALS['db']->queryOne($sql, $params, array('integer'));
+            $spTable = Jaws_ORM::getInstance()->table('static_pages');
+            $max = $spTable->select('max(page_id)')->where('published', true)->getOne();
             if (Jaws_Error::IsError($max)) {
                 return array();
             }
@@ -120,18 +109,12 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetPageTranslationByPage($page_id, $language) 
     {
-        $params = array();
-        $params['page']     = $page_id;
-        $params['language'] = $language;
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $row = $sptTable->select(
+            'translation_id:integer', 'base_id:integer', 'title', 'content', 'language',
+            'user:integer', 'published:boolean', 'updated'
+        )->where('base_id', $page_id)->and()->where('language', $language)->getRow();
 
-        $sql = '
-            SELECT
-                [translation_id], [base_id], [title], [content], [language], [user], [published], [updated]
-            FROM [[static_pages_translation]]
-            WHERE [base_id]  = {page} AND [language] = {language}';
-
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'integer', 'boolean', 'timestamp');
-        $row = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
         }
@@ -153,20 +136,14 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetTranslationsOfPage($page, $onlyPublished = false)
     {
-        $params              = array();
-        $params['page']      = $page;
-        $params['published'] = true;
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $sptTable->select('translation_id:integer', 'language')->where('base_id', $page);
 
-        $sql = '
-            SELECT
-                [translation_id], [language]
-            FROM [[static_pages_translation]]
-            WHERE [base_id] = {page}';
         if ($onlyPublished) {
-            $sql .= ' AND [published] = {published}';
+            $sptTable->and()->where('published', true);
         }
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = $sptTable->getAll();
         if (Jaws_Error::isError($result)) {
             return false;
         }
@@ -187,48 +164,29 @@ class StaticPage_Model extends Jaws_Gadget_Model
     function GetPages($gid = null, $limit = null, $orderBy = 1, $offset = false)
     {
         $orders = array(
-            '[base_id]',
-            '[base_id] DESC',
-            '[title]',
-            '[title] DESC',
-            '[updated]',
-            '[updated] DESC',
+            'base_id',
+            'base_id DESC',
+            'title',
+            'title DESC',
+            'updated',
+            'updated DESC',
         );
         $orderBy = (int)$orderBy;
         $orderBy = $orders[($orderBy > 5)? 1 : $orderBy];
 
-        $params = array();
-        $params['gid'] = $gid;
-
-        $sql = "
-            SELECT
-                spt.[base_id], sp.[group_id], sp.[fast_url], sp.[show_title], spt.[title],
-                spt.[content], spt.[language], spt.[published], spt.[updated]
-            FROM [[static_pages]] sp
-            INNER JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]
-            WHERE sp.[base_language] = spt.[language]";
+        $spTable = Jaws_ORM::getInstance()->table('static_pages as sp');
+        $spTable->select(
+            'spt.base_id:integer', 'sp.group_id:integer', 'sp.fast_url', 'sp.show_title:boolean', 'spt.title',
+            'spt.content', 'spt.language', 'spt.published:boolean', 'spt.updated'
+        );
+        $spTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id');
+        $spTable->where('sp.base_language', array('spt.language', 'expr'));
 
         if (!is_null($gid)) {
-            $sql .= " AND sp.[group_id] = {gid}";
+            $spTable->and()->where('sp.group_id', $gid);
         }
-        $sql .= " ORDER BY spt.$orderBy";
-
-        if (!is_null($limit)) {
-            if (is_numeric($offset)) {
-                $result = $GLOBALS['db']->setLimit($limit, $offset);
-            } else {
-                $result = $GLOBALS['db']->setLimit($limit);
-            }
-
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($result->getMessage(), _t('STATICPAGE_NAME'));
-            }
-        }
-
-        $types = array('integer', 'integer', 'text', 'boolean', 'text', 'text', 'text',
-                       'boolean', 'timestamp');
-
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $spTable->orderBy('spt.'.$orderBy);
+        $result = $spTable->limit($limit, $offset)->getAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
         }
@@ -246,25 +204,17 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function TranslationExists($page_id, $language)
     {
-        $sql = '
-            SELECT
-                COUNT([translation_id]) AS total
-            FROM [[static_pages_translation]] spt
-            INNER JOIN [[static_pages]] sp ON spt.[base_id] = sp.[page_id]
-            ';
+        $spTable = Jaws_ORM::getInstance()->table('static_pages_translation as spt');
+        $spTable->select('count(translation_id) as total');
+        $spTable->join('static_pages as sp',  'sp.page_id',  'spt.base_id');
 
         if (is_numeric($page_id)) {
-            $sql .= 'WHERE sp.[page_id] = {id} AND spt.[language] = {language}';
+            $spTable->where('sp.page_id', $page_id);
         } else {
-            $sql .= 'WHERE sp.[fast_url] = {id} AND spt.[language] = {language}';
+            $spTable->where('sp.fast_url', $page_id);
         }
-
-        $params             = array();
-        $params['id']       = $page_id;
-        $params['language'] = $language;
-
-        $total = $GLOBALS['db']->queryOne($sql, $params);
-        return ($total == '0') ? false : true;        
+        $total = $spTable->and()->where('spt.language', $language)->getOne();
+        return ($total == '0') ? false : true;
     }
 
     /**
@@ -276,22 +226,16 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetGroup($id)
     {
-        $params = array();
-        $params['id'] = $id;
-
-        $sql = '
-            SELECT [id], [title], [fast_url], [meta_keywords], [meta_description], [visible]
-            FROM [[static_pages_groups]]
-            WHERE ';
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $spgTable->select('id:integer', 'title', 'fast_url', 'meta_keywords', 'meta_description', 'visible:boolean');
 
         if (is_numeric($id)) {
-            $sql .= '[id] = {id}';
+            $spgTable->where('id', $id);
         } else {
-            $sql .= '[fast_url] = {id}';
+            $spgTable->where('fast_url', $id);
         }
 
-        $types = array('integer', 'text', 'text', 'text', 'text', 'boolean');
-        $group = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $group = $spgTable->getRow();
         if (Jaws_Error::IsError($group)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -310,31 +254,13 @@ class StaticPage_Model extends Jaws_Gadget_Model
      */
     function GetGroups($visible = null, $limit = null, $offset = null)
     {
-        $params = array();
-        $params['visible'] = (bool)$visible;
-
-        $sql = '
-            SELECT [id], [title], [fast_url], [visible]
-            FROM [[static_pages_groups]]';
+        $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
+        $spgTable->select('id:integer', 'title', 'fast_url', 'visible:boolean')->limit($limit, $offset);
 
         if ($visible != null) {
-            $sql .= ' WHERE [visible] = {visible}';
+            $spgTable->where('visible', (bool)$visible);
         }
-
-        if (!is_null($limit)) {
-            if (is_numeric($offset)) {
-                $result = $GLOBALS['db']->setLimit($limit, $offset);
-            } else {
-                $result = $GLOBALS['db']->setLimit($limit);
-            }
-
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($result->getMessage(), _t('STATICPAGE_NAME'));
-            }
-        }
-
-        $types = array('integer', 'text', 'text', 'boolean');
-        $groups = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $groups = $spgTable->getAll();
         if (Jaws_Error::IsError($groups)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
