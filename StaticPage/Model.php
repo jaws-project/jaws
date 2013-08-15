@@ -42,7 +42,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
             $spTable->and()->where('sp.fast_url', $id);
         }
 
-        return  $spTable->getRow();
+        return  $spTable->fetchRow();
     }
 
     /**
@@ -60,7 +60,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
             'meta_keywords', 'meta_description', 'user:integer', 'published:boolean', 'updated'
         )->where('translation_id', $id);
 
-        $row = $sptTable->getRow();
+        $row = $sptTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
         }
@@ -86,7 +86,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($res) || !isset($res['page_id']) || $res['published'] === false) {
 
             $spTable = Jaws_ORM::getInstance()->table('static_pages');
-            $max = $spTable->select('max(page_id)')->where('published', true)->getOne();
+            $max = $spTable->select('max(page_id)')->where('published', true)->fetchOne();
             if (Jaws_Error::IsError($max)) {
                 return array();
             }
@@ -113,7 +113,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
         $row = $sptTable->select(
             'translation_id:integer', 'base_id:integer', 'title', 'content', 'language',
             'user:integer', 'published:boolean', 'updated'
-        )->where('base_id', $page_id)->and()->where('language', $language)->getRow();
+        )->where('base_id', $page_id)->and()->where('language', $language)->fetchRow();
 
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
@@ -143,7 +143,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
             $sptTable->and()->where('published', true);
         }
 
-        $result = $sptTable->getAll();
+        $result = $sptTable->fetchAll();
         if (Jaws_Error::isError($result)) {
             return false;
         }
@@ -186,7 +186,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
             $spTable->and()->where('sp.group_id', $gid);
         }
         $spTable->orderBy('spt.'.$orderBy);
-        $result = $spTable->limit($limit, $offset)->getAll();
+        $result = $spTable->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
         }
@@ -213,7 +213,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
         } else {
             $spTable->where('sp.fast_url', $page_id);
         }
-        $total = $spTable->and()->where('spt.language', $language)->getOne();
+        $total = $spTable->and()->where('spt.language', $language)->fetchOne();
         return ($total == '0') ? false : true;
     }
 
@@ -235,7 +235,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
             $spgTable->where('fast_url', $id);
         }
 
-        $group = $spgTable->getRow();
+        $group = $spgTable->fetchRow();
         if (Jaws_Error::IsError($group)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -260,7 +260,7 @@ class StaticPage_Model extends Jaws_Gadget_Model
         if ($visible != null) {
             $spgTable->where('visible', (bool)$visible);
         }
-        $groups = $spgTable->getAll();
+        $groups = $spgTable->fetchAll();
         if (Jaws_Error::IsError($groups)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }

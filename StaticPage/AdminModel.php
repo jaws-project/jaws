@@ -287,7 +287,7 @@ class StaticPage_AdminModel extends StaticPage_Model
             $user = $GLOBALS['app']->Session->GetAttribute('user');
             $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
             $sptTable->select('count(base_id)')->where('base_id', $id)->and()->where('user', $user, '<>');
-            $result = $sptTable->getOne();
+            $result = $sptTable->fetchOne();
             if (Jaws_Error::IsError($result) || ($result > 0)) {
                 // FIXME: need new language statement
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), RESPONSE_ERROR);
@@ -411,7 +411,7 @@ class StaticPage_AdminModel extends StaticPage_Model
     function GetGroupsCount()
     {
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
-        $count = $spgTable->select('count(id)')->getOne();
+        $count = $spgTable->select('count(id)')->fetchOne();
         if (Jaws_Error::IsError($count)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
@@ -541,7 +541,7 @@ class StaticPage_AdminModel extends StaticPage_Model
             $limit = 10;
             $spgTable->limit($limit, $offset);
         }
-        $result = $spgTable->orderBy('spt.' . $orderBy)->getAll();
+        $result = $spgTable->orderBy('spt.' . $orderBy)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
         }
