@@ -86,22 +86,10 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetGadgetActions($gadget)
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-
-        $sql = '
-            SELECT [gadget], [action]
-            FROM [[url_maps]]
-            WHERE [gadget] = {gadget}
-            GROUP BY [gadget], [action]
-            ORDER BY [gadget], [action]';
-
-        $result = $GLOBALS['db']->queryCol($sql, $params, null, 1);
-        if (Jaws_Error::IsError($result)) {
-            return array();
-        }
-
-        return $result;
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $mapsTable->select('gadget', 'action')->where('gadget', $gadget);
+        $mapsTable->groupBy('gadget', 'action')->orderBy('gadget', 'action');
+        return $mapsTable->fetchColumn(1);
     }
 
     /**
