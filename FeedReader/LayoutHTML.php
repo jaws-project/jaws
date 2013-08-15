@@ -29,7 +29,7 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('FEEDREADER_LAYOUT_SHOW_TITLES'),
+                'title' => _t('FEEDREADER_FEED'),
                 'value' => $psites
             );
         }
