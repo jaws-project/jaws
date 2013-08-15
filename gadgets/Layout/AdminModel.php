@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Layout/Model.php';
 /**
  * Layout Core Gadget
  *
@@ -9,8 +10,6 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'gadgets/Layout/Model.php';
-
 class Layout_AdminModel extends Layout_Model
 {
     /**
@@ -419,7 +418,7 @@ class Layout_AdminModel extends Layout_Model
         $params['id']     = $item;
         $params['gadget_action'] = $gadget_action;
         $params['action_params'] = serialize($action_params);
-        $params['action_filename'] = $action_filename;
+        $params['action_filename'] = (string)$action_filename;
 
         $sql = '
             UPDATE [[layout]] SET
