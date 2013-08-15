@@ -97,7 +97,7 @@ class StaticPage_HTML extends Jaws_Gadget_HTML
                             //if ($page['language'] == $trans['language']) continue;
                             $tpl->SetBlock('page/translations/language');
                             $tpl->SetVariable('lang', $trans['language']);
-                            if ($base_action = 'Pages') {
+                            if ($base_action == 'Pages') {
                                 $param = array('gid' => !empty($group['fast_url'])? $group['fast_url'] : $group['id'],
                                                'pid' => !empty($page['fast_url'])? $page['fast_url'] : $page['page_id'],
                                                'language' => $trans['language']);
