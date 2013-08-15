@@ -680,7 +680,7 @@ class Jaws_ORM
      * @param   int     $error_level    Sets this error level if errors occurred
      * @return  mixed   Fetched data or Jaws_Error on failure
      */
-    function get($select_type = 'raw', $options = null, $error_level = JAWS_ERROR_ERROR)
+    function fetch($style = 'row', $options = null, $error_level = JAWS_ERROR_ERROR)
     {
         if (!$this->_passed_types) {
             $this->_types = array();
@@ -694,14 +694,14 @@ class Jaws_ORM
         $sql.= $this->_build_having();
         $sql.= $this->_build_orderBy();
 
-        switch ($select_type) {
+        switch ($style) {
             // Fetch the values from the first row of the result set
-            case 'row':
-                $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+            case 'raw':
+                $result = $sql;
                 break;
 
             // Fetch the value from the first column of each row of the result set
-            case 'col':
+            case 'column':
                 $result = $this->jawsdb->dbc->queryCol($sql, $this->_types, (int)$options);
                 break;
 
@@ -722,7 +722,7 @@ class Jaws_ORM
                 break;
 
             default:
-                $result = $sql;
+                $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
         }
 
         $this->reset();
@@ -870,13 +870,16 @@ class Jaws_ORM
                 $this->_query_command = $method;
                 return $this;
 
-            case 'getAll':
-            case 'getRow':
-            case 'getCol':
-            case 'getOne':
-            case 'getRaw':
+            case 'fetchAll':
+            case 'fetchRow':
+            case 'fetchColumn':
+            case 'fetchOne':
+            case 'fetchRaw':
                 $error_level = array_shift($params);
-                return $this->get(strtolower(substr($method, 3)), $params, $error_level);
+                return $this->fetch(strtolower(substr($method, 3)), $params, $error_level);
+
+            case 'get':
+                return $this->fetch('raw');
 
             case 'now':
             case 'expr':
