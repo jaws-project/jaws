@@ -50,6 +50,7 @@ class Jaws_ACL
         $result = $tblACL->select('key_name', 'key_subkey', 'key_value:integer')
             ->where('component', $component)->and()
             ->where('user', 0)->and()->where('group', 0)
+            ->orderBy('key_name', 'key_subkey')
             ->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return null;
@@ -98,11 +99,12 @@ class Jaws_ACL
     {
         if (!empty($user)) {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')->where('user', (int)$user);
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
+            $tblACL->where('user', (int)$user);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
-
+            $tblACL->orderBy('component', 'key_name', 'key_subkey');
             $result = $tblACL->fetchAll();
             if (!Jaws_Error::IsError($result)) {
                 return $result;
@@ -152,11 +154,12 @@ class Jaws_ACL
     {
         if (!empty($group)) {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')->where('group', (int)$group);
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
+            $tblACL->where('group', (int)$group);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
-
+            $tblACL->orderBy('component', 'key_name', 'key_subkey');
             $result = $tblACL->fetchAll();
             if (!Jaws_Error::IsError($result)) {
                 return $result;
