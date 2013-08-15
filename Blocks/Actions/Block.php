@@ -29,7 +29,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('BLOCKS_SHOW_BLOCK'),
+                'title' => _t('BLOCKS_BLOCK'),
                 'value' => $pblocks
             );
         }
