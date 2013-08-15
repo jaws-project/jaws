@@ -222,7 +222,11 @@ class Jaws_ORM
     {
         $this->_table = $table;
         $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
-        $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
+        if (is_object($table)) {
+            $this->_table_quoted = '('. $table->get(). ')';
+        } else {
+            $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
+        }
         return $this;
     }
 
@@ -682,7 +686,7 @@ class Jaws_ORM
         }
 
         $sql = 'select '. $this->_distinct. implode(', ', $this->_columns) . "\n";
-        $sql.= 'from '. $this->_table_quoted. "\n";
+        $sql.= 'from '. $this->_table_quoted. $this->_table_alias. "\n";
         $sql.= $this->_build_join();
         $sql.= $this->_build_where();
         $sql.= $this->_build_groupBy();
@@ -746,13 +750,13 @@ class Jaws_ORM
         switch ($this->_query_command) {
             case 'delete':
                 $sql = "delete\n";
-                $sql.= 'from '. $this->_table_quoted. "\n";
+                $sql.= 'from '. $this->_table_quoted. $this->_table_alias. "\n";
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
             case 'update':
-                $sql = 'update '. $this->_table_quoted. " set\n";
+                $sql = 'update '. $this->_table_quoted. $this->_table_alias. " set\n";
                 foreach ($this->_values as $column => $value) {
                     $value  = $this->quoteValue($value);
                     $column = $this->quoteIdentifier($column);
@@ -769,7 +773,7 @@ class Jaws_ORM
             case 'insert':
                 $values  = '';
                 $columns = '';
-                $sql = 'insert into '. $this->_table_quoted;
+                $sql = 'insert into '. $this->_table_quoted. $this->_table_alias;
                 foreach ($this->_values as $column => $value) {
                     $values .= ', '. $this->quoteValue($value);
                     $columns.= ', '. $this->quoteIdentifier($column);
@@ -784,7 +788,7 @@ class Jaws_ORM
             // insert multiple rows
             case 'insertArray':
                 $columns = '';
-                $sql = 'insert into '. $this->_table_quoted;
+                $sql = 'insert into '. $this->_table_quoted. $this->_table_alias;
                 // build insert columns list
                 $sql.= "\n". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). "\n";
                 // build insert values list
