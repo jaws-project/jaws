@@ -30,7 +30,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('WEATHER_LAYOUT_REGION'),
+                'title' => _t('WEATHER_ACTIONS_REGIONWEATHER'),
                 'value' => $pregions
             );
         }
