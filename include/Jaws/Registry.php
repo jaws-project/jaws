@@ -99,6 +99,7 @@ class Jaws_Registry
             $tblReg->and()->where('key_name', $pattern, 'like');
         }
 
+        $tblReg->orderBy('key_name');
         $result = $tblReg->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return null;
