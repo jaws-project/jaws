@@ -28,29 +28,17 @@ class FeedReader_AdminModel extends FeedReader_Model
      */
     function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $sql = '
-            INSERT INTO [[feeds]]
-                ([title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible])
-            VALUES
-                ({title}, {url}, {cache_time}, {view_type}, {count_entry}, {title_view}, {visible})';
+        $fData = array();
+        $fData['title']       = $title;
+        $fData['url']         = $url;
+        $fData['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
+        $fData['view_type']   = (int)$view_type;
+        $fData['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
+        $fData['title_view']  = (int)$title_view;
+        $fData['visible']     = (int)$visible;
 
-        $params = array();
-        $params['title']       = $title;
-        $params['url']         = $url;
-        $params['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
-        $params['view_type']   = $view_type;
-        $params['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
-        $params['title_view']  = $title_view;
-        $params['visible']     = $visible;
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'),_t('FEEDREADER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
-        return true;
+        $objORM = Jaws_ORM::getInstance()->table('feeds');
+        return $objORM->insert($fData)->exec();
     }
 
     /**
@@ -69,35 +57,17 @@ class FeedReader_AdminModel extends FeedReader_Model
      */
     function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $sql = '
-            UPDATE [[feeds]] SET
-                [title]       = {title},
-                [url]         = {url},
-                [cache_time]  = {cache_time},
-                [view_type]   = {view_type},
-                [count_entry] = {count_entry},
-                [title_view]  = {title_view},
-                [visible]     = {visible}
-            WHERE [id] = {id}';
+        $fData = array();
+        $fData['title']       = $title;
+        $fData['url']         = $url;
+        $fData['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
+        $fData['view_type']   = (int)$view_type;
+        $fData['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
+        $fData['title_view']  = (int)$title_view;
+        $fData['visible']     = (int)$visible;
 
-        $params = array();
-        $params['id']          = (int)$id;
-        $params['title']       = $title;
-        $params['url']         = $url;
-        $params['cache_time']  = ((!is_numeric($cache_time)) ? 3600: $cache_time);
-        $params['view_type']   = $view_type;
-        $params['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
-        $params['title_view']  = $title_view;
-        $params['visible']     = $visible;
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_ERROR_SITE_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_UPDATED'), _t('FEEDREADER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
-        return true;
+        $objORM = Jaws_ORM::getInstance()->table('feeds');
+        return $objORM->update($fData)->where('id', (int)$id)->exec();
     }
 
     /**
@@ -109,14 +79,7 @@ class FeedReader_AdminModel extends FeedReader_Model
      */
     function DeleteFeed($id)
     {
-        $sql = 'DELETE FROM [[feeds]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), _t('FEEDREADER_NAME'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
-        return true;
+        $objORM = Jaws_ORM::getInstance()->table('feeds');
+        return $objORM->delete()->where('id', (int)$id)->exec();
     }
 }

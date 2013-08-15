@@ -56,8 +56,15 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $result = $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FEEDREADER_SITE_ADDED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**
@@ -76,8 +83,15 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
     {
-        $this->_Model->UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $result = $this->_Model->UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FEEDREADER_SITE_UPDATED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**
@@ -89,8 +103,15 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteFeed($id)
     {
-        $this->_Model->DeleteFeed($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $result = $this->_Model->DeleteFeed($id);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('FEEDREADER_SITE_DELETED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**

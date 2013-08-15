@@ -13,7 +13,7 @@
  */
 var FeedReaderCallback = { 
     deletefeed: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response['css'] == 'notice-message') {
             stopAction();
             $('feedsites_datagrid').deleteItem();          
             getDG();
@@ -22,7 +22,7 @@ var FeedReaderCallback = {
     },
     
     insertfeed: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response['css'] == 'notice-message') {
             $('feedsites_datagrid').addItem();
             $('feedsites_datagrid').setCurrentPage(0);
             getDG();
@@ -32,7 +32,7 @@ var FeedReaderCallback = {
     },
 
     updatefeed: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response['css'] == 'notice-message') {
             getDG();
         }
         stopAction();

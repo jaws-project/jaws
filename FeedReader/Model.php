@@ -23,34 +23,17 @@ class FeedReader_Model extends Jaws_Gadget_Model
      */
     function GetFeeds($onlyVisible = false, $limit = false, $offset = null)
     {
-        if (is_numeric($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
+        $objORM = Jaws_ORM::getInstance()->table('feeds');
+        $objORM->select(
+            'id:integer', 'title', 'url', 'cache_time', 'view_type:integer',
+            'count_entry:integer', 'title_view:integer', 'visible:integer'
+        );
+        $objORM->limit($limit, $offset);
         if ($onlyVisible) {
-            $sql = '
-                SELECT
-                    [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view]
-                FROM [[feeds]]
-                WHERE [visible] = 1
-                ORDER BY [id] ASC';
-        } else {
-            $sql = '
-                SELECT
-                    [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible]
-                FROM [[feeds]]
-                ORDER BY [id] ASC';
+            $objORM->where('visible', 1);
         }
-
-        $result = $GLOBALS['db']->queryAll($sql);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $objORM->orderBy('id ASC');
+        return $objORM->getAll();
     }
 
     /**
@@ -62,21 +45,11 @@ class FeedReader_Model extends Jaws_Gadget_Model
      */
     function GetFeed($id)
     {
-        $sql = '
-            SELECT
-                [id], [title], [url], [cache_time], [view_type], [count_entry], [title_view], [visible]
-            FROM [[feeds]]
-            WHERE [id] = {id}';
-
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => (int)$id));
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
-        }
-
-        if (isset($row['id'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('FEEDREADER_ERROR_SITE_DOES_NOT_EXISTS'), _t('FEEDREADER_NAME'));
+        $objORM = Jaws_ORM::getInstance()->table('feeds');
+        $objORM->select(
+            'id:integer', 'title', 'url', 'cache_time', 'view_type:integer',
+            'count_entry:integer', 'title_view:integer', 'visible:integer'
+        );
+        return $objORM->where('id', (int)$id)->getRow();
     }
 }
