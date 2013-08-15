@@ -72,7 +72,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
             $mapData = array();
             $mapData['map'] = $map['map'];
             $actions = '';
-            if ($this->gadget->GetPermission('EditMaps')) {
+            if ($this->gadget->GetPermission('ManageMaps')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
                                             "javascript: editMap(this, '".$map['id']."');",
                                             STOCK_EDIT);

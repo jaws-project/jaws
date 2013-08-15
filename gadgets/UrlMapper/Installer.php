@@ -17,8 +17,10 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLs = array(
-        'EditMaps',
+        'ManageMaps',
+        'ManageAliases',
         'ManageErrorMaps',
+        'ManageProperties',
     );
 
     /**
@@ -84,6 +86,13 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
 
             $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
             $mapsTable->delete()->where('vars_regexps', null, 'is null')->exec();
+
+            // ACL keys
+            $this->gadget->acl->insert('ManageMaps');
+            $this->gadget->acl->insert('ManageAliases');
+            $this->gadget->acl->insert('ManageErrorMaps');
+            $this->gadget->acl->insert('ManageProperties');
+            $this->gadget->acl->delete('EditMaps');
         }
 
         return true;
