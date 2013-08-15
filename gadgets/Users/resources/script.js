@@ -106,9 +106,6 @@ var UsersCallback = {
     },
 
     updategroupacl: function(response) {
-        if (response[0]['css'] == 'notice-message') {
-            stopGroupAction();
-        }
         showResponse(response);
     },
 
