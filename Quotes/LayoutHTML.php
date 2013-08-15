@@ -28,7 +28,7 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
             }
 
             $result[] = array(
-                'title' => _t('QUOTES_ACTION_DISPLAY'),
+                'title' => _t('QUOTES_QUOTE'),
                 'value' => $pgroups
             );
         }
