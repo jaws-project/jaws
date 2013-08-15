@@ -24,7 +24,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     {
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $mapsTable->select('map', 'regexp', 'extension', 'vars_regexps', 'custom_map', 'custom_regexp', 'order');
-        $result = $mapsTable->where('id', $id)->getRow();
+        $result = $mapsTable->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -48,7 +48,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             'id:integer', 'gadget', 'map', 'regexp', 'extension', 'vars_regexps',
             'custom_map', 'custom_regexp');
         $mapsTable->where('gadget', $gadget)->and()->where('action', $action)->and()->where('action', $action);
-        $result = $mapsTable->and()->where('map', $map)->getRow();
+        $result = $mapsTable->and()->where('map', $map)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -68,7 +68,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     {
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $mapsTable->select('id:integer', 'map', 'extension');
-        $result = $mapsTable->where('gadget', $gadget)->and()->where('action', $action)->orderBy('order ASC')->getAll();
+        $mapsTable->where('gadget', $gadget)->and()->where('action', $action);
+        $result = $mapsTable->orderBy('order ASC')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -421,7 +422,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $data['alias_hash'] = md5($alias);
 
         $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
-        $result = $aliasesTable->select('alias_hash')->where('id', $id)->getOne();
+        $result = $aliasesTable->select('alias_hash')->where('id', $id)->fetchOne();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
@@ -478,7 +479,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params['id'] = $id;
 
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $result = $errorsTable->select('url', 'code', 'new_url', 'new_code')->where('id', $id)->getRow();
+        $result = $errorsTable->select('url', 'code', 'new_url', 'new_code')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -530,7 +531,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     function UpdateErrorMap($id, $url, $code, $new_url, $new_code)
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $result = $errorsTable->select('url_hash')->where('id', $id)->getOne();
+        $result = $errorsTable->select('url_hash')->where('id', $id)->fetchOne();
 
 
         $data['url'] = $url;
@@ -597,7 +598,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $errorsTable->select(
             'id:integer', 'url', 'code:integer', 'new_url', 'new_code', 'hits:integer',
             'createtime', 'updatetime');
-        $result = $errorsTable->limit($limit, $offset)->orderBy('createtime')->getAll();
+        $result = $errorsTable->limit($limit, $offset)->orderBy('createtime')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -614,7 +615,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     function GetErrorMapsCount()
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $res = $errorsTable->select('count([id]):integer')->getOne();
+        $res = $errorsTable->select('count([id]):integer')->fetchOne();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -634,7 +635,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $errorsTable->select('id:integer', 'new_url as url', 'new_code as code:integer');
-        $errorMap = $errorsTable->where('url_hash', md5($reqURL))->getRow();
+        $errorMap = $errorsTable->where('url_hash', md5($reqURL))->fetchRow();
         if (Jaws_Error::IsError($errorMap) || empty($errorMap)) {
             if (empty($errorMap)) {
                 $this->AddErrorMap($reqURL, $code);

@@ -26,7 +26,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
         $urlmapTable = Jaws_ORM::getInstance()->table('url_maps');
         $urlmapTable->select('count([id]):integer');
         $urlmapTable->where('gadget', $gadget)->and()->where('action', $action)->and()->where('map', $map);
-        $result = $urlmapTable->and()->where('extension', $extension)->getOne();
+        $result = $urlmapTable->and()->where('extension', $extension)->fetchOne();
 
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -44,7 +44,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
     function GetAliases()
     {
         $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
-        $result = $aliasesTable->select(array('id:integer', 'alias_url'))->getAll();
+        $result = $aliasesTable->select(array('id:integer', 'alias_url'))->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -62,7 +62,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
     function GetAlias($id)
     {
         $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
-        $result = $aliasesTable->select(array('id:integer', 'alias_url', 'real_url'))->where('id', $id)->getRow();
+        $result = $aliasesTable->select(array('id:integer', 'alias_url', 'real_url'))->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -80,7 +80,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
     function AliasExists($hash)
     {
         $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
-        $result = $aliasesTable->select('count([id]):integer')->where('alias_hash', $hash)->getOne();
+        $result = $aliasesTable->select('count([id]):integer')->where('alias_hash', $hash)->fetchOne();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -98,7 +98,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
     function ErrorMapExists($url_hash)
     {
         $urlerrorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $result = $urlerrorsTable->select('count([id]):integer')->where('url_hash', $url_hash)->getOne();
+        $result = $urlerrorsTable->select('count([id]):integer')->where('url_hash', $url_hash)->fetchOne();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -120,7 +120,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
             'custom_regexp', 'vars_regexps'
         );
 
-        return $mapsTable->orderBy('gadget', 'order')->getAll();
+        return $mapsTable->orderBy('gadget', 'order')->fetchAll();
     }
 
     /**
@@ -134,7 +134,7 @@ class UrlMapper_Model extends Jaws_Gadget_Model
     function GetAliasPath($alias)
     {
         $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
-        $result = $aliasesTable->select('real_url')->where('alias_hash', md5($alias))->getOne();
+        $result = $aliasesTable->select('real_url')->where('alias_hash', md5($alias))->fetchOne();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return false;
         }
