@@ -676,11 +676,11 @@ class Jaws_ORM
      *
      * @access  public
      * @param   string  $result_type    Result type (all/row/col/one)
-     * @param   mixed   $options        Extra parameters
+     * @param   mixed   $argument        Extra parameters
      * @param   int     $error_level    Sets this error level if errors occurred
      * @return  mixed   Fetched data or Jaws_Error on failure
      */
-    function fetch($style = 'row', $options = null, $error_level = JAWS_ERROR_ERROR)
+    function fetch($style = 'row', $argument = null, $error_level = JAWS_ERROR_ERROR)
     {
         if (!$this->_passed_types) {
             $this->_types = array();
@@ -702,7 +702,7 @@ class Jaws_ORM
 
             // Fetch the value from the first column of each row of the result set
             case 'column':
-                $result = $this->jawsdb->dbc->queryCol($sql, $this->_types, (int)$options);
+                $result = $this->jawsdb->dbc->queryCol($sql, $this->_types, (int)$argument);
                 break;
 
             // Fetch the value from the first column of the first row of the result
