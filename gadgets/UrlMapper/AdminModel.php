@@ -22,17 +22,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetMap($id)
     {
-        $params = array();
-        $params['id'] = $id;
-
-        $sql = '
-            SELECT
-                [map], [regexp], [extension], [vars_regexps],
-                [custom_map], [custom_regexp], [order]
-            FROM [[url_maps]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $mapsTable->select('map', 'regexp', 'extension', 'vars_regexps', 'custom_map', 'custom_regexp', 'order');
+        $result = $mapsTable->where('id', $id)->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -51,24 +43,12 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetMapByParams($gadget, $action, $map)
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['action'] = $action;
-        $params['map']    = $map;
-
-        $sql = '
-            SELECT
-                [id], [gadget], [map], [regexp], [extension], [vars_regexps],
-                [custom_map], [custom_regexp]
-            FROM [[url_maps]]
-            WHERE
-                [gadget] = {gadget}
-              AND
-                [action] = {action}
-              AND
-                [map] = {map}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $mapsTable->select(
+            'id:integer', 'gadget', 'map', 'regexp', 'extension', 'vars_regexps',
+            'custom_map', 'custom_regexp');
+        $mapsTable->where('gadget', $gadget)->and()->where('action', $action)->and()->where('action', $action);
+        $result = $mapsTable->and()->where('map', $map)->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -86,21 +66,9 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetActionMaps($gadget, $action)
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['action'] = $action;
-
-        $sql = '
-            SELECT
-                [id], [map], [extension]
-            FROM [[url_maps]]
-            WHERE
-                [gadget] = {gadget}
-              AND
-                [action] = {action}
-            ORDER BY [order] ASC';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $mapsTable->select('id:integer', 'map', 'extension');
+        $result = $mapsTable->where('gadget', $gadget)->and()->where('action', $action)->orderBy('order ASC')->getAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -378,20 +346,12 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function DeleteGadgetMaps($gadget, $time = '')
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['time']   = $time;
-
-        $sql = '
-            DELETE FROM [[url_maps]]
-            WHERE
-                [gadget] = {gadget}';
-
+        $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
+        $mapsTable->delete()->where('gadget', $gadget);
         if (!empty($time)) {
-            $sql .= ' AND [updatetime] < {time}';
+            $mapsTable->and()->where('updatetime', $time, '<');
         }
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $mapsTable->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -414,23 +374,19 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), _t('URLMAPPER_NAME'));
         }
 
-        $params = array();
-        $params['real']  = $url;
-        $params['alias'] = $alias;
-        $params['hash']  = md5($alias);
+        $data['real_url']    = $url;
+        $data['alias_url']   = $alias;
+        $data['alias_hash']  = md5($alias);
 
-        if ($this->AliasExists($params['hash'])) {
+        if ($this->AliasExists($data['alias_hash'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
         }
 
-        $sql = '
-            INSERT INTO [[url_aliases]]
-                ([real_url], [alias_url], [alias_hash])
-            VALUES
-                ({real}, {alias}, {hash})';
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
+        $result = $aliasesTable->insert($data)->exec();
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), _t('URLMAPPER_NAME'));
@@ -460,38 +416,26 @@ class UrlMapper_AdminModel extends UrlMapper_Model
             $url = substr($url, 1);
         }
 
-        $params  = array();
-        $params['id']    = $id;
-        $params['real']  = $url;
-        $params['alias'] = $alias;
-        $params['hash']  = md5($alias);
+        $data['real_url']   = $url;
+        $data['alias_url']  = $alias;
+        $data['alias_hash'] = md5($alias);
 
-        $sql = '
-            SELECT
-                [alias_hash]
-            FROM [[url_aliases]]
-            WHERE [id] = {id}';
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
+        $result = $aliasesTable->select('alias_hash')->where('id', $id)->getOne();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
         }
 
-        if ($result != $params['hash']) {
-            if ($this->AliasExists($params['hash'])) {
+        if ($result != $data['alias_hash']) {
+            if ($this->AliasExists($data['alias_hash'])) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
             }
         }
 
-        $sql = '
-            UPDATE [[url_aliases]] SET
-                [real_url] = {real},
-                [alias_url] = {alias},
-                [alias_hash] = {hash}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
+        $result = $aliasesTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
@@ -510,12 +454,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function DeleteAlias($id)
     {
-        $params = array();
-        $params['id'] = $id;
-
-        $sql = 'DELETE FROM [[url_aliases]] WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $aliasesTable = Jaws_ORM::getInstance()->table('url_aliases');
+        $result = $aliasesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_DELETED'), _t('URLMAPPER_NAME'));
@@ -537,13 +477,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $params = array();
         $params['id'] = $id;
 
-        $sql = '
-            SELECT
-                [url], [code], [new_url], [new_code]
-            FROM [[url_errors]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $result = $errorsTable->select('url', 'code', 'new_url', 'new_code')->where('id', $id)->getRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -563,22 +498,17 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function AddErrorMap($url, $code, $new_url = '', $new_code = 404)
     {
-        $params = array();
-        $params['url'] = $url;
-        $params['code'] = $code;
-        $params['url_hash'] = md5($url);
-        $params['new_url'] = $new_url;
-        $params['new_code'] = $new_code;
-        $params['hits'] = 1;
-        $params['now'] = $GLOBALS['db']->Date();
+        $data['url'] = $url;
+        $data['url_hash'] = md5($url);
+        $data['code'] = $code;
+        $data['new_url'] = $new_url;
+        $data['new_code'] = $new_code;
+        $data['hits'] = 1;
+        $data['createtime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
-        $sql = '
-            INSERT INTO [[url_errors]]
-                ([url], [url_hash], [code], [new_url], [new_code], [hits], [createtime], [updatetime])
-            VALUES
-                ({url}, {url_hash}, {code}, {new_url}, {new_code}, {hits}, {now}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $result = $errorsTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -599,44 +529,31 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function UpdateErrorMap($id, $url, $code, $new_url, $new_code)
     {
-        $params = array();
-        $params['id'] = $id;
-        $params['url'] = $url;
-        $params['code'] = $code;
-        $params['url_hash'] = md5($url);
-        $params['new_url'] = $new_url;
-        $params['new_code'] = $new_code;
-        $params['now'] = $GLOBALS['db']->Date();
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $result = $errorsTable->select('url_hash')->where('id', $id)->getOne();
 
-        $sql = '
-            SELECT
-                [url_hash]
-            FROM [[url_errors]]
-            WHERE [id] = {id}';
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+
+        $data['url'] = $url;
+        $data['url_hash'] = md5($url);
+        $data['code'] = $code;
+        $data['new_url'] = $new_url;
+        $data['new_code'] = $new_code;
+        $data['updatetime'] = $GLOBALS['db']->Date();
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
         }
 
-        if ($result != $params['url_hash']) {
-            if ($this->ErrorMapExists($params['url_hash'])) {
+        if ($result != $data['url_hash']) {
+            if ($this->ErrorMapExists($data['url_hash'])) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
             }
         }
 
-        $sql = '
-            UPDATE [[url_errors]] SET
-                [url] = {url},
-                [url_hash] = {url_hash},
-                [code] = {code},
-                [new_url] = {new_url},
-                [new_code] = {new_code},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $result = $errorsTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), _t('URLMAPPER_NAME'));
@@ -655,12 +572,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function DeleteErrorMap($id)
     {
-        $params = array();
-        $params['id'] = $id;
-
-        $sql = 'DELETE FROM [[url_errors]] WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $result = $errorsTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), _t('URLMAPPER_NAME'));
@@ -680,19 +593,11 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetErrorMaps($limit, $offset)
     {
-        $sql = '
-            SELECT [id], [url], [code], [new_url], [new_code], [hits], [createtime], [updatetime]
-            FROM [[url_errors]]
-            ORDER BY [createtime]';
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $errorsTable->select(
+            'id:integer', 'url', 'code:integer', 'new_url', 'new_code', 'hits:integer',
+            'createtime', 'updatetime');
+        $result = $errorsTable->limit($limit, $offset)->orderBy('createtime')->getAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -708,11 +613,8 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetErrorMapsCount()
     {
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[url_errors]]';
-
-        $res = $GLOBALS['db']->queryOne($sql);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $res = $errorsTable->select('count([id]):integer')->getOne();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -730,31 +632,21 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      */
     function GetHTTPError($reqURL, $code)
     {
-        $params = array();
-        $params['url_hash'] = md5($reqURL);
-
-        $sql = '
-            SELECT
-                [id], [new_url] as url, [new_code] as code
-            FROM [[url_errors]]
-            WHERE [url_hash] = {url_hash}';
-
-        $errorMap = $GLOBALS['db']->queryRow($sql, $params);
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $errorsTable->select('id:integer', 'new_url as url', 'new_code as code:integer');
+        $errorMap = $errorsTable->where('url_hash', md5($reqURL))->getRow();
         if (Jaws_Error::IsError($errorMap) || empty($errorMap)) {
             if (empty($errorMap)) {
                 $this->AddErrorMap($reqURL, $code);
             }
         } else {
-            $params = array();
-            $params['id']  = $errorMap['id'];
-            $params['one'] = 1;
+            $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+            $result = $errorsTable->update(
+                array(
+                    'hits' => $errorsTable->expr('hits + ?', 1)
+                )
+            )->where('id', $errorMap['id'])->exec();
 
-            $sql = '
-                UPDATE [[url_errors]] SET
-                    [hits] = [hits] + {one}
-                WHERE [id] = {id}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
             if (Jaws_Error::IsError($result)) {
                 // do nothing
             }
