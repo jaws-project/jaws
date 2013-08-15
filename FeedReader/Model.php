@@ -68,7 +68,7 @@ class FeedReader_Model extends Jaws_Gadget_Model
             FROM [[feeds]]
             WHERE [id] = {id}';
 
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id));
+        $row = $GLOBALS['db']->queryRow($sql, array('id' => (int)$id));
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
