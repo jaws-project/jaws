@@ -30,7 +30,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
 
             $ppollss = array('0' => _t('POLL_LAYOUT_LAST')) + $ppollss;
             $result[] = array(
-                'title' => _t('POLL_LAYOUT_POLL'),
+                'title' => _t('POLL_ACTION_POLL_TITLE'),
                 'value' => $ppollss
             );
         }

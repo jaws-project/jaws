@@ -30,7 +30,7 @@ class Poll_Actions_Polls extends Jaws_Gadget_HTML
 
             $pgroups = array('0' => _t('POLL_LAYOUT_POLLS_ALL')) + $pgroups;
             $result[] = array(
-                'title' => _t('POLL_LAYOUT_POLLS'),
+                'title' => _t('GLOBAL_CATEGORY'),
                 'value' => $pgroups
             );
         }
