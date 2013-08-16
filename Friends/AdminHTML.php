@@ -20,7 +20,7 @@ class Friends_AdminHTML extends Jaws_Gadget_HTML
     function DataGrid()
     {
         $model = $GLOBALS['app']->LoadGadget('Friends', 'AdminModel');
-        $total = $model->TotalOfData();
+        $total = $model->TotalOfData('friend');
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->SetID('friends_datagrid');
         $datagrid->TotalRows($total);

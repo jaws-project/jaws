@@ -41,17 +41,10 @@ class Friends_AdminModel extends Friends_Model
      */
     function NewFriend($friend, $url)
     {
-        $params           = array();
         $params['friend'] = Jaws_XSS::filter($friend, true);
         $params['url']    = Jaws_XSS::filter($url, true);
-
-        $sql = '
-            INSERT INTO [[friend]]
-                ([friend], [url])
-            VALUES
-                ({friend}, {url})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $result = $friendTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FRIENDS_ERROR_NOT_ADDED'), _t('FRIENDS_NAME'));
@@ -72,18 +65,11 @@ class Friends_AdminModel extends Friends_Model
      */
     function UpdateFriend($id, $friend, $url)
     {
-        $params = array();
         $params['friend'] = $friend;
         $params['url']    = $url;
-        $params['id']     = $id;
 
-        $sql = '
-            UPDATE [[friend]] SET
-                [friend] = {friend},
-                [url] = {url}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $result = $friendTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'), _t('FRIENDS_NAME'));
@@ -102,11 +88,8 @@ class Friends_AdminModel extends Friends_Model
      */
     function DeleteFriend($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-        $sql = 'DELETE FROM [[friend]] WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $result = $friendTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'), _t('FRIENDS_NAME'));

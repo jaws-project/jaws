@@ -20,15 +20,8 @@ class Friends_Model extends Jaws_Gadget_Model
      */
     function GetFriend($id)
     {
-        $params = array();
-        $params['id'] = $id;
-        $sql = '
-            SELECT
-                [id], [friend], [url]
-            FROM [[friend]]
-            WHERE [id] = {id}';
-
-        $row = $GLOBALS['db']->queryRow($sql, $params);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $row = $friendTable->select('id:integer', 'friend', 'url')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -49,16 +42,8 @@ class Friends_Model extends Jaws_Gadget_Model
      */
     function GetFriendByName($name)
     {
-        $params = array();
-        $params['name'] = $name;
-
-        $sql = '
-            SELECT
-                [id], [friend], [url]
-            FROM [[friend]]
-            WHERE [friend] = {name}';
-
-        $row = $GLOBALS['db']->queryRow($sql, $params);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $row = $friendTable->select('id:integer', 'friend', 'url')->where('friend', $name)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -79,41 +64,13 @@ class Friends_Model extends Jaws_Gadget_Model
      */
     function GetFriendsList($limit = 10)
     {
-        $sql = '
-            SELECT
-                [id], [friend], [url]
-            FROM [[friend]]
-            ORDER BY [id] DESC';
-
-        $result = $GLOBALS['db']->setLimit(10, $limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
+        $result = $friendTable->select('id:integer', 'friend', 'url')->orderBy('id DESC')->limit(10, $limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
 
         return $result;
-    }
-
-    /**
-     * Get the total of friends we have
-     *
-     * @access  public
-     * @return  mixed   Total of friends we have or Jaws_Error on error
-     */
-    function TotalOfData()
-    {
-        $sql =
-             'SELECT
-               COUNT([id]) AS total
-              FROM [[friend]]';
-
-        $howMany = $GLOBALS['db']->queryOne($sql);
-
-        return Jaws_Error::IsError($howMany) ? 0 : $howMany;
     }
 
     /**
@@ -124,25 +81,13 @@ class Friends_Model extends Jaws_Gadget_Model
      */
     function GetRandomFriends()
     {
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $rand = $GLOBALS['db']->dbc->function->random();
-        $sql = '
-            SELECT
-                [id], [friend], [url]
-            FROM [[friend]]
-            ORDER BY '. $rand;
-
+        $friendTable = Jaws_ORM::getInstance()->table('friend');
         $limit = $this->gadget->registry->fetch('limit');
         if (Jaws_Error::IsError($limit) || !$limit) {
             $limit = 10;
         }
-
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $friendTable->select('id:integer', 'friend', 'url')->orderBy($friendTable->random());
+        $result = $friendTable->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
