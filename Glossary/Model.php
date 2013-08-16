@@ -41,19 +41,12 @@ class Glossary_Model extends Jaws_Gadget_Model
      */
     function GetTermByTerm($term)
     {
-        $sql = "
-            SELECT
-                [id], [user_id], [term], [fast_url], [description], [createtime], [updatetime]
-            FROM [[glossary]]
-            WHERE ";
-        $sql.= $GLOBALS['db']->dbc->datatype->matchPattern(array(1 => '%', $term, '%'), 'ILIKE', '[term]');
-
-        $result = $GLOBALS['db']->queryRow($sql);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $glossaryTable->select(
+            'id', 'user_id', 'term', 'fast_url',
+            'description', 'createtime', 'updatetime'
+        );
+        return $glossaryTable->where('term', $term, 'like')->fetchRow();
     }
 
     /**
