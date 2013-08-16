@@ -26,16 +26,8 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
-        $sql = '
-            INSERT INTO [[quotes]]
-                ([title], [quotation], [gid], [start_time], [stop_time],
-                 [createtime], [updatetime], [show_title], [published])
-            VALUES
-                ({title}, {quotation}, {gid}, {start_time}, {stop_time},
-                 {now}, {now}, {show_title}, {published})';
-
         $date = $GLOBALS['app']->loadDate();
-        $params = array();
+        $now  = $GLOBALS['db']->Date();
         $params['title']       = $title;
         $params['quotation']   = $quotation;
         $params['gid']         = $gid;
@@ -49,19 +41,20 @@ class Quotes_AdminModel extends Quotes_Model
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
             $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
-
-        $params['now']         = $GLOBALS['db']->Date();
+        $params['createtime']  = $now;
+        $params['updatetime']  = $now;
         $params['show_title']  = (bool)$show_title;
         $params['published']   = (bool)$published;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $result = $quotesTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'),_t('QUOTES_NAME'));
         }
 
         $response =  array();
-        $response['id']      = $GLOBALS['db']->lastInsertID('quotes', 'id');
+        $response['id']      = $result;
         $response['title']   = $title;
         $response['message'] = _t('QUOTES_QUOTE_ADDED');
 
@@ -85,21 +78,7 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
-        $sql = '
-            UPDATE [[quotes]] SET
-                [title]       = {title},
-                [quotation]   = {quotation},
-                [gid]         = {gid},
-                [start_time]  = {start_time},
-                [stop_time]   = {stop_time},
-                [updatetime]  = {now},
-                [show_title]  = {show_title},
-                [published]   = {published}
-            WHERE [id] = {id}';
-
         $date = $GLOBALS['app']->loadDate();
-        $params = array();
-        $params['id']          = (int)$id;
         $params['title']       = $title;
         $params['quotation']   = $quotation;
         $params['gid']         = $gid;
@@ -114,11 +93,12 @@ class Quotes_AdminModel extends Quotes_Model
             $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
-        $params['now']         = $GLOBALS['db']->Date();
+        $params['updatetime']  = $GLOBALS['db']->Date();
         $params['show_title']  = (bool)$show_title;
         $params['published']   = (bool)$published;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $result = $quotesTable->update($params)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_UPDATED'), _t('QUOTES_NAME'));
@@ -137,8 +117,8 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function DeleteQuote($id)
     {
-        $sql = 'DELETE FROM [[quotes]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $result = $quotesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_DELETED'), _t('QUOTES_NAME'));
@@ -163,8 +143,8 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
-        $sql = 'SELECT COUNT([id]) FROM [[quotes_groups]] WHERE [title] = {title}';
-        $gc = $GLOBALS['db']->queryOne($sql, array('title' => $title));
+        $table = Jaws_ORM::getInstance()->table('quotes_groups');
+        $gc = $table->select('count(id)')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -175,13 +155,6 @@ class Quotes_AdminModel extends Quotes_Model
             return false;
         }
 
-        $sql = '
-            INSERT INTO [[quotes_groups]]
-                ([title], [view_mode], [view_type], [show_title], [limit_count], [random], [published])
-            VALUES
-                ({title}, {view_mode}, {view_type}, {show_title}, {limit_count}, {random}, {published})';
-
-        $params = array();
         $params['title']       = $title;
         $params['view_mode']   = $view_mode;
         $params['view_type']   = $view_type;
@@ -189,14 +162,16 @@ class Quotes_AdminModel extends Quotes_Model
         $params['limit_count'] = ((empty($limit_count) || !is_numeric($limit_count))? 0 : $limit_count);
         $params['random']      = (bool)$random;
         $params['published']   = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+
+        $table = Jaws_ORM::getInstance()->table('quotes_groups');
+        $res = $table->insert($params)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $response =  array();
-        $response['id']      = $GLOBALS['db']->lastInsertID('quotes_groups', 'id');
+        $response['id']      = $res;
         $response['title']   = $title;
         $response['message'] = _t('QUOTES_GROUPS_CREATED', $response['id']);
 
@@ -220,8 +195,8 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $random, $published)
     {
-        $sql = 'SELECT COUNT([id]) FROM [[quotes_groups]] WHERE [id] != {gid} AND [title] = {title}';
-        $gc = $GLOBALS['db']->queryOne($sql, array('gid' => $gid, 'title' => $title));
+        $table = Jaws_ORM::getInstance()->table('quotes_groups');
+        $gc = $table->select('count(id)')->where('title', $title)->and()->where('id', $gid, '!=')->fetchOne();
         if (Jaws_Error::IsError($gc)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -232,19 +207,6 @@ class Quotes_AdminModel extends Quotes_Model
             return false;
         }
 
-        $sql = '
-            UPDATE [[quotes_groups]] SET
-                [title]       = {title},
-                [view_mode]   = {view_mode},
-                [view_type]   = {view_type},
-                [show_title]  = {show_title},
-                [limit_count] = {limit_count},
-                [random]      = {random},
-                [published]   = {published}
-            WHERE [id] = {id}';
-
-        $params = array();
-        $params['id']          = $gid;
         $params['title']       = $title;
         $params['view_mode']   = $view_mode;
         $params['view_type']   = $view_type;
@@ -252,7 +214,9 @@ class Quotes_AdminModel extends Quotes_Model
         $params['limit_count'] = ((empty($limit_count) || !is_numeric($limit_count))? 0 : $limit_count);
         $params['random']      = (bool)$random;
         $params['published']   = (bool)$published;
-        $res = $GLOBALS['db']->query($sql, $params);
+
+        $table = Jaws_ORM::getInstance()->table('quotes_groups');
+        $res = $table->update($params)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -272,33 +236,20 @@ class Quotes_AdminModel extends Quotes_Model
      */
     function UpdateQuoteGroup($qid, $gid, $new_gid)
     {
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $quotesTable->update(array('gid' => $new_gid));
+
         if (($qid != -1) && ($gid != -1)) {
-            $sql = '
-                UPDATE [[quotes]] SET
-                [gid] = {new_gid}
-                WHERE [[quotes]].[id] = {qid} AND [[quotes]].[gid] = {gid}';
+            $quotesTable->where('id', $qid)->and()->where('gid', $gid);
         } elseif ($gid != -1) {
-            $sql = '
-                UPDATE [[quotes]] SET
-                [gid] = {new_gid}
-                WHERE [[quotes]].[gid] = {gid}';
+            $quotesTable->where('gid', $gid);
         } elseif ($qid != -1) {
-            $sql = '
-                UPDATE [[quotes]] SET
-                [gid] = {new_gid}
-                WHERE [id] = {qid}';
+            $quotesTable->where('id', $qid);
         } else {
-            $sql = '
-                UPDATE [[quotes]] SET
-                [gid] = {new_gid}';
+            $quotesTable->where('gid', $new_gid);
         }
 
-        $params = array();
-        $params['qid']     = $qid;
-        $params['gid']     = $gid;
-        $params['new_gid'] = $new_gid;
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $quotesTable->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -359,8 +310,8 @@ class Quotes_AdminModel extends Quotes_Model
         }
 
         $this->UpdateQuoteGroup(-1, $gid, 0);
-        $sql = 'DELETE FROM [[quotes_groups]] WHERE [id] = {gid}';
-        $res = $GLOBALS['db']->query($sql, array('gid' => $gid));
+        $table = Jaws_ORM::getInstance()->table('quotes_groups');
+        $res = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;

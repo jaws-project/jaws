@@ -19,17 +19,12 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetQuote($id)
     {
-        $sql = '
-            SELECT  [id], [gid], [title], [quotation], [quote_type],
-                    [rank], [start_time], [stop_time], [show_title], [published]
-            FROM [[quotes]]
-            WHERE [id] = {id}';
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $res = $quotesTable->select(
+            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
+            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
+        )->where('id', $id)->fetchRow();
 
-        $params       = array();
-        $params['id'] = $id;
-        $types = array('integer', 'integer', 'text', 'text', 'integer',
-                       'integer', 'timestamp', 'timestamp', 'boolean', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -48,44 +43,20 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetQuotes($id = -1, $gid = -1, $limit = 0, $offset = null)
     {
-        $sql = '
-            SELECT
-                [id], [gid], [title], [quotation], [quote_type],
-                [rank], [start_time], [stop_time], [show_title], [published]
-            FROM 
-                [[quotes]] ';
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $quotesTable->select(
+            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
+            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
+        );
 
         if (($id != -1) && ($gid != -1)) {
-            $sql.= '
-                WHERE [[quotes]].[id] = {id} AND [[quotes]].[gid] = {gid}
-                ORDER BY [[quotes]].[id] ASC';
+            $quotesTable->where('id', $id)->and()->where('gid', $gid);
         } elseif ($gid != -1) {
-            $sql.= '
-                WHERE [[quotes]].[gid] = {gid}
-                ORDER BY [[quotes]].[id] ASC';
+            $quotesTable->where('gid', $gid);
         } elseif ($id != -1) {
-            $sql.= '
-                WHERE [id] = {id}
-                ORDER BY [id] ASC';
-        } else {
-            $sql.= '
-                ORDER BY [id] ASC';
+            $quotesTable->where('id', $id);
         }
-
-        $params        = array();
-        $params['id']  = $id;
-        $params['gid'] = $gid;
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($rs->getMessage(), 'SQL');
-            }
-        }
-
-        $types = array('integer', 'integer', 'text', 'text', 'integer',
-                       'integer', 'timestamp', 'timestamp', 'boolean', 'boolean');
-        $res = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $res = $quotesTable->orderBy('id ASC')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -102,15 +73,11 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetGroup($gid)
     {
-        $sql = '
-            SELECT
-                [id], [title], [view_mode], [view_type], [show_title], [limit_count], [random], [published]
-            FROM [[quotes_groups]]
-            WHERE [id] = {gid}';
-        $params        = array();
-        $params['gid'] = $gid;
-        $types = array('integer', 'text', 'integer', 'integer', 'boolean', 'integer', 'boolean', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $qgTable = Jaws_ORM::getInstance()->table('quotes_groups');
+        $res = $qgTable->select(
+            'id:integer', 'title', 'view_mode:integer', 'view_type:integer', 'show_title:boolean',
+            'limit_count:integer', 'random:boolean', 'published:boolean'
+        )->where('id', $gid)->fetchRow();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -128,37 +95,25 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetGroups($gid = -1, $id = -1)
     {
-        $sql = '
-            SELECT
-                [id], [title], [view_mode], [view_type], [show_title], [limit_count], [random], [published]
-            FROM
-                [[quotes_groups]]';
+        $qgTable = Jaws_ORM::getInstance()->table('quotes_groups');
+        $qgTable->select(
+            'id:integer', 'title', 'view_mode:integer', 'view_type:integer', 'show_title:boolean',
+            'limit_count:integer', 'random:boolean', 'published:boolean'
+        );
 
         if (($gid != -1) && ($id != -1)) {
-            $sql.= '
-                INNER JOIN [[quotes]] ON [[quotes_groups]].[id] = [[quotes]].[gid]
-                WHERE [[quotes_groups]].[id] = {gid} AND [[quotes]].[id] = {id}
-                ORDER BY [[quotes_groups]].[id] ASC';
+            $qgTable->join('quotes', 'quotes_groups.gid', 'quotes.id');
+            $qgTable->where('quotes_groups.id', $gid)->and()->where('quotes.id', $id)->orderBy('quotes_groups.id ASC');
         } elseif ($id != -1) {
-            $sql.= '
-                INNER JOIN [[quotes]] ON [[quotes_groups]].[id] = [[quotes]].[gid]
-                WHERE [[quotes]].[id] = {id}
-                ORDER BY [[quotes_groups]].[id] ASC';
+            $qgTable->join('quotes', 'quotes_groups.gid', 'quotes.id');
+            $qgTable->where('quotes.id', $id)->orderBy('quotes_groups.id ASC');
         } elseif ($gid != -1) {
-            $sql.= '
-                WHERE [id] = {gid}
-                ORDER BY [id] ASC';
+            $qgTable->where('id', $gid)->orderBy('id ASC');
         } else {
-            $sql.= '
-                ORDER BY [id] ASC';
+            $qgTable->orderBy('id ASC');
         }
 
-        $params        = array();
-        $params['gid'] = $gid;
-        $params['id']  = $id;
-
-        $types = array('integer', 'text', 'integer', 'integer', 'boolean', 'integer', 'boolean', 'boolean');
-        $res = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $res = $qgTable->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -177,43 +132,23 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetPublishedQuotes($gid, $limit = null, $randomly = false)
     {
-        $sql = '
-            SELECT
-                [id], [title], [quotation], [rank], [show_title]
-            FROM [[quotes]]
-            WHERE
-                ([gid] = {gid})
-              AND
-                ([published] = {published})
-              AND
-                (([start_time] IS NULL) OR ({now} >= [start_time]))
-              AND
-                (([stop_time] IS NULL) OR ({now} <= [stop_time]))';
+        $now = $GLOBALS['db']->Date();
+
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');
+        $quotesTable->where('gid', $gid)->and()->where('published', true)->and();
+        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
+        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
+        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
+        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
 
         if ($randomly) {
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $rand = $GLOBALS['db']->dbc->function->random();
-            $sql.= '
-                ORDER BY '.$rand;
+            $quotesTable->orderBy($quotesTable->random());
         } else {
-            $sql.= '
-                ORDER BY [rank] ASC, [id] DESC';
+            $quotesTable->orderBy('rank ASC', 'id DESC');
         }
 
-        $params  = array();
-        $params['gid']       = $gid;
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $types = array('integer', 'text', 'text', 'integer', 'boolean');
-        $res = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $res = $quotesTable->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -230,40 +165,23 @@ class Quotes_Model extends Jaws_Gadget_Model
      */
     function GetRecentQuotes($limit = null, $randomly = false)
     {
-        $sql = '
-            SELECT
-                [id], [title], [quotation], [rank], [show_title]
-            FROM [[quotes]]
-            WHERE
-                ([published] = {published})
-              AND
-                (([start_time] IS NULL) OR ({now} >= [start_time]))
-              AND
-                (([stop_time] IS NULL) OR ({now} <= [stop_time]))';
+        $now = $GLOBALS['db']->Date();
+
+        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
+        $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');
+        $quotesTable->where('published', true)->and();
+        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
+        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
+        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
+        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
 
         if ($randomly) {
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $rand = $GLOBALS['db']->dbc->function->random();
-            $sql.= '
-                ORDER BY '.$rand;
+            $quotesTable->orderBy($quotesTable->random());
         } else {
-            $sql.= '
-                ORDER BY [id] DESC';
+            $quotesTable->orderBy('id DESC');
         }
 
-        $params = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $types = array('integer', 'text', 'text', 'integer', 'boolean');
-        $res = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $res = $quotesTable->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
