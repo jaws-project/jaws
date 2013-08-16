@@ -48,16 +48,15 @@ class VisitCounter_Model extends Jaws_Gadget_Model
         $table->where('ip', $ip)->and()->where('visit_time', $date, '>=');
         $visited = $table->fetchRow();
         if (Jaws_Error::IsError($visited)) {
-            return new Jaws_Error(_t('VISITCOUNTER_ERROR_CANT_ADD_VISIT', $ip), _t('VISITCOUNTER_NAME'));
+            return $visited;
         }
 
         $now = time();
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
         if (!empty($visited)) {
-            $inc = $inc? 1 : 0;
             $table->update(array(
                 'visit_time' => $now, 
-                'visits' => $table->expr('visits + ?', $inc)
+                'visits' => $table->expr('visits + ?', (int)$inc)
             ));
             $table->where('ip', $ip)->and()->where('visit_time', $visited['visit_time']);
         } else {
@@ -68,12 +67,8 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             ));
         }
 
-        $result = $table->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return true;
+        $result = $table->exec(JAWS_ERROR_NOTICE);
+        return $result;
     }
 
     /**
@@ -134,7 +129,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     {
         $date = time() - $this->GetOnlineVisitorsTimeout();
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
-        $table->select('COUNT([id]):integer');
+        $table->select('COUNT(id):integer');
         $table->where('visit_time', $date, '>=');
         $count = $table->fetchOne();
         if (Jaws_Error::IsError($count)) {
@@ -163,10 +158,10 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             $innerTable->distinct();
             $innerTable->select('id')->where('visit_time', $date, '>=');
             $table = Jaws_ORM::getInstance()->table($innerTable, 'visitors');
-            $table->select('COUNT([id])');
+            $table->select('COUNT(id)');
         } else {
             $table = Jaws_ORM::getInstance()->table('ipvisitor');
-            $table->select('SUM([visits])')->where('visit_time', $date, '>=');
+            $table->select('SUM(visits)')->where('visit_time', $date, '>=');
         }
 
         $visits = $table->fetchOne();
@@ -206,7 +201,7 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             $table->select('COUNT([id])');
         } else {
             $table = Jaws_ORM::getInstance()->table('ipvisitor');
-            $table->select('SUM([visits])')
+            $table->select('SUM(visits)')
                 ->where('visit_time', $begin, '>=')->and()
                 ->where('visit_time', $end, '<=');
         }
@@ -238,11 +233,11 @@ class VisitCounter_Model extends Jaws_Gadget_Model
             $innerTable->distinct();
             $innerTable->select('id')->where('visit_time', $date, '>=');
             $table = Jaws_ORM::getInstance()->table($innerTable, 'visitors');
-            $table->select('COUNT([id])');
+            $table->select('COUNT(id)');
             $total = $this->gadget->registry->fetch('unique_visits');
         } else {
             $table = Jaws_ORM::getInstance()->table('ipvisitor');
-            $table->select('SUM([visits])')->where('visit_time', $date, '>=');
+            $table->select('SUM(visits)')->where('visit_time', $date, '>=');
             $total = $this->gadget->registry->fetch('impression_visits');
         }
 
