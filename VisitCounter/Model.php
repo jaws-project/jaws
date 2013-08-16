@@ -42,40 +42,33 @@ class VisitCounter_Model extends Jaws_Gadget_Model
      */
     function AddVisitor($ip, $inc = true)
     {
-        $params = array();
-        $params['date'] = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
-        $params['now'] = time();
-        $params['ip'] = $ip;
-
-        $sql = '
-            SELECT [ip], [visit_time]
-            FROM [[ipvisitor]]
-            WHERE [ip] = {ip} AND [visit_time] >= {date}';
-
-        $visited = $GLOBALS['db']->queryRow($sql, $params);
+        $date = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
+        $table = Jaws_ORM::getInstance()->table('ipvisitor');
+        $table->select('ip:integer', 'visit_time:integer');
+        $table->where('ip', $ip)->and()->where('visit_time', $date, '>=');
+        $visited = $table->fetchRow();
         if (Jaws_Error::IsError($visited)) {
             return new Jaws_Error(_t('VISITCOUNTER_ERROR_CANT_ADD_VISIT', $ip), _t('VISITCOUNTER_NAME'));
         }
 
+        $now = time();
+        $table = Jaws_ORM::getInstance()->table('ipvisitor');
         if (!empty($visited)) {
-            $params['visits']   = $inc ? 1 : 0;
-            $params['old_date'] = $visited['visit_time'];
-            $sql = '
-                UPDATE [[ipvisitor]] SET
-                    [visit_time] = {now},
-                    [visits]     = [visits] + {visits}
-                WHERE
-                    [ip] = {ip} AND [visit_time] = {old_date}';
+            $inc = $inc? 1 : 0;
+            $table->update(array(
+                'visit_time' => $now, 
+                'visits' => $table->expr('visits + ?', $inc)
+            ));
+            $table->where('ip', $ip)->and()->where('visit_time', $visited['visit_time']);
         } else {
-            $params['visits'] = 1;
-            $sql = '
-                INSERT INTO [[ipvisitor]]
-                    ([ip], [visit_time], [visits])
-                VALUES
-                    ({ip}, {now}, {visits})';
+            $table->insert(array(
+                'ip' => $ip, 
+                'visit_time' => $now, 
+                'visits' => 1
+            ));
         }
 
-        $result = $GLOBALS['db']->query($sql, $params, JAWS_ERROR_NOTICE);
+        $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -139,19 +132,16 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     */
     function GetOnlineVisitors()
     {
-        $params = array();
-        $params['date'] = time() - $this->GetOnlineVisitorsTimeout();
-        $sql = '
-            SELECT COUNT(*)
-            FROM [[ipvisitor]]
-            WHERE [visit_time] >= {date}';
-
-        $onlinevisitors = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($onlinevisitors)) {
+        $date = time() - $this->GetOnlineVisitorsTimeout();
+        $table = Jaws_ORM::getInstance()->table('ipvisitor');
+        $table->select('COUNT([id]):integer');
+        $table->where('visit_time', $date, '>=');
+        $count = $table->fetchOne();
+        if (Jaws_Error::IsError($count)) {
             return '-';
         }
 
-        return $onlinevisitors;
+        return $count;
     }
 
     /**
@@ -163,24 +153,23 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     */
     function GetTodayVisitors($type = null)
     {
-        $params = array();
-        $params['date'] = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
+        $date = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
         if (is_null($type)) {
             $type = $this->GetVisitType();
         }
 
-        if ($type == 'unique') {
-            $sql = '
-                SELECT COUNT([ip])
-                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_time] >= {date}) AS visitors';
+        if ($type === 'unique') {
+            $innerTable = Jaws_ORM::getInstance()->table('ipvisitor');
+            $innerTable->distinct();
+            $innerTable->select('id')->where('visit_time', $date, '>=');
+            $table = Jaws_ORM::getInstance()->table($innerTable, 'visitors');
+            $table->select('COUNT([id])');
         } else {
-            $sql = '
-                SELECT SUM([visits])
-                FROM [[ipvisitor]]
-                WHERE [visit_time] >= {date}';
+            $table = Jaws_ORM::getInstance()->table('ipvisitor');
+            $table->select('SUM([visits])')->where('visit_time', $date, '>=');
         }
 
-        $visits = $GLOBALS['db']->queryOne($sql, $params);
+        $visits = $table->fetchOne();
         if (Jaws_Error::IsError($visits)) {
             return '-';
         }
@@ -197,33 +186,32 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     */
     function GetYesterdayVisitors($type = null)
     {
-        $params = array();
-        $params['begin'] = $GLOBALS['app']->UserTime2UTC(
+        $begin = $GLOBALS['app']->UserTime2UTC(
             $GLOBALS['app']->UTC2UserTime(time() - 24 * 3600, 'Y-m-d 00:00:00')
         );
-        $params['end'] = $GLOBALS['app']->UserTime2UTC(
+        $end = $GLOBALS['app']->UserTime2UTC(
             $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00')
         );
         if (is_null($type)) {
             $type = $this->GetVisitType();
         }
 
-        if ($type == 'unique') {
-            $sql = '
-                SELECT COUNT([ip])
-                FROM (
-                    SELECT DISTINCT [ip] 
-                    FROM [[ipvisitor]] 
-                    WHERE [visit_time] >= {begin} AND [visit_time] < {end}
-                ) AS visitors';
+        if ($type === 'unique') {
+            $innerTable = Jaws_ORM::getInstance()->table('ipvisitor');
+            $innerTable->distinct();
+            $innerTable->select('id')
+                ->where('visit_time', $begin, '>=')->and()
+                ->where('visit_time', $end, '<=');
+            $table = Jaws_ORM::getInstance()->table($innerTable, 'visitors');
+            $table->select('COUNT([id])');
         } else {
-            $sql = '
-                SELECT SUM([visits])
-                FROM [[ipvisitor]]
-                WHERE [visit_time] >= {begin} AND [visit_time] < {end}';
+            $table = Jaws_ORM::getInstance()->table('ipvisitor');
+            $table->select('SUM([visits])')
+                ->where('visit_time', $begin, '>=')->and()
+                ->where('visit_time', $end, '<=');
         }
 
-        $visits = $GLOBALS['db']->queryOne($sql, $params);
+        $visits = $table->fetchOne();
         if (Jaws_Error::IsError($visits)) {
             return '-';
         }
@@ -232,35 +220,33 @@ class VisitCounter_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets number of total visitors since start date
+     * Gets number of total visitors from start date
      *
      * @access  public
      * @param   string  $type   Type of calculation
-     * @return  int  Number of total visitors or Jaws_Error on failure
+     * @return  int     Number of total visitors or Jaws_Error on failure
     */
     function GetTotalVisitors($type = null)
     {
-        $params = array();
-        $params['date'] = $this->GetStartDate();
-
+        $date = $this->GetStartDate();
         if (is_null($type)) {
             $type = $this->GetVisitType();
         }
 
         if ($type === 'unique') {
+            $innerTable = Jaws_ORM::getInstance()->table('ipvisitor');
+            $innerTable->distinct();
+            $innerTable->select('id')->where('visit_time', $date, '>=');
+            $table = Jaws_ORM::getInstance()->table($innerTable, 'visitors');
+            $table->select('COUNT([id])');
             $total = $this->gadget->registry->fetch('unique_visits');
-            $sql = '
-                SELECT COUNT([ip])
-                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_time] >= {date}) AS visitors';
         } else {
+            $table = Jaws_ORM::getInstance()->table('ipvisitor');
+            $table->select('SUM([visits])')->where('visit_time', $date, '>=');
             $total = $this->gadget->registry->fetch('impression_visits');
-            $sql = '
-                SELECT SUM([visits])
-                FROM [[ipvisitor]]
-                WHERE [visit_time] >= {date}';
         }
 
-        $visits = $GLOBALS['db']->queryOne($sql, $params);
+        $visits = $table->fetchOne();
         if (Jaws_Error::IsError($visits)) {
             return '-';
         }

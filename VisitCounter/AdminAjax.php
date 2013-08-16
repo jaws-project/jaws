@@ -89,17 +89,17 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      * Gets all entries/records for datagrid
      *
      * @access  public
-     * @limit   int     $limit  Data limit to fetch
+     * @param   int     $offset  Data offset to fetch
      * @return  array   List of visits
      */
-    function GetData($limit)
+    function GetData($offset)
     {
         $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminHTML');
-        if (!is_numeric($limit)) {
-            $limit = 0;
+        if (!is_numeric($offset)) {
+            $offset = 0;
         }
 
-        return $gadget->GetVisits($limit);
+        return $gadget->GetVisits($offset);
     }
 
 }

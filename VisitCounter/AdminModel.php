@@ -17,30 +17,19 @@ class VisitCounter_AdminModel extends VisitCounter_Model
      * Gets list of IP visitors / date visited
      *
      * @access  public
-     * @param   int     $limit  Data limit to fetch
+     * @param   int     $offset  Data offset to fetch
      * @return  array   Array of visitors or Jaws_Error on failure
      */
-    function GetVisitors($limit = null)
+    function GetVisitors($offset = null)
     {
-        $sql = '
-            SELECT
-                [ip], [visit_time], [visits]
-            FROM [[ipvisitor]]';
-        if (!is_null($limit)) {
-            $sql .= ' ORDER BY [visit_time] DESC';
-
-            $result = $GLOBALS['db']->setLimit(15, $limit);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($result->getMessage(), 'SQL');
-            }
+        $table = Jaws_ORM::getInstance()->table('ipvisitor');
+        $table->select(array('ip:integer', 'visit_time:integer', 'visits:integer'));
+        $table->orderBy('visit_time DESC');
+        if (!is_null($offset)) {
+            $table->limit(15, $offset);
         }
 
-        $result = $GLOBALS['db']->queryAll($sql);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        return $table->fetchAll();
     }
 
     /**
@@ -51,8 +40,8 @@ class VisitCounter_AdminModel extends VisitCounter_Model
      */
     function ClearVisitors()
     {
-        $sql = 'DELETE FROM [[ipvisitor]]';
-        $result = $GLOBALS['db']->query($sql);
+        $table = Jaws_ORM::getInstance()->table('ipvisitor');
+        $result = $table->delete()->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_VISITORS_NOT_CLEARED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('VISITCOUNTER_ERROR_VISITORS_NOT_CLEARED'), _t('VISITCOUNTER_NAME'));
@@ -71,8 +60,8 @@ class VisitCounter_AdminModel extends VisitCounter_Model
     function ResetCounter()
     {
         if (!Jaws_Error::IsError($this->ClearVisitors())) {
-            $sql = 'UPDATE [[ipvisitor]] SET [visits] = 0';
-            $result = $GLOBALS['db']->query($sql);
+            $table = Jaws_ORM::getInstance()->table('ipvisitor');
+            $result = $table->update(array('visits', 0))->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), _t('VISITCOUNTER_NAME'));

@@ -51,13 +51,13 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
      * Gets list of visits
      *
      * @access  public
-     * @param   int     $limit  Data limitation
+     * @param   int     $offset  Data offset
      * @return  array   List of visits
      */
-    function GetVisits($limit = 0)
+    function GetVisits($offset = 0)
     {
         $model  = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
-        $visits = $model->GetVisitors($limit);
+        $visits = $model->GetVisitors($offset);
         if (Jaws_Error::IsError($visits)) {
             return array();
         }
