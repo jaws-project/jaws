@@ -22,9 +22,7 @@ class GlossaGlossy_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $path = JAWS_PATH . 'gadgets/Glossary/Model.php';
-        if (file_exists($path) && Jaws_Gadget::IsGadgetInstalled('Glossary')) {
-            require_once $path;
+        if (Jaws_Gadget::IsGadgetInstalled('Glossary')) {
             $glossarybutton =& Piwi::CreateWidget('Button', 'glossarybutton', '',
                                 $GLOBALS['app']->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
             $glossarybutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[term]','[/term]','".
@@ -63,35 +61,30 @@ class GlossaGlossy_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        if (!$this->NeedParsing($html)) {
+        if (!Jaws_Gadget::IsGadgetInstalled('Glossary') || !$this->NeedParsing($html)) {
             return $html;
         }
 
-        $path = JAWS_PATH . 'gadgets/Glossary/Model.php';
-        if (file_exists($path) && Jaws_Gadget::IsGadgetInstalled('Glossary')) {
-            require_once $path;
-
-            $howMany = preg_match_all('#\[term\](.*?)\[/term\]#si', $html, $matches);
-
-            for ($i = 0; $i < $howMany; $i++) {
-                $match_text = $matches[1][$i];
-                //How many?
-                if ($term = GlossaryModel::GetTermByTerm(strip_tags($match_text))) {
-                    $new_text = "<acronym title=\"".str_replace(array('[term]', '[/term]'),
-                                                                '', 
-                                                                strip_tags($term['description'])). "\">$match_text</acronym>";
-                    $url = $GLOBALS['app']->Map->GetURLFor('Glossary',
-                                                           'ViewTerm',
-                                                           array('term' => empty($term['fast_url'])? $term['id'] : $term['fast_url']));
-                    $new_text = "<a href=\"{$url}\">$new_text</a>";
-                } else {
-                    $new_text = $match_text;
-                }
-                $html = str_replace('[term]'.$match_text.'[/term]', $new_text, $html);
+        $glossyModel = $GLOBALS['app']->LoadGadget('Glossary', 'Model');
+        $howMany = preg_match_all('#\[term\](.*?)\[/term\]#si', $html, $matches);
+        for ($i = 0; $i < $howMany; $i++) {
+            $match_text = $matches[1][$i];
+            //How many?
+            if ($term = $glossyModel->GetTermByTerm(strip_tags($match_text))) {
+                $new_text = 
+                    "<acronym title=\"".
+                    str_replace(array('[term]', '[/term]'), '', strip_tags($term['description'])).
+                    "\">$match_text</acronym>";
+                $url = $GLOBALS['app']->Map->GetURLFor(
+                    'Glossary',
+                    'ViewTerm',
+                    array('term' => empty($term['fast_url'])? $term['id'] : $term['fast_url'])
+                );
+                $new_text = "<a href=\"{$url}\">$new_text</a>";
+            } else {
+                $new_text = $match_text;
             }
-        } else {
-            //FIXME: Simon says we need a regexp
-            $html = str_replace(array('[term]', '[/term]'), '', $html);
+            $html = str_replace('[term]'.$match_text.'[/term]', $new_text, $html);
         }
 
         return $html;
