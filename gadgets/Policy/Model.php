@@ -27,20 +27,15 @@ class Policy_Model extends Jaws_Gadget_Model
                 $ip = $ip + 0xffffffff + 1;
             }
 
-            $params = array();
-            $params['ip'] = $ip;
-
-            $sql = '
-                SELECT [blocked]
-                FROM [[policy_ipblock]]
-                WHERE {ip} BETWEEN [from_ip] AND [to_ip]';
-
-            $types = array('boolean');
-            $blocked = $GLOBALS['db']->queryOne($sql, $params, $types);
-            //$table = Jaws_ORM::getInstance()->table('policy_ipblock');
-            //$table->select('blocked');
-            //$table->where('ip', array($table->expr('from_ip'), $table->expr('to_ip')), 'BETWEEN');
-            //$blocked = $table->fetchOne();
+            $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+            $table->select('blocked:boolean');
+            $table->where(
+                array($ip, 'integer'),
+                array($table->expr('from_ip'),
+                $table->expr('to_ip')),
+                'between'
+            );
+            $blocked = $table->fetchOne();
             if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
                 return $blocked;
             }
