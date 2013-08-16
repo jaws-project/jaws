@@ -485,13 +485,13 @@ class UrlMapper_AdminModel extends UrlMapper_Model
      * @param   int     $new_code   new code
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function AddErrorMap($url, $code, $new_url = '', $new_code = 404)
+    function AddErrorMap($url, $code, $new_url = '', $new_code = 0)
     {
         $data['url'] = $url;
         $data['url_hash'] = md5($url);
         $data['code'] = $code;
         $data['new_url'] = $new_url;
-        $data['new_code'] = $new_code;
+        $data['new_code'] = empty($new_code)? $code : $new_code;
         $data['hits'] = 1;
         $data['createtime'] = $GLOBALS['db']->Date();
         $data['updatetime'] = $GLOBALS['db']->Date();
