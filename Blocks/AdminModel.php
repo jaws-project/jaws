@@ -87,15 +87,7 @@ class Blocks_AdminModel extends Blocks_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'), _t('BLOCKS_NAME'));
         }
-
-        // TODO: we must use SHOUT here
-        /*
-        // Remove from layout
-        $layoutTable = Jaws_ORM::getInstance()->table('layout');
-        $result = $layoutTable->delete()
-            ->where('gadget', 'Blocks')->and()
-            ->where('gadget_action', "Display({$id})")->exec();
-        */
+        // TODO: we must trigger SHOUT here
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_DELETED', $block['title']), RESPONSE_NOTICE);
         return true;
