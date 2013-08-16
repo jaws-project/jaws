@@ -20,16 +20,11 @@ class Glossary_Model extends Jaws_Gadget_Model
      */
     function GetTerm($id)
     {
-        $params = array();
-        $params['id'] = $id;
-        $sql = "
-            SELECT
-                [id], [user_id], [term], [fast_url], [description], [createtime], [updatetime]
-            FROM [[glossary]]
-            WHERE ";
-        $sql .= is_numeric($id) ? '[id] = {id}' : '[fast_url] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $exp1 = is_numeric($id) ? 'id' : 'fast_url';
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->select(
+            'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'createtime', 'updatetime'
+        )->where($exp1, $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -69,20 +64,10 @@ class Glossary_Model extends Jaws_Gadget_Model
      */
     function GetRandomTerm()
     {
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $rand = $GLOBALS['db']->dbc->function->random();
-        $sql = '
-            SELECT
-                [id], [user_id], [term], [fast_url], [description], [updatetime]
-            FROM [[glossary]]
-            ORDER BY ' . $rand;
-
-        $result = $GLOBALS['db']->setLimit('1');
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        $result = $GLOBALS['db']->queryRow($sql);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->select(
+            'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'updatetime'
+        )->orderBy($glossaryTable->random())->limit(1)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -98,13 +83,10 @@ class Glossary_Model extends Jaws_Gadget_Model
      */
     function GetTerms()
     {
-        $sql = "
-            SELECT
-                [id], [user_id], [term], [fast_url], [description], [updatetime]
-            FROM [[glossary]]
-            ORDER BY [term]";
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->select(
+            'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'updatetime'
+        )->orderBy('term')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

@@ -21,11 +21,8 @@ class Glossary_AdminModel extends Glossary_Model
      */
     function DeleteTerm($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-        $sql = "DELETE FROM [[glossary]] WHERE [id] = {id}";
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_DELETED'), _t('GLOSSARY_NAME'));
@@ -51,21 +48,13 @@ class Glossary_AdminModel extends Glossary_Model
         $fast_url = empty($fast_url) ? $term : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'glossary', false);
 
-        $params = array();
-        $params['id']       = $id;
-        $params['term']     = $term;
-        $params['fast_url'] = $fast_url;
-        $params['desc']     = $desc;
-        $params['now']      = $GLOBALS['db']->Date();
-        $sql = "
-            UPDATE [[glossary]] SET
-                [term] = {term},
-                [fast_url] = {fast_url},
-                [description] = {desc},
-                [updatetime] = {now}
-            WHERE [id] = {id}";
+        $params['term']         = $term;
+        $params['fast_url']     = $fast_url;
+        $params['description']  = $desc;
+        $params['updatetime']   = $GLOBALS['db']->Date();
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_UPDATED'), _t('GLOSSARY_NAME'));
@@ -89,18 +78,15 @@ class Glossary_AdminModel extends Glossary_Model
         $fast_url = empty($fast_url) ? $term : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'glossary');
 
-        $params = array();
-        $params['term']     = $term;
-        $params['fast_url'] = $fast_url;
-        $params['desc']     = $desc;
-        $params['now']      = $GLOBALS['db']->Date();
-        $sql = "
-            INSERT INTO [[glossary]]
-                ([term], [fast_url], [description], [createtime], [updatetime])
-            VALUES
-                ({term}, {fast_url}, {desc}, {now}, {now})";
+        $now = $GLOBALS['db']->Date();
+        $params['term']         = $term;
+        $params['fast_url']     = $fast_url;
+        $params['description']  = $desc;
+        $params['createtime']   = $now;
+        $params['updatetime']   = $now;
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $result = $glossaryTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), _t('GLOSSARY_NAME'));
@@ -108,8 +94,8 @@ class Glossary_AdminModel extends Glossary_Model
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_TERM_ADDED'), RESPONSE_NOTICE);
 
-        $sql = "SELECT [id] FROM [[glossary]] WHERE [createtime] = {now}";
-        $row = $GLOBALS['db']->queryRow($sql, $params);
+        $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
+        $row = $glossaryTable->select('id:integer')->where('createtime', $now)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), _t('GLOSSARY_NAME'));
