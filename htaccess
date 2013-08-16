@@ -26,6 +26,7 @@ AddType 'text/xml; charset=UTF-8' atom rss xml
 
     # shortcut to access admin area
     RewriteRule ^admin$ /admin.php [NC,L]
+    RewriteRule ^admin&checksess$ /admin.php/?checksess [NC,L]
 
     # working without using index.php from URLs for better SEO optimization
     RewriteCond $1 !^(favicon\.(ico|png|gif|jpg)|robots\.txt|admin\.php) [NC]
