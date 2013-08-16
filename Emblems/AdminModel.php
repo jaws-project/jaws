@@ -90,7 +90,7 @@ class Emblems_AdminModel extends Emblems_Model
         $emblemTable = Jaws_ORM::getInstance()->table('emblem');
         $res = $emblemTable->insert($params)->exec();
         if (Jaws_Error::IsError($res)) {
-            @unlink($uploadfile);
+            Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $file_url);
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('EMBLEMS_ERROR_NOT_ADDED'), _t('EMBLEMS_NAME'));
         }
