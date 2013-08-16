@@ -13,6 +13,10 @@ class Jaws_HTTPError
 {
     function Get($code, $title = null, $message = null)
     {
+        header('Content-Type: text/html; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+
         // Let everyone know a HTTP error has been happened
         $result = $GLOBALS['app']->Listener->Shout('HTTPError', $code, 'UrlMapper');
         if (!Jaws_Error::IsError($result) && !empty($result)) {
