@@ -41,7 +41,7 @@ class Users_Actions_Contacts extends Users_HTML
         $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('contacts');
         
-        $tpl->SetVariable('title', _t('USERS_USERS_ACCOUNT_PREF'));
+        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
