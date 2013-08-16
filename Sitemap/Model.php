@@ -28,13 +28,11 @@ class Sitemap_Model extends Jaws_Gadget_Model
      */
     function GetItem($id)
     {
-        $sql = '
-            SELECT [id], [parent_id], [title], [shortname], [rfc_type], [reference], [priority],
-                   [changefreq], [rank], [path], [createtime], [updatetime]
-            FROM [[sitemap]] 
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, array('id' => $id));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select(
+            'id:integer', 'parent_id:integer', 'title', 'shortname', 'rfc_type', 'reference', 'priority:float',
+            'changefreq', 'rank:integer', 'path', 'createtime', 'updatetime'
+        )->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
@@ -102,13 +100,11 @@ class Sitemap_Model extends Jaws_Gadget_Model
      */
     function CreateItemsArray()
     {
-        $sql = "
-            SELECT
-                [id], [parent_id], [title], [shortname], [rfc_type], [reference],
-                [path], [rank], [changefreq], [priority]
-            FROM [[sitemap]] 
-            ORDER BY [parent_id], [rank] ";
-        $result = $GLOBALS['db']->queryAll($sql);
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select(
+            'id:integer', 'parent_id:integer', 'title', 'shortname', 'rfc_type', 'reference', 'priority:float',
+            'changefreq', 'rank:integer', 'path'
+        )->orderBy('parent_id', 'rank')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('SITEMAP_ERROR_GET_ALL_ITEMS'), _t('SITEMAP_NAME'));
         }
@@ -155,8 +151,8 @@ class Sitemap_Model extends Jaws_Gadget_Model
      */
     function GetSitemapItemByTitle($title)
     {
-        $sql = 'SELECT [id] FROM [[sitemap]] WHERE [title] = {title}';
-        $result = $GLOBALS['db']->queryRow($sql, array('title' => $title));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select('id:integer')->where('title', $title)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
@@ -177,9 +173,8 @@ class Sitemap_Model extends Jaws_Gadget_Model
      */
     function GetContent($path)
     {
-        // Get type and reference
-        $sql = "SELECT [rfc_type], [reference] FROM [[sitemap]] WHERE [path] = {path}";
-        $result = $GLOBALS['db']->queryRow($sql, array('path' => $path));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select('rfc_type', 'reference')->where('path', $path)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('SITEMAP_ERROR_GET_ITEM'), _t('SITEMAP_NAME'));
         }
@@ -212,7 +207,7 @@ class Sitemap_Model extends Jaws_Gadget_Model
      * Creates XML struct of sitemap
      *
      * @access  public
-     * @param   bool    $writeToDisk Flag that determinates if content should be written to disk
+     * @param   bool    $writeToDisk Flag that determinate if content should be written to disk
      * @return  mixed   XML content if it is required, or true
      */
     function makeSitemap($writeToDisk = false)
@@ -243,14 +238,12 @@ class Sitemap_Model extends Jaws_Gadget_Model
         $xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xmlString.= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
 
-        $sql = '
-            SELECT
-                [id], [parent_id], [title], [reference], [rank], [priority],
-                [changefreq], [updatetime]
-            FROM [[sitemap]]
-            ORDER BY [id], [priority]';
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select(
+            'id:integer', 'parent_id:integer', 'title', 'reference', 'rank:integer', 'priority:float',
+            'changefreq',  'updatetime'
+        )->orderBy('id', 'priority')->fetchAll();
 
-        $result = $GLOBALS['db']->queryAll($sql);
         if (!Jaws_Error::IsError($result)) {
             $date = $GLOBALS['app']->loadDate();
             foreach($result as $row) {

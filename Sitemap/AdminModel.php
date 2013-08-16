@@ -21,8 +21,8 @@ class Sitemap_AdminModel extends Sitemap_Model
      */
     function GetMaxPosition($parent_id)
     {
-        $sql = 'SELECT MAX([rank]) FROM [[sitemap]] WHERE [parent_id] = {parent_id}';
-        $mp = $GLOBALS['db']->queryOne($sql, array('parent_id' => $parent_id));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $mp = $sitemapTable->select('max(rank)')->where('parent_id', $parent_id)->fetchOne();
         return Jaws_Error::IsError($mp) ? 1 : $mp + 1;
     }
 
@@ -61,18 +61,19 @@ class Sitemap_AdminModel extends Sitemap_Model
             return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
 
+        $now = $GLOBALS['db']->Date();
         $position = $this->GetMaxPosition($parent_id);
-        $params                 = array();
-        $params['now']          = $GLOBALS['db']->Date();
         $params['parent_id']    = $parent_id;
         $params['title']        = $title;
         $params['shortname']    = $shortname;
-        $params['type']         = $type;
+        $params['rfc_type']     = $type;
         $params['reference']    = $reference;
-        $params['position']     = $position;
-        $params['priority']     = $priority;
+        $params['rank']         = $position;
         $params['changefreq']   = $change;
-        
+        $params['priority']     = $priority;
+        $params['createtime']   = $now;
+        $params['updatetime']   = $now;
+
         if ($parent_id == 0) {
             $params['path'] = $shortname;
         } else {
@@ -80,27 +81,19 @@ class Sitemap_AdminModel extends Sitemap_Model
             $params['path'] = $pitem['path'] . '/' . $shortname;
         }
 
-        $sql = '
-            INSERT INTO [[sitemap]]
-                ([parent_id], [title], [shortname], [rfc_type], [reference], [rank],
-                 [path], [changefreq], [priority], [createtime], [updatetime])
-            VALUES
-                ({parent_id}, {title}, {shortname}, {type}, {reference}, {position},
-                 {path}, {changefreq}, {priority}, {now}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
         }
 
-        $sql = 'SELECT
-                [id], [parent_id], [title], [shortname], [rfc_type], [changefreq],
-                [priority], [reference], [rank], [createtime], [updatetime]
-                FROM [[sitemap]]
-                WHERE [createtime] = {now}';
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->select(
+            'id:integer', 'parent_id:integer', 'title', 'shortname', 'rfc_type', 'changefreq',
+                'priority:float', 'reference', 'rank:integer', 'createtime', 'updatetime'
+        )->where('createtime', $now)->fetchRow();
 
-        $result = $GLOBALS['db']->queryRow($sql, $params);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
@@ -127,9 +120,8 @@ class Sitemap_AdminModel extends Sitemap_Model
         }
 
         // Delete item and children
-        $path = $item['path'] . '%';
-        $sql = 'DELETE FROM [[sitemap]] WHERE [path] LIKE {path}';
-        $result = $GLOBALS['db']->query($sql, array('path' => $path));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->delete()->where('path', $item['path'] . '%', 'like')->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_DELETE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_DELETE'), _t('SITEMAP_NAME'));
@@ -178,21 +170,19 @@ class Sitemap_AdminModel extends Sitemap_Model
             return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
 
-        $params = array();
-        $params['now']        = $GLOBALS['db']->Date();
-        $params['id']         = (int)$id;
         $params['title']      = $title;
         $params['shortname']  = $shortname;
-        $params['type']       = $type;
+        $params['rfc_type']   = $type;
         $params['reference']  = $reference;
         $params['parent_id']  = $parent_id;
         $params['priority']   = $priority;
         $params['changefreq'] = $change;
-        
+        $params['updatetime'] = $GLOBALS['db']->Date();
+
         if ($parent_id != $item['parent_id']) {
-            $params['position'] = $this->GetMaxPosition($parent_id);
+            $params['rank'] = $this->GetMaxPosition($parent_id);
         } else {
-            $params['position'] = $item['rank'];
+            $params['rank'] = $item['rank'];
         }
 
 
@@ -203,22 +193,8 @@ class Sitemap_AdminModel extends Sitemap_Model
             $params['path'] = $pitem['path'] . '/' . $shortname;
         }
 
-
-        $sql = '
-            UPDATE [[sitemap]] SET
-                [title]      = {title},
-                [shortname]  = {shortname},
-                [rfc_type]   = {type},
-                [reference]  = {reference},
-                [parent_id]  = {parent_id},
-                [rank]       = {position},
-                [path]       = {path},
-                [priority]   = {priority},
-                [changefreq] = {changefreq},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $result = $sitemapTable->update($params)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_UPDATE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
@@ -258,14 +234,9 @@ class Sitemap_AdminModel extends Sitemap_Model
     function MoveItem($id, $direction)
     {
         $item = $this->GetItem($id);
-        $sql = '
-            SELECT
-                [id], [rank]
-            FROM [[sitemap]]
-            WHERE [parent_id] = {parent}
-            ORDER BY [rank] ASC';
-
-        $result = $GLOBALS['db']->queryAll($sql, array('parent' => $item['parent_id']));
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $sitemapTable->select('id:integer', 'rank:integer')->where('parent_id', $item['parent_id']);
+        $result = $sitemapTable->orderBy('rank ASC')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
@@ -308,36 +279,24 @@ class Sitemap_AdminModel extends Sitemap_Model
 
         if ($run_queries) {
             $now = $GLOBALS['db']->Date();
-
             $params = array();
-            $params['now']      = $now;
-            $params['id']       = $id;
-            $params['position'] = $m_position;
+            $params['rank']         = $m_position;
+            $params['updatetime']   = $now;
 
-            $sql = '
-                UPDATE [[sitemap]] SET
-                    [rank] = {position},
-                    [updatetime] = {now}
-                WHERE [id] = {id}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
+            $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+            $result = $sitemapTable->update($params)->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
             }
 
             $params = array();
-            $params['now']      = $now;
-            $params['id']       = $m_id;
-            $params['position'] = $position;
+            $params['id']           = $m_id;
+            $params['rank']         = $position;
+            $params['updatetime']   = $now;
 
-            $sql = '
-                UPDATE [[sitemap]] SET
-                    [rank] = {position},
-                    [updatetime] = {now}
-                WHERE [id] = {id}';
-
-            $result = $GLOBALS['db']->query($sql, $params);
+            $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+            $result = $sitemapTable->update($params)->where('id', $m_id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));
