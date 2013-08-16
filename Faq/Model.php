@@ -22,49 +22,28 @@ class Faq_Model extends Jaws_Gadget_Model
      */
     function GetQuestions($category = null, $justactive = false)
     {
-        $sql = '
-            SELECT
-                [[faq]].[id],
-                [question],
-                [[faq]].[fast_url],
-                [answer],
-                [[faq]].[faq_position],
-                [[faq_category]].[id] AS cat_id,
-                [[faq_category]].[category_position],
-                [[faq_category]].[category],
-                [[faq_category]].[fast_url] AS cat_fast_url,
-                [[faq_category]].[description],
-                [[faq]].[createtime],
-                [[faq]].[updatetime],
-                [[faq]].[published]
-            FROM [[faq_category]]
-            LEFT JOIN [[faq]] ON [[faq_category]].[id] = [[faq]].[category]';
+        $faqCategoryTable = Jaws_ORM::getInstance()->table('faq_category');
+        $faqCategoryTable->select(
+            'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.faq_position:integer',
+            'faq_category.id AS cat_id:integer', 'faq_category.category_position:integer', 'faq_category.category',
+            'faq_category.fast_url AS cat_fast_url', 'faq_category.description', 'faq.createtime',
+            'faq.updatetime', 'faq.published:boolean'
+        );
+        $faqCategoryTable->join('faq', 'faq_category.id', 'faq.category', 'left');
+
+
         if ($category) {
             if (is_numeric($category)) {
-                $sql .= '
-                    WHERE [[faq_category]].[id] = {category} ';
+                $faqCategoryTable->where('faq_category.id', $category);
             } else {
-                $sql .= '
-                    WHERE [[faq_category]].[fast_url] = {category} ';
+                $faqCategoryTable->where('faq_category.fast_url', $category);
             }
         }
 
         if ($justactive) {
-            $sql .= stristr($sql, 'WHERE') ? ' AND ' : ' WHERE  ';
-            $sql .= '[published] = {active} ';
+            $faqCategoryTable->and()->where('published', true);
         }
-
-        $sql .= '
-            ORDER BY [[faq_category]].[category_position], [[faq]].[faq_position]';
-
-        $params             = array();
-        $params['category'] = $category;
-        $params['active']   = true;
-
-        $types = array('integer', 'text', 'text', 'text', 'integer', 'integer',
-                       'integer', 'text', 'text', 'text', 'timestamp', 'timestamp', 'boolean');
-
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = $faqCategoryTable->orderBy('faq_category.category_position', 'faq.faq_position')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -111,32 +90,20 @@ class Faq_Model extends Jaws_Gadget_Model
      */
     function GetQuestion($id)
     {
-        $sql = '
-            SELECT
-                [[faq]].[id],
-                [question],
-                [[faq]].[fast_url],
-                [answer],
-                [[faq]].[category] AS category_id,
-                [published],
-                [[faq]].[faq_position],
-                [[faq_category]].[category],
-                [[faq]].[createtime],
-                [[faq]].[updatetime]
-            FROM [[faq]]
-            LEFT JOIN [[faq_category]] ON [[faq]].[category] = [[faq_category]].[id]';
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $faqTable->select(
+                'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category AS category_id:integer',
+                'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
+                'faq.updatetime');
+        $faqTable->join('faq_category', 'faq.category', 'faq_category.id', 'left');
+
         if (is_numeric($id)) {
-            $sql .= '
-                WHERE [[faq]].[id] = {id}';
+            $faqTable->where('faq.id', $id);
         } else {
-            $sql .= '
-                WHERE [[faq]].[fast_url] = {id}';
+            $faqTable->where('faq.fast_url', $id);
         }
 
-        $types = array('integer', 'text', 'text', 'text', 'integer', 'boolean',
-                       'integer', 'text', 'timestamp', 'timestamp');
-
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id), $types);
+        $row = $faqTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }
@@ -152,18 +119,9 @@ class Faq_Model extends Jaws_Gadget_Model
      */
     function GetCategories()
     {
-        $sql = '
-            SELECT
-                [id],
-                [category],
-                [fast_url],
-                [description],
-                [category_position],
-                [updatetime]
-            FROM [[faq_category]]
-            ORDER BY [category_position] ASC';
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
+        $result = $table->orderBy('category_position ASC')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -180,18 +138,9 @@ class Faq_Model extends Jaws_Gadget_Model
      */
     function GetCategory($id)
     {
-        $sql = '
-            SELECT
-                [id],
-                [category],
-                [fast_url],
-                [description],
-                [category_position],
-                [updatetime]
-            FROM [[faq_category]]
-            WHERE [id] = {category}';
-
-        $row = $GLOBALS['db']->queryRow($sql, array('category' => $id));
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
+        $row = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error($row->getMessage(), 'SQL');
         }

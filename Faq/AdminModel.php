@@ -22,8 +22,8 @@ class Faq_AdminModel extends Faq_Model
      */
     function GetMaxQuestionPosition($category)
     {
-        $sql = 'SELECT MAX([faq_position]) FROM [[faq]] WHERE [category] = {category}';
-        $max = $GLOBALS['db']->queryOne($sql, array('category' => $category));
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $max = $faqTable->select('max(faq_position)')->where('category', $category)->fetchOne();
         if (Jaws_Error::IsError($max)) {
             $max = 0;
         }
@@ -47,22 +47,18 @@ class Faq_AdminModel extends Faq_Model
         $fast_url = empty($fast_url) ? $question : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq');
 
-        $params = array();
-        $params['question'] = $question;
-        $params['fast_url'] = $fast_url;
-        $params['answer']   = $answer;
-        $params['category'] = $category;
-        $params['active']   = $active;
-        $params['position'] = $this->GetMaxQuestionPosition($category) + 1;
-        $params['now']      = $GLOBALS['db']->Date();
+        $now = $GLOBALS['db']->Date();
+        $params['question']     = $question;
+        $params['fast_url']     = $fast_url;
+        $params['answer']       = $answer;
+        $params['category']     = $category;
+        $params['published']    = $active;
+        $params['faq_position'] = $this->GetMaxQuestionPosition($category) + 1;
+        $params['createtime']   = $now;
+        $params['updatetime']   = $now;
 
-        $sql = '
-            INSERT INTO [[faq]]
-                ([question], [fast_url], [answer], [category], [published], [faq_position], [createtime], [updatetime])
-            VALUES
-                ({question}, {fast_url}, {answer}, {category}, {active}, {position}, {now}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $result = $faqTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), _t('FAQ_NAME'));
@@ -89,26 +85,15 @@ class Faq_AdminModel extends Faq_Model
         $fast_url = empty($fast_url) ? $question : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq', false);
 
-        $params = array();
-        $params['id']       = $id;
-        $params['question'] = $question;
-        $params['fast_url'] = $fast_url;
-        $params['answer']   = $answer;
-        $params['category'] = $category;
-        $params['active']   = $active;
-        $params['now']      = $GLOBALS['db']->Date();
+        $params['question']     = $question;
+        $params['fast_url']     = $fast_url;
+        $params['answer']       = $answer;
+        $params['category']     = $category;
+        $params['published']    = $active;
+        $params['updatetime']   = $GLOBALS['db']->Date();
 
-        $sql = '
-            UPDATE [[faq]] SET
-                [question]   = {question},
-                [fast_url]   = {fast_url},
-                [answer]     = {answer},
-                [category]   = {category},
-                [published]  = {active},
-                [updatetime] = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $result = $faqTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), _t('FAQ_NAME'));
@@ -128,27 +113,25 @@ class Faq_AdminModel extends Faq_Model
      */
     function DeleteQuestion($id)
     {
-        $sql = 'SELECT [faq_position] FROM [[faq]] WHERE [id] = {id}';
-        $rid = $GLOBALS['db']->queryRow($sql, array('id' => $id));
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $rid = $faqTable->select('faq_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($rid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
         }
 
         if (isset($rid['faq_position'])) {
-            $sql = '
-                UPDATE [[faq]] SET
-                    [faq_position] = [faq_position] - 1
-                WHERE [faq_position] > {pos}';
-
-            $rs = $GLOBALS['db']->query($sql, array('pos' => $rid['faq_position']));
+            $faqTable = Jaws_ORM::getInstance()->table('faq');
+            $rs = $faqTable->update(
+                array('faq_position' => $faqTable->expr('faq_position - ?', 1))
+            )->where('faq_position', $rid['faq_position'], '>')->exec();
             if (Jaws_Error::IsError($rs)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
             }
 
-            $sql = 'DELETE FROM [[faq]] WHERE [id] = {id}';
-            $rs = $GLOBALS['db']->query($sql, array('id' => $id));
+            $faqTable = Jaws_ORM::getInstance()->table('faq');
+            $rs = $faqTable->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($rs)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
@@ -180,25 +163,12 @@ class Faq_AdminModel extends Faq_Model
             $newpos = $oldpos;
         }
 
-        $params = array();
-        $params['category'] = (int)$cat;
-        $params['question'] = (int)$id;
-        $params['oldpos']   = (int)$oldpos;
-        $params['newpos']   = (int)$newpos;
-
         //Start Transaction
         $GLOBALS['db']->dbc->beginTransaction();
 
-        $sql = '
-            UPDATE [[faq]] SET
-                [faq_position] = {oldpos}
-            WHERE
-                [category] = {category}
-              AND
-                [faq_position] = {newpos}
-            ';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $faqTable->update(array('faq_position' => (int)$oldpos))->where('category', (int)$cat);
+        $result = $faqTable->and()->where('faq_position', (int)$newpos)->exec();
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();
@@ -207,13 +177,8 @@ class Faq_AdminModel extends Faq_Model
             return $result;
         }
 
-        $sql = '
-            UPDATE [[faq]] SET
-                [faq_position] = {newpos}
-            WHERE
-                [id] = {question}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $result = $faqTable->update(array('faq_position' => (int)$newpos))->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();
@@ -235,8 +200,8 @@ class Faq_AdminModel extends Faq_Model
      */
     function GetMaxCategoryPosition()
     {
-        $sql = 'SELECT MAX([category_position]) FROM [[faq_category]]';
-        $max = $GLOBALS['db']->queryOne($sql);
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $max = $table->select('max(category_position)')->fetchOne();
         if (Jaws_Error::IsError($max)) {
             $max = 0;
         }
@@ -258,20 +223,14 @@ class Faq_AdminModel extends Faq_Model
         $fast_url = empty($fast_url) ? $category : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq_category');
 
-        $params = array();
-        $params['category']    = $category;
-        $params['fast_url']    = $fast_url;
-        $params['description'] = $description;
-        $params['position']    = $this->GetMaxCategoryPosition() + 1;
-        $params['updatetime']  = $GLOBALS['db']->Date();
+        $params['category']             = $category;
+        $params['fast_url']             = $fast_url;
+        $params['description']          = $description;
+        $params['category_position']    = $this->GetMaxCategoryPosition() + 1;
+        $params['updatetime']           = $GLOBALS['db']->Date();
 
-        $sql = '
-            INSERT INTO [[faq_category]]
-                ([category], [fast_url], [description], [category_position], [updatetime])
-            VALUES
-                ({category}, {fast_url}, {description}, {position}, {updatetime})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $result = $table->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), _t('FAQ_NAME'));
@@ -302,22 +261,13 @@ class Faq_AdminModel extends Faq_Model
         $fast_url = empty($fast_url) ? $category : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq_category', false);
 
-        $params = array();
-        $params['id'] = $id;
         $params['category']    = $category;
         $params['fast_url']    = $fast_url;
         $params['description'] = $description;
         $params['updatetime']  = $GLOBALS['db']->Date();
 
-        $sql = '
-            UPDATE [[faq_category]] SET
-                [category] = {category},
-                [fast_url] = {fast_url},
-                [description] = {description},
-                [updatetime] = {updatetime}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $result = $table->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
@@ -336,34 +286,33 @@ class Faq_AdminModel extends Faq_Model
      */
     function DeleteCategory($id)
     {
-        $sql = 'SELECT [category_position] FROM [[faq_category]] WHERE [id] = {id}';
-        $row = $GLOBALS['db']->queryRow($sql, array('id' => $id));
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $row = $table->select('category_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
         }
 
         if (isset($row['category_position'])) {
-            $sql = '
-                UPDATE [[faq_category]] SET
-                    [category_position] = [category_position] - 1
-                WHERE [category_position] > {pos}';
+            $table = Jaws_ORM::getInstance()->table('faq_category');
+            $result = $table->update(
+                array('category_position' => $table->expr('category_position - ?', 1))
+            )->where('category_position', $row['category_position'], '>')->exec();
 
-            $result = $GLOBALS['db']->query($sql, array('pos' => $row['category_position']));
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
             }
 
-            $sql = 'DELETE FROM [[faq_category]] WHERE [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, array('id' => $id));
+            $table = Jaws_ORM::getInstance()->table('faq_category');
+            $result = $table->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), _t('FAQ_NAME'));
             }
 
-            $sql = 'DELETE FROM [[faq]] WHERE [category] = {id}';
-            $result = $GLOBALS['db']->query($sql, array('id' => $id));
+            $faqTable = Jaws_ORM::getInstance()->table('faq');
+            $result = $faqTable->delete()->where('category', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), _t('FAQ_NAME'));
@@ -388,32 +337,19 @@ class Faq_AdminModel extends Faq_Model
      */
     function MoveCategory($cat, $old_position, $new_position)
     {
-        $params = array();
-        $params['id']     = (int)$cat;
-        $params['one']    = 1;
-        $params['oldpos'] = (int)$old_position;
-        $params['newpos'] = (int)$new_position;
-
         //Start Transaction
         $GLOBALS['db']->dbc->beginTransaction();
 
-        if ($params['oldpos'] > $params['newpos']) {
-            $sql = '
-                UPDATE [[faq_category]] SET
-                    [category_position] = [category_position] + {one}
-                WHERE
-                    [category_position] BETWEEN {newpos} AND {oldpos}
-                ';
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        if ((int)$old_position > (int)$new_position) {
+            $result = $table->update(
+                array('category_position' => $table->expr('category_position + ?', 1))
+            )->where('category_position', array((int)$new_position, (int)$old_position), 'between')->exec();
         } else {
-            $sql = '
-                UPDATE [[faq_category]] SET
-                    [category_position] = [category_position] - {one}
-                WHERE
-                    [category_position] BETWEEN {oldpos} AND {newpos}
-                ';
+            $result = $table->update(
+                array('category_position' => $table->expr('category_position - ?', 1))
+            )->where('category_position', array((int)$old_position, (int)$new_position), 'between')->exec();
         }
-
-        $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();
@@ -422,13 +358,8 @@ class Faq_AdminModel extends Faq_Model
             return $result;
         }
 
-        $sql = '
-            UPDATE [[faq_category]] SET
-                [category_position] = {newpos}
-            WHERE
-                [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('faq_category');
+        $result = $table->update(array('category_position' => (int)$new_position))->where('id', (int)$cat)->exec();
         if (Jaws_Error::IsError($result)) {
             //Rollback Transaction
             $GLOBALS['db']->dbc->rollback();
@@ -436,7 +367,6 @@ class Faq_AdminModel extends Faq_Model
             $result->setMessage(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'));
             return $result;
         }
-
 
         //Commit Transaction
         $GLOBALS['db']->dbc->commit();
