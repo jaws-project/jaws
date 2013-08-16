@@ -383,7 +383,7 @@ function componentRegistry(reset)
 {
     if (!regCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('getregistry', selectedComponent),
+            res = ComponentsAjax.callSync('getregistry', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         res.data.each(function(reg) {
@@ -414,7 +414,7 @@ function componentACL(reset)
 {
     if (!aclCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('getacl', selectedComponent),
+            res = ComponentsAjax.callSync('getacl', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         aclCache = div.getElement('div');
         $('component_form').grab(div.getElement('div'));

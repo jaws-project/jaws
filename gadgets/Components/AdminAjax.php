@@ -268,10 +268,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Fetches registry data of the gadget/plugin
      *
      * @access  public
-     * @param   string  $comp   Gadget/Plugin name
+     * @param   string  $comp       Gadget/Plugin name
+     * @param   bool    $is_plugin  Is Plugin?
      * @return  array   Registry keys/values
      */
-    function GetRegistry($comp)
+    function GetRegistry($comp, $is_plugin = false)
     {
         $this->gadget->CheckPermission('ManageRegistry');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Registry');
@@ -305,18 +306,21 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Fetches default ACL data of the gadget/plugin
      *
      * @access  public
-     * @param   string  $comp  Gadget/Plugin name
+     * @param   string  $comp       Gadget/Plugin name
+     * @param   bool    $is_plugin  Is Plugin?
      * @return  array   ACL keys/values
      */
-    function GetACL($comp)
+    function GetACL($comp, $is_plugin = false)
     {
         $this->gadget->CheckPermission('ManageACLs');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'ACL');
         $ui = $html->ACLUI();
-        $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
-        foreach ($acls as $k => $acl) {
-            $acls[$k]['key_desc'] = $info->acl->description($acl['key_name'], $acl['key_subkey']);
+        if (!$is_plugin) {
+            $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
+            foreach ($acls as $k => $acl) {
+                $acls[$k]['key_desc'] = $info->acl->description($acl['key_name'], $acl['key_subkey']);
+            }
         }
         return array('ui' => $ui, 'acls' => $acls);
     }
