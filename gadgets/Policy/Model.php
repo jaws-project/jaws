@@ -37,6 +37,10 @@ class Policy_Model extends Jaws_Gadget_Model
 
             $types = array('boolean');
             $blocked = $GLOBALS['db']->queryOne($sql, $params, $types);
+            //$table = Jaws_ORM::getInstance()->table('policy_ipblock');
+            //$table->select('blocked');
+            //$table->where('ip', array($table->expr('from_ip'), $table->expr('to_ip')), 'BETWEEN');
+            //$blocked = $table->fetchOne();
             if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
                 return $blocked;
             }
@@ -54,16 +58,10 @@ class Policy_Model extends Jaws_Gadget_Model
      */
     function IsAgentBlocked($agent)
     {
-        $params = array();
-        $params['agent'] = Jaws_XSS::filter($agent);
-
-        $sql = '
-            SELECT [blocked]
-            FROM [[policy_agentblock]]
-            WHERE [agent] = {agent}';
-
-        $types = array('boolean');
-        $blocked = $GLOBALS['db']->queryOne($sql, $params, $types);
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $table->select('blocked:boolean');
+        $table->where('agent', Jaws_XSS::filter($agent));
+        $blocked = $table->fetchOne();
         if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
             return $blocked;
         }

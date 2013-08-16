@@ -22,9 +22,9 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetIPRange($id)
     {
-        $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
-        $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
-        return $objORM->where('id', (int)$id)->fetchRow();
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $table->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        return $table->where('id', (int)$id)->fetchRow();
     }
 
     /**
@@ -36,21 +36,9 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetAgent($id)
     {
-        $sql = '
-            SELECT [id], [agent], [blocked]
-            FROM [[policy_agentblock]]
-            WHERE [id] = {id}';
-
-        $params = array();
-        $params['id'] = $id;
-
-        $types = array('integer', 'text', 'boolean');
-        $res = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $table->select('id', 'agent', 'blocked:boolean');
+        return $table->where('id', (int)$id)->fetchRow();
     }
 
     /**
@@ -61,9 +49,9 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetTotalOfBlockedIPs()
     {
-        $sql = 'SELECT COUNT([id]) as total FROM [[policy_ipblock]]';
-        $rs  = $GLOBALS['db']->queryOne($sql);
-        return $rs;
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $table->select('COUNT(id)');
+        return $table->fetchOne();
     }
 
     /**
@@ -74,9 +62,9 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetTotalOfBlockedAgents()
     {
-        $sql = 'SELECT COUNT([id]) as total FROM [[policy_agentblock]]';
-        $rs  = $GLOBALS['db']->queryOne($sql);
-        return $rs;
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $table->select('COUNT(id)');
+        return $table->fetchOne();
     }
 
     /**
@@ -88,10 +76,11 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetBlockedIPs($limit = 0, $offset = null)
     {
-        $objORM = Jaws_ORM::getInstance()->table('policy_ipblock');
-        $objORM->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
-        $objORM->orderBy('id DESC');
-        return $objORM->fetchAll();
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $table->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        $table->limit($limit, $offset);
+        $table->orderBy('id DESC');
+        return $table->fetchAll();
     }
 
     /**
@@ -103,26 +92,11 @@ class Policy_AdminModel extends Policy_Model
      */
     function GetBlockedAgents($limit = 0, $offset = null)
     {
-        if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
-            }
-        }
-
-        $sql = '
-            SELECT
-                [id], [agent], [blocked]
-            FROM [[policy_agentblock]]
-            ORDER BY [id] DESC';
-
-        $types = array('integer', 'text', 'boolean');
-        $rs = $GLOBALS['db']->queryAll($sql, null, $types);
-        if (Jaws_Error::IsError($rs)) {
-            return new Jaws_Error($rs->getMessage(), 'SQL');
-        }
-
-        return $rs;
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $table->select('id', 'agent', 'blocked:boolean');
+        $table->limit($limit, $offset);
+        $table->orderBy('id DESC');
+        return $table->fetchAll();
     }
 
     /**
@@ -146,19 +120,14 @@ class Policy_AdminModel extends Policy_Model
             if ($to_ip < 0) $to_ip = $to_ip + 0xffffffff + 1;
         }
 
-        $sql = '
-            INSERT INTO [[policy_ipblock]]
-                ([from_ip], [to_ip], [blocked])
-            VALUES
-                ({from_ip}, {to_ip}, {blocked})';
+        $data = array();
+        $data['from_ip'] = $from_ip;
+        $data['to_ip'] = $to_ip;
+        $data['blocked'] = (bool)$blocked;
 
-        $params = array();
-        $params['from_ip'] = $from_ip;
-        $params['to_ip']   = $to_ip;
-        $params['blocked'] = (bool)$blocked;
-
-        $rs = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($rs)) {
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $res = $table->insert($data)->exec();
+        if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_IP_NOT_ADDED', 'AddIPRange'), _t('POLICY_NAME'));
         }
@@ -190,20 +159,13 @@ class Policy_AdminModel extends Policy_Model
             if ($to_ip < 0) $to_ip = $to_ip + 0xffffffff + 1;
         }
 
-        $sql = '
-            UPDATE [[policy_ipblock]] SET
-                [from_ip] = {from_ip},
-                [to_ip]   = {to_ip},
-                [blocked] = {blocked}
-            WHERE [id] = {id}';
+        $data = array();
+        $data['from_ip'] = $from_ip;
+        $data['to_ip'] = $to_ip;
+        $data['blocked'] = (bool)$blocked;
 
-        $params = array();
-        $params['id']      = $id;
-        $params['from_ip'] = $from_ip;
-        $params['to_ip']   = $to_ip;
-        $params['blocked'] = (bool)$blocked;
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $res = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_IP_NOT_DELETED', 'EditIPRange'), _t('POLICY_NAME'));
@@ -222,11 +184,11 @@ class Policy_AdminModel extends Policy_Model
      */
     function DeleteIPRange($id)
     {
-        $sql = 'DELETE FROM [[policy_ipblock]] WHERE [id] = {id}';
-        $rs  = $GLOBALS['db']->query($sql, array('id' => (int)$id));
-        if (Jaws_Error::IsError($rs)) {
+        $table = Jaws_ORM::getInstance()->table('policy_ipblock');
+        $res = $table->delete()->where('id', (int)$id)->exec();
+        if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error($rs->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage(), 'SQL');
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_DELETED'), RESPONSE_NOTICE);
@@ -242,17 +204,12 @@ class Policy_AdminModel extends Policy_Model
      */
     function AddAgent($agent, $blocked = true)
     {
-        $params = array();
-        $params['agent']   = $agent;
-        $params['blocked'] = (bool)$blocked;
+        $data = array();
+        $data['agent'] = $agent;
+        $data['blocked'] = (bool)$blocked;
 
-        $sql = '
-            INSERT INTO [[policy_agentblock]]
-                ([agent], [blocked])
-            VALUES
-                ({agent}, {blocked})';
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD', 'AddAgent'), _t('POLICY_NAME'));
@@ -272,18 +229,12 @@ class Policy_AdminModel extends Policy_Model
      */
     function EditAgent($id, $agent, $blocked = true)
     {
-        $params = array();
-        $params['id']      = (int)$id;
-        $params['agent']   = $agent;
-        $params['blocked'] = (bool)$blocked;
+        $data = array();
+        $data['agent'] = $agent;
+        $data['blocked'] = (bool)$blocked;
 
-        $sql = '
-            UPDATE [[policy_agentblock]] SET
-                [agent]   = {agent},
-                [blocked] = {blocked}
-            WHERE [id] = {id}';
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $res = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_EDITED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_EDITED', 'EditAgent'), _t('POLICY_NAME'));
@@ -302,11 +253,11 @@ class Policy_AdminModel extends Policy_Model
      */
     function DeleteAgent($id)
     {
-        $sql = 'DELETE FROM [[policy_agentblock]] WHERE [id] = {id}';
-        $rs  = $GLOBALS['db']->query($sql, array('id' => (int)$id));
-        if (Jaws_Error::IsError($rs)) {
+        $table = Jaws_ORM::getInstance()->table('policy_agentblock');
+        $res = $table->delete()->where('id', (int)$id)->exec();
+        if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error($rs->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage(), 'SQL');
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_DELETED'), RESPONSE_NOTICE);
