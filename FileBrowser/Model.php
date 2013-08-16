@@ -105,19 +105,9 @@ class FileBrowser_Model extends Jaws_Gadget_Model
         }
         $path = str_replace('..', '', $path);
 
-        $sql = 'SELECT
-                    [id], [path], [filename], [title], [description], [fast_url], [hits]
-                FROM [[filebrowser]]
-                WHERE
-                    [path]     = {path}
-                  AND
-                    [filename] = {file}';
-
-        $params = array();
-        $params['path'] = $path;
-        $params['file'] = $file;
-
-        $res = $GLOBALS['db']->queryRow($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('filebrowser');
+        $table->select('id:integer', 'path', 'filename', 'title', 'description', 'fast_url', 'hits:integer');
+        $res = $table->where('path', $path)->and()->where('filename', $file)->fetchRow();
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('FILEBROWSER_NAME'));
         }
@@ -134,21 +124,16 @@ class FileBrowser_Model extends Jaws_Gadget_Model
      */
     function DBFileInfoByIndex($id)
     {
-        $sql = '
-          SELECT
-              [id], [path], [filename], [title], [description], [fast_url], [hits]
-          FROM [[filebrowser]]';
+        $table = Jaws_ORM::getInstance()->table('filebrowser');
+        $table->select('id:integer', 'path', 'filename', 'title', 'description', 'fast_url', 'hits:integer');
 
         if (is_numeric($id)) {
-            $sql .= ' WHERE [id] = {id}';
+            $table->where('id', $id);
         } else {
-            $sql .= ' WHERE [fast_url] = {id}';
+            $table->where('fast_url', $id);
         }
 
-        $params = array();
-        $params['id'] = $id;
-
-        $res = $GLOBALS['db']->queryRow($sql, $params);
+        $res = $table->fetchRow();
         return $res;
     }
 
@@ -610,12 +595,12 @@ class FileBrowser_Model extends Jaws_Gadget_Model
      */
     function HitFileDownload($fid)
     {
-        $sql = '
-            UPDATE [[filebrowser]] SET
-                [hits] = [hits] + 1
-            WHERE
-                [id] = {fid}';
-        $result = $GLOBALS['db']->query($sql, array('fid' => $fid));
+        $table = Jaws_ORM::getInstance()->table('filebrowser');
+        $result = $table->update(
+            array(
+                'hits' => $table->expr('hits + ?', 1)
+            )
+        )->where('id', $fid)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }

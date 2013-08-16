@@ -36,19 +36,16 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         }
         $path = str_replace('..', '', $path);
 
-        $date  = $GLOBALS['app']->loadDate();
         $title = empty($title)? $file : $title;
         $fast_url = empty($fast_url) ? $title : $fast_url;
 
-        $params = array();
-        $params['path']        = $path;
         $params['filename']    = $file;
-        $params['oldname']     = empty($oldname)? $params['filename'] : $oldname;
         $params['title']       = $title;
         $params['description'] = $description;
         $params['updatetime']  = $GLOBALS['db']->Date();
 
-        $dbFile = $this->DBFileInfo($path, $params['oldname']);
+        $oldname = empty($oldname)? $params['filename'] : $oldname;
+        $dbFile = $this->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -59,20 +56,8 @@ class FileBrowser_AdminModel extends FileBrowser_Model
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser', false);
             $params['fast_url'] = $fast_url;
 
-            $sql = '
-                UPDATE [[filebrowser]] SET
-                    [path]         = {path},
-                    [filename]     = {filename},
-                    [title]        = {title},
-                    [description]  = {description},
-                    [fast_url]     = {fast_url},
-                    [updatetime]   = {updatetime}
-                WHERE
-                    [path]     = {path}
-                  AND
-                    [filename] = {oldname}';
-
-            $res = $GLOBALS['db']->query($sql, $params);
+            $table = Jaws_ORM::getInstance()->table('filebrowser');
+            $res = $table->update($params)->where('path', $path)->and()->where('filename', $oldname)->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
@@ -121,17 +106,12 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         }
         $path = str_replace('..', '', $path);
 
-        $params = array();
-        $params['path'] = $path;
-        $params['file'] = $file;
-
         $dbRow = $this->DBFileInfo($path, $file);
         if (!Jaws_Error::isError($dbRow) && !empty($dbRow)) {
-            $params['id'] = $dbRow['id'];
-            $sql = 'DELETE FROM [[filebrowser]] WHERE [id] = {id}';
-            $res = $GLOBALS['db']->query($sql, $params);
+            $table = Jaws_ORM::getInstance()->table('filebrowser');
+            $res = $table->delete()->where('id', $dbRow['id'])->exec();
             if (!Jaws_Error::IsError($res)) {
-                $this->gadget->acl->delete('OutputAccess', $params['id']);
+                $this->gadget->acl->delete('OutputAccess', $dbRow['id']);
                 $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
                 return true;
             }
