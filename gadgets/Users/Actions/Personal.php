@@ -46,7 +46,7 @@ class Users_Actions_Personal extends Users_HTML
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
         if (empty($personal['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/avatar.png');
+            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
         } else {
             $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $personal['avatar'];
             $user_current_avatar .= !empty($personal['last_update']) ? "?" . $personal['last_update'] . "" : '';
