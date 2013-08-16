@@ -436,6 +436,8 @@ class Jaws_ORM
         if (is_object($column)) {
             $colstr = $column->get();
             unset($column);
+        } elseif (is_array($column)) {
+            $colstr = $this->quoteValue($column);
         } else {
             $colstr = $this->quoteIdentifier($column);
         }
