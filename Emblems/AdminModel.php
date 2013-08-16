@@ -24,24 +24,14 @@ class Emblems_AdminModel extends Emblems_Model
      */
     function UpdateEmblem($id, $title, $url, $type, $status)
     {
-        $sql = '
-            UPDATE [[emblem]] SET
-                [title] = {title},
-                [url] = {url},
-                [emblem_type] = {type},
-                [enabled] = {status},
-                [updated] = {now}
-            WHERE [id] = {id}';
-
-        $params = array();
         $params['title']  = $title;
         $params['url']    = $url;
-        $params['type']   = $type;
-        $params['status'] = $status;
-        $params['now']    = $GLOBALS['db']->Date();
-        $params['id']     = $id;
+        $params['emblem_type']   = $type;
+        $params['enabled'] = $status;
+        $params['updated']    = $GLOBALS['db']->Date();
 
-        $res = $GLOBALS['db']->query($sql, $params);
+        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
+        $res = $emblemTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED', 'UpdateEmblem'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage(), 'SQL');
@@ -90,21 +80,15 @@ class Emblems_AdminModel extends Emblems_Model
      */
     function AddEmblem($title, $url, $file_url, $type = 'P', $enabled = false)
     {
-        $sql = '
-            INSERT INTO [[emblem]]
-                ([title], [src], [url], [emblem_type], [enabled], [updated])
-            VALUES
-                ({title}, {src}, {url}, {type}, {enabled}, {now})';
+        $params['title']        = $title;
+        $params['src']          = $file_url;
+        $params['url']          = $url;
+        $params['emblem_type']  = $type;
+        $params['updated']      = $GLOBALS['db']->Date();
+        $params['enabled']      = (bool) $enabled;
 
-        $params = array();
-        $params['title']   = $title;
-        $params['src']     = $file_url;
-        $params['url']     = $url;
-        $params['now']     = $GLOBALS['db']->Date();
-        $params['enabled'] = (bool) $enabled;
-        $params['type']    = $type;
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
+        $res = $emblemTable->insert($params)->exec();
         if (Jaws_Error::IsError($res)) {
             @unlink($uploadfile);
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
@@ -125,10 +109,7 @@ class Emblems_AdminModel extends Emblems_Model
      */
     function DeleteEmblem($id, $src)
     {
-        $sql = 'DELETE FROM [[emblem]] WHERE [id] = {id}';
-        $params = array();
-        $params['id'] = $id;
-        $res = $GLOBALS['db']->query($sql, $params);
+        $res = Jaws_ORM::getInstance()->table('emblem')->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED', 'DeleteEmblem'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage(), 'SQL');

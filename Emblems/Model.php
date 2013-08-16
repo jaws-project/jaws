@@ -27,20 +27,13 @@ class Emblems_Model extends Jaws_Gadget_Model
             }
         }
 
-        $params = array();
-        $sql = '
-            SELECT [id], [title], [src], [url], [emblem_type], [enabled]
-            FROM [[emblem]]';
-        if ($onlyenabled){
-            $params['enabled'] = true;
-            $sql .= '
-                WHERE [enabled] = {enabled}';
-        }
-        $sql .= '
-            ORDER BY [id] ASC';
+        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
+        $emblemTable->select('id:integer', 'title', 'src', 'url', 'emblem_type', 'enabled:boolean');
 
-        $types = array('integer', 'text', 'text', 'text', 'text', 'boolean');
-        $rs = $GLOBALS['db']->queryAll($sql, $params, $types);
+        if ($onlyenabled){
+            $emblemTable->where('enabled', true);
+        }
+        $rs = $emblemTable->orderBy('id ASC')->fetchAll();
         if (Jaws_Error::IsError($rs)){
             return new Jaws_Error($rs->getMessage(), 'SQL');
         }
@@ -56,14 +49,8 @@ class Emblems_Model extends Jaws_Gadget_Model
      */
     function GetEmblem($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-        $sql = "
-            SELECT
-                [id], [title], [src], [url]
-            FROM [[emblem]]
-            WHERE [id] = {id}";
-        $res = $GLOBALS['db']->queryRow($sql, $params);
+        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
+        $res = $emblemTable->select('id:integer', 'title', 'src', 'url')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
