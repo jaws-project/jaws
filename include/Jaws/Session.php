@@ -696,24 +696,14 @@ class Jaws_Session
      */
     function GetUserSessions($user, $onlyOnline = false)
     {
-        $params = array();
-        $params['user'] = (string)$user;
-        $params['expired'] = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
-        $sql = '
-            SELECT COUNT([user])
-            FROM [[session]]
-            WHERE [user] = {user}';
-
+        $expired = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
+        $sessTable = Jaws_ORM::getInstance()->table('session');
+        $sessTable->select('count(user)')->where('user', (string)$user);
         if ($onlyOnline) {
-            $sql.= ' AND [updatetime] >= {expired}';
+            $sessTable->and()->where('updatetime', $expired, '>=');
         }
-
-        $count = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::isError($count)) {
-            return false;
-        }
-
-        return (int)$count;
+        $result = $sessTable->fetchOne();
+        return Jaws_Error::isError($result)? false : (int)$result;
     }
 
     /**
@@ -725,23 +715,12 @@ class Jaws_Session
      */
     function GetSession($sid)
     {
-        $params = array();
-        $params['sid'] = $sid;
-
-        $sql = '
-            SELECT
-                [sid], [user], [data], [referrer], [checksum], [ip], [agent],
-                [updatetime], [longevity]
-            FROM [[session]]
-            WHERE
-                [sid] = {sid}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
-        if (!Jaws_Error::isError($result) && isset($result['sid'])) {
-            return $result;
-        }
-
-        return false;
+        $sessTable = Jaws_ORM::getInstance()->table('session');
+        $sessTable->select(
+            'sid', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
+            'checksum', 'updatetime:integer'
+        );
+        return $sessTable->where('sid', $sid)->fetchRow();
     }
 
     /**
@@ -757,28 +736,17 @@ class Jaws_Session
         $this->DeleteExpiredSessions();
 
         $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
-        $params = array();
-        $params['onlinetime'] = time() - ($idle_timeout * 60);
+        $onlinetime = time() - ($idle_timeout * 60);
 
-        $sql = '
-            SELECT
-                [sid], [domain], [user], [type], [longevity], [ip], [agent], [referrer],
-                [data], [createtime], [updatetime]
-            FROM
-                [[session]]
-            ';
-
-        if ($onlyActive) {
-            $sql.= 'WHERE [updatetime] >= {onlinetime}';
-        }
-
-        $sql.= ' ORDER BY [updatetime] desc';
-
-        $types = array(
-            'integer', 'text', 'text', 'text', 'integer', 'integer', 'text', 'text',
-            'text', 'integer', 'integer',
+        $sessTable = Jaws_ORM::getInstance()->table('session');
+        $sessTable->select(
+            'sid', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
+            'data', 'checksum', 'createtime', 'updatetime:integer'
         );
-        $sessions = $GLOBALS['db']->queryAll($sql, $params, $types);
+        if ($onlyActive) {
+            $sessTable->where('updatetime', $onlinetime, '>=');
+        }
+        $sessions = $sessTable->orderBy('updatetime desc')->fetchAll();
         if (Jaws_Error::isError($sessions)) {
             return $sessions;
         }
