@@ -650,6 +650,14 @@ class Jaws_ORM
      */
     private function _build_where()
     {
+        // removing extra and/or operators at begin/end of statement
+        if (in_array(reset($this->_where), array(' and ', ' or '))) {
+            array_shift($this->_where);
+        }
+        if (in_array(end($this->_where), array(' and ', ' or '))) {
+            array_pop($this->_where);
+        }
+
         $where_str = implode('', $this->_where);
         return empty($where_str)? '' : "where $where_str\n";
     }
@@ -674,6 +682,14 @@ class Jaws_ORM
      */
     private function _build_having()
     {
+        // removing extra and/or operators at begin/end of statement
+        if (in_array(reset($this->_having), array(' and ', ' or '))) {
+            array_shift($this->_having);
+        }
+        if (in_array(end($this->_having), array(' and ', ' or '))) {
+            array_pop($this->_having);
+        }
+
         $having_str = implode('', $this->_having);
         return empty($having_str)? '' : "having $having_str\n";
     }
