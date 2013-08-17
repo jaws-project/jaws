@@ -274,23 +274,22 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         // Verify blocks/Reassign gadgets
         $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
         $sections = $model->GetLayoutSections();
-
-        foreach ($sections as $s) {
-            if (!isset($tpl->Blocks['layout']->InnerBlock[$s['section']])) {
-                if (isset($tpl->Blocks['layout']->InnerBlock[$s['section'] . '_narrow'])) {
-                    $model->MoveSection($s['section'], $s['section'] . '_narrow');
-                } elseif (isset($tpl->Blocks['layout']->InnerBlock[$s['section'] . '_wide'])) {
-                    $model->MoveSection($s['section'], $s['section'] . '_wide');
+        foreach ($sections as $section) {
+            if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
+                if (isset($tpl->Blocks['layout']->InnerBlock[$section . '_narrow'])) {
+                    $model->MoveSection($section, $section . '_narrow');
+                } elseif (isset($tpl->Blocks['layout']->InnerBlock[$section . '_wide'])) {
+                    $model->MoveSection($section, $section . '_wide');
                 } else {
-                    if (strpos($s['section'], '_narrow')) {
-                        $clear_section = str_replace('_narrow', '', $s['section']);
+                    if (strpos($section, '_narrow')) {
+                        $clear_section = str_replace('_narrow', '', $section);
                     } else {
-                        $clear_section = str_replace('_wide', '', $s['section']);
+                        $clear_section = str_replace('_wide', '', $section);
                     }
                     if (isset($tpl->Blocks['layout']->InnerBlock[$clear_section])) {
-                        $model->MoveSection($s['section'], $clear_section);
+                        $model->MoveSection($section, $clear_section);
                     } else {
-                        $model->MoveSection($s['section'], 'main');
+                        $model->MoveSection($section, 'main');
                     }
                 }
             }

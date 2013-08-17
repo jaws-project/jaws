@@ -12,26 +12,6 @@
 class Layout_Model extends Jaws_Gadget_Model
 {
     /**
-     * Get the layout sections
-     *
-     * @access  public
-     * @return  array   Returns an array of layout mode sections and Jaws_Error on error
-     */
-    function GetLayoutSections()
-    {
-        $sql = 'SELECT [section]
-                FROM [[layout]]
-                ORDER BY [section]';
-
-        $res = $GLOBALS['db']->queryAll($sql);
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
-    }
-
-    /**
      * Get the layout items
      *
      * @access  public
@@ -40,8 +20,8 @@ class Layout_Model extends Jaws_Gadget_Model
      */
     function GetLayoutItems($published = null)
     {
-        $layoutTable = Jaws_ORM::getInstance()->table('layout');
-        $items = $layoutTable->select(
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        $items = $lyTable->select(
             'id', 'gadget', 'gadget_action', 'action_params',
             'action_filename', 'display_when', 'section'
         );
@@ -50,7 +30,7 @@ class Layout_Model extends Jaws_Gadget_Model
             $items->where('published', (bool)$published);
         }
 
-        $layoutTable->orderBy('layout_position asc');
+        $lyTable->orderBy('layout_position asc');
         return $items->fetchAll();
     }
 

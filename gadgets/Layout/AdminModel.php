@@ -13,6 +13,18 @@ require_once JAWS_PATH . 'gadgets/Layout/Model.php';
 class Layout_AdminModel extends Layout_Model
 {
     /**
+     * Get the layout sections
+     *
+     * @access  public
+     * @return  array   Returns an array of layout mode sections and Jaws_Error on error
+     */
+    function GetLayoutSections()
+    {
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        return $lyTable->select('section')->orderBy('section')->fetchRow();
+    }
+
+    /**
      * Add a new element to the layout
      *
      * @access  public
@@ -26,44 +38,27 @@ class Layout_AdminModel extends Layout_Model
      */
     function NewElement($section, $gadget, $action, $action_params, $action_filename, $pos = '')
     {
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
-            $sql = '
-            SELECT MAX([layout_position])
-            FROM [[layout]]
-            WHERE [section] = {section}';
-
-            $pos = $GLOBALS['db']->queryOne($sql, array('section' => $section));
+            $pos = $lyTable->select('max(layout_position)')->where('section', $section)->fetchOne();
             if (Jaws_Error::IsError($pos)) {
                 return false;
             }
             $pos += 1;
         }
 
-        $params = array();
-        $params['gadget']          = $gadget;
-        $params['action']          = $action;
-        $params['action_params']   = serialize($action_params);
-        $params['action_filename'] = empty($action_filename)? '' : $action_filename;
-        $params['displayWhen']     = '*';
-        $params['section']         = $section;
-        $params['pos']             = $pos;
-        $params['published']       = true;
+        $lyTable->insert(array(
+            'section'         => $section,
+            'gadget'          => $gadget,
+            'gadget_action'   => $action,
+            'action_params'   => serialize($action_params),
+            'action_filename' =>  empty($action_filename)? '' : $action_filename,
+            'display_when'    => '*',
+            'layout_position' => $pos,
+            'published'       => true
+        ));
 
-        $sql = '
-            INSERT INTO [[layout]]
-                ([section], [gadget], [gadget_action], [action_params], [action_filename],
-                 [display_when], [layout_position], [published])
-            VALUES
-                ({section}, {gadget}, {action}, {action_params}, {action_filename},
-                 {displayWhen}, {pos}, {published})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        $lid = $GLOBALS['db']->lastInsertID('layout', 'id');
-        return (Jaws_Error::IsError($lid))? false : $lid;
+        return $lyTable->exec();
     }
 
     /**
@@ -78,27 +73,13 @@ class Layout_AdminModel extends Layout_Model
      */
     function EditGadgetLayoutAction($gadget, $old_action, $gadget_action, $action_filename = '')
     {
-        $params = array();
-        $params['gadget']          = $gadget;
-        $params['old_action']      = $old_action;
-        $params['gadget_action']   = $gadget_action;
-        $params['action_filename'] = $action_filename;
-
-        $sql = '
-            UPDATE [[layout]] SET
-                [gadget_action]   = {gadget_action},
-                [action_filename] = {action_filename}
-            WHERE
-                [gadget] = {gadget}
-              AND
-                [gadget_action] = {old_action}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return true;
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        $lyTable->update(array(
+            'gadget_action'   => $gadget_action,
+            'action_filename' => $action_filename
+        ));
+        $lyTable->where('gadget', $gadget)->and()->where('gadget_action', $gadget_action);
+        return $lyTable->exec();
     }
 
     /**
@@ -127,50 +108,25 @@ class Layout_AdminModel extends Layout_Model
      */
     function DeleteElement($id, $section, $position)
     {
-        $params = array();
-        $params['id'] = (int)$id;
-
-        $sql = '
-            DELETE
-                FROM [[layout]]
-            WHERE
-                [id] = {id}';
-
-        //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        // begin transaction
+        $lyTable->beginTransaction();
+        $result = $lyTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_DELETED'));
             return $result;
         }
 
-        $params['section'] = $section;
-        $params['pos']     = (int)$position;
-        $params['one']     = 1;
-
-        $sql = '
-            UPDATE [[layout]] SET
-                [layout_position] = [layout_position] - {one}
-            WHERE
-                [section] = {section}
-              AND
-                [layout_position] >= {pos}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $lyTable->update(array('layout_position'=>$lyTable->expr('layout_position - ?', 1)));
+        $lyTable->where('section', $section)->and()->where('layout_position', (int)$position, '>=');
+        $result = $lyTable->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
             return $result;
         }
 
-        //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        // commit transaction
+        $lyTable->commit();
         return true;
     }
 

@@ -116,6 +116,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
         $actions = $this->_Model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
             $id = $this->_Model->NewElement('main', $gadget, $action, $params, $actions[$action]['file']);
+            $id = Jaws_Error::IsError($id)? false : $id;
         }
         if ($id === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);

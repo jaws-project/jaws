@@ -80,12 +80,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
                 return $items;
             }
 
-            $sql = '
-                UPDATE [[layout]] SET
-                    [gadget_action] = {gadget_action},
-                    [action_params] = {action_params}
-                WHERE [id] = {id}';
-
+            $lyTable = Jaws_ORM::getInstance()->table('layout');
             foreach ($items as $item) {
                 preg_match_all('/^([a-z0-9]+)\((.*?)\)$/i', $item['gadget_action'], $matches);
                 if (isset($matches[1][0]) && isset($matches[2][0])) {
@@ -93,7 +88,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
                     $item['action_params'] = array_filter(explode(',', $matches[2][0]));
                 }
                 $item['action_params'] = serialize($item['action_params']);
-                $result = $GLOBALS['db']->query($sql, $item);
+                $result = $lyTable->update($item)->exec();
                 if (Jaws_Error::IsError($result)) {
                     return $result;
                 }
