@@ -163,16 +163,14 @@ class Faq_AdminModel extends Faq_Model
             $newpos = $oldpos;
         }
 
-        //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
-
         $faqTable = Jaws_ORM::getInstance()->table('faq');
+
+        //Start Transaction
+        $faqTable->beginTransaction();
+
         $faqTable->update(array('faq_position' => (int)$oldpos))->where('category', (int)$cat);
         $result = $faqTable->and()->where('faq_position', (int)$newpos)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
             return $result;
         }
@@ -180,15 +178,12 @@ class Faq_AdminModel extends Faq_Model
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $result = $faqTable->update(array('faq_position' => (int)$newpos))->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
             return $result;
         }
 
-        //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        // commit transaction
+        $faqTable->commit();
         return true;
     }
 
@@ -337,10 +332,11 @@ class Faq_AdminModel extends Faq_Model
      */
     function MoveCategory($cat, $old_position, $new_position)
     {
-        //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
+        //Start Transaction
+        $table->beginTransaction();
+
         if ((int)$old_position > (int)$new_position) {
             $result = $table->update(
                 array('category_position' => $table->expr('category_position + ?', 1))
@@ -351,9 +347,6 @@ class Faq_AdminModel extends Faq_Model
             )->where('category_position', array((int)$old_position, (int)$new_position), 'between')->exec();
         }
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'));
             return $result;
         }
@@ -361,15 +354,12 @@ class Faq_AdminModel extends Faq_Model
         $table = Jaws_ORM::getInstance()->table('faq_category');
         $result = $table->update(array('category_position' => (int)$new_position))->where('id', (int)$cat)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-
             $result->setMessage(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'));
             return $result;
         }
 
         //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        $table->commit();
         return true;
     }
 
