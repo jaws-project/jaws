@@ -93,6 +93,14 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('ManageErrorMaps');
             $this->gadget->acl->insert('ManageProperties');
             $this->gadget->acl->delete('EditMaps');
+
+            // Remove old event listener
+            $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+            // Install listener for Add/Upgrade/Removing gadget's maps
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'InstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpgradeGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
+            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'HTTPError');
         }
 
         return true;
