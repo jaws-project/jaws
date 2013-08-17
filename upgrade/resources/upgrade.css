@@ -359,3 +359,6 @@ width:16px;
 height:16px;
 background-image: url("../../images/stock/folder.png");
 }
+#cleanup_download{
+display:inline;
+}
