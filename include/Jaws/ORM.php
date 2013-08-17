@@ -187,6 +187,14 @@ class Jaws_ORM
     var $alias = '';
 
     /**
+     * Not quoted by quoteIdentifier
+     *
+     * @var     array
+     * @access  private
+     */
+    var $reserved_words = array(',', '+', '-', '/', '*', '?', '<', '>', '<>', 'as', 'desc', 'asc');
+
+    /**
      * Constructor
      *
      * @access  public
@@ -239,54 +247,63 @@ class Jaws_ORM
      */
     function quoteIdentifier($column)
     {
-        if (strpos($column, '[') !== false) {
-            $column = str_replace('[',  $this->_identifier_quoting['start'], $column);
-            $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
-        } else {
-            // auto quote identifier if bracket not found
-            if (false !== $dotted_column = strpos($column, '.')) {
-                $column = str_replace(
-                    '.',
-                    $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
-                    $column
-                );
+        $parts = array_filter(array_map('trim', explode(' ', $column)));
+        foreach ($parts as $idx => $column) {
+            if (in_array($column, $this->reserved_words)) {
+                continue;
             }
 
-            if (false !== $open_parenthesis = strpos($column, '(')) {
-                $column = str_replace(
-                    '(',
-                    '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
-                    $column
-                );
-
-                $column = str_replace(
-                    ')',
-                    $this->_identifier_quoting['end']. ')',
-                    $column
-                );
+            if (strpos($column, '[') !== false) {
+                $column = str_replace('[',  $this->_identifier_quoting['start'], $column);
+                $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
             } else {
-                $column = $this->_identifier_quoting['start'] . trim($column);
-                if (false !== $aliased_column = strpos($column, ' as ')) {
-                    $column = substr_replace(
-                        $column,
-                        $this->_identifier_quoting['end'],
-                        $aliased_column,
-                        0
+                // auto quote identifier if bracket not found
+                if (false !== $dotted_column = strpos($column, '.')) {
+                    $column = str_replace(
+                        '.',
+                        $this->_identifier_quoting['end']. '.'. $this->_identifier_quoting['start'],
+                        $column
                     );
-                } elseif (false !== $spaced_column = strpos($column, ' ')) {
-                    $column = substr_replace(
-                        $column,
-                        $this->_identifier_quoting['end'],
-                        $spaced_column,
-                        0
+                }
+
+                if (false !== $open_parenthesis = strpos($column, '(')) {
+                    $column = str_replace(
+                        '(',
+                        '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
+                        $column
+                    );
+
+                    $column = str_replace(
+                        ')',
+                        $this->_identifier_quoting['end']. ')',
+                        $column
                     );
                 } else {
-                    $column = $column. $this->_identifier_quoting['end'];
+                    $column = $this->_identifier_quoting['start'] . trim($column);
+                    if (false !== $aliased_column = strpos($column, ' as ')) {
+                        $column = substr_replace(
+                            $column,
+                            $this->_identifier_quoting['end'],
+                            $aliased_column,
+                            0
+                        );
+                    } elseif (false !== $spaced_column = strpos($column, ' ')) {
+                        $column = substr_replace(
+                            $column,
+                            $this->_identifier_quoting['end'],
+                            $spaced_column,
+                            0
+                        );
+                    } else {
+                        $column = $column. $this->_identifier_quoting['end'];
+                    }
                 }
             }
+
+            $parts[$idx] = $column;
         }
 
-        return $column;
+        return implode(' ', $parts);
     }
 
     /**
