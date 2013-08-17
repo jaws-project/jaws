@@ -106,19 +106,29 @@ class Upgrader_08To0902 extends JawsUpgraderStage
 
         // Trying to add missed acl keys
         _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
+        $exgadgets = array(
+            'Jms' => 'Components',
+            'Chatbox' => 'Shoutbox',
+            'RssReader' => 'FeedReader',
+            'SimpleSite' => 'Sitemap',
+        );
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+        $installed_gadgets = str_replace(
+            array(',Components', ',Shoutbox', ',FeedReader', ',Sitemap'),
+            array(',Jms', ',Chatbox', ',RssReader', ',SimpleSite'),
+            $installed_gadgets
+        );
+
         $igadgets = array_filter(array_map('trim', explode(',', $installed_gadgets)));
         foreach ($igadgets as $ig) {
-            if (false !== stripos($installed_gadgets, ",$ig,")) {
-                if (!array_key_exists("/ACL/gadgets/$ig/default", $keys)) {
-                    $keys["/ACL/gadgets/$ig/default"] = 'true';
-                }
-                if (!array_key_exists("/ACL/gadgets/$ig/default_admin", $keys)) {
-                    $keys["/ACL/gadgets/$ig/default_admin"] = 'false';
-                }
-                if (!array_key_exists("/ACL/gadgets/$ig/default_registry", $keys)) {
-                    $keys["/ACL/gadgets/$ig/default_registry"] = 'false';
-                }
+            if (!array_key_exists("/ACL/gadgets/$ig/default", $keys)) {
+                $keys["/ACL/gadgets/$ig/default"] = 'true';
+            }
+            if (!array_key_exists("/ACL/gadgets/$ig/default_admin", $keys)) {
+                $keys["/ACL/gadgets/$ig/default_admin"] = 'false';
+            }
+            if (!array_key_exists("/ACL/gadgets/$ig/default_registry", $keys)) {
+                $keys["/ACL/gadgets/$ig/default_registry"] = 'false';
             }
         }
 
@@ -154,6 +164,10 @@ class Upgrader_08To0902 extends JawsUpgraderStage
                     $group = 0;
                     $component = $key[1];
                     $new_key_name = $key[2];
+            }
+
+            if (in_array($component, array_keys($exgadgets))) {
+                $component = $exgadgets[$component];
             }
 
             $params['component']  = $component;
