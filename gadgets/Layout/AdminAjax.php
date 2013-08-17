@@ -38,7 +38,13 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
     {
-        $result = $this->_Model->MoveElement($item, $old_section, $old_position, $new_section, $new_position);
+        $result = $this->_Model->MoveElement(
+            $item,
+            $old_section,
+            (int)$old_position,
+            $new_section,
+            (int)$new_position
+        );
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -80,7 +86,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function ChangeDisplayWhen($item, $dw) 
     {
         $res = $this->_Model->ChangeDisplayWhen($item, $dw);
-        if ($res === false) {
+        if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
@@ -168,6 +174,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
         $actions = $this->_Model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
             $res = $this->_Model->EditElementAction($item, $action, $params, $actions[$action]['file']);
+            $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
