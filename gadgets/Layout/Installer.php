@@ -99,6 +99,8 @@ class Layout_Installer extends Jaws_Gadget_Installer
                 }
             }
 
+            // Remove old event listener
+            $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
             // Add listener for remove/publish layout elements related to given gadget
             $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
             $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
