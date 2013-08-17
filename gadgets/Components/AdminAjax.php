@@ -54,8 +54,6 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
             $g['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             $result[$key] = $g;
         }
-        // exclude ControlPanel to be listed as a gadget
-        unset($result['ControlPanel']);
 
         return $result;
     }
