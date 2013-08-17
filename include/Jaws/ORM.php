@@ -195,6 +195,22 @@ class Jaws_ORM
     var $reserved_words = array(',', '+', '-', '/', '*', '?', '<', '>', '<>', 'as', 'desc', 'asc');
 
     /**
+     * Determine if there is an open transaction
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $in_transaction = false;
+
+    /**
+     * Auto rollback changes on error
+     *
+     * @var     bool
+     * @access  private
+     */
+    var $auto_rollback_on_error = true;
+
+    /**
      * Constructor
      *
      * @access  public
@@ -762,6 +778,11 @@ class Jaws_ORM
 
         $this->reset();
         if (PEAR::IsError($result)) {
+            // auto rollback
+            if ($this->in_transaction && $this->auto_rollback_on_error) {
+                $this->rollback();
+            }
+
             $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
             return Jaws_Error::raiseError(
                 $result->getMessage(),
@@ -861,6 +882,11 @@ class Jaws_ORM
 
         $this->reset();
         if (PEAR::IsError($result)) {
+            // auto rollback
+            if ($this->in_transaction && $this->auto_rollback_on_error) {
+                $this->rollback();
+            }
+
             $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 1);
             return Jaws_Error::raiseError(
                 $result->getMessage(),
@@ -871,6 +897,43 @@ class Jaws_ORM
         }
 
         return $result;
+    }
+
+    /**
+     * Start a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function beginTransaction($auto_rollback = true)
+    {
+        $this->in_transaction = true;
+        $this->auto_rollback_on_error = $auto_rollback;
+        $this->jawsdb->dbc->beginTransaction();
+    }
+
+    /**
+     * Cancel any database changes done during a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function rollback()
+    {
+        $this->in_transaction = false;
+        $this->jawsdb->dbc->rollback();
+    }
+
+    /**
+     * Commit the database changes done during a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function commit()
+    {
+        $this->in_transaction = false;
+        $this->jawsdb->dbc->commit();
     }
 
     /**
@@ -953,7 +1016,6 @@ class Jaws_ORM
         $this->_orderBy  = array();
         $this->_limit    = null;
         $this->_offset   = null;
-        $this->_pk_field = 'id';
         $this->_passed_types  = false;
         $this->_query_command = '';
     }
