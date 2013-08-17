@@ -492,7 +492,7 @@ class Jaws_Shared
                 [shared_method],
                 [source],
                 [rule_type],
-                [[shared_methods]].[method] AS method_name
+                [[shared_methods]].[method] as method_name
             FROM [[shared_methods_rules]]
             INNER JOIN [[shared_methods]] ON [[shared_methods]].[id] = [[shared_methods_rules]].[shared_method]
             WHERE [shared_method] = {id}";
