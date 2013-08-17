@@ -33,11 +33,11 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
     function Execute($pSql = array())
     {
         $orderType = $GLOBALS['app']->Registry->fetch('albums_order_type', 'Phoo');
-        if (!in_array($orderType, array('createtime DESC',
+        if (!in_array($orderType, array('createtime desc',
                                         'createtime',
-                                        'name DESC',
+                                        'name desc',
                                         'name',
-                                        'id DESC',
+                                        'id desc',
                                         'id', )))
         {
             $orderType = 'name';
@@ -98,7 +98,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' AND ' . $pSql[1];
-        $sql .= ' ORDER BY pi.[createtime] DESC';
+        $sql .= ' ORDER BY pi.[createtime] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::isError($result)) {

@@ -38,7 +38,7 @@ class Glossary_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' WHERE ' . $pSql;
-        $sql .= " ORDER BY [createtime] DESC";
+        $sql .= " ORDER BY [createtime] desc";
 
         $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {

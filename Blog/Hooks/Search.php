@@ -50,7 +50,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [createtime] DESC';
+        $sql .= ' ORDER BY [createtime] desc';
 
         $params['now']       = $GLOBALS['db']->Date();
         $params['published'] = true;

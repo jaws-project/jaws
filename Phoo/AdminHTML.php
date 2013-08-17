@@ -1040,11 +1040,11 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $albumsorderType->setContainerClass('oneline');
         $albumsorderType->SetTitle(_t('PHOO_ALBUMS_ORDER_TYPE'));
         $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime DESC');
+        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
         $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &darr;', 'name');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'name DESC');
+        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'name desc');
         $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &darr;', 'id');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id DESC');
+        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
         $albumsorderType->SetDefault($settings['albums_order_type']);
 
         // Photos Order type
@@ -1052,11 +1052,11 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         $photosorderType->setContainerClass('oneline');
         $photosorderType->SetTitle(_t('PHOO_PHOTOS_ORDER_TYPE'));
         $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime DESC');
+        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
         $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &darr;', 'title');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'title DESC');
+        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'title desc');
         $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &darr;', 'id');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id DESC');
+        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
         $photosorderType->SetDefault($settings['photos_order_type']);
 
         // Comments

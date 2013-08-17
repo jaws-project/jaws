@@ -902,7 +902,7 @@ class Blog_AdminModel extends Blog_Model
         }
 
         $sql .= (empty($sql_condition)? '' : 'WHERE 1=1 ') . $sql_condition;
-        $sql .= ' ORDER BY [createtime] DESC';
+        $sql .= ' ORDER BY [createtime] desc';
 
         $rows = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($rows)) {
@@ -992,7 +992,7 @@ class Blog_AdminModel extends Blog_Model
 
         $sql = '
             SELECT
-                COUNT(*) AS howmany
+                COUNT(*) as howmany
             FROM [[blog_trackback]]';
 
         $sql_condition = '';

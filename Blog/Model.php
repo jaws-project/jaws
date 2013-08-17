@@ -60,7 +60,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [publishtime] < {endtime}
               AND
                 [publishtime] <= {now}
-            ORDER BY [publishtime] ASC";
+            ORDER BY [publishtime] asc";
 
         $types = array('text', 'text', 'text');
         $result = $GLOBALS['db']->queryAll($sql, $params, $types);
@@ -179,7 +179,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 $sql .= " [user_id]= {user_id}";
             }
         }
-        $sql .= ' ORDER BY [[blog]].[publishtime] DESC';
+        $sql .= ' ORDER BY [[blog]].[publishtime] desc';
 
 
         $types = array('integer', 'integer', 'text', 'text', 'text',
@@ -205,9 +205,9 @@ class Blog_Model extends Jaws_Gadget_Model
 
         $sql = '
             SELECT
-                MIN([publishtime]) AS min_date,
-                MAX([publishtime]) AS max_date,
-                COUNT([id]) AS qty_posts
+                MIN([publishtime]) as min_date,
+                MAX([publishtime]) as max_date,
+                COUNT([id]) as qty_posts
             FROM [[blog]]';
 
         if (!is_null($published)) {
@@ -266,7 +266,7 @@ class Blog_Model extends Jaws_Gadget_Model
             SELECT
                 [id], [title], [fast_url], [published], [publishtime]
             FROM [[blog]]
-            ORDER BY [publishtime] DESC';
+            ORDER BY [publishtime] desc';
 
         $result = $GLOBALS['db']->setLimit('10');
         if (Jaws_Error::IsError($result)) {
@@ -383,7 +383,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $params = array();
         $params['id'] = $post_id;
         $sql = '
-            SELECT [category_id] AS id, [name], [fast_url]
+            SELECT [category_id] as id, [name], [fast_url]
             FROM [[blog_entrycat]]
             INNER JOIN [[blog_category]] ON [category_id] = [id]
             WHERE [entry_id] = {id}';
@@ -410,7 +410,7 @@ class Blog_Model extends Jaws_Gadget_Model
 
             $sql = "
                 SELECT
-                    [category_id] AS id, [entry_id], [name], [fast_url]
+                    [category_id] as id, [entry_id], [name], [fast_url]
                 FROM [[blog_entrycat]]
                 INNER JOIN [[blog_category]] ON [category_id] = [id]
                 WHERE [entry_id] IN ({$in})";
@@ -469,7 +469,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $sql .= '[published] = {published} AND [[blog]].[publishtime] <= {now}';
         if (is_null($conditions)) {
             $sql .= '
-                ORDER BY [[blog]].[publishtime] DESC ';
+                ORDER BY [[blog]].[publishtime] desc ';
 
             if (is_null($extralimit)) {
                     $extralimit =  $this->gadget->registry->fetch('last_entries_limit');
@@ -485,7 +485,7 @@ class Blog_Model extends Jaws_Gadget_Model
             }
 
             $sql .= ' '.$conditions.' ';
-            $sql .= " ORDER BY [[blog]].[publishtime] DESC ";
+            $sql .= " ORDER BY [[blog]].[publishtime] desc ";
 
             if (is_null($extralimit)) {
                     $extralimit =  $this->gadget->registry->fetch('last_entries_limit');
@@ -761,7 +761,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [comments]
             FROM [[blog]]
             WHERE [published] = {published} AND [publishtime] <= {now}
-            ORDER BY [publishtime] DESC';
+            ORDER BY [publishtime] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -789,7 +789,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [publishtime]
             FROM [[blog]]
             WHERE [published] = {published} AND [publishtime] <= {now}
-            ORDER BY [publishtime] DESC';
+            ORDER BY [publishtime] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -814,7 +814,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $sql = '
             SELECT
                 [[blog_category]].[id], [name], [[blog_category]].[fast_url],
-                COUNT([[blog_entrycat]].[entry_id]) AS howmany
+                COUNT([[blog_entrycat]].[entry_id]) as howmany
             FROM [[blog_category]]
             INNER JOIN [[blog_entrycat]] ON [[blog_category]].[id] = [[blog_entrycat]].[category_id]
             INNER JOIN [[blog]] ON [[blog]].[id] = [entry_id]
@@ -871,7 +871,7 @@ class Blog_Model extends Jaws_Gadget_Model
         }
 
         $sql.= '[published] = {published} AND [[blog]].[publishtime] <= {now}
-                ORDER BY [[blog]].[publishtime] DESC';
+                ORDER BY [[blog]].[publishtime] desc';
 
         if (empty($limit)) {
             $limit = $this->gadget->registry->fetch('last_entries_limit');
@@ -935,7 +935,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [[blog]].[published] = {published}
               AND
                 [[blog]].[publishtime] <= {now}
-            ORDER BY [[blog]].[publishtime] DESC';
+            ORDER BY [[blog]].[publishtime] desc';
 
         $limit = $this->gadget->registry->fetch('xml_limit');
         $result = $GLOBALS['db']->setLimit($limit);
@@ -1130,7 +1130,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [[blog]].[publishtime] <= {now}
               AND
                 [[blog_entrycat]].[category_id] = {category}
-            ORDER BY [[blog]].[publishtime] DESC';
+            ORDER BY [[blog]].[publishtime] desc';
 
         $types = array('integer', 'integer', 'integer', 'text', 'text',
                        'text', 'text', 'text', 'text', 'text', 'timestamp', 'timestamp',
@@ -1631,7 +1631,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [published] = {published}
               AND
                 [publishtime] <= {now}
-            ORDER BY [publishtime] DESC';
+            ORDER BY [publishtime] desc';
 
         $params = array();
         $params['published'] = true;
@@ -1673,7 +1673,7 @@ class Blog_Model extends Jaws_Gadget_Model
                 [[blog]].[user_id]
             FROM [[blog]]
             LEFT JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]
-            ORDER BY [[blog]].[publishtime] DESC';
+            ORDER BY [[blog]].[publishtime] desc';
 
         $result = $GLOBALS['db']->setLimit($limit);
         if (Jaws_Error::IsError($result)) {
@@ -1711,14 +1711,14 @@ class Blog_Model extends Jaws_Gadget_Model
 
         $sql = "
             SELECT
-                $month AS month,
-                $year AS year
+                $month as month,
+                $year as year
             FROM [[blog]]
             GROUP BY
                 $month,
                 $year,
                 [publishtime]
-            ORDER BY [publishtime] DESC";
+            ORDER BY [publishtime] desc";
 
         $result = $GLOBALS['db']->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
@@ -1783,7 +1783,7 @@ class Blog_Model extends Jaws_Gadget_Model
                     [parent_id] = {id} 
                   AND
                     [status]    = {status}
-                ORDER BY [createtime] ASC';
+                ORDER BY [createtime] asc';
 
             $result = $GLOBALS['db']->queryAll($sql, $params);
             if (Jaws_Error::IsError($result)) {

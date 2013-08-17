@@ -117,19 +117,19 @@ class Phoo_Model extends Jaws_Gadget_Model
     {
         $orderType = $this->gadget->registry->fetch($resource);
         if ($resource == 'photos_order_type') {
-            if (!in_array($orderType, array('createtime DESC', 'createtime', 'title DESC', 'title', 'id DESC','id' )))
+            if (!in_array($orderType, array('createtime desc', 'createtime', 'title desc', 'title', 'id desc','id' )))
             {
                 $orderType = 'title';
             }
         } else {
-            if (!in_array($orderType, array('createtime DESC', 'createtime', 'name DESC', 'name', 'id DESC', 'id' )))
+            if (!in_array($orderType, array('createtime desc', 'createtime', 'name desc', 'name', 'id desc', 'id' )))
             {
                 $orderType = 'name';
             }
         }
 
         if (strpos($orderType,'DESC')) {
-                $orderType = '['. trim(substr($orderType, 0, strpos($orderType,'DESC'))). '] DESC';
+                $orderType = '['. trim(substr($orderType, 0, strpos($orderType,'DESC'))). '] desc';
         } else {
                 $orderType = '['.$orderType.']';
         }
@@ -188,7 +188,7 @@ class Phoo_Model extends Jaws_Gadget_Model
         }
 
         $sql = substr($sql, 0, -3);
-        $sql .= ' ORDER BY [createtime] DESC';
+        $sql .= ' ORDER BY [createtime] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -234,7 +234,7 @@ class Phoo_Model extends Jaws_Gadget_Model
             $sql .= "([[phoo_album]].[name] = '".$v."') OR ";
         }
         $sql  = substr($sql, 0, -3);
-        $sql .= ') ORDER BY [[phoo_image]].[createtime] DESC';
+        $sql .= ') ORDER BY [[phoo_image]].[createtime] desc';
 
         $limit = $this->gadget->registry->fetch('moblog_limit');
         if (Jaws_Error::isError($limit)) {
@@ -438,7 +438,7 @@ class Phoo_Model extends Jaws_Gadget_Model
 
         $sql = "
             SELECT
-                [id], [name], [published], [createtime], COUNT([phoo_image_id]) AS howmany
+                [id], [name], [published], [createtime], COUNT([phoo_image_id]) as howmany
             FROM [[phoo_album]]
             LEFT JOIN [[phoo_image_album]] ON [id] = [phoo_album_id]
             GROUP BY
@@ -1015,7 +1015,7 @@ class Phoo_Model extends Jaws_Gadget_Model
         }
         $sql  = substr($sql, 0, -3);
         $sql .= ') ';
-        $sql .= ' ORDER BY [[phoo_image]].[id] DESC';
+        $sql .= ' ORDER BY [[phoo_image]].[id] desc';
 
         $limit = $this->gadget->registry->fetch('photoblog_limit');
         $result = $GLOBALS['db']->setLimit($limit);
