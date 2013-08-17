@@ -42,28 +42,12 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetEntriesAsCalendar($begintime, $endtime)
     {
-        $params = array();
-        $params['begintime'] = $begintime;
-        $params['endtime']   = $endtime;
-        $params['now']       = $GLOBALS['db']->Date();
-        $params['published'] = true;
-
-        $sql = "
-            SELECT
-                [title], [fast_url], [publishtime]
-            FROM [[blog]]
-            WHERE
-                [published] = {published}
-              AND
-                [publishtime] >= {begintime}
-              AND
-                [publishtime] < {endtime}
-              AND
-                [publishtime] <= {now}
-            ORDER BY [publishtime] asc";
-
-        $types = array('text', 'text', 'text');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('title', 'fast_url', 'publishtime');
+        $blogTable->where('published', true)->and()->where('publishtime', $begintime, '>=')->and();
+        $blogTable->where('publishtime', $endtime, '<')->and()->where('publishtime', $now, '<=');
+        $result = $blogTable->orderBy('publishtime asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCALENDAR'), _t('BLOG_NAME'));
         }
@@ -91,100 +75,62 @@ class Blog_Model extends Jaws_Gadget_Model
             FROM [[blog]] INNER JOIN [[users]]
             ON [[blog]].[user_id] = [[users]].[id] ';*/
 
-        $params = array();
-
         if (!is_bool($status)) {
             if (is_numeric($status)) {
-                $params['status'] = $status == 1 ? true : false;
+                $status = $status == 1 ? true : false;
             } elseif (is_string($status)) {
-                $params['status'] = $status == 'Y' ? true : false;
+                $status = $status == 'Y' ? true : false;
             }
         } else {
-            $params['status'] = $status;
+            $status = $status;
         }
 
-        $params['filter']   = $filter;
-        $params['category'] = $category;
-        $params['match']    = $match;
-        $params['user_id']  = $user_id;
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'blog.user_id:integer', 'username', 'title', 'summary', 'text',
+            'fast_url', 'blog.publishtime', 'blog.updatetime', 'published:boolean'
+        )->join('users', 'blog.user_id', 'users.id');
 
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [[blog]].[user_id],
-                [username],
-                [title],
-                [summary],
-                [text],
-                [fast_url],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [published]
-            FROM [[blog]]
-            INNER JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]';
-            if (trim($params['category']) != '') {
-                $sql .='
-                INNER JOIN [[blog_entrycat]] ON [[blog]].[id] = [[blog_entrycat]].[entry_id]';
-            }
-        if (trim($params['match']) != '') {
-            $searchdata = explode(' ', $params['match']);
+        if (trim($category) != '') {
+            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
+        }
+        if (trim($match) != '') {
+            $searchdata = explode(' ', $match);
             /**
              * This query needs more work, not use $v straight, should be
              * like rest of the param stuff.
              */
-            $i = 0;
             foreach ($searchdata as $v) {
-                $v = trim($v);
-                $sql .=(stristr($sql, 'WHERE')) ? ' AND ' : ' WHERE ';
-                $sql .= "([[blog]].[title] LIKE {textLike_".$i."} OR [summary] LIKE {textLike_".$i."} OR [text] LIKE {textLike_".$i."})";
-                $params['textLike_'.$i] = '%'.$v.'%';
-                $i++;
+                $str = '%'.trim($v).'%';
+                $blogTable->and()->openWhere()->where('blog.title', $str, 'like')->or();
+                $blogTable->where('summary', $str, 'like')->or()->where('text', $str, 'like')->closeWhere();
             }
-
         }
 
         if (trim($status) != '') {
-            $sql .=(stristr($sql, 'WHERE')) ? ' AND ' : ' WHERE ';
-            $sql .= ' [published] = {status}';
+            $blogTable->and()->where('published', $status);
         }
 
-        if (trim($params['category']) != '') {
-            $sql .=(stristr($sql, 'WHERE')) ? ' AND ' : ' WHERE ';
-            $sql .= ' [[blog_entrycat]].[category_id] = {category}';
+        if (trim($category) != '') {
+            $blogTable->and()->where('blog_entrycat.category_id', $category);
         }
 
-        if (!in_array($params['filter'], array('NOTHING', 'RECENT'))) {
-            $date = explode(':', $params['filter']);
-            $params['year']  = $date[1];
-            $params['month'] = $date[0];
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $year  = $GLOBALS['db']->dbc->function->substring('[[blog]].[publishtime]', 1, 4);
-            $month = $GLOBALS['db']->dbc->function->substring('[[blog]].[publishtime]', 6, 2);
-
-            $sql .= (stristr($sql, 'WHERE')) ? ' AND ':' WHERE ';
-            $sql .= " $year = {year}
-                    AND $month = {month}";
+        if (!in_array($filter, array('NOTHING', 'RECENT'))) {
+            $date = explode(':', $filter);
+            $blogTable->and()->where($blogTable->substring('blog.publishtime', 1, 4), $date[1]);
+            $blogTable->and()->where($blogTable->substring('blog.publishtime', 6, 2), $date[0]);
         }
 
         if (is_numeric($limit)) {
-            $result = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('BLOG_ERROR_ADVANCED_SEARCH'), _t('BLOG_NAME'));
-            }
+            $blogTable->limit(10, $limit);
         }
 
         if (!$this->gadget->GetPermission('ModifyOthersEntries')) {
-            if (trim($params['user_id']) != '') {
-                $sql .=(stristr($sql, 'WHERE')) ? ' AND ' : ' WHERE ';
-                $sql .= " [user_id]= {user_id}";
+            if (trim($user_id) != '') {
+                $blogTable->and()->where('user_id', $user_id);
             }
         }
-        $sql .= ' ORDER BY [[blog]].[publishtime] desc';
-
-
-        $types = array('integer', 'integer', 'text', 'text', 'text',
-                       'text', 'text', 'timestamp', 'timestamp', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = $blogTable->orderBy('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_ADVANCED_SEARCH'), _t('BLOG_NAME'));
         }
@@ -201,21 +147,14 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetPostsDateLimitation($published = null)
     {
-        $params = array();
-
-        $sql = '
-            SELECT
-                MIN([publishtime]) as min_date,
-                MAX([publishtime]) as max_date,
-                COUNT([id]) as qty_posts
-            FROM [[blog]]';
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('min(publishtime) as min_date', 'max(publishtime) as max_date', 'count(id) as qty_posts');
 
         if (!is_null($published)) {
-            $params['published'] = $published;
-            $sql .= ' WHERE [published] = {published}';
+            $blogTable->where('published', $published);
         }
 
-        $summary = $GLOBALS['db']->queryRow($sql, $params);
+        $summary = $blogTable->fetchRow();
         if (Jaws_Error::IsError($summary)) {
             $summary = array();
         }
@@ -262,19 +201,9 @@ class Blog_Model extends Jaws_Gadget_Model
         }
 
         // Recent entries
-        $sql = '
-            SELECT
-                [id], [title], [fast_url], [published], [publishtime]
-            FROM [[blog]]
-            ORDER BY [publishtime] desc';
-
-        $result = $GLOBALS['db']->setLimit('10');
-        if (Jaws_Error::IsError($result)) {
-            return $summary;
-        }
-
-        $types = array('integer', 'text', 'text', 'boolean', 'timestamp');
-        $result = $GLOBALS['db']->queryAll($sql, null, $types);
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('id:integer', 'title', 'fast_url', 'published:boolean', 'publishtime');
+        $result = $blogTable->orderBy('publishtime desc')->limit(10)->fetchAll();
         if (!Jaws_Error::IsError($result) && $result) {
             foreach ($result as $r) {
                 $summary['Entries'][] = $r;
@@ -351,19 +280,10 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetCategoryByName($name)
     {
-        $params = array();
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $params['name'] = $GLOBALS['app']->UTF8->strtolower($name);
-        $lowerName = $GLOBALS['db']->dbc->function->lower('[name]');
-
-        $sql = "
-            SELECT
-                [id], [name], [description], [fast_url], [createtime], [updatetime]
-            FROM [[blog_category]] 
-            WHERE
-                $lowerName = {name}";
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $name = $GLOBALS['app']->UTF8->strtolower($name);
+        $catTable = Jaws_ORM::getInstance()->table('blog_category');
+        $catTable->select('id:integer', 'name', 'description', 'fast_url', 'createtime', 'updatetime');
+        $result = $catTable->where($catTable->lower('name'), $name)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORY'), _t('BLOG_NAME'));
         }
@@ -380,14 +300,9 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetCategoriesInEntry($post_id)
     {
-        $params = array();
-        $params['id'] = $post_id;
-        $sql = '
-            SELECT [category_id] as id, [name], [fast_url]
-            FROM [[blog_entrycat]]
-            INNER JOIN [[blog_category]] ON [category_id] = [id]
-            WHERE [entry_id] = {id}';
-        $categories = $GLOBALS['db']->queryAll($sql, $params);
+        $catTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $catTable->select('category_id as id:integer', 'name', 'fast_url');
+        $categories = $catTable->join('blog_category', 'category_id', 'id')->where('entry_id', $post_id)->fetchAll();
         if (Jaws_Error::isError($categories)) {
             return array();
         }
@@ -406,15 +321,12 @@ class Blog_Model extends Jaws_Gadget_Model
     {
         $categories = array();
         if (is_array($ids) && count($ids) > 0) {
-            $in = implode(',', $ids);
 
-            $sql = "
-                SELECT
-                    [category_id] as id, [entry_id], [name], [fast_url]
-                FROM [[blog_entrycat]]
-                INNER JOIN [[blog_category]] ON [category_id] = [id]
-                WHERE [entry_id] IN ({$in})";
-            $categories = $GLOBALS['db']->queryAll($sql);
+            $catTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+            $catTable->select('category_id as id:integer', 'entry_id:integer', 'name', 'fast_url');
+            $catTable->join('blog_category', 'category_id', 'id')->where('entry_id', $ids, 'in');
+            $categories = $catTable->fetchAll();
+
             if (Jaws_Error::isError($categories)) {
                 return array();
             }
@@ -429,77 +341,37 @@ class Blog_Model extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $cat            Category ID
      * @param   array   $conditions     Array with extra conditions
-     * @param   array   $extraparams    Array with extra params
      * @param   int     $extralimit     Integer which limits number of results
      * @param   int     $extraoffset    Integer which sets an offset to skip results
      * @return  array   Returns an array of entries and Jaws_Error on error
      */
-    function GetEntries($cat = null, $conditions = null, $extraparams = null, $extralimit = null, $extraoffset = null)
+    function GetEntries($cat = null, $conditions = null, $extralimit = null, $extraoffset = null)
     {
-        $params = array();
-        $params['category']  = (int)$cat;
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [username],
-                [email],
-                [nickname],
-                [[blog]].[title],
-                [[blog]].[fast_url],
-                [summary],
-                [text],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [comments],
-                [clicks],
-                [allow_comments]
-            FROM [[blog]]
-            LEFT JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]';
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url',
+            'summary', 'text', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
+            'clicks:integer', 'allow_comments:boolean'
+        );
+        $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
+
         if (!empty($cat)) {
-            $sql .= '
-                INNER JOIN [[blog_entrycat]] ON [[blog]].[id] = [[blog_entrycat]].[entry_id]
-                WHERE [[blog_entrycat]].[category_id] = {category} AND ';
-        } else {
-            $sql .= '
-                WHERE ';
+            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
+            $blogTable->where('blog_entrycat.category_id', (int)$cat);
         }
 
-        $sql .= '[published] = {published} AND [[blog]].[publishtime] <= {now}';
-        if (is_null($conditions)) {
-            $sql .= '
-                ORDER BY [[blog]].[publishtime] desc ';
-
-            if (is_null($extralimit)) {
-                    $extralimit =  $this->gadget->registry->fetch('last_entries_limit');
-            }
-            $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES'), _t('BLOG_NAME'));
-            }
-        } else {
-            // Add conditions to query
-            if (is_array($extraparams)) {
-                $params = array_merge($params, $extraparams);
-            }
-
-            $sql .= ' '.$conditions.' ';
-            $sql .= " ORDER BY [[blog]].[publishtime] desc ";
-
-            if (is_null($extralimit)) {
-                    $extralimit =  $this->gadget->registry->fetch('last_entries_limit');
-            }
-            $result = $GLOBALS['db']->setLimit($extralimit, $extraoffset);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES'), _t('BLOG_NAME'));
+        $blogTable->and()->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        if (!is_null($conditions)) {
+            foreach ($conditions as $condition) {
+                $blogTable->and()->where($condition[0], $condition[1], $condition[2]);
             }
         }
 
-        $types = array('integer', 'text', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'timestamp', 'timestamp',
-                       'integer', 'integer', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        if (is_null($extralimit)) {
+            $extralimit = $this->gadget->registry->fetch('last_entries_limit');
+        }
+        $result = $blogTable->limit($extralimit, $extraoffset)->orderBy('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES'), _t('BLOG_NAME'));
         }
@@ -549,15 +421,13 @@ class Blog_Model extends Jaws_Gadget_Model
         $limit = $this->gadget->registry->fetch('last_entries_limit');
         $offset = $limit * $page;
 
-        $params = array();
-        $params['min_date'] = $min_date;
-        $params['max_date'] = $max_date;
-        $params['published'] = true;
+        $whereArray = array(
+            array('published', true, '='),
+            array('blog.publishtime', $min_date, '>='),
+            array('blog.publishtime', $max_date, '<'),
+        );
 
-        $sql = " AND [published] = {published}
-                 AND [[blog]].[publishtime] >= {min_date} AND [[blog]].[publishtime] < {max_date}";
-
-        return $this->GetEntries(null, $sql, $params, $limit, $offset);
+        return $this->GetEntries(null, $whereArray, $limit, $offset);
     }
 
     /**
@@ -699,13 +569,9 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function MailComment($id, $title, $from_email, $comment, $url)
     {
-        $sql = '
-            SELECT [[users]].[email]
-            FROM [[users]]
-            INNER JOIN [[blog]] ON [[users]].[id] = [[blog]].[user_id]
-            WHERE [[blog]].[id] = {id}';
-
-        $author_email = $GLOBALS['db']->queryOne($sql, array('id' => $id));
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('users.email')->join('blog', 'users.id', 'blog.user_id')->where('blog.id', $id);
+        $author_email = $usersTable->fetchOne();
         if (Jaws_Error::IsError($author_email)) {
             $author_email = '';
         }
@@ -747,23 +613,11 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetEntriesAsArchive()
     {
-        $params              = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [id],
-                [publishtime],
-                [updatetime],
-                [title],
-                [fast_url],
-                [comments]
-            FROM [[blog]]
-            WHERE [published] = {published} AND [publishtime] <= {now}
-            ORDER BY [publishtime] desc';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'comments');
+        $blogTable->where('published', true)->and()->where('publishtime', $now, '<=')->orderBy('publishtime desc');
+        $result = $blogTable->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASARCHIVE'), _t('BLOG_NAME'));
         }
@@ -780,18 +634,10 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetEntriesAsHistory()
     {
-        $params              = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [publishtime]
-            FROM [[blog]]
-            WHERE [published] = {published} AND [publishtime] <= {now}
-            ORDER BY [publishtime] desc';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('publishtime')->where('published', true)->and()->where('publishtime', $now, '<=');
+        $result = $blogTable->orderBy('publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASHISTORY'), _t('BLOG_NAME'));
         }
@@ -807,23 +653,16 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetEntriesAsCategories()
     {
-        $params              = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [[blog_category]].[id], [name], [[blog_category]].[fast_url],
-                COUNT([[blog_entrycat]].[entry_id]) as howmany
-            FROM [[blog_category]]
-            INNER JOIN [[blog_entrycat]] ON [[blog_category]].[id] = [[blog_entrycat]].[category_id]
-            INNER JOIN [[blog]] ON [[blog]].[id] = [entry_id]
-            WHERE [published] = {published} AND [[blog]].[publishtime] <= {now}
-            GROUP BY
-                [[blog_category]].[id], [name], [[blog_category]].[fast_url]
-            ORDER BY [name]';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $now = $GLOBALS['db']->Date();
+        $catTable = Jaws_ORM::getInstance()->table('blog_category');
+        $catTable->select(
+            'blog_category.id:integer', 'name', 'blog_category.fast_url',
+            'count(blog_entrycat.entry_id) as howmany:integer'
+        );
+        $catTable->join('blog_entrycat', 'blog_category.id', 'blog_entrycat.category_id');
+        $catTable->join('blog', 'blog.id', 'entry_id');
+        $catTable->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        $result = $catTable->groupBy('blog_category.id', 'name', 'blog_category.fast_url')->orderBy('name')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCATEGORIES'), _t('BLOG_NAME'));
         }
@@ -840,55 +679,26 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetRecentEntries($cat = null, $limit = 0)
     {
-        $params              = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-        
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [user_id],
-                [username],
-                [[users]].[nickname],
-                [title],
-                [summary],
-                [text],
-                [fast_url],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [comments],
-                [clicks],
-                [allow_comments],
-                [published]
-            FROM [[blog]]
-            LEFT JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]';
-        if (is_numeric($cat)) {
-            $params['cat'] = $cat;
-            $sql.= '  INNER JOIN [[blog_entrycat]] ON [[blog]].[id] = [[blog_entrycat]].[entry_id] 
-                      WHERE [[blog_entrycat]].[category_id] = {cat} AND ';
-        } else {
-            $sql.= '  WHERE ';
-        }
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
+            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
+            'clicks:integer', 'allow_comments:boolean', 'published:boolean'
+        );
+        $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
-        $sql.= '[published] = {published} AND [[blog]].[publishtime] <= {now}
-                ORDER BY [[blog]].[publishtime] desc';
+        if (is_numeric($cat)) {
+            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
+            $blogTable->where('blog_entrycat.category_id', $cat);
+        }
 
         if (empty($limit)) {
             $limit = $this->gadget->registry->fetch('last_entries_limit');
         }
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_ENTRIES'), _t('BLOG_NAME'));
-        }
 
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'text', 'text',
-                       'timestamp', 'timestamp', 'integer', 'integer', 'boolean', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_RECENT_ENTRIES'), _t('BLOG_NAME'));
-        }
-
-        return $result;
+        $blogTable->and()->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        return $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
     }
 
     /**
@@ -907,46 +717,17 @@ class Blog_Model extends Jaws_Gadget_Model
         require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $this->_Atom = new Jaws_AtomFeed();
 
-        $params              = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [user_id],
-                [username],
-                [email],
-                [nickname],
-                [title],
-                [summary],
-                [text],
-                [fast_url],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [clicks],
-                [comments],
-                [allow_comments],
-                [published]
-            FROM [[blog]], [[users]]
-            WHERE
-                [[blog]].[user_id] = [[users]].[id]
-              AND
-                [[blog]].[published] = {published}
-              AND
-                [[blog]].[publishtime] <= {now}
-            ORDER BY [[blog]].[publishtime] desc';
-
+        $now = $GLOBALS['db']->Date();
         $limit = $this->gadget->registry->fetch('xml_limit');
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
-        }
 
-        $types = array('integer', 'integer', 'text', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'timestamp', 'timestamp',
-                       'integer', 'integer', 'boolean', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'user_id:integer', 'username', 'email', 'nickname', 'title', 'summary',
+            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
+            'comments:integer', 'allow_comments:boolean', 'published:boolean'
+        )->join('users', 'blog.user_id', 'users.id');
+        $blogTable->where('blog.published', true)->and()->where('blog.publishtime', $now, '<=');
+        $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
@@ -1098,44 +879,16 @@ class Blog_Model extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
 
-        $params              = array();
-        $params['category']  = $catInfo['id'];
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [user_id],
-                [[blog_entrycat]].[category_id],
-                [username],
-                [email],
-                [nickname],
-                [title],
-                [fast_url],
-                [summary],
-                [text],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [clicks],
-                [comments],
-                [allow_comments],
-                [published]
-            FROM [[blog]]
-                INNER JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]
-                INNER JOIN [[blog_entrycat]] ON [[blog]].[id] = [[blog_entrycat]].[entry_id]
-            WHERE
-                [published] = {published}
-              AND
-                [[blog]].[publishtime] <= {now}
-              AND
-                [[blog_entrycat]].[category_id] = {category}
-            ORDER BY [[blog]].[publishtime] desc';
-
-        $types = array('integer', 'integer', 'integer', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'text', 'timestamp', 'timestamp',
-                       'integer', 'integer', 'boolean', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'user_id:integer', 'blog_entrycat.category_id:integer', 'username', 'email',
+            'nickname', 'title', 'fast_url', 'summary', 'text',  'blog.publishtime', 'blog.updatetime',
+            'clicks:integer', 'comments:integer', 'allow_comments:boolean', 'published:boolean'
+        )->join('users', 'blog.user_id', 'users.id')->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
+        $blogTable->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        $blogTable->and()->where('blog_entrycat.category_id', $catInfo['id']);
+        $result = $blogTable->orderby('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
@@ -1511,7 +1264,7 @@ class Blog_Model extends Jaws_Gadget_Model
 
         $limit = $this->gadget->registry->fetch('last_entries_limit');
         $offset = $limit * $page;
-        $result = $this->GetEntries($category, null, null, $limit, $offset);
+        $result = $this->GetEntries($category, null, $limit, $offset);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_BYCATEGORY'), _t('BLOG_NAME'));
         }
@@ -1528,12 +1281,13 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function ViewEntry($id)
     {
-        $sql = '
-            UPDATE [[blog]] SET
-                [clicks] = [clicks] + 1
-            WHERE
-                [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, array('id' => $id));
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $result = $blogTable->update(
+            array(
+                'clicks' => $blogTable->expr('clicks + ?', 1)
+            )
+        )->where('id', $id)->exec();
+
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1551,56 +1305,29 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetEntry($id, $published = false)
     {
-        $params = array();
-        $params['id'] = $id;
         // super admins can get/show drafted entries
-        $params['published'] = (bool)$published && !$GLOBALS['app']->Session->IsSuperAdmin();
+        $published = (bool)$published && !$GLOBALS['app']->Session->IsSuperAdmin();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'summary',
+            'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean',
+            'blog.publishtime', 'blog.updatetime', 'comments:integer', 'clicks:integer', 'allow_comments:boolean'
+        )->join('users', 'blog.user_id', 'users.id', 'left');
 
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [[blog]].[user_id],
-                [username],
-                [email],
-                [nickname],
-                [[blog]].[title],
-                [summary],
-                [text],
-                [fast_url],
-                [meta_keywords],
-                [meta_description],
-                [trackbacks],
-                [published],
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [comments],
-                [clicks],
-                [allow_comments]
-            FROM [[blog]]
-            LEFT JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]
-            WHERE';
         if (is_numeric($id)) {
-            $sql.= '
-                [[blog]].[id] = {id}';
+            $blogTable->where('blog.id', $id);
         } else {
-            $sql.= '
-                [[blog]].[fast_url] = {id}';
+            $blogTable->where('blog.fast_url', $id);
         }
 
-        if ($params['published']) {
+        if ($published) {
             // entry's author can get/show drafted entries
-            $params['now']  = $GLOBALS['db']->Date();
-            $params['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $sql .= '
-              AND
-                ([[blog]].[user_id] = {user} OR
-                ([published] = {published} AND [[blog]].[publishtime] <= {now}))';
+            $now = $GLOBALS['db']->Date();
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $blogTable->and()->openWhere('blog.user_id', $user)->or();
+            $blogTable->openWhere('published', $published)->and()->where('blog.publishtime', $now, '<=');
         }
-
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'text', 'text', 'boolean',
-                       'timestamp', 'timestamp', 'integer', 'integer', 'boolean');
-        $row = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $row = $blogTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRY'), _t('BLOG_NAME'));
         }
@@ -1624,20 +1351,10 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetLatestPublishedEntryID()
     {
-        $sql = '
-            SELECT [id]
-            FROM [[blog]]
-            WHERE
-                [published] = {published}
-              AND
-                [publishtime] <= {now}
-            ORDER BY [publishtime] desc';
-
-        $params = array();
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $result = $GLOBALS['db']->queryOne($sql, $params);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('id:integer')->where('published', true)->and()->where('publishtime', $now, '<=');
+        $result = $blogTable->orderBy('publishtime desc')->limit(1)->fetchOne();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1654,36 +1371,14 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetLastEntries($limit)
     {
-        $sql = '
-            SELECT
-                [[blog]].[id],
-                [username],
-                [email],
-                [nickname],
-                [[blog]].[title],
-                [[blog]].[fast_url],
-                [summary],
-                [text],
-                [[users]].[nickname] as name,
-                [[blog]].[publishtime],
-                [[blog]].[updatetime],
-                [comments],
-                [clicks],
-                [allow_comments],
-                [[blog]].[user_id]
-            FROM [[blog]]
-            LEFT JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]
-            ORDER BY [[blog]].[publishtime] desc';
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url', 'summary',
+            'text', 'users.nickname as name', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
+            'clicks:integer', 'allow_comments:boolean', 'blog.user_id:integer'
+        )->join('users', 'blog.user_id', 'users.id', 'left');
 
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_LAST_ENTRIES'), _t('BLOG_NAME'));
-        }
-
-        $types = array('integer', 'integer', 'text', 'text', 'text',
-                       'text', 'text', 'text', 'text', 'text', 'timestamp', 'timestamp',
-                       'integer', 'integer', 'boolean', 'integer');
-        $result = $GLOBALS['db']->queryAll($sql, array(), $types);
+        $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_LAST_ENTRIES'), _t('BLOG_NAME'));
         }
@@ -1704,23 +1399,17 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetMonthsEntries()
     {
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            $blogTable->substring('blog.publishtime', 6, 2)->alias('month'),
+            $blogTable->substring('blog.publishtime', 1, 4)->alias('year')
+        )->groupBy(
+                $blogTable->substring('blog.publishtime', 6, 2),
+                $blogTable->substring('blog.publishtime', 1, 4),
+                'publishtime'
+            );
 
-        $year  = $GLOBALS['db']->dbc->function->substring('[[blog]].[publishtime]', 1, 4);
-        $month = $GLOBALS['db']->dbc->function->substring('[[blog]].[publishtime]', 6, 2);
-
-        $sql = "
-            SELECT
-                $month as month,
-                $year as year
-            FROM [[blog]]
-            GROUP BY
-                $month,
-                $year,
-                [publishtime]
-            ORDER BY [publishtime] desc";
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $result = $blogTable->orderBy('publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_MONTH_ENTRIES'), _t('BLOG_NAME'));
         }
@@ -1737,13 +1426,9 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function DoesEntryExists($post_id)
     {
-        $params       = array();
-        $params['id'] = $post_id;
-
-        $sql  = 'SELECT COUNT([id]) FROM [[blog]] WHERE ';
-        $sql .=  is_numeric($post_id) ? '[id] = {id}' : '[fast_url] = {id}';
-
-        $count = $GLOBALS['db']->queryOne($sql, $params);
+        $column =  is_numeric($post_id) ? 'id' : 'fast_url';
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $count = $blogTable->select('count(id)')->where($column, $post_id)->fetchOne();
         if (Jaws_Error::IsError($count)) {
             return false;
         }
@@ -1765,27 +1450,13 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetTrackbacks($id)
     {
-        $params           = array();
-        $params['id']     = $id;
-        $params['status'] = 'approved';
         if ($this->gadget->registry->fetch('trackback') == 'true') {
-            $sql = '
-                SELECT
-                    [id],
-                    [parent_id],
-                    [url],
-                    [title],
-                    [excerpt],
-                    [blog_name],
-                    [createtime]
-                FROM [[blog_trackback]]
-                WHERE 
-                    [parent_id] = {id} 
-                  AND
-                    [status]    = {status}
-                ORDER BY [createtime] asc';
+            $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
+            $trackbackTable->select(
+                'id:integer', 'parent_id:integer', 'url', 'title', 'excerpt', 'blog_name', 'createtime'
+            )->where('parent_id', $id)->and()->where('status', 'approved')->orderBy('createtime asc');
+            $result = $trackbackTable->fetchAll();
 
-            $result = $GLOBALS['db']->queryAll($sql, $params);
             if (Jaws_Error::IsError($result)) {
                 return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'), _t('BLOG_NAME'));
             }
@@ -1811,23 +1482,10 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetTrackback($id)
     {
-        $params           = array();
-        $params['id']     = $id;
-        $sql = '
-            SELECT
-                [id],
-                [parent_id],
-                [url],
-                [title],
-                [excerpt],
-                [blog_name],
-                [ip],
-                [createtime],
-                [updatetime]
-            FROM [[blog_trackback]]
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
+        $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
+        $result = $trackbackTable->select(
+            'id:integer', 'parent_id:integer', 'url', 'title', 'excerpt', 'blog_name', 'ip', 'createtime', 'updatetime'
+        )->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'), _t('BLOG_NAME'));
         }
@@ -1861,11 +1519,11 @@ class Blog_Model extends Jaws_Gadget_Model
         $options = array(
             'next' => array(
                 'sign' => '>',
-                'direction' => 'ASC',
+                'direction' => 'asc',
             ),
             'previous' => array(
                 'sign' => '<',
-                'direction' => 'DESC',
+                'direction' => 'desc',
             )
         );
 
@@ -1875,29 +1533,12 @@ class Blog_Model extends Jaws_Gadget_Model
             $option = $options[$direction];
         }
 
-        $params              = array();
-        $params['id']        = $id;
-        $params['published'] = true;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sql = "
-            SELECT
-                [id], [title], [fast_url]
-            FROM [[blog]]
-            WHERE
-                [[blog]].[id] {$option['sign']} {id}
-              AND
-                [published] = {published}
-              AND
-                [publishtime] <= {now}
-            ORDER BY [id] {$option['direction']}";
-
-        $result = $GLOBALS['db']->setLimit(1);
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        $row = $GLOBALS['db']->queryRow($sql, $params);
+        $now = $GLOBALS['db']->Date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('id:integer', 'title', 'fast_url');
+        $blogTable->where('id', $id, $option['sign'])->and()->where('published', true);
+        $blogTable->and()->where('publishtime', $now, '<=');
+        $row = $blogTable->orderBy('id ' . $option['direction'])->limit(1)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             return false;
         }
@@ -1914,16 +1555,9 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function GetFastURL($fasturl)
     {
-        $params = array();
-        $params['fasturl'] = $fasturl;
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $result = $blogTable->select('id:integer', 'title', 'fast_url')->where('fast_url', $fasturl)->fetchRow();
 
-        $sql = '
-            SELECT
-                [id], [title], [fast_url]
-            FROM [[blog]]
-            WHERE [fast_url] = {fasturl}';
-
-        $result = $GLOBALS['db']->queryRow($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1945,52 +1579,36 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function NewTrackback($parent_id, $url, $title, $excerpt, $blog_name, $ip)
     {
-        $params              = array();
-        $params['parent_id'] = $parent_id;
-        $params['url']       = strip_tags($url);
-        $params['title']     = strip_tags($title);
-        $params['excerpt']   = strip_tags($excerpt);
-        $params['blog_name'] = strip_tags($blog_name);
-        $params['ip']        = $ip;
-        $params['status']    = $this->gadget->registry->fetch('trackback_status');
-
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             if (!$this->DoesEntryExists($parent_id)) {
                 return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
             }
 
             // lets only load it if it's actually needed
-            $params['now'] = $GLOBALS['db']->Date();
+            $now = $GLOBALS['db']->Date();
 
-            $sql = '
-                SELECT
-                    [id]
-                FROM [[blog_trackback]]
-                WHERE
-                    [parent_id] = {parent_id}
-                  AND
-                    url = {url}';
-            $id = $GLOBALS['db']->queryOne($sql, $params);
+            $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
+            $trackbackTable->select('id:integer')->where('parent_id', $parent_id);
+            $id = $trackbackTable->and()->where('url', strip_tags($url))->fetchOne();
+
+            $trackData['title']         = strip_tags($title);
+            $trackData['excerpt']       = strip_tags($excerpt);
+            $trackData['blog_name']     = strip_tags($blog_name);
+            $trackData['updatetime']    = $now;
+
+            $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
             if (!Jaws_Error::IsError($id) && !empty($id)) {
-                $params['id'] = $id;
-                $sql = '
-                    UPDATE [[blog_trackback]] SET
-                        [title]      = {title},
-                        [excerpt]    = {excerpt},
-                        [blog_name]  = {blog_name},
-                        [updatetime] = {now}
-                    WHERE [id] = {id}';
+                $trackbackTable->update($trackData)->where('id', $id);
             } else {
-                $sql = '
-                    INSERT INTO [[blog_trackback]]
-                        ([parent_id], [url], [title], [excerpt], [blog_name], [ip], 
-                         [status], [createtime], [updatetime])
-                    VALUES
-                        ({parent_id}, {url}, {title}, {excerpt}, {blog_name}, {ip}, 
-                         {status}, {now}, {now})';
+                $trackData['parent_id']     = $parent_id;
+                $trackData['url']           = strip_tags($url);
+                $trackData['ip']            = $ip;
+                $trackData['status']        = $this->gadget->registry->fetch('trackback_status');
+                $trackData['createtime']    = $now;
+                $trackbackTable->insert($trackData);
             }
 
-            $result = $GLOBALS['db']->query($sql, $params);
+            $result = $trackbackTable->exec();
             if (Jaws_Error::IsError($result)) {
                 return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_ADDED'), _t('BLOG_NAME'));
             }
@@ -2009,16 +1627,11 @@ class Blog_Model extends Jaws_Gadget_Model
      */
     function CreateTagCloud()
     {
-        $sql = '
-            SELECT
-                COUNT([category_id]) as howmany, [name], [fast_url], [category_id]
-            FROM [[blog_entrycat]]
-            INNER JOIN [[blog_category]] ON [category_id] = [id]
-            GROUP BY [category_id], [name], [fast_url]
-            ORDER BY [name]';
+        $table = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $table->select('count(category_id) as howmany:integer', 'name', 'fast_url', 'category_id:integer');
+        $table->join('blog_category', 'category_id', 'id');
+        $res = $table->groupBy('category_id', 'name', 'fast_url')->orderBy('name')->fetchAll();
 
-        $types = array('integer', 'text', 'text', 'integer');
-        $res = $GLOBALS['db']->queryAll($sql, array(), $types);
         if (Jaws_Error::isError($res)) {
             return new Jaws_Error(_t('BLOG_ERROR_TAGCLOUD_CREATION_FAILED'), _t('BLOG_NAME'));
         }
@@ -2033,10 +1646,9 @@ class Blog_Model extends Jaws_Gadget_Model
      * @param   int     $cat            category
      * @param   int     $page           page
      * @param   array   $condition      conditions array
-     * @param   array   $extraparams    extra params array
      * @return  array  An array with the entries
      */
-    function GetEntriesAsPage($cat = null, $page = 0, $condition = null, $extraparams = null)
+    function GetEntriesAsPage($cat = null, $page = 0, $condition = null)
     {
         if ($page > 0) {
             $page = $page - 1;
@@ -2047,7 +1659,7 @@ class Blog_Model extends Jaws_Gadget_Model
         $limit = $this->gadget->registry->fetch('last_entries_limit');
         $offset = $limit * $page;
 
-        $res = $this->GetEntries($cat, $condition, $extraparams, $limit, $offset);
+        $res = $this->GetEntries($cat, $condition, $limit, $offset);
 
         return $res;
     }

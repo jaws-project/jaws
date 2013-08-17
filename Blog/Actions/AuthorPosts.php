@@ -33,15 +33,19 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
             return false;
         }
 
-        $condition = null;
+        $whereArray = null;
         if (is_numeric($user)) {
-            $condition = ' AND [[blog]].[user_id] = {user}';
+            $whereArray = array(
+                array('blog.user_id', $user, '=')
+            );
         } else {
-            $condition = ' AND [[users]].[username] = {user}';
+            $whereArray = array(
+                array('users.username', $user, '=')
+            );
         }
 
         $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
-        $entries = $bModel->GetEntriesAsPage(null, $page, $condition, array('user' => $user));
+        $entries = $bModel->GetEntriesAsPage(null, $page, $whereArray);
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = $this->gadget->loadTemplate('AuthorPosts.html');
             $tpl->SetBlock('view_author');
