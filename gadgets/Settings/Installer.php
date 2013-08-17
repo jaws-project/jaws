@@ -133,6 +133,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.4.0', '<')) {
             $this->gadget->registry->insert('global_website', 'true');
+            $this->gadget->registry->delete('allow_comments');
             $this->gadget->registry->delete('layoutmode');
             $this->gadget->registry->delete('site_url');
         }
