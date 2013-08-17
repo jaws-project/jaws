@@ -22,18 +22,8 @@ class Jaws_Listener
      */
     function AddListener($gadget, $event)
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['event']  = $event;
-
-        $sql = '
-            INSERT INTO [[listeners]]
-                ([gadget], [event])
-            VALUES
-                ({gadget}, {event})';
-
-        $res = $GLOBALS['db']->query($sql, $params);
-        return $res;
+        $lisnTable = Jaws_ORM::getInstance()->table('listeners');
+        return $lisnTable->insert(array('gadget'=> $gadget, 'event'=> $event))->exec();
     }
 
     /**
@@ -89,14 +79,8 @@ class Jaws_Listener
      */
     function GetListener($id)
     {
-        $sql = '
-            SELECT
-                [id], [gadget], [event]
-            FROM [[listeners]]
-            WHERE  [id] = {id}';
-
-        $res = $GLOBALS['db']->queryAll($sql, array('id' => $id));
-        return $res;
+        $lisnTable = Jaws_ORM::getInstance()->table('listeners');
+        return $lisnTable->select('id', 'gadget', 'event')->where('id', $id)->fetchRow();
     }
 
     /**
@@ -107,13 +91,8 @@ class Jaws_Listener
      */
     function GetListeners()
     {
-        $sql = '
-            SELECT
-                [id], [gadget], [event]
-            FROM [[listeners]]';
-
-        $res = $GLOBALS['db']->queryRow($sql);
-        return $res;
+        $lisnTable = Jaws_ORM::getInstance()->table('listeners');
+        return $lisnTable->select('id', 'gadget', 'event')->fetchAll();
     }
 
     /**
@@ -125,14 +104,8 @@ class Jaws_Listener
      */
     function GetEventListeners($event)
     {
-        $sql = '
-            SELECT
-                [id], [gadget]
-            FROM [[listeners]]
-            WHERE [event] = {event}';
-
-        $res = $GLOBALS['db']->queryAll($sql, array('event' => $event));
-        return $res;
+        $lisnTable = Jaws_ORM::getInstance()->table('listeners');
+        return $lisnTable->select('id', 'gadget')->where('event', $event)->fetchAll();
     }
 
     /**
@@ -145,17 +118,13 @@ class Jaws_Listener
      */
     function DeleteListener($gadget, $event = '')
     {
-        $params = array();
-        $params['gadget'] = $gadget;
-        $params['event']  = $event;
-
-        $sql = 'DELETE FROM [[listeners]] WHERE [gadget] = {gadget}';
+        $lisnTable = Jaws_ORM::getInstance()->table('listeners');
+        $lisnTable->delete()->where('gadget', $gadget);
         if (!empty($event)) {
-            $sql .= ' AND [event] = {event}';
+            $lisnTable->and()->where('event', $event);
         }
 
-        $res = $GLOBALS['db']->query($sql, $params);
-        return $res;
+        return $lisnTable->exec();
     }
 
 }
