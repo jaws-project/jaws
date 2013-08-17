@@ -166,8 +166,14 @@ class Upgrader_08To0902 extends JawsUpgraderStage
                     $new_key_name = $key[2];
             }
 
+            // exchange old to new name
             if (in_array($component, array_keys($exgadgets))) {
                 $component = $exgadgets[$component];
+            }
+
+            // skip adding removed registry gadget
+            if ($component == 'Registry') {
+                continue;
             }
 
             $params['component']  = $component;
