@@ -505,7 +505,7 @@ class Jaws_User
 
         // email
         $uData['email'] = trim($uData['email']);
-        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+        if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                 __FUNCTION__,
@@ -619,7 +619,7 @@ class Jaws_User
 
         // email
         $uData['email'] = trim($uData['email']);
-        if (!preg_match ("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+        if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                 __FUNCTION__,
