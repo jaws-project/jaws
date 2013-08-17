@@ -317,9 +317,9 @@ class Jaws_User
         $limit = 0, $offset = null)
     {
         $fields = array(
-            'id', 'id DESC',
-            'username', 'username DESC',
-            'nickname', 'nickname DESC', 'email'
+            'id', 'id desc',
+            'username', 'username desc',
+            'nickname', 'nickname desc', 'email'
         );
         if (!in_array($orderBy, $fields)) {
             $orderBy = 'username';
