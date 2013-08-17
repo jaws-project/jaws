@@ -77,8 +77,17 @@ class Upgrader_08To0902 extends JawsUpgraderStage
             }
         }
 
+        // Create application
+        include_once JAWS_PATH . 'include/Jaws.php';
+        $GLOBALS['app'] = new Jaws();
+        $GLOBALS['app']->Registry->Init();
+
         // convert acl key name to new format
-        $sql = 'SELECT [key_name], [key_value] FROM [[old_acl]]';
+        $sql = '
+            SELECT
+                [key_name], [key_value]
+            FROM [[old_acl]]
+            ORDER BY [key_name]';
         $keys = $GLOBALS['db']->queryAll($sql, array(), null, MDB2_FETCHMODE_DEFAULT, true);
         if (Jaws_Error::isError($keys)) {
             return Jaws_Error::raiseError($keys->getMessage(), 0, JAWS_ERROR_ERROR);
@@ -94,9 +103,28 @@ class Upgrader_08To0902 extends JawsUpgraderStage
         $params = array();
         $usersArray = array();
         unset($keys['/last_update']);
+
+        // Trying to add missed acl keys
+        _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
+        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+        $igadgets = array_filter(array_map('trim', explode(',', $installed_gadgets)));
+        foreach ($igadgets as $ig) {
+            if (false !== stripos($installed_gadgets, ",$ig,")) {
+                if (!array_key_exists("/ACL/gadgets/$ig/default", $keys)) {
+                    $keys["/ACL/gadgets/$ig/default"] = 'true';
+                }
+                if (!array_key_exists("/ACL/gadgets/$ig/default_admin", $keys)) {
+                    $keys["/ACL/gadgets/$ig/default_admin"] = 'false';
+                }
+                if (!array_key_exists("/ACL/gadgets/$ig/default_registry", $keys)) {
+                    $keys["/ACL/gadgets/$ig/default_registry"] = 'false';
+                }
+            }
+        }
+
+        _log(JAWS_LOG_DEBUG,"trying to add ACLs keys from old to new table");
         foreach ($keys as $key => $value) {
             $value = ($value == 'true');
-            $params['old_key_name'] = $key;
             $key = substr($key, 5);
             $key = explode('/', $key);
             switch ($key[0]) {

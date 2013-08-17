@@ -52,15 +52,6 @@ class Upgrader_08To0903 extends JawsUpgraderStage
         $GLOBALS['app'] = new Jaws();
         $GLOBALS['app']->Registry->Init();
 
-        // Trying to add missed acl keys
-        _log(JAWS_LOG_DEBUG,"trying to add missed acl keys");
-        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
-        $igadgets = array_filter(array_map('trim', explode(',', $installed_gadgets)));
-        foreach ($igadgets as $ig) {
-            $GLOBALS['app']->ACL->insert('default', '', 1, $ig);
-            $GLOBALS['app']->ACL->insert('default_admin', '', 0, $ig);
-        }
-
         // Upgrading core gadgets
         $gadgets = array(
             'UrlMapper', 'Settings', 'ControlPanel', 'Components',
