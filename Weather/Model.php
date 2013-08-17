@@ -59,7 +59,7 @@ class Weather_Model extends Jaws_Gadget_Model
             $weatherTable->where('published', $published);
         }
 
-        $result = $weatherTable->limit($limit, $offset)->orderBy('id ASC')->fetchAll();
+        $result = $weatherTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

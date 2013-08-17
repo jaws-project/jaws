@@ -42,7 +42,7 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $table->select('id', 'answer', 'rank', 'votes');
-        $result = $table->where('pid', $pid)->orderBy('rank ASC')->fetchAll();
+        $result = $table->where('pid', $pid)->orderBy('rank asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -125,7 +125,7 @@ class Poll_Model extends Jaws_Gadget_Model
             $table->limit($limit, $offset);
         }
 
-        $result = $table->orderBy('id ASC')->fetchAll();
+        $result = $table->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -170,7 +170,7 @@ class Poll_Model extends Jaws_Gadget_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_groups');
-        $table->select('id', 'title', 'visible')->orderBy('id ASC');
+        $table->select('id', 'title', 'visible')->orderBy('id asc');
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');

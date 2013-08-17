@@ -93,7 +93,7 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
             $date = array('date' => $date);
             $sql = '
                 SELECT COUNT([ip])
-                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_date] < {date}) AS visitors';
+                FROM (SELECT DISTINCT [ip] FROM [[ipvisitor]] WHERE [visit_date] < {date}) as visitors';
             $unique_visits = $GLOBALS['db']->queryOne($sql, $date);
             if (Jaws_Error::IsError($unique_visits)) {
                 return false;

@@ -52,7 +52,7 @@ class Forums_Model_Groups extends Jaws_Gadget_Model
             if ($onlyPublished) {
                 $sql .= ' WHERE [published] = {published}';
             }
-            $sql .= ' ORDER BY [order] ASC';
+            $sql .= ' ORDER BY [order] asc';
 
         $types = array('integer', 'text', 'text', 'text', 'integer', 'boolean', 'boolean');
         $result = $GLOBALS['db']->queryAll($sql, $params, $types);

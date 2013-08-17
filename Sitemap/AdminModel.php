@@ -236,7 +236,7 @@ class Sitemap_AdminModel extends Sitemap_Model
         $item = $this->GetItem($id);
         $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
         $sitemapTable->select('id:integer', 'rank:integer')->where('parent_id', $item['parent_id']);
-        $result = $sitemapTable->orderBy('rank ASC')->fetchAll();
+        $result = $sitemapTable->orderBy('rank asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_MOVE_ITEM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_MOVE_ITEM'), _t('SITEMAP_NAME'));

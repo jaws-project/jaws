@@ -25,8 +25,8 @@ class Faq_Model extends Jaws_Gadget_Model
         $faqCategoryTable = Jaws_ORM::getInstance()->table('faq_category');
         $faqCategoryTable->select(
             'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.faq_position:integer',
-            'faq_category.id AS cat_id:integer', 'faq_category.category_position:integer', 'faq_category.category',
-            'faq_category.fast_url AS cat_fast_url', 'faq_category.description', 'faq.createtime',
+            'faq_category.id as cat_id:integer', 'faq_category.category_position:integer', 'faq_category.category',
+            'faq_category.fast_url as cat_fast_url', 'faq_category.description', 'faq.createtime',
             'faq.updatetime', 'faq.published:boolean'
         );
         $faqCategoryTable->join('faq', 'faq_category.id', 'faq.category', 'left');
@@ -92,7 +92,7 @@ class Faq_Model extends Jaws_Gadget_Model
     {
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
-                'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category AS category_id:integer',
+                'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category as category_id:integer',
                 'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
                 'faq.updatetime');
         $faqTable->join('faq_category', 'faq.category', 'faq_category.id', 'left');
@@ -121,7 +121,7 @@ class Faq_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('faq_category');
         $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
-        $result = $table->orderBy('category_position ASC')->fetchAll();
+        $result = $table->orderBy('category_position asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

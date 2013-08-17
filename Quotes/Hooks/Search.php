@@ -39,7 +39,7 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [id] DESC';
+        $sql .= ' ORDER BY [id] desc';
 
         $params = array();
         $params['published'] = true;

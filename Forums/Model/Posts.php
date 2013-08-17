@@ -105,7 +105,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             WHERE
                 [tid] = {tid}
             ORDER BY
-                [insert_time] ASC';
+                [insert_time] asc';
 
         if (!empty($limit)) {
             $result = $GLOBALS['db']->setLimit($limit, $offset);
@@ -166,7 +166,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             WHERE
                 [uid] = {uid}
             ORDER BY
-                [[forums_posts]].[insert_time] ASC';
+                [[forums_posts]].[insert_time] asc';
 
         if (!empty($limit)) {
             $result = $GLOBALS['db']->setLimit($limit, $offset);

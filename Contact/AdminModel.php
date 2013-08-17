@@ -48,7 +48,7 @@ class Contact_AdminModel extends Contact_Model
         if ($recipient != -1) {
             $cntctTable->where('recipient', (int)$recipient);
         }
-        $cntctTable->orderBy('id DESC');
+        $cntctTable->orderBy('id desc');
         if (is_numeric($limit)) {
             $cntctTable->limit($limit, $offset);
         }

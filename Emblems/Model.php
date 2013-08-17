@@ -33,7 +33,7 @@ class Emblems_Model extends Jaws_Gadget_Model
         if ($onlyenabled){
             $emblemTable->where('enabled', true);
         }
-        $rs = $emblemTable->orderBy('id ASC')->fetchAll();
+        $rs = $emblemTable->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($rs)){
             return new Jaws_Error($rs->getMessage(), 'SQL');
         }

@@ -165,11 +165,11 @@ class StaticPage_Model extends Jaws_Gadget_Model
     {
         $orders = array(
             'base_id',
-            'base_id DESC',
+            'base_id desc',
             'title',
-            'title DESC',
+            'title desc',
             'updated',
-            'updated DESC',
+            'updated desc',
         );
         $orderBy = (int)$orderBy;
         $orderBy = $orders[($orderBy > 5)? 1 : $orderBy];

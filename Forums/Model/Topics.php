@@ -117,7 +117,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             WHERE
                 [fid] = {fid}' . $published_str . '
             ORDER BY
-                [last_post_time] DESC';
+                [last_post_time] desc';
 
         $types = array(
             'integer', 'integer', 'text', 'integer', 'integer',
@@ -170,7 +170,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         if (!empty($gid)) {
             $sql.= 'WHERE [[forums]].[gid] = {gid}';
         }
-        $sql.= ' ORDER BY [[forums_topics]].[last_post_time] DESC';
+        $sql.= ' ORDER BY [[forums_topics]].[last_post_time] desc';
 
         if (!empty($limit)) {
             $result = $GLOBALS['db']->setLimit($limit, 0);
@@ -408,7 +408,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             WHERE
                 [[forums_posts]].[tid] = {tid}
             ORDER BY
-                [id] DESC';
+                [id] desc';
 
         $types = array('integer', 'integer' , 'integer');
         $last_post = $GLOBALS['db']->queryRow($sql, $params, $types);

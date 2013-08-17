@@ -45,7 +45,7 @@ class Faq_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [createtime] DESC';
+        $sql .= ' ORDER BY [createtime] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {

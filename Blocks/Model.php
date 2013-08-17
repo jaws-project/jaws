@@ -46,7 +46,7 @@ class Blocks_Model extends Jaws_Gadget_Model
                 'createtime:timestamp', 'updatetime:timestamp');
         }
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
-        $blocksTable->select($columns)->orderBy('title ASC');
+        $blocksTable->select($columns)->orderBy('title asc');
         return $blocksTable->fetchAll();
     }
 }

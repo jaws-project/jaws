@@ -94,7 +94,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
         if ($onlyPublished) {
             $sql .= ' AND [[forums]].[published] = {published}';
         }
-        $sql.= ' ORDER BY [[forums]].[order] ASC';
+        $sql.= ' ORDER BY [[forums]].[order] asc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params, $types);
         return $result;

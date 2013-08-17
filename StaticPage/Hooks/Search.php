@@ -49,7 +49,7 @@ class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
             ';
 
         $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY sp.[page_id] DESC';
+        $sql .= ' ORDER BY sp.[page_id] desc';
 
         $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'text', 'timestamp');
         $result = $GLOBALS['db']->queryAll($sql, $params, $types);

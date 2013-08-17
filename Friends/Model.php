@@ -65,7 +65,7 @@ class Friends_Model extends Jaws_Gadget_Model
     function GetFriendsList($limit = 10)
     {
         $friendTable = Jaws_ORM::getInstance()->table('friend');
-        $result = $friendTable->select('id:integer', 'friend', 'url')->orderBy('id DESC')->limit(10, $limit)->fetchAll();
+        $result = $friendTable->select('id:integer', 'friend', 'url')->orderBy('id desc')->limit(10, $limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

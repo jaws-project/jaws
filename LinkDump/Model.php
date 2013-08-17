@@ -64,7 +64,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
                 'createtime', 'updatetime', 'clicks:integer'
             );
             $linksTable->join('linkdump_links_tags', 'linkdump_links_tags.link_id', 'linkdump_links.id');
-            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id ASC')->fetchAll();
+            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id asc')->fetchAll();
         }
 
         return $res;
@@ -123,7 +123,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
     {
         $lgroupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $lgroupsTable->select('id:integer', 'title', 'fast_url', 'limit_count:integer', 'link_type:integer');
-        return $lgroupsTable->orderBy('id ASC')->fetchAll();
+        return $lgroupsTable->orderBy('id asc')->fetchAll();
     }
 
     /**
@@ -144,21 +144,21 @@ class LinkDump_Model extends Jaws_Gadget_Model
         );
 
         if (empty($gid)) {
-            $linksTable->orderBy('gid', 'rank', 'id ASC');
+            $linksTable->orderBy('gid', 'rank', 'id asc');
         } else {
             $linksTable->where('gid', $gid);
             switch ($orderBy) {
                 case 1:
-                    $linksTable->orderBy('id ASC');
+                    $linksTable->orderBy('id asc');
                     break;
                 case 2:
-                    $linksTable->orderBy('title ASC');
+                    $linksTable->orderBy('title asc');
                     break;
                 case 3:
-                    $linksTable->orderBy('clicks DESC');
+                    $linksTable->orderBy('clicks desc');
                     break;
                 default:
-                    $linksTable->orderBy('rank', 'id ASC');
+                    $linksTable->orderBy('rank', 'id asc');
             }
         }
 

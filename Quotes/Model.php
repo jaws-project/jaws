@@ -56,7 +56,7 @@ class Quotes_Model extends Jaws_Gadget_Model
         } elseif ($id != -1) {
             $quotesTable->where('id', $id);
         }
-        $res = $quotesTable->orderBy('id ASC')->limit($limit, $offset)->fetchAll();
+        $res = $quotesTable->orderBy('id asc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
@@ -103,14 +103,14 @@ class Quotes_Model extends Jaws_Gadget_Model
 
         if (($gid != -1) && ($id != -1)) {
             $qgTable->join('quotes', 'quotes_groups.gid', 'quotes.id');
-            $qgTable->where('quotes_groups.id', $gid)->and()->where('quotes.id', $id)->orderBy('quotes_groups.id ASC');
+            $qgTable->where('quotes_groups.id', $gid)->and()->where('quotes.id', $id)->orderBy('quotes_groups.id asc');
         } elseif ($id != -1) {
             $qgTable->join('quotes', 'quotes_groups.gid', 'quotes.id');
-            $qgTable->where('quotes.id', $id)->orderBy('quotes_groups.id ASC');
+            $qgTable->where('quotes.id', $id)->orderBy('quotes_groups.id asc');
         } elseif ($gid != -1) {
-            $qgTable->where('id', $gid)->orderBy('id ASC');
+            $qgTable->where('id', $gid)->orderBy('id asc');
         } else {
-            $qgTable->orderBy('id ASC');
+            $qgTable->orderBy('id asc');
         }
 
         $res = $qgTable->fetchAll();
@@ -145,7 +145,7 @@ class Quotes_Model extends Jaws_Gadget_Model
         if ($randomly) {
             $quotesTable->orderBy($quotesTable->random());
         } else {
-            $quotesTable->orderBy('rank ASC', 'id DESC');
+            $quotesTable->orderBy('rank asc', 'id desc');
         }
 
         $res = $quotesTable->limit($limit)->fetchAll();
@@ -178,7 +178,7 @@ class Quotes_Model extends Jaws_Gadget_Model
         if ($randomly) {
             $quotesTable->orderBy($quotesTable->random());
         } else {
-            $quotesTable->orderBy('id DESC');
+            $quotesTable->orderBy('id desc');
         }
 
         $res = $quotesTable->limit($limit)->fetchAll();

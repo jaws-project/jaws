@@ -32,7 +32,7 @@ class FeedReader_Model extends Jaws_Gadget_Model
         if ($onlyVisible) {
             $objORM->where('visible', 1);
         }
-        $objORM->orderBy('id ASC');
+        $objORM->orderBy('id asc');
         return $objORM->fetchAll();
     }
 

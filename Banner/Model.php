@@ -57,14 +57,14 @@ class Banner_Model extends Jaws_Gadget_Model
 
         if (($bid != -1) && ($gid != -1)) {
             $bannersTable->where('id', $bid)->and()->where('gid', $gid);
-            $bannersTable->orderBy('rank ASC');
+            $bannersTable->orderBy('rank asc');
         } elseif ($gid != -1) {
             $bannersTable->where('gid', $gid);
-            $bannersTable->orderBy('rank ASC');
+            $bannersTable->orderBy('rank asc');
         } elseif ($bid != -1) {
             $bannersTable->where('id', $bid);
         } else {
-            $bannersTable->orderBy('id ASC');
+            $bannersTable->orderBy('id asc');
         }
 
         return $bannersTable->limit($limit, $offset)->fetchAll();
@@ -108,15 +108,15 @@ class Banner_Model extends Jaws_Gadget_Model
         if (($gid != -1) && ($bid != -1)) {
             $bgroupsTable->join('banners', 'banners.gid', 'banners_groups.id');
             $bgroupsTable->where('banners_groups.id', $gid)->and()->where('banners.id', $bid);
-            $bgroupsTable->orderBy('banners_groups.id ASC');
+            $bgroupsTable->orderBy('banners_groups.id asc');
         } elseif ($bid != -1) {
             $bgroupsTable->join('banners', 'banners.gid', 'banners_groups.id');
             $bgroupsTable->where('banners.id', $bid);
-            $bgroupsTable->orderBy('banners_groups.id ASC');
+            $bgroupsTable->orderBy('banners_groups.id asc');
         } elseif ($gid != -1) {
             $bgroupsTable->where('id', $gid);
         } else {
-            $bgroupsTable->orderBy('id ASC');
+            $bgroupsTable->orderBy('id asc');
         }
 
         return $bgroupsTable->fetchAll();
@@ -146,10 +146,10 @@ class Banner_Model extends Jaws_Gadget_Model
         $bannersTable->closeWhere('stop_time', $GLOBALS['db']->Date(), '>=');
 
         if ($gid == 0) {
-            $bannersTable->orderBy('id ASC');
+            $bannersTable->orderBy('id asc');
         } else {
             $bannersTable->and()->where('gid', $gid);
-            $bannersTable->orderBy('id ASC');
+            $bannersTable->orderBy('id asc');
         }
 
         $res = $bannersTable->fetchAll();

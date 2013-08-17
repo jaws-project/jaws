@@ -24,7 +24,7 @@ class VisitCounter_AdminModel extends VisitCounter_Model
     {
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
         $table->select(array('ip:integer', 'visit_time:integer', 'visits:integer'));
-        $table->orderBy('visit_time DESC');
+        $table->orderBy('visit_time desc');
         $table->limit(15, $offset);
 
         return $table->fetchAll();
