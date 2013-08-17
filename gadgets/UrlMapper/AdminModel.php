@@ -69,7 +69,7 @@ class UrlMapper_AdminModel extends UrlMapper_Model
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $mapsTable->select('id:integer', 'map', 'extension');
         $mapsTable->where('gadget', $gadget)->and()->where('action', $action);
-        $result = $mapsTable->orderBy('order ASC')->fetchAll();
+        $result = $mapsTable->orderBy('order asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }

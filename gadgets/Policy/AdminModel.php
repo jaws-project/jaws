@@ -79,7 +79,7 @@ class Policy_AdminModel extends Policy_Model
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
         $table->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
         $table->limit($limit, $offset);
-        $table->orderBy('id DESC');
+        $table->orderBy('id desc');
         return $table->fetchAll();
     }
 
@@ -95,7 +95,7 @@ class Policy_AdminModel extends Policy_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $table->select('id', 'agent', 'blocked:boolean');
         $table->limit($limit, $offset);
-        $table->orderBy('id DESC');
+        $table->orderBy('id desc');
         return $table->fetchAll();
     }
 

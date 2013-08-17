@@ -86,8 +86,8 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
 
         $commentsTable->limit($limit, $offset);
         $orders = array(
-            'createtime ASC',
-            'createtime DESC',
+            'createtime asc',
+            'createtime desc',
         );
         $orderBy = (int)$orderBy;
         $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];

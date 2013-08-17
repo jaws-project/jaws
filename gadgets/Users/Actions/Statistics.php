@@ -95,7 +95,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
-        $users = $usrModel->GetUsers(false, null, 1, '', '[id] DESC', $limit);
+        $users = $usrModel->GetUsers(false, null, 1, '', '[id] desc', $limit);
         foreach($users as $user) {
             $tpl->SetBlock('LatestRegistered/user');
             $tpl->SetVariable('username', $user['username']);

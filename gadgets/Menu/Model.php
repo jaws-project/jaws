@@ -56,7 +56,7 @@ class Menu_Model extends Jaws_Gadget_Model
             $menusTable->and()->where('published', $published);
         }
 
-        return $menusTable->orderBy('rank ASC')->fetchAll();
+        return $menusTable->orderBy('rank asc')->fetchAll();
     }
 
     /**
@@ -97,7 +97,7 @@ class Menu_Model extends Jaws_Gadget_Model
             'id:integer', 'title', 'title_view:integer', 'view_type:integer',
             'rank:integer', 'published:boolean'
         );
-        $mgroupsTable->orderBy('rank DESC');
+        $mgroupsTable->orderBy('rank desc');
         if(empty($gid)) {
             $result = $mgroupsTable->fetchAll();
         } else {
