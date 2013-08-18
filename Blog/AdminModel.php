@@ -29,21 +29,17 @@ class Blog_AdminModel extends Blog_Model
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category');
 
-        $params = array();
-        $params['name']          = $name;
-        $params['description']   = $description;
-        $params['fast_url']      = $fast_url;
-        $params['meta_keywords'] = $meta_keywords;
-        $params['meta_desc']     = $meta_desc;
-        $params['now']           = $GLOBALS['db']->Date();
+        $now = $GLOBALS['db']->Date();
+        $params['name']             = $name;
+        $params['description']      = $description;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keywords;
+        $params['meta_description'] = $meta_desc;
+        $params['createtime']       = $now;
+        $params['updatetime']       = $now;
 
-        $sql = '
-            INSERT INTO [[blog_category]]
-                ([name], [description], [fast_url], [meta_keywords], [meta_description], [createtime], [updatetime])
-            VALUES
-                ({name}, {description}, {fast_url}, {meta_keywords}, {meta_desc}, {now}, {now})';
-
-        $result  = $GLOBALS['db']->query($sql, $params);
+        $catTable = Jaws_ORM::getInstance()->table('blog_category');
+        $result = $catTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), _t('BLOG_NAME'));
@@ -70,26 +66,15 @@ class Blog_AdminModel extends Blog_Model
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category', false);
 
-        $params = array();
-        $params['id']            = $cid;
-        $params['name']          = $name;
-        $params['description']   = $description;
-        $params['fast_url']      = $fast_url;
-        $params['meta_keywords'] = $meta_keywords;
-        $params['meta_desc']     = $meta_desc;
-        $params['now']           = $GLOBALS['db']->Date();
+        $params['name']             = $name;
+        $params['description']      = $description;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keywords;
+        $params['meta_description'] = $meta_desc;
+        $params['updatetime']       = $GLOBALS['db']->Date();
 
-        $sql = '
-            UPDATE [[blog_category]] SET
-                [name]             = {name},
-                [description]      = {description},
-                [fast_url]         = {fast_url},
-                [meta_keywords]    = {meta_keywords},
-                [meta_description] = {meta_desc},
-                [updatetime]       = {now}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $catTable = Jaws_ORM::getInstance()->table('blog_category');
+        $result = $catTable->update($params)->where('id', $cid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -114,33 +99,30 @@ class Blog_AdminModel extends Blog_Model
      */
     function DeleteCategory($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-
         /**
          * Uncomment if you want don't want a category associated with a post
         $sql = "SELECT COUNT([entry_id]) FROM [[blog_entrycat]] WHERE [category_id] = {id}";
         $count = $GLOBALS['db']->queryOne($sql, $params);
         if (Jaws_Error::IsError($count)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
+        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+        return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
         if ($count > 0) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'), _t('BLOG_NAME'));
+        $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
+        return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'), _t('BLOG_NAME'));
         }
-        **/
+         **/
 
-        $sql = 'DELETE FROM [[blog_entrycat]] WHERE [category_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $result = $entrycatTable->delete()->where('category_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
-        $sql = 'DELETE FROM [[blog_category]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $catTable = Jaws_ORM::getInstance()->table('blog_category');
+        $result = $catTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
@@ -160,11 +142,11 @@ class Blog_AdminModel extends Blog_Model
      */
     function AddCategoryToEntry($blog_id, $category_id)
     {
-        $params = array();
         $params['entry_id']    = (int)$blog_id;
         $params['category_id'] = (int)$category_id;
-        $sql = 'INSERT INTO [[blog_entrycat]] VALUES({entry_id}, {category_id})';
-        $result = $GLOBALS['db']->query($sql, $params);
+
+        $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $result = $entrycatTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
@@ -194,8 +176,10 @@ class Blog_AdminModel extends Blog_Model
         $params = array();
         $params['entry_id']    = (int)$blog_id;
         $params['category_id'] = (int)$category_id;
-        $sql = 'DELETE FROM [[blog_entrycat]] WHERE [entry_id] = {entry_id} AND [category_id] = {category_id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+
+        $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $entrycatTable->where('entry_id', (int)$blog_id)->and()->where('category_id', (int)$category_id);
+        $result = $entrycatTable->delete()->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
@@ -258,7 +242,7 @@ class Blog_AdminModel extends Blog_Model
      * @param   bool    $pingback               If Pingback should be used
      * @return  mixed   Return True if settings were saved without problems, else Jaws_Error
      */
-    function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category, 
+    function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
                           $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
                           $pingback)
     {
@@ -300,7 +284,7 @@ class Blog_AdminModel extends Blog_Model
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
      * @param   bool    $allow_comments If entry should allow commnets
-     * @param   bool    $trackbacks     
+     * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
      * @param   bool    $autodraft      Does it comes from an autodraft action?
@@ -312,54 +296,47 @@ class Blog_AdminModel extends Blog_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
 
-        $params                  = array();
-        $params['user']          = $user;
-        $params['title']         = $title;
-        $params['content']       = str_replace("\r\n", "\n", $content);
-        $params['summary']       = str_replace("\r\n", "\n", $summary);
-        $params['trackbacks']    = $trackbacks;
-        $params['publish']       = $this->gadget->GetPermission('PublishEntries')? $publish : false;
-        $params['fast_url']      = $fast_url;
-        $params['meta_keywords'] = $meta_keywords;
-        $params['meta_desc']     = $meta_desc;
-        $params['comments']      = $allow_comments;
+        $date = $GLOBALS['app']->loadDate();
+        $now = $GLOBALS['db']->Date();
+
+        $params['user_id']          = $user;
+        $params['title']            = $title;
+        $params['text']             = str_replace("\r\n", "\n", $content);
+        $params['summary']          = str_replace("\r\n", "\n", $summary);
+        $params['trackbacks']       = $trackbacks;
+        $params['published']        = $this->gadget->GetPermission('PublishEntries')? $publish : false;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keywords;
+        $params['meta_description'] = $meta_desc;
+        $params['allow_comments']   = $allow_comments;
+        $params['createtime']       = $now;
+        $params['updatetime']       = $now;
 
         // Switch out for the MDB2 way
-        if (!is_bool($params['comments'])) {
-            $params['comments'] = $params['comments'] == '1' ? true : false;
+        if (!is_bool($params['allow_comments'])) {
+            $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
         }
 
-        if (!is_bool($params['publish'])) {
-            $params['publish'] = $params['publish'] == '1' ? true : false;
+        if (!is_bool($params['published'])) {
+            $params['published'] = $params['published'] == '1' ? true : false;
         }
-
-        $date = $GLOBALS['app']->loadDate();
-        $params['now'] = $GLOBALS['db']->Date();
 
         if (!is_null($timestamp)) {
             // Maybe we need to not allow crazy dates, e.g. 100 years ago
             $timestamp = $date->ToBaseDate(preg_split('/[- :]/', $timestamp), 'Y-m-d H:i:s');
             $params['publishtime'] = $GLOBALS['app']->UserTime2UTC($timestamp,  'Y-m-d H:i:s');
         } else {
-            $params['publishtime'] = $params['now'];
+            $params['publishtime'] = $now;
         }
 
-        $sql = '
-            INSERT INTO [[blog]]
-                ([user_id], [title], [summary], [text], [fast_url], [meta_keywords], [meta_description],
-                 [createtime], [updatetime], [publishtime], [trackbacks], [published], [allow_comments])
-            VALUES
-                ({user}, {title}, {summary}, {content}, {fast_url}, {meta_keywords}, {meta_desc},
-                 {now}, {now}, {publishtime}, {trackbacks}, {publish}, {comments})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $result = $blogTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), _t('BLOG_NAME'));
         }
 
-        $sql = 'SELECT MAX([id]) FROM [[blog]] WHERE [title] = {title}';
-        $max = $GLOBALS['db']->queryOne($sql, $params);
+        $max = Jaws_ORM::getInstance()->table('blog')->select('max(id)')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($max)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), _t('BLOG_NAME'));
@@ -383,7 +360,7 @@ class Blog_AdminModel extends Blog_Model
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
             $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $max), true),
-                                   $params['content']);
+                $params['text']);
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
@@ -407,7 +384,7 @@ class Blog_AdminModel extends Blog_Model
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
      * @param   bool    $allow_comments If entry should allow commnets
-     * @param   bool    $trackbacks     
+     * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
      * @param   bool    $autodraft      Does it comes from an autodraft action?
@@ -419,27 +396,26 @@ class Blog_AdminModel extends Blog_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
 
-        $params                  = array();
-        $params['title']         = $title;
-        $params['content']       = str_replace("\r\n", "\n", $content);
-        $params['summary']       = str_replace("\r\n", "\n", $summary);
-        $params['trackbacks']    = $trackbacks;
-        $params['published']     = $publish;
-        $params['comments']      = $allow_comments;
-        $params['id']            = $post_id;
-        $params['fast_url']      = $fast_url;
-        $params['meta_keywords'] = $meta_keywords;
-        $params['meta_desc']     = $meta_desc;
+        $params['title']            = $title;
+        $params['text']             = str_replace("\r\n", "\n", $content);
+        $params['summary']          = str_replace("\r\n", "\n", $summary);
+        $params['trackbacks']       = $trackbacks;
+        $params['published']        = $publish;
+        $params['allow_comments']   = $allow_comments;
+        $params['fast_url']         = $fast_url;
+        $params['meta_keywords']    = $meta_keywords;
+        $params['meta_description'] = $meta_desc;
+        $params['updatetime']       = $GLOBALS['db']->Date();
 
         if (!is_bool($params['published'])) {
             $params['published'] = $params['published'] == '1' ? true : false;
         }
 
-        if (!is_bool($params['comments'])) {
-            $params['comments'] = $params['comments'] == '1' ? true : false;
+        if (!is_bool($params['allow_comments'])) {
+            $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
         }
 
-        $e = $this->GetEntry($params['id']);
+        $e = $this->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -468,41 +444,23 @@ class Blog_AdminModel extends Blog_Model
         }
 
         // Switch out for the MDB2 way
-        if (!is_bool($params['comments'])) {
-            $params['comments'] = $params['comments'] === 1 ? true : false;
+        if (!is_bool($params['allow_comments'])) {
+            $params['allow_comments'] = $params['allow_comments'] === 1 ? true : false;
         }
 
         if (!is_bool($params['published'])) {
             $params['published'] = $params['published'] === 1 ? true : false;
         }
 
-        $params['now'] = $GLOBALS['db']->Date();
-
-        $sql = '
-            UPDATE [[blog]] SET
-                [title] = {title},
-                [fast_url] = {fast_url},
-                [meta_keywords] = {meta_keywords},
-                [meta_description] = {meta_desc},
-                [summary]  = {summary},
-                [text] = {content},
-                [updatetime] = {now},
-                [trackbacks] = {trackbacks},
-                [published]  = {published},
-                [allow_comments] = {comments}';
-
         $date = $GLOBALS['app']->loadDate();
         if (!is_null($timestamp)) {
             // Maybe we need to not allow crazy dates, e.g. 100 years ago
             $timestamp = $date->ToBaseDate(preg_split('/[- :]/', $timestamp), 'Y-m-d H:i:s');
             $params['publishtime'] = $GLOBALS['app']->UserTime2UTC($timestamp,  'Y-m-d H:i:s');
-            $sql .= ', [publishtime] = {publishtime} ';
         }
 
-        $sql .= ' WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $result = $blogTable->update($params)->where('id', $post_id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -524,7 +482,7 @@ class Blog_AdminModel extends Blog_Model
 
         foreach ($categories as $category) {
             if (!in_array($category, $catAux)) {
-                $this->AddCategoryToEntry($params['id'], $category);
+                $this->AddCategoryToEntry($post_id, $category);
             } else {
                 if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
                     $catAtom = $this->GetCategoryAtomStruct($category);
@@ -536,20 +494,19 @@ class Blog_AdminModel extends Blog_Model
 
         foreach ($e['categories'] as $k => $v) {
             if (!in_array($v['id'], $categories)) {
-                $this->DeleteCategoryInEntry($params['id'], $v['id']);
+                $this->DeleteCategoryInEntry($post_id, $v['id']);
             }
         }
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Pingback.php';
             $pback =& Jaws_PingBack::getInstance();
-            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $params['id']),
-                                                                   true),
-                                   $params['content']);
+            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $post_id),
+                true), $params['text']);
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_UPDATED'), RESPONSE_NOTICE);
-        return $params['id'];
+        return $post_id;
     }
 
     /**
@@ -579,10 +536,7 @@ class Blog_AdminModel extends Blog_Model
             }
         }
 
-        $params = array();
-        $params['id'] = $post_id;
-        $sql = 'DELETE FROM [[blog]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = Jaws_ORM::getInstance()->table('blog')->delete()->where('id', $post_id)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
         }
@@ -649,14 +603,8 @@ class Blog_AdminModel extends Blog_Model
      */
     function TotalOfPosts()
     {
-        $sql = '
-            SELECT
-                COUNT([[blog]].[id])
-            FROM [[blog]]
-            INNER JOIN [[users]] ON [[blog]].[user_id] = [[users]].[id]';
-
-        $howMany = $GLOBALS['db']->queryOne($sql);
-
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $howMany = $blogTable->select('count(blog.id)')->join('users', 'blog.user_id', 'users.id')->fetchOne();
         return Jaws_Error::IsError($howMany) ? 0 : $howMany;
     }
 
@@ -682,8 +630,8 @@ class Blog_AdminModel extends Blog_Model
      */
     function DeleteCommentsIn($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Comments');
-        return $cModel->DeleteCommentsByReference($this->gadget->name, $id);
+        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'DeleteComments');
+        return $cModel->DeleteGadgetComments($this->gadget->name, $id);
     }
 
     /**
@@ -702,8 +650,9 @@ class Blog_AdminModel extends Blog_Model
 
         // Fix blog trackback counter...
         foreach ($ids as $id) {
-            $sql = 'UPDATE [[blog_trackback]] SET [status] = {status} WHERE [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, array('id' => $id, 'status' => $status));
+            $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
+            $result = $trackbackTable->update(array('status'=>$status))->where('id', $id)->exec();
+
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -755,8 +704,8 @@ class Blog_AdminModel extends Blog_Model
         }
 
         foreach ($ids as $id) {
-            $sql = 'UPDATE [[blog]] SET [published] = {published} WHERE [id] = {id}';
-            $result = $GLOBALS['db']->query($sql, array('id' => $id, 'published' => (bool) $status));
+            $blogTable = Jaws_ORM::getInstance()->table('blog');
+            $result = $blogTable->update(array('published'=>(bool) $status))->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -801,11 +750,8 @@ class Blog_AdminModel extends Blog_Model
      */
     function DeleteTrackback($id)
     {
-        $params             = array();
-        $params['id']       = $id;
+        $result = Jaws_ORM::getInstance()->table('blog_trackback')->delete()->where('id', $id)->exec();
 
-        $sql = 'DELETE FROM [[blog_trackback]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('GLOBAL_TRACKBACKS_ERROR_NOT_DELETED'), 'CORE');
         }
@@ -831,80 +777,58 @@ class Blog_AdminModel extends Blog_Model
             $filterMode != 'postid' &&
             $filterMode != 'status' &&
             $filterMode != 'ip'
-            ) {
+        ) {
             $filterData = '%'.$filterData.'%';
         }
 
-        $params = array();
-        $params['filterData'] = $filterData;
+        $table = Jaws_ORM::getInstance()->table('blog_trackback');
+        $table->select(
+            'id:integer', 'parent_id:integer', 'blog_name', 'url', 'title', 'ip', 'url', 'status', 'createtime'
+        );
 
-        $sql = '
-            SELECT
-                [id],
-                [parent_id],
-                [blog_name],
-                [url],
-                [title],
-                [ip],
-                [url],
-                [status],
-                [createtime]
-            FROM [[blog_trackback]]';
-
-        $sql_condition = '';
         switch ($filterMode) {
-        case 'postid':
-            $sql_condition.= ' AND [parent_id] = {filterData}';
-            break;
-        case 'blog_name':
-            $sql_condition.= ' AND [blog_name] LIKE {filterData}';
-            break;
-        case 'url':
-            $sql_condition.= ' AND [url] LIKE {filterData}';
-            break;
-        case 'title':
-            $sql_condition.= ' AND [title] LIKE {filterData}';
-            break;
-        case 'ip':
-            $sql_condition.= ' AND [ip] LIKE {filterData}';
-            break;
-        case 'excerpt':
-            $sql_condition.= ' AND [excerpt] LIKE {filterData}';
-            break;
-        case 'various':
-            $sql_condition.= ' AND ([blog_name] LIKE {filterData}';
-            $sql_condition.= ' OR [url] LIKE {filterData}';
-            $sql_condition.= ' OR [title] LIKE {filterData}';
-            $sql_condition.= ' OR [excerpt] LIKE {filterData})';
-            break;
-        default:
-            if (is_bool($limit)) {
-                $limit = false;
-                //By default we get the last 20 comments
-                $result = $GLOBALS['db']->setLimit('20');
-                if (Jaws_Error::IsError($result)) {
-                    return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
+            case 'postid':
+                $table->and()->where('parent_id', $filterData);
+                break;
+            case 'blog_name':
+                $table->and()->where('blog_name', $filterData, 'like');
+                break;
+            case 'url':
+                $table->and()->where('url', $filterData, 'like');
+                break;
+            case 'title':
+                $table->and()->where('title', $filterData, 'like');
+                break;
+            case 'ip':
+                $table->and()->where('ip', $filterData, 'like');
+                break;
+            case 'excerpt':
+                $table->and()->where('excerpt', $filterData, 'like');
+                break;
+            case 'various':
+                $table->and()->openWhere()->where('blog_name', $filterData, 'like')->or();
+                $table->where('url', $filterData, 'like')->or();
+                $table->where('title', $filterData, 'like')->or();
+                $table->where('excerpt', $filterData, 'like')->closeWhere();
+                break;
+            default:
+                if (is_bool($limit)) {
+                    $limit = false;
+                    //By default we get the last 20 comments
+                    $table->limit(20);
                 }
-            }
-            break;
+                break;
         }
 
         if (in_array($status, array('approved', 'waiting', 'spam'))) {
-            $params['status'] = $status;
-            $sql.= ' AND [status] = {status}';
+            $table->and()->where('status', $status);
         }
 
         if (is_numeric($limit)) {
-            $result = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
-            }
+            $table->limit(10, $limit);
         }
 
-        $sql .= (empty($sql_condition)? '' : 'WHERE 1=1 ') . $sql_condition;
-        $sql .= ' ORDER BY [createtime] desc';
-
-        $rows = $GLOBALS['db']->queryAll($sql, $params);
+        $rows = $table->orderBy('createtime desc')->fetchAll();
         if (Jaws_Error::IsError($rows)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
         }
@@ -941,23 +865,23 @@ class Blog_AdminModel extends Blog_Model
 
             $newRow['created'] = $date->Format($row['createtime']);
             switch($row['status']) {
-            case 'approved':
-                $newRow['status'] = _t('COMMENTS_STATUS_APPROVED');
-                break;
-            case 'waiting':
-                $newRow['status'] = _t('COMMENTS_STATUS_WAITING');
-                break;
-            case 'spam':
-                $newRow['status'] = _t('COMMENTS_STATUS_SPAM');
-                break;
+                case 'approved':
+                    $newRow['status'] = _t('COMMENTS_STATUS_APPROVED');
+                    break;
+                case 'waiting':
+                    $newRow['status'] = _t('COMMENTS_STATUS_WAITING');
+                    break;
+                case 'spam':
+                    $newRow['status'] = _t('COMMENTS_STATUS_SPAM');
+                    break;
             }
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                        "javascript: trackbackDelete('".$row['id']."');",
-                                        STOCK_DELETE);
+                "javascript: trackbackDelete('".$row['id']."');",
+                STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
             $newRow['actions'] = $actions;
 
@@ -975,80 +899,66 @@ class Blog_AdminModel extends Blog_Model
      * @param   string  $filterMode     Which mode should be used to filter
      * @param   string  $filterData     Data that will be used in the filter
      * @param   string  $status         Spam status (approved, waiting, spam)
+     * @param   mixed   $limit          Limit of data (numeric/boolean: no limit)
      * @return  mixed   Returns how many trackbacks exists with a given filter or Jaws_Error on failure
      */
-    function HowManyFilteredTrackbacks($filterMode, $filterData, $status)
+    function HowManyFilteredTrackbacks($filterMode, $filterData, $status, $limit)
     {
         if (
             $filterMode != 'postid' &&
             $filterMode != 'status' &&
             $filterMode != 'ip'
-            ) {
+        ) {
             $filterData = '%'.$filterData.'%';
         }
 
-        $params = array();
-        $params['filterData'] = $filterData;
+        $table = Jaws_ORM::getInstance()->table('blog_trackback');
+        $table->select('count(*) as howmany');
 
-        $sql = '
-            SELECT
-                COUNT(*) as howmany
-            FROM [[blog_trackback]]';
 
-        $sql_condition = '';
         switch ($filterMode) {
-        case 'postid':
-            $sql_condition.= ' AND [parent_id] = {filterData}';
-            break;
-        case 'blog_name':
-            $sql_condition.= ' AND [blog_name] LIKE {filterData}';
-            break;
-        case 'url':
-            $sql_condition.= ' AND [url] LIKE {filterData}';
-            break;
-        case 'title':
-            $sql_condition.= ' AND [title] LIKE {filterData}';
-            break;
-        case 'ip':
-            $sql_condition.= ' AND [ip] LIKE {filterData}';
-            break;
-        case 'excerpt':
-            $sql_condition.= ' AND [excerpt] LIKE {filterData}';
-            break;
-        case 'various':
-            $sql_condition.= ' AND ([blog_name] LIKE {filterData}';
-            $sql_condition.= ' OR [url] LIKE {filterData}';
-            $sql_condition.= ' OR [title] LIKE {filterData}';
-            $sql_condition.= ' OR [excerpt] LIKE {filterData})';
-            break;
-        default:
-            if (is_bool($limit)) {
-                $limit = false;
-                //By default we get the last 20 comments
-                $result = $GLOBALS['db']->setLimit('20');
-                if (Jaws_Error::IsError($result)) {
-                    return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
+            case 'postid':
+                $table->and()->where('parent_id', $filterData);
+                break;
+            case 'blog_name':
+                $table->and()->where('blog_name', $filterData, 'like');
+                break;
+            case 'url':
+                $table->and()->where('url', $filterData, 'like');
+                break;
+            case 'title':
+                $table->and()->where('title', $filterData, 'like');
+                break;
+            case 'ip':
+                $table->and()->where('ip', $filterData, 'like');
+                break;
+            case 'excerpt':
+                $table->and()->where('excerpt', $filterData, 'like');
+                break;
+            case 'various':
+                $table->and()->openWhere()->where('blog_name', $filterData, 'like')->or();
+                $table->where('url', $filterData, 'like')->or();
+                $table->where('title', $filterData, 'like')->or();
+                $table->where('excerpt', $filterData, 'like')->closeWhere();
+                break;
+            default:
+                if (is_bool($limit)) {
+                    $limit = false;
+                    //By default we get the last 20 comments
+                    $table->limit(20);
                 }
-            }
-            break;
+                break;
         }
 
-        if ($status != 'various' && (!in_array($status, array('approved', 'waiting', 'spam')))) {
-            if ($this->gadget->registry->fetch('trackback_status') == 'waiting') {
-                $status = 'waiting';
-            } else {
-                $status = 'approved';
-            }          
+        if (in_array($status, array('approved', 'waiting', 'spam'))) {
+            $table->and()->where('status', $status);
         }
 
-        if ($status != 'various') {
-            $sql_condition.= ' AND [status] = {status}';
-            $params['status'] = $status;
+        if (is_numeric($limit)) {
+            $table->limit(10, $limit);
         }
 
-        $sql .= (empty($sql_condition)? '' : 'WHERE 1=1 ') . $sql_condition;
-
-        $howmany = $GLOBALS['db']->queryOne($sql, $params);
+        $howmany = $table->fetchOne();
         if (Jaws_Error::IsError($rows)) {
             return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
         }
