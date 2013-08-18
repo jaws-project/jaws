@@ -44,6 +44,17 @@ class Users_Actions_Preferences extends Users_HTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
+        // avatar
+        if (empty($info['avatar'])) {
+            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
+        } else {
+            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $info['avatar'];
+            $user_current_avatar .= !empty($info['last_update']) ? "?" . $info['last_update'] . "" : '';
+        }
+        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
+        $avatar->SetID('avatar');
+        $tpl->SetVariable('avatar', $avatar->Get());
+
         //Language
         $lang =& Piwi::CreateWidget('Combo', 'user_language');
         $lang->setID('user_language');
