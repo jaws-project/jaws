@@ -276,7 +276,10 @@ float:right;
 float:left;
 }
 /* users style */
-.users #personal_fname,.users #personal_lname,.users #username,.users #nickname,.users #email{
+.users #personal_fname,.users #personal_lname,
+.users #username,.users #nickname,.users #email,
+.users #country,.users #city,.users #postal_code,
+.users #user_language,.users #user_theme,.users #user_editor{
 width:380px;
 }
 .users #user_gender{
