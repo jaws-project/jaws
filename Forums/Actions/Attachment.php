@@ -25,7 +25,7 @@ class Forums_Actions_Attachment extends Forums_HTML
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post)) {
-            $this->SetActionMode('Attachment', 'NormalAction', 'StandaloneAction');
+            $this->SetActionMode('Attachment', 'normal', 'standalone');
             return Jaws_HTTPError::Get(500);
         }
 
@@ -42,12 +42,12 @@ class Forums_Actions_Attachment extends Forums_HTML
                     return;
                 }
 
-                $this->SetActionMode('Attachment', 'NormalAction', 'StandaloneAction');
+                $this->SetActionMode('Attachment', 'normal', 'standalone');
                 return Jaws_HTTPError::Get(500);
             }
         }
 
-        $this->SetActionMode('Attachment', 'NormalAction', 'StandaloneAction');
+        $this->SetActionMode('Attachment', 'normal', 'standalone');
         return Jaws_HTTPError::Get(404);
     }
 
