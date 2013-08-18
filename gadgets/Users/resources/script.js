@@ -627,7 +627,7 @@ function onUpload(response) {
 function removeAvatar() {
     $('avatar').value = '';
     $('frm_avatar').reset();
-    $('image').src = 'gadgets/Users/images/avatar.png';
+    $('image').src = 'gadgets/Users/images/photo128px.png';
 }
 
 /**
