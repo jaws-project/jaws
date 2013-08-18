@@ -310,7 +310,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {
-            $this->SetActionMode('Download', 'NormalAction', 'StandaloneAction');
+            $this->SetActionMode('Download', 'normal', 'standalone');
             return Jaws_HTTPError::Get(500);
         }
 
@@ -326,12 +326,12 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                     return;
                 }
 
-                $this->SetActionMode('Download', 'NormalAction', 'StandaloneAction');
+                $this->SetActionMode('Download', 'normal', 'standalone');
                 return Jaws_HTTPError::Get(500);
             }
         }
 
-        $this->SetActionMode('Download', 'NormalAction', 'StandaloneAction');
+        $this->SetActionMode('Download', 'normal', 'standalone');
         return Jaws_HTTPError::Get(404);
     }
 
