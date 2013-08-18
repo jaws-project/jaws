@@ -159,7 +159,7 @@ class Jaws_User
      */
     function GetUser($user, $account = true, $personal = false, $preferences = false, $contacts = false)
     {
-        $columns = array('id:integer',);
+        $columns = array('id:integer', 'avatar');
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
@@ -169,7 +169,7 @@ class Jaws_User
         }
 
         if ($personal) {
-            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'avatar',
+            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'url',
                 'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
                 'interests',)
             );
