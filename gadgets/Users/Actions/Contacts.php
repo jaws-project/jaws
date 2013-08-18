@@ -54,6 +54,33 @@ class Users_Actions_Contacts extends Users_HTML
         $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariablesArray($contacts);
 
+        if (empty($contacts['avatar'])) {
+            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
+        } else {
+            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $contacts['avatar'];
+            $user_current_avatar .= !empty($contacts['last_update']) ? "?" . $contacts['last_update'] . "" : '';
+        }
+        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
+        $avatar->SetID('avatar');
+        $tpl->SetVariable('avatar', $avatar->Get());
+
+        // countries list
+        $ObjCountry = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Country');
+        $countries = $ObjCountry->GetCountries();
+        if (!Jaws_Error::IsError($Countries)) {
+            array_unshift($countries, _t('USERS_ADVANCED_OPTS_NOT_YET'));
+            foreach($countries as $code => $name) {
+                $tpl->SetBlock('contacts/country');
+                $tpl->SetVariable('code', $code);
+                $tpl->SetVariable('name', $name);
+                if ($contacts['country'] === $code) {
+                    $tpl->SetBlock('contacts/country/selected');
+                    $tpl->ParseBlock('contacts/country/selected');
+                }
+                $tpl->ParseBlock('contacts/country');
+            }
+        }
+
         if (!empty($response)) {
             $tpl->SetBlock('contacts/response');
             $tpl->SetVariable('type', $response['type']);

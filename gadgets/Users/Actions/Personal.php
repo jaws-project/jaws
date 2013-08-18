@@ -51,10 +51,8 @@ class Users_Actions_Personal extends Users_HTML
             $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $personal['avatar'];
             $user_current_avatar .= !empty($personal['last_update']) ? "?" . $personal['last_update'] . "" : '';
         }
-
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
         $avatar->SetID('avatar');
-        $avatar->SetStyle('max-width: 128px;max-height: 128px;');
         $tpl->SetVariable('avatar', $avatar->Get());
 
         $tpl->SetVariable('lbl_fname',  _t('USERS_USERS_FIRSTNAME'));

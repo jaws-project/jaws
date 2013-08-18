@@ -7,27 +7,32 @@
   <input type="hidden" name="action" value="UpdateContacts" />
   <div class="content">
     <fieldset>
-      <p><label for="country">{lbl_country}:</label>
-        <input name="country" id="country" value="{country}" type="text" />
-      </p>
-      <p><label for="city">{lbl_city}:</label>
+      <div class="user_avatar">{avatar}</div>
+      <div><label for="country">{lbl_country}:</label>
+        <select name="country" id="country">
+          <!-- BEGIN country -->
+          <option value="{code}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{name}</option>
+          <!-- END country -->
+        </select>
+      </div>
+      <div><label for="city">{lbl_city}:</label>
         <input name="city" id="city" value="{city}" type="text" />
-      </p>
-      <p><label for="address">{lbl_address}:</label>
-        <textarea name="address" id="address" cols="45" rows="4">{address}</textarea>
-      </p>
-      <p><label for="postal_code">{lbl_postal_code}:</label>
+      </div>
+      <div><label for="postal_code">{lbl_postal_code}:</label>
         <input name="postal_code" id="postal_code" value="{postal_code}" type="text" style="direction: ltr;" />
-      </p>
-      <p><label for="phone_number">{lbl_phone_number}:</label>
+      </div>
+      <div><label for="address">{lbl_address}:</label>
+        <textarea name="address" id="address" cols="45" rows="4">{address}</textarea>
+      </div>
+      <div><label for="phone_number">{lbl_phone_number}:</label>
         <input name="phone_number" id="phone_number" value="{phone_number}" type="text" style="direction: ltr;" />
-      </p>
-      <p><label for="mobile_number">{lbl_mobile_number}:</label>
+      </div>
+      <div><label for="mobile_number">{lbl_mobile_number}:</label>
         <input name="mobile_number" id="mobile_number" value="{mobile_number}" type="text" style="direction: ltr;" />
-      </p>
-      <p><label for="fax_number">{lbl_fax_number}:</label>
+      </div>
+      <div><label for="fax_number">{lbl_fax_number}:</label>
         <input name="fax_number" id="fax_number" value="{fax_number}" type="text" style="direction: ltr;" />
-      </p>
+      </div>
     </fieldset>
   </div>
   <div class="actions"><button type="submit" value="{update}">{update}</button></div>

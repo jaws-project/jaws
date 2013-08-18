@@ -68,7 +68,6 @@ class Users_Actions_Account extends Users_HTML
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
         $avatar->SetID('avatar');
-        $avatar->SetStyle('max-width: 128px;max-height: 128px;');
         $account['avatar'] = $avatar->Get();
 
         $account['response'] = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');

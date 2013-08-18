@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Model_Country extends Jaws_Model
+class Users_Model_Country extends Jaws_Gadget_Model
 {
     /**
      * Countries list
