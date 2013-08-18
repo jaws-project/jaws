@@ -59,8 +59,8 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function getMaxDate()
     {
-        $sql = 'SELECT MAX([createtime]) FROM [[phoo_image]]';
-        $max = $GLOBALS['db']->queryOne($sql);
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $max = $table->select('max(createtime)')->fetchOne();
         if (Jaws_Error::IsError($max)) {
             return false;
         }
@@ -77,8 +77,8 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetMinDate()
     {
-        $sql = 'SELECT MIN([createtime]) FROM [[phoo_image]]';
-        $min = $GLOBALS['db']->queryOne($sql);
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $min = $table->select('min(createtime)')->fetchOne();
         if (Jaws_Error::IsError($min)) {
             return false;
         }
@@ -117,19 +117,19 @@ class Phoo_Model extends Jaws_Gadget_Model
     {
         $orderType = $this->gadget->registry->fetch($resource);
         if ($resource == 'photos_order_type') {
-            if (!in_array($orderType, array('createtime desc', 'createtime', 'title desc', 'title', 'id desc','id' )))
+            if (!in_array($orderType, array('createtime DESC', 'createtime', 'title DESC', 'title', 'id DESC','id' )))
             {
                 $orderType = 'title';
             }
         } else {
-            if (!in_array($orderType, array('createtime desc', 'createtime', 'name desc', 'name', 'id desc', 'id' )))
+            if (!in_array($orderType, array('createtime DESC', 'createtime', 'name DESC', 'name', 'id DESC', 'id' )))
             {
                 $orderType = 'name';
             }
         }
 
         if (strpos($orderType,'DESC')) {
-                $orderType = '['. trim(substr($orderType, 0, strpos($orderType,'DESC'))). '] desc';
+                $orderType = '['. trim(substr($orderType, 0, strpos($orderType,'DESC'))). '] DESC';
         } else {
                 $orderType = '['.$orderType.']';
         }
@@ -138,7 +138,7 @@ class Phoo_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Do an advanced search
+     * Performs an advanced search
      *
      * @access  public
      * @param   string  $date     Entry date
@@ -148,54 +148,30 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function AdvancedSearch($date, $album, $words = '')
     {
-        $params          = array();
-        $params['date']  = $date;
-        $params['album'] = $album;
-        $params['words'] = $words;
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $table->select('phoo_image.id', 'filename', 'title', 'createtime');
+        $table->join('phoo_image_album', 'phoo_image.id', 'phoo_image_album.phoo_image_id', 'left');
 
-        ///FIXME: Add words support
-        $sql = '
-            SELECT
-                [[phoo_image]].[id],
-                [filename],
-                [title],
-                [createtime]
-            FROM [[phoo_image]]
-            LEFT JOIN [[phoo_image_album]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
-            WHERE ';
-
-        if (!empty($params['date'])) {
-            $params['date'] = str_replace('/', '_', $params['date']);
-
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
-            $substring = $GLOBALS['db']->dbc->function->substring('[[phoo_image]].[filename]', 6, 10);
-            $sql .= ' ' . $substring . ' = {date} AND';
+        if (!empty($date)) {
+			$table->where(
+				$table->substring('phoo_image.filename', 1, 10),
+				str_replace('-', '_', $date)
+			)->and();
         }
 
-        if (!empty($params['album'])) {
-            $sql .= ' [[phoo_image_album]].[phoo_album_id] = {album} AND';
+        if (!empty($album)) {
+			$table->where('phoo_image_album.phoo_album_id', $album)->and();
         }
 
-        ///FIXME: We have to find a better solution
-        if (!empty($params['words'])) {
-            $words = explode(' ', $params['words']);
-            $i = 0;
+        if (!empty($words)) {
+            $words = explode(' ', $words);
             foreach ($words as $word) {
-                $sql .= " [[phoo_image]].[title] = LIKE({word_".$i."})";
-                $params['word_'.$i] = '%'.$word.'%';
-                $i++;
+                $table->where('phoo_image.title', "%$word%", 'like');
             }
         }
 
-        $sql = substr($sql, 0, -3);
-        $sql .= ' ORDER BY [createtime] desc';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ADVANCEDSEARCH_QUERY'), _t('PHOO_NAME'));
-        }
-
-        return $result;
+        //echo $table->fetchRaw();
+        return $table->orderBy('createtime DESC')->fetchAll();
     }
 
     /**
@@ -206,56 +182,35 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetMoblog()
     {
-        $params = array();
-        $params['published'] = true;
-
-        $sql = '
-            SELECT
-                [phoo_album_id],
-                [filename],
-                [[phoo_image]].[id],
-                [[phoo_image]].[title],
-                [[phoo_image]].[description],
-                [[phoo_image]].[createtime]
-            FROM [[phoo_image_album]]
-            INNER JOIN [[phoo_image]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
-            INNER JOIN [[phoo_album]] ON [[phoo_album]].[id] = [[phoo_image_album]].[phoo_album_id]
-            WHERE
-                [[phoo_image]].[published] = {published}
-              AND (';
-
         $album = $this->gadget->registry->fetch('moblog_album');
         if (Jaws_Error::isError($album)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
         }
 
-        ///FIXME: We have to find a better solution, implode maybe
-        foreach (explode(',', $album) as $v) {
-            $sql .= "([[phoo_album]].[name] = '".$v."') OR ";
-        }
-        $sql  = substr($sql, 0, -3);
-        $sql .= ') ORDER BY [[phoo_image]].[createtime] desc';
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table->select('phoo_album_id', 'filename', 'phoo_image.id', 
+			'phoo_image.title', 'phoo_image.description', 'phoo_image.createtime');
+        $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
+        $table->join('phoo_album', 'phoo_album.id', 'phoo_image_album.phoo_album_id');
+        $table->where('phoo_image.published', true)->and();
+        $table->where('phoo_album.name', $album);
+        $table->orderBy('phoo_image.createtime desc');
 
         $limit = $this->gadget->registry->fetch('moblog_limit');
         if (Jaws_Error::isError($limit)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
         }
 
-        $result = $GLOBALS['db']->setLimit($limit);
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = $table->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
         }
 
         foreach ($result as $key => $image) {
-            $result[$key]['name']   = $image['title'];
-            $result[$key]['thumb']  = $this->GetThumbPath($image['filename']);
+            $result[$key]['name'] = $image['title'];
+            $result[$key]['thumb'] = $this->GetThumbPath($image['filename']);
             $result[$key]['medium'] = $this->GetMediumPath($image['filename']);
-            $result[$key]['image']  = $this->GetOriginalPath($image['filename']);
+            $result[$key]['image'] = $this->GetOriginalPath($image['filename']);
             $result[$key]['stripped_description'] = $image['description'];
         }
 
@@ -270,55 +225,42 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetAlbumList()
     {
-        $params = array();
-        $params['published'] = true;
-
-        $sql = '
-            SELECT
-                [id], [name], [description], [createtime]
-            FROM [[phoo_album]]
-            WHERE [published] = {published}
-            ORDER BY '. $this->GetOrderType('albums_order_type');
-
-        $albums = $GLOBALS['db']->queryAll($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->select('id', 'name', 'description', 'createtime');
+        $table->where('published', true)->orderBy($this->GetOrderType('albums_order_type'));
+        $albums = $table->fetchAll();
         if (Jaws_Error::IsError($albums)) {
             return new Jaws_Error(_t('PHOO_ERROR_ALBUMLIST'), _t('PHOO_NAME'));
         }
 
-        //Add unknown photo album to albums list
-        array_push($albums, array('id'          => 0,
-                                  'name'        => _t('PHOO_WITHOUT_ALBUM'),
+        // Add unknown photo album to albums list
+        array_push($albums, array('id' => 0,
+                                  'name' => _t('PHOO_WITHOUT_ALBUM'),
                                   'description' => _t('PHOO_WITHOUT_ALBUM_DESCRIPTION'),
-                                  'createtime'  => date('Y-m-d H:i:s')));
-
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $rand = $GLOBALS['db']->dbc->function->random();
+                                  'createtime' => date('Y-m-d H:i:s')));
 
         for ($i = 0; $i < count($albums); $i++) {
-            $params['id'] = $albums[$i]['id'];
-            if ($params['id'] == 0) {
+            $id = $albums[$i]['id'];
+            if ($id == 0) {
                 // orphan photos
-                $sql = '
-                    SELECT
-                        [[phoo_image]].[filename], [phoo_album_id]
-                    FROM [[phoo_image]]
-                    LEFT OUTER JOIN [[phoo_image_album]] ON [[phoo_image_album]].[phoo_image_id] = [[phoo_image]].[id]
-                    WHERE [phoo_album_id] IS NULL AND [[phoo_image]].[published] = {published}
-                    ORDER BY ' . $rand;
+				$table = Jaws_ORM::getInstance()->table('phoo_image');
+                $table->select('phoo_image.filename', 'phoo_album_id');
+                $table->join('phoo_image_album', 'phoo_image_album.phoo_image_id', 
+					'phoo_image.id', 'left outer');
+				$table->where('phoo_album_id', '', 'is null')->and();
+				$table->where('phoo_image.published', true);
             } else {
-                $sql = '
-                    SELECT
-                        [[phoo_image]].[filename]
-                    FROM [[phoo_image_album]]
-                    INNER JOIN [[phoo_image]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
-                    WHERE
-                        [phoo_album_id] = {id} AND [[phoo_image]].[published] = {published}
-                    GROUP BY
-                        [[phoo_image]].[filename]
-                    ORDER BY ' . $rand;
+				$table = Jaws_ORM::getInstance()->table('phoo_image_album');
+                $table->select('phoo_image.filename');
+                $table->join('phoo_image', 'phoo_image.id', 
+					'phoo_image_album.phoo_image_id');
+				$table->where('phoo_album_id', $id)->and();
+				$table->where('phoo_image.published', true);
+				$table->groupBy('phoo_image.filename');
             }
+			$table->orderBy($table->random());
 
-            $images = $GLOBALS['db']->queryAll($sql, $params);
+            $images = $table->fetchAll();
             if (!Jaws_Error::IsError($images) && !empty($images)) {
                 $albums[$i]['qty']      = count($images);
                 $albums[$i]['filename'] = $images[0]['filename'];
@@ -339,43 +281,24 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetRandomImage($albumid = null)
     {
-        $GLOBALS['db']->dbc->loadModule('Function', null, true);
-        $rand = $GLOBALS['db']->dbc->function->random();
-
-        $params = array();
-        $params['album']     = (int)$albumid;
-        $params['published'] = true;
-
-        $sql = '
-            SELECT
-                [phoo_album_id],
-                [filename],
-                [[phoo_image]].[id],
-                [[phoo_image]].[title],
-                [[phoo_image]].[description]
-            FROM [[phoo_image_album]]
-            INNER JOIN [[phoo_image]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
-            WHERE [[phoo_image]].[published] = {published}';
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table->select('phoo_album_id', 'filename', 'phoo_image.id', 
+			'phoo_image.title', 'phoo_image.description');
+        $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
 
         if (is_numeric($albumid)) {
-            $sql .= ' AND [[phoo_image_album]].[phoo_album_id] = {album}';
+            $table->and()->where('phoo_image_album.phoo_album_id', (int)$album);
         }
-        $sql .= ' ORDER BY ' . $rand;
-
-        $result = $GLOBALS['db']->setLimit('1');
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_RANDOMIMAGE'), _t('PHOO_NAME'));
-        }
-
-        $row = $GLOBALS['db']->queryRow($sql, $params);
+        $table->orderBy($table->random());
+        $row = $table->limit(1)->fetchRow();
         if (Jaws_Error::IsError($row) || !isset($row['filename'])) {
             return new Jaws_Error(_t('PHOO_ERROR_RANDOMIMAGE'), _t('PHOO_NAME'));
         }
 
-        $row['name']   = $row['title'];
-        $row['thumb']  = $this->GetThumbPath($row['filename']);
+        $row['name'] = $row['title'];
+        $row['thumb'] = $this->GetThumbPath($row['filename']);
         $row['medium'] = $this->GetMediumPath($row['filename']);
-        $row['image']  = $this->GetOriginalPath($row['filename']);
+        $row['image'] = $this->GetOriginalPath($row['filename']);
         $row['stripped_description'] = strip_tags($row['description']);
 
         return $row;
@@ -390,27 +313,11 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetAlbumInfo($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-
-        $sql = '
-            SELECT
-                [id],
-                [name],
-                [description],
-                [allow_comments],
-                [published],
-                [createtime]
-            FROM [[phoo_album]]
-            WHERE [id] = {id}';
-
-        $types = array('integer', 'text', 'text', 'boolean', 'boolean', 'date');
-        $row = $GLOBALS['db']->queryRow($sql, $params, $types);
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUMINFO'), _t('PHOO_NAME'));
-        }
-
-        return $row;
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->select('id', 'name', 'description', 'allow_comments:boolean', 
+			'published:boolean', 'createtime');
+        $table->where('id', $id);
+        return $table->fetchRow();
     }
 
     /**
@@ -422,31 +329,27 @@ class Phoo_Model extends Jaws_Gadget_Model
      * @param   string  $direction  order direction
      * @return  mixed   A list of available albums and Jaws_Error on error
      */
-    function GetAlbums($by = 'name', $direction = 'ASC')
+    function GetAlbums($by = 'name', $direction = 'asc')
     {
-        $directions = array('ASC', 'DESC');
-        $direction  = strtoupper($direction);
+        $directions = array('asc', 'desc');
+        $direction = strtolower($direction);
         if (!in_array($direction, $directions)) {
-            $direction = 'ASC';
+            $direction = 'asc';
         }
 
         $fields = array('id', 'name', 'description', 'createtime');
-        $by     = strtolower($by);
+        $by = strtolower($by);
         if (!in_array($by, $fields)) {
             $by = 'name';
         }
 
-        $sql = "
-            SELECT
-                [id], [name], [published], [createtime], COUNT([phoo_image_id]) as howmany
-            FROM [[phoo_album]]
-            LEFT JOIN [[phoo_image_album]] ON [id] = [phoo_album_id]
-            GROUP BY
-                [id], [name], [published], [createtime]
-            ORDER BY [$by] $direction";
-
-        $types = array('integer', 'text', 'boolean', 'timestamp', 'integer');
-        $rows = $GLOBALS['db']->queryAll($sql, null, $types);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->select('id', 'name', 'count(phoo_image_id) as howmany', 
+			'published:boolean', 'createtime');
+        $table->join('phoo_image_album', 'id', 'phoo_album_id', 'left');
+        $table->groupBy('id', 'name', 'published', 'createtime');
+        $table->orderBy("$by $direction");
+        $rows = $table->fetchAll();
         if (Jaws_Error::IsError($rows)) {
             return new Jaws_Error(_t('PHOO_ERROR_ALBUMS', $by), _t('PHOO_NAME'));
         }
@@ -471,29 +374,23 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetAlbumCount($id)
     {
-        $params        = array();
-        $params['id']  = $id;
-
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $table->select('count(id)');
          if ($id == '0') { //UNKNOWN
-            $sql = '
-                SELECT COUNT([id])
-                FROM [[phoo_image]]
-                LEFT OUTER JOIN [[phoo_image_album]] ON [[phoo_image_album]].[phoo_image_id] = [[phoo_image]].[id]
-                WHERE [phoo_album_id] IS NULL';
+			$join_type = 'left outer';
+			$table->where('phoo_album_id', '', 'is null');
          } else {
-            $sql = '
-                SELECT COUNT([id])
-                FROM [[phoo_image]]
-                INNER JOIN [[phoo_image_album]] ON [[phoo_image_album]].[phoo_image_id] = [[phoo_image]].[id]
-                WHERE [phoo_album_id] = {id}';
+			$join_type = 'inner';
+			$table->where('phoo_album_id', $id);
         }
-
-        $r = $GLOBALS['db']->queryOne($sql, $params);
-        if (Jaws_Error::IsError($r)) {
+        $table->join('phoo_image_album', 'phoo_image_album.phoo_image_id', 
+			'phoo_image.id', $join_type);
+		$res = $table->fetchOne();
+        if (Jaws_Error::IsError($res)) {
             return 0;
         }
 
-        return($r != null ? $r : 0);
+        return($res != null ? $res : 0);
     }
 
     /**
@@ -639,19 +536,9 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetAlbumImages($id, $page = null, $day = null, $month = null, $year = null)
     {
-        $params = array();
-        $params['id']    = $id;
-        $params['month'] = $month;
-        $params['year']  = $year;
-
-        $sql = '
-            SELECT
-                [id], [name], [description], [createtime], [published]
-            FROM [[phoo_album]]
-            WHERE [id] = {id}';
-
-        $types = array('integer', 'text', 'text', 'timestamp', 'boolean');
-        $r = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->select('id', 'name', 'description', 'createtime', 'published:boolean');
+        $r = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($r)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'), _t('PHOO_NAME'));
         }
@@ -677,23 +564,15 @@ class Phoo_Model extends Jaws_Gadget_Model
         }
 
         if ($id == '0') { //UNKNOWN
-            $sql2 = '
-                SELECT
-                    [[phoo_image]].[id], [phoo_album_id], [filename], [[phoo_image]].[title],
-                    [[phoo_image]].[description], [published]
-                FROM [[phoo_image]]
-                LEFT OUTER JOIN [[phoo_image_album]] ON [[phoo_image_album]].[phoo_image_id] = [[phoo_image]].[id]
-                WHERE [phoo_album_id] IS NULL
-                ORDER BY [[phoo_image]].'. $this->GetOrderType('photos_order_type');
+			$table = Jaws_ORM::getInstance()->table('phoo_image');
+			$table->join('phoo_image_album', 'phoo_image_album.phoo_image_id', 
+				'phoo_image.id', 'left outer');
+            $table->where('phoo_album_id', '', 'is null');
         } else {
-            $params['id'] = $id;
-            $sql2 = '
-                SELECT
-                    [[phoo_image]].[id], [phoo_album_id], [filename], [[phoo_image]].[title],
-                    [[phoo_image]].[description], [published]
-                FROM [[phoo_image_album]]
-                INNER JOIN [[phoo_image]] ON [[phoo_image]].[id] = [[phoo_image_album]].[phoo_image_id]
-                WHERE [phoo_album_id] = {id}';
+			$table = Jaws_ORM::getInstance()->table('phoo_image_album');
+			$table->join('phoo_image', 'phoo_image.id', 
+				'phoo_image_album.phoo_image_id');
+            $table->where('phoo_album_id', $id);
             if (checkdate($month, $day, $year)) {
                 if (strlen($day) == 1) {
                     $day = '0'.$day;
@@ -701,24 +580,21 @@ class Phoo_Model extends Jaws_Gadget_Model
                 if (strlen($month) == 1) {
                     $month = '0'.$month;
                 }
-                $params['start'] = $year.'-'.$month.'-'.$day;
-                $params['end'] = date('Y-m-d', mktime(0, 0, 0, $month, $day + 30, $year));
-                $sql2 .= ' AND [[phoo_image]].[createtime] BETWEEN {start} AND {end} ';
+                $start = $year.'-'.$month.'-'.$day;
+                $end = date('Y-m-d', mktime(0, 0, 0, $month, $day + 30, $year));
+                $table->and()->where('phoo_image.createtime', array($start, $end), 'between');
             }
-            $sql2 .= ' ORDER BY [[phoo_image]].'. $this->GetOrderType('photos_order_type');
         }
+        $table->select('phoo_image.id', 'phoo_album_id', 'filename',
+			'phoo_image.title', 'phoo_image.description', 'published:boolean');
+		$table->orderBy('phoo_image.' . $this->GetOrderType('photos_order_type'));
 
         $limit = $this->gadget->registry->fetch('thumbnail_limit');
         if (!empty($page) && !empty($limit)) {
-            $starting_image = ($page - 1) * $limit;
-            $result = $GLOBALS['db']->setLimit($limit, $starting_image);
-            if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'), _t('PHOO_NAME'));
-            }
+            $table->limit($limit, ($page - 1) * $limit);
         }
 
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'boolean');
-        $r2 = $GLOBALS['db']->queryAll($sql2, $params, $types);
+        $r2 = $table->fetchAll();
         if (Jaws_Error::IsError($r2)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'), _t('PHOO_NAME'));
         }
@@ -1015,7 +891,7 @@ class Phoo_Model extends Jaws_Gadget_Model
         }
         $sql  = substr($sql, 0, -3);
         $sql .= ') ';
-        $sql .= ' ORDER BY [[phoo_image]].[id] desc';
+        $sql .= ' ORDER BY [[phoo_image]].[id] DESC';
 
         $limit = $this->gadget->registry->fetch('photoblog_limit');
         $result = $GLOBALS['db']->setLimit($limit);
@@ -1239,15 +1115,10 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetFastURL($albumname)
     {
-        $params = array();
-        $params['album_name'] = $albumname;
-
-        $sql = '
-            SELECT
-                [id] as fast_url, [name] as title
-            FROM [[phoo_album]]
-            WHERE [name] = {album_name}';
-        $res = $GLOBALS['db']->queryRow($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->select('id as fast_url', 'name as title');
+        $table->where('name', $albumname);
+        $res = $Gtable->fetchRow();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1264,13 +1135,12 @@ class Phoo_Model extends Jaws_Gadget_Model
      */
     function GetImageAlbum($id) 
     {
-        $sql = 'SELECT [phoo_album_id]
-                FROM [[phoo_image_album]] 
-                WHERE [phoo_image_id] = {id}
-                ORDER BY [phoo_album_id]';
-        $result = $GLOBALS['db']->setLimit('1');
-
-        $res = $GLOBALS['db']->queryOne($sql, array('id' => $id));
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table-select('phoo_album_id');
+        $table-where('phoo_image_id', $id);
+        $table-orderBy('phoo_album_id');
+        $table-limit(1);
+        $res = $table->fetchOne();
         if (Jaws_Error::IsError($res)) {
             return false;
         }   

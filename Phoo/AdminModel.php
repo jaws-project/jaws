@@ -27,35 +27,18 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function UpdateEntry($id, $title, $description, $allow_comments, $published, $albums = null)
     {
-        $params = array();
-        $params['id']             = (int)$id;
-        $params['title']          = $title;
-        $params['desc']           = $description;
-        $params['allow_comments'] = $allow_comments;
-        $params['published']      = $published;
-        $params['update']         = $GLOBALS['db']->Date();
+        $data = array();
+        $data['title'] = $title;
+        $data['description'] = $description;
+        $data['allow_comments'] = $allow_comments;
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
         if (is_null($published)) {
-            $sql = '
-                UPDATE [[phoo_image]] SET
-                    [title]          = {title},
-                    [description]    = {desc},
-                    [allow_comments] = {allow_comments},
-                    [updatetime]     = {update}
-                WHERE [id] = {id}';
-        } else {
-            $sql = '
-                UPDATE [[phoo_image]] SET
-                    [title]          = {title},
-                    [description]    = {desc},
-                    [allow_comments] = {allow_comments},
-                    [published]      = {published},
-                    [updatetime]     = {update}
-                WHERE [id] = {id}';
+            $data['published'] = (bool)$published;
         }
-
-        $res  = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($res)) {
+        $result = $table->update($data)->where('id', (int)$id)->exec();
+        if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), _t('PHOO_NAME'));
         }
@@ -77,25 +60,22 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function DeletePhoto($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-
-        $sql = 'SELECT [filename] FROM [[phoo_image]] WHERE [id] = {id}';
-        $image = $GLOBALS['db']->queryRow($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $image = $table->select('filename')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
         }
 
-        $sql = 'DELETE FROM [[phoo_image]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table->reset();
+        $result = $table->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
         }
 
-        $sql = 'DELETE FROM [[phoo_image_album]] WHERE [phoo_image_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $result = $table->delete()->where('phoo_image_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
@@ -197,26 +177,27 @@ class Phoo_AdminModel extends Phoo_Model
             return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'), _t('PHOO_NAME'));
         }
 
-        $params['user_id']     = $user;
-        $params['filename']    = date('Y_m_d').'/'.$filename;
-        $params['title']       = $title;
-        $params['description'] = $description;
+        $data = array();
+        $data['user_id'] = $user;
+        $data['filename'] = date('Y_m_d').'/'.$filename;
+        $data['title'] = $title;
+        $data['description'] = $description;
 
-        if ($this->gadget->registry->fetch('allow_comments') == 'true' &&
+        if ($this->gadget->registry->fetch('allow_comments') === 'true' &&
             $album['allow_comments'])
         {
-            $params['allow_comments'] = true;
+            $data['allow_comments'] = true;
         } else {
-            $params['allow_comments'] = false;
+            $data['allow_comments'] = false;
         }
 
-        if ($this->gadget->registry->fetch('published') == 'true' &&
-            $album['published'] === true &&
+        if ($this->gadget->registry->fetch('published') === 'true' &&
+            $data['published'] === true &&
             $this->gadget->GetPermission('ManageAlbums'))
         {
-            $params['published'] = true;
+            $data['published'] = true;
         } else {
-            $params['published'] = false;
+            $data['published'] = false;
         }
 
         $jDate = $GLOBALS['app']->loadDate();
@@ -231,15 +212,10 @@ class Phoo_AdminModel extends Phoo_Model
             $auxtime    = $aux[1];
             $createtime = $auxdate . ' ' . $auxtime;
         }
-        $params['createtime'] = $createtime;
+        $data['createtime'] = $createtime;
 
-        $sql = '
-            INSERT INTO [[phoo_image]]
-                ([user_id], [filename], [title], [description], [allow_comments], [published], [createtime])
-            VALUES
-                ({user_id}, {filename}, {title}, {description}, {allow_comments}, {published}, {createtime})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), _t('PHOO_NAME'));
@@ -265,17 +241,12 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function AddEntryToAlbum($id, $album)
     {
-        $params          = array();
-        $params['id']    = $id;
-        $params['album'] = $album;
+        $data = array();
+        $data['phoo_image_id'] = $id;
+        $data['phoo_album_id'] = $album;
 
-        $sql = '
-            INSERT INTO [[phoo_image_album]]
-                ([phoo_image_id], [phoo_album_id])
-            VALUES
-                ({id}, {album})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), _t('PHOO_NAME'));
@@ -294,13 +265,10 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function SetEntryAlbums($id, $albums)
     {
-        $params           = array();
-        $params['id']     = $id;
-
         // Remove albums
-        $sql = 'DELETE FROM [[phoo_image_album]] WHERE [phoo_image_id] = {id}';
-        ///FIXME: Check for error but maybe not since it always returns true, foobar stuff
-        $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        // FIXME: Check for error but maybe not since it always returns true, foobar stuff
+        $table->delete()->where('phoo_image_id', (int)$id)->exec();
 
         if (is_array($albums) && !empty($albums)) {
             foreach ($albums as $album) {
@@ -328,26 +296,14 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function UpdateAlbum($id, $name, $description, $comments, $published)
     {
-        $params = array();
-        $params['id']          = (int)$id;
-        $params['name']        = $name;
-        $params['description'] = $description;
-        $params['comments']    = $comments;
-        $params['published']   = $published;
+        $data = array();
+        $data['name'] = $name;
+        $data['description'] = $description;
+        $data['allow_comments'] = $comments;
+        $data['published'] = (bool)$published;
 
-        if (!is_bool($params['published'])) {
-            $params['published'] = $params['published'] == '1' ? true : false;
-        }
-
-        $sql = '
-            UPDATE [[phoo_album]] SET
-                [name] = {name},
-                [description] = {description},
-                [allow_comments] = {comments},
-                [published] = {published}
-            WHERE [id] = {id}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $result = $table->update($data)->where('idd', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), _t('PHOO_NAME'));
@@ -456,24 +412,15 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function NewAlbum($name, $description, $comments, $published)
     {
-        $params = array();
-        $params['album']       = $name;
-        $params['description'] = $description;
-        $params['comments']    = $comments;
-        $params['published']   = $published;
-        $params['now']         = $GLOBALS['db']->Date();
+        $data = array();
+        $data['name'] = $name;
+        $data['description'] = $description;
+        $data['allow_comments'] = $comments;
+        $data['published'] = (bool)$published;
+        $data['createtime'] = $GLOBALS['db']->Date();
 
-        if (!is_bool($params['published'])) {
-            $params['published'] = $params['published'] == '1' ? true : false;
-        }
-
-        $sql = '
-            INSERT INTO [[phoo_album]]
-                ([name], [description], [allow_comments], [published], [createtime])
-            VALUES
-                ({album}, {description}, {comments}, {published}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), _t('PHOO_NAME'));
