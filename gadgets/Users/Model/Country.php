@@ -280,4 +280,15 @@ class Users_Model_Country extends Jaws_Model
         return @$this->countries[$code];
     }
 
+    /**
+     * Get countries list based on iso 3166
+     *
+     * @access  public
+     * @return  array  Countries list
+     */
+    function GetCountries()
+    {
+        return $this->countries;
+    }
+
 }
