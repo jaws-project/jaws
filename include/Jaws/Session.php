@@ -588,7 +588,7 @@ class Jaws_Session
             $referrer = '';
         }
 
-        $sessTable = Jaws_ORM::getInstance()->table('session');
+        $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
         if (!empty($this->_SessionID)) {
             // Now we sync with a previous session only if has changed
             if ($GLOBALS['app']->Session->_HasChanged) {
