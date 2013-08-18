@@ -292,6 +292,9 @@ display:inline-block;
 display:inline;
 padding-left:5px;
 }
+.users div.user_avatar{
+float:right;
+}
 /* forums style */
 #requested_gadget_forums #mainbar{
 width:775px;
