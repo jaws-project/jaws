@@ -100,8 +100,7 @@ class Contact_HTML extends Jaws_Gadget_HTML
         }
 
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
-            require_once JAWS_PATH . 'libraries/pear/Validate.php';
-            if (Validate::email($post['contact_email'], true) === false) {
+            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $post['contact_email'])) {
                 $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'), 'Contact');
                 $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
                 Jaws_Header::Referrer();
