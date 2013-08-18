@@ -11,11 +11,11 @@ vertical-align:top;
 fieldset table td table td{
 padding:0px;
 }
-fieldset input{
+fieldset input,fieldset select,fieldset textarea{
 width:220px;
 }
 fieldset select{
-width:120px;
+height:25px;
 }
 fieldset input[type="checkbox"]{
 width:14px;

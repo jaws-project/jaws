@@ -558,9 +558,15 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl = $this->gadget->loadTemplate('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        // country
-        $country =& Piwi::CreateWidget('Entry', 'country', '');
+        $country =& Piwi::CreateWidget('Combo', 'country');
         $country->SetID('country');
+        $country->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '0');
+        $objCountry = $GLOBALS['app']->loadGadget('Users', 'Model', 'Country');
+        $countries = $objCountry->GetCountries();
+        foreach($countries as $code => $name) {
+            $country->AddOption($name, $code);
+        }
+        $country->SetDefault('0');
         $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
         $tpl->SetVariable('country', $country->Get());
 
