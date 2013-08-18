@@ -843,11 +843,11 @@ class Jaws_ORM
                 break;
 
             // insert multiple rows
-            case 'insertArray':
+            case 'insertAll':
                 $columns = '';
                 $sql = 'insert into '. $this->_table_quoted. $this->_table_alias;
                 // build insert columns list
-                $sql.= "\n". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). "\n";
+                $sql.= "\n(". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). ")";
                 // build insert values list
                 $vsql = '';
                 $dbDriver  = $this->jawsdb->getDriver();
@@ -873,6 +873,7 @@ class Jaws_ORM
                 }
 
                 $sql.= $vsql;
+                _log_var_dump($sql);
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
@@ -962,7 +963,7 @@ class Jaws_ORM
                 return $this;
                 break;
 
-            case 'insertArray':
+            case 'insertAll':
                 $this->_columns = array_shift($params);
                 $this->_values  = $params;
                 $this->_query_command = $method;
