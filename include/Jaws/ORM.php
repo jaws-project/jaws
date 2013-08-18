@@ -546,13 +546,12 @@ class Jaws_ORM
      * Having SQL command
      *
      * @access  public
-     * @param   string  $column Column
+     * @param   mixed   $column Column
+     * @param   mixed   $value  Column value
      * @param   string  $opt    Operator condition
-     * @param   string  $value  Column value
      * @return  object  Jaws_ORM object
-     * @todo    support more than one having condition
      */
-    function having($column, $opt, $value)
+    function having($column, $value, $opt = '=')
     {
         switch ($opt) {
             case 'in':
@@ -563,6 +562,11 @@ class Jaws_ORM
             case 'between':
             case 'not between':
                 $value = $this->quoteValue($value[0]). ' and '. $this->quoteValue($value[1]);
+                break;
+
+            case 'like':
+            case 'not like':
+                $value  = $this->quoteValue($value);
                 break;
 
             case 'is null':
@@ -578,6 +582,8 @@ class Jaws_ORM
         if (is_object($column)) {
             $colstr = $column->get();
             unset($column);
+        } elseif (is_array($column)) {
+            $colstr = $this->quoteValue($column);
         } else {
             $colstr = $this->quoteIdentifier($column);
         }
