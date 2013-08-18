@@ -192,7 +192,6 @@ class Phoo_AdminModel extends Phoo_Model
         }
 
         if ($this->gadget->registry->fetch('published') === 'true' &&
-            $data['published'] === true &&
             $this->gadget->GetPermission('ManageAlbums'))
         {
             $data['published'] = true;
@@ -245,7 +244,7 @@ class Phoo_AdminModel extends Phoo_Model
         $data['phoo_image_id'] = $id;
         $data['phoo_album_id'] = $album;
 
-        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album', '', '');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
@@ -322,43 +321,31 @@ class Phoo_AdminModel extends Phoo_Model
      */
     function DeleteAlbum($id)
     {
-        $params       = array();
-        $params['id'] = $id;
-
         // Delete files
         // We do it this way because we don't want to use subqueries(some versions of mysql don't support it)
-        $imgList = '';
-        $sql = '
-            SELECT [phoo_image_id]
-            FROM [[phoo_image_album]]
-            WHERE [phoo_album_id] = {id}';
-        $result = $GLOBALS['db']->queryAll($sql, $params);
-
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table->select('phoo_image_id');
+        $table->where('phoo_album_id', $id);
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
         }
 
+        $imgList = array();
         foreach ($result as $i) {
-            $imgList .= $i['phoo_image_id'].',';
-        }
-        $imgList = substr($imgList,0,-1);
-
-        if (empty($imgList)) {
-            $imgList = '0';
+            $imgList[] = $i['phoo_image_id'];
         }
 
-        $sql = "
-            SELECT
-                [id], [user_id], [filename], [phoo_album_id]
-            FROM [[phoo_image]]
-            INNER JOIN [[phoo_image_album]] ON [id] = [phoo_image_id]
-            WHERE [id] IN({$imgList})
-            GROUP BY
-                [id], [user_id], [filename], [phoo_album_id]
-            HAVING COUNT([phoo_image_id]) = 1";
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $table->select('id', 'user_id', 'filename', 'phoo_album_id');
+        $table->join('phoo_image_album', 'id', 'phoo_image_id');
+        if (!empty($imgList)) {
+            $table->where('id', $imgList, 'in');
+        }
+        $table->groupBy('id', 'user_id', 'filename', 'phoo_album_id');
+        $table->having('count(phoo_image_id)', 1);
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
@@ -372,25 +359,29 @@ class Phoo_AdminModel extends Phoo_Model
         }
 
         // Delete images from phoo_image
-        $sql    = "DELETE FROM [[phoo_image]] WHERE [id] IN({$imgList})";
-        $result = $GLOBALS['db']->query($sql);
+        if (!empty($imgList)) {
+            $table = Jaws_ORM::getInstance()->table('phoo_image');
+            $table->delete()->where('id', $imgList, 'in');
+            $result = $table->exec();
+        }
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
         }
 
         // Delete images from phoo_image_album
-        $sql    = 'DELETE FROM [[phoo_image_album]] WHERE [phoo_album_id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
-
+        $table = Jaws_ORM::getInstance()->table('phoo_image_album');
+        $table->delete()->where('phoo_album_id', $id);
+        $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
         }
 
         // Delete album from phoo_album
-        $sql    = 'DELETE FROM [[phoo_album]] WHERE [id] = {id}';
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('phoo_album');
+        $table->delete()->where('id', $id);
+        $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
