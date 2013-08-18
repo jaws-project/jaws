@@ -17,8 +17,6 @@
 // |          Jon Parise <jon@php.net>                                    |
 // |          Damian Alejandro Fernandez Sosa <damlists@cnba.uba.ar>      |
 // +----------------------------------------------------------------------+
-//
-// $Id: SMTP.php 316954 2011-09-19 00:38:23Z jon $
 
 require_once 'PEAR.php';
 require_once 'Net/Socket.php';
@@ -519,11 +517,6 @@ class Net_SMTP
         }
 
         if (PEAR::isError($this->_parseResponse(250))) {
-            /* If we receive a 503 response, we're already authenticated. */
-            if ($this->_code === 503) {
-                return true;
-            }
-
             /* If the EHLO failed, try the simpler HELO command. */
             if (PEAR::isError($error = $this->_put('HELO', $this->localhost))) {
                 return $error;
