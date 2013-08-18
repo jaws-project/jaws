@@ -11,13 +11,13 @@
  */
 $actions = array();
 
-$actions['Display'] = array(
+$actions['Banners'] = array(
     'layout' => true,
     'parametric' => true,
+    'standalone' => true,
+    'file' => 'Banners',
 );
 $actions['Click'] = array(
     'normal' => true,
-);
-$actions['BannerGroup'] = array(
-    'standalone' => true,
+    'file' => 'Banners',
 );

@@ -21,46 +21,8 @@ class Banner_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Banner', 'LayoutHTML');
-        return $layoutGadget->Display();
+        $layoutGadget = $GLOBALS['app']->LoadGadget('Banner', 'HTML', 'Banners');
+        return $layoutGadget->Banners();
     }
 
-    /**
-     * Redirects request to banner's target
-     *
-     * @access  public
-     * @return  mixed    Void if Success, 404  XHTML template content on Failure
-     */
-    function Click()
-    {
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model');
-        $request =& Jaws_Request::getInstance();
-        $id = (int)$request->get('id', 'get');
-        $banner = $model->GetBanners($id);
-        if (!Jaws_Error::IsError($banner) && !empty($banner)) {
-            $click = $model->ClickBanner($banner[0]['id']);
-            if (!Jaws_Error::IsError($click)) {
-                $link = $banner[0]['url'];
-                Jaws_Header::Location($link);
-            }
-        } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-            return Jaws_HTTPError::Get(404);
-        }
-    }
-
-    /**
-     * Displays banners in a group via standalone action
-     *
-     * @access    public
-     * @return    string   XHTML template content
-     */
-    function BannerGroup()
-    {
-        $request =& Jaws_Request::getInstance();
-        $gid = (int)$request->get('id', 'get');
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Banner', 'LayoutHTML');
-        header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
-        return $layoutGadget->Display($gid, true);
-    }
 }

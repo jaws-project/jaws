@@ -9,4 +9,4 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array('Click', 'banner/click/{id}');
-$maps[] = array('BannerGroup', 'banner/group/{id}');
+$maps[] = array('Banners', 'banner/group/{id}');

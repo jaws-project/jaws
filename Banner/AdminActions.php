@@ -10,15 +10,15 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
-    'normal' => true,
-);
 $actions['Groups'] = array(
     'normal' => true,
+    'file' => 'Groups',
 );
 $actions['Reports'] = array(
     'normal' => true,
+    'file' => 'Reports',
 );
 $actions['UploadBanner'] = array(
     'normal' => true,
+    'file' => 'Banners',
 );
