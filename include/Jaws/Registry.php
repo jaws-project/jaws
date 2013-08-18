@@ -183,7 +183,7 @@ class Jaws_Registry
                     break;
             }
 
-            $this->_Registry[$component][$key_name] = $key_value;
+            unset($this->_Registry[$component][$key_name]);
         }
 
         if (is_array($sqls)) {
