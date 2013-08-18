@@ -160,7 +160,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_pk_field = 'id';
+    var $_pk_field;
 
     /**
      * SQL command name(insert/update/delete)
@@ -242,9 +242,10 @@ class Jaws_ORM
      * @param   string  $alias  Table alias in query
      * @return  object  Jaws_ORM object
      */
-    function table($table, $alias = '')
+    function table($table, $alias = '', $pk_field = 'id')
     {
         $this->_table = $table;
+        $this->_pk_field = $pk_field;
         $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
         if (is_object($table)) {
             $this->_table_quoted = '('. $table->get(). ')';
