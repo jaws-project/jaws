@@ -20,7 +20,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
     function BlockLayoutParams()
     {
         $result = array();
-        $bModel = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
+        $bModel = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
         $blocks = $bModel->GetBlocks(true);
         if (!Jaws_Error::isError($blocks)) {
             $pblocks = array();
@@ -52,7 +52,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
         }
 
         $tpl = $this->gadget->loadTemplate('Blocks.html');
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
         $block = $model->GetBlock($id);
         if (!Jaws_Error::IsError($block)) {
             $tpl->SetBlock('blocks');
