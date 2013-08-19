@@ -142,7 +142,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
         if (in_array('recipient', $items_array)) {
             $tpl->SetBlock('contact/recipient');
             $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
-            $model = $GLOBALS['app']->LoadGadget('Contact', 'Model');
+            $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
             $recipients = $model->GetRecipients(true);
             if (Jaws_Error::IsError($recipients) || empty($recipients)) {
                 $recipients   = array();

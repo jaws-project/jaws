@@ -9,78 +9,13 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_AdminHTML extends Jaws_Gadget_HTML
+class Contact_Actions_Admin_Properties extends Contact_AdminHTML
 {
     /**
-     * Admin of Gadget
+     * Builds Properties UI
      *
      * @access  public
-     * @return  string  XHTML content of administration
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManageContacts')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Contacts');
-            return $gadget->Contacts();
-        } elseif ($this->gadget->GetPermission('ManageRecipients')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Recipients');
-            return $gadget->Recipients();
-        }
-
-        $this->gadget->CheckPermission('UpdateProperties');
-        return $this->Properties();
-    }
-
-    /**
-     * Prepares the contacs menubar
-     *
-     * @access  public
-     * @param   string  $action   Selected action
-     * @return  string  XHTML of menubar
-     */
-    function MenuBar($action)
-    {
-        $actions = array('Contacts', 'Recipients', 'Mailer', 'Properties');
-        if (!in_array($action, $actions)) {
-            $action = 'Contacts';
-        }
-
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
-        $menubar = new Jaws_Widgets_Menubar();
-        if ($this->gadget->GetPermission('ManageContacts')) {
-            $menubar->AddOption('Contacts',
-                                _t('CONTACT_NAME'),
-                                BASE_SCRIPT . '?gadget=Contact&amp;action=Admin',
-                                'gadgets/Contact/images/contact_mini.png');
-        }
-        if ($this->gadget->GetPermission('ManageRecipients')) {
-            $menubar->AddOption('Recipients',
-                                _t('CONTACT_RECIPIENTS'),
-                                BASE_SCRIPT . '?gadget=Contact&amp;action=Recipients',
-                                'gadgets/Contact/images/recipients_mini.png');
-        }
-        if ($this->gadget->GetPermission('AccessToMailer')) {
-            $menubar->AddOption('Mailer',
-                                _t('CONTACT_MAILER'),
-                                BASE_SCRIPT . '?gadget=Contact&amp;action=Mailer',
-                                'gadgets/Contact/images/email_send.png');
-        }
-        if ($this->gadget->GetPermission('UpdateProperties')) {
-            $menubar->AddOption('Properties',
-                                _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=Contact&amp;action=Properties',
-                                'gadgets/Contact/images/properties_mini.png');
-        }
-
-        $menubar->Activate($action);
-        return $menubar->Get();
-    }
-
-    /**
-     * Show contacts Setting
-     *
-     * @access  public
-     * @return  string  XHTML template content
+     * @return  string  XHTML UI
      */
     function Properties()
     {

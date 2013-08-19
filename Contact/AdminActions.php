@@ -11,18 +11,23 @@
 $actions = array();
 
 /* Admin actions */
-$actions['Admin'] = array(
+$actions['Contacts'] = array(
     'normal' => true,
+    'file' => 'Contacts'
 );
 $actions['Recipients'] = array(
     'normal' => true,
+    'file' => 'Recipients'
 );
 $actions['Properties'] = array(
     'normal' => true,
+    'file' => 'Properties'
 );
 $actions['Mailer'] = array(
     'normal' => true,
+    'file' => 'Mailer'
 );
 $actions['UploadFile'] = array(
     'standalone' => true,
+    'file' => 'Mailer'
 );

@@ -13,15 +13,19 @@ $actions = array();
 
 $actions['ContactMini'] = array(
     'normal' => true,
+    'file' => 'Contact'
 );
 $actions['ContactSimple'] = array(
     'normal' => true,
+    'file' => 'Contact'
 );
 $actions['ContactFull'] = array(
     'normal' => true,
+    'file' => 'Contact'
 );
 $actions['Send'] = array(
     'normal' => true,
+    'file' => 'Contact'
 );
 $actions['Display'] = array(
     'layout' => true,
