@@ -11,14 +11,13 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Banner_Actions_Banners extends Banner_HTML
+class Banner_Actions_Banners extends Jaws_Gadget_HTML
 {
-
     /**
-     * Get Display action params
+     * Get then Banners action params
      *
      * @access  public
-     * @return  array list of Display action params
+     * @return  array list of the Banners action params
      */
     function BannersLayoutParams()
     {
@@ -44,7 +43,7 @@ class Banner_Actions_Banners extends Banner_HTML
      * Displays banners(all-time visibles and random ones)
      *
      * @access  public
-     * @param   int     $gid        Group ID
+     * @param   int     $gid    Group ID
      * @return  string  XHTML template content
      */
     function Banners($gid = 0)

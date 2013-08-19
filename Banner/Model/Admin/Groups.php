@@ -13,7 +13,6 @@
  */
 class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
 {
-
     /**
      * Insert a group
      *
