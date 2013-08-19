@@ -53,6 +53,9 @@ class Jaws_Gadget_Model
                     if (empty($filename)) {
                         $type_class_name = $this->gadget->name. '_Model';
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
+                        if (!file_exists($file)) {
+                            return $this->gadget->models['Model'];
+                        }
                     } else {
                         $type_class_name = $this->gadget->name. "_Model_$filename";
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/$filename.php";
@@ -63,6 +66,9 @@ class Jaws_Gadget_Model
                     if (empty($filename)) {
                         $type_class_name = $this->gadget->name. '_AdminModel';
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
+                        if (!file_exists($file)) {
+                            return $this->gadget->models['Model'];
+                        }
                     } else {
                         $type_class_name = $this->gadget->name. "_Model_Admin_$filename";
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
@@ -149,9 +155,9 @@ class Jaws_Gadget_Model
      */
     function TotalOfData($table, $pKey = 'id')
     {
-        $sql = 'SELECT COUNT(['.$pKey.']) FROM [['. $table . ']]';
-        $res = $GLOBALS['db']->queryOne($sql);
-        return Jaws_Error::IsError($res) ? 0 : $res;
+        $objORM = Jaws_ORM::getInstance()->table($table);
+        $res = $objORM->select('count('.$pKey.')')->fetchOne();
+        return Jaws_Error::IsError($res)? 0 : $res;
     }
 
     /**
