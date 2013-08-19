@@ -85,7 +85,7 @@ class Banner_Actions_Banners extends Banner_HTML
         $tpl->SetVariable('gid', $gid);
         if ($group['show_title']) {
             $tpl->SetBlock("$type_block/title");
-            $tpl->SetVariable('title', _t('BANNER_ACTIONS_DISPLAY_TITLE', $group['title']));
+            $tpl->SetVariable('title', _t('BANNER_ACTIONS_BANNERS_TITLE', $group['title']));
             $tpl->ParseBlock("$type_block/title");
         }
 
