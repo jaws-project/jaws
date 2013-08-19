@@ -1098,7 +1098,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
         $query = "CREATE UNIQUE INDEX $name ON $table";
         $fields = array();
         foreach ($definition['fields'] as $field_name => $field) {
-            $field_string = $field_name;
+            $field_string = $db->quoteIdentifier($field_name, true);
             if (!empty($field['sorting'])) {
                 switch ($field['sorting']) {
                 case 'ascending':
