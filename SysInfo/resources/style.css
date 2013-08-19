@@ -5,6 +5,7 @@ width: 100%;
 vertical-align:top;
 }
 #sysinfo fieldset{
+width:728px;
 margin-top:-11px;
 }
 #jaws-sidebar-sysinfo{
@@ -12,8 +13,9 @@ width:220px;
 padding-right:6px;
 }
 #info_section table{
-border-spacing:2px;
+width:100%;
 font-size:smaller;
+border-spacing:2px;
 }
 #info_section tr:nth-child(even){
 background-color:#f5f5f5;
