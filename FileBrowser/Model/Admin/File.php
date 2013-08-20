@@ -51,7 +51,7 @@ class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
             return false;
         }
 
-        if (array_key_exists('id', $dbFile)) {
+        if (!empty($dbFile) && array_key_exists('id', $dbFile)) {
             // Update
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser', false);
             $params['fast_url'] = $fast_url;
