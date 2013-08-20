@@ -165,7 +165,6 @@ class Link extends Bin
             $this->_XHTML.= ' src="'.$this->_image.'"';
             $this->_XHTML.= ' border="0"';
             $this->_XHTML.= ' alt="'.$this->_text.'"';
-            $this->_XHTML.= ' width="16" height="16"';
             $this->_XHTML.= ' title="'.$this->_text.'"';
             $this->_XHTML.= ' />';            
         }
