@@ -33,9 +33,11 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
     function DeleteEmblem($id)
     {
         $this->gadget->CheckPermission('DeleteEmblem');
-        $emblemInfo = $this->_Model->GetEmblem($id);
+        $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
+        $emblemInfo = $model->GetEmblem($id);
         $src = $emblemInfo['src'];
-        $this->_Model->DeleteEmblem($id, $src);
+        $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
+        $model->DeleteEmblem($id, $src);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -53,7 +55,8 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
     function UpdateEmblem($id, $title, $url, $type, $status)
     {
         $this->gadget->CheckPermission('EditEmblem');
-        $this->_Model->UpdateEmblem($id, $title, $url, $type, $status);
+        $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
+        $model->UpdateEmblem($id, $title, $url, $type, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -80,7 +83,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($limit)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminHTML', 'Emblems');
         return $gadget->GetEmblems($limit);
     }
 

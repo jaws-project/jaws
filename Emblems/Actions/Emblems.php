@@ -1,6 +1,6 @@
 <?php
 /**
- * Emblems Gadget (layout side)
+ * Emblems Gadget
  *
  * @category   GadgetLayout
  * @package    Emblems
@@ -8,18 +8,18 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emblems_LayoutHTML extends Jaws_Gadget_HTML
+class Emblems_Actions_Emblems extends Jaws_Gadget_HTML
 {
     /**
-     * Displays the emblems in our site
+     * Displays the emblems
      *
      * @access  public
-     * @return  string   XHTML template content
+     * @return  string   XHTML UI
      */
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Emblems.html');
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
         $rsemblem = $model->GetEmblems(true);
         if (!Jaws_Error::IsError($rsemblem)) {
             $rows = $this->gadget->registry->fetch('rows');
@@ -76,5 +76,4 @@ class Emblems_LayoutHTML extends Jaws_Gadget_HTML
 
         return $tpl->Get();
     }
-
 }

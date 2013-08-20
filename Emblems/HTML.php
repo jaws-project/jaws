@@ -19,19 +19,7 @@ class Emblems_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        return $this->Display();
+        $gadget = $Globals['app']->loadGadget('Emblems', 'Actions', 'Emblems');
+        return $gadget->Display();
     }
-
-    /**
-     * Displays the emblems in our site
-     *
-     * @access  public
-     * @return  string   XHTML template content
-     */
-    function Display()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Emblems', 'LayoutHTML');
-        return $layoutGadget->Display();
-    }
-
 }

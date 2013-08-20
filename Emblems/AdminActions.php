@@ -10,10 +10,12 @@
  */
 $actions = array();
 
-/* Admin actions*/
+/* Admin actions */
 $actions['AddEmblem'] = array(
     'normal' => true,
+    'file'   => 'Emblems'
 );
 $actions['EditEmblem'] = array(
     'normal' => true,
+    'file'   => 'Emblems'
 );
