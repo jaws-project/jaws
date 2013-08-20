@@ -28,8 +28,8 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
     function MenuLayoutParams()
     {
         $result = array();
-        $mModel = $GLOBALS['app']->LoadGadget('Menu', 'Model');
-        $groups = $mModel->GetGroups();
+        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Group');
+        $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
             foreach ($groups as $group) {
@@ -54,8 +54,9 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
      */
     function Menu($gid = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model');
-        $group = $model->GetGroups($gid);
+        $mModel = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
+        $gModel = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Group');
+        $group = $gModel->GetGroups($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
         }
@@ -70,7 +71,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
 
         $tpl->SetBlock('menu');
         $tpl->SetVariable('gid', $group['id']);
-        $tpl->SetVariable('menus_tree', $this->GetNextLevel($model, $tpl_str, $group['id'], 0));
+        $tpl->SetVariable('menus_tree', $this->GetNextLevel($mModel, $tpl_str, $group['id'], 0));
         if ($group['title_view'] == 1) {
             $tpl->SetBlock("menu/group_title");
             $tpl->SetVariable('title', $group['title']);

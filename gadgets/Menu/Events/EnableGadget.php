@@ -16,8 +16,8 @@ class Menu_Events_EnableGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $mModel = $GLOBALS['app']->loadGadget('Menu', 'AdminModel');
-        $res = $mModel->PublishGadgetMenus($gadget, true);
+        $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
+        $res = $model->PublishGadgetMenus($gadget, true);
         return $res;
     }
 

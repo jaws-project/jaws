@@ -35,7 +35,7 @@ class Menu_HTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $id = (int)$request->get('id', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
             require_once JAWS_PATH . 'include/Jaws/Image.php';
