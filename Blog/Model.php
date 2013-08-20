@@ -1325,7 +1325,8 @@ class Blog_Model extends Jaws_Gadget_Model
             $now = $GLOBALS['db']->Date();
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $blogTable->and()->openWhere('blog.user_id', $user)->or();
-            $blogTable->openWhere('published', $published)->and()->where('blog.publishtime', $now, '<=');
+            $blogTable->openWhere('published', $published)->and()->closewhere('blog.publishtime', $now, '<=');
+            $blogTable->closeWhere();
         }
         $row = $blogTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
