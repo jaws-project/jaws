@@ -22,7 +22,7 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Quotes', 'RecentQuotes'),
                         'title' => _t('QUOTES_NAME'));
 
-        $model  = $GLOBALS['app']->loadGadget('Quotes', 'Model');
+        $model  = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Groups');
         $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $max_size = 20;

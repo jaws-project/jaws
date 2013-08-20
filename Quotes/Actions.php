@@ -13,17 +13,22 @@ $actions = array();
 $actions['Display'] = array(
     'layout' => true,
     'parametric' => true,
+    'file'   => 'Quotes',
 );
 $actions['RecentQuotes'] = array(
     'normal' => true,
     'layout' => true,
+    'file'   => 'Quotes',
 );
 $actions['ViewQuote'] = array(
     'normal' => true,
+    'file'   => 'Quotes',
 );
 $actions['ViewGroupQuotes'] = array(
     'normal' => true,
+    'file'   => 'Groups',
 );
 $actions['QuotesByGroup'] = array(
     'standalone' => true,
+    'file'   => 'Quotes',
 );

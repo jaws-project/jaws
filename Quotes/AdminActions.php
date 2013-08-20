@@ -12,7 +12,9 @@ $actions = array();
 
 $actions['Admin'] = array(
     'normal' => true,
+    'file'   => 'Quotes',
 );
 $actions['QuoteGroups'] = array(
     'normal' => true,
+    'file'   => 'Groups',
 );

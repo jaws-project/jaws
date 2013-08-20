@@ -1,14 +1,14 @@
 <?php
 /**
- * Quotes Layout HTML file (for layout purposes)
+ * Quotes Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Quotes
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_LayoutHTML extends Jaws_Gadget_HTML
+class Quotes_Actions_Quotes extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params
@@ -19,7 +19,7 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
     function DisplayLayoutParams()
     {
         $result = array();
-        $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
+        $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Groups');
         $groups = $qModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -52,7 +52,7 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
         $group['limit_count'] = $this->gadget->registry->fetch('last_entries_limit');
         $group['random']      = $this->gadget->registry->fetch('last_entries_view_random') == 'true';
 
-        $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Quotes');
         $quotes = $model->GetRecentQuotes($group['limit_count'], $group['random']);
         if (Jaws_Error::IsError($quotes)) {
             return false;
@@ -70,13 +70,14 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
      */
     function Display($gid)
     {
-        $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
-        $group = $model->GetGroup($gid);
+        $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Quotes');
+        $gModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Groups');
+        $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
         }
 
-        $quotes = $model->GetPublishedQuotes($gid, $group['limit_count'], $group['random']);
+        $quotes = $qModel->GetPublishedQuotes($gid, $group['limit_count'], $group['random']);
         if (Jaws_Error::IsError($quotes)) {
             return false;
         }
@@ -109,8 +110,8 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
         $block = ($group['view_type']==0)? 'simple' : 'marquee';
         $tpl->SetBlock("quotes/$block");
         $tpl->SetVariable('marquee_direction', (($group['view_type']==2)? 'down' :
-                                               (($group['view_type']==3)? 'left' :
-                                               (($group['view_type']==4)? 'right' : 'up'))));
+            (($group['view_type']==3)? 'left' :
+                (($group['view_type']==4)? 'right' : 'up'))));
 
         foreach($quotes as $quote) {
             $tpl->SetBlock("quotes/$block/quote");
@@ -122,7 +123,6 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
             }
             if ($group['view_mode']!= 0) {
                 $tpl->SetBlock("quotes/$block/quote/full_mode");
-                $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model');
                 $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation']));
                 $tpl->ParseBlock("quotes/$block/quote/full_mode");
             }
@@ -134,4 +134,48 @@ class Quotes_LayoutHTML extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     * Displays quotes by group in standalone mode
+     *
+     * @access  public
+     * @return  XHTML template content
+     */
+    function QuotesByGroup()
+    {
+        header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
+        return $this->ViewGroupQuotes();
+    }
+
+    /**
+     * view quote(title and quotation)
+     *
+     * @access  public
+     * @return  string
+     */
+    function ViewQuote()
+    {
+        $request =& Jaws_Request::getInstance();
+        $qid = $request->get('id', 'get');
+        $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Quotes');
+        $gModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Groups');
+        $quote = $qModel->GetQuote($qid);
+        if (Jaws_Error::IsError($quote) || !isset($quote['id']) || !$quote['published']) {
+            return '';
+        }
+        $group = $gModel->GetGroup($quote['gid']);
+        if (Jaws_Error::IsError($group) || !isset($group['id']) || !$group['published']) {
+            return '';
+        }
+
+        $this->SetTitle($quote['title']);
+        $tpl = $this->gadget->loadTemplate('Quote.html');
+        $tpl->SetBlock('quote');
+
+        $tpl->SetVariable('title', $group['title']);
+        $tpl->SetVariable('quote_title', $quote['title']);
+        $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation']));
+
+        $tpl->ParseBlock('quote');
+        return $tpl->Get();
+    }
 }
