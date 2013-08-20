@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_Model extends Jaws_Gadget_Model
+class Glossary_Model_Term extends Jaws_Gadget_Model
 {
     /**
      * Get a term
@@ -86,5 +86,4 @@ class Glossary_Model extends Jaws_Gadget_Model
 
         return $result;
     }
-
 }

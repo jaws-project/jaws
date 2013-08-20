@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Glossary/Model.php';
 /**
  * Glossary Gadget Admin
  *
@@ -10,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Glossary/Model.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_AdminModel extends Glossary_Model
+class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
 {
     /**
      * Deletes a term
@@ -39,7 +38,7 @@ class Glossary_AdminModel extends Glossary_Model
      * @acess   public
      * @param   int     $id         Term's ID
      * @param   string  $term       Term
-     * @param   string  $fast_url   
+     * @param   string  $fast_url
      * @param   string  $desc       Term's description
      * @return  mixed   Returns true if term was deleted or Jaws_Error on error
      */
@@ -69,7 +68,7 @@ class Glossary_AdminModel extends Glossary_Model
      *
      * @acess   public
      * @param   string  $term       Term
-     * @param   string  $fast_url   
+     * @param   string  $fast_url
      * @param   string  $desc       Term's description
      * @return  mixed   Returns true if term was added or Jaws_Error on error
      */
@@ -107,5 +106,4 @@ class Glossary_AdminModel extends Glossary_Model
 
         return false;
     }
-
 }

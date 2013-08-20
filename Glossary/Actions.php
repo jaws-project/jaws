@@ -12,10 +12,13 @@ $actions = array();
 
 $actions['ViewTerm'] = array(
     'normal' => true,
+    'file'   => 'Term',
 );
 $actions['RandomTerms'] = array(
-    'layout' => true,  
+    'layout' => true,
+    'file'   => 'Term',
 );
 $actions['ListOfTerms'] = array(
-    'layout' => true, 
+    'layout' => true,
+    'file'   => 'Term',
 );
