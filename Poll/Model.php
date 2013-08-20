@@ -23,7 +23,7 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $table->update(array('votes' => $table->expr('votes + ?', 1)));
-        $result = $table->where('id', $aid)->and()->where('pid', $pid)->exec();
+        $result = $table->where('id', (int)$aid)->and()->where('pid', (int)$pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'), _t('POLL_NAME'));
         }
