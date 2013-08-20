@@ -20,8 +20,8 @@ class Friends_HTML extends Jaws_Gadget_HTML
     function DefaultAction()
     {
         $this->SetTitle(_t('FRIENDS_NAME'));
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Friends', 'LayoutHTML');
-        return $layoutGadget->Display();
+        $HTML = $GLOBALS['app']->LoadGadget('Friends', 'HTML', 'Friends');
+        return $HTML->Display();
     }
 
 }

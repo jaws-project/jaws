@@ -12,4 +12,5 @@ $actions = array();
 
 $actions['Display'] = array(
     'layout' => true,
+    'file'   => 'Friends',
 );

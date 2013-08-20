@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_Model extends Jaws_Gadget_Model
+class Friends_Model_Friends extends Jaws_Gadget_Model
 {
     /**
      * Get information of a friend
@@ -94,5 +94,4 @@ class Friends_Model extends Jaws_Gadget_Model
 
         return $result;
     }
-
 }

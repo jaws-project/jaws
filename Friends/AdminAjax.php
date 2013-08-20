@@ -32,7 +32,8 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetFriend($friend)
     {
-        $friendInfo = $this->_Model->GetFriend($friend);
+        $model = $GLOBALS['app']->loadGadget('Friends', 'Model', 'Friends');
+        $friendInfo = $model->GetFriend($friend);
         if (Jaws_Error::IsError($friendInfo)) {
             return false; //we need to handle errors on ajax
         } else {
@@ -51,7 +52,8 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function NewFriend($friend, $url)
     {
         $this->gadget->CheckPermission('AddFriend');
-        $this->_Model->NewFriend($friend, $url);
+        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -67,7 +69,8 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function UpdateFriend($old, $friend, $url)
     {
         $this->gadget->CheckPermission('EditFriend');
-        $this->_Model->UpdateFriend($old, $friend, $url);
+        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -81,7 +84,8 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function DeleteFriend($friend)
     {
         $this->gadget->CheckPermission('DeleteFriend');
-        $this->_Model->DeleteFriend($friend);
+        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -95,7 +99,8 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties($limit)
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $this->_Model->UpdateProperties($limit);
+        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -108,7 +113,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($limit = 0)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Friends', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Friends', 'AdminHTML', 'Friends');
         if (!is_numeric($limit)) {
             $limit = 0;
         }

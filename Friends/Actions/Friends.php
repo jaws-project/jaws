@@ -1,15 +1,15 @@
 <?php
 /**
- * Friends Layout HTML file (for layout purposes)
+ * Friend Gadget
  *
- * @category   GadgetLayout
- * @package    Friends
+ * @category   Gadget
+ * @package    Friend
+ * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_LayoutHTML extends Jaws_Gadget_HTML
+class Friends_Actions_Friends extends Jaws_Gadget_HTML
 {
     /**
      * Creates and prints the template of Friends
@@ -20,7 +20,7 @@ class Friends_LayoutHTML extends Jaws_Gadget_HTML
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Friends.html');
-        $model = $GLOBALS['app']->LoadGadget('Friends', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Friends', 'Model', 'Friends');
         $friends = $model->GetRandomFriends();
         if (!Jaws_Error::IsError($friends)) {
             $tpl->SetBlock('friends');
