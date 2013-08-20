@@ -17,10 +17,7 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLs = array(
-        'AddEmblem',
-        'EditEmblem',
-        'DeleteEmblem',
-        'UpdateProperties',
+        'ManageEmblems',
     );
 
     /**
@@ -40,7 +37,6 @@ class Emblems_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('EMBLEMS_NAME'));
         }
 
-        // Create table structure
         $result = $this->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -98,6 +94,12 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '0.9.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
         return true;
     }
 

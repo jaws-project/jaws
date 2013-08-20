@@ -11,7 +11,7 @@
           <value>Jaws Project</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>jaws.png</value>
         </field>
         <field>
@@ -19,16 +19,8 @@
           <value>http://jaws-project.com</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>P</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>true</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -38,7 +30,7 @@
           <value>PHP: Hypertext Preprocessor</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>php.png</value>
         </field>
         <field>
@@ -46,16 +38,8 @@
           <value>http://php.net</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>P</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>true</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -65,7 +49,7 @@
           <value>Apache HTTP Server</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>apache.png</value>
         </field>
         <field>
@@ -73,16 +57,8 @@
           <value>http://www.apache.org</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>P</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -92,7 +68,7 @@
           <value>MySQL</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>mysql.png</value>
         </field>
         <field>
@@ -100,16 +76,8 @@
           <value>http://www.mysql.com</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>P</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -119,7 +87,7 @@
           <value>PostgreSQL</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>pgsql.png</value>
         </field>
         <field>
@@ -127,16 +95,8 @@
           <value>http://www.postgresql.org</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>P</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -146,7 +106,7 @@
           <value>XHTML</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>xhtml.png</value>
         </field>
         <field>
@@ -154,16 +114,8 @@
           <value>http://validator.w3.org/check?uri={url}</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>V</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -173,7 +125,7 @@
           <value>CSS</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>css.png</value>
         </field>
         <field>
@@ -181,16 +133,8 @@
           <value>http://jigsaw.w3.org/css-validator/validator?uri={url}</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>V</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -200,7 +144,7 @@
           <value>RSS</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>rss.png</value>
         </field>
         <field>
@@ -208,16 +152,8 @@
           <value>index.php/Blog/RSS</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>S</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 
@@ -227,7 +163,7 @@
           <value>Atom</value>
         </field>
         <field>
-          <name>src</name>
+          <name>image</name>
           <value>atom.png</value>
         </field>
         <field>
@@ -235,16 +171,8 @@
           <value>index.php/Blog/Atom</value>
         </field>
         <field>
-          <name>emblem_type</name>
-          <value>S</value>
-        </field>
-        <field>
-          <name>enabled</name>
+          <name>published</name>
           <value>false</value>
-        </field>
-        <field>
-          <name>updated</name>
-          <value><variable>timestamp</variable></value>
         </field>
       </insert>
 

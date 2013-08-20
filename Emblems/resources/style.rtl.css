@@ -5,7 +5,7 @@ width:100%;
 vertical-align:top;
 }
 #frm_emblem{
-margin-left:5px;
+margin-right:5px;
 }
 #frm_emblem div{
 padding:3px 0;
@@ -16,6 +16,9 @@ width:50px;
 }
 #frm_emblem input{
 width:200px;
+}
+#frm_emblem input#url{
+direction:ltr;
 }
 #frm_emblems td{
 vertical-align:middle;

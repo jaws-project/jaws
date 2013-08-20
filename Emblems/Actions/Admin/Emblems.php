@@ -5,6 +5,7 @@
  * @category   GadgetAdmin
  * @package    Emblems
  * @author     Jorge A Gallegos <kad@gulags.org.mx>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
@@ -18,94 +19,54 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
      */
     function Emblems()
     {
+        $this->gadget->CheckPermission('ManageEmblems');
+
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->loadTemplate('Emblems.html');
         $tpl->SetBlock('emblems');
 
-        if ($this->gadget->GetPermission('UpdateProperties')) {
-            $tpl->SetBlock('emblems/properties');
-            $propsform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-            $propsform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
-            $propsform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
+        $addform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', 
+            'multipart/form-data', 'frm_emblem');
+        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
+        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddEmblem'));
 
-            include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-            $propsfieldset = new Jaws_Widgets_FieldSet(_t('EMBLEMS_SETTINGS'));
-            $propsfieldset->SetDirection('vertical');
+        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        $fs = new Jaws_Widgets_FieldSet(_t('EMBLEMS_ADD_EMBLEM'));
+        $fs->SetDirection('vertical');
 
-            $rowscombo =& Piwi::CreateWidget('Combo', 'rows_combo');
-            $rowscombo->SetTitle(_t('EMBLEMS_ROWS_LIMIT'));
-            for ($i = 1; $i <= 20; $i++) {
-                $rowscombo->AddOption($i, $i);
-            }
-            $rowscombo->SetDefault($this->gadget->registry->fetch('rows'));
-            $propsfieldset->Add($rowscombo);
-            $urlradio =& Piwi::CreateWidget('RadioButtons', 'allow_url');
-            $urlradio->SetTitle(_t('EMBLEMS_ALLOW_URL'));
-            $urlradio->AddOption(_t('GLOBAL_YES'), 'true');
-            $urlradio->AddOption(_t('GLOBAL_NO'), 'false');
-            if ($this->gadget->registry->fetch('allow_url') == 'true') {
-                $urlradio->SetDefault('true');
-            } else {
-                $urlradio->SetDefault('false');
-            }
-            $propsfieldset->Add($urlradio);
-            $propssubmit = Piwi::CreateWidget('Button', 'submitprops',
-                                              _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
-            $propssubmit->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+        $title =& Piwi::CreateWidget('Entry', 'title', '');
+        $title->SetTitle(_t('GLOBAL_TITLE'));
+        $fs->Add($title);
 
-            $propsform->Add($propsfieldset);
-            $propsform->Add($propssubmit);
+        $url =& Piwi::CreateWidget('Entry', 'url', 'http://');
+        $url->SetTitle(_t('GLOBAL_URL'));
+        $fs->Add($url);
 
-            $tpl->SetVariable('props', $propsform->Get());
-            $tpl->ParseBlock('emblems/properties');
-        }
+        $image =& Piwi::CreateWidget('FileEntry', 'image', '');
+        $image->SetTitle(_t('GLOBAL_FILE'));
+        $fs->Add($image);
 
-        if ($this->gadget->GetPermission('AddEmblem')) {
-            $tpl->SetBlock('emblems/addemblem');
-            $addform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', 'multipart/form-data');
-            $addform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
-            $addform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddEmblem'));
+        $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
+        $addsubmit->SetSubmit();
 
+        $addform->Add($fs);
+        $addform->Add($addsubmit);
 
-            include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-            $addfieldset = new Jaws_Widgets_FieldSet(_t('EMBLEMS_ADD_EMBLEM'));
-            $addfieldset->SetDirection('vertical');
+        $tpl->SetVariable('form', $addform->Get());
 
-            $title =& Piwi::CreateWidget('Entry', 'title', '');
-            $title->SetTitle(_t('GLOBAL_TITLE'));
-            $addfieldset->Add($title);
-
-            $url =& Piwi::CreateWidget('Entry', 'url', 'http://');
-            $url->setStyle('direction: ltr; width: 250px;');
-            $url->SetTitle(_t('GLOBAL_URL'));
-            $addfieldset->Add($url);
-
-            $src =& Piwi::CreateWidget('FileEntry', 'src', '');
-            $src->SetTitle(_t('GLOBAL_FILE'));
-            $addfieldset->Add($src);
-            $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
-            $addsubmit->SetSubmit();
-
-            $addform->Add($addfieldset);
-            $addform->Add($addsubmit);
-            $propsform->Add($addform);
-
-            $tpl->SetVariable('add', $addform->Get());
-            $tpl->ParseBlock('emblems/addemblem');
-        }
-        $tpl->SetBlock('emblems/emblemlist');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('confirmDelete', _t('EMBLEMS_CONFIRM_DELETE'));
         $tpl->SetVariable('grid', $this->Datagrid());
-        $tpl->ParseBlock('emblems/emblemlist');
         $tpl->ParseBlock('emblems');
+
         return $tpl->Get();
     }
 
     /**
-     * Build the datagrid
+     * Builds the datagrid
      *
      * @access  public
-     * @return  string  XHTML template Datagrid
+     * @return  string  XHTML datagrid
      */
     function Datagrid()
     {
@@ -113,28 +74,19 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
         $total = $model->TotalOfData('emblem');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-        $datagrid->SetStyle('width: 980px;');
         $datagrid->SetID('emblems_datagrid');
         $datagrid->TotalRows($total);
 
         $titlecol =& Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'));
-        $titlecol->SetStyle('vertical-align: middle; text-align: center;');
         $datagrid->AddColumn($titlecol);
 
         $urlcol =& Piwi::CreateWidget('Column', _t('GLOBAL_URL'));
-        $urlcol->SetStyle('vertical-align: middle; text-align: center;');
         $datagrid->AddColumn($urlcol);
 
-        $typecol =& Piwi::CreateWidget('Column', _t('EMBLEMS_TYPE'));
-        $typecol->SetStyle('vertical-align: middle; text-align: center;');
-        $datagrid->AddColumn($typecol);
+        $imgcol =& Piwi::CreateWidget('Column', _t('EMBLEMS_RESULT'));
+        $datagrid->AddColumn($imgcol);
 
-        $srccol =& Piwi::CreateWidget('Column', _t('EMBLEMS_SRC'));
-        $srccol->SetStyle('vertical-align: middle; text-align: center;');
-        $datagrid->AddColumn($srccol);
-
-        $statuscol =& Piwi::CreateWidget('Column', _t('EMBLEMS_STATUS'));
-        $statuscol->SetStyle('vertical-align: middle; text-align: center;');
+        $statuscol =& Piwi::CreateWidget('Column', _t('EMBLEMS_PUBLISHED'));
         $datagrid->AddColumn($statuscol);
 
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
@@ -143,11 +95,11 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
     }
 
     /**
-     * Get emblems
+     * Fetches emblems
      *
      * @access  public
-     * @param   int     $limit  Limit of data
-     * @return  array   Emblems Data
+     * @param   int     $limit  Data limit
+     * @return  array   Array of emblems
      */
     function GetEmblems($limit = 0)
     {
@@ -158,67 +110,46 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
             return $entries_grid;
         }
 
+        $dataURL = $GLOBALS['app']->getDataURL('emblems/');
         foreach ($rsemblem as $e) {
             $item = array();
 
-            $titleentry =& Piwi::CreateWidget(
-                                              'Entry', 'title'.$e['id'], $e['title']);
-            $titleentry->SetStyle('width: 148px;');
-            $item['title'] = $titleentry->Get();
+            $titleEntry =& Piwi::CreateWidget('Entry', 'title', $e['title']);
+            $titleEntry->setID('');
+            $titleEntry->SetStyle('width:150px;');
+            $item['title'] = $titleEntry->Get();
 
             if (!empty($e['url']) && strpos('&amp;', $e['url']) === false) {
                 $e['url'] = htmlentities($e['url'], ENT_QUOTES, 'UTF-8');
-            } else {
-                $e['url'] = $e['url'];
             }
-            $urlentry =& Piwi::CreateWidget('Entry', 'url'.$e['id'], $e['url']);
-            $urlentry->SetStyle('direction: ltr; width: 148px;');
+            $urlEntry =& Piwi::CreateWidget('Entry', 'url', $e['url']);
+            $urlEntry->setID('');
+            $urlEntry->SetStyle('direction:ltr; width:250px;');
+            $item['url'] = $urlEntry->Get();
 
-            $item['url'] = $urlentry->Get();
+            if (empty($e['url'])) {
+                $e['url'] = 'javascript:void(0);';
+            }
+            $link =& Piwi::CreateWidget('Link', $e['title'], $e['url'], $dataURL . $e['image']);
+            $item['image'] = $link->Get();
 
-            $typecombo =& Piwi::CreateWidget('Combo', 'type' . $e['id']);
-            $typecombo->SetTitle(_t('EMBLEMS_TYPE'));
-            $typecombo->AddOption(_t('EMBLEMS_LICENSED_UNDER'), 'L');
-            $typecombo->AddOption(_t('EMBLEMS_POWERED_BY'), 'P');
-            $typecombo->AddOption(_t('EMBLEMS_SUPPORTS'), 'S');
-            $typecombo->AddOption(_t('EMBLEMS_BEST_VIEW'), 'B');
-            $typecombo->AddOption(_t('EMBLEMS_IS_VALID'), 'V');
-            $typecombo->SetDefault($e['emblem_type']);
-
-            $item['type'] = $typecombo->Get();
-
-            $item['src'] = '<img src="' . $GLOBALS['app']->getDataURL('emblems/' . $e['src']).
-                           '" alt="'. $e['title'] . '" width="80" height="15" />';
-            $hiddensrc =& Piwi::CreateWidget('HiddenEntry', 'src'.$e['id'], $e['src']);
-            $item['src'] .= $hiddensrc->Get();
-
-            $statuscombo =& Piwi::CreateWidget('Combo', 'status' . $e['id']);
-            $statuscombo->SetTitle(_t('EMBLEMS_STATUS'));
-            $statuscombo->AddOption(_t('EMBLEMS_ACTIVE'), '1');
-            $statuscombo->AddOption(_t('EMBLEMS_INACTIVE'), '0');
-            $statuscombo->SetDefault($e['enabled'] === true ? '1' : '0');
-            $item['status'] = $statuscombo->Get();
-
+            $published =& Piwi::CreateWidget('CheckButtons', 'published');
+            $published->addOption('', '', 'published'.$e['id'], $e['published']);
+            $item['status'] = $published->Get();
+            
             $actions = '';
             $link =& Piwi::CreateWidget(
-                                        'Link', $e['title'],
-                                        $e['url'],
-                                        STOCK_HOME);
-            $actions.= $link->Get().'&nbsp;';
+                'Link',
+                _t('GLOBAL_SAVE'),
+                "javascript: updateEmblem({$e['id']}, this);",
+                STOCK_SAVE);
+            $actions .= $link->Get().'&nbsp;';
 
-            if ($this->gadget->GetPermission('EditEmblem')) {
-                $link =& Piwi::CreateWidget(
-                                            'Link', _t('GLOBAL_SAVE'),
-                                            "javascript: editEmblem('".$e['id']."');",
-                                            STOCK_SAVE);
-                $actions.= $link->Get().'&nbsp;';
-            }
-            if ($this->gadget->GetPermission('DeleteEmblem')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: deleteEmblem('".$e['id']."', '" . _t('EMBLEMS_CONFIRM_DELETE') . "');",
-                                            STOCK_DELETE);
-                $actions.= $link->Get().'&nbsp;';
-            }
+            $link =& Piwi::CreateWidget(
+                'Link', _t('GLOBAL_DELETE'),
+                "javascript: deleteEmblem({$e['id']});",
+                STOCK_DELETE);
+            $actions .= $link->Get().'&nbsp;';
             $item['actions'] = $actions;
             $entries_grid[] = $item;
         }
@@ -227,46 +158,31 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
     }
 
     /**
-     * Edit emblem info
-     *
-     * @access  public
-     * @return  void
-     */
-    function EditEmblem()
-    {
-        $request =& Jaws_Request::getInstance();
-        $id      = (int)$request->get('id', 'get');
-        $post    = $request->get(array('title', 'url', 'status', 'type'), 'post');
-
-        $title  = $post['title' . $id];
-        $url    = $post['url' . $id];
-        $status = $post['status' . $id];
-        $type   = $post['type' . $id];
-        $model  = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
-        $model->UpdateEmblem($id, $title, $url, $type, $status);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems&action=Admin');
-    }
-
-    /**
      * Adds a new emblem
      *
      * @access  public
-     * @see    EmblemsModel->AddEmblem()
+     * @see     EmblemsModel->AddEmblem()
      */
     function AddEmblem()
     {
         $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('title', 'url'), 'post');
-
-        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
+        $post = $request->get(array('title', 'url'), 'post');
+        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 
+            'jpg,gif,swf,png,jpeg,bmp,svg');
         if (!Jaws_Error::IsError($res)) {
-            $filename = $res['src'][0]['host_filename'];
+            $post['image'] = $res['image'][0]['host_filename'];
+            $post['published'] = true;
             $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
-            $model->AddEmblem($post['title'], $post['url'], $filename);
+            $res = $model->AddEmblem($post);
+            if (Jaws_Error::IsError($res)) {
+                Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);
+                $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
+            }
         } else {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
+        $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems&action=Admin');
     }
 }

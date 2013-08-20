@@ -4,7 +4,7 @@
  *
  * @category   GadgetLayout
  * @package    Emblems
- * @author     Jorge A Gallegos <kad@gulags.org.mx>
+ * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
@@ -19,61 +19,24 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_HTML
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Emblems.html');
+        $tpl->SetBlock('emblems');
+        $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
+
         $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
-        $rsemblem = $model->GetEmblems(true);
-        if (!Jaws_Error::IsError($rsemblem)) {
-            $rows = $this->gadget->registry->fetch('rows');
-            $cols = ceil(count($rsemblem) / $rows);
-            $tpl->SetBlock('emblems');
-            $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
-            $cell = 0;
+        $emblems = $model->GetEmblems(true);
+        if (!Jaws_Error::IsError($emblems)) {
             $siteURL = Jaws_Utils::getRequestURL(false);
-            for ($i = 0; $i < $rows; $i++) {
-                $tpl->SetBlock('emblems/emblemrow');
-                for ($j = 0; $j < $cols; $j++) {
-                    if ($cell < count($rsemblem)) {
-                        $tpl->SetBlock('emblems/emblemrow/emblem');
-                        $e = $rsemblem[$cell];
-                        $tpl->SetVariable('id', $e['id']);
-                        if ($this->gadget->registry->fetch('allow_url') == 'true') {
-                            $tpl->SetBlock('emblems/emblemrow/emblem/url');
-                            $tpl->SetVariable('src', $GLOBALS['app']->getDataURL('emblems/' . $e['src']));
-                            $e['url'] = str_replace('{url}', rawurlencode($siteURL), $e['url']);
-                            $tpl->SetVariable('url', $e['url']);
-                            switch($e['emblem_type']) {
-                            case 'B':
-                                $tpl->SetVariable('rel', 'external');
-                                break;
-                            case 'L':
-                                $tpl->SetVariable('rel', 'license');
-                                break;
-                            case 'V':
-                                $tpl->SetVariable('rel', 'external');
-                                break;
-                            case 'S':
-                                $tpl->SetVariable('rel', 'external');
-                                break;
-                            case 'P':
-                                $tpl->SetVariable('rel', 'external');
-                                break;
-                            }
-                            $tpl->SetVariable('title', $model->TranslateType($e['emblem_type']) . $e['title']);
-                            $tpl->ParseBlock('emblems/emblemrow/emblem/url');
-                        } else{
-                            $tpl->SetBlock('emblems/emblemrow/emblem/normal');
-                            $tpl->SetVariable('src', $GLOBALS['app']->getDataURL('emblems/' . $e['src']));
-                            $tpl->SetVariable('title', $model->TranslateType($e['emblem_type']) . $e['title']);
-                            $tpl->ParseBlock('emblems/emblemrow/emblem/normal');
-                        }
-                        $cell++;
-                        $tpl->ParseBlock('emblems/emblemrow/emblem');
-                    }
-                }
-                $tpl->ParseBlock('emblems/emblemrow');
+            foreach ($emblems as $e) {
+                $tpl->SetBlock('emblems/emblem');
+                $tpl->SetVariable('id', $e['id']);
+                $tpl->SetVariable('title', $e['title']);
+                $tpl->SetVariable('image', $GLOBALS['app']->getDataURL('emblems/' . $e['image']));
+                $tpl->SetVariable('url', str_replace('{url}', rawurlencode($siteURL), $e['url']));
+                $tpl->ParseBlock('emblems/emblem');
             }
-            $tpl->ParseBlock('emblems');
         }
 
+        $tpl->ParseBlock('emblems');
         return $tpl->Get();
     }
 }
