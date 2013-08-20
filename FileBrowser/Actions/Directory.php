@@ -1,15 +1,16 @@
 <?php
 /**
- * FileBrowser Layout HTML file (for layout purposes)
+ * Filebrowser Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    FileBrowser
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
+class FileBrowser_Actions_Directory extends Jaws_Gadget_HTML
 {
     /**
      * Prints all the files with their titles and contents of initial folder
@@ -43,16 +44,16 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
                 if ($item['is_dir']) {
                     $relative = Jaws_XSS::filter($item['relative']) . '/';
                     $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
-                                                           'Display',
-                                                           array('path' => $relative));
+                        'Display',
+                        array('path' => $relative));
                 } else {
                     if (empty($item['id'])) {
                         $url = Jaws_XSS::filter($item['url']);
                     } else {
                         $fid = empty($item['fast_url']) ? $item['id'] : Jaws_XSS::filter($item['fast_url']);
                         $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
-                                                               'Download',
-                                                               array('id' => $fid));
+                            'Download',
+                            array('id' => $fid));
                     }
                 }
                 $tpl->SetVariable('url', $url);
@@ -63,5 +64,4 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
 
         return $tpl->Get();
     }
-
 }

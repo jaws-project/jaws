@@ -13,13 +13,17 @@ $actions = array();
 
 $actions['Display'] = array(
     'normal' => true,
+    'file' => 'File',
 );
 $actions['FileInfo'] = array(
     'normal' => true,
+    'file' => 'File',
 );
 $actions['Download'] = array(
     'standalone' => true,
+    'file' => 'File',
 );
 $actions['InitialFolder'] = array(
     'layout' => true,
+    'file' => 'Directory',
 );
