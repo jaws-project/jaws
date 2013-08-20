@@ -59,8 +59,9 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
             $page = 1;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
-        $locationTree = $model->GetCurrentRootDir($path);
+        $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $locationTree = $dModel->GetCurrentRootDir($path);
         if (Jaws_Error::IsError($locationTree)) {
             return false;
         }
@@ -77,7 +78,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                 $_path = substr($_path, 1);
             }
 
-            $dbFile = $model->DBFileInfo($parentPath, $dir);
+            $dbFile = $fModel->DBFileInfo($parentPath, $dir);
             if (Jaws_Error::IsError($dbFile) || empty($dbFile)) {
                 $dirTitle = $dir;
             } else {
@@ -106,7 +107,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
 
         $limit  = (int) $this->gadget->registry->fetch('views_limit');
         $offset = ($page - 1) * $limit;
-        $items = $model->ReadDir($path, $limit, $offset);
+        $items = $dModel->ReadDir($path, $limit, $offset);
         if (!Jaws_Error::IsError($items)) {
             $date = $GLOBALS['app']->loadDate();
             foreach ($items as $item) {
@@ -140,7 +141,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         }
 
         if ($tpl->VariableExists('navigation')) {
-            $total  = $model->GetDirContentsCount($path);
+            $total  = $dModel->GetDirContentsCount($path);
             $params = array('path'  => $path);
             $tpl->SetVariable('navigation',
                               $this->GetNumberedPageNavigation($page, $limit, $total, 'Display', $params));
@@ -166,7 +167,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
@@ -239,8 +240,9 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $id = $request->get('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
-        $dbInfo = $model->DBFileInfoByIndex($id);
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $dbInfo = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($dbInfo) || empty($dbInfo)) {
             return false;
         }
@@ -249,7 +251,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('fileinfo');
 
-        $Info = $model->GetFileProperties($dbInfo['path'], $dbInfo['filename']);
+        $Info = $fModel->GetFileProperties($dbInfo['path'], $dbInfo['filename']);
 
         $tpl->SetVariable('icon',  $Info['mini_icon']);
         $tpl->SetVariable('name',  Jaws_XSS::filter($Info['filename']));
@@ -259,7 +261,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('size',  $Info['size']);
         $tpl->SetVariable('text',  $this->gadget->ParseText($dbInfo['description']));
 
-        $locationTree = $model->GetCurrentRootDir($dbInfo['path']);
+        $locationTree = $dModel->GetCurrentRootDir($dbInfo['path']);
         if (Jaws_Error::IsError($locationTree)) {
             return false;
         }
@@ -271,7 +273,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
                 $path = substr($path, 1);
             }
 
-            $dbFile = $model->DBFileInfo($parentPath, $dir);
+            $dbFile = $fModel->DBFileInfo($parentPath, $dir);
             if (Jaws_Error::IsError($dbFile) || empty($dbFile)) {
                 $dirTitle = $dir;
             } else {
@@ -307,7 +309,7 @@ class FileBrowser_HTML extends Jaws_Gadget_HTML
         $id = Jaws_XSS::defilter($id, true);
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {
             $this->SetActionMode('Download', 'normal', 'standalone');

@@ -32,7 +32,7 @@ class FileBrowser_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('initial_folder');
         $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
         $items = $model->ReadDir($path);
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {

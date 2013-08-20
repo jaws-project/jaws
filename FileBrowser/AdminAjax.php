@@ -33,7 +33,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DBFileInfo($path, $file)
     {
-        return $this->_Model->DBFileInfo($path, $file);
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        return $model->DBFileInfo($path, $file);
     }
 
     /**
@@ -45,7 +46,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetDirContentsCount($path)
     {
-        return $this->_Model->GetDirContentsCount($path);;
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Directory');
+        return $model->GetDirContentsCount($path);
     }
 
     /**
@@ -57,7 +59,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLocation($path)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'File');
         return $gadget->GetLocation($path);
     }
 
@@ -72,7 +74,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetDirectory($dir, $offset, $order)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Directory');
         if (!is_numeric($offset)) {
             $offset = null;
         }
@@ -94,16 +96,17 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
     {
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
         $this->gadget->CheckPermission('ManageFiles');
         $res = true;
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
         $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
         if ($oldname != $file) {
-            $res = $this->_Model->Rename($path, $oldname, $file);
+            $res = $model->Rename($path, $oldname, $file);
         }
 
         if ($res) {
-            $this->_Model->UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname);
+            $model->UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -123,18 +126,21 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)
     {
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
+        $dModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Directory');
+
         $this->gadget->CheckPermission('ManageDirectories');
         $res = true;
         $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
         $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
         if (empty($oldname)) {
-            $res = $this->_Model->MakeDir($path, $dir);
+            $res = $dModel->MakeDir($path, $dir);
         } elseif ($oldname != $dir) {
-            $res = $this->_Model->Rename($path, $oldname, $dir);
+            $res = $fModel->Rename($path, $oldname, $dir);
         }
 
         if ($res) {
-            $this->_Model->UpdateDBFileInfo($path, $dir, $title, $description, $fast_url, $oldname);
+            $fModel->UpdateDBFileInfo($path, $dir, $title, $description, $fast_url, $oldname);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -150,10 +156,11 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteFile($path, $file)
     {
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
         $this->gadget->CheckPermission('ManageFiles');
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
-        if ($this->_Model->Delete($path, $file)) {
-            $this->_Model->DeleteDBFileInfo($path, $file);
+        if ($fModel->Delete($path, $file)) {
+            $fModel->DeleteDBFileInfo($path, $file);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -169,10 +176,11 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteDir($path, $dir)
     {
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
         $this->gadget->CheckPermission('ManageDirectories');
         $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
-        if ($this->_Model->Delete($path, $dir)) {
-            $this->_Model->DeleteDBFileInfo($path, $dir);
+        if ($fModel->Delete($path, $dir)) {
+            $fModel->DeleteDBFileInfo($path, $dir);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();

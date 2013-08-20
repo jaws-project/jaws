@@ -10,19 +10,23 @@
  */
 $actions = array();
 
-/* Admin actions */
 $actions['Admin'] = array(
     'normal' => true,
+    'file' => 'File',
 );
 $actions['UploadFile'] = array(
     'standalone' => true,
+    'file' => 'File',
 );
 $actions['BrowseFile'] = array(
     'standalone' => true,
+    'file' => 'File',
 );
 $actions['DeleteFile'] = array(
     'standalone' => true,
+    'file' => 'File',
 );
 $actions['DeleteDir'] = array(
     'standalone' => true,
+    'file' => 'Directory',
 );

@@ -19,7 +19,7 @@ class FileBrowser_Hooks_ACL extends Jaws_Gadget_Hook
     function Execute()
     {
         $language = $this->gadget->registry->fetch('admin_language', 'Settings');
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
         $items = $model->ReadDir();
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {

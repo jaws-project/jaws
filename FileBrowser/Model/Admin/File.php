@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/FileBrowser/Model.php';
 /**
  * Filebrowser Admin Gadget
  *
@@ -11,7 +10,7 @@ require_once JAWS_PATH . 'gadgets/FileBrowser/Model.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_AdminModel extends FileBrowser_Model
+class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
 {
     /**
      * Add/Update file or directory information
@@ -19,10 +18,10 @@ class FileBrowser_AdminModel extends FileBrowser_Model
      * @access  public
      * @param   string  $path           File|Directory path
      * @param   string  $file           File|Directory name
-     * @param   string  $title          
+     * @param   string  $title
      * @param   string  $description
      * @param   string  $fast_url
-     * @param   string  $oldname        
+     * @param   string  $oldname
      * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname = '')
@@ -45,7 +44,8 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         $params['updatetime']  = $GLOBALS['db']->Date();
 
         $oldname = empty($oldname)? $params['filename'] : $oldname;
-        $dbFile = $this->DBFileInfo($path, $oldname);
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $dbFile = $fModel->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
@@ -77,7 +77,7 @@ class FileBrowser_AdminModel extends FileBrowser_Model
                 return false;
             }
 
-            if (empty($path) && is_dir($this->GetFileBrowserRootDir(). '/'. $file)) {
+            if (empty($path) && is_dir($fModel->GetFileBrowserRootDir(). '/'. $file)) {
                 $this->gadget->acl->insert('OutputAccess', $res, true);
             }
 
@@ -106,7 +106,8 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         }
         $path = str_replace('..', '', $path);
 
-        $dbRow = $this->DBFileInfo($path, $file);
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $dbRow = $fModel->DBFileInfo($path, $file);
         if (!Jaws_Error::isError($dbRow) && !empty($dbRow)) {
             $table = Jaws_ORM::getInstance()->table('filebrowser');
             $res = $table->delete()->where('id', $dbRow['id'])->exec();
@@ -119,42 +120,6 @@ class FileBrowser_AdminModel extends FileBrowser_Model
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
         return false;
-    }
-
-    /**
-     * Creates a directory
-     *
-     * @access  public
-     * @param   string  $path       Where to create it
-     * @param   string  $dir_name   Which name
-     * @return  bool    Returns true if the directory was created, if not, returns false
-     */
-    function MakeDir($path, $dir_name)
-    {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
-        $path = str_replace('..', '', $path);
-        $dir = $this->GetFileBrowserRootDir() . $path . '/' . $dir_name;
-
-        require_once PEAR_PATH. 'File/Util.php';
-        $realpath = File_Util::realpath($dir);
-        $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
-        $blackList = array_map('strtolower', $blackList);
-
-        if (!File_Util::pathInRoot($realpath, $this->GetFileBrowserRootDir()) ||
-            in_array(strtolower(basename($realpath)), $blackList) ||
-            !Jaws_Utils::mkdir($realpath))
-        {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_CREATE_DIRECTORY', $realpath), RESPONSE_ERROR);
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -176,18 +141,19 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         }
         $path = str_replace('..', '', $path);
 
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
         $file = $path . ((empty($path)? '': DIRECTORY_SEPARATOR)) . $filename;
-        $filename = $this->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
+        $filename = $fModel->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
         $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
         require_once PEAR_PATH. 'File/Util.php';
         $realpath = File_Util::realpath($filename);
-        if (!File_Util::pathInRoot($realpath, $this->GetFileBrowserRootDir()) ||
+        if (!File_Util::pathInRoot($realpath, $fModel->GetFileBrowserRootDir()) ||
             in_array(strtolower(basename($filename)), $blackList))
         {
             $msgError = is_dir($filename)? _t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file):
-                                           _t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file);
+                _t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file);
             $GLOBALS['app']->Session->PushLastResponse($msgError, RESPONSE_ERROR);
             return false;
         }
@@ -229,8 +195,9 @@ class FileBrowser_AdminModel extends FileBrowser_Model
             $path = '';
         }
         $path = str_replace('..', '', $path);
-        $oldfile = $this->GetFileBrowserRootDir() . $path . '/' . $old;
-        $newfile = $this->GetFileBrowserRootDir() . $path . '/' . $new;
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $oldfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $old;
+        $newfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $new;
 
         require_once PEAR_PATH. 'File/Util.php';
         $oldfile = File_Util::realpath($oldfile);
@@ -238,8 +205,8 @@ class FileBrowser_AdminModel extends FileBrowser_Model
         $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
-        if (!File_Util::pathInRoot($oldfile, $this->GetFileBrowserRootDir()) ||
-            !File_Util::pathInRoot($newfile, $this->GetFileBrowserRootDir()) ||
+        if (!File_Util::pathInRoot($oldfile, $fModel->GetFileBrowserRootDir()) ||
+            !File_Util::pathInRoot($newfile, $fModel->GetFileBrowserRootDir()) ||
             in_array(strtolower(basename($oldfile)), $blackList) ||
             in_array(strtolower(basename($newfile)), $blackList))
         {
