@@ -28,8 +28,9 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
 
         //Load model
         $max_size = 32;
-        $model  = $GLOBALS['app']->loadGadget('StaticPage', 'Model');
-        $groups = $model->GetGroups(true);
+        $pModel  = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
+        $gModel  = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Group');
+        $groups = $gModel->GetGroups(true);
         foreach($groups as $group) {
             $url   = $GLOBALS['app']->Map->GetURLFor(
                                             'StaticPage',
@@ -41,7 +42,7 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
                             'title2' => ($GLOBALS['app']->UTF8->strlen($group['title']) >= $max_size)?
                                          $GLOBALS['app']->UTF8->substr($group['title'], 0, $max_size).'...' :
                                          $group['title']);
-            $pages = $model->GetPages($group['id']);
+            $pages = $pModel->GetPages($group['id']);
             foreach($pages as $page) {
                 if ($page['published'] === true) {
                     $url   = $GLOBALS['app']->Map->GetURLFor(

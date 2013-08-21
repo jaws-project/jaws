@@ -15,19 +15,25 @@ $actions['GroupPages'] = array(
     'normal' => true,
     'layout' => true,
     'parametric' => true,
+    'file'   => 'Group',
 );
 $actions['PagesList'] = array(
-    'layout' => true, 
+    'layout' => true,
+    'file'   => 'Page',
 );
 $actions['GroupsList'] = array(
-    'layout' => true, 
+    'layout' => true,
+    'file'   => 'Group',
 );
 $actions['Page'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['Pages'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['PagesTree'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );

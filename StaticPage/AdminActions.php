@@ -13,31 +13,41 @@ $actions = array();
 /* Admin actions */
 $actions['AddPage'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['AddNewPage'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['EditPage'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['SaveEditPage'] = array(
     'normal' => true,
+    'file'   => 'Page',
 );
 $actions['Groups'] = array(
     'normal' => true,
+    'file'   => 'Group',
 );
 $actions['Properties'] = array(
     'normal' => true,
+    'file'   => 'Settings',
 );
 $actions['AddNewTranslation'] = array(
     'normal' => true,
+    'file'   => 'Translation',
 );
 $actions['AddTranslation'] = array(
     'normal' => true,
+    'file'   => 'Translation',
 );
 $actions['EditTranslation'] = array(
     'normal' => true,
+    'file'   => 'Translation',
 );
 $actions['SaveEditTranslation'] = array(
     'normal' => true,
+    'file'   => 'Translation',
 );
