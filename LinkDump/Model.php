@@ -28,7 +28,7 @@ class LinkDump_Model extends Jaws_Gadget_Model
 
         $objORM->where(is_numeric($id)? 'id' : 'fast_url', $id);
         $link = $objORM->fetchRow();
-        if (Jaws_Error::IsError($link) || !array_key_exists('id', $link)) {
+        if (Jaws_Error::IsError($link) || empty($link)) {
             return new Jaws_Error(Jaws_Error::IsError($link)? $link->getMessage() : _t('LINKDUMP_LINKS_NOT_EXISTS'),
                                   'LINKDUMP_NAME');
         }

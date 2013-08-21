@@ -57,13 +57,13 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLink($id)
     {
-        $linkInfo = $this->_Model->GetLink($id);
-        if (Jaws_Error::IsError($linkInfo)) {
+        $link = $this->_Model->GetLink($id);
+        if (Jaws_Error::IsError($link) || empty($link)) {
             return false; //Maybe handled one day
         }
 
-        $linkInfo['tags'] = implode(', ', $linkInfo['tags']);
-        return $linkInfo;
+        $link['tags'] = implode(', ', $link['tags']);
+        return $link;
     }
 
     /**
