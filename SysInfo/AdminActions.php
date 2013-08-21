@@ -12,13 +12,17 @@ $actions = array();
 
 $actions['SysInfo'] = array(
     'normal' => true,
+    'file' => 'SysInfo',
 );
 $actions['PHPInfo'] = array(
     'normal' => true,
+    'file' => 'PHPInfo',
 );
 $actions['JawsInfo'] = array(
     'normal' => true,
+    'file' => 'JawsInfo',
 );
 $actions['DirInfo'] = array(
     'normal' => true,
+    'file' => 'DirInfo',
 );

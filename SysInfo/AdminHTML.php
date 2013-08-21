@@ -19,15 +19,19 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('SysInfo')) {
-            return $this->SysInfo();
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'SysInfo');
+            return $HTML->SysInfo();
         } elseif ($this->gadget->GetPermission('PHPInfo')) {
-            return $this->PHPInfo();
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'PHPInfo');
+            return $HTML->PHPInfo();
         } elseif ($this->gadget->GetPermission('JawsInfo')) {
-            return $this->JawsInfo();
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'JawsInfo');
+            return $HTML->JawsInfo();
         }
 
+        $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'DirInfo');
         $this->gadget->CheckPermission('DirInfo');
-        return $this->DirInfo();
+        return $HTML->DirInfo();
     }
 
     /**
@@ -74,125 +78,4 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
         $sidebar->Activate($action);
         return $sidebar->Get();
     }
-
-    /**
-     * Returns information around system(OS, WebServer, Database,...)
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function SysInfo()
-    {
-        $this->gadget->CheckPermission('SysInfo');
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
-        $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('sidebar', $this->SideBar('SysInfo'));
-
-        //System Information
-        $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_SYSINFO'));
-        $items = $model->GetSysInfo();
-        foreach ($items as $item) {
-            $tpl->SetBlock('SysInfo/InfoSection/InfoItem');
-            $tpl->SetVariable('item_title', $item['title']);
-            $tpl->SetVariable('item_value', $item['value']);
-            $tpl->ParseBlock('SysInfo/InfoSection/InfoItem');
-        }
-        $tpl->ParseBlock('SysInfo/InfoSection');
-
-        $tpl->ParseBlock('SysInfo');
-        return $tpl->Get();
-    }
-
-    /**
-     * Returns some PHP Settings
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function PHPInfo()
-    {
-        $this->gadget->CheckPermission('PHPInfo');
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
-        $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('sidebar', $this->SideBar('PHPInfo'));
-
-        //PHP Settings
-        $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_PHPINFO'));
-        $items = $model->GetPHPInfo();
-        foreach ($items as $item) {
-            $tpl->SetBlock('SysInfo/InfoSection/InfoItem');
-            $tpl->SetVariable('item_title', $item['title']);
-            $tpl->SetVariable('item_value', $item['value']);
-            $tpl->ParseBlock('SysInfo/InfoSection/InfoItem');
-        }
-        $tpl->ParseBlock('SysInfo/InfoSection');
-
-        $tpl->ParseBlock('SysInfo');
-        return $tpl->Get();
-    }
-
-    /**
-     * Returns information around installed Jaws
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function JawsInfo()
-    {
-        $this->gadget->CheckPermission('JawsInfo');
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
-        $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('sidebar', $this->SideBar('JawsInfo'));
-
-        //Jaws Settings
-        $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_JAWSINFO'));
-        $items = $model->GetJawsInfo();
-        foreach ($items as $item) {
-            $tpl->SetBlock('SysInfo/InfoSection/InfoItem');
-            $tpl->SetVariable('item_title', $item['title']);
-            $tpl->SetVariable('item_value', $item['value']);
-            $tpl->ParseBlock('SysInfo/InfoSection/InfoItem');
-        }
-        $tpl->ParseBlock('SysInfo/InfoSection');
-
-        $tpl->ParseBlock('SysInfo');
-        return $tpl->Get();
-    }
-
-    /**
-     * Returns directory permissions
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function DirInfo()
-    {
-        $this->gadget->CheckPermission('DirInfo');
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminModel');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
-        $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('sidebar', $this->SideBar('DirInfo'));
-
-        //Directory Permissions
-        $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_DIRINFO'));
-        $items = $model->GetDirsPermissions();
-        foreach ($items as $item) {
-            $tpl->SetBlock('SysInfo/InfoSection/InfoItem');
-            $tpl->SetVariable('item_title', $item['title']);
-            $tpl->SetVariable('item_value', $item['value']);
-            $tpl->ParseBlock('SysInfo/InfoSection/InfoItem');
-        }
-        $tpl->ParseBlock('SysInfo/InfoSection');
-
-        $tpl->ParseBlock('SysInfo');
-        return $tpl->Get();
-    }
-
 }
