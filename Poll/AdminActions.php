@@ -12,10 +12,13 @@ $actions = array();
 
 $actions['Polls'] = array(
     'normal' => true,
+    'file' => 'Poll',
 );
 $actions['PollGroups'] = array(
     'normal' => true,
+    'file' => 'Group',
 );
 $actions['Reports'] = array(
     'normal' => true,
+    'file' => 'Report',
 );

@@ -20,12 +20,14 @@ $actions['Poll'] = array(
 $actions['Polls'] = array(
     'normal' => true,
     'layout' => true,
-    'file'   => 'Polls',
+    'file'   => 'Poll',
     'parametric' => true,
 );
 $actions['ViewResult'] = array(
     'normal' => true,
+    'file' => 'Poll',
 );
 $actions['Vote'] = array(
     'normal' => true,
+    'file' => 'Poll',
 );

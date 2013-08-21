@@ -24,7 +24,7 @@ class Poll_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Poll', 'ListOfPolls'),
                         'title' => _t('POLL_LAYOUT_LIST_POLLS'));
 
-        $model  = $GLOBALS['app']->loadGadget('Poll', 'Model');
+        $model  = $GLOBALS['app']->loadGadget('Poll', 'Model', 'Poll');
         $polls = $model->GetPolls(null, true);
         if (!Jaws_Error::isError($polls)) {
             $max_size = 20;
