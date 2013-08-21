@@ -28,19 +28,21 @@ class LinkDump_Model extends Jaws_Gadget_Model
 
         $objORM->where(is_numeric($id)? 'id' : 'fast_url', $id);
         $link = $objORM->fetchRow();
-        if (Jaws_Error::IsError($link) || empty($link)) {
-            return new Jaws_Error(Jaws_Error::IsError($link)? $link->getMessage() : _t('LINKDUMP_LINKS_NOT_EXISTS'),
-                                  'LINKDUMP_NAME');
+        if (Jaws_Error::IsError($link)) {
+            return $link;
         }
 
-        $objORM->select('tag')->table('linkdump_links_tags');
-        $objORM->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
-        $tags = $objORM->where('link_id', $link['id'])->fetchColumn();
-        if (Jaws_Error::IsError($tags)) {
-            return $tags;
+        if (!empty($link)) {
+            $objORM->select('tag')->table('linkdump_links_tags');
+            $objORM->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
+            $tags = $objORM->where('link_id', $link['id'])->fetchColumn();
+            if (Jaws_Error::IsError($tags)) {
+                return $tags;
+            }
+
+            $link['tags'] = array_filter($tags);
         }
 
-        $link['tags'] = array_filter($tags);
         return $link;
     }
 

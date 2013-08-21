@@ -107,7 +107,7 @@ class LinkDump_HTML extends Jaws_Gadget_HTML
         $lid = Jaws_XSS::defilter($lid, true);
 
         $link = $model->GetLink($lid);
-        if (!Jaws_Error::IsError($link)) {
+        if (!Jaws_Error::IsError($link) && !empty($link)) {
             $click = $model->Click($link['id']);
             if (!Jaws_Error::IsError($click)) {
                 header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 301 Moved Permanently");
