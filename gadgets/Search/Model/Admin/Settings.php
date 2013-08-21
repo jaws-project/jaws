@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Search/Model.php';
 /**
  * Search Gadget Admin
  *
@@ -9,7 +8,7 @@ require_once JAWS_PATH . 'gadgets/Search/Model.php';
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_AdminModel extends Search_Model
+class Search_Model_Admin_Settings extends Jaws_Gadget_Model
 {
     /**
      * Sets searchable gadgets
@@ -29,4 +28,5 @@ class Search_AdminModel extends Search_Model
         $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_SAVED'), RESPONSE_NOTICE);
         return true;
     }
+
 }

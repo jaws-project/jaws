@@ -31,7 +31,7 @@ class Search_Actions_Results extends Search_HTML
         }
 
         $searchable = false;
-        $model = $GLOBALS['app']->LoadGadget('Search', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Search', 'Model', 'Search');
         $options = $model->parseSearch($post, $searchable);
         if ($searchable) {
             $items = $model->Search($options);
@@ -139,7 +139,7 @@ class Search_Actions_Results extends Search_HTML
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $GLOBALS['app']->LoadGadget('Search', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Search', 'Model', 'Search');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');

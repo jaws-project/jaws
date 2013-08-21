@@ -20,7 +20,6 @@ class Search_AdminAjax extends Jaws_Gadget_HTML
     function Search_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -32,7 +31,8 @@ class Search_AdminAjax extends Jaws_Gadget_HTML
      */
     function SaveChanges($gadgets)
     {
-        $this->_Model->SetSearchableGadgets($gadgets);
+        $model = $GLOBALS['app']->LoadGadget('Search', 'AdminModel', 'Settings');
+        $model->SetSearchableGadgets($gadgets);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

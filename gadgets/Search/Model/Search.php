@@ -9,7 +9,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Model extends Jaws_Gadget_Model
+class Search_Model_Search extends Jaws_Gadget_Model
 {
     /**
      * Search options
@@ -75,46 +75,46 @@ class Search_Model extends Jaws_Gadget_Model
                                 foreach($words as $widx => $word) {
                                     $word = $GLOBALS['app']->UTF8->trim($word);
                                     switch($option) {
-                                    case 'exclude':
-                                        foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                                array(1 => '%', $word, '%'),
-                                                                'NOT ILIKE',
-                                                                $field);
-                                            if ($fidx != count($fields) -1)
+                                        case 'exclude':
+                                            foreach($fields as $fidx => $field) {
+                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                    array(1 => '%', $word, '%'),
+                                                    'NOT ILIKE',
+                                                    $field);
+                                                if ($fidx != count($fields) -1)
+                                                    $sqlFields .= ' AND';
+                                            }
+                                            if ($widx !=  count($words) -1)
                                                 $sqlFields .= ' AND';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' AND';
-                                        break;
-                                    case 'all':
-                                    case 'exact':
-                                        foreach($fields as $fidx => $field) {
-                                            if ($fidx == 0) $sqlFields .= '(';
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                                array(1 => '%', $word, '%'),
-                                                                'ILIKE',
-                                                                $field);
-                                            if ($fidx == count($fields) -1)
-                                                $sqlFields .= ')';
-                                            else
+                                            break;
+                                        case 'all':
+                                        case 'exact':
+                                            foreach($fields as $fidx => $field) {
+                                                if ($fidx == 0) $sqlFields .= '(';
+                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                    array(1 => '%', $word, '%'),
+                                                    'ILIKE',
+                                                    $field);
+                                                if ($fidx == count($fields) -1)
+                                                    $sqlFields .= ')';
+                                                else
+                                                    $sqlFields .= ' OR';
+                                            }
+                                            if ($widx !=  count($words) -1)
+                                                $sqlFields .= ' AND';
+                                            break;
+                                        case 'least':
+                                            foreach($fields as $fidx => $field) {
+                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                    array(1 => '%', $word, '%'),
+                                                    'ILIKE',
+                                                    $field);
+                                                if ($fidx != count($fields) -1)
+                                                    $sqlFields .= ' OR';
+                                            }
+                                            if ($widx !=  count($words) -1)
                                                 $sqlFields .= ' OR';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' AND';
-                                        break;
-                                    case 'least':
-                                        foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                                array(1 => '%', $word, '%'),
-                                                                'ILIKE',
-                                                                $field);
-                                            if ($fidx != count($fields) -1)
-                                                $sqlFields .= ' OR';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' OR';
-                                        break;
+                                            break;
                                     }
 
                                     $i++;
@@ -126,7 +126,7 @@ class Search_Model extends Jaws_Gadget_Model
                             }
                         }
                         $preparedSQLs[] = $GLOBALS['db']->sqlParse($preparedSQL, $params);
-                    }    
+                    }
                 } else {
                     $preparedSQLs = $options;
                 }
@@ -157,7 +157,7 @@ class Search_Model extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $options    Search options
-     * @return  string  Search result title 
+     * @return  string  Search result title
      */
     function implodeSearch($options = null)
     {
@@ -190,7 +190,7 @@ class Search_Model extends Jaws_Gadget_Model
     }
 
     /**
-     * Parses a search phrase to find the excluding matches, exact matches, 
+     * Parses a search phrase to find the excluding matches, exact matches,
      * any matches and all other words
      *
      * @access  public
@@ -205,11 +205,11 @@ class Search_Model extends Jaws_Gadget_Model
         if (!empty($phrase)) {
             $phrase.= chr(32);
         }
-        $newOptions = array('all'     => '', 
-                            'exact'   => '', 
-                            'least'   => '', 
-                            'exclude' => '',
-                            'date'    => '');
+        $newOptions = array('all'     => '',
+            'exact'   => '',
+            'least'   => '',
+            'exclude' => '',
+            'date'    => '');
         $size = $GLOBALS['app']->UTF8->strlen($phrase);
         $lastKey = '';
         $tmpWord = '';
@@ -218,46 +218,46 @@ class Search_Model extends Jaws_Gadget_Model
             $ord  = $GLOBALS['app']->UTF8->ord($word);
             $tmpWord.= $word;
             switch($ord) {
-            case 34: // Quotes..
-                if ($lastKey == 'exact') { //Open exact was open, we are closing it
-                    $newOptions['exact'].= $GLOBALS['app']->UTF8->substr($tmpWord, 1, $GLOBALS['app']->UTF8->strlen($tmpWord) - 2);
-                    $lastKey = '';
-                    $tmpWord = '';
-                } else if (empty($lastKey)) {
-                    $lastKey = 'exact'; //We open the exact match
-                }
-                break;
-            case 43: //Plus
-                if ($lastKey != 'exact') {
-                    $lastKey = 'least';
-                }
-                break;
-            case 45: //Minus
-                if ($lastKey != 'exclude') {
-                    $lastKey = 'exclude';
-                }
-                break;
-            case 32: //Space
-                if ($lastKey != 'exact' && !empty($lastKey)) {
-                    if ($lastKey != 'all') {
-                        $substrCount = 1;
-                        if ($tmpWord[0] == ' ') {
-                            $substrCount = 2;
-                        }
-                        $newOptions[$lastKey].= $GLOBALS['app']->UTF8->substr($tmpWord, $substrCount);
-                    } else {
-                        $newOptions[$lastKey].= $tmpWord;
+                case 34: // Quotes..
+                    if ($lastKey == 'exact') { //Open exact was open, we are closing it
+                        $newOptions['exact'].= $GLOBALS['app']->UTF8->substr($tmpWord, 1, $GLOBALS['app']->UTF8->strlen($tmpWord) - 2);
+                        $lastKey = '';
+                        $tmpWord = '';
+                    } else if (empty($lastKey)) {
+                        $lastKey = 'exact'; //We open the exact match
                     }
-                    $lastKey = '';
-                    $tmpWord = '';
-                }
-                break;
-            default:
-                //Any other word opens all
-                if (empty($lastKey)) {
-                    $lastKey = 'all';
-                }
-                break;
+                    break;
+                case 43: //Plus
+                    if ($lastKey != 'exact') {
+                        $lastKey = 'least';
+                    }
+                    break;
+                case 45: //Minus
+                    if ($lastKey != 'exclude') {
+                        $lastKey = 'exclude';
+                    }
+                    break;
+                case 32: //Space
+                    if ($lastKey != 'exact' && !empty($lastKey)) {
+                        if ($lastKey != 'all') {
+                            $substrCount = 1;
+                            if ($tmpWord[0] == ' ') {
+                                $substrCount = 2;
+                            }
+                            $newOptions[$lastKey].= $GLOBALS['app']->UTF8->substr($tmpWord, $substrCount);
+                        } else {
+                            $newOptions[$lastKey].= $tmpWord;
+                        }
+                        $lastKey = '';
+                        $tmpWord = '';
+                    }
+                    break;
+                default:
+                    //Any other word opens all
+                    if (empty($lastKey)) {
+                        $lastKey = 'all';
+                    }
+                    break;
             }
         }
 
@@ -266,8 +266,8 @@ class Search_Model extends Jaws_Gadget_Model
         foreach(array_keys($newOptions) as $option) {
             if (!empty($newOptions[$option])) {
                 $options[$option] = trim(isset($options[$option])?
-                                         $options[$option] . ' ' . $newOptions[$option] :
-                                         $newOptions[$option]);
+                    $options[$option] . ' ' . $newOptions[$option] :
+                    $newOptions[$option]);
             }
 
             $content = (isset($options[$option])) ? $options[$option] : '';
@@ -279,22 +279,22 @@ class Search_Model extends Jaws_Gadget_Model
 
             $options[$option] = '';
             switch($option) {
-            case 'exclude':
-            case 'least':
-            case 'all':
-                $options[$option] = array_filter(explode(' ', $content));
-                break;
-            case 'exact':
-                $options[$option] = array($content);
-                break;
-            case 'date':
-                if (in_array($content, array('past_1month', 'past_2month', 'past_3month',
-                                             'past_6month', 'past_1year',  'anytime'))) {
+                case 'exclude':
+                case 'least':
+                case 'all':
+                    $options[$option] = array_filter(explode(' ', $content));
+                    break;
+                case 'exact':
                     $options[$option] = array($content);
-                } else {
-                    $options[$option] = array('anytime');
-                }
-                break;
+                    break;
+                case 'date':
+                    if (in_array($content, array('past_1month', 'past_2month', 'past_3month',
+                        'past_6month', 'past_1year',  'anytime'))) {
+                        $options[$option] = array($content);
+                    } else {
+                        $options[$option] = array('anytime');
+                    }
+                    break;
             }
 
         }
@@ -373,7 +373,7 @@ class Search_Model extends Jaws_Gadget_Model
             for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
                 $pages[$i] = $i;
             }
-            
+
         } elseif ($page > ($npages - $paginator_size + $tail)) {
             for ($i = 1; $i <= $tail; $i++) {
                 $pages[$i] = $i;
@@ -410,7 +410,7 @@ class Search_Model extends Jaws_Gadget_Model
             for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
                 $pages[$i] = $i;
             }
-            
+
         }
 
         // Next
