@@ -23,7 +23,7 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $table->update(array('votes' => $table->expr('votes + ?', 1)));
-        $result = $table->where('id', (int)$aid)->and()->where('pid', (int)$pid)->exec();
+        $result = $table->where('id', $aid)->and()->where('pid', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'), _t('POLL_NAME'));
         }
@@ -63,12 +63,7 @@ class Poll_Model extends Jaws_Gadget_Model
         $table->select(
             'id', 'gid', 'question', 'select_type', 'poll_type',
             'result_view', 'start_time', 'stop_time', 'visible');
-        $result = $table->where('id', $pid)->fetchRow();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
+        return $table->where('id', $pid)->fetchRow();
     }
 
     /**
@@ -81,22 +76,15 @@ class Poll_Model extends Jaws_Gadget_Model
     {
         $now = $GLOBALS['db']->Date();
         $table = Jaws_ORM::getInstance()->table('poll');
-        $table->select('MAX([id])');
+        $table->select(
+            'id', 'gid', 'question', 'select_type', 'poll_type',
+            'result_view', 'start_time', 'stop_time', 'visible');
         $table->where('visible', 1)->and();
         $table->openWhere()->where('start_time', '', 'is null')->or();
         $table->where('start_time', $now, '>=')->closeWhere()->and();
         $table->openWhere()->where('stop_time', '', 'is null')->or();
         $table->where('stop_time', $now, '<=')->closeWhere();
-        $max = $table->fetchOne();
-        if (Jaws_Error::IsError($max)) {
-            return new Jaws_Error($max->getMessage(), 'SQL');
-        }
-
-        if ($max > 0) {
-            return $this->GetPoll($max);
-        }
-
-        return false;
+        return $table->orderBy('id')->fetchRow();
     }
 
     /**

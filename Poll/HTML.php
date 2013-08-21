@@ -35,15 +35,15 @@ class Poll_HTML extends Jaws_Gadget_HTML
         $post = $request->get(array('pid', 'answers'), 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
-        $poll = $model->GetPoll($post['pid']);
-        if (!Jaws_Error::IsError($poll) && isset($poll['id'])) {
-            if ((($poll['poll_type'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$post['pid']))) &&
+        $poll = $model->GetPoll((int)$post['pid']);
+        if (!Jaws_Error::IsError($poll) && !empty($poll)) {
+            if ((($poll['poll_type'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']))) &&
                 is_array($post['answers']) && count($post['answers'])>0)
             {
-                $GLOBALS['app']->Session->SetCookie('poll_'.$post['pid'], 'voted',
+                $GLOBALS['app']->Session->SetCookie('poll_'.$poll['id'], 'voted',
                             (int) $this->gadget->registry->fetch('cookie_period')*24*60);
                 foreach ($post['answers'] as $aid) {
-                    $model->AddAnswerVote($post['pid'], $aid);
+                    $model->AddAnswerVote($poll['id'], (int)$aid);
                 }
             }
         }
@@ -65,8 +65,8 @@ class Poll_HTML extends Jaws_Gadget_HTML
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model');
         $poll = $model->GetPoll($pid);
-        if (Jaws_Error::IsError($poll) || !isset($poll['id']) || ($poll['result_view'] == 0)) {
-            return '';
+        if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['result_view'] == 0)) {
+            return false;
         }
 
         $tpl = $this->gadget->loadTemplate('Results.html');
