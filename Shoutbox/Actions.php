@@ -12,7 +12,9 @@ $actions = array();
 
 $actions['Display'] = array(
     'layout' => true,
+    'file'   => 'Message',
 );
 $actions['Preview'] = array(
     'normal' => true,
+    'file'   => 'Message',
 );

@@ -10,9 +10,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_AdminModel extends Jaws_Gadget_Model
+class Shoutbox_Model_Admin_Settings extends Jaws_Gadget_Model
 {
-
     /**
      * Set the properties of the gadget
      *

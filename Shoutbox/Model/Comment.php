@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_Model extends Jaws_Gadget_Model
+class Shoutbox_Model_Comment extends Jaws_Gadget_Model
 {
     /**
      * This function mails the comments to the owner
@@ -33,6 +33,6 @@ class Shoutbox_Model extends Jaws_Gadget_Model
         $mail->AddRecipient('');
         $mail->SetSubject($subject);
         $mail->SetBody($comment, 'html');
-        $result = $mail->send();
+        $mail->send();
     }
 }

@@ -13,4 +13,5 @@ $actions = array();
 
 $actions['Settings'] = array(
     'normal' => true,
+    'file'   => 'Settings',
 );

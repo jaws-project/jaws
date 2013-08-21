@@ -1,15 +1,15 @@
 <?php
 /**
- * Shoutbox Layout HTML file (for layout purposes)
+ * Shoutbox Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Shoutbox
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
+ * @author     Jonathan Hernandez <ion@suavizado.com>
+ * @author     Jon Wood <jon@jellybob.co.uk>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
+class Shoutbox_Actions_Message extends Jaws_Gadget_HTML
 {
     /**
      * Displays the shoutbox
@@ -49,5 +49,18 @@ class Shoutbox_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('shoutbox');
         return $tpl->Get();
     }
+
+    /**
+     * Displays a preview of the given shoutbox message
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function Preview()
+    {
+        $layoutGadget = $GLOBALS['app']->LoadGadget('Shoutbox', 'HTML', 'Message');
+        return $layoutGadget->GetMessages(true);
+    }
+
 
 }

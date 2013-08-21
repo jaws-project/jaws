@@ -20,7 +20,6 @@ class Shoutbox_AdminAjax extends Jaws_Gadget_HTML
     function Shoutbox_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
 
@@ -36,7 +35,8 @@ class Shoutbox_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties($limit, $max_strlen, $authority)
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $this->_Model->UpdateProperties($limit, $max_strlen, $authority == 'true');
+        $model = $GLOBALS['app']->LoadGadget('Shoutbox', 'AdminModel', 'Settings');
+        $model->UpdateProperties($limit, $max_strlen, $authority == 'true');
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 }

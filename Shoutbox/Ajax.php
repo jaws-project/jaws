@@ -31,8 +31,8 @@ class Shoutbox_Ajax extends Jaws_Gadget_HTML
      */
     function GetMessages()
     {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Shoutbox', 'LayoutHTML');
-        $messages = $layoutGadget->GetMessages();
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Shoutbox', 'HTML', 'Message');
+        $messages = $gadgetHTML->GetMessages();
         return $messages;
     }
 
