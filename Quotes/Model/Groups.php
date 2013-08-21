@@ -24,12 +24,8 @@ class Quotes_Model_Groups extends Jaws_Gadget_Model
         $res = $qgTable->select(
             'id:integer', 'title', 'view_mode:integer', 'view_type:integer', 'show_title:boolean',
             'limit_count:integer', 'random:boolean', 'published:boolean'
-        )->where('id', $gid)->fetchRow();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        );
+        return $qgTable->where('id', $gid)->fetchRow();
     }
 
     /**

@@ -159,12 +159,12 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_HTML
         $qModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Quotes');
         $gModel = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Groups');
         $quote = $qModel->GetQuote($qid);
-        if (Jaws_Error::IsError($quote) || !isset($quote['id']) || !$quote['published']) {
-            return '';
+        if (Jaws_Error::IsError($quote) || empty($quote) || !$quote['published']) {
+            return false;
         }
         $group = $gModel->GetGroup($quote['gid']);
-        if (Jaws_Error::IsError($group) || !isset($group['id']) || !$group['published']) {
-            return '';
+        if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
+            return false;
         }
 
         $this->SetTitle($quote['title']);

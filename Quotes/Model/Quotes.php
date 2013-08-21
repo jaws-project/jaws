@@ -23,13 +23,8 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $res = $quotesTable->select(
             'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
             'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
-        )->where('id', $id)->fetchRow();
-
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return $res;
+        );
+        return $quotesTable->where('id', $id)->fetchRow();
     }
 
     /**
