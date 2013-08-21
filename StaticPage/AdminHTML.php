@@ -142,7 +142,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         if ($mode == 'base') {
             //show title
-            $show_title = ($show_title === true) ? 1 : 0;
+            $show_title = ($show_title == true) ? 1 : 0;
             $titleShowCombo =& Piwi::CreateWidget('Combo', 'show_title');
             $titleShowCombo->AddOption(_t('GLOBAL_YES'), '1');
             $titleShowCombo->AddOption(_t('GLOBAL_NO'),  '0');

@@ -90,10 +90,10 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
 
         $params['group_id']      = (int)$group;
-        $params['base_language']   = $language;
-        $params['fast_url']   = $fast_url;
-        $params['show_title'] = (bool)$show_title;
-        $params['updated']        = $GLOBALS['db']->Date();
+        $params['base_language'] = $language;
+        $params['fast_url']      = $fast_url;
+        $params['show_title']    = (bool)$show_title;
+        $params['updated']       = $GLOBALS['db']->Date();
 
         $spTable = Jaws_ORM::getInstance()->table('static_pages');
         $result = $spTable->update($params)->where('page_id', $id)->exec();

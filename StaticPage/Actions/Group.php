@@ -48,7 +48,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_HTML
 
         return $result;
     }
-    
+
     /**
      * Displays a block of pages belongs to the specified group
      *
