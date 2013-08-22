@@ -20,7 +20,6 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function Faq_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -33,7 +32,8 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function DeleteCategory($id)
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $this->_Model->DeleteCategory($id);
+        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+        $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -47,7 +47,8 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function DeleteQuestion($id)
     {
         $this->gadget->CheckPermission('DeleteQuestion');
-        $this->_Model->DeleteQuestion($id);
+        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
+        $model->DeleteQuestion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -63,7 +64,8 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveQuestion($cat, $id, $position, $direction)
     {
-        $result = $this->_Model->MoveQuestion($cat, $id, $position, $direction);
+        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
+        $result = $model->MoveQuestion($cat, $id, $position, $direction);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -84,7 +86,8 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveCategory($cat, $old_position, $new_position)
     {
-        $result = $this->_Model->MoveCategory($cat, $old_position, $new_position);
+        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+        $result = $model->MoveCategory($cat, $old_position, $new_position);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -105,7 +108,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $text = $request->get(0, 'post', false);
 
-        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
         return $gadget->gadget->ParseText($text);
     }
 
@@ -118,7 +121,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetCategoryGrid($id)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
         $datagrid = $gadget->DataGrid($id);
 
         if (!empty($datagrid)) {

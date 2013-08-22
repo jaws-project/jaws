@@ -10,14 +10,14 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_Model extends Jaws_Gadget_Model
+class Faq_Model_Question extends Jaws_Gadget_Model
 {
     /**
      * Get the list of questions
      *
      * @access  public
      * @param   int     $category   Just questions from this category(optional)
-     * @param   bool    $justactive 
+     * @param   bool    $justactive
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
     function GetQuestions($category = null, $justactive = false)
@@ -92,9 +92,9 @@ class Faq_Model extends Jaws_Gadget_Model
     {
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
-                'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category as category_id:integer',
-                'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
-                'faq.updatetime');
+            'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category as category_id:integer',
+            'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
+            'faq.updatetime');
         $faqTable->join('faq_category', 'faq.category', 'faq_category.id', 'left');
 
         if (is_numeric($id)) {
@@ -109,46 +109,5 @@ class Faq_Model extends Jaws_Gadget_Model
         }
 
         return $row;
-    }
-
-    /**
-     * Get categories
-     *
-     * @access  public
-     * @return  mixed    An array with the categories ordered by position or Jaws_Error on failure
-     */
-    function GetCategories()
-    {
-        $table = Jaws_ORM::getInstance()->table('faq_category');
-        $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
-        $result = $table->orderBy('category_position asc')->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get category
-     * 
-     * @access  public
-     * @param   int     $id     Category ID
-     * @return  mixed   Array an array with the category info or Jaws_Error on failure
-     */
-    function GetCategory($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('faq_category');
-        $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
-        $row = $table->where('id', $id)->fetchRow();
-        if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
-        }
-
-        if (isset($row['id'])) {
-            return $row;
-        }
-
-        return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_DOES_NOT_EXISTS'));
     }
 }

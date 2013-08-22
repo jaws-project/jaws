@@ -12,13 +12,17 @@ $actions = array();
 
 $actions['View'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['ViewQuestion'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['ViewCategory'] = array(
     'normal' => true,
+    'file' => 'Category',
 );
 $actions['ListCategories'] = array(
     'layout' => true,
+    'file' => 'Category',
 );

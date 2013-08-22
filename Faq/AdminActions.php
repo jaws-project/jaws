@@ -10,28 +10,31 @@
  */
 $actions = array();
 
-/* Admin actions */
-$actions['Admin'] = array(
-    'normal' => true,
-);
 $actions['ManageQuestions'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['NewQuestion'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['EditQuestion'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['UpdateQuestion'] = array(
     'normal' => true,
+    'file' => 'Question',
 );
 $actions['NewCategory'] = array(
     'normal' => true,
+    'file' => 'Category',
 );
 $actions['EditCategory'] = array(
     'normal' => true,
+    'file' => 'Category',
 );
 $actions['UpdateCategory'] = array(
     'normal' => true,
+    'file' => 'Category',
 );
