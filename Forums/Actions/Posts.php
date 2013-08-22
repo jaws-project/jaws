@@ -475,7 +475,7 @@ class Forums_Actions_Posts extends Forums_HTML
 
         // chack captcha only in new post action
         if (empty($rqst['pid'])) {
-            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
             $htmlPolicy->loadCaptcha($tpl, 'post');
         }
 
@@ -517,7 +517,7 @@ class Forums_Actions_Posts extends Forums_HTML
 
         // chack captcha only in new post action
         if (empty($post['pid'])) {
-            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdatePost');
