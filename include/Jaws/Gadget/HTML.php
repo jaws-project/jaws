@@ -193,51 +193,17 @@ class Jaws_Gadget_HTML
     }
 
     /**
-     * Set the action to execute
-     *
-     * @access  public
-     * @param   string  $value Gadget's Action
-     */
-    function SetAction($value)
-    {
-        $this->_Action = $value;
-    }
-
-    /**
-     * Get the gadget's action
-     *
-     * @access  public
-     * @return  string  Returns the gadget's action
-     */
-    function GetAction()
-    {
-        return $this->_Action;
-    }
-
-    /**
      * Execute the action
      *
      * @access  public
      */
-    function Execute()
+    function Execute($action)
     {
-        // is an empty action?
-        if (empty($this->_Action) || $this->_Action == 'DefaultAction') {
-            $this->_Action = $this->gadget->registry->fetch('default_action');
-            if (empty($this->_Action)) {
-                $this->_Action = 'DefaultAction';
-            }
-        }
-
-        // Cut of the param part since we only want to validate the action name
-        if ($pos = strpos($this->_Action, '(')) {
-            $action = substr($this->_Action, 0, $pos);
-        } else {
-            $action = $this->_Action;
-        }
-
         if (!$this->IsValidAction($action)) {
-            Jaws_Error::Fatal('Invalid action: '. $action);
+            return Jaws_Error::raiseError(
+                'Invalid action '.$this->gadget->name.'::'.$action,
+                __FUNCTION__
+            );
         }
 
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
@@ -247,20 +213,14 @@ class Jaws_Gadget_HTML
                 JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
                 $file
             );
+            if (Jaws_Error::isError($objAction)) {
+                return $objAction;
+            }
+
+            return $objAction->$action();
         }
 
-        $action2execute = $this->_Action;
-        if (strpos($action2execute, '(')) {
-            // FIXME: This is a hack to support actions with params,
-            //        currently only supports 1 parameter.
-            $regexp = "/([A-Za-z]+)\((.*)\)/sm";
-            preg_match ($regexp, $action2execute, $matches, PREG_OFFSET_CAPTURE);
-            $method = $matches[1][0];
-            $params = $matches[2][0];
-            return call_user_func(array($this, $method), $params);
-        }
-
-        return empty($file)? $this->$action2execute() : $objAction->$action2execute();
+        return $this->$action();
     }
 
     /**
