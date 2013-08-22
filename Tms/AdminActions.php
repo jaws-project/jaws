@@ -12,10 +12,13 @@ $actions = array();
 
 $actions['Themes'] = array(
     'normal' => true,
+    'file' => 'Themes'
 );
 $actions['UploadTheme'] = array(
     'normal' => true,
+    'file' => 'Themes'
 );
 $actions['DownloadTheme'] = array(
     'standalone' => true,
+    'file' => 'Themes'
 );

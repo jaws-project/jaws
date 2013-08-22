@@ -20,7 +20,6 @@ class Tms_AdminAjax extends Jaws_Gadget_HTML
     function Tms_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -32,8 +31,7 @@ class Tms_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetThemeInfo($theme)
     {
-        $html = $GLOBALS['app']->LoadGadget('Tms', 'AdminHTML');
-        return $html->GetThemeInfo($theme);
+        $gadget = $GLOBALS['app']->LoadGadget('Tms', 'AdminHTML', 'Themes');
+        return $gadget->GetThemeInfo($theme);
     }
-
 }
