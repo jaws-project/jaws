@@ -141,7 +141,7 @@ class Jaws
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
         $this->loadObject('Jaws_URLMapping', 'Map');
-        $this->Session =& Jaws_Session::factory();
+        $this->Session = Jaws_Session::factory();
     }
 
     /**
