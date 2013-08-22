@@ -1,8 +1,8 @@
 <?php
 /**
- * Weather Layout HTML file (for layout purposes)
+ * Weather Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Weather
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
@@ -10,8 +10,9 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_LayoutHTML extends Jaws_Gadget_HTML
+class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
 {
+
     /**
      * Get RegionWeather action params
      *
@@ -21,7 +22,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
     function RegionWeatherLayoutParams()
     {
         $result = array();
-        $wModel = $GLOBALS['app']->LoadGadget('Weather', 'Model');
+        $wModel = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
         $regions = $wModel->GetRegions();
         if (!Jaws_Error::isError($regions)) {
             $pregions = array();
@@ -46,9 +47,17 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
      * @param   bool     $forecast   Whether displays forecast or not
      * @return  string   XHTML content
      */
-    function RegionWeather($region, $forecast = false)
+    function RegionWeather($region = null, $forecast = false)
     {
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model');
+        $request =& Jaws_Request::getInstance();
+        $region_get = $request->get('id', 'get');
+        $region_get = Jaws_XSS::defilter($region_get, true);
+        if(!empty($region_get)) {
+            $region = $region_get;
+            $forecast = true;
+        }
+
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
         $region = $model->GetRegion($region);
         if (Jaws_Error::IsError($region) || empty($region)) {
             return false;
@@ -71,11 +80,11 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
         $metric = $this->gadget->registry->fetch('unit') == 'metric';
         $wService = new Underground_Weather(
-                                $this->gadget->registry->fetch('api_key'),
-                                $metric,
-                                JAWS_DATA . 'weather',
-                                $this->gadget->registry->fetch('update_period'),
-                                $options);
+            $this->gadget->registry->fetch('api_key'),
+            $metric,
+            JAWS_DATA . 'weather',
+            $this->gadget->registry->fetch('update_period'),
+            $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
             $tpl->SetVariable('title', _t('WEATHER_TITLE', $region['title']));
@@ -91,7 +100,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('url',  $url);
             $tpl->SetVariable('temp', $rWeather['temp']);
             $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                                               _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+                _t('WEATHER_UNIT_IMPERIAL_TEMP'));
             $tpl->SetVariable('alt',  $rWeather['icon']);
             $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$rWeather['icon']}.png");
             $tpl->ParseBlock('weather/current');
@@ -105,15 +114,15 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
                 $dFormat = $this->gadget->registry->fetch('date_format');
                 foreach ($rWeather['forecast'] as $dayIndex => $fWeather) {
                     $tpl->SetBlock('weather/forecast/item');
-                    //86400 = 3600 * 24 
+                    //86400 = 3600 * 24
                     $tpl->SetVariable('forecast_date',
-                                      $objDate->Format(time() + $dayIndex * 86400, $dFormat));
+                        $objDate->Format(time() + $dayIndex * 86400, $dFormat));
                     $tpl->SetVariable('lbl_low',   _t('WEATHER_LOW'));
                     $tpl->SetVariable('low_temp',  $fWeather['low']);
                     $tpl->SetVariable('lbl_high',  _t('WEATHER_HIGH'));
                     $tpl->SetVariable('high_temp', $fWeather['high']);
                     $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                                                       _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+                        _t('WEATHER_UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $fWeather['icon']);
                     $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$fWeather['icon']}.png");
                     $tpl->ParseBlock('weather/forecast/item');
@@ -140,7 +149,7 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock('weather');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
 
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
         $regions = $model->GetRegions();
         if (!Jaws_Error::isError($regions)) {
             $options = array();
@@ -157,25 +166,25 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
             require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
             $metric = $this->gadget->registry->fetch('unit') == 'metric';
             $wService = new Underground_Weather(
-                                            $this->gadget->registry->fetch('api_key'),
-                                            $metric,
-                                            JAWS_DATA . 'weather',
-                                            $this->gadget->registry->fetch('update_period'),
-                                            $options);
+                $this->gadget->registry->fetch('api_key'),
+                $metric,
+                JAWS_DATA . 'weather',
+                $this->gadget->registry->fetch('update_period'),
+                $options);
 
             foreach ($regions as $region) {
                 $rWeather = $wService->getWeather($region['latitude'],
-                                                  $region['longitude']);
+                    $region['longitude']);
                 if (!PEAR::isError($rWeather)) {
                     $tpl->SetBlock('weather/region');
                     $tpl->SetVariable('region', $region['title']);
                     $rid = empty($region['fast_url'])? $region['id'] : $region['fast_url'];
                     $tpl->SetVariable('url',  $GLOBALS['app']->Map->GetURLFor('Weather',
-                                                                              'RegionWeather',
-                                                                              array('id' => $rid)));
+                        'RegionWeather',
+                        array('id' => $rid)));
                     $tpl->SetVariable('temp', $rWeather['temp']);
                     $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                                                       _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+                        _t('WEATHER_UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $rWeather['icon']);
                     $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$rWeather['icon']}.png");
                     $tpl->ParseBlock('weather/region');
@@ -186,5 +195,4 @@ class Weather_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('weather');
         return $tpl->Get();
     }
-
 }

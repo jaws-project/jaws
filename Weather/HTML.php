@@ -20,35 +20,7 @@ class Weather_HTML extends Jaws_Gadget_HTML
      */
     function DefaultAction()
     {
-        return $this->AllRegionsWeather();
+        $HTML = $GLOBALS['app']->LoadGadget('Weather', 'HTML', 'RegionWeather');
+        return $HTML->AllRegionsWeather();
     }
-
-    /**
-     * Displays the weather for all regions
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function AllRegionsWeather()
-    {
-        $wLayout = $GLOBALS['app']->LoadGadget('Weather', 'LayoutHTML');
-        return $wLayout->AllRegionsWeather();
-    }
-
-    /**
-     * Displays the weather of a region
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function RegionWeather()
-    {
-        $wLayout = $GLOBALS['app']->LoadGadget('Weather', 'LayoutHTML');
-        $request =& Jaws_Request::getInstance();
-        $region = $request->get('id', 'get');
-        $region = Jaws_XSS::defilter($region, true);
-
-        return $wLayout->RegionWeather($region, true);
-    }
-
 }

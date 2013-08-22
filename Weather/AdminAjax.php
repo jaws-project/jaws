@@ -22,7 +22,6 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function Weather_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -34,7 +33,8 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetRegion($id)
     {
-        $region = $this->_Model->GetRegion($id);
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $region = $model->GetRegion($id);
         if (Jaws_Error::IsError($region)) {
             return false;
         }
@@ -56,7 +56,8 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function InsertRegion($title, $fast_url, $latitude, $longitude, $published)
     {
         $this->gadget->CheckPermission('ManageRegions');
-        $this->_Model->InsertRegion($title, $fast_url, $latitude, $longitude, $published);
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model->InsertRegion($title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -75,7 +76,8 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published)
     {
         $this->gadget->CheckPermission('ManageRegions');
-        $this->_Model->UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published);
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model->UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -89,7 +91,8 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function DeleteRegion($id)
     {
         $this->gadget->CheckPermission('ManageRegions');
-        $this->_Model->DeleteRegion($id);
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model->DeleteRegion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -106,7 +109,8 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties($unit, $update_period, $date_format, $api_key)
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $this->_Model->UpdateProperties($unit, $update_period, $date_format, $api_key);
+        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Properties');
+        $model->UpdateProperties($unit, $update_period, $date_format, $api_key);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -120,7 +124,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($offset, $grid)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Weather', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Weather', 'AdminHTML', 'Regions');
         if (!is_numeric($offset)) {
             $offset = null;
         }

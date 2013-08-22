@@ -12,10 +12,13 @@ $actions = array();
 
 $actions['Regions'] = array(
     'normal' => true,
+    'file' => 'Regions',
 );
 $actions['Properties'] = array(
     'normal' => true,
+    'file' => 'Properties',
 );
 $actions['GetGoogleMapImage'] = array(
     'standalone' => true,
+    'file' => 'GoogleMap',
 );

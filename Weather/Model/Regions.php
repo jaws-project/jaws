@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Model extends Jaws_Gadget_Model
+class Weather_Model_Regions extends Jaws_Gadget_Model
 {
     /**
      * Gets associated data for a region
@@ -24,7 +24,7 @@ class Weather_Model extends Jaws_Gadget_Model
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
-                              'published:boolean');
+            'published:boolean');
 
         if (is_numeric($id)) {
             $weatherTable->where('id', $id);
@@ -66,5 +66,4 @@ class Weather_Model extends Jaws_Gadget_Model
 
         return $result;
     }
-
 }
