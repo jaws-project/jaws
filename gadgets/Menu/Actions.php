@@ -13,9 +13,10 @@ $actions = array();
 
 $actions['Menu'] = array(
     'layout' => true,
-    'file'   => 'Menu',
-    'parametric' => true,
+    'file' => 'Menu',
+    'parametric' => true
 );
 $actions['LoadImage'] = array(
     'standalone' => true,
+    'file' => 'Menu'
 );

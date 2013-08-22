@@ -10,9 +10,15 @@
  */
 $actions = array();
 
+$actions['Admin'] = array(
+    'normal' => true,
+    'file' => 'Menu'
+);
 $actions['UploadImage'] = array(
     'standalone' => true,
+    'file' => 'Menu'
 );
 $actions['LoadImage'] = array(
     'standalone' => true,
+    'file' => 'Menu'
 );

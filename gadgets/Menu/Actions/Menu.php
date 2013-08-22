@@ -152,4 +152,30 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     * Returns menu image as stream data
+     *
+     * @access  public
+     * @return  bool    True on successful, False otherwise
+     */
+    function LoadImage()
+    {
+        $request =& Jaws_Request::getInstance();
+        $id = (int)$request->get('id', 'get');
+        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
+        $image = $model->GetMenuImage($id);
+        if (!Jaws_Error::IsError($image)) {
+            require_once JAWS_PATH . 'include/Jaws/Image.php';
+            $objImage = Jaws_Image::factory();
+            if (!Jaws_Error::IsError($objImage)) {
+                $objImage->setData($image, true);
+                $res = $objImage->display('', null, 315360000);// cached for 10 years!
+                if (!Jaws_Error::IsError($res)) {
+                    return $res;
+                }
+            }
+        }
+
+        return false;
+    }
 }
