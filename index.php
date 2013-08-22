@@ -55,14 +55,14 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
                 Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
             }
 
-            if ($GLOBALS['app']->Session->GetPermission($ReqGadget, 'default')) {
-                $ReqAction = empty($ReqAction)? 'DefaultAction' : $ReqAction;
-                $objGadget->SetAction($ReqAction);
-                $ReqAction = $objGadget->GetAction();
-                $GLOBALS['app']->SetMainRequest($IsIndex, $ReqGadget, $ReqAction);
-            } else {
+            if (!$GLOBALS['app']->Session->GetPermission($ReqGadget, 'default')) {
                 $ReqError = '403';
             }
+
+            if (empty($ReqAction)) {
+                $ReqAction = $objGadget->gadget->default_action;
+            }
+            $GLOBALS['app']->SetMainRequest($IsIndex, $ReqGadget, $ReqAction);
         } else {
             $ReqError = '404';
         }
@@ -83,10 +83,9 @@ $GLOBALS['app']->RunAutoload();
 if (empty($ReqError)) {
     $ReqResult = '';
     if (!empty($objGadget)) {
-        $ReqResult = $objGadget->Execute();
+        $ReqResult = $objGadget->Execute($ReqAction);
         if (Jaws_Error::isError($ReqResult)) {
             $ReqResult = $ReqResult->GetMessage();
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$ReqGadget.'::'.$ReqAction.','.$ReqResult);
         }
         // we must check type of action after execute, because gadget can change it at runtime
         $IsReqActionStandAlone = $objGadget->IsStandAlone($ReqAction);
@@ -97,7 +96,7 @@ if (empty($ReqError)) {
 }
 
 if (!$IsReqActionStandAlone) {
-    $GLOBALS['app']->Layout->Populate($objGadget, $IsIndex, $ReqResult, $AccessToWebsiteDenied);
+    $GLOBALS['app']->Layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $GLOBALS['app']->Layout->Get();
 }
 
