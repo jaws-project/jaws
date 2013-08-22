@@ -15,10 +15,18 @@ class Jaws_URLMapping
     /**
      * Model that will be used to get data
      *
-     * @var    UrlMapperModel
+     * @var    UrlMapper Maps Model
      * @access  private
      */
-    var $_Model;
+    var $_MapsModel;
+
+    /**
+     * Model that will be used to get data
+     *
+     * @var    UrlMapper Aliases Model
+     * @access  private
+     */
+    var $_AliasesModel;
 
     var $_map = array();
     var $_delimiter = '@';
@@ -42,11 +50,14 @@ class Jaws_URLMapping
             Jaws_Error::Fatal($urlMapper->getMessage());
         }
 
-        $this->_Model = $urlMapper->load('Model')->load('Model');
-        if (Jaws_Error::isError($this->_Model)) {
-            Jaws_Error::Fatal($this->_Model->getMessage());
+        $this->_MapsModel = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Maps');
+        if (Jaws_Error::isError($this->_MapsModel)) {
+            Jaws_Error::Fatal($this->_MapsModel->getMessage());
         }
-
+        $this->_AliasesModel = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Aliases');
+        if (Jaws_Error::isError($this->_AliasesModel)) {
+            Jaws_Error::Fatal($this->_AliasesModel->getMessage());
+        }
         // fetch all registry keys
         $regKeys = $urlMapper->registry->fetchAll();
         $regKeys = array_column($regKeys, 'key_value', 'key_name');
@@ -76,7 +87,7 @@ class Jaws_URLMapping
         }
 
         //Moment.. first check if we are running on aliases_mode
-        if ($this->_use_aliases && $realURI = $this->_Model->GetAliasPath($this->_request_uri)) {
+        if ($this->_use_aliases && $realURI = $this->_AliasesModel->GetAliasPath($this->_request_uri)) {
             $this->_request_uri = str_ireplace(BASE_SCRIPT, '', $realURI);
         }
 
@@ -90,7 +101,7 @@ class Jaws_URLMapping
 
         // load maps
         if ($this->_enabled) {
-            $maps = $this->_Model->GetMaps();
+            $maps = $this->_MapsModel->GetMaps();
             if (Jaws_Error::IsError($maps)) {
                 return false;
             }
