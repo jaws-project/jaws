@@ -13,26 +13,26 @@
 class Jaws
 {
     /**
-     * Is index page
+     * The processed request is in index page
      *
      * @var     bool
-     * @access  private
+     * @access  protected
      */
-    var $_IsIndex = false;
+    var $requestedInIndex = false;
 
     /**
-     * The main request's gadget
+     * The requested gadget
      * @var     string
      * @access  protected
      */
-    var $_RequestGadget = '';
+    var $requestedGadget = '';
 
     /**
-     * The main request's action
+     * The requested action
      * @var     string
      * @access  protected
      */
-    var $_RequestAction = '';
+    var $requestedAction = '';
 
     /**
      * Default preferences
@@ -649,22 +649,9 @@ class Jaws
      */
     function SetMainRequest($index, $gadget, $action)
     {
-        $this->_IsIndex       = $index;
-        $this->_RequestGadget = $gadget;
-        $this->_RequestAction = $action;
-    }
-
-    /**
-     * Get main request properties like gadget and action
-     *
-     * @access  public
-     * @return  array   Main request data array
-     */
-    function GetMainRequest()
-    {
-        return array('index'  => $this->_IsIndex,
-                     'gadget' => $this->_RequestGadget,
-                     'action' => $this->_RequestAction);
+        $this->requestedInIndex = $index;
+        $this->requestedGadget  = $gadget;
+        $this->requestedAction  = $action;
     }
 
     /**
@@ -1111,6 +1098,18 @@ class Jaws
         }
         $time = $time - $gmt_offset;
         return empty($format)? $time : date($format, $time);
+    }
+
+    /**
+     * Overloading magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  mixed   Property value otherwise Null
+     */
+    public function __get($property)
+    {
+        return isset($this->$property)? $this->$property : null;
     }
 
 }
