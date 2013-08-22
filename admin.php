@@ -28,16 +28,11 @@ require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $GLOBALS['app']->loadClass('Jaws_ACL', 'ACL');
 
 $request =& Jaws_Request::getInstance();
-$gadget  = $request->get('gadget', 'post');
-if (is_null($gadget)) {
-    $gadget = $request->get('gadget', 'get');
-    $gadget = !is_null($gadget) ? $gadget : '';
-}
-
-$action = $request->get('action', 'post');
-if (is_null($action)) {
-    $action = $request->get('action', 'get');
-    $action = !is_null($action) ? $action : '';
+$ReqGadget = Jaws_Gadget::filter($request->get('gadget', array('post', 'get')));
+$ReqAction = Jaws_Gadget_HTML::filter($request->get('action', array('post', 'get')));
+if (empty($ReqGadget)) {
+    $ReqGadget = 'ControlPanel';
+    $ReqAction = '';
 }
 
 $httpAuthEnabled = $GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true';
@@ -50,7 +45,7 @@ if ($httpAuthEnabled) {
 if (!$GLOBALS['app']->Session->Logged())
 {
     $loginMsg = '';
-    if (($gadget == 'ControlPanel' && $action == 'Login') ||
+    if (($ReqGadget == 'ControlPanel' && $ReqAction == 'Login') ||
         ($httpAuthEnabled && isset($_SERVER['PHP_AUTH_USER'])))
     {
         if ($httpAuthEnabled) {
@@ -122,54 +117,42 @@ if (!is_null($request->get('checksess', 'get'))) {
 // Can use Control Panel?
 $GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
 
-// Check for requested gadget
-if (isset($gadget) && !empty($gadget)) {
-    $ReqGadget = ucfirst($gadget);
-    // Convert first letter to ucase to backwards compability
-    if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
-        $ReqAction = !empty($action) ? $action : 'Admin';
-    } else {
-        Jaws_Error::Fatal('Invalid requested gadget');
+if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
+    $GLOBALS['app']->Session->CheckPermission($ReqGadget, 'default_admin');
+    $goGadget = $GLOBALS['app']->LoadGadget($ReqGadget, 'AdminHTML');
+    if (Jaws_Error::IsError($goGadget)) {
+        Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
     }
-} else {
-    $ReqGadget = 'ControlPanel';
-    $ReqAction = 'DefaultAction';
-}
 
-// Check for permission tu action to execute
-//FIXME: I'm unsure about treat an action as a task, it could be useful
-//   but I prefer not to do it. -ion
-//$GLOBALS['app']->Session->CheckPermission($ReqGadget, $ReqAction);
-$GLOBALS['app']->Session->CheckPermission($ReqGadget, 'default_admin');
+    if (empty($ReqAction)) {
+        $ReqAction = $goGadget->gadget->default_admin_action;
+    }
+    $GLOBALS['app']->SetMainRequest(false, $ReqGadget, $ReqAction);
+    $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
+    if (!$IsReqActionStandAlone) {
+        // Init layout
+        $GLOBALS['app']->InstanceLayout();
+    }
 
-$goGadget = $GLOBALS['app']->LoadGadget($ReqGadget, 'AdminHTML');
-if (Jaws_Error::IsError($goGadget)) {
-    Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
-}
+    $ReqResult = $goGadget->Execute($ReqAction);
+    if (Jaws_Error::IsError($ReqResult)) {
+        Jaws_Error::Fatal($ReqResult->getMessage());
+    }
 
-$goGadget->SetAction($ReqAction);
-$ReqAction = $goGadget->GetAction();
-$GLOBALS['app']->SetMainRequest(false, $ReqGadget, $ReqAction);
-$IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
-
-// If requested action is `stand alone' just print it
-if ($IsReqActionStandAlone) {
-    $ReqResult = $goGadget->Execute();
-} else {
-    // Init layout
-    $GLOBALS['app']->InstanceLayout();
-
-    // If requested action
-    if ($goGadget->IsAdmin($ReqAction)) {
+    if (!$IsReqActionStandAlone) {
+        // Load ControlPanel header
         $GLOBALS['app']->Layout->LoadControlPanelHead();
-        $ReqResult = $GLOBALS['app']->Layout->PutGadget($ReqGadget, $ReqAction);
-        $GLOBALS['app']->Layout->Populate($goGadget, true, $ReqResult);
-    } else {
-        Jaws_Error::Fatal("Invalid operation: You can't execute requested action");
+        $GLOBALS['app']->Layout->Populate($ReqResult);
+        $GLOBALS['app']->Layout->AddHeadLink(
+            'gadgets/'.$ReqGadget.'/resources/style.css',
+            'stylesheet',
+            'text/css'
+        );
+        $GLOBALS['app']->Layout->LoadControlPanel($ReqGadget);
+        $ReqResult = $GLOBALS['app']->Layout->Get();
     }
-
-    $GLOBALS['app']->Layout->LoadControlPanel($ReqGadget);
-    $ReqResult = $GLOBALS['app']->Layout->Get();
+} else {
+    Jaws_Error::Fatal('Invalid requested gadget');
 }
 
 // Send content to client
