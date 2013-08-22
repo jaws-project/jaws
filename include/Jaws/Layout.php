@@ -61,22 +61,6 @@ class Jaws_Layout
     var $_HeadOther = array();
 
     /**
-     * Requested gadget
-     *
-     * @access  private
-     * @var     string
-     */
-    var $_RequestedGadget;
-
-    /**
-     * Requested gadget's action
-     *
-     * @access  private
-     * @var     string
-     */
-    var $_RequestedAction;
-
-    /**
      * Current section
      *
      * @access  private
@@ -518,8 +502,6 @@ class Jaws_Layout
     function Populate(&$goGadget, $is_index = false, $req_result = '', $onlyRequestedAction = false)
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
-        $this->_RequestedGadget = empty($goGadget)? '': $goGadget->gadget->name;
-        $this->_RequestedAction = empty($goGadget)? '': $goGadget->GetAction();
         $items = $this->GetLayoutItems();
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
@@ -543,10 +525,10 @@ class Jaws_Layout
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
                     $content = $req_result;
                 } elseif (!$onlyRequestedAction) {
-                    if ($this->IsDisplayable($this->_RequestedGadget,
-                                             $this->_RequestedAction,
+                    if ($this->IsDisplayable($GLOBALS['app']->requestedGadget,
+                                             $GLOBALS['app']->requestedAction,
                                              $item['display_when'],
-                                             $is_index))
+                                             $GLOBALS['app']->requestedInIndex))
                     {
                         if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
                             $content = $this->PutGadget($item['gadget'],
@@ -831,22 +813,6 @@ class Jaws_Layout
     function addHeadOther($text)
     {
         $this->_HeadOther[] = $text;
-    }
-
-    /**
-     * Get Requested gadget
-     */
-    function GetRequestedGadget()
-    {
-        return $this->_RequestedGadget;
-    }
-
-    /**
-     * Get Requested action 
-     */
-    function GetRequestedAction()
-    {
-        return $this->_RequestedAction;
     }
 
 }
