@@ -13,18 +13,6 @@
 class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Calls default admin action
-     *
-     * @access  public
-     * @return  string  Template content
-     */
-    function Admin()
-    {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminHTML', 'Maps');
-        return $gadgetHTML->Maps();
-    }
-
-    /**
      * Builds the menubar
      *
      * @access  public
