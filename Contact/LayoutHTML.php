@@ -90,7 +90,7 @@ class Contact_LayoutHTML extends Jaws_Gadget_HTML
         }
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'contact');
 
         //company

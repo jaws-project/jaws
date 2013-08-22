@@ -78,7 +78,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_HTML
             Jaws_Header::Referrer();
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Contact');
