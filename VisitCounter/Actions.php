@@ -14,16 +14,21 @@ $actions = array();
 /* Layout actions */
 $actions['DisplayOnline'] = array(
     'layout' => true,
+    'file' => 'VisitCounter'
 );
 $actions['DisplayToday'] = array(
     'layout' => true,
+    'file' => 'VisitCounter'
 );
 $actions['DisplayYesterday'] = array(
     'layout' => true,
+    'file' => 'VisitCounter'
 );
 $actions['DisplayTotal'] = array(
     'layout' => true,
+    'file' => 'VisitCounter'
 );
 $actions['Display'] = array(
     'layout' => true,
+    'file' => 'VisitCounter'
 );

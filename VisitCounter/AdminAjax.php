@@ -33,7 +33,8 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
     function CleanEntries()
     {
         $this->gadget->CheckPermission('ResetCounter');
-        $this->_Model->ClearVisitors();
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Visitors');
+        $model->ClearVisitors();
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -46,8 +47,9 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
     function ResetCounter()
     {
         $this->gadget->CheckPermission('ResetCounter');
-        $this->_Model->SetStartDate(date('Y-m-d H:i:s'));
-        $this->_Model->ResetCounter();
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Visitors');
+        $model->SetStartDate(date('Y-m-d H:i:s'));
+        $model->ResetCounter();
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -60,7 +62,8 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
     function GetStartDate()
     {
         $date  = $GLOBALS['app']->loadDate();
-        $start = $this->_Model->GetStartDate();
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
+        $start = $model->GetStartDate();
         return $date->Format($start);
     }
 
@@ -81,7 +84,8 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $custom_text = $request->get(4, 'post', false);
-        $this->_Model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Properties');
+        $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -94,11 +98,10 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($offset)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminHTML');
         if (!is_numeric($offset)) {
             $offset = 0;
         }
-
+        $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminHTML', 'VisitCounter');
         return $gadget->GetVisits($offset);
     }
 

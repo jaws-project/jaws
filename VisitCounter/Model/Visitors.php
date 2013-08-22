@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_Model extends Jaws_Gadget_Model
+class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
 {
     /**
      * Returns the hostname of an IP address using a reverse lookup

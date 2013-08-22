@@ -10,94 +10,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
+class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_HTML
 {
-    /**
-     * Builds the menubar
-     *
-     * @access  private
-     * @param   string  $selected   Selected menu item
-     * @return  string  XHTML menubar
-     */
-    function MenuBar($selected)
-    {
-        $actions = array('Admin', 'ResetCounter', 'CleanEntries');
-
-        if (!in_array($selected, $actions)) {
-            $selected = 'Admin';
-        }
-
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
-        $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Admin', _t('VISITCOUNTER_ADMIN_ACTION'), '');
-
-        if ($this->gadget->GetPermission('ResetCounter')) {
-            $menubar->AddOption('ResetCounter', _t('VISITCOUNTER_RESET_COUNTER_ACTION'),
-                                "javascript: if (confirm('"._t("VISITCOUNTER_RESET_COUNTER_CONFIRM")."')) ".
-                                "resetCounter(); return false;");
-        }
-
-        if ($this->gadget->GetPermission('CleanEntries')) {
-            $menubar->AddOption('CleanEntries', _t('VISITCOUNTER_CLEAN_COUNTER'),
-                                "javascript: if (confirm('"._t("VISITCOUNTER_CLEAN_COUNTER_CONFIRM")."')) ".
-                                "cleanEntries(); return false;");
-        }
-        $menubar->Activate($selected);
-
-        return $menubar->Get();
-    }
-
-    /**
-     * Gets list of visits
-     *
-     * @access  public
-     * @param   int     $offset  Data offset
-     * @return  array   List of visits
-     */
-    function GetVisits($offset = 0)
-    {
-        $model  = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
-        $visits = $model->GetVisitors($offset);
-        if (Jaws_Error::IsError($visits)) {
-            return array();
-        }
-
-        $newData = array();
-        $date = $GLOBALS['app']->loadDate();
-        foreach($visits as $visit) {
-            $visitData = array();
-            $visitData['ip']     = $visit['ip'];
-            $visitData['date']   = $date->Format($visit['visit_time'], 'Y-m-d H:i:s');
-            $visitData['visits'] = $visit['visits'];
-
-            $newData[] = $visitData;
-        }
-        return $newData;
-
-    }
-
-    /**
-     * Builds the datagrid
-     *
-     * @access  public
-     * @return  string  XHTML datagrid
-     */
-    function DataGrid()
-    {
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
-        $total = $model->TotalOfData('ipvisitor', 'ip');
-
-        $datagrid =& Piwi::CreateWidget('DataGrid', array());
-        $datagrid->TotalRows($total);
-        $datagrid->pageBy(15);
-        $datagrid->SetID('visitcounter_datagrid');
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_IP')));
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_DATE')));
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_VISITS')));
-
-        return $datagrid->Get();
-    }
-
     /**
      * Builds the administration UI
      *
@@ -108,7 +22,7 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
         $num_online       = $model->GetOnlineVisitors();
         $uniqueToday      = $model->GetTodayVisitors('unique');
         $impressionsToday = $model->GetTodayVisitors('impressions');
@@ -249,4 +163,89 @@ class VisitCounter_AdminHTML extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     * Builds the menubar
+     *
+     * @access  private
+     * @param   string  $selected   Selected menu item
+     * @return  string  XHTML menubar
+     */
+    function MenuBar($selected)
+    {
+        $actions = array('Admin', 'ResetCounter', 'CleanEntries');
+
+        if (!in_array($selected, $actions)) {
+            $selected = 'Admin';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+        $menubar->AddOption('Admin', _t('VISITCOUNTER_ADMIN_ACTION'), '');
+
+        if ($this->gadget->GetPermission('ResetCounter')) {
+            $menubar->AddOption('ResetCounter', _t('VISITCOUNTER_RESET_COUNTER_ACTION'),
+                                "javascript: if (confirm('"._t("VISITCOUNTER_RESET_COUNTER_CONFIRM")."')) ".
+                                "resetCounter(); return false;");
+        }
+
+        if ($this->gadget->GetPermission('CleanEntries')) {
+            $menubar->AddOption('CleanEntries', _t('VISITCOUNTER_CLEAN_COUNTER'),
+                                "javascript: if (confirm('"._t("VISITCOUNTER_CLEAN_COUNTER_CONFIRM")."')) ".
+                                "cleanEntries(); return false;");
+        }
+        $menubar->Activate($selected);
+
+        return $menubar->Get();
+    }
+
+    /**
+     * Builds the datagrid
+     *
+     * @access  public
+     * @return  string  XHTML datagrid
+     */
+    function DataGrid()
+    {
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
+        $total = $model->TotalOfData('ipvisitor', 'ip');
+
+        $datagrid =& Piwi::CreateWidget('DataGrid', array());
+        $datagrid->TotalRows($total);
+        $datagrid->pageBy(15);
+        $datagrid->SetID('visitcounter_datagrid');
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_IP')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_DATE')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('VISITCOUNTER_VISITS')));
+
+        return $datagrid->Get();
+    }
+
+    /**
+     * Gets list of visits
+     *
+     * @access  public
+     * @param   int     $offset  Data offset
+     * @return  array   List of visits
+     */
+    function GetVisits($offset = 0)
+    {
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Visitors');
+        $visits = $model->GetVisitors($offset);
+        if (Jaws_Error::IsError($visits)) {
+            return array();
+        }
+
+        $newData = array();
+        $date = $GLOBALS['app']->loadDate();
+        foreach($visits as $visit) {
+            $visitData = array();
+            $visitData['ip']     = $visit['ip'];
+            $visitData['date']   = $date->Format($visit['visit_time'], 'Y-m-d H:i:s');
+            $visitData['visits'] = $visit['visits'];
+
+            $newData[] = $visitData;
+        }
+        return $newData;
+
+    }
 }

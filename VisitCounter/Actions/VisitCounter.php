@@ -1,17 +1,28 @@
 <?php
 /**
- * VisitCounter Gadget (layout actions in client side)
+ * Visit Counter Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    VisitCounter
  * @author     Jorge A Gallegos <kad@gulags.org.mx>
  * @author     Jon Wood <jon@jellybob.co.uk>
- * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
+class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_HTML
 {
+    /**
+     * Calls Display function if no action is specified
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function DefaultAction()
+    {
+        $layoutGadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'LayoutHTML');
+        return $layoutGadget->Display();
+    }
+
     /**
      * Builds the visits report
      *
@@ -25,9 +36,9 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetBlock("VisiCounter");
         $tpl->SetVariable('title', _t('VISITCOUNTER_VISITORS'));
 
-        $model    = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
-        $theme    = $GLOBALS['app']->GetTheme();
+        $theme = $GLOBALS['app']->GetTheme();
         if (is_dir($theme['path'] . 'VisitCounter/images/')) {
             $counter_image = $theme['url'] . 'VisitCounter/images/';
         } else {
@@ -167,5 +178,4 @@ class VisitCounter_LayoutHTML extends Jaws_Gadget_HTML
     {
         return $this->GetVisitorsFormat(array('total'));
     }
-
 }
