@@ -106,7 +106,7 @@ class Jaws_Captcha
 
         $matched = false;
         $result = $this->fetch($key);
-        if (!Jaws_Error::IsError($result)) {
+        if (!Jaws_Error::IsError($result) && is_string($value)) {
             $matched = !empty($value) && (strtolower($result) === strtolower($value));
         }
 
