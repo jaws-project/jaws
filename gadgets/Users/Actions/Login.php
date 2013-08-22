@@ -28,7 +28,7 @@ class Users_Actions_Login extends Users_HTML
         $post  = $request->get(array('email'), 'post');
         $error = '';
 
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -79,7 +79,7 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
@@ -174,7 +174,7 @@ class Users_Actions_Login extends Users_HTML
         }
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
         // remember
@@ -355,7 +355,7 @@ class Users_Actions_Login extends Users_HTML
         }
 
         // check captcha
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login

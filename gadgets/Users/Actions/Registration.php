@@ -68,7 +68,7 @@ class Users_Actions_Registration extends Users_HTML
             $post['url'] = '';
         }
 
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $result = $resCheck->getMessage();
@@ -181,7 +181,7 @@ class Users_Actions_Registration extends Users_HTML
         $tpl->SetVariable('register', _t('USERS_REGISTER'));
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'register');
 
         if (!empty($response)) {
