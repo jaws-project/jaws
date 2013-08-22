@@ -116,14 +116,20 @@ class Jaws_Gadget
     var $name = '';
 
     /**
-     * Action that gadget will execute
+     * Default front-end action name
      *
      * @var     string
      * @access  protected
-     * @see SetAction()
-     * @see GetAction()
      */
-    var $_Action;
+    var $default_action = 'DefaultAction';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Admin';
 
     /**
      * Store component objects for later use so we aren't running
