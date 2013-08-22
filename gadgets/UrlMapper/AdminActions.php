@@ -10,15 +10,20 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
+$actions['Maps'] = array(
     'normal' => true,
+    'file' => 'Maps',
 );
+
 $actions['Aliases'] = array(
     'normal' => true,
+    'file' => 'Aliases',
 );
 $actions['ErrorMaps'] = array(
     'normal' => true,
+    'file' => 'ErrorMaps',
 );
 $actions['Properties'] = array(
     'normal' => true,
+    'file' => 'Properties',
 );
