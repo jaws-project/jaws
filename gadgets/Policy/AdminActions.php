@@ -12,16 +12,21 @@ $actions = array();
 
 $actions['IPBlocking'] = array(
     'normal' => true,
+    'file' => 'IP',
 );
 $actions['AgentBlocking'] = array(
     'normal' => true,
+    'file' => 'Agent',
 );
 $actions['Encryption'] = array(
     'normal' => true,
+    'file' => 'Encryption',
 );
 $actions['AntiSpam'] = array(
     'normal' => true,
+    'file' => 'AntiSpam',
 );
 $actions['AdvancedPolicies'] = array(
     'normal' => true,
+    'file' => 'AdvancedPolicies',
 );

@@ -28,7 +28,7 @@ class Policy_Autoload
      */
     function BlockIPHook()
     {
-        $model  = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        $model  = $GLOBALS['app']->LoadGadget('Policy', 'Model', 'IP');
         $res    = $model->IsIPBlocked($_SERVER['REMOTE_ADDR']);
         if ($res) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -44,7 +44,7 @@ class Policy_Autoload
      */
     function BlockAgentHook()
     {
-        $model = $GLOBALS['app']->LoadGadget('Policy', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Policy', 'Model', 'Agent');
         $res   = $model->IsAgentBlocked($_SERVER["HTTP_USER_AGENT"]);
         if ($res) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
