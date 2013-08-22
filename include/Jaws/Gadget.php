@@ -483,6 +483,18 @@ class Jaws_Gadget
     }
 
     /**
+     * Filter non validate character
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  string  Filtered gadget name
+     */
+    public static function filter($gadget)
+    {
+        return preg_replace('/[^[:alnum:]_]/', '', @(string)$gadget);
+    }
+
+    /**
      * Get permission on a gadget/task
      *
      * @param   string  $key    ACL key(s) name

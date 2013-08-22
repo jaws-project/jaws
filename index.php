@@ -37,8 +37,8 @@ $request =& Jaws_Request::getInstance();
 // Get forwarded error from webserver
 $ReqError = $request->get('http_error', 'get');
 if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
-    $ReqGadget = $request->get('gadget');
-    $ReqAction = $request->get('action');
+    $ReqGadget = Jaws_Gadget::filter($request->get('gadget'));
+    $ReqAction = Jaws_Gadget_HTML::filter($request->get('action'));
 
     if ($AccessToWebsiteDenied && $ReqGadget !== 'Users') {
         $ReqGadget = 'Users';
