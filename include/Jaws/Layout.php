@@ -499,7 +499,7 @@ class Jaws_Layout
      *
      * @access  public
      */
-    function Populate(&$goGadget, $is_index = false, $req_result = '', $onlyRequestedAction = false)
+    function Populate($req_result = '', $onlyRequestedAction = false)
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
         $items = $this->GetLayoutItems();
@@ -576,41 +576,28 @@ class Jaws_Layout
             return $output;
         }
 
-        if (JAWS_SCRIPT == 'admin') {
-            $this->AddHeadLink(
-                'gadgets/'.$gadget.'/resources/style.css',
-                'stylesheet',
-                'text/css'
-            );
-            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'AdminHTML');
-            if (!Jaws_Error::isError($goGadget)) {
-                $goGadget->SetAction($action);
-                $output = $goGadget->Execute();
-            }
+        if (empty($filename)) {
+            // DEPRECATED: will be removed after all jaws official gadget converted
+            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'LayoutHTML');
         } else {
-            if (empty($filename)) {
-                // DEPRECATED: will be removed after all jaws official gadget converted
-                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'LayoutHTML');
-            } else {
-                $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
-            }
-            if (!Jaws_Error::isError($goGadget)) {
-                if (method_exists($goGadget, $action)) {
-                    if (is_null($params)) {
-                        $output = $goGadget->$action();
-                    } else {
-                        $output = call_user_func_array(array($goGadget, $action), $params);
-                    }
+            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
+        }
+        if (!Jaws_Error::isError($goGadget)) {
+            if (method_exists($goGadget, $action)) {
+                if (is_null($params)) {
+                    $output = $goGadget->$action();
                 } else {
-                    $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");
+                    $output = call_user_func_array(array($goGadget, $action), $params);
                 }
             } else {
-                $GLOBALS['log']->Log(
-                    JAWS_LOG_ERROR,
-                    "$gadget is missing the HTML. Jaws can't execute Layout " .
-                    "actions if the file doesn't exists"
-                );
+                $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");
             }
+        } else {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_ERROR,
+                "$gadget is missing the HTML. Jaws can't execute Layout " .
+                "actions if the file doesn't exists"
+            );
         }
 
         if (Jaws_Error::isError($output)) {
