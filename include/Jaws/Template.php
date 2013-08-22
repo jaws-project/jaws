@@ -75,14 +75,13 @@ class Jaws_Template
         if ($loadGlobalVariables) {
             $theme   = $GLOBALS['app']->GetTheme();
             $brow    = $GLOBALS['app']->GetBrowserFlag();
-            $request = $GLOBALS['app']->GetMainRequest();
 
             $this->globalVariables['theme_url']  = $theme['url'];
             $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
-            $this->globalVariables['jaws_index'] = $request['index']? 'jaws_index' : '';
+            $this->globalVariables['jaws_index'] = $GLOBALS['app']->requestedInIndex? 'jaws_index' : '';
             $this->globalVariables['.browser']   = empty($brow)? '' : '.'.$brow;
-            $this->globalVariables['requested_gadget'] = strtolower($request['gadget']);
-            $this->globalVariables['requested_action'] = $request['action'];
+            $this->globalVariables['requested_gadget'] = strtolower($GLOBALS['app']->requestedGadget);
+            $this->globalVariables['requested_action'] = $GLOBALS['app']->requestedAction;
         }
 
     }
