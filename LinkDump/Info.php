@@ -17,6 +17,13 @@ class LinkDump_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.4.4';
+    var $version = '0.4.6';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'ShowCategories';
 }

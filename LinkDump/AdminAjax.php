@@ -32,7 +32,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Groups');
         return $gadget->GetGroupUI();
     }
 
@@ -44,7 +44,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLinkUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Links');
         return $gadget->GetLinkUI();
     }
 
@@ -57,7 +57,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLink($id)
     {
-        $link = $this->_Model->GetLink($id);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Links');
+        $link = $model->GetLink($id);
         if (Jaws_Error::IsError($link) || empty($link)) {
             return false; //Maybe handled one day
         }
@@ -75,7 +76,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroups($gid)
     {
-        $groupInfo = $this->_Model->GetGroup($gid);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $groupInfo = $model->GetGroup($gid);
         if (Jaws_Error::IsError($groupInfo)) {
             return false; //we need to handle errors on ajax
         }
@@ -92,7 +94,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLinksList($gid)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Links');
         return $gadget->GetLinksList($gid);
     }
 
@@ -110,7 +112,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function InsertGroup($title, $fast_url, $limitation, $links_type, $order_type)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $this->_Model->InsertGroup($title, $fast_url, $limitation, $links_type, $order_type);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Groups');
+        $model->InsertGroup($title, $fast_url, $limitation, $links_type, $order_type);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -131,7 +134,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
         $this->gadget->CheckPermission('ManageLinks');
-        $this->_Model->InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Links');
+        $model->InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -151,7 +155,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $this->_Model->UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Groups');
+        $model->UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -172,7 +177,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank)
     {
         $this->gadget->CheckPermission('ManageLinks');
-        $this->_Model->UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Links');
+        $model->UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -188,7 +194,8 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function DeleteLink($id, $gid, $rank)
     {
         $this->gadget->CheckPermission('ManageLinks');
-        $this->_Model->DeleteLink($id, $gid, $rank);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Links');
+        $model->DeleteLink($id, $gid, $rank);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -202,9 +209,9 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup($gid)
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $this->_Model->DeleteGroup($gid);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminModel', 'Groups');
+        $model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
-
 }

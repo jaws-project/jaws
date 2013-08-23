@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/LinkDump/Model.php';
 /**
  * LinkDump Gadget Admin
  *
@@ -10,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/LinkDump/Model.php';
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_AdminModel extends LinkDump_Model
+class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
 {
     /**
     * Insert a link
@@ -81,7 +80,8 @@ class LinkDump_AdminModel extends LinkDump_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_links', false);
 
-        $oldLink = $this->GetLink($id);
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Links');
+        $oldLink = $model->GetLink($id);
         if (Jaws_Error::IsError($oldLink)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
             return new Jaws_Error($oldLink->getMessage(), 'SQL');
@@ -208,6 +208,37 @@ class LinkDump_AdminModel extends LinkDump_Model
     }
 
     /**
+     * Delete link
+     *
+     * @access  public
+     * @param   int     $lid    Link's id
+     * @param   string  $gid    Group ID
+     * @param   int     $rank   
+     * @return  mixed   True on success on Jaws_Error otherwise
+     */
+    function DeleteLink($lid, $gid = '', $rank = 0)
+    {
+        $objORM = Jaws_ORM::getInstance();
+        $res = $objORM->delete()->table('linkdump_links')->where('id', $lid)->exec();
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
+            return $res;
+        }
+
+        $this->MoveLink($lid, $gid, $gid, 0xfff, $rank);
+
+        $res = $objORM->delete()->table('linkdump_links_tags')->where('link_id', $lid)->exec();
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
+            return $res;
+        }
+
+        $this->InvalidateFeed($gid);
+        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+    /**
      * Adds Tag to Link
      * 
      * @access  public
@@ -282,37 +313,6 @@ class LinkDump_AdminModel extends LinkDump_Model
     }
 
     /**
-     * Delete link
-     *
-     * @access  public
-     * @param   int     $lid    Link's id
-     * @param   string  $gid    Group ID
-     * @param   int     $rank   
-     * @return  mixed   True on success on Jaws_Error otherwise
-     */
-    function DeleteLink($lid, $gid = '', $rank = 0)
-    {
-        $objORM = Jaws_ORM::getInstance();
-        $res = $objORM->delete()->table('linkdump_links')->where('id', $lid)->exec();
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
-            return $res;
-        }
-
-        $this->MoveLink($lid, $gid, $gid, 0xfff, $rank);
-
-        $res = $objORM->delete()->table('linkdump_links_tags')->where('link_id', $lid)->exec();
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
-            return $res;
-        }
-
-        $this->InvalidateFeed($gid);
-        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
      * Will Inactivate Feed
      *
      * @access  public
@@ -322,130 +322,12 @@ class LinkDump_AdminModel extends LinkDump_Model
     function InvalidateFeed($gid)
     {
         if (is_numeric($gid)) {
-            $group = $this->GetGroup($gid);
+            $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+            $group = $model->GetGroup($gid);
             $gid = $group['fast_url'];
         }
 
         $rss_path = JAWS_DATA . 'xml/link-' . $gid . '.rss';
         return @unlink($rss_path);
     }
-
-    /**
-    * Insert a group
-    * 
-    * @access  public
-    * @param    string  $title      group title
-    * @param    string  $fast_url
-    * @param    int     $limit_count
-    * @param    string  $link_type
-    * @param    string  $order_type
-    * @return   bool    True Success and False on Failure
-    */
-    function InsertGroup($title, $fast_url, $limit_count, $link_type, $order_type)
-    {
-        $fast_url = empty($fast_url) ? $title : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_groups');
-
-        $gData['title']       = $title;
-        $gData['fast_url']    = $fast_url;
-        $gData['limit_count'] = $limit_count;
-        $gData['link_type']   = $link_type;
-        $gData['order_type']  = $order_type;
-
-        $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
-        $gid = $groupsTable->insert($gData)->exec();
-        if (Jaws_Error::IsError($gid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
-        return true;
-    }
-
-    /**
-    * Update a group
-    * 
-    * @access  public
-    * @param    int     $gid        group ID
-    * @param    string  $title      group title
-    * @param    string  $fast_url
-    * @param    int     $limit_count
-    * @param    string  $link_type
-    * @param    string  $order_type
-    * @return   bool    True on Success and False on Failure
-    */
-    function UpdateGroup($gid, $title, $fast_url, $limit_count, $link_type, $order_type)
-    {
-        $fast_url = empty($fast_url) ? $title : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_groups', false);
-
-        $gData['title']       = $title;
-        $gData['fast_url']    = $fast_url;
-        $gData['limit_count'] = $limit_count;
-        $gData['link_type']   = $link_type;
-        $gData['order_type']  = $order_type;
-
-        $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
-        $res = $groupsTable->update($gData)->where('id', $gid)->exec();
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $this->InvalidateFeed($gid);
-        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-    /**
-     * Delete a group
-     *
-     * @access  public
-     * @param   int     $gid    group ID
-     * @return  bool    True if query was successful and false on error
-     */
-    function DeleteGroup($gid)
-    {
-        if ($gid == 1) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
-            return false;
-        }
-        $group = $this->GetGroup($gid);
-        if (Jaws_Error::IsError($group)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
-        }
-
-        if(!isset($group['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_NOT_EXISTS'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $objORM = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-        $links = $this->GetGroupLinks($gid);
-        foreach ($links as $link) {
-            $res = $objORM->delete()->where('link_id', $link['id'])->exec();
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-                return false;
-            }
-        }
-
-        $res = $objORM->delete()->table('linkdump_links')->where('gid', $gid)->exec();
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $res = $objORM->delete()->table('linkdump_groups')->where('id', $gid)->exec();
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
-        return true;
-    }
-
 }

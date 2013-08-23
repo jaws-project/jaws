@@ -13,27 +13,35 @@ $actions = array();
 
 $actions['Link'] = array(
     'normal' => true,
+    'file' => 'Link'
 );
 $actions['Archive'] = array(
     'normal' => true,
+    'file' => 'Archive'
 );
 $actions['Group'] = array(
     'normal' => true,
+    'file' => 'Archive'
 );
 $actions['Tag'] = array(
     'normal' => true,
+    'file' => 'Tag'
 );
 $actions['Display'] = array(
     'layout' => true,
     'parametric' => true,
+    'file' => 'Display'
 );
 $actions['ShowCategories'] = array(
+    'normal' => true,
     'layout' => true,
+    'file' => 'Categories'
 );
 $actions['ShowTagCloud'] = array(
     'layout' => true,
+    'file' => 'TagCloud'
 );
 $actions['RSS'] = array(
     'standalone' => true,
-    'file' => 'Feeds',
+    'file' => 'Feeds'
 );

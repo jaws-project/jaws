@@ -51,7 +51,7 @@ class LinkDump_Actions_Feeds extends LinkDump_HTML
      */
     function GenerateFeed($gid)
     {
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false;
@@ -90,5 +90,4 @@ class LinkDump_Actions_Feeds extends LinkDump_HTML
         $tpl->ParseBlock('RDF');
         return $tpl->Get();
     }
-
 }
