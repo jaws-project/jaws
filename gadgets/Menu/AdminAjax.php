@@ -2,13 +2,13 @@
 /**
  * Menu AJAX API
  *
- * @category   Ajax
- * @package    Menu
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Jon Wood <jon@substance-it.co.uk>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Ajax
+ * @package     Menu
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_AdminAjax extends Jaws_Gadget_HTML
 {

@@ -2,29 +2,18 @@
 /**
  * Menu Admin Gadget
  *
- * @category   GadgetAdmin
- * @package    Menu
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Jon Wood <jon@substance-it.co.uk>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetAdmin
+ * @package     Menu
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      Mohsen Khahani <mkhahani@gmail.com>
+ * @copyright   2004-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
 {
-    /**
-     * Displays gadget administration section
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Admin()
-    {
-        return $this->Menu();
-    }
-
     /**
      * Builds Menu administration UI
      *

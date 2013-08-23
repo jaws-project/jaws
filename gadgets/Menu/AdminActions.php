@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
+$actions['Menu'] = array(
     'normal' => true,
     'file' => 'Menu'
 );
