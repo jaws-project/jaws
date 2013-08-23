@@ -20,6 +20,14 @@ class Layout_Info extends Jaws_Gadget
     var $version = '1.0.0';
 
     /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'LayoutManager';
+
+    /**
      * Is this gadget core gadget?
      *
      * @var    boolean

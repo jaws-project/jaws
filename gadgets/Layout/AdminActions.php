@@ -9,30 +9,37 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['Admin'] = array(
-    'standalone' => true,
-);
+
 $actions['ChangeTheme'] = array(
     'standalone' => true,
+    'file' => 'Layout',
 );
 $actions['LayoutManager'] = array(
+    'standalone' => true,
     'normal' => true,
+    'file' => 'Layout',
 );
 $actions['LayoutBuilder'] = array(
     'normal' => true,
+    'file' => 'Layout',
 );
 $actions['SetLayoutMode'] = array(
     'normal' => true,
+    'file' => 'Layout',
 );
 $actions['EditElementAction'] = array(
     'standalone' => true,
+    'file' => 'Layout',
 );
 $actions['ChangeDisplayWhen'] = array(
     'standalone' => true,
+    'file' => 'Layout',
 );
 $actions['AddLayoutElement'] = array(
     'standalone' => true,
+    'file' => 'Layout',
 );
 $actions['SaveAddLayoutElement'] = array(
     'normal' => true,
+    'file' => 'Layout',
 );

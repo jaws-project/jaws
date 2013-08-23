@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Layout/Model.php';
+require_once JAWS_PATH . 'gadgets/Layout/Model/Layout.php';
 /**
  * Layout Core Gadget
  *
@@ -10,7 +10,7 @@ require_once JAWS_PATH . 'gadgets/Layout/Model.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_AdminModel extends Layout_Model
+class Layout_Model_Admin_Layout extends Layout_Model_Layout
 {
     /**
      * Get the layout sections
@@ -262,13 +262,13 @@ class Layout_AdminModel extends Layout_Model
 
     /**
      * Change when to display a gadget
-     * 
+     *
      * @access  public
      * @param   int     $item   Item ID
      * @param   string  $dw     Display in these gadgets
      * @return  array   Response
      */
-    function ChangeDisplayWhen($item, $dw) 
+    function ChangeDisplayWhen($item, $dw)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         return $lyTable->update(array('display_when' => $dw))->where('id', $item)->exec();
@@ -276,7 +276,7 @@ class Layout_AdminModel extends Layout_Model
 
     /**
      * Edit layout's element action
-     * 
+     *
      * @access  public
      * @param   int     $item            Item ID
      * @params  string  $gadget_action   Action's name
@@ -284,7 +284,7 @@ class Layout_AdminModel extends Layout_Model
      * @param   string  $action_filename Filename that contant action method
      * @return  array   Response
      */
-    function EditElementAction($item, $gadget_action, $action_params, $action_filename) 
+    function EditElementAction($item, $gadget_action, $action_params, $action_filename)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
@@ -297,7 +297,7 @@ class Layout_AdminModel extends Layout_Model
 
     /**
      * Get layout actions of a given gadget
-     * 
+     *
      * @access  public
      * @param   string  $gadget               Gadget's name
      * @param   bool    $associated_by_action Indexed by action's name

@@ -9,19 +9,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_AdminHTML extends Jaws_Gadget_HTML
+class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
 {
-    /**
-     * Returns the HTML content to manage the layout in the browser
-     *
-     * @access  public
-     * @return  string  HTML conent of Layout Management
-     */
-    function Admin()
-    {
-        return $this->LayoutManager();
-    }
-
     /**
      * Returns the HTML content to manage the layout in the browser
      *
@@ -30,7 +19,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
      */
     function LayoutManager()
     {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
 
         $t_item = $this->gadget->loadTemplate('LayoutManager.html');
         $t_item->SetBlock('working_notification');
@@ -74,9 +63,9 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         $layoutContent = preg_replace(
-                            '$<body([^>]*)>$i',
-                            '<body\1>' . $working_box . $msg_box . $this->getLayoutControls(),
-                            $layoutContent);
+            '$<body([^>]*)>$i',
+            '<body\1>' . $working_box . $msg_box . $this->getLayoutControls(),
+            $layoutContent);
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
 
@@ -108,7 +97,6 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
 
             foreach ($gadgets as $gadget) {
                 if ($gadget['gadget'] == '[REQUESTEDGADGET]') {
-                    $section_empty = false;
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
                     $t_item->SetVariable('item_id', $gadget['id']);
@@ -126,7 +114,6 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     $t_item->SetVariable('item_status', 'none');
                     $t_item->ParseBlock('item');
                 } else {
-                    $section_empty = false;
                     $controls = '';
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
@@ -166,7 +153,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                     if ($gadget['display_when'] == '*') {
                         $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
                     } elseif (empty($gadget['display_when'])) {
-                            $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
+                        $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
                     } else {
                         $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
                     }
@@ -272,7 +259,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         }
 
         // Verify blocks/Reassign gadgets
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
         $sections = $model->GetLayoutSections();
         foreach ($sections as $section) {
             if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
@@ -294,7 +281,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
                 }
             }
         }
-        
+
         $this->gadget->registry->update('theme', $theme, 'Settings');
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
@@ -308,8 +295,6 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
      */
     function AddLayoutElement()
     {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
-
         // FIXME: When a gadget don't have layout actions
         // doesn't permit to add it into layout
         $tpl = $this->gadget->loadTemplate('AddGadget.html');
@@ -348,9 +333,9 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         //Hold.. if we dont have a selected gadget?.. like no gadgets?
         if (count($gadget_list) <= 0) {
             Jaws_Error::Fatal('You don\'t have any installed gadgets, please enable/install one and then come back',
-                             __FILE__, __LINE__);
+                __FILE__, __LINE__);
         }
-        
+
         reset($gadget_list);
         $first = current($gadget_list);
         $tpl->SetVariable('first', $first['name']);
@@ -383,7 +368,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
     {
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Layout');
         $layoutElement = $model->GetElement($id);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;
@@ -492,7 +477,7 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
      */
     function ChangeDisplayWhen()
     {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
 
         $tpl = $this->gadget->loadTemplate('DisplayWhen.html');
         $tpl->SetBlock('template');
@@ -550,5 +535,4 @@ class Layout_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('template');
         return $tpl->Get();
     }
-
 }

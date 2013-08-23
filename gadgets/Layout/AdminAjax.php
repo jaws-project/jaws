@@ -22,7 +22,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function Layout_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
+        $this->_Model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
     }
 
     /**
