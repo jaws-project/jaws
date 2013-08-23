@@ -20,4 +20,20 @@ class Phoo_Info extends Jaws_Gadget
      */
     var $version = '0.8.4';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'AlbumList';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'AdminPhotos';
+
 }

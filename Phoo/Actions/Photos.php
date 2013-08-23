@@ -11,43 +11,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_HTML extends Jaws_Gadget_HTML
+class Phoo_Actions_Photos extends Jaws_Gadget_HTML
 {
-    /**
-     * Returns the default action to use if none is specified.
-     *
-     * @access  public
-     * @return  string   XHTML template content
-     */
-    function DefaultAction()
-    {
-        return $this->AlbumList();
-    }
-
-    /**
-     * Displays an index of galleries.
-     *
-     * @access  public
-     * @return  string   XHTML template content
-     */
-    function AlbumList()
-    {
-        $this->SetTitle(_t('PHOO_ALBUMS'));
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Phoo', 'LayoutHTML');
-        return $layoutGadget->AlbumList();
-    }
-
-    /**
-     * Displays an index of pictures in an album.
-     *
-     * @access  public
-     * @return  string   XHTML template content
-     */
-    function ViewAlbum()
-    {
-        return $this->ViewAlbumPage();
-    }
-
     /**
      * Displays a paged index of pictures in an album.
      * TODO: Test it, maybe we need some modifications in ViewImage...
@@ -238,16 +203,16 @@ class Phoo_HTML extends Jaws_Gadget_HTML
             }
 
             $allow_comments = $image['allow_comments'] === true &&
-                              $image['album_allow_comments'] === true &&
-                              $this->gadget->registry->fetch('allow_comments') == 'true' &&
-                              $allow_comments_config;
+                $image['album_allow_comments'] === true &&
+                $this->gadget->registry->fetch('allow_comments') == 'true' &&
+                $allow_comments_config;
 
             $redirect_to = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
             $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
-                            array('action' => 'ViewImage',
-                                  'params' => array('albumid' => $albumid, 'id' => $image['id']))));
+                array('action' => 'ViewImage',
+                    'params' => array('albumid' => $albumid, 'id' => $image['id']))));
 
             if ($allow_comments) {
                 if ($preview_mode) {
@@ -346,165 +311,6 @@ class Phoo_HTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('ViewImage');
 
         return $tpl->Get();
-    }
-
-    /**
-     * I'm not sure what this does... gets the authors photo maybe?
-     *
-     * @access  public
-     * @see Phoo_Model::GetAsPortrait()
-     * @return  string   XHTML template content
-     * @todo Better docblock
-     */
-    function PhotoblogPortrait()
-    {
-        $request =& Jaws_Request::getInstance();
-
-        $photoid = $request->get('photoid', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $entries = $model->GetAsPortrait($photoid);
-        if (Jaws_Error::IsError($entries)) {
-            return '';
-        }
-
-        if (count($entries) <= 0) {
-            return '';
-        }
-
-        $this->SetTitle(_t('PHOO_PHOTOBLOG'));
-        $tpl = $this->gadget->loadTemplate('Photoblog.html');
-        $tpl->SetBlock('photoblog_portrait');
-        $first = true;
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
-        $date = $GLOBALS['app']->loadDate();
-        foreach ($entries as $entry) {
-            if (empty($photoid)) {
-                if (!$first) {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['thumb']);
-                    if (Jaws_Error::IsError($imgData)) {
-                        continue;
-                    }
-
-                    $tpl->SetBlock('photoblog_portrait/item');
-                    $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
-                    $tpl->SetVariable('url', $url);
-                    $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $tpl->SetVariable('width',  $imgData[0]);
-                    $tpl->SetVariable('height', $imgData[1]);
-                    $tpl->ParseBlock('photoblog_portrait/item');
-                } else {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['medium']);
-                    if (Jaws_Error::IsError($imgData)) {
-                        continue;
-                    }
-
-                    $tpl->SetBlock('photoblog_portrait/main');
-                    $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
-                    $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
-                    $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $tpl->SetVariable('width',  $imgData[0]);
-                    $tpl->SetVariable('height', $imgData[1]);
-                    $tpl->ParseBlock('photoblog_portrait/main');
-                }
-                $first = false;
-            } else {
-                if ($photoid == $entry['id']) {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['medium']);
-                    if (Jaws_Error::IsError($imgData)) {
-                        continue;
-                    }
-
-                    $tpl->SetBlock('photoblog_portrait/main');
-                    $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
-                    $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
-                    $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $tpl->SetVariable('width',  $imgData[0]);
-                    $tpl->SetVariable('height', $imgData[1]);
-                    $tpl->ParseBlock('photoblog_portrait/main');
-                } else {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['thumb']);
-                    if (Jaws_Error::IsError($imgData)) {
-                        continue;
-                    }
-
-                    $tpl->SetBlock('photoblog_portrait/item');
-                    $tpl->SetVariable('thumb', $GLOBALS['app']->getDataURL('phoo/' . $entry['thumb']));
-                    $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
-                    $tpl->SetVariable('url', $url);
-                    $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
-                    $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
-                    $tpl->SetVariable('width',  $imgData[0]);
-                    $tpl->SetVariable('height', $imgData[1]);
-                    $tpl->ParseBlock('photoblog_portrait/item');
-                }
-            }
-        }
-        $tpl->ParseBlock('photoblog_portrait');
-        return $tpl->Get();
-    }
-
-    /**
-     * Displays a preview of the given phoo comment
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Preview()
-    {
-        $request =& Jaws_Request::getInstance();
-        $names = array(
-            'name', 'email', 'url', 'title', 'comments', 'createtime',
-            'ip_address', 'reference', 'albumid'
-        );
-        $post = $request->get($names, 'post');
-        $post['reference'] = (int)$post['reference'];
-        $post['albumid']   = (int)$post['albumid'];
-
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $image = $model->GetImage($post['reference'], $post['albumid']);
-        if (Jaws_Error::isError($image)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-            Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
-        }
-
-        return $this->ViewImage($post['reference'], $post['albumid'], true);
-    }
-
-    /**
-     * Format a date using Jaws
-     *
-     * @access  public
-     * @param   string  $date   The data to format.
-     * @return  string  The formatted date.
-     */
-    function FormatDate($date)
-    {
-        $date = $GLOBALS['app']->loadDate();
-        return $date->Format($date);
-    }
-
-    /**
-     * Resize an image on the fly
-     * 
-     * FIXME: I don't know if is better to get it as a standalone function...
-     * 
-     * @returns binary Image resized
-     */
-    function Thumb()
-    {
-        $request =& Jaws_Request::getInstance();
-        $image   = $request->get('image', 'get');
-
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
-        Jaws_Image::get_exif_thumbnail(JAWS_DATA . 'phoo/import/' . $image, 'gadgets/Phoo/images/Phoo.png');
     }
 
 }

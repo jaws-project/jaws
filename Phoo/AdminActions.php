@@ -10,66 +10,83 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
-    'normal' => true,
-);
 $actions['UploadPhotos'] = array(
     'normal' => true,
+    'file' => 'Upload',
 );
 $actions['UploadPhotosStep2'] = array(
     'normal' => true,
+    'file' => 'Upload',
 );
 $actions['EditPhoto'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
 $actions['SaveEditPhoto'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
 $actions['AdminPhotos'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
 $actions['ManageAlbums'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['DeletePhoto'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
 $actions['NewAlbum'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['SaveNewAlbum'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['EditAlbum'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['SaveEditAlbum'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['DeleteAlbum'] = array(
     'normal' => true,
+    'file' => 'Albums',
 );
 $actions['RotateLeft'] = array(
     'normal' => true,
+    'file' => 'Rotate',
 );
 $actions['RotateRight'] = array(
     'normal' => true,
+    'file' => 'Rotate',
 );
 $actions['ManageComments'] = array(
     'normal' => true,
+    'file' => 'Comments',
 );
 $actions['AdditionalSettings'] = array(
     'normal' => true,
+    'file' => 'Settings',
 );
 $actions['SaveAdditionalSettings'] = array(
     'normal' => true,
+    'file' => 'Settings',
 );
 $actions['Import'] = array(
     'normal' => true,
+    'file' => 'Import',
 );
 $actions['FinishImport'] = array(
     'normal' => true,
+    'file' => 'Import',
 );
+
 /* Standalone Admin Actions */
 $actions['Thumb'] = array(
     'standalone' => true,

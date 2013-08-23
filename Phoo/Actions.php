@@ -12,35 +12,31 @@ $actions = array();
 
 $actions['PhotoblogPortrait'] = array(
     'normal' => true,
+    'file' => 'Photoblog',
 );
 $actions['AlbumList'] = array(
     'normal' => true,
     'layout' => true,
-);
-$actions['ViewAlbum'] = array(
-    'normal' => true,
+    'file' => 'Album',
 );
 $actions['ViewAlbumPage'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
 $actions['ViewImage'] = array(
     'normal' => true,
+    'file' => 'Photos',
 );
-$actions['Comment'] = array(
-    'normal' => true,
-);
-$actions['Reply'] = array(
-    'normal' => true,
-);
-$actions['Preview'] = array(
-    'normal' => true,
-);
-$actions['SaveComment'] = array(
-    'normal' => true,
-);
+//$actions['Preview'] = array(
+//    'normal' => true,
+//    'file' => 'Comments',
+//);
+
 $actions['Random'] = array(
     'layout' => true,
+    'file' => 'Random',
 );
 $actions['Moblog'] = array(
     'layout' => true,
+    'file' => 'Moblog',
 );
