@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Languages_AdminHTML extends Jaws_Gadget_HTML
+class Languages_Actions_Admin_Languages extends Jaws_Gadget_HTML
 {
     /**
      * Calls default action(MainMenu)
@@ -16,11 +16,10 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML template content
      */
-    function Admin()
+    function Languages()
     {
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel');
         $tpl = $this->gadget->loadTemplate('Languages.html');
         $tpl->SetBlock('Languages');
         $tpl->SetVariable('language',   _t('LANGUAGES_LANGUAGE'));
@@ -73,6 +72,7 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
         }
 
         // Components
+        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
         $components = $model->GetComponents();
         $componentsName = array('Global', 'Gadgets', 'Plugins');
         foreach ($components as $compk => $compv) {
@@ -129,11 +129,11 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetLangDataUI($module, $type, $langTo)
     {
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel');
         $tpl = $this->gadget->loadTemplate('LangStrings.html');
         $tpl->SetBlock('LangStrings');
 
         $langFrom = $this->gadget->registry->fetch('base_lang');
+        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
         $data = $model->GetLangData($module, $type, $langTo, $langFrom);
         $color = 'even';
         if (count($data['strings']) > 0) {
@@ -171,30 +171,5 @@ class Languages_AdminHTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('LangStrings');
         return $tpl->Get();
-    }
-
-    /**
-     * Export language
-     *
-     * @access  public
-     * @return  void
-     */
-    function Export()
-    {
-        $request =& Jaws_Request::getInstance();
-        $lang = $request->get('lang', 'get');
-
-        require_once PEAR_PATH. "File/Archive.php"; 
-        $tmpDir = sys_get_temp_dir();
-        $tmpFileName = "$lang.tar";
-        $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;
-        $res = File_Archive::extract(File_Archive::read(JAWS_DATA. "languages/$lang", $lang),
-                                     File_Archive::toArchive($tmpArchiveName,
-                                                             File_Archive::toFiles())
-                                    );
-        if (!PEAR::isError($res)) {
-            Jaws_Utils::Download($tmpArchiveName, $tmpFileName);
-        }
-        Jaws_Header::Referrer();
     }
 }

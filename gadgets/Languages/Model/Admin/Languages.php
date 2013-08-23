@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Languages_AdminModel extends Jaws_Gadget_Model
+class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
 {
     /**
      * Special empty string
@@ -338,5 +338,4 @@ class Languages_AdminModel extends Jaws_Gadget_Model
             return true;
         }
     }
-
 }

@@ -9,9 +9,11 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['Admin'] = array(
+$actions['Languages'] = array(
     'normal' => true,
+    'file' => 'Languages'
 );
 $actions['Export'] = array(
     'standalone' => true,
+    'file' => 'Export'
 );

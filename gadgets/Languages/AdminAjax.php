@@ -20,7 +20,6 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
     function Languages_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -34,7 +33,8 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
     function SaveLanguage($lang_str)
     {
         $this->gadget->CheckPermission('ModifyLanguageProperties');
-        $this->_Model->SaveLanguage($lang_str);
+        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model->SaveLanguage($lang_str);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -49,9 +49,9 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLangDataUI($component, $langTo)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Languages', 'AdminHTML');
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
+        $gadget = $GLOBALS['app']->LoadGadget('Languages', 'AdminHTML', 'Languages');
         return $gadget->GetLangDataUI($component[1], (int)$component[0], $langTo);
     }
 
@@ -71,7 +71,8 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
 
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
-        $this->_Model->SetLangData($component[1], (int)$component[0], $langTo, $data);
+        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model->SetLangData($component[1], (int)$component[0], $langTo, $data);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 }
