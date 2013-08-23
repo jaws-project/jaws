@@ -32,4 +32,12 @@ class Languages_Info extends Jaws_Gadget
      */
     var $_has_layout = false;
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = false;
+
 }
