@@ -30,7 +30,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $tpl->SetVariable('menubar', $this->MenuBar('ManageCategories'));
         $tpl->SetVariable('categories', _t('BLOG_CATEGORIES'));
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
         $categories = $model->GetCategories();
         $combo =& Piwi::CreateWidget('Combo', 'category_id');
         $combo->SetID('category_id');
@@ -99,7 +99,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $request =& Jaws_Request::getInstance();
 
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
         $model->NewCategory($request->get('catname', 'post'));
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
@@ -116,7 +116,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $post    = $request->get(array('catid', 'catname'), 'post');
 
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
         $model->UpdateCategory($post['catid'], $post['catname']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=EditCategory&id=' . $post['catid']);
@@ -132,7 +132,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
         $request =& Jaws_Request::getInstance();
 
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
         $model->DeleteCategory($request->get('catid', 'post'));
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');

@@ -21,7 +21,8 @@ class Blog_Actions_Categories extends Blog_HTML
      */
     function ShowCategory($cat = '')
     {
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $cModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
+        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
 
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('id', 'page'), 'get');
@@ -35,7 +36,7 @@ class Blog_Actions_Categories extends Blog_HTML
             $cat = Jaws_XSS::defilter($post['id'], true);
         }
 
-        $catInfo = $model->GetCategory($cat);
+        $catInfo = $cModel->GetCategory($cat);
         if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
             $name = $catInfo['name'];
             $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
@@ -59,12 +60,12 @@ class Blog_Actions_Categories extends Blog_HTML
             $tpl->SetBlock('view_category');
             $tpl->SetVariable('title', $name);
 
-            $total  = $model->GetCategoryNumberOfPages($catInfo['id']);
+            $total  = $cModel->GetCategoryNumberOfPages($catInfo['id']);
             $limit  = $this->gadget->registry->fetch('last_entries_limit');
             $params = array('id'  => $cat);
             $tpl->SetVariable('navigation',
                               $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params));
-            $entries = $model->GetEntriesByCategory($catInfo['id'], $page);
+            $entries = $pModel->GetEntriesByCategory($catInfo['id'], $page);
             if (!Jaws_Error::IsError($entries)) {
                 foreach ($entries as $entry) {
                     $this->ShowEntry($tpl, 'view_category', $entry);
@@ -79,17 +80,43 @@ class Blog_Actions_Categories extends Blog_HTML
         }
     }
 
+
     /**
-     * Displays a list of blog categories with a link to each one's posts
+     * Displays a list of blog categories with a link to each one's posts and xml feeds
      *
      * @access  public
      * @return  string  XHTML template content
      */
     function CategoriesList()
     {
-        $this->SetTitle(_t('BLOG_CATEGORIES'));
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Blog', 'LayoutHTML');
-        return $layoutGadget->CategoriesList();
+        $tpl = $this->gadget->loadTemplate('Categories.html');
+        $tpl->SetBlock('categories_list');
+        $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $entries = $model->GetEntriesAsCategories();
+        if (!Jaws_Error::IsError($entries)) {
+            foreach ($entries as $e) {
+                $tpl->SetBlock('categories_list/item');
+                $tpl->SetVariable('category', $e['name']);
+                $cid = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid)));
+                $tpl->SetVariable('rssfeed',
+                    $GLOBALS['app']->Map->GetURLFor('Blog',
+                        'ShowRSSCategory',
+                        array('id' => $cid)));
+                $tpl->SetVariable('atomfeed',
+                    $GLOBALS['app']->Map->GetURLFor('Blog',
+                        'ShowAtomCategory',
+                        array('id' => $cid)));
+                $tpl->SetVariable('howmany', $e['howmany']);
+                $tpl->ParseBlock('categories_list/item');
+            }
+        }
+        $tpl->ParseBlock('categories_list');
+
+        return $tpl->Get();
     }
+
+
 
 }

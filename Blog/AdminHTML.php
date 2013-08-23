@@ -13,18 +13,6 @@
 class Blog_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Calls default admin action(NewEntry)
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Admin()
-    {
-        $entriesHTML = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Entries');
-        return $entriesHTML->NewEntry();
-    }
-
-    /**
      * Displays admin menu bar according to selected action
      *
      * @access  public

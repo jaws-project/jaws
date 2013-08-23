@@ -47,6 +47,7 @@ $actions['ShowCategory'] = array(
 $actions['CategoryEntries'] = array(
     'layout' => true,
     'parametric' => true,
+    'file'   => 'Posts',
 );
 $actions['CategoriesList'] = array(
     'normal' => true,
@@ -56,34 +57,44 @@ $actions['CategoriesList'] = array(
 $actions['PopularPosts'] = array(
     'normal' => true,
     'layout' => true,
+    'file'   => 'Posts',
 );
 $actions['PostsAuthors'] = array(
     'normal' => true,
     'layout' => true,
+    'file'   => 'Posts',
 );
 $actions['MonthlyHistory'] = array(
     'layout' => true,
+    'file'   => 'DatePosts',
 );
 $actions['RecentPosts'] = array(
     'layout' => true,
+    'file'   => 'Posts',
 );
 $actions['Calendar'] = array(
     'layout' => true,
+    'file'   => 'DatePosts',
 );
 $actions['RSSLink'] = array(
     'layout' => true,
+    'file'   => 'Feeds',
 );
 $actions['AtomLink'] = array(
     'layout' => true,
+    'file'   => 'Feeds',
 );
 $actions['RecentCommentsRSSLink'] = array(
     'layout' => true,
+    'file'   => 'Feeds',
 );
 $actions['RecentCommentsAtomLink'] = array(
     'layout' => true,
+    'file'   => 'Feeds',
 );
 $actions['ShowTagCloud'] = array(
     'layout' => true,
+    'file'   => 'Tags',
 );
 $actions['Trackback'] = array(
     'standalone' => true,

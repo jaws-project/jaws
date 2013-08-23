@@ -20,7 +20,7 @@ class Blog_Actions_Admin_Summary extends Blog_AdminHTML
      */
     function Summary()
     {
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Summary');
         $summary = $model->GetSummary();
         if (Jaws_Error::IsError($summary)) {
             $summary = array();

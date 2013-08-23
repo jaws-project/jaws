@@ -54,8 +54,9 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $min_date = $GLOBALS['app']->UserTime2UTC($min_date['timestamp'], 'Y-m-d H:i:s');
         $max_date = $GLOBALS['app']->UserTime2UTC($max_date['timestamp'], 'Y-m-d H:i:s');
 
-        $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
-        $entries = $bModel->GetEntriesByDate($page, $min_date, $max_date);
+        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $dpModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $entries = $pModel->GetEntriesByDate($page, $min_date, $max_date);
         if (!Jaws_Error::IsError($entries)) {
             $tpl = $this->gadget->loadTemplate('DatePosts.html');
             $tpl->SetBlock('view_date');
@@ -73,7 +74,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
             $tpl->SetVariable('title', $title);
 
             if ($tpl->VariableExists('page_navigation')) {
-                $total  = $bModel->GetDateNumberOfPages($min_date, $max_date);
+                $total  = $dpModel->GetDateNumberOfPages($min_date, $max_date);
                 $limit  = $this->gadget->registry->fetch('last_entries_limit');
 
                 $params = array('year'  => $year,
@@ -124,7 +125,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $nurl   = null;
         $ntitle = null;
         $objDate = $GLOBALS['app']->loadDate();
-        $model   = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model   = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
         $dLimit  = $model->GetPostsDateLimitation(true);
         if ($dLimit['qty_posts'] != 0) {
             if (empty($month)) {
@@ -197,6 +198,154 @@ class Blog_Actions_DatePosts extends Blog_HTML
         }
 
         return $this->GetNavigation($purl, $ptitle, $nurl, $ntitle);
+    }
+
+    /**
+     * Displays a list of blog entries ordered by date and grouped by month
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function MonthlyHistory()
+    {
+        $tpl = $this->gadget->loadTemplate('MonthlyHistory.html');
+        $tpl->SetBlock('monthly_history');
+        $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $entries = $model->GetEntriesAsHistory();
+        if (!Jaws_Error::IsError($entries)) {
+            $aux_mon_year = '';
+            $date = $GLOBALS['app']->loadDate();
+            foreach ($entries as $key => $entry) {
+                $mon_year = $date->Format($entry['publishtime'], 'm,Y');
+                if ($mon_year != $aux_mon_year) {
+                    if (!empty($aux_mon_year)) {
+                        $tpl->SetBlock('monthly_history/item');
+                        $tpl->SetVariable('url',
+                            $GLOBALS['app']->Map->GetURLFor('Blog',
+                                'ViewDatePage',
+                                array('year'  => $year,
+                                    'month' => $month)));
+                        $tpl->SetVariable('month', $date->MonthString($month) );
+                        $tpl->SetVariable('year', $year);
+                        $tpl->SetVariable('howmany', $howmany);
+                        $tpl->ParseBlock('monthly_history/item');
+                    }
+                    $aux_mon_year = $mon_year;
+                    $year  = substr(strstr($mon_year, ','), 1);
+                    $month = substr($mon_year, 0, strpos($mon_year, ','));
+                    $howmany = 0;
+                }
+                $howmany++;
+
+                if ($key == (count($entries) - 1)) {
+                    $tpl->SetBlock('monthly_history/item');
+                    $tpl->SetVariable('url',
+                        $GLOBALS['app']->Map->GetURLFor('Blog',
+                            'ViewDatePage',
+                            array('year'  => $year,
+                                'month' => $month)));
+                    $tpl->SetVariable('month', $date->MonthString($month) );
+                    $tpl->SetVariable('year', $year);
+                    $tpl->SetVariable('howmany', $howmany);
+                    $tpl->ParseBlock('monthly_history/item');
+                }
+            }
+        }
+        $tpl->ParseBlock('monthly_history');
+
+        return $tpl->Get('archive');
+    }
+
+    /**
+     * Displays a calendar of the current month/year
+     *
+     * @access  public
+     * @return  bool    True on successful installation, False otherwise
+     */
+    function Calendar()
+    {
+        require_once JAWS_PATH.'include/Jaws/Calendar.php';
+        $cal = new Jaws_Calendar('gadgets/Blog/templates/');
+
+        //By default.
+        $objDate = $GLOBALS['app']->loadDate();
+        $dt = explode('-', $objDate->Format(time(), 'Y-m-d'));
+        $year  = $dt[0];
+        $month = $dt[1];
+        $day   = $dt[2];
+
+        $request =& Jaws_Request::getInstance();
+        $get = $request->get(array('gadget', 'action', 'year', 'month', 'day'), 'get');
+
+        // If we are showing a specific month then show calendar of such month
+        if (!is_null($get['gadget']) && !is_null($get['action']) && !is_null($get['month'])) {
+            if (
+                ($get['gadget'] == 'Blog') &&
+                ($get['action'] == 'ViewDatePage') &&
+                (trim($get['month']) != '')
+            ) {
+                $year  = $get['year'];
+                $month = !is_null($get['month']) ? $get['month'] : '';
+                $day   = !is_null($get['day'])   ? $get['day']   : '';
+            }
+        }
+
+        $cal->Year  = $year;
+        $cal->Month = $month;
+        $cal->Day   = $day;
+
+        if ($month == '1') {
+            $lyear  = $year - 1;
+            $lmonth = '12';
+        } else {
+            $lyear  = $year;
+            $lmonth = $month - 1;
+        }
+        if ($lmonth < 10) {
+            $lmonth = '0' . $lmonth;
+        }
+        $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
+            array('year'  => $lyear,
+                'month' => $lmonth,
+            ));
+        $date = $GLOBALS['app']->loadDate();
+        $cal->addArrow('left', '&laquo;' . $date->MonthString($lmonth), $url);
+
+        if ($month == '12') {
+            $ryear  = $year + 1;
+            $rmonth = '1';
+        } else {
+            $ryear  = $year;
+            $rmonth = $month + 1;
+        }
+        if ($rmonth < 10) {
+            $rmonth = '0' . $rmonth;
+        }
+        $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
+            array('year'  => $ryear,
+                'month' => $rmonth,
+            ));
+        $cal->addArrow('right', $date->MonthString($rmonth) . '&raquo;', $url);
+
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $bgnDate = $objDate->ToBaseDate($year, $month, 1, 0, 0, 0, 'Y-m-d H:i:s');
+        $endDate = $objDate->ToBaseDate($year, $month + 1, 1, 0, 0, 0, 'Y-m-d H:i:s');
+        $entries = $model->GetEntriesAsCalendar($bgnDate, $endDate);
+        if (!Jaws_Error::IsError($entries)) {
+            foreach ($entries as $e) {
+                $edt = explode('-', $objDate->Format($e['publishtime'], 'Y-m-d'));
+                $cal->AddItem($edt[0], $edt[1], $edt[2],
+                    $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
+                        array('year'  => $edt[0],
+                            'month' => $edt[1],
+                            'day'   => $edt[2],
+                        )),
+                    $e['title']);
+            }
+        }
+
+        return $cal->ShowMonth($cal->Month, $cal->Year);
     }
 
 }

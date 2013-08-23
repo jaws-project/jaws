@@ -41,8 +41,9 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript: saveSettings(this.form);');
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
-        $settings = $model->GetSettings();
+        $sModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
+        $cModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
+        $settings = $sModel->GetSettings();
         if (Jaws_Error::IsError($settings)) {
             $settings = array();
         }
@@ -99,7 +100,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $recentcommentsLimitCombo->SetDefault(isset($settings['last_recentcomments_limit']) ?
                                               $settings['last_recentcomments_limit'] : '');
 
-        $categories = $model->GetCategories();
+        $categories = $cModel->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
             // Default category
 
@@ -208,7 +209,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
             'comments', 'comment_status', 'trackback', 'trackback_status');
         $post = $request->get($names, 'post');
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
         $model->SaveSettings($post['default_view'], $post['last_entries_limit'],
                              $post['last_comments_limit'], $post['last_recentcomments_limit'],
                              $post['default_category'], $post['xml_limit'],

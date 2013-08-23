@@ -29,7 +29,7 @@ class Blog_Actions_Comments extends Blog_HTML
         $post = $request->get($names, 'post');
         $id   = (int)$post['reference'];
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Blog');

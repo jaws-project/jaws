@@ -29,7 +29,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
                 break;
 
             case 'monthly':
-                $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+                $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
                 $dates = $model->GetPostsDateLimitation(true);
                 $date = $GLOBALS['app']->loadDate();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
@@ -65,7 +65,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
@@ -205,7 +205,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
             $text    = Jaws_UTF8::str_replace('[more]', '', $text);
 
             // Update this entry to split summary and body of post
-            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
             $model->SplitEntry($entry['id'], $summary, $text);
         }
 
@@ -275,32 +275,6 @@ class Blog_HTML extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock("$tpl_base_block/entry");
         return $tpl->Get();
-    }
-
-    /**
-     * Displays a list of popular posts
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function PopularPosts()
-    {
-        $this->SetTitle(_t('BLOG_POPULAR_POSTS'));
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Blog', 'LayoutHTML');
-        return $layoutGadget->PopularPosts();
-    }
-
-    /**
-     * Displays a list of posts authors
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function PostsAuthors()
-    {
-        $this->SetTitle(_t('BLOG_POSTS_AUTHORS'));
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Blog', 'LayoutHTML');
-        return $layoutGadget->PostsAuthors();
     }
 
 }

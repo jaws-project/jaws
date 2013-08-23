@@ -44,8 +44,9 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
             );
         }
 
-        $bModel = $GLOBALS['app']->LoadGadget('Blog', 'Model');
-        $entries = $bModel->GetEntriesAsPage(null, $page, $whereArray);
+        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $aModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'AuthorPosts');
+        $entries = $pModel->GetEntriesAsPage(null, $page, $whereArray);
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = $this->gadget->loadTemplate('AuthorPosts.html');
             $tpl->SetBlock('view_author');
@@ -54,7 +55,7 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
             $this->SetTitle($title);
             $tpl->SetVariable('title', $title);
 
-            $total  = $bModel->GetAuthorNumberOfPages($user);
+            $total  = $aModel->GetAuthorNumberOfPages($user);
             $limit  = $this->gadget->registry->fetch('last_entries_limit');
             $params = array('id'  => $user);
             $tpl->SetVariable(

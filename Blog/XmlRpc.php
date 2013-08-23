@@ -5,7 +5,7 @@
  * - metaweblog
  *    http://www.xmlrpc.com/metaWeblogApi
  *
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @author     Jonathan Hernandez  <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
@@ -189,7 +189,7 @@ function metaWeblog_newPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Categories');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -260,7 +260,7 @@ function metaWeblog_editPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Categories');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -334,7 +334,7 @@ function metaWeblog_deletePost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -371,7 +371,7 @@ function metaWeblog_getCategories($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $categories->GetMessage());
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'Model');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -424,7 +424,7 @@ function metaWeblog_getPost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'Model');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -492,7 +492,7 @@ function metaWeblog_getRecentPosts($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $GLOBALS['app']->loadGadget('Blog', 'Model');
+    $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }

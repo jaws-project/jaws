@@ -22,7 +22,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function RSS($save = false)
     {
         header('Content-type: application/rss+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
         $rss = $model->MakeRSS($save);
         if (Jaws_Error::IsError($rss) && !$save) {
             return '';
@@ -41,7 +41,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function Atom($save = false)
     {
         header('Content-type: application/atom+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
         $atom = $model->MakeAtom($save);
         if (Jaws_Error::IsError($atom) && !$save) {
             return '';
@@ -59,7 +59,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function ShowRSSCategory()
     {
         header('Content-type: application/rss+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
@@ -82,7 +82,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function ShowAtomCategory()
     {
         header('Content-type: application/atom+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
         $request =& Jaws_Request::getInstance();
         $id = $request->get('id', 'get');
@@ -105,7 +105,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function RecentCommentsAtom()
     {
         header('Content-type: application/atom+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
         $xml = $model->GetRecentCommentsAtom();
         if (Jaws_Error::IsError($xml)) {
             return '';
@@ -123,7 +123,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function RecentCommentsRSS()
     {
         header('Content-type: application/rss+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
         $xml = $model->GetRecentCommentsRSS();
         if (Jaws_Error::IsError($xml)) {
             return '';
@@ -141,7 +141,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function CommentsAtom()
     {
         header('Content-type: application/atom+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
         $request =& Jaws_Request::getInstance();
         $id = (int)$request->get('id', 'get');
@@ -163,7 +163,7 @@ class Blog_Actions_Feeds extends Blog_HTML
     function CommentsRSS()
     {
         header('Content-type: application/rss+xml');
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
         $request =& Jaws_Request::getInstance();
         $id = (int)$request->get('id', 'get');
@@ -176,4 +176,63 @@ class Blog_Actions_Feeds extends Blog_HTML
         return $xml;
     }
 
+    /**
+     * Displays a link to blog RSS feed
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function RSSLink()
+    {
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl->SetBlock('rss_link');
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));
+        $tpl->ParseBlock('rss_link');
+        return $tpl->Get();
+    }
+
+    /**
+     * Displays a link to blog Atom feed
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function AtomLink()
+    {
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl->SetBlock('atom_link');
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'));
+        $tpl->ParseBlock('atom_link');
+        return $tpl->Get();
+    }
+
+    /**
+     * Displays a link to RSS feed for blog most recent comments
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function RecentCommentsRSSLink()
+    {
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl->SetBlock('recentcomments_rss_link');
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsRSS'));
+        $tpl->ParseBlock('recentcomments_rss_link');
+        return $tpl->Get();
+    }
+
+    /**
+     * Displays a link to Atom feed for blog most recent comments
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function RecentCommentsAtomLink()
+    {
+        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl->SetBlock('recentcomments_atom_link');
+        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsAtom'));
+        $tpl->ParseBlock('recentcomments_atom_link');
+        return $tpl->Get();
+    }
 }

@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
      */
     function TrackbacksData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Trackbacks');
         return $model->GetTrackbacksDataAsArray($filter, $search, $status, $limit);
     }
 
@@ -147,15 +147,16 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
         $this->gadget->CheckPermission('ManageTrackbacks');
         $request =& Jaws_Request::getInstance();
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $tModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Trackbacks');
+        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Posts');
         // Fetch the trackback
-        $trackback = $model->GetTrackback($request->get('id', 'get'));
+        $trackback = $tModel->GetTrackback($request->get('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
         }
 
         // Fetch the entry
-        $entry = $model->getEntry($trackback['parent_id']);
+        $entry = $pModel->getEntry($trackback['parent_id']);
         if (Jaws_Error::IsError($entry)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
         }

@@ -59,7 +59,7 @@ class Blog_Actions_Trackbacks extends Blog_HTML
             Jaws_Header::Location($url);
         } elseif ($this->gadget->registry->fetch('trackback') == 'true') {
             header('Content-Type: text/xml');
-            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Trackbacks');
             $trackback = $model->NewTrackback($id, $url, $title, $excerpt, $blogname, $ip);
             if (Jaws_Error::IsError($trackback)) {
                 return str_replace('#MESSAGE#', $trackback->GetMessage(), $tb_msg_error);
@@ -81,7 +81,7 @@ class Blog_Actions_Trackbacks extends Blog_HTML
     function ShowTrackbacks($id)
     {
         if ($this->gadget->registry->fetch('trackback') == 'true') {
-            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model');
+            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Trackbacks');
             $trackbacks = $model->GetTrackbacks($id);
             $tpl = $this->gadget->loadTemplate('Trackbacks.html');
             $tpl->SetBlock('trackbacks');
