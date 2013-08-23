@@ -86,7 +86,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
         $imgcol =& Piwi::CreateWidget('Column', _t('EMBLEMS_RESULT'));
         $datagrid->AddColumn($imgcol);
 
-        $statuscol =& Piwi::CreateWidget('Column', _t('EMBLEMS_PUBLISHED'));
+        $statuscol =& Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'));
         $datagrid->AddColumn($statuscol);
 
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
