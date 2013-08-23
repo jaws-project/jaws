@@ -94,7 +94,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                         'updated'     => (bool)$gUpdated,
                         'disabled'    => strpos($disabled_gadgets, ",$gadget,") !==false,
                         'has_layout'  => $objGadget->_has_layout,
-                        'has_html'    => file_exists($gDir . $gadget . DIRECTORY_SEPARATOR . 'HTML.php'),
+                        'has_html'    => !is_null($objGadget->default_action),
                 );
             }
 
