@@ -129,7 +129,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.9.0', '<')) {
             // Update layout actions
-            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('Blog', 'EntriesByCategory', 'CategoryEntries', '');
             }
