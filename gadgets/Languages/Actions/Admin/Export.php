@@ -25,13 +25,15 @@ class Languages_Actions_Admin_Export extends Jaws_Gadget_HTML
         $tmpDir = sys_get_temp_dir();
         $tmpFileName = "$lang.tar";
         $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;
-        $res = File_Archive::extract(File_Archive::read(JAWS_DATA. "languages/$lang", $lang),
-                                     File_Archive::toArchive($tmpArchiveName,
-                                                             File_Archive::toFiles())
-                                    );
+        $res = File_Archive::extract(
+            File_Archive::read(JAWS_DATA. "languages/$lang", $lang),
+            File_Archive::toArchive($tmpArchiveName, File_Archive::toFiles())
+        );
         if (!PEAR::isError($res)) {
-            Jaws_Utils::Download($tmpArchiveName, $tmpFileName);
+            return Jaws_Utils::Download($tmpArchiveName, $tmpFileName);
         }
+
         Jaws_Header::Referrer();
     }
+
 }
