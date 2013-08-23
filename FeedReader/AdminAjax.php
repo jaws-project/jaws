@@ -21,7 +21,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
     function FeedReader_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
+        $this->_Model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel', 'Feed');
     }
 
     /**
@@ -123,7 +123,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData($offset)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML', 'Feed');
         if (!is_numeric($offset)) {
             $offset = null;
         }

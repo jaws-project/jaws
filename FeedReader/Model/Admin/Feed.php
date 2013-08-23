@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'gadgets/FeedReader/Model.php';
+require_once JAWS_PATH . 'gadgets/FeedReader/Model/Feed.php';
 /**
  * FeedReader Gadget
  *
@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'gadgets/FeedReader/Model.php';
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_AdminModel extends FeedReader_Model
+class FeedReader_Model_Admin_Feed extends FeedReader_Model_Feed
 {
     /**
      * Inserts a new feed site

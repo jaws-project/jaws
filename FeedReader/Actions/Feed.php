@@ -1,15 +1,16 @@
 <?php
 /**
- * FeedReader Layout HTML file (for layout purposes)
+ * FeedReader Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    FeedReader
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh  <afz@php.net>
- * @copyright  2004-2013 Jaws Development Group
+ * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
+class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
 {
     /**
      * Get Display action params
@@ -17,10 +18,10 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  array list of Display action params
      */
-    function DisplayLayoutParams()
+    function DisplayFeedsLayoutParams()
     {
         $result = array();
-        $rModel = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
+        $rModel = $GLOBALS['app']->LoadGadget('FeedReader', 'Model', 'Feed');
         $sites = $rModel->GetFeeds();
         if (!Jaws_Error::isError($sites)) {
             $psites = array();
@@ -44,9 +45,13 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
      * @param   int     $id     Feed site ID
      * @return  string  XHTML content with all titles and links of feed sites
      */
-    function Display($id = 0)
+    function DisplayFeeds($id = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'Model');
+        if(empty($id)) {
+            $id = $this->gadget->registry->fetch('default_feed');
+        }
+
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'Model', 'Feed');
         $site = $model->GetFeed($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
             return false;
@@ -78,7 +83,7 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         $res = $parser->fetch($site['url']);
         if (PEAR::isError($res)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['._t('FEEDREADER_NAME').']: ',
-                                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::filter($site['url'])), '');
+                _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::filter($site['url'])), '');
         }
 
         if (!isset($parser->feed)) {
@@ -93,18 +98,18 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
             case 1:
                 $tpl->SetVariable('feed_title', Jaws_XSS::filter($parser->feed['channel']['title']));
                 $tpl->SetVariable('feed_link',
-                      Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                    Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
                 break;
             case 2:
                 $tpl->SetVariable('feed_title', Jaws_XSS::filter($site['title']));
                 $tpl->SetVariable('feed_link',
-                      Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                    Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
                 break;
             default:
         }
         $tpl->SetVariable('marquee_direction', (($site['view_type']==2)? 'down' :
-                                               (($site['view_type']==3)? 'left' :
-                                               (($site['view_type']==4)? 'right' : 'up'))));
+            (($site['view_type']==3)? 'left' :
+                (($site['view_type']==4)? 'right' : 'up'))));
         if (isset($parser->feed['items'])) {
             foreach($parser->feed['items'] as $index => $item) {
                 $tpl->SetBlock("feedreader/$block/item");
@@ -120,5 +125,67 @@ class FeedReader_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock("feedreader/$block");
         $tpl->ParseBlock('feedreader');
         return $tpl->Get();
+    }
+
+    /**
+     * Gets the dcDate of an item
+     *
+     * From planet-php.net source code
+     *
+     * @access  private
+     * @param   array    $item          Item to look for the date
+     * @param   int      $offset        Offset of item(index)
+     * @param   bool     $returnNull    Should it return false?
+     * @return  string   The correct dcDate
+     */
+    function GetDCDate($item, $nowOffset = 0, $returnNull = false)
+    {
+        if (isset($item['dc']['date'])) {
+            $dcdate = $this->FixDate($item['dc']['date']);
+        } elseif (isset($item['pubdate'])) {
+            $dcdate = $this->FixDate($item['pubdate']);
+        } elseif (isset($item['issued'])) {
+            $dcdate = $this->FixDate($item['issued']);
+        } elseif (isset($item['created'])) {
+            $dcdate = $this->FixDate($item['created']);
+        } elseif (isset($item['modified'])) {
+            $dcdate = $this->FixDate($item['modified']);
+        } elseif ($returnNull) {
+            return NULL;
+        } else {
+            //TODO: Find a better alternative here
+            $dcdate = gmdate('Y-m-d H:i:s O', time() + $nowOffset);
+        }
+        return $dcdate;
+    }
+
+    /**
+     * Fixes the date format
+     *
+     * @access  private
+     * @param   string  $date  Date to fix
+     * @return  string  New date format
+     */
+    function FixDate($date)
+    {
+        $date =  preg_replace('/([0-9])T([0-9])/', '$1 $2', $date);
+        $date =  preg_replace('/([\+\-][0-9]{2}):([0-9]{2})/', '$1$2', $date);
+        $date =  gmdate('Y-m-d H:i:s O', strtotime($date));
+        return $date;
+    }
+
+    /**
+     * Gets requested feed
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function GetFeed()
+    {
+        $request =& Jaws_Request::getInstance();
+        $id = $request->get('id', 'get');
+
+        $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'HTML', 'Feed');
+        return $layoutGadget->DisplayFeeds($id);
     }
 }

@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_AdminHTML extends Jaws_Gadget_HTML
+class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_HTML
 {
     /**
      * Prepares data of feed sites for data grid
@@ -21,7 +21,7 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetFeedSites($offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel', 'Feed');
 
         $sites = $model->GetFeeds(false, 12, $offset);
         if (Jaws_Error::IsError($sites)) {
@@ -38,12 +38,12 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
 
             $actions = '';
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                        "javascript: editFeed(this, '".$site['id']."');",
-                                        STOCK_EDIT);
+                "javascript: editFeed(this, '".$site['id']."');",
+                STOCK_EDIT);
             $actions.= $link->Get().'&nbsp;';
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                        "javascript: deleteFeed(this, '".$site['id']."');",
-                                        STOCK_DELETE);
+                "javascript: deleteFeed(this, '".$site['id']."');",
+                STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
 
             $siteData['actions'] = $actions;
@@ -61,7 +61,7 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel', 'Feed');
         $total = $model->TotalOfData('feeds');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -89,7 +89,7 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML template content for administration UI
      */
-    function Admin()
+    function ManageFeeds()
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->loadTemplate('FeedReader.html');
@@ -168,7 +168,7 @@ class FeedReader_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_cancel', $btncancel->Get());
 
         $btnsave =& Piwi::CreateWidget('Button', 'btn_save',
-                                       _t('GLOBAL_SAVE'), STOCK_SAVE);
+            _t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnsave->AddEvent(ON_CLICK, 'updateFeed();');
         $tpl->SetVariable('btn_save', $btnsave->Get());
 

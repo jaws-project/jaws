@@ -11,10 +11,12 @@
  */
 $actions = array();
 
-$actions['Display'] = array(
+$actions['DisplayFeeds'] = array(
     'layout' => true,
     'parametric' => true,
+    'file'   => 'Feed'
 );
 $actions['GetFeed'] = array(
     'normal' => true,
+    'file'   => 'Feed'
 );

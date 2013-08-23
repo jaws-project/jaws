@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_Model extends Jaws_Gadget_Model
+class FeedReader_Model_Feed extends Jaws_Gadget_Model
 {
     /**
      * Gets list of possible feed sites
