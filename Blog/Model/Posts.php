@@ -68,7 +68,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $ids[] = $r['id'];
         }
         $result = null;
-        $categories = $this->GetCategoriesInEntries($ids);
+        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+        $categories = $model->GetCategoriesInEntries($ids);
         foreach ($categories as $cat) {
             $entries[$cat['entry_id']]['categories'][] = array('id'       => $cat['id'],
                 'name'     => $cat['name'],

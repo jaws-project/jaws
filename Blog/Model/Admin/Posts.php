@@ -74,7 +74,6 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                 return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), _t('BLOG_NAME'));
             }
 
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
             $model->MakeCategoryAtom($category_id, $catAtom, true);
             $model->MakeCategoryRSS($category_id, $catAtom, true);
         }
@@ -228,7 +227,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
         }
 
-        $e = $this->GetEntry($post_id);
+        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+        $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
@@ -280,8 +280,9 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $this->MakeAtom(true);
-            $this->MakeRSS (true);
+            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+            $model->MakeAtom(true);
+            $model->MakeRSS (true);
         }
 
         if (!is_array($categories)) {
@@ -298,7 +299,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                 $this->AddCategoryToEntry($post_id, $category);
             } else {
                 if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-                    $catAtom = $this->GetCategoryAtomStruct($category);
+                    $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+                    $catAtom = $model->GetCategoryAtomStruct($category);
                     $this->MakeCategoryAtom($category, $catAtom, true);
                     $this->MakeCategoryRSS($category, $catAtom, true);
                 }
