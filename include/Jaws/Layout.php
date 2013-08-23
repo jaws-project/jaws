@@ -128,7 +128,7 @@ class Jaws_Layout
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
 
-        $this->_Model = $GLOBALS['app']->loadGadget('Layout', 'Model');
+        $this->_Model = $GLOBALS['app']->loadGadget('Layout', 'Model', 'Layout');
         if (Jaws_Error::isError($this->_Model)) {
             Jaws_Error::Fatal("Can't load layout model");
         }
