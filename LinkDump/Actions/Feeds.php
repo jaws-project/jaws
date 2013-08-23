@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_Actions_Feeds extends LinkDump_HTML
+class LinkDump_Actions_Feeds extends Jaws_Gadget_HTML
 {
     /**
      * Displays or writes a RDF feed for the link group

@@ -1,25 +1,20 @@
-<!-- BEGIN archive -->
-<div class="gadget links_archive" id="linkdump_archive_{gid}">
-  <h2>{title}&nbsp;-&nbsp;{name}</h2>
+<!-- BEGIN category -->
+<div class="gadget links_category" id="linkdump_category_{gid}">
+  <h2><a href="{url_category}">{title}&nbsp;-&nbsp;{name}</a></h2>
   <div class="content">
     <ul>
     <!-- BEGIN link -->
     <li>
       <div>
-        <span><a href="{visit_url}" target="{target}" title="{url}">{title}</a>
-              <small>[{lbl_clicks}: {clicks}]</small>
+        <span>
+          <a href="{visit_url}" target="{target}" title="{url}">{title}</a><small>[{lbl_clicks}: {clicks}]</small>
         </span>
         <p>{description}</p>
       </div>
     </li>
     <!-- END link -->
     <!-- BEGIN list -->
-    <li>
-      <div>
-        <span>{title}</span>
-        <p>{description}</p>
-      </div>
-    </li>
+    <li><div><span>{title}</span><p>{description}</p></div></li>
     <!-- END list -->
     </ul>
     <div class="linkdump_action">
@@ -27,4 +22,4 @@
     </div>
   </div>
 </div>
-<!-- END archive -->
+<!-- END category -->

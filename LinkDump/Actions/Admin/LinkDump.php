@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_AdminHTML extends Jaws_Gadget_HTML
+class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_HTML
 {
     /**
      * Administration section
@@ -17,7 +17,7 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML template content
      */
-    function Admin()
+    function LinkDump()
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->loadTemplate('LinkDump.html');
@@ -66,4 +66,5 @@ class LinkDump_AdminHTML extends Jaws_Gadget_HTML
         $tpl->ParseBlock('linkdump');
         return $tpl->Get();
     }
+
 }

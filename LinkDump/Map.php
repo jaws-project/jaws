@@ -9,21 +9,16 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('ShowCategories', 'links');
-$maps[] = array('ShowCategories', 'links/groups');
+$maps[] = array('Categories', 'links');
+$maps[] = array('Categories', 'links/groups');
 $maps[] = array(
-    'Archive',
-    'links/archive/{id}',
-    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
-);
-$maps[] = array(
-    'Group',
-    'links/group/{id}',
+    'Category',
+    'links/groups/{id}',
     array('id' =>  '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
     'Tag',
-    'links/tag/{tag}',
+    'links/tags/{tag}',
     array('tag' =>  '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
