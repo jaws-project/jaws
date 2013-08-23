@@ -19,8 +19,8 @@ class Launcher_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls  = array();
-        $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model');
+        $urls = array();
+        $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model', 'Scripts');
         $scripts = $model->GetScripts();
         if (!Jaws_Error::isError($scripts)) {
             foreach ($scripts as $script) {
@@ -37,5 +37,4 @@ class Launcher_Hooks_Menu extends Jaws_Gadget_Hook
 
         return $urls;
     }
-
 }

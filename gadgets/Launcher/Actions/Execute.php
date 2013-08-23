@@ -19,8 +19,8 @@ class Launcher_Actions_Execute extends Jaws_Gadget_HTML
      */
     function ExecuteLayoutParams()
     {
-        $result  = array();
-        $model   = $GLOBALS['app']->LoadGadget('Launcher', 'Model');
+        $result = array();
+        $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model', 'Scripts');
         $scripts = $model->GetScripts();
         if (!Jaws_Error::IsError($scripts)) {
             $pscripts = array();
@@ -44,7 +44,7 @@ class Launcher_Actions_Execute extends Jaws_Gadget_HTML
      * @param   string  $script     script name
      * @return  string  Script output content
      */
-    function Execute($script = '')
+    function Execute($script = 'defaultscript')
     {
         $params = null;
         if (empty($script)) {
@@ -67,5 +67,4 @@ class Launcher_Actions_Execute extends Jaws_Gadget_HTML
 
         return new Jaws_Error(_t('LAUNCHER_ERROR_SCRIPT_NOT_EXISTS', $script));
     }
-
 }
