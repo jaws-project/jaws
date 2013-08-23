@@ -109,7 +109,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
 
             // Update layout actions
-            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel');
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('Users', 'LoginBox', 'LoginBox', 'Login');
                 $layoutModel->EditGadgetLayoutAction('Users', 'LoginLinks', 'LoginLinks', 'Login');
