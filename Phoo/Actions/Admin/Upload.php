@@ -36,7 +36,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
         $phooFieldset->SetDirection('vertical');
         $phooFieldset->SetId('phoo_fieldset');
         $phooForm =& Piwi::CreateWidget('Form',
-            BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos',
+            BASE_SCRIPT . '?gadget=Phoo',
             'post',
             'multipart/form-data');
         $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'MAX_FILE_SIZE', '15000000'));
@@ -110,7 +110,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
         $album_data = $aModel->getAlbumInfo($album);
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $GLOBALS['app']->Session->PushLastResponse($album_data->getMessage());
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
             exit;
         }
         for ($i = 1; $i <= count($files); $i++) {
@@ -138,14 +138,14 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
                 $res = $pModel->AddEntryToAlbum($img, $album);
                 if (Jaws_Error::IsError($res)) {
                     ///FIXME: This is a unacceptable solution
-                    Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
+                    Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
                 }
             }
         }
 
         $GLOBALS['app']->Session->SetAttribute('failures', $failures);
         if (empty($extra_params)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album=' . $album);
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album=' . $album);
         } else {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
         }

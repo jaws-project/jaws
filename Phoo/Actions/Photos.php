@@ -13,6 +13,18 @@
  */
 class Phoo_Actions_Photos extends Jaws_Gadget_HTML
 {
+
+    /**
+     * Displays an index of pictures in an album.
+     *
+     * @access  public
+     * @return  string   XHTML template content
+     */
+    function ViewAlbum()
+    {
+        return $this->ViewAlbumPage();
+    }
+
     /**
      * Displays a paged index of pictures in an album.
      * TODO: Test it, maybe we need some modifications in ViewImage...

@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('DefaultAction', 'photos');
+$maps[] = array('AlbumList', 'photos');
 $maps[] = array('ViewAlbum', 'photos/album/{id}');
 $maps[] = array('ViewAlbumPage', 'photos/album/{id}/page/{page}');
 $maps[] = array('ViewImage', 'photos/album/{albumid}/photo/{id}[/page/{page}][/order/{order}]');

@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_Import extends Phoo_AdminHTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
         $iModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Import');
-        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $items = $iModel->GetItemsToImport();
         if (count($items) > 0) {
             $tpl->SetBlock('import/pictures');

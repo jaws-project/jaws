@@ -17,7 +17,11 @@ $actions['PhotoblogPortrait'] = array(
 $actions['AlbumList'] = array(
     'normal' => true,
     'layout' => true,
-    'file' => 'Album',
+    'file' => 'Albums',
+);
+$actions['ViewAlbum'] = array(
+    'normal' => true,
+    'file' => 'Photos',
 );
 $actions['ViewAlbumPage'] = array(
     'normal' => true,

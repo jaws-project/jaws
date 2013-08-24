@@ -34,7 +34,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
             $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
@@ -55,6 +55,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
                     // original image
                     $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
                     $objImage->rotate(-90);
+                    _log_var_dump($objImage);
                     $res = $objImage->save();
                     $objImage->free();
                     if (Jaws_Error::IsError($res)) {

@@ -54,7 +54,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_AdminHTML
         $image = $model->GetImageEntry($iGet['image']);
         if (Jaws_Error::IsError ($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
-            JawsHeader::Location ("admin.php?gadget=Phoo&action=Admin");
+            JawsHeader::Location ("admin.php?gadget=Phoo");
         }
         $request =& Jaws_Request::getInstance();
         $album   = $request->get('album', 'get');

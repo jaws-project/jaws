@@ -102,7 +102,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=Admin&album='.$album);
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
     }
 
     /**
@@ -126,7 +126,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $album = $model->GetAlbumInfo($id);
         if (Jaws_Error::IsError($album) || empty($album)) {
             ///FIXME the error msg never has a chance to show
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
         $tpl = $this->gadget->loadTemplate('EditAlbum.html');
@@ -226,7 +226,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $foo = $model->DeleteAlbum($album);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }
 
 }

@@ -254,7 +254,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=Admin');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
         $id             = $image['id'];
@@ -413,6 +413,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $model->DeletePhoto($post['image']);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album='.$post['fromalbum']);
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);
     }
 }

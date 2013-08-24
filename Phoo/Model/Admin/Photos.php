@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH . 'gadgets/Phoo/Model.php';
 /**
  * Phoo Gadget
  *
@@ -10,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Model_Admin_Photos extends Jaws_Gadget_Model
+class Phoo_Model_Admin_Photos extends Phoo_Model
 {
     /**
      * Update the information of an image

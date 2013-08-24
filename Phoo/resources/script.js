@@ -24,7 +24,7 @@ var PhooCallback = {
 
 function gotoLocation(album)
 {
-    window.location= base_script + '&action=AdminPhotos&album=' + album;
+    window.location= base_script + '&album=' + album;
 }
 
 /**
