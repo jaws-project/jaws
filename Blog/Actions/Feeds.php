@@ -176,63 +176,67 @@ class Blog_Actions_Feeds extends Blog_HTML
         return $xml;
     }
 
+
     /**
-     * Displays a link to blog RSS feed
+     * Get then FeedsLink action params
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  array list of the Banners action params
      */
-    function RSSLink()
+    function FeedsLinkLayoutParams()
     {
-        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
-        $tpl->SetBlock('rss_link');
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));
-        $tpl->ParseBlock('rss_link');
-        return $tpl->Get();
+        $result = array();
+        $result[] = array(
+            'title' => _t('FEEDS_CONTENT_TYPE'),
+            'value' => array(
+                'entry' => _t('FEEDS_CONTENT_ENTRY'),
+                'comment' => _t('FEEDS_CONTENT_COMMENT'),
+            )
+        );
+
+        $result[] = array(
+            'title' => _t('FEEDS_LINK_TYPE'),
+            'value' => array(
+                'RSS' => _t('RSSLINK') ,
+                'Atom' => _t('ATOMLINK') ,
+            )
+        );
+        return $result;
     }
 
     /**
-     * Displays a link to blog Atom feed
+     * Displays a link to blog feed
      *
      * @access  public
+     * @param   string  $contentType (entry | comment)
+     * @param   string  $linkType (RSS | Atom)
      * @return  string  XHTML template content
      */
-    function AtomLink()
+    function FeedsLink($contentType, $linkType)
     {
         $tpl = $this->gadget->loadTemplate('XMLLinks.html');
-        $tpl->SetBlock('atom_link');
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'));
-        $tpl->ParseBlock('atom_link');
+        if ($contentType == 'comment') {
+            if ($linkType == 'RSS') {
+                $tpl->SetBlock('recentcomments_rss_link');
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsRSS'));
+                $tpl->ParseBlock('recentcomments_rss_link');
+            } else if ($linkType == 'Atom') {
+                $tpl->SetBlock('recentcomments_atom_link');
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsAtom'));
+                $tpl->ParseBlock('recentcomments_atom_link');
+            }
+        } else if($contentType=='entry'){
+            if ($linkType == 'RSS') {
+                $tpl->SetBlock('rss_link');
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));
+                $tpl->ParseBlock('rss_link');
+            } else if ($linkType == 'Atom') {
+                $tpl->SetBlock('atom_link');
+                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'));
+                $tpl->ParseBlock('atom_link');
+            }
+        }
         return $tpl->Get();
     }
 
-    /**
-     * Displays a link to RSS feed for blog most recent comments
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function RecentCommentsRSSLink()
-    {
-        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
-        $tpl->SetBlock('recentcomments_rss_link');
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsRSS'));
-        $tpl->ParseBlock('recentcomments_rss_link');
-        return $tpl->Get();
-    }
-
-    /**
-     * Displays a link to Atom feed for blog most recent comments
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function RecentCommentsAtomLink()
-    {
-        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
-        $tpl->SetBlock('recentcomments_atom_link');
-        $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RecentCommentsAtom'));
-        $tpl->ParseBlock('recentcomments_atom_link');
-        return $tpl->Get();
-    }
 }

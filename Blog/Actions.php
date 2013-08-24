@@ -76,20 +76,9 @@ $actions['Calendar'] = array(
     'layout' => true,
     'file'   => 'DatePosts',
 );
-$actions['RSSLink'] = array(
+$actions['FeedsLink'] = array(
     'layout' => true,
-    'file'   => 'Feeds',
-);
-$actions['AtomLink'] = array(
-    'layout' => true,
-    'file'   => 'Feeds',
-);
-$actions['RecentCommentsRSSLink'] = array(
-    'layout' => true,
-    'file'   => 'Feeds',
-);
-$actions['RecentCommentsAtomLink'] = array(
-    'layout' => true,
+    'parametric' => true,
     'file'   => 'Feeds',
 );
 $actions['ShowTagCloud'] = array(
