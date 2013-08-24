@@ -50,7 +50,7 @@ class LinkDump_Actions_TagCloud extends Jaws_Gadget_HTML
             $tpl->SetVariable('size', (int)$fsize);
             $tpl->SetVariable('tagname',  $value['tag']);
             $tpl->SetVariable('frequency', $value['howmany']);
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Tag', array('tag' => $value['tag'])));
+            $tpl->SetVariable('url', $this->gadget->urlMap('Tag', array('tag' => $value['tag'])));
             $tpl->SetVariable('category', $value['tag_id']);
             $tpl->ParseBlock('tagcloud/tag');
         }

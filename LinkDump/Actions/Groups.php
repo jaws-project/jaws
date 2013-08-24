@@ -129,7 +129,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_HTML
         foreach ($groups as $group) {
             $tpl->SetBlock('categories/item');
             $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-            $tpl->SetVariable('url',   $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Group', array('id' => $gid)));
+            $tpl->SetVariable('url',   $this->gadget->urlMap('Category', array('id' => $gid)));
             $tpl->SetVariable('title', $group['title']);
             $tpl->ParseBlock('categories/item');
         }

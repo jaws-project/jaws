@@ -45,7 +45,7 @@ class LinkDump_Actions_Tag extends Jaws_Gadget_HTML
                 $tpl->SetVariable('clicks',      $link['clicks']);
                 $tpl->SetVariable('lbl_clicks',  _t('LINKDUMP_LINKS_CLICKS'));
                 $lid = empty($link['fast_url'])? $link['id'] : $link['fast_url'];
-                $tpl->SetVariable('visit_url', $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $lid)));
+                $tpl->SetVariable('visit_url',   $this->gadget->urlMap('Link', array('id' => $lid)));
                 $tpl->ParseBlock('tag/link');
             }
         }
