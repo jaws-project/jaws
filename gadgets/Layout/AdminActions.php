@@ -12,34 +12,22 @@ $actions = array();
 
 $actions['ChangeTheme'] = array(
     'standalone' => true,
-    'file' => 'Layout',
+    'file' => 'Theme',
 );
 $actions['LayoutManager'] = array(
     'standalone' => true,
     'normal' => true,
     'file' => 'Layout',
 );
-$actions['LayoutBuilder'] = array(
-    'normal' => true,
-    'file' => 'Layout',
-);
-$actions['SetLayoutMode'] = array(
-    'normal' => true,
-    'file' => 'Layout',
-);
 $actions['EditElementAction'] = array(
     'standalone' => true,
-    'file' => 'Layout',
+    'file' => 'Element',
 );
 $actions['ChangeDisplayWhen'] = array(
     'standalone' => true,
-    'file' => 'Layout',
+    'file' => 'When',
 );
 $actions['AddLayoutElement'] = array(
     'standalone' => true,
-    'file' => 'Layout',
-);
-$actions['SaveAddLayoutElement'] = array(
-    'normal' => true,
-    'file' => 'Layout',
+    'file' => 'Element',
 );

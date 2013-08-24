@@ -22,7 +22,6 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function Layout_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
     }
 
     /**
@@ -38,7 +37,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
     {
-        $result = $this->_Model->MoveElement(
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $result = $model->MoveElement(
             $item,
             $old_section,
             (int)$old_position,
@@ -65,7 +65,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteElement($item, $section, $position)
     {
-        $result = $this->_Model->DeleteElement($item, $section, $position);
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $result = $model->DeleteElement($item, $section, $position);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -85,7 +86,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function ChangeDisplayWhen($item, $dw) 
     {
-        $res = $this->_Model->ChangeDisplayWhen($item, $dw);
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $res = $model->ChangeDisplayWhen($item, $dw);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
@@ -103,7 +105,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGadgetActions($gadget)
     {
-        return $this->_Model->GetGadgetLayoutActions($gadget);
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        return $model->GetGadgetLayoutActions($gadget);
     }
 
     /**
@@ -119,16 +122,17 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     {
         $res = array();
         $id = false;
-        $actions = $this->_Model->GetGadgetLayoutActions($gadget, true);
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $id = $this->_Model->NewElement('main', $gadget, $action, $params, $actions[$action]['file']);
+            $id = $model->NewElement('main', $gadget, $action, $params, $actions[$action]['file']);
             $id = Jaws_Error::IsError($id)? false : $id;
         }
         if ($id === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
-            $el = $this->_Model->GetElement($id);
+            $el = $model->GetElement($id);
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             $el['tname'] = $info->title;
@@ -171,9 +175,10 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function EditElementAction($item, $gadget, $action, $params) 
     {
         $res = false;
-        $actions = $this->_Model->GetGadgetLayoutActions($gadget, true);
+        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $res = $this->_Model->EditElementAction($item, $action, $params, $actions[$action]['file']);
+            $res = $model->EditElementAction($item, $action, $params, $actions[$action]['file']);
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {
