@@ -25,7 +25,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_HTML
         $tpl->SetBlock('moblog');
         $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Moblog');
         $moblog = $model->GetMoblog();
         if (!Jaws_Error::IsError($moblog)) {
             $objDate = $GLOBALS['app']->loadDate();

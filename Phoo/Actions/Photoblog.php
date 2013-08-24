@@ -26,7 +26,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
 
         $photoid = $request->get('photoid', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photoblog');
         $entries = $model->GetAsPortrait($photoid);
         if (Jaws_Error::IsError($entries)) {
             return '';

@@ -28,8 +28,10 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $album   = $request->get('album', 'get');
         $post    = $request->get(array('date', 'album'), 'post');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $albums = $model->GetAlbums('createtime', 'ASC');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
+        $pnModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $albums = $aModel->GetAlbums('createtime', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetBlock('phoo/photos');
@@ -38,9 +40,9 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
             $datecombo->AddOption('&nbsp;', '');
-            $mindate = $model->GetMinDate();
+            $mindate = $pnModel->GetMinDate();
             if ($mindate) {
-                $maxdate = $model->GetMaxDate();
+                $maxdate = $pnModel->GetMaxDate();
                 $mindateArray = explode('/', $mindate);
                 $maxdateArray = explode('/', $maxdate);
                 for ($year = $maxdateArray[2]; $year >= $mindateArray[2]; $year--) {
@@ -133,7 +135,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
                 }
 
                 foreach ($r_album as $albumId) {
-                    $album = $model->GetAlbumImages($albumId, null, $day, $month, $year);
+                    $album = $pnModel->GetAlbumImages($albumId, null, $day, $month, $year);
                     if (!Jaws_Error::IsError($album)) {
                         if ((isset($album['images']) &&
                                 !is_array($album['images'])) &&
@@ -243,12 +245,13 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManagePhotos');
         $this->AjaxMe('script.js');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
 
         $request =& Jaws_Request::getInstance();
         $get     = $request->get(array('image', 'album'), 'get');
 
-        $image = $model->GetImageEntry((int)$get['image']);
+        $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=Admin');
@@ -301,7 +304,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $tpl->SetVariable('description', $editor->Get());
 
         $albumchecks =& Piwi::CreateWidget('CheckButtons', 'album', 'vertical');
-        $albumsbyname = $model->GetAlbums('name', 'ASC');
+        $albumsbyname = $aModel->GetAlbums('name', 'ASC');
         if (!Jaws_Error::IsError($albumsbyname) && !empty($albumsbyname)) {
             foreach ($albumsbyname as $a) {
                 $albumchecks->AddOption($a['name'], $a['id']);
@@ -386,7 +389,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
 
         $description = $request->get('description', 'post', false);
         // Update photo
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $res = $model->UpdateEntry($post['image'], $post['title'],
             $description, $allow_comments,
             $published);
@@ -408,7 +411,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $request =& Jaws_Request::getInstance();
         $post    = $request->get(array('image', 'fromalbum'), 'post');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $model->DeletePhoto($post['image']);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos&album='.$post['fromalbum']);
     }

@@ -31,8 +31,9 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
         $id = !empty($get['id'])? $get['id'] : '0';
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $album = $model->GetAlbumImages($id, $page);
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $album = $pModel->GetAlbumImages($id, $page);
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
             if ($id == '0') {
@@ -73,7 +74,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
             $tpl->ParseBlock('ViewAlbumPage/photos');
 
             // Pager
-            $pager = $model->GetAlbumPagerNumbered($id, $page);
+            $pager = $aModel->GetAlbumPagerNumbered($id, $page);
 
             if (count($pager) > 0) {
                 $tpl->SetBlock('ViewAlbumPage/pager');
@@ -154,8 +155,9 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
         $id      = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');
         $albumid = !is_null($albumid)? $albumid : (!empty($get['albumid'])? $get['albumid'] : '0');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $image = $model->GetImage($id, $albumid);
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $sModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Settings');
+        $image = $pModel->GetImage($id, $albumid);
         if (Jaws_Error::IsError($image) || empty($image)) {
             return Jaws_HTTPError::Get(404);
         }
@@ -182,7 +184,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
         $tpl->SetVariable('height',      $imgData[1]);
 
         // show if the original was kept
-        $settings = $model->GetSettings();
+        $settings = $sModel->GetSettings();
         if ($settings['keep_original'] == 'true') {
             $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
         } else {

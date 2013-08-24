@@ -20,7 +20,8 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
      */
     function BrowsePhoo()
     {
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $tpl = $this->gadget->loadTemplate('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
 
@@ -33,7 +34,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
         $request =& Jaws_Request::getInstance();
         $album   = $request->get('album', 'get');
         $post    = $request->get(array('date', 'album'), 'post');
-        $albums  = $model->GetAlbums('createtime','ASC');
+        $albums  = $aModel->GetAlbums('createtime','ASC');
 
         // TODO set default value for change page address to correct location after uploading image
         $extraParams = '&amp;';
@@ -73,9 +74,9 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
             $datecombo->AddOption ('&nbsp;','');
-            $mindate = $model->GetMinDate();
+            $mindate = $pModel->GetMinDate();
             if ($mindate) {
-                $maxdate = $model->GetMaxDate();
+                $maxdate = $pModel->GetMaxDate();
                 $mindateArray = explode('/', $mindate);
                 $maxdateArray = explode('/', $maxdate);
                 for ($year = $maxdateArray[2]; $year >= $mindateArray[2]; $year--) {
@@ -165,7 +166,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
                 }
 
                 foreach ($r_album as $albumId) {
-                    $album = $model->GetAlbumImages($albumId, null, $day, $month, $year);
+                    $album = $aModel->GetAlbumImages($albumId, null, $day, $month, $year);
                     if (!Jaws_Error::IsError($album) && !empty($album)) {
                         if ((isset($album['images']) && !is_array($album['images'])) &&
                            (count($album['images']) == 0) && (checkdate($month, 1, $year))) {

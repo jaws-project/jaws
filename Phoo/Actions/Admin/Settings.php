@@ -42,8 +42,9 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
         $reset =& Piwi::CreateWidget('Button', 'reset', _t('GLOBAL_RESET'), STOCK_RESET);
         $reset->setReset(true);
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
-        $settings = $model->GetSettings();
+        $sModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Settings');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $settings = $sModel->GetSettings();
 
         // Default View
         $tpl->SetVariable('label', _t('PHOO_DEFAULT_VIEW'));
@@ -119,7 +120,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
         $exifCombo->SetDefault($settings['show_exif_info']);
 
         // Moblog
-        $albums = $model->GetAlbums('name', 'ASC');
+        $albums = $aModel->GetAlbums('name', 'ASC');
         $moblogAlbumCombo =& Piwi::CreateWidget('Combo', 'moblog_album', _t('PHOO_MOBLOG_ALBUM'));
         $moblogAlbumCombo->setContainerClass('oneline');
         $moblogAlbumCombo->AddOption('&nbsp;', '');
@@ -220,7 +221,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
             'show_exif_info', 'keep_original', 'thumbnail_limit',
             'comment_status', 'albums_order_type', 'photos_order_type'), 'post');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Settings');
         $model->SaveSettings(
             $post['default_action'],
             $post['published'],

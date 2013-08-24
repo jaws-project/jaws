@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
         $request =& Jaws_Request::getInstance();
         $album = $request->get('album', 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $tpl = $this->gadget->loadTemplate('UploadPhotos.html');
         $tpl->SetBlock('upload');
         $tpl->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
@@ -95,8 +95,10 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
      */
     function UploadPhotosStep2()
     {
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $files = $model->UnpackFiles($_FILES);
+        $uModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Upload');
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $files = $uModel->UnpackFiles($_FILES);
 
         $request =& Jaws_Request::getInstance();
         $album   = (int)$request->get('album', 'post');
@@ -105,7 +107,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
         $failures = array();
         $uploadedImages = array();
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $album_data = $model->getAlbumInfo($album);
+        $album_data = $aModel->getAlbumInfo($album);
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $GLOBALS['app']->Session->PushLastResponse($album_data->getMessage());
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
@@ -121,7 +123,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
                 $exploded = explode('.', $filename);
                 $ext  = array_pop($exploded);
                 $name = basename($filename, '.'.$ext);
-                $id = $model->NewEntry($user_id, $files['photo'.$i], $name, '', true, $album_data);
+                $id = $pModel->NewEntry($user_id, $files['photo'.$i], $name, '', true, $album_data);
                 if (!Jaws_Error::IsError($id)) {
                     $uploadedImages[] = $id;
                 } else {
@@ -133,7 +135,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
         // Assign to album
         if (count($uploadedImages) > 0) {
             foreach ($uploadedImages as $img) {
-                $res = $model->AddEntryToAlbum($img, $album);
+                $res = $pModel->AddEntryToAlbum($img, $album);
                 if (Jaws_Error::IsError($res)) {
                     ///FIXME: This is a unacceptable solution
                     Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');

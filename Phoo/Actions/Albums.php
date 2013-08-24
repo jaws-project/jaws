@@ -24,7 +24,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();

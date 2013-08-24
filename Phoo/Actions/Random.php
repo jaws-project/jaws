@@ -24,7 +24,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_HTML
     function Random($albumid = null)
     {
         $tpl = $this->gadget->loadTemplate('Random.html');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Random');
         $r = $model->GetRandomImage($albumid);
         if (!Jaws_Error::IsError($r)) {
             $tpl->SetBlock('random_image');

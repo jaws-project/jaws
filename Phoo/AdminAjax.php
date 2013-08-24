@@ -20,7 +20,6 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function Phoo_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
     }
 
     /**
@@ -38,14 +37,17 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $file['tmp_name'] = JAWS_DATA . 'phoo/import/' . $image;
         $file['name'] = $image;
         $file['size'] = @filesize($file['tmp_name']);
-        $album_data = $this->_Model->getAlbumInfo($album);
-        $id = $this->_Model->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
+
+        $aModel = $GLOBALS['app']->loadGadget('Phoo', 'Model', 'Albums');
+        $pModel = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
+        $album_data = $aModel->getAlbumInfo($album);
+        $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
                                 $file,
                                 $name,
                                 '',
                                 false,
                                 $album_data);
-        $res = $this->_Model->AddEntryToAlbum($id, $album);
+        $res = $pModel->AddEntryToAlbum($id, $album);
     }
 
     /**
@@ -69,7 +71,8 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
 
         $request =& Jaws_Request::getInstance();
         $desc = $request->get(2, 'post', false);
-        $this->_Model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
+        $model = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
+        $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

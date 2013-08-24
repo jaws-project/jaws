@@ -100,7 +100,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $post        = $request->get(array('name', 'allow_comments', 'published'), 'post');
         $description = $request->get('description', 'post', false);
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=Admin&album='.$album);
     }
@@ -117,7 +117,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManageAlbums');
         $this->AjaxMe('script.js');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
 
         $request =& Jaws_Request::getInstance();
         $get     = $request->get(array('action', 'album'), 'get');
@@ -205,7 +205,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $description = $request->get('description', 'post', false);
 
         $id = (int)$post['album'];
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
     }
@@ -224,7 +224,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $request =& Jaws_Request::getInstance();
         $album   = (int)$request->get('album', 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $foo = $model->DeleteAlbum($album);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=AdminPhotos');
     }

@@ -25,8 +25,9 @@ class Phoo_Actions_Admin_Import extends Phoo_AdminHTML
         $tpl->SetBlock('import');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel');
-        $items = $model->GetItemsToImport();
+        $iModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Import');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
+        $items = $iModel->GetItemsToImport();
         if (count($items) > 0) {
             $tpl->SetBlock('import/pictures');
             $tpl->SetVariable('ready_to_import', _t('PHOO_READY_TO_IMPORT', count($items)));
@@ -37,7 +38,7 @@ class Phoo_Actions_Admin_Import extends Phoo_AdminHTML
             $tpl->SetVariable ('import_message', _t('PHOO_IMPORT_MESSAGE'));
             $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));
             $first = false;
-            $albums = $model->GetAlbums('name', 'ASC');
+            $albums = $aModel->GetAlbums('name', 'ASC');
             if (!Jaws_Error::IsError($albums) && !empty($albums)) {
                 foreach ($albums as $a) {
                     if (!$first) {
