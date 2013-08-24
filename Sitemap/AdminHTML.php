@@ -49,8 +49,6 @@ class Sitemap_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('shortname_error',   _t('SITEMAP_ERROR_SHORTNAME_ERROR'));
         $tpl->SetVariable('menubar', $this->Menubar(''));
         
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'AdminModel');
-
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
 
         $parent_id =& Piwi::CreateWidget('HiddenEntry', 'id', '');

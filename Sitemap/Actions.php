@@ -12,31 +12,41 @@ $actions = array();
 
 $actions['Display'] = array(
     'normal' => true,
+    'file'   => 'Sitemap'
 );
 $actions['Sitemap'] = array(
     'normal' => true,
+    'file'   => 'Sitemap'
 );
 $actions['SitemapXML'] = array(
     'standalone' => true,
+    'file'   => 'Sitemap'
 );
 $actions['Show'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['ShowWithoutTop'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['TopMenu'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['ShowTwoLevels'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['ShowThreeLevels'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['DisplayLevel'] = array(
     'layout' => true,
+    'file'   => 'Show'
 );
 $actions['Breadcrumb'] = array(
     'layout' => true,
+    'file'   => 'Breadcrumb'
 );

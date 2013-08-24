@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Sitemap/Model.php';
+require_once JAWS_PATH . 'gadgets/Sitemap/Model/Sitemap.php';
 /**
  * Sitemap Gadget
  *
@@ -10,7 +10,7 @@ require_once JAWS_PATH . 'gadgets/Sitemap/Model.php';
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_AdminModel extends Sitemap_Model
+class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 {
     /**
      * Gets max position for a given parent...
@@ -37,7 +37,7 @@ class Sitemap_AdminModel extends Sitemap_Model
      * @param   string  $reference  Item type reference
      * @param   string  $change     (Optional) Change frequency. Values can be always, hourly, daily, weekly,
      *                              monthly, yearly, never
-     * @param   string  $priority   (Optional) Priority of this item relative to other items on the site. Can be 
+     * @param   string  $priority   (Optional) Priority of this item relative to other items on the site. Can be
      *                              values from 1 to 5 (only numbers!).
      * @return  bool    True if the sitemap was added without errors, otherwise returns false
      */
@@ -47,16 +47,16 @@ class Sitemap_AdminModel extends Sitemap_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_NEW_ITEM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_NEW_ITEM'), _t('SITEMAP_NAME'));
         }
-        
+
         if (!empty($priority) && is_numeric($priority)) {
             if ($priority < 0 && $priority > 1) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), _t('SITEMAP_NAME'));
-            }            
+            }
         }
 
-        if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly', 
-                                                        'yearly', 'never'))) {
+        if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly',
+                'yearly', 'never'))) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
@@ -91,7 +91,7 @@ class Sitemap_AdminModel extends Sitemap_Model
         $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
         $result = $sitemapTable->select(
             'id:integer', 'parent_id:integer', 'title', 'shortname', 'rfc_type', 'changefreq',
-                'priority:float', 'reference', 'rank:integer', 'createtime', 'updatetime'
+            'priority:float', 'reference', 'rank:integer', 'createtime', 'updatetime'
         )->where('createtime', $now)->fetchRow();
 
         if (Jaws_Error::IsError($result)) {
@@ -144,7 +144,7 @@ class Sitemap_AdminModel extends Sitemap_Model
      * @param   string  $reference  Type reference
      * @param   string  $change     (Optional) Change frequency. Values can be always, hourly, daily, weekly,
      *                              monthly, yearly, never
-     * @param   string  $priority   (Optional) Priority of this item relative to other item on the site. Can be 
+     * @param   string  $priority   (Optional) Priority of this item relative to other item on the site. Can be
      *                              values from 1 to 5 (only numbers!).
      * @return  mixed   True on success and Jaws_Error on failure
      */
@@ -156,16 +156,16 @@ class Sitemap_AdminModel extends Sitemap_Model
             return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
         }
 
-        
+
         if (!empty($priority) && is_numeric($priority)) {
             if ($priority < 0 && $priority > 1) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('SITEMAP_ERROR_PRIORITY_FORMAT'), _t('SITEMAP_NAME'));
-            }            
+            }
         }
 
-        if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly', 
-                                                        'yearly', 'never'))) {
+        if (!empty($change) && !in_array($change, array('hourly', 'daily', 'weekly', 'monthly',
+                'yearly', 'never'))) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SITEMAP_ERROR_CHANGE_FREQ_FORMAT'), _t('SITEMAP_NAME'));
         }
@@ -218,7 +218,7 @@ class Sitemap_AdminModel extends Sitemap_Model
                 return new Jaws_Error(_t('SITEMAP_ERROR_UPDATE'), _t('SITEMAP_NAME'));
             }
         }
-        
+
         $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

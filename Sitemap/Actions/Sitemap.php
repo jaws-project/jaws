@@ -9,19 +9,22 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_HTML extends Jaws_Gadget_HTML
+class Sitemap_Actions_Sitemap extends Jaws_Gadget_HTML
 {
     /**
-     * Default action
+     * Displays content
      *
      * @access  public
      * @return  string  XHTML result
      */
-    function DefaultAction()
+    function Display()
     {
-        return $this->Sitemap();
+        // Get content via 'path'
+        $request =& Jaws_Request::getInstance();
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        return $model->GetContent($request->get('path', 'get'));
     }
-    
+
     /**
      * Returns the HTML of a group of sitemap childs (sub levels)
      *
@@ -55,8 +58,8 @@ class Sitemap_HTML extends Jaws_Gadget_HTML
      */
     function Sitemap()
     {
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
-        
+        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+
         $tpl = $this->gadget->loadTemplate('Sitemap.html');
         $items = $model->GetItems();
         if (count($items) > 0) {
@@ -88,22 +91,10 @@ class Sitemap_HTML extends Jaws_Gadget_HTML
     function SitemapXML()
     {
         header('Content-Type: text/xml; charset=utf-8');
-        $sitemap = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
+        $sitemap = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
         $xml     = $sitemap->makeSitemap(false);
         return $xml;
     }
 
-    /**
-     * Displays content
-     * 
-     * @access  public
-     * @return  string  XHTML result
-     */
-    function Display()
-    {
-        // Get content via 'path'
-        $request =& Jaws_Request::getInstance();
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model');
-        return $model->GetContent($request->get('path', 'get'));
-    }
+
 }

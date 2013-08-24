@@ -9,10 +9,11 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_Model extends Jaws_Gadget_Model
+class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 {
+
     /**
-     * Internal variable to load items 
+     * Internal variable to load items
      *
      * @var     array
      * @access  private
@@ -52,7 +53,7 @@ class Sitemap_Model extends Jaws_Gadget_Model
         if (empty($this->_items)) {
             $this->CreateItemsArray();
         }
- 
+
         if (!$levels) {
             return $this->_items;
         }
@@ -61,7 +62,7 @@ class Sitemap_Model extends Jaws_Gadget_Model
 
         if ($levels == -1) {
             foreach ($this->_items as $item) {
-                $items = array_merge($items, $item['childs']);            
+                $items = array_merge($items, $item['childs']);
             }
         } elseif ($levels > 0) {
             $items = $this->_items;
@@ -72,14 +73,14 @@ class Sitemap_Model extends Jaws_Gadget_Model
 
     /**
      * Returns the given levels depth of items
-     * 
+     *
      * @access  private
      * @param   array       $items      Reference to items array
      * @param   int         $current    Start
      * @param   int         $depth      Depth to return
      * @return  bool        Always true
      */
-    function _GetItemLevels(&$items, $current, $depth) 
+    function _GetItemLevels(&$items, $current, $depth)
     {
         foreach ($items as $i) {
             if ($current < $depth) {
@@ -91,11 +92,11 @@ class Sitemap_Model extends Jaws_Gadget_Model
         return true;
     }
 
-   
+
     /**
-     * Creates a hierachical array based on parents... 
+     * Creates a hierachical array based on parents...
      *
-     * @access  private   
+     * @access  private
      * @return  bool    Always true
      */
     function CreateItemsArray()
@@ -125,7 +126,7 @@ class Sitemap_Model extends Jaws_Gadget_Model
      * @params  int     $parent     Parent ID to extract
      * @return  array   Children array
      */
-    function _CreateItemsArray(&$items, $parent) 
+    function _CreateItemsArray(&$items, $parent)
     {
         $result = array();
         if (isset($items[$parent]) && is_array($items[$parent])) {
@@ -146,7 +147,7 @@ class Sitemap_Model extends Jaws_Gadget_Model
      * Returns a single item by title
      *
      * @access  public
-     * @param   string  $title  Item title 
+     * @param   string  $title  Item title
      * @return  array   Array of item properties
      */
     function GetSitemapItemByTitle($title)
@@ -185,24 +186,24 @@ class Sitemap_Model extends Jaws_Gadget_Model
 
         switch ($result['rfc_type']) {
             case 'StaticPage':
-                        $staticPage = $GLOBALS['app']->loadGadget('StaticPage', 'HTML');
-                        return $staticPage->Page($result['reference']);
-                        break;
+                $staticPage = $GLOBALS['app']->loadGadget('StaticPage', 'HTML');
+                return $staticPage->Page($result['reference']);
+                break;
             case 'Launcher':
-                        $launcher = $GLOBALS['app']->loadGadget('Launcher', 'LayoutHTML');
-                        return $launcher->Display($result['reference']);
-                        break;
+                $launcher = $GLOBALS['app']->loadGadget('Launcher', 'LayoutHTML');
+                return $launcher->Display($result['reference']);
+                break;
             case 'Blog':
-                        $blog = $GLOBALS['app']->loadGadget('Blog', 'HTML');
-                        return $blog->SingleView(true, $result['reference']);
-                        break;
+                $blog = $GLOBALS['app']->loadGadget('Blog', 'HTML');
+                return $blog->SingleView(true, $result['reference']);
+                break;
             default:
-                        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-                        return Jaws_HTTPError::Get(404);
-                        
+                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+                return Jaws_HTTPError::Get(404);
+
         }
     }
-    
+
     /**
      * Creates XML struct of sitemap
      *
@@ -252,21 +253,21 @@ class Sitemap_Model extends Jaws_Gadget_Model
                 }
                 $reference = $row['reference'];
                 if (!preg_match('/^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}'
-                               .'((:[0-9]{1,5})?\/.*)?$/i' ,$reference)) {
+                .'((:[0-9]{1,5})?\/.*)?$/i' ,$reference)) {
                     $reference = $GLOBALS['app']->getSiteURL('/' . $reference);
                 }
                 $lastmod   = $date->ToISO($row['updatetime']);
                 $reference = htmlentities($reference, ENT_QUOTES, 'UTF-8');
-                $reference = str_replace("\n", "", $reference);                
-                
+                $reference = str_replace("\n", "", $reference);
+
                 $xmlString.= "<url>\n";
                 $xmlString.= "   <loc>".$reference."</loc>\n";
                 $xmlString.= "   <lastmod>".$lastmod."</lastmod>\n";
-                
+
                 if (!empty($row['changefreq'])) {
                     $xmlString.= "   <changefreq>".$row['changefreq']."</changefreq>\n";
                 }
-                
+
                 if (is_numeric($row['priority'])) {
                     $xmlString.= "   <priority>".$row['priority']."</priority>\n";
                 }
@@ -275,77 +276,5 @@ class Sitemap_Model extends Jaws_Gadget_Model
         }
         $xmlString.= "</urlset>";
         return $xmlString;
-    }       
-    
-    /**
-     * Pings the sitemap.xml file to many search engines
-     *
-     * @access  public
-     * @param   bool    $redo   Rewrites sitemap before sending it(Optional)
-     * @return  bool    True
-     */
-    function ping($redo = false)
-    {
-        if ($redo === true) {
-            $buildSitemap = $this->makeSitemap(true);
-        }
-        
-        $url = htmlentities($GLOBALS['app']->Map->GetURLFor('Sitemap', 'GetXML'),
-                            ENT_QUOTES,
-                            'UTF-8');
-        $sengines = array(
-                          'http://www.google.com/webmasters/sitemaps/ping?sitemap={local}' => 'get',
-                          'http://submissions.ask.com/ping?sitemap={local}' => 'get'
-                          );
-        
-        
-        require_once PEAR_PATH. 'HTTP/Request.php';
-
-        $httpRequest = new HTTP_Request();
-        foreach($sengines as $engine => $method) {
-            $method = strtolower($method);
-            if ($method == 'post') {
-                $httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
-            } else {
-                $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-            }
-            $engine      = str_replace('local', $url, $engine);
-            
-            $httpRequest->setURL($engine);
-            $resRequest  = $httpRequest->sendRequest();
-
-            if (PEAR::isError($resRequest) || (int) $httpRequest->getResponseCode() <> 200) {
-                $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Could not ping sitemap URL to: '.$engine);
-            }
-        }
-        return true;
     }
-
-    /**
-     * Returns an array with info of each path element of a given path
-     *
-     * @access  public
-     * @param   string  $path   URL Path
-     * @return  array   Array with info of each path element
-     */
-    function GetBreadcrumb($path)
-    {
-
-        $breadcrumb = array();
-        $breadcrumb['/'] = _t('SITEMAP_HOME');
-        $apath = explode('/',$path);
-        $a = $this->_items;
-        for ($i = 0; $i < count($apath); $i++) {
-           for ($j = 0; $j < count($a); $j++) {
-               if ($a[$j]['shortname'] == $apath[$i]) {
-                   $breadcrumb[$a[$j]['url']] = $a[$j]['title'];
-                   $a = $a[$j]['childs'];
-                   break;
-               }
-           }
-        }
-
-        return $breadcrumb;
-    }
-
 }

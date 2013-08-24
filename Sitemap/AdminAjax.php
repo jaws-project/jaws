@@ -21,7 +21,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     function Sitemap_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
+        $this->_Model = $GLOBALS['app']->LoadGadget('Sitemap', 'AdminModel', 'Sitemap');
     }
 
     /**
@@ -71,7 +71,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetStaticPageReferences()
     {
-        $staticPage = $GLOBALS['app']->loadGadget('StaticPage', 'Model');
+        $staticPage = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
         $pages = $staticPage->GetPages();
         if (Jaws_Error::IsError($pages)) {
             return array();
@@ -91,7 +91,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetBlogReferences()
     {
-        $blog = $GLOBALS['app']->loadGadget('Blog', 'Model');
+        $blog = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
         $posts = $blog->GetEntriesAsArchive();
         if (Jaws_Error::IsError($posts)) {
             return array();
@@ -218,7 +218,8 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     function PingSitemap()
     {
         $this->gadget->CheckPermission('PingSite');
-        $this->_Model->ping(true);
+        $model =  $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Ping');
+        $model->ping(true);
         $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_SITEMAP_SENT'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

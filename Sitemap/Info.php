@@ -18,4 +18,11 @@ class Sitemap_Info extends Jaws_Gadget
      */
     var $version = '0.8.0';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'Sitemap';
 }
