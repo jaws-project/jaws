@@ -11,16 +11,6 @@
 class Emblems_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLs = array(
-        'ManageEmblems',
-    );
-
-    /**
      * Installs the gadget
      *
      * @access  public
@@ -57,10 +47,6 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Put the config registry keys
-        $this->gadget->registry->insert('rows', '1');
-        $this->gadget->registry->insert('allow_url', 'true');
 
         return true;
     }
@@ -102,5 +88,4 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         }
         return true;
     }
-
 }

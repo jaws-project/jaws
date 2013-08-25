@@ -28,7 +28,7 @@ class Emblems_Model_Emblems extends Jaws_Gadget_Model
         }
 
         $emblemTable = Jaws_ORM::getInstance()->table('emblem');
-        $emblemTable->select('id:integer', 'title', 'image', 'url', 'published:boolean');
+        $emblemTable->select('id', 'title', 'image', 'url', 'type', 'published:boolean');
 
         if ($published){
             $emblemTable->where('published', true);
@@ -50,7 +50,7 @@ class Emblems_Model_Emblems extends Jaws_Gadget_Model
     function GetEmblem($id)
     {
         $emblemTable = Jaws_ORM::getInstance()->table('emblem');
-        $emblemTable->select('id:integer', 'title', 'image', 'url');
+        $emblemTable->select('id:integer', 'title', 'image', 'url', 'type');
         $res = $emblemTable->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');

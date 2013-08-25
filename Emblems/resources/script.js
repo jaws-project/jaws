@@ -30,8 +30,11 @@ var EmblemsCallback = {
  */
 function updateEmblem(id, el)
 {
-    var inputs = el.getParent('tr').getElements('input'),
+    var row = el.getParent('tr'),
+        select = row.getElement('select'),
+        inputs = row.getElements('input'),
         data = {
+            type: select.value,
             title: inputs[0].value,
             url: inputs[1].value,
             published: inputs[2].checked

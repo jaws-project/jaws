@@ -19,6 +19,10 @@
           <value>http://jaws-project.com</value>
         </field>
         <field>
+          <name>type</name>
+          <value>1</value>
+        </field>
+        <field>
           <name>published</name>
           <value>true</value>
         </field>
@@ -36,6 +40,10 @@
         <field>
           <name>url</name>
           <value>http://php.net</value>
+        </field>
+        <field>
+          <name>type</name>
+          <value>1</value>
         </field>
         <field>
           <name>published</name>
@@ -57,6 +65,10 @@
           <value>http://www.apache.org</value>
         </field>
         <field>
+          <name>type</name>
+          <value>1</value>
+        </field>
+        <field>
           <name>published</name>
           <value>false</value>
         </field>
@@ -74,6 +86,10 @@
         <field>
           <name>url</name>
           <value>http://www.mysql.com</value>
+        </field>
+        <field>
+          <name>type</name>
+          <value>1</value>
         </field>
         <field>
           <name>published</name>
@@ -95,6 +111,10 @@
           <value>http://www.postgresql.org</value>
         </field>
         <field>
+          <name>type</name>
+          <value>1</value>
+        </field>
+        <field>
           <name>published</name>
           <value>false</value>
         </field>
@@ -112,6 +132,10 @@
         <field>
           <name>url</name>
           <value>http://validator.w3.org/check?uri={url}</value>
+        </field>
+        <field>
+          <name>type</name>
+          <value>3</value>
         </field>
         <field>
           <name>published</name>
@@ -133,6 +157,10 @@
           <value>http://jigsaw.w3.org/css-validator/validator?uri={url}</value>
         </field>
         <field>
+          <name>type</name>
+          <value>3</value>
+        </field>
+        <field>
           <name>published</name>
           <value>false</value>
         </field>
@@ -152,6 +180,10 @@
           <value>index.php/Blog/RSS</value>
         </field>
         <field>
+          <name>type</name>
+          <value>2</value>
+        </field>
+        <field>
           <name>published</name>
           <value>false</value>
         </field>
@@ -169,6 +201,10 @@
         <field>
           <name>url</name>
           <value>index.php/Blog/Atom</value>
+        </field>
+        <field>
+          <name>type</name>
+          <value>2</value>
         </field>
         <field>
           <name>published</name>

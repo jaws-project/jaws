@@ -12,17 +12,21 @@ padding:3px 0;
 }
 #frm_emblem label{
 display:inline-block;
-width:50px;
+width:70px;
 }
 #frm_emblem input{
 width:200px;
 }
 #frm_emblems td{
 vertical-align:middle;
+text-align:center;
 }
-#frm_emblems input{
+#frm_emblems input:not([type=checkbox]){
 width:300px;
 }
-#frm_emblems input[type=checkbox]{
-width:50px;
+#frm_emblems select{
+white-space:nowrap;
+}
+#frm_emblems img{
+max-height:32px;
 }

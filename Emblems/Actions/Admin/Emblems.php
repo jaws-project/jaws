@@ -46,6 +46,22 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
         $image->SetTitle(_t('GLOBAL_FILE'));
         $fs->Add($image);
 
+        $type =& Piwi::CreateWidget('Combo', 'type');
+        $type->SetTitle(_t('EMBLEMS_TYPE'));
+        $lang = strtoupper($GLOBALS['app']->GetLanguage());
+        for ($i = 1; $i <= 15; $i++) {
+            if (defined('_' . $lang . "_EMBLEMS_TYPE_$i")) {
+                $type->AddOption(_t("EMBLEMS_TYPE_$i"), $i);
+            }
+        }
+        $fs->Add($type);
+
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetTitle(_t('GLOBAL_PUBLISHED'));
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(_t('GLOBAL_NO'), 0);
+        $fs->Add($published);
+
         $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
         $addsubmit->SetSubmit();
 
@@ -76,6 +92,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->SetID('emblems_datagrid');
         $datagrid->TotalRows($total);
+
+        $typecol =& Piwi::CreateWidget('Column', _t('EMBLEMS_TYPE'));
+        $datagrid->AddColumn($typecol);
 
         $titlecol =& Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'));
         $datagrid->AddColumn($titlecol);
@@ -110,9 +129,23 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
             return $entries_grid;
         }
 
+        $types = array();
+        $lang = strtoupper($GLOBALS['app']->GetLanguage());
+        for ($i = 1; $i <= 15; $i++) {
+            if (defined('_' . $lang . "_EMBLEMS_TYPE_$i")) {
+                $types[$i] = _t("EMBLEMS_TYPE_$i");
+            }
+        }
         $dataURL = $GLOBALS['app']->getDataURL('emblems/');
         foreach ($rsemblem as $e) {
             $item = array();
+
+            $typeCombo =& Piwi::CreateWidget('Combo', 'type');
+            $typeCombo->setID('');
+            $typeCombo->AddOptions($types);
+            $typeCombo->SetStyle('width:100px;');
+            $typeCombo->SetDefault($e['type']);
+            $item['type'] = $typeCombo->Get();
 
             $titleEntry =& Piwi::CreateWidget('Entry', 'title', $e['title']);
             $titleEntry->setID('');
@@ -124,7 +157,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
             }
             $urlEntry =& Piwi::CreateWidget('Entry', 'url', $e['url']);
             $urlEntry->setID('');
-            $urlEntry->SetStyle('direction:ltr; width:250px;');
+            $urlEntry->SetStyle('direction:ltr; width:150px;');
             $item['url'] = $urlEntry->Get();
 
             if (empty($e['url'])) {
@@ -166,23 +199,26 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
     function AddEmblem()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('title', 'url'), 'post');
+        $post = $request->get(array('title', 'url', 'type', 'published'), 'post');
         $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 
             'jpg,gif,swf,png,jpeg,bmp,svg');
-        if (!Jaws_Error::IsError($res)) {
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        } else if ($res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
+        } else {
             $post['image'] = $res['image'][0]['host_filename'];
-            $post['published'] = true;
+            $post['published'] = (bool)$post['published'];
             $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
                 Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);
                 $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
             }
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems&action=Admin');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems');
     }
 }

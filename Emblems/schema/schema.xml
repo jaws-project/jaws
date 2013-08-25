@@ -33,6 +33,12 @@
       </field>
 
       <field>
+        <name>type</name>
+        <type>integer</type>
+        <default>1</default>
+      </field>
+
+      <field>
         <name>published</name>
         <was>enabled</was>
         <type>boolean</type>
