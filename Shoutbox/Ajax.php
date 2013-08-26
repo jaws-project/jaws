@@ -11,28 +11,15 @@
 class Shoutbox_Ajax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Shoutbox_Ajax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('Model');
-    }
-
-    /**
-     * Get messages list
+     * Get comments list
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function GetMessages()
+    function GetComments()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Shoutbox', 'HTML', 'Message');
-        $messages = $gadgetHTML->GetMessages();
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Shoutbox', 'HTML', 'Comments');
+        $messages = $gadgetHTML->GetComments();
         return $messages;
     }
 

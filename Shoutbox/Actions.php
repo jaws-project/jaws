@@ -10,11 +10,11 @@
  */
 $actions = array();
 
-$actions['Display'] = array(
+$actions['Comments'] = array(
     'layout' => true,
-    'file'   => 'Message',
+    'file'   => 'Comments',
 );
 $actions['Preview'] = array(
     'normal' => true,
-    'file'   => 'Message',
+    'file'   => 'Comments',
 );

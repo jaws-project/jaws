@@ -9,15 +9,15 @@
  */
 
 /**
- * Get messages list
+ * Get comments list
  *
  */
-function GetMessages()
+function GetComments()
 {
-    var messages = ShoutboxAjax.callSync('getmessages');
-    $$('.shoutbox_comments').innerHTML = messages;
+    var comments = ShoutboxAjax.callSync('GetComments');
+    $$('.shoutbox_comments').innerHTML = comments;
 }
 
 
 var ShoutboxAjax = new JawsAjax('Shoutbox');
-setInterval("GetMessages()", 30*1000);
+setInterval("GetComments()", 30*1000);

@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_Actions_Admin_Comment extends Shoutbox_AdminHTML
+class Shoutbox_Actions_Admin_Comments extends Shoutbox_AdminHTML
 {
     /**
      * Displays shoutbox admin (comments manager)

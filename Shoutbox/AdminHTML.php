@@ -13,18 +13,6 @@
 class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
 {
     /**
-     * Returns the default administration action to use if none is specified.
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Admin()
-    {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Shoutbox', 'AdminHTML', 'Comment');
-        return $gadgetHTML->ManageComments();
-    }
-
-    /**
      * Prepares the shoutbox menubar
      *
      * @access  public
@@ -43,7 +31,7 @@ class Shoutbox_AdminHTML extends Jaws_Gadget_HTML
         $menubar->AddOption(
             'Comments',
             _t('SHOUTBOX_NAME'),
-            BASE_SCRIPT . '?gadget=Shoutbox&amp;action=Admin');
+            BASE_SCRIPT . '?gadget=Shoutbox&amp;action=Comments');
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption(
                 'Settings',

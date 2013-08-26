@@ -18,7 +18,7 @@ class Shoutbox_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.8.1';
+    var $version = '0.9.0';
 
     /**
      * Required gadgets
@@ -29,5 +29,21 @@ class Shoutbox_Info extends Jaws_Gadget
     var $_Requires = array(
         'Comments',
     );
+
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'Comments';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Comments';
 
 }
