@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+  <name><variable>database</variable></name>
+
+  <table>
+    <name><variable>table_prefix</variable>fm_dirs</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>parent</name>
+        <type>integer</type>
+        <default>0</default>
+      </field>
+
+      <field>
+        <name>user</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>name</name>
+        <type>text</type>
+        <length>127</length>
+      </field>
+
+      <field>
+        <name>published</name>
+        <was>enabled</was>
+        <type>boolean</type>
+        <default>true</default>
+      </field>
+
+      <field>
+        <name>createtime</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+    </declaration>
+  </table>
+
+  <table>
+    <name><variable>table_prefix</variable>fm_files</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>dir_id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>user</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>name</name>
+        <type>text</type>
+        <length>512</length>
+      </field>
+
+      <field>
+        <name>filename</name>
+        <type>text</type>
+        <length>512</length>
+      </field>
+
+      <field>
+        <name>filetype</name>
+        <type>text</type>
+        <length>32</length>
+      </field>
+
+      <field>
+        <name>filesize</name>
+        <type>integer</type>
+      </field>
+
+      <field>
+        <name>url</name>
+        <type>text</type>
+        <length>512</length>
+      </field>
+
+      <field>
+        <name>published</name>
+        <was>enabled</was>
+        <type>boolean</type>
+        <default>true</default>
+      </field>
+
+      <field>
+        <name>createtime</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+    </declaration>
+  </table>
+
+</database>
