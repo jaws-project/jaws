@@ -15,7 +15,7 @@
 function GetMessages()
 {
     var messages = ShoutboxAjax.callSync('getmessages');
-    $$('.shoutbox_messages').innerHTML = messages;
+    $$('.shoutbox_comments').innerHTML = messages;
 }
 
 
