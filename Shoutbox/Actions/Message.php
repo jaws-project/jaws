@@ -31,6 +31,7 @@ class Shoutbox_Actions_Message extends Jaws_Gadget_HTML
      */
     function GetMessages($preview_mode = false)
     {
+        $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
