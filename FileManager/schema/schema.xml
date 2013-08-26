@@ -26,14 +26,18 @@
       </field>
 
       <field>
-        <name>name</name>
+        <name>title</name>
         <type>text</type>
-        <length>127</length>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>description</name>
+        <type>text</type>
       </field>
 
       <field>
         <name>published</name>
-        <was>enabled</was>
         <type>boolean</type>
         <default>true</default>
       </field>
@@ -41,7 +45,7 @@
       <field>
         <name>createtime</name>
         <type>integer</type>
-        <notnull>true</notnull>
+        <length>8</length>
       </field>
 
     </declaration>
@@ -71,37 +75,42 @@
       </field>
 
       <field>
-        <name>name</name>
+        <name>title</name>
         <type>text</type>
-        <length>512</length>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>description</name>
+        <type>text</type>
       </field>
 
       <field>
         <name>filename</name>
         <type>text</type>
-        <length>512</length>
+        <length>128</length>
       </field>
 
       <field>
         <name>filetype</name>
         <type>text</type>
-        <length>32</length>
+        <length>64</length>
       </field>
 
       <field>
         <name>filesize</name>
         <type>integer</type>
+        <length>8</length>
       </field>
 
       <field>
         <name>url</name>
         <type>text</type>
-        <length>512</length>
+        <length>255</length>
       </field>
 
       <field>
         <name>published</name>
-        <was>enabled</was>
         <type>boolean</type>
         <default>true</default>
       </field>
@@ -109,7 +118,13 @@
       <field>
         <name>createtime</name>
         <type>integer</type>
-        <notnull>true</notnull>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>updatetime</name>
+        <type>integer</type>
+        <length>8</length>
       </field>
 
     </declaration>
