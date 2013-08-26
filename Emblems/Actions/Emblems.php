@@ -29,7 +29,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_HTML
             foreach ($emblems as $e) {
                 $tpl->SetBlock('emblems/emblem');
                 $tpl->SetVariable('id', $e['id']);
-                $tpl->SetVariable('title', $e['title']);
+                $tpl->SetVariable('title', _t('EMBLEMS_TYPE_' . $e['type'], $e['title']));
                 $tpl->SetVariable('image', $GLOBALS['app']->getDataURL('emblems/' . $e['image']));
                 $tpl->SetVariable('url', str_replace('{url}', rawurlencode($siteURL), $e['url']));
                 $tpl->ParseBlock('emblems/emblem');
