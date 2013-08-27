@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>ipvisitor</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>ip</name>
+            <type>text</type>
+            <length>24</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>visit_time</name>
+            <type>integer</type>
+            <length>8</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>visits</name>
+            <type>integer</type>
+            <length>8</length>
+            <default>0</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>ipvisitor</name>
+            <unique>true</unique>
+            <field>
+                <name>ip</name>
+            </field>
+            <field>
+                <name>visit_time</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>ipvisitor_ip</name>
+            <field>
+                <name>ip</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>ipvisitor_vt</name>
+            <field>
+                <name>visit_time</name>
+            </field>
+        </index>
+
+  </declaration>
+ </table>
+
+</database>

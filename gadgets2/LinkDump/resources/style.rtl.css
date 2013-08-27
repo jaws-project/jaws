@@ -1,0 +1,132 @@
+.links-titlebar{
+text-align:right;
+background:#d3d7cf url(../../ControlPanel/images/titlebar-bg.png) repeat-x bottom left;
+padding-left:10px;
+padding-right:5px;
+margin-bottom:5px;
+border:1px solid #d3d7cf;
+height:2.4em;
+}
+.links-titlebar span{
+float:right;
+padding:.4em;
+white-space:nowrap;
+display:table-cell;
+vertical-align:middle;
+padding-left:6px;
+padding-right:6px;
+border-right:1px solid #ddd;
+}
+.links-titlebar span img{
+width:16px;
+vertical-align:-3px;
+margin-left:2px;
+}
+#links_area{
+float:right;
+width:300px;
+}
+#links_tree{
+margin:0px;
+padding:0px;
+width:298px;
+height:390px;
+border:1px solid #d3d7cf;
+background-color:#f7f7f7;
+overflow:auto;
+}
+#links_tree img{
+width:16px;
+vertical-align:-4px;
+margin-left:0.1em;
+}
+#links_tree a{
+cursor:pointer;
+text-decoration:none;
+}
+#links_tree a:hover{
+text-decoration:underline;
+}
+.links_group{
+margin:0px;
+padding:2px;
+padding-bottom:4px;
+margin-bottom:4px;
+background-color:#f7f7f7;
+border-bottom:1px dotted #d3d7cf;
+}
+.group{
+clear:both;
+font-size:11px;
+font-weight:bold;
+text-align:left;
+padding-bottom:16px;
+background-color:#e7e7e7;
+}
+.group .title{
+float:right;
+}
+.links_actions{
+float:left;
+}
+.links{
+padding:0px;
+font-size:11px;
+text-align:right;
+margin:1px 16px 1px 0px;
+}
+.links div{
+margin:1px 0px 1px 0px;
+}
+.links img{
+padding-left:2px;
+}
+#edit_area{
+float:right;
+width:668px;
+text-align:right;
+margin-right:10px;
+margin-bottom:4px;
+}
+#edit_area span{
+width:400px;
+overflow:hidden;
+}
+#links_edit{
+height:360px;
+border:1px solid #d3d7cf;
+}
+#tbl_group, #tbl_link{
+padding:4px;
+text-align:right;
+}
+#tbl_group td, #tbl_link td{
+padding:8px 10px 0px 0px;
+}
+table#spin_btn{
+border:none;
+padding:0px;
+margin:0px;
+border-spacing:0px;
+}
+table#spin_btn td{
+padding:0px;
+margin:0px;
+}
+table#spin_btn button{
+padding:0px;
+margin:0px;
+border-width:1px;
+height:24px;
+width:28px;
+}
+table#spin_btn button img{
+border:0px;
+height:16px;
+width:16px;
+padding:3px;
+margin:0px;
+}
+#links_type, #order_type{
+width:150px;
+}

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48px"
+   height="48px"
+   id="svg5816"
+   sodipodi:version="0.32"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="logo.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1"
+   inkscape:export-filename="C:\Documents and Settings\Administrator\Desktop\internet-group-chat.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs3">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient29433">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop29435" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop29437" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient29418">
+      <stop
+         style="stop-color:#f5f5f5;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop29420" />
+      <stop
+         style="stop-color:#e9e9e9;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop29422" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient29418"
+       id="linearGradient29443"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1.3423357,0,0,1.3861264,67.371744,-2.3086732)"
+       x1="35.003674"
+       y1="10.957423"
+       x2="27.273300"
+       y2="24.143761" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient29433"
+       id="radialGradient29455"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.346491,0,18.06653)"
+       cx="29.496454"
+       cy="27.645426"
+       fx="29.496454"
+       fy="27.645426"
+       r="11.515739" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="0.13333333"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="16"
+     inkscape:cx="20.367285"
+     inkscape:cy="23.171025"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1031"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:showpageshadow="false"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Group Chat</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Jakub Steiner</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>group</rdf:li>
+            <rdf:li>chat</rdf:li>
+            <rdf:li>IRC</rdf:li>
+            <rdf:li>internet</rdf:li>
+            <rdf:li>network</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Attribution" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <path
+       transform="matrix(1.7364397,0,0,1.0924531,-27.625736,7.234669)"
+       d="m 41.012194,27.645426 a 11.515739,3.9901025 0 1 1 -23.031479,0 11.515739,3.9901025 0 1 1 23.031479,0 z"
+       sodipodi:ry="3.9901025"
+       sodipodi:rx="11.515739"
+       sodipodi:cy="27.645426"
+       sodipodi:cx="29.496454"
+       id="path29453"
+       style="opacity:0.12025314;color:#000000;fill:url(#radialGradient29455);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:block;overflow:visible"
+       sodipodi:type="arc" />
+    <path
+       id="path29441"
+       d="m 38.763181,6.5278841 c 1.427287,0 2.558827,1.2117709 2.558827,2.685621 l 0,21.1384289 c 0,1.47385 -1.13154,2.642304 -2.558827,2.642304 l -18.834643,0 c -1.140851,1.549007 -3.360948,4.06051 -8.683231,6.150937 2.3696,-2.875594 2.364553,-4.828421 2.097394,-6.150937 l -3.8592111,0 c -1.4272861,0 -2.6007717,-1.168454 -2.6007745,-2.642304 l 0,-21.1384289 c 0,-1.4738501 1.1734884,-2.685621 2.6007745,-2.685621 l 29.2796911,0 z"
+       style="color:#000000;fill:url(#linearGradient29443);fill-opacity:1;fill-rule:nonzero;stroke:#787878;stroke-width:1.38270879;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:block;overflow:visible"
+       inkscape:connector-curvature="0" />
+    <path
+       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:1.39032936;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:block;overflow:visible"
+       d="m 38.160086,7.7948394 c 1.293663,0 1.695301,0.6496934 1.695301,2.0022149 l 0,20.0028637 c 0,1.352522 -0.33231,1.926902 -1.625971,1.926902 l -19.081887,0 c -1.034043,1.42149 -2.838304,3.655118 -4.819799,4.57769 0.553178,-1.643103 0.340611,-3.008413 0.237127,-4.57769 l -4.676514,0 c -1.2936626,0 -1.6639895,-0.57438 -1.663992,-1.926902 l 0,-19.825048 c 0,-1.3525213 0.3703294,-2.1800306 1.663992,-2.1800306 l 28.271743,0 z"
+       id="path29449"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:connector-curvature="0" />
+    <rect
+       y="12.518264"
+       x="11.3125"
+       height="0.98215288"
+       width="25.5"
+       id="rect2927"
+       style="opacity:0.28070176;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible" />
+    <rect
+       style="opacity:0.28070176;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
+       id="rect2929"
+       width="25.5"
+       height="0.98215288"
+       x="11.3125"
+       y="15.518264" />
+    <rect
+       y="18.518263"
+       x="11.3125"
+       height="0.98215288"
+       width="17"
+       id="rect2931"
+       style="opacity:0.28070176;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible" />
+    <rect
+       style="opacity:0.28070176;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
+       id="rect2929-7"
+       width="25.5"
+       height="0.98215288"
+       x="11.3125"
+       y="21.518263" />
+    <rect
+       y="24.518263"
+       x="11.3125"
+       height="0.98215288"
+       width="11.431034"
+       id="rect2931-4"
+       style="opacity:0.28070176;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible" />
+  </g>
+</svg>

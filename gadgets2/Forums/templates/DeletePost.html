@@ -1,0 +1,34 @@
+<!-- BEGIN post -->
+<div class="gadget forums deletepost">
+  <h2>
+    <a href="{findex_url}">{findex_title}</a> &rsaquo;
+    <a href="{forum_url}">{forum_title}</a> &rsaquo;
+    <a href="{topic_url}">{topic_title}</a> &rsaquo;
+    {title}
+  </h2>
+  <!-- BEGIN response -->
+  <div class="simple-response-msg">{msg}</div>
+  <!-- END response -->
+  <form name="deletepost" action="{requested_url}" method="post">
+    <input type="hidden" name="gadget" value="Forums" />
+    <input type="hidden" name="action" value="DeletePost" />
+    <input type="hidden" name="fid" value="{fid}" />
+    <input type="hidden" name="tid" value="{tid}" />
+    <input type="hidden" name="pid" value="{pid}" />
+    <div class="content">
+      <div class="post_meta">
+        {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
+        &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+      </div>
+      <div class="post_content">{message}</div>
+      <!-- BEGIN update -->
+      <div class="post_update">{updatedby_lbl}{username}{nickname}{user_url}{update_reason}{update_time}</div>
+      <!-- END update -->
+    </div>
+    <div class="actions">
+      <button type="submit" name="cancel" >{btn_cancel_title}</button>
+      <button type="submit" name="confirm">{btn_submit_title}</button>
+    </div>
+  </form>
+</div>
+<!-- END post -->

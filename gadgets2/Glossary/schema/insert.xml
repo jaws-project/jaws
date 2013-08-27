@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+  <name><variable>table_prefix</variable>glossary</name>
+
+  <initialization>
+   <insert>
+    <field>
+     <name>user_id</name>
+     <value>0</value>
+    </field>
+    <field>
+     <name>term</name>
+     <value>jaws</value>
+    </field>
+    <field>
+     <name>fast_url</name>
+     <value>jaws</value>
+    </field>
+    <field>
+     <name>description</name>
+     <value>Jaws is a Framework and Content Management System for building dynamic web sites. It aims to be User Friendly giving ease of use and lots of ways to customize web sites, but at the same time is Developer Friendly, it offers a simple and powerful framework to hack your own modules.</value>
+    </field>
+    <field>
+     <name>createtime</name>
+     <value><variable>timestamp</variable></value>
+    </field>
+    <field>
+     <name>updatetime</name>
+     <value><variable>timestamp</variable></value>
+    </field>
+   </insert>
+  </initialization>
+  
+ </table>
+
+</database>

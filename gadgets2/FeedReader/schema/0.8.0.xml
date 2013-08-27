@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>rss_sites</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>title</name>
+            <was>name</was>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>cache_time</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>3600</default>
+        </field>
+
+        <field>
+            <name>view_type</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>count_entry</name>
+            <was>count</was>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>title_view</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>visible</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+    </declaration>
+ </table>
+
+</database>

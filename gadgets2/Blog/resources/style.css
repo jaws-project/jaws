@@ -1,0 +1,91 @@
+/* ----- BLOG EDIT POST UI FIELD ----- */
+.blog_field{
+padding:4px;
+text-align:left;
+}
+.blog_category{
+width:62%;
+float:left;
+padding:5px;
+border:1px solid #ddd;
+margin:5px;
+margin-top:0px;
+}
+.blog_advanced{
+width:30%;
+float:left;
+padding:5px;
+border:1px solid #ddd;
+text-align:left;
+}
+#edit_timestamp{
+padding:1px;
+vertical-align:3px;
+}
+#pubdate_table{
+display:inline;
+padding:0px;
+}
+.buttons{
+text-align:right;
+border-top:1px solid #ddd;
+margin:5px;
+padding:5px;
+}
+.dark-background{
+text-align:left;
+}
+.summary_label{
+white-space:nowrap;
+text-align:right;
+}
+.summary_value{
+white-space:nowrap;
+text-align:right;
+}
+.recent_entrie_title{
+text-align:left;
+}
+.recent_entrie_date{
+color:#888a85;
+font-size:10px;
+text-align:right;
+}
+.category_title{
+text-align:left;
+vertical-align: top;
+}
+.editor-preview{
+margin-bottom:20px;
+overflow:auto;
+max-height:400px;
+border:1px solid #d3d7cf;
+text-align:left;
+width:95%;
+display:none;
+padding:10px;
+}
+#ip{
+direction:ltr;
+background-color:#eee;
+}
+div.oneline label{
+width:20em;
+float:left;
+display:block;
+text-align:right;
+}
+#main{
+margin:0 auto;
+}
+#main > table,#main .tableform{
+margin:0 auto;
+}
+.workarea{
+width:370px;
+padding-left:8px;
+vertical-align:top;
+}
+#catinfoform{
+vertical-align: top;
+}

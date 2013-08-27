@@ -1,0 +1,294 @@
+.buttons{
+text-align:right;
+}
+#buttons{
+text-align:right;
+}
+.message{
+text-align:left;
+}
+.import_image_list{
+float:left;
+}
+.pager{
+text-align:center;
+color:#888;
+font-size:90%;
+margin:2em auto 0.8em auto;
+}
+.pager span{
+padding:0.3em 0.4em;
+margin:0 0.1em;
+border:1px solid #999;
+}
+span.pager_previous, span.pager_next{
+border:2px solid #999;
+}
+span.pager_previous{
+margin-right:0.7em;
+}
+span.pager_next{
+margin-left:0.7em;
+}
+.pager span a{
+text-decoration:none;
+}
+.pager span:hover{
+background-color:#666;
+}
+.pager span:hover a{
+color:#fff;
+}
+.pager span.pager_current:hover{
+background:transparent;
+}
+span.pager_current{
+border:0;
+font-weight:bold;
+color:#00f;
+}
+span.pager_separator, span.page_inactive{
+border:0;
+color:#999;
+}
+.pager_total{
+font-size:95%;
+color:#999;
+}
+/** Control Panel Stuff * */
+.phoo-image{
+width:160px;
+height:160px;
+margin:2px;
+padding:2px;
+border:1px solid #d3d7cf;
+background:#fff;
+}
+/** Admin Photos **/
+#phoo-table{
+width:100%;
+}
+#no-albums{
+border:1px solid #d3d7cf;
+background:#fafafa;
+padding:20px;
+margin:20px;
+text-align:center;
+}
+#no-albums table{
+margin:0 auto;
+}
+#albums-combo-cell{
+display:table-cell;
+vertical-align:top;
+width:200px;
+}
+#albums-combo-cell table{
+text-align:left;
+}
+#albums-combo-cell button{
+width:100%;
+text-align:center;
+}
+#albums-area{
+overflow:auto;
+height:500px;
+}
+.phoo-album{
+border:1px solid #d3d7cf;
+background:#fafafa;
+padding:10px;
+margin-bottom:10px;
+}
+.phoo-album-date{
+color:#888a85;
+float:right;
+font-size:80%;
+}
+.phoo-album h3{
+text-align:left;
+}
+.phoo-album-description{
+font-size:90%;
+text-align:left;
+}
+.phoo-album-actions{
+text-align:right;
+color:#888a85;
+font-size:90%;
+}
+.phoo-album-item{
+float:left;
+height:70px;
+text-align:center;
+}
+.phoo-square{
+max-width:60px;
+max-height:60px;
+height:60px;
+}
+.not-found{
+position:relative;
+font-size:80%;
+top:-78%;
+background:#666;
+color:#fff;
+opacity:0.50;
+filter:alpha(opacity=50);
+}
+.not-published{
+position:relative;
+font-size:80%;
+top:-75%;
+background:#666;
+color:#fff;
+opacity:0.50;
+filter:alpha(opacity=50);
+}
+.no-photos{
+margin:2em;
+text-align:center;
+}
+/** Edit Photo **/
+#image-cell{
+display:table-cell;
+vertical-align:top;
+text-align:center;
+padding:10px;
+}
+#image-controls{
+display:block;
+text-align:center;
+}
+#td_img_percent{
+text-align:left;
+}
+#allow-comments-cell{
+border-right:1px solid #d3d7cf;
+padding:4px;
+padding-right:8px;
+white-space:nowrap;
+}
+#published-cell{
+padding:4px;
+padding-left:8px;
+}
+#album-checkboxes-cell{
+vertical-align:top;
+width:250px;
+max-width:250px;
+}
+#album-checkboxes{
+height:150px;
+overflow:auto;
+text-align:left;
+border:1px solid #d3d7cf;
+}
+#album-checkboxes br{
+font-size:0.5em;
+}
+#album-checkboxes label{
+margin:0;
+padding:0px;
+display:block;
+font-size:95%;
+padding-left:1em;
+}
+#album-checkboxes input{
+float:left;
+}
+#photo-info{
+width:100%;
+text-align:left;
+}
+#photo-edit{
+width:170px;
+}
+#main > table,#main .tableform{
+margin:0 auto;
+}
+/* Phoo Browse */
+#phoo_browse{
+height:445px;
+font-size:12px;
+padding:10px;
+background-color:white;
+}
+#phoo_browse #albums-area{
+height:445px;
+padding:0 10px;
+}
+#phoo_browse .no-album{
+padding-top:40px;
+}
+#phoo_browse .phoo-album h2{
+font-size:14px;
+}
+#phoo_browse .phoo-album-description{
+margin:5px 0 10px 0;
+}
+#phoo_browse .phoo-album-items{
+margin-left:-2px;
+}
+#phoo_browse .phoo-album-item a{
+display:block;
+position:relative;
+}
+#phoo_browse .phoo-album-item span{
+position:absolute;
+left:4px;
+top:54px;
+}
+/* Image Select */
+#image_select_container{
+height:445px;
+font-size:12px;
+padding:10px;
+background-color:white;
+}
+#image_select{
+display:inline-block;
+}
+#image_select .image-box{
+border:solid 1px #999;
+background-color:#f5f5f5;
+margin:10px auto;
+padding:10px;
+height:390px;
+}
+#image_select .hbox{
+float:right;
+}
+#image_select .phoo-image{
+border:solid 1px #999;
+padding:3px;
+}
+#image_select .phoo-image img{
+width:225px;
+}
+#image_select .image-porperties tr{
+height:30px;
+}
+/* TEXT Editor Select Photo */
+#photo_upload_title{
+text-align:left;
+font-weight:bold;
+padding-bottom:10px;
+}
+#phoo_browse .files{
+padding:10px;
+margin-bottom:10px;
+border:1px solid #888;
+border-radius:5px;
+}
+div.oneline label{
+width:20em;
+float:left;
+display:block;
+text-align:right;
+}
+.workarea{
+width:370px;
+padding-left:8px;
+vertical-align:top;
+}

@@ -1,0 +1,42 @@
+#themes_info{
+text-align:right;
+}
+#themes_info th{
+color:#3465a4;
+}
+#themes_info td{
+vertical-align: top;
+}
+#buttons_area{
+float:left;
+padding:5px 0;
+border-spacing:0px;
+}
+#themes_combo, #theme_upload{
+direction:ltr;
+}
+#themes_combo{
+width:250px;
+height:290px;
+}
+#themes_combo optgroup{
+direction:rtl;
+}
+#themes_combo optgroup option{
+direction:ltr;
+}
+#themes_info_area{
+width:500px;
+text-align:right;
+}
+#theme_area{
+width:725px;
+height:350px;
+max-height:350px;
+overflow:auto;
+border:1px solid #ccc;
+}
+#extra_options{
+text-align:right;
+padding-top:10px;
+}

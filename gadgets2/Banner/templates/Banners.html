@@ -1,0 +1,78 @@
+<!-- BEGIN banners -->
+<div class="gadget banners" id="banners_{gid}">
+  <!-- BEGIN title --><h2>{title}</h2><!-- END title -->
+  <div class="content">
+    <!-- BEGIN banner -->{template}<!-- END banner -->
+  </div>
+</div>
+<!-- END banners -->
+<!-- BEGIN banners_type_1 -->
+<div class="gadget banners banners_type_1">
+  <!-- BEGIN title --><h2>{title}</h2><!-- END title -->
+  <div class="content">
+    <div id="banners_{gid}">
+    <!-- BEGIN banner -->{template}<!-- END banner -->
+    </div>
+  </div>
+  <script type="text/javascript">
+    function doVScroll(el)
+    {
+        var elParent = el.parentNode;
+        if (parseInt(el.style.top) > -el.offsetHeight) {
+            el.style.top = parseInt(el.style.top) - 1 + "px";
+        } else {
+            el.style.top = elParent.offsetHeight + "px";
+        }
+
+        el.timer = setTimeout(function(){doVScroll(el)}, 25);
+    }
+
+    var el = document.getElementById('banners_{gid}');
+    var elParent = el.parentNode;
+    el.style.position = 'relative';
+    el.style.overflow = 'visible';
+    elParent.style.height = '260px';
+    elParent.style.position = 'relative';
+    elParent.style.overflow = 'hidden';
+    el.style.top = el.parentNode.style.height;
+    doVScroll(el);
+    el.setAttribute('onmouseover', "clearTimeout(this.timer)");
+    el.setAttribute('onmouseout',  "doVScroll(this);");
+  </script>
+</div>
+<!-- END banners_type_1 -->
+<!-- BEGIN banners_type_2 -->
+<div class="gadget banners banners_type_2">
+  <!-- BEGIN title --><h2>{title}</h2><!-- END title -->
+  <div class="content">
+    <div id="banners_{gid}">
+    <!-- BEGIN banner -->{template}<!-- END banner -->
+    </div>
+  </div>
+<script type="text/javascript">
+    function doHScroll(el)
+    {
+        var elParent = el.parentNode;
+        if (parseInt(el.style.left) > -el.offsetWidth) {
+            el.style.left = parseInt(el.style.left) - 1 + "px";
+        } else {
+            el.style.left = elParent.offsetWidth + "px";
+        }
+
+        el.timer = setTimeout(function(){doHScroll(el)}, 25);
+    }
+
+    var el = document.getElementById('banners_{gid}');
+    var elParent = el.parentNode;
+    el.style.position = 'relative';
+    el.style.overflow = 'visible';
+    el.style.whiteSpace="nowrap";
+    elParent.style.position = 'relative';
+    elParent.style.overflow = 'hidden';
+    el.style.left = el.parentNode.style.width;
+    doHScroll(el);
+    el.setAttribute('onmouseover', "clearTimeout(this.timer);");
+    el.setAttribute('onmouseout',  "doHScroll(this);");
+</script>
+</div>
+<!-- END banners_type_2 -->

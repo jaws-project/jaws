@@ -1,0 +1,32 @@
+#emblems{
+width:100%;
+}
+#emblems td{
+vertical-align:top;
+}
+#frm_emblem{
+margin-left:5px;
+}
+#frm_emblem div{
+padding:3px 0;
+}
+#frm_emblem label{
+display:inline-block;
+width:70px;
+}
+#frm_emblem input{
+width:200px;
+}
+#frm_emblems td{
+vertical-align:middle;
+text-align:center;
+}
+#frm_emblems input:not([type=checkbox]){
+width:300px;
+}
+#frm_emblems select{
+white-space:nowrap;
+}
+#frm_emblems img{
+max-height:32px;
+}

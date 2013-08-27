@@ -1,0 +1,131 @@
+#contacts_datagrid{
+margin-top:5px;
+}
+#contacts_datagrid label{
+font-weight:normal;
+cursor:default;
+}
+#contact_ui{
+width:1%;
+vertical-align:top;
+padding-right:8px;
+}
+#c_work_area label{
+width:100px;
+}
+#c_work_area input{
+width:160px;
+}
+input#url,input#address,input#subject,#rid,#message,#reply{
+width:300px;
+}
+#recipient_ui{
+width:1%;
+padding-right:8px;
+vertical-align:top;
+}
+#recipient label{
+width:100px;
+}
+#recipient input{
+width:200px;
+}
+#recipient select{
+width:80px;
+}
+#settings{
+width:100%;
+padding:12px;
+border:1px solid silver;
+}
+#settings td{
+padding:2px;
+}
+#use_antispam,#email_format,#enable_attachment{
+width:90px;
+}
+#comments{
+width:100%;
+height:100px;
+}
+#mailer{
+display:inline-block;
+padding:0 20px;
+}
+#mailer > table td{
+padding:2px 0;
+}
+#mailer tbody{
+display:block;
+}
+#mailer th{
+width:70px;
+}
+select#groups, select#users{
+min-width:200px;
+}
+#mailer input[type=radio]{
+margin:5px 0;
+}
+#mailer input[type=text]{
+width:400px;
+}
+#mailer textarea#message{
+width:100%;
+height:200px;
+}
+#mailer span{
+color:#0000FF;
+}
+#mailer label{
+margin-top:10px;
+}
+#mailer .options{
+margin-bottom:10px;
+}
+#mailer .options label{
+margin:0 5px;
+}
+#ifrm_upload{
+display:none;
+}
+#frm_file a, #frm_file small, #frm_file img{
+vertical-align:middle;
+}
+#frm_file .attach_actions{
+position:relative;
+}
+#frm_file .attach_actions button{
+height:24px;
+margin:0;
+}
+#frm_file .wrapper{
+position:absolute;
+right:0;
+top:0;
+width:110px;
+height:20px;
+overflow:hidden;
+}
+#frm_file .wrapper input{
+position:absolute;
+left:0;
+margin:0;
+font-size:30px;
+opacity:0;
+filter:alpha(opacity=0);
+}
+#btn_attach{
+display:inline-block;
+}
+#file_size{
+font-style:italic;
+color:#555;
+}
+#btn_upload{
+border:none;
+background:none;
+box-shadow:none;
+padding:0;
+color:#3465A4;
+}

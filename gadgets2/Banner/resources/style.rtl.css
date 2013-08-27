@@ -1,0 +1,48 @@
+.main{
+width: 100%
+}
+#b_datagrid{
+vertical-align: top;
+}
+.top-align{
+vertical-align: top;
+}
+#side_button{
+vertical-align: top;
+width: 20px;
+}
+.buttons{
+text-align:left;
+}
+#b_datagrid , #bg_datagrid{
+width:470px;
+}
+#b_work_area, #bg_work_area{
+width:488px;
+padding:4px;
+}
+#banner_box{
+width:100%;
+padding:4px;
+font-weight:bold;
+font-size:small;
+text-align:right;
+}
+#banner_box td{
+text-align:right;
+padding-top:4px;
+}
+#tbl_group{
+width:99%;
+padding:4px;
+text-align:right;
+}
+#group_banners{
+width:99%;
+padding:4px;
+text-align:right;
+}
+#groups_combo{
+width:250px;
+height:372px;
+}

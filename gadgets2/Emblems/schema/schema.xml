@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+  <name><variable>database</variable></name>
+
+  <table>
+    <name><variable>table_prefix</variable>emblem</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>title</name>
+        <type>text</type>
+        <length>50</length>
+      </field>
+
+      <field>
+        <name>image</name>
+        <was>src</was>
+        <type>text</type>
+        <length>255</length>
+      </field>
+
+      <field>
+        <name>url</name>
+        <type>text</type>
+        <length>255</length>
+      </field>
+
+      <field>
+        <name>type</name>
+        <type>integer</type>
+        <default>1</default>
+      </field>
+
+      <field>
+        <name>published</name>
+        <was>enabled</was>
+        <type>boolean</type>
+        <default>true</default>
+      </field>
+
+    </declaration>
+  </table>
+
+</database>

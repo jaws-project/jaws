@@ -1,0 +1,83 @@
+<!-- BEGIN topic -->
+<div class="gadget forums edittopic">
+  <h2>
+    <a href="{findex_url}">{findex_title}</a> &rsaquo;
+    <a href="{forum_url}">{forum_title}</a> &rsaquo;
+    {title}
+  </h2>
+  <!-- BEGIN response -->
+  <div class="simple-response-msg">{msg}</div>
+  <!-- END response -->
+  <form name="edittopic" action="{requested_url}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="gadget" value="Forums" />
+    <input type="hidden" name="action" value="UpdateTopic" />
+    <input type="hidden" name="fid" value="{fid}" />
+    <input type="hidden" name="tid" value="{tid}" />
+    <div class="content">
+      <!-- BEGIN post_meta -->
+      <div class="post_meta">
+        <label>{postedby_lbl}:</label> <a href="{user_url}" title="{username}">{nickname}</a>
+        &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+      </div>
+      <!-- END post_meta -->
+      <!-- BEGIN preview -->
+      <div>
+        <label>{lbl_preview}:</label>
+        <div class="post_preview">{message}</div>
+      </div>
+      <!-- END preview -->
+      <!-- BEGIN target -->
+      <div>
+        <label for="target">{lbl_target}:</label>
+        <select name="target" id="target">
+          <!-- BEGIN item -->
+          <option value="{fid}" {selected}>{title}</option>
+          <!-- END item -->
+        </select>
+      </div>
+      <!-- END target -->
+      <!-- BEGIN subject -->
+      <div>
+        <label for="subject">{lbl_subject}:</label>
+        <input id="subject" name="subject" type="text" value="{subject}" />
+      </div>
+      <!-- END subject -->
+      <div>
+        <label for="message">{lbl_message}:</label>
+        {message}
+      </div>
+        <!-- BEGIN status -->
+        <div>
+            <label for="status">{lbl_status}:</label>
+            <select id="status" name="status">
+                <option value="published" selected>{lbl_published}</option>
+                <option value="draft">{lbl_draft}</option>
+            </select>
+        </div>
+        <!-- END status -->
+      <!-- BEGIN attachment -->
+      <div>
+        <input id="remove_attachment" name="remove_attachment" type="checkbox" />
+        <label for="remove_attachment">{lbl_remove_attachment}</label>
+      </div>
+      <div>
+        <label for="post_attachment">{lbl_attachment}:</label>
+        <input id="post_attachment" name="attachment" type="file" />
+      </div>
+      <!-- END attachment -->
+      <!-- BEGIN update_reason -->
+      <div>
+        <label for="update_reason">{lbl_update_reason}:</label>
+        <textarea id="update_reason" name="update_reason" rows="2">{update_reason}</textarea>
+      </div>
+      <!-- END update_reason -->
+      <!-- INCLUDE Captcha.html gadgets/Policy/templates Policy -->
+    </div>
+    <div class="actions">
+      <button type="button" name="cancel" onclick="window.location='{forum_url}'">{btn_cancel_title}</button>
+      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{btn_preview_title}</button>
+      <button type="submit" name="update">{btn_update_title}</button>
+    </div>
+  </form>
+</div>
+<!-- END topic -->

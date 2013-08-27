@@ -1,0 +1,31 @@
+<!-- BEGIN summary -->
+{menubar}
+<div id="main">
+  <table class="summary" style="width:100%;">
+    <tr><td style="vertical-align: top">
+      <table style="border: 1px solid #d3d7cf; padding: 4px;">
+        <tr><td colspan="2" class="dark-background">{blog_stats}</td></tr>
+        <!-- BEGIN item -->
+        <tr>
+          <td class="summary_label" style="background-color: {bgcolor};">{label}</td>
+          <td class="summary_value" style="background-color: {bgcolor};">{value}</td>
+        </tr>
+        <!-- END item -->
+      </table>
+    </td><td style="width: 90%;vertical-align: top">
+      <!-- BEGIN recent -->    
+      <h2>{title}</h2>
+      <table style="width: 100%">
+        <!-- BEGIN link -->
+        <tr>
+          <td class="recent_entrie_title">{extra}<a href="{url}">{title}</a></td>
+          <td class="recent_entrie_date">[ {date} ]</td>
+        </tr>
+        <!-- END link -->
+      </table>
+      <!-- END recent -->
+    </td></tr>
+  </table>
+<!-- BEGIN message --><span class="control-panel-message">{message}</span><br /><br /><!-- END message -->
+</div>
+<!-- END summary -->

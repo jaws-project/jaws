@@ -1,0 +1,54 @@
+#ssadminarea{
+width:785px;
+margin:auto;
+}
+#ssitemsarea{
+width:360px;
+height:250px;
+float:left;
+}
+#ssitems{
+width:360px;
+height:366px;
+overflow:auto;
+border-left:1px solid #999;
+border-top:1px solid #999;
+border-right:1px solid #ddd;
+border-bottom:1px solid #ddd;
+padding:2px;
+}
+#ssbuttons{
+float:right;
+}
+#ssform{
+margin-left:20px;
+float:left;
+width:400px;
+}
+.item{
+display:block;
+border:1px solid #fff;
+min-height:18px;
+}
+.folder{
+display:block;
+white-space:nowrap;
+border:1px solid #fff;
+}
+.folder a{
+color:#000;
+text-decoration:none;
+background:transparent url('../images/folder.png') 0 center no-repeat;
+padding-left:18px;
+height:20px;
+min-height:20px;
+display:table-cell;
+vertical-align:middle;
+}
+.folder a:hover{
+color:#069;
+}
+.itemchilds{
+display:block;
+padding-left:18px;
+}

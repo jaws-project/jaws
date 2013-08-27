@@ -1,0 +1,56 @@
+<!-- BEGIN static_page -->
+<form action="{base_script}" name="Admin" onsubmit="return searchPage();" method="post">
+<input type="hidden" name="gadget" value="StaticPage" />
+<input type="hidden" name="action" value="Admin" />
+{menubar}
+<div id="main">
+<table style="width: 100%;">
+  <tr>
+    <td id="filter_options">
+      <label for="group">{group}:</label>{group_field}&nbsp;
+      <label for="status">{status}:</label>{status_field}&nbsp;
+      <label for="order">{orderby}:</label>{orderby_field}&nbsp;
+      {search_field}&nbsp;{search}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div style="width: 100%;" id="datagrid">{entries}</div>
+    </td>
+  </tr>
+</table>
+</div>
+</form>
+<script type="text/javascript">
+    var confirmPageDelete    = "{confirmPageDelete}";
+    var confirmMassiveDelete = "{confirmMassiveDelete}";
+    initDataGrid('pages_datagrid', StaticPageAjax, 'getPages');
+</script>
+<!-- END static_page -->
+
+<!-- BEGIN pageform -->
+{menubar}
+{autodraft}
+<div id="preview" class="editor-preview">
+<fieldset>
+ <legend><span>{preview_header}</span></legend>
+ <h1 id="previewTitle"></h1>
+ <div id="previewContent" class="entry">
+ </div>
+</fieldset>
+</div>
+<div id="main">
+{form}
+</div>
+<script type="text/javascript">
+    var base_script = "{base-script}";
+    var confirmPageDelete = "{confirmPageDelete}";
+</script>
+<!-- END pageform -->
+
+<!-- BEGIN Properties -->
+{menubar}
+<div id="main">
+<center>{form}</center>
+</div>
+<!-- END Properties -->

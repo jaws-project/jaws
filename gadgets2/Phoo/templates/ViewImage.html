@@ -1,0 +1,42 @@
+<!-- BEGIN ViewImage -->
+<div class="gadget phoo_image">
+  <h2>{title}</h2>
+  <!-- BEGIN navigation -->
+  <div class="pager">
+  <!-- BEGIN first-photo -->
+    <span class="page_first page_inactive">{lbl_first}</span>
+    <span class="page_previous page_inactive">{lbl_prev}</span>
+  <!-- END first-photo -->
+  <!-- BEGIN no-first-photo -->
+    <span class="page_first"><a href="{url_first}">{lbl_first}</a></span>
+    <span class="page_previous"><a href="{url_prev}">{lbl_prev}</a></span>
+  <!-- END no-first-photo -->
+  <!-- BEGIN last-photo -->
+    <span class="page_next page_inactive">{lbl_next}</span>
+    <span class="page_last page_inactive">{lbl_last}</span>
+  <!-- END last-photo -->
+  <!-- BEGIN no-last-photo -->
+    <span class="page_next"><a href="{url_next}">{lbl_next}</a></span>
+    <span class="page_last"><a href="{url_last}">{lbl_last}</a></span>
+  <!-- END no-last-photo -->
+    <span><a href="{url_thumbs}">{lbl_thumbs}</a></span>
+    <div class="pager_total"><span class="page_inactive">{lbl_page_counter}</span></div>
+  </div>
+  <!-- END navigation -->
+  <div class="content">
+    <a href="{url}" title="{img_desc}" target="_blank">
+      <img src="{medium}" width="{width}" height="{height}" title="{name}" alt="{filename}" /></a>
+    <p>{description}</p>
+    <!-- BEGIN exif -->
+    <div>
+      <h4>{exif_info}</h4>
+      <p><img src="{cameraimg}" title="{camera}" width="48" alt="{camera}" height="48" />
+         <span><strong>{camera}</strong><br />{data}</span></p>
+    </div>
+    <!-- END exif -->
+  </div>
+</div>
+{comments}
+{preview}
+{comment-form}
+<!-- END ViewImage -->

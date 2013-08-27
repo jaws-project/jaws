@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+  <name><variable>table_prefix</variable>faq</name>
+
+  <initialization>
+   <insert>
+    <field>
+     <name>question</name>
+     <value>What is JAWS?</value>
+    </field>
+    <field>
+     <name>fast_url</name>
+     <value>what-is-jaws</value>
+    </field>
+    <field>
+     <name>answer</name>
+     <value>Jaws is a Framework and Content Management System for building dynamic web sites. It aims to be User Friendly giving ease of use and lots of ways to customize web sites, but at the same time is Developer Friendly, it offers a simple and powerful framework to hack your own modules.</value>
+    </field>
+    <field>
+     <name>category</name>
+     <value>1</value>
+    </field>
+    <field>
+     <name>published</name>
+     <value>true</value>
+    </field>
+    <field>
+     <name>faq_position</name>
+     <value>1</value>
+    </field>
+    <field>
+     <name>createtime</name>
+     <value><variable>timestamp</variable></value>
+    </field>
+    <field>
+     <name>updatetime</name>
+     <value><variable>timestamp</variable></value>
+    </field>
+   </insert>
+  </initialization>
+
+ </table>
+
+ <table>
+  <name><variable>table_prefix</variable>faq_category</name>
+
+  <initialization>
+   <insert>
+    <field>
+     <name>category</name>
+     <value>General</value>
+    </field>
+    <field>
+     <name>fast_url</name>
+     <value>general</value>
+    </field>
+    <field>
+     <name>description</name>
+     <value>Here you can find General questions</value>
+    </field>
+    <field>
+     <name>category_position</name>
+     <value>1</value>
+    </field>
+    <field>
+     <name>updatetime</name>
+     <value><variable>timestamp</variable></value>
+    </field>
+   </insert>
+  </initialization>
+
+ </table>
+
+</database>

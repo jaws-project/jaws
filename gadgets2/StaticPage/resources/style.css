@@ -1,0 +1,56 @@
+#filter_options{
+float:left;
+vertical-align:top;
+padding-bottom:5px;
+}
+#editor{
+margin-top:10px;
+margin-bottom:10px;
+}
+.editor-preview{
+width:100%;
+display:none;
+}
+#previewContent br{
+display:block;
+}
+#groups_datagrid{
+vertical-align:top;
+}
+#group_ui{
+width:400px;
+vertical-align:top;
+padding-left:8px;
+}
+#group_ui input{
+width:250px;
+}
+#PageGroups{
+width:100%;
+}
+#btn_advanced{
+float:right;
+margin-top:-32px;
+}
+#page_options td, #advanced_options td{
+padding:2px;
+}
+#page_options td:first-child, #advanced_options td:first-child{
+width:130px;
+}
+#page_options input, #advanced_options input{
+width:400px;
+}
+#page_options select, #advanced_options select{
+min-width:85px;
+}
+.tableform{
+width:100%;
+}
+#frm_settings div{
+padding:2px;
+}
+#frm_settings label{
+display:inline-block;
+width:170px;
+}
