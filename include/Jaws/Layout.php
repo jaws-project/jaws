@@ -676,6 +676,7 @@ class Jaws_Layout
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
 
+        $this->AddHeadMeta('script', BASE_SCRIPT);
         $this->AddHeadMeta('generator', 'Jaws 0.9 (http://jaws-project.com)');
         $headContent = $this->GetHeaderContent($this->_HeadLink, $this->_ScriptLink, $this->_HeadMeta, $this->_HeadOther);
 
