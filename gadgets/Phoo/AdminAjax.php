@@ -11,18 +11,6 @@
 class Phoo_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Phoo_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-    }
-
-    /**
      * Import an image located in 'import' folder
      *
      * @access  public
