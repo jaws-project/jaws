@@ -24,6 +24,21 @@ class Jaws_HTTPError
         }
 
         switch ($code) {
+            case 401:
+                $realm = $GLOBALS['app']->Registry->fetch('realm', 'Settings');
+                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 401 Unauthorized");
+                // using invalid authentication type for avoid popup login box
+                header('WWW-Authenticate: LoginBox realm="'. $realm. '"');
+
+                $urlLogin = $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'LoginBox',
+                    array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
+                );
+                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_401') : $title;
+                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_401', $urlLogin) : $message;
+                break;
+
             case 403:
                 header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 403 Forbidden");
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;

@@ -264,6 +264,8 @@ define('_EN_GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH', "The captcha you wrote doesn't
 /* HTTP Error Codes */
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_301', "Moved permanently");
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_302', "Moved temporarily");
+define('_EN_GLOBAL_HTTP_ERROR_TITLE_401', "Access Denied/Unauthorized");
+define('_EN_GLOBAL_HTTP_ERROR_CONTENT_401', "You must authenticate yourself by <a href=\"{0}\">logging</a>, for access this page.");
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_403', "Access Denied/Forbidden");
 define('_EN_GLOBAL_HTTP_ERROR_CONTENT_403', "You are not authorized to view this page.");
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_404', "Page not found");
