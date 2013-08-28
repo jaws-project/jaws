@@ -190,6 +190,14 @@ class Comments_Actions_Feeds extends Comments_HTML
                     break;
 
                 case 'Shoutbox':
+                    $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments',
+                        array(),
+                        true);
+                    $url = $url . htmlentities('#comment' . $c['id']);
+                    $entry->SetLink($url);
+
+                    $id = $site . '/shoutbox/' . $entry_id . '/' . $c['id'];
+                    $entry->SetId($id);
                     break;
             }
 
