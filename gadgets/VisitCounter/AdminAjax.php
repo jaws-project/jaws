@@ -12,19 +12,6 @@
 class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function VisitCounter_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Cleans all the entries (records)
      *
      * @access  public
