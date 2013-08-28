@@ -12,19 +12,6 @@
 class Emblems_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Emblems_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Updates the emblem
      *
      * @access  public
