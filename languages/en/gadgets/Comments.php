@@ -44,6 +44,7 @@ define('_EN_COMMENTS_PROPERTIES_UPDATED', "Properties have been updated");
 define('_EN_COMMENTS_ERROR_CANT_UPDATE_PROPERTIES', "There was a problem updating the properties");
 define('_EN_COMMENTS_ALLOW_COMMENTS', "Allow comments site-wide");
 define('_EN_COMMENTS_ALLOW_COMMENTS_RESTRICTED', "Restricted");
+define('_EN_COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT', "There was an error getting the Atom struct of comments");
 
 define('_EN_COMMENTS_COMMENTS_STATUS', "Comment status");
 define('_EN_COMMENTS_STATUS_APPROVED', "Approved");

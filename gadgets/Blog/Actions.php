@@ -109,19 +109,3 @@ $actions['ShowAtomCategory'] = array(
     'standalone' => true,
     'file' => 'Feeds',
 );
-$actions['RecentCommentsRSS'] = array(
-    'standalone' => true,
-    'file' => 'Feeds',
-);
-$actions['RecentCommentsAtom'] = array(
-    'standalone' => true,
-    'file' => 'Feeds',
-);
-$actions['CommentsRSS'] = array(
-    'standalone' => true,
-    'file' => 'Feeds',
-);
-$actions['CommentsAtom'] = array(
-    'standalone' => true,
-    'file' => 'Feeds',
-);

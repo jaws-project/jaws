@@ -31,3 +31,19 @@ $actions['RecentComments'] = array(
     'file'   => 'RecentComments',
     'parametric' => true,
 );
+
+$actions['FeedsLink'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Feeds',
+);
+
+$actions['RecentCommentsRSS'] = array(
+    'standalone' => true,
+    'file' => 'Feeds',
+);
+
+$actions['RecentCommentsAtom'] = array(
+    'standalone' => true,
+    'file' => 'Feeds',
+);

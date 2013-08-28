@@ -17,3 +17,11 @@ $maps[] = array(
         'order' => '[[:digit:]]+',
     )
 );
+$maps[] = array(
+    'RecentCommentsRSS',
+    'comments[/gadget/{gadgetname}]/rss'
+);
+$maps[] = array(
+    'RecentCommentsAtom',
+    'comments[/gadget/{gadgetname}]/atom'
+);

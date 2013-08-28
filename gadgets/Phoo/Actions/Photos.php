@@ -216,8 +216,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
                     $allow_comments_config = $allow_comments_config == 'true';
             }
 
-            $allow_comments = $image['allow_comments'] === true &&
-                $image['album_allow_comments'] === true &&
+            $allow_comments = $image['allow_comments'] == true &&
+                $image['album_allow_comments'] == true &&
                 $this->gadget->registry->fetch('allow_comments') == 'true' &&
                 $allow_comments_config;
 
