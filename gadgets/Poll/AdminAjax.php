@@ -12,18 +12,6 @@
 class Poll_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Poll_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-    }
-
-    /**
      * Get a Poll
      *
      * @access  public
