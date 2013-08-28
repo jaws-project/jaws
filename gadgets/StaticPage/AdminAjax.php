@@ -11,18 +11,6 @@
 class StaticPage_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function StaticPage_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-    }
-
-    /**
      * Deletes the page and all of its translations
      *
      * @access  public
