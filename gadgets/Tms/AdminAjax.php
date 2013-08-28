@@ -11,18 +11,6 @@
 class Tms_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Tms_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-    }
-
-    /**
      * Gets information of given theme
      *
      * @access  public
