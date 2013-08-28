@@ -19,7 +19,7 @@ class Shoutbox_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments'),
                         'title' => _t('SHOUTBOX_NAME'));
         return $urls;
     }
