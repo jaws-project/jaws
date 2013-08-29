@@ -14,7 +14,7 @@
 var LinkDumpCallback = { 
     updategroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('group_'+$('gid').value).getElementsByTagName('a')[1].innerHTML = $('title').value;
+            _('group_'+_('gid').value).getElementsByTagName('a')[1].innerHTML = _('title').value;
             stopAction();
         }
         showResponse(response);
@@ -54,22 +54,22 @@ function unselectTreeRow()
 function saveLink()
 {
     if (currentAction == 'Groups') {
-        if ($('title').value.blank()) {
+        if (_('title').value.blank()) {
             alert(incompleteFields);
             return false;
         }
 
-        lc = parseInt($('limit_count').value);
-        $('limit_count').value = (lc < 1)? '1' : ((lc > max_limit_count)? max_limit_count : lc);
+        lc = parseInt(_('limit_count').value);
+        _('limit_count').value = (lc < 1)? '1' : ((lc > max_limit_count)? max_limit_count : lc);
 
         cacheLinkForm = null;
         if (selectedGroup == null) {
             var response = LinkDumpAjax.callSync('insertgroup',
-                                                 $('title').value,
-                                                 $('fast_url').value,
-                                                 $('limit_count').value,
-                                                 $('links_type').value,
-                                                 $('order_type').value);
+                                                 _('title').value,
+                                                 _('fast_url').value,
+                                                 _('limit_count').value,
+                                                 _('links_type').value,
+                                                 _('order_type').value);
             if (response[0]['css'] == 'notice-message') {
                 var gid = response[0]['data'];
                 AddNewGroup(gid);
@@ -78,64 +78,64 @@ function saveLink()
             showResponse(response);
         } else {
             LinkDumpAjax.callAsync('updategroup',
-                                    $('gid').value,
-                                    $('title').value,
-                                    $('fast_url').value,
-                                    $('limit_count').value,
-                                    $('links_type').value,
-                                    $('order_type').value);
+                                    _('gid').value,
+                                    _('title').value,
+                                    _('fast_url').value,
+                                    _('limit_count').value,
+                                    _('links_type').value,
+                                    _('order_type').value);
         }
     } else {
-        if ($('title').value.blank()) {
+        if (_('title').value.blank()) {
             alert(incompleteFields);
             return false;
         }
         if (selectedLink == null) {
             var response = LinkDumpAjax.callSync('insertlink',
-                                                 $('gid').value,
-                                                 $('title').value,
-                                                 $('url').value,
-                                                 $('fast_url').value,
-                                                 $('description').value,
-                                                 $('tags').value,
-                                                 $('rank').value);
+                                                 _('gid').value,
+                                                 _('title').value,
+                                                 _('url').value,
+                                                 _('fast_url').value,
+                                                 _('description').value,
+                                                 _('tags').value,
+                                                 _('rank').value);
             if (response[0]['css'] == 'notice-message') {
                 var lid = response[0]['data'];
-                AddNewLinkItem($('gid').value, lid, $('rank').value);
+                AddNewLinkItem(_('gid').value, lid, _('rank').value);
                 stopAction();
             }
             showResponse(response);
         } else {
             var response = LinkDumpAjax.callSync('updatelink',
-                                                 $('lid').value,
-                                                 $('gid').value,
-                                                 $('title').value,
-                                                 $('url').value,
-                                                 $('fast_url').value,
-                                                 $('description').value,
-                                                 $('tags').value,
-                                                 $('rank').value);
+                                                 _('lid').value,
+                                                 _('gid').value,
+                                                 _('title').value,
+                                                 _('url').value,
+                                                 _('fast_url').value,
+                                                 _('description').value,
+                                                 _('tags').value,
+                                                 _('rank').value);
             if (response[0]['css'] == 'notice-message') {
-                $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
-                var new_parent = $('links_group_'+$('gid').value);
-                var old_parent = $('link_'+$('lid').value).parentNode;
+                _('link_'+_('lid').value).getElementsByTagName('a')[0].innerHTML = _('title').value;
+                var new_parent = _('links_group_'+_('gid').value);
+                var old_parent = _('link_'+_('lid').value).parentNode;
                 var links_elements = new_parent.getElementsByTagName('div');
                 if (old_parent != new_parent) {
-                    if ($('rank').value > (links_elements.length - 1)) {
-                        new_parent.appendChild($('link_'+$('lid').value));
+                    if (_('rank').value > (links_elements.length - 1)) {
+                        new_parent.appendChild(_('link_'+_('lid').value));
                     } else {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value - 1]);
+                        new_parent.insertBefore(_('link_'+_('lid').value), links_elements[_('rank').value - 1]);
                     }
 
                     if (old_parent.innerHTML.blank()) {
                         old_parent.innerHTML = noLinkExists;
                     }
                 } else {
-                    var oldRank = Array.from(links_elements).indexOf($('link_'+$('lid').value)) + 1;
-                    if ($('rank').value > oldRank) {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value]);
+                    var oldRank = Array.from(links_elements).indexOf(_('link_'+_('lid').value)) + 1;
+                    if (_('rank').value > oldRank) {
+                        new_parent.insertBefore(_('link_'+_('lid').value), links_elements[_('rank').value]);
                     } else {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value - 1]);
+                        new_parent.insertBefore(_('link_'+_('lid').value), links_elements[_('rank').value - 1]);
                     }
                 }
                 stopAction();
@@ -147,15 +147,15 @@ function saveLink()
 
 function AddNewGroup(gid) {
     var mainDiv = document.createElement('div');
-    var cloneDiv =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
+    var cloneDiv =_('group_1').getElementsByTagName('div')[0].cloneNode(true);
     mainDiv.className = 'links_group';
     mainDiv.id = "group_"+gid;
     mainDiv.appendChild(cloneDiv);
-    $('links_tree').appendChild(mainDiv);
+    _('links_tree').appendChild(mainDiv);
     var links = mainDiv.getElementsByTagName('a');
     links[0].href      = 'javascript: listLinks('+gid+');';
     links[1].href = 'javascript: editGroup('+gid+');';
-    links[1].innerHTML = $('title').value;
+    links[1].innerHTML = _('title').value;
     links[2].href = 'javascript: addLink('+gid+');';
 
     var linksDiv = document.createElement('div');
@@ -166,7 +166,7 @@ function AddNewGroup(gid) {
 
 function AddNewLinkItem(gid, lid, rank)
 {
-    gLinksDiv = $('links_group_'+gid);
+    gLinksDiv = _('links_group_'+gid);
     var mainDiv = document.createElement('div');
     mainDiv.id = "link_"+lid;
     if (gLinksDiv.innerHTML == noLinkExists) {
@@ -180,9 +180,9 @@ function AddNewLinkItem(gid, lid, rank)
     mainDiv.appendChild(img);
 
     //set ranking
-    var oldRank = Array.from(gLinksDiv.getElementsByTagName('div')).indexOf($('link_'+lid));
+    var oldRank = Array.from(gLinksDiv.getElementsByTagName('div')).indexOf(_('link_'+lid));
     if (rank < oldRank) {
-        gLinksDiv.insertBefore($('link_'+lid), gLinksDiv.getElementsByTagName('div')[rank -1]);
+        gLinksDiv.insertBefore(_('link_'+lid), gLinksDiv.getElementsByTagName('div')[rank -1]);
     }
     //--
 
@@ -191,15 +191,15 @@ function AddNewLinkItem(gid, lid, rank)
     anchor.onclick = function() {
                         editLink(this, lid);
                      }
-    anchor.innerHTML = $('title').value;
+    anchor.innerHTML = _('title').value;
     mainDiv.appendChild(anchor);
 }
 
 function listLinks(gid, force_open)
 {
-    gNode = $('group_'+gid);
+    gNode = _('group_'+gid);
     gFlagimage = gNode.getElementsByTagName('img')[0];
-    divSubList = $('links_group_'+gid);
+    divSubList = _('links_group_'+gid);
     if (divSubList.innerHTML == '') {
         var links_list = LinkDumpAjax.callSync('getlinkslist', gid);
         if (!links_list.blank()) {
@@ -221,22 +221,22 @@ function listLinks(gid, force_open)
 
 function setRanksCombo(pid, selected) {
     listLinks(pid, true);
-    $('rank').options.length = 0;
+    _('rank').options.length = 0;
 
-    var new_parentNode = $('links_group_'+pid);
+    var new_parentNode = _('links_group_'+pid);
     var rank = new_parentNode.getElementsByTagName('div').length;
 
-    if (($('lid').value < 1) || ($('link_'+$('lid').value).parentNode != new_parentNode)) {
+    if ((_('lid').value < 1) || (_('link_'+_('lid').value).parentNode != new_parentNode)) {
         rank = rank + 1;
     }
 
     for(var i = 0; i < rank; i++) {
-        $('rank').options[i] = new Option(i+1, i+1);
+        _('rank').options[i] = new Option(i+1, i+1);
     }
     if (selected == null) {
-        $('rank').value = rank;
+        _('rank').value = rank;
     } else {
-        $('rank').value = selected;
+        _('rank').value = selected;
     }
 }
 
@@ -245,16 +245,16 @@ function setRanksCombo(pid, selected) {
  */
 function stopAction()
 {
-    $('btn_cancel').style.display = 'none';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'none';
-    $('btn_add').style.display    = 'inline';
+    _('btn_cancel').style.display = 'none';
+    _('btn_del').style.display    = 'none';
+    _('btn_save').style.display   = 'none';
+    _('btn_add').style.display    = 'inline';
     selectedLink  = null;
     selectedGroup = null;
     currentAction = null;
     unselectTreeRow();
-    $('links_edit').innerHTML = '';
-    $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
+    _('links_edit').innerHTML = '';
+    _('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
 /**
@@ -267,13 +267,13 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML = addGroupTitle;
+    _('edit_area').getElementsByTagName('span')[0].innerHTML = addGroupTitle;
     selectedGroup = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheGroupForm;
+    _('btn_cancel').style.display = 'inline';
+    _('btn_del').style.display    = 'none';
+    _('btn_save').style.display   = 'inline';
+    _('btn_add').style.display    = 'none';
+    _('links_edit').innerHTML = cacheGroupForm;
 }
 
 /**
@@ -281,7 +281,7 @@ function addGroup()
  */
 function addLink(gid)
 {
-    if ($('links_group_'+gid).innerHTML == '') {
+    if (_('links_group_'+gid).innerHTML == '') {
         listLinks(gid);
     }
     if (cacheLinkForm == null) {
@@ -290,18 +290,18 @@ function addLink(gid)
     stopAction();
     currentAction = 'Links';
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        addLinkTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[1].innerHTML;
+    _('edit_area').getElementsByTagName('span')[0].innerHTML =
+        addLinkTitle + ' - ' + _('group_'+gid).getElementsByTagName('a')[1].innerHTML;
 
     selectedLink = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheLinkForm;
+    _('btn_cancel').style.display = 'inline';
+    _('btn_del').style.display    = 'none';
+    _('btn_save').style.display   = 'inline';
+    _('btn_add').style.display    = 'none';
+    _('links_edit').innerHTML = cacheLinkForm;
 
-    $('gid').value = gid;
-    setRanksCombo($('gid').value);
+    _('gid').value = gid;
+    setRanksCombo(_('gid').value);
 }
 
 /**
@@ -317,22 +317,22 @@ function editGroup(gid)
     currentAction = 'Groups';
     selectedGroup = gid;
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[1].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML   = cacheGroupForm;
+    _('edit_area').getElementsByTagName('span')[0].innerHTML =
+        editGroupTitle + ' - ' + _('group_'+gid).getElementsByTagName('a')[1].innerHTML;
+    _('btn_cancel').style.display = 'inline';
+    _('btn_del').style.display    = 'inline';
+    _('btn_save').style.display   = 'inline';
+    _('btn_add').style.display    = 'none';
+    _('links_edit').innerHTML   = cacheGroupForm;
 
     var groupInfo = LinkDumpAjax.callSync('getgroups', selectedGroup);
 
-    $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'].defilter();
-    $('fast_url').value    = groupInfo['fast_url'];
-    $('limit_count').value = groupInfo['limit_count'];
-    $('links_type').value  = groupInfo['link_type'];
-    $('order_type').value  = groupInfo['order_type'];
+    _('gid').value         = groupInfo['id'];
+    _('title').value       = groupInfo['title'].defilter();
+    _('fast_url').value    = groupInfo['fast_url'];
+    _('limit_count').value = groupInfo['limit_count'];
+    _('links_type').value  = groupInfo['link_type'];
+    _('order_type').value  = groupInfo['order_type'];
 }
 
 /**
@@ -348,26 +348,26 @@ function editLink(element, lid)
     currentAction = 'Links';
     selectedLink = lid;
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        editLinkTitle + ' - ' + $('link_'+lid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheLinkForm;
+    _('edit_area').getElementsByTagName('span')[0].innerHTML =
+        editLinkTitle + ' - ' + _('link_'+lid).getElementsByTagName('a')[0].innerHTML;
+    _('btn_cancel').style.display = 'inline';
+    _('btn_del').style.display    = 'inline';
+    _('btn_save').style.display   = 'inline';
+    _('btn_add').style.display    = 'none';
+    _('links_edit').innerHTML = cacheLinkForm;
 
     var linkInfo = LinkDumpAjax.callSync('getlink', selectedLink);
 
-    $('lid').value         = linkInfo['id'];
-    $('gid').value         = linkInfo['gid'];
-    $('title').value       = linkInfo['title'].defilter();
-    $('url').value         = linkInfo['url'];
-    $('fast_url').value    = linkInfo['fast_url'];
-    $('description').value = linkInfo['description'].defilter();
-    $('tags').value        = linkInfo['tags'];
-    $('clicks').value      = linkInfo['clicks'];
-    setRanksCombo($('gid').value);
-    $('rank').value = linkInfo['rank'];
+    _('lid').value         = linkInfo['id'];
+    _('gid').value         = linkInfo['gid'];
+    _('title').value       = linkInfo['title'].defilter();
+    _('url').value         = linkInfo['url'];
+    _('fast_url').value    = linkInfo['fast_url'];
+    _('description').value = linkInfo['description'].defilter();
+    _('tags').value        = linkInfo['tags'];
+    _('clicks').value      = linkInfo['clicks'];
+    setRanksCombo(_('gid').value);
+    _('rank').value = linkInfo['rank'];
 }
 
 /**
@@ -378,12 +378,12 @@ function delLinks()
     if (currentAction == 'Groups') {
         var gid = selectedGroup;
         var msg = confirmGroupDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[1].innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0,  msg.indexOf('%s%')) + _('group_'+gid).getElementsByTagName('a')[1].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = LinkDumpAjax.callSync('deletegroup', gid);
             if (response[0]['css'] == 'notice-message') {
-                Element.destroy($('group_'+gid));
+                Element.destroy(_('group_'+gid));
             }
             stopAction();
             showResponse(response);
@@ -392,13 +392,13 @@ function delLinks()
         var lid = selectedLink;
         var msg = confirmLinkDelete;
         msg = msg.substr(0,  msg.indexOf('%s%'))+
-              $('link_'+lid).getElementsByTagName('a')[0].innerHTML+
+              _('link_'+lid).getElementsByTagName('a')[0].innerHTML+
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = LinkDumpAjax.callSync('deletelink', lid, $('gid').value, $('rank').value);
+            var response = LinkDumpAjax.callSync('deletelink', lid, _('gid').value, _('rank').value);
             if (response[0]['css'] == 'notice-message') {
-                link_parent = $('link_'+lid).parentNode;
-                Element.destroy($('link_'+lid));
+                link_parent = _('link_'+lid).parentNode;
+                Element.destroy(_('link_'+lid));
                 if (link_parent.innerHTML.blank()) {
                     link_parent.innerHTML = noLinkExists;
                 }
@@ -411,20 +411,20 @@ function delLinks()
 
 function upCount()
 {
-    var lc = parseInt($('limit_count').value);
+    var lc = parseInt(_('limit_count').value);
     lc = isNaN(lc)? 0 : lc;
     lc++;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
-    $('limit_count').value = lc;
+    _('limit_count').value = lc;
 }
 
 function downCount()
 {
-    var lc = parseInt($('limit_count').value);
+    var lc = parseInt(_('limit_count').value);
     lc = isNaN(lc)? 0 : lc;
     lc--;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
-    $('limit_count').value = lc;
+    _('limit_count').value = lc;
 }
 
 var LinkDumpAjax = new JawsAjax('LinkDump', LinkDumpCallback);
