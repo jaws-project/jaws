@@ -50,18 +50,18 @@ function getCommentsDataGrid(name, offset, reset)
     var comments = CommentsAjax.callSync(
         'SearchComments',
         offset,
-        $('gadgets_filter').value,
-        $('filter').value,
-        $('status').value
+        _('gadgets_filter').value,
+        _('filter').value,
+        _('status').value
     );
     if (reset) {
         stopCommentAction();
-        $(name).setCurrentPage(0);
+        _(name).setCurrentPage(0);
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch',
-            $('gadgets_filter').value,
-            $('filter').value,
-            $('status').value
+            _('gadgets_filter').value,
+            _('filter').value,
+            _('status').value
         );
     }
 
@@ -78,25 +78,25 @@ function isValidEmail(email) {
  */
 function stopCommentAction()
 {
-    $('id').value                      = 0;
-    $('gadget').value                  = '';
-    $('comment_ip').set('html', '');
-    $('name').value                    = '';
-    $('email').value                   = '';
-    $('url').value                     = '';
-    $('message').value                 = '';
-    $('reply').value                   = '';
-    $('comment_status').selectedIndex  = 0;
-    $('btn_save').style.display        = 'none';
-    $('btn_cancel').style.display      = 'none';
-    $('name').disabled                 = false;
-    $('email').disabled                = false;
-    $('url').disabled                  = false;
-    $('message').disabled              = false;
-    $('comment_status').disabled       = false;
+    _('id').value                      = 0;
+    _('gadget').value                  = '';
+    _('comment_ip').set('html', '');
+    _('name').value                    = '';
+    _('email').value                   = '';
+    _('url').value                     = '';
+    _('message').value                 = '';
+    _('reply').value                   = '';
+    _('comment_status').selectedIndex  = 0;
+    _('btn_save').style.display        = 'none';
+    _('btn_cancel').style.display      = 'none';
+    _('name').disabled                 = false;
+    _('email').disabled                = false;
+    _('url').disabled                  = false;
+    _('message').disabled              = false;
+    _('comment_status').disabled       = false;
 
     unselectGridRow('comments_datagrid');
-    $('name').focus();
+    _('name').focus();
 }
 
 /**
@@ -107,24 +107,24 @@ function editComment(rowElement, id)
 {
     selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
-    $('name').disabled            = false;
-    $('email').disabled           = false;
-    $('url').disabled             = false;
-    $('message').disabled         = false;
-    $('comment_status').disabled  = false;
-    $('id').value                 = comment['id'];
-    $('gadget').value             = comment['gadget'];
-    $('comment_ip').set('html', comment['ip']);
-    $('name').value               = comment['name'];
-    $('email').value              = comment['email'];
-    $('url').value                = comment['url'];
-    $('message').value            = comment['msg_txt'].defilter();
-    $('comment_status').value     = comment['status'];
-    $('btn_save').style.display   = 'inline';
-    $('btn_cancel').style.display = 'inline';
+    _('name').disabled            = false;
+    _('email').disabled           = false;
+    _('url').disabled             = false;
+    _('message').disabled         = false;
+    _('comment_status').disabled  = false;
+    _('id').value                 = comment['id'];
+    _('gadget').value             = comment['gadget'];
+    _('comment_ip').set('html', comment['ip']);
+    _('name').value               = comment['name'];
+    _('email').value              = comment['email'];
+    _('url').value                = comment['url'];
+    _('message').value            = comment['msg_txt'].defilter();
+    _('comment_status').value     = comment['status'];
+    _('btn_save').style.display   = 'inline';
+    _('btn_cancel').style.display = 'inline';
 
     if(comment['reply']!=null) {
-        $('reply').value          = comment['reply'].defilter();
+        _('reply').value          = comment['reply'].defilter();
     }
 }
 
@@ -133,14 +133,14 @@ function editComment(rowElement, id)
  */
 function updateComment() {
     CommentsAjax.callAsync('UpdateComment',
-        $('gadget').value,
-        $('id').value,
-        $('name').value,
-        $('email').value,
-        $('url').value,
-        $('message').value,
-        $('reply').value,
-        $('comment_status').value);
+        _('gadget').value,
+        _('id').value,
+        _('name').value,
+        _('email').value,
+        _('url').value,
+        _('message').value,
+        _('reply').value,
+        _('comment_status').value);
 }
 
 /**
@@ -162,7 +162,7 @@ function commentDelete(id)
  */
 function commentDGAction(combo)
 {
-    var rows = $('comments_datagrid').getSelectedRows();
+    var rows = _('comments_datagrid').getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
@@ -177,7 +177,7 @@ function commentDGAction(combo)
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            CommentsAjax.callAsync('MarkAs', $('gadget').value, rows, combo.value);
+            CommentsAjax.callAsync('MarkAs', _('gadget').value, rows, combo.value);
         }
     }
 }
@@ -195,7 +195,7 @@ function searchComment()
  */
 function SaveSettings()
 {
-    CommentsAjax.callAsync('SaveSettings', $('allow_comments').value, $('allow_duplicate').value);
+    CommentsAjax.callAsync('SaveSettings', _('allow_comments').value, _('allow_duplicate').value);
 }
 
 var CommentsAjax = new JawsAjax('Comments', CommentsCallback),
