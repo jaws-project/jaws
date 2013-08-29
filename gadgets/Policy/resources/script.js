@@ -14,8 +14,8 @@
 var PolicyCallback = {
     addiprange: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('blocked_ips_datagrid').addItem();
-            $('blocked_ips_datagrid').setCurrentPage(0);
+            _('blocked_ips_datagrid').addItem();
+            _('blocked_ips_datagrid').setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -32,7 +32,7 @@ var PolicyCallback = {
 
     deleteiprange: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('blocked_ips_datagrid').deleteItem();
+            _('blocked_ips_datagrid').deleteItem();
             getDG();
         }
         showResponse(response);
@@ -40,8 +40,8 @@ var PolicyCallback = {
 
     addagent: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('blocked_agents_datagrid').addItem();
-            $('blocked_agents_datagrid').setCurrentPage(0);
+            _('blocked_agents_datagrid').addItem();
+            _('blocked_agents_datagrid').setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -58,7 +58,7 @@ var PolicyCallback = {
 
     deleteagent: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('blocked_agents_datagrid').deleteItem();
+            _('blocked_agents_datagrid').deleteItem();
             getDG();
         }
         showResponse(response);
@@ -114,10 +114,10 @@ function unselectDataGridRow()
 
 function toggleCaptcha(field) 
 {
-    if ($(field + '_captcha').value == 'DISABLED') {
-        $(field + '_captcha_driver').disabled = true;
+    if (_(field + '_captcha').value == 'DISABLED') {
+        _(field + '_captcha_driver').disabled = true;
     } else {
-        $(field + '_captcha_driver').disabled = false;
+        _(field + '_captcha_driver').disabled = false;
     }
 }
 
@@ -126,25 +126,25 @@ function toggleCaptcha(field)
  */
 function saveIPRange()
 {
-    if ($('from_ipaddress').value.blank()) {
+    if (_('from_ipaddress').value.blank()) {
         alert(incompleteFields);
         return false;
     }
 
-    if ($('id').value == 0) {
+    if (_('id').value == 0) {
         PolicyAjax.callAsync(
             'addiprange',
-            $('from_ipaddress').value,
-            $('to_ipaddress').value,
-            $('blocked').value
+            _('from_ipaddress').value,
+            _('to_ipaddress').value,
+            _('blocked').value
         );
     } else {
         PolicyAjax.callAsync(
             'editiprange',
-            $('id').value,
-            $('from_ipaddress').value,
-            $('to_ipaddress').value,
-            $('blocked').value
+            _('id').value,
+            _('from_ipaddress').value,
+            _('to_ipaddress').value,
+            _('blocked').value
         );
     }
 }
@@ -159,10 +159,10 @@ function editIPRange(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var ipRange = PolicyAjax.callSync('getiprange', id);
 
-    $('id').value = ipRange['id'];
-    $('from_ipaddress').value = ipRange['from_ip'];
-    $('to_ipaddress').value   = ipRange['to_ip'];
-    $('blocked').selectedIndex = ipRange['blocked']? 1 : 0;
+    _('id').value = ipRange['id'];
+    _('from_ipaddress').value = ipRange['from_ip'];
+    _('to_ipaddress').value   = ipRange['to_ip'];
+    _('blocked').selectedIndex = ipRange['blocked']? 1 : 0;
 }
 
 /**
@@ -184,15 +184,15 @@ function deleteIPRange(element, id)
  */
 function saveAgent()
 {
-    if ($('agent').value.blank()) {
+    if (_('agent').value.blank()) {
         alert(incompleteFields);
         return false;
     }
 
-    if ($('id').value == 0) {
-        PolicyAjax.callAsync('addagent', $('agent').value, $('blocked').value);
+    if (_('id').value == 0) {
+        PolicyAjax.callAsync('addagent', _('agent').value, _('blocked').value);
     } else {
-        PolicyAjax.callAsync('editagent', $('id').value, $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('editagent', _('id').value, _('agent').value, _('blocked').value);
     }
 }
 
@@ -206,9 +206,9 @@ function editAgent(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var agent = PolicyAjax.callSync('getagent', id);
 
-    $('id').value    = agent['id'];
-    $('agent').value = agent['agent'].defilter();
-    $('blocked').selectedIndex = agent['blocked']? 1 : 0;
+    _('id').value    = agent['id'];
+    _('agent').value = agent['agent'].defilter();
+    _('blocked').selectedIndex = agent['blocked']? 1 : 0;
 }
 
 /**
@@ -231,7 +231,7 @@ function deleteAgent(element, id)
 function setBlockUndefinedIP()
 {
     try {
-        PolicyAjax.callAsync('ipblockingblockundefined', $('block_undefined_ip').checked);
+        PolicyAjax.callAsync('ipblockingblockundefined', _('block_undefined_ip').checked);
     } catch(e) {
         alert(e);
     }
@@ -245,7 +245,7 @@ function setBlockUndefinedAgent()
     try {
         PolicyAjax.callAsync(
             'agentblockingblockundefined',
-            $('block_undefined_agent').checked
+            _('block_undefined_agent').checked
         );
     } catch(e) {
         alert(e);
@@ -260,9 +260,9 @@ function saveEncryptionSettings()
     try {
         PolicyAjax.callAsync(
             'updateencryptionsettings',
-            $('enabled').value,
-            $('key_age').value,
-            $('key_len').value
+            _('enabled').value,
+            _('key_age').value,
+            _('key_len').value
         );
     } catch(e) {
         alert(e);
@@ -277,10 +277,10 @@ function saveAntiSpamSettings()
     try {
         PolicyAjax.callAsync(
             'updateantispamsettings',
-            $('filter').value,
-            $('default_captcha').value,
-            $('default_captcha_driver').value,
-            $('obfuscator').value
+            _('filter').value,
+            _('default_captcha').value,
+            _('default_captcha_driver').value,
+            _('obfuscator').value
         );
     } catch(e) {
         alert(e);
@@ -295,16 +295,16 @@ function saveAdvancedPolicies()
     try {
         PolicyAjax.callAsync(
             'updateadvancedpolicies',
-            $('passwd_complexity').value,
-            $('passwd_bad_count').value,
-            $('passwd_lockedout_time').value,
-            $('passwd_max_age').value,
-            $('passwd_min_length').value,
-            $('login_captcha').value,
-            $('login_captcha_driver').value,
-            $('xss_parsing_level').value,
-            $('session_idle_timeout').value,
-            $('session_remember_timeout').value
+            _('passwd_complexity').value,
+            _('passwd_bad_count').value,
+            _('passwd_lockedout_time').value,
+            _('passwd_max_age').value,
+            _('passwd_min_length').value,
+            _('login_captcha').value,
+            _('login_captcha_driver').value,
+            _('xss_parsing_level').value,
+            _('session_idle_timeout').value,
+            _('session_remember_timeout').value
         );
     } catch(e) {
         alert(e);
@@ -338,14 +338,14 @@ function stopAction()
 {
     switch (currentAction) {
         case 'IPBlocking':
-            $('id').value = 0;
-            $('from_ipaddress').value = '';
-            $('to_ipaddress').value   = '';
+            _('id').value = 0;
+            _('from_ipaddress').value = '';
+            _('to_ipaddress').value   = '';
             unselectDataGridRow();
             break;
         case 'AgentBlocking':
-            $('id').value = 0;
-            $('agent').value = '';
+            _('id').value = 0;
+            _('agent').value = '';
             unselectDataGridRow();
             break;
         default:
