@@ -81,10 +81,10 @@ var ComponentsCallback = {
 
     updatepluginusage: function (response) {
         if (response[0].css === 'notice-message') {
-            usageCache = $('plugin_usage').clone(true, true);
+            usageCache = _('plugin_usage').clone(true, true);
             if (regCache) {
                 regCache = null;
-                $('component_registry').remove();
+                _('component_registry').remove();
             }
         }
         showResponse(response);
@@ -93,10 +93,10 @@ var ComponentsCallback = {
     updateregistry: function (response) {
         if (response[0].css === 'notice-message') {
             regChanges = {};
-            regCache = $('component_registry').clone(true, true);
+            regCache = _('component_registry').clone(true, true);
             if (usageCache) {
                 usageCache = null;
-                $('plugin_usage').remove();
+                _('plugin_usage').remove();
             }
         }
         showResponse(response);
@@ -105,7 +105,7 @@ var ComponentsCallback = {
     updateacl: function (response) {
         if (response[0].css === 'notice-message') {
             aclChanges = {};
-            aclCache = $('component_acl').clone(true, true);
+            aclCache = _('component_acl').clone(true, true);
         }
         showResponse(response);
     }
@@ -120,8 +120,8 @@ function init()
         ComponentsAjax.callSync('getplugins'):
         ComponentsAjax.callSync('getgadgets');
     buildComponentList();
-    $('tabs').getElements('li').addEvent('click', switchTab);
-    $('components').getElements('h3').each(function(el, i) {
+    _('tabs').getElements('li').addEvent('click', switchTab);
+    _('components').getElements('h3').each(function(el, i) {
         el.addEvent('click', toggleCollapse);
         if (ComponentsStorage[Number(pluginsMode)].fetch(i)) {
             el.fireEvent('click');
@@ -136,15 +136,15 @@ function init()
 function buildComponentList()
 {
     var sections = {};
-    sections.outdated = $('outdated').set('html', '');
-    sections.notinstalled = $('notinstalled').set('html', '');
-    sections.installed = $('installed').set('html', '');
-    sections.core = $('core').set('html', '');
+    sections.outdated = _('outdated').set('html', '');
+    sections.notinstalled = _('notinstalled').set('html', '');
+    sections.installed = _('installed').set('html', '');
+    sections.core = _('core').set('html', '');
     Object.keys(components).sort().each(function(name) {
         sections[components[name].state].grab(getComponentElement(components[name]));
     });
-    $('components').getElements('h3').show();
-    $('components').getElements('ul:empty').getPrevious('h3').hide();
+    _('components').getElements('h3').show();
+    _('components').getElements('ul:empty').getPrevious('h3').hide();
 }
 
 /**
@@ -212,14 +212,14 @@ function updateSummary()
         }
         count.total++;
     });
-    $('sum_installed').innerHTML = count.installed;
-    $('sum_notinstalled').innerHTML = count.notinstalled;
+    _('sum_installed').innerHTML = count.installed;
+    _('sum_notinstalled').innerHTML = count.notinstalled;
 
-    $('sum_total').innerHTML = count.total;
+    _('sum_total').innerHTML = count.total;
     if (!pluginsMode) {
-        $('sum_disabled').innerHTML = count.disabled;
-        $('sum_outdated').innerHTML = count.outdated;
-        $('sum_core').innerHTML = count.core;
+        _('sum_disabled').innerHTML = count.disabled;
+        _('sum_outdated').innerHTML = count.outdated;
+        _('sum_core').innerHTML = count.core;
     }
 }
 
@@ -230,7 +230,7 @@ function toggleCollapse()
 {
     this.toggleClass('collapsed');
     ComponentsStorage[Number(pluginsMode)].update(
-        $('components').getElements('h3').indexOf(this),
+        _('components').getElements('h3').indexOf(this),
         this.getProperty('class')
     );
     this.getNext('ul').toggle();
@@ -242,17 +242,17 @@ function toggleCollapse()
 function showHideTabs()
 {
     var comp = components[selectedComponent];
-    $('tabs').getElements('li').hide();
-    $('tab_info').show();
+    _('tabs').getElements('li').hide();
+    _('tab_info').show();
     if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
         if (comp.manage_reg) {
-            $('tab_registry').show();
+            _('tab_registry').show();
         }
         if (comp.manage_acl) {
-            $('tab_acl').show();
+            _('tab_acl').show();
         }
         if (pluginsMode) {
-            $('tab_usage').show();
+            _('tab_usage').show();
         }
     }
 }
@@ -263,30 +263,30 @@ function showHideTabs()
 function showHideButtons()
 {
     var comp = components[selectedComponent];
-    $('component_info').getElements('button').hide();
+    _('component_info').getElements('button').hide();
     if (pluginsMode) {
         switch(comp.state) {
         case 'notinstalled':
-            $('btn_install').show('inline');
+            _('btn_install').show('inline');
             break;
         case 'installed':
-            $('btn_uninstall').show('inline');
+            _('btn_uninstall').show('inline');
             break;
         }
     } else {
         switch(comp.state) {
         case 'outdated':
-            $('btn_update').show('inline');
+            _('btn_update').show('inline');
             break;
         case 'notinstalled':
-            $('btn_install').show('inline');
+            _('btn_install').show('inline');
             break;
         case 'installed':
-            $('btn_uninstall').show('inline');
+            _('btn_uninstall').show('inline');
             if (comp.disabled) {
-                $('btn_enable').show('inline');
+                _('btn_enable').show('inline');
             } else {
-                $('btn_disable').show('inline');
+                _('btn_disable').show('inline');
             }
             break;
         }
@@ -299,10 +299,10 @@ function showHideButtons()
 function switchTab(tab)
 {
     tab = (typeof tab === 'string') ? tab : this.id;
-    tab = $(tab).isVisible() ? tab : 'tab_info';
-    $('tabs').getElement('li.active').removeClass('active');
-    $(tab).addClass('active');
-    $('component_form').getChildren().hide();
+    tab = _(tab).isVisible() ? tab : 'tab_info';
+    _('tabs').getElement('li.active').removeClass('active');
+    _(tab).addClass('active');
+    _('component_form').getChildren().hide();
     switch (tab) {
         case 'tab_info':
             componentInfo();
@@ -332,10 +332,10 @@ function selectComponent()
         'gadgets/' + components[comp].name + '/images/logo.png';
     img.alt = components[comp].title;
     h1.innerHTML = components[comp].title + ': ' + components[comp].description;
-    $('component_head').innerHTML = '';
-    $('component_form').innerHTML = '';
-    $('component_head').adopt(img, h1);
-    $$('#components li.selected').removeClass('selected');
+    _('component_head').innerHTML = '';
+    _('component_form').innerHTML = '';
+    _('component_head').adopt(img, h1);
+    __('#components li.selected').removeClass('selected');
     this.addClass('selected');
 
     selectedComponent = comp;
@@ -343,7 +343,7 @@ function selectComponent()
     aclCache = null;
     usageCache = null;
     showHideTabs();
-    switchTab($('tabs').getElement('li.active').id);
+    switchTab(_('tabs').getElement('li.active').id);
 }
 
 /**
@@ -352,9 +352,9 @@ function selectComponent()
 function closeUI()
 {
     selectedComponent = null;
-    $$('#components li.selected').removeClass('selected');
-    $('summary').show();
-    $('component').hide();
+    __('#components li.selected').removeClass('selected');
+    _('summary').show();
+    _('component').hide();
     updateSummary();
 }
 
@@ -363,16 +363,16 @@ function closeUI()
  */
 function componentInfo()
 {
-    if (!$('component_info')) {
-        $('component_form').set('html', pluginsMode ?
+    if (!_('component_info')) {
+        _('component_form').set('html', pluginsMode ?
             ComponentsAjax.callSync('getplugininfo', selectedComponent):
             ComponentsAjax.callSync('getgadgetinfo', selectedComponent)
         );
     }
 
-    $('summary').hide();
-    $('component').show();
-    $('component_info').show();
+    _('summary').hide();
+    _('component').show();
+    _('component_info').show();
     showHideButtons();
 }
 
@@ -385,7 +385,7 @@ function componentRegistry(reset)
         var table = new Element('table'),
             res = ComponentsAjax.callSync('getregistry', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
-        $('component_form').grab(div.getElement('div'));
+        _('component_form').grab(div.getElement('div'));
         res.data.each(function(reg) {
             var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
                 th = new Element('th').grab(label),
@@ -395,16 +395,16 @@ function componentRegistry(reset)
             input.setProperty('onchange', 'onValueChange(this)');
             table.grab(tr);
         });
-        $('frm_registry').grab(table);
-        regCache = $('component_registry').clone(true, true);
+        _('frm_registry').grab(table);
+        regCache = _('component_registry').clone(true, true);
     }
     if (reset) {
-        regCache.clone(true, true).replaces($('component_registry'));
+        regCache.clone(true, true).replaces(_('component_registry'));
         regChanges = {};
     }
-    $('summary').hide();
-    $('component').show();
-    $('component_registry').show();
+    _('summary').hide();
+    _('component').show();
+    _('component_registry').show();
 }
 
 /**
@@ -417,7 +417,7 @@ function componentACL(reset)
             res = ComponentsAjax.callSync('getacl', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         aclCache = div.getElement('div');
-        $('component_form').grab(div.getElement('div'));
+        _('component_form').grab(div.getElement('div'));
         res.acls.each(function(acl) {
             var key_unique = acl.key_name + ':' + acl.key_subkey;
             var label = new Element('label', {html:acl.key_desc, 'for':key_unique}),
@@ -433,16 +433,16 @@ function componentACL(reset)
             input.setProperty('onchange', 'onValueChange(this)');
             table.grab(tr);
         });
-        $('frm_acl').grab(table);
-        aclCache = $('component_acl').clone(true, true);
+        _('frm_acl').grab(table);
+        aclCache = _('component_acl').clone(true, true);
     }
     if (reset) {
-        aclCache.clone(true, true).replaces($('component_acl'));
+        aclCache.clone(true, true).replaces(_('component_acl'));
         aclChanges = {};
     }
-    $('summary').hide();
-    $('component').show();
-    $('component_acl').show();
+    _('summary').hide();
+    _('component').show();
+    _('component_acl').show();
 }
 
 /**
@@ -501,7 +501,7 @@ function disableGadget()
  */
 function onValueChange(el)
 {
-    switch ($('tabs').getElement('li.active').get('id')) {
+    switch (_('tabs').getElement('li.active').get('id')) {
         case 'tab_registry':
             regChanges[el.id] = el.value;
             break;
@@ -536,7 +536,7 @@ function pluginUsage(reset)
         var tbody = new Element('tbody'),
             res = ComponentsAjax.callSync('getpluginusage', selectedComponent),
             div = new Element('div').set('html', res.ui);
-        $('component_form').grab(div.getElement('div'));
+        _('component_form').grab(div.getElement('div'));
         res.usage.gadgets.each(function(gadget) {
             var label = new Element('label', {html:gadget.title}),
                 th = new Element('th').grab(label),
@@ -553,17 +553,17 @@ function pluginUsage(reset)
             }
             tbody.grab(tr);
         });
-        $('plugin_usage').getElement('table').grab(tbody);
-        $('all_backend').checked = (res.usage.backend === '*') ? true : false;
-        $('all_frontend').checked = (res.usage.frontend === '*') ? true : false;
-        usageCache = $('plugin_usage').clone(true, true);
+        _('plugin_usage').getElement('table').grab(tbody);
+        _('all_backend').checked = (res.usage.backend === '*') ? true : false;
+        _('all_frontend').checked = (res.usage.frontend === '*') ? true : false;
+        usageCache = _('plugin_usage').clone(true, true);
     }
     if (reset) {
-        usageCache.clone(true, true).replaces($('plugin_usage'));
+        usageCache.clone(true, true).replaces(_('plugin_usage'));
     }
-    $('summary').hide();
-    $('component').show();
-    $('plugin_usage').show();
+    _('summary').hide();
+    _('component').show();
+    _('plugin_usage').show();
 }
 
 /**
@@ -571,9 +571,9 @@ function pluginUsage(reset)
  */
 function savePluginUsage()
 {
-    var backend = $('plugin_usage').getElements('input:checked[name=backend]').get('value'),
-        frontend = $('plugin_usage').getElements('input:checked[name=frontend]').get('value'),
-        total = $('plugin_usage').getElements('input[name=frontend]').length;
+    var backend = _('plugin_usage').getElements('input:checked[name=backend]').get('value'),
+        frontend = _('plugin_usage').getElements('input:checked[name=frontend]').get('value'),
+        total = _('plugin_usage').getElements('input[name=frontend]').length;
     backend = (backend.length === total) ? '*' : backend.join(',');
     frontend = (frontend.length === total) ? '*' : frontend.join(',');
     ComponentsAjax.callAsync('updatepluginusage', selectedComponent, backend, frontend);
@@ -586,10 +586,10 @@ function usageCheckAll(el)
 {
     switch (el.id) {
         case 'all_backend':
-            $('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
+            _('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
             break;
         case 'all_frontend':
-            $('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
+            _('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
             break;
     }
 }
