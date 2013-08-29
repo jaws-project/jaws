@@ -31,7 +31,7 @@ var ContactCallback = {
 
     deleterecipient: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('recipient_datagrid').deleteItem();          
+            _('recipient_datagrid').deleteItem();          
             getDG();
             stopAction();
         }
@@ -40,8 +40,8 @@ var ContactCallback = {
 
     insertrecipient: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('recipient_datagrid').addItem();
-            $('recipient_datagrid').setCurrentPage(0);
+            _('recipient_datagrid').addItem();
+            _('recipient_datagrid').setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -62,7 +62,7 @@ var ContactCallback = {
 
     deletecontact: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('contacts_datagrid').deleteItem();          
+            _('contacts_datagrid').deleteItem();          
             getDG('contacts_datagrid');
             stopAction();
         }
@@ -116,49 +116,49 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Recipients':
-        $('id').value      = 0;
-        $('name').value    = '';
-        $('email').value   = '';
-        $('tel').value     = '';
-        $('fax').value     = '';
-        $('mobile').value  = '';
-        $('inform_type').value  = 0;
-        $('visible').value = 1;
+        _('id').value      = 0;
+        _('name').value    = '';
+        _('email').value   = '';
+        _('tel').value     = '';
+        _('fax').value     = '';
+        _('mobile').value  = '';
+        _('inform_type').value  = 0;
+        _('visible').value = 1;
         unselectDataGridRow();
-        $('name').focus();
+        _('name').focus();
         break;
     case 'Contacts':
-        $('id').value      = 0;
-        $('contact_ip').set('html', '');
-        $('name').value    = '';
-        $('email').value   = '';
-        $('company').value = '';
-        $('url').value     = '';
-        $('tel').value     = '';
-        $('fax').value     = '';
-        $('mobile').value  = '';
-        $('address').value = '';
-        $('rid').selectedIndex = -1;
-        $('subject').value = '';
-        $('message').value = '';
-        $('btn_save_send').hide();
-        $('tr_attachment').hide();
-        $('btn_save').hide();
-        $('btn_cancel').hide();
+        _('id').value      = 0;
+        _('contact_ip').set('html', '');
+        _('name').value    = '';
+        _('email').value   = '';
+        _('company').value = '';
+        _('url').value     = '';
+        _('tel').value     = '';
+        _('fax').value     = '';
+        _('mobile').value  = '';
+        _('address').value = '';
+        _('rid').selectedIndex = -1;
+        _('subject').value = '';
+        _('message').value = '';
+        _('btn_save_send').hide();
+        _('tr_attachment').hide();
+        _('btn_save').hide();
+        _('btn_cancel').hide();
         unselectDataGridRow();
-        $('name').focus();
+        _('name').focus();
         break;
     case 'Reply':
-        $('id').value      = 0;
-        $('name').value    = '';
-        $('email').value   = '';
-        $('subject').value = '';
-        $('message').value = '';
-        $('reply').value   = '';
-        $('reply').readOnly = true;
-        $('btn_save_send').hide();
-        $('btn_save').hide();
-        $('btn_cancel').hide();
+        _('id').value      = 0;
+        _('name').value    = '';
+        _('email').value   = '';
+        _('subject').value = '';
+        _('message').value = '';
+        _('reply').value   = '';
+        _('reply').readOnly = true;
+        _('btn_save_send').hide();
+        _('btn_save').hide();
+        _('btn_cancel').hide();
         unselectDataGridRow();
     }
 }
@@ -170,37 +170,37 @@ function stopAction()
 function editContact(element, id)
 {
     currentAction = 'Contacts';
-    $('legend_title').innerHTML = messageDetail_title;
+    _('legend_title').innerHTML = messageDetail_title;
     if (cacheContactForm != null) {
-        $('c_work_area').innerHTML = cacheContactForm;
+        _('c_work_area').innerHTML = cacheContactForm;
     }
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var contact = ContactAjax.callSync('getcontact', id);
-    $('id').value      = contact['id'];
-    $('contact_ip').set('html', contact['ip']);
-    $('name').value    = contact['name'];
-    $('email').value   = contact['email'];
-    $('company').value = contact['company'];
-    $('url').value     = contact['url'];
-    $('tel').value     = contact['tel'];
-    $('fax').value     = contact['fax'];
-    $('mobile').value  = contact['mobile'];
-    $('address').value = contact['address'];
-    $('rid').value     = contact['recipient'];
-    $('subject').value = contact['subject'].defilter();
-    $('message').value = contact['msg_txt'].defilter();
-    $('btn_save_send').hide();
-    $('btn_save').show('inline');
-    $('btn_cancel').show('inline');
+    _('id').value      = contact['id'];
+    _('contact_ip').set('html', contact['ip']);
+    _('name').value    = contact['name'];
+    _('email').value   = contact['email'];
+    _('company').value = contact['company'];
+    _('url').value     = contact['url'];
+    _('tel').value     = contact['tel'];
+    _('fax').value     = contact['fax'];
+    _('mobile').value  = contact['mobile'];
+    _('address').value = contact['address'];
+    _('rid').value     = contact['recipient'];
+    _('subject').value = contact['subject'].defilter();
+    _('message').value = contact['msg_txt'].defilter();
+    _('btn_save_send').hide();
+    _('btn_save').show('inline');
+    _('btn_cancel').show('inline');
 
     if (contact['attachment']) {
-        $('attachment').href = dataURL + contact['attachment'];
-        $('attachment').set('html', contact['attachment']);
-        $('tr_attachment').show();
+        _('attachment').href = dataURL + contact['attachment'];
+        _('attachment').set('html', contact['attachment']);
+        _('tr_attachment').show();
     } else {
-        $('tr_attachment').hide();
+        _('tr_attachment').hide();
     }
 }
 
@@ -210,7 +210,7 @@ function editContact(element, id)
 function editReply(element, id)
 {
     if (cacheContactForm == null) {
-        cacheContactForm = $('c_work_area').innerHTML;
+        cacheContactForm = _('c_work_area').innerHTML;
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -221,20 +221,20 @@ function editReply(element, id)
     currentAction = 'Reply';
 
     selectedContact = id;
-    $('legend_title').innerHTML = contactReply_title;
-    $('c_work_area').innerHTML = cacheReplyForm;
+    _('legend_title').innerHTML = contactReply_title;
+    _('c_work_area').innerHTML = cacheReplyForm;
     var replyData = ContactAjax.callSync('getreply', selectedContact);
-    $('id').value      = replyData['id'];
-    $('name').value    = replyData['name'];
-    $('email').value   = replyData['email'];
-    $('subject').value = replyData['subject'].defilter();
-    $('message').value = replyData['msg_txt'].defilter();
-    $('reply').value   = replyData['reply'].defilter();
-    $('btn_save').show('inline');
-    $('btn_cancel').show('inline');
-    $('btn_save_send').show('inline');
-    $('reply').readOnly = Boolean(replyData['readonly']);
-    $('reply').focus();
+    _('id').value      = replyData['id'];
+    _('name').value    = replyData['name'];
+    _('email').value   = replyData['email'];
+    _('subject').value = replyData['subject'].defilter();
+    _('message').value = replyData['msg_txt'].defilter();
+    _('reply').value   = replyData['reply'].defilter();
+    _('btn_save').show('inline');
+    _('btn_cancel').show('inline');
+    _('btn_save_send').show('inline');
+    _('reply').readOnly = Boolean(replyData['readonly']);
+    _('reply').focus();
 }
 
 /**
@@ -245,23 +245,23 @@ function updateContact(send_reply)
     switch(currentAction) {
     case 'Contacts':
         ContactAjax.callAsync('updatecontact',
-                        $('id').value,
-                        $('name').value,
-                        $('email').value,
-                        $('company').value,
-                        $('url').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('address').value,
-                        $('rid').value,
-                        $('subject').value,
-                        $('message').value);
+                        _('id').value,
+                        _('name').value,
+                        _('email').value,
+                        _('company').value,
+                        _('url').value,
+                        _('tel').value,
+                        _('fax').value,
+                        _('mobile').value,
+                        _('address').value,
+                        _('rid').value,
+                        _('subject').value,
+                        _('message').value);
         break;
     case 'Reply':
         ContactAjax.callAsync('updatereply',
-                        $('id').value,
-                        $('reply').value,
+                        _('id').value,
+                        _('reply').value,
                         send_reply);
         break;
     }
@@ -287,10 +287,10 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callSync('getcontacts', $('recipient_filter').value, offset);
+    var result = ContactAjax.callSync('getcontacts', _('recipient_filter').value, offset);
     if (reset) {
-        $(name).setCurrentPage(0);
-        var total = ContactAjax.callSync('getcontactscount', $('recipient_filter').value);
+        _(name).setCurrentPage(0);
+        var total = ContactAjax.callSync('getcontactscount', _('recipient_filter').value);
     }
     resetGrid(name, result, total);
 }
@@ -304,14 +304,14 @@ function editRecipient(element, id)
     currentAction = 'Recipients';
     selectDataGridRow(element.parentNode.parentNode);
     var recipient = ContactAjax.callSync('getrecipient', id);
-    $('id').value      = recipient['id'];
-    $('name').value    = recipient['name'].defilter();
-    $('email').value   = recipient['email'];
-    $('tel').value     = recipient['tel'];
-    $('fax').value     = recipient['fax'];
-    $('mobile').value  = recipient['mobile'];
-    $('inform_type').value = recipient['inform_type'];
-    $('visible').value = recipient['visible'];
+    _('id').value      = recipient['id'];
+    _('name').value    = recipient['name'].defilter();
+    _('email').value   = recipient['email'];
+    _('tel').value     = recipient['tel'];
+    _('fax').value     = recipient['fax'];
+    _('mobile').value  = recipient['mobile'];
+    _('inform_type').value = recipient['inform_type'];
+    _('visible').value = recipient['visible'];
 }
 
 /**
@@ -319,32 +319,32 @@ function editRecipient(element, id)
  */
 function updateRecipient()
 {
-    if ($('name').value.blank() ||
-        $('email').value.blank() ||
-        !isValidEmail($('email').value.trim())) {
+    if (_('name').value.blank() ||
+        _('email').value.blank() ||
+        !isValidEmail(_('email').value.trim())) {
         alert(incompleteRecipientFields);
         return;
     }
 
-    if($('id').value == 0) {
+    if(_('id').value == 0) {
         ContactAjax.callAsync('insertrecipient',
-                        $('name').value,
-                        $('email').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('inform_type').value,
-                        $('visible').value);
+                        _('name').value,
+                        _('email').value,
+                        _('tel').value,
+                        _('fax').value,
+                        _('mobile').value,
+                        _('inform_type').value,
+                        _('visible').value);
     } else {
         ContactAjax.callAsync('updaterecipient',
-                        $('id').value,
-                        $('name').value,
-                        $('email').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('inform_type').value,
-                        $('visible').value);
+                        _('id').value,
+                        _('name').value,
+                        _('email').value,
+                        _('tel').value,
+                        _('fax').value,
+                        _('mobile').value,
+                        _('inform_type').value,
+                        _('visible').value);
     }
 }
 
@@ -368,9 +368,9 @@ function deleteRecipient(element, id)
 function updateProperties()
 {
     ContactAjax.callAsync('updateproperties',
-                        $('use_antispam').value,
-                        $('email_format').value,
-                        $('enable_attachment').value,
+                        _('use_antispam').value,
+                        _('email_format').value,
+                        _('enable_attachment').value,
                         getEditorValue('comments'));
 }
 
@@ -381,14 +381,14 @@ function switchEmailTarget(value)
 {
     switch (value) {
         case '1':
-            if ($('batch_mail').isDisplayed()) break;
-            $('free_mail').hide();
-            $('batch_mail').show();
+            if (_('batch_mail').isDisplayed()) break;
+            _('free_mail').hide();
+            _('batch_mail').show();
             break;
         case '2':
-            if ($('free_mail').isDisplayed()) break;
-            $('batch_mail').hide();
-            $('free_mail').show();
+            if (_('free_mail').isDisplayed()) break;
+            _('batch_mail').hide();
+            _('free_mail').show();
             break;
     }
 }
@@ -399,14 +399,14 @@ function switchEmailTarget(value)
 function updateUsers(group)
 {
     if (group == '0') {
-        $('users').setValue(0);
+        _('users').setValue(0);
         group = false;
     }
     var users = ContactAjax.callSync('getusers', group);
-    $('users').options.length = 0;
-    $('users').options[0] = new Option(lblAllGroupUsers, 0);
+    _('users').options.length = 0;
+    _('users').options[0] = new Option(lblAllGroupUsers, 0);
     users.each(function(user, i) {
-        $('users').options[$('users').options.length] = new Option(user['nickname'], user['id']);
+        _('users').options[_('users').options.length] = new Option(user['nickname'], user['id']);
     });
 }
 
@@ -415,21 +415,21 @@ function updateUsers(group)
  */
 function newEmail()
 {
-    $('groups').value = 0;
-    $('users').value = 0;
-    $('to').value = '';
-    $('cc').value = '';
-    $('bcc').value = '';
-    $('from').value = '';
-    $('subject').value = '';
-    $('message').value = '';
-    $('filename').value = '';
-    $('frm_file').reset();
+    _('groups').value = 0;
+    _('users').value = 0;
+    _('to').value = '';
+    _('cc').value = '';
+    _('bcc').value = '';
+    _('from').value = '';
+    _('subject').value = '';
+    _('message').value = '';
+    _('filename').value = '';
+    _('frm_file').reset();
 
-    $('attachment').show();
-    $('btn_upload').show();
-    $('attach_loading').hide();
-    $('btn_attach').hide();
+    _('attachment').show();
+    _('btn_upload').show();
+    _('attach_loading').hide();
+    _('btn_attach').hide();
     toggleDisableForm(false);
 }
 
@@ -438,18 +438,18 @@ function newEmail()
  */
 function toggleDisableForm(disabled)
 {
-    $('options_1').disabled   = disabled;
-    $('options_2').disabled   = disabled;
-    $('to').disabled          = disabled;
-    $('cc').disabled          = disabled;
-    $('bcc').disabled         = disabled;
-    $('groups').disabled      = disabled;
-    $('users').disabled       = disabled;
-    $('subject').disabled     = disabled;
-    $('message').disabled     = disabled;
-    $('btn_send').disabled    = disabled;
-    $('btn_preview').disabled = disabled;
-    $('btn_new').disabled     = disabled;
+    _('options_1').disabled   = disabled;
+    _('options_2').disabled   = disabled;
+    _('to').disabled          = disabled;
+    _('cc').disabled          = disabled;
+    _('bcc').disabled         = disabled;
+    _('groups').disabled      = disabled;
+    _('users').disabled       = disabled;
+    _('subject').disabled     = disabled;
+    _('message').disabled     = disabled;
+    _('btn_send').disabled    = disabled;
+    _('btn_preview').disabled = disabled;
+    _('btn_new').disabled     = disabled;
 }
 
 /**
@@ -458,12 +458,12 @@ function toggleDisableForm(disabled)
 function uploadFile() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('mailer').adopt(iframe);
-    $('attachment').hide();
-    $('btn_upload').hide();
-    $('attach_loading').show();
+    _('mailer').adopt(iframe);
+    _('attachment').hide();
+    _('btn_upload').hide();
+    _('attach_loading').show();
     toggleDisableForm(true);
-    $('frm_file').submit();
+    _('frm_file').submit();
 }
 
 /**
@@ -474,31 +474,31 @@ function onUpload(response) {
     toggleDisableForm(false);
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_file').reset();
-        $('btn_upload').show();
-        $('attachment').show();
+        _('frm_file').reset();
+        _('btn_upload').show();
+        _('attachment').show();
     } else {
-        $('filename').value = response.filename;
-        $('file_link').set('html', response.filename);
-        $('file_size').set('html', response.filesize);
-        $('btn_attach').show();
-        $('attachment').hide();
+        _('filename').value = response.filename;
+        _('file_link').set('html', response.filename);
+        _('file_size').set('html', response.filesize);
+        _('btn_attach').show();
+        _('attachment').hide();
     }
-    $('attach_loading').hide();
-    $('ifrm_upload').destroy();
+    _('attach_loading').hide();
+    _('ifrm_upload').destroy();
 }
 
 /**
  * Removes the attachment
  */
 function removeAttachment() {
-    $('filename').value = '';
-    $('frm_file').reset();
-    $('btn_attach').hide();
-    $('file_link').set('html', '');
-    $('file_size').set('html', '');
-    $('btn_upload').show();
-    $('attachment').show();
+    _('filename').value = '';
+    _('frm_file').reset();
+    _('btn_attach').hide();
+    _('file_link').set('html', '');
+    _('file_size').set('html', '');
+    _('btn_upload').show();
+    _('attachment').show();
 }
 
 /**
@@ -522,44 +522,44 @@ function previewMessage()
  */
 function sendEmail()
 {
-    if ($('options_1').checked) {
-        if ($('users').options.length <= 1) {
+    if (_('options_1').checked) {
+        if (_('users').options.length <= 1) {
             alert(groupHasNoUser);
-            $('groups').focus();
+            _('groups').focus();
             return;
         }
-        var target = {'group': $('groups').value,
-                      'user' : $('users').value};
+        var target = {'group': _('groups').value,
+                      'user' : _('users').value};
     } else {
         // Already we have isValidEmail() but validation becomes 
         // too complicated in case of 3 fields (to, cc, bcc) so let server do the job
-        if ($('to').value.blank() &&
-            $('cc').value.blank() &&
-            $('bcc').value.blank())
+        if (_('to').value.blank() &&
+            _('cc').value.blank() &&
+            _('bcc').value.blank())
         {
             alert(incompleteMailerFields);
-            $('to').focus();
+            _('to').focus();
             return;
         }
-        var target = {'to' : $('to').value,
-                      'cc' : $('cc').value,
-                      'bcc': $('bcc').value};
+        var target = {'to' : _('to').value,
+                      'cc' : _('cc').value,
+                      'bcc': _('bcc').value};
     }
 
-    if ($('subject').value.blank()) {
+    if (_('subject').value.blank()) {
         alert(incompleteMailerFields);
-        $('subject').focus();
+        _('subject').focus();
         return;
     }
 
     var body = getEditorValue('message');
     if (body.blank()) {
         alert(incompleteMailerFields);
-        $('message').focus();
+        _('message').focus();
         return;
     }
 
-    ContactAjax.callAsync('sendemail', target, $('subject').value, body, $('filename').value);
+    ContactAjax.callAsync('sendemail', target, _('subject').value, body, _('filename').value);
 }
 
 var ContactAjax = new JawsAjax('Contact', ContactCallback),
