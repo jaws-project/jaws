@@ -206,7 +206,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('site-author',    $this->attributes['site_author']);
         $this->_Template->SetVariable('site-license',   $this->attributes['site_license']);
         $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
-        $cMetas = unserialize($this->attributes['site_custom_meta']);
+        $cMetas = @unserialize($this->attributes['site_custom_meta']);
         if (!empty($cMetas)) {
             foreach ($cMetas as $cMeta) {
                 $this->AddHeadMeta($cMeta[0], $cMeta[1]);
@@ -225,6 +225,7 @@ class Jaws_Layout
     function LoadControlPanelHead()
     {
         $this->AddScriptLink('libraries/mootools/core.js');
+        $this->AddScriptLink('libraries/jquery/jquery.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $this->AddHeadLink(
             'gadgets/ControlPanel/resources/style.css',
