@@ -11,17 +11,6 @@
  */
 class Blog_AdminAjax extends Jaws_Gadget_HTML
 {
-    /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Blog_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-    }
 
     /**
      * Parse text
