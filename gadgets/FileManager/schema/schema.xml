@@ -130,4 +130,42 @@
     </declaration>
   </table>
 
+  <table>
+    <name><variable>table_prefix</variable>fm_shared_files</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>file_id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>user_id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>createtime</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>updatetime</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+    </declaration>
+  </table>
+
 </database>
