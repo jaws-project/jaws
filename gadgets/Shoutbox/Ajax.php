@@ -19,8 +19,7 @@ class Shoutbox_Ajax extends Jaws_Gadget_HTML
     function GetComments()
     {
         $gadgetHTML = $GLOBALS['app']->LoadGadget('Shoutbox', 'HTML', 'Comments');
-        $messages = $gadgetHTML->GetComments();
-        return $messages;
+        return $gadgetHTML->GetComments();
     }
 
 }

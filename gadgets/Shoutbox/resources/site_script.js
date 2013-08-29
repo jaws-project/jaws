@@ -15,9 +15,9 @@
 function GetComments()
 {
     var comments = ShoutboxAjax.callSync('GetComments');
-    __('.shoutbox_comments').innerHTML = comments;
+    $('.Shoutbox_comments').html(comments);
 }
 
 
-var ShoutboxAjax = new JawsAjax('Shoutbox');
-setInterval("GetComments()", 30*1000);
+var ShoutboxAjax = new JawsAjax('Shoutbox', null, 'index.php');
+setInterval(GetComments, 30*1000);
