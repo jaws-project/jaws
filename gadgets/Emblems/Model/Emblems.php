@@ -20,15 +20,11 @@ class Emblems_Model_Emblems extends Jaws_Gadget_Model
      */
     function GetEmblems($published = false, $limit = false)
     {
-        if (is_numeric($limit)) {
-            $rs = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($rs)) {
-                return new Jaws_Error($rs->getMessage(), 'SQL');
-            }
-        }
-
         $emblemTable = Jaws_ORM::getInstance()->table('emblem');
         $emblemTable->select('id', 'title', 'image', 'url', 'type', 'published:boolean');
+        if (is_numeric($limit)) {
+            $emblemTable->limit(10, $limit);
+        }
 
         if ($published){
             $emblemTable->where('published', true);
