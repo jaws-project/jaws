@@ -66,8 +66,8 @@ var UrlMapperCallback = {
     adderrormap: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopErrorMapAction();
-            $('errormaps_datagrid').addItem();
-            $('errormaps_datagrid').lastPage();
+            _('errormaps_datagrid').addItem();
+            _('errormaps_datagrid').lastPage();
             getDG('errormaps_datagrid');
         }
         showResponse(response);
@@ -79,7 +79,7 @@ var UrlMapperCallback = {
     deleteerrormap: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopErrorMapAction();
-            $('errormaps_datagrid').deleteItem();
+            _('errormaps_datagrid').deleteItem();
             getDG('errormaps_datagrid');
         }
         showResponse(response);
@@ -102,7 +102,7 @@ var UrlMapperCallback = {
  */
 function rebuildAliasCombo()
 {
-    var combo = $('alias-combo');
+    var combo = _('alias-combo');
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
@@ -129,10 +129,10 @@ function rebuildAliasCombo()
 function editAlias(id)
 {
     var alias = UrlMapperAjax.callSync('getalias', id);
-    $('alias_id').value   = id;
-    $('custom_url').value = alias['real_url'];
-    $('alias').value      = alias['alias_url'];
-    $('delete_button').style.visibility = 'visible';
+    _('alias_id').value   = id;
+    _('custom_url').value = alias['real_url'];
+    _('alias').value      = alias['alias_url'];
+    _('delete_button').style.visibility = 'visible';
 }
 
 /**
@@ -140,15 +140,15 @@ function editAlias(id)
  */
 function saveAlias()
 {
-    if ($('alias_id').value == '-') {
+    if (_('alias_id').value == '-') {
         UrlMapperAjax.callAsync('addalias',
-                                $('alias').value,
-                                $('custom_url').value);
+                                _('alias').value,
+                                _('custom_url').value);
     } else {
         UrlMapperAjax.callAsync('updatealias',
-                                $('alias_id').value,
-                                $('alias').value,
-                                $('custom_url').value);
+                                _('alias_id').value,
+                                _('alias').value,
+                                _('custom_url').value);
     }
 }
 
@@ -157,7 +157,7 @@ function saveAlias()
  */
 function deleteCurrentAlias()
 {
-    var aliasCombo = $('alias-combo');
+    var aliasCombo = _('alias-combo');
     if (aliasCombo.selectedIndex != -1) {
         UrlMapperAjax.callAsync('deletealias', aliasCombo.value);
     }
@@ -183,8 +183,8 @@ function saveMap()
 {
     UrlMapperAjax.callAsync('updatemap',
                             selectedMap,
-                            $('custom_map_route').value,
-                            $('map_order').value);
+                            _('custom_map_route').value,
+                            _('map_order').value);
 }
 
 /**
@@ -193,16 +193,16 @@ function saveMap()
 function editErrorMap(element, emid)
 {
     selectedErrorMap = emid;
-    $('legend_title').innerHTML = editErrorMap_title;
+    _('legend_title').innerHTML = editErrorMap_title;
     selectDataGridRow(element.parentNode.parentNode);
 
     var errorMapInfo = UrlMapperAjax.callSync('geterrormap', selectedErrorMap);
-    $('url').value = errorMapInfo['url'];
-    $('code').value = errorMapInfo['code'];
-    $('new_url').value = errorMapInfo['new_url'];
-    $('new_code').value = errorMapInfo['new_code'];
+    _('url').value = errorMapInfo['url'];
+    _('code').value = errorMapInfo['code'];
+    _('new_url').value = errorMapInfo['new_url'];
+    _('new_code').value = errorMapInfo['new_code'];
 
-    $('btn_cancel').style.visibility = 'visible';
+    _('btn_cancel').style.visibility = 'visible';
 }
 
 /**
@@ -213,18 +213,18 @@ function editMap(element, mid)
     enableMapEditingArea(true);
 
     selectedMap = mid;
-    $('legend_title').innerHTML = editMap_title;
+    _('legend_title').innerHTML = editMap_title;
     selectDataGridRow(element.parentNode.parentNode);
 
     var mapInfo = UrlMapperAjax.callSync('getmap', selectedMap);
-    $('map_route').value  = mapInfo['map'];
-    $('map_ext').value    = mapInfo['extension'];
-    $('map_order').value  = mapInfo['order'];
+    _('map_route').value  = mapInfo['map'];
+    _('map_ext').value    = mapInfo['extension'];
+    _('map_order').value  = mapInfo['order'];
 
     if (mapInfo['custom_map'] == null || mapInfo['custom_map'] == '') {
-        $('custom_map_route').value  = mapInfo['map'];
+        _('custom_map_route').value  = mapInfo['map'];
     } else {
-        $('custom_map_route').value  = mapInfo['custom_map'];
+        _('custom_map_route').value  = mapInfo['custom_map'];
     }
 }
 
@@ -233,15 +233,15 @@ function editMap(element, mid)
  */
 function showActionMaps()
 {
-    if ($('gadgets_combo').value.blank() ||
-        $('actions_combo').value.blank())
+    if (_('gadgets_combo').value.blank() ||
+        _('actions_combo').value.blank())
     {
         return false;
     }
 
     resetGrid('maps_datagrid', '');
     //Get maps of this action and gadget
-    var result = UrlMapperAjax.callSync('getactionmaps', $('gadgets_combo').value, $('actions_combo').value);
+    var result = UrlMapperAjax.callSync('getactionmaps', _('gadgets_combo').value, _('actions_combo').value);
     resetGrid('maps_datagrid', result);
     enableMapEditingArea(false);
 }
@@ -251,8 +251,8 @@ function showActionMaps()
  */
 function rebuildActionCombo()
 {
-    var combo = $('actions_combo');
-    var selectedGadget = $('gadgets_combo').value;
+    var combo = _('actions_combo');
+    var selectedGadget = _('gadgets_combo').value;
     var actions = UrlMapperAjax.callSync('getgadgetactions', selectedGadget);
 
     combo.options.length = 0;
@@ -280,19 +280,19 @@ function rebuildActionCombo()
 function enableMapEditingArea(status)
 {
     if (status) {
-        $('custom_map_route').disabled  = false;
-        $('btn_save').disabled   = false;
-        $('btn_cancel').disabled = false;
+        _('custom_map_route').disabled  = false;
+        _('btn_save').disabled   = false;
+        _('btn_cancel').disabled = false;
     } else {
         selectedMap = null;
         unselectDataGridRow();
-        $('map_order').value  = '';
-        $('map_route').value  = '';
-        $('map_ext').value    = '';
-        $('custom_map_route').value  = '';
-        $('custom_map_route').disabled  = true;
-        $('btn_save').disabled   = true;
-        $('btn_cancel').disabled = true;
+        _('map_order').value  = '';
+        _('map_route').value  = '';
+        _('map_ext').value    = '';
+        _('custom_map_route').value  = '';
+        _('custom_map_route').disabled  = true;
+        _('btn_save').disabled   = true;
+        _('btn_cancel').disabled = true;
     }
 }
 
@@ -301,10 +301,10 @@ function enableMapEditingArea(status)
  */
 function changeCode()
 {
-    if ($('new_code').value == 410) {
-        $('new_url').disabled = true;
+    if (_('new_code').value == 410) {
+        _('new_url').disabled = true;
     } else {
-        $('new_url').disabled = false;
+        _('new_url').disabled = false;
     }
 }
 
@@ -315,7 +315,7 @@ function getErrorMaps(name, offset, reset)
 {
     var result = UrlMapperAjax.callSync('geterrormaps', 10, offset);
     if (reset) {
-        $(name).setCurrentPage(0);
+        _(name).setCurrentPage(0);
         var total = UrlMapperAjax.callSync('geterrormapscount');
     }
     resetGrid(name, result, total);
@@ -343,17 +343,17 @@ function saveErrorMap()
     if (selectedErrorMap != null && selectedErrorMap > 0) {
         UrlMapperAjax.callAsync('updateerrormap',
             selectedErrorMap,
-            $('url').value,
-            $('code').value,
-            $('new_url').value,
-            $('new_code').value);
+            _('url').value,
+            _('code').value,
+            _('new_url').value,
+            _('new_code').value);
 
     } else {
         UrlMapperAjax.callAsync('adderrormap',
-            $('url').value,
-            $('code').value,
-            $('new_url').value,
-            $('new_code').value);
+            _('url').value,
+            _('code').value,
+            _('new_url').value,
+            _('new_code').value);
     }
 }
 
@@ -362,11 +362,11 @@ function saveErrorMap()
  */
 function stopAction()
 {
-    $('alias_id').value = '-';     
-    $('alias').value    = '';
-    $('custom_url').value = '';
-    $('delete_button').style.visibility = 'hidden';
-    $('alias-combo').selectedIndex = -1;
+    _('alias_id').value = '-';     
+    _('alias').value    = '';
+    _('custom_url').value = '';
+    _('delete_button').style.visibility = 'hidden';
+    _('alias-combo').selectedIndex = -1;
 }
 
 /**
@@ -374,15 +374,15 @@ function stopAction()
  */
 function stopErrorMapAction()
 {
-    $('legend_title').innerHTML = addErrorMap_title;
-    $('btn_cancel').style.visibility = 'hidden';
+    _('legend_title').innerHTML = addErrorMap_title;
+    _('btn_cancel').style.visibility = 'hidden';
     unselectDataGridRow();
     selectedErrorMap = null;
 
-    $('url').value = '';
-    $('code').selectedIndex = -1;
-    $('new_url').value = '';
-    $('new_code').selectedIndex = -1;
+    _('url').value = '';
+    _('code').selectedIndex = -1;
+    _('new_url').value = '';
+    _('new_code').selectedIndex = -1;
 }
 
 /**
