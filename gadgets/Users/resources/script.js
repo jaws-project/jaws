@@ -16,8 +16,8 @@ var UsersCallback = {
     adduser: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopUserAction();
-            $('users_datagrid').addItem();
-            $('users_datagrid').lastPage();
+            _('users_datagrid').addItem();
+            _('users_datagrid').lastPage();
             getDG('users_datagrid');
         }
         showResponse(response);
@@ -64,15 +64,15 @@ var UsersCallback = {
     },
 
     updatemyaccount: function(response) {
-        $('pass1').value = '';
-        $('pass2').value = '';
+        _('pass1').value = '';
+        _('pass2').value = '';
         showResponse(response);
     },
 
     deleteuser: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopUserAction();
-            $('users_datagrid').deleteItem();
+            _('users_datagrid').deleteItem();
             getDG('users_datagrid');
         }
         showResponse(response);
@@ -81,8 +81,8 @@ var UsersCallback = {
     addgroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopGroupAction();
-            $('groups_datagrid').addItem();
-            $('groups_datagrid').lastPage();
+            _('groups_datagrid').addItem();
+            _('groups_datagrid').lastPage();
             getDG('groups_datagrid');
         }
         showResponse(response);
@@ -99,7 +99,7 @@ var UsersCallback = {
     deletegroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopGroupAction();
-            $('groups_datagrid').deleteItem();          
+            _('groups_datagrid').deleteItem();          
             getDG('groups_datagrid');
         }
         showResponse(response);
@@ -162,19 +162,19 @@ function searchUser()
 function getUsers(name, offset, reset)
 {
     var result = UsersAjax.callSync('getusers',
-                                    $('filter_group').value,
-                                    $('filter_type').value,
-                                    $('filter_status').value,
-                                    $('filter_term').value,
-                                    $('order_type').value,
+                                    _('filter_group').value,
+                                    _('filter_type').value,
+                                    _('filter_status').value,
+                                    _('filter_term').value,
+                                    _('order_type').value,
                                     offset);
     if (reset) {
-        $(name).setCurrentPage(0);
+        _(name).setCurrentPage(0);
         var total = UsersAjax.callSync('getuserscount',
-                                       $('filter_group').value,
-                                       $('filter_type').value,
-                                       $('filter_status').value,
-                                       $('filter_term').value);
+                                       _('filter_group').value,
+                                       _('filter_type').value,
+                                       _('filter_status').value,
+                                       _('filter_term').value);
     }
     resetGrid(name, result, total);
 }
@@ -186,7 +186,7 @@ function getGroups(name, offset, reset)
 {
     var result = UsersAjax.callSync('getgroups', offset);
     if (reset) {
-        $(name).setCurrentPage(0);
+        _(name).setCurrentPage(0);
         var total = UsersAjax.callSync('getgroupscount');
     }
     resetGrid(name, result, total);
@@ -209,58 +209,58 @@ function saveUser()
 {
     switch (currentAction) {
         case 'UserAccount':
-            if ($('pass1').value != $('pass2').value) {
+            if (_('pass1').value != _('pass2').value) {
                 alert(wrongPassword);
                 return false;
             }
 
-            if ($('username').value.blank() ||
-                $('nickname').value.blank() ||
-                $('email').value.blank())
+            if (_('username').value.blank() ||
+                _('nickname').value.blank() ||
+                _('email').value.blank())
             {
                 alert(incompleteUserFields);
                 return false;
             }
 
-            if ($('exponent')) {
+            if (_('exponent')) {
                 setMaxDigits(128);
-                var pub_key = new RSAPublicKey($('exponent').value, $('modulus').value, 128);
-                var password = encryptedString(pub_key, $('pass1').value);
+                var pub_key = new RSAPublicKey(_('exponent').value, _('modulus').value, 128);
+                var password = encryptedString(pub_key, _('pass1').value);
             } else {
-                var password = $('pass1').value;
+                var password = _('pass1').value;
             }
 
-            if ($('uid').value == 0) {
-                if ($('pass1').value.blank()) {
+            if (_('uid').value == 0) {
+                if (_('pass1').value.blank()) {
                     alert(incompleteUserFields);
                     return false;
                 }
 
                 UsersAjax.callAsync(
                     'adduser',
-                    {'username': $('username').value,
+                    {'username': _('username').value,
                      'password': password,
-                     'nickname': $('nickname').value,
-                     'email'   : $('email').value,
-                     'status'  : $('status').value,
-                     'superadmin' : $('superadmin').value,
-                     'concurrents': $('concurrents').value,
-                     'expiry_date': $('expiry_date').value
+                     'nickname': _('nickname').value,
+                     'email'   : _('email').value,
+                     'status'  : _('status').value,
+                     'superadmin' : _('superadmin').value,
+                     'concurrents': _('concurrents').value,
+                     'expiry_date': _('expiry_date').value
                     }
                 );
             } else {
                 UsersAjax.callAsync(
                     'updateuser',
-                    $('uid').value,
-                    {'username': $('username').value,
+                    _('uid').value,
+                    {'username': _('username').value,
                      'password': password,
-                     'nickname': $('nickname').value,
-                     'email'   : $('email').value,
-                     'status'  : $('status').value,
-                     'prev_status': $('prev_status').value,
-                     'superadmin' : $('superadmin').value,
-                     'concurrents': $('concurrents').value,
-                     'expiry_date': $('expiry_date').value
+                     'nickname': _('nickname').value,
+                     'email'   : _('email').value,
+                     'status'  : _('status').value,
+                     'prev_status': _('prev_status').value,
+                     'superadmin' : _('superadmin').value,
+                     'concurrents': _('concurrents').value,
+                     'expiry_date': _('expiry_date').value
                     }
                 );
             }
@@ -268,18 +268,18 @@ function saveUser()
             break;
 
         case 'UserACL':
-            if ($('components').value === '') {
+            if (_('components').value === '') {
                 return;
             }
-            var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
+            var acls = _('acl_form').getElements('img[alt!=-1]').map(function (img) {
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('updateuseracl', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('updateuseracl', selectedId, _('components').value, acls);
             break;
 
         case 'UserGroups':
-            var inputs  = $('workarea').getElementsByTagName('input');
+            var inputs  = _('workarea').getElementsByTagName('input');
             var keys    = new Array();
             var counter = 0;
             for (var i = 0; i < inputs.length; i++) {
@@ -293,42 +293,42 @@ function saveUser()
                 }
             }
 
-            UsersAjax.callAsync('addusertogroups', $('uid').value, keys);
+            UsersAjax.callAsync('addusertogroups', _('uid').value, keys);
             break;
 
         case 'UserPersonal':
             UsersAjax.callAsync('updatepersonal',
-                                $('uid').value,
-                                $('fname').value,
-                                $('lname').value,
-                                $('gender').value,
-                                $('ssn').value,
-                                $('dob').value,
-                                $('url').value,
-                                $('about').value,
-                                $('avatar').value,
-                                $('privacy').value);
+                                _('uid').value,
+                                _('fname').value,
+                                _('lname').value,
+                                _('gender').value,
+                                _('ssn').value,
+                                _('dob').value,
+                                _('url').value,
+                                _('about').value,
+                                _('avatar').value,
+                                _('privacy').value);
             break;
 
         case 'UserPreferences':
             UsersAjax.callAsync('updatepreferences',
-                                $('uid').value,
-                                $('language').value,
-                                $('theme').value,
-                                $('editor').value,
-                                $('timezone').value);
+                                _('uid').value,
+                                _('language').value,
+                                _('theme').value,
+                                _('editor').value,
+                                _('timezone').value);
             break;
 
         case 'UserContacts':
             UsersAjax.callAsync('updatecontacts',
-                                $('uid').value,
-                                $('country').value,
-                                $('city').value,
-                                $('address').value,
-                                $('postal_code').value,
-                                $('phone_number').value,
-                                $('mobile_number').value,
-                                $('fax_number').value);
+                                _('uid').value,
+                                _('country').value,
+                                _('city').value,
+                                _('address').value,
+                                _('postal_code').value,
+                                _('phone_number').value,
+                                _('mobile_number').value,
+                                _('fax_number').value);
             break;
     }
 
@@ -407,22 +407,22 @@ function saveGroupACL()
  */
 function editUser(rowElement, uid)
 {
-    $('uid').value = uid;
+    _('uid').value = uid;
     currentAction = 'UserAccount';
-    $('legend_title').innerHTML  = editUser_title;
-    $('workarea').innerHTML = cachedUserForm;
+    _('legend_title').innerHTML  = editUser_title;
+    _('workarea').innerHTML = cachedUserForm;
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, true);
-    $('username').value    = uInfo['username'];
-    $('nickname').value    = uInfo['nickname'].defilter();
-    $('email').value       = uInfo['email'];
-    $('superadmin').value  = Number(uInfo['superadmin']);
-    $('concurrents').value = uInfo['concurrents'];
-    $('expiry_date').value = uInfo['expiry_date'];
-    $('status').value      = uInfo['status'];
-    $('prev_status').value = uInfo['status'];
+    _('username').value    = uInfo['username'];
+    _('nickname').value    = uInfo['nickname'].defilter();
+    _('email').value       = uInfo['email'];
+    _('superadmin').value  = Number(uInfo['superadmin']);
+    _('concurrents').value = uInfo['concurrents'];
+    _('expiry_date').value = uInfo['expiry_date'];
+    _('status').value      = uInfo['status'];
+    _('prev_status').value = uInfo['status'];
 }
 
 /**
@@ -434,11 +434,11 @@ function editACL(rowElement, id, action)
     if (!cachedACLForm) {
         cachedACLForm = UsersAjax.callSync('getaclui');
     }
-    $('workarea').innerHTML = cachedACLForm;
-    $('legend_title').innerHTML  = editACL_title;
+    _('workarea').innerHTML = cachedACLForm;
+    _('legend_title').innerHTML  = editACL_title;
     selectedId = id;
     currentAction = action;
-    chkImages = $('acl').getElements('img').get('src');
+    chkImages = _('acl').getElements('img').get('src');
     chkImages[-1] = chkImages[2];
     delete chkImages[2];
 }
@@ -465,16 +465,16 @@ function getACL()
         return res;
     }
 
-    if ($('components').value === '') {
-        $('acl_form').set('html', '');
+    if (_('components').value === '') {
+        _('acl_form').set('html', '');
         return;
     }
 
-    var form = $('acl_form').set('html', ''),
+    var form = _('acl_form').set('html', ''),
         acls = UsersAjax.callSync(
             'getaclkeys',
             selectedId,
-            $('components').value,
+            _('components').value,
             currentAction
         );
     acls.default_acls.each(function (acl) {
@@ -505,19 +505,19 @@ function getACL()
  */
 function editUserGroups(rowElement, uid)
 {
-    $('uid').value = uid;
+    _('uid').value = uid;
     currentAction = 'UserGroups';
-    $('legend_title').innerHTML  = editUserGroups_title;
+    _('legend_title').innerHTML  = editUserGroups_title;
     if (cachedUserGroupsForm == null) {
         cachedUserGroupsForm = UsersAjax.callSync('usergroupsui');
     }
-    $('workarea').innerHTML = cachedUserGroupsForm;
+    _('workarea').innerHTML = cachedUserGroupsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uGroups = UsersAjax.callSync('getusergroups', uid);
     uGroups.each(function(gid, index) {
-        if ($('group_' + gid)) {
-            $('group_' + gid).checked = true;
+        if (_('group_' + gid)) {
+            _('group_' + gid).checked = true;
         }
     });
 }
@@ -527,27 +527,27 @@ function editUserGroups(rowElement, uid)
  */
 function editPersonal(rowElement, uid)
 {
-    $('uid').value = uid;
+    _('uid').value = uid;
     currentAction = 'UserPersonal';
-    $('legend_title').innerHTML  = editPersonal_title;
+    _('legend_title').innerHTML  = editPersonal_title;
     if (cachedPersonalForm == null) {
         cachedPersonalForm = UsersAjax.callSync('personalui');
     }
-    $('workarea').innerHTML = cachedPersonalForm;
+    _('workarea').innerHTML = cachedPersonalForm;
     initDatePicker('dob');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, false, true);
-    $('fname').value   = uInfo['fname'];
-    $('lname').value   = uInfo['lname'];
-    $('gender').value  = Number(uInfo['gender']);
-    $('ssn').value     = uInfo['ssn'];
-    $('dob').value     = uInfo['dob'];
-    $('url').value     = uInfo['url'];
-    $('about').value   = uInfo['about'];
-    $('avatar').value  = 'false';
-    $('image').src     = uInfo['avatar']+ '?'+ (new Date()).getTime();
-    $('privacy').value = Number(uInfo['privacy']);
+    _('fname').value   = uInfo['fname'];
+    _('lname').value   = uInfo['lname'];
+    _('gender').value  = Number(uInfo['gender']);
+    _('ssn').value     = uInfo['ssn'];
+    _('dob').value     = uInfo['dob'];
+    _('url').value     = uInfo['url'];
+    _('about').value   = uInfo['about'];
+    _('avatar').value  = 'false';
+    _('image').src     = uInfo['avatar']+ '?'+ (new Date()).getTime();
+    _('privacy').value = Number(uInfo['privacy']);
 }
 
 /**
@@ -555,20 +555,20 @@ function editPersonal(rowElement, uid)
  */
 function editPreferences(rowElement, uid)
 {
-    $('uid').value = uid;
+    _('uid').value = uid;
     currentAction = 'UserPreferences';
-    $('legend_title').innerHTML  = editPreferences_title;
+    _('legend_title').innerHTML  = editPreferences_title;
     if (cachedPreferencesForm == null) {
         cachedPreferencesForm = UsersAjax.callSync('preferencesui');
     }
-    $('workarea').innerHTML = cachedPreferencesForm;
+    _('workarea').innerHTML = cachedPreferencesForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
-    $('language').value = uInfo['language'] == null? '-default-': uInfo['language'];
-    $('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
-    $('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
-    $('timezone').value = uInfo['timezone'] == null? '-default-': uInfo['timezone'];
+    _('language').value = uInfo['language'] == null? '-default-': uInfo['language'];
+    _('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
+    _('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
+    _('timezone').value = uInfo['timezone'] == null? '-default-': uInfo['timezone'];
 }
 
 /**
@@ -576,23 +576,23 @@ function editPreferences(rowElement, uid)
  */
 function editContacts(rowElement, uid)
 {
-    $('uid').value = uid;
+    _('uid').value = uid;
     currentAction = 'UserContacts';
-    $('legend_title').innerHTML  = editContacts_title;
+    _('legend_title').innerHTML  = editContacts_title;
     if (cachedContactsForm == null) {
         cachedContactsForm = UsersAjax.callSync('contactsui');
     }
-    $('workarea').innerHTML = cachedContactsForm;
+    _('workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, true);
-    $('country').value          = uInfo['country'];
-    $('city').value             = uInfo['city'];
-    $('address').value          = uInfo['address'];
-    $('postal_code').value      = uInfo['postal_code'];
-    $('phone_number').value     = uInfo['phone_number'];
-    $('mobile_number').value    = uInfo['mobile_number'];
-    $('fax_number').value       = uInfo['fax_number'];
+    _('country').value          = uInfo['country'];
+    _('city').value             = uInfo['city'];
+    _('address').value          = uInfo['address'];
+    _('postal_code').value      = uInfo['postal_code'];
+    _('phone_number').value     = uInfo['phone_number'];
+    _('mobile_number').value    = uInfo['mobile_number'];
+    _('fax_number').value       = uInfo['fax_number'];
 }
 
 /**
@@ -601,8 +601,8 @@ function editContacts(rowElement, uid)
 function upload() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('workarea').adopt(iframe);
-    $('frm_avatar').submit();
+    _('workarea').adopt(iframe);
+    _('frm_avatar').submit();
 }
 
 /**
@@ -612,22 +612,22 @@ function onUpload(response) {
     hideWorkingNotification();
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_avatar').reset();
+        _('frm_avatar').reset();
     } else {
         var filename = response.message + '&' + (new Date()).getTime();
-        $('image').src = base_script + '?gadget=Users&action=LoadAvatar&file=' + filename;
-        $('avatar').value = response.message;
+        _('image').src = base_script + '?gadget=Users&action=LoadAvatar&file=' + filename;
+        _('avatar').value = response.message;
     }
-    $('ifrm_upload').destroy();
+    _('ifrm_upload').destroy();
 }
 
 /**
  * Removes the avatar
  */
 function removeAvatar() {
-    $('avatar').value = '';
-    $('frm_avatar').reset();
-    $('image').src = 'gadgets/Users/images/photo128px.png';
+    _('avatar').value = '';
+    _('frm_avatar').reset();
+    _('image').src = 'gadgets/Users/images/photo128px.png';
 }
 
 /**
@@ -635,11 +635,11 @@ function removeAvatar() {
  */
 function stopUserAction()
 {
-    $('uid').value = 0;
+    _('uid').value = 0;
     currentAction = 'UserAccount';
     unselectGridRow('users_datagrid');
-    $('legend_title').innerHTML  = addUser_title;
-    $('workarea').innerHTML = cachedUserForm;
+    _('legend_title').innerHTML  = addUser_title;
+    _('workarea').innerHTML = cachedUserForm;
     initDatePicker('expiry_date');
 }
 
@@ -650,15 +650,15 @@ function editGroup(rowElement, gid)
 {
     selectedId = gid;
     currentAction = 'Group';
-    $('legend_title').innerHTML   = editGroup_title;
-    $('workarea').innerHTML = cachedGroupForm;
+    _('legend_title').innerHTML   = editGroup_title;
+    _('workarea').innerHTML = cachedGroupForm;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
     var gInfo = UsersAjax.callSync('getgroup', gid);
-    $('name').value        = gInfo['name'];
-    $('title').value       = gInfo['title'].defilter();
-    $('description').value = gInfo['description'].defilter();
-    $('enabled').value     = Number(gInfo['enabled']);
+    _('name').value        = gInfo['name'];
+    _('title').value       = gInfo['title'].defilter();
+    _('description').value = gInfo['description'].defilter();
+    _('enabled').value     = Number(gInfo['enabled']);
 }
 
 /**
@@ -668,17 +668,17 @@ function editGroupUsers(rowElement, gid)
 {
     selectedId = gid;
     currentAction = 'GroupUsers';
-    $('legend_title').innerHTML  = editGroupUsers_title;
+    _('legend_title').innerHTML  = editGroupUsers_title;
     if (cachedGroupUsersForm == null) {
         cachedGroupUsersForm = UsersAjax.callSync('groupusersui');
     }
-    $('workarea').innerHTML = cachedGroupUsersForm;
+    _('workarea').innerHTML = cachedGroupUsersForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var gUsers = UsersAjax.callSync('getgroupusers', gid);
     gUsers.each(function(user, index) {
-        if ($('user_' + user['id'])) {
-            $('user_' + user['id']).checked = true;
+        if (_('user_' + user['id'])) {
+            _('user_' + user['id']).checked = true;
         }
     });
 }
@@ -690,41 +690,41 @@ function saveGroup()
 {
     switch(currentAction) {
         case 'Group':
-            if ($('name').value.blank() || $('title').value.blank()) {
+            if (_('name').value.blank() || _('title').value.blank()) {
                 alert(incompleteGroupFields);
                 return false;
             }
 
             if (selectedId == 0) {
                 UsersAjax.callAsync('addgroup', 
-                                    $('name').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('enabled').value);
+                                    _('name').value,
+                                    _('title').value,
+                                    _('description').value,
+                                    _('enabled').value);
             } else {
                 UsersAjax.callAsync('updategroup',
                                     selectedId,
-                                    $('name').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('enabled').value);
+                                    _('name').value,
+                                    _('title').value,
+                                    _('description').value,
+                                    _('enabled').value);
             }
 
             break;
 
         case 'GroupACL':
-            if ($('components').value === '') {
+            if (_('components').value === '') {
                 return;
             }
-            var acls = $('acl_form').getElements('img[alt!=-1]').map(function (img) {
+            var acls = _('acl_form').getElements('img[alt!=-1]').map(function (img) {
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('updategroupacl', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('updategroupacl', selectedId, _('components').value, acls);
             break;
 
         case 'GroupUsers':
-            var inputs  = $('workarea').getElementsByTagName('input');
+            var inputs  = _('workarea').getElementsByTagName('input');
             var keys    = new Array();
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
@@ -752,8 +752,8 @@ function stopGroupAction()
     selectedId = 0;
     currentAction = 'Group';
     unselectGridRow('groups_datagrid');
-    $('legend_title').innerHTML   = addGroup_title;
-    $('workarea').innerHTML = cachedGroupForm;
+    _('legend_title').innerHTML   = addGroup_title;
+    _('workarea').innerHTML = cachedGroupForm;
 }
 
 /**
@@ -761,12 +761,12 @@ function stopGroupAction()
  */
 function saveSettings()
 {
-    var method     = $('authtype').value;
-    var anon       = $('anon_register').value;
-    var repetitive = $('anon_repetitive_email').value;
-    var act        = $('anon_activation').value;
-    var group      = $('anon_group').value;
-    var recover    = $('password_recovery').value;
+    var method     = _('authtype').value;
+    var anon       = _('anon_register').value;
+    var repetitive = _('anon_repetitive_email').value;
+    var act        = _('anon_activation').value;
+    var group      = _('anon_group').value;
+    var recover    = _('password_recovery').value;
 
     UsersAjax.callAsync('savesettings', method, anon, repetitive, act, group, recover);
 }
@@ -776,30 +776,30 @@ function saveSettings()
  */
 function updateMyAccount()
 {
-    if ($('pass1').value != $('pass2').value) {
+    if (_('pass1').value != _('pass2').value) {
         alert(wrongPassword);
         return false;
     }
 
-    if ($('username').value.blank() ||
-        $('nickname').value.blank() ||
-        $('email').value.blank())
+    if (_('username').value.blank() ||
+        _('nickname').value.blank() ||
+        _('email').value.blank())
     {
         alert(incompleteUserFields);
         return false;
     }
 
-    if ($('exponent')) {
-        encryptedElement($('pass1'), $('exponent').value, $('modulus').value, true, 128);
-        $('pass2').value = $('pass1').value;
+    if (_('exponent')) {
+        encryptedElement(_('pass1'), _('exponent').value, _('modulus').value, true, 128);
+        _('pass2').value = _('pass1').value;
     }
     UsersAjax.callAsync(
         'updatemyaccount',
-        $('uid').value,
-        {'username': $('username').value,
-         'password': $('pass1').value,
-         'nickname': $('nickname').value,
-         'email'   : $('email').value
+        _('uid').value,
+        {'username': _('username').value,
+         'password': _('pass1').value,
+         'nickname': _('nickname').value,
+         'email'   : _('email').value
         }
     );
 }
