@@ -15,7 +15,7 @@ var FeedReaderCallback = {
     deletefeed: function(response) {
         if (response['css'] == 'notice-message') {
             stopAction();
-            $('feedsites_datagrid').deleteItem();          
+            _('feedsites_datagrid').deleteItem();          
             getDG();
         }
         showResponse(response);
@@ -23,8 +23,8 @@ var FeedReaderCallback = {
     
     insertfeed: function(response) {
         if (response['css'] == 'notice-message') {
-            $('feedsites_datagrid').addItem();
-            $('feedsites_datagrid').setCurrentPage(0);
+            _('feedsites_datagrid').addItem();
+            _('feedsites_datagrid').setCurrentPage(0);
             getDG();
         }
         stopAction();
@@ -81,16 +81,16 @@ function unselectDataGridRow()
  */
 function stopAction() 
 {
-    $('id').value          = '0';
-    $('title').value       = '';
-    $('url').value         = 'http://';
-    $('cache_time').value  = '3600';
-    $('view_type').value   = '0';
-    $('count_entry').value = '';
-    $('title_view').value  = '0';
-    $('visible').value     = '1';
+    _('id').value          = '0';
+    _('title').value       = '';
+    _('url').value         = 'http://';
+    _('cache_time').value  = '3600';
+    _('view_type').value   = '0';
+    _('count_entry').value = '';
+    _('title_view').value  = '0';
+    _('visible').value     = '1';
     unselectDataGridRow();
-    $('btn_cancel').style.visibility = 'hidden';
+    _('btn_cancel').style.visibility = 'hidden';
 }
 
 /**
@@ -99,15 +99,15 @@ function stopAction()
  */
 function updateForm(feed)
 {
-    $('id').value          = feed['id'];
-    $('title').value       = feed['title'].defilter();
-    $('url').value         = feed['url'];
-    $('cache_time').value  = feed['cache_time'];
-    $('view_type').value   = feed['view_type'];
-    $('count_entry').value = feed['count_entry'];
-    $('title_view').value  = feed['title_view'];
-    $('visible').value     = feed['visible'];
-    $('btn_cancel').style.visibility = 'visible';
+    _('id').value          = feed['id'];
+    _('title').value       = feed['title'].defilter();
+    _('url').value         = feed['url'];
+    _('cache_time').value  = feed['cache_time'];
+    _('view_type').value   = feed['view_type'];
+    _('count_entry').value = feed['count_entry'];
+    _('title_view').value  = feed['title_view'];
+    _('visible').value     = feed['visible'];
+    _('btn_cancel').style.visibility = 'visible';
 }
 
 /**
@@ -115,33 +115,33 @@ function updateForm(feed)
  */
 function updateFeed()
 {
-    if ($('title').value.blank() ||
-        $('url').value.blank() ||
-        !isValidURL($('url').value.trim()))
+    if (_('title').value.blank() ||
+        _('url').value.blank() ||
+        !isValidURL(_('url').value.trim()))
     {
         alert(incompleteFeedFields);
         return;
     }
 
-    if($('id').value==0) {
+    if(_('id').value==0) {
             FeedReaderAjax.callAsync('insertfeed',
-                                $('title').value,
-                                $('url').value,
-                                $('cache_time').value,
-                                $('view_type').value,
-                                $('count_entry').value,
-                                $('title_view').value,
-                                $('visible').value);
+                                _('title').value,
+                                _('url').value,
+                                _('cache_time').value,
+                                _('view_type').value,
+                                _('count_entry').value,
+                                _('title_view').value,
+                                _('visible').value);
     } else {
         FeedReaderAjax.callAsync('updatefeed',
-                            $('id').value,
-                            $('title').value,
-                            $('url').value,
-                            $('cache_time').value,
-                            $('view_type').value,
-                            $('count_entry').value,
-                            $('title_view').value,
-                            $('visible').value);
+                            _('id').value,
+                            _('title').value,
+                            _('url').value,
+                            _('cache_time').value,
+                            _('view_type').value,
+                            _('count_entry').value,
+                            _('title_view').value,
+                            _('visible').value);
     }
 }
 
