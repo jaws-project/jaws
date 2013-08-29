@@ -12,28 +12,18 @@
  */
 /**
  * Ajax base class
+ *
+ * @param   string  gadget      Gadget Name
+ * @param   object  callback    Callback functions
+ * @param   string  baseScript  Base URL
+ * @return  void
  */
-var JawsAjax = new Class({
-    /**
-     * Initiates the Ajax
-     *
-     * @param   string  gadget      Gadget Name
-     * @param   object  callback    Callback functions
-     * @param   string  baseScript  Base URL
-     * @return  void
-     */
-    initialize: function (gadget, callback, baseScript) {
-        this.gadget = gadget;
-        this.callback = callback;
-        if (baseScript === undefined) {
-            var href = document.location.href,
-                path = document.location.pathname,
-                basePath = href.substr(0, href.indexOf(path) + path.length);
-            baseScript = basePath.replace($$('base')[0].href, '');
-        }
-
-        this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
-    },
+function JawsAjax(gadget, callback, baseScript)
+{
+    this.gadget = gadget;
+    this.callback = callback;
+    baseScript = (baseScript === undefined)?$('meta[name=script]').attr('content') : baseScript;
+    this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
 
     /**
      * Supports backward ajax mechanism
@@ -41,16 +31,10 @@ var JawsAjax = new Class({
      * @param   string  baseScript  Base URL
      * @return  void
      */
-    backwardSupport: function (baseScript) {
-        if (baseScript === undefined) {
-            var href = document.location.href,
-                path = document.location.pathname,
-                basePath = href.substr(0, href.indexOf(path) + path.length);
-            baseScript = basePath.replace($$('base')[0].href, '');
-        }
-
+    this.backwardSupport = function (baseScript) {
+        baseScript = (baseScript === undefined)?$('meta[name=script]').attr('content') : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
-    },
+    };
 
     /**
      * Performs asynchronous Ajax request
@@ -59,20 +43,21 @@ var JawsAjax = new Class({
      * @param   object  params  Parameters passed to the function (optional)
      * @return  void
      */
-    callAsync: function (action, params) {
-        var options = {};
-        options.url = this.baseURL + action;
+    this.callAsync = function (action, params) {
+        var options  = {};
+        options.url  = this.baseURL + action;
+        options.type = 'POST';
+        options.async  = true;
         options.action = action;
-        options.async = true;
         arguments = Array.prototype.slice.call(arguments, 1);
-        options.data = toJSON(arguments);
-        options.urlEncoded = false;
-        options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.onRequest = this.onRequest.bind(this);
-        options.onSuccess = this.onSuccess.bind(this, options);
-        options.onFailure = this.onFailure.bind(this, options);
-        new Request(options).send();
-    },
+        options.data = $.encodeJSON(arguments);
+        options.contentType = 'application/json; charset=utf-8';
+        options.beforeSend = this.onSend.bind(this, options);
+        options.success = this.onSuccess.bind(this, options);
+        options.error = this.onError.bind(this, options);
+        options.complete = this.onComplete.bind(this, options);
+        $.ajax(options);
+    };
 
     /**
      * Performs synchronous Ajax request
@@ -81,57 +66,53 @@ var JawsAjax = new Class({
      * @param   object  params  Parameters passed to the function (optional)
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
-    callSync: function (action, params) {
+    this.callSync = function (action, params) {
         var options = {};
-        options.async = false;
         options.url = this.baseURL + action;
+        options.type = 'POST';
+        options.async = false;
         options.action = action;
         arguments = Array.prototype.slice.call(arguments, 1);
-        options.data = toJSON(arguments);
-        options.urlEncoded = false;
-        options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.onRequest = this.onRequest.bind(this);
-        var req = new Request(options).send();
-        return eval('(' + req.response.text + ')');
-    },
+        options.data = $.encodeJSON(arguments);
+        options.contentType = 'application/json; charset=utf-8';
+        options.beforeSend = this.onSend.bind(this, options);
+        options.complete = this.onComplete.bind(this, options);
+        var result = $.ajax(options);
+        return eval('(' + result.responseText + ')');
+    };
 
-    onRequest: function () {
+    this.onSend = function () {
         // TODO: start loading..
-    },
+    };
 
-    onSuccess: function (reqOptions, responseText) {
-        responseText = eval('(' + responseText + ')');
+    this.onSuccess = function (reqOptions, response, status, result) {
+        response = eval('(' + result.responseText + ')');
         var reqMethod = this.callback[reqOptions.action];
         if (reqMethod) {
-            reqMethod(responseText);
+            reqMethod(response);
         }
-    },
+    };
 
-    onFailure: function () {
-        // TODO: alert failure message
-    }
+    this.onError = function () {
+        // TODO: alert error message
+    };
 
-});
+    this.onComplete = function () {
+        // TODO: stop loading..
+    };
+}
 
 /**
  * Jaws HTML5 wrapper of local storage
+ *
+ * @param   string  gadget  Gadget Name
+ * @return  void
  */
-var JawsStorage = new Class({
-    /**
-     * Initiates the storage
-     *
-     * @param   string  gadget  Gadget Name
-     * @return  void
-     */
-    initialize: function (gadget) {
-        this.gadget = gadget;
-        this.html5Support = 'localStorage' in window;
-        if (this.html5Support) {
-            this.storage = localStorage;
-        } else {
-            this.storage = window.Cookie;
-        }
-    },
+function JawsStorage(gadget)
+{
+    this.gadget = gadget;
+    this.html5Support = 'localStorage' in window;
+    this.storage = this.html5Support? localStorage : window.Cookie;
 
     /**
      * Updates the storage key value
@@ -140,14 +121,14 @@ var JawsStorage = new Class({
      * @param   mixed   value   Key value
      * @return  void
      */
-    update: function (key, value, section) {
+    this.update = function (key, value, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
-            this.storage.setItem(key, JSON.encode(value));
+            this.storage.setItem(key, $.encodeJSON(value));
         } else {
-            this.storage.write(key, JSON.encode(value));
+            this.storage.write(key, $.encodeJSON(value));
         }
-    },
+    };
 
     /**
      * fetchs value of the storage key
@@ -155,14 +136,14 @@ var JawsStorage = new Class({
      * @param   string  key     Key name
      * @return  mixed   Stored value of key
      */
-    fetch: function (key, section) {
+    this.fetch = function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
-            return JSON.decode(this.storage.getItem(key));
+            return $.parseJSON(this.storage.getItem(key));
         } else {
-            return JSON.decode(this.storage.read(key));
+            return $.parseJSON(this.storage.read(key));
         }
-    },
+    };
 
     /**
      * deletes a storage key
@@ -170,82 +151,17 @@ var JawsStorage = new Class({
      * @param   string  key     Key name
      * @return  void
      */
-    'delete': function (key, section) {
+    this.delete = function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
             this.storage.removeItem(key);
         } else {
             this.storage.dispose(key);
         }
-    }
+    };
 
-});
+};
 
-/**
- * Repaints a combo
- */
-function paintCombo(combo, oddColor, evenColor)
-{
-    if (evenColor == undefined) {
-        evenColor = '#fff';
-    }
-
-    var color = evenColor;
-    for(var i=0; i<combo.length; i++) {
-        combo.options[i].style.backgroundColor = color;;
-        if (i % 2 == 0) {
-            color = oddColor;
-        } else {
-            color = evenColor;
-        }
-    }
-}
-
-/**
- * Change the value of the editor/textarea
- */
-function changeEditorValue(name, value)
-{
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
-    if (usingMCE) {
-        var editor = tinyMCE.get(name);
-        if (editor) {
-            editor.setContent(value);
-         } else {
-            $(name).value = value;
-         }
-    } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
-        if (editor.status == 'unloaded') {
-            $(name).value = value;
-        } else {
-            editor.setData(value);
-        }
-    } else {
-        $(name).value = value;
-    }
-}
-
-/**
- * Get the value of the editor/textarea
- */
-function getEditorValue(name)
-{
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
-    if (usingMCE) {
-        var editor = tinyMCE.get(name);
-        return editor.getContent();
-    } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
-        if (editor.status != 'unloaded') {
-            return editor.getData();
-        }
-    }
-
-    return $(name).value;
-}
 /**
  * Extends the Element native object to include some shortcut methods
  */
@@ -286,6 +202,72 @@ Element.implement({
     }
 
 });
+
+/**
+ * Repaints a combo
+ */
+function paintCombo(combo, oddColor, evenColor)
+{
+    if (evenColor == undefined) {
+        evenColor = '#fff';
+    }
+
+    var color = evenColor;
+    for(var i=0; i<combo.length; i++) {
+        combo.options[i].style.backgroundColor = color;;
+        if (i % 2 == 0) {
+            color = oddColor;
+        } else {
+            color = evenColor;
+        }
+    }
+}
+
+/**
+ * Change the value of the editor/textarea
+ */
+function changeEditorValue(name, value)
+{
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
+    if (usingMCE) {
+        var editor = tinyMCE.get(name);
+        if (editor) {
+            editor.setContent(value);
+         } else {
+            $('#'+name).value = value;
+         }
+    } else if (usingCKE) {
+        var editor = CKEDITOR.instances[name];
+        if (editor.status == 'unloaded') {
+            $('#'+name).value = value;
+        } else {
+            editor.setData(value);
+        }
+    } else {
+        $('#'+name).value = value;
+    }
+}
+
+/**
+ * Get the value of the editor/textarea
+ */
+function getEditorValue(name)
+{
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
+    if (usingMCE) {
+        var editor = tinyMCE.get(name);
+        return editor.getContent();
+    } else if (usingCKE) {
+        var editor = CKEDITOR.instances[name];
+        if (editor.status != 'unloaded') {
+            return editor.getData();
+        }
+    }
+
+    return $('#'+name).value;
+}
 
 /**
  * Javascript blank string prototype
@@ -358,13 +340,13 @@ String.prototype.defilter = function(quote_style) {
  */
 function resetGrid(name, data, rowsSize)
 {
-    $(name).reset();
-    $(name).fillWithArray(data);
+    $('#'+name).reset();
+    $('#'+name).fillWithArray(data);
     if (rowsSize != undefined) {
-        $(name).rowsSize = rowsSize;
+        $('#'+name).rowsSize = rowsSize;
     }
-    $(name).updatePageCounter();
-    $(name).repaint();
+    $('#'+name).updatePageCounter();
+    $('#'+name).repaint();
 }
 
 //Which row selected in DataGrid
@@ -380,7 +362,7 @@ function selectGridRow(name, rowElement)
         if (typeof(selectedRows[name]) == 'object') {
             selectedRows[name].style.backgroundColor = selectedRowsColor[name];
         } else {
-            $(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
+            $('#'+selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
         }
     }
 
@@ -388,8 +370,8 @@ function selectGridRow(name, rowElement)
         selectedRowsColor[name] = rowElement.style.backgroundColor;
         rowElement.style.backgroundColor = '#ffffcc';
     } else {
-        selectedRowsColor[name] = $(rowElement).style.backgroundColor;
-        $(rowElement).style.backgroundColor = '#ffffcc';
+        selectedRowsColor[name] = $('#'+rowElement).style.backgroundColor;
+        $('#'+rowElement).style.backgroundColor = '#ffffcc';
     }
 
     selectedRows[name] = rowElement;
@@ -405,7 +387,7 @@ function unselectGridRow(name)
         if (typeof(selectedRows[name]) == 'object') {
             selectedRows[name].style.backgroundColor = selectedRowsColor[name];
         } else {
-            $(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
+            $('#'+selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
         }
     }
 
@@ -422,54 +404,54 @@ var JawsDataGrid = {
      * Get the first Values and prepares the datagrid
      */
     getFirstValues: function() {
-        var firstValues = $(this.name).getFirstPagerValues();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getdata', firstValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).firstPage();
+        var firstValues = $('#'+this.name).getFirstPagerValues();
+        var ajaxObject  = $('#'+this.name).objectName;
+        var result      = ajaxObject.callSync('getdata', firstValues, $('#'+this.name).id);
+        resetGrid($('#'+this.name), result);
+        $('#'+this.name).firstPage();
     },
 
     /**
      * Get the previous Values and prepares the datagrid
      */
     getPreviousValues: function() {
-        var previousValues = $(this.name).getPreviousPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getdata', previousValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).previousPage();
+        var previousValues = $('#'+this.name).getPreviousPagerValues();
+        var ajaxObject     = $('#'+this.name).objectName;
+        var result         = ajaxObject.callSync('getdata', previousValues, $('#'+this.name).id);
+        resetGrid($('#'+this.name), result);
+        $('#'+this.name).previousPage();
     },
 
     /**
      * Get the next Values and prepares the datagrid
      */
     getNextValues: function() {
-        var nextValues     = $(this.name).getNextPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getdata', nextValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).nextPage();
+        var nextValues     = $('#'+this.name).getNextPagerValues();
+        var ajaxObject     = $('#'+this.name).objectName;
+        var result         = ajaxObject.callSync('getdata', nextValues, $('#'+this.name).id);
+        resetGrid($('#'+this.name), result);
+        $('#'+this.name).nextPage();
     },
 
     /**
      * Get the last Values and prepares the datagrid
      */
     getLastValues: function() {
-        var lastValues = $(this.name).getLastPagerValues();
-        var ajaxObject = $(this.name).objectName;
-        var result     = ajaxObject.callSync('getdata', lastValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).lastPage();
+        var lastValues = $('#'+this.name).getLastPagerValues();
+        var ajaxObject = $('#'+this.name).objectName;
+        var result     = ajaxObject.callSync('getdata', lastValues, $('#'+this.name).id);
+        resetGrid($('#'+this.name), result);
+        $('#'+this.name).lastPage();
     },
 
     /**
      * Only retrieves information with the current page the pager has and prepares the datagrid
      */
     getData: function() {
-        var currentPage = $(this.name).getCurrentPage();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getdata', currentPage, $(this.name).id);
-        resetGrid($(this.name), result);
+        var currentPage = $('#'+this.name).getCurrentPage();
+        var ajaxObject  = $('#'+this.name).objectName;
+        var result      = ajaxObject.callSync('getdata', currentPage, $('#'+this.name).id);
+        resetGrid($('#'+this.name), result);
     }
 };
 
@@ -478,55 +460,55 @@ var JawsDataGrid = {
  */
 function initDataGrid(name, objectName, dataFunc)
 {
-    if ($(name) == undefined || objectName == undefined) {
+    if ($('#'+name) == undefined || objectName == undefined) {
         return true;
     }
 
-    $(name).objectName = objectName;
+    $('#'+name).objectName = objectName;
     if (dataFunc == undefined) {
         JawsDataGrid.name = name;
-        $(name + '_pagerFirstAnchor').onclick = function() {
+        $('#'+name + '_pagerFirstAnchor').onclick = function() {
             JawsDataGrid.getFirstValues();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
+        $('#'+name + '_pagerPreviousAnchor').onclick = function() {
             JawsDataGrid.getPreviousValues();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
+        $('#'+name + '_pagerNextAnchor').onclick = function() {
                 JawsDataGrid.getNextValues();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
+        $('#'+name + '_pagerLastAnchor').onclick = function() {
                 JawsDataGrid.getLastValues();
         };
 
         getDG();
     } else {
-        $(name).dataFunc = dataFunc;
+        $('#'+name).dataFunc = dataFunc;
 
-        $(name + '_pagerFirstAnchor').onclick = function() {
-            var offset = $(name).getFirstPagerValues();
+        $('#'+name + '_pagerFirstAnchor').onclick = function() {
+            var offset = $('#'+name).getFirstPagerValues();
             getDG(name, offset);
-            $(name).firstPage();
+            $('#'+name).firstPage();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
-            var offset = $(name).getPreviousPagerValues();
+        $('#'+name + '_pagerPreviousAnchor').onclick = function() {
+            var offset = $('#'+name).getPreviousPagerValues();
             getDG(name, offset);
-            $(name).previousPage();
+            $('#'+name).previousPage();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
-            var offset = $(name).getNextPagerValues();
+        $('#'+name + '_pagerNextAnchor').onclick = function() {
+            var offset = $('#'+name).getNextPagerValues();
             getDG(name, offset);
-            $(name).nextPage();
+            $('#'+name).nextPage();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
-            var offset = $(name).getLastPagerValues();
+        $('#'+name + '_pagerLastAnchor').onclick = function() {
+            var offset = $('#'+name).getLastPagerValues();
             getDG(name, offset);
-            $(name).lastPage();
+            $('#'+name).lastPage();
         };
 
         getDG(name);
@@ -541,16 +523,16 @@ function getDG(name, offset, reset)
     if (name == undefined) {
         JawsDataGrid.getData();
     } else {
-        dataFunc = eval($(name).dataFunc);
+        dataFunc = eval($('#'+name).dataFunc);
 
         if (offset == undefined) {
-            var offset = $(name).getCurrentPage();
+            var offset = $('#'+name).getCurrentPage();
         }
 
-        reset = (reset == true) || ($(name).rowsSize == 0);
+        reset = (reset == true) || ($('#'+name).rowsSize == 0);
         dataFunc(name, offset, reset);
         if (reset) {
-            $(name).setCurrentPage(0);
+            $('#'+name).setCurrentPage(0);
         }
     }
 }
@@ -594,7 +576,7 @@ function createImageLink(imgSrc, link, text, space)
  */
 function initDatePicker(name)
 {
-    dpTable = $(name + '_table');
+    dpTable = $('#'+name + '_table');
     var script = dpTable.nextSibling;
     var newScript = document.createElement('script');
     newScript.type = "text/javascript";
@@ -611,63 +593,51 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
     var dRect = document.getSize();
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
+    if (!$('#'+name).length) {
+        // overlay
+        var overlay = $('<div>', {'id': name+'_overlay', 'class': 'dialog_box_overlay'}).hide();
+        overlay.click(function() {hideDialogBox($(this).next().attr('id'));});
+        $(document.body).append(overlay);
 
-    if ($(name) == undefined) {
-        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
-        var iframe  = new IFrame({
-            src : url,
-            id: name + '_iframe',
-
-            styles: {
-                height: dHeight+'px',
-                width: dWidth+'px',
-                border: 'none'
-            },
-
-            events: {
-                load: function(){
-                    hideWorkingNotification();
-                    this.getParent().show('block');
-                }
+        // title bar
+        var closeBtn = $('<span>', {'class': 'dialog_box_close'}).click(
+            function() {
+                hideDialogBox($(this).parent().parent().attr('id'));
             }
+        );
+        var titleBar = $('<div>', {'class':'dialog_box_title'}).text(dTitle).append(closeBtn);
+        // iframe
+        var iframe  = $('<iframe>', {id: name + '_iframe'}).hide();
+        iframe.css({height: dHeight+'px', width: dWidth+'px', border: 'none'});
+        //dialog
+        var dialog  = $('<div>', {'id':name, 'class':'dialog_box'}).append(titleBar).append(iframe).hide();
+        $(document.body).append(dialog);
+        $(dialog).css({left:dLeft, top:dTop});
+
+        iframe.load(function(){
+            $(this).contents().keydown(function(e) {
+                hideDialogBox($('.dialog_box:visible').attr('id'));
+            });
+
+            hideWorkingNotification();
+            $(this).show();
+            $(this).parent().show();
         });
 
-        //var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
-        var close   = new Element('span', {'class': 'dialog_box_close'});
-        var title   = new Element('div', {'class':'dialog_box_title'}).appendText(dTitle).adopt(close);
-        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).hide();
-        // iframe.addEvent('load', function() {
-            // hideWorkingNotification();
-            // this.getParent().show('block');
-            // Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
-                // if (e.keyCode == Event.KEY_ESC) {
-                    // hideDialogBox(this.getParent());
-                // }
-            // });
-        // });
-        // iframe.addEvent('cached:load', function() {
-            // hideWorkingNotification();
-            // dialog.show('block');
-        // });
-        close.addEvent('click', function() {hideDialogBox(name);});
-        overlay.addEvent('mousedown', function(e) {e.stop();});
-         document.addEvent('keydown', function(e) {
-            var dialog = document.body.getLast();
-            if (e.keyCode == Event.KEY_ESC && dialog.isVisible()) {
-                hideDialogBox(dialog.id);
+        $(document).keydown(function(e) {
+            var dialog = $('.dialog_box:visible');
+            if (e.keyCode == 27 && dialog.length) {
+                hideDialogBox(dialog.attr('id'));
             }
         });
-        $(document.body).adopt(overlay);
-        document.body.adopt(dialog);
-        dialog.setStyles({left:dLeft, top:dTop});
     }
 
-    $(name+'_overlay').show('block');
-    showWorkingNotification();
-    if ($(name+'_iframe').src == url) {
-        $(name+'_iframe').fireEvent('load');
+    $('#'+name+'_overlay').show();
+    if ($('#'+name+'_iframe').attr('src') == url) {
+        $('#'+name).show();
     } else {
-        $(name+'_iframe').src = url;
+        showWorkingNotification();
+        $('#'+name+'_iframe').attr('src', url);
     }
 }
 
@@ -676,8 +646,8 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
  */
 function hideDialogBox(name)
 {
-    $(name).hide();
-    $(name+'_overlay').hide();
+    $('#'+name).hide();
+    $('#'+name+'_overlay').hide();
 }
 
 /**
@@ -717,7 +687,7 @@ function Jaws_Ajax_ServerError(error)
 function showResponse(message, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
-        $(document.body).scrollTo(0, 0);
+        $(document.body).scrollTop(0);
     }
 
     var messages = [];
@@ -727,36 +697,12 @@ function showResponse(message, goTop)
         messages = message;
     }
 
-    $('msgbox-wrapper').innerHTML = '';
+    $('#msgbox-wrapper').html('');
     for(var i = 0; i < messages.length; i++) {
-        var messageDiv  = new Element(
-            'div',
-            {'id':'msgbox_'+i, 'class':messages[i]['css']}
-        ).appendText(messages[i]['message']);
-        $('msgbox-wrapper').appendChild(messageDiv);
-        messageDiv.fade('show');
-        hideResponseBox(messageDiv);
+        var magicMsg = $('<div>', {'id': 'msgbox_'+i, 'class': messages[i]['css']}).text(messages[i]['message']);
+        $('#msgbox-wrapper').append(magicMsg);
+        $(magicMsg).fadeIn().delay(4000).fadeOut(1000);
     }
-}
-
-/**
- * Hide response boxes - Fast Code
- */
-function hideResponseBox(name, timehide)
-{
-    if (typeof(timehide) == 'undefined') {
-        timehide = '3000';
-    }
-
-    setTimeout('hideResponseBoxCallback("' + name.id + '")', timehide);
-}
-
-/**
- * Hide response boxes - JS Action (callback)
- */
-function hideResponseBoxCallback(name)
-{
-    $(name).fade('out');
 }
 
 /**
@@ -767,8 +713,8 @@ function showWorkingNotification(msg)
     if (!msg) {
         msg = default_loading_message;
     }
-    $('working_notification').innerHTML = msg;
-    $('working_notification').style.visibility = 'visible';
+    $('#working_notification').html(msg);
+    $('#working_notification').css('visibility', 'visible');
 }
 
 /**
@@ -776,11 +722,11 @@ function showWorkingNotification(msg)
  */
 function hideWorkingNotification()
 {
-    $('working_notification').style.visibility = 'hidden';
-}
+    $('#working_notification').css('visibility', 'hidden');
+};
 
 /* Copyright (c) 2005 JSON.org */
-function toJSON(v) {
+$.encodeJSON = function(v) {
     var m = {
             '\b': '\\b',
             '\t': '\\t',
