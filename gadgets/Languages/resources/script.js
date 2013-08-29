@@ -39,10 +39,10 @@ function refresh()
  */
 function save_lang()
 {
-    if (!$('lang_code').value.blank() &&
-        !$('lang_name').value.blank())
+    if (!_('lang_code').value.blank() &&
+        !_('lang_name').value.blank())
     {
-        lang_str = $('lang_code').value.trim() + ';' + $('lang_name').value.trim();
+        lang_str = _('lang_code').value.trim() + ';' + _('lang_name').value.trim();
         LanguagesAjax.callAsync('savelanguage', lang_str);
     }
 }
@@ -52,7 +52,7 @@ function save_lang()
  */
 function changeColorOfTranslatedTerms()
 {
-    var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+    var strings_elements = _('tbl_strings').getElementsByTagName('textarea');
     for(var i = 0; i < strings_elements.length; i++) {
         if (strings_elements[i].value != "") {
             strings_elements[i].parentNode.parentNode.getElementsByTagName('span')[0].style.color="#000";
@@ -65,10 +65,10 @@ function changeColorOfTranslatedTerms()
  */
 function filterTranslated()
 {
-    if ($('tbl_strings')) {
-        var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+    if (_('tbl_strings')) {
+        var strings_elements = _('tbl_strings').getElementsByTagName('textarea');
         for(var i = 0; i < strings_elements.length; i++) {
-            if ($('checkbox_filter').checked && strings_elements[i].value != "") {
+            if (_('checkbox_filter').checked && strings_elements[i].value != "") {
                 strings_elements[i].parentNode.parentNode.style.display = 'none';
             } else {
                 strings_elements[i].parentNode.parentNode.style.display = 'inline';
@@ -82,11 +82,11 @@ function filterTranslated()
  */
 function setButtonTitle(title)
 {
-    imgBtn = $('btn_lang').getElementsByTagName('img')[0];
+    imgBtn = _('btn_lang').getElementsByTagName('img')[0];
     text = document.createTextNode(' ' + title);
-    $('btn_lang').innerHTML = '';
-    $('btn_lang').appendChild(imgBtn);
-    $('btn_lang').appendChild(text);
+    _('btn_lang').innerHTML = '';
+    _('btn_lang').appendChild(imgBtn);
+    _('btn_lang').appendChild(text);
 }
 
 /**
@@ -102,42 +102,42 @@ function change_lang_option()
         LangDataChanged = false;
     }
 
-    if ($('lang').selectedIndex == 0) {
-        $('btn_export').disabled = true;
-        $('lang_code').disabled  = false;
-        $('component').disabled  = true;
-        $('lang_code').value = '';
-        $('lang_name').value = '';
-        if ($('btn_lang')) {
+    if (_('lang').selectedIndex == 0) {
+        _('btn_export').disabled = true;
+        _('lang_code').disabled  = false;
+        _('component').disabled  = true;
+        _('lang_code').value = '';
+        _('lang_name').value = '';
+        if (_('btn_lang')) {
             setButtonTitle(add_language_title);
         } else {
-            $('lang_name').disabled  = true;
+            _('lang_name').disabled  = true;
         }
-        $('lang_code').focus();
+        _('lang_code').focus();
         stopAction();
         return;
     } else {
-        $('btn_export').disabled = false;
-        $('lang_code').disabled  = true;
-        $('component').disabled  = false;
-        $('lang_code').value = $('lang').options[$('lang').selectedIndex].value;
-        $('lang_name').value = $('lang').options[$('lang').selectedIndex].text;
-        if ($('btn_lang')) {
+        _('btn_export').disabled = false;
+        _('lang_code').disabled  = true;
+        _('component').disabled  = false;
+        _('lang_code').value = _('lang').options[_('lang').selectedIndex].value;
+        _('lang_name').value = _('lang').options[_('lang').selectedIndex].text;
+        if (_('btn_lang')) {
             setButtonTitle(save_language_title);
         } else {
-            $('lang_name').disabled  = true;
+            _('lang_name').disabled  = true;
         }
     }
 
-    lang = $('lang').value;
-    component = $('component').value;
+    lang = _('lang').value;
+    component = _('component').value;
 
-    if (!$('lang').value.blank() && 
-        !$('component').value.blank())
+    if (!_('lang').value.blank() && 
+        !_('component').value.blank())
     {
-        $('btn_save').style.visibility = 'visible';
-        $('btn_cancel').style.visibility = 'visible';
-        $('lang_strings').innerHTML = LanguagesAjax.callSync('getlangdataui', $('component').value, $('lang').value);
+        _('btn_save').style.visibility = 'visible';
+        _('btn_cancel').style.visibility = 'visible';
+        _('lang_strings').innerHTML = LanguagesAjax.callSync('getlangdataui', _('component').value, _('lang').value);
         filterTranslated();
     }
 }
@@ -153,13 +153,13 @@ function save_lang_data()
     }
 
     var data = new Array();
-    var meta_elements = $('meta_lang').getElementsByTagName('input');
+    var meta_elements = _('meta_lang').getElementsByTagName('input');
     data['meta'] = new Array();
     for(var i = 0; i < meta_elements.length; i++) {
         data['meta'][meta_elements[i].name] = meta_elements[i].value;
     }
 
-    var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+    var strings_elements = _('tbl_strings').getElementsByTagName('textarea');
     data['strings'] = new Array();
     for(var i = 0; i < strings_elements.length; i++) {
         data['strings'][strings_elements[i].name] = strings_elements[i].value;
@@ -175,10 +175,10 @@ function save_lang_data()
  */
 function stopAction()
 {
-    $('btn_save').style.visibility   = 'hidden';
-    $('btn_cancel').style.visibility = 'hidden';
-    $('component').selectedIndex = -1;
-    $('lang_strings').innerHTML = '';
+    _('btn_save').style.visibility   = 'hidden';
+    _('btn_cancel').style.visibility = 'hidden';
+    _('component').selectedIndex = -1;
+    _('lang_strings').innerHTML = '';
     LangDataChanged = false;
 }
 
@@ -187,7 +187,7 @@ function stopAction()
  */
 function export_lang()
 {
-    window.location= base_script + '?gadget=Languages&action=Export&lang=' + $('lang').value;
+    window.location= base_script + '?gadget=Languages&action=Export&lang=' + _('lang').value;
 }
 
 var LanguagesAjax = new JawsAjax('Languages', LanguagesCallback);
