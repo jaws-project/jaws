@@ -20,7 +20,7 @@ var FaqCallback = {
 
     deletecategory: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('FaqCategory_'+currentCategory).destroy();
+            _('FaqCategory_'+currentCategory).destroy();
         }
         showResponse(response);
     },
@@ -148,7 +148,7 @@ function buildCategory(id)
 {
     if (id) {
         var result = FaqAjax.callSync('getcategorygrid', id);
-        var categoryArea = $('FaqDataGridOfCategory_' + id);
+        var categoryArea = _('FaqDataGridOfCategory_' + id);
         categoryArea.innerHTML = result;
         currentCategory = false;
     }
