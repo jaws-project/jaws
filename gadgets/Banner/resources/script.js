@@ -15,8 +15,8 @@ var BannerCallback = {
     insertbanner: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            $('banners_datagrid').addItem();
-            $('banners_datagrid').setCurrentPage(0);
+            _('banners_datagrid').addItem();
+            _('banners_datagrid').setCurrentPage(0);
             getDG('banners_datagrid');
         }
         showResponse(response);
@@ -33,7 +33,7 @@ var BannerCallback = {
     deletebanner: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            $('banners_datagrid').deleteItem();
+            _('banners_datagrid').deleteItem();
             getDG('banners_datagrid');
         }
         showResponse(response);
@@ -118,11 +118,11 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = BannerAjax.callSync('getbannersdatagrid', name, offset, $('bgroup_filter').value);
+    var banners = BannerAjax.callSync('getbannersdatagrid', name, offset, _('bgroup_filter').value);
     if (reset) {
         stopAction();
-        $(name).setCurrentPage(0);
-        var total = BannerAjax.callSync('getbannerscount', $('bgroup_filter').value);
+        _(name).setCurrentPage(0);
+        var total = BannerAjax.callSync('getbannerscount', _('bgroup_filter').value);
     }
 
     resetGrid(name, banners, total);
@@ -130,24 +130,24 @@ function getBannersDataGrid(name, offset, reset)
 
 function makeBigBannerEntry()
 {
-    var height = parseInt($('banner').style.height.substr(0, $('banner').style.height.length-2));
+    var height = parseInt(_('banner').style.height.substr(0, _('banner').style.height.length-2));
     height += 10;
-    $('banner').style.height = height + 'px';
+    _('banner').style.height = height + 'px';
 }
 
 function setTemplate(template)
 {
-    $('template').value = template;
-    $('template').focus();
+    _('template').value = template;
+    _('template').focus();
 }
 
 function changeThroughUpload(checked) {
     if (checked) {
-        $('banner').style.display = 'none';
-        $('upload_banner').style.display = 'inline';
+        _('banner').style.display = 'none';
+        _('upload_banner').style.display = 'inline';
     } else {
-        $('upload_banner').style.display = 'none';
-        $('banner').style.display = 'inline';
+        _('upload_banner').style.display = 'none';
+        _('banner').style.display = 'inline';
     }
 }
 
@@ -156,10 +156,10 @@ function changeThroughUpload(checked) {
  */
 function getGroups()
 {
-    resetCombo($('groups_combo'));
+    resetCombo(_('groups_combo'));
     var groupList = BannerAjax.callSync('getgroups', -1, -1);
     if (groupList != false) {
-        var combo = $('groups_combo');
+        var combo = _('groups_combo');
         var i = 0;
         groupList.each(function(value, index) {
             var op = new Option(value['title'].defilter(), value['id']);
@@ -196,9 +196,9 @@ function submit_banner()
  */
 function saveBanner()
 {
-    if ($('title').value.blank() ||
-        $('template').value.blank() ||
-        $('gid').value == 0)
+    if (_('title').value.blank() ||
+        _('template').value.blank() ||
+        _('gid').value == 0)
     {
         alert(incompleteBannerFields);
         return false;
@@ -209,33 +209,33 @@ function saveBanner()
         document.banner_info.submit();
         return true;
     } else {
-        if ($('bid').value == 0) {
+        if (_('bid').value == 0) {
             BannerAjax.callAsync('insertbanner',
-                                 $('title').value,
-                                 $('url').value,
-                                 $('gid').value,
-                                 $('banner').value,
-                                 $('template').value,
-                                 $('views_limit').value,
-                                 $('clicks_limit').value,
-                                 $('start_time').value,
-                                 $('stop_time').value,
-                                 $('random').value,
-                                 $('published').value);
+                                 _('title').value,
+                                 _('url').value,
+                                 _('gid').value,
+                                 _('banner').value,
+                                 _('template').value,
+                                 _('views_limit').value,
+                                 _('clicks_limit').value,
+                                 _('start_time').value,
+                                 _('stop_time').value,
+                                 _('random').value,
+                                 _('published').value);
         } else {
             BannerAjax.callAsync('updatebanner',
-                                $('bid').value,
-                                $('title').value,
-                                $('url').value,
-                                $('gid').value,
-                                $('banner').value,
-                                $('template').value,
-                                $('views_limit').value,
-                                $('clicks_limit').value,
-                                $('start_time').value,
-                                $('stop_time').value,
-                                $('random').value,
-                                $('published').value);
+                                _('bid').value,
+                                _('title').value,
+                                _('url').value,
+                                _('gid').value,
+                                _('banner').value,
+                                _('template').value,
+                                _('views_limit').value,
+                                _('clicks_limit').value,
+                                _('start_time').value,
+                                _('stop_time').value,
+                                _('random').value,
+                                _('published').value);
         }
     }
 }
@@ -246,37 +246,37 @@ function saveBanner()
 function saveGroup()
 {
     if (currentAction == 'ManageGroupBanners') {
-        var box  = $('group_members');
+        var box  = _('group_members');
         var keys = new Array();
         for(var i = 0; i < box.length; i++) {
             keys[i] = box.options[i].value;
         }
         BannerAjax.callAsync('addbannerstogroup', selectedGroup, keys);
     } else {
-        if ($('title').value.blank()) {
+        if (_('title').value.blank()) {
             alert(incompleteGroupFields);
             return false;
         }
 
         if (selectedGroup == null) {
-            $('gid').value = 0;
+            _('gid').value = 0;
             BannerAjax.callAsync(
                             'insertgroup',
-                            $('title').value,
-                            $('count').value,
-                            $('show_title').value,
-                            $('show_type').value,
-                            $('published').value);
+                            _('title').value,
+                            _('count').value,
+                            _('show_title').value,
+                            _('show_type').value,
+                            _('published').value);
         } else {
-            $('gid').value = selectedGroup;
+            _('gid').value = selectedGroup;
             BannerAjax.callAsync(
                             'updategroup',
-                            $('gid').value,
-                            $('title').value,
-                            $('count').value,
-                            $('show_title').value,
-                            $('show_type').value,
-                            $('published').value);
+                            _('gid').value,
+                            _('title').value,
+                            _('count').value,
+                            _('show_title').value,
+                            _('show_type').value,
+                            _('published').value);
         }
     }
 }
@@ -338,11 +338,11 @@ function addGroup()
     }
     currentAction = 'AddGroup';
 
-    $('cancel_action').style.display = 'inline';
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'none';
-    $('add_group').style.display = 'none';
-    $('group_area').innerHTML = cacheMasterForm;
+    _('cancel_action').style.display = 'inline';
+    _('save_group').style.display = 'inline';
+    _('add_banners').style.display = 'none';
+    _('add_group').style.display = 'none';
+    _('group_area').innerHTML = cacheMasterForm;
     selectedGroup = null;
 }
 
@@ -353,28 +353,28 @@ function editBanner(element, bid)
 {
     if (bid == 0) return;
     currentAction = 'Banners';
-    $('legend_title').innerHTML = editBanner_title;
+    _('legend_title').innerHTML = editBanner_title;
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var banner = BannerAjax.callSync('getbanner', bid);
-    $('bid').value    = banner['id'];
-    $('title').value  = banner['title'].defilter();
-    $('url').value    = banner['url'];
-    $('gid').value    = banner['gid'];
+    _('bid').value    = banner['id'];
+    _('title').value  = banner['title'].defilter();
+    _('url').value    = banner['url'];
+    _('gid').value    = banner['gid'];
     document.getElementsByName('through_upload[]').item(0).checked = false;
-    $('banner').value       = banner['banner'].defilter();
+    _('banner').value       = banner['banner'].defilter();
     defaultTemplate         = banner['template'];
-    $('template').value     = defaultTemplate;
+    _('template').value     = defaultTemplate;
     defaultTemplate = banner['template'];
-    $('views_limit').value  = banner['views_limitation'];
-    $('clicks_limit').value = banner['clicks_limitation'];
+    _('views_limit').value  = banner['views_limitation'];
+    _('clicks_limit').value = banner['clicks_limitation'];
     if (banner['start_time'] == null) banner['start_time'] = '';
     if (banner['stop_time']  == null) banner['stop_time']  = '';
-    $('start_time').value   = banner['start_time'];
-    $('stop_time').value    = banner['stop_time'];
-    $('random').selectedIndex  = banner['random'];
-    $('published').selectedIndex = banner['published']? 1 : 0;
+    _('start_time').value   = banner['start_time'];
+    _('stop_time').value    = banner['stop_time'];
+    _('random').selectedIndex  = banner['random'];
+    _('published').selectedIndex = banner['published']? 1 : 0;
 }
 
 /**
@@ -387,22 +387,22 @@ function editGroup(gid)
         cacheMasterForm = BannerAjax.callSync('getgroupui');
     }
 
-    $('group_banners_area').innerHTML = '';
+    _('group_banners_area').innerHTML = '';
     currentAction = 'EditGroup';
-    $('cancel_action').style.display = 'inline';
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'inline';
-    $('delete_group').style.display = 'inline';
-    $('add_group').style.display = 'none';
-    $('group_area').innerHTML = cacheMasterForm;
+    _('cancel_action').style.display = 'inline';
+    _('save_group').style.display = 'inline';
+    _('add_banners').style.display = 'inline';
+    _('delete_group').style.display = 'inline';
+    _('add_group').style.display = 'none';
+    _('group_area').innerHTML = cacheMasterForm;
     selectedGroup = gid;
     var groupInfo = BannerAjax.callSync('getgroup', selectedGroup);
-    $('gid').value   = groupInfo['id'];
-    $('title').value = groupInfo['title'].defilter();
-    $('count').value = groupInfo['limit_count'];
-    $('show_title').value = groupInfo['show_title']? 1 : 0;
-    $('show_type').value  = groupInfo['show_type'];
-    $('published').selectedIndex = groupInfo['published']? 1 : 0;
+    _('gid').value   = groupInfo['id'];
+    _('title').value = groupInfo['title'].defilter();
+    _('count').value = groupInfo['limit_count'];
+    _('show_title').value = groupInfo['show_title']? 1 : 0;
+    _('show_type').value  = groupInfo['show_type'];
+    _('published').selectedIndex = groupInfo['published']? 1 : 0;
 }
 
 /**
@@ -410,10 +410,10 @@ function editGroup(gid)
  */
 function AddableBanner()
 {
-    var banners = $('banners_combo');
+    var banners = _('banners_combo');
     if (banners.selectedIndex == -1) return false;
 
-    var box = $('group_members');
+    var box = _('group_members');
     if (box.options.length == 0) return true;
 
     var value = banners.options[banners.selectedIndex].value;
@@ -431,10 +431,10 @@ function AddableBanner()
 function addBannerToList()
 {
     if (!AddableBanner()) return;
-    var banners = $('banners_combo');
+    var banners = _('banners_combo');
     var title = banners.options[banners.selectedIndex].text;
     var value = banners.options[banners.selectedIndex].value;
-    var box = $('group_members');
+    var box = _('group_members');
     box.options[box.options.length] = new Option(title, value);
 }
 
@@ -443,7 +443,7 @@ function addBannerToList()
  */
 function delBannerFromList()
 {
-    var box = $('group_members');
+    var box = _('group_members');
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex] = null;
     }
@@ -454,7 +454,7 @@ function delBannerFromList()
  */
 function upBannerRank()
 {
-    var box = $('group_members');
+    var box = _('group_members');
     if (box.selectedIndex < 1) return;
     var tmpText  = box.options[box.selectedIndex - 1].text;
     var tmpValue = box.options[box.selectedIndex - 1].value;
@@ -470,7 +470,7 @@ function upBannerRank()
  */
 function downBannerRank()
 {
-    var box = $('group_members');
+    var box = _('group_members');
     if (box.selectedIndex == -1) return;
     if (box.selectedIndex > box.length-2) return;
     var tmpText  = box.options[box.selectedIndex + 1].text;
@@ -489,45 +489,45 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Banners':
-        $('legend_title').innerHTML = addBanner_title;
+        _('legend_title').innerHTML = addBanner_title;
         defaultTemplate         = '';
-        $('bid').value          = 0;
-        $('title').value        = '';
-        $('url').value          = 'http://';
-        $('banner').value       = '';
-        $('upload_banner').value= '';
-        $('template').value     = '';
-        $('views_limit').value  = '';
-        $('clicks_limit').value = '';
-        $('start_time').value   = '';
-        $('stop_time').value    = '';
-        $('random').value       = 0;
-        $('published').value    = 1;
+        _('bid').value          = 0;
+        _('title').value        = '';
+        _('url').value          = 'http://';
+        _('banner').value       = '';
+        _('upload_banner').value= '';
+        _('template').value     = '';
+        _('views_limit').value  = '';
+        _('clicks_limit').value = '';
+        _('start_time').value   = '';
+        _('stop_time').value    = '';
+        _('random').value       = 0;
+        _('published').value    = 1;
         unselectDataGridRow();
         break;
     case 'EditGroup':
     case 'AddGroup':
-        $('add_group').style.display = 'inline';
-        $('save_group').style.display = 'none';
-        $('add_banners').style.display = 'none';
-        $('delete_group').style.display = 'none';
-        $('groups_combo').selectedIndex = -1;
-        $('group_area').innerHTML = '';
-        $('cancel_action').style.display = 'none';
+        _('add_group').style.display = 'inline';
+        _('save_group').style.display = 'none';
+        _('add_banners').style.display = 'none';
+        _('delete_group').style.display = 'none';
+        _('groups_combo').selectedIndex = -1;
+        _('group_area').innerHTML = '';
+        _('cancel_action').style.display = 'none';
         selectedGroup = null;
         break;
     case 'ManageGroupBanners':
         currentAction = 'EditGroup';
-        $('cancel_action').style.display = 'inline';
-        $('save_group').style.display = 'inline';
-        $('add_banners').style.display = 'inline';
-        $('delete_group').style.display = 'inline';
-        $('add_group').style.display = 'none';
-        $('group_banners_area').innerHTML = '';
+        _('cancel_action').style.display = 'inline';
+        _('save_group').style.display = 'inline';
+        _('add_banners').style.display = 'inline';
+        _('delete_group').style.display = 'inline';
+        _('add_group').style.display = 'none';
+        _('group_banners_area').innerHTML = '';
         //--
-        $('title').disabled   = false;
-        $('count').disabled   = false;
-        $('published').disabled = false;
+        _('title').disabled   = false;
+        _('count').disabled   = false;
+        _('published').disabled = false;
         //--
         break;
     case 'ViewReports':
@@ -544,18 +544,18 @@ function editGroupBanners()
     if (cacheSlaveForm == null) {
         cacheSlaveForm = BannerAjax.callSync('getgroupbannersui');
     }
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'none';
-    $('delete_group').style.display = 'none';
-    $('group_banners_area').innerHTML = cacheSlaveForm;
+    _('save_group').style.display = 'inline';
+    _('add_banners').style.display = 'none';
+    _('delete_group').style.display = 'none';
+    _('group_banners_area').innerHTML = cacheSlaveForm;
     //--
-    $('title').disabled   = true;
-    $('count').disabled   = true;
-    $('published').disabled = true;
+    _('title').disabled   = true;
+    _('count').disabled   = true;
+    _('published').disabled = true;
     //--
     currentAction = 'ManageGroupBanners';
     var banners = BannerAjax.callSync('getbanners', -1, selectedGroup);
-    var box = $('group_members');
+    var box = _('group_members');
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {
         box.options[i] = new Option(banners[i]['title'] +' '+'('+banners[i]['url']+')', banners[i]['id']);
