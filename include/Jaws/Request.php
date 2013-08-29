@@ -119,7 +119,7 @@ class Jaws_Request
         $this->_includes = array();
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
-        // support json encoded pos data
+        // support json encoded posted data
         if (false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
             $json = file_get_contents('php://input');
             $this->data['post'] = Jaws_UTF8::json_decode($json);
