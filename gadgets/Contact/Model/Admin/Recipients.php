@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Contact/Model.php';
 /**
  * Contact admin model
  *
