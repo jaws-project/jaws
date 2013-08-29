@@ -83,7 +83,7 @@ function createTree(data, depth) {
             for (j=1; j<= depth; j++) {
                 space = space + ' → '
             }
-            $('ssparent').options[$('ssparent').options.length] = new Option(space + data[i]['title'], data[i]['id']);
+            _('ssparent').options[_('ssparent').options.length] = new Option(space + data[i]['title'], data[i]['id']);
             // Tree
             strHTML = strHTML + '<span id="ssf' + data[i]['id'] + '" class="folder"><a id="ssa' + data[i]['id'] + '" href="javascript:void(0);" onclick="selectItem(' + data[i]['id'] + ');">' + data[i]['title'] + '</a></span>'
             if (data[i]['childs'].length > 0) {
@@ -106,12 +106,12 @@ function createTree(data, depth) {
 function getItems() {
     var ssitems = SitemapAjax.callSync('getitems');
     // Empty parent combo
-    if ($('ssparent').length>0) {
-        for (i=$('ssparent').options.length-1; i>=1; i--) {
-            $('ssparent').options[i] = null;
+    if (_('ssparent').length>0) {
+        for (i=_('ssparent').options.length-1; i>=1; i--) {
+            _('ssparent').options[i] = null;
         }
     }
-    $('ssitems').innerHTML = createTree(ssitems, 0);
+    _('ssitems').innerHTML = createTree(ssitems, 0);
     if (currentID == '') {
         currentID = firstElement;
     }
@@ -133,57 +133,57 @@ var selectedItems = new Array();
 var previousID = 0;
 
 function selectItem(id) {
-    if ((!id) || (!$('ssf' + id))) return;
+    if ((!id) || (!_('ssf' + id))) return;
     // FIXME: We need to find a way to expand tree when
     // given id is not at top level...
     if (currentAction == 'NEW') {
-        $('delete_button').style.display = 'inline';
+        _('delete_button').style.display = 'inline';
     }
     currentAction = 'EDIT';
     currentID = id;
     if (previousID != currentID) {
         // populate form
         if (editLegend != '')
-            $('ssfieldset_legend').innerHTML = editLegend;
-        $('sstitle').focus();
-        $('ssid').value = ssitems1d[id]['id'];
-        $('sstitle').value = ssitems1d[id]['title'];
-        $('sstype').value = ssitems1d[id]['type'];
+            _('ssfieldset_legend').innerHTML = editLegend;
+        _('sstitle').focus();
+        _('ssid').value = ssitems1d[id]['id'];
+        _('sstitle').value = ssitems1d[id]['title'];
+        _('sstype').value = ssitems1d[id]['type'];
         createReference(ssitems1d[id]['type']);
-        $('ssshortname').value = ssitems1d[id]['shortname'];
+        _('ssshortname').value = ssitems1d[id]['shortname'];
     }
-    for (i=$('sspriority').options.length-1; i>=1; i--) {
-        if ($('sspriority').options[i].value == ssitems1d[id]['priority']) {
-            $('sspriority').options[i].selected = true;
+    for (i=_('sspriority').options.length-1; i>=1; i--) {
+        if (_('sspriority').options[i].value == ssitems1d[id]['priority']) {
+            _('sspriority').options[i].selected = true;
         }
     }
-    for (i=$('sschangefreq').options.length-1; i>=1; i--) {
-        if ($('sschangefreq').options[i].value == ssitems1d[id]['changefreq']) {
-            $('sschangefreq').options[i].selected = true;
+    for (i=_('sschangefreq').options.length-1; i>=1; i--) {
+        if (_('sschangefreq').options[i].value == ssitems1d[id]['changefreq']) {
+            _('sschangefreq').options[i].selected = true;
         }
     }
     
-    $('ssreference').value = ssitems1d[id]['reference'];
-    $('ssparent').value = ssitems1d[id]['parent_id'];
-    $('ssf' + id).style.backgroundColor = '#fafafa';
-    $('ssf' + id).style.borderColor = '#ddd';
-    if ((id != previousID) && ($('ssf' + previousID))) {
-        $('ssf' + previousID).style.backgroundColor = '#fff';
-        $('ssf' + previousID).style.borderColor = '#fff';
+    _('ssreference').value = ssitems1d[id]['reference'];
+    _('ssparent').value = ssitems1d[id]['parent_id'];
+    _('ssf' + id).style.backgroundColor = '#fafafa';
+    _('ssf' + id).style.borderColor = '#ddd';
+    if ((id != previousID) && (_('ssf' + previousID))) {
+        _('ssf' + previousID).style.backgroundColor = '#fff';
+        _('ssf' + previousID).style.borderColor = '#fff';
     }
     if (selectedItems.inArray(id)) {
         // CLOSE
         selectedItems.splice(id,1);
-        $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder.png\')';
-        if ($('ssd' + id + 'childs')) {
-            $('ssd' + id + 'childs').style.display = 'none';
+        _('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder.png\')';
+        if (_('ssd' + id + 'childs')) {
+            _('ssd' + id + 'childs').style.display = 'none';
         }
     } else {
         // OPEN
         selectedItems[id] = id;
-        if ($('ssd' + id + 'childs')) {
-            $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder-open.png\')';
-            $('ssd' + id + 'childs').style.display = 'block';
+        if (_('ssd' + id + 'childs')) {
+            _('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder-open.png\')';
+            _('ssd' + id + 'childs').style.display = 'block';
         }
     }
     previousID = id;
@@ -194,14 +194,14 @@ function selectItem(id) {
  */
 function createSelectElement()
 {
-    if ($('ssfieldset').selectReference == undefined) {
+    if (_('ssfieldset').selectReference == undefined) {
         var combo = document.createElement('select');
         combo.setAttribute('id', 'ssreference');
         combo.style.width = '300px';
-        $('ssfieldset').selectReference = combo;
+        _('ssfieldset').selectReference = combo;
         return combo;
     } else {
-        var combo = $('ssfieldset').selectReference;
+        var combo = _('ssfieldset').selectReference;
         while(combo.options.length != 0) {
             combo.options[0] = null;
         }
@@ -214,15 +214,15 @@ function createSelectElement()
  */
 function createInputElement()
 {
-    if ($('ssfieldset').inputElement == undefined) {
+    if (_('ssfieldset').inputElement == undefined) {
         var input = document.createElement('input');
         input.setAttribute('id', 'ssreference');
         input.setAttribute('type', 'text');
         input.style.width = '300px';
-        $('ssfieldset').inputElement = input;
+        _('ssfieldset').inputElement = input;
         return input;
     } else {
-        var input = $('ssfieldset').inputElement;
+        var input = _('ssfieldset').inputElement;
         return input;
     }
 }
@@ -232,12 +232,12 @@ function createReference(type) {
     if (type == 'url') {
         var inputElement  = createInputElement();
         
-        var divsOfFieldSet = $('ssfieldset').getElementsByTagName('div');
-        divsOfFieldSet[3].replaceChild(inputElement, $('ssreference'));
+        var divsOfFieldSet = _('ssfieldset').getElementsByTagName('div');
+        divsOfFieldSet[3].replaceChild(inputElement, _('ssreference'));
     } else {
         var selectElement = createSelectElement();
-        var divsOfFieldSet = $('ssfieldset').getElementsByTagName('div');
-        divsOfFieldSet[3].replaceChild(selectElement, $('ssreference'));
+        var divsOfFieldSet = _('ssfieldset').getElementsByTagName('div');
+        divsOfFieldSet[3].replaceChild(selectElement, _('ssreference'));
 
         if(references[type]) {
             // Already
@@ -250,8 +250,8 @@ function createReference(type) {
 
 function populateReferences(data) {
     // Empty combo
-    for (i=$('ssreference').options.length-1; i>=0; i--) {
-        $('ssreference').options[i] = null;
+    for (i=_('ssreference').options.length-1; i>=0; i--) {
+        _('ssreference').options[i] = null;
     }
     // Populate combo
     pos = 0;
@@ -259,41 +259,41 @@ function populateReferences(data) {
         if ((typeof data[i] == 'object' && !!data[i]) || (typeof data[i] == 'function')) {
             // nothing
         } else {
-            $('ssreference').options[pos] = new Option(data[i],i);
+            _('ssreference').options[pos] = new Option(data[i],i);
             pos++;
         }
     }
     // Select first
-    if ($('ssreference').options[0]) {
-        $('ssreference').options[0].selected = true;
+    if (_('ssreference').options[0]) {
+        _('ssreference').options[0].selected = true;
     }
 }
 
 
 function saveCurrent() {
-    id = $('ssid').value;
-    parent_id = $('ssparent').value;
-    title = $('sstitle').value;
+    id = _('ssid').value;
+    parent_id = _('ssparent').value;
+    title = _('sstitle').value;
 
-    shortname = $('ssshortname').value;
+    shortname = _('ssshortname').value;
     var re = new RegExp ('^[a-zA-Z0-9-]+$','');
     if (!re.test(shortname)) {
         alert(shortnameError);
-        $('ssshortname').focus();
+        _('ssshortname').focus();
         return;
     }
 
-    type = $('sstype').value;
-    reference = $('ssreference').value;
-    changefreq = $('sschangefreq').value;
-    priority   = $('sspriority').value;
+    type = _('sstype').value;
+    reference = _('ssreference').value;
+    changefreq = _('sschangefreq').value;
+    priority   = _('sspriority').value;
     if (currentAction == 'NEW') {
         SitemapAjax.callAsync('newitem', parent_id, title, shortname, 
             type, reference, changefreq, priority);
     } else {
         if (id == parent_id) {
             alert(selfParentError);
-            $('ssparent').focus();
+            _('ssparent').focus();
             return;
         }
         SitemapAjax.callAsync('updateitem', id, parent_id, title, shortname, 
@@ -306,20 +306,20 @@ function deleteCurrent() {
 }
 
 function newItem() {
-    $('delete_button').style.display = 'none';
-    if ($('ssfieldset_legend').innerHTML != newLegend) {
-        editLegend = $('ssfieldset_legend').innerHTML;
-        $('ssfieldset_legend').innerHTML = newLegend;
+    _('delete_button').style.display = 'none';
+    if (_('ssfieldset_legend').innerHTML != newLegend) {
+        editLegend = _('ssfieldset_legend').innerHTML;
+        _('ssfieldset_legend').innerHTML = newLegend;
     }
     // clean form
-    $('ssid').value = 0;
-    $('sstitle').value = '';
-    $('sstitle').focus();
-    $('sstype').value = 'url';
+    _('ssid').value = 0;
+    _('sstitle').value = '';
+    _('sstitle').focus();
+    _('sstype').value = 'url';
     createReference('url');
-    $('ssshortname').value = '';
-    $('ssreference').value = '';
-    $('ssparent').value = 0;
+    _('ssshortname').value = '';
+    _('ssreference').value = '';
+    _('ssparent').value = 0;
     currentAction = 'NEW';
 }
 
