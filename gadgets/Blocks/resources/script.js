@@ -26,7 +26,7 @@ var BlocksCallback = {
 
     deleteblock: function(response) {
         // Remove item from block combo
-        var combo = $('block_id');
+        var combo = _('block_id');
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
         selIndex = combo.selectedIndex;
         combo.options[selIndex].dispose();
@@ -54,7 +54,7 @@ var BlocksCallback = {
     },
 
     parsetext: function(response) {
-        $('preview_contents').innerHTML = response;
+        _('preview_contents').innerHTML = response;
     }
 }
 
@@ -63,9 +63,9 @@ var BlocksCallback = {
  */
 function fillEditorEntries(block_data)
 {
-    $('block_id').disabled    = false;
-    $('hidden_id').value      = block_data['id'];
-    $('block_title').value    = block_data['title'].defilter();
+    _('block_id').disabled    = false;
+    _('hidden_id').value      = block_data['id'];
+    _('block_title').value    = block_data['title'].defilter();
     changeEditorValue('block_contents', block_data['contents']);
     document.getElementsByName('display_title[]').item(0).checked = block_data['display_title'] == '1';
     currentMode = 'edit';
@@ -79,9 +79,9 @@ function updateBlock()
     if (currentMode == 'new') {
         newBlock();
     } else {
-        $('block_id').disabled = true;
-        id       = $('hidden_id').value;
-        title    = $('block_title').value;
+        _('block_id').disabled = true;
+        id       = _('hidden_id').value;
+        title    = _('block_title').value;
         contents = getEditorValue('block_contents');
         if (title.blank() || contents.blank())
         {
@@ -94,9 +94,9 @@ function updateBlock()
         loading_message = updatingMessage;
         BlocksAjax.callAsync('updateblock', id, title, contents, displayTitle);
         // Update Combo
-        var combo = $('block_id');
+        var combo = _('block_id');
         combo.options[combo.selectedIndex].text = title;
-        $('block_id').disabled    = false;
+        _('block_id').disabled    = false;
     }
 }
 
@@ -105,8 +105,8 @@ function updateBlock()
  */
 function deleteBlock()
 {
-    id = $('hidden_id').value;
-    $('block_id').disabled = true;
+    id = _('hidden_id').value;
+    _('block_id').disabled = true;
     loading_message = deletingMessage;
     BlocksAjax.callAsync('deleteblock', id);
 }
@@ -116,19 +116,19 @@ function deleteBlock()
  */
 function switchTab(c, title)
 {
-    var editDiv    = $('edit');
-    var previewDiv = $('preview');
-    var editTab    = $('editTab');
+    var editDiv    = _('edit');
+    var previewDiv = _('preview');
+    var editTab    = _('editTab');
     if (title) {
         editTab.innerHTML = title;
     } else {
         var editTitle = editTab.innerHTML;
     }
-    var previewTab    = $('previewTab');
-    var previewButton = $('previewButton');
-    var saveButton    = $('saveButton');
-    var cancelButton  = $('cancelButton');
-    var delButton     = $('delButton');
+    var previewTab    = _('previewTab');
+    var previewButton = _('previewButton');
+    var saveButton    = _('saveButton');
+    var cancelButton  = _('cancelButton');
+    var delButton     = _('delButton');
 
     if (c == 'edit') {
         if (currentMode == 'new') {
@@ -181,11 +181,11 @@ function edit(id)
 {
     previousID  = id;
     currentMode = 'edit';
-    $('block_id').disabled = false;
+    _('block_id').disabled = false;
     loading_message = retrievingMessage;
     var block = BlocksAjax.callSync('getblock', id);
     fillEditorEntries(block);
-    $('block_id_txt').innerHTML = id;
+    _('block_id_txt').innerHTML = id;
     switchTab('edit', block['title']);
 }
 
@@ -196,11 +196,11 @@ function preview()
 {
     switchTab('preview');
     var block_contents = getEditorValue('block_contents');
-    $('preview_title').innerHTML = $('block_title').value;
+    _('preview_title').innerHTML = _('block_title').value;
 
     // Use this if you want to use plugins
     BlocksAjax.callAsync('parsetext', block_contents);
-    //$('preview_contents').innerHTML = block_contents;
+    //_('preview_contents').innerHTML = block_contents;
 }
 
 
@@ -211,9 +211,9 @@ function createNewBlock(title)
 {
     currentMode = 'new';
     switchTab('edit', title);
-    combo = $('block_id');
+    combo = _('block_id');
     combo.disabled = true;
-    blockTitle = $('block_title');
+    blockTitle = _('block_title');
     blockTitle.value = '';
     blockTitle.focus();
     changeEditorValue('block_contents', '');
@@ -224,7 +224,7 @@ function createNewBlock(title)
  */
 function newBlock()
 {
-    title = $('block_title').value;
+    title = _('block_title').value;
     contents = getEditorValue('block_contents');
     if (title.blank() || contents.blank())
     {
@@ -243,9 +243,9 @@ function newBlock()
  */
 function afterNewBlock(id)
 {
-    combo = $('block_id');
+    combo = _('block_id');
     combo.disabled = false;
-    combo.options[combo.length] = new Option($('block_title').value, id);
+    combo.options[combo.length] = new Option(_('block_title').value, id);
     combo.options[combo.length - 1].selected = true;
     edit(id);
 }
@@ -255,9 +255,9 @@ function afterNewBlock(id)
  */
 function returnToEdit()
 {
-    combo      = $('block_id');
-    b          = $('newButton');
-    blockTitle = $('block_title');
+    combo      = _('block_id');
+    b          = _('newButton');
+    blockTitle = _('block_title');
 
     if (combo.length > 0) {
 
@@ -287,7 +287,7 @@ function returnToEdit()
  */
 function getFirst()
 {
-    combo = $('block_id');
+    combo = _('block_id');
     if (combo.length > 0) {
         combo.options[0].selected = true;
         edit(combo.options[0].value);
