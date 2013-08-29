@@ -12,36 +12,36 @@
  */
 var TmsCallback = {
     sharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
+        var optionSelected = _('themes_combo').options[_('themes_combo').selectedIndex];
         if (response[0]['css'] == 'notice-message') {
             optionSelected.className = 'isshared';
-            $('unshare_button').style.display = 'block';
-            $('share_button').style.display   = 'none';
+            _('unshare_button').style.display = 'block';
+            _('share_button').style.display   = 'none';
         } else {
             optionSelected.className          = 'isnotshared';
-            $('unshare_button').style.display = 'none';
-            $('share_button').style.display   = 'block';
+            _('unshare_button').style.display = 'none';
+            _('share_button').style.display   = 'block';
         }
         showResponse(response);
     },
     
     unsharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
+        var optionSelected = _('themes_combo').options[_('themes_combo').selectedIndex];
         if (response[0]['css'] == 'notice-message') {
             optionSelected.className = 'isnotshared';
-            $('unshare_button').style.display = 'none';
-            $('share_button').style.display   = 'block';
+            _('unshare_button').style.display = 'none';
+            _('share_button').style.display   = 'block';
         } else {
             optionSelected.className = 'isshared';
-            $('unshare_button').style.display = 'block';
-            $('share_button').style.display   = 'none';
+            _('unshare_button').style.display = 'block';
+            _('share_button').style.display   = 'none';
         }
         showResponse(response);
     },    
     
     installtheme: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('themes_combo').value = selectedTheme;
+            _('themes_combo').value = selectedTheme;
             editTheme(selectedTheme);
         }
         showResponse(response);
@@ -55,8 +55,8 @@ var TmsCallback = {
 
     newrepository: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('repositories_datagrid').addItem();
-            $('repositories_datagrid').setCurrentPage(0);
+            _('repositories_datagrid').addItem();
+            _('repositories_datagrid').setCurrentPage(0);
         }
         showResponse(response);
         getDG();
@@ -64,7 +64,7 @@ var TmsCallback = {
 
     deleterepository: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('repositories_datagrid').deleteItem();          
+            _('repositories_datagrid').deleteItem();          
         }
         showResponse(response);
         getDG();
@@ -90,10 +90,10 @@ var TmsCallback = {
  */
 function showButtons()
 {
-    if ($('download').value == 'true') {
-        $('download_button').style.display = 'block';
+    if (_('download').value == 'true') {
+        _('download_button').style.display = 'block';
     } else {
-        $('download_button').style.display = 'none';
+        _('download_button').style.display = 'none';
     }
 }
 
@@ -113,7 +113,7 @@ function editTheme(theme)
         return false; //Check
     }
     selectedTheme = theme;
-    $('theme_area').innerHTML = themeInfo;
+    _('theme_area').innerHTML = themeInfo;
     showButtons();
 }
 
@@ -122,14 +122,14 @@ function editTheme(theme)
  */
 function cleanWorkingArea(hideButtons)
 {
-    $('theme_area').innerHTML = '';
+    _('theme_area').innerHTML = '';
     if (hideButtons != undefined) {
         if (hideButtons == true) {
             var buttons = new Array('uninstall_button', 'share_button', 
                                     'unshare_button', 'install_button');
             for(var i=0; i<buttons.length; i++) {
-                if ($(buttons[i]) != undefined) {
-                    $(buttons[i]).style.display = 'none';
+                if (_(buttons[i]) != undefined) {
+                    _(buttons[i]).style.display = 'none';
                 }
             }
         }
@@ -165,10 +165,10 @@ function cleanForm(form)
  */
 function updateForm(repositoryInfo) 
 {
-    $('repositories_form').elements['name'].value   = repositoryInfo['name'];
-    $('repositories_form').elements['url'].value    = repositoryInfo['url'];
-    $('repositories_form').elements['id'].value     = repositoryInfo['id'];
-    $('repositories_form').elements['action'].value = 'UpdateRepository';
+    _('repositories_form').elements['name'].value   = repositoryInfo['name'];
+    _('repositories_form').elements['url'].value    = repositoryInfo['url'];
+    _('repositories_form').elements['id'].value     = repositoryInfo['id'];
+    _('repositories_form').elements['action'].value = 'UpdateRepository';
 }
 
 /**
@@ -214,7 +214,7 @@ function submitForm(form)
 function deleteRepository(id)
 {
     TmsAjax.callAsync('deleterepository', id);
-    cleanForm($('repositories_form'));
+    cleanForm(_('repositories_form'));
 }
 
 /**
@@ -230,7 +230,7 @@ function editRepository(id)
  */
 function saveSettings()
 {
-    TmsAjax.callAsync('savesettings', $('share_themes').value);
+    TmsAjax.callAsync('savesettings', _('share_themes').value);
 }
 
 var TmsAjax = new JawsAjax('Tms', TmsCallback),
