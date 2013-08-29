@@ -43,12 +43,7 @@ var SettingsCallback = {
  */
 function submitBasicForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-    SettingsAjax.callAsync('UpdateBasicSettings', settingsArray);
+    SettingsAjax.callAsync('UpdateBasicSettings', $('#settingsForm :input').serializeArray());
 }
 
 /**
@@ -56,12 +51,7 @@ function submitBasicForm()
  */
 function submitAdvancedForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-    SettingsAjax.callAsync('UpdateAdvancedSettings', settingsArray);
+    SettingsAjax.callAsync('UpdateAdvancedSettings', $('#settingsForm :input').serializeArray());
 }
 
 /**
@@ -69,15 +59,15 @@ function submitAdvancedForm()
  */
 function addCustomMeta()
 {
-    var div = new Element('div', {'class':'fields'}),
-        label = new Element('label').set('html', custom_meta),
-        inputName  = new Element('input', {type:'text', title:'Meta Name', 'class':'meta-name'}),
-        inputValue = new Element('input', {type:'text', title:'Meta Content', 'class':'meta-value'});
+    var div = $('<div>', {'class': 'fields'}),
+        label = $('<label>').html(custom_meta),
+        inputName  = $('<input>', {type:'text', title:'Meta Name', 'class':'meta-name'}),
+        inputValue = $('<input>', {type:'text', title:'Meta Content', 'class':'meta-value'});
 
-    div.adopt(label);
-    div.adopt(inputName);
-    div.adopt(inputValue);
-    $('customMeta').adopt(div);
+    div.append(label);
+    div.append(inputName);
+    div.append(inputValue);
+    $('#customMeta').append(div);
 }
 
 /**
@@ -85,23 +75,21 @@ function addCustomMeta()
  */
 function submitMetaForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-
-    var customMeta   = new Array(),
-        customInputs = $('customMeta').getElements('input.meta-name');
-    customInputs.each(function(input) {
-        if (input.value.blank()) {
-            input.getParent().destroy();
+    var customMeta = [];
+    var customInputs = $('#customMeta input.meta-name');
+    customInputs.each(function(index, input) {
+        if (!$(input).val()) {
+            $(input).parent().empty();
             return;
         }
-        customMeta.include([input.value, input.getNext().value]);
+        customMeta[index] = [$(input).val(), $(input).next().val()];
     });
-    SettingsAjax.callAsync('UpdateMetaSettings', settingsArray, customMeta);
+
+    SettingsAjax.callAsync(
+        'UpdateMetaSettings',
+        $('#settingsForm :input').serializeArray(),
+        customMeta
+    );
 }
 
 /**
@@ -109,12 +97,7 @@ function submitMetaForm()
  */
 function submitMailSettingsForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-    SettingsAjax.callAsync('UpdateMailSettings', settingsArray);
+    SettingsAjax.callAsync('UpdateMailSettings', $('#settingsForm :input').serializeArray());
 }
 
 /**
@@ -122,12 +105,7 @@ function submitMailSettingsForm()
  */
 function submitFTPSettingsForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-    SettingsAjax.callAsync('UpdateFTPSettings', settingsArray);
+    SettingsAjax.callAsync('UpdateFTPSettings', $('#settingsForm :input').serializeArray());
 }
 
 /**
@@ -135,12 +113,7 @@ function submitFTPSettingsForm()
  */
 function submitProxySettingsForm()
 {
-    var form = $('settingsForm'),
-        settingsArray = new Array();
-    for (i=0; i<form.elements.length; i++) {
-        settingsArray[form.elements[i].name] = form.elements[i].value;
-    }
-    SettingsAjax.callAsync('UpdateProxySettings', settingsArray);
+    SettingsAjax.callAsync('UpdateProxySettings', $('#settingsForm :input').serializeArray());
 }
 
 function toggleGR() 
