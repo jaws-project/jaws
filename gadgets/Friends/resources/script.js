@@ -13,8 +13,8 @@
 var FriendsCallback = { 
     newfriend: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('friends_datagrid').addItem();
-            $('friends_datagrid').setCurrentPage(0);
+            _('friends_datagrid').addItem();
+            _('friends_datagrid').setCurrentPage(0);
         }
         showResponse(response);
         getDG();
@@ -22,7 +22,7 @@ var FriendsCallback = {
 
     deletefriend: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            $('friends_datagrid').deleteItem();          
+            _('friends_datagrid').deleteItem();          
         }
         showResponse(response);
         getDG();
@@ -60,10 +60,10 @@ function cleanForm(form)
  */
 function updateForm(friendInfo) 
 {
-    $('friends_form').elements['friend'].value       = friendInfo['friend'].defilter();
-    $('friends_form').elements['url'].value          = friendInfo['url'];
-    $('friends_form').elements['id'].value           = friendInfo['id'];
-    $('friends_form').elements['action'].value       = 'UpdateFriend';
+    _('friends_form').elements['friend'].value       = friendInfo['friend'].defilter();
+    _('friends_form').elements['url'].value          = friendInfo['url'];
+    _('friends_form').elements['id'].value           = friendInfo['id'];
+    _('friends_form').elements['action'].value       = 'UpdateFriend';
 }
 
 /**
@@ -110,7 +110,7 @@ function submitForm(form)
 function deleteFriend(id)
 {
     FriendsAjax.callAsync('deletefriend', id);
-    cleanForm($('friends_form'));
+    cleanForm(_('friends_form'));
 }
 
 /**
