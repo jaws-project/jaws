@@ -114,6 +114,7 @@ class Jaws_Gadget_HTML
     function AjaxMe($file = '', $version = '')
     {
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/jquery/jquery.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
