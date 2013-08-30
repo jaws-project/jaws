@@ -13,8 +13,8 @@
 var WebcamCallback = { 
     newwebcam: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            _('webcam_datagrid').addItem();
-            _('webcam_datagrid').setCurrentPage(0);
+            $('webcam_datagrid').addItem();
+            $('webcam_datagrid').setCurrentPage(0);
             getDG();
         }
         showResponse(response);
@@ -22,7 +22,7 @@ var WebcamCallback = {
 
     deletewebcam: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            _('webcam_datagrid').deleteItem();          
+            $('webcam_datagrid').deleteItem();          
             getDG();
         }
         showResponse(response);
@@ -60,11 +60,11 @@ function cleanForm(form)
  */
 function updateForm(webcamInfo) 
 {
-    _('webcam_form').elements['id'].value       = webcamInfo['id'];
-    _('webcam_form').elements['url'].value      = webcamInfo['url'];
-    _('webcam_form').elements['title'].value    = webcamInfo['title'].defilter();
-    _('webcam_form').elements['refresh'].value  = webcamInfo['refresh'];
-    _('webcam_form').elements['action'].value   = 'UpdateWebcam';
+    $('webcam_form').elements['id'].value       = webcamInfo['id'];
+    $('webcam_form').elements['url'].value      = webcamInfo['url'];
+    $('webcam_form').elements['title'].value    = webcamInfo['title'].defilter();
+    $('webcam_form').elements['refresh'].value  = webcamInfo['refresh'];
+    $('webcam_form').elements['action'].value   = 'UpdateWebcam';
 }
 
 /**
@@ -121,7 +121,7 @@ function submitForm(form)
 function deleteWebcam(id)
 {
     WebcamAjax.callAsync('deletewebcam', id);
-    cleanForm(_('webcam_form'));
+    cleanForm($('webcam_form'));
 }
 
 /**

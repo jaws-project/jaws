@@ -31,8 +31,8 @@
                 {remove}
               </div>
               <div class="wrapper" 
-                   onmouseover="_('btn_upload').style.textDecoration='underline'"
-                   onmouseout ="_('btn_upload').style.textDecoration='none'">{attachment}</div>
+                   onmouseover="$('btn_upload').style.textDecoration='underline'"
+                   onmouseout ="$('btn_upload').style.textDecoration='none'">{attachment}</div>
             </div>
           </form>
       </td></tr>
@@ -47,7 +47,7 @@
       groupHasNoUser         = "{groupHasNoUser}",
       incompleteMailerFields = "{incompleteMailerFields}";
   newEmail();
-  _('options_1').checked = true;
+  $('options_1').checked = true;
   switchEmailTarget(1);
 </script>
 <!-- END mailer -->

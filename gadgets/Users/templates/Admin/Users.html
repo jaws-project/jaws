@@ -42,13 +42,13 @@
   var editPreferences_title = "{editPreferences_title}";
   var editContacts_title    = "{editContacts_title}";
   var currentAction         = 'UserAccount';
-  var cachedUserForm        = _('workarea').innerHTML;
+  var cachedUserForm        = $('workarea').innerHTML;
   var base_script           = "{base_script}";
-  _('filter_term').value    = '';
-  _('filter_group').selectedIndex  = 0;
-  _('filter_type').selectedIndex   = 0;
-  _('filter_status').selectedIndex = 0;
-  _('order_type').selectedIndex    = 0;
+  $('filter_term').value    = '';
+  $('filter_group').selectedIndex  = 0;
+  $('filter_type').selectedIndex   = 0;
+  $('filter_status').selectedIndex = 0;
+  $('order_type').selectedIndex    = 0;
   stopUserAction();
   initDataGrid('users_datagrid', UsersAjax, getUsers);
 </script>

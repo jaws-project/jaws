@@ -15,8 +15,8 @@ var PollCallback = {
     insertpoll: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            _('polls_datagrid').addItem();
-            _('polls_datagrid').setCurrentPage(0);
+            $('polls_datagrid').addItem();
+            $('polls_datagrid').setCurrentPage(0);
             getDG();
         }
         showResponse(response);
@@ -33,7 +33,7 @@ var PollCallback = {
     deletepoll: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            _('polls_datagrid').deleteItem();
+            $('polls_datagrid').deleteItem();
             getDG();
         }
         showResponse(response);
@@ -49,8 +49,8 @@ var PollCallback = {
     insertpollgroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            _('pollgroups_datagrid').addItem();
-            _('pollgroups_datagrid').setCurrentPage(0);
+            $('pollgroups_datagrid').addItem();
+            $('pollgroups_datagrid').setCurrentPage(0);
             getDG();
         }
         showResponse(response);
@@ -67,7 +67,7 @@ var PollCallback = {
     deletepollgroup: function(response) {
         if (response[0]['css'] == 'notice-message') {
             stopAction();
-            _('pollgroups_datagrid').deleteItem();
+            $('pollgroups_datagrid').deleteItem();
             getDG();
         }
         showResponse(response);
@@ -114,40 +114,40 @@ function stopAction()
     switch(currentAction) {
     case 'Polls':
         selectedPoll = null;
-        _('legend_title').innerHTML = addPoll_title;
-        _('question').value    = '';
-        _('gid').selectedIndex = 0;
-        _('start_time').value  = '';
-        _('stop_time').value   = '';
-        _('select_type').value = 0;
-        _('poll_type').value   = 0;
-        _('result_view').value = 1;
-        _('visible').value     = 1;
+        $('legend_title').innerHTML = addPoll_title;
+        $('question').value    = '';
+        $('gid').selectedIndex = 0;
+        $('start_time').value  = '';
+        $('stop_time').value   = '';
+        $('select_type').value = 0;
+        $('poll_type').value   = 0;
+        $('result_view').value = 1;
+        $('visible').value     = 1;
         unselectDataGridRow();
-        _('question').focus();
+        $('question').focus();
         break;
     case 'PollAnswers':
         selectedPoll = null;
         currentAction = 'Polls';
-        _('legend_title').innerHTML = addPoll_title;
-        _('p_work_area').innerHTML = cachePollForm;
+        $('legend_title').innerHTML = addPoll_title;
+        $('p_work_area').innerHTML = cachePollForm;
         initDatePicker('start_time');
         initDatePicker('stop_time');
         unselectDataGridRow();
         break;
     case 'PollGroups':
         selectedPollGroup = null;
-        _('legend_title').innerHTML = addPollGroup_title;
-        _('title').value   = '';
-        _('visible').value = 1;
+        $('legend_title').innerHTML = addPollGroup_title;
+        $('title').value   = '';
+        $('visible').value = 1;
         unselectDataGridRow();
-        _('title').focus();
+        $('title').focus();
         break;
     case 'PollGroupPolls':
         selectedPollGroup = null;
         currentAction = 'PollGroups';
-        _('legend_title').innerHTML = addPollGroup_title;
-        _('pg_work_area').innerHTML = cachePollGroupsForm;
+        $('legend_title').innerHTML = addPollGroup_title;
+        $('pg_work_area').innerHTML = cachePollGroupsForm;
         unselectDataGridRow();
         break;
     }
@@ -160,9 +160,9 @@ function editPoll(element, pid)
 {
     currentAction = 'Polls';
     selectedPoll = pid;
-    _('legend_title').innerHTML = editPoll_title;
+    $('legend_title').innerHTML = editPoll_title;
     if (cachePollForm != null) {
-        _('p_work_area').innerHTML = cachePollForm;
+        $('p_work_area').innerHTML = cachePollForm;
         initDatePicker('start_time');
         initDatePicker('stop_time');
     }
@@ -171,16 +171,16 @@ function editPoll(element, pid)
 
     var pollInfo = PollAjax.callSync('getpoll', selectedPoll);
 
-    _('question').value    = pollInfo['question'].defilter();
-    _('gid').value         = pollInfo['gid'];
+    $('question').value    = pollInfo['question'].defilter();
+    $('gid').value         = pollInfo['gid'];
     if (pollInfo['start_time'] == null) pollInfo['start_time'] = '';
     if (pollInfo['stop_time']  == null) pollInfo['stop_time']  = '';
-    _('start_time').value  = pollInfo['start_time'];
-    _('stop_time').value   = pollInfo['stop_time'];
-    _('select_type').value = pollInfo['select_type'];
-    _('poll_type').value   = pollInfo['poll_type'];
-    _('result_view').value = pollInfo['result_view'];
-    _('visible').value     = pollInfo['visible'];
+    $('start_time').value  = pollInfo['start_time'];
+    $('stop_time').value   = pollInfo['stop_time'];
+    $('select_type').value = pollInfo['select_type'];
+    $('poll_type').value   = pollInfo['poll_type'];
+    $('result_view').value = pollInfo['result_view'];
+    $('visible').value     = pollInfo['visible'];
 }
 
 /**
@@ -189,7 +189,7 @@ function editPoll(element, pid)
 function editPollAnswers(element, pid)
 {
     if (cachePollForm == null) {
-        cachePollForm = _('p_work_area').innerHTML;
+        cachePollForm = $('p_work_area').innerHTML;
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -200,18 +200,18 @@ function editPollAnswers(element, pid)
     currentAction = 'PollAnswers';
 
     selectedPoll = pid;
-    _('legend_title').innerHTML = editAnswers_title;
-    _('p_work_area').innerHTML = cachePollAnswersForm;
+    $('legend_title').innerHTML = editAnswers_title;
+    $('p_work_area').innerHTML = cachePollAnswersForm;
     var answersData = PollAjax.callSync('getpollanswers', selectedPoll);
     var answers  = answersData['Answers'];
-    _('question').value  = answersData['question'].defilter();
+    $('question').value  = answersData['question'].defilter();
 
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     box.length = 0;
     for(var i = 0; i < answers.length; i++) {
         box.options[i] = new Option(answers[i]['answer'].defilter(), answers[i]['id']);
     }
-    _('answer').focus();
+    $('answer').focus();
 }
 
 /**
@@ -220,7 +220,7 @@ function editPollAnswers(element, pid)
 function savePoll()
 {
     if (currentAction == 'PollAnswers') {
-        var box = _('answers_combo');
+        var box = $('answers_combo');
         var answers = new Array();
         if (box.length < 2) {
             alert(requiresTwoAnswers);
@@ -233,32 +233,32 @@ function savePoll()
         }
         PollAjax.callAsync('updatepollanswers', selectedPoll, answers);
     } else {
-        if (_('question').value.blank()) {
+        if ($('question').value.blank()) {
             alert(incompletePollsFields);
             return false;
         }
 
         if (selectedPoll == null) {
             PollAjax.callAsync('insertpoll',
-                                _('question').value,
-                                _('gid').value,
-                                _('start_time').value,
-                                _('stop_time').value,
-                                _('select_type').value,
-                                _('poll_type').value,
-                                _('result_view').value,
-                                _('visible').value);
+                                $('question').value,
+                                $('gid').value,
+                                $('start_time').value,
+                                $('stop_time').value,
+                                $('select_type').value,
+                                $('poll_type').value,
+                                $('result_view').value,
+                                $('visible').value);
         } else {
             PollAjax.callAsync('updatepoll',
                                 selectedPoll,
-                                _('question').value,
-                                _('gid').value,
-                                _('start_time').value,
-                                _('stop_time').value,
-                                _('select_type').value,
-                                _('poll_type').value,
-                                _('result_view').value,
-                                _('visible').value);
+                                $('question').value,
+                                $('gid').value,
+                                $('start_time').value,
+                                $('stop_time').value,
+                                $('select_type').value,
+                                $('poll_type').value,
+                                $('result_view').value,
+                                $('visible').value);
         }
     }
 }
@@ -292,12 +292,12 @@ function keypressOnAnswer(event)
  */
 function addAnswer()
 {
-    var answer = _('answer').value;
-    _('answer').value = '';
-    _('answer').focus();
+    var answer = $('answer').value;
+    $('answer').value = '';
+    $('answer').focus();
     if (answer.blank()) return false;
 
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex].text = answer;
         box.selectedIndex = -1;
@@ -311,7 +311,7 @@ function addAnswer()
  */
 function delAnswer()
 {
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex] = null;
     }
@@ -323,13 +323,13 @@ function delAnswer()
  */
 function editAnswer()
 {
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     if (box.selectedIndex == -1) return;
     var answer = box.options[box.selectedIndex].text;
     if (answer.blank()) return false;
 
-    _('answer').value = answer;
-    _('answer').focus();
+    $('answer').value = answer;
+    $('answer').focus();
 }
 
 /**
@@ -337,10 +337,10 @@ function editAnswer()
  */
 function stopAnswer()
 {
-    var box = _('answers_combo');
-    _('answer').value = '';
+    var box = $('answers_combo');
+    $('answer').value = '';
     box.selectedIndex = -1;
-    _('answer').focus();
+    $('answer').focus();
 }
 
 /**
@@ -348,7 +348,7 @@ function stopAnswer()
  */
 function upAnswer()
 {
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     if (box.selectedIndex < 1) return;
     var tmpText  = box.options[box.selectedIndex - 1].text;
     var tmpValue = box.options[box.selectedIndex - 1].value;
@@ -364,7 +364,7 @@ function upAnswer()
  */
 function downAnswer()
 {
-    var box = _('answers_combo');
+    var box = $('answers_combo');
     if (box.selectedIndex == -1) return;
     if (box.selectedIndex > box.length-2) return;
     var tmpText  = box.options[box.selectedIndex + 1].text;
@@ -385,18 +385,18 @@ function editPollGroup(element, gid)
 
     currentAction = 'PollGroups';
     selectedPollGroup = gid;
-    _('legend_title').innerHTML = editPollGroup_title;
+    $('legend_title').innerHTML = editPollGroup_title;
     if (cachePollGroupsForm != null) {
-        _('pg_work_area').innerHTML = cachePollGroupsForm;
+        $('pg_work_area').innerHTML = cachePollGroupsForm;
     }
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var groupInfo = PollAjax.callSync('getpollgroup', selectedPollGroup);
 
-    _('gid').value = groupInfo['id'];
-    _('title').value  = groupInfo['title'].defilter();
-    _('visible').selectedIndex = groupInfo['visible'];
+    $('gid').value = groupInfo['id'];
+    $('title').value  = groupInfo['title'].defilter();
+    $('visible').selectedIndex = groupInfo['visible'];
 }
 
 /**
@@ -405,7 +405,7 @@ function editPollGroup(element, gid)
 function editPollGroupPolls(element, gid)
 {
     if (cachePollGroupsForm == null) {
-        cachePollGroupsForm = _('pg_work_area').innerHTML;
+        cachePollGroupsForm = $('pg_work_area').innerHTML;
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -416,14 +416,14 @@ function editPollGroupPolls(element, gid)
 
     currentAction = 'PollGroupPolls';
     selectedPollGroup = gid;
-    _('legend_title').innerHTML = editPollGroupPolls_title;
-    _('pg_work_area').innerHTML = cachePollGroupPollsForm;
+    $('legend_title').innerHTML = editPollGroupPolls_title;
+    $('pg_work_area').innerHTML = cachePollGroupPollsForm;
 
     var pollsData = PollAjax.callSync('getpollgrouppolls', selectedPollGroup);
     var pollsList  = pollsData['Polls'];
-    _('title').value  = pollsData['title'];
-    if (_('pg_polls_combo')) {
-        var inputs  = _('pg_polls_combo').getElementsByTagName('input');
+    $('title').value  = pollsData['title'];
+    if ($('pg_polls_combo')) {
+        var inputs  = $('pg_polls_combo').getElementsByTagName('input');
         pollsList.each(function(value, index) {
             for (var i=0; i<inputs.length; i++) {
                 if (value['id'] == inputs[i].value) {
@@ -441,8 +441,8 @@ function editPollGroupPolls(element, gid)
 function savePollGroup()
 {
     if (currentAction == 'PollGroupPolls') {
-        if (_('pg_polls_combo')) {
-            var inputs  = _('pg_polls_combo').getElementsByTagName('input');
+        if ($('pg_polls_combo')) {
+            var inputs  = $('pg_polls_combo').getElementsByTagName('input');
             var keys    = new Array();
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
@@ -455,20 +455,20 @@ function savePollGroup()
 
         }
     } else {
-        if (_('title').value.blank()) {
+        if ($('title').value.blank()) {
             alert(incompleteGroupsFields);
             return false;
         }
 
         if (selectedPollGroup == null) {
             PollAjax.callAsync('insertpollgroup',
-                                _('title').value,
-                                _('visible').value);
+                                $('title').value,
+                                $('visible').value);
         } else {
             PollAjax.callAsync('updatepollgroup',
                                 selectedPollGroup,
-                                _('title').value,
-                                _('visible').value);
+                                $('title').value,
+                                $('visible').value);
         }
     }
 }
@@ -488,10 +488,10 @@ function deletePollGroup(element, gid)
 
 function getGroupPolls(gid)
 {
-    var box = _('grouppolls');
+    var box = $('grouppolls');
     box.length = 0;
-    _('result_area').innerHTML = '';
-    _('legend_title').innerHTML = '';
+    $('result_area').innerHTML = '';
+    $('legend_title').innerHTML = '';
     if (gid == 0) return;
     var polls = PollAjax.callSync('getgrouppolls', gid);
     for(var i = 0; i < polls.length; i++) {
@@ -508,9 +508,9 @@ function getGroupPolls(gid)
 
 function showResult(pid)
 {
-    var box = _('grouppolls');
-    _('legend_title').innerHTML = box.options[box.selectedIndex].text;
-    _('result_area').innerHTML = PollAjax.callSync('pollresultsui', pid);
+    var box = $('grouppolls');
+    $('legend_title').innerHTML = box.options[box.selectedIndex].text;
+    $('result_area').innerHTML = PollAjax.callSync('pollresultsui', pid);
 }
 
 var PollAjax = new JawsAjax('Poll', PollCallback);
