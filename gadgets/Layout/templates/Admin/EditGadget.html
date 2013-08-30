@@ -10,17 +10,17 @@
 <script type="text/javascript" src="libraries/jquery/jquery.js"></script>
 <script type="text/javascript">
   function getAction(lid, gadget) {
-    var action = _('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
+    var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
     if (!action) {
         alert('!!!!!!!!!!');
         return;
     }
 
-    title = _('action_'+action.value).getElementsByTagName('label')[0].innerHTML;
-    desc = _('action_'+action.value).getElementsByTagName('span')[0].innerHTML;
+    title = $('action_'+action.value).getElementsByTagName('label')[0].innerHTML;
+    desc = $('action_'+action.value).getElementsByTagName('span')[0].innerHTML;
 
     var params = null;
-    var paramElemets = Array.from(_('action_'+action.value).getElements('select,input:not([type=radio])'));
+    var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
     if (paramElemets.length > 0) {
         params = new Array();
         paramElemets.each(function(elParam, index) {

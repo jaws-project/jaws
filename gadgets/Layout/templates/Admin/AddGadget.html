@@ -19,15 +19,15 @@
   default_loading_message = "{loading-message}";
   var loading_message = default_loading_message;
   function getAction() {
-    var gadget = _('gadget').value;
-    var action = _('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
+    var gadget = $('gadget').value;
+    var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
     if (!action) {
         alert('!!!!!!!!!!');
         return;
     }
 
     var params = null;
-    var paramElemets = Array.from(_('action_'+action.value).getElements('select,input:not([type=radio])'));
+    var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
     if (paramElemets.length > 0) {
         params = new Array();
         paramElemets.each(function(elParam, index) {
