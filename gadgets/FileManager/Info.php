@@ -18,4 +18,20 @@ class FileManager_Info extends Jaws_Gadget
      */
     var $version = '0.0.1';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'FileManager';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'FileManager';
+
 }
