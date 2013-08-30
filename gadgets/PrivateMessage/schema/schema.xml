@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
-    <name>
-        <variable>database</variable>
-    </name>
+    <name><variable>database</variable></name>
 
     <table>
         <name><variable>table_prefix</variable>pm_messages</name>
