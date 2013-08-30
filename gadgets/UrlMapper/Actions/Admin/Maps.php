@@ -78,7 +78,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminHTML
         $tpl->SetBlock('UrlMapper');
 
         // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Admin'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Maps'));
 
         //Combo for gadgets
         $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');

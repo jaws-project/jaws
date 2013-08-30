@@ -20,14 +20,6 @@ class UrlMapper_Info extends Jaws_Gadget
     var $version = '1.0.0';
 
     /**
-     * Default back-end action name
-     *
-     * @var     string
-     * @access  protected
-     */
-    var $default_admin_action = 'Maps';
-
-    /**
      * Is this gadget core gadget?
      *
      * @var    boolean
@@ -48,5 +40,13 @@ class UrlMapper_Info extends Jaws_Gadget
      * @access  protected
      */
     var $default_action = false;
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Maps';
 
 }
