@@ -35,29 +35,42 @@ class Jaws_Widgets_Menubar
     var $_CSS_Class_Name = 'jaws-menubar';
 
     /**
-     * Main Constructor
+     * Constructor
      *
      * @access  public
+     * @param   string  $action Action short-name(NOT URL)
+     * @return  void
      */
-    function Jaws_Widgets_Menubar($name = 'menu')
+    function __construct($action)
     {
-        $this->_Name = strtolower($name);
+        $this->_Name = strtolower($action);
         $this->_Options = array();
+    }
+
+    /**
+     * Creates the Jaws_Widgets_Menubar instance
+     *
+     * @access  public
+     * @param   string  $action Action short-name(NOT URL)
+     * @return  object  returns the instance
+     */
+    function getInstance($action = 'menubar')
+    {
+        return new Jaws_Widgets_Menubar($action);
     }
 
     /**
      * Add a new option
      *
      * @access  public
-     * @param   string  $action     Action's shorname(NOT URL)
+     * @param   string  $action     Action short-name(NOT URL)
      * @param   string  $name       Title to print
-     * @param   string  $url        Url to point
+     * @param   string  $url        URL to point
      * @param   string  $icon       Icon/Stock to use
-     * @param   string  $onclick    Javascript OnClick function
-     * @param   bool    $selected   If the option is marked as selected
-     * @return  void
+     * @param   bool    $permission Display this option?
+     * @return  object  Jaws_Widgets_Menubar object
      */
-    function AddOption($action, $name, $url = '', $icon = '', $selected = false, $onclick = null)
+    function AddOption($action, $name, $url = '', $icon = '', $permission = false, $onclick = null)
     {
         if (strpos($url, 'javascript:') !== false) {
             $onclick = str_replace('javascript:', '', $url);
@@ -69,13 +82,30 @@ class Jaws_Widgets_Menubar
         }
 
         $this->_Options[$action] = array(
-                                         'action'   => strtolower($action),
-                                         'name'     => $name,
-                                         'url'      => $url,
-                                         'icon'     => $icon,
-                                         'selected' => $selected,
-                                         'onclick'  => $onclick
-                                         );
+            'action'   => strtolower($action),
+            'name'     => $name,
+            'url'      => $url,
+            'icon'     => $icon,
+            'selected' => false
+        );
+
+        return $this;
+    }
+
+    /**
+     * Add a new options
+     *
+     * @access  public
+     * @param   array   $options    Options array
+     * @return  object  Jaws_Widgets_Menubar object
+     */
+    function AddOptions($options = array())
+    {
+        foreach ($options as $option) {
+            call_user_func_array(array($this, 'AddOption'), $option);
+        }
+
+        return $this;
     }
 
     /**
@@ -83,13 +113,15 @@ class Jaws_Widgets_Menubar
      *
      * @access  public
      * @param   string  $name  Actions's name to activate
-     * @return  void
+     * @return  object  Jaws_Widgets_Menubar object
      */
     function Activate($name)
     {
         if (isset($this->_Options[$name])) {
             $this->_Options[$name]['selected'] = true;
         }
+
+        return $this;
     }
 
     /**
@@ -97,11 +129,12 @@ class Jaws_Widgets_Menubar
      *
      * @access  public
      * @param   string  $class Prefix class's name
-     * @return  void
+     * @return  object  Jaws_Widgets_Menubar object
      */
     function SetClass($class)
     {
         $this->_CSS_Class_Name = strtolower($class);
+        return $this;
     }
 
     /**
@@ -112,24 +145,17 @@ class Jaws_Widgets_Menubar
      */
     function Get()
     {
-        $result = "\n". '<div id="'.$this->_CSS_Class_Name. '-'. $this->_Name. '" class="'. $this->_CSS_Class_Name. '">'. "<ul>\n";
+        $result = "\n". '<div id="'.$this->_CSS_Class_Name. '-'. $this->_Name.
+            '" class="'. $this->_CSS_Class_Name. '">'. "<ul>\n";
         foreach ($this->_Options as $option) {
             $result.= '<li id="menu-option-'. $option['action']. '"';
             if ($option['selected']) {
                 $result.= ' class="'. $this->_CSS_Class_Name. '-selected" ';
             }
-
-            $result.= '>';
-            if (empty($option['onclick'])) {
-                $result.= '<a href="'. $option['url']. '">';
-            } else {
-                $result.= '<a href="'. $option['url']. '" onclick="'. $option['onclick']. '">';
-            }
-
+            $result.= '><a href="'. $option['url']. '">';
             if (!empty($option['icon'])) {
                 $result.= '<img alt="'. $option['name']. '" src="'. $option['icon']. '" width="16" height="16" /> ';
             }
-
             $result.= $option['name'] . "</a></li>\n";
         }
 

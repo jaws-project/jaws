@@ -8,8 +8,6 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
-
 class Jaws_Widgets_Sidebar extends Jaws_Widgets_Menubar
 {
     /**
