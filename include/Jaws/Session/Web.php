@@ -44,10 +44,12 @@ class Jaws_Session_Web extends Jaws_Session
     {
         parent::Create($info, $remember);
         // Create cookie
-        $this->SetCookie(JAWS_SESSION_NAME,
-                         $this->_SessionID.'-'.$this->GetAttribute('salt'),
-                         $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0,
-                         false);
+        $this->SetCookie(
+            JAWS_SESSION_NAME,
+             $this->_SessionID.'-'.$this->GetAttribute('salt'),
+             $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0,
+             true
+        );
     }
 
     /**
@@ -60,10 +62,12 @@ class Jaws_Session_Web extends Jaws_Session
     function Logout()
     {
         parent::Logout();
-        $this->SetCookie(JAWS_SESSION_NAME,
-                         $this->_SessionID.'-'.$this->GetAttribute('salt'),
-                         0,
-                         false);
+        $this->SetCookie(
+            JAWS_SESSION_NAME,
+            $this->_SessionID.'-'.$this->GetAttribute('salt'),
+            0,
+            true
+        );
     }
 
     /**
