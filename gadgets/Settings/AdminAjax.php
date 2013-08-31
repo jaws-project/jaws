@@ -35,7 +35,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateBasicSettings($settings)
     {
         $this->gadget->CheckPermission('BasicSettings');
-        $settings = array_column($settings, 'value', 'name');
         $this->_Model->SaveBasicSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -51,7 +50,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateAdvancedSettings($settings)
     {
         $this->gadget->CheckPermission('AdvancedSettings');
-        $settings = array_column($settings, 'value', 'name');
         $this->_Model->SaveAdvancedSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -68,7 +66,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMetaSettings($settings, $customMeta)
     {
         $this->gadget->CheckPermission('MetaSettings');
-        $settings = array_column($settings, 'value', 'name');
         $settings['site_custom_meta'] = serialize($customMeta);
         $this->_Model->SaveMetaSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -85,7 +82,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMailSettings($settings)
     {
         $this->gadget->CheckPermission('MailSettings');
-        $settings = array_column($settings, 'value', 'name');
         $this->_Model->UpdateMailSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -101,7 +97,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateFTPSettings($settings)
     {
         $this->gadget->CheckPermission('FTPSettings');
-        $settings = array_column($settings, 'value', 'name');
         $this->_Model->UpdateFTPSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -117,7 +112,6 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProxySettings($settings)
     {
         $this->gadget->CheckPermission('ProxySettings');
-        $settings = array_column($settings, 'value', 'name');
         $this->_Model->UpdateProxySettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
