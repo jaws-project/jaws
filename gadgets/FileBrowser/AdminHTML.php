@@ -65,14 +65,4 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
         return $location_link;
     }
 
-    /**
-     * Prints the admin section
-     *
-     * @access  public
-     * @return  string  XHTML template content of administration
-     */
-    function Admin()
-    {
-    }
-
 }

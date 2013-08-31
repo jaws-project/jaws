@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Actions_File extends Jaws_Gadget_HTML
+class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
 {
 
     /**

@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Actions_Admin_File extends FileBrowser_AdminHTML
+class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
 {
     /**
      * Show Admin action
@@ -18,7 +18,7 @@ class FileBrowser_Actions_Admin_File extends FileBrowser_AdminHTML
      * @access  public
      * @return  string  XHTML template content
      */
-    function Admin()
+    function Files()
     {
         $this->AjaxMe('script.js');
 
@@ -26,7 +26,7 @@ class FileBrowser_Actions_Admin_File extends FileBrowser_AdminHTML
 
         $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
-        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Admin');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Files');
 
         $request =& Jaws_Request::getInstance();
         $path = $request->get('path', 'get');
@@ -162,7 +162,7 @@ class FileBrowser_Actions_Admin_File extends FileBrowser_AdminHTML
         }
 
         if (empty($post['extra_params'])) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Admin&path=' . $post['path']);
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Files&path=' . $post['path']);
         } else {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
         }
