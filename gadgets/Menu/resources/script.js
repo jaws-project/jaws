@@ -68,9 +68,10 @@ function AddNewMenuItem(gid, pid, mid, rank)
     }
     parentNode.appendChild(mainDiv);
     //set ranking
-    var oldRank = Array.from(parentNode.childNodes).indexOf($('menu_'+mid));
+    var menu_elements = Array.from(parentNode.getChildren('.menu_levels'));
+    var oldRank = menu_elements.indexOf($('menu_'+mid));
     if (rank < oldRank) {
-        parentNode.insertBefore($('menu_'+mid), parentNode.childNodes[rank]);
+        parentNode.insertBefore($('menu_'+mid), menu_elements[rank - 1]);
     }
     //--
     var links = mainDiv.getElementsByTagName('a');
@@ -119,16 +120,17 @@ function saveMenus()
         }
         if (selectedMenu == null) {
             var response = MenuAjax.callSync(
-                                    'insertmenu',
-                                    $('pid').value,
-                                    $('gid').value,
-                                    $('type').value,
-                                    $('title').value,
-                                    encodeURI($('url').value),
-                                    $('url_target').value,
-                                    $('rank').value,
-                                    $('published').value,
-                                    $('imagename').value);
+                'insertmenu',
+                $('pid').value,
+                $('gid').value,
+                $('type').value,
+                $('title').value,
+                encodeURI($('url').value),
+                $('url_target').value,
+                $('rank').value,
+                $('published').value,
+                $('imagename').value
+            );
             if (response[0]['css'] == 'notice-message') {
                 var mid = response[0]['message'].substr(0, response[0]['message'].indexOf('%%'));
                 response[0]['message'] = response[0]['message'].substr(response[0]['message'].indexOf('%%')+2);
@@ -138,17 +140,18 @@ function saveMenus()
             showResponse(response);
         } else {
             var response = MenuAjax.callSync(
-                                    'updatemenu',
-                                    $('mid').value,
-                                    $('pid').value,
-                                    $('gid').value,
-                                    $('type').value,
-                                    $('title').value,
-                                    encodeURI($('url').value),
-                                    $('url_target').value,
-                                    $('rank').value,
-                                    $('published').value,
-                                    $('imagename').value);
+                'updatemenu',
+                $('mid').value,
+                $('pid').value,
+                $('gid').value,
+                $('type').value,
+                $('title').value,
+                encodeURI($('url').value),
+                $('url_target').value,
+                $('rank').value,
+                $('published').value,
+                $('imagename').value
+            );
             if (response[0]['css'] == 'notice-message') {
                 $('menu_'+$('mid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 if ($('pid').value == 0) {
@@ -156,18 +159,29 @@ function saveMenus()
                 } else {
                     var new_parentNode = $('menu_'+$('pid').value);
                 }
+
+                var menu_elements = Array.from(new_parentNode.getChildren('.menu_levels'));
                 if ($('menu_'+$('mid').value).parentNode != new_parentNode) {
-                    if ($('rank').value > (new_parentNode.getChildren('.menu_levels').length)) {
+                    if ($('rank').value > (menu_elements.length)) {
                         new_parentNode.appendChild($('menu_'+$('mid').value));
                     } else {
-                        new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value]);
+                        new_parentNode.insertBefore(
+                            $('menu_'+$('mid').value),
+                            menu_elements[$('rank').value - 1]
+                        );
                     }
                 } else {
-                    var oldRank = Array.from(new_parentNode.getChildren()).indexOf($('menu_'+$('mid').value));
+                    var oldRank = menu_elements.indexOf($('menu_'+$('mid').value));
                     if ($('rank').value > oldRank) {
-                        new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value].nextSibling);
+                        new_parentNode.insertBefore(
+                            $('menu_'+$('mid').value),
+                            menu_elements[$('rank').value - 1].nextSibling
+                        );
                     } else {
-                        new_parentNode.insertBefore($('menu_'+$('mid').value), new_parentNode.childNodes[$('rank').value]);
+                        new_parentNode.insertBefore(
+                            $('menu_'+$('mid').value),
+                            menu_elements[$('rank').value - 1]
+                        );
                     }
                 }
                 stopAction();
