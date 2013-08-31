@@ -64,7 +64,6 @@ class Weather_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             $gName  = _t('WEATHER_NAME');
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-            $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
             return new Jaws_Error($errMsg, $gName);
         }
 

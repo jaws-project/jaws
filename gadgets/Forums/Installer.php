@@ -100,7 +100,6 @@ class Forums_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse($errMsg, RESPONSE_ERROR);
                 return new Jaws_Error($errMsg, $gName);
             }
         }
