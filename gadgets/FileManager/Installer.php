@@ -17,7 +17,6 @@ class FileManager_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLs = array(
-        'ManageDirectories',
         'ManageFiles',
         'ShareFile',
         'UpdateSettings'
@@ -53,7 +52,6 @@ class FileManager_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'fm_dirs',
             'fm_files',
             'fm_shared_files');
         foreach ($tables as $table) {

@@ -3,7 +3,7 @@
   <name><variable>database</variable></name>
 
   <table>
-    <name><variable>table_prefix</variable>fm_dirs</name>
+    <name><variable>table_prefix</variable>fm_files</name>
     <declaration>
 
       <field>
@@ -16,7 +16,7 @@
       <field>
         <name>parent</name>
         <type>integer</type>
-        <default>0</default>
+        <notnull>true</notnull>
       </field>
 
       <field>
@@ -26,52 +26,9 @@
       </field>
 
       <field>
-        <name>title</name>
-        <type>text</type>
-        <length>128</length>
-      </field>
-
-      <field>
-        <name>description</name>
-        <type>text</type>
-      </field>
-
-      <field>
-        <name>published</name>
+        <name>is_dir</name>
         <type>boolean</type>
-        <default>true</default>
-      </field>
-
-      <field>
-        <name>createtime</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-    </declaration>
-  </table>
-
-  <table>
-    <name><variable>table_prefix</variable>fm_files</name>
-    <declaration>
-
-      <field>
-        <name>id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-        <autoincrement>true</autoincrement>
-      </field>
-
-      <field>
-        <name>dir_id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
-
-      <field>
-        <name>user</name>
-        <type>integer</type>
-        <notnull>true</notnull>
+        <default>false</default>
       </field>
 
       <field>

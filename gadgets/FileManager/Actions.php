@@ -10,32 +10,6 @@
  */
 $actions = array();
 
-/* Directory Actions */
-$actions['DirForm'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-$actions['GetDirs'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-$actions['GetDir'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-$actions['CreateDir'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-$actions['UpdateDir'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-$actions['DeleteDir'] = array(
-    'normal' => true,
-    'file' => 'Dirs'
-);
-
 /* File Actions */
 $actions['FileForm'] = array(
     'normal' => true,
