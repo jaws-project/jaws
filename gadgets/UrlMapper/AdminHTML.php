@@ -23,7 +23,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
     {
         $actions = array('Maps', 'Aliases', 'ErrorMaps','Properties');
         if (!in_array($action_selected, $actions)) {
-            $action_selected = 'Admin';
+            $action_selected = 'Maps';
         }
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
