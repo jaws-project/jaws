@@ -23,7 +23,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
      */
     function GetCurrentRootDir($current_dir)
     {
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         if (!is_dir($fModel->GetFileBrowserRootDir() . $current_dir)) {
             return new Jaws_Error(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'),
                 _t('FILEBROWSER_NAME'));
@@ -75,7 +75,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
      */
     function GetDirProperties($path, $dirname)
     {
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
 
         static $root_dir;
         if (!isset($root_dir)) {
@@ -121,7 +121,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             $dir['mini_icon'] = 'gadgets/FileBrowser/images/mini_folder.png';
         }
 
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $dbDir = $fModel->DBFileInfo($path, $dirname);
         if (Jaws_Error::IsError($dbDir) || empty($dbDir)) {
             $dir['id']          = 0;
@@ -161,7 +161,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         }
 
         $path = str_replace('..', '', $path);
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (!file_exists($folder) || !$adr = scandir($folder)) {
             if (isset($GLOBALS['app']->Session)) {
@@ -195,7 +195,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             }
         }
 
-        $fModel   = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel   = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $files = $fModel->SortFiles($files, $order);
         if (empty($limit)) {
             return $files;
@@ -222,7 +222,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         }
 
         $path = str_replace('..', '', $path);
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (file_exists($folder) && $adr = scandir($folder)) {
             return count($adr) - 2;

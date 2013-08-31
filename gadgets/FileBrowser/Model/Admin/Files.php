@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
+class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
 {
     /**
      * Add/Update file or directory information
@@ -38,13 +38,14 @@ class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
         $title = empty($title)? $file : $title;
         $fast_url = empty($fast_url) ? $title : $fast_url;
 
+        $params['path']        = $path;
         $params['filename']    = $file;
         $params['title']       = $title;
         $params['description'] = $description;
         $params['updatetime']  = $GLOBALS['db']->Date();
 
         $oldname = empty($oldname)? $params['filename'] : $oldname;
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $dbFile = $fModel->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -106,7 +107,7 @@ class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
         }
         $path = str_replace('..', '', $path);
 
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $dbRow = $fModel->DBFileInfo($path, $file);
         if (!Jaws_Error::isError($dbRow) && !empty($dbRow)) {
             $table = Jaws_ORM::getInstance()->table('filebrowser');
@@ -141,7 +142,7 @@ class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
         }
         $path = str_replace('..', '', $path);
 
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $file = $path . ((empty($path)? '': DIRECTORY_SEPARATOR)) . $filename;
         $filename = $fModel->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
         $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
@@ -195,7 +196,7 @@ class FileBrowser_Model_Admin_File extends Jaws_Gadget_Model
             $path = '';
         }
         $path = str_replace('..', '', $path);
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         $oldfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $old;
         $newfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $new;
 
