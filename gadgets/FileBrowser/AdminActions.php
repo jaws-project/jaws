@@ -10,21 +10,21 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
+$actions['Files'] = array(
     'normal' => true,
-    'file' => 'File',
+    'file' => 'Files',
 );
 $actions['UploadFile'] = array(
     'standalone' => true,
-    'file' => 'File',
+    'file' => 'Files',
 );
 $actions['BrowseFile'] = array(
     'standalone' => true,
-    'file' => 'File',
+    'file' => 'Files',
 );
 $actions['DeleteFile'] = array(
     'standalone' => true,
-    'file' => 'File',
+    'file' => 'Files',
 );
 $actions['DeleteDir'] = array(
     'standalone' => true,

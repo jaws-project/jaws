@@ -9,10 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array(
-    'DefaultAction',
-    'files'
-);
+$maps[] = array('Display', 'files');
 $maps[] = array(
     'Display',
     'files/{path}/page/{page}',
