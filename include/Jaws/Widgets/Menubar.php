@@ -41,7 +41,7 @@ class Jaws_Widgets_Menubar
      * @param   string  $action Action short-name(NOT URL)
      * @return  void
      */
-    function __construct($action)
+    function __construct($action = 'menubar')
     {
         $this->_Name = strtolower($action);
         $this->_Options = array();
@@ -70,24 +70,17 @@ class Jaws_Widgets_Menubar
      * @param   bool    $permission Display this option?
      * @return  object  Jaws_Widgets_Menubar object
      */
-    function AddOption($action, $name, $url = '', $icon = '', $permission = false, $onclick = null)
+    function AddOption($action, $name, $url = '', $icon = '', $permission = true)
     {
-        if (strpos($url, 'javascript:') !== false) {
-            $onclick = str_replace('javascript:', '', $url);
-            $url = '';
+        if ($permission) {
+            $this->_Options[$action] = array(
+                'action'   => strtolower($action),
+                'name'     => $name,
+                'url'      => empty($url)? 'javascript:void(0);' : $url,
+                'icon'     => $icon,
+                'selected' => false
+            );
         }
-
-        if (empty($url)) {
-            $url = 'javascript:void(0);';
-        }
-
-        $this->_Options[$action] = array(
-            'action'   => strtolower($action),
-            'name'     => $name,
-            'url'      => $url,
-            'icon'     => $icon,
-            'selected' => false
-        );
 
         return $this;
     }
