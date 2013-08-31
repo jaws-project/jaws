@@ -129,8 +129,8 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
     {
         $this->gadget->CheckPermission('UploadFiles');
 
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
-        $fModelAdmin = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
+        $fModelAdmin = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'), 'post');
         $uploaddir = $fModel->GetFileBrowserRootDir() . $post['path'];
@@ -230,7 +230,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
             $tpl->ParseBlock("browse/upload_file");
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'File');
+        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
         $pathArr = $fModel->GetCurrentRootDir($path);
         if (!Jaws_Error::IsError($pathArr)) {
@@ -328,7 +328,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
     {
         $this->gadget->CheckPermission('ManageFiles');
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'File');
+        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
         $request =& Jaws_Request::getInstance();
         $post = $request->get(array('path', 'selected_item', 'extra_params'), 'post');
 

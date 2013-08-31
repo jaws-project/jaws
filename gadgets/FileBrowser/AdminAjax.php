@@ -20,7 +20,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DBFileInfo($path, $file)
     {
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'File');
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         return $model->DBFileInfo($path, $file);
     }
 
@@ -46,7 +46,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLocation($path)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'File');
+        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Files');
         return $gadget->GetLocation($path);
     }
 
@@ -83,7 +83,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
     {
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageFiles');
         $res = true;
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
@@ -113,7 +113,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $dModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Directory');
 
         $this->gadget->CheckPermission('ManageDirectories');
@@ -143,7 +143,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteFile($path, $file)
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageFiles');
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
         if ($fModel->Delete($path, $file)) {
@@ -163,7 +163,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteDir($path, $dir)
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'File');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageDirectories');
         $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
         if ($fModel->Delete($path, $dir)) {

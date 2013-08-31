@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Model_File extends Jaws_Gadget_Model
+class FileBrowser_Model_Files extends Jaws_Gadget_Model
 {
 
     /**
