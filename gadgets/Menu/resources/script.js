@@ -68,9 +68,10 @@ function AddNewMenuItem(gid, pid, mid, rank)
     }
     parentNode.appendChild(mainDiv);
     //set ranking
-    var oldRank = Array.from(parentNode.childNodes).indexOf(_('menu_'+mid));
+    var menu_elements = Array.from(parentNode.getChildren('.menu_levels'));
+    var oldRank = menu_elements.indexOf(_('menu_'+mid));
     if (rank < oldRank) {
-        parentNode.insertBefore(_('menu_'+mid), parentNode.childNodes[rank]);
+        parentNode.insertBefore(_('menu_'+mid), menu_elements[rank - 1]);
     }
     //--
     var links = mainDiv.getElementsByTagName('a');
@@ -119,16 +120,17 @@ function saveMenus()
         }
         if (selectedMenu == null) {
             var response = MenuAjax.callSync(
-                                    'insertmenu',
-                                    _('pid').value,
-                                    _('gid').value,
-                                    _('type').value,
-                                    _('title').value,
-                                    encodeURI(_('url').value),
-                                    _('url_target').value,
-                                    _('rank').value,
-                                    _('published').value,
-                                    _('imagename').value);
+                'insertmenu',
+                _('pid').value,
+                _('gid').value,
+                _('type').value,
+                _('title').value,
+                encodeURI(_('url').value),
+                _('url_target').value,
+                _('rank').value,
+                _('published').value,
+                _('imagename').value
+            );
             if (response[0]['css'] == 'notice-message') {
                 var mid = response[0]['message'].substr(0, response[0]['message'].indexOf('%%'));
                 response[0]['message'] = response[0]['message'].substr(response[0]['message'].indexOf('%%')+2);
@@ -138,17 +140,18 @@ function saveMenus()
             showResponse(response);
         } else {
             var response = MenuAjax.callSync(
-                                    'updatemenu',
-                                    _('mid').value,
-                                    _('pid').value,
-                                    _('gid').value,
-                                    _('type').value,
-                                    _('title').value,
-                                    encodeURI(_('url').value),
-                                    _('url_target').value,
-                                    _('rank').value,
-                                    _('published').value,
-                                    _('imagename').value);
+                'updatemenu',
+                _('mid').value,
+                _('pid').value,
+                _('gid').value,
+                _('type').value,
+                _('title').value,
+                encodeURI(_('url').value),
+                _('url_target').value,
+                _('rank').value,
+                _('published').value,
+                _('imagename').value
+            );
             if (response[0]['css'] == 'notice-message') {
                 _('menu_'+_('mid').value).getElementsByTagName('a')[0].innerHTML = _('title').value;
                 if (_('pid').value == 0) {
@@ -156,18 +159,29 @@ function saveMenus()
                 } else {
                     var new_parentNode = _('menu_'+_('pid').value);
                 }
+
+                var menu_elements = Array.from(new_parentNode.getChildren('.menu_levels'));
                 if (_('menu_'+_('mid').value).parentNode != new_parentNode) {
-                    if (_('rank').value > (new_parentNode.getChildren('.menu_levels').length)) {
+                    if (_('rank').value > (menu_elements.length)) {
                         new_parentNode.appendChild(_('menu_'+_('mid').value));
                     } else {
-                        new_parentNode.insertBefore(_('menu_'+_('mid').value), new_parentNode.childNodes[_('rank').value]);
+                        new_parentNode.insertBefore(
+                            _('menu_'+_('mid').value),
+                            menu_elements[_('rank').value - 1]
+                        );
                     }
                 } else {
-                    var oldRank = Array.from(new_parentNode.getChildren()).indexOf(_('menu_'+_('mid').value));
+                    var oldRank = menu_elements.indexOf(_('menu_'+_('mid').value));
                     if (_('rank').value > oldRank) {
-                        new_parentNode.insertBefore(_('menu_'+_('mid').value), new_parentNode.childNodes[_('rank').value].nextSibling);
+                        new_parentNode.insertBefore(
+                            _('menu_'+_('mid').value),
+                            menu_elements[_('rank').value - 1].nextSibling
+                        );
                     } else {
-                        new_parentNode.insertBefore(_('menu_'+_('mid').value), new_parentNode.childNodes[_('rank').value]);
+                        new_parentNode.insertBefore(
+                            _('menu_'+_('mid').value),
+                            menu_elements[_('rank').value - 1]
+                        );
                     }
                 }
                 stopAction();
