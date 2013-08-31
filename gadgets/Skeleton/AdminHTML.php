@@ -18,10 +18,6 @@ class Skeleton_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $objORM = new Jaws_ORM();
-        $str = 'clicks + count(id) - ? - blog.longevity as aaaa';
-        echo $objORM->quoteIdentifier($str);
-
         // Admin message is auto added by Jaws_Layout, should we delete the code below ?
 //         $tpl = $this->gadget->loadTemplate('ControlPanel.html');
 //
