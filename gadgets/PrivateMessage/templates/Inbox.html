@@ -1,0 +1,30 @@
+<!-- BEGIN inbox -->
+{alerts}
+<div class="gadget privateMessage inbox">
+    <h2>{title}</h2>
+
+    <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>{lbl_from}</th>
+                <th>{lbl_title}</th>
+                <th>{lbl_send_time}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <!-- BEGIN message -->
+            <tr>
+                <td>{rownum}</td>
+                <td>{from}</td>
+                <td><a href="{message_url}">{title}</a></td>
+                <td>{send_time}</td>
+            </tr>
+            <!-- END message -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- END inbox -->
