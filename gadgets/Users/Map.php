@@ -11,7 +11,7 @@
  */
 $maps[] = array(
     'LoginBox',
-    'user/login/referrer/{referrer}',
+    'users/login[/referrer/{referrer}]',
     array('referrer' => '.*')
 );
 $maps[] = array(
@@ -19,14 +19,13 @@ $maps[] = array(
     'users/{user}',
     array('user' => '[[:alnum:]-_.@]+')
 );
-$maps[] = array('LoginBox', 'user/login');
-$maps[] = array('Registration', 'user/registration');
-$maps[] = array('Registered', 'user/registered');
-$maps[] = array('Logout', 'user/logout');
-$maps[] = array('Account', 'user/account');
-$maps[] = array('Personal', 'user/personal');
-$maps[] = array('Preferences', 'user/preferences');
-$maps[] = array('Contacts', 'user/contacts');
-$maps[] = array('ForgotLogin', 'user/forget');
-$maps[] = array('ChangePassword', 'user/recover/key/{key}');
-$maps[] = array('ActivateUser', 'user/activate/key/{key}');
+$maps[] = array('Registration', 'users/registration');
+$maps[] = array('Registered', 'users/registered');
+$maps[] = array('Logout', 'users/logout');
+$maps[] = array('Account', 'users/account');
+$maps[] = array('Personal', 'users/personal');
+$maps[] = array('Preferences', 'users/preferences');
+$maps[] = array('Contacts', 'users/contacts');
+$maps[] = array('ForgotLogin', 'users/forget');
+$maps[] = array('ChangePassword', 'users/recover[/{key}]');
+$maps[] = array('ActivateUser', 'users/activate[/{key}]');
