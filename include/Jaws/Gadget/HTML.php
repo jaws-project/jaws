@@ -97,7 +97,7 @@ class Jaws_Gadget_HTML
             $params = $request->getAll('post');
             $output = call_user_func_array(array($objAjax, $method), $params);
         } else {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in $gadget's Ajax dosn't exist.");
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in {$this->gadget->name}'s Ajax dosn't exist.");
         }
 
         // Set Headers
