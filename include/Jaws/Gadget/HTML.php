@@ -90,10 +90,15 @@ class Jaws_Gadget_HTML
             $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Ajax');
         }
 
+        $output = '';
         $request =& Jaws_Request::getInstance();
         $method = $request->get('method', 'get');
-        $params = $request->getAll('post');
-        $output = call_user_func_array(array($objAjax, $method), $params);
+        if (method_exists($objAjax, $method)) {
+            $params = $request->getAll('post');
+            $output = call_user_func_array(array($objAjax, $method), $params);
+        } else {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in $gadget's Ajax dosn't exist.");
+        }
 
         // Set Headers
         header('Content-Type: application/json; charset=utf-8');
