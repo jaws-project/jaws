@@ -24,6 +24,12 @@ class Jaws_HTTPRequest
     var $user_agent = 'Jaws HTTPRequest class (http://jaws-project.com)';
 
     /**
+     * @access  public
+     * @var     integer $default_error_level    Default error logging level
+     */
+    var $default_error_level = JAWS_ERROR_ERROR;
+
+    /**
      * Constructor
      *
      * @access  protected
@@ -64,7 +70,7 @@ class Jaws_HTTPRequest
             return Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
-                JAWS_ERROR_ERROR,
+                $this->default_error_level,
                 1
             );
         }
@@ -96,7 +102,7 @@ class Jaws_HTTPRequest
             return Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
-                JAWS_ERROR_ERROR,
+                $this->default_error_level,
                 1
             );
         }
