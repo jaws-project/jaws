@@ -90,10 +90,15 @@ class Jaws_Gadget_HTML
             $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Ajax');
         }
 
+        $output = '';
         $request =& Jaws_Request::getInstance();
         $method = $request->get('method', 'get');
-        $params = $request->getAll('post');
-        $output = call_user_func_array(array($objAjax, $method), $params);
+        if (method_exists($objAjax, $method)) {
+            $params = $request->getAll('post');
+            $output = call_user_func_array(array($objAjax, $method), $params);
+        } else {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in $gadget's Ajax dosn't exist.");
+        }
 
         // Set Headers
         header('Content-Type: application/json; charset=utf-8');
@@ -114,7 +119,6 @@ class Jaws_Gadget_HTML
     function AjaxMe($file = '', $version = '')
     {
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/jquery/jquery.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
