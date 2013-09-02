@@ -74,8 +74,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageQuotes');
 
-        $request =& Jaws_Request::getInstance();
-        $quotation = $request->get(1, 'post', false);
+        $quotation = jaws()->request->get(1, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -99,8 +98,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageQuotes');
 
-        $request =& Jaws_Request::getInstance();
-        $quotation = $request->get(2, 'post', false);
+        $quotation = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
