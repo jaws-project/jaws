@@ -311,10 +311,11 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     LayoutAjax.callAsync('editelementaction', lid, gadget, action, params);
 }
 
+/**
+ * Update display when 
+ */
 function saveChangeDW(itemId, dw) {
-    // Ugly hack to update
-    fun = 'LayoutAjax.callAsync(\'changedisplaywhen\', ' + itemId + ', \'' + dw + '\')';
-    setTimeout(fun, 0);
+    LayoutAjax.callAsync('ChangeDisplayWhen', itemId, dw);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
