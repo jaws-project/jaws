@@ -64,8 +64,10 @@ var JawsAjax = new Class({
         options.url = this.baseURL + action;
         options.action = action;
         options.async = true;
-        arguments = Array.prototype.slice.call(arguments, 1);
-        options.data = toJSON(arguments);
+        if (arguments.length > 2) {
+            params = Array.prototype.slice.call(arguments, 1);
+        }
+        options.data = toJSON(params);
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
@@ -86,8 +88,10 @@ var JawsAjax = new Class({
         options.async = false;
         options.url = this.baseURL + action;
         options.action = action;
-        arguments = Array.prototype.slice.call(arguments, 1);
-        options.data = toJSON(arguments);
+        if (arguments.length > 2) {
+            params = Array.prototype.slice.call(arguments, 1);
+        }
+        options.data = toJSON(params);
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
