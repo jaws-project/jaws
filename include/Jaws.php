@@ -131,17 +131,31 @@ class Jaws
      * Constructor
      *
      * @access  public
+     * @return  void
      */
-    function Jaws()
+    function __construct()
     {
         spl_autoload_register(array($this, 'loadClass'));
+        $this->loadObject('Jaws_Request', 'request');
         $this->loadObject('Jaws_UTF8', 'UTF8');
         $this->loadObject('Jaws_Translate', 'Translate');
         $this->loadObject('Jaws_Registry', 'Registry');
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
         $this->loadObject('Jaws_URLMapping', 'Map');
+    }
+
+    /**
+     * Initializes the Jaws application object
+     *
+     * @access  public
+     */
+    function init()
+    {
+        $this->Map->Init();
         $this->Session = Jaws_Session::factory();
+        $this->Session->Init();
+        $this->loadPreferences();
     }
 
     /**
