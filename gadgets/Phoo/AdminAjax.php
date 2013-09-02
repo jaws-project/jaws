@@ -57,8 +57,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
             $published = null;
         }
 
-        $request =& Jaws_Request::getInstance();
-        $desc = $request->get(2, 'post', false);
+        $desc = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
         $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();

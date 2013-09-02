@@ -21,10 +21,8 @@ class Phoo_Actions_Admin_Thumb extends Phoo_AdminHTML
      */
     function Thumb()
     {
-        $request =& Jaws_Request::getInstance();
-        $image   = $request->get('image', 'get');
+        $image = jaws()->request->get('image', 'get');
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
             $result = $objImage->load(JAWS_DATA . 'phoo/import/' . $image);

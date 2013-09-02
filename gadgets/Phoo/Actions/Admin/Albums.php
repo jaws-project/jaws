@@ -25,9 +25,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $request     =& Jaws_Request::getInstance();
-        $action      = $request->get('action', 'get');
-        $description = $request->get('description', 'post', false);
+        $action      = jaws()->request->get('action', 'get');
+        $description = jaws()->request->get('description', 'post', false);
 
         $tpl = $this->gadget->loadTemplate('EditAlbum.html');
         $tpl->SetBlock('edit_album');
@@ -96,9 +95,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     function SaveNewAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $request     =& Jaws_Request::getInstance();
-        $post        = $request->get(array('name', 'allow_comments', 'published'), 'post');
-        $description = $request->get('description', 'post', false);
+        $post        = jaws()->request->get(array('name', 'allow_comments', 'published'), 'post');
+        $description = jaws()->request->get('description', 'post', false);
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
@@ -119,10 +117,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $this->AjaxMe('script.js');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
 
-        $request =& Jaws_Request::getInstance();
-        $get     = $request->get(array('action', 'album'), 'get');
-
-        $id = (int)$get['album'];
+        $get = jaws()->request->get(array('action', 'album'), 'get');
+        $id  = (int)$get['album'];
         $album = $model->GetAlbumInfo($id);
         if (Jaws_Error::IsError($album) || empty($album)) {
             ///FIXME the error msg never has a chance to show
@@ -200,9 +196,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $request     =& Jaws_Request::getInstance();
-        $post        = $request->get(array('name', 'album', 'allow_comments', 'published'), 'post');
-        $description = $request->get('description', 'post', false);
+        $post        = jaws()->request->get(array('name', 'album', 'allow_comments', 'published'), 'post');
+        $description = jaws()->request->get('description', 'post', false);
 
         $id = (int)$post['album'];
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
@@ -221,9 +216,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $request =& Jaws_Request::getInstance();
-        $album   = (int)$request->get('album', 'get');
-
+        $album = (int)jaws()->request->get('album', 'get');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $foo = $model->DeleteAlbum($album);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
