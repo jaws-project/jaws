@@ -290,6 +290,7 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('AddEntries');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
 
+        $categories = jaws()->request->get('1:array', 'post');
         $summary = jaws()->request->get(3, 'post', false);
         $text    = jaws()->request->get(4, 'post', false);
 

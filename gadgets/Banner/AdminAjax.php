@@ -214,6 +214,7 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
     function AddBannersToGroup($gid, $banners)
     {
         $this->gadget->CheckPermission('BannersGrouping');
+        $banners = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel', 'Banners');
         $model->AddBannersToGroup($gid, $banners);
         return $GLOBALS['app']->Session->PopLastResponse();
