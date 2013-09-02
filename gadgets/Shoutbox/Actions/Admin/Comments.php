@@ -18,7 +18,7 @@ class Shoutbox_Actions_Admin_Comments extends Shoutbox_AdminHTML
      * @access  public
      * @return  string  XHTML template content
      */
-    function ManageComments()
+    function Comments()
     {
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
 
