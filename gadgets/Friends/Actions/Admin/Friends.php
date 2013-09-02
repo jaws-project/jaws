@@ -140,8 +140,7 @@ class Friends_Actions_Admin_Friends extends Friends_AdminHTML
             $fieldset_friebd = new Jaws_Widgets_FieldSet(_t('FRIENDS_FRIEND'));
             $fieldset_friebd->SetDirection('vertical');
 
-            $request =& Jaws_Request::getInstance();
-            $action = $request->get('action', 'get');
+            $action = jaws()->request->get('action', 'get');
             $action = !(is_null($action) ? $action : '');
 
             $friendentry =& Piwi::CreateWidget('Entry', 'friend',
