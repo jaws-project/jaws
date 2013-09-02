@@ -182,8 +182,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
      */
     function GetFeed()
     {
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'get');
+        $id = jaws()->request->get('id', 'get');
 
         $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'HTML', 'Feed');
         return $layoutGadget->DisplayFeeds($id);
