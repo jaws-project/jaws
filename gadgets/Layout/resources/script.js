@@ -312,9 +312,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 }
 
 function saveChangeDW(itemId, dw) {
-    // Ugly hack to update
-    fun = 'LayoutAjax.callAsync(\'changedisplaywhen\', ' + itemId + ', \'' + dw + '\')';
-    setTimeout(fun, 0);
+    LayoutAjax.callAsync('ChangeDisplayWhen', itemId, dw);
     if (dw == '*') {
         _('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
