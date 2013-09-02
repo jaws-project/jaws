@@ -178,9 +178,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_HTML
      */
     function DownloadTheme()
     {
-        $request =& Jaws_Request::getInstance();
-        $theme = $request->get('theme', 'get');
-
+        $theme = jaws()->request->get('theme', 'get');
         $themes = Jaws_Utils::GetThemesList();
         if (isset($themes[$theme])) {
             $locally = $themes[$theme]['local'];
