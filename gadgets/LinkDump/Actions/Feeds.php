@@ -19,9 +19,7 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_HTML
     function RSS()
     {
         header('Content-type: application/rss+xml');
-
-        $request =& Jaws_Request::getInstance();
-        $gid = $request->get('id', 'get');
+        $gid = jaws()->request->get('id', 'get');
 
         $rss_path = JAWS_DATA . 'xml/link-' . $gid . '.rss';
         if (file_exists($rss_path)) {

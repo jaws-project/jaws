@@ -19,8 +19,7 @@ class LinkDump_Actions_Tag extends Jaws_Gadget_HTML
      */
     function Tag()
     {
-        $request =& Jaws_Request::getInstance();
-        $tag = $request->get('tag', 'get');
+        $tag = jaws()->request->get('tag', 'get');
         $tag = Jaws_XSS::defilter($tag, true);
 
         $target = $this->gadget->registry->fetch('links_target');

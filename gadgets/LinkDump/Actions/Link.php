@@ -18,8 +18,7 @@ class LinkDump_Actions_Link extends Jaws_Gadget_HTML
      */
     function Link()
     {
-        $request =& Jaws_Request::getInstance();
-        $lid = $request->get('id', 'get');
+        $lid = jaws()->request->get('id', 'get');
         $lid = Jaws_XSS::defilter($lid, true);
 
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Links');
