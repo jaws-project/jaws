@@ -107,7 +107,19 @@ class Jaws_Request
     /**
      * @var array
      */
-    var $_allowedTypes = array('get', 'post', 'cookie');
+    var $_allowedMethods = array('get', 'post', 'cookie');
+
+    /**
+     * @var array
+     */
+    var $func_type_check = array(
+        '0'      => 'is_scalar',
+        'int'    => 'is_numeric',
+        'float'  => 'is_float',
+        'string' => 'is_string',
+        'array'  => 'is_array',
+        'bool'   => 'is_bool',
+    );
 
     /**
      * Constructor
@@ -133,6 +145,10 @@ class Jaws_Request
 
         array_walk_recursive($this->data, array(&$this, 'nullstrip'));
 
+        // Add request filters
+        $this->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
+        $this->addFilter('ambiguous', array($this, 'strip_ambiguous'));
+
         // Strict mode
         /*
         if (true) {
@@ -145,32 +161,13 @@ class Jaws_Request
     }
 
     /**
-     * Creates the Jaws_Request instance if it doesn't exist else it returns the already created one
-     *
-     * @access  public
-     * @return  object returns the instance
-     */
-    function &getInstance()
-    {
-        static $objRequest;
-        if (!isset($objRequest)) {
-            $objRequest = new Jaws_Request();
-            // Add request filters
-            $objRequest->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
-            $objRequest->addFilter('ambiguous', array('Jaws_Request', 'strip_ambiguous'));
-        }
-
-        return $objRequest;
-    }
-
-    /**
      * @param   string  $type
      * @return  mixed
      */
     function isTypeValid($type)
     {
         $type = strtolower($type);
-        if (in_array($type, $this->_allowedTypes)) {
+        if (in_array($type, $this->_allowedMethods)) {
             return $type;
         }
 
@@ -258,27 +255,31 @@ class Jaws_Request
      * Does the recursion on the data being fetched
      *
      * @access  private
-     * @param   mixed   $key            The key being fetched, it can be an array with multiple keys in it to fetch and
+     * @param   mixed   $keys           The key being fetched, it can be an array with multiple keys in it to fetch and
      *                                  then an array will be returned accourdingly.
-     * @param   string  $type           Which super global is being fetched from
+     * @param   string  $method         Which super global is being fetched from
      * @param   bool    $filter         Returns filtered data or not
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    function _get($key, $type = '', $filter = true, $json_decode = false)
+    function _get($keys, $method = '', $filter = true, $json_decode = false)
     {
-        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
-        if (is_array($key)) {
+        $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
+        if (is_array($keys)) {
             $result = array();
-            foreach ($key as $k) {
-                $result[$k] = $this->_get($k, $type, $filter, $json_decode);
+            foreach ($keys as $key) {
+                $k = strtok($key, ':');
+                $result[$k] = $this->_get($key, $method, $filter, $json_decode);
             }
 
             return $result;
         }
 
-        if (isset($this->data[$type][$key])) {
-            $value = $json_decode? Jaws_UTF8::json_decode($this->data[$type][$key]) : $this->data[$type][$key];
+        $key  = strtok($keys, ':');
+        $type = strtok(':');
+
+        if (isset($this->data[$method][$key])) {
+            $value = $json_decode? Jaws_UTF8::json_decode($this->data[$method][$key]) : $this->data[$method][$key];
             // try unserialize value
             if (false !== $tvalue = @unserialize($value)) {
                 $value = $tvalue;
@@ -293,7 +294,7 @@ class Jaws_Request
                 }
             }
 
-            return $value;
+            return $this->func_type_check[$type]($value)? $value : null;
         }
 
         return null;
