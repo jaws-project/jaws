@@ -30,9 +30,8 @@ class Blog_Actions_Pingback extends Blog_HTML
                 //We need to parse the target URI to get the post ID
                 $GLOBALS['app']->Map->Parse($response['targetURI']);
 
-                $request =& Jaws_Request::getInstance();
                 //pingbacks come from POST but JawsURL maps everything on get (that how Maps work)
-                $postID = $request->get('id', 'get');
+                $postID = jaws()->request->get('id', 'get');
                 if (empty($postID)) {
                     return;
                 }

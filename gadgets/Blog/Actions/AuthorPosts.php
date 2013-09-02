@@ -20,8 +20,7 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
      */
     function ViewAuthorPage()
     {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'page'), 'get');
+        $post = jaws()->request->get(array('id', 'page'), 'get');
 
         $page = $post['page'];
         if (is_null($page) || $page <= 0 ) {

@@ -96,11 +96,9 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
      */
     function AddCategory()
     {
-        $request =& Jaws_Request::getInstance();
-
         $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
-        $model->NewCategory($request->get('catname', 'post'));
+        $model->NewCategory(jaws()->request->get('catname', 'post'));
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
     }
@@ -112,8 +110,7 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
      */
     function UpdateCategory()
     {
-        $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('catid', 'catname'), 'post');
+        $post    = jaws()->request->get(array('catid', 'catname'), 'post');
 
         $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
@@ -129,11 +126,9 @@ class Blog_Actions_Admin_Categories extends Blog_AdminHTML
      */
     function DeleteCategory()
     {
-        $request =& Jaws_Request::getInstance();
-
         $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Categories');
-        $model->DeleteCategory($request->get('catid', 'post'));
+        $model->DeleteCategory(jaws()->request->get('catid', 'post'));
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
     }

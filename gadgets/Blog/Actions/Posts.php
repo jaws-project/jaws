@@ -21,9 +21,7 @@ class Blog_Actions_Posts extends Blog_HTML
      */
     function ViewPage($cat = null)
     {
-        $request =& Jaws_Request::getInstance();
-        $page = $request->get('page', 'get');
-
+        $page = jaws()->request->get('page', 'get');
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }

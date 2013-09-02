@@ -50,8 +50,7 @@ class Blog_Actions_Post extends Blog_HTML
      */
     function SingleView($id = null, $preview_mode = false)
     {
-        $request =& Jaws_Request::getInstance();
-        $g_id = $request->get('id', 'get');
+        $g_id = jaws()->request->get('id', 'get');
         $g_id = Jaws_XSS::defilter($g_id, true);
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');

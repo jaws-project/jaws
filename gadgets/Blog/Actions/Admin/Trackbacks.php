@@ -145,12 +145,11 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
     function ViewTrackback()
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
-        $request =& Jaws_Request::getInstance();
 
         $tModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Trackbacks');
         $pModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Posts');
         // Fetch the trackback
-        $trackback = $tModel->GetTrackback($request->get('id', 'get'));
+        $trackback = $tModel->GetTrackback(jaws()->request->get('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
         }
