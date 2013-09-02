@@ -42,8 +42,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('AddTerm');
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel', 'Term');
 
-        $request =& Jaws_Request::getInstance();
-        $contents = $request->get(2, 'post', false);
+        $contents = jaws()->request->get(2, 'post', false);
         $id = $model->NewTerm($term, $fast_url, $contents);
         $response = $GLOBALS['app']->Session->PopLastResponse();
         $response['id'] = $id;
@@ -65,8 +64,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('UpdateTerm');
         $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel', 'Term');
 
-        $request =& Jaws_Request::getInstance();
-        $contents = $request->get(3, 'post', false);
+        $contents = jaws()->request->get(3, 'post', false);
         $model->UpdateTerm($id, $term, $fast_url, $contents);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -95,8 +93,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
      */
     function ParseText($text)
     {
-        $request =& Jaws_Request::getInstance();
-        $text = $request->get(0, 'post', false);
+        $text = jaws()->request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminHTML');
         return $gadget->gadget->ParseText($text);
     }

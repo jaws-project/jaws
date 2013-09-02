@@ -53,7 +53,7 @@ var GlossaryCallback = {
     },
 
     parsetext: function(response) {
-        _('preview_contents').innerHTML = response;
+        $('preview_contents').innerHTML = response;
     }
 }
 
@@ -62,9 +62,9 @@ var GlossaryCallback = {
  */
 function fillEditorEntries(term_data)
 {
-    _('hidden_id').value  = term_data['id'];
-    _('term_title').value = term_data['term'].defilter();
-    _('fast_url').value   = term_data['fast_url'];
+    $('hidden_id').value  = term_data['id'];
+    $('term_title').value = term_data['term'].defilter();
+    $('fast_url').value   = term_data['fast_url'];
     changeEditorValue('term_contents', term_data['description']);
     currentMode = 'edit';
 }
@@ -77,9 +77,9 @@ function updateTerm()
     if (currentMode == 'new') {
         newTerm();
     } else {
-        id       = _('hidden_id').value;
-        term     = _('term_title').value;
-        fast_url = _('fast_url').value;
+        id       = $('hidden_id').value;
+        term     = $('term_title').value;
+        fast_url = $('fast_url').value;
         contents = getEditorValue('term_contents');
         if (term.blank() || contents.blank())
         {
@@ -119,11 +119,11 @@ function switchTab(c, title)
     } else {
         var editTitle = editTab.innerHTML;
     }
-    var previewTab    = _('previewTab');
-    var previewButton = _('previewButton');
-    var saveButton    = _('saveButton');
-    var cancelButton  = _('cancelButton');
-    var delButton     = _('delButton');
+    var previewTab    = $('previewTab');
+    var previewButton = $('previewButton');
+    var saveButton    = $('saveButton');
+    var cancelButton  = $('cancelButton');
+    var delButton     = $('delButton');
 
     if (c == 'edit') {
         if (currentMode == 'new') {
@@ -190,11 +190,11 @@ function preview()
 {
     switchTab('preview');
     var term_contents = getEditorValue('term_contents');
-    _('preview_title').innerHTML = _('term_title').value;
+    $('preview_title').innerHTML = $('term_title').value;
 
     // Use this if you want to use plugins
     GlossaryAjax.callAsync('parsetext', term_contents);
-    //_('preview_contents').innerHTML = term_contents;
+    //$('preview_contents').innerHTML = term_contents;
 }
 
 /**
@@ -204,10 +204,10 @@ function createNewTerm(title)
 {
     currentMode = 'new';
     switchTab('edit', title);
-    _('term_id').disabled = true;
-    _('term_title').value = '';
-    _('term_title').focus();
-    _('fast_url').value = '';
+    $('term_id').disabled = true;
+    $('term_title').value = '';
+    $('term_title').focus();
+    $('fast_url').value = '';
     changeEditorValue('term_contents', '');   
 }
 
@@ -216,8 +216,8 @@ function createNewTerm(title)
  */
 function newTerm()
 {
-    term     = _('term_title').value;
-    fast_url = _('fast_url').value;
+    term     = $('term_title').value;
+    fast_url = $('fast_url').value;
     contents = getEditorValue('term_contents');
     if (term.blank() || contents.blank())
     {
@@ -234,9 +234,9 @@ function newTerm()
  */
 function afterNewTerm(id)
 {
-    combo = _('term_id');
+    combo = $('term_id');
     combo.disabled = false;
-    combo.options[combo.length] = new Option(_('term_title').value, id);
+    combo.options[combo.length] = new Option($('term_title').value, id);
     combo.options[combo.length - 1].selected = true;
     edit(id);
 }
@@ -277,7 +277,7 @@ function returnToEdit()
  */
 function getFirst()
 {
-    combo = _('term_id');
+    combo = $('term_id');
     if (combo.length > 0) {
         combo.options[0].selected = true;
         edit(combo.options[0].value);
