@@ -68,9 +68,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties($counters, $numdays, $type, $mode, $custom_text)
     {
         $this->gadget->CheckPermission('UpdateProperties');
-
-        $request =& Jaws_Request::getInstance();
-        $custom_text = $request->get(4, 'post', false);
+        $custom_text = jaws()->request->get(4, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Properties');
         $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
