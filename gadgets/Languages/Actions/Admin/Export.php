@@ -18,8 +18,7 @@ class Languages_Actions_Admin_Export extends Jaws_Gadget_HTML
      */
     function Export()
     {
-        $request =& Jaws_Request::getInstance();
-        $lang = $request->get('lang', 'get');
+        $lang = jaws()->request->get('lang', 'get');
 
         require_once PEAR_PATH. "File/Archive.php"; 
         $tmpDir = sys_get_temp_dir();
