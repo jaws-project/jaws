@@ -23,9 +23,7 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
 
-        $request  =& Jaws_Request::getInstance();
-        $category = $request->get('category', 'get');
-
+        $category = jaws()->request->get('category', 'get');
         if (!is_null($category)) {
             $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
             $cat = $model->GetCategory($category);
@@ -100,9 +98,8 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
         $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
 
-        $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('category', 'fast_url'), 'post');
-        $post['description'] = $request->get('description', 'post', false);
+        $post    = jaws()->request->get(array('category', 'fast_url'), 'post');
+        $post['description'] = jaws()->request->get('description', 'post', false);
 
         $id = $model->AddCategory($post['category'], $post['fast_url'], $post['description']);
 
@@ -119,9 +116,8 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
         $this->gadget->CheckPermission('ManageCategories');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
 
-        $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('id', 'category', 'fast_url'), 'post');
-        $post['description'] = $request->get('description', 'post', false);
+        $post    = jaws()->request->get(array('id', 'category', 'fast_url'), 'post');
+        $post['description'] = jaws()->request->get('description', 'post', false);
 
         $model->UpdateCategory($post['id'], $post['category'], $post['fast_url'], $post['description']);
 
