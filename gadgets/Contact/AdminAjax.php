@@ -227,8 +227,7 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $request =& Jaws_Request::getInstance();
-        $comments = $request->get(3, 'post', false);
+        $comments = jaws()->request->get(3, 'post', false);
 
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Properties');
         $model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
@@ -295,8 +294,7 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
     function GetMessagePreview($message)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $request =& Jaws_Request::getInstance();
-        $message = $request->get(0, 'post', false);
+        $message = jaws()->request->get(0, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Mailer');
         return $gadget->PrepareMessage($message);
@@ -315,8 +313,7 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $request =& Jaws_Request::getInstance();
-        $message = $request->get(2, 'post', false);
+        $message = jaws()->request->get(2, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);

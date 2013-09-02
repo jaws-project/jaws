@@ -57,8 +57,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_HTML
      */
     function Send()
     {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('contact_name', 'contact_email', 'contact_company', 'contact_url',
+        $post = jaws()->request->get(array('contact_name', 'contact_email', 'contact_company', 'contact_url',
                                     'contact_tel', 'contact_fax', 'contact_mobile', 'contact_address',
                                     'contact_recipient', 'contact_subject', 'contact_message'),
                               'post');
