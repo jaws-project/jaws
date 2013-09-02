@@ -19,8 +19,7 @@ class Comments_Actions_Feeds extends Comments_HTML
     function RecentCommentsAtom()
     {
         header('Content-type: application/atom+xml');
-        $request =& Jaws_Request::getInstance();
-        $gadget = $request->get('gadgetname', 'get');
+        $gadget = jaws()->request->get('gadgetname', 'get');
         $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'atom');
         if (Jaws_Error::IsError($commAtom)) {
             return $commAtom;
@@ -42,8 +41,7 @@ class Comments_Actions_Feeds extends Comments_HTML
     function RecentCommentsRSS()
     {
         header('Content-type: application/rss+xml');
-        $request =& Jaws_Request::getInstance();
-        $gadget = $request->get('gadgetname', 'get');
+        $gadget = jaws()->request->get('gadgetname', 'get');
         $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'rss');
         if (Jaws_Error::IsError($commAtom)) {
             return $commAtom;
