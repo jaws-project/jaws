@@ -75,10 +75,10 @@ function unselectDataGridRow()
  */
 function switchTab(tab, hideTabs)
 {
-    var fileDiv = _('f_work_area');
-    var dirDiv  = _('d_work_area');
-    var fileTab = _('fileTab');
-    var dirTab  = _('dirTab');
+    var fileDiv = $('f_work_area');
+    var dirDiv  = $('d_work_area');
+    var fileTab = $('fileTab');
+    var dirTab  = $('dirTab');
 
     if (tab == 'file') {
         fileTab.className     = 'current';
@@ -110,11 +110,11 @@ function switchTab(tab, hideTabs)
 function uploadswitch(checked)
 {
     if (checked) {
-        _('edit_entry').style.display = 'none';
-        _('file_entry').style.display = 'block';
+        $('edit_entry').style.display = 'none';
+        $('file_entry').style.display = 'block';
     } else {
-        _('edit_entry').style.display = 'block';
-        _('file_entry').style.display = 'none';
+        $('edit_entry').style.display = 'block';
+        $('file_entry').style.display = 'none';
     }
 }
 
@@ -131,7 +131,7 @@ function reOrderFiles()
  */
 function cwd(dir)
 {
-    _('path').value = dir;
+    $('path').value = dir;
     getDG('fb_datagrid', 0, true);
     stopAction('dir');
 }
@@ -141,22 +141,22 @@ function cwd(dir)
  */
 function editFile(element, fname)
 {
-    _('oldname').value          = fname;
-    _('filename').value         = fname;
-    _('file_title').value       = '';
-    _('file_description').value = '';
-    _('file_fast_url').value    = '';
+    $('oldname').value          = fname;
+    $('filename').value         = fname;
+    $('file_title').value       = '';
+    $('file_description').value = '';
+    $('file_fast_url').value    = '';
     selectDataGridRow(element.parentNode.parentNode);
-    _('upload_switch').checked = false;
+    $('upload_switch').checked = false;
     uploadswitch(false);
     switchTab('file');
-    _('upload_switch').disabled = false;
+    $('upload_switch').disabled = false;
 
-    var dbfile = FileBrowserAjax.callSync('dbfileinfo', _('path').value, fname);
+    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, fname);
     if (dbfile['id']) {
-        _('file_title').value       = dbfile['title'].defilter();
-        _('file_description').value = dbfile['description'].defilter();
-        _('file_fast_url').value    = dbfile['fast_url'];
+        $('file_title').value       = dbfile['title'].defilter();
+        $('file_description').value = dbfile['description'].defilter();
+        $('file_fast_url').value    = dbfile['fast_url'];
     }
 }
 
@@ -165,24 +165,24 @@ function editFile(element, fname)
  */
 function saveFile()
 {
-    if (_('uploadfile').value.blank() && 
-        _('filename').value.blank())
+    if ($('uploadfile').value.blank() && 
+        $('filename').value.blank())
     {
         alert(incompleteFields);
         return false;
     }
-    if (_('upload_switch').checked && 
-       !_('uploadfile').value.blank())
+    if ($('upload_switch').checked && 
+       !$('uploadfile').value.blank())
     {
         document.fb_form.submit();
     } else {
         FileBrowserAjax.callAsync('updatedbfileinfo',
-                                _('path').value,
-                                _('filename').value,
-                                _('file_title').value,
-                                _('file_description').value,
-                                _('file_fast_url').value,
-                                _('oldname').value
+                                $('path').value,
+                                $('filename').value,
+                                $('file_title').value,
+                                $('file_description').value,
+                                $('file_fast_url').value,
+                                $('oldname').value
                                 );
     }
 }
@@ -193,7 +193,7 @@ function saveFile()
 function delFile(element, file)
 {
     if (confirm(confirmFileDelete)) {
-        FileBrowserAjax.callAsync('deletefile', _('path').value, file);
+        FileBrowserAjax.callAsync('deletefile', $('path').value, file);
     }
 }
 
@@ -202,19 +202,19 @@ function delFile(element, file)
  */
 function editDir(element, dirname)
 {
-    _('oldname').value         = dirname;
-    _('dirname').value         = dirname;
-    _('dir_title').value       = '';
-    _('dir_description').value = '';
-    _('dir_fast_url').value    = '';
+    $('oldname').value         = dirname;
+    $('dirname').value         = dirname;
+    $('dir_title').value       = '';
+    $('dir_description').value = '';
+    $('dir_fast_url').value    = '';
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
-    var dbfile = FileBrowserAjax.callSync('dbfileinfo', _('path').value, dirname);
+    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, dirname);
     if (dbfile['id']) {
-        _('dir_title').value       = dbfile['title'];
-        _('dir_description').value = dbfile['description'];
-        _('dir_fast_url').value    = dbfile['fast_url'];
+        $('dir_title').value       = dbfile['title'];
+        $('dir_description').value = dbfile['description'];
+        $('dir_fast_url').value    = dbfile['fast_url'];
     }
 }
 
@@ -223,18 +223,18 @@ function editDir(element, dirname)
  */
 function saveDir()
 {
-    if (_('dirname').value.blank()) {
+    if ($('dirname').value.blank()) {
         alert(incompleteFields);
         return false;
     }
 
     FileBrowserAjax.callAsync('updatedbdirinfo',
-                            _('path').value,
-                            _('dirname').value,
-                            _('dir_title').value,
-                            _('dir_description').value,
-                            _('dir_fast_url').value,
-                            _('oldname').value
+                            $('path').value,
+                            $('dirname').value,
+                            $('dir_title').value,
+                            $('dir_description').value,
+                            $('dir_fast_url').value,
+                            $('oldname').value
                             );
 }
 
@@ -244,7 +244,7 @@ function saveDir()
 function delDir(element, dir)
 {
     if (confirm(confirmDirDelete)) {
-        FileBrowserAjax.callAsync('deletedir', _('path').value, dir);
+        FileBrowserAjax.callAsync('deletedir', $('path').value, dir);
     }
     
 }
@@ -254,11 +254,11 @@ function delDir(element, dir)
  */
 function getFiles(name, offset, reset)
 {
-    var result = FileBrowserAjax.callSync('getdirectory', _('path').value, offset, _('order_type').value);
+    var result = FileBrowserAjax.callSync('getdirectory', $('path').value, offset, $('order_type').value);
     if (reset) {
-        var total = FileBrowserAjax.callSync('getdircontentscount', _('path').value);
-        var loc   = FileBrowserAjax.callSync('getlocation', _('path').value);
-        _('location').innerHTML = loc;
+        var total = FileBrowserAjax.callSync('getdircontentscount', $('path').value);
+        var loc   = FileBrowserAjax.callSync('getlocation', $('path').value);
+        $('location').innerHTML = loc;
     }
     resetGrid(name, result, total);
 }
@@ -270,22 +270,22 @@ function getFiles(name, offset, reset)
 function stopAction(tab) 
 {
     unselectDataGridRow();
-    _('upload_switch').checked = true;
+    $('upload_switch').checked = true;
     uploadswitch(true);
-    _('upload_switch').disabled = true;
+    $('upload_switch').disabled = true;
     switchTab(tab);
-    _('oldname').value          = '';
+    $('oldname').value          = '';
 
-    _('filename').value         = '';
-    _('uploadfile').value       = '';
-    _('file_title').value       = '';
-    _('file_description').value = '';
-    _('file_fast_url').value    = '';
+    $('filename').value         = '';
+    $('uploadfile').value       = '';
+    $('file_title').value       = '';
+    $('file_description').value = '';
+    $('file_fast_url').value    = '';
 
-    _('dirname').value          = '';
-    _('dir_title').value        = '';
-    _('dir_description').value  = '';
-    _('dir_fast_url').value     = '';
+    $('dirname').value          = '';
+    $('dir_title').value        = '';
+    $('dir_description').value  = '';
+    $('dir_fast_url').value     = '';
 }
 
 var FileBrowserAjax = new JawsAjax('FileBrowser', FileBrowserCallback);
