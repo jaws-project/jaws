@@ -80,9 +80,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      */
     function ParseText($text)
     {
-        $request =& Jaws_Request::getInstance();
-        $text = $request->get(0, 'post', false);
-
+        $text = jaws()->request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
         return $gadget->gadget->ParseText($text);
     }
@@ -145,8 +143,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function AutoDraft($id = '', $group, $showtitle = '', $title = '', $content = '', $language = '',
                        $fast_url = '', $meta_keys = '', $meta_desc = '', $published = '')
     {
-        $request =& Jaws_Request::getInstance();
-        $content = $request->get(4, 'post', false);
+        $content = jaws()->request->get(4, 'post', false);
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
 
         if ($id == 'NEW') {
