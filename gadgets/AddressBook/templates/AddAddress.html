@@ -1,0 +1,43 @@
+<!-- BEGIN address -->
+<div class="gadget addressbook">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <form name="addressbook" action="{base_script}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="gadget" value="AddressBook" />
+  <input type="hidden" name="action" value="SaveItem" />
+  <div class="content">
+      <p><label>{lbl_name}:</label>
+         <input name="addressbook_name" type="text" value="{name}" />
+      </p>
+      <p><label>{lbl_company}:</label>
+         <input name="addressbook_company" type="text" value="{company}" />
+      </p>
+      <p><label>{lbl_title}:</label>
+         <input name="addressbook_title" type="text" value="{title}" />
+      </p>
+      <p><label>{lbl_email}:</label>
+         <input name="addressbook_email" type="text" value="{email}" style="direction: ltr;" />
+      </p>
+      <p><label>{lbl_tel}:</label>
+         <input name="addressbook_tel" type="text" value="{tel}" />
+      </p>
+      <p><label>{lbl_fax}:</label>
+         <input name="addressbook_fax" type="text" value="{fax}" />
+      </p>
+      <p><label>{lbl_mobile}:</label>
+         <input name="addressbook_mobile" type="text" value="{mobile}" />
+      </p>
+      <p><label>{lbl_address}:</label>
+         <input name="addressbook_address" type="text" value="{address}" />
+      </p>
+      <p><label>{lbl_url}:</label>
+         <input name="addressbook_url" type="text" value="{url}" style="direction: ltr;" />
+      </p>
+      <p><label>{lbl_notes}:</label>
+         <textarea name="addressbook_message" cols="25" rows="6">{notes}</textarea>
+      </p>
+  </div>
+  <div class="actions">{btn_save}{btn_cancel}</div>
+  </form>
+</div>
+<!-- END address -->
