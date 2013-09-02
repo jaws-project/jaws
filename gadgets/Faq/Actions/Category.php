@@ -49,9 +49,8 @@ class Faq_Actions_Category extends Jaws_Gadget_HTML
     {
         $model = $GLOBALS['app']->LoadGadget('Faq', 'Model', 'Question');
 
-        $request =& Jaws_Request::getInstance();
-        $cat_id  = $request->get('id', 'get');
-        $cat_id  = Jaws_XSS::defilter($cat_id, true);
+        $cat_id = jaws()->request->get('id', 'get');
+        $cat_id = Jaws_XSS::defilter($cat_id, true);
 
         $this->SetTitle(_t('FAQ_NAME') . ' - ' . _t('FAQ_CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);
