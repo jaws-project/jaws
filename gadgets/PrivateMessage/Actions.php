@@ -15,3 +15,31 @@ $actions['NavigationArea'] = array(
     'layout' => true,
     'file' => 'NavigationArea',
 );
+$actions['Inbox'] = array(
+    'normal' => true,
+    'file' => 'Inbox',
+);
+$actions['ViewMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
+$actions['DeleteMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
+$actions['UnreadMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
+$actions['Outbox'] = array(
+    'normal' => true,
+    'file' => 'Outbox',
+);
+$actions['Send'] = array(
+    'normal' => true,
+    'file' => 'Send',
+);
+$actions['Reply'] = array(
+    'normal' => true,
+    'file' => 'Reply',
+);

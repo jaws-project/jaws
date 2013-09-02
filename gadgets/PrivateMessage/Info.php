@@ -11,6 +11,12 @@
 class PrivateMessage_Info extends Jaws_Gadget
 {
     /**
+     * Constants
+     */
+    const PM_STATUS_UNREAD   = 0;
+    const PM_STATUS_READ     = 1;
+
+    /**
      * Gadget version
      *
      * @var     string

@@ -18,6 +18,10 @@ $_SERVER['HTTP_USER_AGENT'] = array_key_exists('HTTP_USER_AGENT', $_SERVER)?
 $_SERVER['HTTP_REFERER']    = array_key_exists('HTTP_REFERER', $_SERVER)?
                                                $_SERVER['HTTP_REFERER']:
                                                '';
+
+// Prevent user interface redress attack(Clickjacking/Likejacking)
+header('X-Frame-Options: SAMEORIGIN');
+
 if (ini_get('register_globals')) {
     // Might want to change this perhaps to a nicer error
     if (isset($_REQUEST['GLOBALS'])) {
