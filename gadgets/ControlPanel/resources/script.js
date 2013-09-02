@@ -12,9 +12,9 @@
  */
 var ControlPanelCallback = {
     JawsVersion: function(response) {
-        $('#latest_jaws_version').html(response);
-        if (!response) {
-            $('div.notify_version').css('display', 'block');
+        $('latest_jaws_version').set('html', response);
+        if (!response.blank()) {
+            $(document.body).getElement('div.notify_version').setStyle('display', 'block');
         }
     }
 }
@@ -24,12 +24,12 @@ var ControlPanelCallback = {
  */
 function toggleCollapse()
 {
-    $(this).toggleClass('collapsed');
+    this.toggleClass('collapsed');
     ControlPanelStorage.update(
-        $('#sidebar').children().index($(this).parent()),
-        $(this).attr('class')
+        $('sidebar').getChildren().indexOf(this.getParent()),
+        this.getProperty('class')
     );
-    $(this).next('div').toggle();
+    this.getNext('div').toggle();
 }
 
 /**
@@ -37,14 +37,14 @@ function toggleCollapse()
  */
 function init()
 {
-    $('#sidebar h2').on('click', toggleCollapse);
-    $('#sidebar h2').each(function(i, el) {
+    $('sidebar').getElements('h2').addEvent('click', toggleCollapse);
+    $('sidebar').getChildren().each(function(el, i) {
         if (ControlPanelStorage.fetch(i)) {
-            $(el).trigger('click');
+            el.getChildren('h2').fireEvent('click');
         }
     });
 
-    if ($('#do_checking') && $('#do_checking').value == 1) {
+    if ($('do_checking') && $('do_checking').value == 1) {
         ControlPanelAjax.callAsync('JawsVersion');
     }
 }
