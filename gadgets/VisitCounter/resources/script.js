@@ -14,9 +14,9 @@
 var VisitCounterCallback = { 
     cleanentries: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            _('visitcounter_datagrid').setCurrentPage(0);
-            _('visitcounter_datagrid').rowsSize = 0;
-            _('visitcounter_datagrid').updatePageCounter();
+            $('visitcounter_datagrid').setCurrentPage(0);
+            $('visitcounter_datagrid').rowsSize = 0;
+            $('visitcounter_datagrid').updatePageCounter();
             getDG();
             updateStats();
         }
@@ -25,9 +25,9 @@ var VisitCounterCallback = {
     
     resetcounter: function(response) {
         if (response[0]['css'] == 'notice-message') {
-            _('visitcounter_datagrid').setCurrentPage(0);
-            _('visitcounter_datagrid').rowsSize = 0;
-            _('visitcounter_datagrid').updatePageCounter();
+            $('visitcounter_datagrid').setCurrentPage(0);
+            $('visitcounter_datagrid').rowsSize = 0;
+            $('visitcounter_datagrid').updatePageCounter();
             getDG();
             updateStats();
         }
@@ -60,9 +60,9 @@ function cleanEntries()
  */
 function updateStats()
 {
-    _('stats_from').innerHTML  = VisitCounterAjax.callSync('getstartdate');
-    _('visitors').innerHTML    = 0;
-    _('impressions').innerHTML = 0;
+    $('stats_from').innerHTML  = VisitCounterAjax.callSync('getstartdate');
+    $('visitors').innerHTML    = 0;
+    $('impressions').innerHTML = 0;
 }
 
 /**
