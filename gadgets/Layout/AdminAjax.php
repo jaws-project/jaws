@@ -110,6 +110,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     {
         $res = array();
         $id = false;
+        $params = jaws()->request->get('2:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
@@ -163,6 +164,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function EditElementAction($item, $gadget, $action, $params) 
     {
         $res = false;
+        $params = jaws()->request->get('3:array', 'post');
         $eModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $lModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Layout');
         $actions = $eModel->GetGadgetLayoutActions($gadget, true);
