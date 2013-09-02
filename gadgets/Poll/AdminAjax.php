@@ -148,6 +148,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function UpdatePollAnswers($pid, $answers)
     {
         $this->gadget->CheckPermission('ManagePolls');
+        $answers = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->UpdatePollAnswers($pid, $answers);
 
@@ -269,6 +270,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function AddPollsToPollGroup($gid, $polls)
     {
         $this->gadget->CheckPermission('ManageGroups');
+        $polls = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->AddPollsToPollGroup($gid, $polls);
         return $GLOBALS['app']->Session->PopLastResponse();
