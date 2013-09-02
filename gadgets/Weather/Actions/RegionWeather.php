@@ -49,8 +49,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
      */
     function RegionWeather($region = null, $forecast = false)
     {
-        $request =& Jaws_Request::getInstance();
-        $region_get = $request->get('id', 'get');
+        $region_get = jaws()->request->get('id', 'get');
         $region_get = Jaws_XSS::defilter($region_get, true);
         if(!empty($region_get)) {
             $region = $region_get;
