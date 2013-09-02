@@ -12,6 +12,16 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 
+/**
+ * Convenience function to application object
+ *
+ * @access  public
+ * @return  object  Jaws object
+ */
+function &jaws() {
+    return $GLOBALS['app'];
+}
+
 // set default timezone to utc
 date_default_timezone_set('UTC');
 
@@ -83,8 +93,8 @@ if ($db_jaws_version != JAWS_VERSION) {
     Jaws_Header::Location('upgrade/index.php');
 }
 
-$GLOBALS['app']->Map->Init();
-$GLOBALS['app']->Session->Init();
-$GLOBALS['app']->loadPreferences();
+// init application
+$GLOBALS['app']->init();
+
 // load Piwi initialize
 require_once JAWS_PATH . 'include/Jaws/InitPiwi.php';
