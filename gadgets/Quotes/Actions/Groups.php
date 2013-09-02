@@ -18,8 +18,7 @@ class Quotes_Actions_Groups extends Jaws_Gadget_HTML
      */
     function ViewGroupQuotes()
     {
-        $request =& Jaws_Request::getInstance();
-        $gid = $request->get('id', 'get');
+        $gid = jaws()->request->get('id', 'get');
         $layoutGadget = $GLOBALS['app']->LoadGadget('Quotes', 'HTML', 'Quotes');
         return $layoutGadget->Display($gid);
     }
