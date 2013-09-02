@@ -138,8 +138,7 @@ class Users_Actions_Personal extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserPersonal');
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(
+        $post = jaws()->request->get(
             array('fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature',
                   'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'
