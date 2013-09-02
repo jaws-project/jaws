@@ -95,8 +95,7 @@ class Users_Actions_Account extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'nickname', 'email', 'password', 'chkpassword'), 'post');
+        $post = jaws()->request->get(array('username', 'nickname', 'email', 'password', 'chkpassword'), 'post');
         if ($post['password'] === $post['chkpassword']) {
             // check edit username permission
             if (empty($post['username']) ||
@@ -175,8 +174,7 @@ class Users_Actions_Account extends Users_HTML
             return Jaws_HTTPError::Get(404);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $key = $request->get('key', 'get');
+        $key = jaws()->request->get('key', 'get');
 
         $uModel  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Account');
         $result = $uModel->ChangePassword($key);

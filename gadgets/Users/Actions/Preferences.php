@@ -137,8 +137,7 @@ class Users_Actions_Preferences extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserPreferences');
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
+        $post = jaws()->request->get(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Preferences');
         $result = $model->UpdatePreferences(

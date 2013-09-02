@@ -110,8 +110,7 @@ class Users_Actions_Contacts extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserContacts');
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(
+        $post = jaws()->request->get(
             array(
                 'country', 'city', 'address', 'postal_code', 'phone_number',
                 'mobile_number', 'fax_number'
