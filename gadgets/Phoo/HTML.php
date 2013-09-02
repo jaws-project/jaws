@@ -22,12 +22,11 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 //     */
 //    function Preview()
 //    {
-//        $request =& Jaws_Request::getInstance();
 //        $names = array(
 //            'name', 'email', 'url', 'title', 'comments', 'createtime',
 //            'ip_address', 'reference', 'albumid'
 //        );
-//        $post = $request->get($names, 'post');
+//        $post = jaws()->request->get($names, 'post');
 //        $post['reference'] = (int)$post['reference'];
 //        $post['albumid']   = (int)$post['albumid'];
 //
@@ -50,8 +49,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 //     */
 //    function Thumb()
 //    {
-//        $request =& Jaws_Request::getInstance();
-//        $image   = $request->get('image', 'get');
+//        $image = jaws()->request->get('image', 'get');
 //
 //        include_once JAWS_PATH . 'include/Jaws/Image.php';
 //        Jaws_Image::get_exif_thumbnail(JAWS_DATA . 'phoo/import/' . $image, 'gadgets/Phoo/images/Phoo.png');

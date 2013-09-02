@@ -85,8 +85,7 @@ class Phoo_Actions_Admin_Import extends Phoo_AdminHTML
         $this->gadget->CheckPermission('Import');
         $this->AjaxMe('script.js');
 
-        $request =& Jaws_Request::getInstance();
-        $post    = $request->get(array('album', 'images'), 'post');
+        $post = jaws()->request->get(array('album', 'images'), 'post');
 
         $tpl = $this->gadget->loadTemplate('FinishImport.html');
         $tpl->SetBlock('finishimport');
