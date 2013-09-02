@@ -36,9 +36,7 @@ class Layout_Actions_Admin_When extends Jaws_Gadget_HTML
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('display_when', _t('LAYOUT_DISPLAY'));
 
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'get');
-
+        $id = jaws()->request->get('id', 'get');
         $layoutElement = $model->GetElement($id);
         if (is_array($layoutElement) && !empty($layoutElement)) {
             $dw_value = $layoutElement['display_when'];

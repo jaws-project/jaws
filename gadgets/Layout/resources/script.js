@@ -32,7 +32,7 @@ var LayoutCallback = {
 
     addgadget: function(response) {
         if (response['success']) {
-            //_('layout_main').appendChild(document.createTextNode(response['elementbox']));
+            //$('layout_main').appendChild(document.createTextNode(response['elementbox']));
             // Fragile!, it must be equal to LayoutItem.html template
             var dItem = document.createElement('div');
             dItem.setAttribute('class', 'item');
@@ -89,7 +89,7 @@ var LayoutCallback = {
             dItemDw.appendChild(document.createTextNode(response['dwdisplay']));
             dItemDw.appendChild(adw);
 
-            _('layout_main').appendChild(dItem);
+            $('layout_main').appendChild(dItem);
             items['main']['item_' + response['id']] = true;
             layoutSortable.addItems(dItem);
         }
@@ -105,7 +105,7 @@ function getAddedChanges()
 {
     for(var i=0; i<sections.length; i++) {
         var section       = sections[i];
-        var divsOfSection = __('#layout_' + section+ ' .item');
+        var divsOfSection = $$('#layout_' + section+ ' .item');
 
         if (divsOfSection.length > items[section].length) {
             for(var j=0; j<divsOfSection.length; j++) {
@@ -124,7 +124,7 @@ function getAddedChanges()
  */
 function deleteElement(itemId)
 {
-    var itemDiv  = _('item_' + itemId),
+    var itemDiv  = $('item_' + itemId),
         section  = itemDiv.getParent().id.replace('layout_', ''),
         position = itemDiv.getParent().getElements('div.item[id]').indexOf(itemDiv);
 
@@ -181,7 +181,7 @@ function initUI()
 
 function changeTheme()
 {
-    _('controls').submit();
+    $('controls').submit();
 }
 
 function addGadget(url, title)
@@ -202,20 +202,20 @@ function changeDisplayWhen(url)
 var prevGadget = '';
 function selectGadget(g)
 {
-    _('gadget').value = g;
+    $('gadget').value = g;
 
     // Remove all actions 
-    while (_('actions-list').firstChild)
+    while ($('actions-list').firstChild)
     {
-        _('actions-list').removeChild(_('actions-list').firstChild);
+        $('actions-list').removeChild($('actions-list').firstChild);
     };
 
-    if (_(prevGadget)) {
-        _(prevGadget).setAttribute('class', 'gadget-item'); 
-        _(prevGadget).setAttribute('className', 'gadget-item'); 
+    if ($(prevGadget)) {
+        $(prevGadget).setAttribute('class', 'gadget-item'); 
+        $(prevGadget).setAttribute('className', 'gadget-item'); 
     }
-    _(g).setAttribute('class', 'gadget-item gadget-selected'); 
-    _(g).setAttribute('className', 'gadget-item gadget-selected'); 
+    $(g).setAttribute('class', 'gadget-item gadget-selected'); 
+    $(g).setAttribute('className', 'gadget-item gadget-selected'); 
     var actions = LayoutAjax.callSync('getgadgetactions', g);
     if (actions.length > 0) {
         actions.each (function(item, actionIndex) {
@@ -267,11 +267,11 @@ function selectGadget(g)
                     li.adopt(divElement);
                 });
             }
-            _('actions-list').appendChild(li);
+            $('actions-list').appendChild(li);
         });
     } else {
         var li = new Element('li', {'class':'action-msg'}).set('html', noActionsMsg);
-        _('actions-list').appendChild(li);
+        $('actions-list').appendChild(li);
     }
     prevGadget = g;
 }
@@ -306,19 +306,22 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 {
     hideDialogBox('actions_dialog');
     params = (params == null)? null : params.split(',');
-    _('ea' + lid).innerHTML = title;
-    _('ea' + lid).parentNode.parentNode.title = desc;
+    $('ea' + lid).innerHTML = title;
+    $('ea' + lid).parentNode.parentNode.title = desc;
     LayoutAjax.callAsync('editelementaction', lid, gadget, action, params);
 }
 
+/**
+ * Update display when 
+ */
 function saveChangeDW(itemId, dw) {
     LayoutAjax.callAsync('ChangeDisplayWhen', itemId, dw);
     if (dw == '*') {
-        _('dw' + itemId).innerHTML = displayAlways;
+        $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
-        _('dw' + itemId).innerHTML = displayNever;
+        $('dw' + itemId).innerHTML = displayNever;
     } else {
-        _('dw' + itemId).innerHTML = dw.replace(/,/g, ', ');
+        $('dw' + itemId).innerHTML = dw.replace(/,/g, ', ');
     }
     hideDialogBox('dw_dialog');
 }

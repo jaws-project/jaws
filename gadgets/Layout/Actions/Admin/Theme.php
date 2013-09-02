@@ -18,9 +18,7 @@ class Layout_Actions_Admin_Theme extends Jaws_Gadget_HTML
     function ChangeTheme()
     {
         $this->gadget->CheckPermission('ManageThemes');
-
-        $request =& Jaws_Request::getInstance();
-        $theme = $request->get('theme', 'post');
+        $theme = jaws()->request->get('theme', 'post');
 
         $layout_path = JAWS_THEMES. $theme;
         if (!file_exists($layout_path. '/layout.html')) {
