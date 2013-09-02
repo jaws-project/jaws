@@ -20,8 +20,7 @@ class Sitemap_Actions_Breadcrumb extends Jaws_Gadget_HTML
     function Breadcrumb()
     {
         $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Breadcrumb');
-        $request =& Jaws_Request::getInstance();
-        $path = $request->get('path', 'get');
+        $path = jaws()->request->get('path', 'get');
         $bc = $model->GetBreadcrumb($path);
         $tpl = $this->gadget->loadTemplate('Breadcrumb.html');
         $tpl->SetBlock('sitemap_breadcrumb');
