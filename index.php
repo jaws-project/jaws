@@ -33,12 +33,12 @@ $IsReqActionStandAlone = false;
 // Only registerd user can access not global website
 $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
                          $GLOBALS['app']->Registry->fetch('global_website', 'Settings') == 'false';
-$request =& Jaws_Request::getInstance();
+
 // Get forwarded error from webserver
-$ReqError = $request->get('http_error', 'get');
+$ReqError = jaws()->request->get('http_error', 'get');
 if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
-    $ReqGadget = Jaws_Gadget::filter($request->get('gadget'));
-    $ReqAction = Jaws_Gadget_HTML::filter($request->get('action'));
+    $ReqGadget = Jaws_Gadget::filter(jaws()->request->get('gadget'));
+    $ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->get('action'));
 
     if ($AccessToWebsiteDenied && $ReqGadget !== 'Users') {
         $ReqGadget = 'Users';
@@ -101,7 +101,7 @@ if (!$IsReqActionStandAlone) {
 }
 
 // Send content to client
-$resType = $request->get('restype');
+$resType = jaws()->request->get('restype');
 switch ($resType) {
     case 'json':
         header('Content-Type: application/json; charset=utf-8');
