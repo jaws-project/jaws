@@ -123,8 +123,7 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageBanners');
 
-        $request =& Jaws_Request::getInstance();
-        $template = $request->get(4, 'post', false);
+        $template = jaws()->request->get(4, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel', 'Banners');
         $model->InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
@@ -155,8 +154,7 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageBanners');
 
-        $request =& Jaws_Request::getInstance();
-        $template = $request->get(5, 'post', false);
+        $template = jaws()->request->get(5, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel', 'Banners');
         $model->UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
