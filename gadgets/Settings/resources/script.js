@@ -43,7 +43,7 @@ var SettingsCallback = {
  */
 function submitBasicForm()
 {
-    SettingsAjax.callAsync('UpdateBasicSettings', $('#settingsForm :input').serializeArray());
+    SettingsAjax.callAsync('UpdateBasicSettings', $('settingsForm').toQueryString().parseQueryString());
 }
 
 /**
@@ -51,7 +51,7 @@ function submitBasicForm()
  */
 function submitAdvancedForm()
 {
-    SettingsAjax.callAsync('UpdateAdvancedSettings', $('#settingsForm :input').serializeArray());
+    SettingsAjax.callAsync('UpdateAdvancedSettings', $('settingsForm').toQueryString().parseQueryString());
 }
 
 /**
@@ -59,15 +59,15 @@ function submitAdvancedForm()
  */
 function addCustomMeta()
 {
-    var div = $('<div>', {'class': 'fields'}),
-        label = $('<label>').html(custom_meta),
-        inputName  = $('<input>', {type:'text', title:'Meta Name', 'class':'meta-name'}),
-        inputValue = $('<input>', {type:'text', title:'Meta Content', 'class':'meta-value'});
+    var div = new Element('div', {'class':'fields'}),
+        label = new Element('label').set('html', custom_meta),
+        inputName  = new Element('input', {type:'text', title:'Meta Name', 'class':'meta-name'}),
+        inputValue = new Element('input', {type:'text', title:'Meta Content', 'class':'meta-value'});
 
-    div.append(label);
-    div.append(inputName);
-    div.append(inputValue);
-    $('#customMeta').append(div);
+    div.adopt(label);
+    div.adopt(inputName);
+    div.adopt(inputValue);
+    $('customMeta').adopt(div);
 }
 
 /**
@@ -75,19 +75,19 @@ function addCustomMeta()
  */
 function submitMetaForm()
 {
-    var customMeta = [];
-    var customInputs = $('#customMeta input.meta-name');
-    customInputs.each(function(index, input) {
-        if (!$(input).val()) {
-            $(input).parent().empty();
+    var customMeta   = [],
+        customInputs = $$('#customMeta input.meta-name');
+    customInputs.each(function(input) {
+        if (input.value.blank()) {
+            input.getParent().destroy();
             return;
         }
-        customMeta[index] = [$(input).val(), $(input).next().val()];
+        customMeta.include([input.value, input.getNext().value]);
     });
 
     SettingsAjax.callAsync(
         'UpdateMetaSettings',
-        $('#settingsForm :input').serializeArray(),
+        $('settingsForm').toQueryString().parseQueryString(),
         customMeta
     );
 }
@@ -97,7 +97,7 @@ function submitMetaForm()
  */
 function submitMailSettingsForm()
 {
-    SettingsAjax.callAsync('UpdateMailSettings', $('#settingsForm :input').serializeArray());
+    SettingsAjax.callAsync('UpdateMailSettings', $('settingsForm').toQueryString().parseQueryString());
 }
 
 /**
@@ -105,7 +105,7 @@ function submitMailSettingsForm()
  */
 function submitFTPSettingsForm()
 {
-    SettingsAjax.callAsync('UpdateFTPSettings', $('#settingsForm :input').serializeArray());
+    SettingsAjax.callAsync('UpdateFTPSettings', $('settingsForm').toQueryString().parseQueryString());
 }
 
 /**
@@ -113,7 +113,7 @@ function submitFTPSettingsForm()
  */
 function submitProxySettingsForm()
 {
-    SettingsAjax.callAsync('UpdateProxySettings', $('#settingsForm :input').serializeArray());
+    SettingsAjax.callAsync('UpdateProxySettings', $('settingsForm').toQueryString().parseQueryString());
 }
 
 function toggleGR() 
