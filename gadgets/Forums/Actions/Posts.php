@@ -19,8 +19,7 @@ class Forums_Actions_Posts extends Forums_HTML
      */
     function Posts()
     {
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'tid', 'page'), 'get');
+        $rqst = jaws()->request->get(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
@@ -326,8 +325,7 @@ class Forums_Actions_Posts extends Forums_HTML
     {
         $reply_to_message = '';
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
-            $request =& Jaws_Request::getInstance();
-            $rqst = $request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
+            $rqst = jaws()->request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
             if (empty($rqst['fid']) || empty($rqst['tid'])) {
                 return false;
             }
@@ -359,8 +357,7 @@ class Forums_Actions_Posts extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
+        $rqst = jaws()->request->get(array('fid', 'tid', 'pid', 'message', 'update_reason'));
         if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
@@ -500,8 +497,7 @@ class Forums_Actions_Posts extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(
+        $post = jaws()->request->get(
             array('fid', 'tid', 'pid', 'subject', 'message', 'remove_attachment', 'update_reason'),
             'post'
         );
@@ -661,8 +657,7 @@ class Forums_Actions_Posts extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('fid', 'tid', 'pid', 'confirm'));
+        $rqst = jaws()->request->get(array('fid', 'tid', 'pid', 'confirm'));
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);

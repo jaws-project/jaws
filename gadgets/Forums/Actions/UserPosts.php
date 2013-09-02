@@ -18,8 +18,7 @@ class Forums_Actions_UserPosts extends Forums_HTML
      */
     function UserPosts()
     {
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('uid', 'page'), 'get');
+        $rqst = jaws()->request->get(array('uid', 'page'), 'get');
         $uid = (int) $rqst['uid'];
         if(empty($uid)) {
             return;
