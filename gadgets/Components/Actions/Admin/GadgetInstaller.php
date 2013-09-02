@@ -24,8 +24,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $request =& Jaws_Request::getInstance();
-            $gadget = $request->get('comp', 'get');
+            $gadget = jaws()->request->get('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -59,8 +58,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $request =& Jaws_Request::getInstance();
-            $gadget = $request->get('comp', 'get');
+            $gadget = jaws()->request->get('comp', 'get');
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
@@ -94,8 +92,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $request =& Jaws_Request::getInstance();
-            $gadget = $request->get('comp', 'get');
+            $gadget = jaws()->request->get('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -129,8 +126,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $request =& Jaws_Request::getInstance();
-            $gadget = $request->get('comp', 'get');
+            $gadget = jaws()->request->get('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -164,8 +160,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $request =& Jaws_Request::getInstance();
-            $gadget = $request->get('comp', 'get');
+            $gadget = jaws()->request->get('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
