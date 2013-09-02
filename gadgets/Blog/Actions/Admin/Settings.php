@@ -202,12 +202,11 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
     {
         $this->gadget->CheckPermission('Settings');
 
-        $request =& Jaws_Request::getInstance();
         $names = array(
             'default_view', 'last_entries_limit', 'last_comments_limit',
             'last_recentcomments_limit', 'default_category', 'xml_limit',
             'comments', 'comment_status', 'trackback', 'trackback_status');
-        $post = $request->get($names, 'post');
+        $post = jaws()->request->get($names, 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
         $model->SaveSettings($post['default_view'], $post['last_entries_limit'],

@@ -21,12 +21,11 @@ class Blog_Actions_Comments extends Blog_HTML
      */
     function Preview()
     {
-        $request =& Jaws_Request::getInstance();
         $names = array(
             'name', 'email', 'url', 'title', 'message', 'createtime',
             'ip_address', 'reference'
         );
-        $post = $request->get($names, 'post');
+        $post = jaws()->request->get($names, 'post');
         $id   = (int)$post['reference'];
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
