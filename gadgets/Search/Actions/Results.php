@@ -23,9 +23,8 @@ class Search_Actions_Results extends Search_HTML
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('SEARCH_RESULTS'));
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'), 'get');
-        $page = $request->get('page', 'get');
+        $post = jaws()->request->get(array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'), 'get');
+        $page = jaws()->request->get('page', 'get');
         if (is_null($page) || !is_numeric($page) || $page <= 0 ) {
             $page = 1;
         }
