@@ -14,13 +14,18 @@
             </field>
 
             <field>
+                <name>parent_id</name>
+                <type>integer</type>
+            </field>
+
+            <field>
                 <name>from</name>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>
 
             <field>
-                <name>title</name>
+                <name>subject</name>
                 <type>text</type>
                 <length>128</length>
             </field>

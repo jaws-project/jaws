@@ -2,6 +2,7 @@
 {alerts}
 <div class="gadget privateMessage inbox">
     <h2>{title}</h2>
+    <!-- BEGIN response --><div class="{type}">{text}</div><!-- END response -->
 
     <div class="content">
         <table>
@@ -9,7 +10,7 @@
             <tr>
                 <th>#</th>
                 <th>{lbl_from}</th>
-                <th>{lbl_title}</th>
+                <th>{lbl_subject}</th>
                 <th>{lbl_send_time}</th>
             </tr>
             </thead>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{rownum}</td>
                 <td>{from}</td>
-                <td><a href="{message_url}">{title}</a></td>
+                <td><a href="{message_url}">{subject}</a></td>
                 <td>{send_time}</td>
             </tr>
             <!-- END message -->

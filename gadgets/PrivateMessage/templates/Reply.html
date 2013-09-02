@@ -1,0 +1,33 @@
+<!-- BEGIN reply -->
+{alerts}
+<div class="gadget privateMessage message">
+    <h2>{title}</h2>
+
+    <form name="contacts" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" value="ReplyMessage"/>
+        <input type="hidden" name="id" id="id" value="{id}"/>
+
+        <div class="content">
+                <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
+                <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
+                <div>{lbl_send_time}: {send_time}</div>
+                <div>{lbl_subject}: {subject}</div>
+                <div>
+                    <div>{lbl_body}:</div>
+                    <div>{body}</div>
+                </div>
+
+                <div>
+                    <label for="body">{lbl_body}:</label>
+                    <textarea name="body" id="body" rows="6"></textarea>
+                </div>
+
+                <div class="actions">
+                    <button type="submit">{lbl_send}</button>
+                </div>
+
+        </div>
+    </form>
+</div>
+<!-- END reply -->

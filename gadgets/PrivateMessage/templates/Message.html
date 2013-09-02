@@ -3,7 +3,35 @@
 <div class="gadget privateMessage message">
     <h2>{title}</h2>
 
-    <div class="content">
-    </div>
+    <form name="contacts" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" id="action" value=""/>
+        <input type="hidden" name="id" id="id" value="{id}"/>
+
+        <div class="content">
+            <fieldset>
+                <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
+                <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
+                <div>{lbl_send_time}: {send_time}</div>
+
+                <div class="actions">
+                    <a href="{back_url}" class="button"><img src="{icon_back}" alt="{back}"/></a>
+                    <button type="submit" onclick="changeAction('Reply')"><img src="{icon_reply}" alt="{reply}"/></button>
+                    <button type="submit" onclick="changeAction('ForwardMessage')"><img src="{icon_forward}" alt="{forward}"/></button>
+                    <button type="submit" onclick="changeAction('DeleteMessage')"><img src="{icon_delete}" alt="{delete}"/></button>
+                </div>
+                <div>{lbl_subject}: {subject}</div>
+                <div>
+                    <div>{lbl_body}:</div>
+                    <div>{body}</div>
+                </div>
+        </div>
+    </form>
 </div>
+
+<script type="text/javascript">
+    function changeAction(action) {
+        document.getElementById('action').value = action;
+    }
+</script>
 <!-- END message -->

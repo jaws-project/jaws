@@ -18,6 +18,9 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLs = array(
         'ManageProperties',
+        'DeleteMessage',
+        'ReplyMessage',
+        'SendMessage',
     );
 
     /**
@@ -33,7 +36,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $new_dir = JAWS_DATA . 'privatemessage';
+        $new_dir = JAWS_DATA . 'pm';
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('PRIVATEMESSAGE_NAME'));
         }

@@ -1,0 +1,74 @@
+<!-- BEGIN send -->
+{alerts}
+<div class="gadget privateMessage message">
+    <h2>{title}</h2>
+
+    <form name="contacts" action="{base_script}" method="post">
+        <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" value="SendMessage"/>
+
+        <div class="content">
+                <div>
+                    <label for="recipient_users">{lbl_recipient_users}:</label>
+                    <input name="recipient_users" id="recipient_users" type="text"/>
+                </div>
+
+                <div>
+                    <label for="recipient_groups">{lbl_recipient_groups}:</label>
+                    <input name="recipient_groups" id="recipient_groups" type="text"/>
+                </div>
+
+                <div>
+                    <label for="subject">{lbl_subject}:</label>
+                    <input name="subject" id="subject" type="text"/>
+                </div>
+
+                <div>
+                    <label for="body">{lbl_body}:</label>
+                    <textarea name="body" id="body" rows="6"></textarea>
+                </div>
+
+            <fieldset>
+                <legend><span>{lbl_attachments}</span></legend>
+
+                <div>
+                    <label for="file1" id="file1_label">{lbl_file} 1:&nbsp;</label>
+                    <input type="file" title="{lbl_file}1" id="file1" name="file1"> </div><br>
+                <div>
+
+  <span id="file_addentry2">
+      <div>
+          <button onclick="addEntry('{lbl_file}');" value="{lbl_add_file}" id="addEntryButton" name="addEntryButton"
+                  type="button"><img id="addEntryButton_stockimage" alt="" src="{icon_add}">&nbsp;{lbl_add_file}
+          </button>
+      </div></span></div>
+                <br>
+
+            </fieldset>
+
+
+        </div>
+
+        <div class="actions">
+            <a href="{back_url}" class="button">{lbl_back}</a>
+            <button type="submit">{lbl_send}</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    /**
+     * add a file entry
+     */
+    function addEntry(title) {
+        num_entries++;
+        var id = num_entries;
+        entry = '<label id="file' + id + '_label" for="file' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
+        entry += '<input type="file" name="file' + id + '" id="file' + id + '" title="' + title + id + '" /><br />';
+        $('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + $('file_addentry' + id).innerHTML + '</span>';
+    }
+    var num_entries = 1;
+</script>
+
+<!-- END send -->

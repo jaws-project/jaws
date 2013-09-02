@@ -31,6 +31,18 @@ $actions['UnreadMessage'] = array(
     'normal' => true,
     'file' => 'Message',
 );
+$actions['ForwardMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
+$actions['Reply'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
+$actions['ReplyMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
 $actions['Outbox'] = array(
     'normal' => true,
     'file' => 'Outbox',
@@ -39,7 +51,7 @@ $actions['Send'] = array(
     'normal' => true,
     'file' => 'Send',
 );
-$actions['Reply'] = array(
+$actions['SendMessage'] = array(
     'normal' => true,
-    'file' => 'Reply',
+    'file' => 'Send',
 );
