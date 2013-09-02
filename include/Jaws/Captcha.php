@@ -110,7 +110,7 @@ class Jaws_Captcha
             $matched = !empty($value) && (strtolower($result) === strtolower($value));
         }
 
-        $this->delete($key);
+        $this->delete((int)$key);
         return $matched;
     }
 
