@@ -204,9 +204,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
      */
     function Vote()
     {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('pid', 'answers'), 'post');
-
+        $post = jaws()->request->get(array('pid', 'answers:array'), 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $poll = $model->GetPoll((int)$post['pid']);
         if (!Jaws_Error::IsError($poll) && !empty($poll)) {
@@ -233,8 +231,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_HTML
      */
     function ViewResult()
     {
-        $request =& Jaws_Request::getInstance();
-        $pid = $request->get('id', 'get');
+        $pid = jaws()->request->get('id', 'get');
 
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $poll = $model->GetPoll($pid);
