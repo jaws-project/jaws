@@ -42,8 +42,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('AddBlock');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $request =& Jaws_Request::getInstance();
-        $contents = $request->get(1, 'post', false);
+        $contents = jaws()->request->get(1, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
         $res = $model->NewBlock($title, $contents, $displayTitle, $user);
         if (Jaws_Error::IsError($res)) {
@@ -71,8 +70,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('EditBlock');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $request =& Jaws_Request::getInstance();
-        $contents = $request->get(2, 'post', false);
+        $contents = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -102,8 +100,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      */
     function ParseText($text)
     {
-        $request =& Jaws_Request::getInstance();
-        $text = $request->get(0, 'post', false);
+        $text = jaws()->request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML');
         return $gadget->gadget->ParseText($text);
     }
