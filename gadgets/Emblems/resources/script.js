@@ -19,7 +19,7 @@ var EmblemsCallback = {
     deleteemblem: function(response) {
         showResponse(response);
         if (response[0]['css'] == 'notice-message') {
-            _('emblems_datagrid').deleteItem();                                  
+            $('emblems_datagrid').deleteItem();                                  
             getDG();
         }
     }
