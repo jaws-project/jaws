@@ -93,8 +93,7 @@ class Jaws_URLMapping
 
         $params = explode('/', $this->_request_uri);
         if (false !== $apptype_key = array_search('apptype', $params)) {
-            $request =& Jaws_Request::getInstance();
-            $request->set('apptype', $params[$apptype_key + 1], 'get');
+            jaws()->request->set('apptype', $params[$apptype_key + 1], 'get');
             unset($params[$apptype_key], $params[$apptype_key+1]);
         }
         $this->_request_uri = implode('/', array_map('rawurldecode', $params));
@@ -132,11 +131,10 @@ class Jaws_URLMapping
             return false;
         }
 
-        $request =& Jaws_Request::getInstance();
         //Lets check HTTP headers to see if user is trying to login
-        if ($request->get('gadget', 'post') == 'ControlPanel' && $request->get('action', 'post') == 'Login') {
-            $request->set('gadget', 'ControlPanel', 'get');
-            $request->set('action', 'Login', 'get');
+        if (jaws()->request->get('gadget', 'post') == 'ControlPanel' && jaws()->request->get('action', 'post') == 'Login') {
+            jaws()->request->set('gadget', 'ControlPanel', 'get');
+            jaws()->request->set('action', 'Login', 'get');
             return true;
         }
 
@@ -192,13 +190,13 @@ class Jaws_URLMapping
                             }
 
                             // Gadget/Action
-                            $request->set('gadget', $gadget, 'get');
-                            $request->set('action', $action, 'get');
+                            jaws()->request->set('gadget', $gadget, 'get');
+                            jaws()->request->set('action', $action, 'get');
 
                             // Params
                             if (isset($map['params']) && is_array($map['params'])) {
                                 foreach ($map['params'] as $key => $value) {
-                                    $request->set($key, $value, 'get');
+                                    jaws()->request->set($key, $value, 'get');
                                 }
                             }
 
@@ -207,7 +205,7 @@ class Jaws_URLMapping
                             if (is_array($matches_vars)) {
                                 array_shift($matches);
                                 foreach ($matches as $key => $value) {
-                                    $request->set($matches_vars[1][$key], rawurldecode($value), 'get');
+                                    jaws()->request->set($matches_vars[1][$key], rawurldecode($value), 'get');
                                 }
                             }
 
@@ -232,9 +230,9 @@ class Jaws_URLMapping
                 !$this->_enabled || !isset($params[1]) ||
                 !isset($this->_map[$params[0]][$params[1]]))
             {
-                $request->set('gadget', $params[0], 'get');
+                jaws()->request->set('gadget', $params[0], 'get');
                 if (isset($params[1])) {
-                    $request->set('action', $params[1], 'get');
+                    jaws()->request->set('action', $params[1], 'get');
                 }
 
                 /**
@@ -250,7 +248,7 @@ class Jaws_URLMapping
                 $params_count = count($params);
                 if ($params_count % 2 == 0) {
                     for ($i = 0; $i < $params_count; $i += 2) {
-                        $request->set($params[$i], $params[$i+1], 'get');
+                        jaws()->request->set($params[$i], $params[$i+1], 'get');
                     }
                 }
 

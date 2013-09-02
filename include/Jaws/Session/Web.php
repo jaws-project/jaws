@@ -101,8 +101,7 @@ class Jaws_Session_Web extends Jaws_Session
     function GetCookie($name)
     {
         $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
-        $request =& Jaws_Request::getInstance();
-        return $request->get($name, 'cookie');
+        return jaws()->request->get($name, 'cookie');
     }
 
     /**

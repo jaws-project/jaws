@@ -225,7 +225,6 @@ class Jaws_Layout
     function LoadControlPanelHead()
     {
         $this->AddScriptLink('libraries/mootools/core.js');
-        $this->AddScriptLink('libraries/jquery/jquery.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $this->AddHeadLink(
             'gadgets/ControlPanel/resources/style.css',
@@ -701,11 +700,10 @@ class Jaws_Layout
         } else {
             $content = $this->_Template->Get();
             if ($GLOBALS['app']->GZipEnabled()) {
-                $request =& Jaws_Request::getInstance();
                 if (false == strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')) {
-                    $request->set('restype', 'gzip');
+                    jaws()->request->set('restype', 'gzip');
                 } else {
-                    $request->set('restype', 'x-gzip');
+                    jaws()->request->set('restype', 'x-gzip');
                 }
             }
             return $content;
