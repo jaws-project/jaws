@@ -160,8 +160,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
      */
     function LoadImage()
     {
-        $request =& Jaws_Request::getInstance();
-        $id = (int)$request->get('id', 'get');
+        $id = (int)jaws()->request->get('id', 'get');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
