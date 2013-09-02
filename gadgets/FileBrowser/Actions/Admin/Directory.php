@@ -158,8 +158,7 @@ class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminHTML
         $this->gadget->CheckPermission('ManageDirectories');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('path', 'selected_item', 'extra_params'), 'post');
+        $post = jaws()->request->get(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
