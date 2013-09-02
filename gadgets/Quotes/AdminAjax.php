@@ -205,6 +205,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function AddQuotesToGroup($gid, $quotes)
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
+        $quotes = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->AddQuotesToGroup($gid, $quotes);
         return $GLOBALS['app']->Session->PopLastResponse();
