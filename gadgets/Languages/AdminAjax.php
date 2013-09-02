@@ -54,9 +54,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
      */
     function SetLangData($component, $langTo, $data)
     {
-        $request =& Jaws_Request::getInstance();
-        $data = $request->get(2, 'post', false);
-
+        $data = jaws()->request->get(2, 'post', false);
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
