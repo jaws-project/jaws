@@ -59,7 +59,6 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $fakeLayout->Load();
         $fakeLayout->AddScriptLink('libraries/mootools/core.js');
         $fakeLayout->AddScriptLink('libraries/mootools/more.js');
-        $fakeLayout->AddScriptLink('libraries/jquery/jquery.js');
         $fakeLayout->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $fakeLayout->AddScriptLink('gadgets/Layout/resources/script.js');
 
