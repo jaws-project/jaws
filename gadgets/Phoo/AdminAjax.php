@@ -52,6 +52,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdatePhoto($id, $title, $desc, $allow_comments, $published, $albums = null)
     {
+        $albums = jaws()->request->get('5:array', 'post');
         if (!$this->gadget->GetPermission('ManageAlbums')) {
             $albums    = null;
             $published = null;
