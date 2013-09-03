@@ -59,22 +59,6 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes file/dir
-     *
-     * @access  public
-     * @return  string  XHTML form
-     */
-    function DeleteFile($id)
-    {
-        $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
-        $res = $gadget->DeleteFile($id);
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return _t('FILEMANAGER_NOTICE_DIR_DELETED');
-    }
-
-    /**
      * Fetches directory management form
      *
      * @access  public
@@ -96,6 +80,22 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
     {
         $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'HTML', 'Files');
         return $gadget->FileForm();
+    }
+
+    /**
+     * Deletes file/dir
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function DeleteFile($id)
+    {
+        $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $res = $gadget->DeleteFile($id);
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+        return _t('FILEMANAGER_NOTICE_DIR_DELETED');
     }
 
 }

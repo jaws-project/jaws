@@ -56,14 +56,35 @@ function selectFile()
 }
 
 /**
+ * Deselects file and hides the form
+ */
+function cancel()
+{
+    selectedId = null;
+    $('form').set('html', '');
+    comboFiles.selectedIndex = -1;
+}
+
+/**
  * Opens directory
  */
-function openFile()
+function openDir()
 {
     if (fileById[comboFiles.value].is_dir) {
         changeDir(comboFiles.value);
-        updatePath();
     }
+}
+
+/**
+ * Changes current path to the given directory
+ */
+function changeDir(id)
+{
+    selectedId = null;
+    currentDir = id;
+    fmStorage.update('current_dir', id)
+    fillFilesCombo(currentDir);
+    updatePath();
 }
 
 /**
@@ -90,28 +111,6 @@ function updatePath()
 }
 
 /**
- * Changes current path to the given directory
- */
-function changeDir(id)
-{
-    selectedId = null;
-    currentDir = id;
-    fmStorage.update('current_dir', id)
-    fillFilesCombo(currentDir);
-    updatePath();
-}
-
-/**
- * Deselects file and hides the form
- */
-function cancel()
-{
-    selectedId = null;
-    $('form').set('html', '');
-    comboFiles.selectedIndex = -1;
-}
-
-/**
  * Displays the blank form to create a new directory
  */
 function newDir()
@@ -130,6 +129,7 @@ function newDir()
  */
 function edit()
 {
+    if (selectedId === null) return;
     var data = fmAjax.callSync('GetFile', selectedId);
     switch (data.is_dir) {
         case true:
@@ -177,7 +177,6 @@ function newFile()
     if (cachedForm === null) {
         cachedForm = fmAjax.callSync('GetFileForm');
     }
-    //console.log(cachedForm);
     $('form').set('html', cachedForm);
 }
 

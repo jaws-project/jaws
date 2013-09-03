@@ -40,7 +40,7 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
         $request =& Jaws_Request::getInstance();
         $data = $request->get(array('title', 'description', 'parent', 'published'));
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['published'] = ($data['user'] == 1)? true : false;
+        $data['published'] = ($data['published'] == 1)? true : false;
         $data['is_dir'] = true;
         $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
         $result = $model->InsertFile($data);
@@ -66,7 +66,7 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
         $id = (int)$request->get('id');
         $data = $request->get(array('title', 'description', 'parent', 'published'));
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['published'] = ($data['user'] == 1)? true : false;
+        $data['published'] = ($data['published'] == 1)? true : false;
         $data['is_dir'] = true;
         $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
         $result = $model->UpdateFile($id, $data);
