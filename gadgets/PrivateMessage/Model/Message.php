@@ -116,4 +116,84 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         return true;
     }
 
+
+    /**
+     * Send message
+     *
+     * @access  public
+     * @param   integer $user           User id
+     * @param   array   $message        Message data
+     * @param   array   $attachments    File attachments data
+     * @return  mixed    True or Jaws_Error on failure
+     */
+    function SendMessage($user, $message, $attachments)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        //Start Transaction
+        $table->beginTransaction();
+
+        $data = array();
+        $data['from']        = $user;
+        $data['subject']     = $message['subject'];
+        $data['body']        = $message['body'];
+        $data['insert_time'] = time();
+        $message_id = $table->insert($data)->exec();
+        if (Jaws_Error::IsError($message_id)) {
+            return false;
+        }
+
+        if (!empty($attachments) && count($attachments) > 0) {
+            $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
+//            $aData = array();
+//            foreach ($attachments as $attachment) {
+//                $attachment['message_id'] = $message_id;
+//                $aData[] = $attachment;
+//            }
+//            $res = $table->insertAll($aData)->exec();
+            foreach ($attachments as $attachment) {
+                $aData = array();
+                $aData = $attachment;
+                $aData['message_id'] = $message_id;
+                $res = $table->insert($aData)->exec();
+                if (Jaws_Error::IsError($res)) {
+                    return false;
+                }
+            }
+
+        }
+
+        $recipient_users = explode(",", $message['recipient_users']);
+        if (!empty($recipient_groups)) {
+            $recipient_groups = explode(",", $message['recipient_groups']);
+            $table = Jaws_ORM::getInstance()->table('users_groups');
+            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchCol();
+            $recipient_users = array_merge($recipient_users, $group_users);
+        }
+
+        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+//        $data = array();
+//        foreach($recipient_users as $recipient_user) {
+//            $data[] = array(
+//                'message_id' =>$message_id,
+//                'recipient' =>$recipient_user,
+//            );
+//        }
+//        $res = $table->insertAll($data)->exec();
+
+        foreach ($recipient_users as $recipient_user) {
+            $data = array(
+                'message_id' => $message_id,
+                'recipient' => $recipient_user,
+            );
+            $res = $table->insert($data)->exec();
+            if (Jaws_Error::IsError($res)) {
+                return false;
+            }
+        }
+
+        //Commit Transaction
+        $table->commit();
+        return true;
+    }
+
  }

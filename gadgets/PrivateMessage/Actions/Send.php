@@ -55,20 +55,61 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('SendMessage');
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('recipient_users', 'recipient_groups', 'subject', 'body'), 'post');
+        $post = jaws()->request->get(array('recipient_users', 'recipient_groups', 'subject', 'body'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'pm/' . $user . '/',
-            'jpg,gif,swf,png,jpeg,bmp,svg,zip,rar,doc,docx,xls,xlsx');
 
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
-        } else if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED'), RESPONSE_ERROR);
+        $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR;
+        if (!file_exists($pm_dir)) {
+            if (!Jaws_Utils::mkdir($pm_dir)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('GLOBAL_ERROR_FAILED_CREATING_DIR', $pm_dir),
+                    'PrivateMessage.Message',
+                    RESPONSE_ERROR
+                );
+
+                Jaws_Header::Location($this->gadget->urlMap('Inbox'));
+            }
+        }
+
+        $files = Jaws_Utils::UploadFiles(
+            $_FILES,
+            $pm_dir,
+            '',
+            'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+            null
+        );
+
+        if (Jaws_Error::IsError($files)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $files->GetMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        } else if ($files === false || count($files)<1) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
         } else {
-//            $post['image'] = $res['image'][0]['host_filename'];
+            $attachments = array();
+            for ($i = 1; $i <= count($files); $i++) {
+                if (!isset($files['file'.$i])) {
+                    continue;
+                }
+                $user_filename = $files['file'.$i][0]['user_filename'];
+                $host_filename = $files['file'.$i][0]['host_filename'];
+                if (!empty($host_filename)) {
+                    $attachments[] = array(
+                        'user_filename'=> $user_filename,
+                        'host_filename'=> $host_filename,
+                        'file_size'=> $_FILES['file'.$i]['size'],
+                    );
+                }
+            }
+
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-            $res = $model->SendMessage($user, $post);
+            $res = $model->SendMessage($user, $post, $attachments);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $res->GetMessage(),

@@ -3,7 +3,7 @@
 <div class="gadget privateMessage message">
     <h2>{title}</h2>
 
-    <form name="contacts" action="{base_script}" method="post">
+    <form name="contacts" action="{base_script}" method="post" enctype="multipart/form-data">
         <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="SendMessage"/>
@@ -66,7 +66,7 @@
         var id = num_entries;
         entry = '<label id="file' + id + '_label" for="file' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
         entry += '<input type="file" name="file' + id + '" id="file' + id + '" title="' + title + id + '" /><br />';
-        $('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + $('file_addentry' + id).innerHTML + '</span>';
+        _('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + _('file_addentry' + id).innerHTML + '</span>';
     }
     var num_entries = 1;
 </script>

@@ -24,8 +24,6 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $messages = $model->GetInbox($user);
-
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('inbox/response');
             $tpl->SetVariable('type', $response['type']);
@@ -33,17 +31,20 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $i = 0;
-        foreach ($messages as $message) {
-            $i++;
-            $tpl->SetBlock('inbox/message');
-            $tpl->SetVariable('rownum', $i);
-            $tpl->SetVariable('from', $message['from_nickname']);
-            $tpl->SetVariable('subject', $message['subject']);
-            $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+        $messages = $model->GetInbox($user);
+        if (!Jaws_Error::IsError($messages) && !empty($messages)) {
+            $i = 0;
+            foreach ($messages as $message) {
+                $i++;
+                $tpl->SetBlock('inbox/message');
+                $tpl->SetVariable('rownum', $i);
+                $tpl->SetVariable('from', $message['from_nickname']);
+                $tpl->SetVariable('subject', $message['subject']);
+                $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
-            $tpl->SetVariable('message_url', $this->gadget->urlMap('ViewMessage', array('id' => $message['id'])));
-            $tpl->ParseBlock('inbox/message');
+                $tpl->SetVariable('message_url', $this->gadget->urlMap('ViewMessage', array('id' => $message['id'])));
+                $tpl->ParseBlock('inbox/message');
+            }
         }
 
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));

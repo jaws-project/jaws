@@ -36,12 +36,6 @@
             </field>
 
             <field>
-                <name>attachment</name>
-                <type>text</type>
-                <length>255</length>
-            </field>
-
-            <field>
                 <name>status</name>
                 <type>integer</type>
                 <length>1</length>
@@ -58,6 +52,49 @@
                 <name>update_time</name>
                 <type>integer</type>
                 <length>8</length>
+            </field>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>pm_message_attachments</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>message_id</name>
+                <type>integer</type>
+            </field>
+
+            <field>
+                <name>host_filename</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>user_filename</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>file_size</name>
+                <type>integer</type>
+            </field>
+
+            <field>
+                <name>hints_count</name>
+                <type>integer</type>
+                <length>4</length>
+                <default>0</default>
             </field>
 
         </declaration>
@@ -94,41 +131,4 @@
 
         </declaration>
     </table>
-
-    <table>
-        <name><variable>table_prefix</variable>pm_reply</name>
-        <declaration>
-
-            <field>
-                <name>message_id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>recipient_id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>message</name>
-                <type>text</type>
-            </field>
-
-            <field>
-                <name>insert_time</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>update_time</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-        </declaration>
-    </table>
-
 </database>
