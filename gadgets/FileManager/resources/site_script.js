@@ -27,8 +27,8 @@ var FileManagerCallback = {
 function initFileManager()
 {
     comboFiles = $('files');
-    currentDir = 0;
-    fillFilesCombo(currentDir);
+    currentDir = Number(fmStorage.fetch('current_dir'));
+    changeDir(currentDir);
 }
 
 /**
@@ -94,8 +94,9 @@ function updatePath()
  */
 function changeDir(id)
 {
-    currentDir = id;
     selectedId = null;
+    currentDir = id;
+    fmStorage.update('current_dir', id)
     fillFilesCombo(currentDir);
     updatePath();
 }
@@ -181,6 +182,7 @@ function newFile()
 }
 
 var fmAjax = new JawsAjax('FileManager', FileManagerCallback),
+    fmStorage = new JawsStorage('FileManager'),
     comboFiles,
     fileById = {},
     selectedId,
