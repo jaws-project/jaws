@@ -85,11 +85,9 @@ function submitMetaForm()
         customMeta.include([input.value, input.getNext().value]);
     });
 
-    SettingsAjax.callAsync(
-        'UpdateMetaSettings',
-        $('settingsForm').toQueryString().parseQueryString(),
-        customMeta
-    );
+    var settings = $('settingsForm').toQueryString().parseQueryString();
+    settings['site_custom_meta'] = customMeta;
+    SettingsAjax.callAsync('UpdateMetaSettings', settings);
 }
 
 /**
