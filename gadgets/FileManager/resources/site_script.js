@@ -102,7 +102,8 @@ function editDir(data)
     }
     $('form').set('html', cachedDirForm);
     var form = $('frm_dir');
-    //console.log(form.title);
+    form.action.value = 'UpdateDir';
+    form.id.value = selectedId;
     form.title.value = data.title;
     form.description.value = data.description;
     form.parent.value = data.parent;

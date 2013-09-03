@@ -8,6 +8,8 @@
       <select id="files" size="20" style="width:400px" onchange="selectFile()"></select>
       <div class="actions">
         <button type="button" id="btn_new_dir" onclick="newDir()">New Directory</button>
+        <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
+        <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
         <button type="button" id="btn_delete" onclick="deleteFile()">{lbl_delete}</button>
       </div>
     </td>
@@ -29,6 +31,7 @@
 <form id="frm_dir" name="frm_dir" action="{base_url}" method="post">
   <input type="hidden" name="gadget" value="FileManager" />
   <input type="hidden" name="action" value="CreateDir" />
+  <input type="hidden" name="id" value="0" />
   <fieldset>
     <table>
       <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>

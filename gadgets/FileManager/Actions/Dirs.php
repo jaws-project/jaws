@@ -54,4 +54,30 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
         Jaws_Header::Referrer();
     }
 
+    /**
+     * Updates directory
+     *
+     * @access  public
+     * @return  array   Response array
+     */
+    function UpdateDir()
+    {
+        $request =& Jaws_Request::getInstance();
+        $id = (int)$request->get('id');
+        $data = $request->get(array('title', 'description', 'parent', 'published'));
+        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $data['published'] = ($data['user'] == 1)? true : false;
+        $data['is_dir'] = true;
+        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $result = $model->UpdateFile($id, $data);
+        if (Jaws_Error::IsError($result)) {
+            $msg = _t('FILEMANAGER_ERROR_DIR_UPDATE');
+        } else {
+            $msg = _t('FILEMANAGER_NOTICE_DIR_UPDATED');
+        }
+
+        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'FileManager');
+        Jaws_Header::Referrer();
+    }
+
 }

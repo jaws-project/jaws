@@ -11,47 +11,6 @@
 class FileManager_Model_Files extends Jaws_Gadget_Model
 {
     /**
-     * Inserts a new file record
-     *
-     * @access  public
-     * @param   array  $data    File data
-     * @return  mixed   True on successful insert, Jaws_Error otherwise
-     */
-    function InsertFile($data)
-    {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
-        return $fmTable->insert($data)->exec();
-    }
-
-    /**
-     * Updates the emblem
-     *
-     * @access  public
-     * @param   int     $id     Emblem ID
-     * @param   array   $data   Emblem data
-     * @return  mixed   True on successful update and Jaws_Error on error
-     */
-    function UpdateEmblem($id, $data)
-    {
-        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
-        return $emblemTable->update($data)->where('id', $id)->exec();
-    }
-
-    /**
-     * Deletes the emblem
-     *
-     * @access  public
-     * @param   int      $id     ID that identifies the emblem
-     * @param   string   $src    Path to the emblem image
-     * @return  mixed    True if success, Jaws_Error otherwise
-     */
-    function DeleteEmblem($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('emblem');
-        return $table->delete()->where('id', $id)->exec();
-    }
-
-    /**
      * Fetches list of files
      *
      * @access  public
@@ -86,6 +45,34 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
         $fmTable->select('id', 'parent', 'is_dir:boolean', 'title',
             'description', 'filename', 'url', 'published:boolean');
         return $fmTable->where('id', $id)->fetchRow();
+    }
+
+    /**
+     * Inserts a new file/dir
+     *
+     * @access  public
+     * @param   array  $data    File data
+     * @return  mixed   True on successful insert, Jaws_Error otherwise
+     */
+    function InsertFile($data)
+    {
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        return $fmTable->insert($data)->exec();
+    }
+
+    /**
+     * Updates file/dir
+     *
+     * @access  public
+     * @param   int     $id     File ID
+     * @param   array   $data   File data
+     * @return  mixed   True on successful update and Jaws_Error on error
+     */
+    function UpdateFile($id, $data)
+    {
+        _log_var_dump($id);
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        return $fmTable->update($data)->where('id', $id)->exec();
     }
 
     /**
