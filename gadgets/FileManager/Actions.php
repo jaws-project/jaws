@@ -9,6 +9,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $actions = array();
+$actions['FileManager'] = array(
+    'normal' => true,
+    'file' => 'FileManager'
+);
+
+/* Dir Actions */
+$actions['DirForm'] = array(
+    'normal' => true,
+    'file' => 'Dirs'
+);
+$actions['CreateDir'] = array(
+    'normal' => true,
+    'file' => 'Dirs'
+);
+$actions['UpdateDir'] = array(
+    'normal' => true,
+    'file' => 'Dirs'
+);
+$actions['DeleteDir'] = array(
+    'normal' => true,
+    'file' => 'Dirs'
+);
 
 /* File Actions */
 $actions['FileForm'] = array(
@@ -17,11 +39,11 @@ $actions['FileForm'] = array(
 );
 $actions['GetFiles'] = array(
     'normal' => true,
-    'file' => 'Files'
+    'file' => 'FileManager'
 );
 $actions['GetFile'] = array(
     'normal' => true,
-    'file' => 'Files'
+    'file' => 'FileManager'
 );
 $actions['CreateFile'] = array(
     'normal' => true,

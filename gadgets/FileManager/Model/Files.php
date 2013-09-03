@@ -55,47 +55,49 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      * Fetches list of files
      *
      * @access  public
-     * @param   bool    $published  if need to get only published emblems
-     * @param   mixed   $limit      Optional. Limit of data to retrieve (false = returns all)
-     * @return  array   Array of emblems and Jaws_Error on error
+     * @param   int     $parent     Restrict result to a specified node
+     * @param   bool    $published  If true then only published files are returned
+     * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($published = false, $limit = false)
+    function GetFiles($parent = 0, $published = null)
     {
-        if (is_numeric($limit)) {
-            $rs = $GLOBALS['db']->setLimit(10, $limit);
-            if (Jaws_Error::IsError($rs)) {
-                return new Jaws_Error($rs->getMessage(), 'SQL');
-            }
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable->select('id', 'title', 'is_dir', 'filetype');
+
+        if ($parent){
+            $fmTable->where('parent', $parent);
         }
-
-        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
-        $emblemTable->select('id', 'title', 'image', 'url', 'type', 'published:boolean');
-
         if ($published){
-            $emblemTable->where('published', true);
+            $fmTable->where('published', true);
         }
-        $res = $emblemTable->orderBy('id asc')->fetchAll();
-        if (Jaws_Error::IsError($res)){
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-        return $res;
+        return $fmTable->orderBy('id asc')->fetchAll();
     }
 
     /**
-     * Get information of an emblem
+     * Fetches data of a file/dir
      *
      * @access  public
-     * @param   int     $id  Emblem ID
-     * @return  mixed   Array of emblem data and Jaws_Error on error
+     * @param   int     $id  File ID
+     * @return  mixed   Array of file data or Jaws_Error on error
      */
-    function GetEmblem($id)
+    function GetFile($id)
     {
-        $emblemTable = Jaws_ORM::getInstance()->table('emblem');
-        $emblemTable->select('id:integer', 'title', 'image', 'url', 'type');
-        $res = $emblemTable->where('id', $id)->fetchRow();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-        return $res;
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable->select('id', 'parent', 'is_dir:boolean', 'title',
+            'description', 'filename', 'url', 'published:boolean');
+        return $fmTable->where('id', $id)->fetchRow();
+    }
+
+    /**
+     * Deletes file/dir
+     *
+     * @access  public
+     * @param   int     $id  File ID
+     * @return  mixed   Array of file data or Jaws_Error on error
+     */
+    function DeleteFile($id)
+    {
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        return $fmTable->delete()->where('id', $id)->exec();
     }
 }
