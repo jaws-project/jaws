@@ -28,13 +28,12 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates basic settings
      *
      * @access  public
-     * @param   array   $settings  Basic settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
      * @return  array   Response array (notice or error)
      */
-    function UpdateBasicSettings($settings)
+    function UpdateBasicSettings()
     {
         $this->gadget->CheckPermission('BasicSettings');
+        $settings = jaws()->request->getAll('post');
         $this->_Model->SaveBasicSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -43,13 +42,12 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates advanced settings
      *
      * @access  public
-     * @param   array   $settings  Advanced settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
      * @return  array   Response array (notice or error)
      */
-    function UpdateAdvancedSettings($settings)
+    function UpdateAdvancedSettings()
     {
         $this->gadget->CheckPermission('AdvancedSettings');
+        $settings = jaws()->request->getAll('post');
         $this->_Model->SaveAdvancedSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -58,15 +56,13 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates META settings
      *
      * @access  public
-     * @param   array   $settings  META settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
-     * @param   array   $customMeta User defined META
      * @return  array   Response array (notice or error)
      */
-    function UpdateMetaSettings($settings, $customMeta)
+    function UpdateMetaSettings()
     {
         $this->gadget->CheckPermission('MetaSettings');
-        $settings['site_custom_meta'] = serialize($customMeta);
+        $settings = jaws()->request->getAll('post');
+        $settings['site_custom_meta'] = serialize(jaws()->request->get('site_custom_meta:array', 'post'));
         $this->_Model->SaveMetaSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -75,13 +71,12 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates mail settings
      *
      * @access  public
-     * @param   array   $settings  Mail settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
      * @return  array   Response array (notice or error)
      */
-    function UpdateMailSettings($settings)
+    function UpdateMailSettings()
     {
         $this->gadget->CheckPermission('MailSettings');
+        $settings = jaws()->request->getAll('post');
         $this->_Model->UpdateMailSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -90,13 +85,12 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates FTP settings
      *
      * @access  public
-     * @param   array   $settings  FTP settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
      * @return  array   Response array (notice or error)
      */
-    function UpdateFTPSettings($settings)
+    function UpdateFTPSettings()
     {
         $this->gadget->CheckPermission('FTPSettings');
+        $settings = jaws()->request->getAll('post');
         $this->_Model->UpdateFTPSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -105,13 +99,12 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      * Updates proxy settings
      *
      * @access  public
-     * @param   array   $settings  Proxy settings array. Should have the same
-     *                             format as the SaveBasicSettings model's method
      * @return  array   Response array (notice or error)
      */
-    function UpdateProxySettings($settings)
+    function UpdateProxySettings()
     {
         $this->gadget->CheckPermission('ProxySettings');
+        $settings = jaws()->request->getAll('post');
         $this->_Model->UpdateProxySettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
