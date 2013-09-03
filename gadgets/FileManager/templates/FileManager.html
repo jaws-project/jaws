@@ -2,13 +2,13 @@
 <div class="gadget file-manager">
   <h2>{title}</h2>
   <div id="simple_response">{response}</div>
-  <div>Path: <span id="path">/</span></div>
+  <div><b>Path:</b> <span id="path"></span></div>
   <table><tr>
     <td>
-      <select id="files" size="20" style="width:400px" onchange="selectFile()"></select>
+      <select id="files" size="20" style="width:400px" onchange="selectFile()" ondblclick="openFile()"></select>
       <div class="actions">
         <button type="button" id="btn_new_dir" onclick="newDir()">New Directory</button>
-        <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
+        <!--button type="button" id="btn_new_file" onclick="newFile()">New File</button-->
         <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
         <button type="button" id="btn_delete" onclick="deleteFile()">{lbl_delete}</button>
       </div>
@@ -19,7 +19,9 @@
 <style type="text/css">
   fieldset {border:1px solid silver; margin:0; padding:10px;}
   fieldset input {width:250px;}
-  #simple_response {color:#d00;}
+  #simple_response {color:#0a0;}
+  #path span {color:blue; cursor:pointer;}
+  #path span:hover {text-decoration:underline;}
   #frm_dir th {text-align:left;}
 </style>
 <script>

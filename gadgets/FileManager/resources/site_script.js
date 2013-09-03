@@ -15,7 +15,7 @@ var FileManagerCallback = {
         console.log(response);
         if (response) {
             cancel();
-            initFileManager();
+            fillFilesCombo(currentDir);
         }
         $('simple_response').set('html', response);
     }
@@ -26,22 +26,24 @@ var FileManagerCallback = {
  */
 function initFileManager()
 {
-    var files = fmAjax.callSync('GetFiles', 0);
     comboFiles = $('files');
-    if (files) {
-        fillFilesCombo(files);
-    }
+    currentDir = 0;
+    fillFilesCombo(currentDir);
 }
 
 /**
  * Fills files combobox
  */
-function fillFilesCombo(files)
+function fillFilesCombo(parent)
 {
-    comboFiles.options.length = 0;
-    files.each(function (file) {
-        comboFiles.options[comboFiles.options.length] = new Option(file.title, file.id);
-    });
+    var files = fmAjax.callSync('GetFiles', parent);
+    if (files) {
+        comboFiles.options.length = 0;
+        files.each(function (file) {
+            fileById[file.id] = file;
+            comboFiles.options[comboFiles.options.length] = new Option(file.title, file.id);
+        });
+    }
 }
 
 /**
@@ -54,13 +56,58 @@ function selectFile()
 }
 
 /**
+ * Opens directory
+ */
+function openFile()
+{
+    if (fileById[comboFiles.value].is_dir) {
+        changeDir(comboFiles.value);
+        updatePath();
+    }
+}
+
+/**
+ * Builds the directory path
+ */
+function updatePath()
+{
+    var pathArr = fmAjax.callSync('GetPath', currentDir),
+        path = $('path').set('html', ''),
+        link = new Element('span', {'html':'Root'});
+    link.addEvent('click', changeDir.pass(0));
+    path.grab(link);
+    pathArr.reverse().each(function (dir, i) {
+        path.appendText(' > ');
+        if (i === pathArr.length - 1) {
+            path.appendText(dir.title);
+        } else {
+            link = new Element('span');
+            link.set('html', dir.title);
+            link.addEvent('click', changeDir.pass(dir.id));
+            path.grab(link);
+        }
+    });
+}
+
+/**
+ * Changes current path to the given directory
+ */
+function changeDir(id)
+{
+    currentDir = id;
+    selectedId = null;
+    fillFilesCombo(currentDir);
+    updatePath();
+}
+
+/**
  * Deselects file and hides the form
  */
 function cancel()
 {
     selectedId = null;
     $('form').set('html', '');
-    $('files').selectedIndex = -1;
+    comboFiles.selectedIndex = -1;
 }
 
 /**
@@ -72,8 +119,9 @@ function newDir()
         cachedDirForm = fmAjax.callSync('GetDirForm');
     }
     $('form').set('html', cachedDirForm);
-    $('files').selectedIndex = -1;
+    comboFiles.selectedIndex = -1;
     $('frm_dir').title.focus();
+    $('frm_dir').parent.value = currentDir;
 }
 
 /**
@@ -134,6 +182,8 @@ function newFile()
 
 var fmAjax = new JawsAjax('FileManager', FileManagerCallback),
     comboFiles,
+    fileById = {},
     selectedId,
     cachedDirForm = null,
-    cachedFileForm = null;
+    cachedFileForm = null,
+    currentDir = 0;

@@ -16,10 +16,10 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
      * @access  public
      * @return  array   Array of files/dirs
      */
-    function GetFiles()
+    function GetFiles($parent = 0)
     {
         $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
-        $res = $model->GetFiles();
+        $res = $model->GetFiles($parent);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -40,6 +40,22 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
             return false;
         }
         return $res;
+    }
+
+    /**
+     * Fetches path of a file/dir
+     *
+     * @access  public
+     * @param   int     $id     File or Directory ID
+     * @param   array   $path   Directory hierarchy
+     * @return  void
+     */
+    function GetPath($id)
+    {
+        $path = array();
+        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model->GetPath($id, $path);
+        return $path;
     }
 
     /**

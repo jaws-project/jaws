@@ -30,9 +30,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
         // display probabley responses
         $message = $GLOBALS['app']->Session->PopSimpleResponse('FileManager');
         if ($message) {
-            //$tpl->SetBlock('fileForm/response');
             $tpl->SetVariable('response', $message);
-            //$tpl->ParseBlock('fileForm/response');
         }
 
         $tpl->ParseBlock('fileManager');
@@ -47,7 +45,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
      * @param   bool    $published  If true then only published files are returned
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = 0, $published = null)
+    function GetFiles($parent = null, $published = null)
     {
         $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
         $res = $model->GetFiles($parent, $published);

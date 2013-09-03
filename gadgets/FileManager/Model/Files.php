@@ -18,15 +18,15 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      * @param   bool    $published  If true then only published files are returned
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = 0, $published = null)
+    function GetFiles($parent = null, $published = null)
     {
         $fmTable = Jaws_ORM::getInstance()->table('fm_files');
-        $fmTable->select('id', 'title', 'is_dir', 'filetype');
+        $fmTable->select('id', 'title', 'is_dir:boolean');
 
-        if ($parent){
+        if ($parent !== null){
             $fmTable->where('parent', $parent);
         }
-        if ($published){
+        if ($published !== null){
             $fmTable->where('published', true);
         }
         return $fmTable->orderBy('id asc')->fetchAll();
@@ -45,6 +45,25 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
         $fmTable->select('id', 'parent', 'is_dir:boolean', 'title',
             'description', 'filename', 'url', 'published:boolean');
         return $fmTable->where('id', $id)->fetchRow();
+    }
+
+    /**
+     * Fetches path of a file/dir
+     *
+     * @access  public
+     * @param   int     $id     File or Directory ID
+     * @param   array   $path   Directory hierarchy
+     * @return  void
+     */
+    function GetPath($id, &$path)
+    {
+        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable->select('id', 'parent', 'title');
+        $parent = $fmTable->where('id', $id)->fetchRow();
+        if (!empty($parent)) {
+            $path[] = array('id' => $parent['id'], 'title' => $parent['title']);
+            $this->GetPath($parent['parent'], $path);
+        }
     }
 
     /**
@@ -70,7 +89,6 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function UpdateFile($id, $data)
     {
-        _log_var_dump($id);
         $fmTable = Jaws_ORM::getInstance()->table('fm_files');
         return $fmTable->update($data)->where('id', $id)->exec();
     }
