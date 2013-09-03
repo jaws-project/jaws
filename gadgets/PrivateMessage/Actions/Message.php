@@ -18,8 +18,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
      */
     function ViewMessage()
     {
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'get');
+        $id = jaws()->request->get('id', 'get');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
@@ -65,6 +64,31 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             )
         );
 
+        if(!empty($message['attachments'])) {
+            $tpl->SetBlock('message/attachment');
+            $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+            foreach($message['attachments'] as $file) {
+                $tpl->SetBlock('message/attachment/file');
+                $tpl->SetVariable('lbl_hints_count', _t('PRIVATEMESSAGE_FILE_HINTS_COUNT'));
+                $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                $tpl->SetVariable('file_name', $file['user_filename']);
+                $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['file_size']));
+                $tpl->SetVariable('hints_count', $file['hints_count']);
+
+                $tpl->SetVariable('file_download_link', $file['user_filename']);
+                $file_url = $this->gadget->urlMap('Attachment',
+                                                  array(
+                                                      'uid' => $message['from'],
+                                                      'mid' => $id,
+                                                      'aid' => $file['id'],
+                                                  ));
+                $tpl->SetVariable('file_download_link', $file_url);
+
+                $tpl->ParseBlock('message/attachment/file');
+            }
+            $tpl->ParseBlock('message/attachment');
+        }
+
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_back',      STOCK_LEFT);
@@ -86,8 +110,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteMessage');
 
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'post');
+        $id = jaws()->request->get('id', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
@@ -110,8 +133,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
      */
     function Reply()
     {
-        $request =& Jaws_Request::getInstance();
-        $id = $request->get('id', 'post');
+        $id = jaws()->request->get('id', 'post');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
@@ -172,8 +194,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ReplyMessage');
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('id', 'reply'), 'post');
+        $post = jaws()->request->get(array('id', 'reply'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');

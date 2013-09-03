@@ -16,3 +16,13 @@ $maps[] = array(
     'pm/message/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
+$maps[] = array(
+    'Attachment',
+    'pm/{uid}/message/{mid}/attachment/{aid}',
+    array(
+        'uid' => '[[:alnum:]-_]+',
+        'mid' => '[[:alnum:]-_]+',
+        'aid' => '[[:alnum:]-_]+',
+    ),
+    ''
+);

@@ -55,3 +55,7 @@ $actions['SendMessage'] = array(
     'normal' => true,
     'file' => 'Send',
 );
+$actions['Attachment'] = array(
+    'standalone' => true,
+    'file'   => 'Attachment',
+);

@@ -9,7 +9,6 @@
         <input type="hidden" name="id" id="id" value="{id}"/>
 
         <div class="content">
-            <fieldset>
                 <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
                 <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
                 <div>{lbl_send_time}: {send_time}</div>
@@ -25,6 +24,19 @@
                     <div>{lbl_body}:</div>
                     <div>{body}</div>
                 </div>
+
+            <!-- BEGIN attachment -->
+            <div>&nbsp;</div>
+            <fieldset>
+                <legend><span>{lbl_attachments}</span></legend>
+
+                <!-- BEGIN file -->
+                <div><a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size} - {lbl_hints_count}: {hints_count})</div>
+                <!-- END file -->
+
+            </fieldset>
+            <!-- END attachment -->
+
         </div>
     </form>
 </div>

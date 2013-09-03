@@ -44,6 +44,8 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 /* Common */
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
 define('_EN_PRIVATEMESSAGE_FILE', "File");
+define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
+define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");
 define('_EN_PRIVATEMESSAGE_ADD_ANOTHER_FILE', "Add another file");
 
 /* Responses */
