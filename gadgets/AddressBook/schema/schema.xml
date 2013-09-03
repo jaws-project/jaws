@@ -45,36 +45,6 @@
         </field>
 
         <field>
-            <name>url</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>notes</name>
-            <type>text</type>
-        </field>
-
-        <field>
-            <name>public</name>
-            <type>boolean</type>
-            <default>false</default>
-            <description>is information public and other users can see</description>
-        </field>
-
-        <field>
-            <name>address</name>
-            <type>text</type>
-            <length>255</length>
-        </field>
-
-        <field>
-            <name>postal_code</name>
-            <type>text</type>
-            <length>24</length>
-        </field>
-
-        <field>
             <name>phone_number</name>
             <type>text</type>
             <length>48</length>
@@ -90,6 +60,36 @@
             <name>fax_number</name>
             <type>text</type>
             <length>48</length>
+        </field>
+
+        <field>
+            <name>address</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>postal_code</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>notes</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>public</name>
+            <type>boolean</type>
+            <default>false</default>
+            <description>is information public and other users can see</description>
         </field>
 
         <field>
@@ -131,6 +131,12 @@
             <name>description</name>
             <type>text</type>
             <length>128</length>
+        </field>
+
+        <field>
+            <name>user</name>
+            <type>integer</type>
+            <notnull>true</notnull>
         </field>
 
         <index>

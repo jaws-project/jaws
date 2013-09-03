@@ -18,3 +18,27 @@ $actions['AddAddress'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
+$actions['EditAddress'] = array(
+    'normal' => true,
+    'file'   => 'AddressBook',
+);
+$actions['SaveItem'] = array(
+    'normal' => true,
+    'file'   => 'AddressBook',
+);
+$actions['ManageGroups'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);
+$actions['AddGroup'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);
+$actions['EditGroup'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);
+$actions['SaveGroup'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);

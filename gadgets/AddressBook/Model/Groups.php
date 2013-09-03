@@ -1,0 +1,81 @@
+<?php
+/**
+ * AddressBook Gadget
+ *
+ * @category    GadgetModel
+ * @package     AddressBook
+ * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
+ * @copyright   2013 Jaws Development Group
+ */
+class AddressBook_Model_Groups extends Jaws_Gadget_Model
+{
+    /**
+     * Gets a list of Address Books Group
+     *
+     * @access  public
+     * @param   array()     $user      list of Group ID, AddressBook Items must be member of one(minimum) Group ID has exist in this array
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetGroups($user)
+    {
+        $gTable = Jaws_ORM::getInstance()->table('address_group');
+        $gTable->select('*');
+        $gTable->where('user', $user);
+
+        return $gTable->fetchAll();
+    }
+
+    /**
+     * Gets info of selected Group
+     *
+     * @access  public
+     * @param   integer     $gid      Group ID
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetGroupInfo($gid)
+    {
+        $gTable = Jaws_ORM::getInstance()->table('address_group');
+        $gTable->select('*')->where('id', (int) $gid);
+
+        return $gTable->fetchRow();
+    }
+
+    /**
+     * Insert New AddressBook Group Data to DB
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function InsertGroup($user, $name, $desc)
+    {
+        $data['[user]']         = $user;
+        $data['name']           = $name;
+        $data['[description]']  = $desc;
+
+        $adrTable = Jaws_ORM::getInstance()->table('address_group');
+        return $adrTable->insert($data)->exec();
+    }
+
+    /**
+     * Uodate AddressBook Group Data to DB
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function UpdateGroup($gid, $name, $desc)
+    {
+        $data['name']           = $name;
+        $data['[description]']  = $desc;
+
+        $adrTable = Jaws_ORM::getInstance()->table('address_group');
+        return $adrTable->update($data)->where('id', $gid)->exec();
+    }
+}
+
+
+
+
+
+
+
+
