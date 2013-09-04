@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager Gadget
+ * Directory Gadget
  *
  * @category    Gadget
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Actions_Files extends Jaws_Gadget_HTML
+class Directory_Actions_Files extends Jaws_Gadget_HTML
 {
     /**
      * Builds the file management form
@@ -18,17 +18,17 @@ class FileManager_Actions_Files extends Jaws_Gadget_HTML
      */
     function FileForm()
     {
-        $tpl = $this->gadget->loadTemplate('FileManager.html');
+        $tpl = $this->gadget->loadTemplate('Directory.html');
         $tpl->SetBlock('fileForm');
-        $tpl->SetVariable('lbl_title', _t('FILEMANAGER_FILE_TITLE'));
-        $tpl->SetVariable('lbl_parent', _t('FILEMANAGER_FILE_PARENT'));
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+        $tpl->SetVariable('lbl_parent', _t('DIRECTORY_FILE_PARENT'));
         $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
         $tpl->ParseBlock('fileForm');
         return $tpl->Get();
     }
 
     /**
-     * Creates a new file/dir
+     * Creates a new file/directory
      *
      * @access  public
      * @return  array   Response array
@@ -41,16 +41,16 @@ class FileManager_Actions_Files extends Jaws_Gadget_HTML
         $data['published'] = ($data['user'] == 1)? true : false;
         $data['is_dir'] = ($data['is_dir'] == 1)? true : false;
         //_log_var_dump($data);
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $result = $model->InsertFile($data);
         //$result = true;
         if (Jaws_Error::IsError($result)) {
-            $msg = _t('FILEMANAGER_ERROR_FILE_CREATE');
+            $msg = _t('DIRECTORY_ERROR_FILE_CREATE');
         } else {
-            $msg = _t('FILEMANAGER_NOTICE_FILE_CREATED');
+            $msg = _t('DIRECTORY_NOTICE_FILE_CREATED');
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'FileManager');
+        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'Directory');
         Jaws_Header::Referrer();
     }
 

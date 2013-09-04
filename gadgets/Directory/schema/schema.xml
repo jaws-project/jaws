@@ -3,7 +3,7 @@
   <name><variable>database</variable></name>
 
   <table>
-    <name><variable>table_prefix</variable>fm_files</name>
+    <name><variable>table_prefix</variable>directory</name>
     <declaration>
 
       <field>
@@ -67,9 +67,9 @@
       </field>
 
       <field>
-        <name>published</name>
-        <type>boolean</type>
-        <default>true</default>
+        <name>key</name>
+        <type>text</type>
+        <length>32</length>
       </field>
 
       <field>
@@ -88,7 +88,7 @@
   </table>
 
   <table>
-    <name><variable>table_prefix</variable>fm_shared_files</name>
+    <name><variable>table_prefix</variable>directory_share</name>
     <declaration>
 
       <field>

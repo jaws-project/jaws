@@ -1,8 +1,8 @@
 /**
- * FileManager Javascript actions
+ * Directory Javascript actions
  *
  * @category    Ajax
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -10,7 +10,7 @@
 /**
  * Use async mode, create Callback
  */
-var FileManagerCallback = {
+var DirectoryCallback = {
     DeleteFile: function(response) {
         console.log(response);
         if (response) {
@@ -22,9 +22,9 @@ var FileManagerCallback = {
 }
 
 /**
- * Initiates FileManager
+ * Initiates Directory
  */
-function initFileManager()
+function initDirectory()
 {
     comboFiles = $('files');
     currentDir = Number(fmStorage.fetch('current_dir'));
@@ -47,7 +47,7 @@ function fillFilesCombo(parent)
 }
 
 /**
- * Sets selected file/dir ID for edit/delete operations
+ * Sets selected file/directory ID for edit/delete operations
  */
 function selectFile()
 {
@@ -115,10 +115,10 @@ function updatePath()
  */
 function newDir()
 {
-    if (cachedDirForm === null) {
-        cachedDirForm = fmAjax.callSync('GetDirForm');
+    if (cachedDirectoryForm === null) {
+        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
     }
-    $('form').set('html', cachedDirForm);
+    $('form').set('html', cachedDirectoryForm);
     comboFiles.selectedIndex = -1;
     $('frm_dir').title.focus();
     $('frm_dir').parent.value = currentDir;
@@ -146,12 +146,12 @@ function edit()
  */
 function editDir(data)
 {
-    if (cachedDirForm === null) {
-        cachedDirForm = fmAjax.callSync('GetDirForm');
+    if (cachedDirectoryForm === null) {
+        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
     }
-    $('form').set('html', cachedDirForm);
+    $('form').set('html', cachedDirectoryForm);
     var form = $('frm_dir');
-    form.action.value = 'UpdateDir';
+    form.action.value = 'UpdateDirectory';
     form.id.value = selectedId;
     form.title.value = data.title;
     form.description.value = data.description;
@@ -160,7 +160,7 @@ function editDir(data)
 }
 
 /**
- * Deletes selected file/dir
+ * Deletes selected file/directory
  */
 function deleteFile()
 {
@@ -180,11 +180,11 @@ function newFile()
     $('form').set('html', cachedForm);
 }
 
-var fmAjax = new JawsAjax('FileManager', FileManagerCallback),
-    fmStorage = new JawsStorage('FileManager'),
+var fmAjax = new JawsAjax('Directory', DirectoryCallback),
+    fmStorage = new JawsStorage('Directory'),
     comboFiles,
     fileById = {},
     selectedId,
-    cachedDirForm = null,
+    cachedDirectoryForm = null,
     cachedFileForm = null,
     currentDir = 0;

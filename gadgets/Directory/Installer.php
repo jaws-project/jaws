@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager Installer
+ * Directory Installer
  *
  * @category    GadgetModel
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Installer extends Jaws_Gadget_Installer
+class Directory_Installer extends Jaws_Gadget_Installer
 {
     /**
      * Gadget ACLs
@@ -17,7 +17,6 @@ class FileManager_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLs = array(
-        'ManageFiles',
         'ShareFile',
         'UpdateSettings'
     );
@@ -35,9 +34,9 @@ class FileManager_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $new_dir = JAWS_DATA . 'filemanager';
+        $new_dir = JAWS_DATA . 'directory';
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('DIRECTORY_NAME'));
         }
 
         return true;
@@ -52,8 +51,8 @@ class FileManager_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'fm_files',
-            'fm_shared_files');
+            'directory',
+            'directory_share');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {

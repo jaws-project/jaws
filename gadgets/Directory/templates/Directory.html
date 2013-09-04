@@ -1,5 +1,5 @@
-<!-- BEGIN fileManager -->
-<div class="gadget file-manager">
+<!-- BEGIN directory -->
+<div class="gadget directory">
   <h2>{title}</h2>
   <div id="simple_response">{response}</div>
   <div><b>Path:</b> <span id="path"></span></div>
@@ -25,14 +25,14 @@
   #frm_dir th {text-align:left;}
 </style>
 <script>
-  initFileManager();
+  initDirectory();
 </script>
-<!-- END fileManager -->
+<!-- END directory -->
 
-<!-- BEGIN dirForm -->
+<!-- BEGIN directoryForm -->
 <form id="frm_dir" name="frm_dir" action="{base_url}" method="post">
-  <input type="hidden" name="gadget" value="FileManager" />
-  <input type="hidden" name="action" value="CreateDir" />
+  <input type="hidden" name="gadget" value="Directory" />
+  <input type="hidden" name="action" value="CreateDirectory" />
   <input type="hidden" name="id" />
   <input type="hidden" name="parent" value="0" />
   <fieldset>
@@ -50,7 +50,7 @@
     <button type="button" onclick="cancel()">Cancel</button>
   </div>
 </form>
-<!-- END dirForm -->
+<!-- END directoryForm -->
 
 <!-- BEGIN fileForm -->
 <div class="form">
@@ -62,7 +62,7 @@
         <form id="frm_file" name="frm_file" method="post"
               target="ifrm_upload" action="{base_script}"
               enctype="multipart/form-data" onsubmit="return true">
-          <input type="hidden" name="gadget" value="FileManager" />
+          <input type="hidden" name="gadget" value="Directory" />
           <input type="hidden" name="action" value="UploadFile" />
           <input type="file" name="file" onchange="uploadFile()" />
           <input id="filename" name="filename" />

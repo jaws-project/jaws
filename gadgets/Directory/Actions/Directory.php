@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager Gadget
+ * Directory Gadget
  *
  * @category    Gadget
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
+class Directory_Actions_Directory extends Jaws_Gadget_HTML
 {
     /**
      * Builds file management UI
@@ -16,24 +16,24 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML UI
      */
-    function FileManager()
+    function Directory()
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('FileManager.html');
-        $tpl->SetBlock('fileManager');
+        $tpl = $this->gadget->loadTemplate('Directory.html');
+        $tpl->SetBlock('directory');
 
-        $tpl->SetVariable('title', _t('FILEMANAGER_NAME'));
+        $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
         $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
         // display probabley responses
-        $message = $GLOBALS['app']->Session->PopSimpleResponse('FileManager');
+        $message = $GLOBALS['app']->Session->PopSimpleResponse('Directory');
         if ($message) {
             $tpl->SetVariable('response', $message);
         }
 
-        $tpl->ParseBlock('fileManager');
+        $tpl->ParseBlock('directory');
         return $tpl->Get();
     }
 
@@ -47,7 +47,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
      */
     function GetFiles($parent = null, $published = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFiles($parent, $published);
         if (Jaws_Error::IsError($res)){
             return false;
@@ -56,7 +56,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
     }
 
     /**
-     * Fetches data of a file/dir
+     * Fetches data of a file/directory
      *
      * @access  public
      * @param   int     $id  File ID
@@ -64,7 +64,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
      */
     function GetFile($id)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFile($id);
         if (Jaws_Error::IsError($res)) {
             return false;
@@ -73,7 +73,7 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes file/dir
+     * Deletes file/directory
      *
      * @access  public
      * @param   int     $id  File ID
@@ -81,11 +81,11 @@ class FileManager_Actions_FileManager extends Jaws_Gadget_HTML
      */
     function DeleteFile($id)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->DeleteFile($id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
-        return _t('FILEMANAGER_NOTICE_DIR_DELETED');
+        return _t('DIRECTORY_NOTICE_DIR_DELETED');
     }
 }

@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager Gadget
+ * Directory Gadget
  *
  * @category    GadgetModel
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Model_Files extends Jaws_Gadget_Model
+class Directory_Model_Files extends Jaws_Gadget_Model
 {
     /**
      * Fetches list of files
@@ -20,7 +20,7 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function GetFiles($parent = null, $published = null)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         $fmTable->select('id', 'title', 'is_dir:boolean');
 
         if ($parent !== null){
@@ -33,7 +33,7 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
     }
 
     /**
-     * Fetches data of a file/dir
+     * Fetches data of a file/directory
      *
      * @access  public
      * @param   int     $id  File ID
@@ -41,14 +41,14 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function GetFile($id)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         $fmTable->select('id', 'parent', 'is_dir:boolean', 'title',
             'description', 'filename', 'url', 'published:boolean');
         return $fmTable->where('id', $id)->fetchRow();
     }
 
     /**
-     * Fetches path of a file/dir
+     * Fetches path of a file/directory
      *
      * @access  public
      * @param   int     $id     File or Directory ID
@@ -57,7 +57,7 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function GetPath($id, &$path)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         $fmTable->select('id', 'parent', 'title');
         $parent = $fmTable->where('id', $id)->fetchRow();
         if (!empty($parent)) {
@@ -67,7 +67,7 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
     }
 
     /**
-     * Inserts a new file/dir
+     * Inserts a new file/directory
      *
      * @access  public
      * @param   array  $data    File data
@@ -75,12 +75,12 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function InsertFile($data)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         return $fmTable->insert($data)->exec();
     }
 
     /**
-     * Updates file/dir
+     * Updates file/directory
      *
      * @access  public
      * @param   int     $id     File ID
@@ -89,12 +89,12 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function UpdateFile($id, $data)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         return $fmTable->update($data)->where('id', $id)->exec();
     }
 
     /**
-     * Deletes file/dir
+     * Deletes file/directory
      *
      * @access  public
      * @param   int     $id  File ID
@@ -102,7 +102,7 @@ class FileManager_Model_Files extends Jaws_Gadget_Model
      */
     function DeleteFile($id)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('fm_files');
+        $fmTable = Jaws_ORM::getInstance()->table('directory');
         return $fmTable->delete()->where('id', $id)->exec();
     }
 }

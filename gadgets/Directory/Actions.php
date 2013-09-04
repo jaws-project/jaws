@@ -3,33 +3,33 @@
  * Contact Actions file
  *
  * @category    GadgetActions
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $actions = array();
-$actions['FileManager'] = array(
+$actions['Directory'] = array(
     'normal' => true,
-    'file' => 'FileManager'
+    'file' => 'Directory'
 );
 
 /* Dir Actions */
-$actions['DirForm'] = array(
+$actions['DirectoryForm'] = array(
     'normal' => true,
-    'file' => 'Dirs'
+    'file' => 'Directories'
 );
-$actions['CreateDir'] = array(
+$actions['CreateDirectory'] = array(
     'normal' => true,
-    'file' => 'Dirs'
+    'file' => 'Directories'
 );
-$actions['UpdateDir'] = array(
+$actions['UpdateDirectory'] = array(
     'normal' => true,
-    'file' => 'Dirs'
+    'file' => 'Directories'
 );
 $actions['DeleteDir'] = array(
     'normal' => true,
-    'file' => 'Dirs'
+    'file' => 'Directories'
 );
 
 /* File Actions */
@@ -39,11 +39,11 @@ $actions['FileForm'] = array(
 );
 $actions['GetFiles'] = array(
     'normal' => true,
-    'file' => 'FileManager'
+    'file' => 'Directory'
 );
 $actions['GetFile'] = array(
     'normal' => true,
-    'file' => 'FileManager'
+    'file' => 'Directory'
 );
 $actions['CreateFile'] = array(
     'normal' => true,

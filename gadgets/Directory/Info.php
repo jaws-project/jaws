@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager gadget info
+ * Directory gadget info
  *
  * @category    GadgetInfo
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Info extends Jaws_Gadget
+class Directory_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
@@ -24,7 +24,7 @@ class FileManager_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'FileManager';
+    var $default_action = 'Directory';
 
     /**
      * Default back-end action name
@@ -32,6 +32,6 @@ class FileManager_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'FileManager';
+    var $default_admin_action = 'Directory';
 
 }

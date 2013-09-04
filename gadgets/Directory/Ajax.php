@@ -1,24 +1,24 @@
 <?php
 /**
- * FileManager AJAX API
+ * Directory AJAX API
  *
  * @category    Ajax
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Ajax extends Jaws_Gadget_HTML
+class Directory_Ajax extends Jaws_Gadget_HTML
 {
     /**
-     * Fetches list of files/dirs
+     * Fetches list of files/directories
      *
      * @access  public
-     * @return  array   Array of files/dirs
+     * @return  array   Array of files/directories
      */
     function GetFiles($parent = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFiles($parent);
         if (Jaws_Error::IsError($res)) {
             return false;
@@ -27,14 +27,14 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Fetches data of file/dir
+     * Fetches data of file/directory
      *
      * @access  public
-     * @return  array   Array of file/dir data
+     * @return  array   Array of file/directory data
      */
     function GetFile($id)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFile($id);
         if (Jaws_Error::IsError($res)) {
             return false;
@@ -43,7 +43,7 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Fetches path of a file/dir
+     * Fetches path of a file/directory
      *
      * @access  public
      * @param   int     $id     File or Directory ID
@@ -53,7 +53,7 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
     function GetPath($id)
     {
         $path = array();
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $model->GetPath($id, $path);
         return $path;
     }
@@ -64,10 +64,10 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML form
      */
-    function GetDirForm()
+    function GetDirectoryForm()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'HTML', 'Dirs');
-        return $gadget->DirForm();
+        $gadget = $GLOBALS['app']->LoadGadget('Directory', 'HTML', 'Directories');
+        return $gadget->DirectoryForm();
     }
 
     /**
@@ -78,24 +78,24 @@ class FileManager_Ajax extends Jaws_Gadget_HTML
      */
     function GetFileForm()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'HTML', 'Files');
+        $gadget = $GLOBALS['app']->LoadGadget('Directory', 'HTML', 'Files');
         return $gadget->FileForm();
     }
 
     /**
-     * Deletes file/dir
+     * Deletes file/directory
      *
      * @access  public
      * @return  string  XHTML form
      */
     function DeleteFile($id)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $gadget = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $gadget->DeleteFile($id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
-        return _t('FILEMANAGER_NOTICE_DIR_DELETED');
+        return _t('DIRECTORY_NOTICE_DIR_DELETED');
     }
 
 }

@@ -1,14 +1,14 @@
 <?php
 /**
- * FileManager Gadget
+ * Directory Gadget
  *
  * @category    Gadget
- * @package     FileManager
+ * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
+class Directory_Actions_Directories extends Jaws_Gadget_HTML
 {
     /**
      * Builds the directory management form
@@ -16,16 +16,16 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML form
      */
-    function DirForm()
+    function DirectoryForm()
     {
-        $tpl = $this->gadget->loadTemplate('FileManager.html');
-        $tpl->SetBlock('dirForm');
-        $tpl->SetVariable('lbl_title', _t('FILEMANAGER_DIR_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('FILEMANAGER_DIR_DESC'));
-        $tpl->SetVariable('lbl_parent', _t('FILEMANAGER_DIR_PARENT'));
+        $tpl = $this->gadget->loadTemplate('Directory.html');
+        $tpl->SetBlock('directoryForm');
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_DIR_TITLE'));
+        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_DIR_DESC'));
+        $tpl->SetVariable('lbl_parent', _t('DIRECTORY_DIR_PARENT'));
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
-        $tpl->ParseBlock('dirForm');
+        $tpl->ParseBlock('directoryForm');
         return $tpl->Get();
     }
 
@@ -35,22 +35,22 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
      * @access  public
      * @return  array   Response array
      */
-    function CreateDir()
+    function CreateDirectory()
     {
         $request =& Jaws_Request::getInstance();
         $data = $request->get(array('title', 'description', 'parent', 'published'));
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $data['published'] = ($data['published'] == 1)? true : false;
         $data['is_dir'] = true;
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $result = $model->InsertFile($data);
         if (Jaws_Error::IsError($result)) {
-            $msg = _t('FILEMANAGER_ERROR_DIR_CREATE');
+            $msg = _t('DIRECTORY_ERROR_DIR_CREATE');
         } else {
-            $msg = _t('FILEMANAGER_NOTICE_DIR_CREATED');
+            $msg = _t('DIRECTORY_NOTICE_DIR_CREATED');
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'FileManager');
+        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'Directory');
         Jaws_Header::Referrer();
     }
 
@@ -60,7 +60,7 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
      * @access  public
      * @return  array   Response array
      */
-    function UpdateDir()
+    function UpdateDirectory()
     {
         $request =& Jaws_Request::getInstance();
         $id = (int)$request->get('id');
@@ -68,15 +68,15 @@ class FileManager_Actions_Dirs extends Jaws_Gadget_HTML
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $data['published'] = ($data['published'] == 1)? true : false;
         $data['is_dir'] = true;
-        $model = $GLOBALS['app']->LoadGadget('FileManager', 'Model', 'Files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $result = $model->UpdateFile($id, $data);
         if (Jaws_Error::IsError($result)) {
-            $msg = _t('FILEMANAGER_ERROR_DIR_UPDATE');
+            $msg = _t('DIRECTORY_ERROR_DIR_UPDATE');
         } else {
-            $msg = _t('FILEMANAGER_NOTICE_DIR_UPDATED');
+            $msg = _t('DIRECTORY_NOTICE_DIR_UPDATED');
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'FileManager');
+        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'Directory');
         Jaws_Header::Referrer();
     }
 
