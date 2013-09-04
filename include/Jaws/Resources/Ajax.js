@@ -64,7 +64,7 @@ var JawsAjax = new Class({
         options.url = this.baseURL + action;
         options.action = action;
         options.async = true;
-        if (arguments.length > 2) {
+        if (arguments.length > 2 || (typeOf(arguments[1]) != 'object' && typeOf(arguments[1]) != 'array')) {
             params = Array.prototype.slice.call(arguments, 1);
         }
         options.data = toJSON(params);
@@ -88,7 +88,7 @@ var JawsAjax = new Class({
         options.async = false;
         options.url = this.baseURL + action;
         options.action = action;
-        if (arguments.length > 2) {
+        if (arguments.length > 2 || (typeOf(arguments[1]) != 'object' && typeOf(arguments[1]) != 'array')) {
             params = Array.prototype.slice.call(arguments, 1);
         }
         options.data = toJSON(params);
