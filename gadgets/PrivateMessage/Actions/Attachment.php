@@ -19,19 +19,16 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
     function Attachment()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
-                $this->gadget->urlMap(
-                    'LoginBox',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                )
-            );
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
         }
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $rqst = jaws()->request->get(array('uid', 'mid', 'aid'), 'get');
 
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $message = $model->GetMessage($rqst['mid']);
+        $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+        $message = $mModel->GetMessage($rqst['mid']);
         if (Jaws_Error::IsError($message)) {
             return Jaws_HTTPError::Get(500);
         }
@@ -40,13 +37,13 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(500);
         }
 
-        $attachment = $model->GetMessageAttachment($rqst['aid']);
+        $attachment = $aModel->GetMessageAttachment($rqst['aid']);
         if (!empty($attachment) && ($attachment['message_id'] == $rqst['mid'])) {
             $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $rqst['uid'] . DIRECTORY_SEPARATOR .
                 $attachment['host_filename'];
             if (file_exists($filepath)) {
                 // increase download hits
-                $model->HitAttachmentDownload($rqst['aid']);
+                $aModel->HitAttachmentDownload($rqst['aid']);
 
                 if (Jaws_Utils::Download($filepath, $attachment['user_filename'])) {
                     return;

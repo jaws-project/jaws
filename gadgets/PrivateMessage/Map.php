@@ -10,12 +10,22 @@
  */
 $maps[] = array('Inbox', 'pm/inbox');
 $maps[] = array('Outbox', 'pm/outbox');
-$maps[] = array('Send', 'pm/send');
+$maps[] = array(
+    'Send',
+    'pm/send[/forward/{id}]',
+    array('id' => '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
+    'Reply',
+    'pm/reply/{id}',
+    array('id' => '[\p{L}[:digit:]-_\.]+',)
+);
 $maps[] = array(
     'ViewMessage',
     'pm/message/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
+
 $maps[] = array(
     'Attachment',
     'pm/{uid}/message/{mid}/attachment/{aid}',

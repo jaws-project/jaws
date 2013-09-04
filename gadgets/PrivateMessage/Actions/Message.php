@@ -18,11 +18,16 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
      */
     function ViewMessage()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $id = jaws()->request->get('id', 'get');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
-        $message = $model->GetMessage($id);
+        $message = $model->GetMessage($id, true);
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model->MarkMessages($id, PrivateMessage_Info::PM_STATUS_READ, $user);
@@ -89,6 +94,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/attachment');
         }
 
+        $tpl->SetVariable('forward_url', $this->gadget->urlMap('Send', array('id' => $id)));
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_back',      STOCK_LEFT);
@@ -117,7 +123,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $res = $model->DeleteMessage($id, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
-                $res->GetMessage(),
+                $res->getMessage(),
                 'PrivateMessage.Message',
                 RESPONSE_ERROR
             );
@@ -201,7 +207,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $res = $model->ReplyMessage($post['id'], $user, $post['reply']);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
-                $res->GetMessage(),
+                $res->getMessage(),
                 'PrivateMessage.Message',
                 RESPONSE_ERROR
             );

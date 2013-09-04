@@ -18,6 +18,11 @@ class PrivateMessage_Actions_NavigationArea extends Jaws_Gadget_HTML
      */
     function NavigationArea()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $tpl = $this->gadget->loadTemplate('NavigationArea.html');
         $tpl->SetBlock('NavigationArea');
 

@@ -21,16 +21,23 @@
 
                 <div>
                     <label for="subject">{lbl_subject}:</label>
-                    <input name="subject" id="subject" type="text"/>
+                    <input name="subject" id="subject" type="text" value="{subject}"/>
                 </div>
 
                 <div>
                     <label for="body">{lbl_body}:</label>
-                    <textarea name="body" id="body" rows="6"></textarea>
+                    <textarea name="body" id="body" rows="6">{body}</textarea>
                 </div>
 
             <fieldset>
                 <legend><span>{lbl_attachments}</span></legend>
+
+                <!-- BEGIN file -->
+                <div>
+                    <input type="checkbox" name="selected_files[]" id="chk_file_{file_id}" value="{file_id}" checked>
+                    <a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size} - {lbl_hints_count}: {hints_count})
+                </div>
+                <!-- END file -->
 
                 <div>
                     <label for="file1" id="file1_label">{lbl_file} 1:&nbsp;</label>
@@ -43,8 +50,6 @@
                   type="button"><img id="addEntryButton_stockimage" alt="" src="{icon_add}">&nbsp;{lbl_add_file}
           </button>
       </div></span></div>
-                <br>
-
             </fieldset>
 
 

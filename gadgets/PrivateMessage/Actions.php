@@ -31,10 +31,6 @@ $actions['UnreadMessage'] = array(
     'normal' => true,
     'file' => 'Message',
 );
-$actions['ForwardMessage'] = array(
-    'normal' => true,
-    'file' => 'Message',
-);
 $actions['Reply'] = array(
     'normal' => true,
     'file' => 'Message',

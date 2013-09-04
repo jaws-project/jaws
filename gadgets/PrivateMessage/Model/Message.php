@@ -14,10 +14,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * Get a message Info
      *
      * @access  public
-     * @param   integer  $id   Message id
+     * @param   integer $id                 Message id
+     * @param   bool    $fetchAttachment    Fetch message's attachment info?
      * @return  mixed    Inbox count or Jaws_Error on failure
      */
-    function GetMessage($id)
+    function GetMessage($id, $fetchAttachment = false)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
@@ -34,66 +35,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
 
-        $result['attachments'] = $this->GetMessageAttachments($id);
-        return $result;
-    }
-
-    /**
-     * Get a message attachments Info
-     *
-     * @access  public
-     * @param   integer  $id   Message id
-     * @return  array    Array of message attachments or Empty Array
-     */
-    function GetMessageAttachments($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $table->select('id:integer', 'host_filename', 'user_filename', 'file_size', 'hints_count:integer');
-        $result = $table->where('message_id', $id)->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return array();
+        if($fetchAttachment) {
+            $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $result['attachments'] = $model->GetMessageAttachments($id);
         }
         return $result;
-    }
-
-    /**
-     * Get a message attachments Info
-     *
-     * @access  public
-     * @param   integer  $id   Attachment id
-     * @return  array    Array of message attachments or Empty Array
-     */
-    function GetMessageAttachment($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $table->select('message_id:integer', 'host_filename', 'user_filename', 'file_size', 'hints_count:integer');
-        $result = $table->where('id', $id)->fetchRow();
-        if (Jaws_Error::IsError($result)) {
-            return array();
-        }
-        return $result;
-    }
-
-    /**
-     * Increment attachment download hits
-     *
-     * @access  public
-     * @param   integer  $id   Attachment id
-     * @return  mixed   True or Jaws_Error
-     */
-    function HitAttachmentDownload($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $res = $table->update(
-            array(
-                'hints_count' => $table->expr('hints_count + ?', 1)
-            )
-        )->where('id', $id)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return true;
     }
 
     /**
@@ -174,7 +120,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->commit();
         return true;
     }
-
 
     /**
      * Send message

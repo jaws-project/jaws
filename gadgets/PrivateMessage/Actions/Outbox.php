@@ -8,26 +8,26 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_Outbox extends Jaws_Gadget_HTML
 {
     /**
-     * Display Inbox
+     * Display Outbox
      *
      * @access  public
      * @return  void
      */
-    function Inbox()
+    function Outbox()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
-        $tpl = $this->gadget->loadTemplate('Inbox.html');
-        $tpl->SetBlock('inbox');
+        $tpl = $this->gadget->loadTemplate('Outbox.html');
+        $tpl->SetBlock('outbox');
 
         $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('inbox/response');
@@ -36,19 +36,19 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $messages = $model->GetInbox($user);
+        $messages = $model->GetOutbox($user);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
-                $tpl->SetBlock('inbox/message');
+                $tpl->SetBlock('outbox/message');
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('from', $message['from_nickname']);
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap('ViewMessage', array('id' => $message['id'])));
-                $tpl->ParseBlock('inbox/message');
+                $tpl->ParseBlock('outbox/message');
             }
         }
 
@@ -56,7 +56,7 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
-        $tpl->ParseBlock('inbox');
+        $tpl->ParseBlock('outbox');
         return $tpl->Get();
     }
 }
