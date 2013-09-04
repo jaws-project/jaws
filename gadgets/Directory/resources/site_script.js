@@ -28,7 +28,7 @@ function initDirectory()
 {
     comboFiles = $('files');
     currentDir = Number(fmStorage.fetch('current_dir'));
-    changeDir(currentDir);
+    changeDirectory(currentDir);
 }
 
 /**
@@ -68,17 +68,17 @@ function cancel()
 /**
  * Opens directory
  */
-function openDir()
+function openDirectory()
 {
     if (fileById[comboFiles.value].is_dir) {
-        changeDir(comboFiles.value);
+        changeDirectory(comboFiles.value);
     }
 }
 
 /**
  * Changes current path to the given directory
  */
-function changeDir(id)
+function changeDirectory(id)
 {
     selectedId = null;
     currentDir = id;
@@ -95,7 +95,7 @@ function updatePath()
     var pathArr = fmAjax.callSync('GetPath', currentDir),
         path = $('path').set('html', ''),
         link = new Element('span', {'html':'Root'});
-    link.addEvent('click', changeDir.pass(0));
+    link.addEvent('click', changeDirectory.pass(0));
     path.grab(link);
     pathArr.reverse().each(function (dir, i) {
         path.appendText(' > ');
@@ -104,7 +104,7 @@ function updatePath()
         } else {
             link = new Element('span');
             link.set('html', dir.title);
-            link.addEvent('click', changeDir.pass(dir.id));
+            link.addEvent('click', changeDirectory.pass(dir.id));
             path.grab(link);
         }
     });
@@ -113,7 +113,7 @@ function updatePath()
 /**
  * Displays the blank form to create a new directory
  */
-function newDir()
+function newDirectory()
 {
     if (cachedDirectoryForm === null) {
         cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
@@ -133,7 +133,7 @@ function edit()
     var data = fmAjax.callSync('GetFile', selectedId);
     switch (data.is_dir) {
         case true:
-            editDir(data);
+            editDirectory(data);
             break;
         case false:
             editFile(data);
@@ -144,7 +144,7 @@ function edit()
 /**
  * Displays the form with data of selected directory to be edited
  */
-function editDir(data)
+function editDirectory(data)
 {
     if (cachedDirectoryForm === null) {
         cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
@@ -173,10 +173,13 @@ function deleteFile()
  */
 function newFile()
 {
-    if (cachedForm === null) {
-        cachedForm = fmAjax.callSync('GetFileForm');
+    if (cachedFileForm === null) {
+        cachedFileForm = fmAjax.callSync('GetFileForm');
     }
-    $('form').set('html', cachedForm);
+    $('form').set('html', cachedFileForm);
+    comboFiles.selectedIndex = -1;
+    $('frm_file').title.focus();
+    $('frm_file').parent.value = currentDir;
 }
 
 var fmAjax = new JawsAjax('Directory', DirectoryCallback),

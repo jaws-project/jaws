@@ -28,9 +28,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
         // display probabley responses
-        $message = $GLOBALS['app']->Session->PopSimpleResponse('Directory');
-        if ($message) {
-            $tpl->SetVariable('response', $message);
+        //$message = $GLOBALS['app']->Session->PopSimpleResponse('Directory');
+        $response = $GLOBALS['app']->Session->PopResponse('Directory');
+        if ($response) {
+            $tpl->SetVariable('response', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
         }
 
         $tpl->ParseBlock('directory');
