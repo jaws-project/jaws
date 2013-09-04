@@ -15,19 +15,15 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $parent     Restrict result to a specified node
-     * @param   bool    $published  If true then only published files are returned
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null, $published = null)
+    function GetFiles($parent = null)
     {
         $fmTable = Jaws_ORM::getInstance()->table('directory');
         $fmTable->select('id', 'title', 'is_dir:boolean');
 
         if ($parent !== null){
             $fmTable->where('parent', $parent);
-        }
-        if ($published !== null){
-            $fmTable->where('published', true);
         }
         return $fmTable->orderBy('id asc')->fetchAll();
     }
@@ -43,7 +39,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     {
         $fmTable = Jaws_ORM::getInstance()->table('directory');
         $fmTable->select('id', 'parent', 'is_dir:boolean', 'title',
-            'description', 'filename', 'url', 'published:boolean');
+            'description', 'filename', 'url');
         return $fmTable->where('id', $id)->fetchRow();
     }
 

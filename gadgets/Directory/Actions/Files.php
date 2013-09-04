@@ -36,9 +36,8 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     function CreateFile()
     {
         $request =& Jaws_Request::getInstance();
-        $data = $request->get(array('dir_id', 'title', 'description', 'parent', 'published'));
+        $data = $request->get(array('dir_id', 'title', 'description', 'parent'));
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['published'] = ($data['user'] == 1)? true : false;
         $data['is_dir'] = ($data['is_dir'] == 1)? true : false;
         //_log_var_dump($data);
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');

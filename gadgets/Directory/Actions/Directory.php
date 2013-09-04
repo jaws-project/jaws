@@ -42,13 +42,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $parent     Restrict result to a specified node
-     * @param   bool    $published  If true then only published files are returned
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null, $published = null)
+    function GetFiles($parent = null)
     {
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $model->GetFiles($parent, $published);
+        $res = $model->GetFiles($parent);
         if (Jaws_Error::IsError($res)){
             return false;
         }

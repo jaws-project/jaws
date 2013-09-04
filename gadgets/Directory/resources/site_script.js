@@ -156,7 +156,6 @@ function editDir(data)
     form.title.value = data.title;
     form.description.value = data.description;
     form.parent.value = data.parent;
-    form.published.value = (data.published === true)? 1 : 0;
 }
 
 /**
