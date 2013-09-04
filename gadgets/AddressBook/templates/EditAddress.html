@@ -4,42 +4,54 @@
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
   <form name="addressbook" action="{base_script}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="AddressBook" />
-  <input type="hidden" name="action" value="SaveItem" />
+  <input type="hidden" name="action" value="{action}" />
   <input type="hidden" name="id" value="{id}" />
   <div class="content">
       <p><label>{lbl_name}:</label>
-         <input name="addressbook_name" type="text" value="{name}" />
+         <input name="name" type="text" value="{name}" />
       </p>
       <p><label>{lbl_company}:</label>
-         <input name="addressbook_company" type="text" value="{company}" />
+         <input name="company" type="text" value="{company}" />
       </p>
       <p><label>{lbl_title}:</label>
-         <input name="addressbook_title" type="text" value="{title}" />
+         <input name="title" type="text" value="{title}" />
       </p>
       <p><label>{lbl_email}:</label>
-         <input name="addressbook_email" type="text" value="{email}" style="direction: ltr;" />
+         <input name="email" type="text" value="{email}" style="direction: ltr;" />
       </p>
       <p><label>{lbl_phone}:</label>
-         <input name="addressbook_phone" type="text" value="{phone}" />
+         <input name="phone_number" type="text" value="{phone}" />
       </p>
       <p><label>{lbl_mobile}:</label>
-         <input name="addressbook_mobile" type="text" value="{mobile}" />
+         <input name="mobile_number" type="text" value="{mobile}" />
       </p>
       <p><label>{lbl_fax}:</label>
-         <input name="addressbook_fax" type="text" value="{fax}" />
+         <input name="fax_number" type="text" value="{fax}" />
       </p>
       <p><label>{lbl_address}:</label>
-         <input name="addressbook_address" type="text" value="{address}" />
+         <input name="address" type="text" value="{address}" />
       </p>
       <p><label>{lbl_pstcode}:</label>
-         <input name="addressbook_pstcode" type="text" value="{pstcode}" />
+         <input name="postal_code" type="text" value="{pstcode}" />
       </p>
       <p><label>{lbl_url}:</label>
-         <input name="addressbook_url" type="text" value="{url}" style="direction: ltr;" />
+         <input name="url" type="text" value="{url}" style="direction: ltr;" />
       </p>
       <p><label>{lbl_notes}:</label>
-         <textarea name="addressbook_notes" cols="25" rows="6">{notes}</textarea>
+         <textarea name="notes" cols="25" rows="6">{notes}</textarea>
       </p>
+      <p><input type="checkbox" name="public" id="addressbook_public"
+              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+              value="true" />
+         <label for="addressbook_public">{lbl_public}</label>
+      </p>
+        <!-- BEGIN group -->
+          <p><input type="checkbox" name="groups[{gid}]" id="group_{gid}"
+                  <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
+                  value="true" />
+             <label for="group_{gid}">{lbl_group}</label>
+          </p>
+        <!-- END group -->
   </div>
   <div class="actions">
     <a class="button" href="{cancel_url}" title="{cancel_lbl}">{cancel_lbl}</a>

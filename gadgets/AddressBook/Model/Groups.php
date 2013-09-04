@@ -46,12 +46,8 @@ class AddressBook_Model_Groups extends Jaws_Gadget_Model
      * @access  public
      * @returns array of Address Books or Jaws_Error on error
      */
-    function InsertGroup($user, $name, $desc)
+    function InsertGroup($data)
     {
-        $data['[user]']         = $user;
-        $data['name']           = $name;
-        $data['[description]']  = $desc;
-
         $adrTable = Jaws_ORM::getInstance()->table('address_group');
         return $adrTable->insert($data)->exec();
     }
@@ -62,11 +58,8 @@ class AddressBook_Model_Groups extends Jaws_Gadget_Model
      * @access  public
      * @returns array of Address Books or Jaws_Error on error
      */
-    function UpdateGroup($gid, $name, $desc)
+    function UpdateGroup($gid, $data)
     {
-        $data['name']           = $name;
-        $data['[description]']  = $desc;
-
         $adrTable = Jaws_ORM::getInstance()->table('address_group');
         return $adrTable->update($data)->where('id', $gid)->exec();
     }

@@ -12,9 +12,9 @@
         <th>{lbl_title}</th>
         <th>{lbl_email}</th>
         <th>{lbl_phone}</th>
-        <th>{lbl_actions}</th>
+        <th><!-- BEGIN action_header -->{lbl_actions}<!-- END action_header --></th>
       </tr>
-      <!-- BEGIN item -->
+      <!-- BEGIN item1 -->
       <tr>
         <td>{name}</td>
         <td>{company}</td>
@@ -27,7 +27,7 @@
           <!-- END action -->
         </td>
       </tr>
-      <!-- END item -->
+      <!-- END item1 -->
     </table>
     <!-- BEGIN actions -->
     <div class="actions">
@@ -35,5 +35,6 @@
     </div>
     <!-- END actions -->
   </div>
+  <!-- INCLUDE PageNavigation.html -->
 </div>
 <!-- END address_list -->

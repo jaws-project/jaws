@@ -22,7 +22,15 @@ $actions['EditAddress'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
-$actions['SaveItem'] = array(
+$actions['InsertItem'] = array(
+    'stanalone' => true,
+    'file'   => 'AddressBook',
+);
+$actions['UpdateItem'] = array(
+    'stanalone' => true,
+    'file'   => 'AddressBook',
+);
+$actions['View'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
@@ -38,7 +46,11 @@ $actions['EditGroup'] = array(
     'normal' => true,
     'file'   => 'Groups',
 );
-$actions['SaveGroup'] = array(
-    'normal' => true,
+$actions['InsertGroup'] = array(
+    'stanalone' => true,
+    'file'   => 'Groups',
+);
+$actions['UpdateGroup'] = array(
+    'stanalone' => true,
     'file'   => 'Groups',
 );

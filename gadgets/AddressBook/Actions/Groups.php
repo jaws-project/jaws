@@ -18,20 +18,15 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
      */
     function ManageGroups()
     {
-        $model = $this->gadget->load('Model')->load('Model', 'Groups');
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('user', 'page'), 'get');
-        $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
-        $user = empty($rqst['user'])? (int) $GLOBALS['app']->Session->GetAttribute('user') : $rqst['user'];
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $usrModel = new Jaws_User;
-        $user = $usrModel->GetUser($user);
-        if (Jaws_Error::IsError($user) || empty($user)) {
-            return Jaws_HTTPError::Get(404);
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
         }
 
-        $groupItems = $model->GetGroups($user['id']);
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
+
+        $groupItems = $model->GetGroups($user);
         if (Jaws_Error::IsError($groupItems) || !isset($groupItems)) {
             return $groupItems->getMessage(); // TODO: Show intelligible message
         }
@@ -50,8 +45,9 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('address_list_link', $link);
         $tpl->SetVariable('address_list', _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
 
-        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_GROUPS_NAME'));
-        $tpl->SetVariable('lbl_description', _t('ADDRESSBOOK_GROUPS_DESCRIPTION'));
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
 
         foreach ($groupItems as $groupItem) {
             $tpl->SetBlock("groups/item");
@@ -92,11 +88,16 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
      */
     function AddGroup()
     {
-        $this->SetTitle(_t('ADDRESSBOOK_GROUP_ADD_NEW'));
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->SetTitle(_t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
         $tpl = $this->gadget->loadTemplate('EditGroup.html');
 
         $tpl->SetBlock("group");
-        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_ADD_NEW'));
+        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
             $tpl->SetBlock('group/response');
             $tpl->SetVariable('msg', $response);
@@ -104,12 +105,17 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('gid', 0);
-        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_GROUP_NAME'));
-        $tpl->SetVariable('lbl_desc', _t('ADDRESSBOOK_GROUP_DESC'));
+        $tpl->SetVariable('action', 'InsertGroup');
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_desc', _t('GLOBAL_DESCRIPTION'));
 
         $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
         $btnSave->SetSubmit();
         $tpl->SetVariable('btn_save', $btnSave->Get());
+
+        $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
+        $link = $this->gadget->urlMap('ManageGroups');
+        $tpl->SetVariable('cancel_url', $link);
 
         $tpl->ParseBlock('group');
 
@@ -124,15 +130,9 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
      */
     function EditGroup()
     {
-        $this->SetTitle(_t('ADDRESSBOOK_GROUP_EDIT'));
-        $tpl = $this->gadget->loadTemplate('EditGroup.html');
-
-        $tpl->SetBlock("group");
-        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_EDIT'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('group/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('group/response');
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
         }
 
         $request =& Jaws_Request::getInstance();
@@ -148,19 +148,38 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
 
         if (!isset($info)) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
 
+        if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->SetTitle(_t('ADDRESSBOOK_GROUP_EDIT_TITLE'));
+        $tpl = $this->gadget->loadTemplate('EditGroup.html');
+
+        $tpl->SetBlock("group");
+        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_EDIT_TITLE'));
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+            $tpl->SetBlock('group/response');
+            $tpl->SetVariable('msg', $response);
+            $tpl->ParseBlock('group/response');
+        }
+
         $tpl->SetVariable('gid', $info['id']);
-        $tpl->SetVariable('lbl_name',   _t('ADDRESSBOOK_GROUP_NAME'));
+        $tpl->SetVariable('action', 'UpdateGroup');
+        $tpl->SetVariable('lbl_name',   _t('GLOBAL_NAME'));
         $tpl->SetVariable('name',       $info['name']);
-        $tpl->SetVariable('lbl_desc',   _t('ADDRESSBOOK_GROUP_DESC'));
+        $tpl->SetVariable('lbl_desc',   _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('desc',       $info['description']);
 
         $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
         $btnSave->SetSubmit();
         $tpl->SetVariable('btn_save', $btnSave->Get());
+
+        $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
+        $link = $this->gadget->urlMap('ManageGroups');
+        $tpl->SetVariable('cancel_url', $link);
 
         $tpl->ParseBlock('group');
 
@@ -168,32 +187,70 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
     }
 
     /**
-     * Save New/Edit AddressBook Group Data.
+     * Insert New AddressBook Group Data.
      *
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function SaveGroup()
+    function InsertGroup()
     {
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('adr_group_name', 'adr_group_desc', 'gid'), 'post');
-        //$post = jaws()->request->get(array('adr_group_name', 'adr_group_desc', 'gid'), 'post');
-
-        $post['user'] = $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->load('Model')->load('Model', 'Groups');
-
-        if ((int) $post['gid'] == 0) {
-            $result = $model->InsertGroup($post['user'], $post['adr_group_name'], $post['adr_group_desc']);
-            $msg = _t('ADDRESSBOOK_RESULT_NEW_GROUP_SAVED');
-        } else {
-            $result = $model->UpdateGroup($post['gid'], $post['adr_group_name'], $post['adr_group_desc']);
-            $msg = _t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED');
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
         }
+
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('name', 'description'), 'post');
+        $post['[description]'] = $post['description'];
+        unset($post['description']);
+
+        $post['[user]'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $result = $model->InsertGroup($post);
+
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
             Jaws_Header::Referrer();
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse($msg, 'AddressBook');
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_NEW_GROUP_SAVED'), 'AddressBook');
+            $link = $this->gadget->urlMap('ManageGroups');
+            Jaws_Header::Location($link);
+        }
+    }
+
+    /**
+     * Update Selected AddressBook Group Data.
+     *
+     * @access  public
+     * @return  string HTML content with menu and menu items
+     */
+    function UpdateGroup()
+    {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $request =& Jaws_Request::getInstance();
+        $post = $request->get(array('name', 'description'), 'post');
+        $gid = (int) $request->get('gid', 'post');
+
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $info = $model->GetGroupInfo($gid);
+        if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $post['[description]'] = $post['description'];
+        unset($post['description']);
+
+        $result = $model->UpdateGroup($gid, $post);
+
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            Jaws_Header::Referrer();
+        } else {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook');
             $link = $this->gadget->urlMap('ManageGroups');
             Jaws_Header::Location($link);
         }

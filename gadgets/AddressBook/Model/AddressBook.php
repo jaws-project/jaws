@@ -16,10 +16,19 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
      * @param   array()     $gid      list of Group ID, AddressBook Items must be member of one(minimum) Group ID has exist in this array
      * @returns array of Address Books or Jaws_Error on error
      */
-    function GetAddressList($gid)
+    function GetAddressList($user, $gid, $public = false, $limit, $offset = null)
     {
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
         $adrTable->select('*');
+        $adrTable->where('address_book.user', $user)->and();
+
+        if ($public) {
+            $adrTable->where('address_book.public', true)->and();
+        }
+
+        if (!empty($limit)) {
+            $adrTable->limit($limit, $offset);
+        }
 
         if (!empty($gid) && count($gid) > 0) {
             $adrTable->join('address_book_group', 'address_book_group.address', 'address_book.id', 'left');
@@ -27,6 +36,31 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
         }
 
         return $adrTable->fetchAll();
+    }
+
+    /**
+     * Gets count of Address Books
+     *
+     * @access  public
+     * @param   array()     $gid      list of Group ID, AddressBook Items must be member of one(minimum) Group ID has exist in this array
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetAddressListCount($user, $gid, $public = false)
+    {
+        $adrTable = Jaws_ORM::getInstance()->table('address_book');
+        $adrTable->select('count(address_book.id) as address_count:integer');
+        $adrTable->where('address_book.user', $user)->and();
+
+        if ($public) {
+            $adrTable->where('address_book.public', true)->and();
+        }
+
+        if (!empty($gid) && count($gid) > 0) {
+            $adrTable->join('address_book_group', 'address_book_group.address', 'address_book.id', 'left');
+            $adrTable->where('address_book_group.group', $gid, 'in');
+        }
+
+        return $adrTable->fetchOne();
     }
 
     /**
@@ -49,21 +83,9 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
      * @access  public
      * @returns array of Address Books or Jaws_Error on error
      */
-    function InsertAddress($user, $name, $company, $title, $email, $phone, $mobile, $fax, $address, $postal_code, $url, $notes, $public)
+    function InsertAddress($data)
     {
-        $data['[user]']         = $user;
-        $data['name']           = $name;
-        $data['company']        = $company;
-        $data['title']          = $title;
-        $data['email']          = $email;
-        $data['phone_number']   = $phone;
-        $data['mobile_number']  = $mobile;
-        $data['fax_number']     = $fax;
-        $data['address']        = $address;
-        $data['postal_code']    = $postal_code;
-        $data['url']            = $url;
-        $data['notes']          = $notes;
-        $data['public']         = $public;
+        $data['public']         = (bool) $data['public'];
         $data['createtime']     = time();
         $data['updatetime']     = time();
 
@@ -77,20 +99,9 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
      * @access  public
      * @returns array of Address Books or Jaws_Error on error
      */
-    function UpdateAddress($id, $name, $company, $title, $email, $phone, $mobile, $fax, $address, $postal_code, $url, $notes, $public)
+    function UpdateAddress($id, $data)
     {
-        $data['name']           = $name;
-        $data['company']        = $company;
-        $data['title']          = $title;
-        $data['email']          = $email;
-        $data['phone_number']   = $phone;
-        $data['mobile_number']  = $mobile;
-        $data['fax_number']     = $fax;
-        $data['address']        = $address;
-        $data['postal_code']    = $postal_code;
-        $data['url']            = $url;
-        $data['notes']          = $notes;
-        $data['public']         = $public;
+        $data['public']         = (bool) $data['public'];
         $data['updatetime']     = time();
 
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
