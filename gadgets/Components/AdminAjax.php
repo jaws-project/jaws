@@ -50,12 +50,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Gets basic information of the gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Gadget information
      */
-    function GetGadgetInfo($gadget)
+    function GetGadgetInfo()
     {
         $this->gadget->CheckPermission('ManageGadgets');
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Gadgets');
         return $html->GadgetInfo($gadget);
     }
@@ -64,11 +64,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Installs requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
-    function InstallGadget($gadget)
+    function InstallGadget()
     {
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -78,11 +78,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Upgrades requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
-    function UpgradeGadget($gadget)
+    function UpgradeGadget()
     {
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -92,11 +92,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Uninstalls requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
-    function UninstallGadget($gadget)
+    function UninstallGadget()
     {
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -106,11 +106,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Enables requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
-    function EnableGadget($gadget)
+    function EnableGadget()
     {
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -120,11 +120,11 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Disables requested gadget
      *
      * @access  public
-     * @param   string  $gadget  Gadget name
      * @return  array   Response array (notice or error)
      */
-    function DisableGadget($gadget)
+    function DisableGadget()
     {
+        @list($gadget) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -154,12 +154,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Gets basic information of the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin name
      * @return  array   Plugin information
      */
-    function GetPluginInfo($plugin)
+    function GetPluginInfo()
     {
         $this->gadget->CheckPermission('ManagePlugins');
+        @list($plugin) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
         return $html->PluginInfo($plugin);
     }
@@ -168,14 +168,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Enables the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin name
      * @return  array   Response array (notice or error)
      */
-    function InstallPlugin($plugin)
+    function InstallPlugin()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-
-        require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+        @list($plugin) = jaws()->request->getAll('post');
         $return = Jaws_Plugin::InstallPlugin($plugin);
         if (Jaws_Error::IsError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
@@ -189,14 +187,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Disables the plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin name
      * @return  array   Response array (notice or error)
      */
-    function UninstallPlugin($plugin)
+    function UninstallPlugin()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-
-        require_once JAWS_PATH . 'include/Jaws/Plugin.php';
+        @list($plugin) = jaws()->request->getAll('post');
         $return = Jaws_Plugin::UninstallPlugin($plugin);
         if (Jaws_Error::isError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
@@ -210,12 +206,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Returns gadgets which are used in a certain plugin
      *
      * @access  public
-     * @param   string  $plugin  Plugin name
      * @return  array   Array of backend, frontend and all gadgets
      */
-    function GetPluginUsage($plugin)
+    function GetPluginUsage()
     {
         $this->gadget->CheckPermission('ManagePlugins');
+        @list($plugin) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
         $ui = $html->PluginUsage();
 
@@ -236,14 +232,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Updates plugin usage
      *
      * @access  public
-     * @param   string  $plugin     Plugin name
-     * @param   string  $backend    Comma separated list of gadgets
-     * @param   string  $frontend   Comma separated list of gadgets
      * @return  array   Response array (notice or error)
      */
-    function UpdatePluginUsage($plugin, $backend, $frontend)
+    function UpdatePluginUsage()
     {
         $this->gadget->CheckPermission('ManagePlugins');
+        @list($plugin, $backend, $frontend) = jaws()->request->getAll('post');
         $this->gadget->registry->update('backend_gadgets', $backend, $plugin);
         $this->gadget->registry->update('frontend_gadgets', $frontend, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
@@ -254,13 +248,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Fetches registry data of the gadget/plugin
      *
      * @access  public
-     * @param   string  $comp       Gadget/Plugin name
-     * @param   bool    $is_plugin  Is Plugin?
      * @return  array   Registry keys/values
      */
-    function GetRegistry($comp, $is_plugin = false)
+    function GetRegistry()
     {
         $this->gadget->CheckPermission('ManageRegistry');
+        @list($comp, $is_plugin) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Registry');
         $ui = $html->RegistryUI();
         $data = $GLOBALS['app']->Registry->fetchAll($comp);
@@ -271,13 +264,13 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Updates registry with new values
      *
      * @access  public
-     * @param   string  $comp   Gadget/Plugin name
-     * @param   array   $data   changed keys/values
      * @return  array   Response array (notice or error)
      */
-    function UpdateRegistry($comp, $data)
+    function UpdateRegistry()
     {
         $this->gadget->CheckPermission('ManageRegistry');
+        @list($comp, $data) = jaws()->request->getAll('post');
+        $data = jaws()->request->get('1:array', 'post');
         foreach ($data as $key => $value) {
             $res = $GLOBALS['app']->Registry->update($key, $value, $comp);
             if (Jaws_Error::IsError($res)) {
@@ -292,13 +285,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Fetches default ACL data of the gadget/plugin
      *
      * @access  public
-     * @param   string  $comp       Gadget/Plugin name
-     * @param   bool    $is_plugin  Is Plugin?
      * @return  array   ACL keys/values
      */
-    function GetACL($comp, $is_plugin = false)
+    function GetACL()
     {
         $this->gadget->CheckPermission('ManageACLs');
+        @list($comp, $is_plugin) = jaws()->request->getAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'ACL');
         $ui = $html->ACLUI();
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
@@ -315,13 +307,13 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      * Updates ACLs with new values
      *
      * @access  public
-     * @param   string  $comp  Gadget/Plugin name
-     * @param   array   $data  changed keys/values
      * @return  array   Response array (notice or error)
      */
-    function UpdateACL($comp, $data)
+    function UpdateACL()
     {
         $this->gadget->CheckPermission('ManageACLs');
+        @list($comp, $data) = jaws()->request->getAll('post');
+        $data = jaws()->request->get('1:array', 'post');
         foreach ($data as $key => $value) {
             list($key, $subkey) = explode(':', $key);
             $res = $GLOBALS['app']->ACL->update($key, $subkey, $value, $comp);
@@ -329,7 +321,9 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);
             }
         }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
 }
