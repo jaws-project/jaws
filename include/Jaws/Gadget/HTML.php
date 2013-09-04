@@ -93,8 +93,7 @@ class Jaws_Gadget_HTML
         $output = '';
         $method = Jaws_Gadget_HTML::filter(jaws()->request->get('method', 'get'));
         if (method_exists($objAjax, $method)) {
-            $params = jaws()->request->getAll('post');
-            $output = call_user_func_array(array($objAjax, $method), $params);
+            $output = $objAjax->$method();
         } else {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in {$this->gadget->name}'s Ajax dosn't exist.");
         }
