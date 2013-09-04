@@ -211,11 +211,11 @@ function selectGadget(g)
     };
 
     if ($(prevGadget)) {
-        $(prevGadget).setAttribute('class', 'gadget-item'); 
-        $(prevGadget).setAttribute('className', 'gadget-item'); 
+        $(prevGadget).setAttribute('class', 'gadget-item');
+        $(prevGadget).setAttribute('className', 'gadget-item');
     }
-    $(g).setAttribute('class', 'gadget-item gadget-selected'); 
-    $(g).setAttribute('className', 'gadget-item gadget-selected'); 
+    $(g).setAttribute('class', 'gadget-item gadget-selected');
+    $(g).setAttribute('className', 'gadget-item gadget-selected');
     var actions = LayoutAjax.callSync('getgadgetactions', g);
     if (actions.length > 0) {
         actions.each (function(item, actionIndex) {
