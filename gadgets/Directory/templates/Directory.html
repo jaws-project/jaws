@@ -24,8 +24,10 @@
   .response_error {color:#a00;}
   #path span {color:blue; cursor:pointer;}
   #path span:hover {text-decoration:underline;}
+  #filename img {vertical-align:middle; margin:0 5px;}
 </style>
 <script>
+  var imgDeleteFile = "{imgDeleteFile}";
   initDirectory();
 </script>
 <!-- END directory -->
@@ -56,13 +58,15 @@
   <input type="hidden" name="action" value="CreateFile" />
   <input type="hidden" name="id" />
   <input type="hidden" name="parent" value="0" />
-  <input type="hidden" name="filename" />
   <fieldset>
     <table>
       <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
       <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
       <tr><th>URL:</th><td><input name="url" value="http://" /></td></tr>
-      <tr><th>File:</th><td><input type="file" name="file" /></td></tr>
+      <tr><th>File:</th><td>
+        <input type="file" id="file" name="file" />
+        <span id="filename" style="display:none;"></span>
+        </td></tr>
     </table>
   </fieldset>
   <div class="actions">

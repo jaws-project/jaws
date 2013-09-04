@@ -95,7 +95,7 @@ class Directory_Ajax extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             return false;
         }
-        return _t('DIRECTORY_NOTICE_DIR_DELETED');
+        return _t('DIRECTORY_NOTICE_ITEM_DELETED');
     }
 
 }

@@ -29,6 +29,8 @@ function initDirectory()
     comboFiles = $('files');
     currentDir = Number(fmStorage.fetch('current_dir'));
     changeDirectory(currentDir);
+    imgDeleteFile = new Element('img', {src:imgDeleteFile});
+    imgDeleteFile.addEvent('click', removeFile);
 }
 
 /**
@@ -142,7 +144,7 @@ function edit()
 }
 
 /**
- * Displays the form with data of selected directory to be edited
+ * Goes for editing selected directory
  */
 function editDirectory(data)
 {
@@ -151,7 +153,7 @@ function editDirectory(data)
     }
     $('form').set('html', cachedDirectoryForm);
     var form = $('frm_dir');
-    form.action.value = 'UpdateDirectory';
+    form.action.value = 'UpdateFile';
     form.id.value = selectedId;
     form.title.value = data.title;
     form.description.value = data.description;
@@ -180,6 +182,40 @@ function newFile()
     comboFiles.selectedIndex = -1;
     $('frm_file').title.focus();
     $('frm_file').parent.value = currentDir;
+}
+
+/**
+ * Goes for editing selected file
+ */
+function editFile(data)
+{
+    if (cachedFileForm === null) {
+        cachedFileForm = fmAjax.callSync('GetFileForm');
+    }
+    $('form').set('html', cachedFileForm);
+    var form = $('frm_file');
+    form.action.value = 'UpdateFile';
+    form.id.value = selectedId;
+    form.title.value = data.title;
+    form.description.value = data.description;
+    form.url.value = data.url;
+    form.parent.value = data.parent;
+    if (data.filename) {
+        $('filename').set('html', data.filename);
+        $('filename').grab(imgDeleteFile);
+        $('filename').show();
+        $('file').hide();
+    }
+}
+
+/**
+ * Removes attached file
+ */
+function removeFile()
+{
+    $('filename').set('html', '');
+    $('filename').hide();
+    $('file').show();
 }
 
 var fmAjax = new JawsAjax('Directory', DirectoryCallback),
