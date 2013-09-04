@@ -251,8 +251,8 @@ function saveUser()
             } else {
                 UsersAjax.callAsync(
                     'updateuser',
-                    $('uid').value,
-                    {'username': $('username').value,
+                    {'uid': $('uid').value,
+                     'username': $('username').value,
                      'password': password,
                      'nickname': $('nickname').value,
                      'email'   : $('email').value,
@@ -795,8 +795,8 @@ function updateMyAccount()
     }
     UsersAjax.callAsync(
         'updatemyaccount',
-        $('uid').value,
-        {'username': $('username').value,
+        {'uid': $('uid').value,
+         'username': $('username').value,
          'password': $('pass1').value,
          'nickname': $('nickname').value,
          'email'   : $('email').value
