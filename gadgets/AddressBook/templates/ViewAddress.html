@@ -1,0 +1,30 @@
+<!-- BEGIN address -->
+<div class="gadget addressbook">
+  <h2>{top_title}</h2>
+  <div class="content">
+      <p><label>{lbl_name}:</label> {name}</p>
+      <p><label>{lbl_company}:</label> {company}</p>
+      <p><label>{lbl_title}:</label> {title}</p>
+      <p><label>{lbl_email}:</label> {email}</p>
+      <p><label>{lbl_phone}:</label> {phone}</p>
+      <p><label>{lbl_mobile}:</label> {mobile}</p>
+      <p><label>{lbl_fax}:</label> {fax}</p>
+      <p><label>{lbl_address}:</label> {address}</p>
+      <p><label>{lbl_pstcode}:</label> {pstcode}</p>
+      <p><label>{lbl_url}:</label> url</p>
+      <p><label>{lbl_notes}:</label>{notes}</p>
+      <!-- BEGIN selected --><p><label for="addressbook_public">{lbl_is_public}</label></p><!-- END selected -->
+      <!-- BEGIN group -->
+      <p><label for="group_{gid}">{lbl_group}</label></p>
+      <!-- END group -->
+
+    <!-- BEGIN actions -->
+    <div class="actions">
+       <!-- BEGIN action -->
+        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+       <!-- END action -->
+    </div>
+    <!-- END actions -->
+  </div>
+</div>
+<!-- END address -->

@@ -61,19 +61,18 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");
             $tpl->SetVariable('name', $addressItem['name']);
+            $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
             $tpl->SetVariable('company', $addressItem['company']);
             $tpl->SetVariable('title', $addressItem['title']);
             $tpl->SetVariable('email', $addressItem['email']);
             $tpl->SetVariable('phone', $addressItem['phone_number']);
 
             if ($mine) {
-                //Edite Item, TODO: Check user can do this action
                 $tpl->SetBlock('address_list/item1/action');
                 $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
                 $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $addressItem['id'])));
                 $tpl->ParseBlock('address_list/item1/action');
 
-                //Delete Item, TODO: Check user can do this action
                 $tpl->SetBlock('address_list/item1/action');
                 $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
                 $tpl->SetVariable('action_url', $this->gadget->urlMap('DeleteAddress', array('id' => $addressItem['id'])));
@@ -553,6 +552,130 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         $pages['total'] = $total;
         return $pages;
+    }
+
+    /**
+     * Displays not editable version of one address
+     *
+     * @access  public
+     * @return  string HTML content with menu and menu items
+     */
+    function View()
+    {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $request =& Jaws_Request::getInstance();
+        $id = (int) $request->get('id');
+        // TODO: Check this ID for Me, And Can I Edit Or View This?!
+        if ($id == 0) {
+            return false;
+        }
+
+        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $info = $model->GetAddressInfo($id);
+        if (Jaws_Error::IsError($info)) {
+            return $info->getMessage(); // TODO: Show intelligible message
+        }
+
+        if (!isset($info)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user') && $info['public'] == false) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->SetTitle(_t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
+        $tpl = $this->gadget->loadTemplate('ViewAddress.html');
+        $tpl->SetBlock("address");
+        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+            $tpl->SetBlock('address/response');
+            $tpl->SetVariable('msg', $response);
+            $tpl->ParseBlock('address/response');
+        }
+
+        $tpl->SetVariable('id', $info['id']);
+        $tpl->SetVariable('action', 'UpdateItem');
+        $tpl->SetVariable('lbl_name',       _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('name',           $info['name']);
+        $tpl->SetVariable('lbl_company',    _t('ADDRESSBOOK_ITEMS_COMPANY'));
+        $tpl->SetVariable('company',        $info['company']);
+        $tpl->SetVariable('lbl_title',      _t('ADDRESSBOOK_ITEMS_TITLE'));
+        $tpl->SetVariable('title',          $info['title']);
+        $tpl->SetVariable('lbl_email',      _t('ADDRESSBOOK_ITEMS_EMAIL'));
+        $tpl->SetVariable('email',          $info['email']);
+        $tpl->SetVariable('lbl_phone',      _t('ADDRESSBOOK_ITEMS_PHONE_NUMBER'));
+        $tpl->SetVariable('phone',          $info['phone_number']);
+        $tpl->SetVariable('lbl_fax',        _t('ADDRESSBOOK_ITEMS_FAX'));
+        $tpl->SetVariable('fax',            $info['fax_number']);
+        $tpl->SetVariable('lbl_mobile',     _t('ADDRESSBOOK_ITEMS_MOBILE'));
+        $tpl->SetVariable('mobile',         $info['mobile_number']);
+        $tpl->SetVariable('lbl_address',    _t('ADDRESSBOOK_ITEMS_ADDRESS'));
+        $tpl->SetVariable('address',        $info['address']);
+        $tpl->SetVariable('lbl_pstcode',    _t('ADDRESSBOOK_ITEMS_POSTAL_CODE'));
+        $tpl->SetVariable('pstcode',        $info['postal_code']);
+        $tpl->SetVariable('lbl_url',        _t('ADDRESSBOOK_ITEMS_URL'));
+        $tpl->SetVariable('url',            $info['url']);
+        $tpl->SetVariable('lbl_notes',      _t('ADDRESSBOOK_ITEMS_NOTES'));
+        $tpl->SetVariable('notes',          $info['notes']);
+        $tpl->SetVariable('lbl_public',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        if ($info['public']) {
+            $tpl->SetBlock('address/selected');
+            $tpl->SetVariable('lbl_is_public',     _t('ADDRESSBOOK_ITEMS_IS_PUBLIC'));
+            $tpl->ParseBlock('address/selected');
+        }
+
+        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $agData = $agModel->GetData($info['id'], $info['user']);
+
+        if (isset($agData)) {
+            foreach ($agData as $gInfo) {
+                $tpl->SetBlock('address/group');
+                $tpl->SetVariable('lbl_group', $gInfo['name']);
+                $tpl->ParseBlock('address/group');
+            }
+        }
+
+        $tpl->SetBlock('address/actions');
+        if ($info['user'] == $GLOBALS['app']->Session->GetAttribute('user')) {
+            $tpl->SetBlock('address/actions/action');
+            $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $info['id'])));
+            $tpl->ParseBlock('address/actions/action');
+
+            $tpl->SetBlock('address/actions/action');
+            $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
+            $tpl->ParseBlock('address/actions/action');
+
+            $tpl->SetBlock('address/actions/action');
+            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList'));
+            $tpl->ParseBlock('address/actions/action');
+        } else {
+            $tpl->SetBlock('address/actions/action');
+            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList'));
+            $tpl->ParseBlock('address/actions/action');
+
+            require_once JAWS_PATH . 'include/Jaws/User.php';
+            $usrModel = new Jaws_User;
+            $user = $usrModel->GetUser((int) $info['user']);
+            if (!Jaws_Error::IsError($user) && !empty($user)) {
+                $tpl->SetBlock('address/actions/action');
+                $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_USER'));
+                $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList', array('uid' => $user['username'])));
+                $tpl->ParseBlock('address/actions/action');
+            }
+        }
+        $tpl->ParseBlock('address/actions');
+
+        $tpl->ParseBlock('address');
+
+        return $tpl->Get();
     }
 }
 

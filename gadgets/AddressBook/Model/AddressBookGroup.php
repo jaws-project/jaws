@@ -19,8 +19,9 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     {
         $agTable = Jaws_ORM::getInstance()->table('address_book_group');
         $agTable->select('*');
+        $agTable->join('address_group', 'address_book_group.group', 'address_group.id');
         $agTable->where('address', $address)->and();
-        $agTable->where('user', $user)->fetchAll();
+        return $agTable->where('address_book_group.user', $user)->fetchAll();
     }
 
     /**
