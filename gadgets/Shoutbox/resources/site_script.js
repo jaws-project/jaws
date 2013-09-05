@@ -19,5 +19,5 @@ function GetComments()
 }
 
 
-var ShoutboxAjax = new JawsAjax('Shoutbox', null, 'index.php');
+var ShoutboxAjax = new JawsAjax('Shoutbox');
 setInterval(GetComments, 30*1000);
