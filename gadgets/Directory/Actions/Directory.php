@@ -26,6 +26,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
 
         // Display probabley responses
@@ -43,11 +44,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      * Fetches list of files
      *
      * @access  public
-     * @param   int     $parent     Restrict result to a specified node
-     * @return  array   Array of files or Jaws_Error on error
+     * @return  mixed   Array of files or false on error
      */
-    function GetFiles($parent = null)
+    function GetFiles()
     {
+        $parent = jaws()->request->get('parent', 'post');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFiles($parent);
         if (Jaws_Error::IsError($res)){
@@ -60,11 +61,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      * Fetches data of a file/directory
      *
      * @access  public
-     * @param   int     $id  File ID
-     * @return  mixed   Array of file data or Jaws_Error on error
+     * @return  mixed   Array of file data or false on error
      */
-    function GetFile($id)
+    function GetFile()
     {
+        $id = jaws()->request->get('id', 'post');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFile($id);
         if (Jaws_Error::IsError($res)) {
@@ -72,4 +73,20 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         }
         return $res;
     }
+
+    /**
+     * Fetches path of a file/directory
+     *
+     * @access  public
+     * @return  array   Directory hierarchy
+     */
+    function GetPath()
+    {
+        $id = jaws()->request->get('id', 'post');
+        $path = array();
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $model->GetPath($id, $path);
+        return $path;
+    }
+
 }

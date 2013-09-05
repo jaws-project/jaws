@@ -16,47 +16,51 @@ $actions['Directory'] = array(
     'file' => 'Directory'
 );
 $actions['GetFiles'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Directory'
 );
 $actions['GetFile'] = array(
-    'normal' => true,
+    'standalone' => true,
+    'file' => 'Directory'
+);
+$actions['GetPath'] = array(
+    'standalone' => true,
     'file' => 'Directory'
 );
 
 /* Directory Actions */
 $actions['DirectoryForm'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Directories'
 );
 $actions['CreateDirectory'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Directories'
 );
 $actions['UpdateDirectory'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Directories'
 );
 $actions['DeleteDirectory'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Directories'
 );
 
 /* File Actions */
 $actions['FileForm'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Files'
 );
 $actions['CreateFile'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Files'
 );
 $actions['UpdateFile'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Files'
 );
 $actions['DeleteFile'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Files'
 );
 $actions['UploadFile'] = array(

@@ -37,8 +37,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     function CreateFile()
     {
         try {
-            $request =& Jaws_Request::getInstance();
-            $data = $request->get(array('title', 'description', 'parent', 'url'));
+            $data = jaws()->request->get(array('title', 'description', 'parent', 'url'));
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
@@ -126,8 +125,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     function DeleteFile()
     {
         try {
-            $request =& Jaws_Request::getInstance();
-            $id = (int)$request->get('files');
+            $id = (int)jaws()->request->get('id');
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
             // Delete from disk
@@ -146,20 +144,20 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $res = $model->DeleteFile($id);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
-                $GLOBALS['app']->Session->PushResponse(
-                    $res->getMessage(),
-                    'Directory', 
-                    RESPONSE_ERROR
-                );
-                Jaws_Header::Referrer();
             }
         } catch (Exception $e) {
-            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Directory', RESPONSE_ERROR);
-            Jaws_Header::Referrer();
+            return $GLOBALS['app']->Session->GetResponse(
+                $e->getMessage(),
+                RESPONSE_ERROR
+            );
+            //Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushResponse(_t('DIRECTORY_NOTICE_FILE_DELETED'), 'Directory');
-        Jaws_Header::Referrer();
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('DIRECTORY_NOTICE_FILE_DELETED'),
+            RESPONSE_NOTICE
+        );
+        //Jaws_Header::Referrer();
     }
 
 }

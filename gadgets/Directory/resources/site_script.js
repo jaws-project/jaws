@@ -33,8 +33,9 @@ var DirectoryCallback = {
  */
 function initDirectory()
 {
+    DirectoryAjax.backwardSupport();
     comboFiles = $('files');
-    currentDir = Number(fmStorage.fetch('current_dir'));
+    currentDir = Number(DirectoryStorage.fetch('current_dir'));
     changeDirectory(currentDir);
     imgDeleteFile = new Element('img', {src:imgDeleteFile});
     imgDeleteFile.addEvent('click', removeFile);
@@ -45,7 +46,7 @@ function initDirectory()
  */
 function fillFilesCombo(parent)
 {
-    var files = fmAjax.callSync('GetFiles', parent);
+    var files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
     if (files) {
         comboFiles.options.length = 0;
         files.each(function (file) {
@@ -91,7 +92,7 @@ function changeDirectory(id)
 {
     selectedId = null;
     currentDir = id;
-    fmStorage.update('current_dir', id)
+    DirectoryStorage.update('current_dir', id)
     fillFilesCombo(currentDir);
     updatePath();
 }
@@ -101,7 +102,7 @@ function changeDirectory(id)
  */
 function updatePath()
 {
-    var pathArr = fmAjax.callSync('GetPath', currentDir),
+    var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
         path = $('path').set('html', ''),
         link = new Element('span', {'html':'Root'});
     link.addEvent('click', changeDirectory.pass(0));
@@ -125,7 +126,7 @@ function updatePath()
 function edit()
 {
     if (selectedId === null) return;
-    var data = fmAjax.callSync('GetFile', selectedId);
+    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
     switch (data.is_dir) {
         case true:
             editDirectory(data);
@@ -145,15 +146,15 @@ function _delete()
     var form = $('frm_files');
     if (fileById[comboFiles.value].is_dir) {
         if (confirm('Are you sure you want to delete directory?')) {
-            //fmAjax.callAsync('DeleteDirectory', selectedId);
-            form.action.value = 'DeleteDirectory';
-            form.submit();
+            DirectoryAjax.callAsync('DeleteDirectory', {'id':selectedId});
+            //form.action.value = 'DeleteDirectory';
+            //form.submit();
         }
     } else {
         if (confirm('Are you sure you want to delete file?')) {
-            //fmAjax.callAsync('DeleteFile', selectedId);
-            form.action.value = 'DeleteFile';
-            form.submit();
+            DirectoryAjax.callAsync('DeleteFile', {'id':selectedId});
+            //form.action.value = 'DeleteFile';
+            //form.submit();
         }
     }
 }
@@ -164,7 +165,7 @@ function _delete()
 function newDirectory()
 {
     if (cachedDirectoryForm === null) {
-        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
+        cachedDirectoryForm = DirectoryAjax.callSync('DirectoryForm');
     }
     $('form').set('html', cachedDirectoryForm);
     comboFiles.selectedIndex = -1;
@@ -178,7 +179,7 @@ function newDirectory()
 function editDirectory(data)
 {
     if (cachedDirectoryForm === null) {
-        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
+        cachedDirectoryForm = DirectoryAjax.callSync('DirectoryForm');
     }
     $('form').set('html', cachedDirectoryForm);
     var form = $('frm_dir');
@@ -195,7 +196,7 @@ function editDirectory(data)
 function newFile()
 {
     if (cachedFileForm === null) {
-        cachedFileForm = fmAjax.callSync('GetFileForm');
+        cachedFileForm = DirectoryAjax.callSync('FileForm');
     }
     $('form').set('html', cachedFileForm);
     comboFiles.selectedIndex = -1;
@@ -209,7 +210,7 @@ function newFile()
 function editFile(data)
 {
     if (cachedFileForm === null) {
-        cachedFileForm = fmAjax.callSync('GetFileForm');
+        cachedFileForm = DirectoryAjax.callSync('FileForm');
     }
     $('form').set('html', cachedFileForm);
     var form = $('frm_file');
@@ -220,7 +221,10 @@ function editFile(data)
     form.url.value = data.url;
     form.parent.value = data.parent;
     if (data.filename) {
+        var link = new Element('a');
+        link.href = data_url + '/' + data.filename;
         $('filename').set('html', data.filename);
+        $('filename').grab(imgDeleteFile);
         $('filename').grab(imgDeleteFile);
         $('filename').show();
         $('file').hide();
@@ -237,8 +241,8 @@ function removeFile()
     $('file').show();
 }
 
-var fmAjax = new JawsAjax('Directory', DirectoryCallback),
-    fmStorage = new JawsStorage('Directory'),
+var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
+    DirectoryStorage = new JawsStorage('Directory'),
     comboFiles,
     fileById = {},
     selectedId,
