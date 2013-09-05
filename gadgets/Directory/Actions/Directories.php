@@ -36,19 +36,25 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function CreateDirectory()
     {
-        $request =& Jaws_Request::getInstance();
-        $data = $request->get(array('title', 'description', 'parent'));
-        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['is_dir'] = true;
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $result = $model->InsertFile($data);
-        if (Jaws_Error::IsError($result)) {
-            $msg = _t('DIRECTORY_ERROR_DIR_CREATE');
-        } else {
-            $msg = _t('DIRECTORY_NOTICE_DIR_CREATED');
+        try {
+            $request =& Jaws_Request::getInstance();
+            $data = $request->get(array('title', 'description', 'parent'));
+            if (empty($data['title'])) {
+                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
+            }
+            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['is_dir'] = true;
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $result = $model->InsertFile($data);
+            if (Jaws_Error::IsError($result)) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
+            }
+        } catch (Exception $e) {
+            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Directory', RESPONSE_ERROR);
+            Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'Directory');
+        $GLOBALS['app']->Session->PushResponse(_t('DIRECTORY_NOTICE_DIR_CREATED'), 'Directory');
         Jaws_Header::Referrer();
     }
 
@@ -60,20 +66,26 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function UpdateDirectory()
     {
-        $request =& Jaws_Request::getInstance();
-        $id = (int)$request->get('id');
-        $data = $request->get(array('title', 'description', 'parent'));
-        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['is_dir'] = true;
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $result = $model->UpdateFile($id, $data);
-        if (Jaws_Error::IsError($result)) {
-            $msg = _t('DIRECTORY_ERROR_DIR_UPDATE');
-        } else {
-            $msg = _t('DIRECTORY_NOTICE_DIR_UPDATED');
+        try {
+            $request =& Jaws_Request::getInstance();
+            $id = (int)$request->get('id');
+            $data = $request->get(array('title', 'description', 'parent'));
+            if (empty($data['title'])) {
+                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
+            }
+            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['is_dir'] = true;
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $result = $model->UpdateFile($id, $data);
+            if (Jaws_Error::IsError($result)) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
+            }
+        } catch (Exception $e) {
+            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Directory', RESPONSE_ERROR);
+            Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($msg, 'Directory');
+        $GLOBALS['app']->Session->PushResponse(_t('DIRECTORY_NOTICE_DIR_UPDATED'), 'Directory');
         Jaws_Header::Referrer();
     }
 
