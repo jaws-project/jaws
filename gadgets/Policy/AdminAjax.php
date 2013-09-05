@@ -15,12 +15,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Get blocked IP range
      *
      * @access  public
-     * @param   int     $id ID of IP range addresses
      * @return  array   IP range info
      */
-    function GetIPRange($id)
+    function GetIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $IPRange = $model->GetIPRange($id);
         if (Jaws_Error::IsError($IPRange)) {
@@ -39,14 +39,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Block an IP range
      *
      * @access  public
-     * @param   string  $from_ip  The from IP
-     * @param   string  $to_ip    The to IP
-     * @param   bool    $blocked
      * @return  string  Response
      */
-    function AddIPRange($from_ip, $to_ip = null, $blocked)
+    function AddIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
+        @list($from_ip, $to_ip, $blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->AddIPRange($from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -56,15 +54,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Edit blocked an IP range
      *
      * @access  public
-     * @param   int     $id ID of the to-be-blocked IP range addresses
-     * @param   string  $from_ip  The from IP
-     * @param   string  $to_ip    The to IP
-     * @param   bool    $blocked
      * @return  string  Response
      */
-    function EditIPRange($id, $from_ip, $to_ip, $blocked)
+    function EditIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
+        @list($id, $from_ip, $to_ip, $blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->EditIPRange($id, $from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -74,12 +69,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Delete an IP range
      * 
      * @access  public
-     * @param   int $id ID of the-to-be-unblocked IP range addresses
      * @return  string  Response
      */
-    function DeleteIPRange($id)
+    function DeleteIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->DeleteIPRange($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -89,12 +84,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Get blocked agent
      *
      * @access  public
-     * @param   int $id ID of the agent
      * @return  string Agent
      */
-    function GetAgent($id)
+    function GetAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $agent = $model->GetAgent($id);
         if (Jaws_Error::IsError($agent)) {
@@ -108,13 +103,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Block an agent
      *
      * @access  public
-     * @param   string  $agent   Which Agent is supposed to be blocked or allowed
-     * @param   bool    $blocked
      * @return  string  Response
      */
-    function AddAgent($agent, $blocked)
+    function AddAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
+        @list($agent, $blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->AddAgent($agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -124,14 +118,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Block an agent
      *
      * @access  public
-     * @param   int     $id     ID of the agent
-     * @param   string  $agent  Which Agent is supposed to be blocked or allowed
-     * @param   bool    $blocked
      * @return  string  Response
      */
-    function EditAgent($id, $agent, $blocked)
+    function EditAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
+        @list($id, $agent, $blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->EditAgent($id, $agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -141,12 +133,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Unblock an agent
      *
      * @access  public
-     * @param   int $id ID of the agent
      * @return  string  Response
      */
-    function DeleteAgent($id)
+    function DeleteAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->DeleteAgent($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -156,12 +148,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Set IPBlocking block undefined ip
      *
      * @access  public
-     * @param   bool    $blocked    blocked by default
      * @return  bool    True on success and Jaws error on failure
      */
-    function IPBlockingBlockUndefined($blocked)
+    function IPBlockingBlockUndefined()
     {
         $this->gadget->CheckPermission('ManageIPs');
+        @list($blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $res = $model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
@@ -177,12 +169,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Set AgentBlocking block undefined agent
      *
      * @access  public
-     * @param   bool    $blocked    blocked by default
      * @return  bool    True on success and Jaws error on failure
      */
-    function AgentBlockingBlockUndefined($blocked)
+    function AgentBlockingBlockUndefined()
     {
         $this->gadget->CheckPermission('ManageAgents');
+        @list($blocked) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $res = $model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
@@ -198,14 +190,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Update  Encryption Settings
      *
      * @access  public
-     * @param   bool    $enabled   Enable/Disable encryption
-     * @param   bool    $key_age   Key age
-     * @param   bool    $key_len   Key length
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateEncryptionSettings($enabled, $key_age, $key_len)
+    function UpdateEncryptionSettings()
     {
         $this->gadget->CheckPermission('Encryption');
+        @list($enabled, $key_age, $key_len) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Encryption');
         $model->UpdateEncryptionSettings($enabled == 'true', $key_age, $key_len);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -215,16 +205,12 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Update AntiSpam Settings
      *
      * @access  public
-     * @param   bool    $filter
-     * @param   string  $default_captcha
-     * @param   string  $default_captcha_driver
-     * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($filter, $default_captcha,
-                                    $default_captcha_driver, $obfuscator)
+    function UpdateAntiSpamSettings()
     {
         $this->gadget->CheckPermission('AntiSpam');
+        @list($filter, $default_captcha, $default_captcha_driver, $obfuscator) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'AntiSpam');
         $model->UpdateAntiSpamSettings(
             $filter,
@@ -239,23 +225,15 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Update Advanced Policies
      *
      * @access  public
-     * @param   string  $passwd_complexity
-     * @param   int     $passwd_bad_count
-     * @param   int     $passwd_lockedout_time
-     * @param   int     $passwd_max_age
-     * @param   int     $passwd_min_length
-     * @param   string  $login_captcha
-     * @param   string  $login_captcha_driver
-     * @param   string  $xss_parsing_level
-     * @param   int     $session_idle_timeout
-     * @param   int     $session_remember_timeout
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAdvancedPolicies($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
-                                    $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
-                                    $xss_parsing_level, $session_idle_timeout, $session_remember_timeout)
+    function UpdateAdvancedPolicies()
     {
         $this->gadget->CheckPermission('AdvancedPolicies');
+        @list($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
+            $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
+            $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'AdvancedPolicies');
         $model->UpdateAdvancedPolicies(
             $passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
@@ -269,9 +247,11 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      * Rebuild the datagrid
      *
      * @access  public
+     * @return  array   An array of IP/Agents
      */
-    function GetData($offset, $grid)
+    function GetData()
     {
+        @list($offset, $grid) = jaws()->request->getAll('post');
         $ipHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'IP');
         $agentHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'Agent');
         if (!is_numeric($offset)) {
