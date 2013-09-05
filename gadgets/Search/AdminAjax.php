@@ -14,11 +14,11 @@ class Search_AdminAjax extends Jaws_Gadget_HTML
      * Updates searchable gadgets
      *
      * @access  public
-     * @param   array   $gadgets    Array with gadgets to be set as searchable
      * @return  array   Response array (notice or error)
      */
-    function SaveChanges($gadgets)
+    function SaveChanges()
     {
+        $gadgets = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Search', 'AdminModel', 'Settings');
         $model->SetSearchableGadgets($gadgets);
         return $GLOBALS['app']->Session->PopLastResponse();
