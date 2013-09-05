@@ -32,7 +32,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $album   = jaws()->request->get('album', 'get');
-        $post    = jaws()->request->get(array('date', 'album'), 'post');
+        $post    = jaws()->request->get(array('date', 'album:array'), 'post');
         $albums  = $aModel->GetAlbums('createtime','ASC');
 
         // TODO set default value for change page address to correct location after uploading image

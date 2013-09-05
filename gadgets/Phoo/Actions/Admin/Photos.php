@@ -25,7 +25,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         $album = jaws()->request->get('album', 'get');
-        $post  = jaws()->request->get(array('date', 'album'), 'post');
+        $post  = jaws()->request->get(array('date', 'album:array'), 'post');
 
         $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
