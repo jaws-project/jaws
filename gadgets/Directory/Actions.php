@@ -9,12 +9,22 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $actions = array();
+
+/* Public Actions */
 $actions['Directory'] = array(
     'normal' => true,
     'file' => 'Directory'
 );
+$actions['GetFiles'] = array(
+    'normal' => true,
+    'file' => 'Directory'
+);
+$actions['GetFile'] = array(
+    'normal' => true,
+    'file' => 'Directory'
+);
 
-/* Dir Actions */
+/* Directory Actions */
 $actions['DirectoryForm'] = array(
     'normal' => true,
     'file' => 'Directories'
@@ -27,7 +37,7 @@ $actions['UpdateDirectory'] = array(
     'normal' => true,
     'file' => 'Directories'
 );
-$actions['DeleteDir'] = array(
+$actions['DeleteDirectory'] = array(
     'normal' => true,
     'file' => 'Directories'
 );
@@ -36,14 +46,6 @@ $actions['DeleteDir'] = array(
 $actions['FileForm'] = array(
     'normal' => true,
     'file' => 'Files'
-);
-$actions['GetFiles'] = array(
-    'normal' => true,
-    'file' => 'Directory'
-);
-$actions['GetFile'] = array(
-    'normal' => true,
-    'file' => 'Directory'
 );
 $actions['CreateFile'] = array(
     'normal' => true,

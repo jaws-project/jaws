@@ -5,12 +5,16 @@
   <div><b>Path:</b> <span id="path"></span></div>
   <table><tr>
     <td>
-      <select id="files" size="20" style="width:400px" onchange="selectFile()" ondblclick="openDirectory()"></select>
+      <form id="frm_files" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="Directory" />
+        <input type="hidden" name="action" value="DeleteFile" />
+        <select id="files" name="files" size="20" onchange="selectFile()" ondblclick="openDirectory()"></select>
+      </form>
       <div class="actions">
         <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
         <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
         <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
-        <button type="button" id="btn_delete" onclick="deleteFile()">{lbl_delete}</button>
+        <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
       </div>
     </td>
     <td id="form" valign="top"></td>
@@ -24,6 +28,7 @@
   .response_error {color:#a00;}
   #path span {color:blue; cursor:pointer;}
   #path span:hover {text-decoration:underline;}
+  #files {width:400px}
   #filename img {vertical-align:middle; margin:0 5px;}
 </style>
 <script>

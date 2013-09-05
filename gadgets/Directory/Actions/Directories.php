@@ -89,4 +89,33 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
         Jaws_Header::Referrer();
     }
 
+    /**
+     * Deletes directory
+     *
+     * @access  public
+     * @return  mixed   Response array or Jaws_Error on error
+     */
+    function DeleteDirectory()
+    {
+        $request =& Jaws_Request::getInstance();
+        $id = (int)$request->get('files');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $res = $model->DeleteFile($id);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'Directory', 
+                RESPONSE_ERROR
+            );
+            Jaws_Header::Referrer();
+        }
+
+        $GLOBALS['app']->Session->PushResponse(
+            _t('DIRECTORY_NOTICE_DIR_DELETED'),
+            'Directory', 
+            RESPONSE_NOTICE
+        );
+        Jaws_Header::Referrer();
+    }
+
 }

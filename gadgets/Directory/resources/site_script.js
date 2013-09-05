@@ -11,13 +11,20 @@
  * Use async mode, create Callback
  */
 var DirectoryCallback = {
-    DeleteFile: function(response) {
-        console.log(response);
-        if (response) {
+    DeleteDirectory: function(response) {
+        if (response.css === 'notice-message') {
             cancel();
             fillFilesCombo(currentDir);
         }
-        $('simple_response').set('html', response);
+        $('simple_response').set('html', response.message);
+    },
+
+    DeleteFile: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            fillFilesCombo(currentDir);
+        }
+        $('simple_response').set('html', response.message);
     }
 }
 
@@ -113,20 +120,6 @@ function updatePath()
 }
 
 /**
- * Displays the blank form to create a new directory
- */
-function newDirectory()
-{
-    if (cachedDirectoryForm === null) {
-        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
-    }
-    $('form').set('html', cachedDirectoryForm);
-    comboFiles.selectedIndex = -1;
-    $('frm_dir').title.focus();
-    $('frm_dir').parent.value = currentDir;
-}
-
-/**
  * Goes to edit file or directory
  */
 function edit()
@@ -144,6 +137,42 @@ function edit()
 }
 
 /**
+ * Deletes selected directory/file
+ */
+function _delete()
+{
+    if (selectedId === null) return;
+    var form = $('frm_files');
+    if (fileById[comboFiles.value].is_dir) {
+        if (confirm('Are you sure you want to delete directory?')) {
+            //fmAjax.callAsync('DeleteDirectory', selectedId);
+            form.action.value = 'DeleteDirectory';
+            form.submit();
+        }
+    } else {
+        if (confirm('Are you sure you want to delete file?')) {
+            //fmAjax.callAsync('DeleteFile', selectedId);
+            form.action.value = 'DeleteFile';
+            form.submit();
+        }
+    }
+}
+
+/**
+ * Displays the blank form to create a new directory
+ */
+function newDirectory()
+{
+    if (cachedDirectoryForm === null) {
+        cachedDirectoryForm = fmAjax.callSync('GetDirectoryForm');
+    }
+    $('form').set('html', cachedDirectoryForm);
+    comboFiles.selectedIndex = -1;
+    $('frm_dir').title.focus();
+    $('frm_dir').parent.value = currentDir;
+}
+
+/**
  * Goes for editing selected directory
  */
 function editDirectory(data)
@@ -158,16 +187,6 @@ function editDirectory(data)
     form.title.value = data.title;
     form.description.value = data.description;
     form.parent.value = data.parent;
-}
-
-/**
- * Deletes selected file/directory
- */
-function deleteFile()
-{
-    if (confirm('Are you sure you want to delete selected item?')) {
-        fmAjax.callAsync('DeleteFile', selectedId);
-    }
 }
 
 /**

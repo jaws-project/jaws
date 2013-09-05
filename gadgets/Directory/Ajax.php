@@ -83,19 +83,43 @@ class Directory_Ajax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes file/directory
+     * Deletes directory
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function DeleteDirectory($id)
+    {
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $res = $model->DeleteFile($id);
+        if (Jaws_Error::IsError($res)) {
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('DIRECTORY_NOTICE_DIR_DELETED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Deletes file
      *
      * @access  public
      * @return  string  XHTML form
      */
     function DeleteFile($id)
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $gadget->DeleteFile($id);
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $res = $model->DeleteFile($id);
         if (Jaws_Error::IsError($res)) {
-            return false;
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
-        return _t('DIRECTORY_NOTICE_ITEM_DELETED');
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('DIRECTORY_NOTICE_FILE_DELETED'),
+            RESPONSE_NOTICE
+        );
     }
 
 }
