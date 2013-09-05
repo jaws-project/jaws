@@ -14,11 +14,12 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      * Get Block
      *
      * @access  public
-     * @param   int      $id     Block ID
-     * @return  mixed    Block data or False on error
+     * @internal param  int $id Block ID
+     * @return  mixed   Block data or False on error
      */
-    function GetBlock($id)
+    function GetBlock()
     {
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
         $block = $model->GetBlock($id);
         if (Jaws_Error::IsError($block)) {
@@ -32,15 +33,16 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      * Create a new  block
      *
      * @access  public
-     * @param   string  $title          Block title
-     * @param   string  $contents       Block contents
-     * @param   bool    $displayTitle   If true display block title
+     * @internal param  string  $title Block title
+     * @internal param  string  $contents Block contents
+     * @internal param  bool    $displayTitle If true display block title
      * @return  array   Response array (notice or error)
      */
-    function NewBlock($title, $contents, $displayTitle)
+    function NewBlock()
     {
         $this->gadget->CheckPermission('AddBlock');
 
+        @list($title, $contents, $displayTitle) = jaws()->request->getAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $contents = jaws()->request->get(1, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
@@ -59,16 +61,17 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      * Update a block
      *
      * @access  public
-     * @param   int     $id             Block ID
-     * @param   string  $title          Block title
-     * @param   string  $contents       Block contents
-     * @param   bool    $displayTitle   If true display block title
+     * @internal param  int     $id Block ID
+     * @internal param  string  $title Block title
+     * @internal param  string  $contents Block contents
+     * @internal param  bool    $displayTitle If true display block title
      * @return  array  Response array (notice or error)
      */
-    function UpdateBlock($id, $title, $contents, $displayTitle)
+    function UpdateBlock()
     {
         $this->gadget->CheckPermission('EditBlock');
 
+        @list($id, $title, $contents, $displayTitle) = jaws()->request->getAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $contents = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
@@ -80,12 +83,13 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      * Delete a block
      *
      * @access  public
-     * @param   int     $id     Block ID
+     * @internal param  int $id Block ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteBlock($id)
+    function DeleteBlock()
     {
         $this->gadget->CheckPermission('DeleteBlock');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
         $model->DeleteBlock($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -95,10 +99,10 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
      * Parse text
      *
      * @access  public
-     * @param   string  $text    Input text (not parsed)
+     * @internal param  string $text Input text (not parsed)
      * @return  string  Parsed text
      */
-    function ParseText($text)
+    function ParseText()
     {
         $text = jaws()->request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML');
