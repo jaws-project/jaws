@@ -12,29 +12,17 @@
 class Preferences_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Preferences_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Update preferences
      *
      * @access  public
-     * @param   array   $preferences_config
      * @return  array   Response array (notice or error)
      */
-    function UpdatePreferences($preferences_config)
+    function UpdatePreferences()
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $this->_Model->UpdatePreferences($preferences_config);
+        $preferences_config = jaws()->request->getAll('post');
+        $modelPreferences = $this->gadget->load('Model')->load('AdminModel');
+        $modelPreferences->UpdatePreferences($preferences_config);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
