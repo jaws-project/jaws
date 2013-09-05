@@ -11,28 +11,16 @@
 class ServerTime_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function ServerTime_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Updates properties
      *
      * @access  public
-     * @param   string  $format The format of date and time being displayed
      * @return  array   Response array (notice or error)
      */
-    function UpdateProperties($format)
+    function UpdateProperties()
     {
-        $this->_Model->UpdateProperties($format);
+        @list($format) = jaws()->request->getAll('post');
+        $modelServerTime = $this->gadget->load('Model')->load('AdminModel');
+        $modelServerTime->UpdateProperties($format);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
