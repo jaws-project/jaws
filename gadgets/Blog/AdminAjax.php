@@ -27,16 +27,20 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Search for posts and return a datagrid
      *
-     * @access  public
-     * @param   string  $period  Period to look for
-     * @param   int     $cat     Category ID
-     * @param   int     $status  Status (0=Draft, 1=Published)
-     * @param   string  $search  Search word
-     * @param   int     $limit   Limit data
-     * @return  array   Posts Array
+     * @access   public
+     * @internal param  string  $period     Period to look for
+     * @internal param  int     $cat        Category ID
+     * @internal param  int     $status     Status (0=Draft, 1=Published)
+     * @internal param  string  $search     Search word
+     * @internal param  int     $limit      Limit data
+     * @return   array  Posts Array
      */
-    function SearchPosts($period, $cat, $status, $search, $limit = 0)
+    function SearchPosts()
     {
+        @list($period, $cat, $status, $search, $limit) = jaws()->request->getAll('post');
+        if(empty($limit)) {
+            $limit = 0;
+        }
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Entries');
         return $gadget->PostsData($period, $cat, $status, $search, $limit);
     }
@@ -44,16 +48,17 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get total posts of a search
      *
-     * @access  public
-     * @param   string  $period  Period to look for
-     * @param   int     $cat     Category ID
-     * @param   int     $status  Status (0=Draft, 1=Published)
-     * @param   string  $search  Search word
-     * @return  int     Total of posts
+     * @access   public
+     * @internal param  string  $period     Period to look for
+     * @internal param  int     $cat        Category ID
+     * @internal param  int     $status     Status (0=Draft, 1=Published)
+     * @internal param  string  $search     Search word
+     * @return   int    Total of posts
      */
-    function SizeOfSearch($period, $cat, $status, $search)
+    function SizeOfSearch()
     {
-        $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
+        @list($period, $cat, $status, $search) = jaws()->request->getAll('post');
+        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
         $entries = $model->AdvancedSearch(false, $period, $cat, $status, $search,
                                                  $GLOBALS['app']->Session->GetAttribute('user'));
         return count($entries);
@@ -62,25 +67,26 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Save blog settings
      *
-     * @access  public
-     * @param   string  $view                   The default View
-     * @param   int     $limit                  Limit of entries that blog will show
-     * @param   int     $popularLimit           Limit of popular entries
-     * @param   int     $commentsLimit          Limit of comments that blog will show
-     * @param   int     $recentcommentsLimit    Limit of recent comments to display
-     * @param   string  $category               The default category for blog entries
-     * @param   int     xml_limit               limit
-     * @param   bool    $comments               If comments should appear
-     * @param   string  $comment_status         Default comment status
-     * @param   bool    $trackback              If Trackback should be used
-     * @param   string  $trackback_status       Default trackback status
-     * @param   bool    $pingback               If Pingback should be used
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string      $view           The default View
+     * @internal param  int         $limit          Limit of entries that blog will show
+     * @internal param  int         $popularLimit   Limit of popular entries
+     * @internal param  int         $commentsLimit  Limit of comments that blog will show
+     * @internal param  int         $recentcomments Limit Limit of recent comments to display
+     * @internal param  string      $category       The default category for blog entries
+     * @internal param  xml_limit   $int            limit
+     * @internal param  bool        $comments       If comments should appear
+     * @internal param  string      $comment_status Default comment status
+     * @internal param  bool        $trackback      If Trackback should be used
+     * @internal param  string      $trackback_status Default trackback status
+     * @internal param  bool        $pingback       If Pingback should be used
+     * @return   array  Response array (notice or error)
      */
-    function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category, 
-                          $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
-                          $pingback)
+    function SaveSettings()
     {
+        @list($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
+            $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
+            $pingback) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Settings');
         $model->SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
                                     $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
@@ -91,13 +97,14 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get a category data
      *
-     * @access  public
-     * @param   int     $id
-     * @return  Array  Category data
+     * @access   public
+     * @internal param  int     $id
+     * @return   Array  Category data
      */
-    function GetCategory($id)
+    function GetCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
         return $model->GetCategory($id);
     }
@@ -118,17 +125,18 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Add a new category
      *
-     * @access  public
-     * @param   string  $name           Category name
-     * @param   string  $description    Category description
-     * @param   string  $fast_url       Category fast url
-     * @param   string  $meta_keywords  Meta keywords
-     * @param   string  $meta_desc      Meta description
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $name           Category name
+     * @internal param  string  $description    Category description
+     * @internal param  string  $fast_url       Category fast url
+     * @internal param  string  $meta_keywords  Meta keywords
+     * @internal param  string  $meta_desc      Meta description
+     * @return   array  Response array (notice or error)
      */
-    function AddCategory($name, $description, $fast_url, $meta_keywords, $meta_desc)
+    function AddCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        @list($name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Categories');
         $model->NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -137,18 +145,19 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update a category
      *
-     * @access  public
-     * @param   int     $id             ID of category
-     * @param   string  $name           Name of category
-     * @param   string  $description    Category description
-     * @param   string  $fast_url       Category fast url
-     * @param   string  $meta_keywords  Meta keywords
-     * @param   string  $meta_desc      Meta description
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id             ID of category
+     * @internal param  string  $name           Name of category
+     * @internal param  string  $description    Category description
+     * @internal param  string  $fast_url       Category fast url
+     * @internal param  string  $meta_keywords  Meta keywords
+     * @internal param  string  $meta_desc      Meta description
+     * @return   array  Response array (notice or error)
      */
-    function UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc)
+    function UpdateCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        @list($id, $name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Categories');
         $model->UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -157,13 +166,14 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a category
      *
-     * @access  public
-     * @param   int     $id   ID of category
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id     ID of category
+     * @return   array  Response array (notice or error)
      */
-    function DeleteCategory($id)
+    function DeleteCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Categories');
         $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -172,31 +182,33 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Search for trackbacks and return the data in an array
      *
-     * @access  public
-     * @param   int     $limit   Data limit
-     * @param   string  $filter  Filter
-     * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Data array
+     * @access   public
+     * @internal param  int     $limit      Data limit
+     * @internal param  string  $filter     Filter
+     * @internal param  string  $search     Search word
+     * @internal param  string  $status     Spam status (approved, waiting, spam)
+     * @return   array  Data array
      */
-    function SearchTrackbacks($limit, $filter, $search, $status)
+    function SearchTrackbacks()
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
+        @list($limit, $filter, $search, $status) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Trackbacks');
         return $gadget->TrackbacksData($limit, $filter, $search, $status);
     }
 
-     /**
+    /**
      * Get total posts of a trackback search
      *
-     * @access  public
-     * @param   string  $filter  Filter
-     * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  int     Total of posts
+     * @access   public
+     * @internal param  string  $filter     Filter
+     * @internal param  string  $search     Search word
+     * @internal param  string  $status     Spam status (approved, waiting, spam)
+     * @return   int    Total of posts
      */
-    function SizeOfTrackbacksSearch($filter, $search, $status)
+    function SizeOfTrackbacksSearch()
     {
+        @list($filter, $search, $status) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Trackbacks');
         return $model->HowManyFilteredTrackbacks($filter, $search, $status, false);
     }
@@ -204,13 +216,14 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Does a massive delete on entries
      *
-     * @access  public
-     * @param   array   $ids     Entries ids
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  array   $ids    Entries ids
+     * @return   array  Response array (notice or error)
      */
-    function DeleteEntries($ids)
+    function DeleteEntries()
     {
         $this->gadget->CheckPermission('DeleteEntries');
+        @list($ids) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
         $model->MassiveEntryDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -219,14 +232,15 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Change status of group of entries ids
      *
-     * @access  public
-     * @param   array   $ids        Ids of entries
-     * @param   string  $status     New status
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  array   $ids        Ids of entries
+     * @internal param  string  $status     New status
+     * @return   array   Response array (notice or error)
      */
-    function ChangeEntryStatus($ids, $status)
+    function ChangeEntryStatus()
     {
         $this->gadget->CheckPermission('PublishEntries');
+        @list($ids, $status) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
         $model->ChangeEntryStatus($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -235,13 +249,14 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Does a massive delete on trackbacks
      *
-     * @access  public
-     * @param   array   $ids     Trackback ids
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  array   $ids    Trackback ids
+     * @return   array  Response array (notice or error)
      */
-    function DeleteTrackbacks($ids)
+    function DeleteTrackbacks()
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
+        @list($ids) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Trackbacks');
         $model->MassiveTrackbackDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -251,14 +266,15 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Mark as different type a group of ids
      *
-     * @access  public
-     * @param   array   $ids        Ids of comments
-     * @param   string  $status     New status
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  array   $ids    Ids of comments
+     * @internal param  string  $status New status
+     * @return   array  Response array (notice or error)
      */
-    function TrackbackMarkAs($ids, $status)
+    function TrackbackMarkAs()
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
+        @list($ids, $status) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Trackbacks');
         $model->MarkTrackbacksAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -269,25 +285,27 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
      * it's value to not published, which will later be changed when the
      * user clicks on save.
      *
-     * @access  public
-     * @param   int     $id             ID
-     * @param   array   $categories     Array with categories id's
-     * @param   string  $title          Title of the entry
-     * @param   string  $summary        Summary of the entry
-     * @param   string  $text           Content of the entry
-     * @param   string  $fasturl        FastURL
-     * @param   string  $meta_keywords  Meta keywords
-     * @param   string  $meta_desc      Meta description
-     * @param   bool    $allow_comments If entry should allow commnets
-     * @param   string  $trackbacks     Trackback to send
-     * @param   bool    $published      If entry should be published
-     * @param   string  $timestamp      Entry timestamp (optional)
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id             ID
+     * @internal param  array   $categories     Array with categories id's
+     * @internal param  string  $title          Title of the entry
+     * @internal param  string  $summary        Summary of the entry
+     * @internal param  string  $text           Content of the entry
+     * @internal param  string  $fasturl        FastURL
+     * @internal param  string  $meta_keywords  Meta keywords
+     * @internal param  string  $meta_desc      Meta description
+     * @internal param  bool    $allow_comments If entry should allow commnets
+     * @internal param  string  $trackbacks     Trackback to send
+     * @internal param  bool    $published      If entry should be published
+     * @internal param  string  $timestamp      Entry timestamp (optional)
+     * @return   array  Response array (notice or error)
      */
-    function AutoDraft($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
-                       $allow_comments, $trackbacks, $published, $timestamp)
+    function AutoDraft()
     {
         $this->gadget->CheckPermission('AddEntries');
+        @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
+            $allow_comments, $trackbacks, $published, $timestamp) = jaws()->request->getAll('post');
+
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
 
         $categories = jaws()->request->get('1:array', 'post');
