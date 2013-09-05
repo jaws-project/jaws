@@ -25,13 +25,7 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        if (baseScript === undefined) {
-            var href = document.location.href,
-                path = document.location.pathname,
-                basePath = href.substr(0, href.indexOf(path) + path.length);
-            baseScript = basePath.replace($$('base')[0].href, '');
-        }
-
+        baseScript = (baseScript === undefined)? $$('meta[name=script]').getProperty('content') : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
     },
 
@@ -42,13 +36,7 @@ var JawsAjax = new Class({
      * @return  void
      */
     backwardSupport: function (baseScript) {
-        if (baseScript === undefined) {
-            var href = document.location.href,
-                path = document.location.pathname,
-                basePath = href.substr(0, href.indexOf(path) + path.length);
-            baseScript = basePath.replace($$('base')[0].href, '');
-        }
-
+        baseScript = (baseScript === undefined)? $$('meta[name=script]').getProperty('content') : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
     },
 
