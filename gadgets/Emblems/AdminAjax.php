@@ -15,13 +15,12 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
      * Updates the emblem
      *
      * @access  public
-     * @param   int     $id     Emblem ID
-     * @param   array   $data   Emblem data
      * @return  array   Response array (notice or error)
      */
-    function UpdateEmblem($id, $data)
+    function UpdateEmblem()
     {
         $this->gadget->CheckPermission('ManageEmblems');
+        @list($id, $data) = jaws()->request->get(array('0', '1:array'), 'post');
         $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
@@ -37,13 +36,12 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the emblem
      *
      * @access  public
-     * @param   int     $id  Emblem id
      * @return  array   Response array (notice or error)
      */
-    function DeleteEmblem($id)
+    function DeleteEmblem()
     {
         $this->gadget->CheckPermission('ManageEmblems');
-
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
         $emblem = $model->GetEmblem($id);
 
@@ -67,11 +65,11 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
      * Fetches a limited array of emblems
      *
      * @access  public
-     * @param   int     $limit  Limit of emblems
      * @return  array   An array of emblems
      */
-    function GetData($limit)
+    function GetData()
     {
+        @list($limit) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminHTML', 'Emblems');
         return $gadget->GetEmblems($limit);
     }
