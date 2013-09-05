@@ -33,11 +33,11 @@ $actions['UnreadMessage'] = array(
 );
 $actions['Reply'] = array(
     'normal' => true,
-    'file' => 'Message',
+    'file' => 'Reply',
 );
 $actions['ReplyMessage'] = array(
     'normal' => true,
-    'file' => 'Message',
+    'file' => 'Reply',
 );
 $actions['Outbox'] = array(
     'normal' => true,

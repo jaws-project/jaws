@@ -48,6 +48,17 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap('ViewMessage', array('id' => $message['id'])));
+
+                // user's profile
+                $tpl->SetVariable(
+                    'user_url',
+                    $GLOBALS['app']->Map->GetURLFor(
+                        'Users',
+                        'Profile',
+                        array('user' => $message['from_username'])
+                    )
+                );
+
                 $tpl->ParseBlock('inbox/message');
             }
         }

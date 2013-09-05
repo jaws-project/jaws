@@ -25,6 +25,11 @@ $maps[] = array(
     'pm/message/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
+$maps[] = array(
+    'DeleteMessage',
+    'pm/message/delete/{id}',
+    array('id' => '[\p{L}[:digit:]-_\.]+',)
+);
 
 $maps[] = array(
     'Attachment',

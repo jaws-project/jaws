@@ -24,7 +24,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         }
 
         $this->gadget->CheckPermission('SendMessage');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
+        $this->AjaxMe('site_script.js');
 
 //        $date = $GLOBALS['app']->loadDate();
 //        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Send');

@@ -31,6 +31,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_SUBJECT', "Subject");
 define('_EN_PRIVATEMESSAGE_MESSAGE_BODY', "Message Body");
 define('_EN_PRIVATEMESSAGE_MESSAGE_SEND_TIME', "Send Time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENTS', "Attachments");
+define('_EN_PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE', "Delete this message?");
 
 /* Reply */
 define('_EN_PRIVATEMESSAGE_REPLY', "Reply");
@@ -43,6 +44,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 
 /* Common */
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
+define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
 define('_EN_PRIVATEMESSAGE_FILE', "File");
 define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
 define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");
@@ -51,7 +53,9 @@ define('_EN_PRIVATEMESSAGE_ADD_ANOTHER_FILE', "Add another file");
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
 define('_EN_PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED', "No image has been uploaded.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
 
 /* Errors */
 define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
+define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem deleting message.");
 

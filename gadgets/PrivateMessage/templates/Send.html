@@ -63,6 +63,18 @@
 </div>
 
 <script type="text/javascript">
+    $('recipient_users').addEvent('keypress',function(e) {
+        console.log(getUsers($('recipient_users').value));
+    });
+
+    $('recipient_groups').addEvent('keypress',function(e) {
+        console.log(getGroups($('recipient_groups').value));
+    });
+
+</script>
+
+<script type="text/javascript">
+
     /**
      * add a file entry
      */
@@ -71,7 +83,7 @@
         var id = num_entries;
         entry = '<label id="file' + id + '_label" for="file' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
         entry += '<input type="file" name="file' + id + '" id="file' + id + '" title="' + title + id + '" /><br />';
-        _('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + _('file_addentry' + id).innerHTML + '</span>';
+        $('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + $('file_addentry' + id).innerHTML + '</span>';
     }
     var num_entries = 1;
 </script>

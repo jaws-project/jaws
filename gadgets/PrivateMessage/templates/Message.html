@@ -14,10 +14,10 @@
                 <div>{lbl_send_time}: {send_time}</div>
 
                 <div class="actions">
-                    <a href="{back_url}" class="button"><img src="{icon_back}" alt="{back}"/></a>
-                    <button type="submit" onclick="changeAction('Reply')"><img src="{icon_reply}" alt="{reply}"/></button>
-                    <a href="{forward_url}" class="button"><img src="{icon_forward}" alt="{forward}"/></a>
-                    <button type="submit" onclick="changeAction('DeleteMessage')"><img src="{icon_delete}" alt="{delete}"/></button>
+                    <a href="{back_url}" class="button" title="{back}"><img src="{icon_back}" alt="{back}"/></a>
+                    <a href="{reply_url}" class="button" title="{reply}"><img src="{icon_reply}" alt="{reply}"/></a>
+                    <a href="{forward_url}" class="button" title="{forward}"><img src="{icon_forward}" alt="{forward}"/></a>
+                    <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}" alt="{delete}"/></a>
                 </div>
                 <div>{lbl_subject}: {subject}</div>
                 <div>
@@ -42,8 +42,15 @@
 </div>
 
 <script type="text/javascript">
-    function changeAction(action) {
-        document.getElementById('action').value = action;
+    /**
+     * Delete Message
+     */
+    function deleteMessage()
+    {
+        if (confirm('{confirmDelete}')) {
+            window.location.href = "{delete_url}";
+        }
     }
+
 </script>
 <!-- END message -->
