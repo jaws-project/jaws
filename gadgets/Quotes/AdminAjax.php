@@ -14,11 +14,11 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Gets data of the quote
      *
      * @access  public
-     * @param   int     $qid
      * @return  mixed   Quote data array or False on error
      */
-    function GetQuote($qid)
+    function GetQuote()
     {
+        @list($qid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
         $quote = $model->GetQuote($qid);
         if (Jaws_Error::IsError($quote)) {
@@ -42,12 +42,12 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Gets data of quotes
      *
      * @access  public
-     * @param   int     $qid    Quote ID
-     * @param   int     $gid    Group ID
      * @return  mixed   Quotes data array or False on error
      */
-    function GetQuotes($qid, $gid = -1)
+    function GetQuotes()
     {
+        @list($qid, $gid) = jaws()->request->getAll('post');
+        $gid = empty($gid)? -1 : $gid;
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
         $quoteInfo = $model->GetQuotes($qid, $gid);
         if (Jaws_Error::IsError($quoteInfo) || !isset($quoteInfo[0])) {
@@ -61,19 +61,14 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Inserts a new quote
      *
      * @access  public
-     * @param   string  $title
-     * @param   string  $quotation
-     * @param   int     $gid    group ID
-     * @param   string  $start_time
-     * @param   string  $stop_time
-     * @param   bool    $show_title
-     * @param   bool    $published
      * @return  array   Response array (notice or error)
      */
-    function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
+    function InsertQuote()
     {
         $this->gadget->CheckPermission('ManageQuotes');
-
+        @list($title, $quotation, $gid, $start_time, $stop_time,
+            $show_title, $published
+        ) = jaws()->request->getAll('post');
         $quotation = jaws()->request->get(1, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
@@ -84,20 +79,14 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Updates the quote
      *
      * @access  public
-     * @param   int     $id         Quote ID
-     * @param   string  $title
-     * @param   string  $quotation
-     * @param   int     $gid        Group ID
-     * @param   string  $start_time
-     * @param   string  $stop_time
-     * @param   bool    $show_title
-     * @param   bool    $published
      * @return  array   Response array (notice or error)
      */
-    function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
+    function UpdateQuote()
     {
         $this->gadget->CheckPermission('ManageQuotes');
-
+        @list($id, $title, $quotation, $gid, $start_time, $stop_time,
+            $show_title, $published
+        ) = jaws()->request->getAll('post');
         $quotation = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
@@ -108,12 +97,12 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the quote
      *
      * @access  public
-     * @param   int     $id  Quote ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteQuote($id)
+    function DeleteQuote()
     {
         $this->gadget->CheckPermission('ManageQuotes');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->DeleteQuote($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -123,11 +112,11 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Gets data of a quote group
      *
      * @access  public
-     * @param   int     $gid    Group ID
      * @return  mixed   Group data array or False on error
      */
-    function GetGroup($gid)
+    function GetGroup()
     {
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -141,18 +130,14 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Inserts a new group
      *
      * @access  public
-     * @param   string  $title
-     * @param   int     $view_mode
-     * @param   int     $view_type
-     * @param   bool    $show_title
-     * @param   int     $limit_count
-     * @param   bool    $randomly
-     * @param   bool    $published
      * @return  array   Response array (notice or error)
      */
-    function InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
+    function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
+        @list($title, $view_mode, $view_type, $show_title,
+            $limit_count, $randomly, $published
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
@@ -163,19 +148,14 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Updates the group
      *
      * @access  public
-     * @param   int     $gid         Group ID
-     * @param   string  $title
-     * @param   int     $view_mode
-     * @param   int     $view_type
-     * @param   bool    $show_title
-     * @param   int     $limit_count
-     * @param   bool    $randomly
-     * @param   bool    $published
      * @return  array   Response array (notice or error)
      */
-    function UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published)
+    function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
+        @list($gid, $title, $view_mode, $view_type, $show_title,
+            $limit_count, $randomly, $published
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
@@ -198,14 +178,12 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Assigns quotes to a certain group
      *
      * @access  public
-     * @param   int     $gid    Group ID
-     * @param   array   $quotes Array of IDs
      * @return  array   Response array (notice or error)
      */
-    function AddQuotesToGroup($gid, $quotes)
+    function AddQuotesToGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
-        $quotes = jaws()->request->get('1:array', 'post');
+        @list($gid, $quotes) = jaws()->request->get(array('0', '1:array'), 'post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->AddQuotesToGroup($gid, $quotes);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -215,12 +193,12 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the group
      *
      * @access  public
-     * @param   int     $gid    Group ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteGroup($gid)
+    function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->DeleteGroup($gid);
 
