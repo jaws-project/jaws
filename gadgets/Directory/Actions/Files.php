@@ -46,7 +46,10 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $data['is_dir'] = false;
 
             // File upload
-            $path = $GLOBALS['app']->getDataURL('directory');
+            $path = $GLOBALS['app']->getDataURL('directory/' . $data['user']);
+            if (!file_exists($path)) {
+                Jaws_Utils::mkdir($path, 2);
+            }
             $res = Jaws_Utils::UploadFiles($_FILES, $path);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
@@ -88,7 +91,10 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $data['is_dir'] = false;
 
             // File upload
-            $path = $GLOBALS['app']->getDataURL('directory');
+            $path = $GLOBALS['app']->getDataURL('directory/' . $data['user']);
+            if (!file_exists($path)) {
+                Jaws_Utils::mkdir($path, 2);
+            }
             $res = Jaws_Utils::UploadFiles($_FILES, $path);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
