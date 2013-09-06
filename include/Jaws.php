@@ -136,7 +136,7 @@ class Jaws
     function __construct()
     {
         spl_autoload_register(array($this, 'loadClass'));
-        $this->loadObject('Jaws_Request', 'request');
+        $this->loadObject('Jaws_Request', 'request', true);
         $this->loadObject('Jaws_UTF8', 'UTF8');
         $this->loadObject('Jaws_Translate', 'Translate');
         $this->loadObject('Jaws_Registry', 'Registry');
@@ -793,23 +793,19 @@ class Jaws
      * @param   string  $property   Jaws app property name
      * @return  mixed   Object if success otherwise Jaws_Error on failure
      */
-    function loadObject($classname, $property = '')
+    function loadObject($classname, $property = '', $singleton = false)
     {
         // filter non validate character
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
-
-        if (!empty($property)) {
-            if (isset($this->{$property})) {
-                $objClass = $this->{$property};
-            } else {
-                $objClass = new $classname();
-                $this->{$property} = $objClass;
+        if (empty($property) || !isset($this->$property)) {
+            $objClass = $singleton? $classname::getInstance() : new $classname();
+            if (!empty($property)) {
+                $this->$property = $objClass;
             }
-        } else {
-            $objClass = new $classname();
+            return $objClass;
         }
 
-        return $objClass;
+        return $this->$property;
     }
 
     /**
