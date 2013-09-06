@@ -20,7 +20,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetPoll()
     {
-        @list($pid) = jaws()->request->getAll('post');
+        @list($pid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $poll = $model->GetPoll($pid);
         if (Jaws_Error::IsError($poll)) {
@@ -59,7 +59,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePolls');
         @list($question, $gid, $start_time, $stop_time, $select_type,
               $poll_type, $result_view, $visible
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
@@ -86,7 +86,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManagePolls');
         @list($pid, $question, $gid, $start_time, $stop_time,
              $select_type, $poll_type, $result_view, $visible
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
@@ -103,7 +103,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function DeletePoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
-        @list($pid) = jaws()->request->getAll('post');
+        @list($pid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->DeletePoll($pid);
 
@@ -131,7 +131,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetPollAnswers()
     {
-        @list($pid) = jaws()->request->getAll('post');
+        @list($pid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $answers = $model->GetPollAnswers($pid);
         if (Jaws_Error::IsError($answers)) {
@@ -157,8 +157,8 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function UpdatePollAnswers()
     {
         $this->gadget->CheckPermission('ManagePolls');
-        @list($pid, $answers) = jaws()->request->getAll('post');
-        $answers = jaws()->request->get('1:array', 'post');
+        @list($pid, $answers) = jaws()->request->fetchAll('post');
+        $answers = jaws()->request->fetch('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->UpdatePollAnswers($pid, $answers);
 
@@ -174,7 +174,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetPollGroup()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Group');
         $group = $model->GetPollGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -195,7 +195,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function InsertPollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $visible) = jaws()->request->getAll('post');
+        @list($title, $visible) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->InsertPollGroup($title, $visible);
 
@@ -214,7 +214,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function UpdatePollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $title, $visible) = jaws()->request->getAll('post');
+        @list($gid, $title, $visible) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->UpdatePollGroup($gid, $title, $visible);
 
@@ -231,7 +231,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function DeletePollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->DeletePollGroup($gid);
 
@@ -259,7 +259,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetPollGroupPolls()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $polls = $model->GetPolls($gid);
         if (Jaws_Error::IsError($polls)) {
@@ -285,8 +285,8 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function AddPollsToPollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $polls) = jaws()->request->getAll('post');
-        $polls = jaws()->request->get('1:array', 'post');
+        @list($gid, $polls) = jaws()->request->fetchAll('post');
+        $polls = jaws()->request->fetch('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->AddPollsToPollGroup($gid, $polls);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -301,7 +301,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupPolls()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $polls = $model->GetPolls($gid);
         if (Jaws_Error::IsError($polls)) {
@@ -321,7 +321,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function PollResultsUI()
     {
         $this->gadget->CheckPermission('ViewReports');
-        @list($pid) = jaws()->request->getAll('post');
+        @list($pid) = jaws()->request->fetchAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Report');
         return $gadget->PollResultsUI($pid);
     }
@@ -336,7 +336,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData()
     {
-        @list($offset, $grid) = jaws()->request->getAll('post');
+        @list($offset, $grid) = jaws()->request->fetchAll('post');
         $pGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Poll');
         $gGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Group');
         if (!is_numeric($offset)) {
