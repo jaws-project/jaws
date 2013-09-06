@@ -884,7 +884,6 @@ class Jaws_ORM
                 }
 
                 $sql.= $vsql;
-                _log_var_dump($sql);
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
@@ -975,8 +974,8 @@ class Jaws_ORM
                 break;
 
             case 'insertAll':
-                $this->_columns = array_shift($params);
-                $this->_values  = $params;
+                $this->_columns = $params[0];
+                $this->_values  = $params[1];
                 $this->_query_command = $method;
                 return $this;
 
