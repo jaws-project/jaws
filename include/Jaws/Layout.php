@@ -701,9 +701,9 @@ class Jaws_Layout
             $content = $this->_Template->Get();
             if ($GLOBALS['app']->GZipEnabled()) {
                 if (false == strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')) {
-                    jaws()->request->set('restype', 'gzip');
+                    jaws()->request->update('restype', 'gzip');
                 } else {
-                    jaws()->request->set('restype', 'x-gzip');
+                    jaws()->request->update('restype', 'x-gzip');
                 }
             }
             return $content;

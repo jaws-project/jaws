@@ -91,7 +91,7 @@ class Jaws_Gadget_HTML
         }
 
         $output = '';
-        $method = Jaws_Gadget_HTML::filter(jaws()->request->get('method', 'get'));
+        $method = Jaws_Gadget_HTML::filter(jaws()->request->fetch('method', 'get'));
         if (method_exists($objAjax, $method)) {
             $output = $objAjax->$method();
         } else {
