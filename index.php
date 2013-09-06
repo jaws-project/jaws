@@ -35,10 +35,10 @@ $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
                          $GLOBALS['app']->Registry->fetch('global_website', 'Settings') == 'false';
 
 // Get forwarded error from webserver
-$ReqError = jaws()->request->get('http_error', 'get');
+$ReqError = jaws()->request->fetch('http_error', 'get');
 if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
-    $ReqGadget = Jaws_Gadget::filter(jaws()->request->get('gadget'));
-    $ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->get('action'));
+    $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget'));
+    $ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->fetch('action'));
 
     if ($AccessToWebsiteDenied && $ReqGadget !== 'Users') {
         $ReqGadget = 'Users';
@@ -101,7 +101,7 @@ if (!$IsReqActionStandAlone) {
 }
 
 // Send content to client
-$resType = jaws()->request->get('restype');
+$resType = jaws()->request->fetch('restype');
 switch ($resType) {
     case 'json':
         header('Content-Type: application/json; charset=utf-8');

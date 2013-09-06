@@ -27,8 +27,8 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $GLOBALS['app']->loadClass('Jaws_ACL', 'ACL');
 
-$ReqGadget = Jaws_Gadget::filter(jaws()->request->get('gadget', array('post', 'get')));
-$ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->get('action', array('post', 'get')));
+$ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
+$ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->fetch('action', array('post', 'get')));
 if (empty($ReqGadget)) {
     $ReqGadget = 'ControlPanel';
     $ReqAction = '';
@@ -52,9 +52,9 @@ if (!$GLOBALS['app']->Session->Logged())
             $user   = $httpAuth->getUsername();
             $passwd = $httpAuth->getPassword();
         } else {
-            $user    = jaws()->request->get('username', 'post');
-            $passwd  = jaws()->request->get('password', 'post');
-            $crypted = jaws()->request->get('usecrypt', 'post');
+            $user    = jaws()->request->fetch('username', 'post');
+            $passwd  = jaws()->request->fetch('password', 'post');
+            $crypted = jaws()->request->fetch('usecrypt', 'post');
 
             if (isset($crypted)) {
                 require_once JAWS_PATH . 'include/Jaws/Crypt.php';
@@ -71,7 +71,7 @@ if (!$GLOBALS['app']->Session->Logged())
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
         $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
-            $param = jaws()->request->get(array('redirect_to', 'remember', 'authtype'), 'post');
+            $param = jaws()->request->fetch(array('redirect_to', 'remember', 'authtype'), 'post');
             $resCheck = $GLOBALS['app']->Session->Login(
                 $user,
                 $passwd, 
@@ -109,7 +109,7 @@ if (!$GLOBALS['app']->Session->Logged())
 }
 
 // remove checksess(check session) parameter from requested url
-if (!is_null(jaws()->request->get('checksess', 'get'))) {
+if (!is_null(jaws()->request->fetch('checksess', 'get'))) {
     Jaws_Header::Location(substr(Jaws_Utils::getRequestURL(false), 0, -10));
 }
 
@@ -155,7 +155,7 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
 }
 
 // Send content to client
-$resType = jaws()->request->get('restype');
+$resType = jaws()->request->fetch('restype');
 switch ($resType) {
     case 'json':
         header('Content-Type: application/json; charset=utf-8');
