@@ -21,7 +21,7 @@ class Weather_Actions_Admin_GoogleMap extends Weather_AdminHTML
      */
     function GetGoogleMapImage()
     {
-        $gMapParams = jaws()->request->get(array('latitude', 'longitude', 'zoom', 'size'), 'get');
+        $gMapParams = jaws()->request->fetch(array('latitude', 'longitude', 'zoom', 'size'), 'get');
 
         $gMapURL = 'http://maps.google.com/maps/api/staticmap?center='.
             $gMapParams['latitude']. ',' . $gMapParams['longitude'].
@@ -34,7 +34,7 @@ class Weather_Actions_Admin_GoogleMap extends Weather_AdminHTML
         header("Pragma: public");
 
         $httpRequest = new Jaws_HTTPRequest();
-        $result = $httpRequest->get($gMapURL, $data);
+        $result = $httprequest->fetch($gMapURL, $data);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $data = @file_get_contents('gadgets/Weather/images/gmap.png');
             header("Expires: 0");
