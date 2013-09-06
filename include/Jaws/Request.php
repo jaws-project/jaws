@@ -278,14 +278,14 @@ class Jaws_Request
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    function _get($keys, $method = '', $filter = true, $json_decode = false)
+    function _fetch($keys, $method = '', $filter = true, $json_decode = false)
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
                 $k = strtok($key, ':');
-                $result[$k] = $this->_get($key, $method, $filter, $json_decode);
+                $result[$k] = $this->_fetch($key, $method, $filter, $json_decode);
             }
 
             return $result;
@@ -327,7 +327,7 @@ class Jaws_Request
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function get($key, $types = '', $filter = true, $json_decode = false)
+    function fetch($key, $types = '', $filter = true, $json_decode = false)
     {
         $result = null;
         if (empty($types)) {
@@ -348,7 +348,7 @@ class Jaws_Request
         }
 
         foreach ($types as $type) {
-            $result = $this->_get($key, $type, $filter, $json_decode);
+            $result = $this->_fetch($key, $type, $filter, $json_decode);
             if (!is_null($result)) {
                 break;
             }
@@ -365,7 +365,7 @@ class Jaws_Request
      * @param   bool    $filter Returns filtered data or not
      * @return  array   Filtered Data array
      */
-    function getAll($type = '', $filter = true)
+    function fetchAll($type = '', $filter = true)
     {
         $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
         if (!isset($this->data[$type]) || empty($this->data[$type])) {
@@ -381,16 +381,14 @@ class Jaws_Request
         }
     }
 
-    /** Creates a new key or updates an old one, doesn't support recursive stuff atm
-     * One idea would be to have set('get', 'foo/bar/foobar', 'sm00ke') and resolve the path
-     * another would be to allow arrays like crazy but still
+    /** Creates a new key or updates an old one
      *
      * @param   string  $key
      * @param   mixed   $value
      * @param   string  $type
-     * @return  bool
+     * @return  bool    True
      */
-    function set($key, $value, $type = '')
+    function update($key, $value, $type = '')
     {
         $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
         $this->data[$type][$key] = $value;
