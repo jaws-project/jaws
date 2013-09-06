@@ -20,7 +20,7 @@ class Search_Actions_Search extends Search_HTML
      */
     function Box($gadgets_combo = true)
     {
-        $post = jaws()->request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
+        $post = jaws()->request->fetch(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
         $tpl = $this->gadget->loadTemplate('Search.html');
         if ($gadgets_combo) {
             $block = 'Box';
@@ -86,7 +86,7 @@ class Search_Actions_Search extends Search_HTML
      */
     function AdvancedBox()
     {
-        $post = jaws()->request->get(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
+        $post = jaws()->request->fetch(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
         $post['all'] = Jaws_XSS::defilter($post['all']);
 
         $tpl = $this->gadget->loadTemplate('Search.html');
