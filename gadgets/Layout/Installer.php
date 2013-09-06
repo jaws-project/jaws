@@ -83,13 +83,15 @@ class Layout_Installer extends Jaws_Gadget_Installer
 
             $lyTable = Jaws_ORM::getInstance()->table('layout');
             foreach ($items as $item) {
+                $lid = $item['id'];
                 preg_match_all('/^([a-z0-9]+)\((.*?)\)$/i', $item['gadget_action'], $matches);
                 if (isset($matches[1][0]) && isset($matches[2][0])) {
                     $item['gadget_action'] = $matches[1][0];
                     $item['action_params'] = array_filter(explode(',', $matches[2][0]));
                 }
                 $item['action_params'] = serialize($item['action_params']);
-                $result = $lyTable->update($item)->exec();
+                unset($item['id'], $item['action_filename'], $item['display_when'], $item['section']);
+                $result = $lyTable->update($item)->where('id', $lid)->exec();
                 if (Jaws_Error::IsError($result)) {
                     return $result;
                 }
