@@ -24,8 +24,8 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $tpl->SetBlock('phoo');
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
-        $album = jaws()->request->get('album', 'get');
-        $post  = jaws()->request->get(array('date', 'album:array'), 'post');
+        $album = jaws()->request->fetch('album', 'get');
+        $post  = jaws()->request->fetch(array('date', 'album:array'), 'post');
 
         $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
@@ -247,7 +247,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
         $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
 
-        $get = jaws()->request->get(array('image', 'album'), 'get');
+        $get = jaws()->request->fetch(array('image', 'album'), 'get');
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
@@ -368,7 +368,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
      */
     function SaveEditPhoto()
     {
-        $post    = jaws()->request->get(array('allow_comments', 'image', 'title', 'published',
+        $post    = jaws()->request->fetch(array('allow_comments', 'image', 'title', 'published',
             'title', 'album', 'fromalbum'), 'post');
 
         if (isset($post['allow_comments'][0])) {
@@ -383,7 +383,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
             $published = false;
         }
 
-        $description = jaws()->request->get('description', 'post', false);
+        $description = jaws()->request->fetch('description', 'post', false);
         // Update photo
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $res = $model->UpdateEntry($post['image'], $post['title'],
@@ -404,7 +404,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
      */
     function DeletePhoto()
     {
-        $post = jaws()->request->get(array('image', 'fromalbum'), 'post');
+        $post = jaws()->request->fetch(array('image', 'fromalbum'), 'post');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $model->DeletePhoto($post['image']);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);

@@ -31,17 +31,17 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
         $dir = _t('GLOBAL_LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
-        $album   = jaws()->request->get('album', 'get');
-        $post    = jaws()->request->get(array('date', 'album:array'), 'post');
+        $album   = jaws()->request->fetch('album', 'get');
+        $post    = jaws()->request->fetch(array('date', 'album:array'), 'post');
         $albums  = $aModel->GetAlbums('createtime','ASC');
 
         // TODO set default value for change page address to correct location after uploading image
         $extraParams = '&amp;';
         $editor = $GLOBALS['app']->GetEditor();
         if ($editor === 'CKEditor') {
-            $extraParams = jaws()->request->get('extra_params');
+            $extraParams = jaws()->request->fetch('extra_params');
             if(empty($extraParams)) {
-            $getParams = jaws()->request->get(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+            $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor='.$getParams['CKEditor'].
                            '&amp;CKEditorFuncNum='.$getParams['CKEditorFuncNum'].
                            '&amp;langCode='.$getParams['langCode'];
