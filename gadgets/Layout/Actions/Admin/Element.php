@@ -42,9 +42,9 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
         $addButton->AddEvent(ON_CLICK, "getAction();");
         $tpl->SetVariable('add_button', $addButton->Get());
 
-        $section = jaws()->request->get('section', 'post');
+        $section = jaws()->request->fetch('section', 'post');
         if (is_null($section)) {
-            $section = jaws()->request->get('section', 'get');
+            $section = jaws()->request->fetch('section', 'get');
             $section = !is_null($section) ? $section : '';
         }
 
@@ -89,7 +89,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
      */
     function EditElementAction()
     {
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $layoutElement = $model->GetElement($id);
         if (!$layoutElement || !isset($layoutElement['id'])) {

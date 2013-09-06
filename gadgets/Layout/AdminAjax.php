@@ -20,7 +20,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveElement()
     {
-        @list($item, $old_section, $old_position, $new_section, $new_position) = jaws()->request->getAll('post');
+        @list($item, $old_section, $old_position, $new_section, $new_position) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $result = $model->MoveElement(
             $item,
@@ -46,7 +46,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteElement()
     {
-        @list($item, $section, $position) = jaws()->request->getAll('post');
+        @list($item, $section, $position) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $result = $model->DeleteElement($item, $section, $position);
         if (Jaws_Error::IsError($result)) {
@@ -66,7 +66,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function ChangeDisplayWhen() 
     {
-        @list($item, $dw) = jaws()->request->getAll('post');
+        @list($item, $dw) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $res = $model->ChangeDisplayWhen($item, $dw);
         if (Jaws_Error::IsError($res)) {
@@ -85,7 +85,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGadgetActions()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         return $model->GetGadgetLayoutActions($gadget);
     }
@@ -100,8 +100,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     {
         $res = array();
         $id = false;
-        @list($gadget, $action, $params) = jaws()->request->getAll('post');
-        $params = jaws()->request->get('2:array', 'post');
+        @list($gadget, $action, $params) = jaws()->request->fetchAll('post');
+        $params = jaws()->request->fetch('2:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
@@ -153,8 +153,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
     function EditElementAction() 
     {
         $res = false;
-        @list($item, $gadget, $action, $params) = jaws()->request->getAll('post');
-        $params = jaws()->request->get('3:array', 'post');
+        @list($item, $gadget, $action, $params) = jaws()->request->fetchAll('post');
+        $params = jaws()->request->fetch('3:array', 'post');
         $eModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $lModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Layout');
         $actions = $eModel->GetGadgetLayoutActions($gadget, true);
