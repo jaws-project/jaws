@@ -60,7 +60,7 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->SetVariable('next',                    _t('GLOBAL_NEXT'));
 
         $request =& Jaws_Request::getInstance();
-        $loglevel = $request->get('loglevel', 'post');
+        $loglevel = $request->fetch('loglevel', 'post');
         $_SESSION['install']['LogLevel'] = (int)$loglevel;
         $tpl->SetVariable('config', $this->BuildConfig());
 

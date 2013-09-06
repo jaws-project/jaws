@@ -73,7 +73,7 @@ if (!isset($_SESSION['install'])) {
 // Lets handle our requests
 require JAWS_PATH . 'include/Jaws/Request.php';
 $request =& Jaws_Request::getInstance();
-$lang = $request->get('language', 'post');
+$lang = $request->fetch('language', 'post');
 if (isset($lang)) {
     $_SESSION['install']['language'] = urlencode($lang);
 } elseif (!isset($_SESSION['install']['language'])) {
@@ -113,7 +113,7 @@ if (
     $auto_next_step = true;
 }
 
-$go_next_step = $request->get($stage['file'] . '_complete', 'post');
+$go_next_step = $request->fetch($stage['file'] . '_complete', 'post');
 // Only attempt to validate if the next button has been hit.
 if (isset($go_next_step) || isset($auto_next_step)) {
     $result = $stageobj->validate();
