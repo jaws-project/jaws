@@ -23,7 +23,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
      */
     function ViewDatePage($year = '', $month = '', $day = '')
     {
-        $get = jaws()->request->get(array('year', 'month', 'day', 'page'), 'get');
+        $get = jaws()->request->fetch(array('year', 'month', 'day', 'page'), 'get');
         $page = (empty($get['page']) || $get['page'] <= 0)? 1 : $get['page'];
 
         if (empty($year)) {
@@ -274,7 +274,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $month = $dt[1];
         $day   = $dt[2];
 
-        $get = jaws()->request->get(array('gadget', 'action', 'year', 'month', 'day'), 'get');
+        $get = jaws()->request->fetch(array('gadget', 'action', 'year', 'month', 'day'), 'get');
 
         // If we are showing a specific month then show calendar of such month
         if (!is_null($get['gadget']) && !is_null($get['action']) && !is_null($get['month'])) {

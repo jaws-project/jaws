@@ -61,7 +61,7 @@ class Blog_Actions_Feeds extends Blog_HTML
         header('Content-type: application/rss+xml');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
         $xml = $model->MakeCategoryRSS($id);
@@ -83,7 +83,7 @@ class Blog_Actions_Feeds extends Blog_HTML
         header('Content-type: application/atom+xml');
         $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Feeds');
 
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
         $xml = $model->MakeCategoryAtom($id);
