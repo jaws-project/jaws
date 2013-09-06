@@ -15,12 +15,13 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Parse text
      *
-     * @access  public
-     * @param   string  $text  Input text
-     * @return  string  parsed Text
+     * @access   public
+     * @internal param  string  $text   Input text
+     * @return   string  parsed Text
      */
-    function ParseText($text)
+    function ParseText()
     {
+        $text = jaws()->request->get(0, 'post', false);
         return $this->gadget->ParseText($text);
     }
 
