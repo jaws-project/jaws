@@ -159,7 +159,9 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
     {
         $oldpos = $position;
         $newpos = $position + $direction;
-        if (($newpos < 1) || (($direction > 0) && ($newpos > $this->GetMaxCategoryPosition()))) {
+
+        $catModel = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+        if (($newpos < 1) || (($direction > 0) && ($newpos > $catModel->GetMaxCategoryPosition()))) {
             $newpos = $oldpos;
         }
 

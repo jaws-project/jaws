@@ -80,9 +80,8 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
      */
     function ManageQuestions()
     {
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
         $this->AjaxMe('script.js');
-
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
         $category = jaws()->request->fetch('category', 'get');
 
         $manageTpl = $this->gadget->loadTemplate('Faq.html');
