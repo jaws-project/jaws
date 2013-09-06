@@ -60,6 +60,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
+        $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
