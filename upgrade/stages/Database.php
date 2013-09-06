@@ -216,7 +216,7 @@ class Upgrader_Database extends JawsUpgraderStage
     function Validate()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('host', 'user', 'name', 'path', 'port'), 'post');
+        $post = $request->fetch(array('host', 'user', 'name', 'path', 'port'), 'post');
         if (isset($_SESSION['upgrade']['data']['Database'])) {
             $post = $_SESSION['upgrade']['data']['Database'] + $post;
         }
@@ -251,7 +251,7 @@ class Upgrader_Database extends JawsUpgraderStage
         $keys = array_keys($this->_Defaults);
         $keys[] = 'dbpass';
         $request =& Jaws_Request::getInstance();
-        $post = $request->get($keys, 'post');
+        $post = $request->fetch($keys, 'post');
         $request->reset();
 
         if (isset($_SESSION['upgrade']['data']['Database'])) {

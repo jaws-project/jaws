@@ -79,7 +79,7 @@ if (!isset($_SESSION['upgrade'])) {
 // Lets handle our requests
 require JAWS_PATH . 'include/Jaws/Request.php';
 $request =& Jaws_Request::getInstance();
-$lang = $request->get('language', 'post');
+$lang = $request->fetch('language', 'post');
 if (isset($lang)) {
     $_SESSION['upgrade']['language'] = urlencode($lang);
 } elseif (!isset($_SESSION['upgrade']['language'])) {
@@ -106,7 +106,7 @@ $stage = $stages[$_SESSION['upgrade']['stage']];
 $stageobj = $upgrader->loadStage($stage);
 $stages_count = count($stages);
 
-$go_next_step = $request->get($stage['file'] . '_complete', 'post');
+$go_next_step = $request->fetch($stage['file'] . '_complete', 'post');
 // Only attempt to validate if the next button has been hit.
 if (isset($go_next_step)) {
     $result = $stageobj->validate();

@@ -57,7 +57,7 @@ class Installer_Settings extends JawsInstallerStage
         $values = $this->_Fields;
         $keys = array_keys($values);
         $request =& Jaws_Request::getInstance();
-        $post = $request->get($keys, 'post');
+        $post = $request->fetch($keys, 'post');
         foreach ($this->_Fields as $key => $value) {
             if ($post[$key] !== null) {
                 $values[$key] = $post[$key];
@@ -127,7 +127,7 @@ class Installer_Settings extends JawsInstallerStage
     {
         $keys = array_keys($this->_Fields);
         $request =& Jaws_Request::getInstance();
-        $post = $request->get($keys, 'post');
+        $post = $request->fetch($keys, 'post');
 
         if (isset($_SESSION['install']['data']['Settings'])) {
             $post = $_SESSION['install']['data']['Settings'] + $post;

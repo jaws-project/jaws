@@ -36,7 +36,7 @@ class Installer_CreateUser extends JawsInstallerStage
         $values = $this->_Fields;
         $keys = array_keys($values);
         $request =& Jaws_Request::getInstance();
-        $post = $request->get($keys, 'post');
+        $post = $request->fetch($keys, 'post');
         foreach ($this->_Fields as $key => $value) {
             if ($post[$key] !== null) {
                 $values[$key] = $post[$key];
@@ -87,7 +87,7 @@ class Installer_CreateUser extends JawsInstallerStage
     function Validate()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'repeat', 'password', 'nickname'), 'post');
+        $post = $request->fetch(array('username', 'repeat', 'password', 'nickname'), 'post');
 
         if (isset($_SESSION['install']['data']['CreateUser'])) {
             $post = $_SESSION['install']['data']['CreateUser'] + $post;
@@ -124,7 +124,7 @@ class Installer_CreateUser extends JawsInstallerStage
     function Run()
     {
         $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('username', 'email', 'nickname', 'password'), 'post');
+        $post = $request->fetch(array('username', 'email', 'nickname', 'password'), 'post');
 
         if (isset($_SESSION['install']['data']['CreateUser'])) {
             $post = $_SESSION['install']['data']['CreateUser'] + $post;
