@@ -374,7 +374,7 @@ class Jaws_Request
 
         if ($filter) {
             $keys = array_keys($this->data[$type]);
-            $values = array_map(array($this, '_get'), $keys);
+            $values = array_map(array($this, '_fetch'), $keys);
             return array_combine($keys, $values);
         } else {
             return $this->data[$type];
