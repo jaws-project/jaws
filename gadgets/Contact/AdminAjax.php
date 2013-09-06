@@ -13,27 +13,15 @@
 class Contact_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Contact_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Get information of a Contact
      *
      * @access  public
-     * @param   int     $id     Contact ID
+     * @internal param  int $id Contact ID
      * @return  array   Contact info array
      */
-    function GetContact($id)
+    function GetContact()
     {
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Contacts');
         $contact = $model->GetContact($id);
         if (Jaws_Error::IsError($contact)) {
@@ -47,23 +35,26 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Update contact information
      *
      * @access  public
-     * @param   int     $id         Contact ID
-     * @param   string  $name       Name
-     * @param   string  $email      Email address
-     * @param   string  $company
-     * @param   string  $url
-     * @param   string  $tel
-     * @param   string  $fax
-     * @param   string  $mobile
-     * @param   string  $address
-     * @param   int     $recipient  Rcipient ID
-     * @param   string  $subject    Subject of message
-     * @param   string  $message    Message content
+     * @internal param  int     $id Contact ID
+     * @internal param  string  $name Name
+     * @internal param  string  $email Email address
+     * @internal param  string  $company
+     * @internal param  string  $url
+     * @internal param  string  $tel
+     * @internal param  string  $fax
+     * @internal param  string  $mobile
+     * @internal param  string  $address
+     * @internal param  int     $recipient Recipient ID
+     * @internal param  string  $subject Subject of message
+     * @internal param  string  $message Message content
      * @return  array   Response array (notice or error)
      */
-    function UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message)
+    function UpdateContact()
     {
         $this->gadget->CheckPermission('ManageContacts');
+        @list($id, $name, $email, $company, $url, $tel, $fax,
+            $mobile, $address, $recipient, $subject, $message
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
         $model->UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -73,14 +64,15 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Update contact reply
      *
      * @access  public
-     * @param   int     $id             Contact ID
-     * @param   string  $reply          Reply content
-     * @param   bool    $send_reply     whether to send a reply
+     * @internal param  int     $id         Contact ID
+     * @internal param  string  $reply      Reply content
+     * @internal param  bool    $send_reply whether to send a reply
      * @return  array   Response array (notice or error)
      */
-    function UpdateReply($id, $reply, $send_reply)
+    function UpdateReply()
     {
         $this->gadget->CheckPermission('ManageContacts');
+        @list($id, $reply, $send_reply) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
         $res = $model->UpdateReply($id, $reply);
         if (!Jaws_Error::IsError($res) && $send_reply) {
@@ -95,12 +87,13 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Delete a Contact
      *
      * @access  public
-     * @param   string  $id  ID of the Contact
+     * @internal param  string $id ID of the Contact
      * @return  array   Response array (notice or error)
      */
-    function DeleteContact($id)
+    function DeleteContact()
     {
         $this->gadget->CheckPermission('ManageContacts');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
         $model->DeleteContact($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -110,11 +103,12 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Get information of a Contact Reply
      *
      * @access  public
-     * @param   int     Contact ID
+     * @internal param  int     Contact ID
      * @return  mixed   Reply info or False on error
      */
-    function GetReply($id)
+    function GetReply()
     {
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
         $replyData = $model->GetReply($id);
         if (Jaws_Error::IsError($replyData)) {
@@ -142,11 +136,12 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Get information of a Recipient
      *
      * @access  public
-     * @param   int     $id    Recipient ID
+     * @internal param  int $id Recipient ID
      * @return  mixed   Recipient info or False on error
      */
-    function GetRecipient($id)
+    function GetRecipient()
     {
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
         $RecipientInfo = $model->GetRecipient($id);
         if (Jaws_Error::IsError($RecipientInfo)) {
@@ -160,18 +155,19 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Insert the information of a Recipient
      *
      * @access  public
-     * @param   string  $name           Name of the recipient
-     * @param   string  $email          Email of recipient
-     * @param   string  $tel            Phone number of recipient
-     * @param   string  $fax            Fax number of recipient
-     * @param   string  $mobile         Mobile number of recipient
-     * @param   int     $inform_type    Inform Type
-     * @param   string  $visible        The visible of the recipient
+     * @internal param  string  $name           Name of the recipient
+     * @internal param  string  $email          Email of recipient
+     * @internal param  string  $tel            Phone number of recipient
+     * @internal param  string  $fax            Fax number of recipient
+     * @internal param  string  $mobile         Mobile number of recipient
+     * @internal param  int     $inform_type    Inform Type
+     * @internal param  string  $visible        The visible of the recipient
      * @return  array   Response array (notice or error)
      */
-    function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
+    function InsertRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
+        @list($name, $email, $tel, $fax, $mobile, $inform_type, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Recipients');
         $model->InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -181,19 +177,20 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Update the information of a Recipient
      *
      * @access  public
-     * @param   string  $id             ID of the recipient
-     * @param   string  $name           Name of the recipient
-     * @param   string  $email          Email of recipient
-     * @param   string  $tel            Phone number of recipient
-     * @param   string  $fax            Fax number of recipient
-     * @param   string  $mobile         Mobile number of recipient
-     * @param   int     $inform_type    Inform Type
-     * @param   string  $visible        The visible of the recipient
+     * @internal param  string  $id             ID of the recipient
+     * @internal param  string  $name           Name of the recipient
+     * @internal param  string  $email          Email of recipient
+     * @internal param  string  $tel            Phone number of recipient
+     * @internal param  string  $fax            Fax number of recipient
+     * @internal param  string  $mobile         Mobile number of recipient
+     * @internal param  int     $inform_type    Inform Type
+     * @internal param  string  $visible        The visible of the recipient
      * @return  array   Response array (notice or error)
      */
-    function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
+    function UpdateRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
+        @list($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Recipients');
         $model->UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -203,12 +200,13 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Delete a Recipient
      *
      * @access  public
-     * @param   string  $id  ID of the Recipient
+     * @internal param  string  $id     ID of the Recipient
      * @return  array   Response array (notice or error)
      */
-    function DeleteRecipient($id)
+    function DeleteRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Recipients');
         $model->DeleteRecipient($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -218,15 +216,16 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Set properties of the gadget
      *
      * @access  public
-     * @param   bool    $use_antispam
-     * @param   string  $email_format
-     * @param   bool    $enable_attachment
-     * @param   string  $comments
+     * @internal param  bool    $use_antispam
+     * @internal param  string  $email_format
+     * @internal param  bool    $enable_attachment
+     * @internal param  string  $comments
      * @return  array   Response array (notice or error)
      */
-    function UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments)
+    function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
+        @list($use_antispam, $email_format, $enable_attachment, $comments) = jaws()->request->getAll('post');
         $comments = jaws()->request->get(3, 'post', false);
 
         $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Properties');
@@ -238,12 +237,13 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Get Data
      *
      * @access  public
-     * @param   int     $recipient
-     * @param   int     $offset
+     * @internal param  int     $recipient
+     * @internal param  int     $offset
      * @return  array   Recipients or Contacts
      */
-    function GetContacts($recipient, $offset)
+    function GetContacts()
     {
+        @list($recipient, $offset) = jaws()->request->getAll('post');
         if (!is_numeric($offset)) {
             $offset = null;
         }
@@ -256,13 +256,17 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Gets contacts count
      *
      * @access  public
-     * @param   int     $recipient  Recipient ID of contacts
+     * @internal param  int     $recipient  Recipient ID of contacts
      * @return  mixed   Count of available contacts and False on failure
      */
-    function GetContactsCount($recipient = -1)
+    function GetContactsCount()
     {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Contacts');
-        $res = $this->_Model->GetContactsCount($recipient);
+        @list($recipient) = jaws()->request->getAll('post');
+        if(empty($recipient)) {
+            $recipient = -1;
+        }
+        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
+        $res = $model->GetContactsCount($recipient);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -274,11 +278,12 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Gets users of the specified group
      *
      * @access  public
-     * @param   int     $group      ID of the group
+     * @internal param  int     $group  ID of the group
      * @return  array   array of users or false on error
      */
-    function GetUsers($group)
+    function GetUsers()
     {
+        @list($group) = jaws()->request->getAll('post');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         return $userModel->GetUsers($group, null, true);
@@ -288,10 +293,10 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Gets a preview of the email
      *
      * @access  public
-     * @param   string  $message    Content of the message body
+     * @internal param  string  $message    Content of the message body
      * @return  string  XHTML template content
      */
-    function GetMessagePreview($message)
+    function GetMessagePreview()
     {
         $this->gadget->CheckPermission('AccessToMailer');
         $message = jaws()->request->get(0, 'post', false);
@@ -304,15 +309,16 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Sends the email
      *
      * @access  public
-     * @param   string  $target     JSON decoded array ([to, cc, bcc] or [user, group])
-     * @param   string  $subject    Subject of the Email
-     * @param   string  $message    Message body of the Email
-     * @param   string  $attachment attachment
+     * @internal param  string  $target     JSON decoded array ([to, cc, bcc] or [user, group])
+     * @internal param  string  $subject    Subject of the Email
+     * @internal param  string  $message    Message body of the Email
+     * @internal param  string  $attachment attachment
      * @return  array   Response array (notice or error)
      */
-    function SendEmail($target, $subject, $message, $attachment)
+    function SendEmail()
     {
         $this->gadget->CheckPermission('AccessToMailer');
+        @list($target, $subject, $message, $attachment) = jaws()->request->getAll('post');
         $message = jaws()->request->get(2, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Mailer');
@@ -324,12 +330,13 @@ class Contact_AdminAjax extends Jaws_Gadget_HTML
      * Get Data
      *
      * @access  public
-     * @param   int     $offset
-     * @param   string  $grid
+     * @internal param  int     $offset
+     * @internal param  string  $grid
      * @return  array   Recipients or Contacts
      */
-    function GetData($offset, $grid)
+    function GetData()
     {
+        @list($offset, $grid) = jaws()->request->getAll('post');
         if (!is_numeric($offset)) {
             $offset = null;
         }
