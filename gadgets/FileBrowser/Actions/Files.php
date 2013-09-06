@@ -35,15 +35,15 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
             }
         }
 
-        if (jaws()->request->get('path', 'get')) {
-            $path = jaws()->request->get('path', 'get');
-        } elseif (jaws()->request->get('path', 'post')) {
-            $path = jaws()->request->get('path', 'post');
+        if (jaws()->request->fetch('path', 'get')) {
+            $path = jaws()->request->fetch('path', 'get');
+        } elseif (jaws()->request->fetch('path', 'post')) {
+            $path = jaws()->request->fetch('path', 'post');
         } else {
             $path = '';
         }
 
-        $page = jaws()->request->get('page', 'get');
+        $page = jaws()->request->fetch('page', 'get');
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }
@@ -225,7 +225,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
      */
     function FileInfo()
     {
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
@@ -292,7 +292,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
      */
     function Download()
     {
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
