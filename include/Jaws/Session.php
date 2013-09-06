@@ -82,7 +82,7 @@ class Jaws_Session
     function &factory()
     {
         if (!defined('JAWS_APPTYPE')) {
-            $apptype = jaws()->request->get('apptype');
+            $apptype = jaws()->request->fetch('apptype');
             $apptype = empty($apptype)? 'Web' : preg_replace('/[^[:alnum:]_-]/', '', ucfirst(strtolower($apptype)));
             define('JAWS_APPTYPE', $apptype);
         }

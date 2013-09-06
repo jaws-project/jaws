@@ -100,7 +100,7 @@ class Jaws_Captcha
      */
     function check()
     {
-        $post = jaws()->request->get(array('captcha_key', 'entry_value'), 'post');
+        $post = jaws()->request->fetch(array('captcha_key', 'entry_value'), 'post');
         list($key, $value) = array_values($post);
 
         $matched = false;
