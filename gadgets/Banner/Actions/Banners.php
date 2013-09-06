@@ -48,7 +48,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_HTML
      */
     function Banners($gid = 0)
     {
-        $id = (int)jaws()->request->get('id', 'get');
+        $id = (int)jaws()->request->fetch('id', 'get');
         $abs_url = false;
 
         if(!empty($id)) {
@@ -132,7 +132,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_HTML
     function Click()
     {
         $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
-        $id = (int)jaws()->request->get('id', 'get');
+        $id = (int)jaws()->request->fetch('id', 'get');
         $banner = $model->GetBanners($id);
         if (!Jaws_Error::IsError($banner) && !empty($banner)) {
             $click = $model->ClickBanner($banner[0]['id']);
