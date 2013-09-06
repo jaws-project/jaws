@@ -36,12 +36,12 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         // Insert default layout elements
-        $layoutModel = $GLOBALS['app']->LoadGadget('Layout', 'Model', 'Layout');
-        $layoutElementModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $layoutModel  = $this->gadget->load('Model')->load('Model', 'Layout');
+        $elementModel = $this->gadget->load('Model')->load('AdminModel', 'Elements');
         $result = $layoutModel->GetLayoutItems();
         if (!Jaws_Error::IsError($result) && empty($result)) {
-            $layoutElementModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1);
-            $layoutElementModel->NewElement('bar1', 'Users', 'LoginBox', null, 'Login', 1);
+            $elementModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1);
+            $elementModel->NewElement('bar1', 'Users', 'LoginBox', null, 'Login', 1);
         }
 
         if (!empty($input_schema)) {
@@ -75,7 +75,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $layoutModel = $this->gadget->load('Model')->load('AdminModel');
+            $layoutModel = $this->gadget->load('Model')->load('Model', 'Layout');
             $items = $layoutModel->GetLayoutItems();
             if (Jaws_Error::IsError($items)) {
                 return $items;
