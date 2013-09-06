@@ -576,12 +576,7 @@ class Jaws_Layout
             return $output;
         }
 
-        if (empty($filename)) {
-            // DEPRECATED: will be removed after all jaws official gadget converted
-            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'LayoutHTML');
-        } else {
-            $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
-        }
+        $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
         if (!Jaws_Error::isError($goGadget)) {
             if (method_exists($goGadget, $action)) {
                 if (is_null($params)) {
@@ -592,12 +587,6 @@ class Jaws_Layout
             } else {
                 $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");
             }
-        } else {
-            $GLOBALS['log']->Log(
-                JAWS_LOG_ERROR,
-                "$gadget is missing the HTML. Jaws can't execute Layout " .
-                "actions if the file doesn't exists"
-            );
         }
 
         if (Jaws_Error::isError($output)) {
