@@ -20,11 +20,14 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function GetMessage($id, $fetchAttachment = false)
     {
+        $messageTable = Jaws_ORM::getInstance()->table('pm_messages');
+        $messageTable->select('id:integer')->where('parent_id', $id)->alias('child_id');
+
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
-            'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
+            'pm_messages.id:integer', 'parent_id:integer', 'pm_messages.subject', 'pm_messages.body',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_recipients.status:integer', 'from:integer'
+            'pm_recipients.status:integer', 'from:integer', 'pm_messages.insert_time', $messageTable
         );
         $table->join('users', 'pm_messages.from', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
@@ -40,6 +43,45 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $result['attachments'] = $model->GetMessageAttachments($id);
         }
         return $result;
+    }
+
+    /**
+     * Get parent messages info
+     *
+     * @access  public
+     * @param   integer   $id                 Message id
+     * @param   bool      $fetchAttachment    Fetch message's attachment info?
+     * @param   $result
+     * @return  mixed    Inbox count or Jaws_Error on failure
+     */
+    function GetParentMessages($id, $fetchAttachment, &$result)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $table->select(
+            'pm_messages.id:integer', 'parent_id:integer', 'pm_messages.subject', 'pm_messages.body',
+            'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
+            'pm_recipients.status:integer', 'from:integer', 'pm_messages.insert_time'
+        );
+        $table->join('users', 'pm_messages.from', 'users.id');
+        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
+        $table->where('pm_messages.id', $id);
+
+        $message = $table->fetchRow();
+        if (Jaws_Error::IsError($message)) {
+            return new Jaws_Error($message->getMessage(), 'SQL');
+        }
+
+        if($fetchAttachment) {
+            $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $message['attachments'] = $model->GetMessageAttachments($id);
+        }
+
+        $result[] = $message;
+        if(!empty($message['parent_id'])) {
+            $this->GetParentMessages($message['parent_id'], $fetchAttachment, $result);
+        }
+
+        return true;
     }
 
     /**

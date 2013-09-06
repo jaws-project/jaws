@@ -23,6 +23,10 @@ $actions['ViewMessage'] = array(
     'normal' => true,
     'file' => 'Message',
 );
+$actions['MessageHistory'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
 $actions['DeleteMessage'] = array(
     'normal' => true,
     'file' => 'Message',

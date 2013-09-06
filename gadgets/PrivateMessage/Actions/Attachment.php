@@ -24,7 +24,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
         }
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $rqst = jaws()->request->get(array('uid', 'mid', 'aid'), 'get');
+        $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
 
         $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');

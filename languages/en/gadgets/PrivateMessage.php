@@ -32,6 +32,8 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_BODY', "Message Body");
 define('_EN_PRIVATEMESSAGE_MESSAGE_SEND_TIME', "Send Time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENTS', "Attachments");
 define('_EN_PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE', "Delete this message?");
+define('_EN_PRIVATEMESSAGE_PREVIOUS_MESSAGE', "Previous message");
+define('_EN_PRIVATEMESSAGE_NEXT_MESSAGE', "Next message");
 
 /* Reply */
 define('_EN_PRIVATEMESSAGE_REPLY', "Reply");
@@ -45,6 +47,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 /* Common */
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
 define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
+define('_EN_PRIVATEMESSAGE_HISTORY', "History");
 define('_EN_PRIVATEMESSAGE_FILE', "File");
 define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
 define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");

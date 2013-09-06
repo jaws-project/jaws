@@ -29,7 +29,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
 //        $date = $GLOBALS['app']->loadDate();
 //        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Send');
 //        $usrModel = new Jaws_User;
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
 
         $tpl = $this->gadget->loadTemplate('Send.html');
         $tpl->SetBlock('send');
@@ -99,7 +99,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('SendMessage');
 
         $attachments = array();
-        $post = jaws()->request->get(
+        $post = jaws()->request->fetch(
             array('recipient_users', 'recipient_groups', 'subject', 'body', 'selected_files:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');

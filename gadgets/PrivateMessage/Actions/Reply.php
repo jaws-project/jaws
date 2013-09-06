@@ -18,7 +18,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
      */
     function Reply()
     {
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
@@ -79,7 +79,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ReplyMessage');
 
-        $post = jaws()->request->get(array('id', 'reply'), 'post');
+        $post = jaws()->request->fetch(array('id', 'reply'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');

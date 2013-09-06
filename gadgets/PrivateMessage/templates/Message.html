@@ -3,27 +3,38 @@
 <div class="gadget privateMessage message">
     <h2>{title}</h2>
 
-    <form name="contacts" action="{base_script}" method="post">
+    <form name="pm" action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" id="action" value=""/>
         <input type="hidden" name="id" id="id" value="{id}"/>
 
         <div class="content">
-                <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
-                <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
-                <div>{lbl_send_time}: {send_time}</div>
+            <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
+            <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
+            <div>{lbl_send_time}: {send_time}</div>
 
-                <div class="actions">
-                    <a href="{back_url}" class="button" title="{back}"><img src="{icon_back}" alt="{back}"/></a>
-                    <a href="{reply_url}" class="button" title="{reply}"><img src="{icon_reply}" alt="{reply}"/></a>
-                    <a href="{forward_url}" class="button" title="{forward}"><img src="{icon_forward}" alt="{forward}"/></a>
-                    <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}" alt="{delete}"/></a>
-                </div>
-                <div>{lbl_subject}: {subject}</div>
-                <div>
-                    <div>{lbl_body}:</div>
-                    <div>{body}</div>
-                </div>
+            <div class="actions">
+                <a href="{back_url}" class="button" title="{back}"><img src="{icon_back}" alt="{back}"/></a>
+                <!-- BEGIN history -->
+                <a href="{history_url}" class="button" title="{history}"><img src="{icon_history}" alt="{history}"/></a>
+                <!-- END history -->
+                <a href="{reply_url}" class="button" title="{reply}"><img src="{icon_reply}" alt="{reply}"/></a>
+                <a href="{forward_url}" class="button" title="{forward}"><img src="{icon_forward}" alt="{forward}"/></a>
+                <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}"
+                                                                                          alt="{delete}"/></a>
+            </div>
+
+            <div class="actions">
+                <!-- BEGIN message_nav -->
+                <a href="{message_nav_url}" title="{message_nav}">{message_nav}</a>
+                <!-- END message_nav -->
+            </div>
+
+            <div>{lbl_subject}: {subject}</div>
+            <div>
+                <div>{lbl_body}:</div>
+                <div>{body}</div>
+            </div>
 
             <!-- BEGIN attachment -->
             <div>&nbsp;</div>
@@ -31,7 +42,9 @@
                 <legend><span>{lbl_attachments}</span></legend>
 
                 <!-- BEGIN file -->
-                <div><a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size} - {lbl_hints_count}: {hints_count})</div>
+                <div><a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size} - {lbl_hints_count}:
+                    {hints_count})
+                </div>
                 <!-- END file -->
 
             </fieldset>
@@ -45,8 +58,7 @@
     /**
      * Delete Message
      */
-    function deleteMessage()
-    {
+    function deleteMessage() {
         if (confirm('{confirmDelete}')) {
             window.location.href = "{delete_url}";
         }

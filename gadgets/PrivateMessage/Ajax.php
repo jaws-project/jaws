@@ -18,7 +18,7 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
      */
     function GetUsers()
     {
-        @list($term) = jaws()->request->getAll('post');
+        @list($term) = jaws()->request->fetchAll('post');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         return $userModel->GetUsers(false, null, null, $term);
@@ -32,7 +32,7 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
      */
     function GetGroups()
     {
-        @list($term) = jaws()->request->getAll('post');
+        @list($term) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Users');
         return $model->GetGroups($term);
     }
