@@ -21,7 +21,7 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_HTML
         $jaws_version = '';
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->default_error_level = JAWS_ERROR_NOTICE;
-        $result = $httpRequest->get('http://jaws-project.com/version/0', $data);
+        $result = $httprequest->fetch('http://jaws-project.com/version/0', $data);
         if (!Jaws_Error::IsError($result) && $result == 200) {
             if (preg_match('/^\d+(\.\d+)+.*/i', $data)) {
                 $jaws_version = $data;
