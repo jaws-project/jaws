@@ -26,8 +26,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/' . $user));
 
         // Display probabley responses
         $response = $GLOBALS['app']->Session->PopResponse('Directory');

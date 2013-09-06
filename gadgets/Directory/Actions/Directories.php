@@ -49,12 +49,10 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
             }
         } catch (Exception $e) {
-            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Directory', RESPONSE_ERROR);
-            Jaws_Header::Referrer();
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
 
-        $GLOBALS['app']->Session->PushResponse(_t('DIRECTORY_NOTICE_DIR_CREATED'), 'Directory');
-        Jaws_Header::Referrer();
+        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -66,9 +64,8 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     function UpdateDirectory()
     {
         try {
-            $request =& Jaws_Request::getInstance();
-            $id = (int)$request->get('id');
-            $data = $request->get(array('title', 'description', 'parent'));
+            $id = jaws()->request->get('id', 'post');
+            $data = jaws()->request->get(array('title', 'description', 'parent'), 'post');
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
@@ -80,12 +77,10 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
             }
         } catch (Exception $e) {
-            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Directory', RESPONSE_ERROR);
-            Jaws_Header::Referrer();
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
 
-        $GLOBALS['app']->Session->PushResponse(_t('DIRECTORY_NOTICE_DIR_UPDATED'), 'Directory');
-        Jaws_Header::Referrer();
+        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -100,18 +95,10 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->DeleteFile($id);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
-                $res->getMessage(),
-                RESPONSE_ERROR
-            );
-            //Jaws_Header::Referrer();
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
-            _t('DIRECTORY_NOTICE_DIR_DELETED'),
-            RESPONSE_NOTICE
-        );
-        //Jaws_Header::Referrer();
+        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_DELETED'), RESPONSE_NOTICE);
     }
 
 }

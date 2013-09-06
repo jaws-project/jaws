@@ -11,7 +11,39 @@
  * Use async mode, create Callback
  */
 var DirectoryCallback = {
+    CreateDirectory: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            fillFilesCombo(currentDir);
+        }
+        $('simple_response').set('html', response.message);
+    },
+
+    UpdateDirectory: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            fillFilesCombo(currentDir);
+        }
+        $('simple_response').set('html', response.message);
+    },
+
     DeleteDirectory: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            fillFilesCombo(currentDir);
+        }
+        $('simple_response').set('html', response.message);
+    },
+
+    CreateFile: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            fillFilesCombo(currentDir);
+        }
+        $('simple_response').set('html', response.message);
+    },
+
+    UpdateFile: function(response) {
         if (response.css === 'notice-message') {
             cancel();
             fillFilesCombo(currentDir);
@@ -57,9 +89,9 @@ function fillFilesCombo(parent)
 }
 
 /**
- * Sets selected file/directory ID for edit/delete operations
+ * Sets selectedId to file/directory ID
  */
-function selectFile()
+function select()
 {
     selectedId = comboFiles.value;
     $('form').set('html', '');
@@ -147,14 +179,10 @@ function _delete()
     if (fileById[comboFiles.value].is_dir) {
         if (confirm('Are you sure you want to delete directory?')) {
             DirectoryAjax.callAsync('DeleteDirectory', {'id':selectedId});
-            //form.action.value = 'DeleteDirectory';
-            //form.submit();
         }
     } else {
         if (confirm('Are you sure you want to delete file?')) {
             DirectoryAjax.callAsync('DeleteFile', {'id':selectedId});
-            //form.action.value = 'DeleteFile';
-            //form.submit();
         }
     }
 }
@@ -183,7 +211,6 @@ function editDirectory(data)
     }
     $('form').set('html', cachedDirectoryForm);
     var form = $('frm_dir');
-    form.action.value = 'UpdateFile';
     form.id.value = selectedId;
     form.title.value = data.title;
     form.description.value = data.description;
@@ -199,9 +226,11 @@ function newFile()
         cachedFileForm = DirectoryAjax.callSync('FileForm');
     }
     $('form').set('html', cachedFileForm);
-    comboFiles.selectedIndex = -1;
-    $('frm_file').title.focus();
+    $('tr_file').hide();
+    $('frm_upload').show();
     $('frm_file').parent.value = currentDir;
+    $('frm_file').title.focus();
+    comboFiles.selectedIndex = -1;
 }
 
 /**
@@ -221,31 +250,87 @@ function editFile(data)
     form.url.value = data.url;
     form.parent.value = data.parent;
     if (data.filename) {
-        var link = new Element('a');
-        link.href = data_url + '/' + data.filename;
-        $('filename').set('html', data.filename);
-        $('filename').grab(imgDeleteFile);
-        $('filename').grab(imgDeleteFile);
-        $('filename').show();
-        $('file').hide();
+        setFile(data.filename, data_url);
+    } else {
+        $('tr_file').hide();
+        $('frm_upload').show();
     }
 }
 
 /**
- * Removes attached file
+ * Uploads file on the server
+ */
+function uploadFile() {
+    var iframe = new Element('iframe', {id:'ifrm_upload'});
+    $('frm_files').grab(iframe);
+    $('frm_upload').submit();
+}
+
+/**
+ * Applies uploaded file into the form
+ */
+function onUpload(response) {
+    if (response.type === 'error') {
+        alert(response.message);
+        $('frm_upload').reset();
+    } else {
+        var filename = encodeURIComponent(response.message);
+        setFile(filename, '');
+    }
+    $('ifrm_upload').destroy();
+}
+
+/**
+ * Creates a link to the attached file
+ */
+function setFile(filename, url)
+{
+    var link = new Element('a', {'html':filename, 'target':'_blank'});
+    if (url !== '') {
+        link.href = url + '/' + filename;
+    }
+    $('filelink').grab(link);
+    $('filelink').grab(imgDeleteFile);
+    $('tr_file').show();
+    $('frm_upload').hide();
+    $('filename').value = filename;
+}
+
+/**
+ * Removes the attached file
  */
 function removeFile()
 {
-    $('filename').set('html', '');
-    $('filename').hide();
-    $('file').show();
+    $('filename').value = '';
+    $('filelink').set('html', '');
+    $('frm_upload').reset();
+    $('tr_file').hide();
+    $('frm_upload').show();
+}
+
+/**
+ * Submits directory data to create or update
+ */
+function submitDirectory()
+{
+    var action = (selectedId === null)? 'CreateDirectory' : 'UpdateDirectory';
+    DirectoryAjax.callAsync(action, $('frm_dir').toQueryString().parseQueryString());
+}
+
+/**
+ * Submits file data to create or update
+ */
+function submitFile()
+{
+    var action = (selectedId === null)? 'CreateFile' : 'UpdateFile';
+    DirectoryAjax.callAsync(action, $('frm_file').toQueryString().parseQueryString());
 }
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     DirectoryStorage = new JawsStorage('Directory'),
-    comboFiles,
     fileById = {},
-    selectedId,
     cachedDirectoryForm = null,
     cachedFileForm = null,
-    currentDir = 0;
+    currentDir = 0,
+    comboFiles,
+    selectedId;
