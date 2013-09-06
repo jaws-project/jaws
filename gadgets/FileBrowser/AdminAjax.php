@@ -13,13 +13,14 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Gets information of the directory content
      *
-     * @access  public
-     * @param   string  $path   Where to read
-     * @param   string  $file   
-     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @access   public
+     * @internal param  string  $path   Where to read
+     * @internal param  string  $file
+     * @return   mixed  A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
-    function DBFileInfo($path, $file)
+    function DBFileInfo()
     {
+        @list($path, $file) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
         return $model->DBFileInfo($path, $file);
     }
@@ -27,12 +28,13 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Gets Count of items in directory
      *
-     * @access  public
-     * @param   string  $path   Where to check
-     * @return  array   Count of items in directory
+     * @access   public
+     * @internal param  string  $path   Where to check
+     * @return   array  Count of items in directory
      */
-    function GetDirContentsCount($path)
+    function GetDirContentsCount()
     {
+        @list($path) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Directory');
         return $model->GetDirContentsCount($path);
     }
@@ -40,12 +42,13 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Creates and returns some data
      *
-     * @access  public
-     * @param   string  $path
-     * @return  array   
+     * @access   public
+     * @internal param  string  $path
+     * @return   array
      */
-    function GetLocation($path)
+    function GetLocation()
     {
+        @list($path) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Files');
         return $gadget->GetLocation($path);
     }
@@ -53,14 +56,15 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Creates and returns some data
      *
-     * @access  public
-     * @param   string  $dir
-     * @param   int     $offset
-     * @param   int     $order
-     * @return  array   directory array
+     * @access   public
+     * @internal param  string  $dir
+     * @internal param  int     $offset
+     * @internal param  int     $order
+     * @return   array  directory array
      */
-    function GetDirectory($dir, $offset, $order)
+    function GetDirectory()
     {
+        @list($dir, $offset, $order) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Directory');
         if (!is_numeric($offset)) {
             $offset = null;
@@ -72,19 +76,20 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Add/Update file information
      *
-     * @access  public
-     * @param   string  $path           File|Directory path
-     * @param   string  $file           File|Directory name
-     * @param   string  $title
-     * @param   string  $description
-     * @param   string  $fast_url
-     * @param   string  $oldname
-     * @return  mixed   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @access   public
+     * @internal param  string  $path           File|Directory path
+     * @internal param  string  $file           File|Directory name
+     * @internal param  string  $title
+     * @internal param  string  $description
+     * @internal param  string  $fast_url
+     * @internal param  string  $oldname
+     * @return   mixed  A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
-    function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname)
+    function UpdateDBFileInfo()
     {
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageFiles');
+        @list($path, $file, $title, $description, $fast_url, $oldname) = jaws()->request->getAll('post');
+        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $res = true;
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
         $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
@@ -102,21 +107,22 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Add/Update directory information
      *
-     * @access  public
-     * @param   string  $path           File|Directory path
-     * @param   string  $dir            File|Directory name
-     * @param   string  $title
-     * @param   string  $description
-     * @param   string  $fast_url
-     * @param   string  $oldname
-     * @return  array   A list of properties of files and directories of a certain path and Jaws_Error on failure
+     * @access   public
+     * @internal param  string  $path           File|Directory path
+     * @internal param  string  $dir            File|Directory name
+     * @internal param  string  $title
+     * @internal param  string  $description
+     * @internal param  string  $fast_url
+     * @internal param  string  $oldname
+     * @return   array  A list of properties of files and directories of a certain path and Jaws_Error on failure
      */
-    function UpdateDBDirInfo($path, $dir, $title, $description, $fast_url, $oldname)
+    function UpdateDBDirInfo()
     {
+        $this->gadget->CheckPermission('ManageDirectories');
+        @list($path, $dir, $title, $description, $fast_url, $oldname) = jaws()->request->getAll('post');
+
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $dModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Directory');
-
-        $this->gadget->CheckPermission('ManageDirectories');
         $res = true;
         $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
         $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
@@ -136,15 +142,16 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete file information
      *
-     * @access  public
-     * @param   string  $path   File path
-     * @param   string  $file   File name
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $path   File path
+     * @internal param  string  $file   File name
+     * @return   array  Response array (notice or error)
      */
-    function DeleteFile($path, $file)
+    function DeleteFile()
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageFiles');
+        @list($path, $file) = jaws()->request->getAll('post');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
         if ($fModel->Delete($path, $file)) {
             $fModel->DeleteDBFileInfo($path, $file);
@@ -156,15 +163,16 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete directory information
      *
-     * @access  public
-     * @param   string  $path   Directory path
-     * @param   string  $dir    Directory name
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $path   Directory path
+     * @internal param  string  $dir    Directory name
+     * @return   array  Response array (notice or error)
      */
-    function DeleteDir($path, $dir)
+    function DeleteDir()
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $this->gadget->CheckPermission('ManageDirectories');
+        @list($path, $dir) = jaws()->request->getAll('post');
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
         if ($fModel->Delete($path, $dir)) {
             $fModel->DeleteDBFileInfo($path, $dir);
