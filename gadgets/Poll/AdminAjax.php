@@ -14,12 +14,13 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get a Poll
      *
-     * @access  public
-     * @param   int     $pid    poll ID
-     * @return  mixed   Poll info array or False on error
+     * @access   public
+     * @internal param  int     $pid    poll ID
+     * @return   mixed  Poll info array or False on error
      */
-    function GetPoll($pid)
+    function GetPoll()
     {
+        @list($pid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $poll = $model->GetPoll($pid);
         if (Jaws_Error::IsError($poll)) {
@@ -42,20 +43,23 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Insert a Poll
      *
-     * @access  public
-     * @param   string  $question       poll question
-     * @param   int     $gid            group ID
-     * @param   string  $start_time     poll start date time
-     * @param   string  $stop_time      poll stop date time
-     * @param   string  $select_type
-     * @param   string  $poll_type
-     * @param   string  $result_view
-     * @param   bool    $visible        is visible
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $question       poll question
+     * @internal param  int     $gid            group ID
+     * @internal param  string  $start_time     poll start date time
+     * @internal param  string  $stop_time      poll stop date time
+     * @internal param  string  $select_type
+     * @internal param  string  $poll_type
+     * @internal param  string  $result_view
+     * @internal param  bool    $visible        is visible
+     * @return   array  Response array (notice or error)
      */
-    function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
+    function InsertPoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
+        @list($question, $gid, $start_time, $stop_time, $select_type,
+              $poll_type, $result_view, $visible
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
@@ -65,21 +69,24 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update a Poll
      *
-     * @access  public
-     * @param   int     $pid            poll ID
-     * @param   string  $question       poll question
-     * @param   int     $gid            group ID
-     * @param   string  $start_time     poll start date time
-     * @param   string  $stop_time      poll stop date time
-     * @param   string  $select_type
-     * @param   string  $poll_type
-     * @param   string  $result_view
-     * @param   bool    $visible        is visible
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $pid            poll ID
+     * @internal param  string  $question       poll question
+     * @internal param  int     $gid            group ID
+     * @internal param  string  $start_time     poll start date time
+     * @internal param  string  $stop_time      poll stop date time
+     * @internal param  string  $select_type
+     * @internal param  string  $poll_type
+     * @internal param  string  $result_view
+     * @internal param  bool    $visible        is visible
+     * @return   array  Response array (notice or error)
      */
-    function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
+    function UpdatePoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
+        @list($pid, $question, $gid, $start_time, $stop_time,
+             $select_type, $poll_type, $result_view, $visible
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
 
@@ -89,13 +96,14 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a poll
      *
-     * @access  public
-     * @param   int     $pid  Poll ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $pid    Poll ID
+     * @return   array  Response array (notice or error)
      */
-    function DeletePoll($pid)
+    function DeletePoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
+        @list($pid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->DeletePoll($pid);
 
@@ -117,12 +125,13 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get a Poll Answers
      *
-     * @access  public
-     * @param   int     $pid    poll ID
-     * @return  mixed   Response array (notice or error) or False on error
+     * @access   public
+     * @internal param  int     $pid    poll ID
+     * @return   mixed  Response array (notice or error) or False on error
      */
-    function GetPollAnswers($pid)
+    function GetPollAnswers()
     {
+        @list($pid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $answers = $model->GetPollAnswers($pid);
         if (Jaws_Error::IsError($answers)) {
@@ -140,14 +149,15 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update a Poll Answers
      *
-     * @access  public
-     * @param   int     $pid        poll ID
-     * @param   array   $answers    poll answers array
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $pid        poll ID
+     * @internal param  array   $answers    poll answers array
+     * @return   array  Response array (notice or error)
      */
-    function UpdatePollAnswers($pid, $answers)
+    function UpdatePollAnswers()
     {
         $this->gadget->CheckPermission('ManagePolls');
+        @list($pid, $answers) = jaws()->request->getAll('post');
         $answers = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->UpdatePollAnswers($pid, $answers);
@@ -158,12 +168,13 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get a list of poll groups
      *
-     * @access  public
-     * @param   int     $gid    group ID
-     * @return  mixed   Poll Groups list or False on error
+     * @access   public
+     * @internal param  int     $gid    group ID
+     * @return   mixed  Poll Groups list or False on error
      */
-    function GetPollGroup($gid)
+    function GetPollGroup()
     {
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Group');
         $group = $model->GetPollGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -176,14 +187,15 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Insert poll groups
      *
-     * @access  public
-     * @param   string  $title      group title
-     * @param   bool    $visible    is visible
-     * @return  array   response array
+     * @access   public
+     * @internal param  string  $title      group title
+     * @internal param  bool    $visible    is visible
+     * @return   array  response array
      */
-    function InsertPollGroup($title, $visible)
+    function InsertPollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($title, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->InsertPollGroup($title, $visible);
 
@@ -193,15 +205,16 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update poll groups
      *
-     * @access  public
-     * @param   int     $gid        group ID
-     * @param   string  $title      group title
-     * @param   bool    $visible    is visible
-     * @return  array   response array
+     * @access   public
+     * @internal param  int     $gid        group ID
+     * @internal param  string  $title      group title
+     * @internal param  bool    $visible    is visible
+     * @return   array  response array
      */
-    function UpdatePollGroup($gid, $title, $visible)
+    function UpdatePollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($gid, $title, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->UpdatePollGroup($gid, $title, $visible);
 
@@ -211,13 +224,14 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete an poll group
      *
-     * @access  public
-     * @param   int     $gid    group ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $gid    group ID
+     * @return   array  Response array (notice or error)
      */
-    function DeletePollGroup($gid)
+    function DeletePollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Group');
         $model->DeletePollGroup($gid);
 
@@ -239,12 +253,13 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get a list of polls
      *
-     * @access  public
-     * @param   int     $gid       group ID
-     * @return  mixed   response array or false on error
+     * @access   public
+     * @internal param  int     $gid    group ID
+     * @return   mixed  response array or false on error
      */
-    function GetPollGroupPolls($gid)
+    function GetPollGroupPolls()
     {
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $polls = $model->GetPolls($gid);
         if (Jaws_Error::IsError($polls)) {
@@ -262,14 +277,15 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Add a group of Poll (by they ids) to a certain poll group
      *
-     * @access  public
-     * @param   int     $gid    PollGroup's ID
-     * @param   array   $Poll   Array with poll ids
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $gid    PollGroup's ID
+     * @internal param  array   $Poll   Array with poll ids
+     * @return   array  Response array (notice or error)
      */
-    function AddPollsToPollGroup($gid, $polls)
+    function AddPollsToPollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($gid, $polls) = jaws()->request->getAll('post');
         $polls = jaws()->request->get('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
         $model->AddPollsToPollGroup($gid, $polls);
@@ -279,12 +295,13 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Retrieves Group Polls
      *
-     * @access  public
-     * @param   int     $gid        group ID
-     * @return  mixed   array of Polls or false on error
+     * @access   public
+     * @internal param  int     $gid    group ID
+     * @return   mixed  array of Polls or false on error
      */
-    function GetGroupPolls($gid)
+    function GetGroupPolls()
     {
+        @list($gid) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
         $polls = $model->GetPolls($gid);
         if (Jaws_Error::IsError($polls)) {
@@ -297,13 +314,14 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get the poll results
      *
-     * @access  public
-     * @param   int     $pid    poll ID
-     * @return  string  XHTML template content
+     * @access   public
+     * @internal param  int     $pid    poll ID
+     * @return   string XHTML template content
      */
-    function PollResultsUI($pid)
+    function PollResultsUI()
     {
         $this->gadget->CheckPermission('ViewReports');
+        @list($pid) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Report');
         return $gadget->PollResultsUI($pid);
     }
@@ -311,13 +329,14 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Prepare the datagrid of polls
      *
-     * @access  public
-     * @param   int     $offset     date offset
-     * @param   int     $grid       gid
-     * @return  string  The XHTML of a datagrid
+     * @access   public
+     * @internal param  int     $offset     date offset
+     * @internal param  int     $grid       gid
+     * @return   string The XHTML of a datagrid
      */
-    function GetData($offset, $grid)
+    function GetData()
     {
+        @list($offset, $grid) = jaws()->request->getAll('post');
         $pGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Poll');
         $gGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Group');
         if (!is_numeric($offset)) {

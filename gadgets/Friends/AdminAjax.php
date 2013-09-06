@@ -13,12 +13,13 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get information of a friend
      *
-     * @access  public
-     * @param   string  $friend     Friend's name
-     * @return  mixed   Friend information or False on error
+     * @access   public
+     * @internal param  string  $friend     Friend's name
+     * @return   mixed  Friend information or False on error
      */
-    function GetFriend($friend)
+    function GetFriend()
     {
+        @list($friend) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'Model', 'Friends');
         $friendInfo = $model->GetFriend($friend);
         if (Jaws_Error::IsError($friendInfo)) {
@@ -31,14 +32,15 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Add a friend
      *
-     * @access  public
-     * @param   string  $friend  Friend's name
-     * @param   string  $url     Friend's URL
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $friend     Friend's name
+     * @internal param  string  $url        Friend's URL
+     * @return   array  Response array (notice or error)
      */
-    function NewFriend($friend, $url)
+    function NewFriend()
     {
         $this->gadget->CheckPermission('AddFriend');
+        @list($friend, $url) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -47,15 +49,16 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update friend's information
      *
-     * @access  public
-     * @param   string  $old     Friend's OLD name
-     * @param   string  $friend  Friend's name
-     * @param   string  $url     Friend's URL
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $old        Friend's OLD name
+     * @internal param  string  $friend     Friend's name
+     * @internal param  string  $url        Friend's URL
+     * @return   array  Response array (notice or error)
      */
-    function UpdateFriend($old, $friend, $url)
+    function UpdateFriend()
     {
         $this->gadget->CheckPermission('EditFriend');
+        @list($old, $friend, $url) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -64,13 +67,14 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a friend
      *
-     * @access  public
-     * @param   string  $friend  Friend's name
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $friend     Friend's name
+     * @return   array  Response array (notice or error)
      */
-    function DeleteFriend($friend)
+    function DeleteFriend()
     {
         $this->gadget->CheckPermission('DeleteFriend');
+        @list($friend) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -79,13 +83,14 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update the properties
      *
-     * @access  public
-     * @param   int     $limit  Limit random
-     * @return  array   Response array
+     * @access   public
+     * @internal param  int $limit Limit random
+     * @return   array  Response array
      */
-    function UpdateProperties($limit)
+    function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
+        @list($limit) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -94,12 +99,16 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get data from DB
      *
-     * @access  public
-     * @param   int     $limit  limit data
-     * @return  array   data array
+     * @access   public
+     * @internal param  int     $limit  limit data
+     * @return   array  data array
      */
-    function GetData($limit = 0)
+    function GetData()
     {
+        @list($limit) = jaws()->request->getAll('post');
+        if(empty($limit)) {
+            $limit = 0;
+        }
         $gadget = $GLOBALS['app']->LoadGadget('Friends', 'AdminHTML', 'Friends');
         if (!is_numeric($limit)) {
             $limit = 0;

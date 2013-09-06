@@ -42,12 +42,13 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Gets references
      *
-     * @access  public
-     * @param   string  $type   Type of references
-     * @return  mixed   Array of references or false
+     * @access   public
+     * @internal param  string  $type   Type of references
+     * @return   mixed  Array of references or false
      */
-    function GetReferences($type)
+    function GetReferences()
     {
+        @list($type) = jaws()->request->getAll('post');
         switch($type) {
             case 'StaticPage':
                 return $this->GetStaticPageReferences();
@@ -126,20 +127,21 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Creates a new item
      *
-     * @access  public
-     * @param   int     $parent_id  Parent ID
-     * @param   string  $title      Item title
-     * @param   string  $shortname  Item shortname (also used in paths)
-     * @param   string  $type       Item type (URL, StaticPage, Blog, etc)
-     * @param   string  $reference  Type reference (e.g. ID of the static page)
-     * @param   string  $change     Change frequency. Values can be always, hourly, daily, weekly,
-     *                                monthly, yearly, never
-     * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
-     *                                values from 1 to 5 (only numbers!).
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $parent_id      Parent ID
+     * @internal param  string  $title Item     title
+     * @internal param  string  $shortname      Item shortname (also used in paths)
+     * @internal param  string  $type           Item type (URL, StaticPage, Blog, etc)
+     * @internal param  string  $reference      Type reference (e.g. ID of the static page)
+     * @internal param  string  $change         Change frequency. Values can be always, hourly, daily, weekly,
+     *                                          monthly, yearly, never
+     * @internal param  string  $priority       Priority of this item relative to other item on the site. Can be
+     *                                          values from 1 to 5 (only numbers!).
+     * @return   array  Response array (notice or error)
      */
-    function NewItem($parent_id, $title, $shortname, $type, $reference, $change, $priority)
+    function NewItem()
     {
+        @list($parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->getAll('post');
         if ($change == 'none') {
             $change = null;
         }
@@ -158,21 +160,22 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Updates the item
      *
-     * @access  public
-     * @param   int      $id         Item Id
-     * @param   int     $parent_id  Parent ID
-     * @param   string  $title      Item title
-     * @param   string  $shortname  Item shortname (also used in paths)
-     * @param   string  $type       Item type (URL, StaticPage, Blog, etc)
-     * @param   string  $reference  Type reference (e.g. ID of the static page)
-     * @param   string  $change     Change frequency. Values can be always, hourly, daily, weekly,
-     *                                monthly, yearly, never
-     * @param   string  $priority   Priority of this item relative to other item on the site. Can be 
-     *                                values from 1 to 5 (only numbers!).
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id             Item Id
+     * @internal param  int     $parent_id      Parent ID
+     * @internal param  string  $title          Item title
+     * @internal param  string  $shortname      Item shortname (also used in paths)
+     * @internal param  string  $type           Item type (URL, StaticPage, Blog, etc)
+     * @internal param  string  $reference      Type reference (e.g. ID of the static page)
+     * @internal param  string  $change         Change frequency. Values can be always, hourly, daily, weekly,
+     *                                          monthly, yearly, never
+     * @internal param  string  $priority       Priority of this item relative to other item on the site. Can be
+     *                                          values from 1 to 5 (only numbers!).
+     * @return   array  Response array (notice or error)
      */
-    function UpdateItem($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority)
+    function UpdateItem()
     {
+        @list($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->getAll('post');
         if ($change == 'none') {
             $change = null;
         }
@@ -185,12 +188,13 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Deletes the item
      *
-     * @access  public
-     * @param   int     $id Item ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id     Item ID
+     * @return   array  Response array (notice or error)
      */
-    function DeleteItem($id)
+    function DeleteItem()
     {
+        @list($id) = jaws()->request->getAll('post');
         $this->_Model->DeleteItem($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -198,13 +202,14 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Moves item to the given direction
      *
-     * @access  public
-     * @param   int     $id         Item ID
-     * @param   string  $direction  Up or down
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id         Item ID
+     * @internal param  string  $direction  Up or down
+     * @return   array  Response array (notice or error)
      */
-    function MoveItem($id, $direction)
+    function MoveItem()
     {
+        @list($id, $direction) = jaws()->request->getAll('post');
         $this->_Model->MoveItem($id, $direction);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
