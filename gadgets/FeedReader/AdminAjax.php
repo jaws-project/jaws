@@ -28,11 +28,11 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      * Gets information of the feed site
      *
      * @access  public
-     * @param   int     $id    Feed site ID
      * @return  mixed   Feed site information or false on error
      */
-    function GetFeed($id)
+    function GetFeed()
     {
+        @list($id) = jaws()->request->getAll('post');
         $feed = $this->_Model->GetFeed($id);
         if (Jaws_Error::IsError($feed)) {
             return false; //we need to handle errors on ajax
@@ -45,17 +45,13 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      * Inserts a new feed site
      *
      * @access  public
-     * @param   string  $title          Name of the feed site
-     * @param   string  $url            URL of the feed site
-     * @param   int     $cache_time     Cache time period in seconds
-     * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable feed title
-     * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the feed site
      * @return  array   Response array (notice or error)
      */
-    function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function InsertFeed()
     {
+        @list($title, $url, $cache_time, $view_type, $count_entry,
+            $title_view, $visible
+        ) = jaws()->request->getAll('post');
         $result = $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -71,19 +67,17 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      * Updates the feed site information
      *
      * @access  public
-     * @param   string  $id             Feed site ID
-     * @param   string  $title          Name of the feed site
-     * @param   string  $url            URL of the feed site
-     * @param   int     $cache_time     Cache time period in seconds
-     * @param   int     $view_type      Display type (0-4)
-     * @param   int     $count_entry    Number of viewable feed title
-     * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the feed site
      * @return  array   Response array (notice or error)
      */
-    function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function UpdateFeed()
     {
-        $result = $this->_Model->UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        @list($id, $title, $url, $cache_time, $view_type,
+            $count_entry, $title_view, $visible
+        ) = jaws()->request->getAll('post');
+        $result = $this->_Model->UpdateFeed(
+            $id, $title, $url, $cache_time,
+            $view_type, $count_entry, $title_view, $visible
+        );
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
         }
@@ -98,11 +92,11 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the feed site
      *
      * @access  public
-     * @param   int    $id  Feed site ID
      * @return  array  Response array (notice or error)
      */
-    function DeleteFeed($id)
+    function DeleteFeed()
     {
+        @list($id) = jaws()->request->getAll('post');
         $result = $this->_Model->DeleteFeed($id);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -118,11 +112,11 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      * Gets feed sites for data grid
      *
      * @access  public
-     * @param   int     $offset Data offset
      * @return  array   Feed sites
      */
-    function GetData($offset)
+    function GetData()
     {
+        @list($offset) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML', 'Feed');
         if (!is_numeric($offset)) {
             $offset = null;
