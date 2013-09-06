@@ -13,13 +13,14 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get information of a group
      *
-     * @access  public
-     * @param   int     $gid    Group ID
-     * @return  mixed   Group information or False on error
+     * @access   public
+     * @internal param  int     $gid    Group ID
+     * @return   mixed  Group information or False on error
      */
-    function GetGroup($gid)
+    function GetGroup()
     {
         $this->gadget->CheckPermission('default');
+        @list($gid) = jaws()->request->getAll('post');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -32,13 +33,14 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Get information of a forum
      *
-     * @access  public
-     * @param   int     $fid    Forum ID
-     * @return  mixed   Forum information or False on error
+     * @access   public
+     * @internal param  int     $fid    Forum ID
+     * @return   mixed  Forum information or False on error
      */
-    function GetForum($fid)
+    function GetForum()
     {
         $this->gadget->CheckPermission('default');
+        @list($fid) = jaws()->request->getAll('post');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         $forum = $fModel->GetForum($fid);
         if (Jaws_Error::IsError($forum)) {
@@ -77,19 +79,20 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Insert forum
      *
-     * @access  public
-     * @param   int     $gid            group ID
-     * @param   string  $title          forum title
-     * @param   string  $description    forum description
-     * @param   string  $fast_url
-     * @param   string  $order
-     * @param   bool    $locked         is locked
-     * @param   bool    $published      is published
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $gid            group ID
+     * @internal param  string  $title          forum title
+     * @internal param  string  $description    forum description
+     * @internal param  string  $fast_url
+     * @internal param  string  $order
+     * @internal param  bool    $locked         is locked
+     * @internal param  bool    $published      is published
+     * @return   array  Response array (notice or error)
      */
-    function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
+    function InsertForum()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($gid, $title, $description, $fast_url, $order, $locked, $published) = jaws()->request->getAll('post');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -106,20 +109,23 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update forum
      *
-     * @access  public
-     * @param   int     $fid            forum ID
-     * @param   int     $gid            group ID
-     * @param   string  $title          forum title
-     * @param   string  $description    forum description
-     * @param   string  $fast_url
-     * @param   string  $order
-     * @param   bool    $locked
-     * @param   bool    $published
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $fid            forum ID
+     * @internal param  int     $gid            group ID
+     * @internal param  string  $title forum    title
+     * @internal param  string  $description    forum description
+     * @internal param  string  $fast_url
+     * @internal param  string  $order
+     * @internal param  bool    $locked
+     * @internal param  bool    $published
+     * @return   array  Response array (notice or error)
      */
-    function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
+    function UpdateForum()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($fid, $gid, $title, $description,
+            $fast_url, $order, $locked, $published
+        ) = jaws()->request->getAll('post');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -135,13 +141,14 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a forum
      *
-     * @access  public
-     * @param   int     $fid    Forum ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $fid    Forum ID
+     * @return   array  Response array (notice or error)
      */
-    function DeleteForum($fid)
+    function DeleteForum()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($fid) = jaws()->request->getAll('post');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Forums');
         $res = $fModel->DeleteForum($fid);
         if (Jaws_Error::IsError($res)) {
@@ -162,18 +169,19 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Insert group
      *
-     * @access  public
-     * @param   string  $title          group title
-     * @param   string  $description    group description
-     * @param   string  $fast_url
-     * @param   string  $order
-     * @param   bool    $locked
-     * @param   bool    $published
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  string  $title          group title
+     * @internal param  string  $description    group description
+     * @internal param  string  $fast_url
+     * @internal param  string  $order
+     * @internal param  bool    $locked
+     * @internal param  bool    $published
+     * @return   array  Response array (notice or error)
      */
-    function InsertGroup($title, $description, $fast_url, $order, $locked, $published)
+    function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($title, $description, $fast_url, $order, $locked, $published) = jaws()->request->getAll('post');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
@@ -190,19 +198,20 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Update group
      *
-     * @access  public
-     * @param   int     $gid            group ID
-     * @param   string  $title          group title
-     * @param   string  $description    group description
-     * @param   string  $fast_url
-     * @param   string  $order
-     * @param   bool    $locked
-     * @param   bool    $published
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $gid            group ID
+     * @internal param  string  $title          group title
+     * @internal param  string  $description    group description
+     * @internal param  string  $fast_url
+     * @internal param  string  $order
+     * @internal param  bool    $locked
+     * @internal param  bool    $published
+     * @return   array  Response array (notice or error)
      */
-    function UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published)
+    function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($gid, $title, $description, $fast_url, $order, $locked, $published) = jaws()->request->getAll('post');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -218,13 +227,14 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a group
      *
-     * @access  public
-     * @param   int     $gid    Group ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $gid    Group ID
+     * @return   array  Response array (notice or error)
      */
-    function DeleteGroup($gid)
+    function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageForums');
+        @list($gid) = jaws()->request->getAll('post');
         $gModel = $GLOBALS['app']->LoadGadget('Forums', 'AdminModel', 'Groups');
         $res = $gModel->DeleteGroup($gid);
         if (Jaws_Error::IsError($res)) {
