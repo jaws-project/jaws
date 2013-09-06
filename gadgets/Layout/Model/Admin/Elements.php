@@ -174,13 +174,7 @@ class Layout_Model_Admin_Elements extends Layout_Model_Layout
                 // set initial params
                 $actions[$key]['parametric'] = false;
                 $lParamsMethod = $key. 'LayoutParams';
-                if (empty($action['file'])) {
-                    // DEPRECATED: will be removed after all jaws official gadget converted
-                    $objGadget = $GLOBALS['app']->LoadGadget($g, 'LayoutHTML');
-                } else {
-                    $objGadget = $GLOBALS['app']->LoadGadget($g, 'HTML', $action['file']);
-                }
-
+                $objGadget = $GLOBALS['app']->LoadGadget($g, 'HTML', $action['file']);
                 if (!Jaws_Error::IsError($objGadget) && method_exists($objGadget, $lParamsMethod)) {
                     $actions[$key]['params'] = $objGadget->$lParamsMethod();
                 }
