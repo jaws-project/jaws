@@ -19,7 +19,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
      */
     function RotateLeft()
     {
-        $post = jaws()->request->get(array('image', 'fromalbum'), 'post');
+        $post = jaws()->request->fetch(array('image', 'fromalbum'), 'post');
 
         //FIXME: Ugly, maybe we need to pass just the image id, also we need to create a class
         //to manage image actions(resize, rotate)
@@ -77,7 +77,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
      */
     function RotateRight()
     {
-        $post = jaws()->request->get(array('image', 'fromalbum'), 'post');
+        $post = jaws()->request->fetch(array('image', 'fromalbum'), 'post');
 
         //FIXME: Ugly, maybe we need to pass just the image id, also we need to create a
         //class to manage image actions(resize, rotate)

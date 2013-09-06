@@ -20,7 +20,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function GetIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $IPRange = $model->GetIPRange($id);
         if (Jaws_Error::IsError($IPRange)) {
@@ -44,7 +44,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function AddIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($from_ip, $to_ip, $blocked) = jaws()->request->getAll('post');
+        @list($from_ip, $to_ip, $blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->AddIPRange($from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -59,7 +59,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function EditIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($id, $from_ip, $to_ip, $blocked) = jaws()->request->getAll('post');
+        @list($id, $from_ip, $to_ip, $blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->EditIPRange($id, $from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -74,7 +74,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function DeleteIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $model->DeleteIPRange($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -89,7 +89,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function GetAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $agent = $model->GetAgent($id);
         if (Jaws_Error::IsError($agent)) {
@@ -108,7 +108,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function AddAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($agent, $blocked) = jaws()->request->getAll('post');
+        @list($agent, $blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->AddAgent($agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -123,7 +123,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function EditAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($id, $agent, $blocked) = jaws()->request->getAll('post');
+        @list($id, $agent, $blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->EditAgent($id, $agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -138,7 +138,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function DeleteAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $model->DeleteAgent($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -153,7 +153,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function IPBlockingBlockUndefined()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($blocked) = jaws()->request->getAll('post');
+        @list($blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         $res = $model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
@@ -174,7 +174,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function AgentBlockingBlockUndefined()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($blocked) = jaws()->request->getAll('post');
+        @list($blocked) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         $res = $model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
@@ -195,7 +195,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function UpdateEncryptionSettings()
     {
         $this->gadget->CheckPermission('Encryption');
-        @list($enabled, $key_age, $key_len) = jaws()->request->getAll('post');
+        @list($enabled, $key_age, $key_len) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Encryption');
         $model->UpdateEncryptionSettings($enabled == 'true', $key_age, $key_len);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -210,7 +210,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function UpdateAntiSpamSettings()
     {
         $this->gadget->CheckPermission('AntiSpam');
-        @list($filter, $default_captcha, $default_captcha_driver, $obfuscator) = jaws()->request->getAll('post');
+        @list($filter, $default_captcha, $default_captcha_driver, $obfuscator) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'AntiSpam');
         $model->UpdateAntiSpamSettings(
             $filter,
@@ -233,7 +233,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
         @list($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
             $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'AdvancedPolicies');
         $model->UpdateAdvancedPolicies(
             $passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
@@ -251,7 +251,7 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData()
     {
-        @list($offset, $grid) = jaws()->request->getAll('post');
+        @list($offset, $grid) = jaws()->request->fetchAll('post');
         $ipHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'IP');
         $agentHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'Agent');
         if (!is_numeric($offset)) {

@@ -24,7 +24,7 @@ class Users_Actions_Login extends Users_HTML
             return Jaws_HTTPError::Get(404);
         }
 
-        $post  = jaws()->request->get(array('email'), 'post');
+        $post  = jaws()->request->fetch(array('email'), 'post');
         $error = '';
 
         $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
@@ -118,7 +118,7 @@ class Users_Actions_Login extends Users_HTML
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.Login.Response');
         if (!isset($response['data'])) {
-            $referrer  = jaws()->request->get('referrer', 'get');
+            $referrer  = jaws()->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
             $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
@@ -290,7 +290,7 @@ class Users_Actions_Login extends Users_HTML
 
             $tpl->ParseBlock('UserLinks');
         } else {
-            $referrer  = jaws()->request->get('referrer', 'get');
+            $referrer  = jaws()->request->fetch('referrer', 'get');
             $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
             $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $referrer));
 
@@ -335,7 +335,7 @@ class Users_Actions_Login extends Users_HTML
      */
     function Login()
     {
-        $post = jaws()->request->get(
+        $post = jaws()->request->fetch(
             array('username', 'password', 'authtype', 'remember', 'usecrypt', 'referrer'),
             'post'
         );

@@ -296,10 +296,10 @@ class Banner_Actions_Admin_Banners extends Banner_AdminHTML
     {
         $this->gadget->CheckPermission('ManageBanners');
 
-        $post = jaws()->request->get(array('bid', 'title', 'url', 'gid', 'type', 'banner',
+        $post = jaws()->request->fetch(array('bid', 'title', 'url', 'gid', 'type', 'banner',
             'views_limit', 'clicks_limit', 'start_time',
             'stop_time', 'random', 'published'), 'post');
-        $post['template'] = jaws()->request->get('template', 'post', false);
+        $post['template'] = jaws()->request->fetch('template', 'post', false);
 
         $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel', 'Banners');
         $res = Jaws_Utils::UploadFiles($_FILES,

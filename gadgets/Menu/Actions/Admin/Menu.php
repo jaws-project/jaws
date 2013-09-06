@@ -318,7 +318,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
      */
     function LoadImage()
     {
-        $params = jaws()->request->get(array('id', 'file'), 'get');
+        $params = jaws()->request->fetch(array('id', 'file'), 'get');
 
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {

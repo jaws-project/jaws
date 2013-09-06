@@ -29,15 +29,15 @@ class Blog_Actions_Trackbacks extends Blog_HTML
         $sender = Jaws_Utils::GetRemoteAddress();
         $ip = $sender['proxy'] . (!empty($sender['proxy'])? '-' : '') . $sender['client'];
 
-        $post = jaws()->request->get(array('title', 'url', 'blog_name', 'excerpt'), 'post');
+        $post = jaws()->request->fetch(array('title', 'url', 'blog_name', 'excerpt'), 'post');
         if (is_null($post['title']) || is_null($post['url']) ||
             is_null($post['blog_name']) || is_null($post['excerpt'])) {
             Jaws_Header::Location('');
         }
 
-        $id = jaws()->request->get('id', 'get');
+        $id = jaws()->request->fetch('id', 'get');
         if (is_null($id)) {
-            $id = jaws()->request->get('id', 'post');
+            $id = jaws()->request->fetch('id', 'post');
             if (is_null($id)) {
                 $id = '';
             }

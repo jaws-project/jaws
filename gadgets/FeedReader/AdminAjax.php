@@ -32,7 +32,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetFeed()
     {
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $feed = $this->_Model->GetFeed($id);
         if (Jaws_Error::IsError($feed)) {
             return false; //we need to handle errors on ajax
@@ -51,7 +51,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($title, $url, $cache_time, $view_type, $count_entry,
             $title_view, $visible
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $result = $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -73,7 +73,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($id, $title, $url, $cache_time, $view_type,
             $count_entry, $title_view, $visible
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $result = $this->_Model->UpdateFeed(
             $id, $title, $url, $cache_time,
             $view_type, $count_entry, $title_view, $visible
@@ -96,7 +96,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteFeed()
     {
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $result = $this->_Model->DeleteFeed($id);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -116,7 +116,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData()
     {
-        @list($offset) = jaws()->request->getAll('post');
+        @list($offset) = jaws()->request->fetchAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML', 'Feed');
         if (!is_numeric($offset)) {
             $offset = null;

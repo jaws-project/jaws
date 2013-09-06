@@ -21,7 +21,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_HTML
     {
         // Get content via 'path'
         $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
-        return $model->GetContent(jaws()->request->get('path', 'get'));
+        return $model->GetContent(jaws()->request->fetch('path', 'get'));
     }
 
     /**

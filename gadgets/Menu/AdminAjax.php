@@ -61,7 +61,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroups()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Group');
         $groupInfo = $model->GetGroups($gid);
         if (Jaws_Error::IsError($groupInfo)) {
@@ -79,7 +79,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetMenu()
     {
-        @list($mid) = jaws()->request->getAll('post');
+        @list($mid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
         $menuInfo = $model->GetMenu($mid);
         if (Jaws_Error::IsError($menuInfo)) {
@@ -98,7 +98,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
     function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $title_view, $published) = jaws()->request->getAll('post');
+        @list($title, $title_view, $published) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Group');
         $model->InsertGroup($title, $title_view, (bool)$published);
 
@@ -116,7 +116,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageMenus');
         @list($pid, $gid, $type, $title, $url, $url_target,
             $rank, $published, $image
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
         $model->InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, (bool)$published, $image);
 
@@ -132,7 +132,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $title, $title_view, $published) = jaws()->request->getAll('post');
+        @list($gid, $title, $title_view, $published) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Group');
         $model->UpdateGroup($gid, $title, $title_view, (bool)$published);
 
@@ -150,7 +150,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $pid, $gid, $type, $title, $url, $url_target,
             $rank, $published, $image
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
         $model->UpdateMenu(
             $mid, $pid, $gid, $type, $title,
@@ -169,7 +169,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Group');
         $model->DeleteGroup($gid);
 
@@ -185,7 +185,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
     function DeleteMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid) = jaws()->request->getAll('post');
+        @list($mid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
         $result = $model->DeleteMenu($mid);
         if ($result) {
@@ -203,7 +203,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetParentMenus()
     {
-        @list($gid, $mid) = jaws()->request->getAll('post');
+        @list($gid, $mid) = jaws()->request->fetchAll('post');
         $result[] = array('pid'=> 0,
                           'title'=>'\\');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
@@ -223,7 +223,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $new_gid, $old_gid, $new_pid, $old_pid,
             $new_rank, $old_rank
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
         $model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank);
 
@@ -238,7 +238,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetPublicURList()
     {
-        @list($request) = jaws()->request->getAll('post');
+        @list($request) = jaws()->request->fetchAll('post');
         if ($request == 'url') {
             $urls[] = array('url'   => '',
                             'title' => _t('MENU_REFERENCES_FREE_LINK'));

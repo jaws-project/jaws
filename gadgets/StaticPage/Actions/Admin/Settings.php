@@ -26,7 +26,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_AdminHTML
         $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('Properties');
 
-        $action  = jaws()->request->get('action', 'get');
+        $action  = jaws()->request->fetch('action', 'get');
         $tpl->SetVariable('menubar', $this->MenuBar($action));
 
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');

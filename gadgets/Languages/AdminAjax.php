@@ -19,7 +19,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
     function SaveLanguage()
     {
         $this->gadget->CheckPermission('ModifyLanguageProperties');
-        @list($lang_str) = jaws()->request->getAll('post');
+        @list($lang_str) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
         $model->SaveLanguage($lang_str);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -33,7 +33,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLangDataUI()
     {
-        @list($component, $langTo) = jaws()->request->getAll('post');
+        @list($component, $langTo) = jaws()->request->fetchAll('post');
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $gadget = $GLOBALS['app']->LoadGadget('Languages', 'AdminHTML', 'Languages');
@@ -48,8 +48,8 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
      */
     function SetLangData()
     {
-        @list($component, $langTo, $data) = jaws()->request->getAll('post');
-        $data = jaws()->request->get('2:array', 'post', false);
+        @list($component, $langTo, $data) = jaws()->request->fetchAll('post');
+        $data = jaws()->request->fetch('2:array', 'post', false);
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');

@@ -20,7 +20,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function DeleteCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
         $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -36,7 +36,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function DeleteQuestion()
     {
         $this->gadget->CheckPermission('DeleteQuestion');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
         $model->DeleteQuestion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -54,7 +54,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveQuestion()
     {
-        @list($cat, $id, $position, $direction) = jaws()->request->getAll('post');
+        @list($cat, $id, $position, $direction) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
         $result = $model->MoveQuestion($cat, $id, $position, $direction);
         if (Jaws_Error::IsError($result)) {
@@ -77,7 +77,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveCategory()
     {
-        @list($cat, $old_position, $new_position) = jaws()->request->getAll('post');
+        @list($cat, $old_position, $new_position) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
         $result = $model->MoveCategory($cat, $old_position, $new_position);
         if (Jaws_Error::IsError($result)) {
@@ -97,7 +97,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function ParseText()
     {
-        $text = jaws()->request->get(0, 'post', false);
+        $text = jaws()->request->fetch(0, 'post', false);
 
         $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
         return $gadget->gadget->ParseText($text);
@@ -112,7 +112,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetCategoryGrid()
     {
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
         $datagrid = $gadget->DataGrid($id);
 

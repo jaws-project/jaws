@@ -19,7 +19,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function DeletePage()
     {
         $this->gadget->CheckPermission('DeletePage');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
         $model->DeletePage($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -34,7 +34,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function DeleteTranslation()
     {
         $this->gadget->CheckPermission('DeletePage');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Translation');
         $model->DeleteTranslation($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -49,7 +49,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function MassiveDelete()
     {
         $this->gadget->CheckPermission('DeletePage');
-        $pages = jaws()->request->getAll('post');
+        $pages = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
         $model->MassiveDelete($pages);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -64,7 +64,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function UpdateSettings()
     {
         $this->gadget->CheckPermission('Properties');
-        @list($defaultPage, $multiLang) = jaws()->request->getAll('post');
+        @list($defaultPage, $multiLang) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Settings');
         $model->UpdateSettings($defaultPage, $multiLang);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -78,7 +78,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      */
     function ParseText()
     {
-        $text = jaws()->request->get(0, 'post', false);
+        $text = jaws()->request->fetch(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
         return $gadget->gadget->ParseText($text);
     }
@@ -91,7 +91,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      */
     function SizeOfSearch()
     {
-        @list($group, $status, $search) = jaws()->request->getAll('post');
+        @list($group, $status, $search) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
         $pages = $model->SearchPages($group, $status, $search, null);
         return count($pages);
@@ -105,7 +105,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      */
     function SearchPages()
     {
-        @list($group, $status, $search, $orderBy, $limit) = jaws()->request->getAll('post');
+        @list($group, $status, $search, $orderBy, $limit) = jaws()->request->fetchAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Page');
         if (!is_numeric($limit)) {
             $limit = 0;
@@ -126,8 +126,8 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($id, $group, $showtitle, $title, $content, $language,
             $fast_url, $meta_keys, $meta_desc, $published
-        ) = jaws()->request->getAll('post');
-        $content = jaws()->request->get(4, 'post', false);
+        ) = jaws()->request->fetchAll('post');
+        $content = jaws()->request->fetch(4, 'post', false);
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
 
         if ($id == 'NEW') {
@@ -155,7 +155,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroup()
     {
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Group');
         $group = $model->GetGroup($id);
         if (Jaws_Error::IsError($group)) {
@@ -174,7 +174,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function GetGroupsGrid()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($offset) = jaws()->request->getAll('post');
+        @list($offset) = jaws()->request->fetchAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Group');
 
         return $gadget->GetGroupsGrid($offset);
@@ -202,7 +202,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->getAll('post');
+        @list($title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
@@ -223,7 +223,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($id, $title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->getAll('post');
+        @list($id, $title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
@@ -244,7 +244,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->DeleteGroup($id);
         if (Jaws_Error::IsError($res)) {

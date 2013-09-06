@@ -18,7 +18,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetQuote()
     {
-        @list($qid) = jaws()->request->getAll('post');
+        @list($qid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
         $quote = $model->GetQuote($qid);
         if (Jaws_Error::IsError($quote)) {
@@ -46,7 +46,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetQuotes()
     {
-        @list($qid, $gid) = jaws()->request->getAll('post');
+        @list($qid, $gid) = jaws()->request->fetchAll('post');
         $gid = empty($gid)? -1 : $gid;
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
         $quoteInfo = $model->GetQuotes($qid, $gid);
@@ -68,8 +68,8 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageQuotes');
         @list($title, $quotation, $gid, $start_time, $stop_time,
             $show_title, $published
-        ) = jaws()->request->getAll('post');
-        $quotation = jaws()->request->get(1, 'post', false);
+        ) = jaws()->request->fetchAll('post');
+        $quotation = jaws()->request->fetch(1, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -86,8 +86,8 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageQuotes');
         @list($id, $title, $quotation, $gid, $start_time, $stop_time,
             $show_title, $published
-        ) = jaws()->request->getAll('post');
-        $quotation = jaws()->request->get(2, 'post', false);
+        ) = jaws()->request->fetchAll('post');
+        $quotation = jaws()->request->fetch(2, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -102,7 +102,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function DeleteQuote()
     {
         $this->gadget->CheckPermission('ManageQuotes');
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->DeleteQuote($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -116,7 +116,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroup()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -137,7 +137,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageQuoteGroups');
         @list($title, $view_mode, $view_type, $show_title,
             $limit_count, $randomly, $published
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
@@ -155,7 +155,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageQuoteGroups');
         @list($gid, $title, $view_mode, $view_type, $show_title,
             $limit_count, $randomly, $published
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
@@ -183,7 +183,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function AddQuotesToGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
-        @list($gid, $quotes) = jaws()->request->get(array('0', '1:array'), 'post');
+        @list($gid, $quotes) = jaws()->request->fetch(array('0', '1:array'), 'post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
         $model->AddQuotesToGroup($gid, $quotes);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -198,7 +198,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
         $model->DeleteGroup($gid);
 

@@ -136,7 +136,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $tpl->SetBlock('static_page');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $action = jaws()->request->get('action', 'get');
+        $action = jaws()->request->fetch('action', 'get');
         $tpl->SetVariable('menubar', $this->MenuBar($action));
 
         $tpl->SetVariable('grid', $this->DataGrid());
@@ -246,8 +246,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
 
         $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'group_id', 'language', 'published', 'show_title');
-        $post  = jaws()->request->get($fetch, 'post');
-        $post['content'] = jaws()->request->get('content', 'post', false);
+        $post  = jaws()->request->fetch($fetch, 'post');
+        $post['content'] = jaws()->request->fetch('content', 'post', false);
 
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
             $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['published']);
@@ -266,7 +266,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
 
-        $id = (int)jaws()->request->get('id', 'get');
+        $id = (int)jaws()->request->fetch('id', 'get');
 
         $page = $model->GetPage($id);
         if (Jaws_Error::IsError($page)) {
@@ -290,8 +290,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
         $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys', 'meta_desc', 'published', 'show_title');
-        $post    = jaws()->request->get($fetch, 'post');
-        $post['content'] = jaws()->request->get('content', 'post', false);
+        $post    = jaws()->request->fetch($fetch, 'post');
+        $post['content'] = jaws()->request->fetch('content', 'post', false);
         $id      = (int)$post['page'];
 
         $model->UpdatePage($id, $post['group_id'], $post['show_title'], $post['title'],

@@ -29,7 +29,7 @@ class Preferences_HTML extends Jaws_Gadget_HTML
      */
     function Save()
     {
-        $post = jaws()->request->get(
+        $post = jaws()->request->fetch(
             array(
                 'theme', 'editor', 'language', 'calendar_type', 'calendar_language',
                 'date_format', 'timezone'
@@ -51,7 +51,7 @@ class Preferences_HTML extends Jaws_Gadget_HTML
      */
     function SetLanguage()
     {
-        $language = jaws()->request->get('lang', 'get');
+        $language = jaws()->request->fetch('lang', 'get');
 
         if (!is_dir(JAWS_PATH . 'languages/' . $language) &&
             !is_dir(JAWS_DATA . 'languages/' . $language))

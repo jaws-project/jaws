@@ -33,7 +33,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateBasicSettings()
     {
         $this->gadget->CheckPermission('BasicSettings');
-        $settings = jaws()->request->getAll('post');
+        $settings = jaws()->request->fetchAll('post');
         $this->_Model->SaveBasicSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -47,7 +47,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateAdvancedSettings()
     {
         $this->gadget->CheckPermission('AdvancedSettings');
-        $settings = jaws()->request->getAll('post');
+        $settings = jaws()->request->fetchAll('post');
         $this->_Model->SaveAdvancedSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -61,8 +61,8 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMetaSettings()
     {
         $this->gadget->CheckPermission('MetaSettings');
-        $settings = jaws()->request->getAll('post');
-        $settings['site_custom_meta'] = serialize(jaws()->request->get('site_custom_meta:array', 'post'));
+        $settings = jaws()->request->fetchAll('post');
+        $settings['site_custom_meta'] = serialize(jaws()->request->fetch('site_custom_meta:array', 'post'));
         $this->_Model->SaveMetaSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -76,7 +76,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMailSettings()
     {
         $this->gadget->CheckPermission('MailSettings');
-        $settings = jaws()->request->getAll('post');
+        $settings = jaws()->request->fetchAll('post');
         $this->_Model->UpdateMailSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -90,7 +90,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateFTPSettings()
     {
         $this->gadget->CheckPermission('FTPSettings');
-        $settings = jaws()->request->getAll('post');
+        $settings = jaws()->request->fetchAll('post');
         $this->_Model->UpdateFTPSettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -104,7 +104,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProxySettings()
     {
         $this->gadget->CheckPermission('ProxySettings');
-        $settings = jaws()->request->getAll('post');
+        $settings = jaws()->request->fetchAll('post');
         $this->_Model->UpdateProxySettings($settings);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

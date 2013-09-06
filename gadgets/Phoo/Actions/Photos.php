@@ -37,7 +37,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('ViewAlbumPage.html');
         $tpl->SetBlock('ViewAlbumPage');
 
-        $get = jaws()->request->get(array('id', 'page'), 'get');
+        $get = jaws()->request->fetch(array('id', 'page'), 'get');
         $id  = !empty($get['id'])? $get['id'] : '0';
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
@@ -160,7 +160,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $tpl = $this->gadget->loadTemplate('ViewImage.html');
 
-        $get = jaws()->request->get(array('id', 'albumid'), 'get');
+        $get = jaws()->request->fetch(array('id', 'albumid'), 'get');
         $id  = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');
         $albumid = !is_null($albumid)? $albumid : (!empty($get['albumid'])? $get['albumid'] : '0');
 

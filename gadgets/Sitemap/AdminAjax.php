@@ -48,7 +48,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetReferences()
     {
-        @list($type) = jaws()->request->getAll('post');
+        @list($type) = jaws()->request->fetchAll('post');
         switch($type) {
             case 'StaticPage':
                 return $this->GetStaticPageReferences();
@@ -141,7 +141,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function NewItem()
     {
-        @list($parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->getAll('post');
+        @list($parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->fetchAll('post');
         if ($change == 'none') {
             $change = null;
         }
@@ -175,7 +175,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdateItem()
     {
-        @list($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->getAll('post');
+        @list($id, $parent_id, $title, $shortname, $type, $reference, $change, $priority) = jaws()->request->fetchAll('post');
         if ($change == 'none') {
             $change = null;
         }
@@ -194,7 +194,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function DeleteItem()
     {
-        @list($id) = jaws()->request->getAll('post');
+        @list($id) = jaws()->request->fetchAll('post');
         $this->_Model->DeleteItem($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -209,7 +209,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function MoveItem()
     {
-        @list($id, $direction) = jaws()->request->getAll('post');
+        @list($id, $direction) = jaws()->request->fetchAll('post');
         $this->_Model->MoveItem($id, $direction);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

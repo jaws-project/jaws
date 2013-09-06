@@ -55,7 +55,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgetInfo()
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Gadgets');
         return $html->GadgetInfo($gadget);
     }
@@ -68,7 +68,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function InstallGadget()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -82,7 +82,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpgradeGadget()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -96,7 +96,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function UninstallGadget()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -110,7 +110,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function EnableGadget()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -124,7 +124,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
      */
     function DisableGadget()
     {
-        @list($gadget) = jaws()->request->getAll('post');
+        @list($gadget) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
         $html->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -159,7 +159,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetPluginInfo()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        @list($plugin) = jaws()->request->getAll('post');
+        @list($plugin) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
         return $html->PluginInfo($plugin);
     }
@@ -173,7 +173,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function InstallPlugin()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        @list($plugin) = jaws()->request->getAll('post');
+        @list($plugin) = jaws()->request->fetchAll('post');
         $return = Jaws_Plugin::InstallPlugin($plugin);
         if (Jaws_Error::IsError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
@@ -192,7 +192,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UninstallPlugin()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        @list($plugin) = jaws()->request->getAll('post');
+        @list($plugin) = jaws()->request->fetchAll('post');
         $return = Jaws_Plugin::UninstallPlugin($plugin);
         if (Jaws_Error::isError($return)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
@@ -211,7 +211,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetPluginUsage()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        @list($plugin) = jaws()->request->getAll('post');
+        @list($plugin) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
         $ui = $html->PluginUsage();
 
@@ -237,7 +237,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UpdatePluginUsage()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        @list($plugin, $backend, $frontend) = jaws()->request->getAll('post');
+        @list($plugin, $backend, $frontend) = jaws()->request->fetchAll('post');
         $this->gadget->registry->update('backend_gadgets', $backend, $plugin);
         $this->gadget->registry->update('frontend_gadgets', $frontend, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
@@ -253,7 +253,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetRegistry()
     {
         $this->gadget->CheckPermission('ManageRegistry');
-        @list($comp, $is_plugin) = jaws()->request->getAll('post');
+        @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Registry');
         $ui = $html->RegistryUI();
         $data = $GLOBALS['app']->Registry->fetchAll($comp);
@@ -269,8 +269,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UpdateRegistry()
     {
         $this->gadget->CheckPermission('ManageRegistry');
-        @list($comp, $data) = jaws()->request->getAll('post');
-        $data = jaws()->request->get('1:array', 'post');
+        @list($comp, $data) = jaws()->request->fetchAll('post');
+        $data = jaws()->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
             $res = $GLOBALS['app']->Registry->update($key, $value, $comp);
             if (Jaws_Error::IsError($res)) {
@@ -290,7 +290,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function GetACL()
     {
         $this->gadget->CheckPermission('ManageACLs');
-        @list($comp, $is_plugin) = jaws()->request->getAll('post');
+        @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
         $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'ACL');
         $ui = $html->ACLUI();
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
@@ -312,8 +312,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UpdateACL()
     {
         $this->gadget->CheckPermission('ManageACLs');
-        @list($comp, $data) = jaws()->request->getAll('post');
-        $data = jaws()->request->get('1:array', 'post');
+        @list($comp, $data) = jaws()->request->fetchAll('post');
+        $data = jaws()->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
             list($key, $subkey) = explode(':', $key);
             $res = $GLOBALS['app']->ACL->update($key, $subkey, $value, $comp);

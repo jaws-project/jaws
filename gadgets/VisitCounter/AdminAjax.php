@@ -63,8 +63,8 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        @list($counters, $numdays, $type, $mode, $custom_text) = jaws()->request->getAll('post');
-        $custom_text = jaws()->request->get(4, 'post', false);
+        @list($counters, $numdays, $type, $mode, $custom_text) = jaws()->request->fetchAll('post');
+        $custom_text = jaws()->request->fetch(4, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Properties');
         $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -78,7 +78,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData()
     {
-        @list($offset) = jaws()->request->getAll('post');
+        @list($offset) = jaws()->request->fetchAll('post');
         if (!is_numeric($offset)) {
             $offset = 0;
         }

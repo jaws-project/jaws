@@ -19,7 +19,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function ImportImage()
     {
         $this->gadget->CheckPermission('Import');
-        @list($image, $name, $album) = jaws()->request->getAll('post');
+        @list($image, $name, $album) = jaws()->request->fetchAll('post');
         $file = array();
         $file['tmp_name'] = JAWS_DATA . 'phoo/import/' . $image;
         $file['name'] = $image;
@@ -45,9 +45,9 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdatePhoto()
     {
-        @list($id, $title, $desc, $allow_comments, $published, $albums) = jaws()->request->getAll('post');
-        $albums = jaws()->request->get('5:array', 'post');
-        $desc = jaws()->request->get(2, 'post', false);
+        @list($id, $title, $desc, $allow_comments, $published, $albums) = jaws()->request->fetchAll('post');
+        $albums = jaws()->request->fetch('5:array', 'post');
+        $desc = jaws()->request->fetch(2, 'post', false);
         if (!$this->gadget->GetPermission('ManageAlbums')) {
             $albums    = null;
             $published = null;

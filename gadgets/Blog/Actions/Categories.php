@@ -24,7 +24,7 @@ class Blog_Actions_Categories extends Blog_HTML
         $cModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
         $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
 
-        $post = jaws()->request->get(array('id', 'page'), 'get');
+        $post = jaws()->request->fetch(array('id', 'page'), 'get');
         $page = $post['page'];
         if (is_null($page) || $page <= 0 ) {
             $page = 1;

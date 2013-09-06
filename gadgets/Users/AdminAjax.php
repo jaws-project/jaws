@@ -40,7 +40,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetUser()
     {
-        @list($uid, $account, $personal, $preferences, $contacts) = jaws()->request->getAll('post');
+        @list($uid, $account, $personal, $preferences, $contacts) = jaws()->request->fetchAll('post');
         $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $contacts);
         if (Jaws_Error::IsError($profile)) {
             return array();
@@ -80,7 +80,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetUsers()
     {
-        @list($group, $superadmin, $status, $term, $orderBy, $offset) = jaws()->request->getAll('post');
+        @list($group, $superadmin, $status, $term, $orderBy, $offset) = jaws()->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
             $superadmin = false;
@@ -116,7 +116,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetUsersCount()
     {
-        @list($group, $superadmin, $status, $term) = jaws()->request->getAll('post');
+        @list($group, $superadmin, $status, $term) = jaws()->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
             $superadmin = false;
@@ -137,7 +137,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $uData = jaws()->request->getAll('post');
+        $uData = jaws()->request->fetchAll('post');
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
@@ -175,7 +175,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $uData = jaws()->request->getAll('post');
+        $uData = jaws()->request->fetchAll('post');
         $uid = $uData['uid'];
 
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
@@ -224,7 +224,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function DeleteUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        @list($uid) = jaws()->request->getAll('post');
+        @list($uid) = jaws()->request->fetchAll('post');
         if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
@@ -256,7 +256,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function DeleteSession()
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
-        @list($sid) = jaws()->request->getAll('post');
+        @list($sid) = jaws()->request->fetchAll('post');
         if ($GLOBALS['app']->Session->Delete($sid)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_DELETED'),
@@ -283,7 +283,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageIPs');
 
-        @list($ip) = jaws()->request->getAll('post');
+        @list($ip) = jaws()->request->fetchAll('post');
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
         if ($mPolicy->AddIPRange($ip, null, true)) {
             $GLOBALS['app']->Session->PushLastResponse(
@@ -310,7 +310,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageAgents');
-        @list($agent) = jaws()->request->getAll('post');
+        @list($agent) = jaws()->request->fetchAll('post');
 
         $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
         if ($mPolicy->AddAgent($agent, true)) {
@@ -337,8 +337,8 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateUserACL()
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        @list($uid, $comp, $acls) = jaws()->request->getAll('post');
-        $acls = jaws()->request->get('2:array', 'post');
+        @list($uid, $comp, $acls) = jaws()->request->fetchAll('post');
+        $acls = jaws()->request->fetch('2:array', 'post');
         $res = $GLOBALS['app']->ACL->deleteByUser($uid, $comp);
         if ($res) {
             $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, $uid);
@@ -364,8 +364,8 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroupACL()
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        @list($gid, $comp, $acls) = jaws()->request->getAll('post');
-        $acls = jaws()->request->get('2:array', 'post');
+        @list($gid, $comp, $acls) = jaws()->request->fetchAll('post');
+        $acls = jaws()->request->fetch('2:array', 'post');
         $res = $GLOBALS['app']->ACL->deleteByGroup($gid, $comp);
         if ($res) {
             $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, 0, $gid);
@@ -391,8 +391,8 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddUserToGroups()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($uid, $groups) = jaws()->request->getAll('post');
-        $groups = jaws()->request->get('1:array', 'post');
+        @list($uid, $groups) = jaws()->request->fetchAll('post');
+        $groups = jaws()->request->fetch('1:array', 'post');
         $oldGroups = $this->_UserModel->GetGroupsOfUser((int)$uid);
         if (!Jaws_Error::IsError($oldGroups)) {
             $oldGroups = array_keys($oldGroups);
@@ -428,8 +428,8 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddUsersToGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($guid, $users) = jaws()->request->getAll('post');
-        $users = jaws()->request->get('1:array', 'post');
+        @list($guid, $users) = jaws()->request->fetchAll('post');
+        $users = jaws()->request->fetch('1:array', 'post');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UsersGroup');
         $res = $uModel->AddUsersToGroup($guid, $users);
         if (Jaws_Error::IsError($res)) {
@@ -449,7 +449,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function SaveSettings()
     {
         $this->gadget->CheckPermission('ManageProperties');
-        @list($method, $anon, $repetitive, $act, $group, $recover) = jaws()->request->getAll('post');
+        @list($method, $anon, $repetitive, $act, $group, $recover) = jaws()->request->fetchAll('post');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'Settings');
         $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover);
         if (Jaws_Error::IsError($res)) {
@@ -482,7 +482,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function GetACLKeys()
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        @list($id, $comp, $action) = jaws()->request->getAll('post');
+        @list($id, $comp, $action) = jaws()->request->fetchAll('post');
         // fetch default ACLs
         $default_acls = $GLOBALS['app']->ACL->fetchAll($comp);
         // set ACL keys description
@@ -508,7 +508,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMyAccount()
     {
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
-        $uData = jaws()->request->getAll('post');
+        $uData = jaws()->request->fetchAll('post');
         $uid   = $uData['uid'];
         // unset invalid keys
         $invalids = array_diff(array_keys($uData), array('username', 'nickname', 'email', 'password'));
@@ -558,7 +558,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetUserGroups()
     {
-        @list($uid) = jaws()->request->getAll('post');
+        @list($uid) = jaws()->request->fetchAll('post');
         $groups = $this->_UserModel->GetGroupsOfUser((int)$uid);
         if (Jaws_Error::IsError($groups)) {
             return array();
@@ -613,7 +613,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($uid, $fname, $lname, $gender, $ssn, $dob,
             $url, $about, $avatar, $privacy
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $dob = empty($dob)? null : $dob;
         if (!empty($dob)) {
             $objDate = $GLOBALS['app']->loadDate();
@@ -654,7 +654,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function UpdatePreferences()
     {
-        @list($uid, $lang, $theme, $editor, $timezone) = jaws()->request->getAll('post');
+        @list($uid, $lang, $theme, $editor, $timezone) = jaws()->request->fetchAll('post');
         if ($lang == '-default-') {
             $lang = null;
         }
@@ -701,7 +701,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($uid, $country, $city, $address, $postalCode, $phoneNumber,
             $mobileNumber, $faxNumber
-        ) = jaws()->request->getAll('post');
+        ) = jaws()->request->fetchAll('post');
         $res = $this->_UserModel->UpdateContacts(
             $uid,
             array(
@@ -733,7 +733,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroup()
     {
-        @list($guid) = jaws()->request->getAll('post');
+        @list($guid) = jaws()->request->fetchAll('post');
         $group = $this->_UserModel->GetGroup((int)$guid);
         if (Jaws_Error::IsError($group)) {
             return array();
@@ -750,7 +750,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroups()
     {
-        @list($offset) = jaws()->request->getAll('post');
+        @list($offset) = jaws()->request->fetchAll('post');
         $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Groups');
         return $grpHTML->GetGroups(null, $offset);
     }
@@ -764,7 +764,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function AddGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($name, $title, $description, $enabled) = jaws()->request->getAll('post');
+        @list($name, $title, $description, $enabled) = jaws()->request->fetchAll('post');
         $res = $this->_UserModel->AddGroup(
             array(
                 'name' => $name,
@@ -795,7 +795,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($guid, $name, $title, $description, $enabled) = jaws()->request->getAll('post');
+        @list($guid, $name, $title, $description, $enabled) = jaws()->request->fetchAll('post');
         $res = $this->_UserModel->UpdateGroup(
             $guid,
             array(
@@ -826,7 +826,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($guid) = jaws()->request->getAll('post');
+        @list($guid) = jaws()->request->fetchAll('post');
 
         $currentUid = $GLOBALS['app']->Session->GetAttribute('user');
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
@@ -860,7 +860,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupUsers()
     {
-        @list($gid) = jaws()->request->getAll('post');
+        @list($gid) = jaws()->request->fetchAll('post');
         $users = $this->_UserModel->GetUsers((int)$gid);
         if (Jaws_Error::IsError($users)) {
             return array();

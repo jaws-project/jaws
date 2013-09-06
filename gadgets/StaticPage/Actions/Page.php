@@ -54,7 +54,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      */
     function Page($page_id = null, $base_action = 'Page')
     {
-        $post = jaws()->request->get(array('gid', 'pid','language'), 'get');
+        $post = jaws()->request->fetch(array('gid', 'pid','language'), 'get');
         $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
         $post['pid'] = Jaws_XSS::defilter($post['pid'], true);
 

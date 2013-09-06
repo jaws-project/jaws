@@ -28,7 +28,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
         $tpl->SetBlock('filebrowser');
         $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Files');
 
-        $path = jaws()->request->get('path', 'get');
+        $path = jaws()->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
         $tpl->SetVariable('path', $path);
 
@@ -130,7 +130,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
 
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $fModelAdmin = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
-        $post = jaws()->request->get(
+        $post = jaws()->request->fetch(
             array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'),
             'post'
         );
@@ -178,7 +178,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
      */
     function BrowseFile()
     {
-        $path = jaws()->request->get('path', 'get');
+        $path = jaws()->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
 
         $tpl = $this->gadget->loadTemplate('BrowseFile.html');
@@ -199,7 +199,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
             $tpl->SetBlock('browse/script');
             $tpl->ParseBlock('browse/script');
         } elseif ($editor === 'CKEditor') {
-            $getParams = jaws()->request->get(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+            $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor='.$getParams['CKEditor'].
                 '&amp;CKEditorFuncNum='.$getParams['CKEditorFuncNum'].
                 '&amp;langCode='.$getParams['langCode'];
@@ -329,7 +329,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
         $this->gadget->CheckPermission('ManageFiles');
 
         $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
-        $post = jaws()->request->get(array('path', 'selected_item', 'extra_params'), 'post');
+        $post = jaws()->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);

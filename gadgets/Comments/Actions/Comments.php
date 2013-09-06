@@ -54,7 +54,7 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
         // check for posting value
-        $post = jaws()->request->get(array('name', 'email', 'url', 'title', 'message'), 'post');
+        $post = jaws()->request->fetch(array('name', 'email', 'url', 'title', 'message'), 'post');
         if(isset($post['message'])) {
             $tpl->SetVariable('message', $post['message']);
         }
@@ -155,7 +155,7 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function ShowComments($gadget, $action, $reference, $pagination_data, $perPage = null, $orderBy = 0)
     {
-        $rqst = jaws()->request->get(array('order', 'page'), 'get');
+        $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         if(!empty($rqst['order'])) {
@@ -302,7 +302,7 @@ class Comments_Actions_Comments extends Comments_HTML
             'name', 'email', 'url', 'title', 'message', 'createtime',
             'ip_address', 'reference'
         );
-        $post = jaws()->request->get($names, 'post');
+        $post = jaws()->request->fetch($names, 'post');
         if(empty($post['message'])) {
             return;
         }
@@ -398,7 +398,7 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function GetMessages()
     {
-        $rqst = jaws()->request->get(array('order','perpage', 'page'), 'get');
+        $rqst = jaws()->request->fetch(array('order','perpage', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         if(!empty($rqst['perpage'])) {
@@ -496,7 +496,7 @@ class Comments_Actions_Comments extends Comments_HTML
      */
     function PostMessage()
     {
-        $post  = jaws()->request->get(array('message', 'name', 'email', 'url', 'url2', 'requested_gadget',
+        $post  = jaws()->request->fetch(array('message', 'name', 'email', 'url', 'url2', 'requested_gadget',
                                     'requested_action', 'reference', 'redirect_to'), 'post');
 
         $redirectTo = str_replace('&amp;', '&', $post['redirect_to']);

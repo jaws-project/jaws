@@ -206,7 +206,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
             'default_view', 'last_entries_limit', 'last_comments_limit',
             'last_recentcomments_limit', 'default_category', 'xml_limit',
             'comments', 'comment_status', 'trackback', 'trackback_status');
-        $post = jaws()->request->get($names, 'post');
+        $post = jaws()->request->fetch($names, 'post');
 
         $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
         $model->SaveSettings($post['default_view'], $post['last_entries_limit'],

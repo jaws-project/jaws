@@ -83,7 +83,7 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
         $this->AjaxMe('script.js');
 
-        $category = jaws()->request->get('category', 'get');
+        $category = jaws()->request->fetch('category', 'get');
 
         $manageTpl = $this->gadget->loadTemplate('Faq.html');
         $manageTpl->SetBlock('Faq');
@@ -187,7 +187,7 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $qModel = $GLOBALS['app']->LoadGadget('Faq', 'Model', 'Question');
         $cModel = $GLOBALS['app']->LoadGadget('Faq', 'Model', 'Category');
 
-        $get = jaws()->request->get(array('id', 'category'), 'get');
+        $get = jaws()->request->fetch(array('id', 'category'), 'get');
 
         //Add Faq Form
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
@@ -297,8 +297,8 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $this->gadget->CheckPermission('AddQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
 
-        $post = jaws()->request->get(array('question', 'fast_url', 'category', 'status'), 'post');
-        $post['answer'] = jaws()->request->get('answer', 'post', false);
+        $post = jaws()->request->fetch(array('question', 'fast_url', 'category', 'status'), 'post');
+        $post['answer'] = jaws()->request->fetch('answer', 'post', false);
 
         $model->AddQuestion($post['question'], $post['fast_url'], $post['answer'],
             $post['category'], ($post['status'] == 'yes'));
@@ -317,8 +317,8 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $this->gadget->CheckPermission('EditQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
 
-        $post    = jaws()->request->get(array('id', 'question', 'fast_url', 'category', 'status'), 'post');
-        $post['answer'] = jaws()->request->get('answer', 'post', false);
+        $post    = jaws()->request->fetch(array('id', 'question', 'fast_url', 'category', 'status'), 'post');
+        $post['answer'] = jaws()->request->fetch('answer', 'post', false);
 
         $model->UpdateQuestion($post['id'], $post['question'], $post['fast_url'],
             $post['answer'], $post['category'], ($post['status'] == 'yes'));
@@ -336,7 +336,7 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $this->gadget->CheckPermission('DeleteQuestion');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
 
-        $id = (int)jaws()->request->get('id', 'get');
+        $id = (int)jaws()->request->fetch('id', 'get');
         $model->DeleteQuestion($id);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq');

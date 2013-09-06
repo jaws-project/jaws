@@ -20,7 +20,7 @@ class Forums_Actions_Topics extends Forums_HTML
      */
     function Topics()
     {
-        $rqst = jaws()->request->get(array('fid', 'page', 'status'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'page', 'status'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
@@ -169,7 +169,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->get(array('fid', 'tid', 'target', 'subject', 'message', 'update_reason'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'target', 'subject', 'message', 'update_reason'));
         if (empty($rqst['fid'])) {
             return false;
         }
@@ -342,7 +342,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $topic = jaws()->request->get(
+        $topic = jaws()->request->fetch(
             array(
                 'fid', 'tid', 'target', 'subject', 'message', 'remove_attachment',
                 'update_reason', 'status'
@@ -523,7 +523,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->get(array('fid', 'tid', 'confirm'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'confirm'));
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
@@ -640,7 +640,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->get(array('fid', 'tid'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
@@ -689,7 +689,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $this->gadget->CheckPermission('PublishTopic');
 
-        $rqst = jaws()->request->get(array('fid', 'tid'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
