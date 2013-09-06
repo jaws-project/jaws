@@ -24,7 +24,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->get('comp', 'get');
+            $gadget = jaws()->request->fetch('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -58,7 +58,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->get('comp', 'get');
+            $gadget = jaws()->request->fetch('comp', 'get');
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
@@ -92,7 +92,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->get('comp', 'get');
+            $gadget = jaws()->request->fetch('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -126,7 +126,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->get('comp', 'get');
+            $gadget = jaws()->request->fetch('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -160,7 +160,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->get('comp', 'get');
+            $gadget = jaws()->request->fetch('comp', 'get');
         }
 
         $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');

@@ -22,7 +22,7 @@ class Components_Actions_Version extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $get = jaws()->request->get(array('type', 'component'));
+        $get = jaws()->request->fetch(array('type', 'component'));
         $version = '0';
         switch ((int)$get['type']) {
             case 0:
