@@ -14,12 +14,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the page and all of its translations
      *
      * @access  public
-     * @param   int     $id  Page ID
      * @return  array   Response array (notice or error)
      */
-    function DeletePage($id)
+    function DeletePage()
     {
         $this->gadget->CheckPermission('DeletePage');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
         $model->DeletePage($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -29,12 +29,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the page translation
      *
      * @access  public
-     * @param   int     $id  Page ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteTranslation($id)
+    function DeleteTranslation()
     {
         $this->gadget->CheckPermission('DeletePage');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Translation');
         $model->DeleteTranslation($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -44,12 +44,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Executes a batch delete on pages
      *
      * @access  public
-     * @param   array   $pages  Array of page IDs
      * @return  array   Response array (notice or error)
      */
-    function MassiveDelete($pages)
+    function MassiveDelete()
     {
         $this->gadget->CheckPermission('DeletePage');
+        $pages = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
         $model->MassiveDelete($pages);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -59,13 +59,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Updates gadget settings
      *
      * @access  public
-     * @param   string  $defaultPage    Default page to use
-     * @param   string  $multiLang      Whether uses multilanguage 'schema' or not
      * @return  array   Response array (notice or error)
      */
-    function UpdateSettings($defaultPage, $multiLang)
+    function UpdateSettings()
     {
         $this->gadget->CheckPermission('Properties');
+        @list($defaultPage, $multiLang) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Settings');
         $model->UpdateSettings($defaultPage, $multiLang);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -75,10 +74,9 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Parses passed text
      *
      * @access  public
-     * @param   string  $text   Input text
      * @return  string  Parsed text
      */
-    function ParseText($text)
+    function ParseText()
     {
         $text = jaws()->request->get(0, 'post', false);
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
@@ -89,13 +87,11 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Gets total number of search results
      *
      * @access  public
-     * @param   int     $group      Group ID
-     * @param   mixed   $status     Status of the page(s) (1/0 or Y/N)
-     * @param   string  $search     Keywords(title/description) of the pages we are looking for
      * @return  int     Total number of pages
      */
-    function SizeOfSearch($group, $status, $search)
+    function SizeOfSearch()
     {
+        @list($group, $status, $search) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
         $pages = $model->SearchPages($group, $status, $search, null);
         return count($pages);
@@ -105,15 +101,11 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Searches for specified pages
      *
      * @access  public
-     * @param   int     $group      Group ID
-     * @param   mixed   $status     Status of the pages we are looking for (1/0 or Y/N)
-     * @param   string  $search     The Keywords we are looking for in title/description of the pages
-     * @param   int     $orderBy    Order by
-     * @param   int     $offset     Data limit
      * @return  array   List of pages
      */
-    function SearchPages($group, $status, $search, $orderBy, $limit)
+    function SearchPages()
     {
+        @list($group, $status, $search, $orderBy, $limit) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Page');
         if (!is_numeric($limit)) {
             $limit = 0;
@@ -128,21 +120,13 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * user clicks on save.
      *
      * @access  public
-     * @param   int     $id         The ID of the staticpage to update
-     * @param   int     $group      The group ID of the page
-     * @param   bool    $showtitle  Whether displays page title or not
-     * @param   string  $title      Page title
-     * @param   string  $content    Page content
-     * @param   string  $language   Page language
-     * @param   string  $fast_url   The fast URL of the page
-     * @param   string  $meta_keys  Meta keywords
-     * @param   string  $meta_desc  Meta description
-     * @param   bool    $published  If the item is published or not. Default: draft
      * @return  array   Response array (notice or error)
      */
-    function AutoDraft($id = '', $group, $showtitle = '', $title = '', $content = '', $language = '',
-                       $fast_url = '', $meta_keys = '', $meta_desc = '', $published = '')
+    function AutoDraft()
     {
+        @list($id, $group, $showtitle, $title, $content, $language,
+            $fast_url, $meta_keys, $meta_desc, $published
+        ) = jaws()->request->getAll('post');
         $content = jaws()->request->get(4, 'post', false);
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
 
@@ -167,11 +151,11 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Gets the group data
      *
      * @access  public
-     * @param   int     $id  Group ID
      * @return  array   Group information
      */
-    function GetGroup($id)
+    function GetGroup()
     {
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Group');
         $group = $model->GetGroup($id);
         if (Jaws_Error::IsError($group)) {
@@ -185,12 +169,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Gets the group data for grid
      *
      * @access  public
-     * @param   int     $offset  Start offset of the result boundaries 
      * @return  string  XHTML grid data
      */
-    function GetGroupsGrid($offset)
+    function GetGroupsGrid()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($offset) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Group');
 
         return $gadget->GetGroupsGrid($offset);
@@ -213,16 +197,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Adds a new group
      *
      * @access  public
-     * @param   string  $title      Title of the group
-     * @param   string  $fast_url   Shortcut keyword to link to the group
-     * @param   string  $meta_keys  Meta keywords
-     * @param   string  $meta_desc  Meta description
-     * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
-    function InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible)
+    function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
@@ -238,17 +218,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Updates the group
      *
      * @access  public
-     * @param   int     $id         Group ID
-     * @param   string  $title      Title of the group
-     * @param   string  $meta_keys  Meta keywords
-     * @param   string  $meta_desc  Meta description
-     * @param   string  $fast_url   Shortcut keyword to link to the group
-     * @param   bool    $visible    Visibility status of the group
      * @return  array   Response array (notice or error)
      */
-    function UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible)
+    function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($id, $title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
@@ -264,12 +239,12 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the group
      *
      * @access  public
-     * @param   int     $id  group ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteGroup($id)
+    function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
         $res = $model->DeleteGroup($id);
         if (Jaws_Error::IsError($res)) {
