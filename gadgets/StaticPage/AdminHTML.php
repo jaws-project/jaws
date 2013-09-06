@@ -96,7 +96,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('StaticPage.html');
         $tpl->SetBlock('pageform');
 
-        $m_action  = jaws()->request->get('action', 'get');
+        $m_action  = jaws()->request->fetch('action', 'get');
         $tpl->SetVariable('menubar', $this->MenuBar($m_action));
 
         $pageform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
