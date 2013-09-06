@@ -20,7 +20,7 @@ class Preferences_AdminAjax extends Jaws_Gadget_HTML
     function UpdatePreferences()
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        $preferences_config = jaws()->request->getAll('post');
+        $preferences_config = jaws()->request->fetchAll('post');
         $modelPreferences = $this->gadget->load('Model')->load('AdminModel');
         $modelPreferences->UpdatePreferences($preferences_config);
         return $GLOBALS['app']->Session->PopLastResponse();
