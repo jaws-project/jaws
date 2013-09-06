@@ -161,6 +161,22 @@ class Jaws_Request
     }
 
     /**
+     * Creates the Jaws_Request instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @return  object returns the instance
+     */
+    function &getInstance()
+    {
+        static $objRequest;
+        if (!isset($objRequest)) {
+            $objRequest = new Jaws_Request();
+        }
+
+        return $objRequest;
+    }
+
+    /**
      * @param   string  $type
      * @return  mixed
      */
