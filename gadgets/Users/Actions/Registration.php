@@ -53,7 +53,7 @@ class Users_Actions_Registration extends Users_HTML
         }
 
         $result  = '';
-        $post = jaws()->request->get(
+        $post = jaws()->request->fetch(
             array(
                 'username', 'email', 'nickname', 'password', 'password_check',
                 'fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day',
@@ -210,7 +210,7 @@ class Users_Actions_Registration extends Users_HTML
             return Jaws_HTTPError::Get(404);
         }
 
-        $key = jaws()->request->get('key', 'get');
+        $key = jaws()->request->fetch('key', 'get');
 
         $jUser = new Jaws_User;
         $user = $jUser->GetUserByEmailVerifyKey($key);

@@ -42,7 +42,7 @@ class Users_Actions_Admin_Avatar extends Users_AdminHTML
      */
     function LoadAvatar()
     {
-        $file = jaws()->request->get('file', 'get');
+        $file = jaws()->request->fetch('file', 'get');
 
         require_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();

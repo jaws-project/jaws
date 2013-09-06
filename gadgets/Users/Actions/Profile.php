@@ -126,7 +126,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
     function Profile()
     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $user = jaws()->request->get('user', 'get');
+        $user = jaws()->request->fetch('user', 'get');
         if (empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
