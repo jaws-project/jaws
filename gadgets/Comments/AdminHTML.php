@@ -121,7 +121,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('status', $status->Get());
 
         // filter
-        $filterData = jaws()->request->get('filter', 'get');
+        $filterData = jaws()->request->fetch('filter', 'get');
         $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
         $filterEntry->setSize(20);
         $tpl->SetVariable('filter', $filterEntry->Get());
