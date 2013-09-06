@@ -27,11 +27,11 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Gets information of a webcam
      *
      * @access  public
-     * @param   int     $id  Webcam ID
      * @return  mixed   Array of webcam information or false on failure
      */
-    function GetWebcam($id)
+    function GetWebcam()
     {
+        @list($id) = jaws()->request->getAll('post');
         $webcamInfo = $this->_Model->GetWebcam($id);
         if (Jaws_Error::IsError($webcamInfo)) {
             return false; //we need to handle errors on ajax
@@ -44,14 +44,12 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Adds a new webcam
      *
      * @access  public
-     * @param   string  $title      Title of the webcam frame
-     * @param   string  $url        Url of the webcam image
-     * @param   int     $refresh    The refresh time to reload the webcam
      * @return  array   Response array (notice or error)
      */
-    function NewWebcam($title, $url, $refresh)
+    function NewWebcam()
     {
         $this->gadget->CheckPermission('AddWebcam');
+        @list($title, $url, $refresh) = jaws()->request->getAll('post');
         $this->_Model->NewWebcam($title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -60,15 +58,12 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Updates webcam information
      *
      * @access  public
-     * @param   int     $id         Webcam ID
-     * @param   string  $title      Title of the webcam frame
-     * @param   string  $url        Url of the webcam image
-     * @param   int     $refresh    Refresh rate
      * @return  array   Response array (notice or error)
      */
-    function UpdateWebcam($id, $title, $url, $refresh)
+    function UpdateWebcam()
     {
         $this->gadget->CheckPermission('EditWebcam');
+        @list($id, $title, $url, $refresh) = jaws()->request->getAll('post');
         $this->_Model->UpdateWebcam($id, $title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -77,12 +72,12 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Deletes the webcam
      *
      * @access  public
-     * @param   int     $id  Webcam ID
      * @return  array   Response array (notice or error)
      */
-    function DeleteWebcam($id)
+    function DeleteWebcam()
     {
         $this->gadget->CheckPermission('DeleteWebcam');
+        @list($id) = jaws()->request->getAll('post');
         $this->_Model->DeleteWebcam($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -91,12 +86,12 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Updates properties
      *
      * @access  public
-     * @param   int     $limit  The limitation
      * @return  array   Response array (notice or error)
      */
-    function UpdateProperties($limit)
+    function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
+        @list($limit) = jaws()->request->getAll('post');
         $this->_Model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -105,11 +100,11 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Callback to display short URLs
      *
      * @access  private
-     * @param   string  $url    Original URL
      * @return  string  Short URL
      */
-    function ShowShortURL($url)
+    function ShowShortURL()
     {
+        @list($url) = jaws()->request->getAll('post');
         if (strlen($url) > 40) {
             return "<a title=\"{$url}\" href=\"{$url}\">" . substr($url, 0, 40) . "...</a>";
         }
@@ -121,11 +116,11 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
      * Gets webcams
      *
      * @access  public
-     * @param   int     $limit  The limitation
      * @return  array   List of webcams
      */
-    function GetData($limit)
+    function GetData()
     {
+        @list($limit) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Webcam', 'AdminHTML');
         return $gadget->GetWebcams($limit);
     }
