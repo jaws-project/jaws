@@ -14,13 +14,12 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
      * Import an image located in 'import' folder
      *
      * @access  public
-     * @param   string  $image  Image file
-     * @param   string  $name   Name of the image
-     * @param   string  $album  In which album the image will be imported
+     * @return  array   Response array (notice or error)
      */
-    function ImportImage($image, $name, $album)
+    function ImportImage()
     {
         $this->gadget->CheckPermission('Import');
+        @list($image, $name, $album) = jaws()->request->getAll('post');
         $file = array();
         $file['tmp_name'] = JAWS_DATA . 'phoo/import/' . $image;
         $file['name'] = $image;
@@ -42,23 +41,18 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
      * Update album photo information
      *
      * @access  public
-     * @param   int     $id             Photo Id
-     * @param   string  $title          Photo title
-     * @param   string  $desc           Photo description
-     * @param   bool    $allow_comments Comment status
-     * @param   bool     $published      Publish status
-     * @param    array    $albums
      * @return  array   Response array (notice or error)
      */
-    function UpdatePhoto($id, $title, $desc, $allow_comments, $published, $albums = null)
+    function UpdatePhoto()
     {
+        @list($id, $title, $desc, $allow_comments, $published, $albums) = jaws()->request->getAll('post');
         $albums = jaws()->request->get('5:array', 'post');
+        $desc = jaws()->request->get(2, 'post', false);
         if (!$this->gadget->GetPermission('ManageAlbums')) {
             $albums    = null;
             $published = null;
         }
 
-        $desc = jaws()->request->get(2, 'post', false);
         $model = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
         $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
