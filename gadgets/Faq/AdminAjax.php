@@ -13,13 +13,14 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a category
      *
-     * @access  public
-     * @param   int     $id     Category ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int  $id  Category ID
+     * @return   array  Response array (notice or error)
      */
-    function DeleteCategory($id)
+    function DeleteCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
         $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -28,13 +29,14 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Delete a question
      *
-     * @access  public
-     * @param   int     $id     Question ID
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $id    Question ID
+     * @return   array  Response array (notice or error)
      */
-    function DeleteQuestion($id)
+    function DeleteQuestion()
     {
         $this->gadget->CheckPermission('DeleteQuestion');
+        @list($id) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
         $model->DeleteQuestion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -43,15 +45,16 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Move a question
      *
-     * @access  public
-     * @param   int     $cat        Category ID
-     * @param   int     $id         Question ID
-     * @param   int     $position   Position of question
-     * @param   string  $direction  Direction (+1/-1)
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $cat        Category ID
+     * @internal param  int     $id         Question ID
+     * @internal param  int     $position   Position of question
+     * @internal param  string  $direction  Direction (+1/-1)
+     * @return   array  Response array (notice or error)
      */
-    function MoveQuestion($cat, $id, $position, $direction)
+    function MoveQuestion()
     {
+        @list($cat, $id, $position, $direction) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Question');
         $result = $model->MoveQuestion($cat, $id, $position, $direction);
         if (Jaws_Error::IsError($result)) {
@@ -66,14 +69,15 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Move a category
      *
-     * @access  public
-     * @param   int     $cat            Category ID
-     * @param   int     $old_position   Old position of category
-     * @param   int     $new_position   New position of category
-     * @return  array   Response array (notice or error)
+     * @access   public
+     * @internal param  int     $cat            Category ID
+     * @internal param  int     $old_position   Old position of category
+     * @internal param  int     $new_position   New position of category
+     * @return   array  Response array (notice or error)
      */
-    function MoveCategory($cat, $old_position, $new_position)
+    function MoveCategory()
     {
+        @list($cat, $old_position, $new_position) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
         $result = $model->MoveCategory($cat, $old_position, $new_position);
         if (Jaws_Error::IsError($result)) {
@@ -102,12 +106,13 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     /**
      * Rebuild the work area of a category
      *
-     * @access  public
-     * @param   int     $id        Category ID
-     * @return  string  XHTML template content
+     * @access   public
+     * @internal param  int     $id     Category ID
+     * @return   string XHTML template content
      */
-    function GetCategoryGrid($id)
+    function GetCategoryGrid()
     {
+        @list($id) = jaws()->request->getAll('post');
         $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
         $datagrid = $gadget->DataGrid($id);
 
