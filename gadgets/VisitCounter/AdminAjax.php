@@ -58,16 +58,12 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      * Updates properties
      *
      * @access  public
-     * @param   string  $counters       Enabled visit counters
-     * @param   int     $numdays        Cookie lifetime in days
-     * @param   string  $type           The type of visits being displayed
-     * @param   int     $mode           Display mode
-     * @param   string  $custom_text    User defined text to be displayed
      * @return  array   Response array (notice or error)
      */
-    function UpdateProperties($counters, $numdays, $type, $mode, $custom_text)
+    function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
+        @list($counters, $numdays, $type, $mode, $custom_text) = jaws()->request->getAll('post');
         $custom_text = jaws()->request->get(4, 'post', false);
         $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Properties');
         $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
@@ -78,11 +74,11 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
      * Gets all entries/records for datagrid
      *
      * @access  public
-     * @param   int     $offset  Data offset to fetch
      * @return  array   List of visits
      */
-    function GetData($offset)
+    function GetData()
     {
+        @list($offset) = jaws()->request->getAll('post');
         if (!is_numeric($offset)) {
             $offset = 0;
         }
