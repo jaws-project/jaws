@@ -19,7 +19,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetFriend()
     {
-        @list($friend) = jaws()->request->getAll('post');
+        @list($friend) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'Model', 'Friends');
         $friendInfo = $model->GetFriend($friend);
         if (Jaws_Error::IsError($friendInfo)) {
@@ -40,7 +40,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function NewFriend()
     {
         $this->gadget->CheckPermission('AddFriend');
-        @list($friend, $url) = jaws()->request->getAll('post');
+        @list($friend, $url) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -58,7 +58,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function UpdateFriend()
     {
         $this->gadget->CheckPermission('EditFriend');
-        @list($old, $friend, $url) = jaws()->request->getAll('post');
+        @list($old, $friend, $url) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -74,7 +74,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function DeleteFriend()
     {
         $this->gadget->CheckPermission('DeleteFriend');
-        @list($friend) = jaws()->request->getAll('post');
+        @list($friend) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -90,7 +90,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        @list($limit) = jaws()->request->getAll('post');
+        @list($limit) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
         $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -105,7 +105,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetData()
     {
-        @list($limit) = jaws()->request->getAll('post');
+        @list($limit) = jaws()->request->fetchAll('post');
         if(empty($limit)) {
             $limit = 0;
         }
