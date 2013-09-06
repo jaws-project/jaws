@@ -85,8 +85,8 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     function SaveSettings()
     {
         @list($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
-            $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
-            $pingback) = jaws()->request->getAll('post');
+            $xml_limit, $comments, $comment_status, $trackback, $trackback_status, $pingback
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Settings');
         $model->SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
                                     $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
@@ -304,8 +304,8 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddEntries');
         @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
-            $allow_comments, $trackbacks, $published, $timestamp) = jaws()->request->getAll('post');
-
+            $allow_comments, $trackbacks, $published, $timestamp
+        ) = jaws()->request->getAll('post');
         $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Posts');
 
         $categories = jaws()->request->get('1:array', 'post');
