@@ -1,15 +1,15 @@
 <?php
 /**
- * ServerTime Gadget
+ * Webcam Gadget Admin
  *
- * @category   Gadget
- * @package    ServerTime
+ * @category   GadgetAdmin
+ * @package    Webcam
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
+ * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTime_AdminHTML extends Jaws_Gadget_HTML
+class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_HTML
 {
     /**
      * Displays the administration page
