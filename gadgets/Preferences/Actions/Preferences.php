@@ -25,7 +25,7 @@ class Preferences_Actions_Preferences extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('PREFERENCES_ACTION_TITLE'));
 
         // load cookies preferences
-        $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+        $cookies = $GLOBALS['app']->Session->GetCookie('preferences:array');
         if (!is_array($cookies)) {
             $cookies = array();
         }
