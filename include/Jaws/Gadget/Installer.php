@@ -19,12 +19,20 @@ class Jaws_Gadget_Installer
     var $_DefaultACL = true;
 
     /**
-     * Gadget ACLs
+     * Gadget Registry keys
      *
      * @var     array
      * @access  private
      */
-    var $_ACLs = array();
+    var $_RegKeys = array();
+
+    /**
+     * Gadget ACL keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLKeys = array();
 
     /**
      * Jaws_Gadget object
@@ -86,7 +94,7 @@ class Jaws_Gadget_Installer
     function GetACLs()
     {
         $result = array();
-        foreach ($this->_ACLs as $acl) {
+        foreach ($this->_ACLKeys as $acl) {
             if (is_array($acl)) {
                 $result[] = $acl;
             } else {
@@ -158,14 +166,13 @@ class Jaws_Gadget_Installer
             return $result;
         }
 
-        // Applying the keys that every gadget gets
+        // Registry keys
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
-        $this->gadget->registry->insert(
-            array(
-                'version'  => $this->gadget->version,
-                'requires' => $requires,
-            )
+        $installer->_RegKeys = array_merge(
+            array('version' => $this->gadget->version, 'requires' => $requires),
+            $installer->_RegKeys
         );
+        $this->gadget->registry->insert($installer->_RegKeys, $this->gadget->name);
 
         // ACL keys
         $this->gadget->acl->insert($installer->GetACLs(), $this->gadget->name);
