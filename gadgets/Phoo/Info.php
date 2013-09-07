@@ -18,7 +18,7 @@ class Phoo_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.8.4';
+    var $version = '0.9.0';
 
     /**
      * Default front-end action name

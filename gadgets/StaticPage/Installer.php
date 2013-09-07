@@ -89,6 +89,14 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('StaticPage', 'GroupPages', 'GroupPages', 'Group');
+            $layoutModel->EditGadgetLayoutAction('StaticPage', 'PagesList', 'PagesList', 'Page');
+            $layoutModel->EditGadgetLayoutAction('StaticPage', 'GroupsList', 'GroupsList', 'Group');
+        }
+
         return true;
     }
 

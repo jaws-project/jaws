@@ -85,7 +85,6 @@ class Poll_Installer extends Jaws_Gadget_Installer
             $layoutModel->EditGadgetLayoutAction('Poll', 'Display', 'Poll', 'Poll');
             $layoutModel->EditGadgetLayoutAction('Poll', 'LastPoll', 'Poll', 'Poll');
             $layoutModel->EditGadgetLayoutAction('Poll', 'ListOfPolls', 'Polls', 'Polls');
-            $layoutModel->EditGadgetLayoutAction('Poll', 'ListOfPolls', 'Polls', 'Polls');
         }
 
         return true;

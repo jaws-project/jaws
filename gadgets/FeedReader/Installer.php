@@ -82,6 +82,12 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
         // ACL keys
         $this->gadget->acl->delete('ManageRSSSite');
 
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('FeedReader', 'Display', 'DisplayFeeds', 'Feed');
+        }
+
         return true;
     }
 

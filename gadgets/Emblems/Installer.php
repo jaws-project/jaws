@@ -84,6 +84,12 @@ class Emblems_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // Update layout actions
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Emblems', 'Display', 'Display', 'Emblems');
+            }
         }
         return true;
     }

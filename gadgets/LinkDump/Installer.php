@@ -99,8 +99,9 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
         // Update layout actions
         $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
         if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowCategories', 'Categories', 'Groups');
             $layoutModel->EditGadgetLayoutAction('LinkDump', 'Display', 'Category', 'Groups');
+            $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowCategories', 'Categories', 'Groups');
+            $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowTagCloud', 'ShowTagCloud', 'TagCloud');
         }
 
         return true;

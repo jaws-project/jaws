@@ -116,6 +116,14 @@ class Phoo_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('Phoo', 'AlbumList', 'AlbumList', 'Albums');
+            $layoutModel->EditGadgetLayoutAction('Phoo', 'Random', 'Random', 'Random');
+            $layoutModel->EditGadgetLayoutAction('Phoo', 'Moblog', 'Moblog', 'Moblog');
+        }
+
         return true;
     }
 

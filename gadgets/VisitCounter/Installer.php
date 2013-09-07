@@ -138,6 +138,15 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('VisitCounter', 'Display', 'Display', 'VisitCounter');
+            $layoutModel->EditGadgetLayoutAction('VisitCounter', 'DisplayOnline', 'DisplayOnline', 'VisitCounter');
+            $layoutModel->EditGadgetLayoutAction('VisitCounter', 'DisplayToday', 'DisplayToday', 'VisitCounter');
+            $layoutModel->EditGadgetLayoutAction('VisitCounter', 'DisplayTotal', 'DisplayTotal', 'VisitCounter');
+        }
+
         return true;
     }
 
