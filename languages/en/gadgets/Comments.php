@@ -22,6 +22,8 @@ define('_EN_COMMENTS_ACTIONS_COMMENTS', "Comments");
 define('_EN_COMMENTS_ACTIONS_COMMENTS_DESC', "show list of comments");
 define('_EN_COMMENTS_ACTIONS_RECENTCOMMENTS', "Recent comments");
 define('_EN_COMMENTS_ACTIONS_RECENTCOMMENTS_DESC', "show list of recent comments");
+define('_EN_COMMENTS_ACTIONS_FEEDSLINK', "Feed Button");
+define('_EN_COMMENTS_ACTIONS_FEEDSLINK_DESC', "Displays a link to the feed.");
 
 define('_EN_COMMENTS_COMMENTS_PER_PAGE', "Comments per page");
 define('_EN_COMMENTS_RECENT_COMMENTS', "{0} recent comments");
@@ -38,6 +40,9 @@ define('_EN_COMMENTS_USERS_REGISTERED_DATE', "Registered date");
 define('_EN_COMMENTS_POSTEDBY', "Posted by");
 define('_EN_COMMENTS_REPLY_TO_COMMENT', "Reply");
 define('_EN_COMMENTS_REPLIER', "Replied by");
+define('_EN_COMMENTS_FEEDS_TYPE', "Feed type");
+define('_EN_COMMENTS_FEEDS_RSS', "RSS");
+define('_EN_COMMENTS_FEEDS_ATOM', "Atom");
 
 define('_EN_COMMENTS_ANTISPAM_ALLOWDUPLICATE', "Allow duplicate messages");
 define('_EN_COMMENTS_PROPERTIES_UPDATED', "Properties have been updated");
