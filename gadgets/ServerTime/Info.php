@@ -17,6 +17,22 @@ class ServerTime_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.8.1';
+    var $version = '0.9.0';
+
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'Display';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Admin';
 
 }

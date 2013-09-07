@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTime_AdminModel extends Jaws_Gadget_Model
+class ServerTime_Model_Admin_Properties extends Jaws_Gadget_Model
 {
     /**
      * Updates the properties of ServerTime

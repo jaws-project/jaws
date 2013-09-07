@@ -1,6 +1,6 @@
 <?php
 /**
- * ServerTime Actions file
+ * ServerTime Admin Actions file
  *
  * @category    GadgetActions
  * @package     ServerTime
@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Display'] = array(
-    'layout' => true,
+$actions['Admin'] = array(
+    'normal' => true,
     'file' => 'ServerTime',
 );
