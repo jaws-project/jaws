@@ -17,6 +17,6 @@ class Faq_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.8.2';
+    var $version = '0.9.0';
 
 }
