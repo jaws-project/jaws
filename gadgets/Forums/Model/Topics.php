@@ -22,45 +22,26 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetTopic($tid, $fid = null)
     {
-        $params = array();
-        $params['tid'] = (int)$tid;
-        $params['fid'] = (int)$fid;
-
-        $sql = '
-            SELECT
-                [[forums_topics]].[id], [fid], [subject], [views], [replies],
-                [first_post_id], [first_post_uid], [first_post_time], [last_post_id], [last_post_time],
-                [[forums_topics]].[published], [[forums_topics]].[locked],
-                [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
-                [[forums]].[last_topic_id] as forum_last_topic_id,
-                [[forums_posts]].[message], [attachment_host_fname], [update_reason],
-                [[users]].[username], [[users]].[nickname], [[users]].[email]
-            FROM
-                [[forums_topics]]
-            LEFT JOIN
-                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
-            LEFT JOIN
-                [[forums_posts]] ON [[forums_topics]].[first_post_id] = [[forums_posts]].[id]
-            LEFT JOIN
-                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
-            WHERE
-                [[forums_topics]].[id] = {tid}';
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $table->select(
+                'forums_topics.id:integer', 'fid:integer', 'subject', 'views:integer', 'replies:integer',
+                'first_post_id:integer', 'first_post_uid:integer', 'first_post_time:integer', 'last_post_id:integer',
+                'last_post_time:integer','forums_topics.published:boolean', 'forums_topics.locked:boolean',
+                'forums.title as forum_title', 'forums.fast_url as forum_fast_url',
+                'forums.last_topic_id as forum_last_topic_id:integer',
+                'forums_posts.message', 'attachment_host_fname', 'update_reason',
+                'users.username', 'users.nickname', 'users.email'
+        );
+        $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
+        $table->join('forums_posts', 'forums_topics.first_post_id', 'forums_posts.id', 'left');
+        $table->join('users', 'forums_posts.uid', 'users.id', 'left');
+        $table->where('forums_topics.id', $tid);
 
         if (!empty($fid)) {
-            $sql .= ' AND [fid] = {fid}';
+            $table->and()->where('fid', $fid);
         }
 
-        $types = array(
-            'integer', 'integer', 'text', 'integer', 'integer',
-            'integer', 'integer', 'integer', 'integer', 'integer',
-            'boolean', 'boolean',
-            'text', 'text',
-            'integer',
-            'text', 'text', 'text',
-            'text', 'text', 'text',
-        );
-
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $result = $table->fetchRow();
         return $result;
     }
 
@@ -77,65 +58,34 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetTopics($fid, $published = null, $uid = null, $limit = 0, $offset = null)
     {
-        $params = array();
-        $params['fid'] = $fid;
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $table->select(
+                'forums_topics.id:integer', 'fid:integer', 'subject:integer', 'views:integer', 'replies:integer',
+                'first_post_id:integer', 'first_post_uid:integer', 'first_post_time:integer',
+                'last_post_id:integer', 'last_post_uid:integer', 'last_post_time:integer',
+                'fuser.username as first_username', 'fuser.nickname as first_nickname',
+                'luser.username as last_username', 'luser.nickname as last_nickname',
+                'locked:boolean', 'published:boolean'
+        );
+        $table->join('users as fuser', 'forums_topics.first_post_uid', 'fuser.id', 'left');
+        $table->join('users as luser', 'forums_topics.last_post_uid', 'luser.id', 'left');
+        $table->where('fid', $fid)->orderBy('last_post_time desc')->limit($limit, $offset);
 
-        $published_str = '';
         if (empty($uid)) {
             if ($published !== null) {
-                $params['published'] = $published;
-                $published_str = ' AND [published] = {published}';
+                $table->and()->where('published', $published);
             }
         } else {
-            $params['uid'] = $uid;
-            $params['published'] = $published;
-
             if ($published === null) {
-                $params['published'] = true;
-                $published_str = ' AND ([published] = {published} OR [first_post_uid] = {uid})';
+                $table->and()->openWhere('published', true)->or()->closeWhere('first_post_uid', $uid);
             } else if ($published === true){
-                $published_str = ' AND [published] = {published}';
+                $table->and()->where('published', $published);
             } else {
-                $published_str = ' AND [published] = {published} AND [first_post_uid] = {uid}';
+                $table->and()->where('published', $published)->and('first_post_uid', $uid);
             }
         }
 
-        $sql = '
-            SELECT
-                [[forums_topics]].[id], [fid], [subject], [views], [replies],
-                [first_post_id], [first_post_uid], [first_post_time],
-                [last_post_id], [last_post_uid], [last_post_time],
-                fuser.[username] as first_username, fuser.[nickname] as first_nickname,
-                luser.[username] as last_username, luser.[nickname] as last_nickname,
-                [locked], [published]
-            FROM
-                [[forums_topics]]
-            LEFT JOIN 
-                [[users]] as fuser ON [[forums_topics]].[first_post_uid] = fuser.[id]
-            LEFT JOIN 
-                [[users]] as luser ON [[forums_topics]].[last_post_uid] = luser.[id]
-            WHERE
-                [fid] = {fid}' . $published_str . '
-            ORDER BY
-                [last_post_time] desc';
-
-        $types = array(
-            'integer', 'integer', 'text', 'integer', 'integer',
-            'integer', 'integer', 'integer',
-            'integer', 'integer', 'integer',
-            'text', 'text',
-            'text', 'text',
-            'boolean', 'boolean',
-        );
-
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = $table->fetchAll();
         return $result;
     }
 
@@ -149,37 +99,20 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetRecentTopics($gid = '', $limit = 0)
     {
-        $params = array();
-        $params['gid'] = $gid;
-
-        $sql = '
-            SELECT
-                [[forums_topics]].[id], [fid], [subject], [[forums_posts]].[message],
-                [replies], [last_post_id], [last_post_uid], [last_post_time],
-                [[users]].[username], [[users]].[nickname]
-            FROM
-                [[forums_topics]]
-            LEFT JOIN
-                [[forums_posts]] ON [[forums_topics]].[last_post_id] = [[forums_posts]].[id]
-            LEFT JOIN
-                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
-            LEFT JOIN
-                [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
-            ';
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $table->select(
+                'forums_topics.id:integer', 'fid:integer', 'subject', 'forums_posts.message',
+                'replies', 'last_post_id:integer', 'last_post_uid:integer', 'last_post_time:integer',
+                'users.username', 'users.nickname'
+        );
+        $table->join('forums_posts', 'forums_topics.last_post_id', 'forums_posts.id', 'left');
+        $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
+        $table->join('users', 'forums_topics.last_post_uid', 'users.id', 'left');
 
         if (!empty($gid)) {
-            $sql.= 'WHERE [[forums]].[gid] = {gid}';
+            $table->where('forums.gid', $gid);
         }
-        $sql.= ' ORDER BY [[forums_topics]].[last_post_time] desc';
-
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, 0);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = $table->orderBy('forums_topics.last_post_time desc')->limit($limit, 0)->fetchAll();
         return $result;
     }
 
@@ -197,39 +130,25 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function InsertTopic($uid, $fid, $subject, $message, $attachment = null, $published = true)
     {
-        $params = array();
-        $params['uid']       = $uid;
-        $params['fid']       = (int)$fid;
-        $params['subject']   = $subject;
-        $params['published'] = (bool)$published;
+        $data['fid']              = (int)$fid;
+        $data['subject']          = $subject;
+        $data['first_post_uid']   = $uid;
+        $data['last_post_uid']    = $uid;
+        $data['published']        = (bool)$published;
 
-        $sql = '
-            INSERT INTO [[forums_topics]]
-                ([fid], [subject], [first_post_uid], [last_post_uid], [published])
-            VALUES
-                ({fid}, {subject}, {uid}, {uid}, {published})';
-
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
         //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
+        $table->beginTransaction();
 
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
-            return $result;
-        }
-
-        $tid = $GLOBALS['db']->lastInsertID('forums_topics', 'id');
+        $tid = $table->insert($data)->exec();
         if (Jaws_Error::IsError($tid)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
             return $tid;
         }
 
         $pid = 0;
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         if (!Jaws_Error::IsError($pModel)) {
-            $pid = $pModel->InsertPost($params['uid'], $tid, $params['fid'], $message, $attachment, true);
+            $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
                 //Rollback Transaction
                 $GLOBALS['db']->dbc->rollback();
@@ -238,7 +157,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        $table->commit();
 
         return $tid;
     }

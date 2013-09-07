@@ -22,55 +22,33 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function GetPost($pid, $tid = null, $fid = null)
     {
-        $params = array();
-        $params['fid'] = (int)$fid;
-        $params['tid'] = (int)$tid;
-        $params['pid'] = (int)$pid;
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $table->select('
+                forums_posts.id:integer', 'forums_posts.uid:integer', 'tid:integer', 'message', 'forums_posts.insert_time:integer',
+                'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count:integer',
+                'update_uid:integer', 'update_reason', 'update_time:integer', 'forums_posts.status:integer',
+                'forums_topics.fid:integer', 'forums_topics.subject', 'forums_topics.locked as topic_locked:boolean',
+                'first_post_id as topic_first_post_id:integer', 'first_post_time as topic_first_post_time:integer',
+                'last_post_id as topic_last_post_id:integer', 'last_post_time as topic_last_post_time:integer',
+                'forums.title as forum_title', 'forums.fast_url as forum_fast_url',
+                'forums.last_topic_id as forum_last_topic_id:integer',
+                'users.username', 'users.nickname', 'users.registered_date as user_registered_date:integer',
+                'users.email', 'users.avatar', 'users.last_update as user_last_update:integer'
+        );
+        $table->join('forums_topics', 'forums_posts.tid', 'forums_topics.id', 'left');
+        $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
+        $table->join('users', 'forums_posts.uid', 'users.id', 'left');
 
-        $sql = '
-            SELECT
-                [[forums_posts]].[id], [[forums_posts]].[uid], [tid], [message], [[forums_posts]].[insert_time],
-                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count],
-                [update_uid], [update_reason], [update_time], [[forums_posts]].[status],
-                [[forums_topics]].[fid], [[forums_topics]].[subject], [[forums_topics]].[locked] as topic_locked,
-                [first_post_id] as topic_first_post_id, [first_post_time] as topic_first_post_time,
-                [last_post_id] as topic_last_post_id, [last_post_time] as topic_last_post_time,
-                [[forums]].[title] as forum_title, [[forums]].[fast_url] as forum_fast_url,
-                [[forums]].[last_topic_id] as forum_last_topic_id,
-                [[users]].[username], [[users]].[nickname], [[users]].[registered_date] as user_registered_date,
-                [[users]].[email], [[users]].[avatar], [[users]].[last_update] as user_last_update
-            FROM
-                [[forums_posts]]
-            LEFT JOIN
-                [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
-            LEFT JOIN
-                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
-            LEFT JOIN
-                [[users]] ON [[forums_posts]].[uid] = [[users]].[id]
-            WHERE
-                [[forums_posts]].[id] = {pid}';
+        $table->where('forums_posts.id', $pid);
 
         if (!empty($tid)) {
-            $sql .= ' AND [tid] = {tid}';
+            $table->and()->where('tid', $tid);
         }
         if (!empty($fid)) {
-            $sql .= ' AND [fid] = {fid}';
+            $table->and()->where('fid', $fid);
         }
 
-        $types = array(
-            'integer', 'integer', 'integer', 'text', 'integer',
-            'text', 'text', 'integer',
-            'integer', 'text', 'integer', 'integer',
-            'integer', 'text', 'boolean',
-            'integer', 'integer',
-            'integer', 'integer',
-            'text', 'text',
-            'integer',
-            'text', 'text', 'integer',
-            'text', 'text', 'integer',
-        );
-
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $result = $table->fetchRow();
         return $result;
     }
 
@@ -85,36 +63,18 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function GetPosts($tid, $limit = 0, $offset = null)
     {
-        $params = array();
-        $params['tid'] = $tid;
-
-        $sql = '
-            SELECT
-                [[forums_posts]].[id], [uid], [message],
-                [attachment_host_fname], [attachment_user_fname], [attachment_hits_count], [update_uid],
-                [update_reason], [update_time], [[forums_posts]].[insert_time], [[forums_posts]].[status],
-                cuser.[username], cuser.[nickname], cuser.[registered_date] as user_registered_date,
-                cuser.[email], cuser.[avatar], cuser.[last_update] as user_last_update,
-                uuser.[username] as updater_username, uuser.[nickname] as updater_nickname
-            FROM
-                [[forums_posts]]
-            LEFT JOIN
-                [[users]] as cuser ON [[forums_posts]].[uid] = cuser.[id]
-            LEFT JOIN
-                [[users]] as uuser ON [[forums_posts]].[update_uid] = uuser.[id]
-            WHERE
-                [tid] = {tid}
-            ORDER BY
-                [insert_time] asc';
-
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $table->select(
+            'forums_posts.id', 'uid', 'message',
+                'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count', 'update_uid',
+                'update_reason', 'update_time', 'forums_posts.insert_time', 'forums_posts.status',
+                'cuser.username', 'cuser.nickname', 'cuser.registered_date as user_registered_date',
+                'cuser.email', 'cuser.avatar', 'cuser.last_update as user_last_update',
+                'uuser.username as updater_username', 'uuser.nickname as updater_nickname'
+        );
+        $table->join('users as cuser', 'forums_posts.uid', 'cuser.id', 'left');
+        $table->join('users as uuser', 'forums_posts.update_uid', 'uuser.id', 'left');
+        $result = $table->where('tid', $tid)->orderBy('insert_time asc')->limit($limit, $offset)->fetchAll();
         return $result;
     }
 
@@ -127,15 +87,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function GetUserPostsCount($uid)
     {
-        $params = array();
-        $params['uid'] = (int)$uid;
-
-        $sql = '
-            SELECT COUNT([id])
-            FROM [[forums_posts]]
-            WHERE [uid] = {uid}';
-
-        $count = $GLOBALS['db']->queryOne($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $count = $table->select('count(id)')->where('uid', $uid)->fetchOne();
         return $count;
     }
 
@@ -150,32 +103,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function GetUserPosts($uid, $limit = 0, $offset = null)
     {
-        $params = array();
-        $params['uid'] = (int)$uid;
-
-        $sql = '
-            SELECT
-                [[forums_posts]].[id], [[forums_posts]].[tid], [uid], [message], [[forums_posts]].[insert_time],
-                [[forums_topics]].[fid], [[forums_topics]].[subject], [[forums_topics]].[replies] as topic_replies
-            FROM
-                [[forums_posts]]
-            LEFT JOIN
-                [[forums_topics]] ON [[forums_posts]].[tid] = [[forums_topics]].[id]
-            LEFT JOIN
-                [[forums]] ON [[forums_topics]].[fid] = [[forums]].[id]
-            WHERE
-                [uid] = {uid}
-            ORDER BY
-                [[forums_posts]].[insert_time] asc';
-
-        if (!empty($limit)) {
-            $result = $GLOBALS['db']->setLimit($limit, $offset);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $table->select('forums_posts.id', 'forums_posts.tid', 'uid', 'message', 'forums_posts.insert_time',
+                       'forums_topics.fid', 'forums_topics.subject', 'forums_topics.replies as topic_replies');
+        $table->join('forums_topics', 'forums_posts.tid', 'forums_topics.id', 'left');
+        $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
+        $table->where('uid', $uid)->orderBy('forums_posts.insert_time asc');
+        $result = $table->limit($limit, $offset)->fetchAll();
         return $result;
     }
 
@@ -193,39 +127,27 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function InsertPost($uid, $tid, $fid, $message, $attachment = null, $new_topic = false)
     {
-        $params = array();
-        $params['uid'] = (int)$uid;
-        $params['tid'] = (int)$tid;
-        $params['now'] = time();
-        $params['ip']  = $_SERVER['REMOTE_ADDR'];
-        $params['message'] = $message;
+        $data['uid']            = (int)$uid;
+        $data['tid']            = (int)$tid;
+        $data['insert_time']    = time();
+        $data['ip']             = $_SERVER['REMOTE_ADDR'];
+        $data['message']        = $message;
         if (empty($attachment)) {
-            $params['attachment_host_fname'] = '';
-            $params['attachment_user_fname'] = '';
+            $data['attachment_host_fname'] = '';
+            $data['attachment_user_fname'] = '';
         } else {
-            $params['attachment_host_fname'] = $attachment['host_fname'];
-            $params['attachment_user_fname'] = $attachment['user_fname'];
+            $data['attachment_host_fname'] = $attachment['host_fname'];
+            $data['attachment_user_fname'] = $attachment['user_fname'];
         }
-
-        $sql = '
-            INSERT INTO [[forums_posts]]
-                ([tid], [uid], [message], [attachment_host_fname], [attachment_user_fname], [ip], [insert_time])
-            VALUES
-                ({tid}, {uid}, {message}, {attachment_host_fname}, {attachment_user_fname}, {ip}, {now})';
-
-        $result = $GLOBALS['db']->query($sql, $params);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        $pid = $GLOBALS['db']->lastInsertID('forums_posts', 'id');
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $pid = $table->insert($data)->exec();
         if (Jaws_Error::IsError($pid)) {
             return $pid;
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         if (!Jaws_Error::IsError($tModel)) {
-            $result = $tModel->UpdateTopicStatistics($params['tid'], $new_topic? $pid : 0, $params['now']);
+            $result = $tModel->UpdateTopicStatistics($data['tid'], $new_topic? $pid : 0, $data['insert_time']);
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -256,28 +178,18 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function UpdatePost($pid, $uid, $message, $attachment = null, $old_attachment = '', $update_reason = '')
     {
-        $params = array();
-        $params['uid'] = (int)$uid;
-        $params['pid'] = (int)$pid;
-        $params['now'] = time();
-        $params['message'] = $message;
-        $params['update_reason'] = $update_reason;
-        if (is_null($attachment)) {
-            $attachment_host_fname = '[attachment_host_fname]';
-            $attachment_user_fname = '[attachment_user_fname]';
-            $attachment_hits_count = '[attachment_hits_count]';
-        } else {
-            $attachment_host_fname = '{attachment_host_fname}';
-            $attachment_user_fname = '{attachment_user_fname}';
-            $attachment_hits_count = '[attachment_hits_count]';
+        $data['update_uid']     = (int)$uid;
+        $data['update_time']    = time();
+        $data['message']        = $message;
+        $data['update_reason']  = $update_reason;
+        if (!is_null($attachment)) {
             if (empty($attachment)) {
-                $attachment_hits_count = '{attachment_hits_count}';
-                $params['attachment_hits_count'] = 0;
-                $params['attachment_host_fname'] = '';
-                $params['attachment_user_fname'] = '';
+                $data['attachment_hits_count'] = 0;
+                $data['attachment_host_fname'] = '';
+                $data['attachment_user_fname'] = '';
             } else {
-                $params['attachment_host_fname'] = $attachment['host_fname'];
-                $params['attachment_user_fname'] = $attachment['user_fname'];
+                $data['attachment_host_fname'] = $attachment['host_fname'];
+                $data['attachment_user_fname'] = $attachment['user_fname'];
             }
 
             // remove old attachment file
@@ -286,19 +198,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             }
         }
 
-        $sql = "
-            UPDATE [[forums_posts]] SET
-                [message]            = {message},
-                [update_uid]    = {uid},
-                [attachment_host_fname] = $attachment_host_fname,
-                [attachment_user_fname] = $attachment_user_fname,
-                [attachment_hits_count] = $attachment_hits_count,
-                [update_reason] = {update_reason},
-                [update_time]   = {now}
-            WHERE
-                [id] = {pid}";
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $result = $table->update($data)->where('id', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -318,15 +219,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function DeletePost($pid, $tid, $fid, $attachment = '')
     {
-        $params = array();
-        $params['pid'] = (int)$pid;
-
-        $sql = '
-            DELETE FROM [[forums_posts]]
-            WHERE
-                [id] = {pid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $result = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -360,14 +254,15 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function HitAttachmentDownload($pid)
     {
-        $sql = '
-            UPDATE [[forums_posts]] SET
-                [attachment_hits_count] = [attachment_hits_count] + 1
-            WHERE
-                [id] = {pid}';
-        $result = $GLOBALS['db']->query($sql, array('pid' => $pid));
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $res = $table->update(
+            array(
+                'attachment_hits_count' => $table->expr('attachment_hits_count + ?', 1)
+            )
+        )->where('id', $pid)->exec();
+
+        if (Jaws_Error::IsError($res)) {
+            return $res;
         }
 
         return true;

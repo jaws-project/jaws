@@ -20,22 +20,10 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      */
     function GetForum($fid)
     {
-        $params = array();
-        $params['fid'] = $fid;
-
-        $sql = '
-            SELECT
-                [id], [gid], [title], [description], [fast_url], [topics], [posts],
-                [order], [locked], [published]
-            FROM [[forums]]
-            WHERE [id] = {fid}';
-
-        $types = array(
-            'integer', 'integer', 'text', 'text', 'text', 'integer', 'integer',
-            'integer', 'boolean', 'boolean'
-        );
-
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $table = Jaws_ORM::getInstance()->table('forums');
+        $table->select('id:integer', 'gid:integer', 'title', 'description', 'fast_url', 'topics:integer',
+                       'posts:integer', 'order:integer', 'locked:boolean', 'published:boolean');
+        $result = $table->where('id', $fid)->fetchRow();
         return $result;
     }
 
@@ -50,53 +38,29 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      */
     function GetForums($gid = false, $onlyPublished = false, $last_topic_detail = false)
     {
-        $params = array();
-        $params['gid']  = $gid;
-        $params['true'] = true;
-        $params['published'] = true;
-
+        $table = Jaws_ORM::getInstance()->table('forums');
         if ($last_topic_detail) {
-            $sql = '
-                SELECT
-                    [[forums]].[id], [[forums]].[title], [[forums]].[description],
-                    [[forums]].[fast_url], [topics], [posts], [last_topic_id],
-                    [[forums_topics]].[last_post_time], [[forums_topics]].[replies],
-                    [[users]].[username], [[users]].[nickname], [[forums]].[locked], [[forums]].[published]
-                FROM [[forums]]
-                LEFT JOIN [[forums_topics]] ON [[forums]].[last_topic_id] = [[forums_topics]].[id]
-                LEFT JOIN [[users]] ON [[forums_topics]].[last_post_uid] = [[users]].[id]
-                WHERE {true} = {true}';
 
-            $types = array(
-                'integer', 'text', 'text',
-                'text', 'integer', 'integer', 'integer',
-                'timestamp', 'integer',
-                'text', 'text', 'boolean', 'boolean'
-            );
+            $table->select('forums.id:integer', 'forums.title', 'forums.description',
+                    'forums.fast_url', 'topics:integer', 'posts:integer', 'last_topic_id:integer',
+                    'forums_topics.last_post_time', 'forums_topics.replies:integer',
+                    'users.username', 'users.nickname', 'forums.locked:boolean', 'forums.published:boolean');
+            $table->join('forums_topics', 'forums.last_topic_id', 'forums_topics.id', 'left');
+            $table->join('users', 'forums_topics.last_post_uid', 'users.id', 'left');
+
         } else {
-            $sql = '
-                SELECT
-                    [id], [title], [description], [fast_url], [topics], [posts],
-                    [locked], [published]
-                FROM [[forums]]
-                WHERE {true} = {true}';
-
-            $types = array(
-                'integer', 'text', 'text', 'text', 'integer', 'integer',
-                'boolean', 'boolean'
-            );
+            $table->select('id:integer', 'title', 'description', 'fast_url', 'topics:integer',
+                           'posts:integer', 'locked:boolean', 'published:boolean');
         }
 
         if (!empty($gid)) {
-            $sql .= ' AND [gid] = {gid}';
+            $table->and()->where('gid', $gid);
         }
 
         if ($onlyPublished) {
-            $sql .= ' AND [[forums]].[published] = {published}';
+            $table->and()->where('forums.published', true);
         }
-        $sql.= ' ORDER BY [[forums]].[order] asc';
-
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = $table->orderBy('forums.order asc')->fetchAll();
         return $result;
     }
 
@@ -109,30 +73,16 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      */
     function UpdateForumStatistics($fid)
     {
-        $params = array();
-        $params['fid'] = (int)$fid;
+        $table = Jaws_ORM::getInstance()->table('forums');
+        $ftmTable = Jaws_ORM::getInstance()->table('forums_topics')->select('max(id)')->where('fid', $fid);
+        $ftcTable = Jaws_ORM::getInstance()->table('forums_topics')->select('count(id)')->where('fid', $fid);
+        $ftsTable = Jaws_ORM::getInstance()->table('forums_topics')->select('sum(id)')->where('fid', $fid);
+        $result = $table->update(array(
+                'last_topic_id' => $ftmTable,
+                'topics' => $ftcTable,
+                'posts' => $ftsTable,
+            ))->where('id', $fid)->exec();
 
-        $sql = "
-            UPDATE [[forums]] SET
-                [last_topic_id] = (
-                    SELECT MAX([[forums_topics]].[id])
-                    FROM [[forums_topics]]
-                    WHERE [[forums_topics]].[fid] = {fid}
-                ),
-                [topics] = (
-                    SELECT COUNT([[forums_topics]].[id])
-                    FROM [[forums_topics]]
-                    WHERE [[forums_topics]].[fid] = {fid}
-                ),
-                [posts] = (
-                    SELECT SUM([replies])
-                    FROM [[forums_topics]]
-                    WHERE [[forums_topics]].[fid] = {fid}
-                )
-            WHERE
-                [id] = {fid}";
-
-        $result = $GLOBALS['db']->query($sql, $params);
         return $result;
     }
 
