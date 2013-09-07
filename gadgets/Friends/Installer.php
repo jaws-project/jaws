@@ -70,6 +70,12 @@ class Friends_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('Friends', 'Display', 'Display', 'Friends');
+        }
+
         return true;
     }
 
