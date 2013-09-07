@@ -21,18 +21,21 @@ define('_EN_SITEMAP_ACL_DEFAULT', "Manage Sitemap");
 define('_EN_SITEMAP_ACL_PINGSITE', "Notify search engines your sitemap");
 
 // Actions
-define('_EN_SITEMAP_SHOW', "Menu");
-define('_EN_SITEMAP_SHOW_DESCRIPTION', "Display the Sitemap menu.");
-define('_EN_SITEMAP_SHOWWITHOUTTOP', "Menu without top items");
-define('_EN_SITEMAP_SHOWWITHOUTTOP_DESCRIPTION', "Display menu without top items.");
-define('_EN_SITEMAP_TOPMENU', "Top Menu");
-define('_EN_SITEMAP_TOPMENU_DESCRIPTION', "Display the Sitemap top level menu.");
-define('_EN_SITEMAP_TWOLEVELS', "Two Levels Menu");
-define('_EN_SITEMAP_TWOLEVELS_DESCRIPTION', "Display the Sitemap menu with 2 levels.");
-define('_EN_SITEMAP_THREELEVELS', "Three Levels Menu");
-define('_EN_SITEMAP_THREELEVELS_DESCRIPTION', "Display the Sitemap menu with 3 levels.");
-define('_EN_SITEMAP_BREADCRUMB', "Breadcrumb");
-define('_EN_SITEMAP_BREADCRUMB_DESCRIPTION', "Show breadcrumb for current page");
+define('_EN_SITEMAP_ACTIONS_SHOW', "Menu");
+define('_EN_SITEMAP_ACTIONS_SHOW_DESC', "Display the Sitemap menu.");
+define('_EN_SITEMAP_ACTIONS_SHOWWITHOUTTOP', "Menu without top items");
+define('_EN_SITEMAP_ACTIONS_SHOWWITHOUTTOP_DESC', "Display menu without top items.");
+define('_EN_SITEMAP_ACTIONS_TOPMENU', "Top Menu");
+define('_EN_SITEMAP_ACTIONS_TOPMENU_DESC', "Display the Sitemap top level menu.");
+define('_EN_SITEMAP_ACTIONS_SHOWTWOLEVELS', "Two Levels Menu");
+define('_EN_SITEMAP_ACTIONS_SHOWTWOLEVELS_DESC', "Display the Sitemap menu with 2 levels.");
+define('_EN_SITEMAP_ACTIONS_SHOWTHREELEVELS', "Three Levels Menu");
+define('_EN_SITEMAP_ACTIONS_SHOWTHREELEVELS_DESC', "Display the Sitemap menu with 3 levels.");
+define('_EN_SITEMAP_ACTIONS_DISPLAYLEVEL', "Menu Levels");
+define('_EN_SITEMAP_ACTIONS_DISPLAYLEVEL_DESC', "Display the Sitemap menu levels.");
+
+define('_EN_SITEMAP_ACTIONS_BREADCRUMB', "Breadcrumb");
+define('_EN_SITEMAP_ACTIONS_BREADCRUMB_DESC', "Show breadcrumb for current page");
             
 // Messages
 define('_EN_SITEMAP_CREATED', "New item created");
