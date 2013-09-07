@@ -16,7 +16,7 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
-    var $_ACLs = array(
+    var $_ACLKeys = array(
         'Backup',
     );
 
