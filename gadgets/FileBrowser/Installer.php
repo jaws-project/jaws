@@ -16,7 +16,7 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
-    var $_ACLs = array(
+    var $_ACLKeys = array(
         'ManageFiles',
         'UploadFiles',
         'ManageDirectories',
