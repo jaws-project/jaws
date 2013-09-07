@@ -30,7 +30,7 @@ class Users_Actions_Preferences extends Users_HTML
 
         $this->gadget->CheckPermission('EditUserPreferences');
         //Here we load the Settings/Layout models (which is part of core) to extract some data
-        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel');
+        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel', 'Settings');
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;

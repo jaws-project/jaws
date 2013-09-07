@@ -21,7 +21,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
     function Settings_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
+        $this->_Model = $GLOBALS['app']->LoadGadget('Settings', 'AdminModel', 'Settings');
     }
 
     /**

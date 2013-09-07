@@ -50,7 +50,7 @@ class Preferences_Actions_Preferences extends Jaws_Gadget_HTML
             $tpl->SetVariable('reset_button', $reset->Get());
         }
 
-        $settingsModel = $GLOBALS['app']->LoadGadget('Settings', 'AdminModel');
+        $settingsModel = $GLOBALS['app']->LoadGadget('Settings', 'AdminModel', 'Settings');
         //get a list of themes
         if ($displayTheme) {
             $tpl->SetBlock('preferences/option');
