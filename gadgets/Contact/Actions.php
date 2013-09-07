@@ -33,5 +33,5 @@ $actions['ContactFull'] = array(
 );
 $actions['Send'] = array(
     'normal' => true,
-    'file' => 'Contact'
+    'file' => 'Send'
 );
