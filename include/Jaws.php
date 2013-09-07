@@ -798,7 +798,9 @@ class Jaws
         // filter non validate character
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
         if (empty($property) || !isset($this->$property)) {
-            $objClass = $singleton? $classname::getInstance() : new $classname();
+            // DEPRECATED: php 5.2
+            $objClass = $singleton? call_user_func(array($classname, 'getInstance')) : new $classname();
+            //$objClass = $singleton? $classname::getInstance() : new $classname();
             if (!empty($property)) {
                 $this->$property = $objClass;
             }
