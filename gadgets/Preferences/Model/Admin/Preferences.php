@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Preferences/Model.php';
 /**
  * Preferences Gadget Model
  *
@@ -10,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Preferences/Model.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_AdminModel extends Preferences_Model
+class Preferences_Model_Admin_Preferences extends Jaws_Gadget_Model
 {
     /**
      * Update preferences
@@ -22,8 +21,8 @@ class Preferences_AdminModel extends Preferences_Model
     function UpdatePreferences($preferences_config)
     {
         $prefKeys = array('display_theme', 'display_editor', 'display_language',
-                          'display_calendar_type', 'display_calendar_language',
-                          'display_date_format', 'display_timezone');
+            'display_calendar_type', 'display_calendar_language',
+            'display_date_format', 'display_timezone');
 
         foreach ($preferences_config as $Key => $Value) {
             if (in_array($Key, $prefKeys)) {

@@ -1,15 +1,14 @@
 <?php
 /**
- * Preferences Gadget (layout client side)
+ * Preferences Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Preferences
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_LayoutHTML extends Jaws_Gadget_HTML
+class Preferences_Actions_Preferences extends Jaws_Gadget_HTML
 {
     /**
      * Display Action

@@ -1,6 +1,6 @@
 <?php
 /**
- * Preferences Actions file
+ * Preferences Admin Actions file
  *
  * @category    GadgetActions
  * @package     Preferences
@@ -11,15 +11,7 @@
  */
 $actions = array();
 
-$actions['Save'] = array(
+$actions['Admin'] = array(
     'normal' => true,
-    'file' => 'Save',
-);
-$actions['SetLanguage'] = array(
-    'normal' => true,
-    'file' => 'Save',
-);
-$actions['Display'] = array(
-    'layout' => true,
     'file' => 'Preferences',
 );

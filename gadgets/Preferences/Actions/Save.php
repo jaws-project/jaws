@@ -8,20 +8,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_HTML extends Jaws_Gadget_HTML
+class Preferences_Actions_Save extends Jaws_Gadget_HTML
 {
-    /**
-     * Default Action
-     *
-     * @access      public
-     * @return      string   HTML content of DefaultAction
-     */
-    function DefaultAction()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Preferences', 'LayoutHTML');
-        return $layoutGadget->Display();
-    }
-
     /**
      * Save the cookie, save the world
      *
@@ -38,7 +26,7 @@ class Preferences_HTML extends Jaws_Gadget_HTML
         );
 
         $expire_age = 150*24*60; //don't expired for 150 days
-        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model', 'Preferences');
         $model->SavePreferences($post, $expire_age);
 
         Jaws_Header::Referrer();
@@ -64,7 +52,7 @@ class Preferences_HTML extends Jaws_Gadget_HTML
         $preferences['language'] = $language;
 
         $expire_age = 150*24*60; //don't expired for 150 days
-        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Preferences', 'Model', 'Preferences');
         $model->SavePreferences($preferences, $expire_age);
 
         Jaws_Header::Referrer();
