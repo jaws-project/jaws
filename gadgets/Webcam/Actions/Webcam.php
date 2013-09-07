@@ -1,15 +1,15 @@
 <?php
 /**
- * Webcam Gadget - Layout actions
+ * Webcam Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Webcam
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Webcam_LayoutHTML extends Jaws_Gadget_HTML
+class Webcam_Actions_Webcam extends Jaws_Gadget_HTML
 {
     /**
      * Displays webcams
@@ -20,7 +20,7 @@ class Webcam_LayoutHTML extends Jaws_Gadget_HTML
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Webcam.html');
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
         $webcams = $model->GetWebcams();
         if (!Jaws_Error::IsError($webcams)) {
             $tpl->SetBlock('webcam');
@@ -48,7 +48,7 @@ class Webcam_LayoutHTML extends Jaws_Gadget_HTML
     function Random()
     {
         $tpl = $this->gadget->loadTemplate('Webcam.html');
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model');
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
         $webcam = $model->GetRandomWebCam();
         if (!Jaws_Error::IsError($webcam)) {
             $tpl->SetBlock('webcam');
@@ -64,5 +64,4 @@ class Webcam_LayoutHTML extends Jaws_Gadget_HTML
 
         return $tpl->Get();
     }
-
 }

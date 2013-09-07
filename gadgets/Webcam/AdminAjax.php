@@ -11,19 +11,6 @@
 class Webcam_AdminAjax extends Jaws_Gadget_HTML
 {
     /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function Webcam_AdminAjax($gadget)
-    {
-        parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $this->gadget->load('Model')->load('AdminModel');
-    }
-
-    /**
      * Gets information of a webcam
      *
      * @access  public
@@ -32,7 +19,8 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     function GetWebcam()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $webcamInfo = $this->_Model->GetWebcam($id);
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
+        $webcamInfo = $model->GetWebcam($id);
         if (Jaws_Error::IsError($webcamInfo)) {
             return false; //we need to handle errors on ajax
         }
@@ -50,7 +38,8 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddWebcam');
         @list($title, $url, $refresh) = jaws()->request->fetchAll('post');
-        $this->_Model->NewWebcam($title, $url, $refresh);
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel', 'Webcam');
+        $model->NewWebcam($title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -64,7 +53,8 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('EditWebcam');
         @list($id, $title, $url, $refresh) = jaws()->request->fetchAll('post');
-        $this->_Model->UpdateWebcam($id, $title, $url, $refresh);
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel', 'Webcam');
+        $model->UpdateWebcam($id, $title, $url, $refresh);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -78,7 +68,8 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteWebcam');
         @list($id) = jaws()->request->fetchAll('post');
-        $this->_Model->DeleteWebcam($id);
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel', 'Webcam');
+        $model->DeleteWebcam($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -92,7 +83,8 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($limit) = jaws()->request->fetchAll('post');
-        $this->_Model->UpdateProperties($limit);
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel', 'Properties');
+        $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -121,7 +113,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Webcam', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Webcam', 'AdminHTML', 'Webcam');
         return $gadget->GetWebcams($limit);
     }
 
