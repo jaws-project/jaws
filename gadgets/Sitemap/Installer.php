@@ -82,6 +82,18 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'Show', 'Show', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowWithoutTop', 'ShowWithoutTop', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'TopMenu', 'TopMenu', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowTwoLevels', 'ShowTwoLevels', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowThreeLevels', 'ShowThreeLevels', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'DisplayLevel', 'DisplayLevel', 'Show');
+            $layoutModel->EditGadgetLayoutAction('Sitemap', 'Breadcrumb', 'Breadcrumb', 'Breadcrumb');
+        }
+
         return true;
     }
 
