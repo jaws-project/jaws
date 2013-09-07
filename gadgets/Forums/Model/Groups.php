@@ -19,17 +19,10 @@ class Forums_Model_Groups extends Jaws_Gadget_Model
      */
     function GetGroup($gid)
     {
-        $params = array();
-        $params['gid'] = $gid;
-
-        $sql = '
-            SELECT
-                [id], [title], [description], [fast_url], [order], [locked], [published]
-            FROM [[forums_groups]]
-            WHERE [id] = {gid}';
-
-        $types = array('integer', 'text', 'text', 'text', 'integer', 'boolean', 'boolean');
-        $result = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $table = Jaws_ORM::getInstance()->table('forums_groups');
+        $table->select('id:integer', 'title', 'description', 'fast_url',
+                       'order:integer', 'locked:boolean', 'published:boolean');
+        $result = $table->where('id', $gid)->fetchRow();
         return $result;
     }
 
@@ -42,20 +35,14 @@ class Forums_Model_Groups extends Jaws_Gadget_Model
      */
     function GetGroups($onlyPublished = false)
     {
-        $params = array();
-        $params['published'] = true;
+        $table = Jaws_ORM::getInstance()->table('forums_groups');
+        $table->select('id:integer', 'title', 'description', 'fast_url',
+                       'order:integer', 'locked:boolean', 'published:boolean');
 
-        $sql = '
-            SELECT
-                [id], [title], [description], [fast_url], [order], [locked], [published]
-            FROM [[forums_groups]]';
-            if ($onlyPublished) {
-                $sql .= ' WHERE [published] = {published}';
-            }
-            $sql .= ' ORDER BY [order] asc';
-
-        $types = array('integer', 'text', 'text', 'text', 'integer', 'boolean', 'boolean');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        if ($onlyPublished) {
+            $table->where('published', true);
+        }
+        $result = $table->orderBy('order asc')->fetchAll();
         return $result;
     }
 
