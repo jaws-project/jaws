@@ -70,6 +70,13 @@ class Webcam_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('Webcam', 'Display', 'Display', 'Webcam');
+            $layoutModel->EditGadgetLayoutAction('Webcam', 'Random', 'Random', 'Webcam');
+        }
+
         return true;
     }
 

@@ -949,6 +949,7 @@ class Jaws_ORM
     {
         if (self::$in_transaction) {
             self::$in_transaction = false;
+            self::$auto_rollback_on_error = true;
             $this->jawsdb->dbc->commit();
         }
     }
@@ -1035,8 +1036,6 @@ class Jaws_ORM
         $this->_offset   = null;
         $this->_passed_types  = false;
         $this->_query_command = '';
-        self::$in_transaction = false;
-        self::$auto_rollback_on_error = true;
     }
 
 }
