@@ -17,6 +17,6 @@ class Friends_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.6.1';
+    var $version = '0.9.0';
 
 }
