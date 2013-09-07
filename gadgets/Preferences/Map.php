@@ -8,5 +8,5 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('DefaultAction', 'preferences');
+$maps[] = array('Display', 'preferences');
 $maps[] = array('SetLanguage', 'language/{lang}');
