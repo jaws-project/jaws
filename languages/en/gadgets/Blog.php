@@ -41,10 +41,8 @@ define('_EN_BLOG_ACTIONS_RECENTCOMMENTS', "Recent Comments");
 define('_EN_BLOG_ACTIONS_RECENTCOMMENTSS_DESC', "Displays a summary of recent comments.");
 define('_EN_BLOG_ACTIONS_CALENDAR', "Blog Calendar");
 define('_EN_BLOG_ACTIONS_CALENDAR_DESC', "Displays a calendar for this month, with blog entries marked.");
-define('_EN_BLOG_ACTIONS_RSSLINK', "RSS Button");
-define('_EN_BLOG_ACTIONS_RSSLINK_DESC', "Displays a link to the RSS feed.");
-define('_EN_BLOG_ACTIONS_ATOMLINK', "Atom Button");
-define('_EN_BLOG_ACTIONS_ATOMLINK_DESC', "Displays a link to the Atom feed.");
+define('_EN_BLOG_ACTIONS_FEEDSLINK', "Feed Button");
+define('_EN_BLOG_ACTIONS_FEEDSLINK_DESC', "Displays a link to the feed.");
 define('_EN_BLOG_ACTIONS_RECENTCOMMENTSRSSLINK', "Comments RSS Button");
 define('_EN_BLOG_ACTIONS_RECENTCOMMENTSRSSLINK_DESC', "Displays a link to the comments RSS feed.");
 define('_EN_BLOG_ACTIONS_RECENTCOMMENTSATOMLINK', "Comments Atom Button");
@@ -154,6 +152,9 @@ define('_EN_BLOG_ENTRY_VISITS', "Visits: {0}");
 define('_EN_BLOG_POPULAR_POSTS', "Popular Posts");
 define('_EN_BLOG_POSTS_AUTHORS', "Posts Authors");
 define('_EN_BLOG_CATEGORY_INCOMPLETE_FIELDS', "Some fields haven't been (correctly) filled in.");
+define('_EN_BLOG_FEEDS_TYPE', "Feed type");
+define('_EN_BLOG_FEEDS_RSS', "RSS");
+define('_EN_BLOG_FEEDS_ATOM', "Atom");
 
 /* Responses */
 define('_EN_BLOG_CATEGORY_ADDED', "A category has been added");
