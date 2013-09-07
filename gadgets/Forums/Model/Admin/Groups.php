@@ -40,7 +40,7 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
             return $res;
         }
 
-        return $GLOBALS['db']->lastInsertID('forums_groups', 'id');;
+        return $res;
     }
 
     /**

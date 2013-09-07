@@ -42,7 +42,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
             return $res;
         }
 
-        return $GLOBALS['db']->lastInsertID('forums', 'id');
+        return $res;
     }
 
     /**
