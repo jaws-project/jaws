@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['ManageWebcams'] = array(
+$actions['Display'] = array(
     'normal' => true,
     'file' => 'Webcam',
 );
