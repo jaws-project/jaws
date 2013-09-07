@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Webcam_AdminHTML extends Jaws_Gadget_HTML
+class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_HTML
 {
     /**
      * Callback to display short URLs
@@ -36,7 +36,7 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetWebCams($limit = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel');
+        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
         $webcams = $model->GetWebCams($limit);
         if (Jaws_Error::IsError($webcams)) {
             return array();
@@ -50,15 +50,15 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
             $actions = '';
             if ($this->gadget->GetPermission('EditWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript: editWebcam('".$webcam['id']."');",
-                                            STOCK_EDIT);
+                    "javascript: editWebcam('".$webcam['id']."');",
+                    STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
-                                            "deleteWebcam('".$webcam['id']."');",
-                                            STOCK_DELETE);
+                    "javascript: if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
+                    "deleteWebcam('".$webcam['id']."');",
+                    STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
             $webcamData['actions'] = $actions;
@@ -94,7 +94,7 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML content of Admin
      */
-    function Admin()
+    function ManageWebcams()
     {
         $this->AjaxMe('script.js');
 
@@ -128,7 +128,7 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
             $buttonbox =& Piwi::CreateWidget('HBox');
             $buttonbox->SetStyle('float: right;'); //hig style
             $submit =& Piwi::CreateWidget('Button', 'addnewwebcam',
-                                          _t('GLOBAL_SAVE', _t('WEBCAM_NAME')), STOCK_SAVE);
+                _t('GLOBAL_SAVE', _t('WEBCAM_NAME')), STOCK_SAVE);
             $submit->AddEvent(ON_CLICK, 'javascript: submitForm(this.form);');
 
             $cancel =& Piwi::CreateWidget('Button', 'cancelform', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
@@ -171,7 +171,7 @@ class Webcam_AdminHTML extends Jaws_Gadget_HTML
 
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
-                                                 _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
+                _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
             $submit_config->SetStyle('float: right;');
             $submit_config->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
 

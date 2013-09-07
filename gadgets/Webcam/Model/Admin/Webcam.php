@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Webcam/Model.php';
 /**
  * Webcam Gadget Admin
  *
@@ -10,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Webcam/Model.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Webcam_AdminModel extends Webcam_Model
+class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
 {
     /**
      * Inserts a new webcam
@@ -86,23 +85,4 @@ class Webcam_AdminModel extends Webcam_Model
         $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_DELETED'), RESPONSE_NOTICE);
         return true;
     }
-
-    /**
-     * Updates properties of the gadget
-     *
-     * @access  public
-     * @param   int     $limit  The limitation
-     * @return  mixed   True if change is successful, if not, returns Jaws_Error on any error
-     */
-    function UpdateProperties($limit)
-    {
-        $res = $this->gadget->registry->update('limit_random', $limit);
-        if ($res || !Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
-            return true;
-        }
-        $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('WEBCAM_ERROR_PROPERTIES_NOT_UPDATED'), _t('WEBCAM_NAME'));
-    }
-
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Webcam Actions file
+ * Webcam Admin Actions file
  *
  * @category    GadgetActions
  * @package     Webcam
@@ -10,12 +10,7 @@
  */
 $actions = array();
 
-$actions['Display'] = array(
-    'layout' => true,
-    'file' => 'Webcam',
-);
-
-$actions['Random'] = array(
-    'layout' => true,
+$actions['ManageWebcams'] = array(
+    'normal' => true,
     'file' => 'Webcam',
 );
