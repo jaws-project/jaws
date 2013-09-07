@@ -19,8 +19,8 @@ define('_EN_SHOUTBOX_ACL_MANAGECOMMENTS', "Manage comments");
 define('_EN_SHOUTBOX_ACL_UPDATEPROPERTIES', "Edit messages");
 
 /* Actions */
-define('_EN_SHOUTBOX_ACTIONS_DISPLAY', "Display Shoutbox");
-define('_EN_SHOUTBOX_ACTIONS_DISPLAY_DESC', "Displays a shoutbox");
+define('_EN_SHOUTBOX_ACTIONS_COMMENTS', "Display Shoutbox");
+define('_EN_SHOUTBOX_ACTIONS_COMMENTS_DESC', "Displays a shoutbox");
 
 /* Strings */
 define('_EN_SHOUTBOX_SHOUTBOX', "Shoutbox");
