@@ -11,6 +11,32 @@
 class Blog_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'columns'                   => '1',
+        'default_view'              => 'last_entries',
+        'last_entries_limit'        => '20',
+        'popular_limit'             => '10',
+        'xml_limit'                 => '10',
+        'default_category'          => '1',
+        'allow_comments'            => 'true',
+        'comment_status'            => 'approved',
+        'last_comments_limit'       => '20',
+        'last_recentcomments_limit' => '20',
+        'generate_xml'              => 'true',
+        'generate_category_xml'     => 'true',
+        'trackback'                 => 'true',
+        'trackback_status'          => 'approved',
+        'plugabble'                 => 'true',
+        'use_antispam'              => 'true',
+        'pingback'                  => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -69,25 +95,6 @@ class Blog_Installer extends Jaws_Gadget_Installer
 
         // Install listener for update comment
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpdateComment');
-
-        // Registry keys
-        $this->gadget->registry->insert('columns',                   '1');
-        $this->gadget->registry->insert('default_view',              'last_entries');
-        $this->gadget->registry->insert('last_entries_limit',        '20');
-        $this->gadget->registry->insert('popular_limit',             '10');
-        $this->gadget->registry->insert('xml_limit',                 '10');
-        $this->gadget->registry->insert('default_category',          '1');
-        $this->gadget->registry->insert('allow_comments',            'true');
-        $this->gadget->registry->insert('comment_status',            'approved');
-        $this->gadget->registry->insert('last_comments_limit',       '20');
-        $this->gadget->registry->insert('last_recentcomments_limit', '20');
-        $this->gadget->registry->insert('generate_xml',              'true');
-        $this->gadget->registry->insert('generate_category_xml',     'true');
-        $this->gadget->registry->insert('trackback',                 'true');
-        $this->gadget->registry->insert('trackback_status',          'approved');
-        $this->gadget->registry->insert('plugabble',                 'true');
-        $this->gadget->registry->insert('use_antispam',              'true');
-        $this->gadget->registry->insert('pingback',                  'true');
 
         return true;
     }
