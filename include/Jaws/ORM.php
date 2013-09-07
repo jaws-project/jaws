@@ -333,7 +333,7 @@ class Jaws_ORM
     function quoteValue($value)
     {
         if (is_object($value)) {
-            $vstr = $value->get();
+            $vstr = '('. $value->get(). ')';
             unset($value);
         } else {
             if (is_array($value)) {
