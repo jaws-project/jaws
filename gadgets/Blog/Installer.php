@@ -130,7 +130,15 @@ class Blog_Installer extends Jaws_Gadget_Installer
             // Update layout actions
             $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
             if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->EditGadgetLayoutAction('Blog', 'EntriesByCategory', 'CategoryEntries', '');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'CategoryEntries', 'CategoryEntries', 'Posts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'EntriesByCategory', 'CategoryEntries', 'Posts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'CategoriesList', 'CategoriesList', 'Categories');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'PopularPosts', 'PopularPosts', 'Posts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'PostsAuthors', 'PostsAuthors', 'Posts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'MonthlyHistory', 'MonthlyHistory', 'DatePosts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'Calendar', 'Calendar', 'DatePosts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'RecentPosts', 'RecentPosts', 'Posts');
+                $layoutModel->EditGadgetLayoutAction('Blog', 'ShowTagCloud', 'ShowTagCloud', 'Tags');
             }
         }
 
