@@ -44,6 +44,15 @@ class SysInfo_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Update layout actions
+        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        if (!Jaws_Error::isError($layoutModel)) {
+            $layoutModel->EditGadgetLayoutAction('SysInfo', 'SysInfo', 'SysInfo', 'SysInfo');
+            $layoutModel->EditGadgetLayoutAction('SysInfo', 'PHPInfo', 'PHPInfo', 'PHPInfo');
+            $layoutModel->EditGadgetLayoutAction('SysInfo', 'JawsInfo', 'JawsInfo', 'JawsInfo');
+            $layoutModel->EditGadgetLayoutAction('SysInfo', 'DirInfo', 'DirInfo', 'DirInfo');
+        }
+
         return true;
     }
 
