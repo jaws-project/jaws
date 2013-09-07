@@ -94,10 +94,9 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Save
+        $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, "javascript: if(this.form.elements['title'].value == '') { alert('".
-                              _t('BLOG_MISSING_TITLE') . "'); this.form.elements['title'].focus(); } ".
-                              "else { this.form.submit(); }");
+        $saveButton->SetSubmit();
         $tpl->SetVariable('save_button', $saveButton->Get());
 
         // Preview
@@ -340,10 +339,9 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Save
+        $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('BLOG_UPDATE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, "javascript: if(this.form.elements['title'].value == '') { alert('".
-                                _t('BLOG_MISSING_TITLE') . "'); this.form.elements['title'].focus(); } ".
-                                "else { this.form.submit(); }");
+        $saveButton->SetSubmit();
         $tpl->SetVariable('save_button', $saveButton->Get());
 
         // Preview
