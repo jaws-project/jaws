@@ -81,10 +81,10 @@ class Comments_Actions_Feeds extends Comments_HTML
         );
 
         $result[] = array(
-            'title' => _t('FEEDS_LINK_TYPE'),
+            'title' => _t('COMMENTS_FEEDS_TYPE'),
             'value' => array(
-                'RSS' => _t('RSSLINK') ,
-                'Atom' => _t('ATOMLINK') ,
+                'RSS' => _t('COMMENTS_FEEDS_RSS') ,
+                'Atom' => _t('COMMENTS_FEEDS_ATOM') ,
             )
         );
         return $result;

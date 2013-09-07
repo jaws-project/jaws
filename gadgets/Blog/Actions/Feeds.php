@@ -104,10 +104,10 @@ class Blog_Actions_Feeds extends Blog_HTML
     {
         $result = array();
         $result[] = array(
-            'title' => _t('FEEDS_LINK_TYPE'),
+            'title' => _t('BLOG_FEEDS_TYPE'),
             'value' => array(
-                'RSS' => _t('RSSLINK') ,
-                'Atom' => _t('ATOMLINK') ,
+                'RSS' => _t('BLOG_FEEDS_RSS') ,
+                'Atom' => _t('BLOG_FEEDS_ATOM') ,
             )
         );
         return $result;
