@@ -23,6 +23,7 @@
         <name>user</name>
         <type>integer</type>
         <notnull>true</notnull>
+        <description>file owner but not necessarily the creator</description>
       </field>
 
       <field>
@@ -70,44 +71,26 @@
         <name>key</name>
         <type>text</type>
         <length>32</length>
+        <description>is used for creating a shared link to file</description>
       </field>
 
       <field>
-        <name>createtime</name>
+        <name>shared</name>
+        <type>boolean</type>
+        <description>is file shared to others</description>
+      </field>
+
+      <field>
+        <name>reference</name>
         <type>integer</type>
-        <length>8</length>
+        <description>reference to original file that is shared</description>
       </field>
 
       <field>
-        <name>updatetime</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-    </declaration>
-  </table>
-
-  <table>
-    <name><variable>table_prefix</variable>directory_share</name>
-    <declaration>
-
-      <field>
-        <name>id</name>
+        <name>owner</name>
         <type>integer</type>
         <notnull>true</notnull>
-        <autoincrement>true</autoincrement>
-      </field>
-
-      <field>
-        <name>file_id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
-
-      <field>
-        <name>user_id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
+        <description>the creator user of the file, may be equal to user</description>
       </field>
 
       <field>

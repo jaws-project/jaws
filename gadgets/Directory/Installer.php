@@ -49,9 +49,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $tables = array(
-            'directory',
-            'directory_share');
+        $tables = array('directory');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
