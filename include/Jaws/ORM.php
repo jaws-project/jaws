@@ -468,7 +468,7 @@ class Jaws_ORM
 
         // quote column identifier
         if (is_object($column)) {
-            $colstr = $column->get();
+            $colstr = '('. $column->get(). ')';
             unset($column);
         } elseif (is_array($column)) {
             $colstr = $this->quoteValue($column);
@@ -534,7 +534,7 @@ class Jaws_ORM
         foreach(func_get_args() as $column) {
             // quote column identifier
             if (is_object($column)) {
-                $colstr = $column->get();
+                $colstr = '('. $column->get(). ')';
                 unset($column);
             } else {
                 $colstr = $this->quoteIdentifier($column);
@@ -584,7 +584,7 @@ class Jaws_ORM
 
         // quote column identifier
         if (is_object($column)) {
-            $colstr = $column->get();
+            $colstr = '('. $column->get(). ')';
             unset($column);
         } elseif (is_array($column)) {
             $colstr = $this->quoteValue($column);
