@@ -28,22 +28,16 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'forums');
 
-        $sql = '
-            INSERT INTO [[forums]]
-                ([gid], [title], [description], [fast_url], [order], [locked], [published])
-            VALUES
-                ({gid}, {title}, {description}, {fast_url}, {order}, {locked}, {published})';
+        $data['gid']         = $gid;
+        $data['title']       = $title;
+        $data['description'] = $description;
+        $data['fast_url']    = $fast_url;
+        $data['order']       = (int) $order;
+        $data['locked']      = (bool) $locked;
+        $data['published']   = (bool) $published;
 
-        $params = array();
-        $params['gid']         = $gid;
-        $params['title']       = $title;
-        $params['description'] = $description;
-        $params['fast_url']    = $fast_url;
-        $params['order']       = (int) $order;
-        $params['locked']      = (bool) $locked;
-        $params['published']   = (bool) $published;
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums');
+        $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -70,29 +64,16 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'forums', false);
 
-        $sql = '
-            UPDATE [[forums]]
-            SET
-                [gid]         = {gid},
-                [title]       = {title},
-                [description] = {description},
-                [fast_url]    = {fast_url},
-                [order]       = {order},
-                [locked]      = {locked},
-                [published]   = {published}
-            WHERE [id] = {fid}';
+        $data['gid']         = $gid;
+        $data['title']       = $title;
+        $data['description'] = $description;
+        $data['fast_url']    = $fast_url;
+        $data['order']       = (int) $order;
+        $data['locked']      = (bool) $locked;
+        $data['published']   = (bool) $published;
 
-        $params = array();
-        $params['fid']         = $fid;
-        $params['gid']         = $gid;
-        $params['title']       = $title;
-        $params['description'] = $description;
-        $params['fast_url']    = $fast_url;
-        $params['order']       = (int) $order;
-        $params['locked']      = (bool) $locked;
-        $params['published']   = (bool) $published;
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums');
+        $res = $table->update($data)->where('id', $fid)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -109,18 +90,9 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
      */
     function DeleteForum($fid)
     {
-        $params = array();
-        $params['fid']  = (int)$fid;
-        $params['zero'] = 0;
-
-        $sql = '
-            DELETE FROM [[forums]]
-            WHERE
-                [id] = {fid}
-              AND
-                (SELECT COUNT([id]) FROM [[forums_topics]] WHERE [fid] = {fid}) = {zero}';
-
-        $res = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums');
+        $subQuery = Jaws_ORM::getInstance()->table('forums_topics')->select('count(id)')->where('fid', $fid);
+        $res = $table->delete()->where('id', $fid)->and()->where($subQuery, '0')->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }

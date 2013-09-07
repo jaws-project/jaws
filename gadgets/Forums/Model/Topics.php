@@ -60,7 +60,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('forums_topics');
         $table->select(
-                'forums_topics.id:integer', 'fid:integer', 'subject:integer', 'views:integer', 'replies:integer',
+                'forums_topics.id:integer', 'fid:integer', 'subject', 'views:integer', 'replies:integer',
                 'first_post_id:integer', 'first_post_uid:integer', 'first_post_time:integer',
                 'last_post_id:integer', 'last_post_uid:integer', 'last_post_time:integer',
                 'fuser.username as first_username', 'fuser.nickname as first_nickname',
@@ -150,8 +150,6 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         if (!Jaws_Error::IsError($pModel)) {
             $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
-                //Rollback Transaction
-                $GLOBALS['db']->dbc->rollback();
                 return $pid;
             }
         }
@@ -182,40 +180,27 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null, $old_attachment = '',
         $published = null, $update_reason = '')
     {
-        $params = array();
-        $params['target']    = (int)$target;
-        $params['tid']       = (int)$tid;
-        $params['subject']   = $subject;
-        $params['published'] = true;
+        $data['fid']    = (int)$target;
+        $data['subject']   = $subject;
+        $data['published'] = true;
 
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
         //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
+        $table->beginTransaction();
 
-        $sql = '
-            UPDATE [[forums_topics]] SET
-                [fid]       = {target},
-                [subject]   = {subject},
-                [published] = {published}
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $result = $table->update($data)->where('id', $tid)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $old_attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
         //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        $table->commit();
 
         // update forums statistics if topic moved
         if ($target != $fid) {
@@ -247,38 +232,22 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function DeleteTopic($tid, $fid, $attachment = '')
     {
-        $params = array();
-        $params['tid'] = $tid;
-
-        $sql = '
-            DELETE FROM [[forums_posts]]
-            WHERE
-                [tid] = {tid}';
-
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
         //Start Transaction
-        $GLOBALS['db']->dbc->beginTransaction();
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table->beginTransaction();
+        $result = $table->delete()->where('tid', $tid)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
-        $sql = '
-            DELETE FROM [[forums_topics]]
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $result = $table->delete()->where('id', $tid)->exec();
         if (Jaws_Error::IsError($result)) {
-            //Rollback Transaction
-            $GLOBALS['db']->dbc->rollback();
             return $result;
         }
 
         //Commit Transaction
-        $GLOBALS['db']->dbc->commit();
+        $table->commit();
 
         // remove attachment file
         if (!empty($attachment)) {
@@ -307,30 +276,9 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function UpdateTopicStatistics($tid, $first_post_id = 0, $first_post_time = null)
     {
-        $params = array();
-        $params['tid'] = (int)$tid;
-        $params['first_post_id']   = $first_post_id;
-        $params['first_post_time'] = $first_post_time;
-        if (empty($first_post_id)) {
-            $first_post_id   = '[first_post_id]';
-            $first_post_time = '[first_post_time]';
-        } else {
-            $first_post_id   = '{first_post_id}';
-            $first_post_time = '{first_post_time}';
-        }
-
-        $sql = '
-            SELECT
-                [id], [uid], [insert_time]
-            FROM
-                [[forums_posts]]
-            WHERE
-                [[forums_posts]].[tid] = {tid}
-            ORDER BY
-                [id] desc';
-
-        $types = array('integer', 'integer' , 'integer');
-        $last_post = $GLOBALS['db']->queryRow($sql, $params, $types);
+        $table = Jaws_ORM::getInstance()->table('forums_posts');
+        $table->select('id:integer', 'uid:integer', 'insert_time:integer');
+        $last_post = $table->where('tid', $tid)->orderBy('id desc')->fetchRow();
         if (Jaws_Error::IsError($last_post)) {
             return $last_post;
         }
@@ -343,29 +291,18 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             );
         }
 
-        $params['last_post_id']   = $last_post['id'];
-        $params['last_post_time'] = $last_post['insert_time'];
-        $params['last_post_uid']  = $last_post['uid'];
+        if (!empty($first_post_id)) {
+            $data['first_post_id']   = (int)$first_post_id;
+            $data['first_post_time'] = $first_post_time;
+        }
 
-        $sql = "
-            UPDATE [[forums_topics]] SET
-                [first_post_id]   = $first_post_id,
-                [first_post_time] = $first_post_time,
-                [last_post_id]   = {last_post_id},
-                [last_post_time] = {last_post_time},
-                [last_post_uid]  = {last_post_uid},
-                [replies]        = (
-                    SELECT
-                        COUNT([[forums_posts]].[id])
-                    FROM
-                        [[forums_posts]]
-                    WHERE
-                        [[forums_posts]].[tid] = {tid}
-                )
-            WHERE
-                [id] = {tid}";
+        $data['last_post_id']   = $last_post['id'];
+        $data['last_post_time'] = $last_post['insert_time'];
+        $data['last_post_uid']  = $last_post['uid'];
 
-        $result = $GLOBALS['db']->query($sql, $params);
+        $data['replies'] = Jaws_ORM::getInstance()->table('forums_posts')->select('count(id)')->where('tid', $tid);
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $result = $table->update($data)->where('id', $tid)->exec();
         return $result;
     }
 
@@ -379,17 +316,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function LockTopic($tid, $locked)
     {
-        $params = array();
-        $params['tid']    = (int)$tid;
-        $params['locked'] = $locked;
-
-        $sql = '
-            UPDATE [[forums_topics]] SET
-                [locked]   = {locked}
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $result = $table->update(array('locked' => $locked))->where('id', $tid)->exec();
         return $result;
     }
 
@@ -403,17 +331,8 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function PublishTopic($tid, $published)
     {
-        $params = array();
-        $params['tid']    = (int)$tid;
-        $params['published'] = $published;
-
-        $sql = '
-            UPDATE [[forums_topics]] SET
-                [published]   = {published}
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $result = $table->update(array('published' => $published))->where('id', $tid)->exec();
         return $result;
     }
 
@@ -426,17 +345,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function UpdateTopicViews($tid)
     {
-        $params = array();
-        $params['tid'] = (int)$tid;
-        $params['one'] = 1;
-
-        $sql = '
-            UPDATE [[forums_topics]] SET
-                [views] = [views] + {one}
-            WHERE
-                [id] = {tid}';
-
-        $result = $GLOBALS['db']->query($sql, $params);
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $result = $table->update(
+            array(
+                'views' => $table->expr('views + ?', 1)
+            )
+        )->where('id', $tid)->exec();
         return $result;
     }
 
