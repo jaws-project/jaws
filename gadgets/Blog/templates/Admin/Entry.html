@@ -6,7 +6,20 @@
  </div>
 </div>
 <div id="main">
-  <form name="edit_entry" method="post" action="{base_script}">
+  <script type="text/javascript">
+    function updateEditorsText(entryForm) {
+        if (entryForm.elements['title'].value == '') {
+            alert('{missing_title}');
+            entryForm.elements['title'].focus(); 
+            return false;
+        }
+
+        $('summary_block').value = getEditorValue('summary_block');
+        $('text_block').value = getEditorValue('text_block');
+        return true;
+    }
+  </script>
+  <form name="edit_entry" method="post" action="{base_script}" onsubmit="return updateEditorsText(this);">
    <input id="action" type="hidden" name="action" value="Save{action}" />
    <input type="hidden" name="gadget" value="Blog" />
    <input id="id" type="hidden" name="id" value="{id}" />
