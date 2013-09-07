@@ -16,6 +16,6 @@ class Quotes_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.2.0';
+    var $version = '0.9.0';
 
 }
