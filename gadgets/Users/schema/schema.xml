@@ -133,7 +133,7 @@
             <name>public</name>
             <type>boolean</type>
             <default>false</default>
-            <description>is profile information public</description>
+            <description>profile information accessible for anonymouse</description>
         </field>
 
         <field>
