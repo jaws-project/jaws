@@ -1,15 +1,14 @@
 <?php
 /**
- * Preferences Gadget (layout client side)
+ * Preferences Gadget
  *
- * @category   GadgetLayout
+ * @category   Gadget
  * @package    Preferences
  * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_LayoutHTML extends Jaws_Gadget_HTML
+class Preferences_Actions_Preferences extends Jaws_Gadget_HTML
 {
     /**
      * Display Action
@@ -26,7 +25,7 @@ class Preferences_LayoutHTML extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('PREFERENCES_ACTION_TITLE'));
 
         // load cookies preferences
-        $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
+        $cookies = $GLOBALS['app']->Session->GetCookie('preferences:array');
         if (!is_array($cookies)) {
             $cookies = array();
         }
@@ -51,7 +50,7 @@ class Preferences_LayoutHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('reset_button', $reset->Get());
         }
 
-        $settingsModel = $GLOBALS['app']->LoadGadget('Settings', 'AdminModel');
+        $settingsModel = $GLOBALS['app']->LoadGadget('Settings', 'AdminModel', 'Settings');
         //get a list of themes
         if ($displayTheme) {
             $tpl->SetBlock('preferences/option');

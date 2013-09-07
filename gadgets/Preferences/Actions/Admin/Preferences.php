@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_AdminHTML extends Jaws_Gadget_HTML
+class Preferences_Actions_Admin_Preferences extends Jaws_Gadget_HTML
 {
     /**
      * Admin of Gadget

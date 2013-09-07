@@ -9,15 +9,16 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Preferences_Model extends Jaws_Gadget_Model
+class Preferences_Model_Preferences extends Jaws_Gadget_Model
 {
     /**
      * Save the cookie, save the world
      *
-     * @access  public
-     * @param   array   $Preferences
-     * @param   int     $expire_age
-     * @return  bool    True/False
+     * @access   public
+     * @param    array  $preferences
+     * @param    int    $expire_age
+     * @internal param array $Preferences
+     * @return   bool    True/False
      */
     function SavePreferences($preferences, $expire_age = 1440)
     {
@@ -25,5 +26,4 @@ class Preferences_Model extends Jaws_Gadget_Model
         $GLOBALS['app']->Session->SetCookie('preferences', serialize($preferences), $expire_age);
         return true;
     }
-
 }

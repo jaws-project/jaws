@@ -18,7 +18,7 @@ class Preferences_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Preferences', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Display', 'DefaultAction'),
                         'title' => _t('PREFERENCES_ACTION_TITLE'));
         return $urls;
     }
