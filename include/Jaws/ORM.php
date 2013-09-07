@@ -200,7 +200,7 @@ class Jaws_ORM
      * @var     bool
      * @access  private
      */
-    var $in_transaction = false;
+    static private $in_transaction = false;
 
     /**
      * Auto rollback changes on error
@@ -208,7 +208,7 @@ class Jaws_ORM
      * @var     bool
      * @access  private
      */
-    var $auto_rollback_on_error = true;
+    static private $auto_rollback_on_error = true;
 
     /**
      * Constructor
@@ -790,7 +790,7 @@ class Jaws_ORM
         $this->reset();
         if (PEAR::IsError($result)) {
             // auto rollback
-            if ($this->in_transaction && $this->auto_rollback_on_error) {
+            if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
             }
 
@@ -894,7 +894,7 @@ class Jaws_ORM
         $this->reset();
         if (PEAR::IsError($result)) {
             // auto rollback
-            if ($this->in_transaction && $this->auto_rollback_on_error) {
+            if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
             }
 
@@ -918,9 +918,11 @@ class Jaws_ORM
      */
     function beginTransaction($auto_rollback = true)
     {
-        $this->in_transaction = true;
-        $this->auto_rollback_on_error = $auto_rollback;
-        $this->jawsdb->dbc->beginTransaction();
+        if (!self::$in_transaction) {
+            self::$in_transaction = true;
+            self::$auto_rollback_on_error = $auto_rollback;
+            $this->jawsdb->dbc->beginTransaction();
+        }
     }
 
     /**
@@ -931,8 +933,10 @@ class Jaws_ORM
      */
     function rollback()
     {
-        $this->in_transaction = false;
-        $this->jawsdb->dbc->rollback();
+        if (self::$in_transaction) {
+            self::$in_transaction = false;
+            $this->jawsdb->dbc->rollback();
+        }
     }
 
     /**
@@ -943,8 +947,10 @@ class Jaws_ORM
      */
     function commit()
     {
-        $this->in_transaction = false;
-        $this->jawsdb->dbc->commit();
+        if (self::$in_transaction) {
+            self::$in_transaction = false;
+            $this->jawsdb->dbc->commit();
+        }
     }
 
     /**
@@ -1029,6 +1035,8 @@ class Jaws_ORM
         $this->_offset   = null;
         $this->_passed_types  = false;
         $this->_query_command = '';
+        self::$in_transaction = false;
+        self::$auto_rollback_on_error = true;
     }
 
 }
