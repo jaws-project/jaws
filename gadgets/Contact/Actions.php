@@ -11,31 +11,27 @@
  */
 $actions = array();
 
+$actions['Contact'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file' => 'Contact'
+);
 $actions['ContactMini'] = array(
     'normal' => true,
+    'layout' => true,
     'file' => 'Contact'
 );
 $actions['ContactSimple'] = array(
     'normal' => true,
+    'layout' => true,
     'file' => 'Contact'
 );
 $actions['ContactFull'] = array(
     'normal' => true,
+    'layout' => true,
     'file' => 'Contact'
 );
 $actions['Send'] = array(
     'normal' => true,
-    'file' => 'Contact'
-);
-$actions['Display'] = array(
-    'layout' => true,
-);
-$actions['DisplayMini'] = array(
-    'layout' => true,
-);
-$actions['DisplaySimple'] = array(
-    'layout' => true,
-);
-$actions['DisplayFull'] = array(
-    'layout' => true,
+    'file' => 'Send'
 );

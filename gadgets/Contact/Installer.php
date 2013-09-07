@@ -92,10 +92,10 @@ class Contact_Installer extends Jaws_Gadget_Installer
         // Update layout actions
         $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
         if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('Contact', 'Display', 'Display', 'Contact');
-            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplayMini', 'DisplayMini', 'Contact');
-            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplaySimple', 'DisplaySimple', 'Contact');
-            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplayFull', 'DisplayFull', 'Contact');
+            $layoutModel->EditGadgetLayoutAction('Contact', 'Display', 'Contact', 'Contact');
+            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplayMini', 'ContactMini', 'Contact');
+            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplaySimple', 'ContactSimple', 'Contact');
+            $layoutModel->EditGadgetLayoutAction('Contact', 'DisplayFull', 'ContactFull', 'Contact');
         }
 
         return true;

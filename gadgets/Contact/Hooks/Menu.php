@@ -19,17 +19,17 @@ class Contact_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'DefaultAction'),
-                        'title'  => _t('CONTACT_ACTION_DISPLAY'),
+        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'Contact'),
+                        'title'  => _t('CONTACT_ACTIONS_CONTACT'),
                         'title2' => _t('CONTACT_US'));
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactMini'),
-                        'title'  => _t('CONTACT_ACTION_DISPLAY_MINI'),
+                        'title'  => _t('CONTACT_ACTIONS_CONTACTMINI'),
                         'title2' => _t('CONTACT_US'));
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactSimple'),
-                        'title'  => _t('CONTACT_ACTION_DISPLAY_SIMPLE'),
+                        'title'  => _t('CONTACT_ACTIONS_CONTACTSIMPLE'),
                         'title2' => _t('CONTACT_US'));
         $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactFull'),
-                        'title'  => _t('CONTACT_ACTION_DISPLAY_FULL'),
+                        'title'  => _t('CONTACT_ACTIONS_CONTACTFULL'),
                         'title2' => _t('CONTACT_US'));
         return $urls;
     }

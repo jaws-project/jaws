@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('DefaultAction', 'contact');
-$maps[] = array('ContactMini',   'contact/mini');
+$maps[] = array('Contact', 'contact');
+$maps[] = array('ContactMini', 'contact/mini');
 $maps[] = array('ContactSimple', 'contact/simple');
-$maps[] = array('ContactFull',   'contact/full');
+$maps[] = array('ContactFull', 'contact/full');
