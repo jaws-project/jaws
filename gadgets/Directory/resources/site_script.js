@@ -79,13 +79,11 @@ function initDirectory()
 function fillFilesCombo(parent)
 {
     var files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
-    if (files) {
-        comboFiles.options.length = 0;
-        files.each(function (file) {
-            fileById[file.id] = file;
-            comboFiles.options[comboFiles.options.length] = new Option(file.title, file.id);
-        });
-    }
+    comboFiles.options.length = 0;
+    files.each(function (file) {
+        fileById[file.id] = file;
+        comboFiles.options[comboFiles.options.length] = new Option(file.title, file.id);
+    });
 }
 
 /**
@@ -188,7 +186,7 @@ function _delete()
 }
 
 /**
- * Displays the blank form to create a new directory
+ * Brings the directory creation UI up
  */
 function newDirectory()
 {
@@ -202,7 +200,7 @@ function newDirectory()
 }
 
 /**
- * Goes for editing selected directory
+ * Brings the edit directory UI up
  */
 function editDirectory(data)
 {
@@ -218,7 +216,7 @@ function editDirectory(data)
 }
 
 /**
- * Sets selected file for edit/delete
+ * Brings the file creation UI up
  */
 function newFile()
 {
@@ -234,7 +232,7 @@ function newFile()
 }
 
 /**
- * Goes for editing selected file
+ * Brings the edit file UI up
  */
 function editFile(data)
 {
@@ -326,11 +324,75 @@ function submitFile()
     DirectoryAjax.callAsync(action, $('frm_file').toQueryString().parseQueryString());
 }
 
+/**
+ * Brings the share UI up
+ */
+function share()
+{
+    if (cachedShareForm === null) {
+        cachedShareForm = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
+    }
+    $('form').set('html', cachedShareForm);
+    $('groups').selectedIndex = -1;
+    //var form = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
+    //console.log(groups);
+}
+
+/**
+ * Fetches and displays users of selected group
+ */
+function toggleUsers(gid)
+{
+    var container = $('users').empty();
+    if (usersByGroup[gid] === undefined) {
+        usersByGroup[gid] = DirectoryAjax.callSync('GetUsers', {'gid':gid});
+    }
+    usersByGroup[gid].each(function (user) {
+        var div = new Element('div'),
+            input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
+            label = new Element('label', {'for':'chk_'+user.id});
+        input.set('checked', (sharedFileUsers[user.id] !== undefined));
+        input.addEvent('click', selectUser)
+        label.set('html', user.nickname);
+        div.adopt(input, label);
+        container.grab(div);
+    });
+}
+
+/**
+ * Adds/removes user to/from shares
+ */
+function selectUser()
+{
+    if (this.checked) {
+        sharedFileUsers[this.value] = this.getNext('label').get('html');
+    } else {
+        delete sharedFileUsers[this.value];
+    }
+    updateShareUsers();
+}
+
+/**
+ * Updates list of users with sharing changes
+ */
+function updateShareUsers()
+{
+    var users = $('file_users').empty();
+    Object.each(sharedFileUsers, function(name, id) {
+        var div = new Element('div', {'id':'usr_'+id});
+        div.set('html', name);
+        users.grab(div);
+    });
+}
+
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     DirectoryStorage = new JawsStorage('Directory'),
     fileById = {},
+    usersByGroup = {},
+    sharedFileUsers = {},
     cachedDirectoryForm = null,
     cachedFileForm = null,
+    cachedShareForm = null,
     currentDir = 0,
     comboFiles,
     selectedId;

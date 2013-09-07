@@ -49,11 +49,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFiles()
     {
-        $parent = jaws()->request->get('parent', 'post');
+        $parent = jaws()->request->fetch('parent', 'post');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFiles($parent);
         if (Jaws_Error::IsError($res)){
-            return false;
+            return array();
         }
         return $res;
     }
@@ -66,11 +66,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFile()
     {
-        $id = jaws()->request->get('id', 'post');
+        $id = jaws()->request->fetch('id', 'post');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->GetFile($id);
         if (Jaws_Error::IsError($res)) {
-            return false;
+            return array();
         }
         return $res;
     }
@@ -83,7 +83,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetPath()
     {
-        $id = jaws()->request->get('id', 'post');
+        $id = jaws()->request->fetch('id', 'post');
         $path = array();
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $model->GetPath($id, $path);

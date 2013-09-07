@@ -4,7 +4,7 @@
   <div id="simple_response" class="{response_type}">{response}</div>
   <div><b>Path:</b> <span id="path"></span></div>
   <table><tr>
-    <td>
+    <td valign="top">
       <form id="frm_files" action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="Directory" />
         <input type="hidden" name="action" value="DeleteFile" />
@@ -14,6 +14,7 @@
         <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
         <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
         <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
+        <button type="button" id="btn_share" onclick="share()">Share</button>
         <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
       </div>
     </td>
@@ -22,16 +23,25 @@
 </div>
 <style type="text/css">
   fieldset {border:1px solid silver; margin:0; padding:10px;}
-  fieldset input {width:250px;}
+  fieldset input[type=text] {width:250px;}
   form th {text-align:left;}
   .response_notice {color:#0a0;}
   .response_error {color:#a00;}
+
   #path span {color:blue; cursor:pointer;}
   #path span:hover {text-decoration:underline;}
+
   #files {width:400px}
   #filelink img {vertical-align:middle; margin:0 5px;}
   #frm_file th, #frm_upload th {width:75px;}
   #ifrm_upload {display:none;}
+
+  #share_users, #groups {width:330px}
+  #users, #file_users {border:1px solid silver; margin:0; padding:10px;
+    max-height:150px; overflow-y:auto; line-height:1.5;}
+  #file_users {height:100px; line-height:1.2;}
+  #users input {margin-right:3px; vertical-align:middle;}
+  #users label {font-weight:bold; vertical-align:middle;}
 </style>
 <script>
   var data_url = "{data_url}",

@@ -37,7 +37,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     function CreateDirectory()
     {
         try {
-            $data = jaws()->request->get(array('title', 'description', 'parent'), 'post');
+            $data = jaws()->request->fetch(array('title', 'description', 'parent'), 'post');
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
@@ -64,8 +64,8 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     function UpdateDirectory()
     {
         try {
-            $id = jaws()->request->get('id', 'post');
-            $data = jaws()->request->get(array('title', 'description', 'parent'), 'post');
+            $id = jaws()->request->fetch('id', 'post');
+            $data = jaws()->request->fetch(array('title', 'description', 'parent'), 'post');
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
@@ -91,7 +91,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function DeleteDirectory()
     {
-        $id = (int)jaws()->request->get('id');
+        $id = (int)jaws()->request->fetch('id');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $res = $model->DeleteFile($id);
         if (Jaws_Error::IsError($res)) {
