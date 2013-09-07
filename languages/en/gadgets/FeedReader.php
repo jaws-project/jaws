@@ -30,8 +30,8 @@ define('_EN_FEEDREADER_CONFIRM_DELETE_FEED', "Are you sure you want to delete th
 
 /* Actions */
 define('_EN_FEEDREADER_ACTION_TITLE', "News on other sites");
-define('_EN_FEEDREADER_ACTIONS_DISPLAY', "Show title news of RSS sites");
-define('_EN_FEEDREADER_ACTIONS_DISPLAY_DESC', "Show the title news and links of configured feed URLs");
+define('_EN_FEEDREADER_ACTIONS_DISPLAYFEEDS', "Show title news of RSS sites");
+define('_EN_FEEDREADER_ACTIONS_DISPLAYFEEDS_DESC', "Show the title news and links of configured feed URLs");
 
 /* Strings */
 define('_EN_FEEDREADER_FEED', "Feed");
