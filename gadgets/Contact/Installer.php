@@ -11,6 +11,20 @@
 class Contact_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'use_antispam' => 'true',
+        'email_format' => 'html',
+        'enable_attachment' => 'false',
+        'comments' => '',
+        'default_items' => 'name,email,url,recipient,subject,attachment,message',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -42,17 +56,6 @@ class Contact_Installer extends Jaws_Gadget_Installer
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('CONTACT_NAME'));
         }
-
-        //registry keys.
-        $this->gadget->registry->insert(
-            array(
-                'use_antispam' => 'true',
-                'email_format' => 'html',
-                'enable_attachment' => 'false',
-                'comments' => '',
-                'default_items' => 'name,email,url,recipient,subject,attachment,message',
-            )
-        );
 
         return true;
     }
