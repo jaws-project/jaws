@@ -522,7 +522,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $editor =& Piwi::CreateWidget('Combo', 'editor');
         $editor->SetID('editor');
         $editor->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel');
+        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel', 'Settings');
         $editors = $settingsModel->GetEditorList();
         foreach($editors as $k => $v) {
             $editor->AddOption($v, $k);
