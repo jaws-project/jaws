@@ -11,6 +11,19 @@
 class Search_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'min_key_len'    => '3',
+        'max_result_len' => '500',
+        'results_limit'  => '10',
+        'searchable_gadgets' => '*',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
@@ -18,12 +31,6 @@ class Search_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        // Registry keys
-        $this->gadget->registry->insert('searchable_gadgets', '*');
-        $this->gadget->registry->insert('min_key_len', '3');
-        $this->gadget->registry->insert('max_result_len', '500');
-        $this->gadget->registry->insert('results_limit', '10');
-
         return true;
     }
 
