@@ -11,6 +11,16 @@
 class Webcam_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'limit_random' => '3',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -35,9 +45,6 @@ class Webcam_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        //Registry keys.
-        $this->gadget->registry->insert('limit_random', '3');
 
         return true;
     }
