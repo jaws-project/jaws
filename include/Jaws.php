@@ -146,6 +146,22 @@ class Jaws
     }
 
     /**
+     * Creates the Jaws instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @return  object returns the instance
+     */
+    function &getInstance()
+    {
+        static $objJaws;
+        if (!isset($objJaws)) {
+            $objJaws = new Jaws();
+        }
+
+        return $objJaws;
+    }
+
+    /**
      * Initializes the Jaws application object
      *
      * @access  public
@@ -1124,4 +1140,14 @@ class Jaws
         return isset($this->$property)? $this->$property : null;
     }
 
+}
+
+/**
+ * Convenience function to application object
+ *
+ * @access  public
+ * @return  object  Jaws object
+ */
+function &jaws() {
+    return Jaws::getInstance();
 }

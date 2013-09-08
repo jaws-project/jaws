@@ -323,7 +323,7 @@ class Installer_Database extends JawsInstallerStage
 
         // Create application
         require_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
+        $GLOBALS['app'] = jaws();
         $GLOBALS['app']->Registry->Init();
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
 
