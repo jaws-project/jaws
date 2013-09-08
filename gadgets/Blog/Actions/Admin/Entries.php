@@ -178,7 +178,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $pModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Posts');
         $tModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Trackbacks');
 
-        $names   = array('edit_timestamp', 'pubdate', 'categories', 'title',
+        $names   = array('edit_timestamp', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'allow_comments', 'published',
                          'trackback_to', 'meta_keywords', 'meta_desc');
         $post    = jaws()->request->fetch($names, 'post');
@@ -437,7 +437,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
      */
     function SaveEditEntry()
     {
-        $names   = array('id', 'edit_timestamp', 'pubdate', 'categories', 'title',
+        $names   = array('id', 'edit_timestamp', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'meta_keywords', 'meta_desc', 
                          'allow_comments', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
