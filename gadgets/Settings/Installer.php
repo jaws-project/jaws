@@ -60,6 +60,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         'cookie_version' => '0.4',
         'cookie_session' => 'false',
         'cookie_secure' => 'false',
+        'cookie_httponly' => 'false',
         'ftp_enabled' => 'false',
         'ftp_host' => '127.0.0.1',
         'ftp_port' => '21',
@@ -142,6 +143,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.4.0', '<')) {
             $this->gadget->registry->insert('global_website', 'true');
+            $this->gadget->registry->insert('cookie_httponly', 'false');
             $this->gadget->registry->delete('allow_comments');
             $this->gadget->registry->delete('layoutmode');
             $this->gadget->registry->delete('site_url');
