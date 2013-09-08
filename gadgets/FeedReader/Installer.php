@@ -11,6 +11,16 @@
 class FeedReader_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'default_feed' => '0',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
@@ -31,9 +41,6 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Registry keys
-        $this->gadget->registry->insert('default_feed', '0');
 
         return true;
     }
