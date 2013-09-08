@@ -46,9 +46,8 @@ class Jaws_Session_Web extends Jaws_Session
         // Create cookie
         $this->SetCookie(
             JAWS_SESSION_NAME,
-             $this->_SessionID.'-'.$this->GetAttribute('salt'),
-             $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0,
-             true
+            $this->_SessionID.'-'.$this->GetAttribute('salt'),
+            $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0
         );
     }
 
@@ -80,15 +79,20 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   bool    $httponly   If TRUE the cookie will be made accessible only through the HTTP protocol
      * @return  void
      */
-    function SetCookie($name, $value, $minutes = 0, $httponly = false)
+    function SetCookie($name, $value, $minutes = 0, $httponly = null)
     {
         $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
         $path    = $GLOBALS['app']->getSiteURL('/', true);
         $domain  = '';//$GLOBALS['app']->Registry->fetch('cookie_domain', 'Settings');
-        $secure  = ($GLOBALS['app']->Registry->fetch('cookie_secure', 'Settings') == 'false') ? false : true;
-        $domain .= $httponly? '; HttpOnly' : '';
-        setcookie($name, $value, $expires, $path, $domain);
+        // secure
+        $secure = $GLOBALS['app']->Registry->fetch('cookie_secure', 'Settings') == 'true';
+        $secure = $secure && (strtolower($_SERVER['HTTPS']) == 'on');
+        // http only
+        if (is_null($httponly)) {
+            $httponly = $GLOBALS['app']->Registry->fetch('cookie_httponly', 'Settings') == 'true';
+        }
+        setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
     }
 
     /**
