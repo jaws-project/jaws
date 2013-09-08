@@ -54,7 +54,6 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
                     // original image
                     $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
                     $objImage->rotate(-90);
-                    _log_var_dump($objImage);
                     $res = $objImage->save();
                     $objImage->free();
                     if (Jaws_Error::IsError($res)) {
