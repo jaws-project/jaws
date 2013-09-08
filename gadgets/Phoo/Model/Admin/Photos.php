@@ -178,10 +178,10 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         }
 
         $data = array();
-        $data['user_id'] = $user;
-        $data['filename'] = date('Y_m_d').'/'.$filename;
-        $data['title'] = $title;
-        $data['description'] = $description;
+        $data['user_id']        = $user;
+        $data['filename']       = date('Y_m_d').'/'.$filename;
+        $data['title']          = $title;
+        $data['description']    = $description;
 
         if ($this->gadget->registry->fetch('allow_comments') === 'true' &&
             $album['allow_comments'])
@@ -203,10 +203,10 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $createtime = $GLOBALS['db']->Date();
         if (function_exists('exif_read_data') &&
             (preg_match("/\.jpg$|\.jpeg$/i", $files['name'])) &&
-            ($data = @exif_read_data($uploadfile, 1, true))
-            && !empty($data['IFD0']['DateTime']) && $jDate->ValidDBDate($data['IFD0']['DateTime']))
+            ($exifData = @exif_read_data($uploadfile, 1, true))
+            && !empty($exifData['IFD0']['DateTime']) && $jDate->ValidDBDate($exifData['IFD0']['DateTime']))
         {
-            $aux        = explode(' ', $data['IFD0']['DateTime']);
+            $aux        = explode(' ', $exifData['IFD0']['DateTime']);
             $auxdate    = str_replace(':', '-', $aux[0]);
             $auxtime    = $aux[1];
             $createtime = $auxdate . ' ' . $auxtime;
@@ -222,7 +222,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
 
         // Lets remove the original if keep_original = false
         if ($this->gadget->registry->fetch('keep_original') == 'false') {
-            @unlink(JAWS_DATA . 'phoo/' . $params['filename']);
+            @unlink(JAWS_DATA . 'phoo/' . $data['filename']);
         }
 
         // Get last id...
