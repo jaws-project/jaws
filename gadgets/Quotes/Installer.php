@@ -11,6 +11,20 @@
 class Quotes_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'last_entries_limit'       => '10',
+        'last_entries_view_mode'   => '0',
+        'last_entries_view_type'   => '0',
+        'last_entries_show_title'  => 'true',
+        'last_entries_view_random' => 'false',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -38,13 +52,6 @@ class Quotes_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Registry keys
-        $this->gadget->registry->insert('last_entries_limit',       '10');
-        $this->gadget->registry->insert('last_entries_view_mode',   '0');
-        $this->gadget->registry->insert('last_entries_view_type',   '0');
-        $this->gadget->registry->insert('last_entries_show_title',  'true');
-        $this->gadget->registry->insert('last_entries_view_random', 'false');
 
         return true;
     }
