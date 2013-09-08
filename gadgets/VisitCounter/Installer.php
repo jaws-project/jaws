@@ -11,6 +11,24 @@
 class VisitCounter_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'timeout' => '600',
+        'type'    => 'impressions',
+        'period'  => '0',
+        'start'   => '',
+        'mode'    => 'text',
+        'custom_text'    => '<strong>Total Visitors:</strong> <font color="red">{total}</font>',
+        'unique_visits'  => '0',
+        'visit_counters' => 'online,today,yesterday,total',
+        'impression_visits' => '0',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -36,15 +54,7 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->insert('visit_counters',  'online,today,yesterday,total');
-        $this->gadget->registry->insert('timeout', '600');
-        $this->gadget->registry->insert('type', 'impressions');
-        $this->gadget->registry->insert('period', '0');
-        $this->gadget->registry->insert('start', date('Y-m-d H:i:s'));
-        $this->gadget->registry->insert('mode', 'text');
-        $this->gadget->registry->insert('custom_text', '<strong>Total Visitors:</strong> <font color="red">{total}</font>');
-        $this->gadget->registry->insert('unique_visits', '0');
-        $this->gadget->registry->insert('impression_visits', '0');
+        $this->gadget->registry->update('start', date('Y-m-d H:i:s'));
 
         return true;
     }

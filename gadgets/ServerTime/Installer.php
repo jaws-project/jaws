@@ -11,6 +11,16 @@
 class ServerTime_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'date_format' =>'DN d MN Y',
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
@@ -18,9 +28,6 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        // Registry keys
-        $this->gadget->registry->insert('date_format',  'DN d MN Y');
-
         return true;
     }
 

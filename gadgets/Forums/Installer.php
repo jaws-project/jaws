@@ -11,6 +11,22 @@
 class Forums_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'topics_limit' => '15',
+        'posts_limit'  =>  '10',
+        'recent_limit' =>  '5',
+        'date_format'  => 'd MN Y G:i',
+        'edit_min_limit_time' => '300',
+        'edit_max_limit_time' => '900',
+        'enable_attachment'   => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -68,15 +84,6 @@ class Forums_Installer extends Jaws_Gadget_Installer
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('FORUMS_NAME'));
         }
-
-        // Registry keys
-        $this->gadget->registry->insert('topics_limit', '15');
-        $this->gadget->registry->insert('posts_limit',  '10');
-        $this->gadget->registry->insert('recent_limit',  '5');
-        $this->gadget->registry->insert('date_format', 'd MN Y G:i');
-        $this->gadget->registry->insert('edit_min_limit_time', '300');
-        $this->gadget->registry->insert('edit_max_limit_time', '900');
-        $this->gadget->registry->insert('enable_attachment',   'true');
 
         return true;
     }

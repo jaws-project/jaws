@@ -11,6 +11,16 @@
 class Menu_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'default_group_id' => '1'
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -52,9 +62,6 @@ class Menu_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
-
-        // Registry keys
-        $this->gadget->registry->insert('default_group_id', '1');
 
         return true;
     }

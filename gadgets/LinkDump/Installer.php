@@ -11,6 +11,17 @@
 class LinkDump_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'links_target'    => 'blank',
+        'max_limit_count' => '100',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -54,10 +65,6 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
         }
-
-        // Registry key
-        $this->gadget->registry->insert('max_limit_count', '100');
-        $this->gadget->registry->insert('links_target', 'blank');
 
         return true;
     }

@@ -11,6 +11,32 @@
 class Phoo_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'default_action'    => 'AlbumList',
+        'thumbsize'         => '133x100',
+        'mediumsize'        => '400x300',
+        'moblog_album'      => '',
+        'moblog_limit'      => '10',
+        'photoblog_album'   => '',
+        'photoblog_limit'   => '5',
+        'allow_comments'    => 'true',
+        'published'         => 'true',
+        'plugabble'         => 'true',
+        'show_exif_info'    => 'false',
+        'keep_original'     => 'true',
+        'thumbnail_limit'   => '0',
+        'use_antispam'      => 'true',
+        'comment_status'    => 'approved',
+        'albums_order_type' => 'name',
+        'photos_order_type' => 'id',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -60,25 +86,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
 
         // Install listener for update comment
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpdateComment');
-
-        // Registry keys
-        $this->gadget->registry->insert('default_action',    'AlbumList');
-        $this->gadget->registry->insert('thumbsize',         '133x100');
-        $this->gadget->registry->insert('mediumsize',        '400x300');
-        $this->gadget->registry->insert('moblog_album',      '');
-        $this->gadget->registry->insert('moblog_limit',      '10');
-        $this->gadget->registry->insert('photoblog_album',   '');
-        $this->gadget->registry->insert('photoblog_limit',   '5');
-        $this->gadget->registry->insert('allow_comments',    'true');
-        $this->gadget->registry->insert('published',         'true');
-        $this->gadget->registry->insert('plugabble',         'true');
-        $this->gadget->registry->insert('show_exif_info',    'false');
-        $this->gadget->registry->insert('keep_original',     'true');
-        $this->gadget->registry->insert('thumbnail_limit',   '0');
-        $this->gadget->registry->insert('use_antispam',      'true');
-        $this->gadget->registry->insert('comment_status',    'approved');
-        $this->gadget->registry->insert('albums_order_type', 'name');
-        $this->gadget->registry->insert('photos_order_type', 'id');
 
         return true;
     }

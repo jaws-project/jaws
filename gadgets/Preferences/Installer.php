@@ -11,6 +11,22 @@
 class Preferences_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'display_theme'             => 'true',
+        'display_editor'            => 'true',
+        'display_language'          => 'true',
+        'display_calendar_type'     => 'true',
+        'display_calendar_language' => 'true',
+        'display_date_format'       => 'true',
+        'display_timezone'          => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -28,14 +44,6 @@ class Preferences_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        $this->gadget->registry->insert('display_theme',             'true');
-        $this->gadget->registry->insert('display_editor',            'true');
-        $this->gadget->registry->insert('display_language',          'true');
-        $this->gadget->registry->insert('display_calendar_type',     'true');
-        $this->gadget->registry->insert('display_calendar_language', 'true');
-        $this->gadget->registry->insert('display_date_format',       'true');
-        $this->gadget->registry->insert('display_timezone',          'true');
-
         //enable cookie precedence
         $this->gadget->registry->update('cookie_precedence', 'true', 'Settings');
 

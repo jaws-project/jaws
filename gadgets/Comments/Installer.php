@@ -11,6 +11,20 @@
 class Comments_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'allow_duplicate'   => 'no',
+        'allow_comments'    => 'true',
+        'comments_per_page' => '10',
+        'recent_comment_limit'   => '10',
+        'default_comment_status' => '1',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -33,15 +47,6 @@ class Comments_Installer extends Jaws_Gadget_Installer
     {
         // Install listener for removing comments related to uninstalled gadget
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
-
-        // Registry keys
-        $this->gadget->registry->insert(array(
-            'default_comment_status' => '1',
-            'recent_comment_limit' => '10',
-            'comments_per_page' => '10',
-            'allow_duplicate' => 'no',
-            'allow_comments' => 'true',
-        ));
 
         if ($upgrade_from_08x) {
             return $this->Upgrade('0.8.0', '1.0.0');

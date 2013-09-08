@@ -11,6 +11,17 @@
 class Languages_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'base_lang' => 'en',
+        'update_default_lang' => 'false',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -37,8 +48,6 @@ class Languages_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_NAME'));
         }
 
-        $this->gadget->registry->insert('base_lang', 'en');
-        $this->gadget->registry->insert('update_default_lang', 'false');
         return true;
     }
 

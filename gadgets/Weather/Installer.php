@@ -11,6 +11,19 @@
 class Weather_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'unit'          => 'metric',
+        'date_format'   => 'DN d MN',
+        'update_period' => '3600',
+        'api_key'       => '',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -42,12 +55,6 @@ class Weather_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Registry keys
-        $this->gadget->registry->insert('unit', 'metric');
-        $this->gadget->registry->insert('date_format', 'DN d MN');
-        $this->gadget->registry->insert('update_period', '3600');
-        $this->gadget->registry->insert('api_key', '');
 
         return true;
     }

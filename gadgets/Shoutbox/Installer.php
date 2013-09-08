@@ -11,6 +11,20 @@
 class Shoutbox_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'limit'               => '7',
+        'use_antispam'        => 'true',
+        'max_strlen'          => '125',
+        'comment_status'      => 'approved',
+        'anon_post_authority' => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -29,13 +43,6 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        // Registry keys.
-        $this->gadget->registry->insert('limit', '7');
-        $this->gadget->registry->insert('use_antispam', 'true');
-        $this->gadget->registry->insert('max_strlen', '125');
-        $this->gadget->registry->insert('comment_status', 'approved');
-        $this->gadget->registry->insert('anon_post_authority', 'true');
-
         return true;
     }
 

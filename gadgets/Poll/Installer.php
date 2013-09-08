@@ -11,6 +11,16 @@
 class Poll_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'cookie_period' => '150',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -39,9 +49,6 @@ class Poll_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Registry keys.
-        $this->gadget->registry->insert('cookie_period',  '150');
 
         return true;
     }

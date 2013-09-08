@@ -11,6 +11,16 @@
 class Friends_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'limit' => '5',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -35,9 +45,6 @@ class Friends_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        //registry keys.
-        $this->gadget->registry->insert('limit', '5');
 
         return true;
     }

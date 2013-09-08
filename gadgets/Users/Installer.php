@@ -11,6 +11,23 @@
 class Users_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'latest_limit' => '10',
+        'password_recovery' => 'false',
+        'register_notification' => 'true',
+        'authtype' => 'Default',
+        'anon_register' => 'false',
+        'anon_repetitive_email' => 'true',
+        'anon_activation' => 'user',
+        'anon_group' => '',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -52,18 +69,6 @@ class Users_Installer extends Jaws_Gadget_Installer
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
         }
-
-        // Registry keys
-        $this->gadget->registry->insert(array(
-            'latest_limit' => '10',
-            'password_recovery' => 'false',
-            'register_notification' => 'true',
-            'authtype' => 'Default',
-            'anon_register' => 'false',
-            'anon_repetitive_email' => 'true',
-            'anon_activation' => 'user',
-            'anon_group' => '',
-        ));
 
         // Create the group 'users'
         require_once JAWS_PATH . 'include/Jaws/User.php';

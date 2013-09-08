@@ -11,6 +11,39 @@
 class Policy_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'block_undefined_ip' => 'false',
+        'block_undefined_agent' => 'false',
+        'filter' => 'DISABLED',
+        'default_captcha_status' => 'DISABLED',
+        'default_captcha_driver' => 'Math',
+        'obfuscator' => 'DISABLED',
+        'akismet_key' => '',
+        'typepad_key' => '',
+        'crypt_enabled' => 'false',
+        'crypt_pub_key' => '',
+        'crypt_pvt_key' => '',
+        'crypt_key_len' => '128',
+        'crypt_key_age' => '86400',
+        'crypt_key_start_date' => '0',
+        'passwd_bad_count' => '7',
+        'passwd_lockedout_time' => '60',      // per second
+        'passwd_max_age' => '0',              // per day  0 = resistant
+        'passwd_min_length' => '0',
+        'passwd_complexity' => 'no',
+        'login_captcha_status' => '1',
+        'login_captcha_driver' => 'Math',
+        'xss_parsing_level' => 'paranoid',
+        'session_idle_timeout' => '30',       // per minute
+        'session_remember_timeout' => '720',  // hours = 1 month
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -41,32 +74,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $this->gadget->registry->insert(array(
-            'block_undefined_ip' => 'false',
-            'block_undefined_agent' => 'false',
-            'filter' => 'DISABLED',
-            'default_captcha_status' => 'DISABLED',
-            'default_captcha_driver' => 'Math',
-            'obfuscator' => 'DISABLED',
-            'akismet_key' => '',
-            'typepad_key' => '',
-            'crypt_enabled' => $_SESSION['secure']? 'true' : 'false',
-            'crypt_pub_key' => $_SESSION['pub_key'],
-            'crypt_pvt_key' => $_SESSION['pvt_key'],
-            'crypt_key_len' => '128',
-            'crypt_key_age' => '86400',
-            'crypt_key_start_date' => $_SESSION['secure']? time() : '0',
-            'passwd_bad_count' => '7',
-            'passwd_lockedout_time' => '60',      // per second
-            'passwd_max_age' => '0',              // per day  0 = resistant
-            'passwd_min_length' => '0',
-            'passwd_complexity' => 'no',
-            'login_captcha_status' => '1',
-            'login_captcha_driver' => 'Math',
-            'xss_parsing_level' => 'paranoid',
-            'session_idle_timeout' => '30',       // per minute
-            'session_remember_timeout' => '720',  // hours = 1 month
-        ));
+        $this->gadget->registry->update('crypt_enabled', $_SESSION['secure']? 'true' : 'false');
+        $this->gadget->registry->update('crypt_pub_key', $_SESSION['pub_key']);
+        $this->gadget->registry->update('crypt_pvt_key', $_SESSION['pvt_key']);
+        $this->gadget->registry->update('crypt_key_start_date', $_SESSION['secure']? time() : '0');
 
         return true;
     }
