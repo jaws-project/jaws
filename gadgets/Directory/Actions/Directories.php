@@ -11,20 +11,28 @@
 class Directory_Actions_Directories extends Jaws_Gadget_HTML
 {
     /**
-     * Builds the directory management form
+     * Builds the directory view/edit form
      *
      * @access  public
      * @return  string  XHTML form
      */
     function DirectoryForm()
     {
+        $type = jaws()->request->fetch('type', 'post');
         $tpl = $this->gadget->loadTemplate('Directory.html');
-        $tpl->SetBlock('directoryForm');
+        $tpl->SetBlock($type);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_DIR_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_DIR_DESC'));
-        $tpl->SetVariable('lbl_parent', _t('DIRECTORY_DIR_PARENT'));
+        $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
-        $tpl->ParseBlock('directoryForm');
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        if ($type === 'view') {
+            $tpl->SetVariable('title', '{title}');
+            $tpl->SetVariable('desc', '{description}');
+        }
+        $tpl->ParseBlock($type);
         return $tpl->Get();
     }
 
@@ -41,8 +49,10 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['user'] = $data['owner'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data['is_dir'] = true;
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $result = $model->InsertFile($data);
             if (Jaws_Error::IsError($result)) {
@@ -69,8 +79,9 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $data['is_dir'] = true;
+            //$data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $result = $model->UpdateFile($id, $data);
             if (Jaws_Error::IsError($result)) {

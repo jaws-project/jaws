@@ -87,12 +87,27 @@ function fillFilesCombo(parent)
 }
 
 /**
- * Sets selectedId to file/directory ID
+ * Fetches and displays details on a file/directory
  */
-function select()
+function viewInfo()
 {
     selectedId = comboFiles.value;
-    $('form').set('html', '');
+    var data = DirectoryAjax.callSync('GetFile', {id:selectedId});
+    if (data.is_dir) {
+        if (!cachedForms.viewDir) {
+            cachedForms.viewDir = DirectoryAjax.callSync('DirectoryForm', {type:'view'});
+        }
+        var form = cachedForms.viewDir;
+    } else {
+        if (!cachedForms.viewFile) {
+            cachedForms.viewFile = DirectoryAjax.callSync('FileForm', {type:'view'});
+        }
+        var form = cachedForms.viewFile;
+    }
+    $('form').set('html', form.substitute(data));
+    if (data.filename) {
+        $('filelink').grab(getDownloadLink(data.filename, data_url));
+    }
 }
 
 /**
@@ -151,23 +166,6 @@ function updatePath()
 }
 
 /**
- * Goes to edit file or directory
- */
-function edit()
-{
-    if (selectedId === null) return;
-    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
-    switch (data.is_dir) {
-        case true:
-            editDirectory(data);
-            break;
-        case false:
-            editFile(data);
-            break;
-    }
-}
-
-/**
  * Deletes selected directory/file
  */
 function _delete()
@@ -190,10 +188,11 @@ function _delete()
  */
 function newDirectory()
 {
-    if (cachedDirectoryForm === null) {
-        cachedDirectoryForm = DirectoryAjax.callSync('DirectoryForm');
+    selectedId = null;
+    if (!cachedForms.editDir) {
+        cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {type:'edit'});
     }
-    $('form').set('html', cachedDirectoryForm);
+    $('form').set('html', cachedForms.editDir);
     comboFiles.selectedIndex = -1;
     $('frm_dir').title.focus();
     $('frm_dir').parent.value = currentDir;
@@ -204,10 +203,12 @@ function newDirectory()
  */
 function editDirectory(data)
 {
-    if (cachedDirectoryForm === null) {
-        cachedDirectoryForm = DirectoryAjax.callSync('DirectoryForm');
+    if (selectedId === null) return;
+    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
+    if (!cachedForms.editDir) {
+        cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {type:'edit'});
     }
-    $('form').set('html', cachedDirectoryForm);
+    $('form').set('html', cachedForms.editDir);
     var form = $('frm_dir');
     form.id.value = selectedId;
     form.title.value = data.title;
@@ -220,10 +221,11 @@ function editDirectory(data)
  */
 function newFile()
 {
-    if (cachedFileForm === null) {
-        cachedFileForm = DirectoryAjax.callSync('FileForm');
+    selectedId = null;
+    if (!cachedForms.editFile) {
+        cachedForms.editFile = DirectoryAjax.callSync('FileForm', {type:'edit'});
     }
-    $('form').set('html', cachedFileForm);
+    $('form').set('html', cachedForms.editFile);
     $('tr_file').hide();
     $('frm_upload').show();
     $('frm_file').parent.value = currentDir;
@@ -236,10 +238,12 @@ function newFile()
  */
 function editFile(data)
 {
-    if (cachedFileForm === null) {
-        cachedFileForm = DirectoryAjax.callSync('FileForm');
+    if (selectedId === null) return;
+    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
+    if (!cachedForms.editFile) {
+        cachedForms.editFile = DirectoryAjax.callSync('FileForm', {type:'edit'});
     }
-    $('form').set('html', cachedFileForm);
+    $('form').set('html', cachedForms.editFile);
     var form = $('frm_file');
     form.action.value = 'UpdateFile';
     form.id.value = selectedId;
@@ -249,6 +253,7 @@ function editFile(data)
     form.parent.value = data.parent;
     if (data.filename) {
         setFile(data.filename, data_url);
+        $('filename').value = ':nochange:';
     } else {
         $('tr_file').hide();
         $('frm_upload').show();
@@ -274,8 +279,26 @@ function onUpload(response) {
     } else {
         var filename = encodeURIComponent(response.message);
         setFile(filename, '');
+        $('filename').value = filename;
     }
     $('ifrm_upload').destroy();
+}
+
+/**
+ * Creates a link to attached file
+ */
+function getDownloadLink(filename, url)
+{
+    var link = new Element('a', {'html':filename, 'target':'_blank'});
+    if (url !== '') {
+        link.href = url + '/' + filename;
+    }
+    return link;
+    $('filelink').grab(link);
+    $('filelink').grab(imgDeleteFile);
+    $('tr_file').show();
+    $('frm_upload').hide();
+    $('filename').value = filename;
 }
 
 /**
@@ -291,7 +314,6 @@ function setFile(filename, url)
     $('filelink').grab(imgDeleteFile);
     $('tr_file').show();
     $('frm_upload').hide();
-    $('filename').value = filename;
 }
 
 /**
@@ -329,10 +351,10 @@ function submitFile()
  */
 function share()
 {
-    if (cachedShareForm === null) {
-        cachedShareForm = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
+    if (!cachedForms.share) {
+        cachedForms.share = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
     }
-    $('form').set('html', cachedShareForm);
+    $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
     //var form = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
     //console.log(groups);
@@ -390,9 +412,7 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     fileById = {},
     usersByGroup = {},
     sharedFileUsers = {},
-    cachedDirectoryForm = null,
-    cachedFileForm = null,
-    cachedShareForm = null,
+    cachedForms = {},
     currentDir = 0,
     comboFiles,
     selectedId;

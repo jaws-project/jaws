@@ -1,0 +1,26 @@
+<!-- BEGIN directory -->
+<div class="gadget directory">
+  <h2>{title}</h2>
+  <div id="simple_response" class="{response_type}">{response}</div>
+  <div><b>Path:</b> <span id="path"></span></div>
+  <table><tr>
+    <td valign="top">
+      <form id="frm_files" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="Directory" />
+        <input type="hidden" name="action" value="DeleteFile" />
+        <select id="files" name="files" size="20" onchange="viewInfo()" ondblclick="openDirectory()"></select>
+      </form>
+      <div class="actions">
+        <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
+        <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
+      </div>
+    </td>
+    <td id="form" valign="top"></td>
+  </tr></table>
+</div>
+<script>
+  var data_url = "{data_url}",
+      imgDeleteFile = "{imgDeleteFile}";
+  initDirectory();
+</script>
+<!-- END directory -->

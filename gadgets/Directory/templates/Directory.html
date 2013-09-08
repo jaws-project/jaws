@@ -1,57 +1,21 @@
-<!-- BEGIN directory -->
-<div class="gadget directory">
-  <h2>{title}</h2>
-  <div id="simple_response" class="{response_type}">{response}</div>
-  <div><b>Path:</b> <span id="path"></span></div>
-  <table><tr>
-    <td valign="top">
-      <form id="frm_files" action="{base_script}" method="post">
-        <input type="hidden" name="gadget" value="Directory" />
-        <input type="hidden" name="action" value="DeleteFile" />
-        <select id="files" name="files" size="20" onchange="select()" ondblclick="openDirectory()"></select>
-      </form>
-      <div class="actions">
-        <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
-        <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
-        <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
-        <button type="button" id="btn_share" onclick="share()">Share</button>
-        <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
-      </div>
-    </td>
-    <td id="form" valign="top"></td>
-  </tr></table>
+<!-- BEGIN view -->
+<div id="inf_dir">
+  <fieldset>
+    <table>
+      <tr><th>{lbl_title}:</th><td>{title}</td></tr>
+      <tr><th>{lbl_desc}:</th><td>{desc}</td></tr>
+    </table>
+  </fieldset>
+  <div class="actions">
+    <button type="button" id="btn_share" onclick="share()">Share</button>
+    <button type="button" id="btn_edit" onclick="editDirectory()">{lbl_edit}</button>
+    <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
+    <button type="button" onclick="cancel()">{lbl_cancel}</button>
+  </div>
 </div>
-<style type="text/css">
-  fieldset {border:1px solid silver; margin:0; padding:10px;}
-  fieldset input[type=text] {width:250px;}
-  form th {text-align:left;}
-  .response_notice {color:#0a0;}
-  .response_error {color:#a00;}
+<!-- END view -->
 
-  #path span {color:blue; cursor:pointer;}
-  #path span:hover {text-decoration:underline;}
-
-  #files {width:400px}
-  #filelink img {vertical-align:middle; margin:0 5px;}
-  #frm_file th, #frm_upload th {width:75px;}
-  #ifrm_upload {display:none;}
-
-  #share_users, #groups {width:330px}
-  #users, #file_users {border:1px solid silver; margin:0; padding:10px;
-    max-height:150px; overflow-y:auto; line-height:1.5;}
-  #file_users {height:100px; line-height:1.2;}
-  #users input {margin-right:3px; vertical-align:middle;}
-  #users label {font-weight:bold; vertical-align:middle;}
-</style>
-<script>
-  var data_url = "{data_url}",
-      temp_url = "{temp_url}",
-      imgDeleteFile = "{imgDeleteFile}";
-  initDirectory();
-</script>
-<!-- END directory -->
-
-<!-- BEGIN directoryForm -->
+<!-- BEGIN edit -->
 <form id="frm_dir">
   <input type="hidden" name="id" />
   <input type="hidden" name="parent" value="0" />
@@ -63,37 +27,7 @@
   </fieldset>
   <div class="actions">
     <button type="button" onclick="submitDirectory()">{lbl_submit}</button>
-    <button type="button" onclick="cancel()">Cancel</button>
+    <button type="button" onclick="cancel()">{lbl_cancel}</button>
   </div>
 </form>
-<!-- END directoryForm -->
-
-<!-- BEGIN fileForm -->
-<fieldset>
-  <form id="frm_file">
-    <input type="hidden" name="id" />
-    <input type="hidden" name="parent" value="0" />
-    <input type="hidden" name="filename" id="filename" />
-    <table>
-      <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
-      <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
-      <tr><th>URL:</th><td><input name="url" value="http://" /></td></tr>
-      <tr id="tr_file"><th>File:</th><td id="filelink"></td></tr>
-    </table>
-  </form>
-  <form id="frm_upload" action="{base_script}" target="ifrm_upload"
-        method="post" enctype="multipart/form-data" onsubmit="return true">
-    <input type="hidden" name="gadget" value="Directory" />
-    <input type="hidden" name="action" value="UploadFile" />
-    <table>
-      <tr><th>File:</th><td>
-        <input type="file" id="file" name="file" onchange="uploadFile()" />
-      </td></tr>
-    </table>
-  </form>
-</fieldset>
-<div class="actions">
-  <button type="button" onclick="submitFile()">{lbl_submit}</button>
-  <button type="button" onclick="cancel()">Cancel</button>
-</div>
-<!-- END fileForm -->
+<!-- END edit -->

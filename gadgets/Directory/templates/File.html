@@ -1,0 +1,48 @@
+<!-- BEGIN view -->
+<div id="inf_file">
+  <fieldset>
+    <table>
+      <tr><th>{lbl_title}:</th><td>{title}</td></tr>
+      <tr><th>{lbl_desc}:</th><td>{desc}</td></tr>
+      <tr><th>URL:</th><td>{url}</td></tr>
+      <tr><th>File:</th><td id="filelink">{filename}</td></tr>
+    </table>
+  </fieldset>
+  <div class="actions">
+    <button type="button" id="btn_share" onclick="share()">Share</button>
+    <button type="button" id="btn_edit" onclick="editFile()">{lbl_edit}</button>
+    <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
+    <button type="button" onclick="cancel()">{lbl_cancel}</button>
+  </div>
+</div>
+<!-- END view -->
+
+<!-- BEGIN edit -->
+<fieldset>
+  <form id="frm_file">
+    <input type="hidden" name="id" />
+    <input type="hidden" name="parent" value="0" />
+    <input type="hidden" name="filename" id="filename" />
+    <table>
+      <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
+      <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
+      <tr><th>URL:</th><td><input name="url" value="http://" /></td></tr>
+      <tr id="tr_file"><th>File:</th><td id="filelink"></td></tr>
+    </table>
+  </form>
+  <form id="frm_upload" action="{base_script}" target="ifrm_upload"
+        method="post" enctype="multipart/form-data" onsubmit="return true">
+    <input type="hidden" name="gadget" value="Directory" />
+    <input type="hidden" name="action" value="UploadFile" />
+    <table>
+      <tr><th>File:</th><td>
+        <input type="file" id="file" name="file" onchange="uploadFile()" />
+      </td></tr>
+    </table>
+  </form>
+</fieldset>
+<div class="actions">
+  <button type="button" onclick="submitFile()">{lbl_submit}</button>
+  <button type="button" onclick="cancel()">Cancel</button>
+</div>
+<!-- END edit -->

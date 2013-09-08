@@ -18,13 +18,23 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      */
     function FileForm()
     {
-        $tpl = $this->gadget->loadTemplate('Directory.html');
-        $tpl->SetBlock('fileForm');
+        $type = jaws()->request->fetch('type', 'post');
+        $tpl = $this->gadget->loadTemplate('File.html');
+        $tpl->SetBlock($type);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_parent', _t('DIRECTORY_FILE_PARENT'));
         $tpl->SetVariable('lbl_desc', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
-        $tpl->ParseBlock('fileForm');
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        if ($type === 'view') {
+            $tpl->SetVariable('title', '{title}');
+            $tpl->SetVariable('desc', '{description}');
+            $tpl->SetVariable('url', '{url}');
+        }
+        $tpl->ParseBlock($type);
         return $tpl->Get();
     }
 
@@ -41,12 +51,14 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['user'] = $data['owner'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data['is_dir'] = false;
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
 
             // Upload file
             $path = $GLOBALS['app']->getDataURL('directory/' . $data['user']);
-            if (!file_exists($path)) {
+            if (!is_dir($path)) {
                 if (!Jaws_Utils::mkdir($path, 2)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
                 }
@@ -60,9 +72,14 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
                 if (empty($data['filename'])) {
                     throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                 } else {
-                    $filename = Jaws_Utils::upload_tmp_dir(). '/'. $data['filename'];
+                    $filename = Jaws_Utils::upload_tmp_dir(). '/' . $data['filename'];
                     if (file_exists($filename)) {
-                        @rename($filename, $path . '/' . $data['filename']);
+                        $target = $path . '/' . $data['filename'];
+                        // FIXME: we need to extract file basename and extension
+                        // if (file_exists($target)) {
+                            // $target .= '_'. uniqid(floor(microtime()*1000));
+                        // }
+                        @rename($filename, $target);
                     } else {
                         throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
@@ -92,16 +109,17 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     {
         try {
             $id = jaws()->request->fetch('id');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data = jaws()->request->fetch(array('title', 'description', 'parent', 'url', 'filename'));
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $data['is_dir'] = false;
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
 
             // File upload
-            $path = $GLOBALS['app']->getDataURL('directory/' . $data['user']);
-            if (!file_exists($path)) {
+            $path = $GLOBALS['app']->getDataURL('directory/' . $user);
+            if (!is_dir($path)) {
                 if (!Jaws_Utils::mkdir($path, 2)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
                 }

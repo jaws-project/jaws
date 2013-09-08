@@ -18,14 +18,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Directory()
     {
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Directory.html');
+        $tpl = $this->gadget->loadTemplate('Main.html');
         $tpl->SetBlock('directory');
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
         $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/' . $user));
