@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_AdminModel extends Jaws_Gadget_Model
+class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
 {
     /**
      * Gets the available calendars
@@ -154,7 +154,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function SaveBasicSettings($settings)
     {
         $basicKeys = array('site_status', 'site_name', 'site_slogan', 'site_language',
-                           'admin_language', 'main_gadget', 'site_email', 'site_comment');
+            'admin_language', 'main_gadget', 'site_email', 'site_comment');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $basicKeys)) {
@@ -194,8 +194,8 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function SaveAdvancedSettings($settings)
     {
         $advancedKeys = array('date_format', 'calendar_type', 'calendar_language',
-                              'use_gravatar', 'gravatar_rating', 'show_viewsite',
-                              'site_title_separator', 'editor', 'timezone');
+            'use_gravatar', 'gravatar_rating', 'show_viewsite',
+            'site_title_separator', 'editor', 'timezone');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
@@ -230,7 +230,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function SaveMetaSettings($settings)
     {
         $advancedKeys = array('site_description', 'site_keywords', 'site_author',
-                              'site_license', 'site_copyright', 'site_custom_meta');
+            'site_license', 'site_copyright', 'site_custom_meta');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $advancedKeys)) {
@@ -269,8 +269,8 @@ class Settings_AdminModel extends Jaws_Gadget_Model
      */
     function UpdateMailSettings($settings)
     {
-        $mailKeys = array('mailer', 'gate_email', 'gate_title', 'smtp_vrfy', 'sendmail_path', 
-                          'smtp_host', 'smtp_port', 'smtp_auth', 'smtp_user', 'smtp_pass');
+        $mailKeys = array('mailer', 'gate_email', 'gate_title', 'smtp_vrfy', 'sendmail_path',
+            'smtp_host', 'smtp_port', 'smtp_auth', 'smtp_user', 'smtp_pass');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $mailKeys)) {
@@ -311,7 +311,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function UpdateFTPSettings($settings)
     {
         $ftpKeys = array('ftp_enabled', 'ftp_host', 'ftp_port',
-                         'ftp_mode', 'ftp_user', 'ftp_pass', 'ftp_root');
+            'ftp_mode', 'ftp_user', 'ftp_pass', 'ftp_root');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $ftpKeys)) {
@@ -351,7 +351,7 @@ class Settings_AdminModel extends Jaws_Gadget_Model
     function UpdateProxySettings($settings)
     {
         $proxyKeys = array('proxy_enabled', 'proxy_host', 'proxy_port',
-                         'proxy_auth', 'proxy_user', 'proxy_pass');
+            'proxy_auth', 'proxy_user', 'proxy_pass');
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $proxyKeys)) {
