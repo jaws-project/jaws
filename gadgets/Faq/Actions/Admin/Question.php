@@ -250,7 +250,6 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $editor =& $GLOBALS['app']->LoadEditor('Faq', 'answer', $answer, false);
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->TextArea->SetRows(8);
-        $editor->SetWidth('750px');
         $editor->setID('answer');
 
         $statCombo =& Piwi::CreateWidget('Combo', 'status');

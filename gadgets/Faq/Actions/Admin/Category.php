@@ -61,7 +61,6 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
         $editor =& $GLOBALS['app']->LoadEditor('Faq', 'description', $desc, false);
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->TextArea->SetRows(8);
-        $editor->SetWidth('750px');
 
         $faqform->Add($catbox);
         $faqform->Add($editor);
