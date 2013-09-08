@@ -79,7 +79,7 @@ class Upgrader_08To0902 extends JawsUpgraderStage
 
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
+        $GLOBALS['app'] = jaws();
         $GLOBALS['app']->Registry->Init();
 
         // convert acl key name to new format

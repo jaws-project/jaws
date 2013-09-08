@@ -20,7 +20,7 @@ class Upgrader_Cleanup extends JawsUpgraderStage
     {
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
+        $GLOBALS['app'] = jaws();
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $tpl = new Jaws_Template(false, false);

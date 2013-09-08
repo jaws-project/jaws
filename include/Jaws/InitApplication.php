@@ -12,16 +12,6 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 
-/**
- * Convenience function to application object
- *
- * @access  public
- * @return  object  Jaws object
- */
-function &jaws() {
-    return $GLOBALS['app'];
-}
-
 // set default timezone to utc
 date_default_timezone_set('UTC');
 
@@ -81,7 +71,7 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
 // Create application
 require_once JAWS_PATH . 'include/Jaws.php';
-$GLOBALS['app'] = new Jaws();
+$GLOBALS['app'] = jaws();
 // get an instance of Jaws_DB
 $GLOBALS['db'] =& Jaws_DB::getInstance($db);
 if (Jaws_Error::IsError($GLOBALS['db'])) {

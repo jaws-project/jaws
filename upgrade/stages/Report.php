@@ -24,7 +24,7 @@ class Upgrader_Report extends JawsUpgraderStage
         $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
 
         require_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = new Jaws();
+        $GLOBALS['app'] = jaws();
         if (!isset($_SESSION['upgrade']['InstalledVersion'])) {
             $_SESSION['upgrade']['InstalledVersion'] = $GLOBALS['app']->Registry->Init();
         }
