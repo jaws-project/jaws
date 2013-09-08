@@ -11,6 +11,21 @@
 class FileBrowser_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'black_list'  => 'htaccess',
+        'root_dir'    => 'files',
+        'order_type'  => 'filename, false',
+        'views_limit' => '0',
+        'virtual_links'  => 'false',
+        'frontend_avail' => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -44,14 +59,6 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        //registry keys.
-        $this->gadget->registry->insert('black_list', 'htaccess');
-        $this->gadget->registry->insert('root_dir', 'files');
-        $this->gadget->registry->insert('frontend_avail', 'true');
-        $this->gadget->registry->insert('virtual_links', 'false');
-        $this->gadget->registry->insert('order_type', 'filename, false');
-        $this->gadget->registry->insert('views_limit', '0');
 
         return true;
     }
