@@ -11,6 +11,23 @@
 class UrlMapper_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'map_enabled' => 'true',
+        'map_use_file' => 'true',
+        'map_use_rewrite' => 'false',
+        'map_map_to_use' => 'both',
+        'map_custom_precedence' => 'false',
+        'map_restrict_multimap' => 'false',
+        'map_extensions' => 'html',
+        'map_use_aliases' => 'true',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -41,18 +58,6 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpgradeGadget');
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
         $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'HTTPError');
-
-        // Registry keys
-        $this->gadget->registry->insert(array(
-            'map_enabled' => 'true',
-            'map_use_file' => 'true',
-            'map_use_rewrite' => 'false',
-            'map_map_to_use' => 'both',
-            'map_custom_precedence' => 'false',
-            'map_restrict_multimap' => 'false',
-            'map_extensions' => 'html',
-            'map_use_aliases' => 'true',
-        ));
 
         return true;
     }
