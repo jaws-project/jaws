@@ -8,5 +8,5 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('DefaultAction', 'feed/default');
+$maps[] = array('DisplayFeeds', 'feed/default');
 $maps[] = array('GetFeed', 'feed/{id}');

@@ -18,7 +18,7 @@ class FeedReader_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('FeedReader', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('FeedReader', 'DisplayFeeds'),
                         'title' => _t('FEEDREADER_NAME'));
 
         $model  = $GLOBALS['app']->loadGadget('FeedReader', 'Model', 'Feed');
