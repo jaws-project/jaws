@@ -25,7 +25,7 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
         $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'Archive'),
                          'title'  => _t('BLOG_ARCHIVE'));
         $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'CategoriesList'),
-                         'title'  => _t('BLOG_LAYOUT_CATEGORIES'),
+                         'title'  => _t('BLOG_ACTIONS_CATEGORIESLIST'),
                          'title2' => _t('BLOG_CATEGORIES'));
         $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'PopularPosts'),
                          'title'  => _t('BLOG_POPULAR_POSTS'));
