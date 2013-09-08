@@ -11,6 +11,18 @@
 class StaticPage_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'hide_title'    => 'true',
+        'default_page'  => '1',
+        'multilanguage' => 'yes',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -47,11 +59,6 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
-
-        // Registry keys
-        $this->gadget->registry->insert('hide_title', 'true');
-        $this->gadget->registry->insert('default_page', '1');
-        $this->gadget->registry->insert('multilanguage', 'yes');
 
         return true;
     }
