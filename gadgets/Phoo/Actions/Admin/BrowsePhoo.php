@@ -20,8 +20,8 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
      */
     function BrowsePhoo()
     {
-        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
-        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
+        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $tpl = $this->gadget->loadTemplate('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
 
@@ -165,7 +165,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
                 }
 
                 foreach ($r_album as $albumId) {
-                    $album = $aModel->GetAlbumImages($albumId, null, $day, $month, $year);
+                    $album = $pModel->GetAlbumImages($albumId, null, $day, $month, $year);
                     if (!Jaws_Error::IsError($album) && !empty($album)) {
                         if ((isset($album['images']) && !is_array($album['images'])) &&
                            (count($album['images']) == 0) && (checkdate($month, 1, $year))) {

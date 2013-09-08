@@ -232,7 +232,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
 
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
-        $pathArr = $fModel->GetCurrentRootDir($path);
+        $pathArr = $dModel->GetCurrentRootDir($path);
         if (!Jaws_Error::IsError($pathArr)) {
             foreach ($pathArr as $_path => $dir)
             {
