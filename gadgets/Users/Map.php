@@ -14,11 +14,6 @@ $maps[] = array(
     'users/login[/referrer/{referrer}]',
     array('referrer' => '.*')
 );
-$maps[] = array(
-    'Profile',
-    'users/{user}',
-    array('user' => '[[:alnum:]-_.@]+')
-);
 $maps[] = array('Registration', 'users/registration');
 $maps[] = array('Registered', 'users/registered');
 $maps[] = array('Logout', 'users/logout');
@@ -29,3 +24,8 @@ $maps[] = array('Contacts', 'users/contacts');
 $maps[] = array('ForgotLogin', 'users/forget');
 $maps[] = array('ChangePassword', 'users/recover[/{key}]');
 $maps[] = array('ActivateUser', 'users/activate[/{key}]');
+$maps[] = array(
+    'Profile',
+    'users/{user}',
+    array('user' => '[[:alnum:]-_.@]+')
+);
