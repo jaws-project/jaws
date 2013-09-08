@@ -11,6 +11,16 @@
 class Components_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'versions_remote_access' => 'false',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -31,9 +41,6 @@ class Components_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        // Registry keys
-        $this->gadget->registry->insert('versions_remote_access', 'false');
-
         return true;
     }
 
