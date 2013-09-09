@@ -57,6 +57,13 @@ var DirectoryCallback = {
             fillFilesCombo(currentDir);
         }
         $('simple_response').set('html', response.message);
+    },
+
+    UpdateFileUsers: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+        }
+        $('simple_response').set('html', response.message);
     }
 }
 
@@ -135,11 +142,12 @@ function openDirectory()
  */
 function changeDirectory(id)
 {
-    selectedId = null;
     currentDir = id;
+    selectedId = null;
     DirectoryStorage.update('current_dir', id)
-    fillFilesCombo(currentDir);
+    fillFilesCombo(id);
     updatePath();
+    cancel();
 }
 
 /**
@@ -351,13 +359,19 @@ function submitFile()
  */
 function share()
 {
+    selectedId = comboFiles.value;
     if (!cachedForms.share) {
-        cachedForms.share = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
+        cachedForms.share = DirectoryAjax.callSync('GetShareForm');
     }
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
-    //var form = DirectoryAjax.callSync('GetShareForm', {'fid':selectedId});
-    //console.log(groups);
+
+    var users = DirectoryAjax.callSync('GetFileUsers', {'id':selectedId});
+    sharedFileUsers = {};
+    users.each(function (user) {
+        sharedFileUsers[user.id] = user.nickname;
+    });
+    updateShareUsers()
 }
 
 /**
@@ -395,16 +409,29 @@ function selectUser()
 }
 
 /**
- * Updates list of users with sharing changes
+ * Updates list of file users
  */
 function updateShareUsers()
 {
-    var users = $('file_users').empty();
+    var list = $('share_users').empty();
     Object.each(sharedFileUsers, function(name, id) {
-        var div = new Element('div', {'id':'usr_'+id});
-        div.set('html', name);
-        users.grab(div);
+        list.options[list.options.length] = new Option(name, id);
     });
+}
+
+/**
+ * Submits share data
+ */
+function submitShare()
+{
+    var users = [];
+    Array.each($('share_users').options, function(opt) {
+        users.push(opt.value);
+    });
+    DirectoryAjax.callAsync(
+        'UpdateFileUsers',
+        {'id':selectedId, 'users':users.toString()}
+    );
 }
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),

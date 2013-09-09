@@ -15,34 +15,64 @@ class Directory_Model_Share extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id  File ID
-     * @return  array   Array of users or an empty array
+     * @return  mixed   Query result
      */
     function GetFileUsers($id)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        $fmTable->select('id', 'title', 'is_dir:boolean');
-
-        if ($parent !== null){
-            $fmTable->where('parent', $parent);
-        }
-        return $fmTable->orderBy('id asc')->fetchAll();
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('users.id', 'users.nickname');
+        $table->join('users', 'directory.user', 'users.id');
+        $table->where('directory.reference', $id);
+        return $table->fetchAll();
     }
 
     /**
-     * Updates users which the file is shared for
+     * Creates shortcuts of the file record for passed users
      *
      * @access  public
      * @param   int     $id  File ID
-     * @return  array   Array of users or an empty array
+     * @param   array   Users ID's
+     * @return  mixed   True or Jaws_Error
      */
     function UpdateFileUsers($id, $users)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        $fmTable->select('id', 'title', 'is_dir:boolean');
-
-        if ($parent !== null){
-            $fmTable->where('parent', $parent);
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('is_dir:boolean', 'title', 'description', 
+            'user', 'owner', 'reference', 'shared:boolean');
+        $file = $table->fetchRow();
+        if (Jaws_Error::IsError($file)) {
+            return $file;
         }
-        return $fmTable->orderBy('id asc')->fetchAll();
+
+        if (!empty($users)) {
+            $shortcut = array(
+                'parent' => 0,
+                'shared' => false,
+                'is_dir' => $file['is_dir'],
+                'title' => $file['title'],
+                'description' => $file['description'],
+                'owner' => $file['owner'],
+                'reference' => !empty($file['reference'])? $file['reference'] : $id,
+            );
+            foreach ($users as $uid) {
+                $shortcut['user'] = $uid;
+                $table->reset();
+                $res = $table->insert($shortcut)->exec();
+                if (Jaws_Error::IsError($res)) {
+                    return $res;
+                }
+            }
+        }
+
+        $shared = !empty($users);
+        if ($file['shared'] !== $shared) {
+            $table->reset();
+            $res = $table->update(array('shared' => $shared))->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+        }
+
+        return true;
     }
 }

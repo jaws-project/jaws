@@ -68,7 +68,11 @@ $actions['UploadFile'] = array(
     'file' => 'Files'
 );
 
-/* Setting Actions */
+/* Share Actions */
+$actions['GetUsers'] = array(
+    'standalone' => true,
+    'file' => 'Share'
+);
 $actions['GetShareForm'] = array(
     'standalone' => true,
     'file' => 'Share'
@@ -77,7 +81,7 @@ $actions['GetFileUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
 );
-$actions['GetUsers'] = array(
+$actions['UpdateFileUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
 );

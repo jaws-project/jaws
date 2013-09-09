@@ -77,13 +77,8 @@
       <field>
         <name>shared</name>
         <type>boolean</type>
+        <default>false</default>
         <description>is file shared to others</description>
-      </field>
-
-      <field>
-        <name>reference</name>
-        <type>integer</type>
-        <description>reference to original file that is shared</description>
       </field>
 
       <field>
@@ -91,6 +86,12 @@
         <type>integer</type>
         <notnull>true</notnull>
         <description>the creator user of the file, may be equal to user</description>
+      </field>
+
+      <field>
+        <name>reference</name>
+        <type>integer</type>
+        <description>reference to original file that is shared</description>
       </field>
 
       <field>

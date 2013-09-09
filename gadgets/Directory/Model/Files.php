@@ -11,21 +11,26 @@
 class Directory_Model_Files extends Jaws_Gadget_Model
 {
     /**
-     * Fetches list of files
+     * Fetches list of files and directories
      *
      * @access  public
      * @param   int     $parent     Restrict result to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null)
+    function GetFiles($user = null, $parent = null)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        $fmTable->select('id', 'title', 'is_dir:boolean');
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('id', 'title', 'is_dir:boolean');
 
         if ($parent !== null){
-            $fmTable->where('parent', $parent);
+            $table->where('parent', $parent);
         }
-        return $fmTable->orderBy('id asc')->fetchAll();
+
+        if ($user !== null){
+            $table->and()->where('user', $user);
+        }
+
+        return $table->orderBy('id asc')->fetchAll();
     }
 
     /**
@@ -37,10 +42,10 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function GetFile($id)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        $fmTable->select('id', 'user', 'parent', 'is_dir:boolean', 'title',
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('id', 'user', 'parent', 'is_dir:boolean', 'title',
             'description', 'filename', 'url');
-        return $fmTable->where('id', $id)->fetchRow();
+        return $table->where('id', $id)->fetchRow();
     }
 
     /**
@@ -53,9 +58,9 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function GetPath($id, &$path)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        $fmTable->select('id', 'parent', 'title');
-        $parent = $fmTable->where('id', $id)->fetchRow();
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('id', 'parent', 'title');
+        $parent = $table->where('id', $id)->fetchRow();
         if (!empty($parent)) {
             $path[] = array('id' => $parent['id'], 'title' => $parent['title']);
             $this->GetPath($parent['parent'], $path);
@@ -71,8 +76,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function InsertFile($data)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        return $fmTable->insert($data)->exec();
+        $table = Jaws_ORM::getInstance()->table('directory');
+        return $table->insert($data)->exec();
     }
 
     /**
@@ -85,8 +90,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function UpdateFile($id, $data)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        return $fmTable->update($data)->where('id', $id)->exec();
+        $table = Jaws_ORM::getInstance()->table('directory');
+        return $table->update($data)->where('id', $id)->exec();
     }
 
     /**
@@ -98,7 +103,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function DeleteFile($id)
     {
-        $fmTable = Jaws_ORM::getInstance()->table('directory');
-        return $fmTable->delete()->where('id', $id)->exec();
+        $table = Jaws_ORM::getInstance()->table('directory');
+        return $table->delete()->where('id', $id)->exec();
     }
 }

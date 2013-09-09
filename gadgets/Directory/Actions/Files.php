@@ -108,8 +108,19 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     function UpdateFile()
     {
         try {
-            $id = jaws()->request->fetch('id');
+            $id = (int)jaws()->request->fetch('id');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Check for existance
+            $file = $model->GetFile($id);
+            if (Jaws_Error::IsError($file)) {
+                throw new Exception($file->getMessage());
+            }
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($file['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
+            }
+
             $data = jaws()->request->fetch(array('title', 'description', 'parent', 'url', 'filename'));
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -168,6 +179,16 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         try {
             $id = (int)jaws()->request->fetch('id');
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Check for existance
+            $file = $model->GetFile($id);
+            if (Jaws_Error::IsError($file)) {
+                throw new Exception($file->getMessage());
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($file['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_DELETE'));
+            }
 
             // Delete from disk
             $file = $model->GetFile($id);

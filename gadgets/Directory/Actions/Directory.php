@@ -49,8 +49,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     function GetFiles()
     {
         $parent = jaws()->request->fetch('parent', 'post');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $model->GetFiles($parent);
+        $res = $model->GetFiles($user, $parent);
         if (Jaws_Error::IsError($res)){
             return array();
         }

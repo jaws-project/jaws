@@ -74,15 +74,25 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     function UpdateDirectory()
     {
         try {
-            $id = jaws()->request->fetch('id', 'post');
+            $id = (int)jaws()->request->fetch('id', 'post');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Check for existance
+            $dir = $model->GetFile($id);
+            if (Jaws_Error::IsError($dir)) {
+                throw new Exception($dir->getMessage());
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($dir['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
+            }
+
             $data = jaws()->request->fetch(array('title', 'description', 'parent'), 'post');
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            //$data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $result = $model->UpdateFile($id, $data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
@@ -102,11 +112,26 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function DeleteDirectory()
     {
-        $id = (int)jaws()->request->fetch('id');
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $model->DeleteFile($id);
-        if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+        try {
+            $id = (int)jaws()->request->fetch('id');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Check for existance
+            $dir = $model->GetFile($id);
+            if (Jaws_Error::IsError($dir)) {
+                throw new Exception($dir->getMessage());
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($dir['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_DELETE'));
+            }
+
+            $res = $model->DeleteFile($id);
+            if (Jaws_Error::IsError($res)) {
+                throw new Exception($res->getMessage());
+            }
+        } catch (Exception $e) {
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
 
         return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_DELETED'), RESPONSE_NOTICE);

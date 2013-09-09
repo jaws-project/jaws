@@ -13,11 +13,10 @@ fieldset th {width:1%; text-align:left;}
 #frm_file th, #frm_upload th {width:75px;}
 #ifrm_upload {display:none;}
 
-#share_users, #groups {width:330px}
-#users, #file_users {
+#users {
   border:1px solid silver; margin:0; padding:10px;
   max-height:150px; overflow-y:auto; line-height:1.5;
 }
-#file_users {height:100px; line-height:1.2;}
+#share_users {width:100%; height:100px;}
 #users input {margin-right:3px; vertical-align:middle;}
 #users label {font-weight:bold; vertical-align:middle;}
