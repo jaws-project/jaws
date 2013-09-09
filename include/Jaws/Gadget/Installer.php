@@ -161,11 +161,6 @@ class Jaws_Gadget_Installer
             }
         }
 
-        $result = $installer->Install($insert, $variables);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         // Registry keys
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
         $installer->_RegKeys = array_merge(
@@ -173,6 +168,14 @@ class Jaws_Gadget_Installer
             $installer->_RegKeys
         );
         $this->gadget->registry->insert($installer->_RegKeys, $this->gadget->name);
+
+        // load gadget install method
+        $result = $installer->Install($insert, $variables);
+        if (Jaws_Error::IsError($result)) {
+            // removeing gadget registry keys
+            $GLOBALS['app']->Registry->delete($this->gadget->name);
+            return $result;
+        }
 
         // ACL keys
         $this->gadget->acl->insert($installer->GetACLs(), $this->gadget->name);
