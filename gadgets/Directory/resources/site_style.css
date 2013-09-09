@@ -5,10 +5,63 @@ fieldset th {width:1%; text-align:left;}
 .response_notice {color:#0a0;}
 .response_error {color:#a00;}
 
+.file-box{
+display:inline-block;
+width:50px;
+max-height:100px;
+margin:10px;
+text-align:center;
+border-radius:1px;
+line-height:1.5;
+font:11px tahoma;
+padding:3px;
+vertical-align:top;
+}
+.file-title{
+cursor:default;
+word-break:break-all
+}
+.file-box:hover{
+box-shadow:0 0 1px #3a41af;
+background-color:#f9fbff;
+}
+.file-box.selected{
+box-shadow:0 0 2px #3a41af;
+background-color:#eaf0fc;
+}
+.file-icon{
+height:32px;
+background-position:center center;
+background-repeat:no-repeat;
+}
+.file-icon.folder{
+background-image:url(../images/mimetypes/folder.png);
+}
+.file-icon.file{
+background-image:url(../images/mimetypes/file.png);
+}
+
+#workspace{
+min-height:300px;
+border:1px solid #ddd;
+margin-top:5px;
+}
+
 #path span {color:blue; cursor:pointer;}
 #path span:hover {text-decoration:underline;}
 
-#files {width:400px}
+#statusbar{
+background-color:#f8f8f8;
+border:1px solid #ddd;
+border-top:none;
+font:11px tahoma;
+padding:2px 3px;
+}
+#statusbar span{
+margin-left:10px;
+color:#999;
+}
+
 #filelink img {vertical-align:middle; margin:0 5px;}
 #frm_file th, #frm_upload th {width:75px;}
 #ifrm_upload {display:none;}

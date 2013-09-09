@@ -20,14 +20,34 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     {
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Main.html');
-        $tpl->SetBlock('directory');
+        $tpl = $this->gadget->loadTemplate('Workspace.html');
+        $tpl->SetBlock('workspace');
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
         $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
+        $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/' . $user));
+
+        // File template
+        $tpl->SetBlock('workspace/fileTemplate');
+        $tpl->SetVariable('id', '{id}');
+        $tpl->SetVariable('title', '{title}');
+        $tpl->SetVariable('type', '{type}');
+        $tpl->ParseBlock('workspace/fileTemplate');
+
+        // Status bar
+        $tpl->SetBlock('workspace/statusbar');
+        $tpl->SetVariable('title', '{title}');
+        $tpl->SetVariable('filesize', '{filesize}');
+        $tpl->SetVariable('createtime', '{createtime}');
+        $tpl->SetVariable('updatetime', '{updatetime}');
+        $tpl->ParseBlock('workspace/statusbar');
 
         // Display probabley responses
         $response = $GLOBALS['app']->Session->PopResponse('Directory');
@@ -36,7 +56,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             $tpl->SetVariable('response_type', $response['type']);
         }
 
-        $tpl->ParseBlock('directory');
+        $tpl->ParseBlock('workspace');
         return $tpl->Get();
     }
 
@@ -72,6 +92,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             return array();
         }
+        $objDate = $GLOBALS['app']->loadDate();
+        $res['createtime'] = $objDate->Format($res['createtime'], 'n/j/Y g:i A');
+        $res['updatetime'] = $objDate->Format($res['updatetime'], 'n/j/Y g:i A');
+        $res['filesize'] = Jaws_Utils::FormatSize($res['filesize']);
         return $res;
     }
 

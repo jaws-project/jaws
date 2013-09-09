@@ -14,56 +14,54 @@ var DirectoryCallback = {
     CreateDirectory: function(response) {
         if (response.css === 'notice-message') {
             cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     UpdateDirectory: function(response) {
         if (response.css === 'notice-message') {
             cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     DeleteDirectory: function(response) {
         if (response.css === 'notice-message') {
-            cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     CreateFile: function(response) {
         if (response.css === 'notice-message') {
             cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     UpdateFile: function(response) {
         if (response.css === 'notice-message') {
             cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     DeleteFile: function(response) {
         if (response.css === 'notice-message') {
-            cancel();
-            fillFilesCombo(currentDir);
+            displayFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     },
 
     UpdateFileUsers: function(response) {
         if (response.css === 'notice-message') {
             cancel();
         }
-        $('simple_response').set('html', response.message);
+        //$('simple_response').set('html', response.message);
     }
 }
 
@@ -73,34 +71,65 @@ var DirectoryCallback = {
 function initDirectory()
 {
     DirectoryAjax.backwardSupport();
-    comboFiles = $('files');
-    currentDir = Number(DirectoryStorage.fetch('current_dir'));
-    changeDirectory(currentDir);
     imgDeleteFile = new Element('img', {src:imgDeleteFile});
     imgDeleteFile.addEvent('click', removeFile);
+    currentDir = Number(DirectoryStorage.fetch('current_dir'));
+    fileTemplate = $('workspace').get('html');
+    statusTemplate = $('statusbar').get('html');
+    $('workspace').addEvent('click', cancel);
+    openDirectory(currentDir);
 }
 
 /**
- * Fills files combobox
+ * Displays files and directories
  */
-function fillFilesCombo(parent)
+function displayFiles(parent)
 {
-    var files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
-    comboFiles.options.length = 0;
+    var ws = $('workspace'),
+        files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
+    ws.empty();
+    fileById = {};
+    filesCount = files.length;
     files.each(function (file) {
-        fileById[file.id] = file;
-        comboFiles.options[comboFiles.options.length] = new Option(file.title, file.id);
+        file.type = file.is_dir? 'folder' : 'file'
+        ws.grab(getFileElement(file));
     });
+
+    $('statusbar').set('html', filesCount + ' items').show();
+}
+
+/**
+ * Builds a file element from passed data
+ */
+function getFileElement(fileData)
+{
+    var html = fileTemplate.substitute(fileData),
+        div = new Element('div', {'html':html}).getFirst();
+    div.addEvent('click', fileSelect);
+    div.addEvent('dblclick', fileOpen);
+    div.data = {};
+    div.data.id = fileData.id;
+    return div;
 }
 
 /**
  * Fetches and displays details on a file/directory
  */
-function viewInfo()
+function fileSelect(e)
 {
-    selectedId = comboFiles.value;
-    var data = DirectoryAjax.callSync('GetFile', {id:selectedId});
-    if (data.is_dir) {
+    var ws = $('workspace'),
+        st = $('statusbar');
+    cancel();
+    this.addClass('selected');
+    selectedId = this.data.id;
+    if (!fileById[selectedId]) {
+        fileById[selectedId] = DirectoryAjax.callSync('GetFile', {id:selectedId});
+    }
+    st.set('html', statusTemplate.substitute(fileById[selectedId]));
+    e.stop();
+    updateActions();
+
+    /*if (data.is_dir) {
         if (!cachedForms.viewDir) {
             cachedForms.viewDir = DirectoryAjax.callSync('DirectoryForm', {type:'view'});
         }
@@ -114,38 +143,28 @@ function viewInfo()
     $('form').set('html', form.substitute(data));
     if (data.filename) {
         $('filelink').grab(getDownloadLink(data.filename, data_url));
-    }
-}
-
-/**
- * Deselects file and hides the form
- */
-function cancel()
-{
-    selectedId = null;
-    $('form').set('html', '');
-    comboFiles.selectedIndex = -1;
+    }*/
 }
 
 /**
  * Opens directory
  */
-function openDirectory()
+function fileOpen()
 {
-    if (fileById[comboFiles.value].is_dir) {
-        changeDirectory(comboFiles.value);
+    if (fileById[selectedId].is_dir) {
+        openDirectory(selectedId);
     }
 }
 
 /**
- * Changes current path to the given directory
+ * Navigates to the given directory
  */
-function changeDirectory(id)
+function openDirectory(id)
 {
     currentDir = id;
     selectedId = null;
-    DirectoryStorage.update('current_dir', id)
-    fillFilesCombo(id);
+    DirectoryStorage.update('current_dir', id);
+    displayFiles(id);
     updatePath();
     cancel();
 }
@@ -157,8 +176,8 @@ function updatePath()
 {
     var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
         path = $('path').set('html', ''),
-        link = new Element('span', {'html':'Root'});
-    link.addEvent('click', changeDirectory.pass(0));
+        link = new Element('span', {'html':'My Drive'});
+    link.addEvent('click', openDirectory.pass(0));
     path.grab(link);
     pathArr.reverse().each(function (dir, i) {
         path.appendText(' > ');
@@ -167,10 +186,47 @@ function updatePath()
         } else {
             link = new Element('span');
             link.set('html', dir.title);
-            link.addEvent('click', changeDirectory.pass(dir.id));
+            link.addEvent('click', openDirectory.pass(dir.id));
             path.grab(link);
         }
     });
+}
+
+/**
+ * Deselects file and hides the form
+ */
+function cancel()
+{
+    selectedId = null;
+    $('form').set('html', '');
+    $('workspace').getElements('.selected').removeClass('selected');
+    $('statusbar').set('html', filesCount + ' items').show();
+    updateActions();
+}
+
+/**
+ * Shows/Hides appropriate buttons
+ */
+function updateActions()
+{
+    if (selectedId === null) {
+        $('file_actions').hide();
+    } else {
+        $('file_actions').show();
+    }
+}
+
+/**
+ * Calls file/directory edit function
+ */
+function edit()
+{
+    if (selectedId === null) return;
+    if (fileById[selectedId].is_dir) {
+        editDirectory();
+    } else {
+        editFile();
+    }
 }
 
 /**
@@ -179,8 +235,7 @@ function updatePath()
 function _delete()
 {
     if (selectedId === null) return;
-    var form = $('frm_files');
-    if (fileById[comboFiles.value].is_dir) {
+    if (fileById[selectedId].is_dir) {
         if (confirm('Are you sure you want to delete directory?')) {
             DirectoryAjax.callAsync('DeleteDirectory', {'id':selectedId});
         }
@@ -201,7 +256,6 @@ function newDirectory()
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {type:'edit'});
     }
     $('form').set('html', cachedForms.editDir);
-    comboFiles.selectedIndex = -1;
     $('frm_dir').title.focus();
     $('frm_dir').parent.value = currentDir;
 }
@@ -209,14 +263,14 @@ function newDirectory()
 /**
  * Brings the edit directory UI up
  */
-function editDirectory(data)
+function editDirectory()
 {
-    if (selectedId === null) return;
-    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
     if (!cachedForms.editDir) {
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {type:'edit'});
     }
     $('form').set('html', cachedForms.editDir);
+    //var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
+    var data = fileById[selectedId];
     var form = $('frm_dir');
     form.id.value = selectedId;
     form.title.value = data.title;
@@ -238,20 +292,18 @@ function newFile()
     $('frm_upload').show();
     $('frm_file').parent.value = currentDir;
     $('frm_file').title.focus();
-    comboFiles.selectedIndex = -1;
 }
 
 /**
  * Brings the edit file UI up
  */
-function editFile(data)
+function editFile()
 {
-    if (selectedId === null) return;
-    var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
     if (!cachedForms.editFile) {
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {type:'edit'});
     }
     $('form').set('html', cachedForms.editFile);
+    var data = fileById[selectedId];
     var form = $('frm_file');
     form.action.value = 'UpdateFile';
     form.id.value = selectedId;
@@ -273,7 +325,7 @@ function editFile(data)
  */
 function uploadFile() {
     var iframe = new Element('iframe', {id:'ifrm_upload'});
-    $('frm_files').grab(iframe);
+    document.body.grab(iframe);
     $('frm_upload').submit();
 }
 
@@ -288,6 +340,9 @@ function onUpload(response) {
         var filename = encodeURIComponent(response.message);
         setFile(filename, '');
         $('filename').value = filename;
+        if ($('frm_file').title.value == '') {
+            $('frm_file').title.value = filename;
+        }
     }
     $('ifrm_upload').destroy();
 }
@@ -359,7 +414,6 @@ function submitFile()
  */
 function share()
 {
-    selectedId = comboFiles.value;
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('GetShareForm');
     }
@@ -441,5 +495,7 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     sharedFileUsers = {},
     cachedForms = {},
     currentDir = 0,
-    comboFiles,
+    filesCount = 0,
+    fileTemplate = '',
+    statusTemplate = '',
     selectedId;

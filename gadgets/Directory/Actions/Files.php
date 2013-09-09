@@ -75,11 +75,10 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
                     $filename = Jaws_Utils::upload_tmp_dir(). '/' . $data['filename'];
                     if (file_exists($filename)) {
                         $target = $path . '/' . $data['filename'];
-                        // FIXME: we need to extract file basename and extension
-                        // if (file_exists($target)) {
-                            // $target .= '_'. uniqid(floor(microtime()*1000));
-                        // }
-                        @rename($filename, $target);
+                        if (!Jaws_Utils::rename($filename, $target, true)) {
+                            throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                        }
+                        $data['filesize'] = filesize($target);
                     } else {
                         throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
@@ -148,7 +147,11 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
                 } else {
                     $filename = Jaws_Utils::upload_tmp_dir(). '/'. $data['filename'];
                     if (file_exists($filename)) {
-                        @rename($filename, $path . '/' . $data['filename']);
+                        $target = $path . '/' . $data['filename'];
+                        if (!Jaws_Utils::rename($filename, $target, false)) {
+                            throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                        }
+                        $data['filesize'] = filesize($target);
                     } else {
                         throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }

@@ -1,0 +1,39 @@
+<!-- BEGIN workspace -->
+<div class="gadget directory">
+  <h2>{title}</h2>
+  <div id="simple_response" class="{response_type}">{response}</div>
+  <div class="actions" style="float:right">
+    <span id="file_actions">
+      <button type="button" id="btn_share" onclick="share()">{lbl_share}</button>
+      <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
+      <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
+      <!--button type="button" id="btn_cancel" onclick="cancel()">{lbl_cancel}</button-->
+    </span>
+    <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
+    <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
+  </div>
+  <div><span id="path"></span></div>
+  <div id="workspace">
+    <!-- BEGIN fileTemplate -->
+    <div id="file_{id}" class="file-box">
+      <div class="file-icon {type}"></div>
+      <div class="file-title">{title}</div>
+    </div>
+    <!-- END fileTemplate -->
+  </div>
+  <div id="statusbar" style="display:none;">
+    <!-- BEGIN statusbar -->
+    <strong>{title}</strong>
+    <span>Size: </span>{filesize}
+    <span>Date created: </span>{createtime}
+    <span>Date modified: </span>{updatetime}
+    <!-- END statusbar -->
+  </div><br/>
+  <div id="form"></div>
+</div>
+<script>
+  var data_url = "{data_url}",
+      imgDeleteFile = "{imgDeleteFile}";
+  initDirectory();
+</script>
+<!-- END workspace -->

@@ -30,7 +30,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->and()->where('user', $user);
         }
 
-        return $table->orderBy('id asc')->fetchAll();
+        return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
     }
 
     /**
@@ -44,7 +44,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'user', 'parent', 'is_dir:boolean', 'title',
-            'description', 'filename', 'url');
+            'description', 'filename', 'url', 'filetype', 'filesize',
+            'createtime', 'updatetime');
         return $table->where('id', $id)->fetchRow();
     }
 
@@ -76,6 +77,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function InsertFile($data)
     {
+        $data['createtime'] = $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->insert($data)->exec();
     }
@@ -90,6 +92,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function UpdateFile($id, $data)
     {
+        $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->update($data)->where('id', $id)->exec();
     }
