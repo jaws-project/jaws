@@ -235,9 +235,9 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
                 $v = trim($v);
                 $likeStr = '%'.$v.'%';
 
-                $spgTable->and()->where(
-                    $spgTable->where('spt.title', $likeStr, 'like')->or()->where('spt.content', $likeStr, 'like')
-                );
+                $spgTable->and()->openWhere();
+                $spgTable->where('spt.title', $likeStr, 'like')->or()->where('spt.content', $likeStr, 'like');
+                $spgTable->closeWhere();
             }
         }
 
