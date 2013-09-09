@@ -149,6 +149,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $toolBar->Add($deleteAll);
 
         $tpl->SetVariable('tools', $toolBar->Get());
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('confirmPageDelete',    _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
         $tpl->SetVariable('confirmMassiveDelete', _t('STATICPAGE_CONFIRM_MASIVE_DELETE_PAGE'));
 

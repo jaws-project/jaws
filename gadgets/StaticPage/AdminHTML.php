@@ -242,6 +242,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $pageform->Add($buttonbox);
 
         $tpl->setVariable('preview_header', _t('GLOBAL_PREVIEW'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('form', $pageform->Get());
         $tpl->SetVariable('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
 
