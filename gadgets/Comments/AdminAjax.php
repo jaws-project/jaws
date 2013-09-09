@@ -87,7 +87,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function DeleteComments()
     {
         $this->gadget->CheckPermission('ManageComments');
-        $ids = jaws()->request->fetch('0:array', 'post');
+        $ids = jaws()->request->fetchAll('post');
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'DeleteComments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
