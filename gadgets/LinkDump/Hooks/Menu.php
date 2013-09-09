@@ -19,7 +19,7 @@ class LinkDump_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('LinkDump', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Categories'),
                         'title' => _t('LINKDUMP_NAME'));
 
         $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
@@ -29,7 +29,7 @@ class LinkDump_Hooks_Menu extends Jaws_Gadget_Hook
             foreach ($groups as $group) {
                 $title = _t('LINKDUMP_LINKS_ARCHIVE'). ' - '. $group['title'];
                 $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-                $url = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Archive', array('id' => $gid));
+                $url = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Category', array('id' => $gid));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($title) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($title, 0, $max_size - 3) . '...' :
