@@ -10,7 +10,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array('GroupsList', 'pages');
-$maps[] = array('DefaultAction', 'page/default');
+$maps[] = array('Page', 'page/default');
 $maps[] = array('PagesTree', 'page/index');
 $maps[] = array(
     'Page', 

@@ -48,11 +48,10 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      * Builds an individual page
      *
      * @access  public
-     * @param   int     $page_id        Page ID (optional)
      * @param   string  $base_action    Determines the map to be used (Page/Pages)
      * @return  string  XHTML content
      */
-    function Page($page_id = null, $base_action = 'Page')
+    function Page($base_action = 'Page')
     {
         $post = jaws()->request->fetch(array('gid', 'pid','language'), 'get');
         $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
@@ -69,7 +68,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
             }
         }
 
-        $page_id = is_null($page_id)? $post['pid'] : $page_id;
+        $page_id = empty($post['pid'])? $this->gadget->registry->fetch('default_page') : $post['pid'];
         $page_language = $post['language'];
         if (empty($page_language)) {
             // if page language not set try to load language traslation of page that same as site language
@@ -150,7 +149,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      */
     function Pages()
     {
-        return $this->Page(null, 'Pages');
+        return $this->Page('Pages');
     }
 
     /**
