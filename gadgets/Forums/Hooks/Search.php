@@ -63,13 +63,11 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $post = array();
             $post['title'] = $r['subject'];
-            $post['url']   = $GLOBALS['app']->Map->GetURLFor(
-                'Forums',
+            $post['url']   = $this->gadget->urlMap(
                 'Posts',
                 array(
                     'fid' => $r['fid'],
                     'tid' => $r['tid'],
-                    'pid' => $r['id'],
                     'page' => ceil($r['post_number']/10)
                 )
             );
