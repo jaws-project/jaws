@@ -92,7 +92,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function SizeOfSearch()
     {
         @list($group, $status, $search) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
+        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
         $pages = $model->SearchPages($group, $status, $search, null);
         return count($pages);
     }
