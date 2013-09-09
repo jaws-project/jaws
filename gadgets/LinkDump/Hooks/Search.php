@@ -50,7 +50,7 @@ class LinkDump_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $link = array();
             $link['title']   = $r['title'];
-            $link['url']     = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Click', array('id' => $r['id']));
+            $link['url']     = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $r['id']));
             $link['outer']   = true;
             $link['image']   = 'gadgets/LinkDump/images/logo.png';
             $link['snippet'] = $r['description'];
