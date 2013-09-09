@@ -322,6 +322,15 @@ class Jaws_Utils
                     closedir($hDir);
                 }
             } else {
+                if (file_exists($dest) && !$overwrite) {
+                    $destinfo = pathinfo($dest);
+                    $dest = $destinfo['dirname']. DIRECTORY_SEPARATOR .
+                        $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
+                    if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
+                        $dest.= '.'. $destinfo['extension'];
+                    }
+                }
+
                 $result = @copy($source, $dest);
                 if ($result && !empty($mode)) {
                     Jaws_Utils::chmod($dest, $mode);
