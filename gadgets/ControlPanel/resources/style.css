@@ -674,6 +674,9 @@ min-width:40px;
 margin-top:8px;
 text-align:right;
 }
+.notify_version{
+display:none;
+}
 /* ----- DIALOG BOX -----*/
 .dialog_box{
 position:absolute;
