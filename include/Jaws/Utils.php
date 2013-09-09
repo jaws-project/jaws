@@ -288,13 +288,14 @@ class Jaws_Utils
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   string  $source Path to the source file or directory
-     * @param   string  $dest   The destination path
-     * @param   int     $mode   see php chmod() function
+     * @param   string  $source     Path to the source file or directory
+     * @param   string  $dest       The destination path
+     * @param   bool    $overwrite  Overwite files if exists
+     * @param   int     $mode       see php chmod() function
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    function copy($source, $dest, $mode = null)
+    function copy($source, $dest, $overwrite = true, $mode = null)
     {
         $result = false;
         if (file_exists($source)) {
@@ -306,9 +307,12 @@ class Jaws_Utils
                                 continue;
                             }
 
-                            $result = Jaws_Utils::copy($source. DIRECTORY_SEPARATOR . $file,
-                                                       $dest. DIRECTORY_SEPARATOR . $file,
-                                                       $mode);
+                            $result = Jaws_Utils::copy(
+                                $source. DIRECTORY_SEPARATOR . $file,
+                                $dest. DIRECTORY_SEPARATOR . $file,
+                                $overwrite,
+                                $mode
+                            );
                             if (!$result) {
                                 break;
                             }
@@ -322,6 +326,60 @@ class Jaws_Utils
                 if ($result && !empty($mode)) {
                     Jaws_Utils::chmod($dest, $mode);
                 }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Renames/Moves a file or directory
+     *
+     * @access  public
+     * @param   string  $source     Path to the source file or directory
+     * @param   string  $dest       The destination path
+     * @param   bool    $overwrite  Overwite files if exists
+     * @return  bool    True if success, False otherwise
+     * @see http://www.php.net/rename
+     */
+    function rename($source, $dest, $overwrite = true)
+    {
+        $result = false;
+        if (file_exists($source)) {
+            if (file_exists($dest)) {
+                if (is_dir($source)) {
+                    if (false !== $hDir = @opendir($source)) {
+                        while(false !== ($file = @readdir($hDir))) {
+                            if($file == '.' || $file == '..') {
+                                continue;
+                            }
+                            $result = Jaws_Utils::rename(
+                                $source. DIRECTORY_SEPARATOR . $file,
+                                $dest. DIRECTORY_SEPARATOR . $file,
+                                $overwrite
+                            );
+                            if (!$result) {
+                                break;
+                            }
+                        }
+
+                        closedir($hDir);
+                        Jaws_Utils::delete($source);
+                    }
+                } else {
+                    if (!$overwrite) {
+                        $destinfo = pathinfo($dest);
+                        $dest = $destinfo['dirname']. DIRECTORY_SEPARATOR .
+                            $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
+                        if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
+                            $dest.= '.'. $destinfo['extension'];
+                        }
+                    }
+
+                    $result = @rename($source, $dest);
+                }
+            } else {
+                $result = @rename($source, $dest);
             }
         }
 
@@ -472,10 +530,14 @@ class Jaws_Utils
                     if (file_exists($uploadfile)) {
                         @unlink($uploadfile);
                     }
-                    $res = $move_files? @rename($file['tmp_name'], $uploadfile) : @copy($file['tmp_name'], $uploadfile);
+                    $res = $move_files?
+                        @rename($file['tmp_name'], $uploadfile):
+                        @copy($file['tmp_name'], $uploadfile);
                     if (!$res) {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $host_filename),
-                                              __FUNCTION__);
+                        return new Jaws_Error(
+                            _t('GLOBAL_ERROR_UPLOAD', $host_filename),
+                            __FUNCTION__
+                        );
                     }
                 }
 
