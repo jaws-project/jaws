@@ -151,7 +151,7 @@ function commentDelete(id)
 {
     stopCommentAction();
     if (confirm(confirmCommentDelete)) {
-        CommentsAjax.callAsync('DeleteComments', id);
+        CommentsAjax.callAsync('DeleteComments', new Array(id));
     }
     unselectGridRow('comments_datagrid');
 }
