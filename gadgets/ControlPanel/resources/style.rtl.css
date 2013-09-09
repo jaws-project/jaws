@@ -677,6 +677,9 @@ min-width:40px;
 margin-top:8px;
 text-align:left;
 }
+.notify_version{
+display:none;
+}
 #latest_jaws_version{
 direction:ltr;
 display:inline-block;

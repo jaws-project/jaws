@@ -13,8 +13,8 @@
 var ControlPanelCallback = {
     JawsVersion: function(response) {
         $('latest_jaws_version').set('html', response);
-        if (!response.blank()) {
-            $(document.body).getElement('div.notify_version').setStyle('display', 'block');
+        if (!response.blank() && response !== $('jaws_version').value) {
+            $$('div.notify_version').setStyle('display', 'block');
         }
     }
 }
@@ -44,7 +44,15 @@ function init()
         }
     });
 
-    if ($('do_checking') && $('do_checking').value == 1) {
+    // compare current version with latest jaws version
+    if (!$('latest_jaws_version').get('text').blank() &&
+        $('latest_jaws_version').get('text') !== $('jaws_version').value)
+    {
+        $$('div.notify_version').setStyle('display', 'block');
+    }
+
+    // check jaws project website for latest version
+    if ($('do_checking').value == 1) {
         ControlPanelAjax.callAsync('JawsVersion');
     }
 }
