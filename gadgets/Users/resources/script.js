@@ -395,14 +395,6 @@ function deleteGroup(rowElement, gid)
 }
 
 /**
- * Save the group ACL keys
- */
-function saveGroupACL()
-{
-    UsersAjax.callAsync('savegroupacl', selectedId, changedACLs);
-}
-
-/**
  * Edit user
  */
 function editUser(rowElement, uid)
