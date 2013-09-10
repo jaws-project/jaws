@@ -52,6 +52,12 @@ define('_EN_ADDRESSBOOK_ITEMS_PUBLIC', "Public");
 define('_EN_ADDRESSBOOK_OTHER_DETAILS', "Other Details");
 define('_EN_ADDRESSBOOK_TEL_TITLE', "Phones");
 define('_EN_ADDRESSBOOK_EMAIL_TITLE', "Emails");
+define('_EN_ADDRESSBOOK_ADR_TITLE', "Addresses");
+define('_EN_ADDRESSBOOK_HOME_ADR', "Home Address");
+define('_EN_ADDRESSBOOK_WORK_ADR', "Work Address");
+define('_EN_ADDRESSBOOK_OTHER_ADR', "Other Address");
+define('_EN_ADDRESSBOOK_ITEMS_FIRSTNAME', "First Name");
+define('_EN_ADDRESSBOOK_ITEMS_LASTNAME', "Last Name");
 
 /* Groups */
 define('_EN_ADDRESSBOOK_GROUP_TITLE', "Address Book Groups");
@@ -59,6 +65,7 @@ define('_EN_ADDRESSBOOK_GROUPS_ADD', "Add New Group");
 define('_EN_ADDRESSBOOK_GROUP_ADD_NEW_TITLE', "Add New Group");
 define('_EN_ADDRESSBOOK_GROUP_EDIT_TITLE', "Edit Group");
 define('_EN_ADDRESSBOOK_GROUPS_MANAGE', "Manage Groups");
+define('_EN_ADDRESSBOOK_VIEW_GROUP_MEMBER', "View Members");
 
 // Responses
 define('_EN_ADDRESSBOOK_RESULT_NEW_GROUP_SAVED', "Group was successfully added");
