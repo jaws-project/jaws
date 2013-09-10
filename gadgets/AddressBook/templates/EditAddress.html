@@ -73,11 +73,43 @@
       </div>
     </fieldset>
     <fieldset>
-      <legend><span>{other_details}</span></legend>
-      <div>
-        <label for="addressbook_url" >{lbl_url}:</label>
-        <input id="addressbook_url" name="url" type="text" value="{url}" style="direction: ltr;" />
+      <legend><span>{adr_title}</span></legend>
+      <div id="adr_p">
+       <!-- BEGIN adr -->
+       <div id="adr_{index}" class="adr">
+        <select name="adr_type[{index}]" style="width: 150px;" >
+          <!-- BEGIN item -->
+          <option value="{type_id}" {selected}>{type_name}</option>
+          <!-- END item -->
+        </select>
+        <button onclick="AddAdrItem();" value="" id="addAdrButton" name="addAdrButton"type="button">
+          <img alt="{lbl_add_adr}" src="{icon_add}">
+        </button>
+        <button onclick="RemoveItem(this);" value="" id="removeAdrButton" name="removeAdrButton"type="button">
+          <img alt="{lbl_remove_adr}" src="{icon_remove}">
+        </button>
+        <textarea name="adr[{index}]" cols="25" rows="6" style="width: 100%;">{value}</textarea>
+       </div>
+       <!-- END adr -->
       </div>
+    </fieldset>
+    <fieldset>
+      <legend><span>{other_details}</span></legend>
+      <div id="url_p">
+       <!-- BEGIN url -->
+       <div id="url_{index}" class="url">
+        <label>{lbl_url}:</label>
+        <input name="url[{index}]" type="text" value="{value}" style="width: 350px; display: inline;"/>
+        <button onclick="AddUrlItem();" value="" id="addUrlButton" name="addUrlButton"type="button">
+          <img alt="{lbl_add_Url}" src="{icon_add}">
+        </button>
+        <button onclick="RemoveItem(this);" value="" id="removeUrlButton" name="removeUrlButton"type="button">
+          <img alt="{lbl_remove_Url}" src="{icon_remove}">
+        </button>
+       </div>
+       <!-- END url -->
+      </div>
+
       <div>
         <label for="addressbook_notes" >{lbl_notes}:</label>
         <textarea id="addressbook_notes" name="notes" cols="25" rows="6">{notes}</textarea>
@@ -120,6 +152,16 @@
         $('removeEmailButton').style.display = 'none';
     }
 
+    remain = $('removeAdrButton').parentNode.parentNode.getElementsByTagName('div').length;
+    if (remain == 1) {
+        $('removeAdrButton').style.display = 'none';
+    }
+
+    remain = $('removeUrlButton').parentNode.parentNode.getElementsByTagName('div').length;
+    if (remain == 1) {
+        $('removeUrlButton').style.display = 'none';
+    }
+
     function AddTellItem()
     {
         lastID = lastID + 1;
@@ -146,6 +188,32 @@
         div.getElementsByTagName('input')[0].value = '';
         div.getElementsByTagName('select')[0].selectedIndex = 0;
         $('email_p').appendChild(div);
+    }
+
+    function AddAdrItem()
+    {
+        lastID = lastID + 1;
+        $('removeAdrButton').style.display = 'inline'
+        var div = $('adr_p').getElementsByTagName('div')[0].cloneNode(true);
+        div.className = 'adr';
+        div.id = "adr_" + lastID;
+        div.getElementsByTagName('select')[0].name = 'adr_type['+lastID+']';
+        div.getElementsByTagName('textarea')[0].name  = 'adr['+lastID+']';
+        div.getElementsByTagName('textarea')[0].value = '';
+        div.getElementsByTagName('select')[0].selectedIndex = 0;
+        $('adr_p').appendChild(div);
+    }
+
+    function AddUrlItem()
+    {
+        lastID = lastID + 1;
+        $('removeUrlButton').style.display = 'inline'
+        var div = $('url_p').getElementsByTagName('div')[0].cloneNode(true);
+        div.className = 'url';
+        div.id = "url_" + lastID;
+        div.getElementsByTagName('input')[0].name  = 'url['+lastID+']';
+        div.getElementsByTagName('input')[0].value = '';
+        $('url_p').appendChild(div);
     }
 
     function RemoveItem(inputObject)

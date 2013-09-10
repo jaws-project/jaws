@@ -38,6 +38,17 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
     );
 
     /**
+     * Address Types
+     * @var     array
+     * @access  private
+     */
+    var $_AdrTypes = array(
+        1 => array('fieldType' => 'home', 'lang' => 'HOME_ADR'),
+        2 => array('fieldType' => 'work', 'lang' => 'WORK_ADR'),
+        3 => array('fieldType' => 'other', 'lang' => 'OTHER_ADR'),
+    );
+
+    /**
      * Displays the list of Address Book items, this items can filter by $gid(group ID) param.
      *
      * @access  public
@@ -173,13 +184,13 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_name',         _t('ADDRESSBOOK_ITEMS_NAME'));
         $tpl->SetVariable('lbl_title',        _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_nickname',     _t('ADDRESSBOOK_ITEMS_NICKNAME'));
-        $tpl->SetVariable('lbl_url',          _t('ADDRESSBOOK_ITEMS_URL'));
         $tpl->SetVariable('lbl_notes',        _t('ADDRESSBOOK_ITEMS_NOTES'));
         $tpl->SetVariable('lbl_public',       _t('ADDRESSBOOK_ITEMS_PUBLIC'));
         $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
         $tpl->SetVariable('lbl_delete_image', _t('ADDRESSBOOK_PERSON_IMAGE_DELETE'));
         $tpl->SetVariable('tel_title',        _t('ADDRESSBOOK_TEL_TITLE'));
         $tpl->SetVariable('email_title',      _t('ADDRESSBOOK_EMAIL_TITLE'));
+        $tpl->SetVariable('adr_title',        _t('ADDRESSBOOK_ADR_TITLE'));
         $tpl->SetVariable('group_title',      _t('ADDRESSBOOK_GROUP_TITLE'));
         $tpl->SetVariable('other_details',    _t('ADDRESSBOOK_OTHER_DETAILS'));
 
@@ -192,6 +203,8 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $iIndex = 1;
         $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
         $this->GetItemsCombo($tpl, 'email', $tels, $iIndex, $this->_EmailTypes);
+        $this->GetItemsCombo($tpl, 'adr', $tels, $iIndex, $this->_AdrTypes);
+        $this->GetItemsInput($tpl, 'url', array(''), $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
@@ -271,6 +284,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_public',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
         $tpl->SetVariable('tel_title',      _t('ADDRESSBOOK_TEL_TITLE'));
         $tpl->SetVariable('email_title',    _t('ADDRESSBOOK_EMAIL_TITLE'));
+        $tpl->SetVariable('adr_title',      _t('ADDRESSBOOK_ADR_TITLE'));
         $tpl->SetVariable('group_title',    _t('ADDRESSBOOK_GROUP_TITLE'));
         $tpl->SetVariable('other_details',  _t('ADDRESSBOOK_OTHER_DETAILS'));
         $tpl->SetVariable('name',           $info['name']);
@@ -297,6 +311,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
         $tpl->SetVariable('lbl_delete_image', _t('ADDRESSBOOK_PERSON_IMAGE_DELETE'));
 
+        /////////////
         $iIndex = 1;
         if (trim($info['tel_home']) != '') {
             $tels = explode(',', $info['tel_home']);
@@ -318,6 +333,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
         }
 
+        /////////////
         $iIndex = 1;
         if (trim($info['email_home']) != '') {
             $emails = explode(',', $info['email_home']);
@@ -339,6 +355,38 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
         }
 
+        /////////////
+        $iIndex = 1;
+        if (trim($info['adr_home']) != '') {
+            $adrs = explode(',', $info['adr_home']);
+            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
+        }
+
+        if (trim($info['adr_work']) != '') {
+            $adrs = explode(',', $info['adr_work']);
+            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
+        }
+
+        if (trim($info['adr_other']) != '') {
+            $adrs = explode(',', $info['adr_other']);
+            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
+        }
+
+        if ($iIndex == 1) {
+            $adrs = array(':');
+            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
+        }
+
+        /////////////
+        $iIndex = 1;
+        if (trim($info['url']) != '') {
+            $urls = explode('/n', $info['url']);
+            $this->GetItemsInput($tpl, 'url', $urls, $iIndex);
+        }
+
+        if ($iIndex == 1) {
+            $this->GetItemsCombo($tpl, 'url', array(''), $iIndex);
+        }
         $tpl->SetVariable('lastID', $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
@@ -451,6 +499,34 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $post['email_home'] = implode(',', $emailHome);
         $post['email_work'] = implode(',', $emailWork);
         $post['email_other'] = implode(',', $emailOther);
+
+        $adrs = jaws()->request->fetch(array('adr_type:array', 'adr:array'), 'post');
+        $adrHome = array();
+        $adrWork = array();
+        $adrOther = array();
+        if (isset($adrs['adr_type'])) {
+            foreach ($adrs['adr'] as $key => $adr) {
+                if (trim($adr) != '') {
+                    switch ($adrs['adr_type'][$key]) {
+                        case 1: //Home
+                            $adrHome[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                        case 2: //Work
+                            $adrWork[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                        case 3: //Other
+                            $adrOther[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['adr_home'] = implode(',', $adrHome);
+        $post['adr_work'] = implode(',', $adrWork);
+        $post['adr_other'] = implode(',', $adrOther);
+
+        $urls = jaws()->request->fetch('url:array', 'post');
+        $post['url'] = implode('/n', $urls);
 
         if (empty($post['delete_image'])) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
@@ -569,6 +645,34 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $post['email_home'] = implode(',', $emailHome);
         $post['email_work'] = implode(',', $emailWork);
         $post['email_other'] = implode(',', $emailOther);
+
+        $adrs = jaws()->request->fetch(array('adr_type:array', 'adr:array'), 'post');
+        $adrHome = array();
+        $adrWork = array();
+        $adrOther = array();
+        if (isset($adrs['adr_type'])) {
+            foreach ($adrs['adr'] as $key => $adr) {
+                if (trim($adr) != '') {
+                    switch ($adrs['adr_type'][$key]) {
+                        case 1: //Home
+                            $adrHome[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                        case 2: //Work
+                            $adrWork[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                        case 3: //Other
+                            $adrOther[] = $adrs['adr_type'][$key] . ':' . $adr;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['adr_home'] = implode(',', $adrHome);
+        $post['adr_work'] = implode(',', $adrWork);
+        $post['adr_other'] = implode(',', $adrOther);
+
+        $urls = jaws()->request->fetch('url:array', 'post');
+        $post['url'] = implode('/n', $urls);
 
         if (empty($post['delete_image'])) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
@@ -915,6 +1019,29 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
                 $tpl->SetVariable('selected', ($key == $result[0])? 'selected="selected"': '');
                 $tpl->ParseBlock("address/$base_block/item");
             }
+            $tpl->ParseBlock("address/$base_block");
+            $startIndex +=1;
+        }
+    }
+
+    /**
+     * Fill and get input with url
+     *
+     * @access  public
+     * @param   object  $tpl
+     * @param   string  $base_block
+     * @param   array   $inputValue
+     * @return  string  XHTML template content
+     */
+    function GetItemsInput(&$tpl, $base_block, $inputValue, &$startIndex)
+    {
+        foreach ($inputValue as $val) {
+            $tpl->SetBlock("address/$base_block");
+            $tpl->SetVariable('lbl_url',  _t('ADDRESSBOOK_ITEMS_URL'));
+            $tpl->SetVariable('icon_add', STOCK_ADD);
+            $tpl->SetVariable('icon_remove', STOCK_REMOVE);
+            $tpl->SetVariable('index', $startIndex);
+            $tpl->SetVariable('value', $val);
             $tpl->ParseBlock("address/$base_block");
             $startIndex +=1;
         }
