@@ -31,8 +31,6 @@ define('_EN_BLOG_WEBSERVICE', "Blog web service.");
 define('_EN_BLOG_WSDL', "Blog WSDL service.");
 
 /* Layout components */
-define('_EN_BLOG_ACTIONS_DEFAULTACTION_TITLE', "Blog Posts");
-define('_EN_BLOG_ACTIONS_DEFAULTACTION_DESC', "A multi user blog system. Supports trackbacks, pingbacks, commenting, and XML feeds");
 define('_EN_BLOG_ACTIONS_MONTHLYHISTORY', "Monthly View");
 define('_EN_BLOG_ACTIONS_MONTHLYHISTORY_DESC', "Displays a monthly summary of blog entries.");
 define('_EN_BLOG_ACTIONS_CATEGORIESLIST', "Category List");
