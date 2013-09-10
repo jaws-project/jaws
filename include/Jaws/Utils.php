@@ -295,7 +295,7 @@ class Jaws_Utils
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    function copy($source, &$dest, $overwrite = true, $mode = null)
+    function copy($source, $dest, $overwrite = true, $mode = null)
     {
         $result = false;
         if (file_exists($source)) {
@@ -338,7 +338,7 @@ class Jaws_Utils
             }
         }
 
-        return $result;
+        return ($result === true)? $dest : false;
     }
 
     /**
@@ -351,7 +351,7 @@ class Jaws_Utils
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    function rename($source, &$dest, $overwrite = true)
+    function rename($source, $dest, $overwrite = true)
     {
         $result = false;
         if (file_exists($source)) {
@@ -392,7 +392,7 @@ class Jaws_Utils
             }
         }
 
-        return $result;
+        return ($result === true)? $dest : false;
     }
 
     /**
