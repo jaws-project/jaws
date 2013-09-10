@@ -100,7 +100,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");
-            $tpl->SetVariable('name', $addressItem['name']);
+            $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
             $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
             $tpl->SetVariable('title', $addressItem['title']);
 
@@ -181,7 +181,8 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('id', 0);
         $tpl->SetVariable('lastID', 1);
         $tpl->SetVariable('action', 'InsertItem');
-        $tpl->SetVariable('lbl_name',         _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('lbl_firstname',    _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_lastname',     _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_title',        _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_nickname',     _t('ADDRESSBOOK_ITEMS_NICKNAME'));
         $tpl->SetVariable('lbl_notes',        _t('ADDRESSBOOK_ITEMS_NOTES'));
@@ -276,7 +277,8 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('id', $info['id']);
         $tpl->SetVariable('action', 'UpdateItem');
-        $tpl->SetVariable('lbl_name',       _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('lbl_firstname',  _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_lastname',   _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_title',      _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_nickname',   _t('ADDRESSBOOK_ITEMS_NICKNAME'));
         $tpl->SetVariable('lbl_url',        _t('ADDRESSBOOK_ITEMS_URL'));
@@ -287,7 +289,6 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('adr_title',      _t('ADDRESSBOOK_ADR_TITLE'));
         $tpl->SetVariable('group_title',    _t('ADDRESSBOOK_GROUP_TITLE'));
         $tpl->SetVariable('other_details',  _t('ADDRESSBOOK_OTHER_DETAILS'));
-        $tpl->SetVariable('name',           $info['name']);
         $tpl->SetVariable('title',          $info['title']);
         $tpl->SetVariable('nickname',       $info['nickname']);
         $tpl->SetVariable('url',            $info['url']);
@@ -295,6 +296,12 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         if ($info['public']) {
             $tpl->SetBlock('address/selected');
             $tpl->ParseBlock('address/selected');
+        }
+
+        $names = explode(';', $info['name']);
+        if (count($names) > 1) {
+            $tpl->SetVariable('lastname', $names[0]);
+            $tpl->SetVariable('firstname', $names[1]);
         }
 
         if (empty($info['image'])) {
@@ -385,7 +392,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         }
 
         if ($iIndex == 1) {
-            $this->GetItemsCombo($tpl, 'url', array(''), $iIndex);
+            $this->GetItemsInput($tpl, 'url', array(''), $iIndex);
         }
         $tpl->SetVariable('lastID', $iIndex);
 
@@ -437,7 +444,9 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('name', 'title', 'delete_image', 'url', 'notes', 'public'), 'post');
+        $post = jaws()->request->fetch(array('firstname', 'lastname', 'title', 'delete_image', 'url', 'notes', 'public'), 'post');
+        $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
+        unset($post['firstname'], $post['lastname']);
 
         $groupIDs = jaws()->request->fetch('groups:array');
         $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
@@ -570,10 +579,12 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('name', 'title', 'nickname', 'delete_image',
+        $post = jaws()->request->fetch(array('firstname', 'lastname', 'title', 'nickname', 'delete_image',
                                     'url', 'notes', 'public', 'id'),
                               'post');
 
+        $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
+        unset($post['firstname'], $post['lastname']);
         $id = (int) $post['id'];
         unset($post['id']);
         $groupIDs = jaws()->request->fetch('groups:array');
