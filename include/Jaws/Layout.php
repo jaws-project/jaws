@@ -504,6 +504,10 @@ class Jaws_Layout
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
         $items = $this->GetLayoutItems();
         if (!Jaws_Error::IsError($items)) {
+            // temporary store page title/description
+            $title = $this->_Title;
+            $description = $this->_Description;
+
             foreach ($items as $item) {
                 if ($this->_Section != $item['section']) {
                     if (!empty($this->_Section)) {
@@ -531,10 +535,12 @@ class Jaws_Layout
                                              $GLOBALS['app']->requestedInIndex))
                     {
                         if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
-                            $content = $this->PutGadget($item['gadget'],
-                                                        $item['gadget_action'],
-                                                        unserialize($item['action_params']),
-                                                        $item['action_filename']);
+                            $content = $this->PutGadget(
+                                $item['gadget'],
+                                $item['gadget_action'],
+                                unserialize($item['action_params']),
+                                $item['action_filename']
+                            );
                         }
                     }
                 }
@@ -543,6 +549,9 @@ class Jaws_Layout
                     $contentString .= str_replace('{ELEMENT}', $content, $currentContent)."\n\n\n";
                 }
             }
+            // restore stored title because layout action can't change title/description
+            $this->_Title = $title;
+            $this->_Description = $description;
             if (!empty($this->_Section)) {
                 $this->_Template->SetVariable('ELEMENT', $contentString);
                 $this->_Template->ParseBlock('layout/' . $this->_Section);

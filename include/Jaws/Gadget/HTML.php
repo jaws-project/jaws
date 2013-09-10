@@ -209,6 +209,12 @@ class Jaws_Gadget_HTML
             );
         }
 
+        if (isset($GLOBALS['app']->Layout)) {
+            $upper_prefix = strtoupper($this->gadget->name.'_ACTIONS_'.$action);
+            $GLOBALS['app']->Layout->SetTitle(_t($upper_prefix.'_TITLE'));
+            $GLOBALS['app']->Layout->SetDescription(_t($upper_prefix.'_DESC'));
+        }
+
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (!empty($file)) {
             $objAction = $GLOBALS['app']->LoadGadget(
