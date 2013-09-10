@@ -503,6 +503,7 @@ class Jaws_Utils
                     continue;
                 }
 
+                $host_filetype = isset($file['type']) ? $file['type'] : '';
                 $user_filename = isset($file['name']) ? $file['name'] : '';
                 $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/", "", $user_filename));
                 $fileinfo = pathinfo($host_filename);
@@ -560,6 +561,7 @@ class Jaws_Utils
                 Jaws_Utils::chmod($uploadfile);
                 $result[$key][$i]['user_filename'] = $user_filename;
                 $result[$key][$i]['host_filename'] = $host_filename;
+                $result[$key][$i]['host_filetype'] = $host_filetype;
             }
         }
 
