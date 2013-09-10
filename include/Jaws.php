@@ -638,7 +638,7 @@ class Jaws
                 }
             }
 
-            $file = JAWS_PATH. 'plugins/'. $plugin. '/plugin.php';
+            $file = JAWS_PATH. 'plugins/'. $plugin. '/Plugin.php';
             if (file_exists($file)) {
                 include_once $file;
             }
