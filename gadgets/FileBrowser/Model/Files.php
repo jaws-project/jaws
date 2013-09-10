@@ -101,10 +101,10 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
             $file['icon'] = $image_url . $iconName;
         } else {
             //Is icon does not exists..
-            if (!is_file(JAWS_PATH . 'gadgets/FileBrowser/images/'.$iconName)) {
-                $icon =  'gadgets/FileBrowser/images/mimetypes/text-generic.png';
+            if (!is_file(JAWS_PATH. 'images/'.$iconName)) {
+                $icon = 'images/mimetypes/text-generic.png';
             } else {
-                $icon =  'gadgets/FileBrowser/images/'.$iconName;
+                $icon = 'images/'.$iconName;
             }
             $file['icon'] = $icon;
         }
