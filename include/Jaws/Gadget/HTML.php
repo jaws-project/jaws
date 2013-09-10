@@ -210,9 +210,12 @@ class Jaws_Gadget_HTML
         }
 
         if (isset($GLOBALS['app']->Layout)) {
-            $upper_prefix = strtoupper($this->gadget->name.'_ACTIONS_'.$action);
-            $GLOBALS['app']->Layout->SetTitle(_t($upper_prefix.'_TITLE'));
-            $GLOBALS['app']->Layout->SetDescription(_t($upper_prefix.'_DESC'));
+            $title = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_TITLE');
+            $description = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_DESC');
+            $title = (_t($title) == $title)? '' : _t($title);
+            $description = (_t($description) == $description)? '' : _t($description);
+            $GLOBALS['app']->Layout->SetTitle($title);
+            $GLOBALS['app']->Layout->SetDescription($description);
         }
 
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
