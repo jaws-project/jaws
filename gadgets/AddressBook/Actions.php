@@ -54,3 +54,7 @@ $actions['UpdateGroup'] = array(
     'stanalone' => true,
     'file'   => 'Groups',
 );
+$actions['GroupMembers'] = array(
+    'normal' => true,
+    'file'   => 'AddressBookGroup',
+);

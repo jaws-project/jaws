@@ -60,6 +60,11 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             $tpl->SetVariable('action_url', $this->gadget->urlMap('EditGroup', array('id' => $groupItem['id'])));
             $tpl->ParseBlock('groups/item/action');
 
+            $tpl->SetBlock('groups/item/action');
+            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_GROUP_MEMBER'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
+            $tpl->ParseBlock('groups/item/action');
+
             //Delete Item, TODO: Check user can do this action
             $tpl->SetBlock('groups/item/action');
             $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
@@ -253,19 +258,3 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

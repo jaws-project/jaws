@@ -37,6 +37,21 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     }
 
     /**
+     * Get list of AddressBooks Groups
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetAddressList($gid, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        $agTable->select('*');
+        $agTable->join('address_book', 'address_book_group.address', 'address_book.id');
+        $agTable->where('group', $gid)->and();
+        return $agTable->where('address_book_group.user', $user)->fetchAll();
+    }
+
+    /**
      * Add relation between Group and AddressBook item
      *
      * @access  public
@@ -64,11 +79,3 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
         return $agTable->delete()->where('user', (int) $user)->and()->where('address', (int) $address)->exec();
     }
 }
-
-
-
-
-
-
-
-
