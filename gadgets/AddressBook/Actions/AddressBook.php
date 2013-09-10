@@ -10,6 +10,34 @@
 class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 {
     /**
+     * Telephone Types
+     * @var     array
+     * @access  private
+     */
+    var $_TelTypes = array(
+        1 => array('fieldType' => 'home', 'telType' => 'cell', 'lang' => 'HOME_TELL'),
+        2 => array('fieldType' => 'home', 'telType' => 'mobile', 'lang' => 'HOME_MOBILE'),
+        3 => array('fieldType' => 'home', 'telType' => 'fax', 'lang' => 'HOME_FAX'),
+        4 => array('fieldType' => 'work', 'telType' => 'cell', 'lang' => 'WORK_TELL'),
+        5 => array('fieldType' => 'work', 'telType' => 'mobile', 'lang' => 'WORK_MOBILE'),
+        6 => array('fieldType' => 'work', 'telType' => 'fax', 'lang' => 'WORK_FAX'),
+        7 => array('fieldType' => 'other', 'telType' => 'cell', 'lang' => 'OTHER_TELL'),
+        8 => array('fieldType' => 'other', 'telType' => 'mobile', 'lang' => 'OTHER_MOBILE'),
+        9 => array('fieldType' => 'other', 'telType' => 'fax', 'lang' => 'OTHER_FAX'),
+    );
+
+    /**
+     * Email Types
+     * @var     array
+     * @access  private
+     */
+    var $_EmailTypes = array(
+        1 => array('fieldType' => 'home', 'lang' => 'HOME_EMAIL'),
+        2 => array('fieldType' => 'work', 'lang' => 'WORK_EMAIL'),
+        3 => array('fieldType' => 'other', 'lang' => 'OTHER_EMAIL'),
+    );
+
+    /**
      * Displays the list of Address Book items, this items can filter by $gid(group ID) param.
      *
      * @access  public
@@ -18,10 +46,14 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
      */
     function AddressList()
     {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
 
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('uid', 'page'));
+        $rqst = jaws()->request->fetch(array('uid', 'page'));
 
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
         $user = empty($rqst['uid'])? (int) $GLOBALS['app']->Session->GetAttribute('user') : $rqst['uid'];
@@ -53,19 +85,13 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
-        $tpl->SetVariable('lbl_company', _t('ADDRESSBOOK_ITEMS_COMPANY'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('lbl_email', _t('ADDRESSBOOK_ITEMS_EMAIL'));
-        $tpl->SetVariable('lbl_phone', _t('ADDRESSBOOK_ITEMS_PHONE_NUMBER'));
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");
             $tpl->SetVariable('name', $addressItem['name']);
             $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
-            $tpl->SetVariable('company', $addressItem['company']);
             $tpl->SetVariable('title', $addressItem['title']);
-            $tpl->SetVariable('email', $addressItem['email']);
-            $tpl->SetVariable('phone', $addressItem['phone_number']);
 
             if ($mine) {
                 $tpl->SetBlock('address_list/item1/action');
@@ -129,6 +155,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
         $tpl = $this->gadget->loadTemplate('EditAddress.html');
 
@@ -141,19 +168,30 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('id', 0);
+        $tpl->SetVariable('lastID', 1);
         $tpl->SetVariable('action', 'InsertItem');
-        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
-        $tpl->SetVariable('lbl_company', _t('ADDRESSBOOK_ITEMS_COMPANY'));
-        $tpl->SetVariable('lbl_email', _t('ADDRESSBOOK_ITEMS_EMAIL'));
-        $tpl->SetVariable('lbl_phone', _t('ADDRESSBOOK_ITEMS_PHONE_NUMBER'));
-        $tpl->SetVariable('lbl_fax', _t('ADDRESSBOOK_ITEMS_FAX'));
-        $tpl->SetVariable('lbl_mobile', _t('ADDRESSBOOK_ITEMS_MOBILE'));
-        $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
-        $tpl->SetVariable('lbl_pstcode', _t('ADDRESSBOOK_ITEMS_POSTAL_CODE'));
-        $tpl->SetVariable('lbl_url', _t('ADDRESSBOOK_ITEMS_URL'));
-        $tpl->SetVariable('lbl_notes', _t('ADDRESSBOOK_ITEMS_NOTES'));
-        $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('lbl_public',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('lbl_name',         _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('lbl_title',        _t('ADDRESSBOOK_ITEMS_TITLE'));
+        $tpl->SetVariable('lbl_nickname',     _t('ADDRESSBOOK_ITEMS_NICKNAME'));
+        $tpl->SetVariable('lbl_url',          _t('ADDRESSBOOK_ITEMS_URL'));
+        $tpl->SetVariable('lbl_notes',        _t('ADDRESSBOOK_ITEMS_NOTES'));
+        $tpl->SetVariable('lbl_public',       _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
+        $tpl->SetVariable('lbl_delete_image', _t('ADDRESSBOOK_PERSON_IMAGE_DELETE'));
+        $tpl->SetVariable('tel_title',        _t('ADDRESSBOOK_TEL_TITLE'));
+        $tpl->SetVariable('email_title',      _t('ADDRESSBOOK_EMAIL_TITLE'));
+        $tpl->SetVariable('group_title',      _t('ADDRESSBOOK_GROUP_TITLE'));
+        $tpl->SetVariable('other_details',    _t('ADDRESSBOOK_OTHER_DETAILS'));
+
+        $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
+        $personImage =& Piwi::CreateWidget('Image', $current_image);
+        $personImage->SetID('personImage');
+        $tpl->SetVariable('image', $personImage->Get());
+
+        $tels = array(':');
+        $iIndex = 1;
+        $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+        $this->GetItemsCombo($tpl, 'email', $tels, $iIndex, $this->_EmailTypes);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
@@ -192,8 +230,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $id = (int) $request->get('id');
+        $id = (int) jaws()->request->fetch('id');
         // TODO: Check this ID for Me, And Can I Edit Or View This?!
         if ($id == 0) {
             return false;
@@ -213,6 +250,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
         $tpl = $this->gadget->loadTemplate('EditAddress.html');
         $tpl->SetBlock("address");
@@ -226,32 +264,82 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('id', $info['id']);
         $tpl->SetVariable('action', 'UpdateItem');
         $tpl->SetVariable('lbl_name',       _t('ADDRESSBOOK_ITEMS_NAME'));
-        $tpl->SetVariable('name',           $info['name']);
-        $tpl->SetVariable('lbl_company',    _t('ADDRESSBOOK_ITEMS_COMPANY'));
-        $tpl->SetVariable('company',        $info['company']);
         $tpl->SetVariable('lbl_title',      _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('title',          $info['title']);
-        $tpl->SetVariable('lbl_email',      _t('ADDRESSBOOK_ITEMS_EMAIL'));
-        $tpl->SetVariable('email',          $info['email']);
-        $tpl->SetVariable('lbl_phone',      _t('ADDRESSBOOK_ITEMS_PHONE_NUMBER'));
-        $tpl->SetVariable('phone',          $info['phone_number']);
-        $tpl->SetVariable('lbl_fax',        _t('ADDRESSBOOK_ITEMS_FAX'));
-        $tpl->SetVariable('fax',            $info['fax_number']);
-        $tpl->SetVariable('lbl_mobile',     _t('ADDRESSBOOK_ITEMS_MOBILE'));
-        $tpl->SetVariable('mobile',         $info['mobile_number']);
-        $tpl->SetVariable('lbl_address',    _t('ADDRESSBOOK_ITEMS_ADDRESS'));
-        $tpl->SetVariable('address',        $info['address']);
-        $tpl->SetVariable('lbl_pstcode',    _t('ADDRESSBOOK_ITEMS_POSTAL_CODE'));
-        $tpl->SetVariable('pstcode',        $info['postal_code']);
+        $tpl->SetVariable('lbl_nickname',   _t('ADDRESSBOOK_ITEMS_NICKNAME'));
         $tpl->SetVariable('lbl_url',        _t('ADDRESSBOOK_ITEMS_URL'));
-        $tpl->SetVariable('url',            $info['url']);
         $tpl->SetVariable('lbl_notes',      _t('ADDRESSBOOK_ITEMS_NOTES'));
-        $tpl->SetVariable('notes',          $info['notes']);
         $tpl->SetVariable('lbl_public',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('tel_title',      _t('ADDRESSBOOK_TEL_TITLE'));
+        $tpl->SetVariable('email_title',    _t('ADDRESSBOOK_EMAIL_TITLE'));
+        $tpl->SetVariable('group_title',    _t('ADDRESSBOOK_GROUP_TITLE'));
+        $tpl->SetVariable('other_details',  _t('ADDRESSBOOK_OTHER_DETAILS'));
+        $tpl->SetVariable('name',           $info['name']);
+        $tpl->SetVariable('title',          $info['title']);
+        $tpl->SetVariable('nickname',       $info['nickname']);
+        $tpl->SetVariable('url',            $info['url']);
+        $tpl->SetVariable('notes',          $info['notes']);
         if ($info['public']) {
             $tpl->SetBlock('address/selected');
             $tpl->ParseBlock('address/selected');
         }
+
+        if (empty($info['image'])) {
+            $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
+        } else {
+            $current_image = $GLOBALS['app']->getDataURL() . "addressbook/image/" . $info['image'];
+            $current_image .= !empty($info['updatetime']) ? "?" . $info['updatetime'] . "" : '';
+        }
+        $personImage =& Piwi::CreateWidget('Image', $current_image);
+        $personImage->SetID('personImage');
+        $tpl->SetVariable('image', $personImage->Get());
+
+        // upload/delete image
+        $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
+        $tpl->SetVariable('lbl_delete_image', _t('ADDRESSBOOK_PERSON_IMAGE_DELETE'));
+
+        $iIndex = 1;
+        if (trim($info['tel_home']) != '') {
+            $tels = explode(',', $info['tel_home']);
+            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+        }
+
+        if (trim($info['tel_work']) != '') {
+            $tels = explode(',', $info['tel_work']);
+            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+        }
+
+        if (trim($info['tel_other']) != '') {
+            $tels = explode(',', $info['tel_other']);
+            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+        }
+
+        if ($iIndex == 1) {
+            $tels = array(':');
+            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+        }
+
+        $iIndex = 1;
+        if (trim($info['email_home']) != '') {
+            $emails = explode(',', $info['email_home']);
+            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
+        }
+
+        if (trim($info['email_work']) != '') {
+            $emails = explode(',', $info['email_work']);
+            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
+        }
+
+        if (trim($info['email_other']) != '') {
+            $emails = explode(',', $info['email_other']);
+            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
+        }
+
+        if ($iIndex == 1) {
+            $emails = array(':');
+            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
+        }
+
+        $tpl->SetVariable('lastID', $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
@@ -301,16 +389,78 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('name', 'company', 'title',
-                                    'email', 'phone_number', 'mobile_number',
-                                    'fax_number', 'address', 'postal_code',
-                                    'url', 'notes', 'public'),
-                              'post');
+        $post = jaws()->request->fetch(array('name', 'title', 'delete_image', 'url', 'notes', 'public'), 'post');
 
-        $groupIDs = $request->get('groups');
+        $groupIDs = jaws()->request->fetch('groups:array');
+        $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
+
         $post['[user]'] = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+
+        $telHome = array();
+        $telWork = array();
+        $telOther = array();
+        if (isset($tels['tel_type'])) {
+            foreach ($tels['tel_number'] as $key => $telNumber) {
+                if (trim($telNumber) != '') {
+                    switch ($tels['tel_type'][$key]) {
+                        case 1: //Home
+                        case 2:
+                        case 3:
+                            $telHome[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                        case 4: //Work
+                        case 5:
+                        case 6:
+                            $telWork[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                        case 7: //Other
+                        case 8:
+                        case 9:
+                            $telOther[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['tel_home'] = implode(',', $telHome);
+        $post['tel_work'] = implode(',', $telWork);
+        $post['tel_other'] = implode(',', $telOther);
+
+        $emails = jaws()->request->fetch(array('email_type:array', 'email:array'), 'post');
+        $emailHome = array();
+        $emailWork = array();
+        $emailOther = array();
+        if (isset($emails['email_type'])) {
+            foreach ($emails['email'] as $key => $email) {
+                if (trim($email) != '') {
+                    switch ($emails['email_type'][$key]) {
+                        case 1: //Home
+                            $emailHome[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                        case 2: //Work
+                            $emailWork[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                        case 3: //Other
+                            $emailOther[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['email_home'] = implode(',', $emailHome);
+        $post['email_work'] = implode(',', $emailWork);
+        $post['email_other'] = implode(',', $emailOther);
+
+        if (empty($post['delete_image'])) {
+            $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
+            if (!empty($res) && !Jaws_Error::IsError($res)) {
+                $post['image'] = $res['image'][0]['host_filename'];
+            }
+        } else {
+            $post['image'] = '';
+        }
+        unset($post['delete_image']);
 
         $adrID = $model->InsertAddress($post);
 
@@ -344,15 +494,14 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('name', 'company', 'title',
-                                    'email', 'phone_number', 'mobile_number',
-                                    'fax_number', 'address', 'postal_code',
+        $post = jaws()->request->fetch(array('name', 'title', 'nickname', 'delete_image',
                                     'url', 'notes', 'public', 'id'),
                               'post');
 
         $id = (int) $post['id'];
         unset($post['id']);
+        $groupIDs = jaws()->request->fetch('groups:array');
+        $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
 
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
 
@@ -363,8 +512,74 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $groupIDs = $request->get('groups');
-        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $telHome = array();
+        $telWork = array();
+        $telOther = array();
+        if (isset($tels['tel_type'])) {
+            foreach ($tels['tel_number'] as $key => $telNumber) {
+                if (trim($telNumber) == '') {
+                    unset($tels['tel_number'][$key]);
+                    unset($tels['tel_type'][$key]);
+                } else {
+                    switch ($tels['tel_type'][$key]) {
+                        case 1: //Home
+                        case 2:
+                        case 3:
+                            $telHome[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                        case 4: //Work
+                        case 5:
+                        case 6:
+                            $telWork[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                        case 7: //Other
+                        case 8:
+                        case 9:
+                            $telOther[] = $tels['tel_type'][$key] . ':' . $telNumber;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['tel_home'] = implode(',', $telHome);
+        $post['tel_work'] = implode(',', $telWork);
+        $post['tel_other'] = implode(',', $telOther);
+
+        $emails = jaws()->request->fetch(array('email_type:array', 'email:array'), 'post');
+        $emailHome = array();
+        $emailWork = array();
+        $emailOther = array();
+        if (isset($emails['email_type'])) {
+            foreach ($emails['email'] as $key => $email) {
+                if (trim($email) != '') {
+                    switch ($emails['email_type'][$key]) {
+                        case 1: //Home
+                            $emailHome[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                        case 2: //Work
+                            $emailWork[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                        case 3: //Other
+                            $emailOther[] = $emails['email_type'][$key] . ':' . $email;
+                            break;
+                    }
+                }
+            }
+        }
+        $post['email_home'] = implode(',', $emailHome);
+        $post['email_work'] = implode(',', $emailWork);
+        $post['email_other'] = implode(',', $emailOther);
+
+        if (empty($post['delete_image'])) {
+            $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
+            if (!empty($res) && !Jaws_Error::IsError($res)) {
+                $post['image'] = $res['image'][0]['host_filename'];
+            }
+        } else {
+            $post['image'] = '';
+        }
+        unset($post['delete_image']);
+
         $result = $model->UpdateAddress($id, $post);
 
         if (Jaws_Error::IsError($result)) {
@@ -567,8 +782,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $id = (int) $request->get('id');
+        $id = (int) jaws()->request->fetch('id');
         // TODO: Check this ID for Me, And Can I Edit Or View This?!
         if ($id == 0) {
             return false;
@@ -592,37 +806,33 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('ViewAddress.html');
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('address/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('address/response');
-        }
-
         $tpl->SetVariable('id', $info['id']);
         $tpl->SetVariable('action', 'UpdateItem');
-        $tpl->SetVariable('lbl_name',       _t('ADDRESSBOOK_ITEMS_NAME'));
-        $tpl->SetVariable('name',           $info['name']);
-        $tpl->SetVariable('lbl_company',    _t('ADDRESSBOOK_ITEMS_COMPANY'));
-        $tpl->SetVariable('company',        $info['company']);
-        $tpl->SetVariable('lbl_title',      _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('title',          $info['title']);
-        $tpl->SetVariable('lbl_email',      _t('ADDRESSBOOK_ITEMS_EMAIL'));
-        $tpl->SetVariable('email',          $info['email']);
-        $tpl->SetVariable('lbl_phone',      _t('ADDRESSBOOK_ITEMS_PHONE_NUMBER'));
-        $tpl->SetVariable('phone',          $info['phone_number']);
-        $tpl->SetVariable('lbl_fax',        _t('ADDRESSBOOK_ITEMS_FAX'));
-        $tpl->SetVariable('fax',            $info['fax_number']);
-        $tpl->SetVariable('lbl_mobile',     _t('ADDRESSBOOK_ITEMS_MOBILE'));
-        $tpl->SetVariable('mobile',         $info['mobile_number']);
-        $tpl->SetVariable('lbl_address',    _t('ADDRESSBOOK_ITEMS_ADDRESS'));
-        $tpl->SetVariable('address',        $info['address']);
-        $tpl->SetVariable('lbl_pstcode',    _t('ADDRESSBOOK_ITEMS_POSTAL_CODE'));
-        $tpl->SetVariable('pstcode',        $info['postal_code']);
-        $tpl->SetVariable('lbl_url',        _t('ADDRESSBOOK_ITEMS_URL'));
-        $tpl->SetVariable('url',            $info['url']);
-        $tpl->SetVariable('lbl_notes',      _t('ADDRESSBOOK_ITEMS_NOTES'));
-        $tpl->SetVariable('notes',          $info['notes']);
-        $tpl->SetVariable('lbl_public',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('lbl_name',     _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('lbl_nickname', _t('ADDRESSBOOK_ITEMS_NICKNAME'));
+        $tpl->SetVariable('lbl_title',    _t('ADDRESSBOOK_ITEMS_TITLE'));
+        $tpl->SetVariable('lbl_url',      _t('ADDRESSBOOK_ITEMS_URL'));
+        $tpl->SetVariable('lbl_notes',    _t('ADDRESSBOOK_ITEMS_NOTES'));
+        $tpl->SetVariable('lbl_public',   _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('name',      $info['name']);
+        $tpl->SetVariable('nickname',  $info['nickname']);
+        $tpl->SetVariable('title',     $info['title']);
+        $tpl->SetVariable('url',       $info['url']);
+        $tpl->SetVariable('notes',     $info['notes']);
+
+        if (trim($info['tel_home']) != '') {
+            $tels = explode(',', $info['tel_home']);
+            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
+        }
+        if (trim($info['tel_work']) != '') {
+            $tels = explode(',', $info['tel_work']);
+            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
+        }
+        if (trim($info['tel_other']) != '') {
+            $tels = explode(',', $info['tel_other']);
+            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
+        }
+
         if ($info['public']) {
             $tpl->SetBlock('address/selected');
             $tpl->SetVariable('lbl_is_public',     _t('ADDRESSBOOK_ITEMS_IS_PUBLIC'));
@@ -677,21 +887,57 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         return $tpl->Get();
     }
+
+    /**
+     * Fill and get combo with phone number, email address, address
+     *
+     * @access  public
+     * @param   object  $tpl
+     * @param   string  $base_block
+     * @param   array   $inputValue
+     * @param   integer $startIndex
+     * @param   array   $options
+     * @return  string  XHTML template content
+     */
+    function GetItemsCombo(&$tpl, $base_block, $inputValue, &$startIndex, $options)
+    {
+        foreach ($inputValue as $val) {
+            $result = explode(':', $val);
+            $tpl->SetBlock("address/$base_block");
+            $tpl->SetVariable('icon_add', STOCK_ADD);
+            $tpl->SetVariable('icon_remove', STOCK_REMOVE);
+            $tpl->SetVariable('index', $startIndex);
+            $tpl->SetVariable('value', $result[1]);
+            foreach ($options as $key => $Info) {
+                $tpl->SetBlock("address/$base_block/item");
+                $tpl->SetVariable('type_id', $key);
+                $tpl->SetVariable('type_name', _t('ADDRESSBOOK_' . $Info['lang']));
+                $tpl->SetVariable('selected', ($key == $result[0])? 'selected="selected"': '');
+                $tpl->ParseBlock("address/$base_block/item");
+            }
+            $tpl->ParseBlock("address/$base_block");
+            $startIndex +=1;
+        }
+    }
+
+    /**
+     * Get lists of phone number, email address, address
+     *
+     * @access  public
+     * @param   object  $tpl
+     * @param   string  $base_block
+     * @param   array   $inputValue
+     * @param   array   $options
+     * @return  string  XHTML template content
+     */
+    function GetItemsLable(&$tpl, $base_block, $inputValue, $options)
+    {
+        foreach ($inputValue as $val) {
+            $result = explode(':', $val);
+            $tpl->SetBlock("address/$base_block");
+            $tpl->SetVariable('item', $result[1]);
+            $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_' . $options[$result[0]]['lang']));
+            $tpl->ParseBlock("address/$base_block");
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

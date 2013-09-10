@@ -88,9 +88,36 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
         $data['public']         = (bool) $data['public'];
         $data['createtime']     = time();
         $data['updatetime']     = time();
+        $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR;
 
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
-        return $adrTable->insert($data)->exec();
+        $insertResult = $adrTable->insert($data)->exec();
+
+        if (array_key_exists('image', $data) && !Jaws_Error::IsError($insertResult) && !empty($data['image'])) {
+            $fileinfo = pathinfo($data['image']);
+            if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png'))) {
+                    return false;
+                } else {
+                    if (!is_dir($targetDir)) {
+                        Jaws_Utils::mkdir($targetDir);
+                    }
+                    $targetDir = $targetDir. 'image'. DIRECTORY_SEPARATOR;
+                    if (!is_dir($targetDir)) {
+                        Jaws_Utils::mkdir($targetDir);
+                    }
+
+                    $new_image = $insertResult . '.' . $fileinfo['extension'];
+                    rename(Jaws_Utils::upload_tmp_dir(). '/'. $data['image'],
+                            $targetDir. $new_image);
+                    $data['image'] = $new_image;
+                }
+            }
+        }
+        if (!Jaws_Error::IsError($insertResult)) {
+            $this->UpdateAddress($insertResult, $data);
+        }
+        return $insertResult;
     }
 
     /**
@@ -103,16 +130,43 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
     {
         $data['public']         = (bool) $data['public'];
         $data['updatetime']     = time();
+        $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR;
+
+        if (array_key_exists('image', $data)) {
+            // get address information
+            $adr = $this->GetAddressInfo((int)$id);
+            if (Jaws_Error::IsError($adr) || empty($adr)) {
+                return false;
+            }
+
+            if (!empty($adr['image'])) {
+                Jaws_Utils::Delete($targetDir. 'image'. DIRECTORY_SEPARATOR . $adr['image']);
+            }
+
+            if (!empty($data['image'])) {
+                $fileinfo = pathinfo($data['image']);
+                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                    if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png'))) {
+                        return false;
+                    } else {
+                        if (!is_dir($targetDir)) {
+                            Jaws_Utils::mkdir($targetDir);
+                        }
+                        $targetDir = $targetDir. 'image'. DIRECTORY_SEPARATOR;
+                        if (!is_dir($targetDir)) {
+                            Jaws_Utils::mkdir($targetDir);
+                        }
+
+                        $new_image = $adr['id']. '.'. $fileinfo['extension'];
+                        rename(Jaws_Utils::upload_tmp_dir(). '/'. $data['image'],
+                                $targetDir. $new_image);
+                        $data['image'] = $new_image;
+                    }
+                }
+            }
+        }
 
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
         return $adrTable->update($data)->where('id', (int) $id)->exec();
     }
 }
-
-
-
-
-
-
-
-

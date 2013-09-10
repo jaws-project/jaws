@@ -7,56 +7,157 @@
   <input type="hidden" name="action" value="{action}" />
   <input type="hidden" name="id" value="{id}" />
   <div class="content">
-      <p><label>{lbl_name}:</label>
-         <input name="name" type="text" value="{name}" />
-      </p>
-      <p><label>{lbl_company}:</label>
-         <input name="company" type="text" value="{company}" />
-      </p>
-      <p><label>{lbl_title}:</label>
-         <input name="title" type="text" value="{title}" />
-      </p>
-      <p><label>{lbl_email}:</label>
-         <input name="email" type="text" value="{email}" style="direction: ltr;" />
-      </p>
-      <p><label>{lbl_phone}:</label>
-         <input name="phone_number" type="text" value="{phone}" />
-      </p>
-      <p><label>{lbl_mobile}:</label>
-         <input name="mobile_number" type="text" value="{mobile}" />
-      </p>
-      <p><label>{lbl_fax}:</label>
-         <input name="fax_number" type="text" value="{fax}" />
-      </p>
-      <p><label>{lbl_address}:</label>
-         <input name="address" type="text" value="{address}" />
-      </p>
-      <p><label>{lbl_pstcode}:</label>
-         <input name="postal_code" type="text" value="{pstcode}" />
-      </p>
-      <p><label>{lbl_url}:</label>
-         <input name="url" type="text" value="{url}" style="direction: ltr;" />
-      </p>
-      <p><label>{lbl_notes}:</label>
-         <textarea name="notes" cols="25" rows="6">{notes}</textarea>
-      </p>
-      <p><input type="checkbox" name="public" id="addressbook_public"
-              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-              value="true" />
-         <label for="addressbook_public">{lbl_public}</label>
-      </p>
-        <!-- BEGIN group -->
-          <p><input type="checkbox" name="groups[{gid}]" id="group_{gid}"
-                  <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
-                  value="true" />
-             <label for="group_{gid}">{lbl_group}</label>
-          </p>
-        <!-- END group -->
+    <fieldset>
+      <div class="addressbook_image">{image}</div>
+      <div>
+        <label for="addressbook_name" >{lbl_name}:</label>
+        <input id="addressbook_name" name="name" type="text" value="{name}" />
+      </div>
+      <div>
+        <label for="addressbook_title" >{lbl_title}:</label>
+        <input id="addressbook_title" name="title" type="text" value="{title}" />
+      </div>
+      <div>
+        <label for="addressbook_nickname" >{lbl_nickname}:</label>
+        <input id="addressbook_nickname" name="nickname" type="text" value="{nickname}" />
+      </div>
+      <div>
+        <label for="person_image">{lbl_upload_image}:</label>
+        <input type="file" name="image" id="person_image">
+      </div>
+      <div>
+        <input type="checkbox" name="delete_image" id="delete_image" value="1">
+        <label for="delete_image">{lbl_delete_image}</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span>{tel_title}</span></legend>
+      <div id="tel_p">
+       <!-- BEGIN tel -->
+       <div id="tel_{index}" class="tel">
+        <select name="tel_type[{index}]" style="width: 150px;" >
+          <!-- BEGIN item -->
+          <option value="{type_id}" {selected}>{type_name}</option>
+          <!-- END item -->
+        </select>
+        <input name="tel_number[{index}]" type="text" value="{value}" />
+        <button onclick="AddTellItem();" value="" id="addTelButton" name="addTelButton"type="button">
+          <img alt="{lbl_add_tell}" src="{icon_add}">
+        </button>
+        <button onclick="RemoveItem(this);" value="" id="removeTelButton" name="removeTelButton"type="button">
+          <img alt="{lbl_remove_tell}" src="{icon_remove}">
+        </button>
+       </div>
+       <!-- END tel -->
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span>{email_title}</span></legend>
+      <div id="email_p">
+       <!-- BEGIN email -->
+       <div id="email_{index}" class="email">
+        <select name="email_type[{index}]" style="width: 150px;" >
+          <!-- BEGIN item -->
+          <option value="{type_id}" {selected}>{type_name}</option>
+          <!-- END item -->
+        </select>
+        <input name="email[{index}]" type="text" value="{value}" />
+        <button onclick="AddEmailItem();" value="" id="addEmailButton" name="addEmailButton"type="button">
+          <img alt="{lbl_add_email}" src="{icon_add}">
+        </button>
+        <button onclick="RemoveItem(this);" value="" id="removeEmailButton" name="removeEmailButton"type="button">
+          <img alt="{lbl_remove_email}" src="{icon_remove}">
+        </button>
+       </div>
+       <!-- END email -->
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span>{other_details}</span></legend>
+      <div>
+        <label for="addressbook_url" >{lbl_url}:</label>
+        <input id="addressbook_url" name="url" type="text" value="{url}" style="direction: ltr;" />
+      </div>
+      <div>
+        <label for="addressbook_notes" >{lbl_notes}:</label>
+        <textarea id="addressbook_notes" name="notes" cols="25" rows="6">{notes}</textarea>
+      </div>
+      <div>
+        <input type="checkbox" name="public" id="addressbook_public"
+            <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+            value="true" />
+        <label for="addressbook_public">{lbl_public}</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span>{group_title}</span></legend>
+      <!-- BEGIN group -->
+        <div>
+          <input type="checkbox" name="groups[{gid}]" id="group_{gid}"
+                <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
+                value="true" />
+          <label for="group_{gid}">{lbl_group}</label>
+        </div>
+      <!-- END group -->
+    </fieldset>
   </div>
   <div class="actions">
     <a class="button" href="{cancel_url}" title="{cancel_lbl}">{cancel_lbl}</a>
     {btn_save}
   </div>
   </form>
+
+ <script type="text/javascript">
+    var lastID = {lastID};
+
+    remain = $('removeTelButton').parentNode.parentNode.getElementsByTagName('div').length;
+    if (remain == 1) {
+        $('removeTelButton').style.display = 'none';
+    }
+
+    remain = $('removeEmailButton').parentNode.parentNode.getElementsByTagName('div').length;
+    if (remain == 1) {
+        $('removeEmailButton').style.display = 'none';
+    }
+
+    function AddTellItem()
+    {
+        lastID = lastID + 1;
+        $('removeTelButton').style.display = 'inline'
+        var div = $('tel_p').getElementsByTagName('div')[0].cloneNode(true);
+        div.className = 'tel';
+        div.id = "tel_" + lastID;
+        div.getElementsByTagName('select')[0].name = 'tel_type['+lastID+']';
+        div.getElementsByTagName('input')[0].name  = 'tel_number['+lastID+']';
+        div.getElementsByTagName('input')[0].value = '';
+        div.getElementsByTagName('select')[0].selectedIndex = 0;
+        $('tel_p').appendChild(div);
+    }
+
+    function AddEmailItem()
+    {
+        lastID = lastID + 1;
+        $('removeEmailButton').style.display = 'inline'
+        var div = $('email_p').getElementsByTagName('div')[0].cloneNode(true);
+        div.className = 'email';
+        div.id = "email_" + lastID;
+        div.getElementsByTagName('select')[0].name = 'email_type['+lastID+']';
+        div.getElementsByTagName('input')[0].name  = 'email['+lastID+']';
+        div.getElementsByTagName('input')[0].value = '';
+        div.getElementsByTagName('select')[0].selectedIndex = 0;
+        $('email_p').appendChild(div);
+    }
+
+    function RemoveItem(inputObject)
+    {
+        remain = $(inputObject).parentNode.parentNode.getElementsByTagName('div').length;
+        parent = $(inputObject).parentNode.parentNode.getElementsByTagName('div');
+        Element.destroy($(inputObject).parentNode);
+        if (remain == 2) {
+            parent[0].getElementsByTagName('button')[1].style.display = 'none';
+        }
+    }
+ </script>
+
 </div>
 <!-- END address -->

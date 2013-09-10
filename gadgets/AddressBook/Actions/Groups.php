@@ -135,8 +135,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $rqst = $request->get(array('id'));
+        $rqst = jaws()->request->fetch(array('id'));
         if (empty($rqst['id'])) {
             return false;
         }
@@ -199,8 +198,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('name', 'description'), 'post');
+        $post = jaws()->request->fetch(array('name', 'description'), 'post');
         $post['[description]'] = $post['description'];
         unset($post['description']);
 
@@ -231,9 +229,8 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $request =& Jaws_Request::getInstance();
-        $post = $request->get(array('name', 'description'), 'post');
-        $gid = (int) $request->get('gid', 'post');
+        $post = jaws()->request->fetch(array('name', 'description'), 'post');
+        $gid = (int) jaws()->request->fetch('gid', 'post');
 
         $model = $this->gadget->load('Model')->load('Model', 'Groups');
         $info = $model->GetGroupInfo($gid);

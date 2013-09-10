@@ -18,16 +18,17 @@
             <name>user</name>
             <type>integer</type>
             <notnull>true</notnull>
+            <description>creator user id</description>
         </field>
 
         <field>
             <name>name</name>
             <type>text</type>
-            <length>64</length>
+            <length>128</length>
         </field>
 
         <field>
-            <name>company</name>
+            <name>nickname</name>
             <type>text</type>
             <length>64</length>
         </field>
@@ -35,47 +36,11 @@
         <field>
             <name>title</name>
             <type>text</type>
-            <length>128</length>
+            <length>64</length>
         </field>
 
         <field>
-            <name>email</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>phone_number</name>
-            <type>text</type>
-            <length>48</length>
-        </field>
-
-        <field>
-            <name>mobile_number</name>
-            <type>text</type>
-            <length>48</length>
-        </field>
-
-        <field>
-            <name>fax_number</name>
-            <type>text</type>
-            <length>48</length>
-        </field>
-
-        <field>
-            <name>address</name>
-            <type>text</type>
-            <length>255</length>
-        </field>
-
-        <field>
-            <name>postal_code</name>
-            <type>text</type>
-            <length>24</length>
-        </field>
-
-        <field>
-            <name>url</name>
+            <name>image</name>
             <type>text</type>
             <length>128</length>
         </field>
@@ -83,6 +48,85 @@
         <field>
             <name>notes</name>
             <type>text</type>
+        </field>
+
+        <field>
+            <name>related</name>
+            <type>integer</type>
+            <default>0</default>
+            <description>this contact(AddressBook) maybe link or related with another contact(AddressBook)</description>
+        </field>
+
+        <field>
+            <name>user_link</name>
+            <type>integer</type>
+            <default>0</default>
+            <description>link to a user in users gadget</description>
+        </field>
+
+        <field>
+            <name>key</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>tel_home</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>tel_work</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>tel_other</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>adr_home</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>adr_work</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>adr_other</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>email_home</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>email_work</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>email_other</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>128</length>
         </field>
 
         <field>
