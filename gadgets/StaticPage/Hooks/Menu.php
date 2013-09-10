@@ -19,7 +19,7 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page'),
                         'title' => _t('STATICPAGE_NAME'));
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'GroupsList'),
                         'title' => _t('STATICPAGE_GROUPS_LIST'));
