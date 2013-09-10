@@ -29,8 +29,10 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true);
 
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $model->MarkMessages($id, PrivateMessage_Info::PM_STATUS_READ, $user);
+        if ($message['status'] != PrivateMessage_Info::PM_STATUS_READ) {
+            $user = $GLOBALS['app']->Session->GetAttribute('user');
+            $model->MarkMessages($id, PrivateMessage_Info::PM_STATUS_READ, $user);
+        }
 
         $tpl = $this->gadget->loadTemplate('Message.html');
         $tpl->SetBlock('message');
@@ -111,22 +113,26 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
         if(!empty($message['child_id'])) {
             $tpl->SetBlock('message/message_nav');
-            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('ViewMessage',
+            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap(
+                'ViewMessage',
                 array('id' => $message['child_id'])));
             $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_NEXT_MESSAGE'));
             $tpl->ParseBlock('message/message_nav');
         }
 
 
-
-        $tpl->SetVariable('reply_url',      $this->gadget->urlMap('Reply', array('id' => $id)));
+        if(empty($message['child_id'])) {
+            $tpl->SetBlock('message/reply');
+            $tpl->SetVariable('reply_url',      $this->gadget->urlMap('Reply', array('id' => $id)));
+            $tpl->SetVariable('icon_reply',     STOCK_JUMP_TO);
+            $tpl->ParseBlock('message/reply');
+        }
         $tpl->SetVariable('forward_url',    $this->gadget->urlMap('Send', array('id' => $id)));
         $tpl->SetVariable('delete_url',     $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
         $tpl->SetVariable('back_url',       $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_back',      STOCK_LEFT);
         $tpl->SetVariable('icon_forward',   STOCK_RIGHT);
-        $tpl->SetVariable('icon_reply',     STOCK_JUMP_TO);
         $tpl->SetVariable('icon_delete',    STOCK_DELETE);
 
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));

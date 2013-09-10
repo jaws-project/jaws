@@ -31,7 +31,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         );
         $table->join('users', 'pm_messages.from', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
-        $table->where('pm_messages.id', $id);
+        $table->where('pm_recipients.id', $id);
 
         $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
@@ -64,7 +64,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         );
         $table->join('users', 'pm_messages.from', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
-        $table->where('pm_messages.id', $id);
+        $table->where('pm_recipients.id', $id);
 
         $message = $table->fetchRow();
         if (Jaws_Error::IsError($message)) {
@@ -115,8 +115,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $table->update(array('status' => $status))->where('message_id', $ids, 'in')->and()->where('recipient', $user);
-        $res = $table->exec();
+        $table->update(array('status' => $status, 'update_time' => time()));
+        $res = $table->where('id', $ids, 'in')->and()->where('recipient', $user)->exec();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -141,7 +141,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->beginTransaction();
 
         $data = array();
-        $data['parent_id']   = $id;
+        $data['parent_id']   = $message['id'];
         $data['from']        = $user;
         $data['subject']     = _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']);
         $data['body']        = $reply;
@@ -174,16 +174,16 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function SendMessage($user, $message, $attachments)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $mTable = Jaws_ORM::getInstance()->table('pm_messages');
         //Start Transaction
-        $table->beginTransaction();
+        $mTable->beginTransaction();
 
         $data = array();
         $data['from']        = $user;
         $data['subject']     = $message['subject'];
         $data['body']        = $message['body'];
         $data['insert_time'] = time();
-        $message_id = $table->insert($data)->exec();
+        $message_id = $mTable->insert($data)->exec();
         if (Jaws_Error::IsError($message_id)) {
             return false;
         }
@@ -208,12 +208,17 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         }
 
-        $recipient_users = explode(",", $message['recipient_users']);
-        if (!empty($recipient_groups)) {
+        $recipient_users = array();
+        if (!empty($message['recipient_users'])) {
+            $recipient_users = explode(",", $message['recipient_users']);
+        }
+        if (!empty($message['recipient_groups'])) {
             $recipient_groups = explode(",", $message['recipient_groups']);
             $table = Jaws_ORM::getInstance()->table('users_groups');
-            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchCol();
-            $recipient_users = array_merge($recipient_users, $group_users);
+            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchColumn();
+            if (!empty($group_users) && count($group_users) > 0) {
+                $recipient_users = array_merge($recipient_users, $group_users);
+            }
         }
 
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
@@ -226,19 +231,25 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 //        }
 //        $res = $table->insertAll($data)->exec();
 
-        foreach ($recipient_users as $recipient_user) {
-            $data = array(
-                'message_id' => $message_id,
-                'recipient' => $recipient_user,
-            );
-            $res = $table->insert($data)->exec();
-            if (Jaws_Error::IsError($res)) {
-                return false;
+        if (!empty($recipient_users) && count($recipient_users) > 0) {
+            foreach ($recipient_users as $recipient_user) {
+                $data = array(
+                    'message_id' => $message_id,
+                    'recipient' => $recipient_user,
+                );
+                $res = $table->insert($data)->exec();
+                if (Jaws_Error::IsError($res)) {
+                    return false;
+                }
             }
+        } else {
+            //Rollback Transaction
+            $mTable->rollback();
+            return false;
         }
 
         //Commit Transaction
-        $table->commit();
+        $mTable->commit();
         return true;
     }
 

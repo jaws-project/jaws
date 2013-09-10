@@ -16,7 +16,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
-    var $_ACLs = array(
+    var $_ACLKeys = array(
         'ManageProperties',
         'DeleteMessage',
         'ReplyMessage',
@@ -53,9 +53,11 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'pm_messages',
             'pm_recipients',
-            'pm_reply');
+            'pm_reply',
+            'pm_messages',
+            'pm_message_attachments',
+        );
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {

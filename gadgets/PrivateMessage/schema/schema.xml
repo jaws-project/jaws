@@ -105,6 +105,13 @@
         <declaration>
 
             <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
                 <name>message_id</name>
                 <type>integer</type>
                 <notnull>true</notnull>

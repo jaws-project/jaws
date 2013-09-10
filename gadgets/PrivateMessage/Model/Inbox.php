@@ -23,7 +23,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
             'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
-            'users.nickname as from_nickname', 'pm_recipients.status:integer', 'users.username as from_username'
+            'users.nickname as from_nickname', 'pm_recipients.status:integer', 'users.username as from_username',
+            'pm_recipients.id as message_recipient_id:integer'
         );
         $table->join('users', 'pm_messages.from', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');

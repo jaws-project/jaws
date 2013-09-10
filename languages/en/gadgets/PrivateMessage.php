@@ -15,6 +15,10 @@ define('_EN_PRIVATEMESSAGE_DESCRIPTION', "User can send private message to each 
 
 /* ACL's */
 define('_EN_PRIVATEMESSAGE_ACL_DEFAULT', "Administer PrivateMessage");
+define('_EN_PRIVATEMESSAGE_ACL_MANAGEPROPERTIES', "Manage Properties");
+define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
+define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
+define('_EN_PRIVATEMESSAGE_ACL_SENDMESSAGE', "Send message");
 
 /* Layout Actions */
 define('_EN_PRIVATEMESSAGE_ACTIONS_REGIONWEATHER', "Region");
